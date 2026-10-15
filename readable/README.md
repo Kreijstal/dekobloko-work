@@ -1567,6 +1567,26 @@ static state is restored. Complete post-match screen/audio routing, live
 server interpretation, full asset-dependent painting and original-JAR
 equivalence remain unverified.
 
+GameplayRenderHelpers and GameOverlayHelpers name the static rendering and
+icon-pool helper bags. HUD methods now expose the power-up meter grid/row,
+individual meter, lever selection, multiplayer HUD, single-player composition
+and score-popup drawing. Player-count layouts, Q8 meter levels/velocities,
+power-up/bar assets, countdown digits, characters and lever variants have
+reviewed names. The byte/full-integer HUD bodies remain overloads with their
+original bindings; guard153 stays153 in the integer body and narrows to -103
+in the byte body.
+
+Native fixtures verify lever masks/controls/state/tutorial gating; meter pixels
+at the3/7/13/20 thresholds, fractional Q8 truncation and full-meter pulse; grid
+order/limits and the nominal75-pixel centering used by the4-by3 sidebar grid.
+Sprite-call references check offset parallax order/geometry/overflow, countdown
+transforms, character lever variants and message-icon conditions. Byte/integer
+HUD pixels agree at guard -103; this is a metamorphic comparison. Independent
+glyph pixels check popup placement/clipping and lifetime alpha. Sprite probes
+replace artwork. Full HUD text content, character artwork, tutorial highlights,
+single-player composition, all invalid inputs, live rendering and original-JAR
+equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,

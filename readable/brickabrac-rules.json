@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 68,
+  "version": 69,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -490,6 +490,13 @@
       "originalName": "cm",
       "to": "AlternateNumericLoginCredentials",
       "evidence": "cm.java: Same numeric payload with distinct wire kind0 selected by factory flag; exact server interpretation remains qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cn",
+      "originalName": "cn",
+      "to": "GameOverlayHelpers",
+      "evidence": "cn.java: Static achievement-icon pool acquisition and score-popup painting; shared sprite decode storage and unrelated globals remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -2114,6 +2121,13 @@
       "originalName": "tp",
       "to": "IndexedSprite",
       "evidence": "tp.java: Unsigned-byte palette indices with cropped geometry, transparent/opaque/alpha drawing, quarter-size averaging and RGB conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ua",
+      "originalName": "ua",
+      "to": "GameplayRenderHelpers",
+      "evidence": "ua.java: Static helpers centering the power-up meter grid and drawing vertically offset parallax layers; unrelated client globals remain qualified.",
       "confidence": "reviewed"
     },
     {
@@ -3874,6 +3888,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cn.field_e:[Ljp;",
+      "originalName": "field_e",
+      "to": "smallLeverSprites",
+      "evidence": "cn.java: Loaded from basic/lever_small; left/neutral/right frame selected from controls.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cp.field_I:Ljp;",
       "originalName": "field_I",
       "to": "volcanicMidSprite",
@@ -4728,6 +4749,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ed.field_b:[Ljp;",
+      "originalName": "field_b",
+      "to": "countdownSprites",
+      "evidence": "ed.java: Three sprites generated as3,2,1 and selected for simulation ticks0..149.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ed.field_e:[I",
       "originalName": "field_e",
       "to": "projectedVertexY",
@@ -4753,6 +4781,13 @@
       "originalName": "field_d",
       "to": "keyEventCodes",
       "evidence": "ef.java: 128-entry event ring, mapped code for presses and -1 for typed characters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ef.field_e:[Ljp;",
+      "originalName": "field_e",
+      "to": "smallCharacterSprites",
+      "evidence": "ef.java: Loaded from basic/characters_small and indexed by board character.",
       "confidence": "reviewed"
     },
     {
@@ -6013,6 +6048,13 @@
       "originalName": "field_n",
       "to": "height",
       "evidence": "gg.java: Inclusive bottom edge is y plus height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gg.field_p:[Ljp;",
+      "originalName": "field_p",
+      "to": "powerUpMeterIcons",
+      "evidence": "gg.java: Loaded from basic/powerup and indexed by flagged brick type for HUD meters.",
       "confidence": "reviewed"
     },
     {
@@ -7360,6 +7402,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_cb:[I",
+      "originalName": "field_cb",
+      "to": "powerUpMeterLevels256",
+      "evidence": "j.java: Displayed drop-progress levels in Q8 with target20 from cadence counters or falling power-up presence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_db:I",
       "originalName": "field_db",
       "to": "controlMask",
@@ -7539,6 +7588,13 @@
       "originalName": "field_x",
       "to": "ballPulses",
       "evidence": "j.java: Transient BallPulseEffect collection aged/unlinked by match and drawn by board renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_xb:[I",
+      "originalName": "field_xb",
+      "to": "powerUpMeterVelocities256",
+      "evidence": "j.java: Damped per-type display velocity, clamped to plus/minus512 before integration and target overshoot correction.",
       "confidence": "reviewed"
     },
     {
@@ -8298,10 +8354,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kh.field_c:[[I",
+      "originalName": "field_c",
+      "to": "boardLayoutXByPlayerCount",
+      "evidence": "kh.java: X origins for1..5 players;3..5-player entries also reserve empty preview positions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kh.field_d:[[Ljp;",
       "originalName": "field_d",
       "to": "constructionSegsSprites",
       "evidence": "sn.java: Literal sprite resource construct/construction_segs assigned to this resolved field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kh.field_e:[[I",
+      "originalName": "field_e",
+      "to": "boardLayoutYByPlayerCount",
+      "evidence": "kh.java: Y origins for1..5 players and reserved preview positions.",
       "confidence": "reviewed"
     },
     {
@@ -8316,6 +8386,13 @@
       "originalName": "field_g",
       "to": "deque",
       "evidence": "kh.java: Retained deque, independent of its shared cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kh.field_h:[[I",
+      "originalName": "field_h",
+      "to": "boardScaleDivisorsByPlayerCount",
+      "evidence": "kh.java: Divisor1 for full board,2 for half-size previews; indexed by playerCount-1.",
       "confidence": "reviewed"
     },
     {
@@ -9086,6 +9163,13 @@
       "originalName": "field_xb",
       "to": "validationInvalid",
       "evidence": "lp.java: Rejected text/date input; icon selects error sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lp.field_yb:[Ljp;",
+      "originalName": "field_yb",
+      "to": "spaceSmallLeverSprites",
+      "evidence": "lp.java: Loaded from basic/lever_small_space for character5.",
       "confidence": "reviewed"
     },
     {
@@ -10906,6 +10990,13 @@
       "originalName": "field_c",
       "to": "achievementNotificationTick",
       "evidence": "ok.java: Notification animation/update counter, removes at335 and plays sound at50.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ol.field_r:Ljp;",
+      "originalName": "field_r",
+      "to": "powerUpMeterBarSprite",
+      "evidence": "ol.java: Loaded from basic/powerupbar; frames the four-band progress meter.",
       "confidence": "reviewed"
     },
     {
@@ -14136,6 +14227,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ul.field_r:[Ljp;",
+      "originalName": "field_r",
+      "to": "chocolateSmallLeverSprites",
+      "evidence": "ul.java: Loaded from basic/lever_small_choc for character2.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:um.field_a:I",
       "originalName": "field_a",
       "to": "bottomInset",
@@ -15239,6 +15337,111 @@
       "originalName": "var5",
       "to": "clientBranchFlag",
       "evidence": "BrickABrac.java: Original generated branch flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:a.a(ILak;Lj;)V#0",
+      "originalName": "stackIn_25_0",
+      "to": "failureContext",
+      "evidence": "a.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:a.a(ILak;Lj;)V#1",
+      "originalName": "stackIn_25_1",
+      "to": "contextBuilder",
+      "evidence": "a.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:a.a(ILak;Lj;)V#10",
+      "originalName": "var6",
+      "to": "leverFrame",
+      "evidence": "a.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:a.a(ILak;Lj;)V#11",
+      "originalName": "var7",
+      "to": "leverSprites",
+      "evidence": "a.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:a.a(ILak;Lj;)V#12",
+      "originalName": "var9",
+      "to": "currentLever",
+      "evidence": "a.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:a.a(ILak;Lj;)V#13",
+      "originalName": "var10",
+      "to": "fadingLever",
+      "evidence": "a.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:a.a(ILak;Lj;)V#14",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtException",
+      "evidence": "a.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:a.a(ILak;Lj;)V#2",
+      "originalName": "stackIn_26_2",
+      "to": "matchSummary",
+      "evidence": "a.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:a.a(ILak;Lj;)V#3",
+      "originalName": "stackIn_28_1",
+      "to": "boardContextBuilder",
+      "evidence": "a.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:a.a(ILak;Lj;)V#4",
+      "originalName": "stackIn_29_2",
+      "to": "boardSummary",
+      "evidence": "a.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:a.a(ILak;Lj;)V#5",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "a.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:a.a(ILak;Lj;)V#6",
+      "originalName": "var3_int",
+      "to": "fadeAlpha",
+      "evidence": "a.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:a.a(ILak;Lj;)V#7",
+      "originalName": "var3",
+      "to": "failure",
+      "evidence": "a.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:a.a(ILak;Lj;)V#8",
+      "originalName": "var4",
+      "to": "currentCharacter",
+      "evidence": "a.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:a.a(ILak;Lj;)V#9",
+      "originalName": "var5",
+      "to": "eyeSprite",
+      "evidence": "a.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
       "confidence": "reviewed"
     },
     {
@@ -26113,6 +26316,104 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:kb.a(Lak;IILj;)I#0",
+      "originalName": "var4_int",
+      "to": "isPlayerMasked",
+      "evidence": "kb.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kb.a(Lak;IILj;)I#1",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "kb.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kb.a(Lak;IILj;)I#10",
+      "originalName": "stackIn_26_1",
+      "to": "boardContextBuilder",
+      "evidence": "kb.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kb.a(Lak;IILj;)I#11",
+      "originalName": "stackIn_27_2",
+      "to": "boardSummary",
+      "evidence": "kb.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kb.a(Lak;IILj;)I#12",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "kb.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kb.a(Lak;IILj;)I#13",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtException",
+      "evidence": "kb.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kb.a(Lak;IILj;)I#2",
+      "originalName": "var5",
+      "to": "unusedWords",
+      "evidence": "kb.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kb.a(Lak;IILj;)I#3",
+      "originalName": "stackIn_3_0",
+      "to": "maskedValue",
+      "evidence": "kb.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kb.a(Lak;IILj;)I#4",
+      "originalName": "stackIn_13_0",
+      "to": "leftFrame",
+      "evidence": "kb.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kb.a(Lak;IILj;)I#5",
+      "originalName": "stackIn_18_0",
+      "to": "rightFrame",
+      "evidence": "kb.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kb.a(Lak;IILj;)I#6",
+      "originalName": "stackIn_20_0",
+      "to": "neutralFrame",
+      "evidence": "kb.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kb.a(Lak;IILj;)I#7",
+      "originalName": "stackIn_23_0",
+      "to": "failureContext",
+      "evidence": "kb.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kb.a(Lak;IILj;)I#8",
+      "originalName": "stackIn_23_1",
+      "to": "contextBuilder",
+      "evidence": "kb.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:kb.a(Lak;IILj;)I#9",
+      "originalName": "stackIn_24_2",
+      "to": "matchSummary",
+      "evidence": "kb.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ke.c(I)V#1",
       "originalName": "var2_long",
       "to": "nowMillis",
@@ -26194,6 +26495,104 @@
       "originalName": "var8",
       "to": "guardQuotient",
       "evidence": "ki.java: Reviewed half-intensity scan conversion, RGB shading or diagnostics; multi-role scratch names preserve existing lifetime reuse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:km.a(Lak;Lj;IIZII)V#0",
+      "originalName": "var11",
+      "to": "typeId",
+      "evidence": "km.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:km.a(Lak;Lj;IIZII)V#1",
+      "originalName": "var7_int",
+      "to": "iconX",
+      "evidence": "km.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:km.a(Lak;Lj;IIZII)V#10",
+      "originalName": "stackIn_22_2",
+      "to": "boardSummary",
+      "evidence": "km.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:km.a(Lak;Lj;IIZII)V#11",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "km.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:km.a(Lak;Lj;IIZII)V#12",
+      "originalName": "var7",
+      "to": "failure",
+      "evidence": "km.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:km.a(Lak;Lj;IIZII)V#13",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtException",
+      "evidence": "km.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:km.a(Lak;Lj;IIZII)V#2",
+      "originalName": "var8",
+      "to": "iconY",
+      "evidence": "km.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:km.a(Lak;Lj;IIZII)V#3",
+      "originalName": "var9",
+      "to": "column",
+      "evidence": "km.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:km.a(Lak;Lj;IIZII)V#4",
+      "originalName": "var10",
+      "to": "row",
+      "evidence": "km.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:km.a(Lak;Lj;IIZII)V#5",
+      "originalName": "var12",
+      "to": "unusedClientFlag",
+      "evidence": "km.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:km.a(Lak;Lj;IIZII)V#6",
+      "originalName": "stackIn_18_0",
+      "to": "failureContext",
+      "evidence": "km.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:km.a(Lak;Lj;IIZII)V#7",
+      "originalName": "stackIn_18_1",
+      "to": "contextBuilder",
+      "evidence": "km.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:km.a(Lak;Lj;IIZII)V#8",
+      "originalName": "stackIn_19_2",
+      "to": "matchSummary",
+      "evidence": "km.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:km.a(Lak;Lj;IIZII)V#9",
+      "originalName": "stackIn_21_1",
+      "to": "boardContextBuilder",
+      "evidence": "km.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
       "confidence": "reviewed"
     },
     {
@@ -28535,6 +28934,181 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#0",
+      "originalName": "stackIn_8_0",
+      "to": "tutorialActiveValue",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#1",
+      "originalName": "stackIn_11_0",
+      "to": "tutorialValue",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#10",
+      "originalName": "stackIn_51_1",
+      "to": "matchContextBuilder",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#11",
+      "originalName": "stackIn_52_2",
+      "to": "matchSummary",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#12",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#13",
+      "originalName": "var6_int",
+      "to": "tutorialActive",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#14",
+      "originalName": "var6",
+      "to": "failure",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#15",
+      "originalName": "var7",
+      "to": "highlightAge",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#16",
+      "originalName": "var8",
+      "to": "barX",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#17",
+      "originalName": "var9",
+      "to": "meterLevel",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#18",
+      "originalName": "var10",
+      "to": "barBottom",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#19",
+      "originalName": "var11",
+      "to": "firstBandHeight",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#2",
+      "originalName": "stackIn_13_1",
+      "to": "highlightStageValue",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#20",
+      "originalName": "var6_intLifetime1",
+      "to": "highlightMeter",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#21",
+      "originalName": "var11Lifetime1",
+      "to": "secondBandHeight",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#22",
+      "originalName": "var11Lifetime2",
+      "to": "thirdBandHeight",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#23",
+      "originalName": "var11Lifetime3",
+      "to": "fourthBandHeight",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#24",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtException",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#3",
+      "originalName": "stackIn_22_0",
+      "to": "firstBandValue",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#4",
+      "originalName": "stackIn_27_0",
+      "to": "secondBandValue",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#5",
+      "originalName": "stackIn_32_0",
+      "to": "thirdBandValue",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#6",
+      "originalName": "stackIn_38_0",
+      "to": "fourthBandValue",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#7",
+      "originalName": "stackIn_48_0",
+      "to": "failureContext",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#8",
+      "originalName": "stackIn_48_1",
+      "to": "contextBuilder",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oc.a(IIILj;Lak;B)V#9",
+      "originalName": "stackIn_49_2",
+      "to": "boardSummary",
+      "evidence": "oc.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:og.<init>(JLmh;Lmh;Lmh;[Log;[I[Ljava/lang/String;[C)V#16",
       "originalName": "var10",
       "to": "font",
@@ -28906,6 +29480,188 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#0",
+      "originalName": "stackIn_3_0",
+      "to": "maskedValue",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#1",
+      "originalName": "stackIn_37_0",
+      "to": "failureContext",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#10",
+      "originalName": "var11",
+      "to": "characterSpriteAlias",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#11",
+      "originalName": "var12_int",
+      "to": "countdownAge",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#12",
+      "originalName": "var12",
+      "to": "leverSprites",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#13",
+      "originalName": "var13_int",
+      "to": "countdownWidth",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#14",
+      "originalName": "var13",
+      "to": "leverSprite",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#15",
+      "originalName": "var14_int",
+      "to": "countdownHeight",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#16",
+      "originalName": "var14",
+      "to": "truncatedPlayerName",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#17",
+      "originalName": "var15_int",
+      "to": "countdownFadeAge",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#18",
+      "originalName": "var15",
+      "to": "unusedMessageSlot",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#19",
+      "originalName": "var15_ref",
+      "to": "statusText",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#2",
+      "originalName": "stackIn_37_1",
+      "to": "contextBuilder",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#20",
+      "originalName": "var16_ref_String",
+      "to": "nameAndStatusText",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#21",
+      "originalName": "var16",
+      "to": "messageWidth",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#22",
+      "originalName": "var17",
+      "to": "countdownSprite",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#23",
+      "originalName": "var18",
+      "to": "characterSprite",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#24",
+      "originalName": "var10Lifetime1",
+      "to": "statusTop",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#25",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtException",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#3",
+      "originalName": "stackIn_38_2",
+      "to": "boardSummary",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#4",
+      "originalName": "stackIn_40_1",
+      "to": "matchContextBuilder",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#5",
+      "originalName": "stackIn_41_2",
+      "to": "matchSummary",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#6",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#7",
+      "originalName": "var9_int",
+      "to": "isPlayerMasked",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#8",
+      "originalName": "var9",
+      "to": "failure",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#9",
+      "originalName": "var10",
+      "to": "countdownIndex",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:om.a(Lom;Z)Z#18",
       "originalName": "var3_int",
       "to": "thisInvitationPriority",
@@ -28938,6 +29694,188 @@
       "originalName": "var6",
       "to": "otherStartedPriority",
       "evidence": "om.java: Scoped game comparator local: invitation/status6 and flag8/spectator priorities or exception context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#0",
+      "originalName": "stackIn_3_0",
+      "to": "maskedValue",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#1",
+      "originalName": "stackIn_37_0",
+      "to": "failureContext",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#10",
+      "originalName": "var11",
+      "to": "characterSpriteAlias",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#11",
+      "originalName": "var12_int",
+      "to": "countdownAge",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#12",
+      "originalName": "var12",
+      "to": "leverSprites",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#13",
+      "originalName": "var13_int",
+      "to": "countdownWidth",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#14",
+      "originalName": "var13",
+      "to": "leverSprite",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#15",
+      "originalName": "var14_int",
+      "to": "countdownHeight",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#16",
+      "originalName": "var14",
+      "to": "truncatedPlayerName",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#17",
+      "originalName": "var15_int",
+      "to": "countdownFadeAge",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#18",
+      "originalName": "var15",
+      "to": "unusedMessageSlot",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#19",
+      "originalName": "var15_ref",
+      "to": "statusText",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#2",
+      "originalName": "stackIn_37_1",
+      "to": "contextBuilder",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#20",
+      "originalName": "var16_ref_String",
+      "to": "nameAndStatusText",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#21",
+      "originalName": "var16",
+      "to": "messageWidth",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#22",
+      "originalName": "var17",
+      "to": "countdownSprite",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#23",
+      "originalName": "var18",
+      "to": "characterSprite",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#24",
+      "originalName": "var10Lifetime1",
+      "to": "statusTop",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#25",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtException",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#3",
+      "originalName": "stackIn_38_2",
+      "to": "boardSummary",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#4",
+      "originalName": "stackIn_40_1",
+      "to": "matchContextBuilder",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#5",
+      "originalName": "stackIn_41_2",
+      "to": "matchSummary",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#6",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#7",
+      "originalName": "var9_int",
+      "to": "isPlayerMasked",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#8",
+      "originalName": "var9",
+      "to": "failure",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:om.a(ZBIZLj;IIZLak;)V#9",
+      "originalName": "var10",
+      "to": "countdownIndex",
+      "evidence": "om.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
       "confidence": "reviewed"
     },
     {
@@ -32903,6 +33841,125 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#0",
+      "originalName": "var13",
+      "to": "lifeIndex",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#1",
+      "originalName": "stackIn_19_0",
+      "to": "failureContext",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#10",
+      "originalName": "var8",
+      "to": "failure",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#11",
+      "originalName": "var9",
+      "to": "insetY",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#12",
+      "originalName": "var10",
+      "to": "lineHeight",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#13",
+      "originalName": "var11",
+      "to": "drawX",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#14",
+      "originalName": "var12",
+      "to": "drawY",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#15",
+      "originalName": "var14",
+      "to": "unusedClientFlag",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#16",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtException",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#2",
+      "originalName": "stackIn_19_1",
+      "to": "contextBuilder",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#3",
+      "originalName": "stackIn_20_2",
+      "to": "matchSummary",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#4",
+      "originalName": "stackIn_22_1",
+      "to": "fontContextBuilder",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#5",
+      "originalName": "stackIn_23_2",
+      "to": "fontSummary",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#6",
+      "originalName": "stackIn_25_1",
+      "to": "boardContextBuilder",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#7",
+      "originalName": "stackIn_26_2",
+      "to": "boardSummary",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#8",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tk.a(ILak;Lbi;Lj;BIII)V#9",
+      "originalName": "var8_int",
+      "to": "insetX",
+      "evidence": "tk.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:tn.a(I)V#0",
       "originalName": "var3",
       "to": "unusedGameFlag",
@@ -33243,6 +34300,27 @@
       "originalName": "var6",
       "to": "promotedEntry",
       "evidence": "to.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ua.a(Lj;IIIIILak;)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "ua.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ua.a(Ljp;IIILjp;ILjp;IIILjp;I)V#0",
+      "originalName": "var12_int",
+      "to": "unusedGuardQuotient",
+      "evidence": "ua.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ua.a(Ljp;IIILjp;ILjp;IIILjp;I)V#1",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "ua.java: Reviewed HUD/icon rendering declaration and source resource/call data flow.",
       "confidence": "reviewed"
     },
     {
@@ -35290,6 +36368,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:a.a(ILak;Lj;)V",
+      "originalName": "a",
+      "to": "drawSinglePlayerCharacterHud",
+      "evidence": "a.java: Paints current/fading character background, eye expression and lever sprites; canonical guard640.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:a.a(ILmp;Lmp;)Z",
       "originalName": "a",
       "to": "comesBeforeFriend",
@@ -36568,6 +37653,13 @@
       "originalName": "a",
       "to": "acquireAchievementIcon",
       "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(Lul;Lj;III)V",
+      "originalName": "a",
+      "to": "drawScorePopup",
+      "evidence": "cn.java: Centers popup text at Q8 coordinates plus offsets and capHeight with remainingTicks/50 alpha; guard10030.",
       "confidence": "reviewed"
     },
     {
@@ -39910,6 +41002,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kb.a(Lak;IILj;)I",
+      "originalName": "a",
+      "to": "getLeverFrameIndex",
+      "evidence": "kb.java: Returns left0/neutral1/right2 from sole left/right control while unmasked, state2 and tutorial policy permits; guard above63.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kc.a(B)I",
       "originalName": "a",
       "to": "pulseSize",
@@ -40477,6 +41576,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:km.a(Lak;Lj;IIZII)V",
+      "originalName": "a",
+      "to": "drawPowerUpMeterGrid",
+      "evidence": "km.java: Visits flagged brick-type bits0..28 in ascending order, paints associated power-up icon/meters left-to-right then down at25-pixel spacing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:km.a(Z)I",
       "originalName": "a",
       "to": "getParentScreenId",
@@ -41013,6 +42119,13 @@
       "originalName": "a",
       "to": "clearFaceDepthBuckets",
       "evidence": "lj.java: Clears shared bucket counts in groups of eight from supplied starting offset; non-multiple capacities retain original behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(ILj;Lak;II)V",
+      "originalName": "a",
+      "to": "drawPowerUpMeterRow",
+      "evidence": "lj.java: Draws flagged power-up meters in a single row of at most5 icons; guard -34.",
       "confidence": "reviewed"
     },
     {
@@ -42150,6 +43263,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oc.a(IIILj;Lak;B)V",
+      "originalName": "a",
+      "to": "drawPowerUpMeter",
+      "evidence": "oc.java: Draws basic/powerup icon, smoothed drop meter with four threshold bands and tutorial/full-meter highlight; guard above106.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oc.a(IIILoc;II)V",
       "originalName": "a",
       "to": "handlePointerRelease",
@@ -42402,10 +43522,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V",
+      "originalName": "$cfr$intArgs$a$687785aae666",
+      "to": "drawMultiplayerBoardHud",
+      "evidence": "om.java: Decompiler full-integer overload of byte-guard HUD body; preserves guard values outside byte range.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:om.a(Lom;Z)Z",
       "originalName": "a",
       "to": "comesBeforeGame",
       "evidence": "om.java: Invitation/status6 priority, direct join and byte priority, waiting/started, flag8/spectator and activity time; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:om.a(ZBIZLj;IIZLak;)V",
+      "originalName": "a",
+      "to": "drawMultiplayerBoardHud",
+      "evidence": "om.java: Draws countdown, frame, power-up row, character/lever and name/result/message HUD; byte guard -103.",
       "confidence": "reviewed"
     },
     {
@@ -44600,6 +45734,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tk.a(ILak;Lbi;Lj;BIII)V",
+      "originalName": "a",
+      "to": "drawSinglePlayerStatus",
+      "evidence": "tk.java: Paints four prepared status strings and spare-life sprites with horizontal wrapping and vertical limit; guard below -96.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tk.a(JI)V",
       "originalName": "a",
       "to": "setSecondaryKey",
@@ -44786,6 +45927,20 @@
       "originalName": "a",
       "to": "drawInterpolatedMeshTriangle",
       "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ua.a(Lj;IIIIILak;)V",
+      "originalName": "a",
+      "to": "drawCenteredPowerUpMeters",
+      "evidence": "ua.java: Centers the 75-by75 nominal grid in supplied bounds, adds3 pixels vertically, then draws4 columns by3 rows; guard below -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ua.a(Ljp;IIILjp;ILjp;IIILjp;I)V",
+      "originalName": "a",
+      "to": "drawOffsetParallaxLayers",
+      "evidence": "ua.java: Paints four layers with 5/5/10/20 scroll multipliers and fixed 480-base/vertical offset; caller guards79/95; unused guard quotient retained.",
       "confidence": "reviewed"
     },
     {
@@ -46487,6 +47642,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ih.java: Closes/reset transport, increments failures, lastError -1 and randomizes XOR byte; guard8. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:a.a(ILak;Lj;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "a.java: Paints current/fading character background, eye expression and lever sprites; canonical guard640.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:a.a(ILak;Lj;)V#1",
+      "originalName": "param1",
+      "to": "match",
+      "evidence": "a.java: Paints current/fading character background, eye expression and lever sprites; canonical guard640.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:a.a(ILak;Lj;)V#2",
+      "originalName": "param2",
+      "to": "board",
+      "evidence": "a.java: Paints current/fading character background, eye expression and lever sprites; canonical guard640.",
       "confidence": "reviewed"
     },
     {
@@ -50344,6 +51520,41 @@
       "originalName": "param8",
       "to": "transitionBit",
       "evidence": "cn.java: Reuses first pooled icon or creates one, then overwrites position, size, owner, achievement and transition mask inputs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(Lul;Lj;III)V#0",
+      "originalName": "param0",
+      "to": "popup",
+      "evidence": "cn.java: Centers popup text at Q8 coordinates plus offsets and capHeight with remainingTicks/50 alpha; guard10030.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(Lul;Lj;III)V#1",
+      "originalName": "param1",
+      "to": "unusedBoard",
+      "evidence": "cn.java: Centers popup text at Q8 coordinates plus offsets and capHeight with remainingTicks/50 alpha; guard10030.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(Lul;Lj;III)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "cn.java: Centers popup text at Q8 coordinates plus offsets and capHeight with remainingTicks/50 alpha; guard10030.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(Lul;Lj;III)V#3",
+      "originalName": "param3",
+      "to": "offsetX",
+      "evidence": "cn.java: Centers popup text at Q8 coordinates plus offsets and capHeight with remainingTicks/50 alpha; guard10030.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cn.a(Lul;Lj;III)V#4",
+      "originalName": "param4",
+      "to": "offsetY",
+      "evidence": "cn.java: Centers popup text at Q8 coordinates plus offsets and capHeight with remainingTicks/50 alpha; guard10030.",
       "confidence": "reviewed"
     },
     {
@@ -60693,6 +61904,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:kb.a(Lak;IILj;)I#0",
+      "originalName": "param0",
+      "to": "match",
+      "evidence": "kb.java: Returns left0/neutral1/right2 from sole left/right control while unmasked, state2 and tutorial policy permits; guard above63.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kb.a(Lak;IILj;)I#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "kb.java: Returns left0/neutral1/right2 from sole left/right control while unmasked, state2 and tutorial policy permits; guard above63.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kb.a(Lak;IILj;)I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "kb.java: Returns left0/neutral1/right2 from sole left/right control while unmasked, state2 and tutorial policy permits; guard above63.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:kb.a(Lak;IILj;)I#3",
+      "originalName": "param3",
+      "to": "board",
+      "evidence": "kb.java: Returns left0/neutral1/right2 from sole left/right control while unmasked, state2 and tutorial policy permits; guard above63.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:kc.<init>(II)V#0",
       "originalName": "param0",
       "to": "x256",
@@ -61859,6 +63098,55 @@
       "originalName": "param2",
       "to": "obfuscationGuard",
       "evidence": "km.java: Dispatches original numeric action semantics; role follows callers and derived overrides, encodings remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:km.a(Lak;Lj;IIZII)V#0",
+      "originalName": "param0",
+      "to": "match",
+      "evidence": "km.java: Visits flagged brick-type bits0..28 in ascending order, paints associated power-up icon/meters left-to-right then down at25-pixel spacing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:km.a(Lak;Lj;IIZII)V#1",
+      "originalName": "param1",
+      "to": "board",
+      "evidence": "km.java: Visits flagged brick-type bits0..28 in ascending order, paints associated power-up icon/meters left-to-right then down at25-pixel spacing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:km.a(Lak;Lj;IIZII)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "km.java: Visits flagged brick-type bits0..28 in ascending order, paints associated power-up icon/meters left-to-right then down at25-pixel spacing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:km.a(Lak;Lj;IIZII)V#3",
+      "originalName": "param3",
+      "to": "x",
+      "evidence": "km.java: Visits flagged brick-type bits0..28 in ascending order, paints associated power-up icon/meters left-to-right then down at25-pixel spacing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:km.a(Lak;Lj;IIZII)V#4",
+      "originalName": "param4",
+      "to": "enabled",
+      "evidence": "km.java: Visits flagged brick-type bits0..28 in ascending order, paints associated power-up icon/meters left-to-right then down at25-pixel spacing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:km.a(Lak;Lj;IIZII)V#5",
+      "originalName": "param5",
+      "to": "columns",
+      "evidence": "km.java: Visits flagged brick-type bits0..28 in ascending order, paints associated power-up icon/meters left-to-right then down at25-pixel spacing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:km.a(Lak;Lj;IIZII)V#6",
+      "originalName": "param6",
+      "to": "rows",
+      "evidence": "km.java: Visits flagged brick-type bits0..28 in ascending order, paints associated power-up icon/meters left-to-right then down at25-pixel spacing.",
       "confidence": "reviewed"
     },
     {
@@ -63385,6 +64673,41 @@
       "originalName": "param0",
       "to": "offset",
       "evidence": "lj.java: Clears shared bucket counts in groups of eight from supplied starting offset; non-multiple capacities retain original behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lj.a(ILj;Lak;II)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "lj.java: Draws flagged power-up meters in a single row of at most5 icons; guard -34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lj.a(ILj;Lak;II)V#1",
+      "originalName": "param1",
+      "to": "board",
+      "evidence": "lj.java: Draws flagged power-up meters in a single row of at most5 icons; guard -34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lj.a(ILj;Lak;II)V#2",
+      "originalName": "param2",
+      "to": "match",
+      "evidence": "lj.java: Draws flagged power-up meters in a single row of at most5 icons; guard -34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lj.a(ILj;Lak;II)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "lj.java: Draws flagged power-up meters in a single row of at most5 icons; guard -34.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:lj.a(ILj;Lak;II)V#4",
+      "originalName": "param4",
+      "to": "y",
+      "evidence": "lj.java: Draws flagged power-up meters in a single row of at most5 icons; guard -34.",
       "confidence": "reviewed"
     },
     {
@@ -67301,6 +68624,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oc.a(IIILj;Lak;B)V#0",
+      "originalName": "param0",
+      "to": "y",
+      "evidence": "oc.java: Draws basic/powerup icon, smoothed drop meter with four threshold bands and tutorial/full-meter highlight; guard above106.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIILj;Lak;B)V#1",
+      "originalName": "param1",
+      "to": "typeId",
+      "evidence": "oc.java: Draws basic/powerup icon, smoothed drop meter with four threshold bands and tutorial/full-meter highlight; guard above106.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIILj;Lak;B)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "oc.java: Draws basic/powerup icon, smoothed drop meter with four threshold bands and tutorial/full-meter highlight; guard above106.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIILj;Lak;B)V#3",
+      "originalName": "param3",
+      "to": "board",
+      "evidence": "oc.java: Draws basic/powerup icon, smoothed drop meter with four threshold bands and tutorial/full-meter highlight; guard above106.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIILj;Lak;B)V#4",
+      "originalName": "param4",
+      "to": "match",
+      "evidence": "oc.java: Draws basic/powerup icon, smoothed drop meter with four threshold bands and tutorial/full-meter highlight; guard above106.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIILj;Lak;B)V#5",
+      "originalName": "param5",
+      "to": "obfuscationGuard",
+      "evidence": "oc.java: Draws basic/powerup icon, smoothed drop meter with four threshold bands and tutorial/full-meter highlight; guard above106.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oc.a(IIILoc;II)V#0",
       "originalName": "param0",
       "to": "pointerY",
@@ -68246,6 +69611,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#0",
+      "originalName": "param0",
+      "to": "resultWordMode",
+      "evidence": "om.java: Decompiler full-integer overload of byte-guard HUD body; preserves guard values outside byte range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "om.java: Decompiler full-integer overload of byte-guard HUD body; preserves guard values outside byte range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "om.java: Decompiler full-integer overload of byte-guard HUD body; preserves guard values outside byte range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#3",
+      "originalName": "param3",
+      "to": "showCountdown",
+      "evidence": "om.java: Decompiler full-integer overload of byte-guard HUD body; preserves guard values outside byte range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#4",
+      "originalName": "param4",
+      "to": "board",
+      "evidence": "om.java: Decompiler full-integer overload of byte-guard HUD body; preserves guard values outside byte range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#5",
+      "originalName": "param5",
+      "to": "y",
+      "evidence": "om.java: Decompiler full-integer overload of byte-guard HUD body; preserves guard values outside byte range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#6",
+      "originalName": "param6",
+      "to": "playerId",
+      "evidence": "om.java: Decompiler full-integer overload of byte-guard HUD body; preserves guard values outside byte range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#7",
+      "originalName": "param7",
+      "to": "showMessages",
+      "evidence": "om.java: Decompiler full-integer overload of byte-guard HUD body; preserves guard values outside byte range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.$cfr$intArgs$a$687785aae666(ZIIZLj;IIZLak;)V#8",
+      "originalName": "param8",
+      "to": "match",
+      "evidence": "om.java: Decompiler full-integer overload of byte-guard HUD body; preserves guard values outside byte range.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:om.<init>(I)V#0",
       "originalName": "param0",
       "to": "settingCount",
@@ -68264,6 +69692,69 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "om.java: Invitation/status6 priority, direct join and byte priority, waiting/started, flag8/spectator and activity time; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.a(ZBIZLj;IIZLak;)V#0",
+      "originalName": "param0",
+      "to": "resultWordMode",
+      "evidence": "om.java: Draws countdown, frame, power-up row, character/lever and name/result/message HUD; byte guard -103.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.a(ZBIZLj;IIZLak;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "om.java: Draws countdown, frame, power-up row, character/lever and name/result/message HUD; byte guard -103.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.a(ZBIZLj;IIZLak;)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "om.java: Draws countdown, frame, power-up row, character/lever and name/result/message HUD; byte guard -103.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.a(ZBIZLj;IIZLak;)V#3",
+      "originalName": "param3",
+      "to": "showCountdown",
+      "evidence": "om.java: Draws countdown, frame, power-up row, character/lever and name/result/message HUD; byte guard -103.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.a(ZBIZLj;IIZLak;)V#4",
+      "originalName": "param4",
+      "to": "board",
+      "evidence": "om.java: Draws countdown, frame, power-up row, character/lever and name/result/message HUD; byte guard -103.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.a(ZBIZLj;IIZLak;)V#5",
+      "originalName": "param5",
+      "to": "y",
+      "evidence": "om.java: Draws countdown, frame, power-up row, character/lever and name/result/message HUD; byte guard -103.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.a(ZBIZLj;IIZLak;)V#6",
+      "originalName": "param6",
+      "to": "playerId",
+      "evidence": "om.java: Draws countdown, frame, power-up row, character/lever and name/result/message HUD; byte guard -103.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.a(ZBIZLj;IIZLak;)V#7",
+      "originalName": "param7",
+      "to": "showMessages",
+      "evidence": "om.java: Draws countdown, frame, power-up row, character/lever and name/result/message HUD; byte guard -103.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.a(ZBIZLj;IIZLak;)V#8",
+      "originalName": "param8",
+      "to": "match",
+      "evidence": "om.java: Draws countdown, frame, power-up row, character/lever and name/result/message HUD; byte guard -103.",
       "confidence": "reviewed"
     },
     {
@@ -74028,6 +75519,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tk.a(ILak;Lbi;Lj;BIII)V#0",
+      "originalName": "param0",
+      "to": "height",
+      "evidence": "tk.java: Paints four prepared status strings and spare-life sprites with horizontal wrapping and vertical limit; guard below -96.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tk.a(ILak;Lbi;Lj;BIII)V#1",
+      "originalName": "param1",
+      "to": "match",
+      "evidence": "tk.java: Paints four prepared status strings and spare-life sprites with horizontal wrapping and vertical limit; guard below -96.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tk.a(ILak;Lbi;Lj;BIII)V#2",
+      "originalName": "param2",
+      "to": "font",
+      "evidence": "tk.java: Paints four prepared status strings and spare-life sprites with horizontal wrapping and vertical limit; guard below -96.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tk.a(ILak;Lbi;Lj;BIII)V#3",
+      "originalName": "param3",
+      "to": "board",
+      "evidence": "tk.java: Paints four prepared status strings and spare-life sprites with horizontal wrapping and vertical limit; guard below -96.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tk.a(ILak;Lbi;Lj;BIII)V#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "tk.java: Paints four prepared status strings and spare-life sprites with horizontal wrapping and vertical limit; guard below -96.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tk.a(ILak;Lbi;Lj;BIII)V#5",
+      "originalName": "param5",
+      "to": "x",
+      "evidence": "tk.java: Paints four prepared status strings and spare-life sprites with horizontal wrapping and vertical limit; guard below -96.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tk.a(ILak;Lbi;Lj;BIII)V#6",
+      "originalName": "param6",
+      "to": "y",
+      "evidence": "tk.java: Paints four prepared status strings and spare-life sprites with horizontal wrapping and vertical limit; guard below -96.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tk.a(ILak;Lbi;Lj;BIII)V#7",
+      "originalName": "param7",
+      "to": "width",
+      "evidence": "tk.java: Paints four prepared status strings and spare-life sprites with horizontal wrapping and vertical limit; guard below -96.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tk.a(JI)V#0",
       "originalName": "param0",
       "to": "key",
@@ -74585,6 +76132,139 @@
       "originalName": "param9",
       "to": "obfuscationGuard",
       "evidence": "tq.java: Orders RGB-colored vertices by Y before interpolated triangle rasterization; guard below -51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Lj;IIIIILak;)V#0",
+      "originalName": "param0",
+      "to": "board",
+      "evidence": "ua.java: Centers the 75-by75 nominal grid in supplied bounds, adds3 pixels vertically, then draws4 columns by3 rows; guard below -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Lj;IIIIILak;)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "ua.java: Centers the 75-by75 nominal grid in supplied bounds, adds3 pixels vertically, then draws4 columns by3 rows; guard below -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Lj;IIIIILak;)V#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "ua.java: Centers the 75-by75 nominal grid in supplied bounds, adds3 pixels vertically, then draws4 columns by3 rows; guard below -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Lj;IIIIILak;)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "ua.java: Centers the 75-by75 nominal grid in supplied bounds, adds3 pixels vertically, then draws4 columns by3 rows; guard below -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Lj;IIIIILak;)V#4",
+      "originalName": "param4",
+      "to": "y",
+      "evidence": "ua.java: Centers the 75-by75 nominal grid in supplied bounds, adds3 pixels vertically, then draws4 columns by3 rows; guard below -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Lj;IIIIILak;)V#5",
+      "originalName": "param5",
+      "to": "height",
+      "evidence": "ua.java: Centers the 75-by75 nominal grid in supplied bounds, adds3 pixels vertically, then draws4 columns by3 rows; guard below -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Lj;IIIIILak;)V#6",
+      "originalName": "param6",
+      "to": "match",
+      "evidence": "ua.java: Centers the 75-by75 nominal grid in supplied bounds, adds3 pixels vertically, then draws4 columns by3 rows; guard below -53.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Ljp;IIILjp;ILjp;IIILjp;I)V#0",
+      "originalName": "param0",
+      "to": "nearSprite",
+      "evidence": "ua.java: Paints four layers with 5/5/10/20 scroll multipliers and fixed 480-base/vertical offset; caller guards79/95; unused guard quotient retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Ljp;IIILjp;ILjp;IIILjp;I)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "ua.java: Paints four layers with 5/5/10/20 scroll multipliers and fixed 480-base/vertical offset; caller guards79/95; unused guard quotient retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Ljp;IIILjp;ILjp;IIILjp;I)V#10",
+      "originalName": "param10",
+      "to": "backSprite",
+      "evidence": "ua.java: Paints four layers with 5/5/10/20 scroll multipliers and fixed 480-base/vertical offset; caller guards79/95; unused guard quotient retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Ljp;IIILjp;ILjp;IIILjp;I)V#11",
+      "originalName": "param11",
+      "to": "verticalOffset",
+      "evidence": "ua.java: Paints four layers with 5/5/10/20 scroll multipliers and fixed 480-base/vertical offset; caller guards79/95; unused guard quotient retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Ljp;IIILjp;ILjp;IIILjp;I)V#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "ua.java: Paints four layers with 5/5/10/20 scroll multipliers and fixed 480-base/vertical offset; caller guards79/95; unused guard quotient retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Ljp;IIILjp;ILjp;IIILjp;I)V#3",
+      "originalName": "param3",
+      "to": "y",
+      "evidence": "ua.java: Paints four layers with 5/5/10/20 scroll multipliers and fixed 480-base/vertical offset; caller guards79/95; unused guard quotient retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Ljp;IIILjp;ILjp;IIILjp;I)V#4",
+      "originalName": "param4",
+      "to": "middleSprite",
+      "evidence": "ua.java: Paints four layers with 5/5/10/20 scroll multipliers and fixed 480-base/vertical offset; caller guards79/95; unused guard quotient retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Ljp;IIILjp;ILjp;IIILjp;I)V#5",
+      "originalName": "param5",
+      "to": "obfuscationGuard",
+      "evidence": "ua.java: Paints four layers with 5/5/10/20 scroll multipliers and fixed 480-base/vertical offset; caller guards79/95; unused guard quotient retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Ljp;IIILjp;ILjp;IIILjp;I)V#6",
+      "originalName": "param6",
+      "to": "farSprite",
+      "evidence": "ua.java: Paints four layers with 5/5/10/20 scroll multipliers and fixed 480-base/vertical offset; caller guards79/95; unused guard quotient retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Ljp;IIILjp;ILjp;IIILjp;I)V#7",
+      "originalName": "param7",
+      "to": "scroll65536",
+      "evidence": "ua.java: Paints four layers with 5/5/10/20 scroll multipliers and fixed 480-base/vertical offset; caller guards79/95; unused guard quotient retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Ljp;IIILjp;ILjp;IIILjp;I)V#8",
+      "originalName": "param8",
+      "to": "unusedValue",
+      "evidence": "ua.java: Paints four layers with 5/5/10/20 scroll multipliers and fixed 480-base/vertical offset; caller guards79/95; unused guard quotient retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.a(Ljp;IIILjp;ILjp;IIILjp;I)V#9",
+      "originalName": "param9",
+      "to": "scaleDivisor",
+      "evidence": "ua.java: Paints four layers with 5/5/10/20 scroll multipliers and fixed 480-base/vertical offset; caller guards79/95; unused guard quotient retained.",
       "confidence": "reviewed"
     },
     {
@@ -78670,9 +80350,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "00b5f8f80b8522975e07024341494a990d405c6fe7b4196e525d2f915b61521d",
+      "build-brickabrac-rules.mjs": "d9bb7a161e63881857463fd47592a0ed02dec50cc1a662ddaf07dd414a1b908b",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "314686322667233c85123fb478bc0f6924d1f472761dcee95dc1e034476084a9",
+      "tests/test-brickabrac-core.mjs": "6b0758c7f3d4517b32b835970a59e24476aca38c85bb729f15fb9e4a21fbb433",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
