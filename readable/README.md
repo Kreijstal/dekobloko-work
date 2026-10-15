@@ -1613,6 +1613,33 @@ default-ramp appearance, every randomized full-lifetime trajectory, calls
 after removal, complete scene presentation, live FPS and original-JAR
 equivalence remain unverified.
 
+ArchiveSourceManager now names master-index loading, optional RSA recovery,
+Whirlpool verification and lazy cached archive-source creation. The master
+request is archive/group 255/255; each 72-byte record contains CRC32, revision
+and a 64-byte expected index digest. Both RSA inputs must be present to use
+modular exponentiation. Otherwise the 65 received signature bytes are used
+directly. The first recovered byte is ignored. Loading retains the completed
+request, packet and original data array, and later polls reuse them.
+
+ResourceArchiveFactory names optional cache-store setup, prefetch/cleanup
+flags and resource-wrapper policies. The manager retains the first source
+created for each ID, including its cache/cleanup settings; later lookup
+arguments do not replace it. Maintenance performs queued-group work across
+sources, then a separate sweep for scan/cleanup work. Unrelated static
+UI/music/string helpers remain qualified.
+
+In-memory fetch fixtures use independent OpenSSL Whirlpool digests for
+0/1/3/255 records. They cover queue limits, pending/ready reuse, record metadata,
+bounds, retained data/request identity, ignored plaintext prefix bytes,
+invalid signature lengths, record/signature tampering, rejection before
+publication and recovery. Deterministic RSA test keys exercise valid/wrong
+hashes and short recovered signatures; a missing key component preserves
+plaintext behavior. Factory/maintenance checks cover cached settings/cursors,
+cleanup delegation and uncached wrapper policies. Prefetch stays inactive
+without a group cache. Static state is restored. Wrong guards, arbitrary
+malformed headers, live transport, disk-cache factory handle transfer,
+complete prefetch scheduling, live startup performance and original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,

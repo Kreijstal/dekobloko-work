@@ -320,6 +320,8 @@ const classes={
 classes.ua=['GameplayRenderHelpers','Static helpers centering the power-up meter grid and drawing vertically offset parallax layers; unrelated client globals remain qualified.'];
 classes.cn=['GameOverlayHelpers','Static achievement-icon pool acquisition and score-popup painting; shared sprite decode storage and unrelated globals remain separate.'];
 classes.nj=['FireworkBurst','Delayed concentric particle rings with Q8 positions/velocities, damped expansion, gravity, retained trails, fading glow and intrusive lifetime removal; unrelated static UI assets remain separate.'];
+classes.co=['ArchiveSourceManager','Loads and verifies the archive255/group255 master index with optional RSA and Whirlpool, lazily caches archive sources and advances their work; unrelated static UI/music helpers remain separate.'];
+classes.go=['ResourceArchiveFactory','Creates resource archive wrappers with optional cache-store setup, source reuse/prefetch and decoded-file policy; incoming string/helper globals remain separate.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -2665,6 +2667,63 @@ local("uf","a(II)V",4,"decompiledCaughtParameter0","caughtException","Reviewed f
 local("vq","a(III)V",0,"var3","ringCount","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
 local("vq","a(III)V",1,"var4","particlesPerRing","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
 
+// Master-index verification and cached archive-source creation.
+field("co","g","Ljava/math/BigInteger;","rsaModulus","Optional modular exponentiation modulus for master-index signature bytes.");
+field("co","i","Ljava/math/BigInteger;","rsaExponent","Optional exponent; both RSA fields must be nonnull to activate signature recovery.");
+field("co","k","[Ljq;","archiveSources","Master record count bounds the lazy source cache; populated source settings are retained on subsequent lookup.");
+field("co","b","Lwq;","masterIndexPacket","Installed only after digest verification; retains original request data and mutable record cursor.");
+field("co","a","Lih;","fetchClient","Queues the priority255/255 master request and is shared by each created cached source.");
+field("co","c","Lda;","masterIndexRequest","Retained pending/completed master-index request; queue-full startup defers creation.");
+field("co","h","Lkg;","cacheIo","Shared cache I/O worker passed into cached archive sources.");
+field("dp","v","Lco;","archiveSourceManager","Global startup-created manager polled for readiness and used by archive factory/maintenance.");
+method("co","a","(I)V","maintainArchiveSources","Visits all populated sources to process queued groups, then a second pass maintains scans/cleanup; guard77.",["obfuscationGuard"]);
+method("co","a","(Z)Z","pollMasterIndex","Requests255/255 when queue capacity permits, waits for data, verifies65-byte recovered signature against Whirlpool over count plus72-byte records, then allocates source cache; false guard.",["obfuscationGuard"]);
+method("co","a","(IZLve;ILve;)Ljq;","getArchiveSource","Requires verified index and in-range ID; returns existing source or reads CRC/revision/digest record and caches newly constructed source; guard81.",["obfuscationGuard", "cleanupEnabled", "indexCache", "archiveId", "groupCache"]);
+method("co","<init>","(Lih;Lkg;)V","<init>","Delegates to manager with both RSA inputs null.",["fetchClient", "cacheIo"]);
+method("co","<init>","(Lih;Lkg;Ljava/math/BigInteger;Ljava/math/BigInteger;)V","<init>","Retains dependencies and optional RSA inputs; requests master index immediately unless priority queue already full.",["fetchClient", "cacheIo", "rsaExponent", "rsaModulus"]);
+method("go","a","(ZIZIZZ)Lmf;","createResourceArchive","Opens optional disk cache stores, obtains manager source, optionally starts prefetch and creates resource wrapper; true guard.",["prefetch", "archiveId", "cleanupEnabled", "decodedFilePolicy", "discardPackedGroups", "obfuscationGuard"]);
+method("go","a","(B)Ljava/lang/String;","readIncomingString","Reads a CP1252 zero-terminated string from shared incoming packet after unused guard arithmetic.",["obfuscationGuard"]);
+method("o","d","(I)Z","pollArchiveMasterIndex","Canonical guard -572695519 delegates global manager poll with false; other guard returns false.",["obfuscationGuard"]);
+local("co","a(I)V",0,"var2","queuedSourceIndex","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(I)V",1,"var3","unusedClientFlag","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(I)V",2,"var2Lifetime1","maintenanceSourceIndex","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(Z)Z",0,"var7","digestByteIndex","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(Z)Z",1,"var3","archiveCount","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(Z)Z",2,"var4","signatureBytes","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(Z)Z",3,"var5","recoveredSignature","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(Z)Z",4,"var7_ref_java_math_BigInteger","recoveredInteger","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(Z)Z",5,"var8","unusedClientFlag","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(Z)Z",6,"var9","unusedIndexCache","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(Z)Z",7,"var11","masterPacket","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(Z)Z",8,"var12","signatureStorage","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(Z)Z",9,"var13","signatureInteger","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(Z)Z",10,"var14","signatureBuffer","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(Z)Z",11,"var16","masterDigest","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(IZLve;ILve;)Ljq;",0,"stackIn_9_0","cachedSourceResult","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(IZLve;ILve;)Ljq;",1,"stackIn_11_0","createdSourceResult","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(IZLve;ILve;)Ljq;",2,"stackIn_14_0","failureContext","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(IZLve;ILve;)Ljq;",3,"stackIn_14_1","contextBuilder","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(IZLve;ILve;)Ljq;",4,"stackIn_15_2","indexCacheSummary","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(IZLve;ILve;)Ljq;",5,"stackIn_17_1","groupContextBuilder","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(IZLve;ILve;)Ljq;",6,"stackIn_18_2","groupCacheSummary","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(IZLve;ILve;)Ljq;",7,"decompiledCaughtException","caughtFailure","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(IZLve;ILve;)Ljq;",8,"var6_int","unusedGuardQuotient","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(IZLve;ILve;)Ljq;",9,"var6","failure","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(IZLve;ILve;)Ljq;",10,"var7","indexCrc","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(IZLve;ILve;)Ljq;",11,"var8","indexRevision","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(IZLve;ILve;)Ljq;",12,"var10","source","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(IZLve;ILve;)Ljq;",13,"var14","indexDigest","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","a(IZLve;ILve;)Ljq;",14,"decompiledCaughtParameter0","caughtException","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("co","<init>(Lih;Lkg;Ljava/math/BigInteger;Ljava/math/BigInteger;)V",0,"runtimeException","failure","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("go","a(ZIZIZZ)Lmf;",0,"var6","indexCacheOrFailure","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("go","a(ZIZIZZ)Lmf;",1,"var7","groupCache","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("go","a(ZIZIZZ)Lmf;",2,"var8","source","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("go","a(ZIZIZZ)Lmf;",3,"stackIn_14_0","archiveResult","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("go","a(ZIZIZZ)Lmf;",4,"decompiledCaughtException","caughtFailure","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("go","a(ZIZIZZ)Lmf;",5,"decompiledCaughtParameter0","ioFailure","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("go","a(ZIZIZZ)Lmf;",6,"decompiledUncheckedException","uncheckedFailure","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+local("go","a(ZIZIZZ)Lmf;",7,"decompiledCheckedException","checkedFailure","Reviewed master-index verification, cached source construction or archive-factory declaration.");
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -2931,10 +2990,13 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "FireworkBurst names the concentric particle effect, including Q8 positions/velocities, timing phases, shared acceleration, per-particle colors, trail histories and intensity decay. Lifecycle helpers name spawn bounds, seeded random source, active deque/count, creation, advancement/replacement, combined drawing and clearing. The separate static brick sprites, matchmaking label, orb-coin sprite and background tint palette retain their reviewed resource/UI roles.", '',
 "Deterministic constructor fixtures use an independent ISAAC/trigonometric reference for schedule, ring colors, jittered positions/velocities, zeroed histories and random state. Controlled lifecycle fixtures compare damping followed by closed-form coasting/ballistic motion, committed trail samples, start-delay/fade boundaries and exact lifetime unlink/count changes. A horizontal turn changes shared acceleration after the first affected particle has already applied its previous value; zero acceleration consumes one random draw. Pool fixtures preserve three-burst seeding even when replacement is disabled, removed-burst replacement, half-open spawn ranges, bounds setup and clearing. Time-derived seed contents are not traced.", '',
 "drawRadialGlow names the Q4 finite-difference disk renderer and its scanline kernel. An independent per-pixel squared-distance reference checks clipping, strict radius boundaries, intensity lookup and channel-wise saturated RGB addition. Burst-paint references compose trail/halo/core glows and verify Q8-to-Q4 placement, hidden start delay and pixel-offset conversion in the combined update/draw helper. Fixtures use controlled RGB ramps. Static state is restored. Arbitrary invalid counts/offsets/guards, default-ramp perceptual appearance, every randomized full-lifetime trajectory, calls after removal, complete scene presentation, live frame rates and original-JAR equivalence remain unverified.", '',
+"ArchiveSourceManager exposes the priority255/255 master-index request, optional RSA exponent/modulus, verified packet, per-archive source cache and cache I/O dependency. Records contain CRC32, revision and64-byte expected index digest in72 bytes after the count byte. Both RSA inputs must be nonnull to decode the signature; otherwise65 received bytes are used directly. The first recovered byte is ignored, and the remaining64 bytes must match Whirlpool of the count and records. Subsequent polling retains the installed packet, completed request and original data array without rereading.", '',
+"ResourceArchiveFactory exposes optional cache-store setup, cleanup/prefetch flags and packed/decoded-file policies. getArchiveSource requires a verified master index and an in-range ID; it caches the first created source, so later cache-store/cleanup arguments do not replace its retained settings. Maintenance processes queued groups across populated slots, then maintains scans/cleanup in a second sweep. Unrelated static UI/music/string helpers remain qualified.", '',
+"In-memory FetchProbe fixtures use OpenSSL-generated Whirlpool digests for0/1/3/255 records. They verify queue-full deferral, pending/ready reuse, record metadata and bounds, retained payload/request identities, ignored plaintext signature prefix bytes, invalid lengths, record/signature tampering, rejection before publication and later recovery. Deterministic test RSA keys exercise real modular exponentiation with valid/wrong digest and short recovery; either missing key input preserves plaintext behavior. Source fixtures check cached identity/settings/cursor preservation, cleanup delegation and uncached archive-wrapper policies with prefetch remaining inactive when no group cache exists. Static state is restored. Wrong guards, arbitrary malformed headers/counts, live transport, disk-cache factory handle transfer, complete prefetch scheduling, live startup performance and original-JAR equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:70,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:71,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

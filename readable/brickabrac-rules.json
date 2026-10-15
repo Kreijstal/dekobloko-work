@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 70,
+  "version": 71,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -500,6 +500,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:co",
+      "originalName": "co",
+      "to": "ArchiveSourceManager",
+      "evidence": "co.java: Loads and verifies the archive255/group255 master index with optional RSA and Whirlpool, lazily caches archive sources and advances their work; unrelated static UI/music helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:cp",
       "originalName": "cp",
       "to": "WidgetLayerStack",
@@ -889,6 +896,13 @@
       "originalName": "gn",
       "to": "MultiplayerExitScreen",
       "evidence": "gn.java: ID19 result/exit menu with return-to-lobby/resign actions; resign availability follows retained match state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:go",
+      "originalName": "go",
+      "to": "ResourceArchiveFactory",
+      "evidence": "go.java: Creates resource archive wrappers with optional cache-store setup, source reuse/prefetch and decoded-file policy; incoming string/helper globals remain separate.",
       "confidence": "reviewed"
     },
     {
@@ -3909,6 +3923,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:co.field_a:Lih;",
+      "originalName": "field_a",
+      "to": "fetchClient",
+      "evidence": "co.java: Queues the priority255/255 master request and is shared by each created cached source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_b:Lwq;",
+      "originalName": "field_b",
+      "to": "masterIndexPacket",
+      "evidence": "co.java: Installed only after digest verification; retains original request data and mutable record cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_c:Lda;",
+      "originalName": "field_c",
+      "to": "masterIndexRequest",
+      "evidence": "co.java: Retained pending/completed master-index request; queue-full startup defers creation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_g:Ljava/math/BigInteger;",
+      "originalName": "field_g",
+      "to": "rsaModulus",
+      "evidence": "co.java: Optional modular exponentiation modulus for master-index signature bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_h:Lkg;",
+      "originalName": "field_h",
+      "to": "cacheIo",
+      "evidence": "co.java: Shared cache I/O worker passed into cached archive sources.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_i:Ljava/math/BigInteger;",
+      "originalName": "field_i",
+      "to": "rsaExponent",
+      "evidence": "co.java: Optional exponent; both RSA fields must be nonnull to activate signature recovery.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_k:[Ljq;",
+      "originalName": "field_k",
+      "to": "archiveSources",
+      "evidence": "co.java: Master record count bounds the lazy source cache; populated source settings are retained on subsequent lookup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cp.field_I:Ljp;",
       "originalName": "field_I",
       "to": "volcanicMidSprite",
@@ -4634,6 +4697,13 @@
       "originalName": "field_t",
       "to": "receivedChatDisplayName",
       "evidence": "dp.java: Chat reader scratch display name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dp.field_v:Lco;",
+      "originalName": "field_v",
+      "to": "archiveSourceManager",
+      "evidence": "dp.java: Global startup-created manager polled for readiness and used by archive factory/maintenance.",
       "confidence": "reviewed"
     },
     {
@@ -20128,6 +20198,223 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:co.<init>(Lih;Lkg;Ljava/math/BigInteger;Ljava/math/BigInteger;)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(I)V#0",
+      "originalName": "var2",
+      "to": "queuedSourceIndex",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(I)V#1",
+      "originalName": "var3",
+      "to": "unusedClientFlag",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(I)V#2",
+      "originalName": "var2Lifetime1",
+      "to": "maintenanceSourceIndex",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(IZLve;ILve;)Ljq;#0",
+      "originalName": "stackIn_9_0",
+      "to": "cachedSourceResult",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(IZLve;ILve;)Ljq;#1",
+      "originalName": "stackIn_11_0",
+      "to": "createdSourceResult",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(IZLve;ILve;)Ljq;#10",
+      "originalName": "var7",
+      "to": "indexCrc",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(IZLve;ILve;)Ljq;#11",
+      "originalName": "var8",
+      "to": "indexRevision",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(IZLve;ILve;)Ljq;#12",
+      "originalName": "var10",
+      "to": "source",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(IZLve;ILve;)Ljq;#13",
+      "originalName": "var14",
+      "to": "indexDigest",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(IZLve;ILve;)Ljq;#14",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtException",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(IZLve;ILve;)Ljq;#2",
+      "originalName": "stackIn_14_0",
+      "to": "failureContext",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(IZLve;ILve;)Ljq;#3",
+      "originalName": "stackIn_14_1",
+      "to": "contextBuilder",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(IZLve;ILve;)Ljq;#4",
+      "originalName": "stackIn_15_2",
+      "to": "indexCacheSummary",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(IZLve;ILve;)Ljq;#5",
+      "originalName": "stackIn_17_1",
+      "to": "groupContextBuilder",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(IZLve;ILve;)Ljq;#6",
+      "originalName": "stackIn_18_2",
+      "to": "groupCacheSummary",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(IZLve;ILve;)Ljq;#7",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(IZLve;ILve;)Ljq;#8",
+      "originalName": "var6_int",
+      "to": "unusedGuardQuotient",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(IZLve;ILve;)Ljq;#9",
+      "originalName": "var6",
+      "to": "failure",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(Z)Z#0",
+      "originalName": "var7",
+      "to": "digestByteIndex",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(Z)Z#1",
+      "originalName": "var3",
+      "to": "archiveCount",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(Z)Z#10",
+      "originalName": "var14",
+      "to": "signatureBuffer",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(Z)Z#11",
+      "originalName": "var16",
+      "to": "masterDigest",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(Z)Z#2",
+      "originalName": "var4",
+      "to": "signatureBytes",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(Z)Z#3",
+      "originalName": "var5",
+      "to": "recoveredSignature",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(Z)Z#4",
+      "originalName": "var7_ref_java_math_BigInteger",
+      "to": "recoveredInteger",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(Z)Z#5",
+      "originalName": "var8",
+      "to": "unusedClientFlag",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(Z)Z#6",
+      "originalName": "var9",
+      "to": "unusedIndexCache",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(Z)Z#7",
+      "originalName": "var11",
+      "to": "masterPacket",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(Z)Z#8",
+      "originalName": "var12",
+      "to": "signatureStorage",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:co.a(Z)Z#9",
+      "originalName": "var13",
+      "to": "signatureInteger",
+      "evidence": "co.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:cp.b(IIIII)Leg;#0",
       "originalName": "var6",
       "to": "clientBranchFlag",
@@ -24318,6 +24605,62 @@
       "originalName": "decompiledCaughtParameter0",
       "to": "caughtParameter",
       "evidence": "gj.java: Reviewed category tag decoding, CP1252 shortcut, archive/cache, root scan or recursive category menu declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:go.a(ZIZIZZ)Lmf;#0",
+      "originalName": "var6",
+      "to": "indexCacheOrFailure",
+      "evidence": "go.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:go.a(ZIZIZZ)Lmf;#1",
+      "originalName": "var7",
+      "to": "groupCache",
+      "evidence": "go.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:go.a(ZIZIZZ)Lmf;#2",
+      "originalName": "var8",
+      "to": "source",
+      "evidence": "go.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:go.a(ZIZIZZ)Lmf;#3",
+      "originalName": "stackIn_14_0",
+      "to": "archiveResult",
+      "evidence": "go.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:go.a(ZIZIZZ)Lmf;#4",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "go.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:go.a(ZIZIZZ)Lmf;#5",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "ioFailure",
+      "evidence": "go.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:go.a(ZIZIZZ)Lmf;#6",
+      "originalName": "decompiledUncheckedException",
+      "to": "uncheckedFailure",
+      "evidence": "go.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:go.a(ZIZIZZ)Lmf;#7",
+      "originalName": "decompiledCheckedException",
+      "to": "checkedFailure",
+      "evidence": "go.java: Reviewed master-index verification, cached source construction or archive-factory declaration.",
       "confidence": "reviewed"
     },
     {
@@ -38349,6 +38692,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:co.a(I)V",
+      "originalName": "a",
+      "to": "maintainArchiveSources",
+      "evidence": "co.java: Visits all populated sources to process queued groups, then a second pass maintains scans/cleanup; guard77.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:co.a(IZLve;ILve;)Ljq;",
+      "originalName": "a",
+      "to": "getArchiveSource",
+      "evidence": "co.java: Requires verified index and in-range ID; returns existing source or reads CRC/revision/digest record and caches newly constructed source; guard81.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:co.a(Z)Z",
+      "originalName": "a",
+      "to": "pollMasterIndex",
+      "evidence": "co.java: Requests255/255 when queue capacity permits, waits for data, verifies65-byte recovered signature against Whirlpool over count plus72-byte records, then allocates source cache; false guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cp.a(I)V",
       "originalName": "a",
       "to": "hideLayers",
@@ -39879,6 +40243,20 @@
       "originalName": "f",
       "to": "getResultBottom",
       "evidence": "ld.java: Subclass supplies result presentation bottom; guard -6. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.a(B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "readIncomingString",
+      "evidence": "go.java: Reads a CP1252 zero-terminated string from shared incoming packet after unused guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.a(ZIZIZZ)Lmf;",
+      "originalName": "a",
+      "to": "createResourceArchive",
+      "evidence": "go.java: Opens optional disk cache stores, obtains manager source, optionally starts prefetch and creates resource wrapper; true guard.",
       "confidence": "reviewed"
     },
     {
@@ -43925,6 +44303,13 @@
       "originalName": "c",
       "to": "updateHover",
       "evidence": "nq.java: Replaces hover state using sprite pixel hit testing for current pointer; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:o.d(I)Z",
+      "originalName": "d",
+      "to": "pollArchiveMasterIndex",
+      "evidence": "o.java: Canonical guard -572695519 delegates global manager poll with false; other guard returns false.",
       "confidence": "reviewed"
     },
     {
@@ -52314,6 +52699,97 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:co.<init>(Lih;Lkg;)V#0",
+      "originalName": "param0",
+      "to": "fetchClient",
+      "evidence": "co.java: Delegates to manager with both RSA inputs null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.<init>(Lih;Lkg;)V#1",
+      "originalName": "param1",
+      "to": "cacheIo",
+      "evidence": "co.java: Delegates to manager with both RSA inputs null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.<init>(Lih;Lkg;Ljava/math/BigInteger;Ljava/math/BigInteger;)V#0",
+      "originalName": "param0",
+      "to": "fetchClient",
+      "evidence": "co.java: Retains dependencies and optional RSA inputs; requests master index immediately unless priority queue already full.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.<init>(Lih;Lkg;Ljava/math/BigInteger;Ljava/math/BigInteger;)V#1",
+      "originalName": "param1",
+      "to": "cacheIo",
+      "evidence": "co.java: Retains dependencies and optional RSA inputs; requests master index immediately unless priority queue already full.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.<init>(Lih;Lkg;Ljava/math/BigInteger;Ljava/math/BigInteger;)V#2",
+      "originalName": "param2",
+      "to": "rsaExponent",
+      "evidence": "co.java: Retains dependencies and optional RSA inputs; requests master index immediately unless priority queue already full.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.<init>(Lih;Lkg;Ljava/math/BigInteger;Ljava/math/BigInteger;)V#3",
+      "originalName": "param3",
+      "to": "rsaModulus",
+      "evidence": "co.java: Retains dependencies and optional RSA inputs; requests master index immediately unless priority queue already full.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "co.java: Visits all populated sources to process queued groups, then a second pass maintains scans/cleanup; guard77.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(IZLve;ILve;)Ljq;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "co.java: Requires verified index and in-range ID; returns existing source or reads CRC/revision/digest record and caches newly constructed source; guard81.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(IZLve;ILve;)Ljq;#1",
+      "originalName": "param1",
+      "to": "cleanupEnabled",
+      "evidence": "co.java: Requires verified index and in-range ID; returns existing source or reads CRC/revision/digest record and caches newly constructed source; guard81.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(IZLve;ILve;)Ljq;#2",
+      "originalName": "param2",
+      "to": "indexCache",
+      "evidence": "co.java: Requires verified index and in-range ID; returns existing source or reads CRC/revision/digest record and caches newly constructed source; guard81.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(IZLve;ILve;)Ljq;#3",
+      "originalName": "param3",
+      "to": "archiveId",
+      "evidence": "co.java: Requires verified index and in-range ID; returns existing source or reads CRC/revision/digest record and caches newly constructed source; guard81.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(IZLve;ILve;)Ljq;#4",
+      "originalName": "param4",
+      "to": "groupCache",
+      "evidence": "co.java: Requires verified index and in-range ID; returns existing source or reads CRC/revision/digest record and caches newly constructed source; guard81.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:co.a(Z)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "co.java: Requests255/255 when queue capacity permits, waits for data, verifies65-byte recovered signature against Whirlpool over count plus72-byte records, then allocates source cache; false guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cp.a(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -57484,6 +57960,55 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ld.java: Subclass supplies result presentation bottom; guard -6. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:go.a(B)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "go.java: Reads a CP1252 zero-terminated string from shared incoming packet after unused guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:go.a(ZIZIZZ)Lmf;#0",
+      "originalName": "param0",
+      "to": "prefetch",
+      "evidence": "go.java: Opens optional disk cache stores, obtains manager source, optionally starts prefetch and creates resource wrapper; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:go.a(ZIZIZZ)Lmf;#1",
+      "originalName": "param1",
+      "to": "archiveId",
+      "evidence": "go.java: Opens optional disk cache stores, obtains manager source, optionally starts prefetch and creates resource wrapper; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:go.a(ZIZIZZ)Lmf;#2",
+      "originalName": "param2",
+      "to": "cleanupEnabled",
+      "evidence": "go.java: Opens optional disk cache stores, obtains manager source, optionally starts prefetch and creates resource wrapper; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:go.a(ZIZIZZ)Lmf;#3",
+      "originalName": "param3",
+      "to": "decodedFilePolicy",
+      "evidence": "go.java: Opens optional disk cache stores, obtains manager source, optionally starts prefetch and creates resource wrapper; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:go.a(ZIZIZZ)Lmf;#4",
+      "originalName": "param4",
+      "to": "discardPackedGroups",
+      "evidence": "go.java: Opens optional disk cache stores, obtains manager source, optionally starts prefetch and creates resource wrapper; true guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:go.a(ZIZIZZ)Lmf;#5",
+      "originalName": "param5",
+      "to": "obfuscationGuard",
+      "evidence": "go.java: Opens optional disk cache stores, obtains manager source, optionally starts prefetch and creates resource wrapper; true guard.",
       "confidence": "reviewed"
     },
     {
@@ -69258,6 +69783,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "nq.java: Replaces hover state using sprite pixel hit testing for current pointer; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:o.d(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "o.java: Canonical guard -572695519 delegates global manager poll with false; other guard returns false.",
       "confidence": "reviewed"
     },
     {
@@ -81428,9 +81960,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "6991b924eaa2742844c635979e4c50e346e287af0a8923e0088e62117f658872",
+      "build-brickabrac-rules.mjs": "7852dd86834c07743f3016fc29149ec7f49f6152da261ee7a4c52108feadfcee",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "c8da68abb70f5c35d7e922ee7abcd3dfcde414f4d172e3e8d8713c5bd52c3590",
+      "tests/test-brickabrac-core.mjs": "922e2959df1e72dadd4dc0079ca68178b8cbf3be240b9c97c6790f433f2381e7",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
