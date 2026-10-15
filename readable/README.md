@@ -2071,6 +2071,24 @@ rules to that new input remain necessary before this fix appears in the
 published game sources. Existing raw-versus-renamed fixtures do not establish
 equivalence to the original JAR and did not detect this upstream defect.
 
+The focused original-gamepack regression can now be reproduced with
+`node readable/tests/brickabrac-list-reset-probe.mjs ORIGINAL_GAMEPACK.jar`.
+The command verifies the fixed JAR identity, builds temporary compilation stubs
+from source, and runs the real helper through reflection against an independent
+bounds/cursor model. Its 5,449 assertions cover empty and nonempty lists, signed
+boundary values, both guard arguments, malformed children, missing lists/null
+roots, partial mutations, horizontal-bound preservation, intrusive link identity,
+unchanged grandchildren and the final deque cursor. The original JAR passes with
+trace SHA-256 `7c82f2de56199b3eb7b567dcb5bfca1414abd16664293b40c1c76231e1a6a729`.
+Running the same model against freshly compiled published named Java rejects a
+canonical one-child reset: it throws `NullPointerException` instead of returning
+normally. This deliberate negative control confirms the probe detects the known
+frozen-input defect. The probe can also resolve raw/readable aliases from the
+dictionary for integration after the input migration. Both compiler and JVM
+probe processes have 30-second execution limits; temporary output is removed.
+This is a native check of this helper's contract; whole-game equivalence and
+interactive friend/ignore list behavior remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
