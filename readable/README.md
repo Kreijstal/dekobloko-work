@@ -1885,6 +1885,32 @@ code units. Original static references are restored. These checks compare raw an
 decompiled Java; modern email-standard compliance, server acceptance, malformed scan
 offsets/other guards, live account forms and original-JAR equivalence remain unverified.
 
+BytePayloadSubmission and BytePayloadRequest name the intrusive records behind the
+auxiliary byte-payload wire path. Payload/checksum fields, pending queues,
+send/reply/resend helpers and their locals now expose the observed type1 submission and
+type0 request behavior. Both private throwing constructors are retained; fixtures
+allocate controlled instances without inventing a production factory or assigning a
+server-side feature meaning. Unrelated static helpers retain separate roles.
+
+Background resource initialization now identifies all five archives and the sound cache,
+while scene initialization names its argument forwarding and seasonal scene choice.
+The960x480 and1280x480 background surface pools, generic selection and both wrappers
+have descriptive names. Selection promotes the first matching entry or tail victim
+without retagging it; callers retain that responsibility. Level-attribute aggregation
+and sprite-decoding locals are named.
+
+Native fixtures verify archive identity, repeated append behavior, pool
+dimensions/default keys, all eleven scene slots and both farm/Halloween choices. An
+independent list model checks cache hits, duplicate keys, misses, recency order and
+caller retagging through the generic selector and both wrappers. Exclusive-end level
+ranges cover signed/high-bit attributes, empty/reversed ranges and guard state. In-
+memory wire fixtures use independent ISAAC/CRC32 references, null/empty payloads, byte-
+length wrapping, submission-before-request resends, first-match CRC acknowledgement and
+CRC-protected FIFO replies. Contextual null failures and private throwing constructors
+are checked; original static references are restored. Production record creation,
+invalid-CRC/reconnect branches, server feature meaning/acceptance, real archive
+loading/artwork, malformed guards and original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,

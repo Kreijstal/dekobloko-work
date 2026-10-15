@@ -344,6 +344,8 @@ classes.la=['RasterEffectHelpers','Bubble refraction scanlines, grayscale-palett
 classes.bm=['GameRenderAudioHelpers','Static helper bag for mesh sorting/logo loading, board-mask presentation, gameplay audio dispatch and background setup; unrelated globals retain separate roles.'];
 
 classes.lo=['LegacyEmailValidationError','Identity-only error markers returned by the legacy email syntax helpers; null denotes success. No instance state; toString throws. Unrelated static result-text rendering and input globals retain separate roles.'];
+classes.ln=['BytePayloadSubmission','Intrusive opaque byte-payload submission with retained CRC32 acknowledgement key; private constructor throws and no normal factory is present in the frozen sources. Unrelated static background bootstrap, level-attribute, sprite and UI helpers retain separate roles.'];
+classes.wj=['BytePayloadRequest','State-free intrusive marker for pending type0 byte-payload requests; replies validate CRC32 and remove the first queued marker, discarding returned bytes. Private constructor throws; unrelated sleep, text substitution and music helpers retain separate roles.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -3885,6 +3887,127 @@ local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby trans
  local("sg","a(ILjava/lang/String;)Ljava/lang/String;",8,"decompiledCaughtParameter0","caughtParameter",evidence);
 }
 
+
+{
+ const evidence="Background bootstrap callers and consumers identify the sound-effect, music-sample, MIDI-track, patch and scene-sprite archives. Cache selection promotes the first matching surface or tail victim without changing keys. Level attributes combine an exclusive-end range. The byte-payload sender stores its CRC32; kind1 replies unlink the first matching submission and kind0 replies validate their CRC32 before FIFO request removal. Resends preserve submission-before-request order; fixtures use isolated in-memory state.";
+ method("ln","a","(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V","initializeBackgroundResources",evidence,["musicSampleArchive", "soundCache", "musicTrackArchive", "sceneSpriteArchive", "soundEffectArchive", "obfuscationGuard", "musicPatchArchive"]);
+ method("bm","a","(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V","initializeBackgroundScenes",evidence,["musicTrackArchive", "soundEffectArchive", "obfuscationGuard", "musicPatchArchive", "soundCache", "sceneSpriteArchive", "musicSampleArchive"]);
+ method("ln","a","(Lnc;IZI)I","combineLevelAttributes",evidence,["pack", "startIndex", "obfuscationGuard", "endIndex"]);
+ method("so","a","(IIILvl;)Lpb;","selectCachedSurface",evidence,["obfuscationGuard", "cacheKeyOne", "cacheKeyTwo", "pool"]);
+ method("ge","a","(III)Lpb;","selectBackgroundSurface960",evidence,["cacheKeyTwo", "cacheKeyOne", "obfuscationGuard"]);
+ method("kd","a","(IIB)Lpb;","selectBackgroundSurface1280",evidence,["cacheKeyTwo", "cacheKeyOne", "obfuscationGuard"]);
+ method("gn","a","(IILln;)V","sendBytePayloadSubmission",evidence,["opcode", "obfuscationGuard", "submission"]);
+ field("ln","i","[B","payload",evidence);
+ field("ln","m","I","checksum",evidence);
+ field("ln","j","[Ljp;","smallRosetteSprites",evidence);
+ field("ie","v","Lvl;","pendingBytePayloadSubmissions",evidence);
+ field("BrickABrac","I","Lmf;","backgroundSoundEffectArchive",evidence);
+ field("i","m","Lmf;","backgroundSpriteArchive",evidence);
+ field("mh","lb","Lmf;","backgroundMusicTrackArchive",evidence);
+ field("og","gc","Lmf;","backgroundMusicSampleArchive",evidence);
+ field("ji","a","Lmf;","backgroundMusicPatchArchive",evidence);
+ field("ip","s","Lvl;","backgroundSurfacePool960",evidence);
+ field("cr","N","Lvl;","backgroundSurfacePool1280",evidence);
+ local("ln","a(Lnc;IZI)I",0,"var5","levelIndex",evidence);
+ local("ln","a(Lnc;IZI)I",1,"var4_int","combinedAttributes",evidence);
+ local("ln","a(Lnc;IZI)I",2,"var4","failure",evidence);
+ local("ln","a(Lnc;IZI)I",3,"var6","gameFlag",evidence);
+ local("ln","a(Lnc;IZI)I",4,"stackIn_7_0","resultAttributes",evidence);
+ local("ln","a(Lnc;IZI)I",5,"stackIn_10_0","failureContext",evidence);
+ local("ln","a(Lnc;IZI)I",6,"stackIn_10_1","contextBuilder",evidence);
+ local("ln","a(Lnc;IZI)I",7,"stackIn_11_2","packSummary",evidence);
+ local("ln","a(Lnc;IZI)I",8,"decompiledCaughtException","caughtFailure",evidence);
+ local("ln","a(Lnc;IZI)I",9,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",0,"var7_int","surface960Index",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",1,"var8","gameFlag",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",2,"stackIn_12_0","failureContext",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",3,"stackIn_12_1","contextBuilder",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",4,"stackIn_13_2","sampleArchiveSummary",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",5,"stackIn_15_1","sampleContextBuilder",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",6,"stackIn_16_2","soundCacheSummary",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",7,"stackIn_18_1","cacheContextBuilder",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",8,"stackIn_19_2","trackArchiveSummary",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",9,"stackIn_21_1","trackContextBuilder",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",10,"stackIn_22_2","spriteArchiveSummary",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",11,"stackIn_24_1","spriteContextBuilder",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",12,"stackIn_25_2","effectArchiveSummary",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",13,"stackIn_27_1","effectContextBuilder",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",14,"stackIn_28_2","patchArchiveSummary",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",15,"decompiledCaughtException","caughtFailure",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",16,"var7","failure",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",17,"var7_intLifetime1","surface1280Index",evidence);
+ local("ln","a(Lmf;Lwp;Lmf;Lmf;Lmf;ILmf;)V",18,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",0,"stackIn_14_0","failureContext",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",1,"stackIn_14_1","contextBuilder",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",2,"stackIn_15_2","trackArchiveSummary",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",3,"stackIn_18_1","trackContextBuilder",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",4,"stackIn_19_2","effectArchiveSummary",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",5,"stackIn_22_1","effectContextBuilder",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",6,"stackIn_23_2","patchArchiveSummary",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",7,"stackIn_26_1","patchContextBuilder",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",8,"stackIn_27_2","soundCacheSummary",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",9,"stackIn_30_1","cacheContextBuilder",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",10,"stackIn_31_2","spriteArchiveSummary",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",11,"stackIn_34_1","spriteContextBuilder",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",12,"stackIn_35_2","sampleArchiveSummary",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",13,"decompiledCaughtException","caughtFailure",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",14,"var7","failure",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",15,"decompiledSharedTail0","useHalloweenScene",evidence);
+ local("bm","a(Lmf;Lmf;ILmf;Lwp;Lmf;Lmf;)V",16,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("so","a(IIILvl;)Lpb;",0,"var4","selectedOrFailure",evidence);
+ local("so","a(IIILvl;)Lpb;",1,"var5","candidate",evidence);
+ local("so","a(IIILvl;)Lpb;",2,"var6","unusedPool",evidence);
+ local("so","a(IIILvl;)Lpb;",3,"stackIn_11_0","selectedSurface",evidence);
+ local("so","a(IIILvl;)Lpb;",4,"stackIn_14_0","failureContext",evidence);
+ local("so","a(IIILvl;)Lpb;",5,"stackIn_14_1","contextBuilder",evidence);
+ local("so","a(IIILvl;)Lpb;",6,"stackIn_15_2","poolSummary",evidence);
+ local("so","a(IIILvl;)Lpb;",7,"decompiledCaughtException","caughtFailure",evidence);
+ local("so","a(IIILvl;)Lpb;",8,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("ge","a(III)Lpb;",0,"var4","unusedComponent",evidence);
+ local("kd","a(IIB)Lpb;",0,"var3","guardCalculation",evidence);
+ local("gn","a(IILln;)V",0,"var3","outgoingAlias",evidence);
+ local("gn","a(IILln;)V",1,"var3_ref","failure",evidence);
+ local("gn","a(IILln;)V",2,"var4","payloadStart",evidence);
+ local("gn","a(IILln;)V",3,"var5","outgoing",evidence);
+ local("gn","a(IILln;)V",4,"stackIn_8_0","failureContext",evidence);
+ local("gn","a(IILln;)V",5,"stackIn_8_1","contextBuilder",evidence);
+ local("gn","a(IILln;)V",6,"stackIn_9_2","submissionSummary",evidence);
+ local("gn","a(IILln;)V",7,"decompiledCaughtException","caughtFailure",evidence);
+ local("gn","a(IILln;)V",8,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("ln","a(IILmf;I)Z",0,"var4","unusedDataAlias",evidence);
+ local("ln","a(IILmf;I)Z",1,"var4_ref","failure",evidence);
+ local("ln","a(IILmf;I)Z",2,"var5","spriteBytes",evidence);
+ local("ln","a(IILmf;I)Z",3,"stackIn_10_0","failureContext",evidence);
+ local("ln","a(IILmf;I)Z",4,"stackIn_10_1","contextBuilder",evidence);
+ local("ln","a(IILmf;I)Z",5,"stackIn_11_2","archiveSummary",evidence);
+ local("ln","a(IILmf;I)Z",6,"decompiledCaughtException","caughtFailure",evidence);
+ local("ln","a(IILmf;I)Z",7,"decompiledCaughtParameter0","caughtParameter",evidence);
+ method("re","f","(B)V","receiveBytePayloadReply",evidence,["obfuscationGuard"]);
+ method("hj","b","(II)V","resendBytePayloadOperations",evidence,["opcode", "obfuscationGuard"]);
+ method("bd","a","(II)V","sendBytePayloadRequest",evidence,["opcode", "obfuscationGuard"]);
+ field("uc","q","Lvl;","pendingBytePayloadRequests",evidence);
+ local("re","f(B)V",0,"runtimeException","failure",evidence);
+ local("re","f(B)V",1,"var2","replyKind",evidence);
+ local("re","f(B)V",2,"var3_ref_wj","pendingRequest",evidence);
+ local("re","f(B)V",3,"var3","acknowledgementChecksum",evidence);
+ local("re","f(B)V",4,"var4_int","replyPayloadLength",evidence);
+ local("re","f(B)V",5,"var4","submission",evidence);
+ local("re","f(B)V",6,"var5","unusedPayloadSlot",evidence);
+ local("re","f(B)V",7,"var6","gameFlag",evidence);
+ local("re","f(B)V",8,"var9","incoming",evidence);
+ local("re","f(B)V",9,"var13","replyPayload",evidence);
+ local("re","f(B)V",10,"decompiledCaughtException","caughtFailure",evidence);
+ local("re","f(B)V",11,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("hj","b(II)V",0,"var2","pendingRequest",evidence);
+ local("hj","b(II)V",1,"var3","gameFlag",evidence);
+ local("hj","b(II)V",2,"var4","submission",evidence);
+ local("hj","b(II)V",3,"decompiledCaughtException","caughtFailure",evidence);
+ local("hj","b(II)V",4,"var2_ref","failure",evidence);
+ local("hj","b(II)V",5,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("bd","a(II)V",0,"var2","outgoing",evidence);
+
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -4176,10 +4299,13 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "Independent pixel fixtures cover cropped-canvas reflection at every clip edge, signed result words including integer extremes, custom positive-value formats, full-size suppression, scaling, alpha rounding and signed24-bit alpha pixel words. Mask fixtures check ticks before/at50, the bounce cutoff at160, fade onset at180 and saturation at280, including clipped/offscreen positions and clip preservation. The upper mask copies zero pixels; its flipped lower half skips them. One-pixel indexed glyphs distinguish actual characters. Original static references are restored. Actual artwork, malformed guards/scales, live rendering performance and original-JAR equivalence remain unverified.", '',
 "LegacyEmailValidationError identifies the four error singletons returned by the email grammar helpers: missingEmailAddress, missingEmailPart, emailPartTooLong and invalidEmailSyntax. Null denotes success. The address, local-part, domain, domain-label and nonnumeric-suffix helpers now have descriptive method, parameter and local names, as do their splitPreservingEmptyParts/countCharacter dependencies and EmailValidator result/message paths. The class also contains the previously reviewed board-result renderer and unrelated input globals.", '',
 "Independent fixtures use dot-atom decomposition, ASCII label regular expressions and backward escape-parity checks. They cover every UTF16 unit in atoms, labels, quoted local parts and suffixes; short quoted/dotted combinations; length limits64/63/255; empty/trailing labels; first-at splitting; error precedence; positive domain scan offsets; singleton identity and throwing toString; live message lookup; guard bypass and null-failure context. The observed grammar accepts a one-character double-quote string as a quoted local part, ignores whether a closing quote is escaped, permits arbitrary quoted contents except unescaped interior quotes, and rejects all-digit suffixes. Split/count checks cover empty parts, literal delimiters, StringBuilder and surrogate code units. Original static references are restored. These checks compare raw and named decompiled Java; modern email-standard compliance, server acceptance, malformed scan offsets/other guards, live account forms and original-JAR equivalence remain unverified.", '',
+"BytePayloadSubmission and BytePayloadRequest name the intrusive records behind the auxiliary byte-payload wire path. Payload/checksum fields, pending queues, send/reply/resend helpers and their locals now expose the observed type1 submission and type0 request behavior. Both private throwing constructors are retained; fixtures allocate controlled instances without inventing a production factory or assigning a server-side feature meaning. Unrelated static helpers retain separate roles.", '',
+"Background resource initialization now identifies all five archives and the sound cache, while scene initialization names its argument forwarding and seasonal scene choice. The960x480 and1280x480 background surface pools, generic selection and both wrappers have descriptive names. Selection promotes the first matching entry or tail victim without retagging it; callers retain that responsibility. Level-attribute aggregation and sprite-decoding locals are named.", '',
+"Native fixtures verify archive identity, repeated append behavior, pool dimensions/default keys, all eleven scene slots and both farm/Halloween choices. An independent list model checks cache hits, duplicate keys, misses, recency order and caller retagging through the generic selector and both wrappers. Exclusive-end level ranges cover signed/high-bit attributes, empty/reversed ranges and guard state. In-memory wire fixtures use independent ISAAC/CRC32 references, null/empty payloads, byte-length wrapping, submission-before-request resends, first-match CRC acknowledgement and CRC-protected FIFO replies. Contextual null failures and private throwing constructors are checked; original static references are restored. Production record creation, invalid-CRC/reconnect branches, server feature meaning/acceptance, real archive loading/artwork, malformed guards and original-JAR equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:81,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:82,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
