@@ -132,7 +132,6 @@ const { runQcDoLoopTailClone } = require('./qcDoLoopTailClone');
 const { runRasterClipContinuation } = require('./ckClipFlag');
 const { runQkExceptionSplit } = require('./qkExceptionSplit');
 const { runVlCacheJoin } = require('./vlCacheJoin');
-const { runBParserLoopHeader } = require('./bParserLoopHeader');
 const { runRasterScanlineEntryClone } = require('./rasterScanlineEntryClone');
 const { runSourceScopeLocalInit } = require('./sourceScopeLocalInit');
 const { runStackReceiverTailClone } = require('./stackReceiverTailClone');
@@ -2615,7 +2614,6 @@ function loadProfiles(dir, selected = []) {
     ckClipFlag: [],
     ckClipFlagQuadrants: [],
     vlCacheJoin: [],
-    bParserLoopHeader: [],
     rasterScanlineEntryClone: [],
     sourceScopeLocalInit: [],
     stackReceiverTailClone: [],
@@ -3798,7 +3796,6 @@ const passes = [
   { name: 'raster-clip-continuation', fn: (a) => runRasterClipContinuation(a, { targets: profiles.ckClipFlag, quadrants: profiles.ckClipFlagQuadrants }) },
   ...(runtimeSafe ? [] : [{ name: 'qk-exception-split', fn: (a) => runQkExceptionSplit(a, { targets: profiles.qkExceptionSplit }) }]),
   { name: 'vl-cache-join', fn: (a) => runVlCacheJoin(a, { targets: profiles.vlCacheJoin }) },
-  { name: 'b-parser-loop-header', fn: (a) => runBParserLoopHeader(a, { targets: profiles.bParserLoopHeader }) },
   { name: 'raster-scanline-entry-clone', fn: (a) => runRasterScanlineEntryClone(a, { targets: profiles.rasterScanlineEntryClone }) },
   { name: 'source-scope-local-init', fn: (a) => runSourceScopeLocalInit(a, { targets: profiles.sourceScopeLocalInit }) },
   { name: 'stack-receiver-tail-clone', fn: (a) => runStackReceiverTailClone(a, { targets: profiles.stackReceiverTailClone }) },

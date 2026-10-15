@@ -206,7 +206,7 @@ ordering.
 `--profile <name>` selects a per-game JSON profile from
 `scripts/pipeline/profiles/`: `armiesofgielinor`, `brickabrac`, `chess`,
 `dekobloko`, `minerdisturbance`, `pixelate`, `tetralink`. The default is
-`dekobloko`. Use `--profile none` for a generic runtime-safe run that loads no
+`none`. Use `--profile none` for a generic runtime-safe run that loads no
 game profile, and `--profile all` only when deliberately checking profile
 leakage.
 
@@ -326,7 +326,7 @@ checked exception propagated by arbitrary bytecode.
 
 Profile-selected passes live beside them in `scripts/pipeline/`:
 `eiTailClone`, `qcDoLoopTailClone`, `qkExceptionSplit`, `vlCacheJoin`,
-`bParserLoopHeader`, `rasterScanlineEntryClone`, `sourceScopeLocalInit`,
+`rasterScanlineEntryClone`, `sourceScopeLocalInit`,
 `stackReceiverTailClone`, `ckClipFlag`, `pollLoopReturnNormalize`,
 `retargetBranches`, `removeShadowedExceptionHandlers`,
 `terminalActionExtract`, `terminalCleanupExtract`, `terminalIteratorExtract`,
@@ -348,6 +348,72 @@ patch.
    bytecode diff before accepting the result.
 
 A new game profile must not change the existing baselines.
+
+### Moving reconstruction into the compiler
+
+The normal 44-game driver already selects `--profile none --safe-bytecode`.
+Its remaining preprocessing dependency is not synonymous with active game
+profiles: it also coordinates generic passes and local shape recognizers.
+Standalone `java-tools` must learn the useful structural patterns without
+requiring this runner, class names, offsets or feature switches.
+
+The first migration recovers a duplicated local producer at a loop entry:
+
+```text
+preheader: load slot; goto test     preheader: nop; goto header
+header:    load slot          =>   header:    load slot
+test:      consume value           test:      consume value
+           ... goto header                   ... goto header
+```
+
+`java-tools/src/decompiler/preloadedLoopEntryRecovery.js`, introduced in commit
+`c6a20254acceb716bf0105ac7f7884454a029594`, indexes incoming
+edges and proves that every jump to the shared test supplies the same local.
+An entry into a preheader's goto, a different producer or an ambiguous protected
+boundary prevents recovery. It preserves PCs, labels, exception tables and
+instruction count, does not clone execution paths, and runs before local/stack analysis
+in normal standalone class, directory and JAR decompilation. It introduces no
+environment switch or application selector. Native tests compare original class
+files, default output and forced fallback against an independent loop oracle,
+including five value categories, null/identity, overflow, signed zero, NaNs,
+partial failures, protected code and a bypass counterexample: 5,100 cases per
+variant. The reduced unprocessed fixture loses its synthetic stack variable
+and becomes a direct `while (param0 != -1)` loop. The tracked compiler-source
+Git tar archive SHA-256 is
+`324230850ae626924c5b10cc91e5ab73a97e6018586cd686ed518c0e6d36a4f3`:
+`git archive --format=tar c6a20254acceb716bf0105ac7f7884454a029594 | sha256sum`.
+This identifies compiler source, not a game JAR or generated Java.
+
+The old `bParserLoopHeader` module and its Chess class/method/offset selector
+are removed. The scoped historical Chess pipeline comparison processes the
+selected class successfully before and after removal, producing identical
+bytes. Both outputs pass ASM BasicVerifier (12 methods total). Reproduce the
+comparison using the fixed original Chess class set:
+
+```sh
+node scripts/test-loop-entry-migration.mjs /absolute/path/to/chess/classes
+```
+
+The test makes isolated copies of the pinned old runner and the candidate,
+rejects silent passthroughs and removes all temporary output. It does not
+publish Java or modify original classes. A separate preservation-mode experiment
+with `--runtime-safe` failed in both runners; diagnostics on the candidate
+reported a missing `L197` exception-table label. Those failed passthroughs are
+not counted as validation.
+
+This is one structural migration, not elimination of all preprocessing. Scans
+of untouched Chess (2,903 methods) and Brick-a-Brac (3,588 methods) found no
+direct matches before other cleanup. The positive demonstration is the reduced
+arbitrary fixture; a whole-game readability or runtime improvement is not yet
+established for this migration.
+
+| Remaining dependency | Current status and direction |
+|---|---|
+| Generic bytecode passes in `java-tools` | Already independent algorithms; Deko still selects order and safety options. Prefer compiler analysis/reconstruction when mutation is unnecessary. |
+| `structuredGotoClone` and `pollLoopReturnNormalize` | Local, mixed shape-repair code. Reduce and prove individual patterns before migrating them; moving the files alone would preserve the dependency's assumptions. |
+| `eiTailClone`, `qcDoLoopTailClone`, `qkExceptionSplit` and other profile sites | Explicit game-selected legacy patches remain in Deko. Replace each with an arbitrary fixture and a general proof before removing its selector. |
+| Dead flags and interclass constants | Generic engines exist; whole-program assumptions need evidence about the input set. A decompiler must not silently assume that outside callers or reflection cannot change a field. |
+| Semantic names, resource maps and relocations | Application data stays in Deko; it does not belong in the generic compiler. |
 
 ## Verification tools
 
