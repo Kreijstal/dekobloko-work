@@ -1911,6 +1911,32 @@ are checked; original static references are restored. Production record creation
 invalid-CRC/reconnect branches, server feature meaning/acceptance, real archive
 loading/artwork, malformed guards and original-JAR equivalence remain unverified.
 
+RunLengthSpriteCodec names Paris background sprite encoding, transparent-run marking and
+clipped drawing. The integer representation starts with a row-offset table followed by
+positive literal words and transparent commands equal to1 minus run length. Encoding
+first marks the original backing array in place, then installs a new command array while
+retaining sprite geometry. Encoded pixels require the specialized drawing helper.
+
+ParallaxMusicHelpers names Paris far/mid/near composition and the eight-stage special-
+music preparation path. Named fields identify the stage, track/patch archives and title,
+panic, completion and podium tracks. Four polls load the named tracks; four further
+stages prepare instrument usage, and the next poll reports completion. Failed
+loads/preparation retain the current stage. MusicTrack.load parameter names are
+corrected to groupName then fileName, matching archive lookup.
+
+Independent fixtures construct command words from forward runs, expand row offsets,
+check original-array mutation and compare drawing against immutable source pixels across
+patterns, cropped geometry and clip edges. Paris composition checks opaque far pixels,
+transparent near/mid layers, fixed16 scroll, integer scale offsets and the near layer
+anchored at480 minus canvas height. The existing fully-left draw bounds failure is
+preserved and tested; normal pixel fixtures cover horizontal overlap or positions to the
+right. Controlled archives contain four named empty MIDI files in one unnamed group,
+with distinct divisions to verify file selection, testing each blocked/successful load,
+missing-patch retries, usage retention/release, completion timing and invalid-
+stage/guard behavior. Original statics are restored. Negative literal pixels,
+malformed/re-encoded command streams, all offscreen failures, real artwork/audio
+playback, live performance and original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,

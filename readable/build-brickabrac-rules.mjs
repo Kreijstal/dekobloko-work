@@ -346,6 +346,8 @@ classes.bm=['GameRenderAudioHelpers','Static helper bag for mesh sorting/logo lo
 classes.lo=['LegacyEmailValidationError','Identity-only error markers returned by the legacy email syntax helpers; null denotes success. No instance state; toString throws. Unrelated static result-text rendering and input globals retain separate roles.'];
 classes.ln=['BytePayloadSubmission','Intrusive opaque byte-payload submission with retained CRC32 acknowledgement key; private constructor throws and no normal factory is present in the frozen sources. Unrelated static background bootstrap, level-attribute, sprite and UI helpers retain separate roles.'];
 classes.wj=['BytePayloadRequest','State-free intrusive marker for pending type0 byte-payload requests; replies validate CRC32 and remove the first queued marker, discarding returned bytes. Private constructor throws; unrelated sleep, text substitution and music helpers retain separate roles.'];
+classes.uq=['RunLengthSpriteCodec','Converts positive RGB/zero-transparent sprite pixels to row-indexed literal/transparent-run commands and draws that representation with clipping. Encoding mutates the original backing array before installing a new command array.'];
+classes.wo=['ParallaxMusicHelpers','Paris background composition with two encoded parallax layers plus staged loading/preparation of title, panic, completion and podium music; unrelated UI-layer and firework globals retain separate roles.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -1492,7 +1494,7 @@ for(const [owner,original,type,to,evidence] of [
  ['ie','K','Lhr;','midiReader','Track event reader.'],['ie','C','Llk;','voiceMixer','Child mixing voices and fading streams.'],['ie','w','Lsi;','patches','Loaded music patches keyed by instrument/program.'],['ie','A','[[Lka;','voicesByNote','16x128 held-note lookup.'],['ie','r','[[Lka;','voicesByGroup','16x128 exclusive-group lookup.'],['ie','E','I','masterGain','Master gain starting256.'],['ie','t','I','tempoScale','Scheduling scale starting1000000.'],['ie','s','[I','channelVolume','Controller7/39 state, default12800.'],['ie','W','[I','channelPan','Controller10/42 state, default8192.'],['ie','Q','[I','channelExpression','Controller11/43 state, default16383.'],['ie','V','[I','channelPitchBend','Pitch-wheel state, default8192.'],['ie','m','[I','channelModulation','Controller1/33 state.'],['ie','D','[I','channelPortamentoTime','Controller5/37 state.'],['ie','p','[I','channelBank','Controller0/32 state and program base.'],['ie','n','[I','channelFlags','Sustain/portamento/retrigger bits1/2/4.'],['ie','P','[I','channelParameter','RPN/NRPN selector state, default32767.'],['ie','G','[I','channelPitchBendRange','Data-entry state for selected RPN0; default256.'],['ie','y','[I','channelSampleOffset','Controller16/48 playback offset.'],['ie','z','[I','channelRetriggerValue','Controller17/49 value used for retrigger frequency.'],['ie','S','[I','channelGain','Independent per-channel gain starting256.'],['ie','J','[I','channelProgram','Active bank/program identifier.'],['ie','R','[I','initialPrograms','Program defaults restored by reset.'],['m','f','Lie;','musicSynthesizer','Shared synthesizer used by scenes.'],
 ])field(owner,original,type,to,evidence);
 method('wp','<init>','(Lmf;Lmf;)V','<init>','Retains source archives and allocates two256-bucket caches.',['soundEffectArchive','musicSampleArchive']);method('wp','a','(III[I)Loe;','getSoundEffect','Checks decoded cache before budget, decodes effect and debits PCM length; guard0.',['fileId','obfuscationGuard','groupId','budget']);method('wp','a','(II[II)Loe;','getMusicSample','Checks PCM cache before budget, retains incomplete compressed sample, then transfers to decoded cache; guard0.',['fileId','groupId','budget','obfuscationGuard']);method('wp','a','([III)Loe;','getSoundEffectById','Uses single-group or single-file layout; unsupported layout behavior retained.',['budget','id','obfuscationGuard']);method('wp','a','(I[II)Loe;','getMusicSampleById','Uses single-group or single-file layout; unsupported layout throws.',['id','budget','obfuscationGuard']);method('wp','a','([ILjava/lang/String;ILjava/lang/String;)Loe;','getSoundEffectByName','Resolves archive group/file and delegates numeric cache retrieval; guard2.',['budget','fileName','obfuscationGuard','groupName']);method('wp','a','(Ljava/lang/String;BLjava/lang/String;[I)Loe;','getMusicSampleByName','Resolves compressed-sample group/file and delegates retrieval; guard below -45.',['groupName','obfuscationGuard','fileName','budget']);method('wp','a','(Ljava/lang/String;Ljava/lang/String;B)Loe;','getSoundEffectByName','Effect-name convenience overload with no budget; guard at least107.',['fileName','groupName','obfuscationGuard']);method('wp','a','(BLjava/lang/String;Ljava/lang/String;)Loe;','getMusicSampleByName','Compressed sample name convenience overload with no budget; guard28.',['obfuscationGuard','fileName','groupName']);
-method('vm','a','()V','releaseInstrumentUsage','Drops lazily built instrument-note map.');method('vm','b','()V','buildInstrumentUsage','Scans MIDI bank/program/note events into128-note masks; velocity-zero notes are ignored; channel9 starts at instrument128.');method('vm','a','(Lmf;Ljava/lang/String;Ljava/lang/String;)Lvm;','load','Returns null if packed bytes unavailable, else decodes MusicTrack.',['archive','fileName','groupName']);method('vm','<init>','(Lwq;)V','<init>','Decodes original packed track representation into MIDI bytes.',['packedTrack']);method('se','<init>','([B)V','<init>','Retains supplied byte array.',['bytes']);
+method('vm','a','()V','releaseInstrumentUsage','Drops lazily built instrument-note map.');method('vm','b','()V','buildInstrumentUsage','Scans MIDI bank/program/note events into128-note masks; velocity-zero notes are ignored; channel9 starts at instrument128.');method('vm','a','(Lmf;Ljava/lang/String;Ljava/lang/String;)Lvm;','load','Returns null if packed bytes unavailable, else decodes MusicTrack.',['archive','groupName','fileName']);method('vm','<init>','(Lwq;)V','<init>','Decodes original packed track representation into MIDI bytes.',['packedTrack']);method('se','<init>','([B)V','<init>','Retains supplied byte array.',['bytes']);
 for(const [original,descriptor,to,params,evidence] of [
  ['e','()I','getTrackCount',[],'Returns saved track count.'],['e','(I)I','readMessage',['track'],'Reads packed channel event or meta/sysex marker.'],['a','(I)V','seekTrack',['track'],'Seeks shared cursor to saved track offset.'],['b','(J)I','timeToTick',['time'],'Rounded positive-time conversion using current tempo/time offset; units remain scaled by division.'],['f','()Z','isDone',[],'All track positions negative.'],['b','()V','markTrackEnded',[],'Sets cursor -1 before saving ended track.'],['f','(I)V','readTrackDelta',['track'],'Adds variable-length delta to track ticks.'],['a','()I','nextTrack',[],'Earliest active tick, with first-index tie break.'],['a','([B)V','parse',['data'],'Reads track count/division and locates MTrk chunks; initial tempo500000.'],['d','(I)I','readMessageInternal',['track'],'Handles running status and sysex escape.'],['a','(II)I','readMessageBody',['track','status'],'Reads message bytes or meta markers1=end,2=tempo,3=other.'],['d','()V','clear',[],'Releases byte storage and track arrays.'],['c','(I)J','getTickTime',['tick'],'Tempo-scaled tick time with compensation offset.'],['a','(J)V','reset',['time'],'Resets running status/ticks and reads first deltas at supplied time origin.'],['c','()Z','hasData',[],'Checks retained MIDI bytes.'],['b','(I)V','saveTrackPosition',['track'],'Stores shared cursor offset for track.'],
 ])method('hr',original,descriptor,to,evidence,params);
@@ -4008,6 +4010,81 @@ local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby trans
 
 }
 
+
+{
+ const evidence="Paris asset loading encodes four near/mid sprite variants before the parallax helper draws them. Row offsets precede positive literals and1-minus-run-length transparent commands. Native reference pixels verify encoding, aliases, clipping and layer placement. The special music helper loads four named tracks, prepares each in four further stages, and reports completion on the next poll; in-memory archive/MIDI fixtures verify the stages.";
+ method("uq","a","(Ljp;II)V","drawEncodedSprite",evidence,["encodedSprite", "x", "y"]);
+ method("uq","a","(Ljp;)V","markTransparentRuns",evidence,["sprite"]);
+ method("uq","b","(Ljp;)V","encodeSprite",evidence,["sprite"]);
+ method("uq","a","([I[IIIIIIII)V","blitEncodedRows",evidence,["target", "commands", "commandIndex", "destinationOffset", "command", "leftLimit", "rightLimit", "rowWidth", "rowCount"]);
+ method("wo","a","(I)Z","pollSpecialMusicPreparation",evidence,["obfuscationGuard"]);
+ method("wo","a","(IILjp;IIIIILjp;Ljp;I)V","drawParisParallaxLayers",evidence,["destinationY", "scroll16", "midSprite", "obfuscationGuard", "viewWidth", "verticalOffset", "destinationX", "scaleDivisor", "nearSprite", "farSprite", "unusedColorIndex"]);
+ field("m","i","I","specialMusicPreparationStage",evidence);
+ field("kc","j","Lmf;","specialMusicTrackArchive",evidence);
+ field("ic","a","Lmf;","specialMusicPatchArchive",evidence);
+ field("cd","g","Lvm;","titleMusicTrack",evidence);
+ field("uk","t","Lvm;","panicMusicTrack",evidence);
+ field("c","j","Lvm;","completionMusicTrack",evidence);
+ field("oj","q","Lvm;","podiumMusicTrack",evidence);
+ local("uq","a(Ljp;II)V",0,"var10","clippedTopRows",evidence);
+ local("uq","a(Ljp;II)V",1,"var3","destinationOffset",evidence);
+ local("uq","a(Ljp;II)V",2,"var4","commandIndex",evidence);
+ local("uq","a(Ljp;II)V",3,"var5","height",evidence);
+ local("uq","a(Ljp;II)V",4,"var6","width",evidence);
+ local("uq","a(Ljp;II)V",5,"var7","initialCommand",evidence);
+ local("uq","a(Ljp;II)V",6,"var8","leftLimit",evidence);
+ local("uq","a(Ljp;II)V",7,"var9","rightLimit",evidence);
+ local("uq","a(Ljp;)V",0,"var2","row",evidence);
+ local("uq","a(Ljp;)V",1,"var4","column",evidence);
+ local("uq","a(Ljp;)V",2,"incrementValue$6","previousTransparentCount",evidence);
+ local("uq","a(Ljp;)V",3,"var1","pixelIndex",evidence);
+ local("uq","a(Ljp;)V",4,"var3","transparentCount",evidence);
+ local("uq","a(Ljp;)V",5,"var5","color",evidence);
+ local("uq","b(Ljp;)V",0,"var3_int","countRow",evidence);
+ local("uq","b(Ljp;)V",1,"incrementValue$2","countReadIndex",evidence);
+ local("uq","b(Ljp;)V",2,"incrementValue$0","buildReadIndex",evidence);
+ local("uq","b(Ljp;)V",3,"var1","commandCount",evidence);
+ local("uq","b(Ljp;)V",4,"var2","countPixelIndex",evidence);
+ local("uq","b(Ljp;)V",5,"var3","encodedWords",evidence);
+ local("uq","b(Ljp;)V",6,"var4","countColumn",evidence);
+ local("uq","b(Ljp;)V",7,"var5","countCommand",evidence);
+ local("uq","b(Ljp;)V",8,"var6","buildColumn",evidence);
+ local("uq","b(Ljp;)V",9,"var7","buildCommand",evidence);
+ local("uq","b(Ljp;)V",10,"var8","allocatedWordsAlias",evidence);
+ local("uq","b(Ljp;)V",11,"var9","allocatedWords",evidence);
+ local("uq","b(Ljp;)V",12,"var2Lifetime1","buildPixelIndex",evidence);
+ local("uq","b(Ljp;)V",13,"var4Lifetime1","writeIndex",evidence);
+ local("uq","b(Ljp;)V",14,"var5Lifetime1","buildRow",evidence);
+ local("uq","a([I[IIIIIIII)V",0,"var10","rowCountdown",evidence);
+ local("uq","a([I[IIIIIIII)V",1,"var9","relativeX",evidence);
+ local("wo","a(I)Z",0,"stackIn_5_0","alternateTitleLoaded",evidence);
+ local("wo","a(I)Z",1,"stackIn_13_0","alternatePanicLoaded",evidence);
+ local("wo","a(I)Z",2,"stackIn_23_0","alternatePodiumLoaded",evidence);
+ local("wo","a(I)Z",3,"stackIn_31_0","alternateTitlePrepared",evidence);
+ local("wo","a(I)Z",4,"stackIn_43_0","alternatePodiumPrepared",evidence);
+ local("wo","a(I)Z",5,"stackIn_52_0","alternateCompletionLoaded",evidence);
+ local("wo","a(I)Z",6,"stackIn_60_0","alternatePanicPrepared",evidence);
+ local("wo","a(I)Z",7,"stackIn_68_0","alternateCompletionPrepared",evidence);
+ local("wo","a(I)Z",8,"stackIn_77_0","titleLoaded",evidence);
+ local("wo","a(I)Z",9,"stackIn_85_0","panicLoaded",evidence);
+ local("wo","a(I)Z",10,"stackIn_95_0","podiumLoaded",evidence);
+ local("wo","a(I)Z",11,"stackIn_103_0","titlePrepared",evidence);
+ local("wo","a(I)Z",12,"stackIn_116_0","podiumPrepared",evidence);
+ local("wo","a(I)Z",13,"stackIn_124_0","completionLoaded",evidence);
+ local("wo","a(I)Z",14,"stackIn_132_0","panicPrepared",evidence);
+ local("wo","a(I)Z",15,"stackIn_139_0","completionPrepared",evidence);
+ local("wo","a(I)Z",16,"var1","unusedInitialSuccess",evidence);
+ local("wo","a(I)Z",17,"var2","stage",evidence);
+ local("wo","a(I)Z",18,"var3","unusedGameFlag",evidence);
+ local("wo","a(I)Z",19,"var4","unusedSprite",evidence);
+ local("wo","a(I)Z",20,"var1Lifetime1","unusedAlternateSuccess",evidence);
+ local("wo","a(I)Z",21,"var1Lifetime2","alternateAdvanceFlag",evidence);
+ local("wo","a(I)Z",22,"var2Lifetime1","alternateStage",evidence);
+ local("wo","a(I)Z",23,"var1Lifetime3","advanceFlag",evidence);
+ local("wo","a(IILjp;IIIIILjp;Ljp;I)V",0,"var12","unusedSprite",evidence);
+ local("wo","a(IILjp;IIIIILjp;Ljp;I)V",1,"runtimeException","failure",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -4302,10 +4379,13 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "BytePayloadSubmission and BytePayloadRequest name the intrusive records behind the auxiliary byte-payload wire path. Payload/checksum fields, pending queues, send/reply/resend helpers and their locals now expose the observed type1 submission and type0 request behavior. Both private throwing constructors are retained; fixtures allocate controlled instances without inventing a production factory or assigning a server-side feature meaning. Unrelated static helpers retain separate roles.", '',
 "Background resource initialization now identifies all five archives and the sound cache, while scene initialization names its argument forwarding and seasonal scene choice. The960x480 and1280x480 background surface pools, generic selection and both wrappers have descriptive names. Selection promotes the first matching entry or tail victim without retagging it; callers retain that responsibility. Level-attribute aggregation and sprite-decoding locals are named.", '',
 "Native fixtures verify archive identity, repeated append behavior, pool dimensions/default keys, all eleven scene slots and both farm/Halloween choices. An independent list model checks cache hits, duplicate keys, misses, recency order and caller retagging through the generic selector and both wrappers. Exclusive-end level ranges cover signed/high-bit attributes, empty/reversed ranges and guard state. In-memory wire fixtures use independent ISAAC/CRC32 references, null/empty payloads, byte-length wrapping, submission-before-request resends, first-match CRC acknowledgement and CRC-protected FIFO replies. Contextual null failures and private throwing constructors are checked; original static references are restored. Production record creation, invalid-CRC/reconnect branches, server feature meaning/acceptance, real archive loading/artwork, malformed guards and original-JAR equivalence remain unverified.", '',
+"RunLengthSpriteCodec names Paris background sprite encoding, transparent-run marking and clipped drawing. The integer representation starts with a row-offset table followed by positive literal words and transparent commands equal to1 minus run length. Encoding first marks the original backing array in place, then installs a new command array while retaining sprite geometry. Encoded pixels require the specialized drawing helper.", '',
+"ParallaxMusicHelpers names Paris far/mid/near composition and the eight-stage special-music preparation path. Named fields identify the stage, track/patch archives and title, panic, completion and podium tracks. Four polls load the named tracks; four further stages prepare instrument usage, and the next poll reports completion. Failed loads/preparation retain the current stage. MusicTrack.load parameter names are corrected to groupName then fileName, matching archive lookup.", '',
+"Independent fixtures construct command words from forward runs, expand row offsets, check original-array mutation and compare drawing against immutable source pixels across patterns, cropped geometry and clip edges. Paris composition checks opaque far pixels, transparent near/mid layers, fixed16 scroll, integer scale offsets and the near layer anchored at480 minus canvas height. The existing fully-left draw bounds failure is preserved and tested; normal pixel fixtures cover horizontal overlap or positions to the right. Controlled archives contain four named empty MIDI files in one unnamed group, with distinct divisions to verify file selection, testing each blocked/successful load, missing-patch retries, usage retention/release, completion timing and invalid-stage/guard behavior. Original statics are restored. Negative literal pixels, malformed/re-encoded command streams, all offscreen failures, real artwork/audio playback, live performance and original-JAR equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:82,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:83,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
