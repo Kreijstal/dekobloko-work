@@ -333,6 +333,7 @@ classes.m=['ConditionalTextValue','Retains null-normalized text and a conditiona
 classes.ck=['DiagnosticTextLine','Intrusive mutable StringBuilder line used by the heap/render-loop-rate diagnostic overlay; unrelated static archive, framebuffer and tutorial helpers remain separate.'];
 classes.vj=['SocialTabbedPanel','Wraps a caller-provided primary panel plus explicitly labelled Friends and Ignore tabs, and lays out their shared controls; unrelated static music/ranking/background helpers remain separate.'];
 classes.wn=['FriendListUi','Updates friend rows, location colors, rename indicators, name tooltips and footer actions; unrelated static keyboard, chat-filter and font helpers retain their separate roles.'];
+classes.nh=['LobbyUiHelpers','Static lobby controls, setting/start eligibility and status-expiry updates, plus nine-slice drawing and shared-font style setup; unrelated chat/configuration globals retain their separate roles.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -3113,6 +3114,157 @@ local("io","callbackEnumModes(Lcom/ms/directX/DDSurfaceDesc;Lcom/ms/com/IUnknown
  local("jm","a(ZZI)V",27,"decompiledCaughtParameter0","caughtUpdateFailure",evidence);
 }
 
+
+// Lobby controls, expiring row statuses and nine-slice painting.
+{
+ const evidence="Reviewed lobby controls/status-expiry and frame-drawing statements and callers; mixed-purpose locals explicitly retain their distinct phase roles.";
+ field("nh","a","Lmh;","cancelCreateGameButton",evidence);
+ field("nh","d","Ljava/lang/String;","reportSecurityHeading",evidence);
+ field("rg","g","[I","nineSliceClipScratch",evidence);
+ field("hc","c","Z","joinRequestsPanelOpen",evidence);
+ method("nh","a","(I)V","advanceLobbyStatusTimers",evidence,["obfuscationGuard"]);
+ method("nh","a","(ZZZIZ)V","updateLobbyControls",evidence,["obfuscationGuard", "suppressInput", "inputEnabled", "gameActionOpcode", "allowStartGame"]);
+ method("nh","a","([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V","initializeUiStylesWithSharedFont",evidence,{"5": "font", "13": "obfuscationGuard"});
+ method("nh","b","(I)V","clearSharedReferences",evidence,["obfuscationGuard"]);
+ local("nh","a(IIII[Ljp;I)V",0,"stackIn_10_0","leftWidthValue",evidence);
+ local("nh","a(IIII[Ljp;I)V",1,"stackIn_13_0","rightWidthValue",evidence);
+ local("nh","a(IIII[Ljp;I)V",2,"stackIn_18_0","topHeightValue",evidence);
+ local("nh","a(IIII[Ljp;I)V",3,"stackIn_21_0","bottomHeightValue",evidence);
+ local("nh","a(IIII[Ljp;I)V",4,"stackIn_88_0","contextFailure",evidence);
+ local("nh","a(IIII[Ljp;I)V",5,"stackIn_88_1","contextPrefix",evidence);
+ local("nh","a(IIII[Ljp;I)V",6,"stackIn_89_2","spritesArgumentSummary",evidence);
+ local("nh","a(IIII[Ljp;I)V",7,"decompiledCaughtException","caughtFailure",evidence);
+ local("nh","a(IIII[Ljp;I)V",8,"var6_int","leftWidth",evidence);
+ local("nh","a(IIII[Ljp;I)V",9,"var6","paintingFailure",evidence);
+ local("nh","a(IIII[Ljp;I)V",10,"var7","rightWidth",evidence);
+ local("nh","a(IIII[Ljp;I)V",11,"var8","topHeight",evidence);
+ local("nh","a(IIII[Ljp;I)V",12,"var9","bottomHeight",evidence);
+ local("nh","a(IIII[Ljp;I)V",13,"var10","rightX",evidence);
+ local("nh","a(IIII[Ljp;I)V",14,"var11","bottomY",evidence);
+ local("nh","a(IIII[Ljp;I)V",15,"var12","centerLeft",evidence);
+ local("nh","a(IIII[Ljp;I)V",16,"var13","centerRight",evidence);
+ local("nh","a(IIII[Ljp;I)V",17,"var14","centerTop",evidence);
+ local("nh","a(IIII[Ljp;I)V",18,"var15","centerBottom",evidence);
+ local("nh","a(IIII[Ljp;I)V",19,"var16","clipCenterLeft",evidence);
+ local("nh","a(IIII[Ljp;I)V",20,"var17","clipCenterRight",evidence);
+ local("nh","a(IIII[Ljp;I)V",21,"var18","clipCenterTop",evidence);
+ local("nh","a(IIII[Ljp;I)V",22,"var19","clipCenterBottom",evidence);
+ local("nh","a(IIII[Ljp;I)V",23,"var20","topTileX",evidence);
+ local("nh","a(IIII[Ljp;I)V",24,"var21","centerTileX",evidence);
+ local("nh","a(IIII[Ljp;I)V",25,"var22","clientBranchFlag",evidence);
+ local("nh","a(IIII[Ljp;I)V",26,"var20Lifetime1","bottomTileX",evidence);
+ local("nh","a(IIII[Ljp;I)V",27,"var20Lifetime2","leftTileY",evidence);
+ local("nh","a(IIII[Ljp;I)V",28,"var20Lifetime3","rightTileY",evidence);
+ local("nh","a(IIII[Ljp;I)V",29,"var20Lifetime4","centerTileY",evidence);
+ local("nh","a(IIII[Ljp;I)V",30,"decompiledFrameCompleted3","topTilesCompleted",evidence);
+ local("nh","a(IIII[Ljp;I)V",31,"decompiledFrameCompleted2","bottomTilesCompleted",evidence);
+ local("nh","a(IIII[Ljp;I)V",32,"decompiledFrameCompleted1","leftTilesCompleted",evidence);
+ local("nh","a(IIII[Ljp;I)V",33,"decompiledFrameCompleted0","rightTilesCompleted",evidence);
+ local("nh","a(IIII[Ljp;I)V",34,"decompiledCaughtParameter0","caughtPaintingFailure",evidence);
+ local("nh","a(I)V",0,"stackIn_15_0","iteratedGame",evidence);
+ local("nh","a(I)V",1,"stackIn_23_0","nextCollectionEntry",evidence);
+ local("nh","a(I)V",2,"stackIn_29_0","expiryMinusOne",evidence);
+ local("nh","a(I)V",3,"stackIn_29_1","invertedLobbyPlayerTimer",evidence);
+ local("nh","a(I)V",4,"decompiledCaughtException","caughtFailure",evidence);
+ local("nh","a(I)V",5,"stackOut_14_0","gameForUpdate",evidence);
+ local("nh","a(I)V",6,"var1","lobbyPlayer",evidence);
+ local("nh","a(I)V",7,"var1_ref","game",evidence);
+ local("nh","a(I)V",8,"var1_ref2","timerFailure",evidence);
+ local("nh","a(I)V",9,"var2","clientBranchFlag",evidence);
+ local("nh","a(I)V",10,"var1Lifetime1","gamePlayer",evidence);
+ local("nh","a(I)V",11,"stackIn_29_0Lifetime1","expiredTimerMinusOne",evidence);
+ local("nh","a(I)V",12,"stackIn_29_1Lifetime1","invertedGamePlayerTimer",evidence);
+ local("nh","a(I)V",13,"decompiledNaturalLoopExit0","allGamesVisited",evidence);
+ local("nh","a(I)V",14,"decompiledCaughtParameter0","caughtTimerFailure",evidence);
+ local("nh","a(ZZZIZ)V",0,"stackIn_3_0","transitionTick",evidence);
+ local("nh","a(ZZZIZ)V",1,"stackIn_4_1","transitionAlternateGuard",evidence);
+ local("nh","a(ZZZIZ)V",2,"stackIn_23_0","startButtonForEnable",evidence);
+ local("nh","a(ZZZIZ)V",3,"stackIn_24_1","startAllowedWithoutPendingOptions",evidence);
+ local("nh","a(ZZZIZ)V",4,"stackIn_39_0","ruleLengthOrInvertedSetting",evidence);
+ local("nh","a(ZZZIZ)V",5,"stackIn_39_1","ruleIndexOrInvertedMaximumSetting",evidence);
+ local("nh","a(ZZZIZ)V",6,"stackIn_51_0","playerCountForRule",evidence);
+ local("nh","a(ZZZIZ)V",7,"stackIn_58_0","ruleSettingIndex",evidence);
+ local("nh","a(ZZZIZ)V",8,"stackIn_58_1","playerCountRuleSentinel",evidence);
+ local("nh","a(ZZZIZ)V",9,"stackIn_67_0","rulePairCursor",evidence);
+ local("nh","a(ZZZIZ)V",10,"stackIn_73_0","overrideGateValue",evidence);
+ local("nh","a(ZZZIZ)V",11,"stackIn_81_0","affectedSetting",evidence);
+ local("nh","a(ZZZIZ)V",12,"stackIn_87_0","affectedSettingValue",evidence);
+ local("nh","a(ZZZIZ)V",13,"stackIn_133_0","playerUnindexed",evidence);
+ local("nh","a(ZZZIZ)V",14,"stackIn_153_0","playerOverrideGateValue",evidence);
+ local("nh","a(ZZZIZ)V",15,"stackIn_174_0","lobbyRoot",evidence);
+ local("nh","a(ZZZIZ)V",16,"stackIn_175_1","lobbyInputEnabled",evidence);
+ local("nh","a(ZZZIZ)V",17,"stackIn_179_0","gameRoot",evidence);
+ local("nh","a(ZZZIZ)V",18,"stackIn_180_1","gameInputEnabled",evidence);
+ local("nh","a(ZZZIZ)V",19,"stackIn_184_0","requestsRoot",evidence);
+ local("nh","a(ZZZIZ)V",20,"stackIn_185_1","requestsInputEnabled",evidence);
+ local("nh","a(ZZZIZ)V",21,"decompiledCaughtException","caughtFailure",evidence);
+ local("nh","a(ZZZIZ)V",22,"stackOut_80_0","affectedSettingForTooltip",evidence);
+ local("nh","a(ZZZIZ)V",23,"stackOut_132_0","playerUnindexedValue",evidence);
+ local("nh","a(ZZZIZ)V",24,"var5","updateFailure",evidence);
+ local("nh","a(ZZZIZ)V",25,"var6","startButtonForCollapse",evidence);
+ local("nh","a(ZZZIZ)V",26,"var7","waitingMessageForCollapse",evidence);
+ local("nh","a(ZZZIZ)V",27,"var8","countdownTarget",evidence);
+ local("nh","a(ZZZIZ)V",28,"var9_ref_String","gameDisplayName",evidence);
+ local("nh","a(ZZZIZ)V",29,"var9","buttonSplitXOrCountdownSeconds",evidence);
+ local("nh","a(ZZZIZ)V",30,"var10_ref_String","pendingRequestCaption",evidence);
+ local("nh","a(ZZZIZ)V",31,"var10","restrictionPass",evidence);
+ local("nh","a(ZZZIZ)V",32,"var11","settingCursorOrRestrictionFlag",evidence);
+ local("nh","a(ZZZIZ)V",33,"var11_ref","affectedSettingNames",evidence);
+ local("nh","a(ZZZIZ)V",34,"var12","ruleCursorOrMultipleSettingsFlag",evidence);
+ local("nh","a(ZZZIZ)V",35,"var13_ref_int__","rulePairsForInspection",evidence);
+ local("nh","a(ZZZIZ)V",36,"var13","tooltipSettingIndex",evidence);
+ local("nh","a(ZZZIZ)V",37,"var13_ref_String","restrictionHeading",evidence);
+ local("nh","a(ZZZIZ)V",38,"var14","pairCursorOrMinimumRatedGames",evidence);
+ local("nh","a(ZZZIZ)V",39,"var14_ref_String","restrictionDetails",evidence);
+ local("nh","a(ZZZIZ)V",40,"var15","settingCursorOrEligibilityMask",evidence);
+ local("nh","a(ZZZIZ)V",41,"var16","settingCursorOrIneligiblePlayer",evidence);
+ local("nh","a(ZZZIZ)V",42,"var17_int","settingValueOrPlayerCount",evidence);
+ local("nh","a(ZZZIZ)V",43,"var17","gamePlayerRows",evidence);
+ local("nh","a(ZZZIZ)V",44,"var18","unusedIterationScratch",evidence);
+ local("nh","a(ZZZIZ)V",45,"var18_int","requiredRatingValue",evidence);
+ local("nh","a(ZZZIZ)V",46,"var18_ref","player",evidence);
+ local("nh","a(ZZZIZ)V",47,"var19","clientBranchFlag",evidence);
+ local("nh","a(ZZZIZ)V",48,"var20","unusedSprites",evidence);
+ local("nh","a(ZZZIZ)V",49,"var21","rulePairsAlias",evidence);
+ local("nh","a(ZZZIZ)V",50,"var23","requestsButtonForCollapse",evidence);
+ local("nh","a(ZZZIZ)V",51,"var24","rulePairsForMatching",evidence);
+ local("nh","a(ZZZIZ)V",52,"var25","highlightedSettingName",evidence);
+ local("nh","a(ZZZIZ)V",53,"var26","rulePairs",evidence);
+ local("nh","a(ZZZIZ)V",54,"var27","requestsButtonAlias",evidence);
+ local("nh","a(ZZZIZ)V",55,"stackIn_58_0Lifetime1","pairIndexForMaximum",evidence);
+ local("nh","a(ZZZIZ)V",56,"stackIn_58_1Lifetime1","pairCountForMaximum",evidence);
+ local("nh","a(ZZZIZ)V",57,"stackIn_67_0Lifetime1","ruleMatched",evidence);
+ local("nh","a(ZZZIZ)V",58,"var13Lifetime1","minimumRating",evidence);
+ local("nh","a(ZZZIZ)V",59,"var18_intLifetime1","requiredRatedGamesValue",evidence);
+ local("nh","a(ZZZIZ)V",60,"decompiledFrameRemainder1","continueOwnerEligibility",evidence);
+ local("nh","a(ZZZIZ)V",61,"decompiledSharedTail1","usePluralRequestCaption",evidence);
+ local("nh","a(ZZZIZ)V",62,"decompiledSharedTail0","useSingularRestrictionCaption",evidence);
+ local("nh","a(ZZZIZ)V",63,"decompiledNaturalLoopExit0","allSettingsVisited",evidence);
+ local("nh","a(ZZZIZ)V",64,"decompiledFrameRemainder0","continuePlayerIteration",evidence);
+ local("nh","a(ZZZIZ)V",65,"decompiledCaughtParameter0","caughtUpdateFailure",evidence);
+ local("nh","a([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V",0,"stackIn_6_0","contextFailure",evidence);
+ local("nh","a([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V",1,"stackIn_6_1","contextPrefix",evidence);
+ local("nh","a([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V",2,"stackIn_7_2","firstSpritesSummary",evidence);
+ local("nh","a([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V",3,"stackIn_9_1","fontContextPrefix",evidence);
+ local("nh","a([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V",4,"stackIn_10_2","fontArgumentSummary",evidence);
+ local("nh","a([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V",5,"stackIn_12_1","secondSpritesContextPrefix",evidence);
+ local("nh","a([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V",6,"stackIn_13_2","secondSpritesSummary",evidence);
+ local("nh","a([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V",7,"stackIn_15_1","thirdSpritesContextPrefix",evidence);
+ local("nh","a([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V",8,"stackIn_16_2","thirdSpritesSummary",evidence);
+ local("nh","a([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V",9,"decompiledCaughtException","caughtFailure",evidence);
+ local("nh","a([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V",10,"var15_int","fontLineHeight",evidence);
+ local("nh","a([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V",11,"var15","initializationFailure",evidence);
+ local("nh","a([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V",12,"var16","fontCapHeight",evidence);
+ local("nh","a([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V",13,"var17","unusedSprites",evidence);
+ local("nh","a([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V",14,"decompiledCaughtParameter0","caughtInitializationFailure",evidence);
+ local("nh","b(I)V",0,"var1","unusedGuardQuotient",evidence);
+}
+
+method('co','a','(IZ)V','layoutLobbyTransition','Quadratic transition offsets position lobby and game roots around the 640-pixel base width; canonical false guard.',['transitionTick','obfuscationGuard']);
+local("co","a(IZ)V",0,"var2","centerOffsetX","Quadratic lobby transition geometry; callers use the fixed positive transition span.");
+local("co","a(IZ)V",1,"var3","transitionSpanSquared","Quadratic lobby transition geometry; callers use the fixed positive transition span.");
+local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby transition geometry; callers use the fixed positive transition span.");
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -3392,10 +3544,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "Native fixtures verify text normalization/defaults, decimal append/scratch reuse, line selection/order, render-rate caching and disabled-line removal. Independent decimal expectations preserve negative signed-remainder characters below zero and the omitted scratch minus. Independent overlay pixels/glyph events cover strict next100-pixel rounding, an exact100 boundary, spaces, reversed glyph order, row spacing, empty lists and no-op drawing guards. Heap contents are checked only for format/range and excluded from deterministic traces. Static state and original scratch contents are restored. The displayed fps is a render-loop rate, not presented FPS. Full handshake behavior, arbitrary malformed text/guards, live presentation, memory budgets and original-JAR equivalence remain unverified.", '',
 "SocialTabbedPanel names the primary/Friends/Ignore wrapper and retained tabs/bounds. FriendListUi names friend-row updates; updateIgnoreList and initializeSocialPanels expose related helpers on their existing owners. Shared panel/pane references, headings, status text, rename sprite and scrollbar width have reviewed names. Four ScrollPaneWithFooter parameter names are corrected: the content gap and actual scrollbar width were previously reversed. Unrelated static helpers retain separate roles.", '',
 "Native fixtures initialize panels from an in-memory named sprite archive and verify tab identities/labels, initial selection, bounds/guards, row-height and scrollbar variations. Unequal gap/scrollbar geometry checks verify the corrected parameter roles and footer separation. Friend/ignore fixtures cover fresh/reused labels, ordering, retained layout, rename icons/tooltips, truncated-name tooltips, availability states and four footer action modes. Friend location colors preserve server String reference identity, including equal text in a distinct object. Independent fixed-advance truncation expectations retain the extra dropped character before the ellipsis; nonpositive name widths keep the full name. The ignore false guard returns after scroll layout, before availability mutation. Static state is restored. Real assets, live input/servers, friend-row context menus, all narrow positive truncation widths, arbitrary invalid guards and original-JAR equivalence remain unverified.", '',
+"LobbyUiHelpers names lobby controls/status timers, create-game cancel and report-security references, and the shared-font style wrapper. updateLobbyControls names setting-rule, restriction-pass, eligibility, request-caption and root-gating locals; reused locals retain qualified phase names. Unresolved numeric style parameters remain qualified. layoutLobbyTransition exposes quadratic root positioning.", '',
+"Independent per-pixel nine-slice fixtures cover missing pieces, transparent RGB, edge/center tiling, clipping, small dimensions and proportional border overlap with original tile anchors. Clip restoration and no-op dimensions/guards use the real painter. Timer fixtures cover three row collections, negative/zero/one/two/max-int timers, adjacent removals, indexed/unindexed rows and repeated ticks. Only transition to zero clears status; only unindexed rows unlink. No-game controller fixtures check three transition positions, all input/suppression/request-panel gates and tab activation. Static state and prior scratch contents are restored. Trimmed/alpha frame pieces, malformed arrays, nested scratch use, wrong client flags, full game-present eligibility/actions, style initialization effects, real assets, live input/servers, invalid guards and original-JAR equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:75,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:76,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

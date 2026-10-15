@@ -1741,6 +1741,33 @@ availability. Static state is restored. Real assets, live input/servers, friend
 row context-menu actions, all narrow positive truncation widths, arbitrary
 invalid guards and original-JAR equivalence remain unverified.
 
+LobbyUiHelpers names the lobby-control and status-timer helper bag, its
+create-game cancel button and report-security heading. updateLobbyControls
+exposes restriction-pass, setting-rule, eligibility, request-caption and root
+input-gating locals. Shared locals keep qualified names where the export reuses
+them for different phases. initializeUiStylesWithSharedFont names the font
+wrapper and metric locals; unresolved numeric style parameters stay qualified.
+layoutLobbyTransition names the quadratic root-positioning helper.
+
+Independent per-pixel nine-slice fixtures cover missing pieces, transparent
+pixels, tiled edges/center, clipping, small dimensions and proportional border
+overlap. Original tile anchors are preserved when the visible center collapses.
+Clip-restoration and no-op dimension/guard checks run through the real painter.
+Fixtures use untrimmed RGB sprites; trimmed/alpha pieces, wrong client-branch
+flags, every malformed sprite array and nested/reentrant scratch use remain
+unverified.
+
+Timer fixtures cover lobby players, lobby games and current-game players with
+negative, zero, one, two and maximum-int timers. Only positive timers decrement.
+The transition to zero clears status and unlinks the primary row only when its
+secondary index link is absent; rows already at zero retain their status.
+Indexed rows remain linked. Adjacent removals and repeated ticks are checked.
+No-game controller fixtures check three transition positions, all input/
+suppression/request-panel gates and tab activation. Static state and the prior
+mutable clip scratch are restored. The full game-present owner/eligibility and
+request-action branches, style initialization effects, real assets, live input/
+servers, invalid guards and original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
