@@ -358,6 +358,13 @@ classes.tm=['OutgoingPacketHelpers','RSA-wrapped four-word keys and padded encry
 classes.nl=['IncomingPacketHelpers','Ciphered incoming packet framing, queued delivery and opcode history; its separately named scaled-decimal formatter and sprite/archive/lobby globals retain distinct roles.'];
 classes.vd=['PacketReceiveHelpers','Accumulates available game-packet bytes with partial cursors, read-time updates and transport closure on timeout, EOF or IO failure; unrelated audio-maintenance and projection globals are retained.'];
 classes.rf=['GameConnectionHelpers','Current connection-phase identity and remove/reject-player packet submission; unrelated UI strings, table request and theme sprite retain separate roles.'];
+classes.ne=["AppletJavaScriptBridge", "Guarded LiveConnect script evaluation and function calls, with caller arguments/results and thrown failures passed through directly."];
+classes.qm=["BrowserResizeNotificationHelpers", "Sends the browser resizing callback with one boxed mode word and swallows bridge failures; unrelated task/UI labels remain separate."];
+classes.iq=["MicrosoftDirectSoundInitializer", "Legacy Microsoft-JVM startup probe allocates two descriptor/cursor records, DirectSound and WaveFormatEx objects; its owned reflected bootstrap name follows this rename."];
+classes.pc=["DirectSoundInitializerMarker", "Empty marker interface implemented only by the Microsoft DirectSound initializer."];
+classes.ph=["BirthDateValidationMarker", "Empty marker interface implemented only by the birth-date validator; it adds no callable contract."];
+classes.bp=["QuickChatContextMarker", "Empty interface implemented by FontRequestHelpers and used only as an unused QuickChatPhraseRegistry constructor context."];
+classes.rm=["FontRequestHelpers", "Binary-mask font construction and email-availability request construction, plus an otherwise unused Quick Chat context marker and unrelated farm/UI globals."];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -4574,6 +4581,33 @@ local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby trans
  local("wh","a(I[BII)V",7,"decompiledCaughtParameter0","caughtParameter",evidence);
 }
 
+{
+ const evidence="A separate child-first class loader supplies a recording JavaScript boundary without changing published signature stubs or starting an applet host. Fixtures verify all guard boundaries, argument/applet/result identity, thrown-failure propagation and resize callback swallowing. DirectSound construction checks two distinct initialized descriptor/cursor entries and marker relationships; reflection-literal verification follows the renamed owned startup class. Existing binary-font/email request fixtures cover the mixed helper factories.";
+ method("ne","a","(Ljava/applet/Applet;Ljava/lang/String;I)V","evaluateScript",evidence,["applet", "script", "obfuscationGuard"]);
+ method("ne","a","([Ljava/lang/Object;ILjava/applet/Applet;Ljava/lang/String;)Ljava/lang/Object;","callFunction",evidence,["arguments", "obfuscationGuard", "applet", "functionName"]);
+ method("ne","a","(Ljava/lang/String;ILjava/applet/Applet;)Ljava/lang/Object;","callFunctionWithoutArguments",evidence,["functionName", "obfuscationGuard", "applet"]);
+ method("qm","a","(II)V","notifyBrowserResize",evidence,["obfuscationGuard", "mode"]);
+ field("iq","a","[Lcom/ms/directX/DSBufferDesc;","bufferDescriptors",evidence);
+ field("iq","b","[Lcom/ms/directX/DSCursors;","bufferCursors",evidence);
+ local("iq","<init>()V",0,"var1","descriptorIndex",evidence);
+ local("iq","<init>()V",1,"var1Lifetime1","cursorIndex",evidence);
+ local("iq","<init>()V",2,"discarded$0","discardedDirectSound",evidence);
+ local("iq","<init>()V",3,"discarded$1","discardedWaveFormat",evidence);
+ local("qm","a(II)V",0,"decompiledCaughtException","caughtFailure",evidence);
+ local("qm","a(II)V",1,"var2","guardCalculation",evidence);
+ local("qm","a(II)V",2,"var3","ignoredBridgeFailure",evidence);
+ local("qm","a(II)V",3,"decompiledCaughtParameter0","caughtBridgeFailure",evidence);
+ local("qm","a(II)V",4,"decompiledUncheckedException","uncheckedFailure",evidence);
+ local("qm","a(II)V",5,"decompiledCheckedException","checkedFailure",evidence);
+ local("rm","a(Ljava/lang/String;I)Lac;",0,"var2","failure",evidence);
+ local("rm","a(Ljava/lang/String;I)Lac;",1,"stackIn_3_0","request",evidence);
+ local("rm","a(Ljava/lang/String;I)Lac;",2,"stackIn_6_0","failureContext",evidence);
+ local("rm","a(Ljava/lang/String;I)Lac;",3,"stackIn_6_1","contextBuilder",evidence);
+ local("rm","a(Ljava/lang/String;I)Lac;",4,"stackIn_7_2","emailSummary",evidence);
+ local("rm","a(Ljava/lang/String;I)Lac;",5,"decompiledCaughtException","caughtFailure",evidence);
+ local("rm","a(Ljava/lang/String;I)Lac;",6,"decompiledCaughtParameter0","caughtParameter",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -4881,10 +4915,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'Deterministic key fixtures compare complete wire bytes against a separate unsigned-word XTEA model and BigInteger RSA framing, including zero-block known output, signed keys, input offsets, zero/unaligned lengths, 65535/65536 length truncation, untouched source bytes and scratch reuse/replacement. Additional checks cover random-generator initialization, contextual null failures and all 256 reflected CRC64 table entries. Controlled in-memory socket rings verify keepalive phase gates, unavailable transports, guarded writes, error closure, copied delayed payloads, future-head FIFO blocking, one-entry delivery, strict deadlines, jitter/clamping and disabled-delay behavior. No writer threads or real sockets are started. Live authentication/server interoperability and original-JAR equivalence remain unverified.', '',
 'IncomingPacketHelpers, PacketReceiveHelpers and GameConnectionHelpers identify incoming framing/delivery, partial byte accumulation and shared connection-phase/player-removal helpers. Remaining receive exception/stream-read locals are named, along with getMillisSinceGameRead. The separately named formatScaledDecimal helper exposes grouping, fractional scale and locale separators; its duplicate guarded branches retain distinct locals.', '',
 'Controlled InputStream fixtures verify already-buffered cursor preservation, newly completed cursor reset, clipped byte requests, repeated short reads, partial-read continuation, absent transports, no-data waiting, timeout closure, negative availability, IO failures and partial EOF. Incoming-delay fixtures verify copied FIFO payloads, clamped Gaussian jitter, future-head blocking, phase gates, pending-frame priority, single-entry delivery and opcode-history shifts. String/BigInteger references verify grouped scaled decimals, signed long limits, large scales, locale IDs and archive-clearing guard behavior. The existing Long.MIN_VALUE negation-overflow spelling is explicitly preserved. These checks use no live sockets; exact timeout-boundary timing, live server compatibility and original-JAR equivalence remain unverified.', '',
+'AppletJavaScriptBridge names guarded script evaluation and function calls with or without argument arrays. BrowserResizeNotificationHelpers names the resizing callback and its guarded failure swallowing. MicrosoftDirectSoundInitializer exposes per-instance buffer descriptors/cursors and follows its owned reflected startup literal. DirectSoundInitializerMarker and BirthDateValidationMarker identify their sole implementers; QuickChatContextMarker describes an unused QuickChatPhraseRegistry constructor argument implemented by FontRequestHelpers. These empty interfaces add no callable contract. FontRequestHelpers also names its email-request construction locals.', '',
+'A temporary recording JavaScript class is loaded with isolated game classes through a child-first loader; published signature stubs and their dependency hash remain unchanged. Fixtures verify all bridge guard boundaries, null and nonnull applet/function/argument inputs, caller argument identity, result identity, exact thrown-failure propagation and resize callback boxing/swallowing. Guard arithmetic outside the resize callback catch remains observable. DirectSound fixtures verify two distinct descriptor/cursor records per instance against signature stubs; marker interfaces are checked for empty contracts and implementer relationships. The owned reflective initializer name is included in binding/literal checks. No applet host, browser JavaScript engine, real DirectSound device or original-gamepack equivalence is verified.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:88,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:89,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
