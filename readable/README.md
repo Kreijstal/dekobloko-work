@@ -2202,11 +2202,28 @@ names. Existing binding/native/reverse checks verify this lexical pass. They do
 not establish complete original-gamepack equivalence for these methods; all
 fixed-point arithmetic and random draws remain visible in the generated code.
 
+GameplayScreen now names the remaining locals in input sending, batch receive,
+position correction and held-key collection. advanceMatch separates remote
+catch-up and local throttling from effect-meter/display-position easing,
+inversion countdowns and offline result selection. The effect-player and
+display-player loops, target values, conditional carrier, unused alias and
+exception context now have distinct names. MultiplayerMatch queued-effect
+routing and pending-effect consumption also name their remaining carriers.
+
+getExpiredPositionTimerMask corrects the earlier getStateZeroPlayerMask name:
+it selects unmasked players whose positionOrderTicks is exactly zero, without
+testing boardState. The existing independent mask fixture assigns these fields
+differently and covers every pair of five-player masks. PlayerInputBatch now
+names the consumed/fallback read indices, retaining cursor advancement before
+array failure and the noncanonical cleanup path. Native source fixtures and
+binding/reverse checks verify this naming pass; live-server and whole-game
+equivalence remain unverified.
+
 The current readable Brick export uses a Git-only raw-source snapshot from the
 verified 44-game catalog refresh. The snapshot remains an ancestor of the named
 export; reproduction reads it directly from Git. Its raw Java tree SHA-256 is
 `29a4eb473e753435cfd6d57bc5c9a77ef3ca9b477d8503c53c321ab55762f7df`.
-All 420 class identities are retained. The current manifest has 15,074 rules.
+All 420 class identities are retained. The current manifest has 15,138 rules.
 Only `jh.java` differs from the former raw input: list traversal now updates
 currentChild, the variable tested by the loop. firstChildAlias and nextChildAlias
 identify the unused retained references. No generated Java is hand-patched.
