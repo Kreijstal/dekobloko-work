@@ -2030,6 +2030,14 @@ QuickChatPopupHelpers.cleanupPopupUi and UiCleanupHelpers.cleanupPopupUi expose 
 
 The export remains a reproducible naming pass over fixed decompiled input. Original loading-dialog rendering, live quick-chat interaction, the noncanonical interface guard clock reset, actual server delivery and original-gamepack equivalence remain unverified. Other mesh/resource helpers and unrelated static fields retain their separate roles.
 
+MusicVoice.updateTooltipState, BlankScreen.getVisibleTooltipText and CanvasInputHelpers.setPendingTooltipAnchor expose tooltip timing and pointer anchoring. tooltipDelayTicks, tooltipDisplayDurationTicks, tooltipSuppressionDurationTicks, pendingTooltipX and pendingTooltipY identify the remaining shared fields. The updater increments the signed counter and captures the current pointer only when both pending coordinates are -1 before checking its guard. Canonical updates consume the pending pair; a noncanonical update retains it and leaves the text/anchors unchanged.
+
+The pinned decompiled null-text predicate is asymmetric: null-to-null requests reanchoring, while a nonnull-to-null transition does not. Nonnull equal strings compare by value, and the new String reference is retained after a canonical call. This observed contract is preserved rather than silently corrected. A table-driven state model covers all null/equal/different cases, display/suppression boundaries, explicit/partial pointer candidates, movement, signed overflow and both client branch-flag values. A 400-step trace combines text changes, pending-anchor setters and tooltip reset. Getter fixtures check the visibility window and its guard. Original-gamepack confirmation of the null branch remains outstanding.
+
+PasswordTooltipHelpers.usernameContainsPasswordOrReverse removes underscores from the username and tests a case-sensitive substring match for the supplied password or its raw UTF-16 reversal. ScreenshotViewer.reverseUtf16CodeUnits names the latter operation; it reverses char units without repairing surrogate pairs. The helper does not lowercase input itself. Independent swaps cover every UTF-16 unit, paired/unpaired surrogates and guard effects. Exhaustive short-word fixtures and Unicode cases check direct/reverse matches, username-only underscore removal, empty strings, UI-reference clearing and null-failure ordering.
+
+These fixtures verify the fixed decompiled sources and the readable export without a browser or server. Full password-dialog interaction, real tooltip rendering and original-gamepack equivalence remain unverified. The neighboring sprite/layout helpers retain their existing independent roles.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,

@@ -386,6 +386,7 @@ classes.di=["QuickChatSineHelpers", "Default quick-chat activation and guarded 2
 classes.ce=["QuickChatPopupHelpers", "Quick-chat pointer processing and horizontal panning, plus hidden-popup/loading/tooltip cleanup; independent character/font/stat globals retain separate roles."];
 classes.hc=["MeshLobbyUiHelpers", "Mesh decoding, lobby resource setup, frame-clock reset and quick-chat help/menu forwarding, with independently named presentation assets."];
 classes.mc=["UiCleanupHelpers", "Guarded popup cleanup forwarding; connection-state, mesh-count and presentation globals keep their separately named roles."];
+classes.ll=["PasswordTooltipHelpers", "Username substring checks for a password or its raw UTF16 reversal, plus pending tooltip Y and independently retained login/UI globals."];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -5205,6 +5206,51 @@ local('na','a(IIIBI)V',0,'var6','fieldStartX','Centered date-field origin shared
  local("of","a(ILog;)V",0,"runtimeException","failure",evidence);
 }
 
+{
+ const evidence="A table-driven tooltip model checks all null/equal/different text transitions, delay/display/suppression boundaries, pending-pointer capture, movement, noncanonical partial updates, signed overflow and both client branch-flag values. Multi-frame traces verify getters and anchor setters. Independent code-unit swaps and substring references verify raw UTF16 reversal, underscore removal, case sensitivity, empty strings, guard side effects and null-failure order.";
+ field("ue","e","I","tooltipDelayTicks",evidence);
+ field("jh","a","I","tooltipDisplayDurationTicks",evidence);
+ field("ol","y","I","tooltipSuppressionDurationTicks",evidence);
+ field("oo","v","I","pendingTooltipX",evidence);
+ field("ll","b","I","pendingTooltipY",evidence);
+ method("ka","a","(Ljava/lang/String;I)V","updateTooltipState",evidence,["text", "obfuscationGuard"]);
+ method("of","d","(B)Ljava/lang/String;","getVisibleTooltipText",evidence,["obfuscationGuard"]);
+ method("ap","a","(IIB)V","setPendingTooltipAnchor",evidence,["x", "y", "obfuscationGuard"]);
+ method("ll","a","(Ljava/lang/String;BLjava/lang/String;)Z","usernameContainsPasswordOrReverse",evidence,["password", "obfuscationGuard", "username"]);
+ method("w","a","(ILjava/lang/String;)Ljava/lang/String;","reverseUtf16CodeUnits",evidence,["obfuscationGuard", "text"]);
+ local("ka","a(Ljava/lang/String;I)V",0,"stackIn_28_0","displayWindowFlag",evidence);
+ local("ka","a(Ljava/lang/String;I)V",1,"stackIn_72_0","failureContext",evidence);
+ local("ka","a(Ljava/lang/String;I)V",2,"stackIn_72_1","contextBuilder",evidence);
+ local("ka","a(Ljava/lang/String;I)V",3,"stackIn_73_2","textSummary",evidence);
+ local("ka","a(Ljava/lang/String;I)V",4,"decompiledCaughtException","caughtFailure",evidence);
+ local("ka","a(Ljava/lang/String;I)V",5,"var2_int","wasWithinDisplayWindow",evidence);
+ local("ka","a(Ljava/lang/String;I)V",6,"var2","failure",evidence);
+ local("ka","a(Ljava/lang/String;I)V",7,"var3","clientBranchFlag",evidence);
+ local("ka","a(Ljava/lang/String;I)V",8,"decompiledFrameRemainder0","reanchorRequested",evidence);
+ local("ka","a(Ljava/lang/String;I)V",9,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("ll","a(Ljava/lang/String;BLjava/lang/String;)Z",0,"var3","reversedPassword",evidence);
+ local("ll","a(Ljava/lang/String;BLjava/lang/String;)Z",1,"stackIn_7_0","containsPassword",evidence);
+ local("ll","a(Ljava/lang/String;BLjava/lang/String;)Z",2,"stackIn_10_0","failureContext",evidence);
+ local("ll","a(Ljava/lang/String;BLjava/lang/String;)Z",3,"stackIn_10_1","contextBuilder",evidence);
+ local("ll","a(Ljava/lang/String;BLjava/lang/String;)Z",4,"stackIn_11_2","passwordSummary",evidence);
+ local("ll","a(Ljava/lang/String;BLjava/lang/String;)Z",5,"stackIn_13_1","usernameContextBuilder",evidence);
+ local("ll","a(Ljava/lang/String;BLjava/lang/String;)Z",6,"stackIn_14_2","usernameSummary",evidence);
+ local("ll","a(Ljava/lang/String;BLjava/lang/String;)Z",7,"decompiledCaughtException","caughtFailure",evidence);
+ local("ll","a(Ljava/lang/String;BLjava/lang/String;)Z",8,"var3_ref","failure",evidence);
+ local("ll","a(Ljava/lang/String;BLjava/lang/String;)Z",9,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("w","a(ILjava/lang/String;)Ljava/lang/String;",0,"var4","characterIndex",evidence);
+ local("w","a(ILjava/lang/String;)Ljava/lang/String;",1,"var2_int","length",evidence);
+ local("w","a(ILjava/lang/String;)Ljava/lang/String;",2,"var2","failure",evidence);
+ local("w","a(ILjava/lang/String;)Ljava/lang/String;",3,"var3","reversedUnits",evidence);
+ local("w","a(ILjava/lang/String;)Ljava/lang/String;",4,"var5","unusedGameFlag",evidence);
+ local("w","a(ILjava/lang/String;)Ljava/lang/String;",5,"stackIn_7_0","result",evidence);
+ local("w","a(ILjava/lang/String;)Ljava/lang/String;",6,"stackIn_11_0","failureContext",evidence);
+ local("w","a(ILjava/lang/String;)Ljava/lang/String;",7,"stackIn_11_1","contextBuilder",evidence);
+ local("w","a(ILjava/lang/String;)Ljava/lang/String;",8,"stackIn_12_2","textSummary",evidence);
+ local("w","a(ILjava/lang/String;)Ljava/lang/String;",9,"decompiledCaughtException","caughtFailure",evidence);
+ local("w","a(ILjava/lang/String;)Ljava/lang/String;",10,"decompiledCaughtParameter0","caughtParameter",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -5533,10 +5579,14 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "Controlled fixtures use real detached menus to isolate pressed-state branches and a real component hierarchy for pointer interaction. They verify one/two root updates through animation state, selected-row toggles, outside close, all pan thresholds, signed overflow, disabled input and the font-clearing guard. Pointer fixtures open/unlink a submenu and send a leaf message through both controller entry points. Seeded independent cipher/body references check complete message and filter packet bytes and distinguish the forwarded opcodes. Closed and malformed roots/menus verify early return and plain versus contextual failures.", '',
 "QuickChatPopupHelpers.cleanupPopupUi and UiCleanupHelpers.cleanupPopupUi expose hidden-layer removal, loading-animation stop and tooltip reset. UsernameAvailabilityValidator.clearTooltipState and tooltipText, tooltipTicks, tooltipSuppressed, tooltipAnchorX and tooltipAnchorY identify the five reset fields. Real layer deques and recording layer callbacks check removal order, retained visible layers and opacity. A minimally initialized loading dialog with a real activity indicator checks stop flags. Injected pruning failures and missing indicators verify which mutations happen before failure; the direct tooltip guard runs before resets, while the outer cleanup wrapper guard runs afterward.", '',
 "The export remains a reproducible naming pass over fixed decompiled input. Original loading-dialog rendering, live quick-chat interaction, the noncanonical interface guard clock reset, actual server delivery and original-gamepack equivalence remain unverified. Other mesh/resource helpers and unrelated static fields retain their separate roles.", '',
+"MusicVoice.updateTooltipState, BlankScreen.getVisibleTooltipText and CanvasInputHelpers.setPendingTooltipAnchor expose tooltip timing and pointer anchoring. tooltipDelayTicks, tooltipDisplayDurationTicks, tooltipSuppressionDurationTicks, pendingTooltipX and pendingTooltipY identify the remaining shared fields. The updater increments the signed counter and captures the current pointer only when both pending coordinates are -1 before checking its guard. Canonical updates consume the pending pair; a noncanonical update retains it and leaves the text/anchors unchanged.", '',
+"The pinned decompiled null-text predicate is asymmetric: null-to-null requests reanchoring, while a nonnull-to-null transition does not. Nonnull equal strings compare by value, and the new String reference is retained after a canonical call. This observed contract is preserved rather than silently corrected. A table-driven state model covers all null/equal/different cases, display/suppression boundaries, explicit/partial pointer candidates, movement, signed overflow and both client branch-flag values. A 400-step trace combines text changes, pending-anchor setters and tooltip reset. Getter fixtures check the visibility window and its guard. Original-gamepack confirmation of the null branch remains outstanding.", '',
+"PasswordTooltipHelpers.usernameContainsPasswordOrReverse removes underscores from the username and tests a case-sensitive substring match for the supplied password or its raw UTF-16 reversal. ScreenshotViewer.reverseUtf16CodeUnits names the latter operation; it reverses char units without repairing surrogate pairs. The helper does not lowercase input itself. Independent swaps cover every UTF-16 unit, paired/unpaired surrogates and guard effects. Exhaustive short-word fixtures and Unicode cases check direct/reverse matches, username-only underscore removal, empty strings, UI-reference clearing and null-failure ordering.", '',
+"These fixtures verify the fixed decompiled sources and the readable export without a browser or server. Full password-dialog interaction, real tooltip rendering and original-gamepack equivalence remain unverified. The neighboring sprite/layout helpers retain their existing independent roles.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:96,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:97,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
