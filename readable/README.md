@@ -1976,6 +1976,10 @@ retained/dismissed/null dialogs. Original static references are restored. Actual
 fullscreen changes, caller action dispatch, sound asset loading/playback, malformed
 guards and original-JAR equivalence remain unverified.
 
+Integer helpers now name signed ASCII validation/parsing for bases 2 through 36, decimal/radix wrappers, and their digit/sign/overflow locals. Independent ASCII grammar and BigInteger bounds check signed limits, long inputs, leading zeroes, optional plus signs, mixed case, invalid radices and null precedence. Every UTF-16 code unit is checked against decimal validation; StringBuilder and a CharSequence that rejects toString verify direct character access. Raw/named traces retain contextual exception causes.
+
+The shared widget-theme cache, fullscreen frame disposal and social-list panel dispatcher are named from their direct contracts. Fixtures verify an already installed theme is returned by identity. Theme construction, real OS fullscreen disposal, live social-panel dispatch and original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,

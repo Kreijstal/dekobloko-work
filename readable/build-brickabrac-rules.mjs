@@ -352,6 +352,8 @@ classes.bq=['FullscreenDialogHelpers','Builds six fullscreen prompt types, row/b
 classes.rd=['GamePresentationHelpers','Static indexed-text formatting, diagnostic drawing, background selection and decoded RGB sprite construction helper bag; unrelated UI/artwork globals retain separate roles.'];
 classes.o=['ClientResourceHelpers','Static archive master-index polling, gameplay sound setup and shared fullscreen-frame drawing; unrelated account/lobby state and tutorial globals retain separate roles.'];
 classes.ng=['ScreenNavigationHelpers','Requests game-screen transitions and polls/clears quick-chat help dialogs; unrelated quick-chat channel, labels and sprite globals retain separate roles.'];
+classes.sh=['IntegerValidationHelpers','Signed ASCII integer validation with radix2 through36 and checked32-bit accumulation; unrelated shared-widget-theme, heap-reporting, collision and UI globals retain separate roles.'];
+classes.sq=['IntegerParsingHelpers','Signed ASCII radix parsing and its validation failure paths; unrelated fullscreen disposal, social-panel updates, diagnostics, conditional text and quick-chat globals retain separate roles.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -4342,6 +4344,93 @@ local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby trans
  local("o","a(I)V",1,"var2","contentHeight",evidence);
 }
 
+
+{
+ const evidence="The predicate and parser classify ASCII digits/letters, handle a leading minus or optional plus, accumulate with signed overflow checks and require at least one digit. Decimal/radix wrappers forward to these helpers. BigInteger-backed ASCII reference cases verify bases2 through36, range boundaries, leading zeroes, UTF16 rejection, CharSequence inputs and contextual exceptions; unrelated UI helpers are named from their direct cache/teardown/panel contracts.";
+ method("sh","a","(ZILjava/lang/CharSequence;I)Z","isAsciiInt",evidence,["allowLeadingPlus", "obfuscationGuard", "text", "radix"]);
+ method("sq","a","(BIZLjava/lang/CharSequence;)I","parseAsciiInt",evidence,["obfuscationGuard", "radix", "allowLeadingPlus", "text"]);
+ method("dc","a","(Ljava/lang/CharSequence;I)Z","isDecimalInt",evidence,["text", "obfuscationGuard"]);
+ method("fl","a","(Ljava/lang/CharSequence;I)I","parseDecimalInt",evidence,["text", "obfuscationGuard"]);
+ method("tk","a","(IBLjava/lang/CharSequence;)I","parseRadixInt",evidence,["radix", "obfuscationGuard", "text"]);
+ method("sh","a","(B)Leh;","getSharedWidgetTheme",evidence,["obfuscationGuard"]);
+ method("sq","a","(Ltg;ILjava/awt/Frame;)V","closeFullscreenFrame",evidence,["platform", "obfuscationGuard", "frame"]);
+ method("sq","a","(ZII)V","updateSocialListPanels",evidence,["inputEnabled", "opcode", "obfuscationGuard"]);
+ field("dm","g","Leh;","sharedWidgetTheme",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",0,"var9","characterIndex",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",1,"stackIn_40_0","hasDigitResult",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",2,"stackIn_43_0","failureContext",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",3,"stackIn_43_1","contextBuilder",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",4,"stackIn_44_2","textSummary",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",5,"decompiledCaughtException","caughtFailure",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",6,"var4_int","guardCalculation",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",7,"var4","failure",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",8,"var5","negativeFlag",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",9,"var6","hasDigitFlag",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",10,"var7","value",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",11,"var8","length",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",12,"var10","digit",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",13,"var11","nextValue",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",14,"var12","unusedGameFlag",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",15,"decompiledFrameRemainder0","processDigit",evidence);
+ local("sh","a(ZILjava/lang/CharSequence;I)Z",16,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",0,"var8","characterIndex",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",1,"stackIn_39_0","parsedValue",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",2,"stackIn_42_0","failureContext",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",3,"stackIn_42_1","contextBuilder",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",4,"stackIn_43_2","textSummary",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",5,"decompiledCaughtException","caughtFailure",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",6,"var4_int","negativeFlag",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",7,"var4","failure",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",8,"var5","hasDigitFlag",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",9,"var6","value",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",10,"var7","length",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",11,"var9","digit",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",12,"var10","nextValue",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",13,"var11","unusedGameFlag",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",14,"decompiledFrameRemainder0","processDigit",evidence);
+ local("sq","a(BIZLjava/lang/CharSequence;)I",15,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("dc","a(Ljava/lang/CharSequence;I)Z",0,"var2","failure",evidence);
+ local("dc","a(Ljava/lang/CharSequence;I)Z",1,"stackIn_4_0","validResult",evidence);
+ local("dc","a(Ljava/lang/CharSequence;I)Z",2,"stackIn_7_0","failureContext",evidence);
+ local("dc","a(Ljava/lang/CharSequence;I)Z",3,"stackIn_7_1","contextBuilder",evidence);
+ local("dc","a(Ljava/lang/CharSequence;I)Z",4,"stackIn_8_2","textSummary",evidence);
+ local("dc","a(Ljava/lang/CharSequence;I)Z",5,"decompiledCaughtException","caughtFailure",evidence);
+ local("dc","a(Ljava/lang/CharSequence;I)Z",6,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("fl","a(Ljava/lang/CharSequence;I)I",0,"var2","failure",evidence);
+ local("fl","a(Ljava/lang/CharSequence;I)I",1,"stackIn_3_0","parsedValue",evidence);
+ local("fl","a(Ljava/lang/CharSequence;I)I",2,"stackIn_6_0","failureContext",evidence);
+ local("fl","a(Ljava/lang/CharSequence;I)I",3,"stackIn_6_1","contextBuilder",evidence);
+ local("fl","a(Ljava/lang/CharSequence;I)I",4,"stackIn_7_2","textSummary",evidence);
+ local("fl","a(Ljava/lang/CharSequence;I)I",5,"decompiledCaughtException","caughtFailure",evidence);
+ local("fl","a(Ljava/lang/CharSequence;I)I",6,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("tk","a(IBLjava/lang/CharSequence;)I",0,"var3","failure",evidence);
+ local("tk","a(IBLjava/lang/CharSequence;)I",1,"stackIn_3_0","parsedValue",evidence);
+ local("tk","a(IBLjava/lang/CharSequence;)I",2,"stackIn_6_0","failureContext",evidence);
+ local("tk","a(IBLjava/lang/CharSequence;)I",3,"stackIn_6_1","contextBuilder",evidence);
+ local("tk","a(IBLjava/lang/CharSequence;)I",4,"stackIn_7_2","textSummary",evidence);
+ local("tk","a(IBLjava/lang/CharSequence;)I",5,"decompiledCaughtException","caughtFailure",evidence);
+ local("tk","a(IBLjava/lang/CharSequence;)I",6,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("sh","a(B)Leh;",0,"var1","cachedGuardCalculation",evidence);
+ local("sh","a(B)Leh;",1,"var1Lifetime1","createdGuardCalculation",evidence);
+ local("sq","a(Ltg;ILjava/awt/Frame;)V",0,"var3","exitTask",evidence);
+ local("sq","a(Ltg;ILjava/awt/Frame;)V",1,"var4","unusedGameFlag",evidence);
+ local("sq","a(Ltg;ILjava/awt/Frame;)V",2,"stackIn_11_0","failureContext",evidence);
+ local("sq","a(Ltg;ILjava/awt/Frame;)V",3,"stackIn_11_1","contextBuilder",evidence);
+ local("sq","a(Ltg;ILjava/awt/Frame;)V",4,"stackIn_12_2","platformSummary",evidence);
+ local("sq","a(Ltg;ILjava/awt/Frame;)V",5,"stackIn_14_1","frameContextBuilder",evidence);
+ local("sq","a(Ltg;ILjava/awt/Frame;)V",6,"stackIn_15_2","frameSummary",evidence);
+ local("sq","a(Ltg;ILjava/awt/Frame;)V",7,"decompiledCaughtException","caughtFailure",evidence);
+ local("sq","a(Ltg;ILjava/awt/Frame;)V",8,"var3_ref","failure",evidence);
+ local("sq","a(Ltg;ILjava/awt/Frame;)V",9,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("sq","a(ZII)V",0,"var4_ref_nn","contextController",evidence);
+ local("sq","a(ZII)V",1,"var5_ref_String","actionLabel",evidence);
+ local("sq","a(ZII)V",2,"var5","anchorX",evidence);
+ local("sq","a(ZII)V",3,"var6","anchorY",evidence);
+ local("sq","a(ZII)V",4,"var3","pressedFriend",evidence);
+ local("sq","a(ZII)V",5,"var4_ref_nnLifetime1","contextControllerAlias",evidence);
+ local("sq","a(ZII)V",6,"var4","guardCalculation",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -4643,10 +4732,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "Independent fixtures check all six prompt kinds with privileged/unprivileged platform state, pointer/keyboard selection, two centers and two wrap widths. Reference rows, button actions, countdown alignment, widths, heights and rectangles use controlled font metrics; timestamp checks verify bounds without hashing wall time. Template fixtures use regular-expression tokenization and standard integer parsing, including malformed/overflow tokens, leading zeroes, repeated and nonrecursive replacements. Character replacement covers every UTF16 unit, surrogate halves, literal replacement syntax and capacity hints. Balanced wrapping uses independent separator tokenization and font-width references; menu lookup checks registry identity and its guard. Original static references and scratch arrays are restored. Actual fullscreen transitions, countdown rendering/action dispatch, real archive creation, malformed layout dimensions/guards, all wrapping failures and original-JAR equivalence remain unverified.", '',
 "ClientResourceHelpers names the mixed archive polling, gameplay sound setup and fullscreen-frame drawing helper bag. ScreenNavigationHelpers names screen requests and quick-chat help polling. Fullscreen row/frame drawing, live button hit testing, input action polling, close cleanup, font/metric/frame/center configuration and size accessors now have descriptive methods and locals. Reviewed fields identify paints, selected/normal frames, baselines and outer padding.", '',
 "Native fixtures compare row glyph events and frame geometry against independent controlled-font models, including singular/plural countdown alignment, selection paints and absent button frames. Clock bounds allow deterministic assertions across countdown boundaries. A coordinate-grid oracle checks hit rectangles; keyboard and pointer fixtures cover action IDs0 through5, Escape handling, timeout rebuilding prompt5 with action2, and explicit countdown-array cleanup. Closing retains row data. Font/frame configuration and size getters are exercised. Quick-chat help polling covers retained/dismissed/null dialogs. Original static references are restored. Actual OS fullscreen changes, caller action dispatch, sound asset loading/playback, malformed guards and original-JAR equivalence remain unverified.", '',
+'Integer helpers now name signed ASCII validation/parsing for bases 2 through 36, decimal/radix wrappers, and their digit/sign/overflow locals. Independent ASCII grammar and BigInteger bounds check signed limits, long inputs, leading zeroes, optional plus signs, mixed case, invalid radices and null precedence. Every UTF-16 code unit is checked against decimal validation; StringBuilder and a CharSequence that rejects toString verify direct character access. Raw/named traces retain contextual exception causes.', '',
+'The shared widget-theme cache, fullscreen frame disposal and social-list panel dispatcher are named from their direct contracts. Fixtures verify an already installed theme is returned by identity. Theme construction, real OS fullscreen disposal, live social-panel dispatch and original-JAR equivalence remain unverified.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:85,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:86,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
