@@ -1670,6 +1670,34 @@ restored. Desktop fullscreen, Microsoft DirectDraw, all asynchronous mode-switch
 failures, display-frame selection, hardware behavior, live rendering and
 original-JAR equivalence remain unverified.
 
+AwtPointerController names Robot movement, custom ARGB cursor construction
+and hidden-cursor ownership. Reflective names movemouse/showcursor/
+setcustomcursor stay fixed; four owned class-name literals follow the rename.
+Hiding creates a transparent 1-by-1 cursor at hotspot 0,0. Repeated hiding on
+the same component does nothing. Switching resets the previous component
+first; showing restores the retained owner regardless of the supplied
+component. Failed cursor creation after a switch leaves the previous cursor
+and owner cleared.
+
+MicrosoftJvmCursorController names visibility, allocation, window/procedure
+and cursor-handle state while retaining the callback ABI.
+DirectDrawFullscreenController names two-pass mode enumeration and its
+shared scratch buffer/count. Exported legacy peer lookups remain null:
+Microsoft visibility fails before mutation, while DirectDraw entry makes
+the frame visible before failing. Neither path is treated as working native
+desktop support.
+
+Headless Robot/Toolkit/Component probes verify coordinates, ARGB images,
+hotspots, transparency, ownership, no-op/reset/show and failure ordering.
+The real platform-task dispatcher calls the reflected pointer driver for
+operations 14/15/17. Win32 stub-backed fixtures check legacy callback state;
+a scripted DirectDraw adapter checks two enumeration passes, scratch cleanup
+and restore cooperative level 8. The probe compiler now receives the same
+temporary dependency classpath used by game compilation/runtime. Static
+state is restored. Actual cursor appearance, Microsoft native APIs,
+DirectDraw hardware, concurrent enumeration, arbitrary invalid image/hotspot
+inputs and original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
