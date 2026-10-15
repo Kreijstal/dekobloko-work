@@ -2038,6 +2038,23 @@ PasswordTooltipHelpers.usernameContainsPasswordOrReverse removes underscores fro
 
 These fixtures verify the fixed decompiled sources and the readable export without a browser or server. Full password-dialog interaction, real tooltip rendering and original-gamepack equivalence remain unverified. The neighboring sprite/layout helpers retain their existing independent roles.
 
+BrickHitTransitionTable.codesByBrickType and MonotonicTime.brickHitPendingTypes
+make the two per-type hit lookups explicit. Direct ball contact and multiplayer
+brick attacks use these separate arrays for transitionCode and pendingTypeId.
+The existing special handling of types19–22 stays visible in the callers; the
+names do not assign meanings to undocumented numeric transition codes.
+
+PlayerBadgeHelpers.selectPlayerBadgeKind and TextFieldRenderer.prefixLocalPlayerBadge
+expose badge selection and text decoration. loginPrivilegeByteOne and
+loginPrivilegeByteTwo identify consecutive unsigned-byte fields in the login
+success body. A first value of at least2 selects kind2/image1; otherwise a second
+value of at least5 selects kind1/image0; other values select no image. These names
+retain the decoded-byte distinction without guessing exact server role labels.
+ReflectionCheckHelpers.resetPendingReflectionChecks replaces the shared queue
+with a fresh empty deque. RasterStackHelpers.popRaster names the owner of the
+existing snapshot restoration/pooling operation. Unrelated globals retain their
+separate names and storage owners.
+
 A subsequent bytecode audit found a correctness defect in the frozen input for
 `jh.a(boolean,mh)`, the list-layout reset helper used by friend/ignore list updates.
 The original JAR stores both the first child and each next child into slot 2, and

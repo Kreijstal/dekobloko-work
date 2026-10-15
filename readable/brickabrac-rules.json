@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 98,
+  "version": 99,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -2180,6 +2180,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qp",
+      "originalName": "qp",
+      "to": "PlayerBadgeHelpers",
+      "evidence": "qp.java: Selects the local player badge kind from two decoded login privilege bytes; unrelated sprite-palette and UI globals retain separate roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qq",
       "originalName": "qq",
       "to": "SoundTone",
@@ -2198,6 +2205,13 @@
       "originalName": "ra",
       "to": "AudioMixer",
       "evidence": "ra.java: Mixes child streams, skips them and maintains sample-counted listener queue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rb",
+      "originalName": "rb",
+      "to": "BrickHitTransitionTable",
+      "evidence": "rb.java: Per-brick-type transition codes assigned by direct ball contact and multiplayer brick attacks; pending replacement types remain in their original separate owner.",
       "confidence": "reviewed"
     },
     {
@@ -2303,6 +2317,13 @@
       "originalName": "sb",
       "to": "BrickGameLayerController",
       "evidence": "sb.java: Concrete Brick rendering/input/update coordination across menus, gameplay and multiplayer status. Static helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sc",
+      "originalName": "sc",
+      "to": "RasterStackHelpers",
+      "evidence": "sc.java: Restores and pools the most recent raster snapshot; unrelated account-widget globals retain separate roles.",
       "confidence": "reviewed"
     },
     {
@@ -2779,6 +2800,13 @@
       "originalName": "wd",
       "to": "QuickChatPhraseDefinition",
       "evidence": "wd.java: Tagged phrase fragments, linked phrase IDs and parameter-command words; preview joins fragments with ellipses. Unrelated static UI/audio helpers remain separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:we",
+      "originalName": "we",
+      "to": "ReflectionCheckHelpers",
+      "evidence": "we.java: Replaces the pending reflection-check deque during connection setup; unrelated packet-history, artwork and player-label globals retain separate roles.",
       "confidence": "reviewed"
     },
     {
@@ -7115,6 +7143,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gh.field_f:I",
+      "originalName": "field_f",
+      "to": "loginPrivilegeByteTwo",
+      "evidence": "gh.java: Login-success decoding reads these unsigned bytes consecutively. The first also gates privileged overrides and mute controls. Badge selection returns2 when the first is at least2, otherwise1 when the second is at least5, otherwise0. TextFieldRenderer prefixes image1 for kind2 and image0 for kind1. Exact server role labels are not inferred.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gj.field_a:I",
       "originalName": "field_a",
       "to": "receivedChatChannel",
@@ -9653,6 +9688,13 @@
       "originalName": "field_Xb",
       "to": "pointerChanged",
       "evidence": "kb.java: Frame snapshot of pointer-change latch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kb.field_Yb:I",
+      "originalName": "field_Yb",
+      "to": "loginPrivilegeByteOne",
+      "evidence": "kb.java: Login-success decoding reads these unsigned bytes consecutively. The first also gates privileged overrides and mute controls. Badge selection returns2 when the first is at least2, otherwise1 when the second is at least5, otherwise0. TextFieldRenderer prefixes image1 for kind2 and image0 for kind1. Exact server role labels are not inferred.",
       "confidence": "reviewed"
     },
     {
@@ -14633,10 +14675,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qp.field_a:Ljava/lang/String;",
+      "originalName": "field_a",
+      "to": "askToJoinGameText",
+      "evidence": "qp.java: Literal invitation-action template Ask to join <player> game.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_b:Ljava/lang/String;",
+      "originalName": "field_b",
+      "to": "gameFullText",
+      "evidence": "qp.java: Literal This game is full message.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qp.field_c:[I",
       "originalName": "field_c",
       "to": "decodedSpritePalette",
       "evidence": "qp.java: Shared RGB palette; entries beyond0 whose encoded color is0 become1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_d:Ljava/lang/String;",
+      "originalName": "field_d",
+      "to": "friendsAndOpponentsPrivateChatText",
+      "evidence": "qp.java: Literal private-chat filter caption naming friends and opponents.",
       "confidence": "reviewed"
     },
     {
@@ -14847,6 +14910,13 @@
       "originalName": "field_p",
       "to": "processedSamples",
       "evidence": "ra.java: Samples accumulated since listener countdown normalization.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rb.field_a:[I",
+      "originalName": "field_a",
+      "to": "codesByBrickType",
+      "evidence": "rb.java: Brick ball-contact handling and MultiplayerMatch brick attacks index the same 29-entry array by typeId, assign its value to transitionCode, and separately index MonotonicTime for pendingTypeId. The table is a gameplay transition code table, not a packet-length table.",
       "confidence": "reviewed"
     },
     {
@@ -16607,6 +16677,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ue.field_b:[I",
+      "originalName": "field_b",
+      "to": "brickHitPendingTypes",
+      "evidence": "ue.java: Brick ball-contact handling and MultiplayerMatch brick attacks index the same 29-entry array by typeId, assign its value to transitionCode, and separately index MonotonicTime for pendingTypeId. The table is a gameplay transition code table, not a packet-length table.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ue.field_d:I",
       "originalName": "field_d",
       "to": "packetDelayMillis",
@@ -17647,6 +17724,13 @@
       "originalName": "field_b",
       "to": "activePowerUpSprites",
       "evidence": "we.java: Asset archive names, half-size construction and ball/paddle draw sites identify full/half and active sprite roles. Identity fixtures verify scale selection, null/shared/empty arrays, source retention and guard effects; normal/steel ball pixels verify draw-site use. Independent trigonometric references verify atan table rounding, piecewise Q16 quantization, reciprocal boundaries, sine accuracy and wrapped custom-table lookup. Real intrusive quick-chat fixtures verify installation/reparenting, default activation, recursive close/reset and partial failure state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:we.field_c:Ljava/lang/String;",
+      "originalName": "field_c",
+      "to": "playerOneLabel",
+      "evidence": "we.java: Literal Player One label retained in this shared helper owner.",
       "confidence": "reviewed"
     },
     {
@@ -62135,6 +62219,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qp.a(IIB)I",
+      "originalName": "a",
+      "to": "selectPlayerBadgeKind",
+      "evidence": "qp.java: Login-success decoding reads these unsigned bytes consecutively. The first also gates privileged overrides and mute controls. Badge selection returns2 when the first is at least2, otherwise1 when the second is at least5, otherwise0. TextFieldRenderer prefixes image1 for kind2 and image0 for kind1. Exact server role labels are not inferred.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qq.a()V",
       "originalName": "a",
       "to": "releaseScratch",
@@ -62160,6 +62251,13 @@
       "originalName": "a",
       "to": "decode",
       "evidence": "qq.java: Decodes mandatory/optional envelopes, up to ten encoded oscillator records into five slots, echo/duration/offset/filter. Original overflow behavior retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:r.a(BLjava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "prefixLocalPlayerBadge",
+      "evidence": "r.java: Login-success decoding reads these unsigned bytes consecutively. The first also gates privileged overrides and mute controls. Badge selection returns2 when the first is at least2, otherwise1 when the second is at least5, otherwise0. TextFieldRenderer prefixes image1 for kind2 and image0 for kind1. Exact server role labels are not inferred.",
       "confidence": "reviewed"
     },
     {
@@ -62251,6 +62349,13 @@
       "originalName": "e",
       "to": "normalizeListenerTimes",
       "evidence": "ra.java: Subtracts accumulated sample count from listener countdowns and resets accumulator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.a(B)V",
+      "originalName": "a",
+      "to": "clearTransitionCodes",
+      "evidence": "rb.java: Releases the transition array before evaluating the retained arithmetic guard.",
       "confidence": "reviewed"
     },
     {
@@ -64792,6 +64897,13 @@
       "originalName": "h",
       "to": "getPreview",
       "evidence": "wd.java: Returns empty without fragments or concatenates fragments separated by literal ellipses; guard -3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:we.a(B)V",
+      "originalName": "a",
+      "to": "resetPendingReflectionChecks",
+      "evidence": "we.java: Connection setup calls with -46 and replaces ResourceArchive.pendingReflectionChecks with a new empty NodeDeque; the previous queue object is not cleared.",
       "confidence": "reviewed"
     },
     {
@@ -94986,6 +95098,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qp.a(IIB)I#0",
+      "originalName": "param0",
+      "to": "privilegeByteOne",
+      "evidence": "qp.java: Login-success decoding reads these unsigned bytes consecutively. The first also gates privileged overrides and mute controls. Badge selection returns2 when the first is at least2, otherwise1 when the second is at least5, otherwise0. TextFieldRenderer prefixes image1 for kind2 and image0 for kind1. Exact server role labels are not inferred.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qp.a(IIB)I#1",
+      "originalName": "param1",
+      "to": "privilegeByteTwo",
+      "evidence": "qp.java: Login-success decoding reads these unsigned bytes consecutively. The first also gates privileged overrides and mute controls. Badge selection returns2 when the first is at least2, otherwise1 when the second is at least5, otherwise0. TextFieldRenderer prefixes image1 for kind2 and image0 for kind1. Exact server role labels are not inferred.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qp.a(IIB)I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "qp.java: Login-success decoding reads these unsigned bytes consecutively. The first also gates privileged overrides and mute controls. Badge selection returns2 when the first is at least2, otherwise1 when the second is at least5, otherwise0. TextFieldRenderer prefixes image1 for kind2 and image0 for kind1. Exact server role labels are not inferred.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qq.a(II)[I#0",
       "originalName": "param0",
       "to": "sampleCount",
@@ -95046,6 +95179,20 @@
       "originalName": "param1",
       "to": "textColor",
       "evidence": "r.java: Uses supplied font and text color with editable-field frame/style.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:r.a(BLjava/lang/String;)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "r.java: Login-success decoding reads these unsigned bytes consecutively. The first also gates privileged overrides and mute controls. Badge selection returns2 when the first is at least2, otherwise1 when the second is at least5, otherwise0. TextFieldRenderer prefixes image1 for kind2 and image0 for kind1. Exact server role labels are not inferred.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:r.a(BLjava/lang/String;)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "r.java: Login-success decoding reads these unsigned bytes consecutively. The first also gates privileged overrides and mute controls. Badge selection returns2 when the first is at least2, otherwise1 when the second is at least5, otherwise0. TextFieldRenderer prefixes image1 for kind2 and image0 for kind1. Exact server role labels are not inferred.",
       "confidence": "reviewed"
     },
     {
@@ -95172,6 +95319,13 @@
       "originalName": "param2",
       "to": "frames",
       "evidence": "ra.java: Calls enabled-aware process on every child stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "rb.java: Releases the transition array before evaluating the retained arithmetic guard.",
       "confidence": "reviewed"
     },
     {
@@ -102154,6 +102308,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:we.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "we.java: Connection setup calls with -46 and replaces ResourceArchive.pendingReflectionChecks with a new empty NodeDeque; the previous queue object is not cleared.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wf.a(Lra;)I#0",
       "originalName": "param0",
       "to": "mixer",
@@ -103485,7 +103646,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "808eeb41f5feb60abfce5963cf8336a5f0b500cac2fa073ce94537d4dd2ceb1e",
+      "build-brickabrac-rules.mjs": "713d8e62953435c53cdf8cef34ef16ae5cb04350f1cfbd7e56a83b3097feece1",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
       "tests/test-brickabrac-core.mjs": "2e4e3d6526c08003219693ac0705e48ca7ed399d97ead38d8661f9074fb0a85f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
