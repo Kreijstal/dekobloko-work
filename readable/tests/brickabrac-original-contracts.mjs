@@ -12,7 +12,7 @@ export const originalGamepackSha256 = '91284c0ec25fa4f8913876c78be9d80d273d8dd56
 
 // The same independent model runs against original gamepack classes, raw Java,
 // and renamed Java. Original gamepack fields have no decompiler `field_` prefix.
-export function verifyBrickListReset({classpath, mapping, readable = false, originalGamepack = false, temporary}) {
+function contractBindings({classpath, mapping, readable, originalGamepack}) {
   assert.ok(!(readable && originalGamepack), 'Original gamepacks do not use readable symbol aliases');
   if (originalGamepack) {
     const archive = classpath.split(path.delimiter)[0];
@@ -24,14 +24,19 @@ export function verifyBrickListReset({classpath, mapping, readable = false, orig
   const className = owner => readable ? aliases.get('C:' + owner) || owner : owner;
   const field = (owner, name, descriptor) => {
     const symbol = `F:${owner}.field_${name}:${descriptor}`;
-    assert.ok(symbols.has(symbol), 'Missing list-reset fixture field: ' + symbol);
+    assert.ok(symbols.has(symbol), 'Missing original-contract fixture field: ' + symbol);
     return originalGamepack ? name : readable ? aliases.get(symbol) || 'field_' + name : 'field_' + name;
   };
   const method = (owner, name, descriptor) => {
     const symbol = `M:${owner}.${name}${descriptor}`;
-    assert.ok(symbols.has(symbol), 'Missing list-reset fixture method: ' + symbol);
+    assert.ok(symbols.has(symbol), 'Missing original-contract fixture method: ' + symbol);
     return readable ? aliases.get(symbol) || name : name;
   };
+  return {className, field, method};
+}
+
+export function verifyBrickListReset({classpath, mapping, readable = false, originalGamepack = false, temporary}) {
+  const {className, field, method} = contractBindings({classpath, mapping, readable, originalGamepack});
   const directory = path.join(temporary, 'list-reset-probe');
   fs.mkdirSync(directory, {recursive: true});
   const source = path.join(directory, 'ListResetProbe.java');
@@ -135,15 +140,110 @@ public class ListResetProbe {
   return {checks: Number(match[1]), traceSha256: match[2], independentExpectations: true};
 }
 
+// Standard Java stream encoders define the wire bytes independently of the
+// game's packet writers. A bounded stream model additionally checks partial
+// writes, cursor overflow, null storage and retention of caller-owned arrays.
+export function verifyBrickServiceHeader({classpath, mapping, readable = false, originalGamepack = false, temporary}) {
+  const {className, field, method} = contractBindings({classpath, mapping, readable, originalGamepack});
+  const directory = path.join(temporary, 'service-header-probe');
+  fs.mkdirSync(directory, {recursive: true});
+  const source = path.join(directory, 'ServiceHeaderProbe.java');
+  fs.writeFileSync(source, `import java.io.*;
+import java.lang.reflect.*;
+import java.security.MessageDigest;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+public class ServiceHeaderProbe {
+ static final Class<?> packet=load(${JSON.stringify(className('wq'))});
+ static final Class<?> owner=load(${JSON.stringify(className('c'))});
+ static final Class<?> wrapped=load(${JSON.stringify(className('v'))});
+ static final Field bytes=field(packet,${JSON.stringify(field('wq', 'k', '[B'))});
+ static final Field position=field(packet,${JSON.stringify(field('wq', 'l', 'I'))});
+ static final Field cause=field(wrapped,${JSON.stringify(field('v', 'f', 'Ljava/lang/Throwable;'))});
+ static final Method write=method(owner,${JSON.stringify(method('c', 'a', '(IIIILwq;)V'))},int.class,int.class,int.class,int.class,packet);
+ static MessageDigest trace;static int checks;
+ static Class<?> load(String name){try{return Class.forName(name);}catch(Exception e){throw new RuntimeException(e);}}
+ static Field field(Class<?> type,String name){try{Field f=type.getDeclaredField(name);f.setAccessible(true);return f;}catch(Exception e){throw new RuntimeException(e);}}
+ static Method method(Class<?> type,String name,Class<?>...parameters){try{Method m=type.getDeclaredMethod(name,parameters);m.setAccessible(true);return m;}catch(Exception e){throw new RuntimeException(e);}}
+ static void check(String label,Object actual,Object expected){
+  if(!Objects.equals(actual,expected))throw new AssertionError(label+": "+actual+" != "+expected);
+  checks++;trace.update((label+"="+actual+"\\n").getBytes(StandardCharsets.UTF_8));
+ }
+ static byte[] encode(int wordOne,int serviceCode,int wordTwo,int headerByte)throws Exception{
+  ByteArrayOutputStream buffer=new ByteArrayOutputStream();DataOutputStream out=new DataOutputStream(buffer);
+  out.writeByte(serviceCode);out.writeShort(17);out.writeShort(wordOne);out.writeShort(wordTwo);out.writeByte(headerByte);
+  return buffer.toByteArray();
+ }
+ static String invoke(Object value,int wordOne,int serviceCode,int wordTwo,int headerByte)throws Exception{
+  try{write.invoke(null,wordOne,serviceCode,wordTwo,headerByte,value);return "ok";}
+  catch(InvocationTargetException error){
+   Throwable valueError=error.getCause();Set<Throwable> seen=Collections.newSetFromMap(new IdentityHashMap<Throwable,Boolean>());
+   while(wrapped.isInstance(valueError)){if(!seen.add(valueError))throw new AssertionError("cyclic exception wrapper");valueError=(Throwable)cause.get(valueError);}
+   return valueError.getClass().getName();
+  }
+ }
+ static void run(String label,int wordOne,int serviceCode,int wordTwo,int headerByte,int length,int start)throws Exception{
+  byte[] storage=length<0?null:new byte[length];
+  if(storage!=null)for(int i=0;i<storage.length;i++)storage[i]=(byte)(0x5b+i*37);
+  byte[] expected=storage==null?null:storage.clone(),wire=encode(wordOne,serviceCode,wordTwo,headerByte);
+  int cursor=start;String outcome="ok";
+  for(byte value:wire){
+   int index=cursor++;
+   if(expected==null){outcome="java.lang.NullPointerException";break;}
+   if(index<0||index>=expected.length){outcome="java.lang.ArrayIndexOutOfBoundsException";break;}
+   expected[index]=value;
+  }
+  Constructor<?> constructor=packet.getDeclaredConstructor(byte[].class);constructor.setAccessible(true);
+  Object value=constructor.newInstance(new Object[]{storage});position.setInt(value,start);
+  check(label+"/outcome",invoke(value,wordOne,serviceCode,wordTwo,headerByte),outcome);
+  check(label+"/position",position.getInt(value),cursor);
+  check(label+"/caller-array",bytes.get(value)==storage,true);
+  check(label+"/bytes",Arrays.toString((byte[])bytes.get(value)),Arrays.toString(expected));
+ }
+ public static void main(String[] args)throws Exception{
+  trace=MessageDigest.getInstance("SHA-256");
+  for(int value=0;value<=65535;value++){
+   run("word-one/"+value,value,0xc1,0x5678,0xe7,16,3);
+   run("word-two/"+value,0x1234,0xc1,value,0xe7,16,3);
+  }
+  for(int value=0;value<=255;value++){
+   run("service/"+value,0x1234,value,0x5678,0xe7,14,1);
+   run("last-byte/"+value,0x1234,0xc1,0x5678,value,14,1);
+  }
+  int[] boundary={Integer.MIN_VALUE,-65537,-65536,-257,-256,-129,-128,-1,0,1,127,128,255,256,257,32767,32768,65535,65536,Integer.MAX_VALUE};
+  for(int value:boundary){
+   run("signed-word-one/"+value,value,12,0x5678,0xe7,20,5);
+   run("signed-word-two/"+value,0x1234,12,value,0xe7,20,5);
+   run("signed-service/"+value,0x1234,value,0x5678,0xe7,20,5);
+   run("signed-last-byte/"+value,0x1234,12,0x5678,value,20,5);
+  }
+  for(int length=0;length<=12;length++)for(int start:new int[]{-3,-1,0,1,3,7,length-1,length,length+1,Integer.MIN_VALUE,Integer.MAX_VALUE})
+   run("partial/"+length+"/"+start,0x12345678,0xabcdef12,0x90abcdef,0x76543210,length,start);
+  for(int start:new int[]{Integer.MIN_VALUE,-1,0,1,Integer.MAX_VALUE})run("null-storage/"+start,1,12,2,3,-1,start);
+  check("null-packet",invoke(null,1,12,2,3),"java.lang.NullPointerException");
+  StringBuilder hex=new StringBuilder();for(byte value:trace.digest())hex.append(String.format("%02x",value&255));
+  System.out.println("checks:"+checks);System.out.println("traceSha256:"+hex);
+ }
+}
+`);
+  captureProcess('timeout', ['30', 'javac', '--release', '8', '-encoding', 'UTF-8', '-d', directory, source]);
+  const result = captureProcess('timeout', ['30', 'java', '-Xmx256m', '-Xverify:all', '-Djava.awt.headless=true', '-cp',
+    [directory, classpath].join(path.delimiter), 'ServiceHeaderProbe']);
+  const match = /^checks:(\d+)\ntraceSha256:([a-f0-9]{64})\n$/.exec(result.stdout.toString());
+  assert.ok(match, 'Missing service-header probe result');
+  return {checks: Number(match[1]), traceSha256: match[2], independentExpectations: true, wireBytes: 8, fixedWord: 17};
+}
+
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'brick-list-reset-'));
+  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'brick-original-contracts-'));
   try {
-    if (process.argv.length !== 3) throw new Error('Usage: node readable/tests/brickabrac-list-reset-probe.mjs ORIGINAL_GAMEPACK.jar');
+    if (process.argv.length !== 3) throw new Error('Usage: node readable/tests/brickabrac-original-contracts.mjs ORIGINAL_GAMEPACK.jar');
     const mapping = JSON.parse(fs.readFileSync(path.join(funorbRepository, 'decompilation/brickabrac-naming.json')));
     const stubs = buildCompilationStubs(funorbRepository, temporary);
-    const result = verifyBrickListReset({classpath: [path.resolve(process.argv[2]), stubs.jar].join(path.delimiter),
-      mapping, originalGamepack: true, temporary});
-    console.log(JSON.stringify({originalGamepackSha256, ...result}));
+    const options = {classpath: [path.resolve(process.argv[2]), stubs.jar].join(path.delimiter),
+      mapping, originalGamepack: true, temporary};
+    console.log(JSON.stringify({originalGamepackSha256, listReset: verifyBrickListReset(options),
+      serviceHeader: verifyBrickServiceHeader(options)}));
   } catch (error) {
     console.error(error.stderr?.toString() || error.message);
     process.exitCode = 1;

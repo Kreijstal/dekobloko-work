@@ -2101,6 +2101,32 @@ Their names describe observed shared roles while retaining unrelated storage
 and unresolved members. This completes class-file naming; method/field/local
 review and the corrected-input migration remain separate unfinished work.
 
+GrowableIntList.writeServiceHeader now exposes the shared eight-byte prefix:
+serviceCode:u8, fixed17:u16be, headerWordOne:u16be, headerWordTwo:u16be,
+headerByte:u8. Word/byte names identify wire positions; their application-level
+meanings remain unresolved. The independent standard-stream contract passes
+527,249 assertions against the fixed original gamepack and corrected raw Java,
+with trace SHA-256
+`a6e42900659658b7a4fb8bd47cbdf682722e49913aa07ebdced06edf9db8142c`.
+It covers both complete 16-bit word domains and 8-bit byte domains, signed
+truncation, append offsets, caller-array retention, cursor overflow and
+partial/null failures. The negative control swaps the first and third integer
+arguments at the native helper invocation while keeping the stream reference
+unchanged; it fails at `word-one/0/bytes`. The default core check applies the
+same contract to raw and
+renamed compiled code. One current original-contract probe contains this check
+and the earlier list-reset model; the old single-contract filename is removed.
+
+ArchiveConnectionHelpers.pollArchiveConnection writes that prefix with
+serviceCode 12, then opcode 15 and archiveHandshakeWord, producing 13 bytes. Its
+phase, socket task, pending transport, reply deadline, host and alternating
+ports are now named. Brick.handleArchiveConnectionFailure preserves state
+reset, port swapping and existing failure counters/status codes.
+GameCanvas.pollArchiveSources and PlatformServices.requestSocketConnection
+name the calling boundary. The header assertion count is reported separately
+from the existing 3,454,982 core assertions. Complete connection-state and
+live-server equivalence remain unverified.
+
 A subsequent bytecode audit found a correctness defect in the frozen input for
 `jh.a(boolean,mh)`, the list-layout reset helper used by friend/ignore list updates.
 The original JAR stores both the first child and each next child into slot 2, and
@@ -2134,8 +2160,8 @@ rules to that new input remain necessary before this fix appears in the
 published game sources. Existing raw-versus-renamed fixtures do not establish
 equivalence to the original JAR and did not detect this upstream defect.
 
-The focused original-gamepack regression can now be reproduced with
-`node readable/tests/brickabrac-list-reset-probe.mjs ORIGINAL_GAMEPACK.jar`.
+The original-gamepack contracts can be reproduced with
+`node readable/tests/brickabrac-original-contracts.mjs ORIGINAL_GAMEPACK.jar`.
 The command verifies the fixed JAR identity, builds temporary compilation stubs
 from source, and runs the real helper through reflection against an independent
 bounds/cursor model. Its 5,449 assertions cover empty and nonempty lists, signed
@@ -2154,7 +2180,7 @@ The same model also passes against all classes compiled from the corrected
 whole-game batch, with the same assertion count and trace. That raw Java tree
 has SHA-256 `29a4eb473e753435cfd6d57bc5c9a77ef3ca9b477d8503c53c321ab55762f7df`;
 only `jh.java` differs from the frozen input. This is a generated-Java tree
-identity, separate from the compiler-source tar hash above. All existing 14,884
+identity, separate from the compiler-source tar hash above. All existing 14,929
 naming rules still resolve with their expected original names in that input.
 An unpublished full naming round using the pass 100 map over the corrected
 input passes the
