@@ -355,6 +355,9 @@ classes.ng=['ScreenNavigationHelpers','Requests game-screen transitions and poll
 classes.sh=['IntegerValidationHelpers','Signed ASCII integer validation with radix2 through36 and checked32-bit accumulation; unrelated shared-widget-theme, heap-reporting, collision and UI globals retain separate roles.'];
 classes.sq=['IntegerParsingHelpers','Signed ASCII radix parsing and its validation failure paths; unrelated fullscreen disposal, social-panel updates, diagnostics, conditional text and quick-chat globals retain separate roles.'];
 classes.tm=['OutgoingPacketHelpers','RSA-wrapped four-word keys and padded encrypted payloads, optional delayed outgoing writes, plus separately named chat filters, sprite-alpha state and an unused reflected CRC64 table.'];
+classes.nl=['IncomingPacketHelpers','Ciphered incoming packet framing, queued delivery and opcode history; its separately named scaled-decimal formatter and sprite/archive/lobby globals retain distinct roles.'];
+classes.vd=['PacketReceiveHelpers','Accumulates available game-packet bytes with partial cursors, read-time updates and transport closure on timeout, EOF or IO failure; unrelated audio-maintenance and projection globals are retained.'];
+classes.rf=['GameConnectionHelpers','Current connection-phase identity and remove/reject-player packet submission; unrelated UI strings, table request and theme sprite retain separate roles.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -4520,6 +4523,57 @@ local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby trans
  local("wq","f(BI)V",1,"var4","unusedGameFlag",evidence);
 }
 
+{
+ const evidence="Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.";
+ method("nl","a","(ZZIJI)Ljava/lang/String;","formatScaledDecimal",evidence,["obfuscationGuard", "groupThousands", "fractionDigits", "scaledValue", "localeId"]);
+ method("de","f","(I)J","getMillisSinceGameRead",evidence,["obfuscationGuard"]);
+ local("nl","a([IB)Z",2,"stackIn_38_0","failureContext",evidence);
+ local("nl","a([IB)Z",3,"stackIn_38_1","contextBuilder",evidence);
+ local("nl","a([IB)Z",4,"stackIn_39_2","packetLengthsSummary",evidence);
+ local("nl","a([IB)Z",5,"decompiledCaughtException","caughtFailure",evidence);
+ local("nl","a([IB)Z",7,"var2","failure",evidence);
+ local("nl","a([IB)Z",12,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",0,"discarded$1","discardedFractionAppend",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",1,"discarded$0","discardedDecimalAppend",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",2,"discarded$2","discardedIntegerAppend",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",3,"discarded$3","discardedSignAppend",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",4,"discarded$4","discardedGroupAppend",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",5,"discarded$6","alternateDiscardedFractionAppend",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",6,"discarded$5","alternateDiscardedDecimalAppend",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",7,"discarded$7","alternateDiscardedIntegerAppend",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",8,"discarded$8","alternateDiscardedSignAppend",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",9,"discarded$9","alternateDiscardedGroupAppend",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",10,"var6","decimalSeparator",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",11,"var7","groupSeparator",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",12,"var8","negativeFlag",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",13,"var9","alternateBuilderAlias",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",14,"var10","fractionIndex",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",15,"var11","fractionLowWord",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",16,"var12","unusedGameFlag",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",17,"var13","alternateBuilder",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",18,"var14","builder",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",19,"var8Lifetime1","alternateNegativeFlag",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",20,"var10Lifetime1","alternateFractionIndex",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",21,"var10Lifetime2","alternateGroupDigitCount",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",22,"var11Lifetime1","alternateFractionLowWord",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",23,"var11Lifetime2","alternateIntegerLowWord",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",24,"var10Lifetime3","groupDigitCount",evidence);
+ local("nl","a(ZZIJI)Ljava/lang/String;",25,"var11Lifetime3","integerLowWord",evidence);
+ local("vd","a(II)Z",1,"var2","readFailure",evidence);
+ local("vd","a(II)Z",2,"decompiledCaughtException","caughtFailure",evidence);
+ local("vd","a(II)Z",3,"decompiledCaughtParameter0","caughtReadFailure",evidence);
+ local("vd","a(II)Z",4,"decompiledUncheckedException","uncheckedFailure",evidence);
+ local("vd","a(II)Z",5,"decompiledCheckedException","checkedFailure",evidence);
+ local("wh","a(I[BII)V",0,"var5_int","readCount",evidence);
+ local("wh","a(I[BII)V",1,"var6","unusedGameFlag",evidence);
+ local("wh","a(I[BII)V",2,"stackIn_12_0","failureContext",evidence);
+ local("wh","a(I[BII)V",3,"stackIn_12_1","contextBuilder",evidence);
+ local("wh","a(I[BII)V",4,"stackIn_13_2","targetSummary",evidence);
+ local("wh","a(I[BII)V",5,"decompiledCaughtException","caughtFailure",evidence);
+ local("wh","a(I[BII)V",6,"var5","failure",evidence);
+ local("wh","a(I[BII)V",7,"decompiledCaughtParameter0","caughtParameter",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -4825,10 +4879,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'The shared widget-theme cache, fullscreen frame disposal and social-list panel dispatcher are named from their direct contracts. Fixtures verify an already installed theme is returned by identity. Theme construction, real OS fullscreen disposal, live social-panel dispatch and original-JAR equivalence remain unverified.', '',
 'OutgoingPacketHelpers exposes encrypted-payload construction and delayed flushing. RSA wraps marker10, four generated key words and the original 16-bit payload length; payload bytes are zero-padded to eight-byte blocks and encrypted with 32 XTEA rounds. Names now identify key randomness, both reusable scratch packets, delay/jitter settings, the outgoing FIFO and the last write time. DelayedPacket.opcodeOrByteCount explicitly covers incoming opcodes and outgoing byte counts. Packet encryption/RSA/padding locals and the packet-content wrapper are named as well.', '',
 'Deterministic key fixtures compare complete wire bytes against a separate unsigned-word XTEA model and BigInteger RSA framing, including zero-block known output, signed keys, input offsets, zero/unaligned lengths, 65535/65536 length truncation, untouched source bytes and scratch reuse/replacement. Additional checks cover random-generator initialization, contextual null failures and all 256 reflected CRC64 table entries. Controlled in-memory socket rings verify keepalive phase gates, unavailable transports, guarded writes, error closure, copied delayed payloads, future-head FIFO blocking, one-entry delivery, strict deadlines, jitter/clamping and disabled-delay behavior. No writer threads or real sockets are started. Live authentication/server interoperability and original-JAR equivalence remain unverified.', '',
+'IncomingPacketHelpers, PacketReceiveHelpers and GameConnectionHelpers identify incoming framing/delivery, partial byte accumulation and shared connection-phase/player-removal helpers. Remaining receive exception/stream-read locals are named, along with getMillisSinceGameRead. The separately named formatScaledDecimal helper exposes grouping, fractional scale and locale separators; its duplicate guarded branches retain distinct locals.', '',
+'Controlled InputStream fixtures verify already-buffered cursor preservation, newly completed cursor reset, clipped byte requests, repeated short reads, partial-read continuation, absent transports, no-data waiting, timeout closure, negative availability, IO failures and partial EOF. Incoming-delay fixtures verify copied FIFO payloads, clamped Gaussian jitter, future-head blocking, phase gates, pending-frame priority, single-entry delivery and opcode-history shifts. String/BigInteger references verify grouped scaled decimals, signed long limits, large scales, locale IDs and archive-clearing guard behavior. The existing Long.MIN_VALUE negation-overflow spelling is explicitly preserved. These checks use no live sockets; exact timeout-boundary timing, live server compatibility and original-JAR equivalence remain unverified.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:87,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:88,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 87,
+  "version": 88,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -1676,6 +1676,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nl",
+      "originalName": "nl",
+      "to": "IncomingPacketHelpers",
+      "evidence": "nl.java: Ciphered incoming packet framing, queued delivery and opcode history; its separately named scaled-decimal formatter and sprite/archive/lobby globals retain distinct roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nm",
       "originalName": "nm",
       "to": "IntrusiveNode",
@@ -2068,6 +2075,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:rf",
+      "originalName": "rf",
+      "to": "GameConnectionHelpers",
+      "evidence": "rf.java: Current connection-phase identity and remove/reject-player packet submission; unrelated UI strings, table request and theme sprite retain separate roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rg",
       "originalName": "rg",
       "to": "QuickChatPhraseRegistry",
@@ -2436,6 +2450,13 @@
       "originalName": "vc",
       "to": "GameLayerController",
       "evidence": "vc.java: Render/key/update and qualified readiness contract used by the interactive client.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vd",
+      "originalName": "vd",
+      "to": "PacketReceiveHelpers",
+      "evidence": "vd.java: Accumulates available game-packet bytes with partial cursors, read-time updates and transport closure on timeout, EOF or IO failure; unrelated audio-maintenance and projection globals are retained.",
       "confidence": "reviewed"
     },
     {
@@ -36725,6 +36746,188 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#0",
+      "originalName": "discarded$1",
+      "to": "discardedFractionAppend",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#1",
+      "originalName": "discarded$0",
+      "to": "discardedDecimalAppend",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#10",
+      "originalName": "var6",
+      "to": "decimalSeparator",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#11",
+      "originalName": "var7",
+      "to": "groupSeparator",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#12",
+      "originalName": "var8",
+      "to": "negativeFlag",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#13",
+      "originalName": "var9",
+      "to": "alternateBuilderAlias",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#14",
+      "originalName": "var10",
+      "to": "fractionIndex",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#15",
+      "originalName": "var11",
+      "to": "fractionLowWord",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#16",
+      "originalName": "var12",
+      "to": "unusedGameFlag",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#17",
+      "originalName": "var13",
+      "to": "alternateBuilder",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#18",
+      "originalName": "var14",
+      "to": "builder",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#19",
+      "originalName": "var8Lifetime1",
+      "to": "alternateNegativeFlag",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#2",
+      "originalName": "discarded$2",
+      "to": "discardedIntegerAppend",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#20",
+      "originalName": "var10Lifetime1",
+      "to": "alternateFractionIndex",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#21",
+      "originalName": "var10Lifetime2",
+      "to": "alternateGroupDigitCount",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#22",
+      "originalName": "var11Lifetime1",
+      "to": "alternateFractionLowWord",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#23",
+      "originalName": "var11Lifetime2",
+      "to": "alternateIntegerLowWord",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#24",
+      "originalName": "var10Lifetime3",
+      "to": "groupDigitCount",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#25",
+      "originalName": "var11Lifetime3",
+      "to": "integerLowWord",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#3",
+      "originalName": "discarded$3",
+      "to": "discardedSignAppend",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#4",
+      "originalName": "discarded$4",
+      "to": "discardedGroupAppend",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#5",
+      "originalName": "discarded$6",
+      "to": "alternateDiscardedFractionAppend",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#6",
+      "originalName": "discarded$5",
+      "to": "alternateDiscardedDecimalAppend",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#7",
+      "originalName": "discarded$7",
+      "to": "alternateDiscardedIntegerAppend",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#8",
+      "originalName": "discarded$8",
+      "to": "alternateDiscardedSignAppend",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a(ZZIJI)Ljava/lang/String;#9",
+      "originalName": "discarded$9",
+      "to": "alternateDiscardedGroupAppend",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:nl.a([IB)Z#0",
       "originalName": "var5_int",
       "to": "queuedByteIndex",
@@ -36753,10 +36956,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:nl.a([IB)Z#12",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a([IB)Z#2",
+      "originalName": "stackIn_38_0",
+      "to": "failureContext",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a([IB)Z#3",
+      "originalName": "stackIn_38_1",
+      "to": "contextBuilder",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a([IB)Z#4",
+      "originalName": "stackIn_39_2",
+      "to": "packetLengthsSummary",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a([IB)Z#5",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:nl.a([IB)Z#6",
       "originalName": "var2_long",
       "to": "nowMillis",
       "evidence": "nl.java: Reviewed incoming packet frame/delay declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:nl.a([IB)Z#7",
+      "originalName": "var2",
+      "to": "failure",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
       "confidence": "reviewed"
     },
     {
@@ -46077,6 +46322,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:vd.a(II)Z#1",
+      "originalName": "var2",
+      "to": "readFailure",
+      "evidence": "vd.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vd.a(II)Z#2",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "vd.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vd.a(II)Z#3",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtReadFailure",
+      "evidence": "vd.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vd.a(II)Z#4",
+      "originalName": "decompiledUncheckedException",
+      "to": "uncheckedFailure",
+      "evidence": "vd.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vd.a(II)Z#5",
+      "originalName": "decompiledCheckedException",
+      "to": "checkedFailure",
+      "evidence": "vd.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ve.a(II)[B#0",
       "originalName": "var16",
       "to": "sectorByteIndex",
@@ -46592,6 +46872,62 @@
       "originalName": "discarded$15",
       "to": "ignoredFirstFragmentAppend",
       "evidence": "wd.java: Reviewed phrase/chat-wire declaration, metadata and consumers; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wh.a(I[BII)V#0",
+      "originalName": "var5_int",
+      "to": "readCount",
+      "evidence": "wh.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wh.a(I[BII)V#1",
+      "originalName": "var6",
+      "to": "unusedGameFlag",
+      "evidence": "wh.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wh.a(I[BII)V#2",
+      "originalName": "stackIn_12_0",
+      "to": "failureContext",
+      "evidence": "wh.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wh.a(I[BII)V#3",
+      "originalName": "stackIn_12_1",
+      "to": "contextBuilder",
+      "evidence": "wh.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wh.a(I[BII)V#4",
+      "originalName": "stackIn_13_2",
+      "to": "targetSummary",
+      "evidence": "wh.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wh.a(I[BII)V#5",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "wh.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wh.a(I[BII)V#6",
+      "originalName": "var5",
+      "to": "failure",
+      "evidence": "wh.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wh.a(I[BII)V#7",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "wh.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
       "confidence": "reviewed"
     },
     {
@@ -49980,6 +50316,13 @@
       "originalName": "b",
       "to": "drawScreen",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.f(I)J",
+      "originalName": "f",
+      "to": "getMillisSinceGameRead",
+      "evidence": "de.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
       "confidence": "reviewed"
     },
     {
@@ -55615,6 +55958,13 @@
       "originalName": "a",
       "to": "canAppendNameCharacter",
       "evidence": "nk.java: Accepts configured name character when buffer nonnull and shorter than12, rejecting leading separators; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.a(ZZIJI)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatScaledDecimal",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
       "confidence": "reviewed"
     },
     {
@@ -65842,6 +66192,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "gf.java: Screen rendering callback invoked by the applet render path. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:de.f(I)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "de.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
       "confidence": "reviewed"
     },
     {
@@ -83478,6 +83835,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nl.a(ZZIJI)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nl.a(ZZIJI)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "groupThousands",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nl.a(ZZIJI)Ljava/lang/String;#2",
+      "originalName": "param2",
+      "to": "fractionDigits",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nl.a(ZZIJI)Ljava/lang/String;#3",
+      "originalName": "param3",
+      "to": "scaledValue",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nl.a(ZZIJI)Ljava/lang/String;#4",
+      "originalName": "param4",
+      "to": "localeId",
+      "evidence": "nl.java: Incoming framing and byte accumulation preserve already-buffered cursor state, reset newly completed reads, clip availability to needed bytes and close failed or timed-out transports. Controlled InputStreams verify partial reads, bounded requests, IO/EOF failures and timeout paths without sockets. Delayed input fixtures verify jitter clamping, strict FIFO deadlines, pending-frame priority and opcode history. The scaled decimal formatter is independently checked with string grouping and BigInteger magnitudes, explicitly preserving its Long.MIN_VALUE overflow spelling.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:nl.a([IB)Z#0",
       "originalName": "param0",
       "to": "packetLengths",
@@ -97248,9 +97640,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "b812cc46484de10ed5cd389a141334f8c26ca03521d9d835ff56037799fac830",
+      "build-brickabrac-rules.mjs": "0b5f446700f846147190c29f31081f89dba42af356973988b802dbe92e06f0d2",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "878a1b3bd2fabe67e5bfdb6dc4e798a48c30d879b6269ad02c2038a39b291718",
+      "tests/test-brickabrac-core.mjs": "c0ba9a035c3e32a604816d059af7ba1894983c374b2dace441150e5d125873df",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
