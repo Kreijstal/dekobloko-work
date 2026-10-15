@@ -2063,8 +2063,9 @@ return carrier and exception context. It retains a different implementation
 from SpriteInputHelpers.createHalfSizeSprite; no new pixel-equivalence claim
 is made for this helper. spaceNearHalfSprite names the space_near scene cache;
 rankingSortModeLabels and goodGriefText retain their literal/localized roles.
-The reset method's name follows the audited original contract. Its frozen-input
-defect described below remains visible, and the naming pass preserves it.
+The reset method's name follows the audited original contract. Its corrected
+raw input is now pinned through the full-catalog workflow, and the default
+raw/named verification runs the independent reset contract described below.
 
 IntArrayRequestHelpers, LevelResultWireHelpers, TableResponseHelpers and
 SocialListResponseHelpers now expose the owners of the reviewed request,
@@ -2099,7 +2100,7 @@ state containers are LobbyRenderGlobals, LobbyKeyboardGlobals, LobbyCaptionGloba
 LobbyLoginGlobals, CanvasViewGlobals, DialogPointerGlobals and FontSceneGlobals.
 Their names describe observed shared roles while retaining unrelated storage
 and unresolved members. This completes class-file naming; method/field/local
-review and the corrected-input migration remain separate unfinished work.
+review remains unfinished; the corrected-input migration is described below.
 
 GrowableIntList.writeServiceHeader now exposes the shared eight-byte prefix:
 serviceCode:u8, fixed17:u16be, headerWordOne:u16be, headerWordTwo:u16be,
@@ -2141,73 +2142,61 @@ original arithmetic; cleanup methods preserve guard-specific release order,
 repeated assignments and unrelated integer writes. Existing raw/named fixtures
 check this naming pass; complete original-gamepack equivalence remains unverified.
 
-A subsequent bytecode audit found a correctness defect in the frozen input for
-`jh.a(boolean,mh)`, the list-layout reset helper used by friend/ignore list updates.
-The original JAR stores both the first child and each next child into slot 2, and
-its backedge reloads slot 2. The pinned transformed class instead seeds slot 4,
-reads slot 4 at the loop header, and writes each next child into slot 5 followed
-by a self-assignment. The Java faithfully reflects that already-corrupted
-bytecode and fails to advance a nonempty list. Direct decompilation of the
-original class retains the update; this is a bytecode transformation defect,
-not a naming-rule defect. The audited original gamepack JAR SHA-256 is
-`91284c0ec25fa4f8913876c78be9d80d273d8dd567d5b92950f1795f37b3c95d`.
+The current readable Brick export uses a Git-only raw-source snapshot from the
+verified 44-game catalog refresh. The snapshot remains an ancestor of the named
+export; reproduction reads it directly from Git. Its raw Java tree SHA-256 is
+`29a4eb473e753435cfd6d57bc5c9a77ef3ca9b477d8503c53c321ab55762f7df`.
+All 420 class identities and the existing 14,959 naming identities are retained;
+five reset-loop locals receive reviewed names, bringing the rule count to 14,964.
+Only `jh.java` differs from the former raw input: list traversal now updates
+currentChild, the variable tested by the loop. firstChildAlias and nextChildAlias
+identify the unused retained references. No generated Java is hand-patched.
+
+The earlier source pin `8f15143529e53929d7157a5393487342612a4180`
+had a bytecode-transformation defect in `jh.a(boolean,mh)`, the list-layout reset
+helper used by friend/ignore list updates. The original JAR stores both the first
+and next child into slot 2 and reloads that slot at the loop header. The former
+transformed class instead read slot 4 but stored each next child into slot 5,
+followed by a self-assignment. Its decompiled Java could fail a nonempty reset
+with NullPointerException. Direct original-class decompilation retained the
+update, identifying the transformation rather than the naming pass as the cause.
+The former raw-versus-named checks missed this shared upstream defect.
 
 The generic fix is java-tools commit
-`00c1c12fb58cdbd6be065e604ee5e9acbcebeff7`. Its tracked Git source tar SHA-256 is
-`34c1e50357f69cafd0c4550a63beeb07a8b56c8c891bdb31e4fc49a652509613`;
-this second hash identifies decompiler source, not the game JAR. The typed-alias
-splitter now proves that each moved definition reaches exactly the moved loads
-across backedges, joins, switches and exception edges. It refuses incomplete
-lifetimes and overlapping rewrites automatically, without a new application
-flag. A bounded, two-state traversal per definition avoids path enumeration.
-`node test/splitTypedAliasCopyLocals.test.js` in java-tools passes 35 assertions,
-including native comparisons of original bytecode, transformed bytecode and
-rebuilt readable Java across 30 cursor/reset/failure cases. The old pass fails
-the cursor comparison. The adjacent array, concrete-object, shared-store and
-typed-reuse tests also pass. A fresh pipeline output for the real helper now
-writes the next child back into the slot read by its loop condition.
+`00c1c12fb58cdbd6be065e604ee5e9acbcebeff7`, whose tracked Git source tar
+SHA-256 is
+`34c1e50357f69cafd0c4550a63beeb07a8b56c8c891bdb31e4fc49a652509613`.
+This identifies decompiler source, not a game JAR. The typed-alias splitter now
+proves complete moved-definition/load lifetimes across backedges, joins,
+switches and exception edges, refusing incomplete or overlapping rewrites by
+default. A bounded two-state traversal avoids path enumeration. Its focused
+regression passes 35 assertions, including native comparisons of original
+bytecode, transformed bytecode and rebuilt Java across 30 reset/cursor/failure
+cases; the old pass fails the cursor comparison.
 
-The published naming export still uses its existing frozen source and
-generator pins; it has not been hand-patched. Refreshing the raw catalog through
-the documented verifier/compilation/publication gates and migrating the naming
-rules to that new input remain necessary before this fix appears in the
-published game sources. Existing raw-versus-renamed fixtures do not establish
-equivalence to the original JAR and did not detect this upstream defect.
-
-The original-gamepack contracts can be reproduced with
+The default `readable/reproduce-brickabrac.mjs --update|--check` gate now runs
+the independent list-reset model against both complete raw and named builds.
+Each variant passes 5,449 assertions with trace SHA-256
+`7c82f2de56199b3eb7b567dcb5bfca1414abd16664293b40c1c76231e1a6a729`.
+These are reported separately from the 3,454,982 core and 527,249 service-header
+assertions. The original gamepack passes the same model and trace. Its fixed
+JAR SHA-256 is
+`91284c0ec25fa4f8913876c78be9d80d273d8dd567d5b92950f1795f37b3c95d`.
+To repeat the original-only audit, run
 `node readable/tests/brickabrac-original-contracts.mjs ORIGINAL_GAMEPACK.jar`.
-The command verifies the fixed JAR identity, builds temporary compilation stubs
-from source, and runs the real helper through reflection against an independent
-bounds/cursor model. Its 5,449 assertions cover empty and nonempty lists, signed
-boundary values, both guard arguments, malformed children, missing lists/null
-roots, partial mutations, horizontal-bound preservation, intrusive link identity,
-unchanged grandchildren and the final deque cursor. The original JAR passes with
-trace SHA-256 `7c82f2de56199b3eb7b567dcb5bfca1414abd16664293b40c1c76231e1a6a729`.
-Running the same model against freshly compiled published named Java rejects a
-canonical one-child reset: it throws `NullPointerException` instead of returning
-normally. This deliberate negative control confirms the probe detects the known
-frozen-input defect. The helper freshly emitted from the corrected batch's
-transformed class, recompiled against pinned raw peer classes, passes the same
-5,449 assertions with the original JAR's trace hash. This verifies the isolated
-repair while full-pack migration and publication remain pending.
-The same model also passes against all classes compiled from the corrected
-whole-game batch, with the same assertion count and trace. That raw Java tree
-has SHA-256 `29a4eb473e753435cfd6d57bc5c9a77ef3ca9b477d8503c53c321ab55762f7df`;
-only `jh.java` differs from the frozen input. This is a generated-Java tree
-identity, separate from the compiler-source tar hash above. All existing 14,929
-naming rules still resolve with their expected original names in that input.
-An unpublished full naming round using the pass 100 map over the corrected
-input passes the
-3,454,982 core assertions with the existing trace, and its original, raw and
-named list-reset variants agree on all 5,449 assertions and the reset trace.
-The temporary rule set deliberately made no Git source-pin claim, and its
-generated output was removed after validation. The real input pin and default
-reset-gate integration still require the complete catalog publication.
-The probe can also resolve raw/readable aliases from the
-dictionary for integration after the input migration. Both compiler and JVM
-probe processes have 30-second execution limits; temporary output is removed.
-This is a native check of this helper's contract; whole-game equivalence and
-interactive friend/ignore list behavior remain unverified.
+Ordinary readable-source reproduction needs neither that JAR nor a new flag.
+
+The model covers empty/nonempty lists, signed boundaries, both guards, malformed
+children, missing lists/null roots, partial mutations, horizontal-bound and
+intrusive-link preservation, unchanged grandchildren and the final deque cursor.
+As a negative control, the new default core gate was run before repinning and
+rejected the former input at `reset/1/-1/-2147483648/true/result`:
+NullPointerException instead of success. Earlier isolated and whole-pack
+corrected-input prototypes passed before the final Git-backed migration; their
+temporary generated output was removed. Both compiler and JVM contract probes
+have 30-second execution limits and temporary output is removed. These checks
+verify the helper contract; whole-game equivalence and interactive friend/ignore
+list behavior remain unverified.
 
 The catalog refresh also exposed a compiler-time stall in Arcanists' large
 `mi.b(IIII)V` method, after control-flow reconstruction had already finished.
@@ -2237,9 +2226,13 @@ Git source tar SHA-256
 The clean compiler-only Arcanists repair now passes diagnostics and whole-game
 compilation of all 363 sources against stubs alone, with zero hard failures and
 one supported fallback. Its existing batch report records the corrected compiler
-pin and source identity. The complete catalog still has to finish and pass its
-publication gates. These compiler checks do not establish browser frame-rate
-or whole-game equivalence.
+pin and source identity. The Steel Sentinels compiler-only repair also passes
+all 347 sources, with one supported fallback. All 44 current reports pass; the
+original batch failure and subsequent successful repairs remain recorded rather
+than rewriting the historical result. Full-catalog publication independently
+compiles every raw game and all five preserved named exports against stubs
+alone. These compiler checks do not establish browser frame-rate or whole-game
+equivalence.
 
 ## Steel Sentinels
 

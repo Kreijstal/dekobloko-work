@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 105,
+  "version": 106,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
-    "commit": "8f15143529e53929d7157a5393487342612a4180",
+    "commit": "9159750b0604b9082db8b91fe73a0a0b119c7f22",
     "subdirectory": "games/brickabrac"
   },
-  "inputTreeSha256": "fac54f0a3858ed2cf55d94450690d9df5c74bc290059131269fce05c5fb8aba6",
+  "inputTreeSha256": "29a4eb473e753435cfd6d57bc5c9a77ef3ca9b477d8503c53c321ab55762f7df",
   "renames": [
     {
       "symbol": "B:ak.a(Lj;Lvl;Lvl;I)V#0",
@@ -32700,6 +32700,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:jh.a(ZLmh;)V#0",
+      "originalName": "var4",
+      "to": "currentChild",
+      "evidence": "jh.java: The corrected raw reset loop advances currentChild; firstChildAlias and nextChildAlias retain the unused initial/next references, the branch-flag read remains unused, and failures retain their existing context wrapper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jh.a(ZLmh;)V#1",
+      "originalName": "var2",
+      "to": "firstChildAlias",
+      "evidence": "jh.java: The corrected raw reset loop advances currentChild; firstChildAlias and nextChildAlias retain the unused initial/next references, the branch-flag read remains unused, and failures retain their existing context wrapper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jh.a(ZLmh;)V#2",
+      "originalName": "var3",
+      "to": "unusedGameFlag",
+      "evidence": "jh.java: The corrected raw reset loop advances currentChild; firstChildAlias and nextChildAlias retain the unused initial/next references, the branch-flag read remains unused, and failures retain their existing context wrapper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jh.a(ZLmh;)V#3",
+      "originalName": "var2Lifetime1",
+      "to": "nextChildAlias",
+      "evidence": "jh.java: The corrected raw reset loop advances currentChild; firstChildAlias and nextChildAlias retain the unused initial/next references, the branch-flag read remains unused, and failures retain their existing context wrapper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jh.a(ZLmh;)V#4",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "jh.java: The corrected raw reset loop advances currentChild; firstChildAlias and nextChildAlias retain the unused initial/next references, the branch-flag read remains unused, and failures retain their existing context wrapper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:ji.a(JI)Lnm;#0",
       "originalName": "var5",
       "to": "match",
@@ -58512,7 +58547,7 @@
       "symbol": "M:jh.a(ZLmh;)V",
       "originalName": "a",
       "to": "resetListVerticalBounds",
-      "evidence": "jh.java: The original gamepack and corrected raw Java reset localY, height, remainingY and remainingHeight on each direct child and then the parent, preserving horizontal bounds and grandchildren. The independent model has 5449 assertions including cursor and partial failures. The frozen input has the documented non-advancing child defect; naming does not repair it. The false guard calls arithmetic cleanup before the parent reset.",
+      "evidence": "jh.java: The original gamepack and corrected raw Java reset localY, height, remainingY and remainingHeight on each direct child and then the parent, preserving horizontal bounds and grandchildren. The independent model has 5449 assertions including cursor and partial failures. The corrected source is pinned through the verified full-catalog workflow; the default raw/named core gate now runs this original-contract model. The false guard calls arithmetic cleanup before the parent reset.",
       "confidence": "reviewed"
     },
     {
@@ -82032,14 +82067,14 @@
       "symbol": "P:jh.a(ZLmh;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
-      "evidence": "jh.java: The original gamepack and corrected raw Java reset localY, height, remainingY and remainingHeight on each direct child and then the parent, preserving horizontal bounds and grandchildren. The independent model has 5449 assertions including cursor and partial failures. The frozen input has the documented non-advancing child defect; naming does not repair it. The false guard calls arithmetic cleanup before the parent reset.",
+      "evidence": "jh.java: The original gamepack and corrected raw Java reset localY, height, remainingY and remainingHeight on each direct child and then the parent, preserving horizontal bounds and grandchildren. The independent model has 5449 assertions including cursor and partial failures. The corrected source is pinned through the verified full-catalog workflow; the default raw/named core gate now runs this original-contract model. The false guard calls arithmetic cleanup before the parent reset.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:jh.a(ZLmh;)V#1",
       "originalName": "param1",
       "to": "list",
-      "evidence": "jh.java: The original gamepack and corrected raw Java reset localY, height, remainingY and remainingHeight on each direct child and then the parent, preserving horizontal bounds and grandchildren. The independent model has 5449 assertions including cursor and partial failures. The frozen input has the documented non-advancing child defect; naming does not repair it. The false guard calls arithmetic cleanup before the parent reset.",
+      "evidence": "jh.java: The original gamepack and corrected raw Java reset localY, height, remainingY and remainingHeight on each direct child and then the parent, preserving horizontal bounds and grandchildren. The independent model has 5449 assertions including cursor and partial failures. The corrected source is pinned through the verified full-catalog workflow; the default raw/named core gate now runs this original-contract model. The false guard calls arithmetic cleanup before the parent reset.",
       "confidence": "reviewed"
     },
     {
@@ -104738,9 +104773,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "5bc8e660ed2171381cd4e32ff152d19b858849048c47b3ea5dbe03c6fefdec6a",
+      "build-brickabrac-rules.mjs": "4b0599151d6aaa35c017fd36cbf670b5d0b82c7475366c1418625bd924448fab",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "fea84ed9fa134f3d1ad0fdbb05d0f89d27c2759306cf6224e30d0aef664bdef3",
+      "tests/test-brickabrac-core.mjs": "1c155d2290310da98109aa985fb1baa681c92ac580b6ca5ce218577cf1115432",
       "tests/brickabrac-original-contracts.mjs": "b4ec4506c9397d2331bafeb0f301f8bd27f4969d10f53d70fbac672d4840b7f8",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
@@ -104748,8 +104783,8 @@
   },
   "generators": {
     "javaTools": {
-      "commit": "1d183d3ba75fc0a8cd3af1544591b8c463c0e1ff",
-      "trackedSourceTarSha256": "7230d95fc7b957c8c56c76ed8203e42c1808e0084711cfd0495f47d8a692e8cd"
+      "commit": "00c1c12fb58cdbd6be065e604ee5e9acbcebeff7",
+      "trackedSourceTarSha256": "34c1e50357f69cafd0c4550a63beeb07a8b56c8c891bdb31e4fc49a652509613"
     },
     "namingTool": {
       "schema": 1,
