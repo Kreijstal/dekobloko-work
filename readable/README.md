@@ -2104,11 +2104,46 @@ frozen-input defect. The helper freshly emitted from the corrected batch's
 transformed class, recompiled against pinned raw peer classes, passes the same
 5,449 assertions with the original JAR's trace hash. This verifies the isolated
 repair while full-pack migration and publication remain pending.
+The same model also passes against all classes compiled from the corrected
+whole-game batch, with the same assertion count and trace. That raw Java tree
+has SHA-256 `29a4eb473e753435cfd6d57bc5c9a77ef3ca9b477d8503c53c321ab55762f7df`;
+only `jh.java` differs from the frozen input. This is a generated-Java tree
+identity, separate from the compiler-source tar hash above. All existing 14,803
+naming rules still resolve with their expected original names in that input.
 The probe can also resolve raw/readable aliases from the
 dictionary for integration after the input migration. Both compiler and JVM
 probe processes have 30-second execution limits; temporary output is removed.
 This is a native check of this helper's contract; whole-game equivalence and
 interactive friend/ignore list behavior remain unverified.
+
+The catalog refresh also exposed a compiler-time stall in Arcanists' large
+`mi.b(IIII)V` method, after control-flow reconstruction had already finished.
+Sampling found repeated defensive AST copies of completed expression prefixes.
+java-tools commit `471b23f` builds parser-owned children without those copies and
+detaches each complete result once, preserving the public factories' defensive
+copies and independent child occurrences. Five regressions compare implemented
+parser entry points to the previous construction, bound copying work and parse
+a 4,000-term expression without recursive clone overflow. Adjacent frontend
+tests pass 282 assertions and native compiler tests pass 27.
+The method then completed; sampling its remaining work identified repeated
+token scans in loop-completion proofs. Commit `d88bc5c` indexes identifier
+occurrences and caches each unchanged frame's assignment check. The regression
+reads 1,482/2,890 token properties for 32/64 locals and exits; the previous code
+reads 524,991/4,064,607 and fails the linear-growth check. The existing completion
+and scoped-initialization tests pass 12 cases, including independent native
+models. The isolated Brick reset helper emits identical Java before/after these
+optimizations when both runs use the same class-resolution context.
+The complete isolated `mi.class` now finishes successfully in 332 seconds. Its
+emitted Java is byte-identical before/after the occurrence-index optimization.
+This run shared the machine with the catalog build and is not a controlled
+performance benchmark.
+Both changes run by default and leave the rewrite proofs intact. The combined
+compiler revision is `d88bc5ce810baed642d8cb3fd7a6cd8953baac3d`, with tracked
+Git source tar SHA-256
+`3210cfac245b602d71ecd007f672cbc92d0038a74b73d9ab29895ddf383358cb`.
+The clean compiler-only Arcanists repair must still pass diagnostics and
+whole-game compilation against stubs alone before catalog publication. These
+compiler checks do not establish browser frame-rate or whole-game equivalence.
 
 ## Steel Sentinels
 
