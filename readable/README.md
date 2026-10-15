@@ -2066,6 +2066,16 @@ rankingSortModeLabels and goodGriefText retain their literal/localized roles.
 The reset method's name follows the audited original contract. Its frozen-input
 defect described below remains visible, and the naming pass preserves it.
 
+IntArrayRequestHelpers, LevelResultWireHelpers, TableResponseHelpers and
+SocialListResponseHelpers now expose the owners of the reviewed request,
+submission and receive paths. RankingSortHelpers uses the existing comparator
+in RankingSocketHelpers, whose connector factory retains its separate transport
+role. Cleanup names preserve guard-specific callbacks, partial release order
+and unrelated integer side effects. The exact waiting/level/player/consent and
+power-up text fields are named, alongside the independent long bitwiseAnd
+helper and its operands/result/exception locals. No new live-server or original
+packet-equivalence claim is made by these source-only names.
+
 A subsequent bytecode audit found a correctness defect in the frozen input for
 `jh.a(boolean,mh)`, the list-layout reset helper used by friend/ignore list updates.
 The original JAR stores both the first child and each next child into slot 2, and
@@ -2119,9 +2129,10 @@ The same model also passes against all classes compiled from the corrected
 whole-game batch, with the same assertion count and trace. That raw Java tree
 has SHA-256 `29a4eb473e753435cfd6d57bc5c9a77ef3ca9b477d8503c53c321ab55762f7df`;
 only `jh.java` differs from the frozen input. This is a generated-Java tree
-identity, separate from the compiler-source tar hash above. All existing 14,823
+identity, separate from the compiler-source tar hash above. All existing 14,853
 naming rules still resolve with their expected original names in that input.
-An unpublished full naming round over the corrected input also passes the
+An unpublished full naming round using the pass 100 map over the corrected
+input passes the
 3,454,982 core assertions with the existing trace, and its original, raw and
 named list-reset variants agree on all 5,449 assertions and the reset trace.
 The temporary rule set deliberately made no Git source-pin claim, and its
@@ -2158,9 +2169,12 @@ Both changes run by default and leave the rewrite proofs intact. The combined
 compiler revision is `d88bc5ce810baed642d8cb3fd7a6cd8953baac3d`, with tracked
 Git source tar SHA-256
 `3210cfac245b602d71ecd007f672cbc92d0038a74b73d9ab29895ddf383358cb`.
-The clean compiler-only Arcanists repair must still pass diagnostics and
-whole-game compilation against stubs alone before catalog publication. These
-compiler checks do not establish browser frame-rate or whole-game equivalence.
+The clean compiler-only Arcanists repair now passes diagnostics and whole-game
+compilation of all 363 sources against stubs alone, with zero hard failures and
+one supported fallback. Its existing batch report records the corrected compiler
+pin and source identity. The complete catalog still has to finish and pass its
+publication gates. These compiler checks do not establish browser frame-rate
+or whole-game equivalence.
 
 ## Steel Sentinels
 
