@@ -113,6 +113,58 @@ catalog without retaining a build batch. Compilation stubs for naming are built
 from source in temporary storage; no stub JAR belongs in the publication.
 Remove the owned temporary batch after export validation.
 
+### Updating the raw input of a named game
+
+First finish the complete catalog rebuild, publish it with the clean batch
+publisher, check it, and commit that publication in `funorb-decompiled`. Named
+games keep their existing readable preview during this step. Then run:
+
+```bash
+node readable/pin-game-input.mjs BATCH FUNORB_REPO BATCH/tooling/java-tools GAME
+```
+
+The command replays the matching batch publisher's full `--check` gates. It
+requires a clean committed publication and refuses an incomplete or mismatched
+batch. Its result prints a `commit`, a `reference`, the file count, and
+`sourceTreeSha256`. That checksum identifies the raw emitted Java; the separate
+decompiler-source tar checksum remains in the catalog's generator provenance.
+
+For a named game, the command builds a raw-source commit through a temporary Git
+index and protects it with one current `refs/readable-inputs/GAME` reference.
+The worktree, real index and `HEAD` keep the current named preview. The snapshot
+contains the raw game Java and matching catalog record, with that game's old
+named receipt, guide and dictionary removed. Other games and files are retained.
+An identical pending snapshot is reused. A different unfinished snapshot is
+preserved and must be completed before another input can replace it. A game
+already published as matching raw Java can use its existing `HEAD` directly.
+
+Use the returned raw commit as the game's source pin. Before regenerating a
+named game, start a merge that retains the current preview:
+
+```bash
+git -C FUNORB_REPO merge --no-commit --no-ff -s ours SOURCE_COMMIT
+```
+
+For Brick a Brac, update `SOURCE_COMMIT` in
+`readable/build-brickabrac-rules.mjs`, regenerate/check its manifest and named
+export, run the native fixtures and catalog check, and reverse the dictionary
+to verify exact raw bytes. Review and stage the resulting named Java and
+receipts, then commit the merge on `master`. The raw snapshot becomes an ancestor
+of the checked readable export without being checked out over the preview.
+The Git-preservation tests exercise this merge procedure.
+
+After the named merge is committed and pushed, confirm the input remains
+reachable and remove only its matching temporary reference:
+
+```bash
+git -C FUNORB_REPO merge-base --is-ancestor SOURCE_COMMIT HEAD
+git -C FUNORB_REPO update-ref -d refs/readable-inputs/GAME SOURCE_COMMIT
+```
+
+The committed input can then be archived for reproduction even after the owned
+batch is deleted. This procedure introduces no second readable source directory
+and commits generated Java only in `funorb-decompiled`.
+
 If a generic compiler fix lands during a long batch, preserve the verified
 bytecode and rebuild compiler-only failures with:
 
