@@ -383,6 +383,9 @@ classes.uo=["AppletResourceHelpers", "Applet marker lookup, indexed-sprite loadi
 classes.ui=["AppletSettingsUiHelpers", "Settings-cookie storage, table request resending and UI text/presentation helpers, with unrelated globals kept distinct."];
 classes.gr=["GameplaySpriteHelpers", "Board-scale sprite-set selection plus separately named ranking and archive helpers; retained menu/pointer globals keep distinct roles."];
 classes.di=["QuickChatSineHelpers", "Default quick-chat activation and guarded 2048-angle Q16 sine lookup, alongside independent UI labels."];
+classes.ce=["QuickChatPopupHelpers", "Quick-chat pointer processing and horizontal panning, plus hidden-popup/loading/tooltip cleanup; independent character/font/stat globals retain separate roles."];
+classes.hc=["MeshLobbyUiHelpers", "Mesh decoding, lobby resource setup, frame-clock reset and quick-chat help/menu forwarding, with independently named presentation assets."];
+classes.mc=["UiCleanupHelpers", "Guarded popup cleanup forwarding; connection-state, mesh-count and presentation globals keep their separately named roles."];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -5178,6 +5181,30 @@ local('na','a(IIIBI)V',0,'var6','fieldStartX','Centered date-field origin shared
  local("kq","a(Lvn;BIII)V",7,"decompiledCaughtParameter0","caughtParameter",evidence);
 }
 
+{
+ const evidence="Controlled real-menu fixtures verify quick-chat outside clicks, selected-row toggles, root update counts, five-pixel panning/hysteresis, overflow and font guard effects. Integrated pointer fixtures open/close submenus and compare message/filter opcode bytes against independent wire references. Real layer deques, recording layer callbacks and owned loading-indicator state verify cleanup order, opacity/removal, tooltip reset and partial failures. Source-level names preserve all control flow and guard placement.";
+ field("vq","J","Ljava/lang/String;","tooltipText",evidence);
+ field("go","e","I","tooltipTicks",evidence);
+ field("th","h","Z","tooltipSuppressed",evidence);
+ field("b","a","I","tooltipAnchorX",evidence);
+ field("ad","j","I","tooltipAnchorY",evidence);
+ method("ce","a","(ZIBI)V","updateQuickChatMenu",evidence,["inputEnabled", "filterOpcode", "obfuscationGuard", "messageOpcode"]);
+ method("hc","a","(ZIII)V","updateQuickChatInterface",evidence,["inputEnabled", "obfuscationGuard", "messageOpcode", "filterOpcode"]);
+ method("ce","a","(I)V","cleanupPopupUi",evidence,["obfuscationGuard"]);
+ method("mc","a","(B)V","cleanupPopupUi",evidence,["obfuscationGuard"]);
+ method("fl","f","(B)V","clearTooltipState",evidence,["obfuscationGuard"]);
+ method("th","b","(I)V","closeQuickChatIfOpen",evidence,["obfuscationGuard"]);
+ method("of","a","(ILog;)V","appendQuickChatSubmenu",evidence,["obfuscationGuard", "submenu"]);
+ local("ce","a(ZIBI)V",0,"var4","anyPressedItem",evidence);
+ local("ce","a(ZIBI)V",1,"var5","rightEdgeWithInputDisabled",evidence);
+ local("ce","a(ZIBI)V",2,"var5Lifetime1","rightEdge",evidence);
+ local("ce","a(ZIBI)V",3,"var5Lifetime2","rightEdgeAfterPress",evidence);
+ local("ce","a(ZIBI)V",4,"var5Lifetime3","rightEdgeAfterPressWithGuardSideEffect",evidence);
+ local("mc","a(B)V",0,"var1","unusedGuardRemainder",evidence);
+ local("fl","f(B)V",0,"var1","unusedGuardQuotient",evidence);
+ local("of","a(ILog;)V",0,"runtimeException","failure",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -5502,10 +5529,14 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "AppletFlowHelpers.atan8192FromQ16 and IntrusiveHashTable.atanRatio2048Table expose the paddle rebound angle lookup. The table rounds atan(index/2048) into 8192 units per turn; small Q16 ratios quantize by32, and larger magnitudes use reciprocal quantization against134217728. QuickChatSineHelpers.lookupSine2048Q16 identifies wrapped2048-angle Q16 lookup. Independent fixtures check all2049 atan entries, a dense signed tangent range, every reciprocal boundary and integer extremes; custom tables prove lookup indices and reference retention. Sine values are checked within one Q16 unit of the ideal wave, with exact custom-table wrapping and guard/null/short-array failures.", '',
 "QuickChatSineHelpers.activateDefaultQuickChatMenu, HuffmanCodec.installQuickChatMenu and GamePresentationHelpers.closeQuickChatMenu expose menu installation and closure. defaultQuickChatMenu, quickChatMenuOpen and quickChatScrollX name their shared state. Real menu/component/deque fixtures verify replacement, reparenting, repeated installation, null/default behavior, recursive row/submenu reset, scroll reset and closed-state timing. Broken roots and null/partial row arrays check the exact state retained when an exception interrupts installation or closure.", '',
 "Sprite fixtures verify all ten active asset roles by identity, source pixel retention, null/shared/empty arrays, arbitrary divisors and guard side effects. Independent pixels exercise normal and steel balls at both supported scales, negative coordinates and clipping. The export is still a reproducible naming pass over pinned decompiled sources. Original asset loading, phased-ball alpha drawing, live quick-chat interaction and original-gamepack equivalence remain unverified.", '',
+"QuickChatPopupHelpers.updateQuickChatMenu and MeshLobbyUiHelpers.updateQuickChatInterface expose quick-chat input and help/menu forwarding. BlankScreen.appendQuickChatSubmenu and QuickChatParameterType.closeQuickChatIfOpen name the remaining root-link and conditional-close helpers. The horizontal pan adds 5 beyond right edge 640, subtracts 5 below 635 only when the offset is positive, and holds within 635 through 640. It retains integer overflow and can subtract below zero. An outside click closes the menu before the same update still evaluates panning. Pressed items cause a second root update even when input dispatch is disabled.", '',
+"Controlled fixtures use real detached menus to isolate pressed-state branches and a real component hierarchy for pointer interaction. They verify one/two root updates through animation state, selected-row toggles, outside close, all pan thresholds, signed overflow, disabled input and the font-clearing guard. Pointer fixtures open/unlink a submenu and send a leaf message through both controller entry points. Seeded independent cipher/body references check complete message and filter packet bytes and distinguish the forwarded opcodes. Closed and malformed roots/menus verify early return and plain versus contextual failures.", '',
+"QuickChatPopupHelpers.cleanupPopupUi and UiCleanupHelpers.cleanupPopupUi expose hidden-layer removal, loading-animation stop and tooltip reset. UsernameAvailabilityValidator.clearTooltipState and tooltipText, tooltipTicks, tooltipSuppressed, tooltipAnchorX and tooltipAnchorY identify the five reset fields. Real layer deques and recording layer callbacks check removal order, retained visible layers and opacity. A minimally initialized loading dialog with a real activity indicator checks stop flags. Injected pruning failures and missing indicators verify which mutations happen before failure; the direct tooltip guard runs before resets, while the outer cleanup wrapper guard runs afterward.", '',
+"The export remains a reproducible naming pass over fixed decompiled input. Original loading-dialog rendering, live quick-chat interaction, the noncanonical interface guard clock reset, actual server delivery and original-gamepack equivalence remain unverified. Other mesh/resource helpers and unrelated static fields retain their separate roles.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:95,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:96,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
