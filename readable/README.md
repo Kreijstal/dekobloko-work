@@ -1587,6 +1587,32 @@ replace artwork. Full HUD text content, character artwork, tutorial highlights,
 single-player composition, all invalid inputs, live rendering and original-JAR
 equivalence remain unverified.
 
+FireworkBurst exposes concentric particle rings with Q8 positions/velocities,
+phase timings, shared acceleration, trail histories, colors and intensity
+fade. Lifecycle helpers name spawn bounds, seeded random source, active
+pool/count, creation, advancement/replacement, drawing and clearing. Static
+brick sprites, matchmaking text, the orb-coin sprite and background tint
+palette keep their separate resource/UI roles.
+
+An independent ISAAC/trigonometric reference checks construction and exact
+random consumption. Controlled motion checks damping, then closed-form
+coasting/ballistic trajectories, committed trails, delay/fade boundaries and
+lifetime unlink/count changes. The turn branch changes shared acceleration
+after the first particle has applied its previous value; starting from zero
+consumes one random draw. Empty pools spawn three bursts even with replacement
+disabled. Pool fixtures also cover replacement, half-open spawn ranges, bounds
+setup, clearing and combined update/draw offset conversion. Time-derived seed
+contents are excluded from traces.
+
+The Q4 radial-glow renderer now names its finite-difference scanline kernel.
+Independent pixel geometry checks clipping, strict radius boundaries, ramp
+lookup and saturated RGB addition. Composed glow references check trail,
+halo/core painting, Q8-to-Q4 coordinates and the hidden start delay. Fixtures
+use controlled RGB ramps and restore static state. Arbitrary invalid inputs,
+default-ramp appearance, every randomized full-lifetime trajectory, calls
+after removal, complete scene presentation, live FPS and original-JAR
+equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,

@@ -319,6 +319,7 @@ const classes={
 };
 classes.ua=['GameplayRenderHelpers','Static helpers centering the power-up meter grid and drawing vertically offset parallax layers; unrelated client globals remain qualified.'];
 classes.cn=['GameOverlayHelpers','Static achievement-icon pool acquisition and score-popup painting; shared sprite decode storage and unrelated globals remain separate.'];
+classes.nj=['FireworkBurst','Delayed concentric particle rings with Q8 positions/velocities, damped expansion, gravity, retained trails, fading glow and intrusive lifetime removal; unrelated static UI assets remain separate.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -2554,6 +2555,116 @@ local("ua","a(Lj;IIIIILak;)V",0,"runtimeException","failure","Reviewed HUD/icon 
 local("ua","a(Ljp;IIILjp;ILjp;IIILjp;I)V",0,"var12_int","unusedGuardQuotient","Reviewed HUD/icon rendering declaration and source resource/call data flow.");
 local("ua","a(Ljp;IIILjp;ILjp;IIILjp;I)V",1,"runtimeException","failure","Reviewed HUD/icon rendering declaration and source resource/call data flow.");
 
+// Firework burst simulation, lifecycle and Q4 additive radial glow.
+field("nj","A","[I","particleX256","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","C","[I","particleY256","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","r","[I","velocityX256","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","y","[I","velocityY256","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","n","[I","particleColorIndices","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","P","[I","trailColorIndices","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","D","[[I","trailXHistory256","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","m","[[I","trailYHistory256","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","w","I","particleCount","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","L","I","ringCount","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","H","I","particlesPerRing","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","s","I","originX256","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","N","I","originY256","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","K","I","startDelayTicks","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","u","I","lifetimeTicks","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","k","I","ageTicks","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","I","I","trailStartAge","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","B","I","dampingEndAge","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","q","I","accelerationStartAge","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","t","I","fadeStartAge","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","o","I","horizontalFlipAge","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","O","I","gravity256","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","p","I","horizontalAcceleration256","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","J","I","trailLength","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","j","I","fadeTicks","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","E","I","haloIntensityDecayPerTick","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","i","I","trailIntensityDecayPerTick","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","x","I","coreIntensityDecayPerTick","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("ip","r","Lfo;","fireworkRandom","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("dl","f","I","activeFireworkCount","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("ob","E","Lvl;","fireworkBursts","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("oq","x","I","fireworkSpawnMinX","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("fr","k","I","fireworkSpawnMinY","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("lg","L","I","fireworkSpawnMaxX","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("wo","a","I","fireworkSpawnMaxY","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("qb","w","I","fireworkSpawnWidth","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("ag","E","I","fireworkSpawnHeight","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("eb","q","[I","fireworkBaseColors","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("eb","r","[[I","fireworkColorRamps","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","G","[I","backgroundTintColors","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","F","Ljava/lang/String;","matchmakingStatusText","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","z","Ljp;","achievementOrbCoinSprite","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+field("nj","l","[Ljp;","activeBrickSprites","Reviewed firework construction/update/drawing, lifecycle callers, static resource assignments or spawn-bound data flow.");
+method("nj","c","(I)V","advanceParticles","Waits for start delay, integrates particles from supplied index, records trails and unlinks/decrements global count at exact lifetime; canonical index0.",["firstParticle"]);
+method("nj","a","(II)V","drawParticles","Paints retained trail samples plus halo/core glows at Q4 centers; hidden until start delay expires; guard -1196049244.",["obfuscationGuard", "horizontalOffset16"]);
+method("nj","<init>","(IIII)V","<init>","Constructs ringCount times particlesPerRing particles; consumes shared ISAAC for timings/colors/positions/radial velocities.",["ringCount", "particlesPerRing", "originX", "originY"]);
+method("vq","a","(III)V","spawnFireworkBurst","Chooses at least4 rings and8 particles per ring, samples configured rectangle, queues burst and increments active count; guard1273378209.",["maxRingsExclusive", "obfuscationGuard", "maxParticlesPerRingExclusive"]);
+method("uf","a","(II)V","spawnFireworkBursts","Spawns one randomized burst for each index in supplied half-open range.",["endIndex", "firstIndex"]);
+method("wp","a","(ZB)V","advanceFireworks","Seeds3 bursts when active count0, advances each queued burst, then optionally replenishes removed count; guard -51.",["replaceFinishedBursts", "obfuscationGuard"]);
+method("hq","b","(ZZI)V","advanceAndDrawFireworks","Advances pool, optionally replenishes, then draws retained bursts with horizontal pixel offset converted toQ4; canonical true.",["obfuscationGuard", "replaceFinishedBursts", "horizontalOffset"]);
+method("lg","h","(I)V","clearFireworks","Clears burst deque and assigns supplied global active count; ordinary caller0.",["activeCount"]);
+method("qn","a","(IIIII)V","initializeFireworkSpawnArea","Reseeds shared ISAAC from monotonic time and retains half-open spawn rectangle plus width/height; guard -6532.",["maxY", "minX", "maxX", "minY", "obfuscationGuard"]);
+method("lb","a","(IIII[I)V","drawRadialGlow","Clips Q4 disk, looks up radial intensity and adds saturated RGB; only squared distances strictly below radius squared contribute.",["centerX16", "centerY16", "radius16", "peakIntensity", "colorRamp"]);
+method("lb","a","(IIIIIIII[II[IIIIIIII)V","addRadialGlowScanlines","Finite differences advance squared distance across pixels/rows; radial lookup and packed saturating RGB addition retain exact arithmetic.",["sourceColor", "destinationColor", "colorSum", "distanceSquared", "distanceStepX", "distanceSecondDifferenceX", "radiusSquared", "destinationIndex", "destination", "peakIntensity", "colorRamp", "destinationRowSkip", "initialDistanceStepX", "negativeWidth", "rowDistanceSquared", "distanceStepY", "distanceSecondDifferenceY", "negativeHeight"]);
+local("nj","<init>(IIII)V",0,"var11","ringIndex","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("nj","<init>(IIII)V",1,"var9","particleColorIndex","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("nj","<init>(IIII)V",2,"var10","trailColorIndex","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("nj","<init>(IIII)V",3,"var12","ringParticleIndex","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("nj","<init>(IIII)V",4,"var5","particleIndex","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("nj","<init>(IIII)V",5,"var6","ringSpeed256","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("nj","<init>(IIII)V",6,"var7","angleStep8192","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("nj","<init>(IIII)V",7,"var8","angleJitter8192","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("nj","c(I)V",0,"fieldTemp$0","remainingDelay","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("nj","c(I)V",1,"var2","particleIndex","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("nj","c(I)V",2,"var3","unusedClientFlag","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("nj","c(I)V",3,"decompiledFrameRemainder0","moveParticleAfterBranch","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("nj","c(I)V",4,"fieldTemp$1","nextAge","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("nj","a(II)V",0,"var3","particleIndex","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("nj","a(II)V",1,"var4","trailIndex","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("nj","a(II)V",2,"var5","unusedClientFlag","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",0,"var5","radiusSquared","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",1,"var6","left","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",2,"var7","right","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",3,"var8","top","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",4,"var9","bottom","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",5,"var10","leftDistanceSquared","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",6,"var11","nextXDistanceSquared","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",7,"var12","nextNextXDistanceSquared","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",8,"var13","xDistanceStep","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",9,"var14","nextXDistanceStep","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",10,"var15","xDistanceSecondDifference","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",11,"var16","topDistanceSquared","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",12,"var17","nextYDistanceSquared","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",13,"var18","nextNextYDistanceSquared","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",14,"var19","yDistanceStep","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",15,"var20","nextYDistanceStep","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",16,"var21","yDistanceSecondDifference","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",17,"var22","destinationIndex","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIII[I)V",18,"var23","destinationRowSkip","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("lb","a(IIIIIIII[II[IIIIIIII)V",0,"var18","negativeColumn","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("hq","b(ZZI)V",0,"var3","burst","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("hq","b(ZZI)V",1,"var4","unusedClientFlag","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("hq","b(ZZI)V",2,"decompiledCaughtException","caughtFailure","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("hq","b(ZZI)V",3,"var3_ref","failure","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("hq","b(ZZI)V",4,"decompiledCaughtParameter0","caughtException","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("wp","a(ZB)V",0,"var2_int","previousCount","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("wp","a(ZB)V",1,"var3","burst","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("wp","a(ZB)V",2,"var4","unusedClientFlag","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("wp","a(ZB)V",3,"decompiledCaughtException","caughtFailure","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("wp","a(ZB)V",4,"var2","failure","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("wp","a(ZB)V",5,"decompiledCaughtParameter0","caughtException","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("uf","a(II)V",0,"var2_int","burstIndex","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("uf","a(II)V",1,"var3","unusedClientFlag","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("uf","a(II)V",2,"decompiledCaughtException","caughtFailure","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("uf","a(II)V",3,"var2","failure","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("uf","a(II)V",4,"decompiledCaughtParameter0","caughtException","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("vq","a(III)V",0,"var3","ringCount","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+local("vq","a(III)V",1,"var4","particlesPerRing","Reviewed firework lifecycle or radial-glow finite-difference declaration.");
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -2817,10 +2928,13 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "Spectator fixtures verify count/local-player/masked-tick/overlay eligibility, edge-triggered key latching, direction precedence and wraparound. Progress fixtures check opcode16, pack*1000+level packing, intermediate flag, int-before-rounding overflow and short truncation, plus both suppression paths. Network-leave fixtures verify opcode66, mask mutation and offline rejection before mutation/output. Deferred score-table fixtures verify positive-score gating, existing-row preservation and packed start/end range. Canonical guards and divisor1000 are used. Static state is restored. Complete post-match screen/audio routing, live network/server interpretation, asset rendering and original-JAR equivalence remain unverified.", '',
 "GameplayRenderHelpers/GameOverlayHelpers name two static rendering/pool helper bags. The player-count layout arrays, Q8 power-up meter positions/velocities, basic powerup/powerupbar assets, countdown digits, small characters and character-specific lever sprites now have reviewed identities. drawMultiplayerBoardHud keeps both the byte and decompiler-generated full-integer signatures as overloads; binding checks preserve their call targets. Guard153 reaches the full-integer body unchanged, while the byte overload receives -103 after narrowing.", '',
 "Independent native fixtures verify lever selection under all three mask sources, sole left/right controls, active board state and tutorial-stage gating. Meter pixels cover thresholds3/7/13/20, Q8 fractional truncation and full-meter pulse; recorded sprite calls verify grid order, row limits and the nominal75-pixel centering formula used by the4-by3 sidebar grid. Offset parallax fixtures preserve signed overflow, integer division, layer order and vertical480-base offsets. Player-HUD fixtures verify countdown boundaries, sprite transforms/alpha, character-specific levers and message-icon conditions; a metamorphic pixel comparison checks byte/integer overload agreement at guard -103. Separate popup fixtures use independent glyph pixels for Q8 placement/clipping and lifetime alpha. Sprite probes replace artwork. Full HUD text content, character artwork, tutorial highlights, single-player status/character composition, all invalid inputs, live rendering and original-JAR equivalence remain unverified.", '',
+"FireworkBurst names the concentric particle effect, including Q8 positions/velocities, timing phases, shared acceleration, per-particle colors, trail histories and intensity decay. Lifecycle helpers name spawn bounds, seeded random source, active deque/count, creation, advancement/replacement, combined drawing and clearing. The separate static brick sprites, matchmaking label, orb-coin sprite and background tint palette retain their reviewed resource/UI roles.", '',
+"Deterministic constructor fixtures use an independent ISAAC/trigonometric reference for schedule, ring colors, jittered positions/velocities, zeroed histories and random state. Controlled lifecycle fixtures compare damping followed by closed-form coasting/ballistic motion, committed trail samples, start-delay/fade boundaries and exact lifetime unlink/count changes. A horizontal turn changes shared acceleration after the first affected particle has already applied its previous value; zero acceleration consumes one random draw. Pool fixtures preserve three-burst seeding even when replacement is disabled, removed-burst replacement, half-open spawn ranges, bounds setup and clearing. Time-derived seed contents are not traced.", '',
+"drawRadialGlow names the Q4 finite-difference disk renderer and its scanline kernel. An independent per-pixel squared-distance reference checks clipping, strict radius boundaries, intensity lookup and channel-wise saturated RGB addition. Burst-paint references compose trail/halo/core glows and verify Q8-to-Q4 placement, hidden start delay and pixel-offset conversion in the combined update/draw helper. Fixtures use controlled RGB ramps. Static state is restored. Arbitrary invalid counts/offsets/guards, default-ramp perceptual appearance, every randomized full-lifetime trajectory, calls after removal, complete scene presentation, live frame rates and original-JAR equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:69,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:70,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
