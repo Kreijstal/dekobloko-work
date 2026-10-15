@@ -371,6 +371,11 @@ classes.df=["AccountDateHelpers", "RSA birth-date submission, pending email-avai
 classes.un=["CalendarRankingHelpers", "Current local calendar year and packed ranking statistics, plus independently named dialog/layout globals."];
 classes.rh=["CalendarMatchmakingState", "Common-year month lengths and matchmaking choice mask; unrelated tutorial, sprite and text globals retain distinct roles."];
 classes.tq=["MeshAudioHelpers", "Interpolated mesh triangle dispatch and audio startup forwarding, alongside shared account packet scratch and unrelated labels."];
+classes.b=["MouseInputCleanup", "Removes mouse/motion/focus listeners and resets held-button state at the canonical guard; unrelated theme/geometry globals retain separate roles."];
+classes.t=["CanvasInputCleanup", "Detaches keyboard and pointer listeners, with an explicit wheel-preservation branch; account and UI globals retain separate roles."];
+classes.uf=["KeyDispatchHelpers", "Ctrl/Alt-sensitive eligibility for pairing key codes with typed characters; separately named fireworks, ignored-player requests and common-packet globals retain distinct roles."];
+classes.ap=["CanvasInputHelpers", "Attaches keyboard, pointer and optional wheel listeners; separate numeric/name helpers and UI/theme globals retain their original contracts."];
+classes.pl=["SpriteInputHelpers", "Half-size RGB sprite creation, signed binary-mask run encoding and mouse listener installation; separately named resource, text and game-request helpers retain distinct roles."];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -4802,6 +4807,100 @@ local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby trans
 
 local('na','a(IIIBI)V',0,'var6','fieldStartX','Centered date-field origin shared by day/month ordering and fixed-width year input.');
 
+{
+ const evidence="Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.";
+ method("uf","b","(II)Z","shouldPairKeyWithCharacter",evidence,["obfuscationGuard", "keyCode"]);
+ method("b","a","(ILjava/awt/Component;)V","detachMouseInput",evidence,["obfuscationGuard", "component"]);
+ method("t","a","(ZLjava/awt/Canvas;)V","detachCanvasInput",evidence,["preserveMouseWheel", "canvas"]);
+ method("ap","a","(BLjava/awt/Canvas;)V","attachCanvasInput",evidence,["obfuscationGuard", "canvas"]);
+ method("pl","a","(Ljava/awt/Component;I)V","attachMouseInput",evidence,["component", "obfuscationGuard"]);
+ method("pl","a","(ILjp;)Ljp;","createHalfSizeSprite",evidence,["obfuscationGuard", "sprite"]);
+ method("pl","a","(Ljp;I)V","encodeBinaryMaskRuns",evidence,["sprite", "firstOffsetRow"]);
+ method("jp","a","(II)V","drawHalfSize",evidence,["x", "y"]);
+ method("jp","a","([IIIIIIII)V","drawHalfSizePixels",evidence,["source", "sourceOffset", "destinationOffset", "sourceRowSkip", "destinationRowSkip", "sourceWidth", "destinationWidth", "destinationHeight"]);
+ local("uf","b(II)Z",0,"stackIn_26_0","postDigitRangeAccepted",evidence);
+ local("uf","b(II)Z",1,"stackIn_44_0","mainRangeAccepted",evidence);
+ local("uf","b(II)Z",2,"stackIn_64_0","letterOrSpecialAccepted",evidence);
+ local("uf","b(II)Z",3,"stackIn_77_0","upperSpecialAccepted",evidence);
+ local("uf","b(II)Z",4,"stackIn_88_0","lowSpecialAccepted",evidence);
+ local("uf","b(II)Z",5,"stackIn_103_0","tailSpecialAccepted",evidence);
+ local("uf","b(II)Z",6,"stackIn_114_0","tailRangeAccepted",evidence);
+ local("uf","b(II)Z",7,"stackIn_127_0","fallbackSpecialAccepted",evidence);
+ local("uf","b(II)Z",8,"stackIn_138_0","fallbackAccepted",evidence);
+ local("uf","b(II)Z",9,"decompiledFrameRemainder3","unusedMainRangeGate",evidence);
+ local("uf","b(II)Z",10,"decompiledFrameRemainder2","continueUpperSpecialCheck",evidence);
+ local("uf","b(II)Z",11,"decompiledFrameRemainder1","continueFallbackCheck",evidence);
+ local("uf","b(II)Z",12,"decompiledFrameRemainder0","continueTailRangeCheck",evidence);
+ local("b","a(ILjava/awt/Component;)V",0,"runtimeException","failure",evidence);
+ local("t","a(ZLjava/awt/Canvas;)V",0,"var2","failure",evidence);
+ local("t","a(ZLjava/awt/Canvas;)V",1,"stackIn_8_0","failureContext",evidence);
+ local("t","a(ZLjava/awt/Canvas;)V",2,"stackIn_8_1","contextBuilder",evidence);
+ local("t","a(ZLjava/awt/Canvas;)V",3,"stackIn_9_2","canvasSummary",evidence);
+ local("t","a(ZLjava/awt/Canvas;)V",4,"decompiledCaughtException","caughtFailure",evidence);
+ local("t","a(ZLjava/awt/Canvas;)V",5,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("ap","a(BLjava/awt/Canvas;)V",0,"var2","failure",evidence);
+ local("ap","a(BLjava/awt/Canvas;)V",1,"stackIn_7_0","failureContext",evidence);
+ local("ap","a(BLjava/awt/Canvas;)V",2,"stackIn_7_1","contextBuilder",evidence);
+ local("ap","a(BLjava/awt/Canvas;)V",3,"stackIn_8_2","canvasSummary",evidence);
+ local("ap","a(BLjava/awt/Canvas;)V",4,"decompiledCaughtException","caughtFailure",evidence);
+ local("ap","a(BLjava/awt/Canvas;)V",5,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("pl","a(Ljava/awt/Component;I)V",0,"var3","unusedArchive",evidence);
+ local("pl","a(Ljava/awt/Component;I)V",1,"runtimeException","failure",evidence);
+ local("pl","a(ILjp;)Ljp;",0,"var2","halfSprite",evidence);
+ local("pl","a(ILjp;)Ljp;",1,"var2_ref","failure",evidence);
+ local("pl","a(ILjp;)Ljp;",2,"var3","unusedBytes",evidence);
+ local("pl","a(ILjp;)Ljp;",3,"stackIn_3_0","result",evidence);
+ local("pl","a(ILjp;)Ljp;",4,"stackIn_6_0","failureContext",evidence);
+ local("pl","a(ILjp;)Ljp;",5,"stackIn_6_1","contextBuilder",evidence);
+ local("pl","a(ILjp;)Ljp;",6,"stackIn_7_2","spriteSummary",evidence);
+ local("pl","a(ILjp;)Ljp;",7,"decompiledCaughtException","caughtFailure",evidence);
+ local("pl","a(ILjp;)Ljp;",8,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("pl","a(Ljp;I)V",0,"var5_int","offsetRow",evidence);
+ local("pl","a(Ljp;I)V",1,"var8","column",evidence);
+ local("pl","a(Ljp;I)V",2,"incrementValue$2","sourceIndexBeforeIncrement",evidence);
+ local("pl","a(Ljp;I)V",3,"incrementValue$1","offsetIndexBeforeIncrement",evidence);
+ local("pl","a(Ljp;I)V",4,"incrementValue$0","runIndexBeforeIncrement",evidence);
+ local("pl","a(Ljp;I)V",5,"stackIn_24_0","failureContext",evidence);
+ local("pl","a(Ljp;I)V",6,"stackIn_24_1","contextBuilder",evidence);
+ local("pl","a(Ljp;I)V",7,"stackIn_25_2","spriteSummary",evidence);
+ local("pl","a(Ljp;I)V",8,"decompiledCaughtException","caughtFailure",evidence);
+ local("pl","a(Ljp;I)V",9,"var2","offsetsAlias",evidence);
+ local("pl","a(Ljp;I)V",10,"var2_ref","failure",evidence);
+ local("pl","a(Ljp;I)V",11,"var3","sourceIndex",evidence);
+ local("pl","a(Ljp;I)V",12,"var4","runCount",evidence);
+ local("pl","a(Ljp;I)V",13,"var5","encodedPixels",evidence);
+ local("pl","a(Ljp;I)V",14,"var6","opaqueRunLength",evidence);
+ local("pl","a(Ljp;I)V",15,"var7","transparentRunLength",evidence);
+ local("pl","a(Ljp;I)V",16,"var9","sourcePixel",evidence);
+ local("pl","a(Ljp;I)V",17,"var10","unusedGameFlag",evidence);
+ local("pl","a(Ljp;I)V",18,"var11","offsetsInitialAlias",evidence);
+ local("pl","a(Ljp;I)V",19,"var12","offsetsAllocatedAlias",evidence);
+ local("pl","a(Ljp;I)V",20,"var13","rowOffsets",evidence);
+ local("pl","a(Ljp;I)V",21,"var3Lifetime1","encodedIndex",evidence);
+ local("pl","a(Ljp;I)V",22,"var6Lifetime1","offsetCopyIndex",evidence);
+ local("pl","a(Ljp;I)V",23,"var6Lifetime2","runCopyIndex",evidence);
+ local("pl","a(Ljp;I)V",24,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("jp","a(II)V",0,"var3","firstSourceColumn",evidence);
+ local("jp","a(II)V",1,"var4","lastSourceColumn",evidence);
+ local("jp","a(II)V",2,"var5","firstSourceRow",evidence);
+ local("jp","a(II)V",3,"var6","lastSourceRow",evidence);
+ local("jp","a([IIIIIIII)V",0,"dupTemp$0","topLeftLoad",evidence);
+ local("jp","a([IIIIIIII)V",1,"dupTemp$1","topRightLoad",evidence);
+ local("jp","a([IIIIIIII)V",2,"dupTemp$2","bottomLeftLoad",evidence);
+ local("jp","a([IIIIIIII)V",3,"dupTemp$3","bottomRightLoad",evidence);
+ local("jp","a([IIIIIIII)V",4,"incrementValue$4","destinationIndexBeforeIncrement",evidence);
+ local("jp","a([IIIIIIII)V",5,"var8","row",evidence);
+ local("jp","a([IIIIIIII)V",6,"var9","column",evidence);
+ local("jp","a([IIIIIIII)V",7,"var10","topLeftPixel",evidence);
+ local("jp","a([IIIIIIII)V",8,"var11","backgroundRedBlue",evidence);
+ local("jp","a([IIIIIIII)V",9,"var12","backgroundGreen",evidence);
+ local("jp","a([IIIIIIII)V",10,"var13","redBlueSum",evidence);
+ local("jp","a([IIIIIIII)V",11,"var14","greenSum",evidence);
+ local("jp","a([IIIIIIII)V",12,"var10Lifetime1","topRightPixel",evidence);
+ local("jp","a([IIIIIIII)V",13,"var10Lifetime2","bottomLeftPixel",evidence);
+ local("jp","a([IIIIIIII)V",14,"var10Lifetime3","bottomRightPixel",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -5115,10 +5214,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'Independent pose fixtures cover all piece sign cases and animation boundaries; no-face meshes verify depth-selected final pose/projection state, including the existing draw-ordinal original-center lookup. A real one-face triangle checks complete shaded pixels for default and pointer lighting. Board-end pixel references cover every tick0 through260, odd/even widths, clipping, fade/bounce cutoffs, delayed message opacity and signed high bytes from alpha blending. Additional checks cover sequence attribute ranges/guard sentinel and frame/sprite style parameter forwarding by values and array identity. Whole original logo imagery, multi-piece shaded overlap, original asset/browser rendering and original-gamepack equivalence remain unverified.', '',
 'AccountDateHelpers exposes RSA birth-date submission, pending email-availability reply consumption and account-dialog result polling. CalendarRankingHelpers exposes the current local year; CalendarMatchmakingState names the common-year month table. NameEntryPopup.isLegacyLeapYear, ReflectionCheck.getLegacyMonthLength and PlayerInputBatch.isValidLegacyDate identify the hybrid calendar contracts. MeshAudioHelpers identifies triangle/audio forwarding and shared account packet scratch. Account RSA fields, pending email Boolean, date parser/validation branches and CP1252 decode locals are named. packetRandom corrects the earlier delay-only name: account nonce words share the same Random.', '',
 'Independent calendar references cover Julian/Gregorian leap behavior, negative-year conversion, full year cycles, month/day bounds and integer extremes. Real date-field widgets check Unicode/overflow parsing, day/month order, validator/listener links, completeness, age limits, messages and debounce status. Deterministic nonce fixtures compare birth-date opcode18 framing and marker12 RSA bytes, including out-of-range truncation, scratch reset/reuse and guarded panel submission. Email Boolean replies are checked through consumption and request completion. Current-year checks use local Gregorian references without hashing wall-clock values. Live calendar rendering, pointer submission, complete account-dialog polling, server acceptance and original-gamepack equivalence remain unverified.', '',
+'KeyDispatchHelpers.shouldPairKeyWithCharacter identifies the Ctrl/Alt-sensitive key whitelist used by client key/typed-character pairing. CanvasInputHelpers and CanvasInputCleanup expose ordered keyboard, pointer and optional wheel setup/cleanup; MouseInputCleanup names the lower pointer-only removal and held-button reset. SpriteInputHelpers names mouse installation, half-size sprite creation and binary-mask run encoding. RgbSprite.drawHalfSize and its sample-averaging kernel now expose dimensions, offsets, row skips and pixel roles. Other unrelated static helpers/globals retain separate roles.', '',
+'Independent whitelist fixtures cover key ranges, extreme codes, Ctrl/Alt/Shift combinations, guard short-circuiting and short/null held arrays. A recording Canvas uses real AWT listener lists to check attach/detach order, wheel preservation, null singletons and partial state at every injected callback failure. Direct mouse removal preserves its raw-versus-contextual exception boundary and wrong-guard behavior. Sprite references check signed opaque/transparent mask lengths, row offsets, prefix consumption for nonzero offset rows and old-array mutation/replacement. Half-size pixels cover odd cropped canvases, framebuffer restoration and clipped even-width draws. Full client event dispatch, odd-width clipped sampling, native display interaction and original-gamepack equivalence remain unverified.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:91,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:92,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

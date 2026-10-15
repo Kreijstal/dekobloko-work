@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 91,
+  "version": 92,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -325,10 +325,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ap",
+      "originalName": "ap",
+      "to": "CanvasInputHelpers",
+      "evidence": "ap.java: Attaches keyboard, pointer and optional wheel listeners; separate numeric/name helpers and UI/theme globals retain their original contracts.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:aq",
       "originalName": "aq",
       "to": "PcmPlayerService",
       "evidence": "aq.java: Runnable owning two players, running/stop flags and platform event pumping. Unrelated static UI data remains separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:b",
+      "originalName": "b",
+      "to": "MouseInputCleanup",
+      "evidence": "b.java: Removes mouse/motion/focus listeners and resets held-button state at the canonical guard; unrelated theme/geometry globals retain separate roles.",
       "confidence": "reviewed"
     },
     {
@@ -1956,6 +1970,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pl",
+      "originalName": "pl",
+      "to": "SpriteInputHelpers",
+      "evidence": "pl.java: Half-size RGB sprite creation, signed binary-mask run encoding and mouse listener installation; separately named resource, text and game-request helpers retain distinct roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pm",
       "originalName": "pm",
       "to": "ArrayOperations",
@@ -2313,6 +2334,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:t",
+      "originalName": "t",
+      "to": "CanvasInputCleanup",
+      "evidence": "t.java: Detaches keyboard and pointer listeners, with an explicit wheel-preservation branch; account and UI globals retain separate roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ta",
       "originalName": "ta",
       "to": "NineSliceFrame",
@@ -2457,6 +2485,13 @@
       "originalName": "ue",
       "to": "MonotonicTime",
       "evidence": "ue.java: Synchronized wall-time helper compensating backward clock jumps; unrelated static/global data retain their roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:uf",
+      "originalName": "uf",
+      "to": "KeyDispatchHelpers",
+      "evidence": "uf.java: Ctrl/Alt-sensitive eligibility for pairing key codes with typed characters; separately named fireworks, ignored-player requests and common-packet globals retain distinct roles.",
       "confidence": "reviewed"
     },
     {
@@ -19071,6 +19106,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:ap.a(BLjava/awt/Canvas;)V#0",
+      "originalName": "var2",
+      "to": "failure",
+      "evidence": "ap.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ap.a(BLjava/awt/Canvas;)V#1",
+      "originalName": "stackIn_7_0",
+      "to": "failureContext",
+      "evidence": "ap.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ap.a(BLjava/awt/Canvas;)V#2",
+      "originalName": "stackIn_7_1",
+      "to": "contextBuilder",
+      "evidence": "ap.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ap.a(BLjava/awt/Canvas;)V#3",
+      "originalName": "stackIn_8_2",
+      "to": "canvasSummary",
+      "evidence": "ap.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ap.a(BLjava/awt/Canvas;)V#4",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "ap.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:ap.a(BLjava/awt/Canvas;)V#5",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "ap.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:aq.run()V#0",
       "originalName": "var1_int",
       "to": "playerIndex",
@@ -19166,6 +19243,13 @@
       "originalName": "var3",
       "to": "fatalFailure",
       "evidence": "aq.java: Reviewed PCM encoding, mixer format setup or two-player worker lifecycle local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:b.a(ILjava/awt/Component;)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "b.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
       "confidence": "reviewed"
     },
     {
@@ -31517,6 +31601,139 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:jp.a(II)V#0",
+      "originalName": "var3",
+      "to": "firstSourceColumn",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a(II)V#1",
+      "originalName": "var4",
+      "to": "lastSourceColumn",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a(II)V#2",
+      "originalName": "var5",
+      "to": "firstSourceRow",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a(II)V#3",
+      "originalName": "var6",
+      "to": "lastSourceRow",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a([IIIIIIII)V#0",
+      "originalName": "dupTemp$0",
+      "to": "topLeftLoad",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a([IIIIIIII)V#1",
+      "originalName": "dupTemp$1",
+      "to": "topRightLoad",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a([IIIIIIII)V#10",
+      "originalName": "var13",
+      "to": "redBlueSum",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a([IIIIIIII)V#11",
+      "originalName": "var14",
+      "to": "greenSum",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a([IIIIIIII)V#12",
+      "originalName": "var10Lifetime1",
+      "to": "topRightPixel",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a([IIIIIIII)V#13",
+      "originalName": "var10Lifetime2",
+      "to": "bottomLeftPixel",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a([IIIIIIII)V#14",
+      "originalName": "var10Lifetime3",
+      "to": "bottomRightPixel",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a([IIIIIIII)V#2",
+      "originalName": "dupTemp$2",
+      "to": "bottomLeftLoad",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a([IIIIIIII)V#3",
+      "originalName": "dupTemp$3",
+      "to": "bottomRightLoad",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a([IIIIIIII)V#4",
+      "originalName": "incrementValue$4",
+      "to": "destinationIndexBeforeIncrement",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a([IIIIIIII)V#5",
+      "originalName": "var8",
+      "to": "row",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a([IIIIIIII)V#6",
+      "originalName": "var9",
+      "to": "column",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a([IIIIIIII)V#7",
+      "originalName": "var10",
+      "to": "topLeftPixel",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a([IIIIIIII)V#8",
+      "originalName": "var11",
+      "to": "backgroundRedBlue",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:jp.a([IIIIIIII)V#9",
+      "originalName": "var12",
+      "to": "backgroundGreen",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:jp.g(II)V#0",
       "originalName": "var9",
       "to": "clippedBottomRows",
@@ -40344,6 +40561,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:pl.a(ILjp;)Ljp;#0",
+      "originalName": "var2",
+      "to": "halfSprite",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(ILjp;)Ljp;#1",
+      "originalName": "var2_ref",
+      "to": "failure",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(ILjp;)Ljp;#2",
+      "originalName": "var3",
+      "to": "unusedBytes",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(ILjp;)Ljp;#3",
+      "originalName": "stackIn_3_0",
+      "to": "result",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(ILjp;)Ljp;#4",
+      "originalName": "stackIn_6_0",
+      "to": "failureContext",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(ILjp;)Ljp;#5",
+      "originalName": "stackIn_6_1",
+      "to": "contextBuilder",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(ILjp;)Ljp;#6",
+      "originalName": "stackIn_7_2",
+      "to": "spriteSummary",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(ILjp;)Ljp;#7",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(ILjp;)Ljp;#8",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:pl.a(I[BIZIB)V#0",
       "originalName": "var6",
       "to": "packet",
@@ -40362,6 +40642,195 @@
       "originalName": "var8",
       "to": "creationWord",
       "evidence": "pl.java: Scoped outgoing request buffer, byte-length origin or packed option word verified from writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljava/awt/Component;I)V#0",
+      "originalName": "var3",
+      "to": "unusedArchive",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljava/awt/Component;I)V#1",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#0",
+      "originalName": "var5_int",
+      "to": "offsetRow",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#1",
+      "originalName": "var8",
+      "to": "column",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#10",
+      "originalName": "var2_ref",
+      "to": "failure",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#11",
+      "originalName": "var3",
+      "to": "sourceIndex",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#12",
+      "originalName": "var4",
+      "to": "runCount",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#13",
+      "originalName": "var5",
+      "to": "encodedPixels",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#14",
+      "originalName": "var6",
+      "to": "opaqueRunLength",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#15",
+      "originalName": "var7",
+      "to": "transparentRunLength",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#16",
+      "originalName": "var9",
+      "to": "sourcePixel",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#17",
+      "originalName": "var10",
+      "to": "unusedGameFlag",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#18",
+      "originalName": "var11",
+      "to": "offsetsInitialAlias",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#19",
+      "originalName": "var12",
+      "to": "offsetsAllocatedAlias",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#2",
+      "originalName": "incrementValue$2",
+      "to": "sourceIndexBeforeIncrement",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#20",
+      "originalName": "var13",
+      "to": "rowOffsets",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#21",
+      "originalName": "var3Lifetime1",
+      "to": "encodedIndex",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#22",
+      "originalName": "var6Lifetime1",
+      "to": "offsetCopyIndex",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#23",
+      "originalName": "var6Lifetime2",
+      "to": "runCopyIndex",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#24",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#3",
+      "originalName": "incrementValue$1",
+      "to": "offsetIndexBeforeIncrement",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#4",
+      "originalName": "incrementValue$0",
+      "to": "runIndexBeforeIncrement",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#5",
+      "originalName": "stackIn_24_0",
+      "to": "failureContext",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#6",
+      "originalName": "stackIn_24_1",
+      "to": "contextBuilder",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#7",
+      "originalName": "stackIn_25_2",
+      "to": "spriteSummary",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#8",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pl.a(Ljp;I)V#9",
+      "originalName": "var2",
+      "to": "offsetsAlias",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
       "confidence": "reviewed"
     },
     {
@@ -44579,6 +45048,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:t.a(ZLjava/awt/Canvas;)V#0",
+      "originalName": "var2",
+      "to": "failure",
+      "evidence": "t.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:t.a(ZLjava/awt/Canvas;)V#1",
+      "originalName": "stackIn_8_0",
+      "to": "failureContext",
+      "evidence": "t.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:t.a(ZLjava/awt/Canvas;)V#2",
+      "originalName": "stackIn_8_1",
+      "to": "contextBuilder",
+      "evidence": "t.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:t.a(ZLjava/awt/Canvas;)V#3",
+      "originalName": "stackIn_9_2",
+      "to": "canvasSummary",
+      "evidence": "t.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:t.a(ZLjava/awt/Canvas;)V#4",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "t.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:t.a(ZLjava/awt/Canvas;)V#5",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "t.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:tb.<init>(Lcp;Ljava/lang/String;)V#0",
       "originalName": "var3_int",
       "to": "detailHeight",
@@ -46781,6 +47292,97 @@
       "originalName": "var9",
       "to": "nameCharacters",
       "evidence": "uf.java: Reviewed social update/lookup/request declaration and intrusive ownership; exact ordinal/spelling checked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.b(II)Z#0",
+      "originalName": "stackIn_26_0",
+      "to": "postDigitRangeAccepted",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.b(II)Z#1",
+      "originalName": "stackIn_44_0",
+      "to": "mainRangeAccepted",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.b(II)Z#10",
+      "originalName": "decompiledFrameRemainder2",
+      "to": "continueUpperSpecialCheck",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.b(II)Z#11",
+      "originalName": "decompiledFrameRemainder1",
+      "to": "continueFallbackCheck",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.b(II)Z#12",
+      "originalName": "decompiledFrameRemainder0",
+      "to": "continueTailRangeCheck",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.b(II)Z#2",
+      "originalName": "stackIn_64_0",
+      "to": "letterOrSpecialAccepted",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.b(II)Z#3",
+      "originalName": "stackIn_77_0",
+      "to": "upperSpecialAccepted",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.b(II)Z#4",
+      "originalName": "stackIn_88_0",
+      "to": "lowSpecialAccepted",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.b(II)Z#5",
+      "originalName": "stackIn_103_0",
+      "to": "tailSpecialAccepted",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.b(II)Z#6",
+      "originalName": "stackIn_114_0",
+      "to": "tailRangeAccepted",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.b(II)Z#7",
+      "originalName": "stackIn_127_0",
+      "to": "fallbackSpecialAccepted",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.b(II)Z#8",
+      "originalName": "stackIn_138_0",
+      "to": "fallbackAccepted",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:uf.b(II)Z#9",
+      "originalName": "decompiledFrameRemainder3",
+      "to": "unusedMainRangeGate",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
       "confidence": "reviewed"
     },
     {
@@ -50662,6 +51264,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ap.a(BLjava/awt/Canvas;)V",
+      "originalName": "a",
+      "to": "attachCanvasInput",
+      "evidence": "ap.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detachMouseInput",
+      "evidence": "b.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ba.a([BIII)I",
       "originalName": "a",
       "to": "computeCrc32",
@@ -52493,6 +53109,13 @@
       "originalName": "a",
       "to": "requestIntArray",
       "evidence": "fa.java: Allocates values, appends pending request and sends type0 request; guard below -68.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.a(II)V",
+      "originalName": "a",
+      "to": "drawHalfSize",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -54908,6 +55531,20 @@
       "originalName": "a",
       "to": "flipHorizontal",
       "evidence": "jp.java: Reverses each pixel row and reflects crop offset within original canvas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jp.a(II)V",
+      "originalName": "a",
+      "to": "drawHalfSize",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jp.a([IIIIIIII)V",
+      "originalName": "a",
+      "to": "drawHalfSizePixels",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
       "confidence": "reviewed"
     },
     {
@@ -58362,6 +58999,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pl.a(ILjp;)Ljp;",
+      "originalName": "a",
+      "to": "createHalfSizeSprite",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pl.a(I[BIZIB)V",
       "originalName": "a",
       "to": "requestCreateGame",
@@ -58369,10 +59013,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pl.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "attachMouseInput",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pl.a(Ljava/lang/String;Ljava/lang/String;BLmf;)Ljp;",
       "originalName": "a",
       "to": "loadRgbSpriteByName",
       "evidence": "pl.java: Resolves group/file names then loads first RGB sprite; guard -110.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pl.a(Ljp;I)V",
+      "originalName": "a",
+      "to": "encodeBinaryMaskRuns",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
       "confidence": "reviewed"
     },
     {
@@ -60049,6 +60707,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:t.a(ZLjava/awt/Canvas;)V",
+      "originalName": "a",
+      "to": "detachCanvasInput",
+      "evidence": "t.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ta.a(IIIZI)V",
       "originalName": "a",
       "to": "paintFrame",
@@ -60788,6 +61453,13 @@
       "originalName": "a",
       "to": "requestRemoveIgnoredPlayer",
       "evidence": "uf.java: Finds lookupName, unlinks both ownerships and decrements count; operation3 sends supplied wire name; guard -66.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uf.b(II)Z",
+      "originalName": "b",
+      "to": "shouldPairKeyWithCharacter",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
       "confidence": "reviewed"
     },
     {
@@ -64141,6 +64813,34 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "ao.java: Advances latestIndex and stores the same object reference; canonical guard -39.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ap.a(BLjava/awt/Canvas;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ap.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ap.a(BLjava/awt/Canvas;)V#1",
+      "originalName": "param1",
+      "to": "canvas",
+      "evidence": "ap.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:b.a(ILjava/awt/Component;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "b.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:b.a(ILjava/awt/Component;)V#1",
+      "originalName": "param1",
+      "to": "component",
+      "evidence": "b.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
       "confidence": "reviewed"
     },
     {
@@ -70693,6 +71393,20 @@
       "originalName": "param6",
       "to": "pixels",
       "evidence": "fb.java: Retains cropped geometry and caller ARGB array through base constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fb.a(II)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fb.a(II)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -78050,6 +78764,76 @@
       "originalName": "param6",
       "to": "pixels",
       "evidence": "jp.java: Retains cropped geometry and caller pixel array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.a(II)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.a(II)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.a([IIIIIIII)V#0",
+      "originalName": "param0",
+      "to": "source",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.a([IIIIIIII)V#1",
+      "originalName": "param1",
+      "to": "sourceOffset",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.a([IIIIIIII)V#2",
+      "originalName": "param2",
+      "to": "destinationOffset",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.a([IIIIIIII)V#3",
+      "originalName": "param3",
+      "to": "sourceRowSkip",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.a([IIIIIIII)V#4",
+      "originalName": "param4",
+      "to": "destinationRowSkip",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.a([IIIIIIII)V#5",
+      "originalName": "param5",
+      "to": "sourceWidth",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.a([IIIIIIII)V#6",
+      "originalName": "param6",
+      "to": "destinationWidth",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:jp.a([IIIIIIII)V#7",
+      "originalName": "param7",
+      "to": "destinationHeight",
+      "evidence": "jp.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
       "confidence": "reviewed"
     },
     {
@@ -89092,6 +89876,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pl.a(ILjp;)Ljp;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pl.a(ILjp;)Ljp;#1",
+      "originalName": "param1",
+      "to": "sprite",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:pl.a(I[BIZIB)V#0",
       "originalName": "param0",
       "to": "opcode",
@@ -89134,6 +89932,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pl.a(Ljava/awt/Component;I)V#0",
+      "originalName": "param0",
+      "to": "component",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pl.a(Ljava/awt/Component;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:pl.a(Ljava/lang/String;Ljava/lang/String;BLmf;)Ljp;#0",
       "originalName": "param0",
       "to": "groupName",
@@ -89159,6 +89971,20 @@
       "originalName": "param3",
       "to": "archive",
       "evidence": "pl.java: Resolves group/file names then loads first RGB sprite; guard -110.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pl.a(Ljp;I)V#0",
+      "originalName": "param0",
+      "to": "sprite",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pl.a(Ljp;I)V#1",
+      "originalName": "param1",
+      "to": "firstOffsetRow",
+      "evidence": "pl.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
       "confidence": "reviewed"
     },
     {
@@ -93628,6 +94454,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:t.a(ZLjava/awt/Canvas;)V#0",
+      "originalName": "param0",
+      "to": "preserveMouseWheel",
+      "evidence": "t.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:t.a(ZLjava/awt/Canvas;)V#1",
+      "originalName": "param1",
+      "to": "canvas",
+      "evidence": "t.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ta.<init>([Ljp;)V#0",
       "originalName": "param0",
       "to": "sprites",
@@ -95704,6 +96544,20 @@
       "originalName": "param3",
       "to": "obfuscationGuard",
       "evidence": "uf.java: Finds lookupName, unlinks both ownerships and decrements count; operation3 sends supplied wire name; guard -66.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uf.b(II)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uf.b(II)Z#1",
+      "originalName": "param1",
+      "to": "keyCode",
+      "evidence": "uf.java: Key-pairing fixtures exhaust code ranges and Ctrl/Alt/Shift combinations against an independent whitelist, including guard short-circuiting and held-array failures. A recording Canvas verifies listener order, preservation/removal, partial failures and contextual exception boundaries with real AWT listener lists. Sprite references verify half-size pixels and framebuffer restoration, and binary-mask row offsets/signed run lengths plus original-array mutation. No native display or full client dispatch loop is exercised.",
       "confidence": "reviewed"
     },
     {
@@ -99789,9 +100643,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "acfbd851d9e1abaf00356381482e772b92fcdb36a083b3f3a01366692f0e2003",
+      "build-brickabrac-rules.mjs": "8b60866aa07668f1e208ed54953ca725145be63cc54738c734bf2ced7011fab6",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "b79ef613b1063745b883bbebfd781870473cd31239c5ce2d5f6cf347e122d2c2",
+      "tests/test-brickabrac-core.mjs": "72e1900058f487e4b6576a79092f13bb16a0e62040f893fd0ce6ed7f242ed738",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
