@@ -340,6 +340,7 @@ classes.fq=['HorizontalFrameHelpers','Draws a left/middle/right tiled RGB strip 
 classes.n=['ConnectionPhase','Identity-only connection-state markers; three specific markers allow game-transport use. Unrelated static chat-history, sprite and opponent-search helpers retain separate roles.'];
 classes.sj=['ChatLobbyUiHelpers','Rebuilds visible chat-history rows and handles lobby responses; unrelated applet-cookie, music and loading globals retain separate roles.'];
 classes.vg=['GameTransportActions','Tests transport availability through the current connection phase and sends leave/decline-game requests; unrelated text-choice frame/messages retain separate roles.'];
+classes.la=['RasterEffectHelpers','Bubble refraction scanlines, grayscale-palette sprite blitting, raster outlines, vertical gradients, branched glow and fixed8 HSV conversion; unrelated static UI/token helpers retain separate roles.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -3541,6 +3542,160 @@ local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby trans
  local("n","a(IZZB)V",32,"decompiledCaughtParameter0","caughtUpdateFailure",evidence);
 }
 
+
+// Refraction and raster effect helpers.
+{
+ const evidence="Reviewed raster helper arithmetic and drawing callers, including fixed16-pixel centers, outward sampling, grayscale detection, mask-neighbor offsets and 255-complement gradient weights.";
+ field("on","L","[I","bubbleDistortionFalloff",evidence);
+ field("pa","i","[I","glowBranchScratch",evidence);
+ field("mh","F","[I","glowSequenceWords",evidence);
+ field("la","c","Z","viewKeyWasHeld",evidence);
+ method("la","a","(IIIIIIIIIIIIII)V","drawBubbleRowBelowCenter",evidence,["y", "distanceSquared", "distanceStepX", "distanceStep2X", "falloffIndexShift", "radiusSquared", "scaledRadiusSquared", "leftBound", "centerColumn", "rightBound", "distortionAmount", "destinationOffset", "centerX16", "centerY16"]);
+ method("la","b","(IIIIIIIIIIIIII)V","drawBubbleRowAboveCenter",evidence,["y", "distanceSquared", "distanceStepX", "distanceStep2X", "falloffIndexShift", "radiusSquared", "scaledRadiusSquared", "leftBound", "centerColumn", "rightBound", "distortionAmount", "destinationOffset", "centerX16", "centerY16"]);
+ method("la","a","([I[IIIIIIIIII[I)V","blitGrayscalePalette",evidence,["destination", "source", "sourceColor", "sourceOffset", "destinationOffset", "columnCountdown", "rowCountdown", "width", "height", "destinationRowSkip", "sourceRowSkip", "grayPalette"]);
+ method("la","a","([IIIIIIIII)V","markOutlineNeighbors",evidence,["pixels", "offset", "leftIndex", "rightIndex", "aboveIndex", "belowIndex", "width", "height", "rowSkip"]);
+ method("la","a","(Ljp;II[I)V","drawGrayscalePaletteSprite",evidence,["sprite", "x", "y", "grayPalette"]);
+ method("la","a","(IIIIIII)V","fillVerticalGradientAlpha255",evidence,["x", "y", "width", "height", "topColor", "bottomColor", "alpha255"]);
+ method("la","a","(IIIII[II)V","drawBranchedGlow",evidence,["centerX16", "centerY16", "radiusStep16", "generations", "maximumChildren", "colors", "sequenceSeed"]);
+ method("la","a","(III)I","hsvFixed8ToRgb",evidence,["hueDegrees256", "saturation256", "value255"]);
+ method("gp","a","(IIIII)V","outlineRasterRegion",evidence,["height", "y", "width", "unusedBelowIndex", "x"]);
+ local("la","a(IIIIIIIIIIIIII)V",0,"incrementValue$1","writtenOffset",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",1,"var14","deltaY16",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",2,"var15","rightDestination",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",3,"var16","rightDistanceSquared",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",4,"var17","rightDistanceStep",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",5,"var18","rightX",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",6,"var19","rightDeltaX16",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",7,"var20","rightFalloffIndex",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",8,"var21","rightDistortion",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",9,"var22","rightSourceX",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",10,"var23","rightSourceY",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",11,"var24","rightSourceColor",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",12,"var25","rightGain64OrGreen",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",13,"var26","rightRedBlueOrCarry",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",14,"var15Lifetime1","leftDestination",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",15,"var16Lifetime1","leftDistanceSquared",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",16,"var17Lifetime1","leftDistanceStep",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",17,"var18Lifetime1","leftX",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",18,"var19Lifetime1","leftDeltaX16",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",19,"var20Lifetime1","leftFalloffIndex",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",20,"var21Lifetime1","leftDistortion",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",21,"var22Lifetime1","leftSourceX",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",22,"var23Lifetime1","leftSourceY",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",23,"var24Lifetime1","leftSourceColor",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",24,"var25Lifetime1","leftGain64OrGreen",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",25,"var26Lifetime1","leftRedBlueOrCarry",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",26,"var24Lifetime2","rightPackedColor",evidence);
+ local("la","a(IIIIIIIIIIIIII)V",27,"var24Lifetime1Lifetime1","leftPackedColor",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",0,"incrementValue$1","writtenOffset",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",1,"var14","deltaY16",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",2,"var15","rightDestination",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",3,"var16","rightDistanceSquared",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",4,"var17","rightDistanceStep",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",5,"var18","rightX",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",6,"var19","rightDeltaX16",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",7,"var20","rightFalloffIndex",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",8,"var21","rightDistortion",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",9,"var22","rightSourceX",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",10,"var23","rightSourceY",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",11,"var24","rightSourceColor",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",12,"var25","rightGain64OrGreen",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",13,"var26","rightRedBlueOrCarry",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",14,"var15Lifetime1","leftDestination",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",15,"var16Lifetime1","leftDistanceSquared",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",16,"var17Lifetime1","leftDistanceStep",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",17,"var18Lifetime1","leftX",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",18,"var19Lifetime1","leftDeltaX16",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",19,"var20Lifetime1","leftFalloffIndex",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",20,"var21Lifetime1","leftDistortion",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",21,"var22Lifetime1","leftSourceX",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",22,"var23Lifetime1","leftSourceY",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",23,"var24Lifetime1","leftSourceColor",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",24,"var25Lifetime1","leftGain64OrGreen",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",25,"var26Lifetime1","leftRedBlueOrCarry",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",26,"var24Lifetime2","rightPackedColor",evidence);
+ local("la","b(IIIIIIIIIIIIII)V",27,"var24Lifetime1Lifetime1","leftPackedColor",evidence);
+ local("la","a(IIII)V",0,"var28","lowerRow",evidence);
+ local("la","a(IIII)V",1,"var4","radiusSquared",evidence);
+ local("la","a(IIII)V",2,"var5","leftX",evidence);
+ local("la","a(IIII)V",3,"var6","centerColumn",evidence);
+ local("la","a(IIII)V",4,"var7","rightX",evidence);
+ local("la","a(IIII)V",5,"var8","topY",evidence);
+ local("la","a(IIII)V",6,"var9","centerRow",evidence);
+ local("la","a(IIII)V",7,"var10","bottomY",evidence);
+ local("la","a(IIII)V",8,"var28Lifetime1","upperRow",evidence);
+ local("la","a(IIII)V",9,"var11","xSquared0",evidence);
+ local("la","a(IIII)V",10,"var12","xSquared1",evidence);
+ local("la","a(IIII)V",11,"var13","xSquared2",evidence);
+ local("la","a(IIII)V",12,"var14","xStep0",evidence);
+ local("la","a(IIII)V",13,"var15","xStep1",evidence);
+ local("la","a(IIII)V",14,"var16","xSecondDifference",evidence);
+ local("la","a(IIII)V",15,"var17","ySquared0",evidence);
+ local("la","a(IIII)V",16,"var18","ySquared1",evidence);
+ local("la","a(IIII)V",17,"var19","ySquared2",evidence);
+ local("la","a(IIII)V",18,"var20","yStep0",evidence);
+ local("la","a(IIII)V",19,"var21","yStep1",evidence);
+ local("la","a(IIII)V",20,"var22","ySecondDifference",evidence);
+ local("la","a(IIII)V",21,"var23","falloffIndexShift",evidence);
+ local("la","a(IIII)V",22,"var24","scaledRadiusSquared",evidence);
+ local("la","a(IIII)V",23,"var25","destinationOffset",evidence);
+ local("la","a(IIII)V",24,"var26","distanceSquared",evidence);
+ local("la","a(IIII)V",25,"var27","distanceStepY",evidence);
+ local("la","a(Ljp;II[I)V",0,"var10","clippedTopRows",evidence);
+ local("la","a(Ljp;II[I)V",1,"var10Lifetime1","clippedLeftColumns",evidence);
+ local("la","a(Ljp;II[I)V",2,"var10Lifetime2","clippedRightColumns",evidence);
+ local("la","a(Ljp;II[I)V",3,"var4","destinationOffset",evidence);
+ local("la","a(Ljp;II[I)V",4,"var5","sourceOffset",evidence);
+ local("la","a(Ljp;II[I)V",5,"var6","height",evidence);
+ local("la","a(Ljp;II[I)V",6,"var7","width",evidence);
+ local("la","a(Ljp;II[I)V",7,"var8","destinationRowSkip",evidence);
+ local("la","a(Ljp;II[I)V",8,"var9","sourceRowSkip",evidence);
+ local("la","a([I[IIIIIIIIII[I)V",0,"incrementValue$14","writtenOffset",evidence);
+ local("la","a([IIIIIIIII)V",0,"var9","columnCountdown",evidence);
+ local("la","a(IIIIIII)V",0,"var12","rowCountdown",evidence);
+ local("la","a(IIIIIII)V",1,"var13","topWeight256",evidence);
+ local("la","a(IIIIIII)V",2,"var14","bottomWeight256",evidence);
+ local("la","a(IIIIIII)V",3,"var15","gradientRedBlue",evidence);
+ local("la","a(IIIIIII)V",4,"var16","gradientGreen",evidence);
+ local("la","a(IIIIIII)V",5,"var17","columnCountdown",evidence);
+ local("la","a(IIIIIII)V",6,"var18","destinationColor",evidence);
+ local("la","a(IIIIIII)V",7,"incrementValue$0","writtenOffset",evidence);
+ local("la","a(IIIIIII)V",8,"var7","gradientPosition16",evidence);
+ local("la","a(IIIIIII)V",9,"var8","gradientStep16",evidence);
+ local("la","a(IIIIIII)V",10,"var9","inverseAlpha255",evidence);
+ local("la","a(IIIIIII)V",11,"var10","destinationRowSkip",evidence);
+ local("la","a(IIIIIII)V",12,"var11","destinationOffset",evidence);
+ local("la","a(III)I",0,"var4Lifetime1","sectorParity",evidence);
+ local("la","a(III)I",1,"var3","sectorThenPairIndex",evidence);
+ local("la","a(III)I",2,"var4","one256",evidence);
+ local("la","a(III)I",3,"var5","minimumChannel",evidence);
+ local("la","a(III)I",4,"var6","fallingChannel",evidence);
+ local("la","a(III)I",5,"var7","risingChannel",evidence);
+ local("la","a(IIIII[II)V",0,"var12","generation",evidence);
+ local("la","a(IIIII[II)V",1,"var13","nextGenerationCount",evidence);
+ local("la","a(IIIII[II)V",2,"var14","node",evidence);
+ local("la","a(IIIII[II)V",3,"incrementValue$0","xReadIndex",evidence);
+ local("la","a(IIIII[II)V",4,"var15","nodeX16",evidence);
+ local("la","a(IIIII[II)V",5,"incrementValue$1","yReadIndex",evidence);
+ local("la","a(IIIII[II)V",6,"var16","nodeY16",evidence);
+ local("la","a(IIIII[II)V",7,"incrementValue$2","childrenReadIndex",evidence);
+ local("la","a(IIIII[II)V",8,"var17","childCount",evidence);
+ local("la","a(IIIII[II)V",9,"var18","child",evidence);
+ local("la","a(IIIII[II)V",10,"incrementValue$3","xWriteIndex",evidence);
+ local("la","a(IIIII[II)V",11,"incrementValue$4","xWordIndex",evidence);
+ local("la","a(IIIII[II)V",12,"incrementValue$5","yWriteIndex",evidence);
+ local("la","a(IIIII[II)V",13,"incrementValue$6","yWordIndex",evidence);
+ local("la","a(IIIII[II)V",14,"incrementValue$7","childrenWriteIndex",evidence);
+ local("la","a(IIIII[II)V",15,"incrementValue$8","childrenWordIndex",evidence);
+ local("la","a(IIIII[II)V",16,"var7","readIndex",evidence);
+ local("la","a(IIIII[II)V",17,"var8","writeIndex",evidence);
+ local("la","a(IIIII[II)V",18,"var9","generationCount",evidence);
+ local("la","a(IIIII[II)V",19,"var10","intensity",evidence);
+ local("la","a(IIIII[II)V",20,"var11","radius16",evidence);
+ local("gp","a(IIIII)V",0,"var5","offset",evidence);
+ local("gp","a(IIIII)V",1,"var6","rowSkip",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -3826,10 +3981,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "Native fixtures use distinct body/button fonts, heights and baselines to verify stored styles. Sprite wrappers check frame-array identities and the shared-font wrapper checks derived metrics. One/two-body-line fixtures independently compare centered geometry, glyph/frame calls, selected colors, half-open hit boundaries, result maps and queued-key activation/closure. HorizontalFrameHelpers has independent RGB pixel fixtures for cap overlap, middle tiling, transparency and clip restoration; caps retain their full size even with a smaller requested width. Static state and original mutable scratch arrays are restored. Frame probes replace dialog artwork. General word wrapping/markup, complete pointer event flows, alpha/trimmed strip pieces, malformed arrays/guards, live resize/presentation, server actions and original-JAR equivalence remain unverified.", '',
 "ConnectionPhase names identity-only connection/login/validation markers. Named fields follow surrounding packet reads/writes, distinguishing readiness, reply/seed/body waits and logged-in state without claiming server semantics. GameTransportActions.canUseGameTransport requires a transport and awaitingLoginReply, awaitingLoginSuccessBody or loggedInConnection. toString still throws. ChatLobbyUiHelpers names row rebuilding and shared message style, chat font, pane, pinning and unread count. updateOpponentSearchControls names pending-search captions/checks/input routing, keeping numeric choice type2 qualified. setAppletCookie names the existing best-effort cookie helper.", '',
 "Native fixtures verify eleven controlled markers plus an unknown marker, transport presence/absence, the alternate phase guard and null-phase failure; an Unsafe dummy transport performs no I/O. Independent chat-row selection covers limits, category filters, ignored-name/system-message handling and suppression, followed by chronological bounds, escaped text, fonts/colors/highlights, pressed-row return, component reuse and unread counts. Refreshing existing visible rows preserves unread counts and pins/resets scrolling state. Narrow/wide transitions preserve new-row counting when old hidden messages become visible again. The no-pending search branch shares three-root press/transition checks with the lobby controller. Original statics/history arrays/phase references are restored. Live connections/full handshakes, pending-search eligibility/request effects, wheel/drag/all-channel/markup behavior, real browser cookies, live presentation and original-JAR equivalence remain unverified.", '',
+"RasterEffectHelpers names bubble-refraction scanlines, grayscale-palette blitting, outline marking, vertical gradients, branched glow and fixed8 HSV conversion. Reviewed fields identify the falloff table, glow scratch/sequence arrays and retained view-key state. Existing drawBubbleDistortion and gameplay identities are preserved; unrelated UI/token helpers remain qualified.", '',
+"Independent bubble pixels use closed-form distances/falloff and immutable source sampling, covering fractional/offscreen centers, strict circles, positive amounts and radii through32767 with index normalization. Drawing uses framebuffer bounds and ignores the current clip while preserving clip state. Gradient fixtures retain the255-alpha complement divided by256, including alpha-zero darkening. Palette sprites cover clipping/offsets, source-zero transparency, mapped zero and nongray32-bit copying. Outline fixtures use Manhattan-distance-two neighborhoods, signed greater-than-one seeds and marker1 idempotence. HSV sector references preserve integer bias and hue wrap. Branched glows use a node-list/trigonometric model plus the independent additive-glow oracle, covering separate x/y sequence words, child counts, generation/radius/intensity changes and zero/varied sequences. Generation count also sets root child count. Original statics/scratch references are restored. Negative distortion/squared-radius overflow, artwork/perceptual appearance, malformed palettes/sizes/guards, negative seeds/scratch capacity, all drawing combinations, live performance and original-JAR equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:78,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:79,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

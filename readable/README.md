@@ -1829,6 +1829,37 @@ controller. Actual pending-search eligibility, request effects and live server
 behavior remain unverified. setAppletCookie names the existing best-effort
 cookie-host/expiry/Discard helper; real browser cookie I/O is unverified.
 
+RasterEffectHelpers names the bubble-refraction scanlines, grayscale-palette
+blitter, outline-neighbor pass, vertical gradient, branched glow and fixed8 HSV
+conversion. The bubble falloff table, glow scratch/sequence arrays and retained
+view-key flag now have reviewed roles. Existing drawBubbleDistortion identity
+and previous gameplay rules remain unchanged.
+
+Independent bubble pixels use closed-form squared distances, the falloff curve
+and immutable source samples, rather than finite differences/in-place scanlines.
+Fixtures cover fractional/offscreen centers, strict circle boundaries, positive
+amounts and radii through 32767, including normalization shifts. The renderer
+uses full framebuffer bounds and ignores the current clip; clip state itself is
+preserved. Negative amounts and squared-radius overflow remain unverified.
+
+Gradient references preserve the 255-alpha complement and division by 256;
+even alpha zero darkens covered destination pixels. Grayscale remapping checks
+cropped offsets/clipping, transparent source zero, palette writes of zero and
+unchanged nongray 32-bit values. Outline references use Manhattan-distance-two
+neighbors, signed greater-than-one seed detection, unchanged nonzero neighbors
+and idempotence of marker 1. HSV references preserve sector permutation and the
+export's integer rounding bias, including saturation zero and hue wrap.
+
+Branched-glow fixtures use an independent node-list model, trigonometric
+references and the existing per-pixel additive-glow oracle. They cover separate
+x/y sequence words, nonnegative child-count remainder, generation/radius/intensity
+changes, zero/varied sequences and seeded sequence indexing. The generation
+count also supplies the root's child count. Static state and original scratch
+array references are restored. Default artwork/perceptual appearance, arbitrary
+invalid palettes/sizes/guards, negative seeds and scratch-capacity limits, all
+runtime drawing combinations, live performance and original-JAR equivalence
+remain unverified. Unrelated UI/token helpers retain qualified names.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
