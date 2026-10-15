@@ -178,9 +178,15 @@ select different games and use immutable clean compiler checkouts.
 This emits each failed game completely into temporary staging, checks diagnostics
 and compiles against stubs alone before replacing its previous staged Java and
 reports. Pipeline or verifier failures require an authoritative pipeline retry
-instead. A retry may record a different positive `PIPELINE_TIMEOUT_SECONDS`
+instead. A retry may record a different nonnegative `PIPELINE_TIMEOUT_SECONDS`
 execution cap; the publisher replays that recorded value when checking its
 fingerprint and includes each game's pipeline environment in the manifest.
+A value of `0` disables that execution cap. Pipeline, source-export and javac
+steps run without a wall-clock limit by default. Explicit limits remain available
+through `PIPELINE_TIMEOUT_SECONDS`, `DECOMPILER_TIMEOUT_SECONDS`,
+`DECOMPILER_SECONDS_PER_CLASS` and `JAVAC_TIMEOUT_SECONDS`; the decompiler uses
+the larger of its fixed limit and its per-class limit. A timeout is incomplete
+validation and does not establish that any particular class is stuck.
 Every transformation gate must still match the original batch.
 Each repaired game records its exact clean compiler commit and tracked
 source tar SHA-256 in the existing report; the publisher verifies that archive

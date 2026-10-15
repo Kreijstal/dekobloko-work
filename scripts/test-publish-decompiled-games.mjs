@@ -41,7 +41,9 @@ test('pipeline retries may change recorded execution timeouts but never transfor
   for (const changed of [{...retry, PIPELINE_ALLOW_MUTUALLY_GUARDED_FALSE_CYCLES: '0'},
     {...retry, BULK_PIPELINE_UNKNOWN_GATE: '1'}, {}, null])
     assert.throws(() => pipelineCheckEnvironment(batch, changed, {}), /environment/);
-  for (const value of ['0', '-1', 'NaN', '7200.5', '9007199254740992', 7200])
+  assert.deepEqual(pipelineCheckEnvironment(batch, {...batch, PIPELINE_TIMEOUT_SECONDS: '0'}, {}),
+    {...batch, PIPELINE_TIMEOUT_SECONDS: '0'});
+  for (const value of ['-1', 'NaN', '7200.5', '9007199254740992', 7200])
     assert.throws(() => pipelineCheckEnvironment(batch, {...batch, PIPELINE_TIMEOUT_SECONDS: value}, {}), /timeout/);
 });
 

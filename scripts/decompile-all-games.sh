@@ -7,11 +7,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO="$(dirname "$SCRIPT_DIR")"
 ROOT="$REPO/.work/games"
 JAVA_TOOLS_DIR="${JAVA_TOOLS_DIR:-${JT_DIR:-/home/kreijstal/git/java-tools}}"
-PIPELINE_TIMEOUT_SECONDS="${PIPELINE_TIMEOUT_SECONDS:-1800}"
-# Floor for the decompiler cap; the effective cap scales with class count.
-DECOMPILER_TIMEOUT_SECONDS="${DECOMPILER_TIMEOUT_SECONDS:-600}"
-DECOMPILER_SECONDS_PER_CLASS="${DECOMPILER_SECONDS_PER_CLASS:-6}"
-JAVAC_TIMEOUT_SECONDS="${JAVAC_TIMEOUT_SECONDS:-600}"
+# GNU timeout treats 0 as unlimited. Full exports have no wall-clock cap by
+# default: corpus size, compiler work and CPU contention vary substantially.
+# Callers may opt into a fixed cap or a class-count-scaled decompiler cap.
+PIPELINE_TIMEOUT_SECONDS="${PIPELINE_TIMEOUT_SECONDS:-0}"
+DECOMPILER_TIMEOUT_SECONDS="${DECOMPILER_TIMEOUT_SECONDS:-0}"
+DECOMPILER_SECONDS_PER_CLASS="${DECOMPILER_SECONDS_PER_CLASS:-0}"
+JAVAC_TIMEOUT_SECONDS="${JAVAC_TIMEOUT_SECONDS:-0}"
 GAME=""
 JOBS=1
 RESUME=0
@@ -517,11 +519,8 @@ NODE
   fi
 
   if ((pipeline_fail == 0 && verify_fail == 0)); then
-    # A timeout here is never "the whole game was a bit slow": measured cost is
-    # ~0.1-0.6s per class, and every game that has ever hit the cap did so by
-    # wedging on ONE class (aceofskies eg.class, kickabout os.class) while the
-    # other 500-odd finished in seconds.  So the cap only has to be generous
-    # enough to be unambiguous, and the useful output is WHICH class it died on.
+    # A caller-supplied cap bounds the whole export, including postprocessing.
+    # Reaching it does not prove that the last active class is stuck.
     cli_timeout=$((input_count * DECOMPILER_SECONDS_PER_CLASS))
     ((cli_timeout < DECOMPILER_TIMEOUT_SECONDS)) && cli_timeout="$DECOMPILER_TIMEOUT_SECONDS"
     # CFR_JS_PROFILE_CLASSES makes cfr.js log per-class start/done lines. Without
@@ -538,11 +537,11 @@ NODE
     if ((cli_status != 0)); then
       cli_fail=1
       if ((cli_status == 124)); then
-        # The last class to start without a matching done line is the culprit.
-        stuck=$(awk '/cfr-class-start/ {s=$2} /cfr-class-done/ {d=$3} END {print (s==d ? "" : s)}' \
+        # Record progress at interruption without blaming the last active class.
+        last_active=$(awk '/cfr-class-start/ {s=$2} /cfr-class-done/ {d=$3} END {print (s==d ? "" : s)}' \
           "$work/logs/decompiler.log")
         echo "[harness] decompiler killed by timeout after ${cli_timeout}s" \
-          "(${input_count} classes); wedged on class: ${stuck:-unknown}" \
+          "(${input_count} classes); last active class: ${last_active:-none; possibly postprocessing}" \
           >>"$work/logs/decompiler.log"
       fi
     fi

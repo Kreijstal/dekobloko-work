@@ -64,7 +64,7 @@ export function pipelineCheckEnvironment(batchEnvironment, recordedEnvironment, 
   for (const key of new Set([...Object.keys(batchEnvironment), ...Object.keys(recordedEnvironment)])) {
     if (key === 'PIPELINE_TIMEOUT_SECONDS') {
       for (const value of [batchEnvironment[key], recordedEnvironment[key]])
-        if (value !== undefined && (typeof value !== 'string' || !/^[1-9][0-9]*$/.test(value) || !Number.isSafeInteger(Number(value))))
+        if (value !== undefined && (typeof value !== 'string' || !/^(0|[1-9][0-9]*)$/.test(value) || !Number.isSafeInteger(Number(value))))
           throw new Error('Invalid recorded pipeline timeout');
     } else if (batchEnvironment[key] !== recordedEnvironment[key])
       throw new Error(`Pipeline transformation environment differs: ${key}`);
