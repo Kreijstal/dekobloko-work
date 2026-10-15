@@ -378,6 +378,9 @@ classes.ap=["CanvasInputHelpers", "Attaches keyboard, pointer and optional wheel
 classes.pl=["SpriteInputHelpers", "Half-size RGB sprite creation, signed binary-mask run encoding and mouse listener installation; separately named resource, text and game-request helpers retain distinct roles."];
 classes.gd=["ByteArrayPoolHelpers", "Synchronized exact-size byte-array acquisition from fixed and optional buckets, plus active canvas selection; unrelated widget/chat globals retain separate roles."];
 classes.gl=["LauncherCacheFiles", "Patched cache-file lookup delegates to the launcher hook; initialization retains legacy cache identity, namespace, user-home and file-table state."];
+classes.nk=["AppletFlowHelpers", "Applet quit-page navigation, transition polling, bounded name input and archive/trigonometry helpers; unrelated UI/sprite globals retain distinct roles."];
+classes.uo=["AppletResourceHelpers", "Applet marker lookup, indexed-sprite loading and table-request helpers, with independent bitset and presentation globals."];
+classes.ui=["AppletSettingsUiHelpers", "Settings-cookie storage, table request resending and UI text/presentation helpers, with unrelated globals kept distinct."];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -4963,6 +4966,162 @@ local('na','a(IIIBI)V',0,'var6','fieldStartX','Centered date-field origin shared
  local("gl","a(IILjava/lang/String;)V",2,"decompiledCaughtParameter0","caughtParameter",evidence);
 }
 
+{
+ const evidence="Independent prefix-segment references verify URL language/settings/session replacement and preservation; recording applets and an isolated JavaScript boundary verify cookie precedence, marker fallbacks, settings/session writes, ordered link refresh and quit navigation. Fixtures check argument/state identity, guard boundaries and swallowed versus contextual/propagated failures without contacting a browser or server.";
+ field("wp","d","Ljava/lang/String;","clientSettings",evidence);
+ field("sk","G","Ljava/lang/String;","clientSession",evidence);
+ field("ni","Sb","Z","tuhstatbutMarkerSet",evidence);
+ method("lh","a","(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;","rewriteAppletPath",evidence,["settingsOverride", "obfuscationGuard", "sessionOverride", "languageOverride", "url"]);
+ method("hg","a","(Ljava/applet/Applet;Ljava/net/URL;I)Ljava/net/URL;","applyChangedAppletParameters",evidence,["applet", "url", "obfuscationGuard"]);
+ method("td","a","(ZLjava/applet/Applet;)V","refreshAppletLinks",evidence,["obfuscationGuard", "applet"]);
+ method("da","a","(Ljava/lang/String;ILjava/applet/Applet;)V","setSessionCookie",evidence,["sessionValue", "obfuscationGuard", "applet"]);
+ method("ui","a","(ILjava/applet/Applet;Ljava/lang/String;)V","setSettingsCookie",evidence,["obfuscationGuard", "applet", "settingsValue"]);
+ method("dj","a","(ZLjava/applet/Applet;)Ljava/lang/String;","readSettingsCookie",evidence,["obfuscationGuard", "applet"]);
+ method("uo","a","(Ljava/applet/Applet;B)Z","hasTuhstatbutMarker",evidence,["applet", "obfuscationGuard"]);
+ method("cb","a","(Ljava/applet/Applet;I)V","setTuhstatbutMarker",evidence,["applet", "obfuscationGuard"]);
+ method("nk","a","(ILjava/applet/Applet;)V","showQuitPage",evidence,["obfuscationGuard", "applet"]);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",0,"discarded$0","unusedRetainedPrefixAppend",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",1,"discarded$1","unusedLanguageKeyAppend",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",2,"discarded$2","unusedLanguageValueAppend",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",3,"discarded$3","unusedSettingsKeyAppend",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",4,"discarded$4","unusedSettingsValueAppend",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",5,"discarded$5","unusedSessionKeyAppend",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",6,"discarded$6","unusedSessionValueAppend",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",7,"discarded$7","unusedTrailingSlashAppend",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",8,"discarded$8","unusedSuffixAppend",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",9,"stackIn_41_0","rewrittenUrl",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",10,"stackIn_43_0","originalUrlFallback",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",11,"stackIn_46_0","failureContext",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",12,"stackIn_46_1","contextBuilder",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",13,"stackIn_47_2","settingsSummary",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",14,"stackIn_49_1","sessionContextBuilder",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",15,"stackIn_50_2","sessionSummary",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",16,"stackIn_52_1","urlContextBuilder",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",17,"stackIn_53_2","urlSummary",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",18,"decompiledCaughtException","caughtFailure",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",19,"var5","filePath",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",20,"var5_ref","rewriteFailure",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",21,"var6","prefixEnd",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",22,"var7_int","languageSegmentEnd",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",23,"var7","rewrittenPath",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",24,"var8","invalidUrlFailure",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",25,"var9","unusedGameFlag",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",26,"var7_intLifetime1","affiliateSegmentEnd",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",27,"var7_intLifetime2","settingsSegmentEnd",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",28,"var7_intLifetime3","sessionSegmentEnd",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",29,"decompiledCaughtParameter0","caughtUrlFailure",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",30,"decompiledCaughtParameter1","caughtRewriteFailure",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",31,"decompiledUncheckedException","uncheckedFailure",evidence);
+ local("lh","a(Ljava/lang/String;BLjava/lang/String;ILjava/net/URL;)Ljava/net/URL;",32,"decompiledCheckedException","checkedFailure",evidence);
+ local("hg","a(Ljava/applet/Applet;Ljava/net/URL;I)Ljava/net/URL;",0,"var3","settingsOverride",evidence);
+ local("hg","a(Ljava/applet/Applet;Ljava/net/URL;I)Ljava/net/URL;",1,"var4","unusedSettingsAlias",evidence);
+ local("hg","a(Ljava/applet/Applet;Ljava/net/URL;I)Ljava/net/URL;",2,"stackIn_11_0","rewrittenUrl",evidence);
+ local("hg","a(Ljava/applet/Applet;Ljava/net/URL;I)Ljava/net/URL;",3,"stackIn_14_0","failureContext",evidence);
+ local("hg","a(Ljava/applet/Applet;Ljava/net/URL;I)Ljava/net/URL;",4,"stackIn_14_1","contextBuilder",evidence);
+ local("hg","a(Ljava/applet/Applet;Ljava/net/URL;I)Ljava/net/URL;",5,"stackIn_15_2","appletSummary",evidence);
+ local("hg","a(Ljava/applet/Applet;Ljava/net/URL;I)Ljava/net/URL;",6,"stackIn_17_1","urlContextBuilder",evidence);
+ local("hg","a(Ljava/applet/Applet;Ljava/net/URL;I)Ljava/net/URL;",7,"stackIn_18_2","urlSummary",evidence);
+ local("hg","a(Ljava/applet/Applet;Ljava/net/URL;I)Ljava/net/URL;",8,"decompiledCaughtException","caughtFailure",evidence);
+ local("hg","a(Ljava/applet/Applet;Ljava/net/URL;I)Ljava/net/URL;",9,"var4Lifetime1","sessionOverride",evidence);
+ local("hg","a(Ljava/applet/Applet;Ljava/net/URL;I)Ljava/net/URL;",10,"var4Lifetime2","unusedSettingsCopy",evidence);
+ local("hg","a(Ljava/applet/Applet;Ljava/net/URL;I)Ljava/net/URL;",11,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("td","a(ZLjava/applet/Applet;)V",0,"stackIn_8_0","failureContext",evidence);
+ local("td","a(ZLjava/applet/Applet;)V",1,"stackIn_8_1","contextBuilder",evidence);
+ local("td","a(ZLjava/applet/Applet;)V",2,"stackIn_9_2","appletSummary",evidence);
+ local("td","a(ZLjava/applet/Applet;)V",3,"decompiledCaughtException","caughtFailure",evidence);
+ local("td","a(ZLjava/applet/Applet;)V",4,"var2","ignoredBrowserFailure",evidence);
+ local("td","a(ZLjava/applet/Applet;)V",5,"var2_ref","refreshFailure",evidence);
+ local("td","a(ZLjava/applet/Applet;)V",6,"var3","rewrittenPrefix",evidence);
+ local("td","a(ZLjava/applet/Applet;)V",7,"var4","codeBase",evidence);
+ local("td","a(ZLjava/applet/Applet;)V",8,"decompiledCaughtParameter0","caughtBrowserFailure",evidence);
+ local("td","a(ZLjava/applet/Applet;)V",9,"decompiledCaughtParameter1","caughtRefreshFailure",evidence);
+ local("td","a(ZLjava/applet/Applet;)V",10,"decompiledUncheckedException","uncheckedFailure",evidence);
+ local("td","a(ZLjava/applet/Applet;)V",11,"decompiledCheckedException","checkedFailure",evidence);
+ local("da","a(Ljava/lang/String;ILjava/applet/Applet;)V",0,"var3","cookiePrefix",evidence);
+ local("da","a(Ljava/lang/String;ILjava/applet/Applet;)V",1,"var4","cookieHost",evidence);
+ local("da","a(Ljava/lang/String;ILjava/applet/Applet;)V",2,"var5","cookieAttributes",evidence);
+ local("da","a(Ljava/lang/String;ILjava/applet/Applet;)V",3,"stackIn_13_0","failureContext",evidence);
+ local("da","a(Ljava/lang/String;ILjava/applet/Applet;)V",4,"stackIn_13_1","contextBuilder",evidence);
+ local("da","a(Ljava/lang/String;ILjava/applet/Applet;)V",5,"stackIn_14_2","sessionSummary",evidence);
+ local("da","a(Ljava/lang/String;ILjava/applet/Applet;)V",6,"stackIn_16_1","appletContextBuilder",evidence);
+ local("da","a(Ljava/lang/String;ILjava/applet/Applet;)V",7,"stackIn_17_2","appletSummary",evidence);
+ local("da","a(Ljava/lang/String;ILjava/applet/Applet;)V",8,"decompiledCaughtException","caughtFailure",evidence);
+ local("da","a(Ljava/lang/String;ILjava/applet/Applet;)V",9,"var3_ref","ignoredBrowserFailure",evidence);
+ local("da","a(Ljava/lang/String;ILjava/applet/Applet;)V",10,"var3_ref2","sessionFailure",evidence);
+ local("da","a(Ljava/lang/String;ILjava/applet/Applet;)V",11,"decompiledCaughtParameter0","caughtBrowserFailure",evidence);
+ local("da","a(Ljava/lang/String;ILjava/applet/Applet;)V",12,"decompiledCaughtParameter1","caughtSessionFailure",evidence);
+ local("da","a(Ljava/lang/String;ILjava/applet/Applet;)V",13,"decompiledUncheckedException","uncheckedFailure",evidence);
+ local("da","a(Ljava/lang/String;ILjava/applet/Applet;)V",14,"decompiledCheckedException","checkedFailure",evidence);
+ local("ui","a(ILjava/applet/Applet;Ljava/lang/String;)V",0,"var6","cookiePrefix",evidence);
+ local("ui","a(ILjava/applet/Applet;Ljava/lang/String;)V",1,"var5","unusedPrefixCopy",evidence);
+ local("ui","a(ILjava/applet/Applet;Ljava/lang/String;)V",2,"var4","cookieHost",evidence);
+ local("ui","a(ILjava/applet/Applet;Ljava/lang/String;)V",3,"var7","cookieAttributes",evidence);
+ local("ui","a(ILjava/applet/Applet;Ljava/lang/String;)V",4,"var5Lifetime1","unusedPrefixAlias",evidence);
+ local("ui","a(ILjava/applet/Applet;Ljava/lang/String;)V",5,"var5Lifetime2","unusedHostCopy",evidence);
+ local("ui","a(ILjava/applet/Applet;Ljava/lang/String;)V",6,"var5Lifetime3","unusedHostAlias",evidence);
+ local("ui","a(ILjava/applet/Applet;Ljava/lang/String;)V",7,"var5Lifetime4","unusedAttributesCopy",evidence);
+ local("ui","a(ILjava/applet/Applet;Ljava/lang/String;)V",8,"var5Lifetime5","unusedAttributesAlias",evidence);
+ local("ui","a(ILjava/applet/Applet;Ljava/lang/String;)V",9,"var5Lifetime6","cookieWithLifetime",evidence);
+ local("ui","a(ILjava/applet/Applet;Ljava/lang/String;)V",10,"throwable","ignoredBrowserFailure",evidence);
+ local("ui","a(ILjava/applet/Applet;Ljava/lang/String;)V",11,"var3_int","unusedGuardQuotient",evidence);
+ local("ui","a(ILjava/applet/Applet;Ljava/lang/String;)V",12,"runtimeException","failure",evidence);
+ local("ui","a(ILjava/applet/Applet;Ljava/lang/String;)V",13,"decompiledUncheckedException","uncheckedFailure",evidence);
+ local("ui","a(ILjava/applet/Applet;Ljava/lang/String;)V",14,"decompiledCheckedException","checkedFailure",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",0,"var6","cookieIndex",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",1,"var3","settingsCookieName",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",2,"var4","cookieText",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",3,"var5","cookieParts",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",4,"var7","equalsIndex",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",5,"var8","unusedGameFlag",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",6,"var9","unusedApplet",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",7,"var10","cookiePrefix",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",8,"stackIn_8_0","cookieValue",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",9,"stackIn_15_0","fallbackSettings",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",10,"stackIn_18_0","failureContext",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",11,"stackIn_18_1","contextBuilder",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",12,"stackIn_19_2","appletSummary",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",13,"decompiledCaughtException","caughtFailure",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",14,"var2","ignoredBrowserFailure",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",15,"var2_ref","readFailure",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",16,"decompiledCaughtParameter0","caughtBrowserFailure",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",17,"decompiledCaughtParameter1","caughtReadFailure",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",18,"decompiledUncheckedException","uncheckedFailure",evidence);
+ local("dj","a(ZLjava/applet/Applet;)Ljava/lang/String;",19,"decompiledCheckedException","checkedFailure",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",0,"var6","cookieIndex",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",1,"var2","markerName",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",2,"var3","unusedGuardQuotient",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",3,"var4","cookieText",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",4,"var5","cookieParts",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",5,"var7","equalsIndex",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",6,"var8","unusedGameFlag",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",7,"stackIn_17_0","appletMarkerPresent",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",8,"stackIn_20_0","failureContext",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",9,"stackIn_20_1","contextBuilder",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",10,"stackIn_21_2","appletSummary",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",11,"decompiledCaughtException","caughtFailure",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",12,"var2_ref","ignoredBrowserFailure",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",13,"var2_ref2","markerFailure",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",14,"decompiledCaughtParameter0","caughtBrowserFailure",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",15,"decompiledCaughtParameter1","caughtMarkerFailure",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",16,"decompiledUncheckedException","uncheckedFailure",evidence);
+ local("uo","a(Ljava/applet/Applet;B)Z",17,"decompiledCheckedException","checkedFailure",evidence);
+ local("cb","a(Ljava/applet/Applet;I)V",0,"var2","markerName",evidence);
+ local("cb","a(Ljava/applet/Applet;I)V",1,"var3","markerValue",evidence);
+ local("cb","a(Ljava/applet/Applet;I)V",2,"var4","discardLifetime",evidence);
+ local("cb","a(Ljava/applet/Applet;I)V",3,"runtimeException","failure",evidence);
+ local("nk","a(ILjava/applet/Applet;)V",0,"var2","quitUrl",evidence);
+ local("nk","a(ILjava/applet/Applet;)V",1,"var2_ref","ignoredNavigationFailure",evidence);
+ local("nk","a(ILjava/applet/Applet;)V",2,"var2_ref2","navigationFailure",evidence);
+ local("nk","a(ILjava/applet/Applet;)V",3,"stackIn_8_0","failureContext",evidence);
+ local("nk","a(ILjava/applet/Applet;)V",4,"stackIn_8_1","contextBuilder",evidence);
+ local("nk","a(ILjava/applet/Applet;)V",5,"stackIn_9_2","appletSummary",evidence);
+ local("nk","a(ILjava/applet/Applet;)V",6,"decompiledCaughtException","caughtFailure",evidence);
+ local("nk","a(ILjava/applet/Applet;)V",7,"decompiledCaughtParameter0","caughtNavigationFailure",evidence);
+ local("nk","a(ILjava/applet/Applet;)V",8,"decompiledCaughtParameter1","caughtContextFailure",evidence);
+ local("nk","a(ILjava/applet/Applet;)V",9,"decompiledUncheckedException","uncheckedFailure",evidence);
+ local("nk","a(ILjava/applet/Applet;)V",10,"decompiledCheckedException","checkedFailure",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -5280,10 +5439,13 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'Independent whitelist fixtures cover key ranges, extreme codes, Ctrl/Alt/Shift combinations, guard short-circuiting and short/null held arrays. A recording Canvas uses real AWT listener lists to check attach/detach order, wheel preservation, null singletons and partial state at every injected callback failure. Direct mouse removal preserves its raw-versus-contextual exception boundary and wrong-guard behavior. Sprite references check signed opaque/transparent mask lengths, row offsets, prefix consumption for nonzero offset rows and old-array mutation/replacement. Half-size pixels cover odd cropped canvases, framebuffer restoration and clipped even-width draws. Full client event dispatch, odd-width clipped sampling, native display interaction and original-gamepack equivalence remain unverified.', '',
 "ByteArrayPoolHelpers exposes synchronized acquireByteArray and getActiveCanvas. Fixed 100/5000/30000-byte bucket arrays and counts, optional bucket sizes/counts/arrays, and the regular windowCanvas are named. Acquired buffers retain their old bytes; consumed slots are cleared. LauncherCacheFiles exposes initialization, guarded file lookup and the patched launcher redirect, with namespace, legacy cache identity, user home, initialization flag and legacy file table named. The patched redirect ignores its guard/cache-id arguments and delegates policy to the launcher.", '',
 "Independent stack fixtures check exact-size selection, fixed-before-custom priority, duplicate custom sizes, LIFO identity, exhaustion, fresh zero-filled allocation, retained contents, null/mismatched stored arrays and count-decrement state on failed reads. Concurrent acquisition checks uniqueness and cleared slots; canvas fixtures cover fullscreen preference and arithmetic guards. An isolated recording hook checks argument/result/failure identity, initialization-independent routing and non-instantiability without writing files. Controlled properties check missing/empty/trailing-slash homes, denied reads, stale-home retention, namespace guard ordering and untouched legacy tables. Pool refill, real launcher filesystem policy and original-gamepack equivalence remain unverified.", '',
+"AppletFlowHelpers, AppletResourceHelpers and AppletSettingsUiHelpers expose quit navigation, the literal tuhstatbut marker and settings-cookie storage alongside their separately retained static helper roles. DisplayModeInfo.applyChangedAppletParameters and FramedMenuScreen.rewriteAppletPath name leading language, affiliate, settings and session path handling. clientSettings, clientSession and tuhstatbutMarkerSet expose the shared state. GameClock.readSettingsCookie, ArchiveNetworkRequest.setSessionCookie, MatchingTextValidator.setTuhstatbutMarker and VolcanicBackground.refreshAppletLinks connect the browser flow.", '',
+"Path rewriting scans only leading recognized, slash-terminated segments. Language/settings/session overrides remove matching segments before insertion; affiliate segments survive, empty overrides remove without adding, and values remain unescaped. Settings reads prefer the exact prefixed cookie name, then retained state, then the applet parameter. The noncanonical read guard can still reach cookies when retained state exists. The marker accepts cookie-name presence regardless of value, an applet parameter or the installed flag. Settings writes use a94608000-second lifetime; nonempty session writes have no explicit expiry, and empty writes delete. Both retain values before browser work and refresh six links in order. Quit navigation requests quit.ws in _top.", '',
+"Independent prefix-list fixtures cover repeated/mixed prefixes, replacement/removal, boundaries, raw values and URL reconstruction fallback. Recording applets and the isolated JavaScript fixture verify parameter comparison/order, cookie duplicates/trim/no-decode behavior, retained-state precedence, marker guards/fallbacks, cookie scripts, bounded expiry dates, ordered links and partial failures. Quit fixtures distinguish printed/swallowed Exceptions from propagated Errors. The published stubs and dependency hash are unchanged; temporary recording classes are removed after validation. Real browser persistence, external navigation, server acceptance, noncanonical destructive cleanup branches and original-gamepack equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:93,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:94,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
