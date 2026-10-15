@@ -337,6 +337,9 @@ classes.nh=['LobbyUiHelpers','Static lobby controls, setting/start eligibility a
 classes.gh=['TextChoiceDialogStyles','Configures the centered body/button text dialog fonts, frames, metrics, position and colors; unrelated game instructions, chat text and fireworks helpers retain separate roles.'];
 classes.aj=['TextChoiceDialogHitTest','Maps a pointer into selectable centered text-dialog rows; unrelated static archive/content accessors retain separate roles.'];
 classes.fq=['HorizontalFrameHelpers','Draws a left/middle/right tiled RGB strip and configures text-dialog colors; unrelated archive checksum and resource globals retain separate roles.'];
+classes.n=['ConnectionPhase','Identity-only connection-state markers; three specific markers allow game-transport use. Unrelated static chat-history, sprite and opponent-search helpers retain separate roles.'];
+classes.sj=['ChatLobbyUiHelpers','Rebuilds visible chat-history rows and handles lobby responses; unrelated applet-cookie, music and loading globals retain separate roles.'];
+classes.vg=['GameTransportActions','Tests transport availability through the current connection phase and sends leave/decline-game requests; unrelated text-choice frame/messages retain separate roles.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -3436,6 +3439,108 @@ local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby trans
  local("fq","a(III[Ljp;I)V",11,"decompiledCaughtParameter0","caughtDrawingFailure",evidence);
 }
 
+
+// Connection markers, chat row reconstruction and opponent-search controls.
+{
+ const evidence="Reviewed connection-phase comparisons and surrounding packet reads/writes, visible chat-row reconstruction and opponent-search control callers; unrelated static helpers retain separate roles.";
+ field("mc","e","Ln;","connectionFailed",evidence);
+ field("pi","u","Ln;","readyToSendHandshake",evidence);
+ field("gf","c","Ln;","awaitingLoginPreludeReply",evidence);
+ field("dc","f","Ln;","awaitingLoginSeed",evidence);
+ field("rq","c","Ln;","awaitingLoginReply",evidence);
+ field("fo","g","Ln;","awaitingLoginSuccessBody",evidence);
+ field("km","k","Ln;","awaitingLoginErrorBody",evidence);
+ field("q","i","Ln;","loggedInConnection",evidence);
+ field("ck","k","Ln;","awaitingValidationReply",evidence);
+ field("o","g","Ln;","awaitingValidationStrings",evidence);
+ field("vj","e","Ln;","awaitingValidationBody",evidence);
+ field("rf","b","Ln;","connectionPhase",evidence);
+ field("sj","a","Lmh;","chatMessageStyle",evidence);
+ field("jq","y","Ldh;","chatFont",evidence);
+ field("i","q","Lmm;","chatHistoryPane",evidence);
+ field("nd","b","Z","chatPinnedToBottom",evidence);
+ field("on","E","I","unreadChatMessageCount",evidence);
+ method("n","c","(I)Z","allowsGameTransport",evidence,["obfuscationGuard"]);
+ method("vg","a","(I)Z","canUseGameTransport",evidence,["obfuscationGuard"]);
+ method("sj","a","(IIII)Lgb;","rebuildChatHistoryRows",evidence,["rowX", "rowHeight", "obfuscationGuard", "wheelTurns"]);
+ method("sj","a","(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V","setAppletCookie",evidence,["applet", "obfuscationGuard", "value", "name", "maxAgeSeconds"]);
+ method("n","a","(IZZB)V","updateOpponentSearchControls",evidence,["gameActionOpcode", "inputEnabled", "suppressInput", "obfuscationGuard"]);
+ local("n","c(I)Z",0,"stackIn_8_0","phaseAllowsTransport",evidence);
+ local("sj","a(IIII)Lgb;",0,"stackIn_42_0","nullFocusMarker",evidence);
+ local("sj","a(IIII)Lgb;",1,"stackIn_42_1","chatFocusMarker",evidence);
+ local("sj","a(IIII)Lgb;",2,"stackIn_50_0","isPinned",evidence);
+ local("sj","a(IIII)Lgb;",3,"var4","pressedMessage",evidence);
+ local("sj","a(IIII)Lgb;",4,"var5","visibleCount",evidence);
+ local("sj","a(IIII)Lgb;",5,"var6","rebuiltRowsHeight",evidence);
+ local("sj","a(IIII)Lgb;",6,"var7","reverseHistoryIndex",evidence);
+ local("sj","a(IIII)Lgb;",7,"var8","forwardHistoryIndex",evidence);
+ local("sj","a(IIII)Lgb;",8,"var8_ref_gb","candidateMessage",evidence);
+ local("sj","a(IIII)Lgb;",9,"var9","visible",evidence);
+ local("sj","a(IIII)Lgb;",10,"var9_ref_gb","displayedMessage",evidence);
+ local("sj","a(IIII)Lgb;",11,"var10_int","filterLevel",evidence);
+ local("sj","a(IIII)Lgb;",12,"var10","prefix",evidence);
+ local("sj","a(IIII)Lgb;",13,"var11","escapedText",evidence);
+ local("sj","a(IIII)Lgb;",14,"var12","messageColor",evidence);
+ local("sj","a(IIII)Lgb;",15,"var13","unusedClientFlag",evidence);
+ local("sj","a(IIII)Lgb;",16,"var7Lifetime1","nextRowY",evidence);
+ local("sj","a(IIII)Lgb;",17,"var8Lifetime1","heightDelta",evidence);
+ local("sj","a(IIII)Lgb;",18,"var9Lifetime1","bottomScrollY",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",0,"stackIn_11_0","contextFailure",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",1,"stackIn_11_1","contextPrefix",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",2,"stackIn_12_2","appletSummary",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",3,"stackIn_14_1","valueContextPrefix",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",4,"stackIn_15_2","valueSummary",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",5,"stackIn_17_1","nameContextPrefix",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",6,"stackIn_18_2","nameSummary",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",7,"decompiledCaughtException","caughtFailure",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",8,"var6","ignoredBrowserFailure",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",9,"var6_ref","cookieFailure",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",10,"var7","unusedHostCopy",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",11,"var8","cookieHost",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",12,"var9","cookieAttributes",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",13,"var7Lifetime1","unusedHostAlias",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",14,"var7Lifetime2","unusedCookieCopy",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",15,"var7Lifetime3","unusedCookieAlias",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",16,"var7Lifetime4","cookieWithLifetime",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",17,"decompiledCaughtParameter0","caughtBrowserFailure",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",18,"decompiledCaughtParameter1","caughtCookieFailure",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",19,"decompiledUncheckedException","uncheckedFailure",evidence);
+ local("sj","a(Ljava/applet/Applet;BLjava/lang/String;Ljava/lang/String;J)V",20,"decompiledCheckedException","checkedFailure",evidence);
+ local("n","a(IZZB)V",0,"stackIn_13_0","choiceSelectedValue",evidence);
+ local("n","a(IZZB)V",1,"stackIn_28_0","searchButtonForText",evidence);
+ local("n","a(IZZB)V",2,"stackIn_29_1","searchButtonCaption",evidence);
+ local("n","a(IZZB)V",3,"stackIn_31_0","messagePanelForText",evidence);
+ local("n","a(IZZB)V",4,"stackIn_32_1","messagePanelCaption",evidence);
+ local("n","a(IZZB)V",5,"stackIn_61_0","searchStatusCaption",evidence);
+ local("n","a(IZZB)V",6,"stackIn_73_0","lobbyRoot",evidence);
+ local("n","a(IZZB)V",7,"stackIn_74_1","lobbyInputEnabled",evidence);
+ local("n","a(IZZB)V",8,"stackIn_78_0","gameRoot",evidence);
+ local("n","a(IZZB)V",9,"stackIn_79_1","gameInputEnabled",evidence);
+ local("n","a(IZZB)V",10,"stackIn_83_0","requestsRoot",evidence);
+ local("n","a(IZZB)V",11,"stackIn_84_1","requestsInputEnabled",evidence);
+ local("n","a(IZZB)V",12,"decompiledCaughtException","caughtFailure",evidence);
+ local("n","a(IZZB)V",13,"var4","updateFailure",evidence);
+ local("n","a(IZZB)V",14,"var5","searchButtonForCollapse",evidence);
+ local("n","a(IZZB)V",15,"var6","statusLabelForCollapse",evidence);
+ local("n","a(IZZB)V",16,"var7","buttonSplitX",evidence);
+ local("n","a(IZZB)V",17,"var8","alternateSearchCaption",evidence);
+ local("n","a(IZZB)V",18,"var9_int","selectedChoiceCount",evidence);
+ local("n","a(IZZB)V",19,"var9","statusOrRestrictionDetails",evidence);
+ local("n","a(IZZB)V",20,"var10","choiceIndexOrCaptionWidth",evidence);
+ local("n","a(IZZB)V",21,"var11_int","choiceSelected",evidence);
+ local("n","a(IZZB)V",22,"var11","restrictionDetailsAlias",evidence);
+ local("n","a(IZZB)V",23,"var11_ref","highlightedSettingName",evidence);
+ local("n","a(IZZB)V",24,"var12","clientBranchFlag",evidence);
+ local("n","a(IZZB)V",25,"var13","settingIndex",evidence);
+ local("n","a(IZZB)V",26,"var15","requestsButtonForCollapse",evidence);
+ local("n","a(IZZB)V",27,"var16","searchStatusText",evidence);
+ local("n","a(IZZB)V",28,"var17","requestsButtonAlias",evidence);
+ local("n","a(IZZB)V",29,"var11Lifetime1","restrictionDetailsCopy",evidence);
+ local("n","a(IZZB)V",30,"var9_intLifetime1","firstSettingIndex",evidence);
+ local("n","a(IZZB)V",31,"var10Lifetime1","settingCursorOrCaptionWidth",evidence);
+ local("n","a(IZZB)V",32,"decompiledCaughtParameter0","caughtUpdateFailure",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -3719,10 +3824,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "Independent per-pixel nine-slice fixtures cover missing pieces, transparent RGB, edge/center tiling, clipping, small dimensions and proportional border overlap with original tile anchors. Clip restoration and no-op dimensions/guards use the real painter. Timer fixtures cover three row collections, negative/zero/one/two/max-int timers, adjacent removals, indexed/unindexed rows and repeated ticks. Only transition to zero clears status; only unindexed rows unlink. No-game controller fixtures check three transition positions, all input/suppression/request-panel gates and tab activation. Static state and prior scratch contents are restored. Trimmed/alpha frame pieces, malformed arrays, nested scratch use, wrong client flags, full game-present eligibility/actions, real assets, live input/servers, invalid guards and original-JAR equivalence remain unverified.", '',
 "TextChoiceDialogStyles/TextChoiceDialogHitTest name centered-dialog configuration and pointer selection. Reviewed fields cover body/button fonts, baselines, line heights, frames/padding, colors, position/bounds, line/action/result maps and selection/open state. Configuration setters and sprite/font wrappers expose these roles. configureTextChoiceDialogWithFont replaces the earlier broad UI-style name. Mode0 adds a Members or Log in/Create account action plus Close; mode1 adds only Close. Result1 stays open and result2 closes.", '',
 "Native fixtures use distinct body/button fonts, heights and baselines to verify stored styles. Sprite wrappers check frame-array identities and the shared-font wrapper checks derived metrics. One/two-body-line fixtures independently compare centered geometry, glyph/frame calls, selected colors, half-open hit boundaries, result maps and queued-key activation/closure. HorizontalFrameHelpers has independent RGB pixel fixtures for cap overlap, middle tiling, transparency and clip restoration; caps retain their full size even with a smaller requested width. Static state and original mutable scratch arrays are restored. Frame probes replace dialog artwork. General word wrapping/markup, complete pointer event flows, alpha/trimmed strip pieces, malformed arrays/guards, live resize/presentation, server actions and original-JAR equivalence remain unverified.", '',
+"ConnectionPhase names identity-only connection/login/validation markers. Named fields follow surrounding packet reads/writes, distinguishing readiness, reply/seed/body waits and logged-in state without claiming server semantics. GameTransportActions.canUseGameTransport requires a transport and awaitingLoginReply, awaitingLoginSuccessBody or loggedInConnection. toString still throws. ChatLobbyUiHelpers names row rebuilding and shared message style, chat font, pane, pinning and unread count. updateOpponentSearchControls names pending-search captions/checks/input routing, keeping numeric choice type2 qualified. setAppletCookie names the existing best-effort cookie helper.", '',
+"Native fixtures verify eleven controlled markers plus an unknown marker, transport presence/absence, the alternate phase guard and null-phase failure; an Unsafe dummy transport performs no I/O. Independent chat-row selection covers limits, category filters, ignored-name/system-message handling and suppression, followed by chronological bounds, escaped text, fonts/colors/highlights, pressed-row return, component reuse and unread counts. Refreshing existing visible rows preserves unread counts and pins/resets scrolling state. Narrow/wide transitions preserve new-row counting when old hidden messages become visible again. The no-pending search branch shares three-root press/transition checks with the lobby controller. Original statics/history arrays/phase references are restored. Live connections/full handshakes, pending-search eligibility/request effects, wheel/drag/all-channel/markup behavior, real browser cookies, live presentation and original-JAR equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:77,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:78,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

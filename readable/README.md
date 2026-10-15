@@ -1793,6 +1793,42 @@ replace dialog artwork. General word wrapping/markup, full pointer event flows,
 alpha/trimmed strip pieces, malformed arrays/guards, live resize/presentation,
 server actions and original-JAR equivalence remain unverified.
 
+ConnectionPhase names the identity-only markers shared by connection, login
+and validation polling. The named transitions distinguish failure, readiness
+to send a handshake, login prelude/seed/reply/success-body/error-body waits,
+validation reply/string/body waits and the logged-in phase. These names follow
+surrounding packet reads/writes; they do not establish server-side semantics.
+GameTransportActions.canUseGameTransport requires a transport and one of three
+specific phase identities: awaitingLoginReply, awaitingLoginSuccessBody or
+loggedInConnection. Its toString override still throws.
+
+Native marker fixtures verify all eleven controlled identities plus a fresh
+unknown marker, transport-present/absent combinations, the alternate phase
+guard, and the existing null-phase failure with a present transport. The dummy
+transport is allocated with Unsafe and is never used for I/O. Original global
+phase references are restored. Live connection setup, full handshake polling,
+server interoperability and original-JAR equivalence remain unverified.
+
+ChatLobbyUiHelpers names visible chat-row rebuilding. The shared message style,
+chat font, history pane, bottom-pinning flag and unread-message count now have
+reviewed roles. Fixtures independently select the newest eligible rows under
+category limits, filter levels, ignored names and suppression, then check
+chronological placement, escaped text, font/color/highlight values, pressed-row
+return, cached component reuse and unread counts. Refreshing an unchanged visible set replaces components without increasing
+unread counts, resets the filter-change flag and pins the target scroll position
+to the bottom. Narrow/wide filter transitions preserve the counter quirk: an old
+message that becomes visible again gets a new row and increases the unread count. Static state and original history
+arrays are restored. Complete wheel/drag interactions, all channels/markup,
+live frame presentation and original-JAR equivalence remain unverified.
+
+updateOpponentSearchControls exposes pending-opponent-search captions,
+choice/setting checks and input routing. The numeric choice type 2 stays
+qualified rather than being assigned an unproven server meaning. The no-pending
+branch shares the existing three-root press/transition fixtures with the lobby
+controller. Actual pending-search eligibility, request effects and live server
+behavior remain unverified. setAppletCookie names the existing best-effort
+cookie-host/expiry/Discard helper; real browser cookie I/O is unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
