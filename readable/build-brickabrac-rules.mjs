@@ -376,6 +376,8 @@ classes.t=["CanvasInputCleanup", "Detaches keyboard and pointer listeners, with 
 classes.uf=["KeyDispatchHelpers", "Ctrl/Alt-sensitive eligibility for pairing key codes with typed characters; separately named fireworks, ignored-player requests and common-packet globals retain distinct roles."];
 classes.ap=["CanvasInputHelpers", "Attaches keyboard, pointer and optional wheel listeners; separate numeric/name helpers and UI/theme globals retain their original contracts."];
 classes.pl=["SpriteInputHelpers", "Half-size RGB sprite creation, signed binary-mask run encoding and mouse listener installation; separately named resource, text and game-request helpers retain distinct roles."];
+classes.gd=["ByteArrayPoolHelpers", "Synchronized exact-size byte-array acquisition from fixed and optional buckets, plus active canvas selection; unrelated widget/chat globals retain separate roles."];
+classes.gl=["LauncherCacheFiles", "Patched cache-file lookup delegates to the launcher hook; initialization retains legacy cache identity, namespace, user-home and file-table state."];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -4901,6 +4903,66 @@ local('na','a(IIIBI)V',0,'var6','fieldStartX','Centered date-field origin shared
  local("jp","a([IIIIIIII)V",14,"var10Lifetime3","bottomRightPixel",evidence);
 }
 
+{
+ const evidence="Independent stack fixtures verify exact-size fixed/custom acquisition, fixed-bucket priority, LIFO identity, reference clearing, retained bytes, guard and malformed-state boundaries, and concurrent exhaustion. Canvas fixtures check fullscreen preference and arithmetic guards. An isolated recording launcher hook verifies cache argument/result/failure identity without filesystem access; controlled properties verify initialization and stale-home behavior on denied reads. Live launcher filesystem policy remains unverified.";
+ field("ig","N","I","bytePool100Count",evidence);
+ field("cf","b","[[B","bytePool100",evidence);
+ field("dq","b","I","bytePool5000Count",evidence);
+ field("da","L","[[B","bytePool5000",evidence);
+ field("ac","e","I","bytePool30000Count",evidence);
+ field("si","b","[[B","bytePool30000",evidence);
+ field("bm","a","[[[B","customBytePools",evidence);
+ field("gn","x","[I","customBytePoolSizes",evidence);
+ field("lk","u","[I","customBytePoolCounts",evidence);
+ field("kj","D","Ljava/awt/Canvas;","windowCanvas",evidence);
+ field("gl","a","Ljava/lang/String;","userHomeDirectory",evidence);
+ field("gl","b","Ljava/util/Hashtable;","legacyFileTable",evidence);
+ field("gl","c","Ljava/lang/String;","cacheNamespace",evidence);
+ field("gl","d","I","legacyCacheId",evidence);
+ field("gl","e","Z","initialized",evidence);
+ method("gd","a","(IB)[B","acquireByteArray",evidence,["length", "obfuscationGuard"]);
+ method("gd","a","(B)Ljava/awt/Canvas;","getActiveCanvas",evidence,["obfuscationGuard"]);
+ method("gl","a","(Ljava/lang/String;I)Ljava/io/File;","resolveCacheFile",evidence,["fileName", "obfuscationGuard"]);
+ method("gl","a","(ILjava/lang/String;Ljava/lang/String;I)Ljava/io/File;","redirectCacheFile",evidence,["unusedObfuscationGuard", "fileName", "cacheNamespace", "unusedCacheId"]);
+ method("gl","a","(IILjava/lang/String;)V","initializeCache",evidence,["obfuscationGuard", "cacheId", "namespace"]);
+ local("gd","a(IB)[B",0,"fieldTemp$2","mediumPoolIndex",evidence);
+ local("gd","a(IB)[B",1,"dupTemp$3","customPoolIndex",evidence);
+ local("gd","a(IB)[B",2,"arrayValue$4","customBucket",evidence);
+ local("gd","a(IB)[B",3,"fieldTemp$5","largePoolIndex",evidence);
+ local("gd","a(IB)[B",4,"dupTemp$6","customPoolIndexAfterLargeMiss",evidence);
+ local("gd","a(IB)[B",5,"arrayValue$7","customBucketAfterLargeMiss",evidence);
+ local("gd","a(IB)[B",6,"fieldTemp$17","smallPoolIndex",evidence);
+ local("gd","a(IB)[B",7,"fieldTemp$14","largePoolIndexAfterSmallMiss",evidence);
+ local("gd","a(IB)[B",8,"dupTemp$15","customPoolIndexAfterSmallMiss",evidence);
+ local("gd","a(IB)[B",9,"arrayValue$16","customBucketAfterSmallMiss",evidence);
+ local("gd","a(IB)[B",10,"fieldTemp$13","mediumPoolIndexAfterSmallMiss",evidence);
+ local("gd","a(IB)[B",11,"dupTemp$8","customPoolIndexAfterMediumMiss",evidence);
+ local("gd","a(IB)[B",12,"arrayValue$9","customBucketAfterMediumMiss",evidence);
+ local("gd","a(IB)[B",13,"fieldTemp$12","largePoolIndexAfterMediumMiss",evidence);
+ local("gd","a(IB)[B",14,"dupTemp$10","customPoolIndexAfterLargeFallback",evidence);
+ local("gd","a(IB)[B",15,"arrayValue$11","customBucketAfterLargeFallback",evidence);
+ local("gd","a(IB)[B",16,"var2_ref_byte__","mediumBuffer",evidence);
+ local("gd","a(IB)[B",17,"var2","customSizeIndex",evidence);
+ local("gd","a(IB)[B",18,"var3","customBuffer",evidence);
+ local("gd","a(IB)[B",19,"var2Lifetime1","customSizeIndexAfterSmallMiss",evidence);
+ local("gd","a(IB)[B",20,"var2Lifetime2","customSizeIndexAfterMediumMiss",evidence);
+ local("gd","a(IB)[B",21,"var2Lifetime3","customSizeIndexAfterLargeFallback",evidence);
+ local("gd","a(IB)[B",22,"var2Lifetime4","customSizeIndexAfterLargeMiss",evidence);
+ local("gd","a(IB)[B",23,"var2_ref_byte__Lifetime1","smallBuffer",evidence);
+ local("gd","a(IB)[B",24,"var2_ref_byte__Lifetime2","largeBufferAfterSmallMiss",evidence);
+ local("gd","a(IB)[B",25,"var2_ref_byte__Lifetime3","mediumBufferAfterSmallMiss",evidence);
+ local("gd","a(IB)[B",26,"var2_ref_byte__Lifetime4","largeBufferAfterMediumMiss",evidence);
+ local("gd","a(IB)[B",27,"var3Lifetime1","customBufferAfterSmallMiss",evidence);
+ local("gd","a(IB)[B",28,"var3Lifetime2","customBufferAfterMediumMiss",evidence);
+ local("gd","a(IB)[B",29,"var3Lifetime3","customBufferAfterLargeFallback",evidence);
+ local("gd","a(IB)[B",30,"var2_ref_byte__Lifetime5","largeBuffer",evidence);
+ local("gd","a(IB)[B",31,"var3Lifetime4","customBufferAfterLargeMiss",evidence);
+ local("gd","a(B)Ljava/awt/Canvas;",0,"var1","unusedGuardQuotient",evidence);
+ local("gl","a(IILjava/lang/String;)V",0,"var3","ignoredPropertyFailure",evidence);
+ local("gl","a(IILjava/lang/String;)V",1,"decompiledCaughtException","caughtPropertyFailure",evidence);
+ local("gl","a(IILjava/lang/String;)V",2,"decompiledCaughtParameter0","caughtParameter",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -5216,10 +5278,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'Independent calendar references cover Julian/Gregorian leap behavior, negative-year conversion, full year cycles, month/day bounds and integer extremes. Real date-field widgets check Unicode/overflow parsing, day/month order, validator/listener links, completeness, age limits, messages and debounce status. Deterministic nonce fixtures compare birth-date opcode18 framing and marker12 RSA bytes, including out-of-range truncation, scratch reset/reuse and guarded panel submission. Email Boolean replies are checked through consumption and request completion. Current-year checks use local Gregorian references without hashing wall-clock values. Live calendar rendering, pointer submission, complete account-dialog polling, server acceptance and original-gamepack equivalence remain unverified.', '',
 'KeyDispatchHelpers.shouldPairKeyWithCharacter identifies the Ctrl/Alt-sensitive key whitelist used by client key/typed-character pairing. CanvasInputHelpers and CanvasInputCleanup expose ordered keyboard, pointer and optional wheel setup/cleanup; MouseInputCleanup names the lower pointer-only removal and held-button reset. SpriteInputHelpers names mouse installation, half-size sprite creation and binary-mask run encoding. RgbSprite.drawHalfSize and its sample-averaging kernel now expose dimensions, offsets, row skips and pixel roles. Other unrelated static helpers/globals retain separate roles.', '',
 'Independent whitelist fixtures cover key ranges, extreme codes, Ctrl/Alt/Shift combinations, guard short-circuiting and short/null held arrays. A recording Canvas uses real AWT listener lists to check attach/detach order, wheel preservation, null singletons and partial state at every injected callback failure. Direct mouse removal preserves its raw-versus-contextual exception boundary and wrong-guard behavior. Sprite references check signed opaque/transparent mask lengths, row offsets, prefix consumption for nonzero offset rows and old-array mutation/replacement. Half-size pixels cover odd cropped canvases, framebuffer restoration and clipped even-width draws. Full client event dispatch, odd-width clipped sampling, native display interaction and original-gamepack equivalence remain unverified.', '',
+"ByteArrayPoolHelpers exposes synchronized acquireByteArray and getActiveCanvas. Fixed 100/5000/30000-byte bucket arrays and counts, optional bucket sizes/counts/arrays, and the regular windowCanvas are named. Acquired buffers retain their old bytes; consumed slots are cleared. LauncherCacheFiles exposes initialization, guarded file lookup and the patched launcher redirect, with namespace, legacy cache identity, user home, initialization flag and legacy file table named. The patched redirect ignores its guard/cache-id arguments and delegates policy to the launcher.", '',
+"Independent stack fixtures check exact-size selection, fixed-before-custom priority, duplicate custom sizes, LIFO identity, exhaustion, fresh zero-filled allocation, retained contents, null/mismatched stored arrays and count-decrement state on failed reads. Concurrent acquisition checks uniqueness and cleared slots; canvas fixtures cover fullscreen preference and arithmetic guards. An isolated recording hook checks argument/result/failure identity, initialization-independent routing and non-instantiability without writing files. Controlled properties check missing/empty/trailing-slash homes, denied reads, stale-home retention, namespace guard ordering and untouched legacy tables. Pool refill, real launcher filesystem policy and original-gamepack equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:92,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:93,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
