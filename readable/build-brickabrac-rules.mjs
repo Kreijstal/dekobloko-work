@@ -322,6 +322,10 @@ classes.cn=['GameOverlayHelpers','Static achievement-icon pool acquisition and s
 classes.nj=['FireworkBurst','Delayed concentric particle rings with Q8 positions/velocities, damped expansion, gravity, retained trails, fading glow and intrusive lifetime removal; unrelated static UI assets remain separate.'];
 classes.co=['ArchiveSourceManager','Loads and verifies the archive255/group255 master index with optional RSA and Whirlpool, lazily caches archive sources and advances their work; unrelated static UI/music helpers remain separate.'];
 classes.go=['ResourceArchiveFactory','Creates resource archive wrappers with optional cache-store setup, source reuse/prefetch and decoded-file policy; incoming string/helper globals remain separate.'];
+classes.qn=['CanvasResizeController','Retained canvas sizing policy with heap/capability gates, periodic adaptive fitting, fixed-size fallback and fullscreen save/restore; constructor remains unsupported and static helpers remain separate.'];
+classes.rc=['CanvasResizeHandler','Width/height callback used by canvas sizing and fullscreen save/restore, with retained obfuscation guard.'];
+classes.hg=['DisplayModeInfo','Width, height, bit depth and refresh-rate record decoded from platform display-mode tuples; unrelated static collision/account helpers remain separate.'];
+classes.db=['AwtFullscreenController','AWT graphics-device fullscreen driver with saved display mode, mode enumeration, refresh selection and restoration; reflective public method names remain unchanged.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -2724,6 +2728,140 @@ local("go","a(ZIZIZZ)Lmf;",5,"decompiledCaughtParameter0","ioFailure","Reviewed 
 local("go","a(ZIZIZZ)Lmf;",6,"decompiledUncheckedException","uncheckedFailure","Reviewed master-index verification, cached source construction or archive-factory declaration.");
 local("go","a(ZIZIZZ)Lmf;",7,"decompiledCheckedException","checkedFailure","Reviewed master-index verification, cached source construction or archive-factory declaration.");
 
+// Canvas policy and display-mode records; AWT entry points retain reflective names.
+field("qn","w","I","ticksUntilResize","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","i","I","maximumHeight","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","e","Lrc;","resizeHandler","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","t","I","fallbackHeight","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","j","I","requestedHeight","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","d","I","savedCanvasHeight","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","g","I","resizeIntervalTicks","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","v","I","fallbackWidth","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","c","I","minimumHeapLimitMiB","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","x","I","maximumWidth","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","q","I","fullscreenWidth","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","m","I","requestedWidth","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","s","I","fullscreenHeight","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","r","F","aspectRatio","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","h","I","minimumHeight","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","l","I","savedCanvasWidth","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","a","I","minimumWidth","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qn","b","Z","adaptiveResizeEnabled","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("jj","a","Lqn;","canvasResizeController","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("to","b","I","canvasWidth","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("to","i","I","canvasOffsetX","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("be","g","I","canvasHeight","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("qh","a","I","reportedHeapLimitMiB","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("go","c","I","windowModeCapabilityWord","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("ua","d","Lwg;","fullscreenCanvas","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("hg","d","I","width","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("hg","c","I","height","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("hg","h","I","bitDepth","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("hg","f","I","refreshRate","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("db","a","Ljava/awt/GraphicsDevice;","graphicsDevice","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+field("db","b","Ljava/awt/DisplayMode;","savedDisplayMode","Reviewed canvas resize/fullscreen call data flow, heap-limit reflection or packed display-mode tuple assignments.");
+method("qn","c","(I)V","tickResizePolicy","Skips fullscreen canvas; periodically applies eligible adaptive fit or fixed fallback and horizontal centering; guard at least23.",["obfuscationGuard"]);
+method("qn","a","(I)V","restoreSavedCanvasSize","Always calls handler with saved width/height and guard -77; caller guard -33/102.",["obfuscationGuard"]);
+method("qn","a","(III)V","setRequestedSize","Stores requested dimensions before unused guard arithmetic; guard0 is valid.",["obfuscationGuard", "width", "height"]);
+method("qn","a","(Z)Lwg;","openFullscreenCanvas","Saves current dimensions, resizes to fullscreen request, creates canvas and restores on null result; canonical true.",["obfuscationGuard"]);
+method("qn","a","(B)Z","canUseAdaptiveResize","Canonical -32 requires reported heap at least threshold and positive window-mode capability word.",["obfuscationGuard"]);
+method("qn","d","(I)V","applyAdaptiveSize","Clamps requested dimensions then fits positive aspect ratio without a second minimum clamp; handler -97 and offset update when threshold below requested width; caller0.",["offsetUpdateThreshold"]);
+method("rc","a","(III)V","resizeCanvas","Retained resize callback; controller passes guards -70/-77/-93/-97.",["width", "height", "obfuscationGuard"]);
+method("db","a","(BLjava/awt/Frame;)V","setFullscreenWindow","Delegates to graphics device fullscreen window; normal guards9/25.",["obfuscationGuard", "window"]);
+method("lj","a","(ZLtg;)[Lhg;","listDisplayModes","Returns empty when unsupported/task failed; maps packed width,height,depth,refresh tuples into display records; canonical true.",["obfuscationGuard", "platform"]);
+method("eh","a","(ILtg;IIII)Ljava/awt/Frame;","openFullscreenFrame","Checks availability, picks largest matching bit depth when unspecified, requests fullscreen task and returns frame or cleans failed result; guard119.",["refreshRate", "platform", "height", "obfuscationGuard", "bitDepth", "width"]);
+method("ff","a","(IIIIZLtg;)Lwg;","createFullscreenCanvas","Creates GameCanvas within requested fullscreen frame, configures bounds/focus and returns null on unavailable frame; canonical true.",["refreshRate", "bitDepth", "width", "height", "obfuscationGuard", "platform"]);
+method("tg","b","(I)Z","isFullscreenAvailable","Requires privileged mode and a nonnull driver for the active JVM branch; ordinary negative guards.",["obfuscationGuard"]);
+method("tg","a","(I)Lql;","requestDisplayModes","Enqueues task5 with zero arguments; guard0.",["obfuscationGuard"]);
+method("tg","a","(IIIII)Lql;","requestEnterFullscreen","Enqueues task6 with packed width/height and bit-depth/refresh tuples; guard -35.",["refreshRate", "obfuscationGuard", "height", "bitDepth", "width"]);
+method("sh","b","(I)V","refreshReportedHeapLimit","Reflects Runtime.maxMemory and stores1+floor(bytes/1048576), leaving previous fallback on reflection failure; guard1.",["obfuscationGuard"]);
+parameter("db","enter(Ljava/awt/Frame;IIII)V",0,"window","Public enter/listmodes/exit names are retained because PlatformServices resolves them by reflection.");
+parameter("db","enter(Ljava/awt/Frame;IIII)V",1,"width","Public enter/listmodes/exit names are retained because PlatformServices resolves them by reflection.");
+parameter("db","enter(Ljava/awt/Frame;IIII)V",2,"height","Public enter/listmodes/exit names are retained because PlatformServices resolves them by reflection.");
+parameter("db","enter(Ljava/awt/Frame;IIII)V",3,"bitDepth","Public enter/listmodes/exit names are retained because PlatformServices resolves them by reflection.");
+parameter("db","enter(Ljava/awt/Frame;IIII)V",4,"refreshRate","Public enter/listmodes/exit names are retained because PlatformServices resolves them by reflection.");
+local("qn","c(I)V",0,"fieldTemp$0","remainingResizeTicks","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("qn","c(I)V",1,"fieldTemp$1","remainingResizeTicksFallback","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("qn","a(I)V",0,"var2","unusedGuardQuotient","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("qn","a(III)V",0,"var4","unusedGuardRemainder","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("qn","a(Z)Lwg;",0,"var2","canvas","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("qn","d(I)V",0,"var2","fittedWidth","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("qn","d(I)V",1,"var3","fittedHeight","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("qn","d(I)V",2,"var4","widthFromHeight","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("qn","d(I)V",3,"var5","unusedClientFlag","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("qn","d(I)V",4,"var4Lifetime1","widthFromHeightAtLimit","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("qn","d(I)V",5,"decompiledFrameRemainder0","requestResizeAfterFit","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("db","listmodes()[I",0,"var3","modeIndex","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("db","listmodes()[I",1,"var4","deviceModes","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("db","listmodes()[I",2,"var1","modesAlias","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("db","listmodes()[I",3,"var2","packedModes","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("db","enter(Ljava/awt/Frame;IIII)V",0,"var9","modeIndex","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("db","enter(Ljava/awt/Frame;IIII)V",1,"var6","previousRefreshRate","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("db","enter(Ljava/awt/Frame;IIII)V",2,"var7","availableModes","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("db","enter(Ljava/awt/Frame;IIII)V",3,"var8","foundRefreshRate","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("db","enter(Ljava/awt/Frame;IIII)V",4,"var10","candidateRefreshRate","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("db","<init>()V",0,"var4","deviceIndex","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("db","<init>()V",1,"var1","environment","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("db","<init>()V",2,"var2","devices","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("db","<init>()V",3,"var3","devicesAlias","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("db","<init>()V",4,"var5","candidateDevice","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",0,"var5","modeIndex","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",1,"stackIn_4_0","unsupportedResult","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",2,"stackIn_10_0","failedTaskResult","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",3,"stackIn_13_0","wrongGuardResult","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",4,"stackIn_18_0","modesResult","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",5,"stackIn_21_0","failureContext","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",6,"stackIn_21_1","contextBuilder","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",7,"stackIn_22_2","platformSummary","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",8,"decompiledCaughtException","caughtFailure","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",9,"var2","failure","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",10,"var3","packedModes","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",11,"var4","modes","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",12,"var6","mode","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",13,"var7","unusedClientFlag","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",14,"var8","task","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",15,"var9","packedModesAlias","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",16,"var10","packedModesStorage","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("lj","a(ZLtg;)[Lhg;",17,"decompiledCaughtParameter0","caughtException","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",0,"var8","modeIndex","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",1,"stackIn_7_0","unavailableResult","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",2,"stackIn_38_0","failedFrameResult","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",3,"stackIn_40_0","frameResult","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",4,"stackIn_43_0","failureContext","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",5,"stackIn_43_1","contextBuilder","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",6,"stackIn_44_2","platformSummary","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",7,"decompiledCaughtException","caughtFailure","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",8,"var6","modes","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",9,"var6_ref","failure","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",10,"var7_int","foundMode","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",11,"var7","frame","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",12,"var9","unusedClientFlag","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",13,"var10","availableModes","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",14,"var11","task","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("eh","a(ILtg;IIII)Ljava/awt/Frame;",15,"decompiledCaughtParameter0","caughtException","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("ff","a(IIIIZLtg;)Lwg;",0,"var6","frameAlias","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("ff","a(IIIIZLtg;)Lwg;",1,"var6_ref","failure","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("ff","a(IIIIZLtg;)Lwg;",2,"var7","canvas","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("ff","a(IIIIZLtg;)Lwg;",3,"var8","frame","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("ff","a(IIIIZLtg;)Lwg;",4,"stackIn_2_0","unavailableResult","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("ff","a(IIIIZLtg;)Lwg;",5,"stackIn_6_0","canvasResult","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("ff","a(IIIIZLtg;)Lwg;",6,"stackIn_9_0","failureContext","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("ff","a(IIIIZLtg;)Lwg;",7,"stackIn_9_1","contextBuilder","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("ff","a(IIIIZLtg;)Lwg;",8,"stackIn_10_2","platformSummary","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("ff","a(IIIIZLtg;)Lwg;",9,"decompiledCaughtException","caughtFailure","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("ff","a(IIIIZLtg;)Lwg;",10,"decompiledCaughtParameter0","caughtException","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("sh","b(I)V",0,"decompiledCaughtException","caughtFailure","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("sh","b(I)V",1,"var1","maxMemoryMethod","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("sh","b(I)V",2,"var1_ref","lookupFailure","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("sh","b(I)V",3,"var2","runtime","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("sh","b(I)V",4,"var2_ref","invocationFailure","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("sh","b(I)V",5,"var3","maxMemoryBytes","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("sh","b(I)V",6,"var4","unusedArguments","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("sh","b(I)V",7,"decompiledCaughtParameter0","caughtInvocationFailure","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("sh","b(I)V",8,"decompiledCaughtParameter1","caughtLookupFailure","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("sh","b(I)V",9,"decompiledUncheckedException","uncheckedFailure","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+local("sh","b(I)V",10,"decompiledCheckedException","checkedFailure","Reviewed canvas sizing, fullscreen/display enumeration or heap-reporting declaration.");
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -2993,10 +3131,13 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "ArchiveSourceManager exposes the priority255/255 master-index request, optional RSA exponent/modulus, verified packet, per-archive source cache and cache I/O dependency. Records contain CRC32, revision and64-byte expected index digest in72 bytes after the count byte. Both RSA inputs must be nonnull to decode the signature; otherwise65 received bytes are used directly. The first recovered byte is ignored, and the remaining64 bytes must match Whirlpool of the count and records. Subsequent polling retains the installed packet, completed request and original data array without rereading.", '',
 "ResourceArchiveFactory exposes optional cache-store setup, cleanup/prefetch flags and packed/decoded-file policies. getArchiveSource requires a verified master index and an in-range ID; it caches the first created source, so later cache-store/cleanup arguments do not replace its retained settings. Maintenance processes queued groups across populated slots, then maintains scans/cleanup in a second sweep. Unrelated static UI/music/string helpers remain qualified.", '',
 "In-memory FetchProbe fixtures use OpenSSL-generated Whirlpool digests for0/1/3/255 records. They verify queue-full deferral, pending/ready reuse, record metadata and bounds, retained payload/request identities, ignored plaintext signature prefix bytes, invalid lengths, record/signature tampering, rejection before publication and later recovery. Deterministic test RSA keys exercise real modular exponentiation with valid/wrong digest and short recovery; either missing key input preserves plaintext behavior. Source fixtures check cached identity/settings/cursor preservation, cleanup delegation and uncached archive-wrapper policies with prefetch remaining inactive when no group cache exists. Static state is restored. Wrong guards, arbitrary malformed headers/counts, live transport, disk-cache factory handle transfer, complete prefetch scheduling, live startup performance and original-JAR equivalence remain unverified.", '',
+"CanvasResizeController/CanvasResizeHandler expose requested, bounded, fallback, saved and fullscreen dimensions, periodic resize state and callback guards. Adaptive eligibility requires a positive server-provided window-mode word and enough reported heap. Heap reporting retains1+floor(Runtime.maxMemory/1048576), with fallback64 on unavailable reflection. Fitting clamps first and then applies positive float aspect ratio without another minimum clamp; it may therefore produce a dimension below its minimum, including zero for extreme ratios. Callback feedback affects centering because adaptive offsets use dimensions after the callback, whereas fixed fallback computes its offset before the callback. Failed heap eligibility disables adaptive mode and defers fallback until the next tick.", '',
+"DisplayModeInfo names width/height/bit-depth/refresh tuples. AwtFullscreenController names graphics-device and saved-mode state, enumeration locals and refresh selection while retaining reflective public names enter/exit/listmodes. Four direct Class.forName class-name literals now follow the class rename. When refresh is unspecified, the closest matching rate to the saved mode wins, with the first equal-distance match retained; no matching mode uses the previous rate. A failed exit verification retains saved mode/window state for a later restore attempt.", '',
+"Headless fixtures verify eligibility boundaries, explicit fit vectors, NaN/infinity/tiny ratios, timer/fallback/fullscreen suppression, callback feedback, setter/save/restore and unavailable fullscreen creation. Simulated GraphicsDevice/Frame objects verify packed mode enumeration, refresh ties/override/fallback, frame setup and failed/successful restore. The real PlatformServices task dispatcher invokes the reflectively named driver and produces DisplayModeInfo records, checking renamed class resolution. Controller/driver state is allocated with Unsafe: the controller constructor still throws Error and real graphics-device selection/window presentation is not exercised. Static state is restored. Real desktop fullscreen, Microsoft DirectDraw, all asynchronous mode-switch failures, display-frame selection, hardware behavior, live rendering and original-JAR equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:71,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:72,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

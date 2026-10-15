@@ -1640,6 +1640,36 @@ without a group cache. Static state is restored. Wrong guards, arbitrary
 malformed headers, live transport, disk-cache factory handle transfer,
 complete prefetch scheduling, live startup performance and original-JAR equivalence remain unverified.
 
+CanvasResizeController and CanvasResizeHandler expose bounded/requested,
+fallback, saved and fullscreen sizes, periodic resize state and callbacks.
+Eligibility checks a positive server-provided window-mode word and the
+reported heap limit. Heap reporting keeps 1+floor(maxMemory/1048576), with
+fallback 64 when reflection is unavailable. Aspect fitting happens after
+clamping and does not reapply minimums. Extreme ratios can produce zero;
+ordinary ratios can reduce a dimension below its minimum. Adaptive centering
+uses width after the callback; fixed fallback computes its offset first.
+Failing the heap gate delays fixed fallback until the next tick.
+
+DisplayModeInfo names packed width/height/bit-depth/refresh tuples.
+AwtFullscreenController names device/saved-mode state and refresh-selection
+locals. Its reflective public names enter/exit/listmodes remain unchanged;
+four direct class-name literals follow the class rename. Unspecified refresh
+chooses the closest matching rate to the saved mode, retaining the first tie,
+or the previous rate when no mode matches. Failed restoration keeps saved
+mode/window state for a later attempt.
+
+Headless fixtures check eligibility, explicit fit vectors, extreme float
+ratios, timers, fallback/fullscreen suppression, callback feedback, setters,
+save/restore and unavailable fullscreen creation. Simulated graphics-device
+and frame objects check enumeration, refresh ties/overrides/fallback, frame
+setup and restoration failures/retry. The real platform-task dispatcher calls
+the reflected driver and decodes display records. Fixtures allocate controlled
+state with Unsafe: the resize-controller constructor still throws Error, and
+real device selection/window presentation is not exercised. Static state is
+restored. Desktop fullscreen, Microsoft DirectDraw, all asynchronous mode-switch
+failures, display-frame selection, hardware behavior, live rendering and
+original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
