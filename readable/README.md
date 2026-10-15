@@ -38,6 +38,38 @@ game; failed metadata installation restores the previous game and receipt.
 Checks and reverse reconstruction also use temporary storage, never `.work`.
 The frozen generic naming dependency remains under `tools`, bound by `PIN.json`.
 
+## Control-flow candidate check
+
+Readability work now prioritizes simpler control flow over additional symbol
+rules. The generic default recovery in `java-tools` commit
+`da77cad39788d8fdf00fff4aaafcdb6889a90d41` flattens sole-if branch wrappers into
+ordered `else if` chains. It can rotate an inverted decision by negating its
+complete original condition. Conditions retain their evaluation order and
+unboxing; leaf blocks retain declarations, transfers, monitors and exception
+regions. Floating comparisons are not complemented without a type proof.
+Chains are bounded and unsupported or ambiguous syntax stays unchanged.
+
+Run the integration diagnostic against that compiler checkout:
+
+```sh
+env -u JAVA_TOOL_OPTIONS JAVA_TOOLS_DIR=/absolute/path/to/java-tools \
+  node readable/tests/test-brickabrac-control-flow.mjs
+```
+
+The pass110 Brick publication provides 3,142 scanned methods. The candidate
+changes 182 methods in 116 files, removes 636 wrapper blocks and rotates 288
+decisions. `PowerUp.applyToBoard` loses 16 wrapper blocks; its maximum brace
+depth falls from 18 to 6. Both complete 420-class source variants compile, and
+the existing native contracts pass 4,082,720 assertions per variant with
+unchanged core, service-header, list-reset and paddle-movement trace hashes.
+These scoped contracts do not establish full original-client equivalence.
+
+The diagnostic makes one temporary candidate tree and removes it on completion.
+It does not replace the publication or its naming dictionary. The current
+published Java remains pass110; publishing this structural change requires a
+fresh catalog rebuild, a pinned raw snapshot and the normal binding/reversal
+checks. No symbol matching rules were added for this experiment.
+
 ## Brick-a-brac
 
 The semantic passes name GameScreen/GameplayScreen, MultiplayerMatch,
