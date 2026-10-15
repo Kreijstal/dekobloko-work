@@ -1860,6 +1860,10 @@ invalid palettes/sizes/guards, negative seeds and scratch-capacity limits, all
 runtime drawing combinations, live performance and original-JAR equivalence
 remain unverified. Unrelated UI/token helpers retain qualified names.
 
+GameRenderAudioHelpers names the static rendering/audio helper bag without assigning ownership of its unrelated globals. drawBoardMaskOverlay, drawBoardResultWord, activeBoardMaskSprite and positiveBoardResultFormat expose the delayed board-mask presentation. RgbSprite.drawVerticallyFlipped reflects the original sprite canvas, including crop offsets; its clipping/scanline locals are named. Result words remain qualified numeric values rather than inferred scores.
+
+Independent pixel fixtures cover cropped-canvas reflection at every clip edge, signed result words including integer extremes, custom positive-value formats, full-size suppression, scaling, alpha rounding and signed24-bit alpha pixel words. Mask fixtures check ticks before/at50, the bounce cutoff at160, fade onset at180 and saturation at280, including clipped/offscreen positions and clip preservation. The upper mask copies zero pixels; its flipped lower half skips them. One-pixel indexed glyphs distinguish actual characters. Original static references are restored. Actual artwork, malformed guards/scales, live rendering performance and original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,

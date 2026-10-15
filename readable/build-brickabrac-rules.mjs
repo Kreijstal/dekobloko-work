@@ -341,6 +341,8 @@ classes.n=['ConnectionPhase','Identity-only connection-state markers; three spec
 classes.sj=['ChatLobbyUiHelpers','Rebuilds visible chat-history rows and handles lobby responses; unrelated applet-cookie, music and loading globals retain separate roles.'];
 classes.vg=['GameTransportActions','Tests transport availability through the current connection phase and sends leave/decline-game requests; unrelated text-choice frame/messages retain separate roles.'];
 classes.la=['RasterEffectHelpers','Bubble refraction scanlines, grayscale-palette sprite blitting, raster outlines, vertical gradients, branched glow and fixed8 HSV conversion; unrelated static UI/token helpers retain separate roles.'];
+classes.bm=['GameRenderAudioHelpers','Static helper bag for mesh sorting/logo loading, board-mask presentation, gameplay audio dispatch and background setup; unrelated globals retain separate roles.'];
+
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -3696,6 +3698,45 @@ local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby trans
  local("gp","a(IIIII)V",1,"var6","rowSkip",evidence);
 }
 
+
+{
+ const evidence="Board-mask callers, sprite canvas reflection and result rendering trace the delayed bounce, vertical mirror, fade, reduced-board geometry and signed numeric text; independent raster fixtures preserve timing, clipping and integer rounding.";
+ method("bm","a","(IIILj;IILjava/lang/String;B)V","drawBoardMaskOverlay",evidence,["x","y","boardHeight","board","boardWidth","scaleDivisor","message","obfuscationGuard"]);
+ method("lo","a","(IIIIIIILj;)V","drawBoardResultWord",evidence,["boardWidth","alpha256","obfuscationGuard","x","scaleDivisor","y","boardHeight","board"]);
+ method("jp","g","(II)V","drawVerticallyFlipped",evidence,["x","y"]);
+ field("vn","w","Ljp;","activeBoardMaskSprite",evidence);
+ field("hh","e","Ljava/lang/String;","positiveBoardResultFormat",evidence);
+ local("bm","a(IIILj;IILjava/lang/String;B)V",0,"stackIn_18_0","failureContext",evidence);
+ local("bm","a(IIILj;IILjava/lang/String;B)V",1,"stackIn_18_1","contextBuilder",evidence);
+ local("bm","a(IIILj;IILjava/lang/String;B)V",2,"stackIn_19_2","boardSummary",evidence);
+ local("bm","a(IIILj;IILjava/lang/String;B)V",3,"stackIn_22_1","messageContextBuilder",evidence);
+ local("bm","a(IIILj;IILjava/lang/String;B)V",4,"stackIn_23_2","messageSummary",evidence);
+ local("bm","a(IIILj;IILjava/lang/String;B)V",5,"decompiledCaughtException","caughtFailure",evidence);
+ local("bm","a(IIILj;IILjava/lang/String;B)V",6,"var8_int","elapsedTicks",evidence);
+ local("bm","a(IIILj;IILjava/lang/String;B)V",7,"var8","failure",evidence);
+ local("bm","a(IIILj;IILjava/lang/String;B)V",8,"var9","bounceDistance",evidence);
+ local("bm","a(IIILj;IILjava/lang/String;B)V",9,"var11","alpha256",evidence);
+ local("bm","a(IIILj;IILjava/lang/String;B)V",10,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("lo","a(IIIIIIILj;)V",0,"var8","unusedTextSlot",evidence);
+ local("lo","a(IIIIIIILj;)V",1,"var8_ref","resultText",evidence);
+ local("lo","a(IIIIIIILj;)V",2,"var8_ref2","failure",evidence);
+ local("lo","a(IIIIIIILj;)V",3,"stackIn_6_0","formattedResult",evidence);
+ local("lo","a(IIIIIIILj;)V",4,"stackIn_12_0","failureContext",evidence);
+ local("lo","a(IIIIIIILj;)V",5,"stackIn_12_1","contextBuilder",evidence);
+ local("lo","a(IIIIIIILj;)V",6,"stackIn_13_2","boardSummary",evidence);
+ local("lo","a(IIIIIIILj;)V",7,"decompiledCaughtException","caughtFailure",evidence);
+ local("lo","a(IIIIIIILj;)V",8,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("jp","g(II)V",0,"var9","clippedBottomRows",evidence);
+ local("jp","g(II)V",1,"var9Lifetime1","clippedLeftColumns",evidence);
+ local("jp","g(II)V",2,"var9Lifetime2","clippedRightColumns",evidence);
+ local("jp","g(II)V",3,"var3","destinationOffset",evidence);
+ local("jp","g(II)V",4,"var4","sourceOffset",evidence);
+ local("jp","g(II)V",5,"var5","height",evidence);
+ local("jp","g(II)V",6,"var6","width",evidence);
+ local("jp","g(II)V",7,"var7","destinationRowSkip",evidence);
+ local("jp","g(II)V",8,"var8","sourceRowSkip",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -3983,10 +4024,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "Native fixtures verify eleven controlled markers plus an unknown marker, transport presence/absence, the alternate phase guard and null-phase failure; an Unsafe dummy transport performs no I/O. Independent chat-row selection covers limits, category filters, ignored-name/system-message handling and suppression, followed by chronological bounds, escaped text, fonts/colors/highlights, pressed-row return, component reuse and unread counts. Refreshing existing visible rows preserves unread counts and pins/resets scrolling state. Narrow/wide transitions preserve new-row counting when old hidden messages become visible again. The no-pending search branch shares three-root press/transition checks with the lobby controller. Original statics/history arrays/phase references are restored. Live connections/full handshakes, pending-search eligibility/request effects, wheel/drag/all-channel/markup behavior, real browser cookies, live presentation and original-JAR equivalence remain unverified.", '',
 "RasterEffectHelpers names bubble-refraction scanlines, grayscale-palette blitting, outline marking, vertical gradients, branched glow and fixed8 HSV conversion. Reviewed fields identify the falloff table, glow scratch/sequence arrays and retained view-key state. Existing drawBubbleDistortion and gameplay identities are preserved; unrelated UI/token helpers remain qualified.", '',
 "Independent bubble pixels use closed-form distances/falloff and immutable source sampling, covering fractional/offscreen centers, strict circles, positive amounts and radii through32767 with index normalization. Drawing uses framebuffer bounds and ignores the current clip while preserving clip state. Gradient fixtures retain the255-alpha complement divided by256, including alpha-zero darkening. Palette sprites cover clipping/offsets, source-zero transparency, mapped zero and nongray32-bit copying. Outline fixtures use Manhattan-distance-two neighborhoods, signed greater-than-one seeds and marker1 idempotence. HSV sector references preserve integer bias and hue wrap. Branched glows use a node-list/trigonometric model plus the independent additive-glow oracle, covering separate x/y sequence words, child counts, generation/radius/intensity changes and zero/varied sequences. Generation count also sets root child count. Original statics/scratch references are restored. Negative distortion/squared-radius overflow, artwork/perceptual appearance, malformed palettes/sizes/guards, negative seeds/scratch capacity, all drawing combinations, live performance and original-JAR equivalence remain unverified.", '',
+"GameRenderAudioHelpers names the static rendering/audio helper bag without assigning ownership of its unrelated globals. drawBoardMaskOverlay, drawBoardResultWord, activeBoardMaskSprite and positiveBoardResultFormat expose the delayed board-mask presentation. RgbSprite.drawVerticallyFlipped reflects the original sprite canvas, including crop offsets; its clipping/scanline locals are named. Result words remain qualified numeric values rather than inferred scores.", '',
+"Independent pixel fixtures cover cropped-canvas reflection at every clip edge, signed result words including integer extremes, custom positive-value formats, full-size suppression, scaling, alpha rounding and signed24-bit alpha pixel words. Mask fixtures check ticks before/at50, the bounce cutoff at160, fade onset at180 and saturation at280, including clipped/offscreen positions and clip preservation. The upper mask copies zero pixels; its flipped lower half skips them. One-pixel indexed glyphs distinguish actual characters. Original static references are restored. Actual artwork, malformed guards/scales, live rendering performance and original-JAR equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:79,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:80,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
