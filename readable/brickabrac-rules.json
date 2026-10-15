@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 104,
+  "version": 105,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -6002,6 +6002,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ed.field_a:Ljava/lang/String;",
+      "originalName": "field_a",
+      "to": "contactInformationReportReason",
+      "evidence": "ed.java: Literal Asking for or providing contact information report reason.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ed.field_b:[Ljp;",
       "originalName": "field_b",
       "to": "countdownSprites",
@@ -6009,10 +6016,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ed.field_c:Ljava/lang/String;",
+      "originalName": "field_c",
+      "to": "unreadMessagesFormat",
+      "evidence": "ed.java: Literal You have <%0> unread messages! format, substituted with the unread count.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ed.field_e:[I",
       "originalName": "field_e",
       "to": "projectedVertexY",
       "evidence": "ed.java: Screen-center plus scaled view Y divided by visible depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ed.field_f:[I",
+      "originalName": "field_f",
+      "to": "achievementBitIndices",
+      "evidence": "ed.java: queueMappedBitAchievement indexes this table by achievement ID, rejects negative entries and toggles 1 shifted by the mapped bit index.",
       "confidence": "reviewed"
     },
     {
@@ -6433,6 +6454,41 @@
       "originalName": "field_m",
       "to": "lobbyPlayerIndex",
       "evidence": "eq.java: Secondary index of all lobby players keyed by64-bit player ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:er.field_a:Ljava/lang/String;",
+      "originalName": "field_a",
+      "to": "acceptDrawText",
+      "evidence": "er.java: Literal Accept draw text used by the draw action.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:er.field_b:Ljp;",
+      "originalName": "field_b",
+      "to": "lobbyGameLogoSprite",
+      "evidence": "er.java: Loaded from basic/lobby_game_logo and installed as the lobby game logo.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:er.field_c:J",
+      "originalName": "field_c",
+      "to": "canvasCreatedAtMillis",
+      "evidence": "er.java: Written from MonotonicTime immediately after canvas creation/focus setup; paint compares elapsed time with 1000ms before requesting canvas replacement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:er.field_d:Ljp;",
+      "originalName": "field_d",
+      "to": "constructionSmokeHalfSprite",
+      "evidence": "er.java: ConstructionBackground assigns the half-size construction smoke sprite, encodes its runs and uses it in scene rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:er.field_e:Ljava/lang/String;",
+      "originalName": "field_e",
+      "to": "friendListFullText",
+      "evidence": "er.java: Literal full friend-list message with free/member capacity limits, also updated by localization.",
       "confidence": "reviewed"
     },
     {
@@ -7836,6 +7892,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hh.field_a:Ljava/lang/String;",
+      "originalName": "field_a",
+      "to": "preferredDisplayNameTooltip",
+      "evidence": "hh.java: Literal preferred name tooltip assigned to the username fields in account registration and name selection.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hh.field_b:[I",
       "originalName": "field_b",
       "to": "unlockedLevelCounts",
@@ -7850,10 +7913,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hh.field_d:D",
+      "originalName": "field_d",
+      "to": "quarterTurnRadians",
+      "evidence": "hh.java: Initialized by atan2(1,0), then subtracted from the pointer angle before radial-sector selection.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hh.field_e:Ljava/lang/String;",
       "originalName": "field_e",
       "to": "positiveBoardResultFormat",
       "evidence": "hh.java: Board-mask callers, sprite canvas reflection and result rendering trace the delayed bounce, vertical mirror, fade, reduced-board geometry and signed numeric text; independent raster fixtures preserve timing, clipping and integer rounding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hh.field_f:Ljava/lang/String;",
+      "originalName": "field_f",
+      "to": "yesText",
+      "evidence": "hh.java: Literal Yes label used by the setting option row.",
       "confidence": "reviewed"
     },
     {
@@ -18070,6 +18147,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wc.field_a:Ljava/lang/String;",
+      "originalName": "field_a",
+      "to": "quitToWebsiteText",
+      "evidence": "wc.java: Literal Quit to website caption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wc.field_c:Ljava/lang/String;",
+      "originalName": "field_c",
+      "to": "passwordLabel",
+      "evidence": "wc.java: Literal Password: caption.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wc.field_d:Z",
       "originalName": "field_d",
       "to": "uiPressClaimed",
@@ -27699,6 +27790,13 @@
       "originalName": "var9",
       "to": "remainingLengthBits",
       "evidence": "eq.java: Reviewed cache ownership, Whirlpool round/bit packing or account conversion local.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:er.a(III)I#0",
+      "originalName": "var3",
+      "to": "negativeValueAdjustment",
+      "evidence": "er.java: The sign-derived adjustment is (value >> 31) & (divisor - 1), retained with Java overflow and arbitrary divisor behavior.",
       "confidence": "reviewed"
     },
     {
@@ -43935,6 +44033,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:qj.b(III)V#0",
+      "originalName": "var5",
+      "to": "validatedSubmissionByte",
+      "evidence": "qj.java: The mapped-bit achievement path validates the submission complement, rejects negative table entries, forms one shifted bit and captures the existing adjusted result words. These local names do not assign unverified meanings to other result words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.b(III)V#1",
+      "originalName": "var6",
+      "to": "achievementBitIndex",
+      "evidence": "qj.java: The mapped-bit achievement path validates the submission complement, rejects negative table entries, forms one shifted bit and captures the existing adjusted result words. These local names do not assign unverified meanings to other result words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.b(III)V#2",
+      "originalName": "var7",
+      "to": "achievementBitMask",
+      "evidence": "qj.java: The mapped-bit achievement path validates the submission complement, rejects negative table entries, forms one shifted bit and captures the existing adjusted result words. These local names do not assign unverified meanings to other result words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.b(III)V#3",
+      "originalName": "var4",
+      "to": "validatedAchievementId",
+      "evidence": "qj.java: The mapped-bit achievement path validates the submission complement, rejects negative table entries, forms one shifted bit and captures the existing adjusted result words. These local names do not assign unverified meanings to other result words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:qj.b(III)V#4",
+      "originalName": "var4Lifetime1",
+      "to": "guardCalculation",
+      "evidence": "qj.java: The mapped-bit achievement path validates the submission complement, rejects negative table entries, forms one shifted bit and captures the existing adjusted result words. These local names do not assign unverified meanings to other result words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:qj.f(I)V#0",
       "originalName": "var2",
       "to": "guardArithmetic",
@@ -55730,6 +55863,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ed.a(I)V",
+      "originalName": "a",
+      "to": "clearSharedReferences",
+      "evidence": "ed.java: Reviewed shared numeric owners retain independent static UI/game roles. Literal strings, exact resource assignments and resolved call sites establish these identities; cleanup guard order and unrelated integer writes are preserved. Clears contactInformationReportReason and achievementBitIndices first; guards greater than -61 return before releasing the other text, projection and countdown arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(II)V",
+      "originalName": "a",
+      "to": "drawMenuBackground",
+      "evidence": "ed.java: Draws the selected background at destinationX with the supplied color index and current scroll; scene 7 also advances/draws fireworks with the same horizontal offset.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ed.b(II)I",
       "originalName": "b",
       "to": "unsignedBitLength",
@@ -55944,6 +56091,13 @@
       "originalName": "b",
       "to": "reset",
       "evidence": "eq.java: Clears bit length, hash and buffer cursors; guard99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.a(B)V",
+      "originalName": "a",
+      "to": "clearSharedReferences",
+      "evidence": "er.java: Reviewed shared numeric owners retain independent static UI/game roles. Literal strings, exact resource assignments and resolved call sites establish these identities; cleanup guard order and unrelated integer writes are preserved. Releases text/sprites; guards other than -121 also call nonnegativeRemainder before clearing friendListFullText.",
       "confidence": "reviewed"
     },
     {
@@ -56980,6 +57134,13 @@
       "originalName": "a",
       "to": "integerPower",
       "evidence": "hh.java: Exponentiation by squaring with signed32 wraparound; nonpositive exponent returns1; canonical guard29605, other guards return -85.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hh.a(Z)V",
+      "originalName": "a",
+      "to": "clearSharedReferences",
+      "evidence": "hh.java: Reviewed shared numeric owners retain independent static UI/game roles. Literal strings, exact resource assignments and resolved call sites establish these identities; cleanup guard order and unrelated integer writes are preserved. Both guard branches release the same reference set, retaining the original repeated unlockedLevelCounts assignments.",
       "confidence": "reviewed"
     },
     {
@@ -65572,6 +65733,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wc.a(I)V",
+      "originalName": "a",
+      "to": "clearSharedReferences",
+      "evidence": "wc.java: Reviewed shared numeric owners retain independent static UI/game roles. Literal strings, exact resource assignments and resolved call sites establish these identities; cleanup guard order and unrelated integer writes are preserved. Clears both strings; guards at most 62 also write the unrelated field_e integer to 120.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wc.a([IIIII)V",
       "originalName": "a",
       "to": "blendHalfRgbSpan",
@@ -73937,6 +74105,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ed.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "ed.java: Reviewed shared numeric owners retain independent static UI/game roles. Literal strings, exact resource assignments and resolved call sites establish these identities; cleanup guard order and unrelated integer writes are preserved. Clears contactInformationReportReason and achievementBitIndices first; guards greater than -61 return before releasing the other text, projection and countdown arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ed.a(II)V#0",
+      "originalName": "param0",
+      "to": "destinationX",
+      "evidence": "ed.java: Draws the selected background at destinationX with the supplied color index and current scroll; scene 7 also advances/draws fireworks with the same horizontal offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ed.a(II)V#1",
+      "originalName": "param1",
+      "to": "colorIndex",
+      "evidence": "ed.java: Draws the selected background at destinationX with the supplied color index and current scroll; scene 7 also advances/draws fireworks with the same horizontal offset.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ed.b(II)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -74592,6 +74781,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "eq.java: Clears bit length, hash and buffer cursors; guard99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:er.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "er.java: Reviewed shared numeric owners retain independent static UI/game roles. Literal strings, exact resource assignments and resolved call sites establish these identities; cleanup guard order and unrelated integer writes are preserved. Releases text/sprites; guards other than -121 also call nonnegativeRemainder before clearing friendListFullText.",
       "confidence": "reviewed"
     },
     {
@@ -77819,6 +78015,13 @@
       "originalName": "param2",
       "to": "base",
       "evidence": "hh.java: Exponentiation by squaring with signed32 wraparound; nonpositive exponent returns1; canonical guard29605, other guards return -85.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hh.a(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hh.java: Reviewed shared numeric owners retain independent static UI/game roles. Literal strings, exact resource assignments and resolved call sites establish these identities; cleanup guard order and unrelated integer writes are preserved. Both guard branches release the same reference set, retaining the original repeated unlockedLevelCounts assignments.",
       "confidence": "reviewed"
     },
     {
@@ -103099,6 +103302,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wc.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "wc.java: Reviewed shared numeric owners retain independent static UI/game roles. Literal strings, exact resource assignments and resolved call sites establish these identities; cleanup guard order and unrelated integer writes are preserved. Clears both strings; guards at most 62 also write the unrelated field_e integer to 120.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wc.a([IIIII)V#0",
       "originalName": "param0",
       "to": "target",
@@ -104528,7 +104738,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "f100c38192ee6c5139367e6b47c7d06100ad8147130f329c25cc90d7a21f79ea",
+      "build-brickabrac-rules.mjs": "5bc8e660ed2171381cd4e32ff152d19b858849048c47b3ea5dbe03c6fefdec6a",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
       "tests/test-brickabrac-core.mjs": "fea84ed9fa134f3d1ad0fdbb05d0f89d27c2759306cf6224e30d0aef664bdef3",
       "tests/brickabrac-original-contracts.mjs": "b4ec4506c9397d2331bafeb0f301f8bd27f4969d10f53d70fbac672d4840b7f8",

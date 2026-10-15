@@ -2127,6 +2127,20 @@ name the calling boundary. The header assertion count is reported separately
 from the existing 3,454,982 core assertions. Complete connection-state and
 live-server equivalence remain unverified.
 
+GameplayScreen.queueMappedBitAchievement now names the validated achievement ID
+and submission byte, lookup bit index and shifted bit mask. achievementBitIndices
+names its existing ID-to-bit table, including negative unsupported entries.
+IntegerBitLengthHelpers.drawMenuBackground exposes horizontal placement, color
+selection and the scene-7 fireworks callback. canvasCreatedAtMillis names the
+monotonic timestamp used by the canvas-recreation age check.
+constructionSmokeHalfSprite and lobbyGameLogoSprite follow exact resource
+assignments. Literal report, unread-message, draw, friend-limit, password,
+website and preferred-name labels now have readable names on their existing
+shared owners. The numeric adjustment and radial quarter-turn names retain the
+original arithmetic; cleanup methods preserve guard-specific release order,
+repeated assignments and unrelated integer writes. Existing raw/named fixtures
+check this naming pass; complete original-gamepack equivalence remains unverified.
+
 A subsequent bytecode audit found a correctness defect in the frozen input for
 `jh.a(boolean,mh)`, the list-layout reset helper used by friend/ignore list updates.
 The original JAR stores both the first child and each next child into slot 2, and
