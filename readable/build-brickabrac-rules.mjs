@@ -331,6 +331,8 @@ classes.in=['MicrosoftJvmCursorController','Legacy Microsoft JVM cursor visibili
 classes.io=['DirectDrawFullscreenController','Legacy Microsoft DirectDraw mode enumeration callback and fullscreen cooperative/display-mode adapter; exported enter peer lookup remains a null placeholder.'];
 classes.m=['ConditionalTextValue','Retains null-normalized text and a conditional-inclusion flag, forced false for empty text; callers selectively include it in a handshake branch. Unrelated static helpers remain separate.'];
 classes.ck=['DiagnosticTextLine','Intrusive mutable StringBuilder line used by the heap/render-loop-rate diagnostic overlay; unrelated static archive, framebuffer and tutorial helpers remain separate.'];
+classes.vj=['SocialTabbedPanel','Wraps a caller-provided primary panel plus explicitly labelled Friends and Ignore tabs, and lays out their shared controls; unrelated static music/ranking/background helpers remain separate.'];
+classes.wn=['FriendListUi','Updates friend rows, location colors, rename indicators, name tooltips and footer actions; unrelated static keyboard, chat-filter and font helpers retain their separate roles.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -1323,7 +1325,7 @@ method('fj','<init>','(JLmh;Lmh;Lmh;Lmh;)V','<init>','Creates distinct buttons/p
 method('fj','a','(IIIBIIII)V','setScrollbarBounds','Stores geometry and lays out end buttons, track/page regions and thumb; canonical byte guard -110.',['x','viewportHeight','height','obfuscationGuard','width','scrollOffset','contentHeight','y']);method('fj','a','(IIII)V','layoutScrollbar','End buttons fit width or half height; thumb proportional to viewport/content, clamped to track with minimum width; guard at most -75.',['obfuscationGuard','contentHeight','scrollOffset','viewportHeight']);method('fj','a','(IIBZ)I','getDraggedScrollOffset','Maps current thumb displacement to content range with rounding; two clamp orders differ for content shorter than viewport; guard106.',['contentHeight','viewportHeight','obfuscationGuard','clampMinimumFirst']);
 for(const [original,descriptor,to,parameters,evidence] of [['h','(I)Z','pollLineUp',['obfuscationGuard'],'Immediate press then20/3 repeat while captured; canonical guard0.'],['i','(I)Z','pollLineDown',['obfuscationGuard'],'Immediate press then20/3 repeat while captured; canonical guard2.'],['j','(I)Z','pollPageUp',['obfuscationGuard'],'Immediate press then20/3 repeat while captured and pointer above target thumb; canonical guard2.'],['d','(B)Z','pollPageDown',['obfuscationGuard'],'Immediate press then20/3 repeat while captured and pointer below target thumb; canonical guard -79.'],['f','(B)Z','isThumbCaptured',['obfuscationGuard'],'Nonzero captured button on thumb; canonical guard57.']])method('fj',original,descriptor,to,evidence,parameters);
 method('mm','<init>','(JLmh;Lmh;Lfj;)V','<init>','Attaches supplied content inside new viewport and clones scrollbar template.',['id','content','viewportStyle','scrollbarStyle']);method('mm','a','(IBIIIII)V','setScrollPaneBounds','Stores outer bounds and lays out viewport/content width and scrollbar; guard below -108.',['contentRightInset','obfuscationGuard','width','x','y','scrollbarWidth','height']);method('mm','b','(BII)V','layoutScrollPane','Subtracts scrollbar width and right inset from viewport/content; scrollbar at right edge; guard -45.',['obfuscationGuard','scrollbarWidth','contentRightInset']);method('mm','a','(IIIIZ)V','applyScrollInput','Adds line/page/wheel displacement, clamps target scroll, maps captured thumb and refreshes scrollbar geometry; short-content clamp order depends on boolean.',['wheelDisplacement','obfuscationGuard','pageStep','lineStep','clampMinimumFirst']);method('mm','a','(ZIZI)V','updateScroll','Applies wheel/line/page/drag without repacking children; canonical true guard.',['obfuscationGuard','lineStep','clampMinimumFirst','wheelDisplacement']);method('mm','a','(IZIIIZI)Z','layoutAndScroll','Keeps child layout when requested or while active without relayout permission; applies scroll input and returns keep-layout decision.',['gap','keepChildLayout','wheelDisplacement','lineStep','pageStep','allowActiveRelayout','obfuscationGuard']);method('mm','a','(IIIIZZ)Z','updateContentLayout','Uses viewport height as page step and returns keep-layout decision; guard22676.',['gap','wheelDisplacement','lineStep','obfuscationGuard','allowActiveRelayout','keepChildLayout']);
-method('hj','<init>','(JLmh;Lmh;Lfj;Lmh;Ljava/lang/String;Ljava/lang/String;)V','<init>','Constructs content, scroll pane and two footer labels from styles.',['id','styleTemplate','viewportStyle','scrollbarStyle','footerStyle','leftText','rightText']);method('hj','<init>','(JLhj;Ljava/lang/String;Ljava/lang/String;)V','<init>','Clones container/viewport/scrollbar/footer styles with replacement text.',['id','styleTemplate','leftText','rightText']);method('hj','a','(ZIIIIIII)V','setPaneFooterBounds','Stores geometry then lays out pane and footer; true guard.',['obfuscationGuard','scrollbarWidth','width','x','y','contentRightInset','footerHeight','height']);method('hj','a','(IIII)V','layoutPaneFooter','Positions pane above footer, leaving scrollbar-width gap in footer and pane height; guard -779.',['footerHeight','obfuscationGuard','contentRightInset','scrollbarWidth']);
+method('hj','<init>','(JLmh;Lmh;Lfj;Lmh;Ljava/lang/String;Ljava/lang/String;)V','<init>','Constructs content, scroll pane and two footer labels from styles.',['id','styleTemplate','viewportStyle','scrollbarStyle','footerStyle','leftText','rightText']);method('hj','<init>','(JLhj;Ljava/lang/String;Ljava/lang/String;)V','<init>','Clones container/viewport/scrollbar/footer styles with replacement text.',['id','styleTemplate','leftText','rightText']);method('hj','a','(ZIIIIIII)V','setPaneFooterBounds','Stores geometry then lays out pane and footer; true guard.',['obfuscationGuard','contentRightInset','width','x','y','scrollbarWidth','footerHeight','height']);method('hj','a','(IIII)V','layoutPaneFooter','Positions pane above footer; contentRightInset separates footer buttons and reduces pane height, while scrollbarWidth controls the actual scrollbar; guard -779.',['footerHeight','obfuscationGuard','scrollbarWidth','contentRightInset']);
 method('rk','<init>','(JLmh;Lmh;Lmh;Ljp;Ljava/lang/String;)V','<init>','Creates optional icon/label and marks descendants to inherit visual state.',['id','styleTemplate','iconStyle','labelStyle','sprite','text']);method('rk','b','(III)V','layoutIconLabel','Measures optional children, constrains label, aligns combined inset/gap width and forwards vertical alignment; canonical guard -111.',['obfuscationGuard','inset','gap']);method('rk','a','(III)I','measureIconLabelWidth','Combined intrinsic widths plus gap and two insets; absent child contributes negative gap; guard24.',['gap','obfuscationGuard','inset']);method('rk','a','(IIIIIII)V','setIconLabelBounds','Sets immediate bounds then positions children; guard -10411.',['obfuscationGuard','y','inset','gap','x','height','width']);
 method('ni','<init>','(JLjp;Ljp;ILmh;Ljava/lang/String;)V','<init>','Installs selected/normal icon sprites, icon vertical alignment and label template/text.',['id','selectedSprite','normalSprite','iconVerticalAlignment','labelStyle','text']);method('ni','<init>','(JLmh;Lmh;Ljava/lang/String;)V','<init>','Creates icon/label style children and marks them to inherit visual state.',['id','iconStyle','labelStyle','text']);method('ni','<init>','(JLni;Ljava/lang/String;)V','<init>','Clones icon and label styles with replacement text.',['id','styleTemplate','text']);method('ni','a','(BI)I','measureIconLabelWidth','Sum of icon/label intrinsic width and gap; guard11.',['obfuscationGuard','gap']);method('ni','b','(II)V','layoutIconLabel','Icon starts at zero with intrinsic width; label fills remaining width after gap; guard -32434.',['obfuscationGuard','gap']);method('ni','a','(IIIIZI)V','setIconLabelBounds','Sets immediate bounds then lays out icon and label; canonical true guard.',['width','gap','height','y','obfuscationGuard','x']);
 for(const [owner,signature,names] of [
@@ -3012,6 +3014,105 @@ local("io","callbackEnumModes(Lcom/ms/directX/DDSurfaceDesc;Lcom/ms/com/IUnknown
  local("rd","b(I)V",18,"decompiledCaughtParameter0","caughtDrawingFailure",evidence);
 }
 
+
+// Social tabs, shared controls and friend/ignore row updates.
+{
+ const evidence="Reviewed SocialTabbedPanel constructor labels, social-panel initialization and friends/ignore update callers; unrelated static helpers retain separate roles.";
+ field("vj","d","Loa;","tabs",evidence);
+ field("rg","c","Lmh;","friendsPanel",evidence);
+ field("gf","f","Lhj;","friendsListPane",evidence);
+ field("f","c","Lhj;","ignoreListPane",evidence);
+ field("sj","d","Lmh;","friendsStatusLabel",evidence);
+ field("gk","c","Lmh;","friendNameHeading",evidence);
+ field("qj","u","Lmh;","friendLocationHeading",evidence);
+ field("ok","g","Ljp;","displayNameChangedSprite",evidence);
+ field("ec","J","I","uiScrollbarWidth",evidence);
+ field("e","j","Ljava/lang/String;","friendsTabLabel",evidence);
+ field("pl","e","Ljava/lang/String;","ignoreTabLabel",evidence);
+ field("n","a","Ljava/lang/String;","nameColumnHeadingText",evidence);
+ field("bc","c","Ljava/lang/String;","locationColumnHeadingText",evidence);
+ method("vj","<init>","(Ljava/lang/String;Lmh;)V",null,evidence,["primaryTabLabel", "primaryPanel"]);
+ method("vj","a","(IIIII)V","setBounds",evidence,["width", "x", "obfuscationGuard", "y", "height"]);
+ method("wn","a","(ZII)Lmp;","updateFriendsList",evidence,["allowActiveRelayout", "wheelTurns", "obfuscationGuard"]);
+ method("jm","a","(ZZI)V","updateIgnoreList",evidence,["allowActiveRelayout", "obfuscationGuard", "wheelTurns"]);
+ method("fr","a","(Lmf;B)V","initializeSocialPanels",evidence,["archive", "obfuscationGuard"]);
+ local("vj","<init>(Ljava/lang/String;Lmh;)V",0,"var3","tabLabels",evidence);
+ local("vj","<init>(Ljava/lang/String;Lmh;)V",1,"var4","panels",evidence);
+ local("vj","<init>(Ljava/lang/String;Lmh;)V",2,"runtimeException","constructionFailure",evidence);
+ local("vj","a(IIIII)V",0,"var6","tabHeight",evidence);
+ local("vj","a(IIIII)V",1,"var7","panelInset",evidence);
+ local("fr","a(Lmf;B)V",0,"var5","friendsViewport",evidence);
+ local("fr","a(Lmf;B)V",1,"var6","friendsViewportAlias",evidence);
+ local("fr","a(Lmf;B)V",2,"var3","ignoreViewport",evidence);
+ local("fr","a(Lmf;B)V",3,"runtimeException","initializationFailure",evidence);
+ local("wn","a(ZII)Lmp;",0,"stackIn_4_0","scrollPaneForLayout",evidence);
+ local("wn","a(ZII)Lmp;",1,"stackIn_4_1","rowGapForLayout",evidence);
+ local("wn","a(ZII)Lmp;",2,"stackIn_4_2","wheelPixels",evidence);
+ local("wn","a(ZII)Lmp;",3,"stackIn_4_3","lineStep",evidence);
+ local("wn","a(ZII)Lmp;",4,"stackIn_4_4","layoutGuard",evidence);
+ local("wn","a(ZII)Lmp;",5,"stackIn_4_5","activeRelayout",evidence);
+ local("wn","a(ZII)Lmp;",6,"stackIn_5_6","keepChildLayout",evidence);
+ local("wn","a(ZII)Lmp;",7,"stackIn_12_0","entryForInitialization",evidence);
+ local("wn","a(ZII)Lmp;",8,"stackIn_33_0","nameLabelForText",evidence);
+ local("wn","a(ZII)Lmp;",9,"stackIn_34_1","displayedName",evidence);
+ local("wn","a(ZII)Lmp;",10,"stackIn_37_0","serverLabelForText",evidence);
+ local("wn","a(ZII)Lmp;",11,"stackIn_38_1","displayedLocation",evidence);
+ local("wn","a(ZII)Lmp;",12,"stackIn_42_0","truncatedValue",evidence);
+ local("wn","a(ZII)Lmp;",13,"stackIn_101_0","returnedEntry",evidence);
+ local("wn","a(ZII)Lmp;",14,"decompiledCaughtException","caughtFailure",evidence);
+ local("wn","a(ZII)Lmp;",15,"stackOut_11_0","iteratedEntry",evidence);
+ local("wn","a(ZII)Lmp;",16,"var3_int","layoutRetained",evidence);
+ local("wn","a(ZII)Lmp;",17,"var3","updateFailure",evidence);
+ local("wn","a(ZII)Lmp;",18,"var4","entries",evidence);
+ local("wn","a(ZII)Lmp;",19,"var5","pressedEntry",evidence);
+ local("wn","a(ZII)Lmp;",20,"var6","previousEntry",evidence);
+ local("wn","a(ZII)Lmp;",21,"var7","entry",evidence);
+ local("wn","a(ZII)Lmp;",22,"var8","createdLabels",evidence);
+ local("wn","a(ZII)Lmp;",23,"var9","rowY",evidence);
+ local("wn","a(ZII)Lmp;",24,"var10","textColor",evidence);
+ local("wn","a(ZII)Lmp;",25,"var11","activeTextColor",evidence);
+ local("wn","a(ZII)Lmp;",26,"var12","hasPreviousName",evidence);
+ local("wn","a(ZII)Lmp;",27,"var13","nameX",evidence);
+ local("wn","a(ZII)Lmp;",28,"var14","nameWidth",evidence);
+ local("wn","a(ZII)Lmp;",29,"var15","isTruncated",evidence);
+ local("wn","a(ZII)Lmp;",30,"var16","pressedName",evidence);
+ local("wn","a(ZII)Lmp;",31,"var17","contextForMessage",evidence);
+ local("wn","a(ZII)Lmp;",32,"var18","messageCaption",evidence);
+ local("wn","a(ZII)Lmp;",33,"var19","clientBranchFlag",evidence);
+ local("wn","a(ZII)Lmp;",34,"var17Lifetime1","contextForSpectate",evidence);
+ local("wn","a(ZII)Lmp;",35,"var18Lifetime1","spectateCaption",evidence);
+ local("wn","a(ZII)Lmp;",36,"decompiledFrameCompleted0","processFooterActions",evidence);
+ local("wn","a(ZII)Lmp;",37,"decompiledCaughtParameter0","caughtUpdateFailure",evidence);
+ local("jm","a(ZZI)V",0,"stackIn_3_0","scrollPaneForLayout",evidence);
+ local("jm","a(ZZI)V",1,"stackIn_3_1","rowGapForLayout",evidence);
+ local("jm","a(ZZI)V",2,"stackIn_3_2","wheelPixels",evidence);
+ local("jm","a(ZZI)V",3,"stackIn_3_3","lineStep",evidence);
+ local("jm","a(ZZI)V",4,"stackIn_3_4","layoutGuard",evidence);
+ local("jm","a(ZZI)V",5,"stackIn_3_5","activeRelayout",evidence);
+ local("jm","a(ZZI)V",6,"stackIn_4_6","keepChildLayout",evidence);
+ local("jm","a(ZZI)V",7,"stackIn_20_0","nameLabelForText",evidence);
+ local("jm","a(ZZI)V",8,"stackIn_21_1","displayedName",evidence);
+ local("jm","a(ZZI)V",9,"stackIn_24_0","truncatedValue",evidence);
+ local("jm","a(ZZI)V",10,"decompiledCaughtException","caughtFailure",evidence);
+ local("jm","a(ZZI)V",11,"var3_int","layoutRetained",evidence);
+ local("jm","a(ZZI)V",12,"var3","updateFailure",evidence);
+ local("jm","a(ZZI)V",13,"var4","entries",evidence);
+ local("jm","a(ZZI)V",14,"var5","previousEntry",evidence);
+ local("jm","a(ZZI)V",15,"var6","entry",evidence);
+ local("jm","a(ZZI)V",16,"var7","createdLabels",evidence);
+ local("jm","a(ZZI)V",17,"var8","hasPreviousName",evidence);
+ local("jm","a(ZZI)V",18,"var9","nameX",evidence);
+ local("jm","a(ZZI)V",19,"var10","nameWidth",evidence);
+ local("jm","a(ZZI)V",20,"var11","isTruncated",evidence);
+ local("jm","a(ZZI)V",21,"var13_ref_String","removeIgnoreCaption",evidence);
+ local("jm","a(ZZI)V",22,"var13","pressX",evidence);
+ local("jm","a(ZZI)V",23,"var14","pressY",evidence);
+ local("jm","a(ZZI)V",24,"var15","unusedClientFlag",evidence);
+ local("jm","a(ZZI)V",25,"var16","contextForRemove",evidence);
+ local("jm","a(ZZI)V",26,"var17","contextForLayout",evidence);
+ local("jm","a(ZZI)V",27,"decompiledCaughtParameter0","caughtUpdateFailure",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -3289,10 +3390,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "Headless Robot/Toolkit/Component probes verify coordinates, ARGB image contents/hotspots, transparent cursor creation, owner transfer/no-op/show/reset and cursor-creation failure state. Real PlatformServices tasks14/15/17 call the reflectively resolved pointer driver and preserve movement/cursor parameters. Legacy fixtures check constructor/callback state using the existing no-op Win32 stubs; a scripted DirectDraw subclass verifies two-pass enumeration/cleanup and restore cooperative level8. Probe compilation now uses the same existing temporary dependency classpath as game compilation/runtime. Static state is restored. Real Robot/cursor appearance, Microsoft JVM native behavior, DirectDraw hardware, concurrent enumeration, arbitrary invalid cursor dimensions/hotspots and original-JAR equivalence remain unverified.", '',
 "ConditionalTextValue names null-normalized text and its conditional-inclusion flag; empty text forces false and the single-string constructor defaults false. DiagnosticTextLine names mutable heap/render-loop diagnostic lines, with reviewed font, deque, enable flags, cached values and initialization/update/drawing helpers. Unrelated static helpers retain separate roles.", '',
 "Native fixtures verify text normalization/defaults, decimal append/scratch reuse, line selection/order, render-rate caching and disabled-line removal. Independent decimal expectations preserve negative signed-remainder characters below zero and the omitted scratch minus. Independent overlay pixels/glyph events cover strict next100-pixel rounding, an exact100 boundary, spaces, reversed glyph order, row spacing, empty lists and no-op drawing guards. Heap contents are checked only for format/range and excluded from deterministic traces. Static state and original scratch contents are restored. The displayed fps is a render-loop rate, not presented FPS. Full handshake behavior, arbitrary malformed text/guards, live presentation, memory budgets and original-JAR equivalence remain unverified.", '',
+"SocialTabbedPanel names the primary/Friends/Ignore wrapper and retained tabs/bounds. FriendListUi names friend-row updates; updateIgnoreList and initializeSocialPanels expose related helpers on their existing owners. Shared panel/pane references, headings, status text, rename sprite and scrollbar width have reviewed names. Four ScrollPaneWithFooter parameter names are corrected: the content gap and actual scrollbar width were previously reversed. Unrelated static helpers retain separate roles.", '',
+"Native fixtures initialize panels from an in-memory named sprite archive and verify tab identities/labels, initial selection, bounds/guards, row-height and scrollbar variations. Unequal gap/scrollbar geometry checks verify the corrected parameter roles and footer separation. Friend/ignore fixtures cover fresh/reused labels, ordering, retained layout, rename icons/tooltips, truncated-name tooltips, availability states and four footer action modes. Friend location colors preserve server String reference identity, including equal text in a distinct object. Independent fixed-advance truncation expectations retain the extra dropped character before the ellipsis; nonpositive name widths keep the full name. The ignore false guard returns after scroll layout, before availability mutation. Static state is restored. Real assets, live input/servers, friend-row context menus, all narrow positive truncation widths, arbitrary invalid guards and original-JAR equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:74,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:75,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

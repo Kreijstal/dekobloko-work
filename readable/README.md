@@ -1717,6 +1717,30 @@ restored. The displayed “fps” is a render-loop rate, not presented FPS. Comp
 handshake behavior, arbitrary malformed text/guards, live presentation, memory
 budgets and original-JAR equivalence remain unverified.
 
+SocialTabbedPanel names the primary/Friends/Ignore wrapper, retained tabs and
+bounds method. FriendListUi names friend-row updates; updateIgnoreList and
+initializeSocialPanels expose the related helpers on their existing owners.
+Shared panel/pane references, headings, status text, rename sprite and scrollbar
+width now have reviewed names. Unrelated static helpers retain separate roles.
+
+The two ScrollPaneWithFooter bounds/layout signatures previously labelled the
+gap as scrollbarWidth and the actual scrollbar width as contentRightInset.
+Those four parameter names are corrected. Unequal gap/scrollbar fixtures verify
+the actual geometry, including the gap between footer buttons.
+
+Native fixtures initialize panels from an in-memory named sprite archive and
+check tab identity/labels, initial selection, bounds/guards, row-height and
+scrollbar variations. Friend/ignore fixtures cover fresh/reused labels, ordering,
+retained layout, renamed-player icons/tooltips, truncated-name tooltips,
+availability states and four footer action modes. Friend colors preserve
+reference identity: a distinct String with equal server text uses the other
+location color. Independent fixed-advance truncation expectations preserve the
+extra character dropped before the ellipsis. Nonpositive name widths keep the
+full name. The ignore false guard returns after scroll layout, before updating
+availability. Static state is restored. Real assets, live input/servers, friend
+row context-menu actions, all narrow positive truncation widths, arbitrary
+invalid guards and original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
