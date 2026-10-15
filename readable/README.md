@@ -2083,7 +2083,11 @@ trace SHA-256 `7c82f2de56199b3eb7b567dcb5bfca1414abd16664293b40c1c76231e1a6a729`
 Running the same model against freshly compiled published named Java rejects a
 canonical one-child reset: it throws `NullPointerException` instead of returning
 normally. This deliberate negative control confirms the probe detects the known
-frozen-input defect. The probe can also resolve raw/readable aliases from the
+frozen-input defect. The helper freshly emitted from the corrected batch's
+transformed class, recompiled against pinned raw peer classes, passes the same
+5,449 assertions with the original JAR's trace hash. This verifies the isolated
+repair while full-pack migration and publication remain pending.
+The probe can also resolve raw/readable aliases from the
 dictionary for integration after the input migration. Both compiler and JVM
 probe processes have 30-second execution limits; temporary output is removed.
 This is a native check of this helper's contract; whole-game equivalence and
