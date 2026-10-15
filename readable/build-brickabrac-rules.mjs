@@ -343,6 +343,7 @@ classes.vg=['GameTransportActions','Tests transport availability through the cur
 classes.la=['RasterEffectHelpers','Bubble refraction scanlines, grayscale-palette sprite blitting, raster outlines, vertical gradients, branched glow and fixed8 HSV conversion; unrelated static UI/token helpers retain separate roles.'];
 classes.bm=['GameRenderAudioHelpers','Static helper bag for mesh sorting/logo loading, board-mask presentation, gameplay audio dispatch and background setup; unrelated globals retain separate roles.'];
 
+classes.lo=['LegacyEmailValidationError','Identity-only error markers returned by the legacy email syntax helpers; null denotes success. No instance state; toString throws. Unrelated static result-text rendering and input globals retain separate roles.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -3737,6 +3738,153 @@ local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby trans
  local("jp","g(II)V",8,"var8","sourceRowSkip",evidence);
 }
 
+
+{
+ const evidence="Legacy email-validation call chain and singleton returns distinguish absent address, missing parts, length and syntax failures. Source checks preserve first-at splitting, ASCII alphabets, empty labels, quoted escape parity and nonnumeric suffix rules; independent boundary/character fixtures verify behavior.";
+ method("cp","a","(Ljava/lang/String;B)Llo;","validateLegacyEmailAddress",evidence,["address", "obfuscationGuard"]);
+ method("h","a","(Ljava/lang/String;Z)Llo;","validateEmailLocalPart",evidence,["localPart", "initialPreviousDot"]);
+ method("ji","a","(Ljava/lang/String;I)Llo;","validateEmailDomain",evidence,["domain", "firstLabelIndex"]);
+ method("kb","a","(ILjava/lang/String;)Llo;","validateEmailDomainLabel",evidence,["obfuscationGuard", "label"]);
+ method("mf","a","(BLjava/lang/String;)Llo;","rejectNumericEmailSuffix",evidence,["obfuscationGuard", "suffix"]);
+ method("qb","a","(BLjava/lang/String;C)[Ljava/lang/String;","splitPreservingEmptyParts",evidence,["obfuscationGuard", "text", "delimiter"]);
+ method("pp","a","(BCLjava/lang/CharSequence;)I","countCharacter",evidence,["obfuscationGuard", "character", "text"]);
+ field("tl","b","Llo;","missingEmailAddress",evidence);
+ field("la","a","Llo;","missingEmailPart",evidence);
+ field("pi","r","Llo;","emailPartTooLong",evidence);
+ field("wg","c","Llo;","invalidEmailSyntax",evidence);
+ field("kq","k","Ljava/lang/String;","emailDomainAlphanumerics",evidence);
+ field("qa","v","Ljava/lang/String;","emailLocalAtomCharacters",evidence);
+ field("wl","O","Ljava/lang/String;","invalidEmailMessage",evidence);
+ field("to","l","Ljava/lang/String;","validEmailMessage",evidence);
+ local("kb","a(ILjava/lang/String;)Llo;",0,"var3","characterIndex",evidence);
+ local("kb","a(ILjava/lang/String;)Llo;",1,"var2_int","labelLength",evidence);
+ local("kb","a(ILjava/lang/String;)Llo;",2,"var4","character",evidence);
+ local("kb","a(ILjava/lang/String;)Llo;",3,"var5","gameFlag",evidence);
+ local("kb","a(ILjava/lang/String;)Llo;",4,"stackIn_3_0","missingPartError",evidence);
+ local("kb","a(ILjava/lang/String;)Llo;",5,"stackIn_8_0","lengthError",evidence);
+ local("kb","a(ILjava/lang/String;)Llo;",6,"stackIn_17_0","hyphenError",evidence);
+ local("kb","a(ILjava/lang/String;)Llo;",7,"stackIn_20_0","characterError",evidence);
+ local("kb","a(ILjava/lang/String;)Llo;",8,"stackIn_25_0","failureContext",evidence);
+ local("kb","a(ILjava/lang/String;)Llo;",9,"stackIn_25_1","contextBuilder",evidence);
+ local("kb","a(ILjava/lang/String;)Llo;",10,"stackIn_26_2","labelSummary",evidence);
+ local("kb","a(ILjava/lang/String;)Llo;",11,"decompiledCaughtException","caughtFailure",evidence);
+ local("kb","a(ILjava/lang/String;)Llo;",12,"var2","failure",evidence);
+ local("kb","a(ILjava/lang/String;)Llo;",13,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",0,"stackIn_3_0","missingPartError",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",1,"stackIn_6_0","lengthError",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",2,"stackIn_11_0","closingQuoteError",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",3,"stackIn_20_0","toggledEscapeFlag",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",4,"stackIn_24_0","unescapedQuoteError",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",5,"stackIn_37_0","dotPlacementError",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",6,"stackIn_42_0","characterError",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",7,"stackIn_48_0","failureContext",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",8,"stackIn_48_1","contextBuilder",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",9,"stackIn_49_2","localPartSummary",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",10,"decompiledCaughtException","caughtFailure",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",11,"var2_int","localPartLength",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",12,"var2","failure",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",13,"var3","escapeFlag",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",14,"var4","quotedIndex",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",15,"var5","quotedCharacter",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",16,"var6","gameFlag",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",17,"var3Lifetime1","previousDotFlag",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",18,"var4Lifetime1","atomIndex",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",19,"var5Lifetime1","atomCharacter",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",20,"decompiledFrameRemainder0","checkAtomCharacter",evidence);
+ local("h","a(Ljava/lang/String;Z)Llo;",21,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",0,"var2_int","domainLength",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",1,"var2","failure",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",2,"var3","labels",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",3,"var4","labelsToValidate",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",4,"var5","labelIndex",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",5,"var6","label",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",6,"var7","labelError",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",7,"var8","gameFlag",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",8,"stackIn_3_0","missingDomainError",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",9,"stackIn_7_0","lengthError",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",10,"stackIn_10_0","missingLabelsError",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",11,"stackIn_15_0","returnedLabelError",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",12,"stackIn_18_0","suffixError",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",13,"stackIn_21_0","failureContext",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",14,"stackIn_21_1","contextBuilder",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",15,"stackIn_22_2","domainSummary",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",16,"decompiledCaughtException","caughtFailure",evidence);
+ local("ji","a(Ljava/lang/String;I)Llo;",17,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("mf","a(BLjava/lang/String;)Llo;",0,"var2_int","suffixLength",evidence);
+ local("mf","a(BLjava/lang/String;)Llo;",1,"var2","failure",evidence);
+ local("mf","a(BLjava/lang/String;)Llo;",2,"var3","characterIndex",evidence);
+ local("mf","a(BLjava/lang/String;)Llo;",3,"var4","character",evidence);
+ local("mf","a(BLjava/lang/String;)Llo;",4,"var5","gameFlag",evidence);
+ local("mf","a(BLjava/lang/String;)Llo;",5,"stackIn_7_0","successValue",evidence);
+ local("mf","a(BLjava/lang/String;)Llo;",6,"stackIn_12_0","numericSuffixError",evidence);
+ local("mf","a(BLjava/lang/String;)Llo;",7,"stackIn_15_0","failureContext",evidence);
+ local("mf","a(BLjava/lang/String;)Llo;",8,"stackIn_15_1","contextBuilder",evidence);
+ local("mf","a(BLjava/lang/String;)Llo;",9,"stackIn_16_2","suffixSummary",evidence);
+ local("mf","a(BLjava/lang/String;)Llo;",10,"decompiledCaughtException","caughtFailure",evidence);
+ local("mf","a(BLjava/lang/String;)Llo;",11,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("cp","a(Ljava/lang/String;B)Llo;",0,"var2_int","atIndex",evidence);
+ local("cp","a(Ljava/lang/String;B)Llo;",1,"var2","failure",evidence);
+ local("cp","a(Ljava/lang/String;B)Llo;",2,"var3","localPart",evidence);
+ local("cp","a(Ljava/lang/String;B)Llo;",3,"var4","domain",evidence);
+ local("cp","a(Ljava/lang/String;B)Llo;",4,"var5","localPartError",evidence);
+ local("cp","a(Ljava/lang/String;B)Llo;",5,"stackIn_4_0","missingAddressError",evidence);
+ local("cp","a(Ljava/lang/String;B)Llo;",6,"stackIn_7_0","missingAtError",evidence);
+ local("cp","a(Ljava/lang/String;B)Llo;",7,"stackIn_10_0","guardSuccessValue",evidence);
+ local("cp","a(Ljava/lang/String;B)Llo;",8,"stackIn_13_0","returnedLocalPartError",evidence);
+ local("cp","a(Ljava/lang/String;B)Llo;",9,"stackIn_15_0","domainError",evidence);
+ local("cp","a(Ljava/lang/String;B)Llo;",10,"stackIn_18_0","failureContext",evidence);
+ local("cp","a(Ljava/lang/String;B)Llo;",11,"stackIn_18_1","contextBuilder",evidence);
+ local("cp","a(Ljava/lang/String;B)Llo;",12,"stackIn_19_2","addressSummary",evidence);
+ local("cp","a(Ljava/lang/String;B)Llo;",13,"decompiledCaughtException","caughtFailure",evidence);
+ local("cp","a(Ljava/lang/String;B)Llo;",14,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",0,"var8","partIndex",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",1,"incrementValue$1","writtenPartIndex",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",2,"var3_int","delimiterCount",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",3,"var3","failure",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",4,"var4","parts",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",5,"var5","nextPartIndex",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",6,"var6","guardCalculation",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",7,"var7","partStart",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",8,"var9","delimiterIndex",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",9,"var10","gameFlag",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",10,"var11","textSequence",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",11,"stackIn_8_0","resultParts",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",12,"stackIn_11_0","failureContext",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",13,"stackIn_11_1","contextBuilder",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",14,"stackIn_12_2","textSummary",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",15,"decompiledCaughtException","caughtFailure",evidence);
+ local("qb","a(BLjava/lang/String;C)[Ljava/lang/String;",16,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("pp","a(BCLjava/lang/CharSequence;)I",0,"var3_int","count",evidence);
+ local("pp","a(BCLjava/lang/CharSequence;)I",1,"var4","length",evidence);
+ local("pp","a(BCLjava/lang/CharSequence;)I",2,"var5","characterIndex",evidence);
+ local("pp","a(BCLjava/lang/CharSequence;)I",3,"var6","gameFlag",evidence);
+ local("pp","a(BCLjava/lang/CharSequence;)I",4,"stackIn_9_0","resultCount",evidence);
+ local("pp","a(BCLjava/lang/CharSequence;)I",5,"stackIn_12_0","failureContext",evidence);
+ local("pp","a(BCLjava/lang/CharSequence;)I",6,"stackIn_12_1","contextBuilder",evidence);
+ local("pp","a(BCLjava/lang/CharSequence;)I",7,"stackIn_13_2","textSummary",evidence);
+ local("pp","a(BCLjava/lang/CharSequence;)I",8,"decompiledCaughtException","caughtFailure",evidence);
+ local("pp","a(BCLjava/lang/CharSequence;)I",9,"var3","failure",evidence);
+ local("pp","a(BCLjava/lang/CharSequence;)I",10,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("sg","a(Ljava/lang/String;B)Lqh;",0,"var3_int","validFlag",evidence);
+ local("sg","a(Ljava/lang/String;B)Lqh;",1,"var3","failure",evidence);
+ local("sg","a(Ljava/lang/String;B)Lqh;",2,"stackIn_5_0","validationFlag",evidence);
+ local("sg","a(Ljava/lang/String;B)Lqh;",3,"stackIn_8_0","invalidStatus",evidence);
+ local("sg","a(Ljava/lang/String;B)Lqh;",4,"stackIn_11_0","failureContext",evidence);
+ local("sg","a(Ljava/lang/String;B)Lqh;",5,"stackIn_11_1","contextBuilder",evidence);
+ local("sg","a(Ljava/lang/String;B)Lqh;",6,"stackIn_12_2","textSummary",evidence);
+ local("sg","a(Ljava/lang/String;B)Lqh;",7,"decompiledCaughtException","caughtFailure",evidence);
+ local("sg","a(Ljava/lang/String;B)Lqh;",8,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("sg","a(ILjava/lang/String;)Ljava/lang/String;",0,"var3_int","guardCalculation",evidence);
+ local("sg","a(ILjava/lang/String;)Ljava/lang/String;",1,"var3","failure",evidence);
+ local("sg","a(ILjava/lang/String;)Ljava/lang/String;",2,"stackIn_3_0","invalidMessage",evidence);
+ local("sg","a(ILjava/lang/String;)Ljava/lang/String;",3,"stackIn_5_0","validMessage",evidence);
+ local("sg","a(ILjava/lang/String;)Ljava/lang/String;",4,"stackIn_8_0","failureContext",evidence);
+ local("sg","a(ILjava/lang/String;)Ljava/lang/String;",5,"stackIn_8_1","contextBuilder",evidence);
+ local("sg","a(ILjava/lang/String;)Ljava/lang/String;",6,"stackIn_9_2","textSummary",evidence);
+ local("sg","a(ILjava/lang/String;)Ljava/lang/String;",7,"decompiledCaughtException","caughtFailure",evidence);
+ local("sg","a(ILjava/lang/String;)Ljava/lang/String;",8,"decompiledCaughtParameter0","caughtParameter",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -4026,10 +4174,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "Independent bubble pixels use closed-form distances/falloff and immutable source sampling, covering fractional/offscreen centers, strict circles, positive amounts and radii through32767 with index normalization. Drawing uses framebuffer bounds and ignores the current clip while preserving clip state. Gradient fixtures retain the255-alpha complement divided by256, including alpha-zero darkening. Palette sprites cover clipping/offsets, source-zero transparency, mapped zero and nongray32-bit copying. Outline fixtures use Manhattan-distance-two neighborhoods, signed greater-than-one seeds and marker1 idempotence. HSV sector references preserve integer bias and hue wrap. Branched glows use a node-list/trigonometric model plus the independent additive-glow oracle, covering separate x/y sequence words, child counts, generation/radius/intensity changes and zero/varied sequences. Generation count also sets root child count. Original statics/scratch references are restored. Negative distortion/squared-radius overflow, artwork/perceptual appearance, malformed palettes/sizes/guards, negative seeds/scratch capacity, all drawing combinations, live performance and original-JAR equivalence remain unverified.", '',
 "GameRenderAudioHelpers names the static rendering/audio helper bag without assigning ownership of its unrelated globals. drawBoardMaskOverlay, drawBoardResultWord, activeBoardMaskSprite and positiveBoardResultFormat expose the delayed board-mask presentation. RgbSprite.drawVerticallyFlipped reflects the original sprite canvas, including crop offsets; its clipping/scanline locals are named. Result words remain qualified numeric values rather than inferred scores.", '',
 "Independent pixel fixtures cover cropped-canvas reflection at every clip edge, signed result words including integer extremes, custom positive-value formats, full-size suppression, scaling, alpha rounding and signed24-bit alpha pixel words. Mask fixtures check ticks before/at50, the bounce cutoff at160, fade onset at180 and saturation at280, including clipped/offscreen positions and clip preservation. The upper mask copies zero pixels; its flipped lower half skips them. One-pixel indexed glyphs distinguish actual characters. Original static references are restored. Actual artwork, malformed guards/scales, live rendering performance and original-JAR equivalence remain unverified.", '',
+"LegacyEmailValidationError identifies the four error singletons returned by the email grammar helpers: missingEmailAddress, missingEmailPart, emailPartTooLong and invalidEmailSyntax. Null denotes success. The address, local-part, domain, domain-label and nonnumeric-suffix helpers now have descriptive method, parameter and local names, as do their splitPreservingEmptyParts/countCharacter dependencies and EmailValidator result/message paths. The class also contains the previously reviewed board-result renderer and unrelated input globals.", '',
+"Independent fixtures use dot-atom decomposition, ASCII label regular expressions and backward escape-parity checks. They cover every UTF16 unit in atoms, labels, quoted local parts and suffixes; short quoted/dotted combinations; length limits64/63/255; empty/trailing labels; first-at splitting; error precedence; positive domain scan offsets; singleton identity and throwing toString; live message lookup; guard bypass and null-failure context. The observed grammar accepts a one-character double-quote string as a quoted local part, ignores whether a closing quote is escaped, permits arbitrary quoted contents except unescaped interior quotes, and rejects all-digit suffixes. Split/count checks cover empty parts, literal delimiters, StringBuilder and surrogate code units. Original static references are restored. These checks compare raw and named decompiled Java; modern email-standard compliance, server acceptance, malformed scan offsets/other guards, live account forms and original-JAR equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:80,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:81,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

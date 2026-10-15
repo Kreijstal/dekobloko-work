@@ -1864,6 +1864,27 @@ GameRenderAudioHelpers names the static rendering/audio helper bag without assig
 
 Independent pixel fixtures cover cropped-canvas reflection at every clip edge, signed result words including integer extremes, custom positive-value formats, full-size suppression, scaling, alpha rounding and signed24-bit alpha pixel words. Mask fixtures check ticks before/at50, the bounce cutoff at160, fade onset at180 and saturation at280, including clipped/offscreen positions and clip preservation. The upper mask copies zero pixels; its flipped lower half skips them. One-pixel indexed glyphs distinguish actual characters. Original static references are restored. Actual artwork, malformed guards/scales, live rendering performance and original-JAR equivalence remain unverified.
 
+LegacyEmailValidationError identifies the four error singletons returned by the email
+grammar helpers: missingEmailAddress, missingEmailPart, emailPartTooLong and
+invalidEmailSyntax. Null denotes success. The address, local-part, domain, domain-label
+and nonnumeric-suffix helpers now have descriptive method, parameter and local names, as
+do their splitPreservingEmptyParts/countCharacter dependencies and EmailValidator
+result/message paths. The class also contains the previously reviewed board-result
+renderer and unrelated input globals.
+
+Independent fixtures use dot-atom decomposition, ASCII label regular expressions and
+backward escape-parity checks. They cover every UTF16 unit in atoms, labels, quoted
+local parts and suffixes; short quoted/dotted combinations; length limits64/63/255;
+empty/trailing labels; first-at splitting; error precedence; positive domain scan
+offsets; singleton identity and throwing toString; live message lookup; guard bypass and
+null-failure context. The observed grammar accepts a one-character double-quote string
+as a quoted local part, ignores whether a closing quote is escaped, permits arbitrary
+quoted contents except unescaped interior quotes, and rejects all-digit suffixes.
+Split/count checks cover empty parts, literal delimiters, StringBuilder and surrogate
+code units. Original static references are restored. These checks compare raw and named
+decompiled Java; modern email-standard compliance, server acceptance, malformed scan
+offsets/other guards, live account forms and original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
