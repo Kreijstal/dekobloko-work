@@ -1937,6 +1937,27 @@ stage/guard behavior. Original statics are restored. Negative literal pixels,
 malformed/re-encoded command streams, all offscreen failures, real artwork/audio
 playback, live performance and original-JAR equivalence remain unverified.
 
+FullscreenDialogHelpers names the six fullscreen prompt builders plus menu lookup and
+configured archive creation. Reviewed fields expose prompt kind/open state, rows, row-
+to-button indices, button actions/bounds, singular/plural countdown lines, selection,
+geometry, fonts and spacing. GamePresentationHelpers names the mixed indexed-
+text/diagnostic/background/sprite-construction helper bag. Indexed formatting, literal
+character replacement, balanced wrapping and fullscreen text measurement now have
+descriptive methods, parameters and locals.
+
+Independent fixtures check all six prompt kinds with privileged/unprivileged platform
+state, pointer/keyboard selection, two centers and two wrap widths. Reference rows,
+button actions, countdown alignment, widths, heights and rectangles use controlled font
+metrics; timestamp checks verify bounds without hashing wall time. Template fixtures use
+regular-expression tokenization and standard integer parsing, including
+malformed/overflow tokens, leading zeroes, repeated and nonrecursive replacements.
+Character replacement covers every UTF16 unit, surrogate halves, literal replacement
+syntax and capacity hints. Balanced wrapping uses independent separator tokenization and
+font-width references; menu lookup checks registry identity and its guard. Original
+static references and scratch arrays are restored. Actual fullscreen transitions,
+countdown rendering/action dispatch, real archive creation, malformed layout
+dimensions/guards, all wrapping failures and original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,
