@@ -251,6 +251,95 @@ value; constant folding must preserve the former and reject the latter.
 Protected regions are excluded from these folds. The structured tests retain retired fixtures as unchanged-input
 regressions alongside the positive generic cases.
 
+#### Complete catalog verification, 2026-10-16
+
+An isolated batch using clean Deko commit
+`a76baf33c2781959cd455e6526ae9d7d438e7a05` and java-tools commit
+`c6a20254acceb716bf0105ac7f7884454a029594` completed all 44 original gamepacks.
+The production files in `scripts/pipeline/` are identical at the later harness
+commit `6acae12df1c11a639b1f50af575d22ab9266597d`. Every original class is version
+50, so the modern-class preservation rule above did not bypass this validation.
+
+| Check | Result |
+| --- | --- |
+| Focused game-agnostic/native suite against clean java-tools | All six tests pass |
+| Original input inventories | All 44 match the fixed catalog input hashes |
+| Pipeline fingerprints | All 44 match the clean generator pins and recorded gates |
+| Final ASM verification | 18,481 classes, 156,488 methods, zero failures |
+| Complete Java exports | 44 games, 18,481 Java files, zero hard failures |
+| Independent compilation with compatibility stubs only | All 44 pass |
+| Standard driver aggregate | Exit 0, all 44 rows pass |
+
+The focused suite was also run with `JAVA_TOOLS_DIR` pointing to the same clean
+batch compiler, excluding unrelated local compiler changes:
+
+```sh
+JAVA_TOOLS_DIR="$BATCH/tooling/java-tools" \
+  node --test scripts/test-game-agnostic-preprocessing.mjs
+```
+
+The final standard aggregate used the pinned batch checkout:
+
+```sh
+JAVA_TOOLS_DIR="$BATCH/tooling/java-tools" \
+  bash "$BATCH/tooling/dekobloko-work/scripts/decompile-all-games.sh" \
+  "$BATCH" --resume --jobs 12
+```
+
+The independent compiler checked each complete exported source tree with this
+command shape; original game classes were absent from its classpath:
+
+```sh
+javac --release 8 -proc:none -encoding UTF-8 -sourcepath '' \
+  -classpath "$BATCH/tooling/dekobloko-work/lib/dekobloko-stubs.jar" \
+  -d "$CHECK_CLASSES" @"$SOURCES_ARGS"
+```
+
+The final inventory audit called the publisher's `inventory` and `validateReport`
+checks for every game, verified the compiler archive and repaired source-tree
+hashes, and checked the final verifier logs. No failed or partial export was
+counted as a passing result.
+
+These SHA-256 values identify **generator source archives**, not game JARs:
+
+| Generator source | Git-generated tar SHA-256 |
+| --- | --- |
+| Deko `a76baf33c2781959cd455e6526ae9d7d438e7a05` | `ee67f5b441569a4e157e59ee3827e85f4b757ee554c21b9ecdebfc5850f888f0` |
+| java-tools `c6a20254acceb716bf0105ac7f7884454a029594` | `324230850ae626924c5b10cc91e5ab73a97e6018586cd686ed518c0e6d36a4f3` |
+
+Reproduce either hash with `git archive --format=tar COMMIT | sha256sum` in
+the corresponding repository.
+
+The initial harness limits interrupted five preprocessing runs and fifteen
+source exports. Those limits were chosen by the validation runner; exhausting
+them did not establish a compiler hang. The five complete pipeline retries used
+the same generator sources with larger explicit execution limits. The fifteen
+source-only retries reused verified bytecode and the same clean compiler,
+without an outer time limit. Their existing reports record the compiler archive,
+source-tree hash and previous failure fields.
+
+Commit `6acae12` removes implicit limits from future full exports and corrects
+the diagnostic that blamed the last active class for a total-budget timeout.
+`bash -n scripts/decompile-all-games.sh` passed, and
+`node --test scripts/test-publish-decompiled-games.mjs` passed all four tests,
+including replay of a recorded unlimited pipeline execution. A complete version-50
+fixture also passed the standard driver with all four timeout variables unset;
+its original, transformed and source-recompiled programs each verified and
+returned `36`.
+
+Reported valid fallbacks across the catalog changed from 18 to 19. The only
+changed game is Stellar Shard: `qe.a(ILjava/lang/String;Ljava/lang/Throwable;)V`
+retains a 16-state fallback because structured reconstruction changed exception
+table priority or coverage at throwing PC 146. Its source compiles. This is a
+remaining readability limitation; reported fallback totals do not count every
+dispatcher in generated Java. The published comparison baseline also uses older
+compiler commits (`00c1c12` and `d88bc5c`), so the comparison does not isolate the
+effect of removing application-specific preprocessing.
+
+This batch validates bytecode provenance and source exports. It provides no
+browser memory, presented-FPS or Android gameplay measurements. Generated Java
+and binaries from this check remain temporary validation outputs.
+
 ### Safety flags
 
 `--safe-bytecode` enables stricter variants of a few local-splitting and
