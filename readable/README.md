@@ -1698,6 +1698,25 @@ state is restored. Actual cursor appearance, Microsoft native APIs,
 DirectDraw hardware, concurrent enumeration, arbitrary invalid image/hotspot
 inputs and original-JAR equivalence remain unverified.
 
+ConditionalTextValue names the null-normalized text and conditional-inclusion
+flag read by the handshake builder. Empty text always clears the flag; the
+single-string constructor defaults it to false. DiagnosticTextLine names the
+mutable heap/render-loop diagnostic lines, with reviewed font, deque, enable
+flags, cached values and initialize/update/draw helpers.
+
+Native fixtures check text normalization/defaults, numeric append and scratch
+reuse, diagnostic line selection/order, render-rate caching and disabled-line
+removal. Independent decimal expectations preserve the exported negative-value
+quirk: signed remainders produce characters below '0', and the appended scratch
+minus is omitted from output. Overlay references check pixels and reversed glyph
+placement, spaces, row spacing, empty lists, drawing guards and strict rounding
+to the next 100 pixels, including a measured width exactly equal to 100.
+Heap values are checked only for format/range; their nondeterministic contents
+are excluded from the trace. Static state and the original scratch builder are
+restored. The displayed “fps” is a render-loop rate, not presented FPS. Complete
+handshake behavior, arbitrary malformed text/guards, live presentation, memory
+budgets and original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,

@@ -329,6 +329,8 @@ classes.db=['AwtFullscreenController','AWT graphics-device fullscreen driver wit
 classes.dd=['AwtPointerController','AWT Robot pointer movement, ARGB custom cursor creation and retained hidden-cursor component; reflective public method names remain fixed.'];
 classes.in=['MicrosoftJvmCursorController','Legacy Microsoft JVM cursor visibility/window-procedure callback adapter; exported peer lookup remains a null placeholder.'];
 classes.io=['DirectDrawFullscreenController','Legacy Microsoft DirectDraw mode enumeration callback and fullscreen cooperative/display-mode adapter; exported enter peer lookup remains a null placeholder.'];
+classes.m=['ConditionalTextValue','Retains null-normalized text and a conditional-inclusion flag, forced false for empty text; callers selectively include it in a handshake branch. Unrelated static helpers remain separate.'];
+classes.ck=['DiagnosticTextLine','Intrusive mutable StringBuilder line used by the heap/render-loop-rate diagnostic overlay; unrelated static archive, framebuffer and tutorial helpers remain separate.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -2926,6 +2928,90 @@ local("io","callbackEnumModes(Lcom/ms/directX/DDSurfaceDesc;Lcom/ms/com/IUnknown
 local("io","callbackEnumModes(Lcom/ms/directX/DDSurfaceDesc;Lcom/ms/com/IUnknown;)V",2,"fieldTemp$3","bitDepthOffset","Reviewed pointer/cursor image, callback branch or DirectDraw enumeration declaration.");
 local("io","callbackEnumModes(Lcom/ms/directX/DDSurfaceDesc;Lcom/ms/com/IUnknown;)V",3,"fieldTemp$4","refreshRateOffset","Reviewed pointer/cursor image, callback branch or DirectDraw enumeration declaration.");
 
+
+// Conditional text values and the mutable heap/render-loop diagnostic overlay.
+{
+ const evidence="Reviewed conditional text ownership or diagnostic overlay initialization, update, numeric append and drawing callers; render-loop rate is not presented FPS.";
+ field("m","l","Ljava/lang/String;","text",evidence);
+ field("m","g","Z","included",evidence);
+ field("ck","l","Ljava/lang/StringBuilder;","text",evidence);
+ field("bq","b","Lck;","renderRateDiagnosticLine",evidence);
+ field("bj","P","Lck;","heapDiagnosticLine",evidence);
+ field("ff","d","Lvl;","diagnosticLines",evidence);
+ field("wp","c","Ldh;","diagnosticFont",evidence);
+ field("pf","f","Z","showHeapDiagnostic",evidence);
+ field("im","g","Z","showRenderRateDiagnostic",evidence);
+ field("rn","c","I","lastDiagnosticRenderRate",evidence);
+ field("lf","u","J","lastDiagnosticAllocatedHeapKiB",evidence);
+ field("mk","j","J","lastDiagnosticUsedHeapKiB",evidence);
+ field("gh","e","Ljava/lang/StringBuilder;","diagnosticDecimalScratch",evidence);
+ method("m","<init>","(Ljava/lang/String;)V",null,evidence,["text"]);
+ method("m","<init>","(Ljava/lang/String;Z)V",null,evidence,["text", "included"]);
+ method("m","b","(I)Ljava/lang/String;","getText",evidence,["obfuscationGuard"]);
+ method("m","a","(B)Z","isIncluded",evidence,["obfuscationGuard"]);
+ method("ck","<init>","(I)V",null,evidence,["initialCapacity"]);
+ method("oc","a","(ILdh;)V","initializeDiagnosticOverlay",evidence,["obfuscationGuard", "font"]);
+ method("sq","a","(Z)V","updateDiagnosticOverlay",evidence,["obfuscationGuard"]);
+ method("od","a","(IJLjava/lang/StringBuilder;)V","appendDiagnosticDecimal",evidence,["obfuscationGuard", "value", "destination"]);
+ method("rd","b","(I)V","drawDiagnosticOverlay",evidence,["obfuscationGuard"]);
+ local("m","<init>(Ljava/lang/String;Z)V",0,"var3","constructorFailure",evidence);
+ local("m","<init>(Ljava/lang/String;Z)V",1,"stackIn_6_1","includedValue",evidence);
+ local("m","<init>(Ljava/lang/String;Z)V",2,"stackIn_12_0","contextFailure",evidence);
+ local("m","<init>(Ljava/lang/String;Z)V",3,"stackIn_12_1","contextPrefix",evidence);
+ local("m","<init>(Ljava/lang/String;Z)V",4,"stackIn_13_2","textArgumentSummary",evidence);
+ local("m","<init>(Ljava/lang/String;Z)V",5,"decompiledCaughtException","caughtFailure",evidence);
+ local("m","<init>(Ljava/lang/String;Z)V",6,"decompiledCaughtParameter0","caughtConstructorFailure",evidence);
+ local("oc","a(ILdh;)V",0,"runtimeException","initializationFailure",evidence);
+ local("od","a(IJLjava/lang/StringBuilder;)V",0,"discarded$4","discardedDigitAppend",evidence);
+ local("od","a(IJLjava/lang/StringBuilder;)V",1,"discarded$5","discardedSignAppend",evidence);
+ local("od","a(IJLjava/lang/StringBuilder;)V",2,"var6","digitIndex",evidence);
+ local("od","a(IJLjava/lang/StringBuilder;)V",3,"discarded$6","discardedDestinationAppend",evidence);
+ local("od","a(IJLjava/lang/StringBuilder;)V",4,"var4_int","negativeFlag",evidence);
+ local("od","a(IJLjava/lang/StringBuilder;)V",5,"var5","digitCount",evidence);
+ local("od","a(IJLjava/lang/StringBuilder;)V",6,"var7","unusedClientFlag",evidence);
+ local("od","a(IJLjava/lang/StringBuilder;)V",7,"stackIn_6_0","negativeValue",evidence);
+ local("od","a(IJLjava/lang/StringBuilder;)V",8,"stackIn_16_0","contextFailure",evidence);
+ local("od","a(IJLjava/lang/StringBuilder;)V",9,"stackIn_16_1","contextPrefix",evidence);
+ local("od","a(IJLjava/lang/StringBuilder;)V",10,"stackIn_17_2","destinationArgumentSummary",evidence);
+ local("od","a(IJLjava/lang/StringBuilder;)V",11,"decompiledCaughtException","caughtFailure",evidence);
+ local("od","a(IJLjava/lang/StringBuilder;)V",12,"var4","appendFailure",evidence);
+ local("od","a(IJLjava/lang/StringBuilder;)V",13,"decompiledCaughtParameter0","caughtAppendFailure",evidence);
+ local("sq","a(Z)V",0,"discarded$9","discardedRateAppendHeapDisabled",evidence);
+ local("sq","a(Z)V",1,"discarded$8","discardedRateAppendAlternateGuard",evidence);
+ local("sq","a(Z)V",2,"discarded$10","discardedUsedHeapAppendAllocationChanged",evidence);
+ local("sq","a(Z)V",3,"discarded$11","discardedAllocatedHeapAppendAllocationChanged",evidence);
+ local("sq","a(Z)V",4,"discarded$13","discardedRateAppendAllocationChanged",evidence);
+ local("sq","a(Z)V",5,"discarded$12","discardedRateAppendAllocationChangedAlternateGuard",evidence);
+ local("sq","a(Z)V",6,"discarded$14","discardedRateAppendHeapUnchanged",evidence);
+ local("sq","a(Z)V",7,"discarded$15","discardedRateAppendHeapUnchangedAlternateGuard",evidence);
+ local("sq","a(Z)V",8,"discarded$16","discardedUsedHeapAppendUsageChanged",evidence);
+ local("sq","a(Z)V",9,"discarded$17","discardedAllocatedHeapAppendUsageChanged",evidence);
+ local("sq","a(Z)V",10,"discarded$18","discardedRateAppendUsageChanged",evidence);
+ local("sq","a(Z)V",11,"discarded$19","discardedRateAppendUsageChangedAlternateGuard",evidence);
+ local("sq","a(Z)V",12,"var1","allocatedHeapBytesThenKiB",evidence);
+ local("sq","a(Z)V",13,"var3","freeHeapBytesThenKiB",evidence);
+ local("sq","a(Z)V",14,"var5","usedHeapKiB",evidence);
+ local("rd","b(I)V",0,"var8","reverseCharacterIndex",evidence);
+ local("rd","b(I)V",1,"dupTemp$0","characterForAdvance",evidence);
+ local("rd","b(I)V",2,"decompiledCaughtException","caughtFailure",evidence);
+ local("rd","b(I)V",3,"var1_int","lineCount",evidence);
+ local("rd","b(I)V",4,"var1","drawingFailure",evidence);
+ local("rd","b(I)V",5,"var2","panelHeight",evidence);
+ local("rd","b(I)V",6,"var3","panelWidth",evidence);
+ local("rd","b(I)V",7,"var4_ref_ck","measuredLine",evidence);
+ local("rd","b(I)V",8,"var4","borderInset",evidence);
+ local("rd","b(I)V",9,"var5","drawnLine",evidence);
+ local("rd","b(I)V",10,"var5_int","measuredLineWidth",evidence);
+ local("rd","b(I)V",11,"var6","measureCharacterIndex",evidence);
+ local("rd","b(I)V",12,"var7","unusedCharacter",evidence);
+ local("rd","b(I)V",13,"var9","unusedClientFlag",evidence);
+ local("rd","b(I)V",14,"var4Lifetime1","baselineY",evidence);
+ local("rd","b(I)V",15,"var5_intLifetime1","borderAlpha256",evidence);
+ local("rd","b(I)V",16,"var6Lifetime1","cursorX",evidence);
+ local("rd","b(I)V",17,"var7Lifetime1","drawnCharacter",evidence);
+ local("rd","b(I)V",18,"decompiledCaughtParameter0","caughtDrawingFailure",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -3201,10 +3287,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "AwtPointerController exposes Robot movement, ARGB custom cursor construction and the retained hidden-cursor component. Reflective public names movemouse/showcursor/setcustomcursor remain unchanged, while four owned Class.forName literals follow the class rename. Hiding installs a transparent1-by1 cursor at hotspot0,0. Repeated hiding on the same component is a no-op; switching first resets the previous component. Showing ignores the supplied component and restores the retained owner. If creating the new cursor fails during a switch, the previous cursor/owner have already been cleared.", '',
 "MicrosoftJvmCursorController names visibility, callback allocation, window/procedure and arrow-cursor state, preserving the public callback ABI. DirectDrawFullscreenController names the DirectDraw object and shared enumeration buffer/count; callbacks write width,height,bit-depth,refresh tuples through two passes, then clear scratch state. The exported legacy component/frame peer lookups remain null placeholders: the Microsoft visibility path fails before state mutation; DirectDraw entry makes the frame visible before failing, with no display/cooperative entry calls. These paths are preserved rather than treated as operational desktop support.", '',
 "Headless Robot/Toolkit/Component probes verify coordinates, ARGB image contents/hotspots, transparent cursor creation, owner transfer/no-op/show/reset and cursor-creation failure state. Real PlatformServices tasks14/15/17 call the reflectively resolved pointer driver and preserve movement/cursor parameters. Legacy fixtures check constructor/callback state using the existing no-op Win32 stubs; a scripted DirectDraw subclass verifies two-pass enumeration/cleanup and restore cooperative level8. Probe compilation now uses the same existing temporary dependency classpath as game compilation/runtime. Static state is restored. Real Robot/cursor appearance, Microsoft JVM native behavior, DirectDraw hardware, concurrent enumeration, arbitrary invalid cursor dimensions/hotspots and original-JAR equivalence remain unverified.", '',
+"ConditionalTextValue names null-normalized text and its conditional-inclusion flag; empty text forces false and the single-string constructor defaults false. DiagnosticTextLine names mutable heap/render-loop diagnostic lines, with reviewed font, deque, enable flags, cached values and initialization/update/drawing helpers. Unrelated static helpers retain separate roles.", '',
+"Native fixtures verify text normalization/defaults, decimal append/scratch reuse, line selection/order, render-rate caching and disabled-line removal. Independent decimal expectations preserve negative signed-remainder characters below zero and the omitted scratch minus. Independent overlay pixels/glyph events cover strict next100-pixel rounding, an exact100 boundary, spaces, reversed glyph order, row spacing, empty lists and no-op drawing guards. Heap contents are checked only for format/range and excluded from deterministic traces. Static state and original scratch contents are restored. The displayed fps is a render-loop rate, not presented FPS. Full handshake behavior, arbitrary malformed text/guards, live presentation, memory budgets and original-JAR equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:73,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:74,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
