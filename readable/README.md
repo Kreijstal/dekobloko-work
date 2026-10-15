@@ -2091,6 +2091,16 @@ RGB-span routines. These are shared static owners, often holding unrelated
 methods and globals; their names do not imply a reconstructed original module
 boundary. The UiComponentNode base and constructor are unchanged.
 
+All 420 top-level classes now have readable filenames: 419 reviewed class
+identities plus the original BrickABrac entry point. The last functional owners
+are GameSettingConstraintHelpers, ArchiveConnectionHelpers, LobbyOverlayHelpers,
+ModalOverlayHelpers, WidgetLayerBootstrap and ClientViewHelpers. The remaining
+state containers are LobbyRenderGlobals, LobbyKeyboardGlobals, LobbyCaptionGlobals,
+LobbyLoginGlobals, CanvasViewGlobals, DialogPointerGlobals and FontSceneGlobals.
+Their names describe observed shared roles while retaining unrelated storage
+and unresolved members. This completes class-file naming; method/field/local
+review and the corrected-input migration remain separate unfinished work.
+
 A subsequent bytecode audit found a correctness defect in the frozen input for
 `jh.a(boolean,mh)`, the list-layout reset helper used by friend/ignore list updates.
 The original JAR stores both the first child and each next child into slot 2, and
@@ -2144,7 +2154,7 @@ The same model also passes against all classes compiled from the corrected
 whole-game batch, with the same assertion count and trace. That raw Java tree
 has SHA-256 `29a4eb473e753435cfd6d57bc5c9a77ef3ca9b477d8503c53c321ab55762f7df`;
 only `jh.java` differs from the frozen input. This is a generated-Java tree
-identity, separate from the compiler-source tar hash above. All existing 14,871
+identity, separate from the compiler-source tar hash above. All existing 14,884
 naming rules still resolve with their expected original names in that input.
 An unpublished full naming round using the pass 100 map over the corrected
 input passes the
