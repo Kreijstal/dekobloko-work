@@ -2142,12 +2142,50 @@ original arithmetic; cleanup methods preserve guard-specific release order,
 repeated assignments and unrelated integer writes. Existing raw/named fixtures
 check this naming pass; complete original-gamepack equivalence remains unverified.
 
+PlayerBoard now names its remaining instance fields: level/life brick and level
+counters, beneficial/harmful pickup streaks, ordered-brick sequence progress,
+buildTicks, boardHeight, initialPaddleCenterX, displayedPosition256,
+displayedPositionVelocity256, chargedActivationCount and backgroundChangePending.
+lifeBrickClears/lifeLevelClears keep the original accounting and tutorial-reset
+rules; progressBrickClears remains the separate value copied into local position
+updates. Beneficial pickup classification includes self-targeted pickups and the
+single-player type13 exception. levelsSinceBeneficialPickup counts completion
+events after the last pickup, including the partly played pickup level.
+brickSequenceStepsByType exposes the existing
+step lookup without assigning undocumented color labels.
+
+Paddle.leftBound256/rightBound256 correct two earlier names: controlMode was
+actually the lower X clamp, and boardSpan256 is the upper right edge rather than
+a span from that lower bound. Constructor parameters use the same names.
+reversedControlTicks and aftertouchTicks expose their existing countdowns,
+power-up extensions, reset, snapshot and checksum roles.
+
+The default native gate now includes an independent paddle-motion model. It
+passes 95,040 assertions in 4,320 five-frame cases against the fixed original JAR
+and both complete raw/named builds, with trace SHA-256
+`1f6519f1aba1afaab03a41d206db26d14227fb29ab9b8ccfb159e012f054c0a0`.
+Cases include negative/nonzero left edges, narrow/ordinary/full-width paddles,
+out-of-range starts, all four direction masks, reversal expiry and positive,
+zero and negative effect timers. The model's reference uses per-substep bounded
+movement rather than the game's clamp statements. The nonpositive timer values
+are retained; controls reverse for the update that starts with one remaining tick.
+As a negative control, the owned probe sets the actual left-bound field to zero
+after constructor checks while retaining the nonzero reference: it fails the
+first motion comparison (`0 != -8192`). The probe initially used serve-delay
+state4; source review corrected its setup to active-play state2 before these
+runs, without changing the movement reference.
+
+The model uses empty ball/brick collections to isolate paddle movement. It does
+not verify active aftertouch steering, collision behavior, rendered gameplay or
+whole-game equivalence. Its assertions are reported separately from the existing
+core, header and list-reset counts. The original-contract CLI runs all three
+shared contracts; ordinary reproduction needs no original JAR or new flag.
+
 The current readable Brick export uses a Git-only raw-source snapshot from the
 verified 44-game catalog refresh. The snapshot remains an ancestor of the named
 export; reproduction reads it directly from Git. Its raw Java tree SHA-256 is
 `29a4eb473e753435cfd6d57bc5c9a77ef3ca9b477d8503c53c321ab55762f7df`.
-All 420 class identities and the existing 14,959 naming identities are retained;
-five reset-loop locals receive reviewed names, bringing the rule count to 14,964.
+All 420 class identities are retained. The current manifest has 14,982 rules.
 Only `jh.java` differs from the former raw input: list traversal now updates
 currentChild, the variable tested by the loop. firstChildAlias and nextChildAlias
 identify the unused retained references. No generated Java is hand-patched.

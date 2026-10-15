@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 106,
+  "version": 107,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "9159750b0604b9082db8b91fe73a0a0b119c7f22",
@@ -6247,6 +6247,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ej.field_E:[I",
+      "originalName": "field_E",
+      "to": "brickSequenceStepsByType",
+      "evidence": "ej.java: The fixed 29-entry table assigns steps1..7 to the reviewed brick types; Brick.onCircleContact compares its type entry with brickSequenceStep plus1. Cleanup and assignments retain their existing owner.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ej.field_F:Lvl;",
       "originalName": "field_F",
       "to": "pendingAchievementMaskRequests",
@@ -9054,6 +9061,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_A:I",
+      "originalName": "field_A",
+      "to": "chargedActivationCount",
+      "evidence": "j.java: Counts action updates that detonate at least one charged ball; a single update counts once even when several balls activate. New-level setup clears it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_B:Ljava/util/Random;",
       "originalName": "field_B",
       "to": "messageRandom",
@@ -9089,6 +9103,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_G:I",
+      "originalName": "field_G",
+      "to": "displayedPosition256",
+      "evidence": "j.java: Initialized from boardOffset shifted8 and reset from positionWord plus boardOffset shifted8 on snapshots; eased by displayedPositionVelocity256 and read by race-track rendering. The units retain the existing positionWord qualification.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_H:I",
       "originalName": "field_H",
       "to": "characterIndex",
@@ -9100,6 +9121,13 @@
       "originalName": "field_I",
       "to": "actionKeyCode",
       "evidence": "j.java: Primary held-key code mapped to bit4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_J:I",
+      "originalName": "field_J",
+      "to": "displayedPositionVelocity256",
+      "evidence": "j.java: Display-only position velocity adds target-position error divided by100, damps by7/8, caps only positive velocity at1280 and advances displayedPosition256. The noncanonical random guard still writes79.",
       "confidence": "reviewed"
     },
     {
@@ -9124,6 +9152,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_N:I",
+      "originalName": "field_N",
+      "to": "beneficialPowerUpStreak",
+      "evidence": "j.java: The single-player self-targeted or type13 pickup branch increments this and clears harmfulPowerUpStreak; harmful pickups clear this counter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_O:[Lon;",
       "originalName": "field_O",
       "to": "portalBricks",
@@ -9138,6 +9173,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_Q:I",
+      "originalName": "field_Q",
+      "to": "progressBrickClears",
+      "evidence": "j.java: Qualifying brick removals increment this separate progress counter; local simulation copies it into positionWord. The initial tutorial exclusion clears it; board snapshots and the checksum preserve it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_R:I",
       "originalName": "field_R",
       "to": "bubbleSeed",
@@ -9149,6 +9191,13 @@
       "originalName": "field_S",
       "to": "flaggedBrickTypeMask",
       "evidence": "j.java: OR of type bits for eligible installed bricks with flag2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_T:I",
+      "originalName": "field_T",
+      "to": "initialPaddleCenterX",
+      "evidence": "j.java: Constructor stores boardWidth/2 in pixels and passes it shifted8 to the initial paddle; the synchronization checksum also includes this retained seed.",
       "confidence": "reviewed"
     },
     {
@@ -9243,6 +9292,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_hb:I",
+      "originalName": "field_hb",
+      "to": "levelsSinceBeneficialPickup",
+      "evidence": "j.java: Counts level-completion events since the last single-player beneficial pickup, including completion of the partly played pickup level. The reset branch includes self-targeted pickups and type13. The message guard retains its noncanonical -123 write.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_i:I",
       "originalName": "field_i",
       "to": "messageTicks",
@@ -9278,6 +9334,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_l:I",
+      "originalName": "field_l",
+      "to": "brickSequenceStep",
+      "evidence": "j.java: Brick contact advances only when the per-type table equals the next step, otherwise resets for unflagged bricks. Charged activation clears it and guarded score addition can seed1; achievement22 reads the retained step.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_lb:Ljava/lang/String;",
       "originalName": "field_lb",
       "to": "pendingMessage",
@@ -9285,10 +9348,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_m:I",
+      "originalName": "field_m",
+      "to": "lifeBrickClears",
+      "evidence": "j.java: Qualifying completed brick-removal transitions increment this achievement counter. Accounting reset on a new life and the first tutorial-level exclusion clear it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_mb:I",
       "originalName": "field_mb",
       "to": "boardWidth",
       "evidence": "j.java: Player board constructor, queued attack scheduling, brick/ball/paddle geometry and scoring paths; board offset participates in scrolling/progress state; finer meaning remains qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_n:I",
+      "originalName": "field_n",
+      "to": "buildTicks",
+      "evidence": "j.java: Power-up16 adds16. Eligible updates shift bricks/waypoints by one pixel and decrement this counter, inserting a row at multiples of16. Snapshots undo the partial-row displacement using its remainder.",
       "confidence": "reviewed"
     },
     {
@@ -9341,6 +9418,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:j.field_r:I",
+      "originalName": "field_r",
+      "to": "levelsCleared",
+      "evidence": "j.java: Increments at level completion and is restored from the board snapshot; it distinguishes the first level presentation from subsequent levels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:j.field_rb:I",
       "originalName": "field_rb",
       "to": "lives",
@@ -9359,6 +9443,27 @@
       "originalName": "field_sb",
       "to": "randomSeed",
       "evidence": "j.java: Player board constructor, queued attack scheduling, brick/ball/paddle geometry and scoring paths; board offset participates in scrolling/progress state; finer meaning remains qualified.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_t:I",
+      "originalName": "field_t",
+      "to": "lifeLevelClears",
+      "evidence": "j.java: Level completion increments this achievement counter; resetServe with resetAccounting clears it on a new life.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_tb:Z",
+      "originalName": "field_tb",
+      "to": "backgroundChangePending",
+      "evidence": "j.java: Set when single-player level setup changes the selected background after at least one clear; GameplayScreen captures the outgoing background, selects the replacement and clears this flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_u:I",
+      "originalName": "field_u",
+      "to": "harmfulPowerUpStreak",
+      "evidence": "j.java: The single-player opponent-targeted/non-type13 pickup branch increments this and clears beneficialPowerUpStreak; beneficial pickups clear this counter.",
       "confidence": "reviewed"
     },
     {
@@ -9387,6 +9492,13 @@
       "originalName": "field_w",
       "to": "displayedWarning",
       "evidence": "j.java: Active warning record aged and rendered independently of pending record.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:j.field_wb:I",
+      "originalName": "field_wb",
+      "to": "boardHeight",
+      "evidence": "j.java: Constructor initializes466 pixels; board rendering uses it for the vertical clip and warning placement scales against this height.",
       "confidence": "reviewed"
     },
     {
@@ -17925,8 +18037,8 @@
     {
       "symbol": "F:vo.field_B:I",
       "originalName": "field_B",
-      "to": "controlMode",
-      "evidence": "vo.java: Paddle construction/reset and growth/shrink: center remains fixed while width changes in3072-unit increments; control mode retains its numeric encoding.",
+      "to": "leftBound256",
+      "evidence": "vo.java: The constructor retains this lower X edge; advanceBoard clamps paddle.x256 against it in every movement substep. The independent movement contract checks negative/nonzero bounds against the original gamepack and both source variants.",
       "confidence": "reviewed"
     },
     {
@@ -17940,14 +18052,21 @@
       "symbol": "F:vo.field_E:I",
       "originalName": "field_E",
       "to": "centerX256",
-      "evidence": "vo.java: Paddle construction/reset and growth/shrink: center remains fixed while width changes in3072-unit increments; control mode retains its numeric encoding.",
+      "evidence": "vo.java: Paddle construction/reset and growth/shrink: center remains fixed while width changes in3072-unit increments.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:vo.field_F:I",
       "originalName": "field_F",
       "to": "sizeStage",
-      "evidence": "vo.java: Paddle construction/reset and growth/shrink: center remains fixed while width changes in3072-unit increments; control mode retains its numeric encoding.",
+      "evidence": "vo.java: Paddle construction/reset and growth/shrink: center remains fixed while width changes in3072-unit increments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vo.field_H:I",
+      "originalName": "field_H",
+      "to": "aftertouchTicks",
+      "evidence": "vo.java: Power-up12 adds300; positive values reverse ball horizontal velocity toward the paddle center during movement substeps. The update decrements this timer; wipe-out and reset clear it. Snapshot/checksum positions are unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -17958,10 +18077,17 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vo.field_w:I",
+      "originalName": "field_w",
+      "to": "reversedControlTicks",
+      "evidence": "vo.java: Power-up3 adds250. While positive, advanceBoard flips the low two direction bits before computing paddle velocity, then decrements the timer. Snapshot/checksum and expiry-warning paths retain this same field.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vo.field_y:I",
       "originalName": "field_y",
-      "to": "boardSpan256",
-      "evidence": "vo.java: Paddle construction/reset and growth/shrink: center remains fixed while width changes in3072-unit increments; control mode retains its numeric encoding.",
+      "to": "rightBound256",
+      "evidence": "vo.java: The constructor retains this upper right edge; advanceBoard clamps paddle.x256 to rightBound256 minus width256 in every movement substep. This is an edge coordinate, not a movement mode or a span measured from the left bound.",
       "confidence": "reviewed"
     },
     {
@@ -103032,28 +103158,28 @@
       "symbol": "P:vo.<init>(IIII)V#0",
       "originalName": "param0",
       "to": "centerX256",
-      "evidence": "vo.java: Constructs15-pixel-high paddle and resets its88-pixel width.",
+      "evidence": "vo.java: Constructs15-pixel-high paddle with explicit left/right movement edges and resets its88-pixel width; the original-gamepack motion model verifies the retained bounds.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:vo.<init>(IIII)V#1",
       "originalName": "param1",
       "to": "y256",
-      "evidence": "vo.java: Constructs15-pixel-high paddle and resets its88-pixel width.",
+      "evidence": "vo.java: Constructs15-pixel-high paddle with explicit left/right movement edges and resets its88-pixel width; the original-gamepack motion model verifies the retained bounds.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:vo.<init>(IIII)V#2",
       "originalName": "param2",
-      "to": "controlMode",
-      "evidence": "vo.java: Constructs15-pixel-high paddle and resets its88-pixel width.",
+      "to": "leftBound256",
+      "evidence": "vo.java: Constructs15-pixel-high paddle with explicit left/right movement edges and resets its88-pixel width; the original-gamepack motion model verifies the retained bounds.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:vo.<init>(IIII)V#3",
       "originalName": "param3",
-      "to": "boardSpan256",
-      "evidence": "vo.java: Constructs15-pixel-high paddle and resets its88-pixel width.",
+      "to": "rightBound256",
+      "evidence": "vo.java: Constructs15-pixel-high paddle with explicit left/right movement edges and resets its88-pixel width; the original-gamepack motion model verifies the retained bounds.",
       "confidence": "reviewed"
     },
     {
@@ -104773,10 +104899,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "4b0599151d6aaa35c017fd36cbf670b5d0b82c7475366c1418625bd924448fab",
+      "build-brickabrac-rules.mjs": "a1dc00412c4a1df52e0c058f1f9f9ec3069fa471a1b7116a967608eccf29acae",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "1c155d2290310da98109aa985fb1baa681c92ac580b6ca5ce218577cf1115432",
-      "tests/brickabrac-original-contracts.mjs": "b4ec4506c9397d2331bafeb0f301f8bd27f4969d10f53d70fbac672d4840b7f8",
+      "tests/test-brickabrac-core.mjs": "cc450016771c63553dc4cda094aa2618ff6a824ad0db8f0380eb284a28a36124",
+      "tests/brickabrac-original-contracts.mjs": "5229844022e06d7da906b8e86bc6f3ee3a66ceeafba568c392b48ae0f703a983",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

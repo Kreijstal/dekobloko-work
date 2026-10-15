@@ -234,6 +234,79 @@ public class ServiceHeaderProbe {
   return {checks: Number(match[1]), traceSha256: match[2], independentExpectations: true, wireBytes: 8, fixedWord: 17};
 }
 
+
+// A discrete movement model supplies position/control expectations independently
+// of the game's clamp order. Bounds include nonzero and negative left edges.
+export function verifyBrickPaddleMovement({classpath, mapping, readable = false, originalGamepack = false, temporary}) {
+  const {className, field, method} = contractBindings({classpath, mapping, readable, originalGamepack});
+  const directory = path.join(temporary, 'paddle-movement-probe');
+  fs.mkdirSync(directory, {recursive: true});
+  const source = path.join(directory, 'PaddleMovementProbe.java');
+  fs.writeFileSync(source, `import java.lang.reflect.*;
+import java.security.MessageDigest;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+public class PaddleMovementProbe {
+ static final Class<?> board=load(${JSON.stringify(className('j'))}),paddle=load(${JSON.stringify(className('vo'))}),body=load(${JSON.stringify(className('vi'))}),rectangle=load(${JSON.stringify(className('bn'))}),match=load(${JSON.stringify(className('ak'))}),deque=load(${JSON.stringify(className('vl'))});
+ static final Field position=field(body,${JSON.stringify(field('vi','j','I'))}),width=field(rectangle,${JSON.stringify(field('bn','u','I'))}),leftBound=field(paddle,${JSON.stringify(field('vo','B','I'))}),rightBound=field(paddle,${JSON.stringify(field('vo','y','I'))}),reversedTicks=field(paddle,${JSON.stringify(field('vo','w','I'))}),aftertouchTicks=field(paddle,${JSON.stringify(field('vo','H','I'))}),controls=field(board,${JSON.stringify(field('j','db','I'))});
+ static final Method advance=method(match,${JSON.stringify(method('ak','a','(Lj;Lvl;Lvl;I)V'))},board,deque,deque,int.class);
+ static Object allocator;static Method allocate;static MessageDigest trace;static int checks;
+ static Class<?> load(String name){try{return Class.forName(name);}catch(Exception e){throw new RuntimeException(e);}}
+ static Field field(Class<?> type,String name){try{Field f=type.getDeclaredField(name);f.setAccessible(true);return f;}catch(Exception e){throw new RuntimeException(e);}}
+ static Method method(Class<?> type,String name,Class<?>...parameters){try{Method m=type.getDeclaredMethod(name,parameters);m.setAccessible(true);return m;}catch(Exception e){throw new RuntimeException(e);}}
+ static Object create(Class<?> type)throws Exception{Constructor<?> c=type.getDeclaredConstructor();c.setAccessible(true);return c.newInstance();}
+ static Object instance(Class<?> type)throws Exception{return allocate.invoke(allocator,type);}
+ static void check(String label,Object actual,Object expected)throws Exception{checks++;if(!Objects.equals(actual,expected))throw new AssertionError(label+": "+actual+" != "+expected);trace.update((label+"="+actual+"\\n").getBytes(StandardCharsets.UTF_8));}
+ static Object freshBoard()throws Exception{
+  Object value=instance(board);
+  for(String name:new String[]{${['K','gb','pb','C','nb','x'].map(n=>JSON.stringify(field('j',n,'Lvl;'))).join(',')}})field(board,name).set(value,create(deque));
+  Object groups=Array.newInstance(deque,3);for(int i=0;i<3;i++)Array.set(groups,i,create(deque));
+  field(board,${JSON.stringify(field('j','z','[Lvl;'))}).set(value,groups);
+  field(board,${JSON.stringify(field('j','Z','I'))}).setInt(value,2);
+  field(board,${JSON.stringify(field('j','L','I'))}).setInt(value,1);
+  field(board,${JSON.stringify(field('j','k','I'))}).setInt(value,-1);
+  field(board,${JSON.stringify(field('j','mb','I'))}).setInt(value,640);
+  return value;
+ }
+ static void run(int left,int right,int size,int start,int mask,int initialReversed,int initialAftertouch)throws Exception{
+  String label="motion/"+left+"/"+right+"/"+size+"/"+start+"/"+mask+"/"+initialReversed+"/"+initialAftertouch;
+  Object value=freshBoard(),session=instance(match);field(match,${JSON.stringify(field('ak','k','I'))}).setInt(session,2);
+  Constructor<?> constructor=paddle.getDeclaredConstructor(int.class,int.class,int.class,int.class);constructor.setAccessible(true);
+  Object bat=constructor.newInstance(50000,119296,left,right);field(board,${JSON.stringify(field('j','yb','Lvo;'))}).set(value,bat);
+  check(label+"/constructor-left",leftBound.getInt(bat),left);check(label+"/constructor-right",rightBound.getInt(bat),right);
+  position.setInt(bat,start);width.setInt(bat,size);reversedTicks.setInt(bat,initialReversed);aftertouchTicks.setInt(bat,initialAftertouch);
+  int x=start,reverse=initialReversed,aftertouch=initialAftertouch;
+  for(int tick=0;tick<5;tick++){
+   controls.setInt(value,mask);int effective=mask^(reverse>0?3:0);
+   int step=((effective&2)!=0?256:0)-((effective&1)!=0?256:0);
+   for(int eighth=0;eighth<8;eighth++)x=Math.max(left,Math.min(right-size,x+step));
+   if(reverse>0)reverse--;if(aftertouch>0)aftertouch--;
+   advance.invoke(session,value,create(deque),create(deque),0);
+   check(label+"/"+tick+"/x",position.getInt(bat),x);check(label+"/"+tick+"/controls",controls.getInt(value),effective);
+   check(label+"/"+tick+"/reversed",reversedTicks.getInt(bat),reverse);check(label+"/"+tick+"/aftertouch",aftertouchTicks.getInt(bat),aftertouch);
+  }
+ }
+ public static void main(String[] args)throws Exception{
+  Class<?> unsafe=Class.forName("sun.misc.Unsafe");Field singleton=field(unsafe,"theUnsafe");allocator=singleton.get(null);allocate=unsafe.getMethod("allocateInstance",Class.class);trace=MessageDigest.getInstance("SHA-256");
+  Field branch=field(load(${JSON.stringify(className('BrickABrac'))}),${JSON.stringify(field('BrickABrac','J','Z'))}),recording=field(load(${JSON.stringify(className('r'))}),${JSON.stringify(field('r','A','Z'))});boolean savedBranch=branch.getBoolean(null),savedRecording=recording.getBoolean(null);branch.setBoolean(null,false);recording.setBoolean(null,false);
+  try{
+   for(int[] limits:new int[][]{{-8192,65536},{2048,100000},{0,163840}}){int left=limits[0],right=limits[1];
+    for(int size:new int[]{1,22528,right-left})for(int start:new int[]{left-4096,left,left+123,right-size-123,right-size,right-size+4096})
+     for(int mask=0;mask<4;mask++)for(int reverse:new int[]{-3,0,1,2,250})for(int aftertouch:new int[]{-1,0,1,2})run(left,right,size,start,mask,reverse,aftertouch);
+   }
+  }finally{branch.setBoolean(null,savedBranch);recording.setBoolean(null,savedRecording);}
+  StringBuilder hex=new StringBuilder();for(byte b:trace.digest())hex.append(String.format(Locale.ROOT,"%02x",b&255));System.out.println("checks:"+checks);System.out.println("traceSha256:"+hex);
+ }
+}
+`);
+  captureProcess('timeout', ['30', 'javac', '--release', '8', '-encoding', 'UTF-8', '-d', directory, source]);
+  const result = captureProcess('timeout', ['30', 'java', '-Xmx256m', '-Xverify:all', '-Djava.awt.headless=true', '-cp',
+    [directory, classpath].join(path.delimiter), 'PaddleMovementProbe']);
+  const match = /^checks:(\d+)\ntraceSha256:([a-f0-9]{64})\n$/.exec(result.stdout.toString());
+  assert.ok(match, 'Missing paddle movement probe result');
+  return {checks: Number(match[1]), traceSha256: match[2], independentExpectations: true, framesPerCase: 5};
+}
+
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'brick-original-contracts-'));
   try {
@@ -243,7 +316,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     const options = {classpath: [path.resolve(process.argv[2]), stubs.jar].join(path.delimiter),
       mapping, originalGamepack: true, temporary};
     console.log(JSON.stringify({originalGamepackSha256, listReset: verifyBrickListReset(options),
-      serviceHeader: verifyBrickServiceHeader(options)}));
+      serviceHeader: verifyBrickServiceHeader(options), paddleMovement: verifyBrickPaddleMovement(options)}));
   } catch (error) {
     console.error(error.stderr?.toString() || error.message);
     process.exitCode = 1;
