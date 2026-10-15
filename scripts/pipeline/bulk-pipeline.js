@@ -13,7 +13,7 @@ const { spawnSync } = require('child_process');
 const { createRequire } = Module;
 
 const DEKOB = path.resolve(__dirname, '..', '..');
-const JT = path.resolve(process.env.JAVA_TOOLS_DIR || process.env.JT_DIR || '/home/kreijstal/git/java-tools');
+const JT = path.resolve(process.env.JAVA_TOOLS_DIR || process.env.JT_DIR || path.join(DEKOB, '..', 'java-tools'));
 // Default to the java-tools checkout we just resolved. This previously
 // defaulted to the literal author path even when JAVA_TOOLS_DIR pointed
 // somewhere else, so on any other machine the pipeline looked for its node
@@ -127,22 +127,13 @@ const { runLiftSourceScopeLocals } = requireJavaTools('src/passes/liftSourceScop
 const { runSplitTypedReusedLocals } = requireJavaTools('src/passes/splitTypedReusedLocals', 'src/splitTypedReusedLocals');
 const { runRetargetUndefinedTypedAliasLoads } = requireJavaTools('src/passes/retargetUndefinedTypedAliasLoads', 'src/retargetUndefinedTypedAliasLoads');
 
-const { runEiTailClone } = require('./eiTailClone');
-const { runQcDoLoopTailClone } = require('./qcDoLoopTailClone');
 const { runRasterClipContinuation } = require('./ckClipFlag');
-const { runQkExceptionSplit } = require('./qkExceptionSplit');
 const { runVlCacheJoin } = require('./vlCacheJoin');
-const { runRasterScanlineEntryClone } = require('./rasterScanlineEntryClone');
-const { runSourceScopeLocalInit } = require('./sourceScopeLocalInit');
-const { runStackReceiverTailClone } = require('./stackReceiverTailClone');
-const { runRetargetBranches } = require('./retargetBranches');
 const { runTerminalIteratorExtract } = require('./terminalIteratorExtract');
 const { runTerminalActionExtract } = require('./terminalActionExtract');
-const { runTerminalCleanupExtract } = require('./terminalCleanupExtract');
 const { runStructuredGotoClone } = require('./structuredGotoClone');
 const { runPollLoopReturnNormalize } = require('./pollLoopReturnNormalize');
-const { FIELD_RENAMES, METHOD_RENAMES, expandMethodRenames, runCompileConflictRenames } = require('./compileConflictRenames');
-const { runDekoblokoExceptionHandlerDrops } = require('./removeShadowedExceptionHandlers');
+const { expandMethodRenames, runCompileConflictRenames } = require('./compileConflictRenames');
 
 const inDir = process.argv[2];
 const outDir = process.argv[3];
@@ -165,11 +156,10 @@ const configuredInterclassDceIterations = Number.parseInt(
 const interclassDceMaxIterations = Number.isInteger(configuredInterclassDceIterations)
   && configuredInterclassDceIterations > 0
   ? configuredInterclassDceIterations : 16;
-const profileArg = readOptionValue('--profile') || readOptionValue('--profiles') || process.env.PIPELINE_PROFILES || '';
-const selectedProfiles = (profileArg || 'none')
-  .split(',')
-  .map((name) => name.trim())
-  .filter(Boolean);
+// Historical callers may still pass --profile none. Bytecode preparation is
+// uniform; named profiles must never reintroduce class/offset-selected repairs.
+const requestedProfile = readOptionValue('--profile') || readOptionValue('--profiles') || process.env.PIPELINE_PROFILES || 'none';
+if (requestedProfile !== 'none') throw new Error('Game-specific bytecode profiles are no longer supported; use generic preprocessing.');
 const skipPassNames = new Set((process.env.SKIP_PIPELINE_PASSES || '')
   .split(',')
   .map((name) => name.trim())
@@ -224,8 +214,6 @@ const structuredGotoDefaultEnv = {
   STRUCTURED_GOTO_SHARED_ARRAY_RECORD_UPDATE_BODY: '0',
   STRUCTURED_GOTO_SHARED_ARRAY_RECORD_UPDATE_BODY_MAX_REWRITES: '8',
   STRUCTURED_GOTO_SHARED_ARRAY_RECORD_UPDATE_BODY_MAX_INSNS: '48',
-  STRUCTURED_GOTO_STATIC_INT_LOOP_FLAG_BRANCHES: '1',
-  STRUCTURED_GOTO_STATIC_INT_LOOP_FLAG_MIN_BRANCHES: '3',
   STRUCTURED_GOTO_RASTER_TOP_CLIP_SCANLINE_ENTRY: '1',
   STRUCTURED_GOTO_RASTER_TOP_CLIP_SCANLINE_ENTRY_MAX_REWRITES: '2',
   STRUCTURED_GOTO_RASTER_TOP_CLIP_SCANLINE_ENTRY_MAX_RANGE: '360',
@@ -285,17 +273,13 @@ const structuredGotoDefaultEnv = {
   STRUCTURED_GOTO_MENU_LOOP_CONTINUATION: '1',
   STRUCTURED_GOTO_TARGETED_SHARED_LOOP_INCREMENT_TAILS: '1',
   STRUCTURED_GOTO_BUCKET_ARRAY_INIT_TAIL: '1',
-  STRUCTURED_GOTO_OBJECT_REFRESH_CONTINUATION: '1',
-  STRUCTURED_GOTO_PREFIX_CONTINUATION: '1',
   STRUCTURED_GOTO_SHARED_BOOLEAN_LOOP_TAIL: '1',
-  STRUCTURED_GOTO_ITERATOR_ADVANCE_TAIL: '1',
   STRUCTURED_GOTO_MESSAGE_EXIT_TAIL: '1',
   STRUCTURED_GOTO_TWO_SIDED_NOT_COMPARE: '1',
   STRUCTURED_GOTO_ONE_SIDED_NOT_COMPARE: '1',
   STRUCTURED_GOTO_STACK_SHIFT_STORE_TAIL: '1',
   STRUCTURED_GOTO_DUPLICATE_CARD_LOOP_CLEANUP: '1',
   STRUCTURED_GOTO_STACK_COMPARE_TAILS: '1',
-  STRUCTURED_GOTO_CARD_SECOND_HAND_LOOP: '1',
   STRUCTURED_GOTO_CARD_LOOP_FALLBACK: '1',
   STRUCTURED_GOTO_SHARED_ICON_LOOP: '1',
   STRUCTURED_GOTO_EARLY_FINAL_LOOP_EXIT: '1',
@@ -309,24 +293,10 @@ const structuredGotoDefaultEnv = {
   STRUCTURED_GOTO_BACKWARD_CONTINUE_TAILS: '1',
   STRUCTURED_GOTO_PHASE_CONTINUATION_TAIL: '1',
   STRUCTURED_GOTO_MENU_CONTINUATION_TAIL: '1',
-  STRUCTURED_GOTO_DUPLICATE_QUEUE_ENTRY_RETARGET: '1',
-  STRUCTURED_GOTO_DUPLICATE_INITIAL_POSE_RETARGET: '1',
-  STRUCTURED_GOTO_ITERATOR_BOOLEAN_TAIL: '1',
   STRUCTURED_GOTO_PRESENCE_BOOLEAN_TAIL: '1',
-  STRUCTURED_GOTO_DUPLICATE_RADIUS_SCAN_RETARGET: '1',
   STRUCTURED_GOTO_BASE38_DUPLICATE_ENCODER_ENTRY: '1',
-  STRUCTURED_GOTO_CHAT_WIDTH_TAILS: '1',
-  STRUCTURED_GOTO_BASE38_BOOLEAN_DUPLICATE_ENCODER_ENTRY: '1',
-  STRUCTURED_GOTO_EVENT_ACTION_TAIL: '1',
-  STRUCTURED_GOTO_OBJECT_MERGE_LOOP_RETARGET: '1',
-  STRUCTURED_GOTO_RENDERER_DISPATCH_BODY: '1',
   STRUCTURED_GOTO_GRID_TILE_UPDATE_CONTINUE: '1',
-  STRUCTURED_GOTO_STATE_UPDATE_CREATION_BODY: '1',
   STRUCTURED_GOTO_TARGETED_BASE38_DECREMENT_TAIL: '1',
-  STRUCTURED_GOTO_DISABLE_BACKWARD_TAIL: '1',
-  STRUCTURED_GOTO_COLUMN_CONTINUE_SPLITTER: '1',
-  STRUCTURED_GOTO_STATE_BRIDGES: '1',
-  STRUCTURED_GOTO_INVALID_ENTRY_TAIL: '1',
   STRUCTURED_GOTO_TARGETED_CANONICAL_IINC_CONTINUES: '1',
   STRUCTURED_GOTO_FORWARD_IINC_CONTINUES: '1',
   STRUCTURED_GOTO_FORWARD_IINC_CONTINUE_MAX_REWRITES: '32',
@@ -347,8 +317,6 @@ const structuredGotoDefaultEnv = {
   STRUCTURED_GOTO_SHARED_RENDERER_BOOLEAN_SELECTOR: '1',
   STRUCTURED_GOTO_SHARED_CONDITIONAL_RENDER_TAIL: '1',
   STRUCTURED_GOTO_SHARED_CONDITIONAL_RENDER_TAIL_MAX_REWRITES: '8',
-  STRUCTURED_GOTO_SHARED_RENDER_CHOICE_TAIL: '0',
-  STRUCTURED_GOTO_SHARED_RENDER_CHOICE_TAIL_MAX_REWRITES: '8',
   STRUCTURED_GOTO_SHARED_STATIC_BOOLEAN_RENDER_RESTORE_TAIL: '1',
   STRUCTURED_GOTO_SHARED_STATIC_BOOLEAN_RENDER_RESTORE_TAIL_MAX_REWRITES: '4',
   STRUCTURED_GOTO_SHARED_STATIC_INVOKE_JOIN_TAIL: '1',
@@ -429,8 +397,6 @@ const structuredGotoDefaultEnv = {
   // every cloned edge, keep it as an explicit experimental opt-in: otherwise
   // valid nested numeric loops can lose their body and increment backedge.
   STRUCTURED_GOTO_STACK_COMPARE_CONTINUATION: '0',
-  STRUCTURED_GOTO_EVENT_LOOP_ACTION_TAIL_CLONE: '1',
-  STRUCTURED_GOTO_RASTER_ROW_SCAN_HEADER_CLONE: '1',
   STRUCTURED_GOTO_STRING_BASE38_SPLIT_TAIL: '1',
   STRUCTURED_GOTO_DISABLE_OPTION_CONTINUE_TAIL: '1',
   STRUCTURED_GOTO_DUPLICATE_HALVE_SETUP_TAIL: '1',
@@ -453,7 +419,7 @@ if (skipPassNames.has('ck-clip-flag')) {
 }
 
 if (!inDir || !outDir) {
-  console.error('Usage: bulk-pipeline.js <input-class-dir> <output-class-dir> [--profile dekobloko|none|all|name[,name...]] [--skip-inline] [--safe-bytecode] [--experimental-interclass-dce]');
+  console.error('Usage: bulk-pipeline.js <input-class-dir> <output-class-dir> [--skip-inline] [--safe-bytecode] [--experimental-interclass-dce]');
   process.exit(2);
 }
 
@@ -477,6 +443,17 @@ function listClassFiles(dir, root = dir) {
 }
 
 const files = listClassFiles(inDir);
+// The serializer does not regenerate StackMapTable frames. Preserve modern
+// inputs (Java 7+, major 51) rather than emitting verifier-invalid classes
+// after a CFG rewrite. Major 50 still supports inference-based verification.
+// Cross-class descriptor/name changes must also stay disabled for a mixed set
+// whose preserved classes would retain their original references.
+const preservedFrameClasses = new Set(files.filter(file => fs.readFileSync(path.join(inDir, file)).readUInt16BE(6) >= 51));
+if (preservedFrameClasses.size) {
+  experimentalSignatureCompaction = false;
+  skipPassNames.add('intize-boolean-parameters');
+  skipPassNames.add('compile-conflict-renames');
+}
 const processFiles = selectProcessFiles(files);
 const processFileSet = new Set(processFiles);
 const analysisFiles = process.env.BULK_PIPELINE_SCOPE_ANALYSIS_TO_SELECTED === '1' ? processFiles : files;
@@ -496,10 +473,6 @@ if (experimentalSignatureCompaction
     '[experimental-signature-compaction] disabled: descriptor rewrites require gamepack-wide analysis',
   );
   experimentalSignatureCompaction = false;
-}
-const profiles = loadProfiles(path.join(__dirname, 'profiles'), selectedProfiles);
-for (const passName of profiles.skipPasses) {
-  skipPassNames.add(passName);
 }
 
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'dekob-bulkpipe-'));
@@ -1328,17 +1301,6 @@ function shouldDisableBroadStructuredGotoClonesForAst(astRoot, classFile) {
   return hasBroadCloneSensitiveCandidate(astRoot);
 }
 
-function hasMethodSignature(astRoot, owner, name, descriptor) {
-  for (const cls of astRoot.classes || []) {
-    if (!cls || cls.className !== owner || !Array.isArray(cls.items)) continue;
-    for (const item of cls.items) {
-      const method = item && item.type === 'method' && item.method;
-      if (method && method.name === name && method.descriptor === descriptor) return true;
-    }
-  }
-  return false;
-}
-
 
 function hasTargetedCfrCloneCandidate(astRoot) {
   return anyCodeItems(astRoot, (codeItems, method) =>
@@ -1555,7 +1517,7 @@ function hasGridObjectScanShape(descriptor, metrics) {
 }
 
 function hasCompactObjectSelectorShape(descriptor, metrics) {
-  return descriptor.endsWith(')Lwa;') &&
+  return /\)L[^;]+;$/.test(descriptor) &&
     metrics.insns >= 180 &&
     metrics.branches >= 25 &&
     metrics.intFieldLoads >= 15 &&
@@ -2325,18 +2287,6 @@ function isInvokeInstruction(insn) {
   return typeof cur === 'string' && cur.startsWith('invoke');
 }
 
-function shouldRunNarrowStaticIntGridLoopFlagPipeline(astRoot) {
-  for (const cls of astRoot.classes || []) {
-    for (const item of cls.items || []) {
-      const method = item && item.type === 'method' && item.method;
-      if (!method || method.name !== 'h' || method.descriptor !== '(I)V') continue;
-      const codeAttr = (method.attributes || []).find((attr) => attr && attr.type === 'code');
-      const codeItems = codeAttr && codeAttr.code && codeAttr.code.codeItems;
-      if (Array.isArray(codeItems) && hasStaticIntGridLoopFlagUpdateShape(codeItems)) return true;
-    }
-  }
-  return false;
-}
 
 function shouldRunNarrowDuplicateGridScanContinuePipeline(astRoot) {
   for (const cls of astRoot.classes || []) {
@@ -2535,7 +2485,8 @@ function hasUiMatcherControlFlowShape(codeItems) {
     if (isGetStaticDescriptorBulk(insn, '[Z')) staticBoolArrayLoads += 1;
     if (isPutStaticDescriptorBulk(insn, '[B')) staticByteArrayStores += 1;
     if (isGetStaticDescriptorBulk(insn, '[Ljava/lang/String;')) stringArrayLoads += 1;
-    if (isInvokeDescriptorBulk(insn, '(B)Lma;')) iteratorNextCalls += 1;
+    // This is a conservative skip gate, so accept any reference result.
+    if (isInvokeInstruction(insn) && /^\(B\)L[^;]+;$/.test(methodDescriptorBulk(insn) || '')) iteratorNextCalls += 1;
     if (isInvokeDescriptorBulk(insn, '(ZZ)V')) uiBooleanCalls += 1;
   }
   return staticInt2dLoads >= 2 &&
@@ -2546,25 +2497,6 @@ function hasUiMatcherControlFlowShape(codeItems) {
     uiBooleanCalls >= 3;
 }
 
-function hasStaticIntGridLoopFlagUpdateShape(codeItems) {
-  if (!hasExactIntegerGuardDividePrologueBulk(codeItems)) return false;
-  if (!hasEarlyStaticIntGridWidthLoadBulk(codeItems)) return false;
-  let staticInt2dLoads = 0;
-  let arrayLoads = 0;
-  let arrayStores = 0;
-  let negations = 0;
-  let randomIntCalls = 0;
-  for (let i = 0; i < codeItems.length; i += 1) {
-    const insn = itemInsn(codeItems, i);
-    const cur = instructionOp(insn);
-    if (isGetStaticDescriptorBulk(insn, '[[I')) staticInt2dLoads += 1;
-    if (cur === 'aaload' || cur === 'iaload') arrayLoads += 1;
-    if (cur === 'iastore') arrayStores += 1;
-    if (cur === 'ineg') negations += 1;
-    if (isInvokeDescriptorBulk(insn, '(IZLjava/util/Random;)I')) randomIntCalls += 1;
-  }
-  return staticInt2dLoads >= 4 && arrayLoads >= 8 && arrayStores >= 4 && negations >= 2 && randomIntCalls >= 2;
-}
 
 function hasExactIntegerGuardDividePrologueBulk(codeItems) {
   for (let i = 0; i + 7 < Math.min(codeItems.length, 24); i += 1) {
@@ -2603,62 +2535,6 @@ function integerConstantValueBulk(insn) {
   return null;
 }
 
-function loadProfiles(dir, selected = []) {
-  const merged = {
-    deadFlagFields: [],
-    compileConflictRenames: { fields: [], methods: [] },
-    exceptionHandlerDrops: { handlers: [], ranges: [] },
-    eiTailClone: [],
-    qkExceptionSplit: [],
-    qcDoLoopTailClone: [],
-    ckClipFlag: [],
-    ckClipFlagQuadrants: [],
-    vlCacheJoin: [],
-    rasterScanlineEntryClone: [],
-    sourceScopeLocalInit: [],
-    stackReceiverTailClone: [],
-    retargetBranches: [],
-    materializeBooleanInvokeArgs: [],
-    splitArrayReachingLocalOptions: {},
-    controlFlowDceOptions: {},
-    skipPasses: [],
-  };
-  if (!fs.existsSync(dir)) return merged;
-  if (selected.some((name) => name === 'none' || name === 'none.json')) return merged;
-  const loadAll = selected.some((name) => name === 'all' || name === 'all.json');
-  const selectedSet = new Set(selected.map((name) => name.endsWith('.json') ? name : `${name}.json`));
-  const files = fs.readdirSync(dir)
-    .filter((f) => f.endsWith('.json'))
-    .filter((f) => loadAll || selectedSet.has(f))
-    .sort();
-  for (const file of files) {
-    const profile = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
-    for (const key of Object.keys(merged)) {
-      if (!profile[key]) continue;
-      if (Array.isArray(merged[key])) {
-        merged[key].push(...profile[key]);
-      } else if (key === 'splitArrayReachingLocalOptions' || key === 'controlFlowDceOptions') {
-        Object.assign(merged[key], profile[key]);
-      } else if (key === 'compileConflictRenames') {
-        merged[key].fields.push(...(profile[key].fields || []));
-        merged[key].methods.push(...(profile[key].methods || []));
-      } else if (key === 'exceptionHandlerDrops') {
-        merged[key].handlers.push(...(profile[key].handlers || []));
-        merged[key].ranges.push(...(profile[key].ranges || []));
-      }
-    }
-  }
-  for (const key of ['ckClipFlagQuadrants']) {
-    const seen = new Set();
-    merged[key] = merged[key].filter((entry) => {
-      const text = JSON.stringify(entry);
-      if (seen.has(text)) return false;
-      seen.add(text);
-      return true;
-    });
-  }
-  return merged;
-}
 
 function raiseMaxStackFloor(ast, floor = 64) {
   for (const cls of ast.classes || []) {
@@ -2777,9 +2653,6 @@ function collectClassShadowFieldRenames() {
   const classNames = new Set(analysisFiles.map((f) => path.basename(f, '.class')));
   const byKey = new Map();
   const parents = new Map();
-  for (const rename of [...FIELD_RENAMES, ...profiles.compileConflictRenames.fields]) {
-    byKey.set(`${rename.owner}.${rename.name}:${rename.descriptor}`, rename);
-  }
   for (const f of analysisFiles) {
     const { ast } = loadAst(path.join(inDir, f));
     for (const cls of ast.classes || []) {
@@ -2822,7 +2695,7 @@ function collectMethodOverrideRenames() {
     const { ast } = loadAst(path.join(inDir, f));
     classes.push(...(ast.classes || []));
   }
-  return expandMethodRenames({ classes }, [...METHOD_RENAMES, ...profiles.compileConflictRenames.methods]);
+  return expandMethodRenames({ classes }, []);
 }
 
 function collectAutoDeadFlagFields() {
@@ -2892,7 +2765,6 @@ const builtInDeadFlagFields = configuredList('PIPELINE_BUILTIN_DEAD_FLAG_FIELDS'
 const autoDeadFlagDiscovery = collectAutoDeadFlagFields();
 const autoDeadFlagFields = autoDeadFlagDiscovery.fields;
 const interproceduralConstantArgumentDiscovery = collectInterproceduralConstantArgumentFacts([
-  ...profiles.deadFlagFields,
   ...builtInDeadFlagFields,
   ...autoDeadFlagFields,
 ]);
@@ -3002,7 +2874,6 @@ if (experimentalInterclassDce) {
 }
 function deadFlagFieldsForClass(classFile) {
   let fields = [
-    ...profiles.deadFlagFields,
     ...builtInDeadFlagFields,
     ...autoDeadFlagFields,
   ];
@@ -3649,7 +3520,6 @@ const passes = [
     name: 'experimental-constant-expressions',
     fn: runConstantExpressionFold,
   }] : []),
-  { name: 'ei-tail-clone', fn: (a) => runEiTailClone(a, { targets: profiles.eiTailClone }) },
   { name: 'peephole', fn: (a, f) => runPeepholeClean(a, safePeepholeOptionsForClass(a, f, {
     ...(runtimeSafe ? { removeRethrowHandlers: false } : {}),
     ...(safeBytecode ? {
@@ -3725,7 +3595,6 @@ const passes = [
   ...(runtimeSafe ? [] : [
     { name: 'remove-shadowed-exception-handlers', fn: (a) => runRemoveShadowedExceptionHandlers(a) },
     { name: 'remove-shadowing-trivial-rethrow-handlers', fn: (a) => runRemoveShadowingTrivialRethrowHandlers(a) },
-    { name: 'dekobloko-exception-handler-drops', fn: (a) => runDekoblokoExceptionHandlerDrops(a, profiles.exceptionHandlerDrops) },
     { name: 'strip-rethrow', fn: (a) => removeTrivialRethrowHandlers(a, { keepHandlerCode: true }) },
   ]),
   {
@@ -3773,7 +3642,6 @@ const passes = [
   { name: 'primitive-array-copy-loops', fn: (a) => runPrimitiveArrayCopyLoops(a) },
   { name: 'split-array-reaching-local', fn: (a) => runSplitArrayReachingLocal(a, {
     ...(safeBytecode ? { requireDominance: true, preserveOriginalLocals: true } : {}),
-    ...profiles.splitArrayReachingLocalOptions,
   }) },
   { name: 'split-reference-array-reaching-local', fn: (a) => runSplitReferenceArrayReachingLocal(a) },
   { name: 'split-array-store-local-assignment', fn: (a) => runSplitArrayStoreLocalAssignment(a) },
@@ -3793,12 +3661,8 @@ const passes = [
   { name: 'inline-goto-return-island', fn: (a) => runInlineGotoReturnIsland(a) },
   ...(skipInline ? [] : [{ name: 'inline-exit', fn: (a) => runInlineSharedExitGoto(a, { maxBodyInsns: 50 }) }]),
   { name: 'inline-return', fn: (a) => runInlineSharedReturn(a, { oncePerMethod: false }) },
-  { name: 'raster-clip-continuation', fn: (a) => runRasterClipContinuation(a, { targets: profiles.ckClipFlag, quadrants: profiles.ckClipFlagQuadrants }) },
-  ...(runtimeSafe ? [] : [{ name: 'qk-exception-split', fn: (a) => runQkExceptionSplit(a, { targets: profiles.qkExceptionSplit }) }]),
-  { name: 'vl-cache-join', fn: (a) => runVlCacheJoin(a, { targets: profiles.vlCacheJoin }) },
-  { name: 'raster-scanline-entry-clone', fn: (a) => runRasterScanlineEntryClone(a, { targets: profiles.rasterScanlineEntryClone }) },
-  { name: 'source-scope-local-init', fn: (a) => runSourceScopeLocalInit(a, { targets: profiles.sourceScopeLocalInit }) },
-  { name: 'stack-receiver-tail-clone', fn: (a) => runStackReceiverTailClone(a, { targets: profiles.stackReceiverTailClone }) },
+  { name: 'raster-clip-continuation', fn: (a) => runRasterClipContinuation(a) },
+  { name: 'vl-cache-join', fn: (a) => runVlCacheJoin(a) },
   ...(runtimeSafe ? [] : [{ name: 'remove-shadowing-trivial-rethrow-handlers2', fn: (a) => runRemoveShadowingTrivialRethrowHandlers(a) }]),
   { name: 'peephole2', fn: (a, f) => runPeepholeClean(a, safePeepholeOptionsForClass(a, f, {
     ...(runtimeSafe ? { removeRethrowHandlers: false } : {}),
@@ -3865,13 +3729,10 @@ const passes = [
   })) },
   ...(skipControlFlowDce ? [] : [{ name: 'control-flow-dce', fn: (a) => runControlFlowDce(a, {
     ...(safeBytecode ? { requireIsolatedMergeTarget: true, guardStackGotos: true } : {}),
-    ...profiles.controlFlowDceOptions,
   }) }]),
-  { name: 'qc-doloop-tail-clone', fn: (a) => runQcDoLoopTailClone(a, { targets: profiles.qcDoLoopTailClone }) },
   ...(runtimeSafe ? [] : [{ name: 'compile-conflict-renames', fn: (a) => runCompileConflictRenames(a, { fieldRenames, methodRenames }) }]),
-  { name: 'materialize-boolean-invoke-args', fn: (a) => runMaterializeBooleanInvokeArgs(a, { targets: profiles.materializeBooleanInvokeArgs }) },
+  { name: 'materialize-boolean-invoke-args', fn: (a) => runMaterializeBooleanInvokeArgs(a) },
   { name: 'inline-single-use-boolean-branch2', fn: (a) => runInlineSingleUseBooleanBranch(a) },
-  { name: 'retarget-branches', fn: (a) => runRetargetBranches(a, { targets: profiles.retargetBranches }) },
   { name: 'split-concrete-object-reaching-local-late', fn: (a) => runSplitConcreteObjectReachingLocal(a, safeBytecode ? { requireDominance: true, preserveOriginalLocals: true } : {}) },
   { name: 'split-typed-reused-locals-late', fn: (a) => runSplitTypedReusedLocals(a, {
     preserveOriginalLocals: true,
@@ -3960,6 +3821,12 @@ for (const f of processFiles) {
   const inPath = path.join(effectiveInputDir, f);
   const outPath = path.join(outDir, f);
   try {
+    if (preservedFrameClasses.has(f)) {
+      fs.mkdirSync(path.dirname(outPath), {recursive: true});
+      fs.copyFileSync(inPath, outPath);
+      processed += 1;
+      continue;
+    }
     let { ast, cp } = loadAst(inPath);
     resetOrphanGuard(ast, fs.readFileSync(inPath), f);
     // Descriptor changes must be applied to every class before any of the
@@ -4087,19 +3954,6 @@ for (const f of processFiles) {
       processed += 1;
       continue;
     }
-    if (safeBytecode && shouldRunNarrowStaticIntGridLoopFlagPipeline(ast)) {
-      const narrowEnv = Object.fromEntries(Object.keys(structuredGotoDefaultEnv).map((key) => [key, '0']));
-      narrowEnv.STRUCTURED_GOTO_STATIC_INT_LOOP_FLAG_BRANCHES = '1';
-      narrowEnv.STRUCTURED_GOTO_STATIC_INT_LOOP_FLAG_MIN_BRANCHES = '3';
-      withEnvOverrides(narrowEnv, () => runStructuredGotoClone(ast));
-      raiseMaxStackFloor(ast);
-      orphanGuardPassLabel = 'narrow-static-int-grid-loop-flag';
-      ({ ast, cp } = saveAndReload(ast, cp));
-      orphanGuardPassLabel = '';
-      fs.copyFileSync(tmpFile, outPath);
-      processed += 1;
-      continue;
-    }
     if (safeBytecode && shouldRunNarrowDuplicateGridScanContinuePipeline(ast)) {
       const narrowEnv = Object.fromEntries(Object.keys(structuredGotoDefaultEnv).map((key) => [key, '0']));
       narrowEnv.STRUCTURED_GOTO_DUPLICATE_GRID_SCAN_CONTINUES = '1';
@@ -4209,16 +4063,6 @@ for (const f of processFiles) {
           const terminalActionSaveStart = Date.now();
           ({ ast, cp } = saveAndReload(ast, cp));
           tracePassTime(f, 'post-final:save-after-terminal-action-extract', terminalActionSaveStart);
-        }
-      }
-      if (!skipPassNames.has('terminal-cleanup-extract')) {
-        const terminalCleanupStart = Date.now();
-        const terminalCleanupResult = runTerminalCleanupExtract(ast);
-        tracePassTime(f, 'post-final:terminal-cleanup-extract', terminalCleanupStart);
-        if (terminalCleanupResult && terminalCleanupResult.changed) {
-          const terminalCleanupSaveStart = Date.now();
-          ({ ast, cp } = saveAndReload(ast, cp));
-          tracePassTime(f, 'post-final:save-after-terminal-cleanup-extract', terminalCleanupSaveStart);
         }
       }
       if (!skipPassNames.has('structured-goto-clone') && !initialSkipBroadStructuredGoto && !shouldSkipBroadStructuredGoto(ast)) {

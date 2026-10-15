@@ -8,7 +8,7 @@ const { createRequire } = Module;
 const { spawnSync } = require('child_process');
 
 const DEKOB = path.resolve(__dirname, '..', '..');
-const JT = path.resolve(process.env.JAVA_TOOLS_DIR || process.env.JT_DIR || '/home/kreijstal/git/java-tools');
+const JT = path.resolve(process.env.JAVA_TOOLS_DIR || process.env.JT_DIR || path.join(__dirname, '../../..', 'java-tools'));
 const jtRequire = createRequire(path.join(JT, 'package.json'));
 const { getAST } = jtRequire('jvm_parser');
 const { convertJson } = require(path.join(JT, 'src/parsing/convert_tree'));

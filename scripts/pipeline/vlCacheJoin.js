@@ -2,7 +2,6 @@
 
 function runVlCacheJoin(astRoot, options = {}) {
   let changed = 0;
-  const targets = options.targets || [];
   for (const cls of astRoot.classes || []) {
     if (!cls) continue;
     for (const item of cls.items || []) {
@@ -10,16 +9,7 @@ function runVlCacheJoin(astRoot, options = {}) {
       const codeAttr = (item.method.attributes || []).find((attr) => attr.type === 'code');
       const codeItems = codeAttr && codeAttr.code && codeAttr.code.codeItems;
       if (!Array.isArray(codeItems)) continue;
-      const explicit = targets.filter((spec) =>
-        cls.className === spec.className &&
-        item.method.name === spec.methodName &&
-        item.method.descriptor === spec.descriptor);
-      for (const target of explicit) {
-        changed += rewrite(codeItems, target);
-      }
-      if (explicit.length === 0 && options.infer !== false) {
-        changed += rewriteInferred(codeItems, options);
-      }
+      changed += rewriteInferred(codeItems, options);
     }
   }
   return { changed: changed > 0, changed };

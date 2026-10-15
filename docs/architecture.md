@@ -14,12 +14,12 @@ belongs here, and nothing game-specific belongs there.
 | Concern | Owner |
 |---|---|
 | Bytecode parsing, transforms, decompiler, JIT, Wasm tiers, `jvm-cli.js` | `java-tools` |
-| Game launchers, gamepack retrieval, JS5 services, per-game profiles, protocol servers | this repository |
+| Game launchers, gamepack retrieval, JS5 services, game manifests, protocol servers | this repository |
 | Per-game readable naming manifests, reproduction/export drivers, proof fixtures | this repository (`readable/`) |
 | Published raw/readable Java, dictionaries and export provenance | `funorb-decompiled` |
 
 Game-specific compatibility lives in named, documented adapters —
-`stubs/src/`, `apps/launcher/src/local/awt/`, `scripts/pipeline/profiles/` —
+`stubs/src/`, `apps/launcher/src/local/awt/` —
 never hidden inside generic JVM execution. Cross-repository API changes are
 tracked as follow-ups, not made from here.
 
@@ -39,7 +39,7 @@ trace selectors.
 | `game-logic/` | Renderer-free Java gameplay library, independently buildable, checked against the untouched original `lk` board class. |
 | `stubs/src/` | Legacy JDK/browser/native dependency stubs → `lib/dekobloko-stubs.jar`. |
 | `scripts/lib/` | Shared infrastructure: java-tools discovery, provenance, offline guard, configuration registry. |
-| `scripts/pipeline/` | The deobfuscation pipeline (`bulk-pipeline.js`), its passes, and per-game JSON profiles. |
+| `scripts/pipeline/` | The deobfuscation pipeline (`bulk-pipeline.js`), and generic shape-based passes. |
 | `scripts/launcher/` | Build and run wrappers for the native applet launcher. |
 | `scripts/` | Gamepack fetch, decompile driver, headless and multi-game jvm.js runners, JS5 server and recorder, the browser game library, the config printer and the test runner. |
 | `tools/differential-methods/` | The differential-method benchmark workflow: capture, oracle, build, hotspot, server and report stages. `build.mjs` defaults its compiler to `/usr/lib/jvm/java-8-openjdk/bin/javac`, which is not present here; set `JAVAC`. |
@@ -58,18 +58,19 @@ refuse any non-loopback host by name, before any DNS or TCP work, and rejects
 `scripts/launch-alterorb-games-jvmjs.js`; anything else that reports an offline
 run should install it too.
 
-### Generic passes versus profile-driven passes
+### Generic preprocessing
 
 ```text
 java-tools/src/        generic bytecode transforms and serializers
-scripts/pipeline/      pipeline order, profile-aware pass wrappers, game JSON profiles
+scripts/pipeline/      pipeline order and generic shape-based pass wrappers
 ```
 
-A profile entry selects a *candidate site*; it is not permission to blindly
-patch arbitrary code. The pass implementation still checks the surrounding
-CFG/instruction shape before rewriting. That is how the pipeline avoids hiding
-game-specific hacks inside reusable transforms. Details and the transform
-catalog: [decompilation.md](decompilation.md).
+Preprocessing selects candidates from CFG, stack, type and instruction
+relationships. It has no built-in game class/member names, offset patches or
+per-game profiles. A recognizer must leave an input unchanged when its generic
+proof fails. Semantic naming dictionaries and resource relocations remain
+application data in `readable/`. Details and regression commands:
+[decompilation.md](decompilation.md).
 
 ### Game recognition
 

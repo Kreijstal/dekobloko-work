@@ -315,14 +315,13 @@ function localDescriptor(method, local) {
   const index = Number(local);
   if (!Number.isInteger(index)) return null;
   const slots = [];
-  if (!hasStaticFlag(method)) slots.push({ index: 0, desc: 'Lthis;' });
   let slot = hasStaticFlag(method) ? 0 : 1;
   for (const desc of parseMethodParams(method.descriptor)) {
     slots.push({ index: slot, desc });
     slot += (desc === 'J' || desc === 'D') ? 2 : 1;
   }
   const found = slots.find((entry) => entry.index === index);
-  if (!found || found.desc === 'Lthis;') return null;
+  if (!found) return null;
   if (found.desc === 'Z' || found.desc === 'B' || found.desc === 'C' || found.desc === 'S') return found.desc;
   return found.desc === 'I' ? 'I' : null;
 }

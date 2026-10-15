@@ -42,13 +42,12 @@ try {
     run('git', ['-C', repository, 'archive', '--format=tar', '--output=' + archive, baselineCommit]);
     run('tar', ['-xf', archive, '-C', checkout]);
     if (variant === 'candidate') {
-      for (const relative of ['scripts/pipeline/bulk-pipeline.js', 'scripts/pipeline/profiles/chess.json'])
-        fs.copyFileSync(path.join(repository, relative), path.join(checkout, relative));
-      fs.rmSync(path.join(checkout, 'scripts/pipeline/bParserLoopHeader.js'));
+      fs.rmSync(path.join(checkout, 'scripts/pipeline'), {recursive: true});
+      fs.cpSync(path.join(repository, 'scripts/pipeline'), path.join(checkout, 'scripts/pipeline'), {recursive: true});
     }
     const output = path.join(temporary, variant + '-out');
     const stdout = run(process.execPath, ['scripts/pipeline/bulk-pipeline.js', input, output,
-      '--profile', 'chess', '--safe-bytecode'], {cwd: checkout, env: environment});
+      ...(variant === 'baseline' ? ['--profile', 'chess'] : []), '--safe-bytecode'], {cwd: checkout, env: environment});
     // A silent passthrough has identical bytes too. It is a failed comparison,
     // not evidence that the removed preprocessing was unnecessary.
     assert.match(stdout, /Done: 1\/1 processed, 0 failed \(passthrough\), 0 copied/);

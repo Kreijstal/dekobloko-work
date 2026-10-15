@@ -64,9 +64,7 @@ function runStructuredGotoClone(astRoot) {
       if (process.env.STRUCTURED_GOTO_SHARED_ARRAY_RECORD_UPDATE_BODY === '1') {
         rewrites += cloneSharedArrayRecordUpdateBodies(codeItems, codeAttr.code);
       }
-      if (process.env.STRUCTURED_GOTO_STATIC_INT_LOOP_FLAG_BRANCHES === '1') {
-        rewrites += removeStaticIntLoopFlagBranches(codeItems, item.method);
-      }
+
       if (process.env.STRUCTURED_GOTO_RASTER_TOP_CLIP_SCANLINE_ENTRY === '1') {
         rewrites += cloneRasterTopClipScanlineEntries(codeItems, codeAttr.code);
       }
@@ -79,6 +77,7 @@ function runStructuredGotoClone(astRoot) {
       if (process.env.STRUCTURED_GOTO_SIBLING_LOCAL_SCAN_BODIES === '1') {
         rewrites += cloneSiblingLocalScanBodies(codeItems, codeAttr.code, item.method);
       }
+
       if (process.env.STRUCTURED_GOTO_SHARED_FALLTHROUGH_CONTINUATION_TAIL === '1' &&
         shouldRunSharedFallthroughContinuationTail(item.method, codeItems)) {
         rewrites += cloneSharedFallthroughContinuationTails(codeItems, codeAttr.code);
@@ -116,18 +115,12 @@ function runStructuredGotoClone(astRoot) {
       if (shouldRunCachedLookupContinuationClone(cls, item.method)) {
         rewrites += cloneHbbCachedLookupContinuationTail(codeItems, codeAttr.code);
       }
-      if (shouldRunObjectRefreshContinuationClone(cls, item.method)) {
-        rewrites += cloneObjectRefreshContinuation(codeItems, codeAttr.code);
-      }
-      if (shouldRunPrefixContinuationClone(cls, item.method)) {
-        rewrites += clonePrefixContinuation(codeItems, codeAttr.code);
-      }
+
+
       if (shouldRunSharedBooleanLoopTailClone(cls, item.method)) {
         rewrites += cloneSharedBooleanLoopTail(codeItems, codeAttr.code);
       }
-      if (shouldRunIteratorAdvanceTailClone(cls, item.method)) {
-        rewrites += cloneIteratorAdvanceTail(codeItems, codeAttr.code);
-      }
+
       if (shouldRunMessageExitTailClone(cls, item.method)) {
         rewrites += cloneMessageExitTail(codeItems, codeAttr.code);
       }
@@ -146,15 +139,8 @@ function runStructuredGotoClone(astRoot) {
       if (shouldRunStackCompareTailClone(cls, item.method)) {
         rewrites += cloneStackCompareTails(codeItems, codeAttr.code);
       }
-      if (shouldRunStaticZeroFlagBranchCleanup(cls, item.method)) {
-        rewrites += removeAnyStaticZeroFlagLocalBranches(codeItems);
-      }
-      if (shouldRunStaticZeroFlagBranchCleanupForAlternateShape(cls, item.method)) {
-        rewrites += removeAlternateStaticZeroFlagLocalBranches(codeItems);
-      }
-      if (shouldRunCardSecondHandLoopClone(cls, item.method)) {
-        rewrites += cloneCardSecondHandLoop(codeItems, codeAttr.code);
-      }
+
+
       if (shouldRunCardLoopFallbackClone(cls, item.method)) {
         rewrites += cloneCardLoopFallback(codeItems, codeAttr.code);
       }
@@ -228,62 +214,28 @@ function runStructuredGotoClone(astRoot) {
       if (shouldRunMenuContinuationTailClone(cls, item.method)) {
         rewrites += cloneMenuContinuationTail(codeItems, codeAttr.code);
       }
-      if (shouldRunDuplicateQueueEntryRetarget(cls, item.method, codeItems)) {
-        rewrites += retargetDuplicateQueueEntry(codeItems);
-      }
-      if (shouldRunDuplicateInitialPoseRetarget(cls, item.method, codeItems)) {
-        rewrites += retargetDuplicateInitialPose(codeItems);
-      }
-      if (shouldRunIteratorBooleanTailClone(cls, item.method, codeItems)) {
-        rewrites += cloneIteratorBooleanTail(codeItems, codeAttr.code);
-      }
+
+
       if (shouldRunPresenceBooleanTailClone(cls, item.method, codeItems)) {
         rewrites += clonePresenceBooleanTails(codeItems, codeAttr.code);
       }
-      if (shouldRunDuplicateRadiusScanRetarget(cls, item.method, codeItems)) {
-        rewrites += retargetDuplicateRadiusScans(codeItems, codeAttr.code);
-      }
+
       if (shouldRunBase38DuplicateEncoderEntryCleanup(cls, item.method, codeItems)) {
         rewrites += retargetDuplicateBase38EncoderEntry(codeItems);
         rewrites += cloneForwardBase38CharBody(codeItems, codeAttr.code);
       }
-      if (shouldRunChatWidthTailClone(cls, item.method, codeItems)) {
-        rewrites += cloneChatWidthTails(codeItems, codeAttr.code);
-      }
-      if (shouldRunBooleanBase38DuplicateEncoderEntryRetarget(cls, item.method, codeItems)) {
-        rewrites += retargetBooleanDuplicateBase38Encoder(codeItems);
-      }
-      if (shouldRunEventActionTailClone(cls, item.method, codeItems)) {
-        rewrites += cloneEventActionTails(codeItems, codeAttr.code);
-      }
-      if (shouldRunObjectMergeLoopRetarget(cls, item.method, codeItems)) {
-        rewrites += retargetObjectMergeLoopTrampolines(codeItems);
-      }
-      if (shouldRunRendererDispatchClone(cls, item.method, codeItems)) {
-        rewrites += cloneRendererDispatchBodies(codeItems, codeAttr.code);
-      }
+
+
       if (shouldRunGridTileUpdateContinueClone(cls, item.method, codeItems)) {
         rewrites += cloneGridTileUpdateContinueHeaders(codeItems);
         rewrites += retargetDuplicatePreLoopSetup(codeItems);
       }
-      if (shouldRunStateUpdateCreationClone(cls, item.method, codeItems)) {
-        rewrites += cloneStateUpdateCreationBody(codeItems, codeAttr.code);
-      }
+
       if (shouldRunTargetedBase38DecrementTailClone(cls, item.method, codeItems)) {
         rewrites += cloneTargetedBase38DecrementTails(codeItems);
       }
-      if (shouldRunDisableBackwardTailClone(cls, item.method, codeItems)) {
-        rewrites += cloneDisableBackwardTails(codeItems);
-      }
-      if (shouldRunColumnContinueSplitter(cls, item.method, codeItems)) {
-        rewrites += retargetColumnContinues(codeItems);
-      }
-      if (shouldRunStateBridgeCleanup(cls, item.method, codeItems)) {
-        rewrites += invertConditionalGotoBridges(codeItems);
-      }
-      if (shouldRunInvalidEntryTailClone(cls, item.method, codeItems)) {
-        rewrites += cloneInvalidEntryTails(codeItems);
-      }
+
+
       if (shouldRunTargetedCanonicalIincContinueSplitter(cls, item.method, codeItems)) {
         rewrites += retargetIincBackedgesToCanonicalContinues(codeItems);
       }
@@ -304,7 +256,7 @@ function runStructuredGotoClone(astRoot) {
         rewrites += canonicalizeDuplicatedRadixParserLoop(codeItems, codeAttr.code, item.method);
       }
       if (process.env.STRUCTURED_GOTO_CONST_FALSE_COMPARE_INTERRUPTERS === '1') {
-        rewrites += removeConstantFalseCompareInterrupters(codeItems);
+        rewrites += removeConstantFalseCompareInterrupters(codeItems, codeAttr.code);
       }
       if (process.env.STRUCTURED_GOTO_SIMPLIFY_CONSTANT_BRANCHES === '1') {
         rewrites += simplifyConstantBooleanBranches(codeItems);
@@ -319,7 +271,7 @@ function runStructuredGotoClone(astRoot) {
         rewrites += removeDeadAthrowPadding(codeItems, codeAttr.code);
       }
       if (process.env.STRUCTURED_GOTO_SHARED_CHANGE_LOG_TAIL === '1') {
-        rewrites += cloneSharedChangeLogTails(codeItems, codeAttr.code);
+        rewrites += simplifyDuplicateNullXorChangeDetectors(codeItems);
       }
       if (process.env.STRUCTURED_GOTO_CONDITIONAL_INT_CONSTANT_COMPARE_BOUND === '1') {
         rewrites += materializeConditionalIntConstantCompareBounds(codeItems, codeAttr.code);
@@ -330,9 +282,7 @@ function runStructuredGotoClone(astRoot) {
       if (process.env.STRUCTURED_GOTO_SHARED_CONDITIONAL_RENDER_TAIL === '1') {
         rewrites += cloneSharedConditionalRenderTails(codeItems, codeAttr.code);
       }
-      if (process.env.STRUCTURED_GOTO_SHARED_RENDER_CHOICE_TAIL === '1') {
-        rewrites += cloneSharedRenderChoiceTails(codeItems, codeAttr.code);
-      }
+
       if (process.env.STRUCTURED_GOTO_SHARED_STATIC_BOOLEAN_RENDER_RESTORE_TAIL === '1') {
         rewrites += cloneSharedStaticBooleanRenderRestoreTails(codeItems, codeAttr.code);
       }
@@ -438,23 +388,19 @@ function runStructuredGotoClone(astRoot) {
         rewrites += cloneBooleanPutfieldCompareContinuations(codeItems, codeAttr.code);
         rewrites += cloneBooleanPutfieldDrainLoopEntries(codeItems, codeAttr.code);
       }
-      if (process.env.STRUCTURED_GOTO_EVENT_LOOP_ACTION_TAIL_CLONE === '1') {
-        rewrites += cloneEventLoopActionTails(codeItems, codeAttr.code);
-      }
-      if (process.env.STRUCTURED_GOTO_RASTER_ROW_SCAN_HEADER_CLONE === '1') {
-        rewrites += cloneRasterRowScanContinueHeaders(codeItems, codeAttr.code);
-      }
+
+
       if (process.env.STRUCTURED_GOTO_STRING_BASE38_SPLIT_TAIL === '1') {
         rewrites += cloneStringBase38SplitDecrementTails(codeItems, codeAttr.code);
         rewrites += cloneStringBase38ForwardSplitDecrementTails(codeItems, codeAttr.code);
-        rewrites += cloneStringBase38ForwardCharBodies(codeItems, codeAttr.code);
+
       }
       if (process.env.STRUCTURED_GOTO_DISABLE_OPTION_CONTINUE_TAIL === '1') {
         rewrites += cloneByteArrayClearSharedFieldCopyTails(codeItems, codeAttr.code);
         rewrites += cloneDisableOptionContinueTails(codeItems, codeAttr.code);
       }
       if (process.env.STRUCTURED_GOTO_CONST_FALSE_COMPARE_INTERRUPTERS === '1') {
-        rewrites += removeConstantFalseCompareInterrupters(codeItems);
+        rewrites += removeConstantFalseCompareInterrupters(codeItems, codeAttr.code);
       }
       if (process.env.STRUCTURED_GOTO_DUPLICATE_HALVE_SETUP_TAIL === '1') {
         rewrites += retargetDuplicateHalveSetupTails(codeItems, codeAttr.code);
@@ -473,7 +419,7 @@ function runStructuredGotoClone(astRoot) {
       if (process.env.STRUCTURED_GOTO_CLONE_RETURN !== '0') rewrites += cloneForwardReturnCleanupGotos(codeItems);
       if (process.env.STRUCTURED_GOTO_CLONE_ARRAY_JOIN === '1') rewrites += cloneArrayLoadStoreJoins(codeItems);
       if (shouldRunSmallIincJoin(cls, item.method)) rewrites += cloneConditionalSmallIincJoins(codeItems);
-      if (shouldRunFalseReturnGuardCleanup(cls, item.method)) rewrites += removeFalseReturnGuards(codeItems);
+      if (shouldRunFalseReturnGuardCleanup(cls, item.method)) rewrites += removeFalseReturnGuards(codeItems, codeAttr.code);
       if (shouldRunSharedContinueTailClone(cls, item.method)) rewrites += cloneSharedContinueTails(codeItems);
       if (shouldRunJiByteWrapScanTailClone(cls, item.method)) rewrites += cloneJiByteWrapScanTails(codeItems);
       if (shouldRunPbBlurTailRetarget(cls, item.method)) rewrites += retargetPbBlurLateTailEntry(codeItems);
@@ -656,7 +602,6 @@ function sameInstructionSequence(codeItems, start, expectedItems) {
 }
 
 
-
 function methodSignature(cls, method) {
   const owner = cls && cls.className || '*';
   return `${owner}.${method && method.name || ''}${method && method.descriptor || ''}`;
@@ -799,33 +744,6 @@ function shouldRunPresenceBooleanTailClone(cls, method, codeItems) {
     hasPresenceBooleanCandidate(codeItems);
 }
 
-function shouldRunDuplicateQueueEntryRetarget(cls, method, codeItems) {
-  return featureEnabled('STRUCTURED_GOTO_DUPLICATE_QUEUE_ENTRY_RETARGET') &&
-    targetGate('STRUCTURED_GOTO_DUPLICATE_QUEUE_ENTRY_RETARGET_TARGETS', cls, method) &&
-    method &&
-    hasDuplicateQueueEntry(codeItems);
-}
-
-function shouldRunDuplicateInitialPoseRetarget(cls, method, codeItems) {
-  return featureEnabled('STRUCTURED_GOTO_DUPLICATE_INITIAL_POSE_RETARGET') &&
-    targetGate('STRUCTURED_GOTO_DUPLICATE_INITIAL_POSE_RETARGET_TARGETS', cls, method) &&
-    method && method.name === '<init>' &&
-    findDuplicateInitialPose(codeItems) != null;
-}
-
-function shouldRunIteratorBooleanTailClone(cls, method, codeItems) {
-  return featureEnabled('STRUCTURED_GOTO_ITERATOR_BOOLEAN_TAIL') &&
-    targetGate('STRUCTURED_GOTO_ITERATOR_BOOLEAN_TAIL_TARGETS', cls, method) &&
-    method &&
-    findIteratorBooleanTail(codeItems) != null;
-}
-
-function shouldRunDuplicateRadiusScanRetarget(cls, method, codeItems) {
-  return featureEnabled('STRUCTURED_GOTO_DUPLICATE_RADIUS_SCAN_RETARGET') &&
-    targetGate('STRUCTURED_GOTO_DUPLICATE_RADIUS_SCAN_RETARGET_TARGETS', cls, method) &&
-    method && method.descriptor === '(ZII)V' &&
-    findDuplicateRadiusScans(codeItems) != null;
-}
 
 function shouldRunBase38DuplicateEncoderEntryCleanup(cls, method, codeItems) {
   return featureEnabled('STRUCTURED_GOTO_BASE38_DUPLICATE_ENCODER_ENTRY') &&
@@ -834,40 +752,6 @@ function shouldRunBase38DuplicateEncoderEntryCleanup(cls, method, codeItems) {
     findDuplicateBase38EncoderEntry(codeItems) != null;
 }
 
-function shouldRunChatWidthTailClone(cls, method, codeItems) {
-  return featureEnabled('STRUCTURED_GOTO_CHAT_WIDTH_TAILS') &&
-    targetGate('STRUCTURED_GOTO_CHAT_WIDTH_TAILS_TARGETS', cls, method) &&
-    method && method.descriptor === '(III)Z' &&
-    findChatWidthTailUses(codeItems).length > 0;
-}
-
-function shouldRunBooleanBase38DuplicateEncoderEntryRetarget(cls, method, codeItems) {
-  return featureEnabled('STRUCTURED_GOTO_BASE38_BOOLEAN_DUPLICATE_ENCODER_ENTRY') &&
-    targetGate('STRUCTURED_GOTO_BASE38_BOOLEAN_DUPLICATE_ENCODER_ENTRY_TARGETS', cls, method) &&
-    method && method.descriptor === '(Ljava/lang/String;Z)V' &&
-    findBooleanDuplicateBase38Encoder(codeItems) != null;
-}
-
-function shouldRunEventActionTailClone(cls, method, codeItems) {
-  return featureEnabled('STRUCTURED_GOTO_EVENT_ACTION_TAIL') &&
-    targetGate('STRUCTURED_GOTO_EVENT_ACTION_TAIL_TARGETS', cls, method) &&
-    method && method.descriptor === '(IB)V' &&
-    findEventActionTail(codeItems) != null;
-}
-
-function shouldRunObjectMergeLoopRetarget(cls, method, codeItems) {
-  return featureEnabled('STRUCTURED_GOTO_OBJECT_MERGE_LOOP_RETARGET') &&
-    targetGate('STRUCTURED_GOTO_OBJECT_MERGE_LOOP_RETARGET_TARGETS', cls, method) &&
-    method && method.descriptor === '(B)Lwa;' &&
-    hasObjectMergeLoopTrampoline(codeItems);
-}
-
-function shouldRunRendererDispatchClone(cls, method, codeItems) {
-  return featureEnabled('STRUCTURED_GOTO_RENDERER_DISPATCH_BODY') &&
-    targetGate('STRUCTURED_GOTO_RENDERER_DISPATCH_BODY_TARGETS', cls, method) &&
-    method && method.descriptor === '(IZIIIIILfe;)V' &&
-    hasRendererDispatchBody(codeItems);
-}
 
 function shouldRunGridTileUpdateContinueClone(cls, method, codeItems) {
   return featureEnabled('STRUCTURED_GOTO_GRID_TILE_UPDATE_CONTINUE') &&
@@ -876,12 +760,6 @@ function shouldRunGridTileUpdateContinueClone(cls, method, codeItems) {
     (hasGridTileUpdateContinueHeader(codeItems) || hasDuplicatePreLoopSetup(codeItems));
 }
 
-function shouldRunStateUpdateCreationClone(cls, method, codeItems) {
-  return featureEnabled('STRUCTURED_GOTO_STATE_UPDATE_CREATION_BODY') &&
-    targetGate('STRUCTURED_GOTO_STATE_UPDATE_CREATION_BODY_TARGETS', cls, method) &&
-    method && method.descriptor === '(IIIII)V' &&
-    findStateUpdateCreationBranch(codeItems) != null;
-}
 
 function shouldRunTargetedBase38DecrementTailClone(cls, method, codeItems) {
   return featureEnabled('STRUCTURED_GOTO_TARGETED_BASE38_DECREMENT_TAIL') &&
@@ -894,33 +772,6 @@ function isTargetedBase38DecrementTailMethod(cls, method) {
   return method && method.descriptor === '(Ljava/lang/String;I)V';
 }
 
-function shouldRunDisableBackwardTailClone(cls, method, codeItems) {
-  return featureEnabled('STRUCTURED_GOTO_DISABLE_BACKWARD_TAIL') &&
-    targetGate('STRUCTURED_GOTO_DISABLE_BACKWARD_TAIL_TARGETS', cls, method) &&
-    method && method.descriptor === '(Ljava/awt/Canvas;B)V' &&
-    hasDisableBackwardTail(codeItems);
-}
-
-function shouldRunColumnContinueSplitter(cls, method, codeItems) {
-  return featureEnabled('STRUCTURED_GOTO_COLUMN_CONTINUE_SPLITTER') &&
-    targetGate('STRUCTURED_GOTO_COLUMN_CONTINUE_SPLITTER_TARGETS', cls, method) &&
-    method && method.descriptor === '(ZIZLka;IIIII)V' &&
-    findCanonicalColumnContinue(codeItems) != null;
-}
-
-function shouldRunStateBridgeCleanup(cls, method, codeItems) {
-  return featureEnabled('STRUCTURED_GOTO_STATE_BRIDGES') &&
-    targetGate('STRUCTURED_GOTO_STATE_BRIDGE_TARGETS', cls, method) &&
-    method && method.descriptor === '(BI)Lqe;' &&
-    hasConditionalGotoBridge(codeItems);
-}
-
-function shouldRunInvalidEntryTailClone(cls, method, codeItems) {
-  return featureEnabled('STRUCTURED_GOTO_INVALID_ENTRY_TAIL') &&
-    targetGate('STRUCTURED_GOTO_INVALID_ENTRY_TAIL_TARGETS', cls, method) &&
-    method && method.descriptor === '(B)V' &&
-    findInvalidEntryTail(codeItems) != null;
-}
 
 function shouldRunTargetedCanonicalIincContinueSplitter(cls, method, codeItems) {
   return featureEnabled('STRUCTURED_GOTO_TARGETED_CANONICAL_IINC_CONTINUES') &&
@@ -943,25 +794,12 @@ function shouldRunBucketArrayInitTailClone(cls, method) {
     targetGate('STRUCTURED_GOTO_BUCKET_ARRAY_INIT_TAIL_TARGETS', cls, method);
 }
 
-function shouldRunObjectRefreshContinuationClone(cls, method) {
-  return featureEnabled('STRUCTURED_GOTO_OBJECT_REFRESH_CONTINUATION') &&
-    targetGate('STRUCTURED_GOTO_OBJECT_REFRESH_CONTINUATION_TARGETS', cls, method);
-}
-
-function shouldRunPrefixContinuationClone(cls, method) {
-  return featureEnabled('STRUCTURED_GOTO_PREFIX_CONTINUATION') &&
-    targetGate('STRUCTURED_GOTO_PREFIX_CONTINUATION_TARGETS', cls, method);
-}
 
 function shouldRunSharedBooleanLoopTailClone(cls, method) {
   return featureEnabled('STRUCTURED_GOTO_SHARED_BOOLEAN_LOOP_TAIL') &&
     targetGate('STRUCTURED_GOTO_SHARED_BOOLEAN_LOOP_TAIL_TARGETS', cls, method);
 }
 
-function shouldRunIteratorAdvanceTailClone(cls, method) {
-  return featureEnabled('STRUCTURED_GOTO_ITERATOR_ADVANCE_TAIL') &&
-    targetGate('STRUCTURED_GOTO_ITERATOR_ADVANCE_TAIL_TARGETS', cls, method);
-}
 
 function shouldRunMessageExitTailClone(cls, method) {
   return featureEnabled('STRUCTURED_GOTO_MESSAGE_EXIT_TAIL') &&
@@ -994,22 +832,6 @@ function shouldRunStackCompareTailClone(cls, method) {
     targetGate('STRUCTURED_GOTO_STACK_COMPARE_TAILS_TARGETS', cls, method);
 }
 
-function shouldRunStaticZeroFlagBranchCleanup(cls, method) {
-  return featureEnabled('STRUCTURED_GOTO_STATIC_ZERO_FLAG_BRANCHES') &&
-    targetGate('STRUCTURED_GOTO_STATIC_ZERO_FLAG_BRANCH_TARGETS', cls, method) &&
-    targetGate('STRUCTURED_GOTO_STATIC_ZERO_FLAG_BRANCHES_TARGETS', cls, method);
-}
-
-function shouldRunStaticZeroFlagBranchCleanupForAlternateShape(cls, method) {
-  return featureEnabled('STRUCTURED_GOTO_STATIC_ZERO_FLAG_BRANCHES') &&
-    targetGate('STRUCTURED_GOTO_STATIC_ZERO_FLAG_BRANCH_TARGETS', cls, method) &&
-    targetGate('STRUCTURED_GOTO_STATIC_ZERO_FLAG_BRANCHES_TARGETS', cls, method);
-}
-
-function shouldRunCardSecondHandLoopClone(cls, method) {
-  return featureEnabled('STRUCTURED_GOTO_CARD_SECOND_HAND_LOOP') &&
-    targetGate('STRUCTURED_GOTO_CARD_SECOND_HAND_LOOP_TARGETS', cls, method);
-}
 
 function shouldRunCardLoopFallbackClone(cls, method) {
   return featureEnabled('STRUCTURED_GOTO_CARD_LOOP_FALLBACK') &&
@@ -1284,97 +1106,6 @@ function nextInstructionIndex(codeItems, start) {
   return -1;
 }
 
-
-
-function cloneObjectRefreshContinuation(codeItems, code) {
-  let rewrites = 0;
-  for (let i = 8; i + 2 < codeItems.length && rewrites < 1; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    const branchOp = op(branch);
-    if (branchOp !== 'if_icmplt' && branchOp !== 'if_icmpge') continue;
-    if (!hasFieldAccessNearby(codeItems, i - 18, i, 'ln', 'x', 'I')) continue;
-    if (!hasFieldAccessNearby(codeItems, i - 18, i, 'ln', 'N', 'I')) continue;
-    const gotoIndex = nextInstructionIndex(codeItems, i + 1);
-    if (gotoIndex !== i + 1 || op(codeItems[gotoIndex] && codeItems[gotoIndex].instruction) !== 'goto') continue;
-    const fallthrough = nextInstructionIndex(codeItems, gotoIndex + 1);
-    if (fallthrough < 0 || findLabelIndex(codeItems, branch.arg) !== fallthrough) continue;
-    const target = findLabelIndex(codeItems, codeItems[gotoIndex].instruction.arg);
-    if (target <= gotoIndex) continue;
-    if (intLoadLocal(codeItems[target] && codeItems[target].instruction) !== 2) continue;
-    const end = findObjectRefreshIteratorLatchEnd(codeItems, target);
-    if (end <= target) continue;
-    rewrites += cloneGotoRangeAt(codeItems, code, gotoIndex, target, end, 'LCKOBJREF');
-  }
-  return rewrites;
-}
-
-function findObjectRefreshIteratorLatchEnd(codeItems, start) {
-  for (let i = start; i + 6 < Math.min(codeItems.length, start + 360); i += 1) {
-    if (refLoadLocal(codeItems[i] && codeItems[i].instruction) !== 0) continue;
-    if (op(codeItems[i + 1] && codeItems[i + 1].instruction) !== 'getfield') continue;
-    if (!isBipush(codeItems[i + 2] && codeItems[i + 2].instruction, -71)) continue;
-    if (op(codeItems[i + 3] && codeItems[i + 3].instruction) !== 'invokevirtual') continue;
-    if (op(codeItems[i + 4] && codeItems[i + 4].instruction) !== 'checkcast') continue;
-    const store = localStore(codeItems[i + 5] && codeItems[i + 5].instruction);
-    if (!store || store.kind !== 'a' || store.local !== 3) continue;
-    if (op(codeItems[i + 6] && codeItems[i + 6].instruction) !== 'goto') continue;
-    return i + 7;
-  }
-  return -1;
-}
-
-function clonePrefixContinuation(codeItems, code) {
-  let rewrites = 0;
-  for (let i = 2; i + 2 < codeItems.length && rewrites < 1; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    if (op(branch) !== 'if_icmpeq') continue;
-    if (op(codeItems[i - 2] && codeItems[i - 2].instruction) !== 'iconst_0') continue;
-    if (!isGetStatic(codeItems[i - 1] && codeItems[i - 1].instruction, 'em', 'em_h', 'I')) continue;
-    const gotoIndex = nextInstructionIndex(codeItems, i + 1);
-    if (gotoIndex !== i + 1 || op(codeItems[gotoIndex] && codeItems[gotoIndex].instruction) !== 'goto') continue;
-    const fallthrough = nextInstructionIndex(codeItems, gotoIndex + 1);
-    if (fallthrough < 0 || findLabelIndex(codeItems, branch.arg) !== fallthrough) continue;
-    const target = findLabelIndex(codeItems, codeItems[gotoIndex].instruction.arg);
-    if (target <= gotoIndex || op(codeItems[target] && codeItems[target].instruction) !== 'new') continue;
-    const end = readForwardGotoBlockEnd(codeItems, target, 64);
-    if (end <= target) continue;
-    rewrites += cloneGotoRangeAt(codeItems, code, gotoIndex, target, end, 'LCKPFX');
-  }
-  return rewrites;
-}
-
-function cloneIteratorAdvanceTail(codeItems, code) {
-  let rewrites = 0;
-  for (let i = 0; i < codeItems.length && rewrites < 1; i += 1) {
-    const jump = codeItems[i] && codeItems[i].instruction;
-    if (op(jump) !== 'goto') continue;
-    const target = findLabelIndex(codeItems, jump.arg);
-    if (target <= i) continue;
-    const tail = readIteratorAdvanceTail(codeItems, target);
-    if (!tail) continue;
-    const prev = previousInstructionIndex(codeItems, i - 1);
-    if (prev < 0 || op(codeItems[prev] && codeItems[prev].instruction) !== 'ifeq') continue;
-    rewrites += cloneGotoRangeAt(codeItems, code, i, target, tail.end, 'LCKITERADV');
-  }
-  return rewrites;
-}
-
-function readIteratorAdvanceTail(codeItems, start) {
-  if (refLoadLocal(codeItems[start] && codeItems[start].instruction) !== 17) return null;
-  if (!isBipush(codeItems[start + 1] && codeItems[start + 1].instruction, -71)) return null;
-  if (!isInvoke(codeItems[start + 2] && codeItems[start + 2].instruction, 'pf', 'a', '(B)Loh;')) return null;
-  if (op(codeItems[start + 3] && codeItems[start + 3].instruction) !== 'checkcast') return null;
-  const store = localStore(codeItems[start + 4] && codeItems[start + 4].instruction);
-  if (!store || store.kind !== 'a') return null;
-  if (op(codeItems[start + 5] && codeItems[start + 5].instruction) !== 'goto') return null;
-  const header = findLabelIndex(codeItems, codeItems[start + 5].instruction.arg);
-  if (header < 0 || header >= start) return null;
-  const headerLocal = refLoadLocal(codeItems[header] && codeItems[header].instruction);
-  const nextHeader = nextInstructionIndex(codeItems, header + 1);
-  const nextHeaderLocal = nextHeader >= 0 ? refLoadLocal(codeItems[nextHeader] && codeItems[nextHeader].instruction) : null;
-  if (headerLocal !== store.local && nextHeaderLocal !== store.local) return null;
-  return { end: start + 6 };
-}
 
 function cloneMessageExitTail(codeItems, code) {
   const exitStart = findSharedMessageExitStart(codeItems);
@@ -1696,171 +1427,12 @@ function cloneConditionalRangeAfterBranchWithFallthroughGoto(codeItems, code, br
   return 1;
 }
 
-function cloneSharedFallthroughContinuationTails(codeItems, code) {
-  const maxRewrites = Number(process.env.STRUCTURED_GOTO_SHARED_FALLTHROUGH_CONTINUATION_TAIL_MAX_REWRITES || 4);
-  let rewrites = 0;
-  for (let i = 0; i < codeItems.length && rewrites < maxRewrites; i += 1) {
-    const insn = codeItems[i] && codeItems[i].instruction;
-    const cur = op(insn);
-    if (!isConditionalBranch(cur)) continue;
-    const target = findLabelIndex(codeItems, insn.arg);
-    if (target <= i) continue;
-    const targetLabel = labelName(codeItems[target] && codeItems[target].labelDef);
-    if (!targetLabel || targetLabel.startsWith('LCKSFTC_')) continue;
-    const refs = collectLabelReferencesDetailed(codeItems, targetLabel);
-    if (refs.length < 1 || !hasSharedFallthroughSource(codeItems, target, i, refs)) continue;
-    const tail = readSharedFallthroughContinuationTail(codeItems, target);
-    if (!tail) continue;
-    if (tail.kind === 'staticThenReceiverCleanup' && !isConstStaticIntModeBranch(codeItems, i)) continue;
-    if (tail.kind === 'staticThenReceiverCleanup' && !cleanupExitHasArgumentGuard(codeItems, tail.exitIndex)) continue;
-    const fallthrough = nextInstructionIndex(codeItems, i + 1);
-    if (fallthrough < 0 || fallthrough >= target) continue;
-    const fallthroughLabel = ensureFreshLabel(codeItems, fallthrough, 'LCKSFTC_FALL');
-    const exitLabel = ensureFreshLabel(codeItems, tail.exitIndex, 'LCKSFTC_EXIT');
-    const cloneId = structuredCloneId;
-    structuredCloneId += 1;
-    const clone = cloneItems(codeItems.slice(target, tail.end));
-    renameInternalLabels(clone, `LCKSFTC_${cloneId}_`);
-    clone.push({ instruction: { op: 'goto', arg: exitLabel } });
-    insn.op = invertConditionalBranch(cur);
-    insn.arg = fallthroughLabel;
-    codeItems.splice(i + 1, 0, ...clone);
-    rewrites += 1;
-    i += clone.length;
-  }
-  return rewrites;
-}
-
-function hasSharedFallthroughSource(codeItems, target, branchIndex, refs) {
-  if (refs.some((ref) => ref !== branchIndex)) return true;
-  const previous = previousInstruction(codeItems, target - 1);
-  const prevOp = op(previous && previous.instruction);
-  return !!prevOp && prevOp !== 'goto' && !isConditionalBranch(prevOp) && !isReturnOp(prevOp) && prevOp !== 'athrow';
-}
-
-function shouldRunSharedFallthroughContinuationTail(method, codeItems) {
-  if (!method || !Array.isArray(codeItems)) return false;
-  return hasStaticStateTransitionSharedTailShape(method, codeItems) ||
-    hasBufferedObjectValidationSharedTailShape(method, codeItems) ||
-    hasSharedInvokeExitTailCandidate(codeItems);
-}
-
-function hasStaticStateTransitionSharedTailShape(method, codeItems) {
-  if (method.descriptor !== '(ZI)V') return false;
-  let boolCalls = 0;
-  let staticIntStores = 0;
-  let staticObjectNullStores = 0;
-  let staticObjectActionCalls = 0;
-  for (const item of codeItems) {
-    const insn = item && item.instruction;
-    if (isInvokeDescriptor(insn, '(I)Z')) boolCalls += 1;
-    if (isPutStaticDescriptor(insn, 'I')) staticIntStores += 1;
-    if (isPutStaticDescriptor(insn, 'Z')) staticIntStores += 1;
-    if (isPutStaticDescriptor(insn, 'Loj;')) staticObjectNullStores += 1;
-    if (isInvokeDescriptor(insn, '(ILoj;I)V')) staticObjectActionCalls += 1;
-  }
-  return boolCalls >= 2 && staticIntStores >= 6 && staticObjectNullStores >= 1 && staticObjectActionCalls >= 1;
-}
-
-function hasBufferedObjectValidationSharedTailShape(method, codeItems) {
-  if (method.descriptor !== '(B)V') return false;
-  let byteArrayFieldLoads = 0;
-  let intFieldLoads = 0;
-  let staticObjectClears = 0;
-  let checksumCalls = 0;
-  let messageCalls = 0;
-  for (let i = 0; i < codeItems.length; i += 1) {
-    const insn = codeItems[i] && codeItems[i].instruction;
-    if (isGetFieldDescriptor(insn, '[B')) byteArrayFieldLoads += 1;
-    if (isGetFieldDescriptor(insn, 'I')) intFieldLoads += 1;
-    if (op(insn) === 'aconst_null' && isPutStaticObjectDescriptor(codeItems[i + 1] && codeItems[i + 1].instruction)) {
-      staticObjectClears += 1;
-    }
-    if (isInvokeDescriptor(insn, '([BBI)J')) checksumCalls += 1;
-    if (isInvokeDescriptor(insn, '(BZILjava/lang/String;)V')) messageCalls += 1;
-  }
-  return byteArrayFieldLoads >= 1 &&
-    intFieldLoads >= 2 &&
-    staticObjectClears >= 1 &&
-    checksumCalls >= 1 &&
-    messageCalls >= 1;
-}
 
 function isPutStaticObjectDescriptor(insn) {
   const descriptor = fieldDescriptor(insn);
   return op(insn) === 'putstatic' && typeof descriptor === 'string' && descriptor.startsWith('L');
 }
 
-function hasSharedInvokeExitTailCandidate(codeItems) {
-  const refsByLabel = collectLabelReferencesByLabel(codeItems);
-  for (let start = 0; start < codeItems.length; start += 1) {
-    const label = labelName(codeItems[start] && codeItems[start].labelDef);
-    if (!label) continue;
-    const tail = readSharedInvokeExitTail(codeItems, start);
-    if (!tail) continue;
-    const refs = refsByLabel.get(label) || [];
-    if (refs.some((idx) => idx < start && isConditionalBranch(op(codeItems[idx] && codeItems[idx].instruction))) &&
-      hasSharedFallthroughSource(codeItems, start, refs[0], refs)) {
-      return true;
-    }
-  }
-  return false;
-}
-
-function readSharedInvokeExitTail(codeItems, start) {
-  if (!isReceiverLoadInstruction(codeItems[start] && codeItems[start].instruction)) return null;
-  for (let invokeIndex = start + 2; invokeIndex <= start + 4 && invokeIndex + 1 < codeItems.length; invokeIndex += 1) {
-    const invoke = codeItems[invokeIndex] && codeItems[invokeIndex].instruction;
-    if (!isInvokeInstruction(invoke)) continue;
-    const descriptor = methodDescriptor(invoke);
-    if (!['(Z)V', '(B)V', '(I)V', '(II)V'].includes(descriptor)) continue;
-    if (!rangeHasOnlySimpleInvokeArguments(codeItems, start + 1, invokeIndex)) continue;
-    const jump = codeItems[invokeIndex + 1] && codeItems[invokeIndex + 1].instruction;
-    if (op(jump) !== 'goto') continue;
-    const exitIndex = findLabelIndex(codeItems, jump.arg);
-    if (exitIndex <= invokeIndex + 1) continue;
-    return { end: invokeIndex + 1, exitIndex };
-  }
-  return null;
-}
-
-function isReceiverLoadInstruction(insn) {
-  const descriptor = fieldDescriptor(insn);
-  if (op(insn) === 'getstatic' && typeof descriptor === 'string' && (descriptor.startsWith('L') || descriptor.startsWith('['))) return true;
-  return refLoadLocal(insn) != null || op(insn) === 'aload_0';
-}
-
-function rangeHasOnlySimpleInvokeArguments(codeItems, start, end) {
-  if (end <= start) return false;
-  for (let i = start; i < end; i += 1) {
-    const insn = codeItems[i] && codeItems[i].instruction;
-    if (integerConstantValue(insn) != null) continue;
-    if (intLoadLocal(insn) != null) continue;
-    return false;
-  }
-  return true;
-}
-
-function readSharedFallthroughContinuationTail(codeItems, start) {
-  const invokeTail = readSharedInvokeExitTail(codeItems, start);
-  if (invokeTail) return invokeTail;
-  const first = op(codeItems[start] && codeItems[start].instruction);
-  const second = op(codeItems[start + 1] && codeItems[start + 1].instruction);
-  if (second !== 'putstatic') return null;
-  if (first !== 'aconst_null' && first !== 'getstatic') return null;
-  if (op(codeItems[start + 2] && codeItems[start + 2].instruction) === 'goto') {
-    const exitIndex = findLabelIndex(codeItems, codeItems[start + 2].instruction.arg);
-    if (exitIndex < 0) return null;
-    return { end: start + 3, exitIndex };
-  }
-  const fourth = op(codeItems[start + 3] && codeItems[start + 3].instruction);
-  if (intLoadLocal(codeItems[start + 2] && codeItems[start + 2].instruction) == null) return null;
-  if (!isConditionalBranch(fourth)) return null;
-  const branchTarget = findLabelIndex(codeItems, codeItems[start + 3].instruction.arg);
-  const exitIndex = nextInstructionIndex(codeItems, start + 4);
-  if (branchTarget <= start + 3 || exitIndex < 0) return null;
-  return { end: start + 4, exitIndex };
-}
 
 function cloneSharedStaticAssignmentTails(codeItems, code) {
   let rewrites = 0;
@@ -2833,16 +2405,6 @@ function cloneGotoRangeAt(codeItems, code, gotoIndex, start, end, prefix) {
   return 1;
 }
 
-function readForwardGotoBlockEnd(codeItems, start, maxInsns) {
-  let instructions = 0;
-  for (let i = start; i < codeItems.length; i += 1) {
-    if (!codeItems[i] || !codeItems[i].instruction) continue;
-    instructions += 1;
-    if (instructions > maxInsns) return -1;
-    if (op(codeItems[i].instruction) === 'goto') return i + 1;
-  }
-  return -1;
-}
 
 function findPreviousLocalLoopHeaderLabel(codeItems, before, local) {
   for (let i = before - 1; i >= 0; i -= 1) {
@@ -2865,24 +2427,6 @@ function plainUnreferencedItems(codeItems, start, end) {
     if (item.stackMapFrame || item.lineNumber) return false;
   }
   return true;
-}
-
-function hasFieldAccessNearby(codeItems, start, end, owner, name, descriptor) {
-  for (let i = Math.max(0, start); i < Math.min(codeItems.length, end); i += 1) {
-    const insn = codeItems[i] && codeItems[i].instruction;
-    if ((op(insn) === 'getfield' || op(insn) === 'getstatic') && fieldMatches(insn, owner, name, descriptor)) return true;
-  }
-  return false;
-}
-
-function fieldMatches(insn, owner, name, descriptor) {
-  const itemArg = insn && typeof insn === 'object' ? insn.arg : null;
-  return Array.isArray(itemArg)
-    && itemArg[0] === 'Field'
-    && itemArg[1] === owner
-    && Array.isArray(itemArg[2])
-    && itemArg[2][0] === name
-    && itemArg[2][1] === descriptor;
 }
 
 
@@ -2946,13 +2490,6 @@ function hasStaticBooleanLoad(codeItems) {
   return codeItems.some((item) => isGetStaticDescriptor(item && item.instruction, 'Z'));
 }
 
-function isPutStatic(insn, owner, name, descriptor) {
-  return op(insn) === 'putstatic' && fieldMatches(insn, owner, name, descriptor);
-}
-
-function isPutField(insn, owner, name, descriptor) {
-  return op(insn) === 'putfield' && fieldMatches(insn, owner, name, descriptor);
-}
 
 function cloneHbbCachedLookupContinuationTail(codeItems, code) {
   let rewrites = 0;
@@ -3072,9 +2609,6 @@ function cloneUcaSharedLoopIncrementTail(codeItems, code) {
   }
   return rewrites;
 }
-
-
-
 
 
 function cloneBucketArrayInitTail(codeItems, code) {
@@ -3209,7 +2743,6 @@ function cloneEntityLoopContinuation(codeItems, code) {
   }
   return rewrites;
 }
-
 
 
 function hasDuplicateArrayLoopHeaderAliasCandidate(codeItems) {
@@ -4421,168 +3954,6 @@ function removeDuplicateCardLoopGoto(codeItems) {
 }
 
 
-
-function removeAnyStaticZeroFlagLocalBranches(codeItems) {
-  const candidate = findStaticZeroFlagLocalBinding(codeItems);
-  return candidate
-    ? removeStaticZeroFlagLocalBranches(codeItems, candidate.owner, candidate.name)
-    : 0;
-}
-
-function removeAlternateStaticZeroFlagLocalBranches(codeItems) {
-  return removeAnyStaticZeroFlagLocalBranches(codeItems);
-}
-
-function removeStaticZeroFlagLocalBranches(codeItems, owner, name) {
-  const binding = findStaticZeroFlagLocalBinding(codeItems, owner, name);
-  if (!binding) return 0;
-  let rewrites = 0;
-  const local = binding.local;
-  for (let index = binding.storeIndex + 1; index + 1 < codeItems.length; index += 1) {
-    const item = codeItems[index];
-    const insn = item && item.instruction;
-    if (writesLocal(insn, local)) break;
-    if (intLoadLocal(insn) !== local) continue;
-    const branchIndex = nextInstructionIndex(codeItems, index + 1);
-    if (branchIndex !== index + 1) continue;
-    const branch = codeItems[branchIndex] && codeItems[branchIndex].instruction;
-    const cur = op(branch);
-    if (cur !== 'ifne' && cur !== 'ifeq') continue;
-    item.instruction = 'nop';
-    if (cur === 'ifne') {
-      codeItems[branchIndex].instruction = 'nop';
-    } else {
-      codeItems[branchIndex].instruction = { op: 'goto', arg: branch.arg };
-    }
-    rewrites += 1;
-  }
-  return rewrites;
-}
-
-function removeStaticIntLoopFlagBranches(codeItems, method) {
-  if (!looksLikeOneIntInstanceUpdateMethod(method)) return 0;
-  if (!hasIntegerGuardDividePrologue(codeItems)) return 0;
-  const candidate = findStaticIntLoopFlagBinding(codeItems);
-  if (!candidate) return 0;
-  return removeStaticZeroFlagLocalBranches(codeItems, candidate.owner, candidate.name);
-}
-
-function looksLikeOneIntInstanceUpdateMethod(method) {
-  const access = Array.isArray(method && method.access) ? method.access : [];
-  return method && method.name === 'h' && method.descriptor === '(I)V' && !access.includes('static');
-}
-
-function hasIntegerGuardDividePrologue(codeItems) {
-  for (let i = 0; i + 8 < Math.min(codeItems.length, 24); i += 1) {
-    if (integerConstantValue(codeItems[i] && codeItems[i].instruction) !== -74) continue;
-    if (integerConstantValue(codeItems[i + 1] && codeItems[i + 1].instruction) !== 29) continue;
-    if (intLoadLocal(codeItems[i + 2] && codeItems[i + 2].instruction) == null) continue;
-    if (op(codeItems[i + 3] && codeItems[i + 3].instruction) !== 'isub') continue;
-    if (integerConstantValue(codeItems[i + 4] && codeItems[i + 4].instruction) !== 44) continue;
-    if (op(codeItems[i + 5] && codeItems[i + 5].instruction) !== 'idiv') continue;
-    if (op(codeItems[i + 6] && codeItems[i + 6].instruction) !== 'idiv') continue;
-    if (intStoreLocal(codeItems[i + 7] && codeItems[i + 7].instruction) != null) return true;
-  }
-  return false;
-}
-
-function findStaticIntLoopFlagBinding(codeItems) {
-  const minBranches = Number(process.env.STRUCTURED_GOTO_STATIC_INT_LOOP_FLAG_MIN_BRANCHES || 3);
-  const binding = findStaticZeroFlagLocalBinding(codeItems);
-  if (!binding) return null;
-  const get = codeItems[binding.getIndex] && codeItems[binding.getIndex].instruction;
-  const field = staticFieldRef(get);
-  if (!field || field.descriptor !== 'I') return null;
-
-  let branches = 0;
-  let ifne = 0;
-  let ifeq = 0;
-  for (let index = binding.storeIndex + 1; index + 1 < codeItems.length; index += 1) {
-    const insn = codeItems[index] && codeItems[index].instruction;
-    if (writesLocal(insn, binding.local)) break;
-    if (intLoadLocal(insn) !== binding.local) continue;
-    const branchIndex = nextInstructionIndex(codeItems, index + 1);
-    if (branchIndex !== index + 1) return null;
-    const branch = codeItems[branchIndex] && codeItems[branchIndex].instruction;
-    const cur = op(branch);
-    if (cur !== 'ifne' && cur !== 'ifeq') return null;
-    const target = findLabelIndex(codeItems, branch.arg);
-    if (target < 0 || target === branchIndex) return null;
-    branches += 1;
-    if (cur === 'ifne') ifne += 1;
-    else ifeq += 1;
-  }
-  if (branches < minBranches || ifne === 0 || ifeq === 0) return null;
-  if (!looksLikeStaticIntGridLoopFlagMethod(codeItems)) return null;
-  return { ...binding, ...field };
-}
-
-function looksLikeStaticIntGridLoopFlagMethod(codeItems) {
-  if (!hasEarlyStaticIntGridWidthLoad(codeItems)) return false;
-  let staticInt2dLoads = 0;
-  let arrayLoads = 0;
-  let arrayStores = 0;
-  let negations = 0;
-  let randomIntCalls = 0;
-  for (const item of codeItems) {
-    const insn = item && item.instruction;
-    const cur = op(insn);
-    if (isGetStaticDescriptor(insn, '[[I')) staticInt2dLoads += 1;
-    if (cur === 'aaload' || cur === 'iaload') arrayLoads += 1;
-    if (cur === 'iastore') arrayStores += 1;
-    if (cur === 'ineg') negations += 1;
-    if (isInvokeDescriptor(insn, '(IZLjava/util/Random;)I')) randomIntCalls += 1;
-  }
-  return staticInt2dLoads >= 4 &&
-    arrayLoads >= 8 &&
-    arrayStores >= 4 &&
-    negations >= 2 &&
-    randomIntCalls >= 2;
-}
-
-function hasEarlyStaticIntGridWidthLoad(codeItems) {
-  for (let i = 0; i + 4 < Math.min(codeItems.length, 60); i += 1) {
-    if (!isGetStaticDescriptor(codeItems[i] && codeItems[i].instruction, '[[I')) continue;
-    if (op(codeItems[i + 1] && codeItems[i + 1].instruction) !== 'iconst_0') continue;
-    if (op(codeItems[i + 2] && codeItems[i + 2].instruction) !== 'aaload') continue;
-    if (op(codeItems[i + 3] && codeItems[i + 3].instruction) !== 'arraylength') continue;
-    if (intStoreLocal(codeItems[i + 4] && codeItems[i + 4].instruction) != null) return true;
-  }
-  return false;
-}
-
-function findStaticZeroFlagLocalBinding(codeItems, owner, name) {
-  for (let index = 0; index + 1 < codeItems.length && index < 40; index += 1) {
-    const get = codeItems[index] && codeItems[index].instruction;
-    if (owner || name) {
-      if (!isGetStatic(get, owner, name, 'I')) continue;
-    } else if (!isGetStaticDescriptor(get, 'I')) {
-      continue;
-    }
-    const storeIndex = nextInstructionIndex(codeItems, index + 1);
-    if (storeIndex !== index + 1) continue;
-    const store = codeItems[storeIndex] && codeItems[storeIndex].instruction;
-    const local = intStoreLocal(store);
-    if (local == null) continue;
-    const field = staticFieldRef(get);
-    return {
-      local,
-      getIndex: index,
-      storeIndex,
-      owner: field && field.owner,
-      name: field && field.name,
-    };
-  }
-  return null;
-}
-
-function staticFieldRef(insn) {
-  if (!isGetStaticDescriptor(insn, 'I')) return null;
-  const arg = insn && insn.arg;
-  if (!Array.isArray(arg) || !Array.isArray(arg[2])) return null;
-  return { owner: arg[1], name: arg[2][0], descriptor: arg[2][1] };
-}
-
 function cloneRasterTopClipScanlineEntries(codeItems, code) {
   let rewrites = 0;
   const maxRewrites = Number(process.env.STRUCTURED_GOTO_RASTER_TOP_CLIP_SCANLINE_ENTRY_MAX_REWRITES || 2);
@@ -4854,9 +4225,6 @@ function hasInvokeInRange(codeItems, start, end, descriptor) {
   return false;
 }
 
-function writesLocal(insn, local) {
-  return writtenLocalIndexes(insn).includes(local);
-}
 
 function cloneStackCompareTails(codeItems, code) {
   let rewrites = 0;
@@ -4912,110 +4280,6 @@ function readStackCompareSharedLoopClonePlan(codeItems, target) {
     return { start: target, end: exitIndex, appendExitLabel: exitLabel };
   }
   return null;
-}
-
-function resolveGotoChainIndex(codeItems, index) {
-  let cur = index;
-  const seen = new Set();
-  for (let depth = 0; depth < 12; depth += 1) {
-    if (cur < 0 || cur >= codeItems.length || seen.has(cur)) return cur;
-    seen.add(cur);
-    const insn = codeItems[cur] && codeItems[cur].instruction;
-    if (op(insn) !== 'goto') return cur;
-    const next = findLabelIndex(codeItems, insn.arg);
-    if (next < 0) return cur;
-    cur = next;
-  }
-  return cur;
-}
-
-
-
-function cloneCardSecondHandLoop(codeItems, code) {
-  let rewrites = 0;
-  rewrites += cloneCardFirstHandLoopEntry(codeItems, code);
-  rewrites += cloneCardSecondHandLoopEntry(codeItems, code);
-  return rewrites;
-}
-
-function cloneCardFirstHandLoopEntry(codeItems, code) {
-  for (let i = 0; i < codeItems.length; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    if (op(branch) !== 'if_icmpeq') continue;
-    const target = findLabelIndex(codeItems, branch.arg);
-    if (target <= i + 1 || target + 4 >= codeItems.length) continue;
-    if (labelName(codeItems[target] && codeItems[target].labelDef) !== 'L687') continue;
-    if (op(codeItems[target] && codeItems[target].instruction) !== 'iconst_0') continue;
-    if (intStoreLocal(codeItems[target + 1] && codeItems[target + 1].instruction) !== 6) continue;
-    if (!isBipush(codeItems[target + 2] && codeItems[target + 2].instruction, 7)) continue;
-    if (intLoadLocal(codeItems[target + 3] && codeItems[target + 3].instruction) !== 6) continue;
-    const exitBranch = codeItems[target + 4] && codeItems[target + 4].instruction;
-    if (op(exitBranch) !== 'if_icmple') continue;
-    const exit = findLabelIndex(codeItems, exitBranch.arg);
-    if (exit <= target + 4) continue;
-    const secondLoop = findCardHandLoopStart(codeItems, target + 8, exit, exitBranch.arg);
-    if (secondLoop <= target) continue;
-    if (!looksLikeSecondHandLoopBody(codeItems, target, secondLoop)) continue;
-    return cloneConditionalRangeAfterBranchWithFallthroughGoto(codeItems, code, i, target, exit, labelName(exitBranch.arg), 'LCKCARDHAND1');
-  }
-  return 0;
-}
-
-function cloneCardSecondHandLoopEntry(codeItems, code) {
-  for (let i = 2; i < codeItems.length; i += 1) {
-    const jump = codeItems[i] && codeItems[i].instruction;
-    if (op(jump) !== 'goto') continue;
-    const target = findLabelIndex(codeItems, jump.arg);
-    if (target <= i + 1 || target + 4 >= codeItems.length) continue;
-    if (labelName(codeItems[target] && codeItems[target].labelDef) !== 'L883') continue;
-    if (intLoadLocal(codeItems[i - 2] && codeItems[i - 2].instruction) !== 7) continue;
-    const guard = codeItems[i - 1] && codeItems[i - 1].instruction;
-    if (op(guard) !== 'ifeq') continue;
-    if (op(codeItems[target] && codeItems[target].instruction) !== 'iconst_0') continue;
-    if (intStoreLocal(codeItems[target + 1] && codeItems[target + 1].instruction) !== 6) continue;
-    if (!isBipush(codeItems[target + 2] && codeItems[target + 2].instruction, 7)) continue;
-    if (intLoadLocal(codeItems[target + 3] && codeItems[target + 3].instruction) !== 6) continue;
-    const exitBranch = codeItems[target + 4] && codeItems[target + 4].instruction;
-    if (op(exitBranch) !== 'if_icmple') continue;
-    const exit = findLabelIndex(codeItems, exitBranch.arg);
-    if (exit <= target + 4 || exit <= i) continue;
-    if (labelName(guard.arg) !== labelName(exitBranch.arg)) continue;
-    if (!looksLikeSecondHandLoopBody(codeItems, target, exit)) continue;
-    return cloneGotoRangeAtWithFallthroughGoto(codeItems, code, i, target, exit, labelName(exitBranch.arg), 'LCKCARDHAND2');
-  }
-  return 0;
-}
-
-function findCardHandLoopStart(codeItems, start, end, exitLabel) {
-  const cleanExit = labelName(exitLabel);
-  for (let i = start; i + 4 < end; i += 1) {
-    if (op(codeItems[i] && codeItems[i].instruction) !== 'iconst_0') continue;
-    if (intStoreLocal(codeItems[i + 1] && codeItems[i + 1].instruction) !== 6) continue;
-    if (!isBipush(codeItems[i + 2] && codeItems[i + 2].instruction, 7)) continue;
-    if (intLoadLocal(codeItems[i + 3] && codeItems[i + 3].instruction) !== 6) continue;
-    const branch = codeItems[i + 4] && codeItems[i + 4].instruction;
-    if (op(branch) === 'if_icmple' && labelName(branch.arg) === cleanExit) return i;
-  }
-  return -1;
-}
-
-function looksLikeSecondHandLoopBody(codeItems, start, end) {
-  if (end - start < 60 || end - start > 140) return false;
-  let sawCardArray = false;
-  let sawDrawSelected = false;
-  let sawIncrementBackedge = false;
-  const header = labelName(codeItems[start + 2] && codeItems[start + 2].labelDef);
-  for (let i = start; i < end; i += 1) {
-    const insn = codeItems[i] && codeItems[i].instruction;
-    if (isGetFieldObjectArrayDescriptor(insn)) sawCardArray = true;
-    if (isInvokeDescriptor(insn, '(IIIIII)V')) sawDrawSelected = true;
-    const inc = readIincInstruction(insn);
-    if (inc && inc.local === 6 && inc.incr === 1) {
-      const branch = codeItems[nextInstructionIndex(codeItems, i + 1)] && codeItems[nextInstructionIndex(codeItems, i + 1)].instruction;
-      if (op(branch) === 'ifeq' && header && labelName(branch.arg) === header) sawIncrementBackedge = true;
-    }
-  }
-  return sawCardArray && sawDrawSelected && sawIncrementBackedge;
 }
 
 
@@ -5283,25 +4547,6 @@ function findConditionalRefsToLabel(codeItems, label, start, end) {
   return out;
 }
 
-function cloneTailAfterConditionalBranch(codeItems, code, branchIndex, start, end, prefix) {
-  const insn = codeItems[branchIndex] && codeItems[branchIndex].instruction;
-  const cur = op(insn);
-  if (!isConditionalBranch(cur)) return 0;
-  if (start < 0 || end <= start) return 0;
-  if (branchIndex >= start && branchIndex < end) return 0;
-  if (rangeTouchesExceptionTable(code, codeItems, start, end)) return 0;
-  const fallthrough = nextInstructionIndex(codeItems, branchIndex + 1);
-  if (fallthrough < 0) return 0;
-  const cloneId = structuredCloneId;
-  structuredCloneId += 1;
-  const fallthroughLabel = ensureFreshLabel(codeItems, fallthrough, `${prefix}F_${cloneId}`);
-  const clone = cloneItems(codeItems.slice(start, end));
-  renameInternalLabels(clone, `${prefix}_${cloneId}_`);
-  insn.op = invertConditionalBranch(cur);
-  insn.arg = fallthroughLabel;
-  codeItems.splice(branchIndex + 1, 0, ...clone);
-  return 1;
-}
 
 function cloneConditionalRangeAfterBranch(codeItems, code, branchIndex, start, end, prefix) {
   const insn = codeItems[branchIndex] && codeItems[branchIndex].instruction;
@@ -6807,14 +6052,18 @@ function hasSameMethodStaticCallBetween(codeItems, start, end, method) {
   return false;
 }
 
-function removeConstantFalseCompareInterrupters(codeItems) {
+function removeConstantFalseCompareInterrupters(codeItems, code) {
   let rewrites = 0;
+  const references = collectLabelReferenceCounts(codeItems);
   for (let i = 0; i < codeItems.length; i += 1) {
     const constant = codeItems[i] && codeItems[i].instruction;
     const branchIndex = nextInstructionIndex(codeItems, i + 1);
     if (branchIndex !== i + 1) continue;
     const branch = codeItems[branchIndex] && codeItems[branchIndex].instruction;
     if (!isConstantFalseBranch(constant, branch)) continue;
+    const branchLabel = labelName(codeItems[branchIndex] && codeItems[branchIndex].labelDef);
+    if (branchLabel && (references.get(branchLabel) || 0) > 0) continue;
+    if (rangeTouchesExceptionTable(code, codeItems, i, branchIndex + 1)) continue;
     const compareIndex = nextInstructionIndex(codeItems, branchIndex + 1);
     if (compareIndex !== branchIndex + 1) continue;
     if (!isIntCompareBranch(op(codeItems[compareIndex] && codeItems[compareIndex].instruction))) continue;
@@ -6946,51 +6195,6 @@ function collectExceptionTableLabels(codeItems, code) {
   return out;
 }
 
-function cloneSharedChangeLogTails(codeItems, code) {
-  let rewrites = 0;
-  const maxRewrites = Number(process.env.STRUCTURED_GOTO_SHARED_CHANGE_LOG_TAIL_MAX_REWRITES || 16);
-  const refCounts = collectLabelReferenceCounts(codeItems);
-  for (let i = 6; i < codeItems.length && rewrites < maxRewrites; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    const cur = op(branch);
-    if (cur !== 'ifne' && cur !== 'ifeq') continue;
-    const isBooleanCallBranch = isBooleanInvoke(codeItems[i - 1] && codeItems[i - 1].instruction);
-    const isNullXorBranch = op(codeItems[previousInstructionIndex(codeItems, i - 1)] && codeItems[previousInstructionIndex(codeItems, i - 1)].instruction) === 'ixor';
-    if (!isBooleanCallBranch && !isNullXorBranch) continue;
-    const target = findLabelIndex(codeItems, branch.arg);
-    if (target <= i + 1 || target - i > 96) continue;
-    const targetLabel = labelName(codeItems[target] && codeItems[target].labelDef);
-    if (!targetLabel) continue;
-    const targetRefs = refCounts.get(targetLabel) || 0;
-    if (isBooleanCallBranch && targetRefs > 1 && !hasRecentNullXorBranchToLabel(codeItems, i, targetLabel, 96)) continue;
-    if (isNullXorBranch && targetRefs > 3) continue;
-    const tail = readChangeLogSetFlagTail(codeItems, target);
-    if (!tail) continue;
-    if (rangeTouchesExceptionTable(code, codeItems, target, tail.end)) continue;
-
-    rewrites += cloneConditionalRangeAfterBranchWithFallthroughGoto(
-      codeItems,
-      code,
-      i,
-      target,
-      tail.end,
-      tail.joinLabel,
-      'LCKCHGLOG',
-    );
-    i += tail.end - target;
-  }
-  rewrites += simplifyDuplicateNullXorChangeDetectors(codeItems);
-  rewrites += cloneSharedInstanceChangeReturnSummaries(codeItems, code);
-  rewrites += nopUnreachableChangedLogTails(codeItems);
-  return rewrites;
-}
-
-function isBooleanInvoke(insn) {
-  const cur = op(insn);
-  if (cur !== 'invokevirtual' && cur !== 'invokeinterface') return false;
-  const descriptor = methodDescriptor(insn);
-  return typeof descriptor === 'string' && descriptor.endsWith(')Z');
-}
 
 function isAnyBooleanInvoke(insn) {
   const cur = op(insn);
@@ -6999,131 +6203,6 @@ function isAnyBooleanInvoke(insn) {
   return typeof descriptor === 'string' && descriptor.endsWith(')Z');
 }
 
-function hasRecentNullXorBranchToLabel(codeItems, before, label, maxDistance) {
-  const min = Math.max(0, before - maxDistance);
-  for (let i = before - 1; i >= min; i -= 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    const cur = op(branch);
-    if ((cur !== 'ifne' && cur !== 'ifeq') || labelName(branch.arg) !== label) continue;
-    const xorIndex = previousInstructionIndex(codeItems, i - 1);
-    if (xorIndex >= 0 && op(codeItems[xorIndex] && codeItems[xorIndex].instruction) === 'ixor') return true;
-  }
-  return false;
-}
-
-function readChangeLogSetFlagTail(codeItems, start, options = {}) {
-  const ensureJoin = options.ensureJoin !== false;
-  let logInvokeIndex = -1;
-  let storeIndex = -1;
-  let flagLocal = null;
-  let sawChangedMessage = false;
-  const limit = Math.min(codeItems.length, start + 80);
-  for (let i = start; i < limit; i += 1) {
-    const cur = op(codeItems[i] && codeItems[i].instruction);
-    if (cur === 'goto' || isConditionalBranch(cur) || isReturnOp(cur) || cur === 'athrow') break;
-    if (isChangedMessageConstant(codeItems[i] && codeItems[i].instruction)) sawChangedMessage = true;
-    const ref = methodRef(codeItems[i] && codeItems[i].instruction);
-    if (ref && methodDescriptor(codeItems[i] && codeItems[i].instruction) &&
-      methodDescriptor(codeItems[i] && codeItems[i].instruction).endsWith(')V') &&
-      (ref.owner === 'java/io/PrintStream' || cur === 'invokestatic')) {
-      logInvokeIndex = i;
-    }
-    if (op(codeItems[i] && codeItems[i].instruction) === 'iconst_1') {
-      const store = intStoreLocal(codeItems[i + 1] && codeItems[i + 1].instruction);
-      if (store != null) {
-        storeIndex = i + 1;
-        flagLocal = store;
-      }
-    }
-  }
-  if (!sawChangedMessage || logInvokeIndex < 0 || storeIndex < 0) return null;
-
-  const end = Math.max(logInvokeIndex + 1, storeIndex + 1);
-  if (flagLocal == null) return null;
-  const joinIndex = nextInstructionIndex(codeItems, end);
-  if (joinIndex < 0) return null;
-  const joinLabel = ensureJoin
-    ? ensureFreshLabel(codeItems, joinIndex, 'LCKCHGLOG_JOIN')
-    : labelName(codeItems[joinIndex] && codeItems[joinIndex].labelDef);
-  return { end, joinLabel };
-}
-
-function isChangedMessageConstant(insn) {
-  const cur = op(insn);
-  if (cur !== 'ldc' && cur !== 'ldc_w') return false;
-  return typeof insn.arg === 'string' && insn.arg.includes(' has changed. before=');
-}
-
-function cloneSharedInstanceChangeReturnSummaries(codeItems, code) {
-  let rewrites = 0;
-  const maxRewrites = Number(process.env.STRUCTURED_GOTO_INSTANCE_CHANGE_RETURN_MAX_REWRITES || 24);
-  const refCounts = collectLabelReferenceCounts(codeItems);
-  const candidates = [];
-  for (let start = 0; start < codeItems.length; start += 1) {
-    const summary = readInstanceChangeReturnSummary(codeItems, start);
-    if (!summary) continue;
-    const targetLabel = labelName(codeItems[start] && codeItems[start].labelDef);
-    if (!targetLabel) continue;
-    const refCount = refCounts.get(targetLabel) || 0;
-    if (refCount < 2 || refCount > 4) continue;
-    if (rangeTouchesExceptionTable(code, codeItems, start, summary.end)) continue;
-    const refs = collectLabelReferencesDetailed(codeItems, targetLabel)
-      .filter((refIndex) => refIndex < start);
-    if (refs.length !== refCount) continue;
-    if (!refs.every((refIndex) => {
-      const cur = op(codeItems[refIndex] && codeItems[refIndex].instruction);
-      return cur === 'goto' || isConditionalBranch(cur);
-    })) continue;
-    candidates.push({ start, end: summary.end, refs });
-  }
-
-  for (const candidate of candidates) {
-    for (const refIndex of [...candidate.refs].sort((a, b) => b - a)) {
-      if (rewrites >= maxRewrites) return rewrites;
-      const cur = op(codeItems[refIndex] && codeItems[refIndex].instruction);
-      if (cur === 'goto') {
-        rewrites += cloneGotoRangeAt(codeItems, code, refIndex, candidate.start, candidate.end, 'LCKINSTRET');
-      } else if (isConditionalBranch(cur)) {
-        rewrites += cloneConditionalRangeAfterBranch(codeItems, code, refIndex, candidate.start, candidate.end, 'LCKINSTRET');
-      }
-    }
-  }
-  return rewrites;
-}
-
-function readInstanceChangeReturnSummary(codeItems, start) {
-  const flagLocal = intLoadLocal(codeItems[start] && codeItems[start].instruction);
-  if (flagLocal == null) return null;
-  const printBranch = codeItems[start + 1] && codeItems[start + 1].instruction;
-  if (op(printBranch) !== 'ifne') return null;
-  const returnJump = codeItems[start + 2] && codeItems[start + 2].instruction;
-  if (op(returnJump) !== 'goto') return null;
-  const printIndex = findLabelIndex(codeItems, printBranch.arg);
-  const returnIndex = findLabelIndex(codeItems, returnJump.arg);
-  if (printIndex !== start + 3 || returnIndex !== start + 6) return null;
-  if (op(codeItems[printIndex] && codeItems[printIndex].instruction) !== 'getstatic') return null;
-  if (!isInstanceChangedMessageConstant(codeItems[printIndex + 1] && codeItems[printIndex + 1].instruction)) return null;
-  if (!isPrintStringInvoke(codeItems[printIndex + 2] && codeItems[printIndex + 2].instruction)) return null;
-  if (!isReturnOp(op(codeItems[returnIndex] && codeItems[returnIndex].instruction))) return null;
-  return { flagLocal, end: returnIndex + 1 };
-}
-
-function isInstanceChangedMessageConstant(insn) {
-  const cur = op(insn);
-  if (cur !== 'ldc' && cur !== 'ldc_w') return false;
-  return typeof insn.arg === 'string' &&
-    insn.arg.startsWith('This instance of ') &&
-    insn.arg.endsWith(' has changed');
-}
-
-function isPrintStringInvoke(insn) {
-  const ref = methodRef(insn);
-  return !!ref &&
-    op(insn) === 'invokevirtual' &&
-    ref.owner === 'java/io/PrintStream' &&
-    ref.name === 'println' &&
-    methodDescriptor(insn) === '(Ljava/lang/String;)V';
-}
 
 function simplifyDuplicateNullXorChangeDetectors(codeItems) {
   let rewrites = 0;
@@ -7239,30 +6318,6 @@ function rangeLabelsAreInternal(codeItems, refCounts, start, end) {
   return true;
 }
 
-function nopUnreachableChangedLogTails(codeItems) {
-  let rewrites = 0;
-  const refCounts = collectLabelReferenceCounts(codeItems);
-  for (let i = 1; i < codeItems.length; i += 1) {
-    const prev = previousInstructionIndex(codeItems, i - 1);
-    if (prev < 0 || !isUnconditionalTerminal(op(codeItems[prev] && codeItems[prev].instruction))) continue;
-    const label = labelName(codeItems[i] && codeItems[i].labelDef);
-    if (label && (refCounts.get(label) || 0) > 0) continue;
-    const tail = readChangeLogSetFlagTail(codeItems, i, { ensureJoin: false });
-    if (!tail) continue;
-    let end = tail.end;
-    const jumpIndex = nextInstructionIndex(codeItems, end);
-    if (jumpIndex === end && op(codeItems[jumpIndex] && codeItems[jumpIndex].instruction) === 'goto') {
-      const jumpLabel = labelName(codeItems[jumpIndex] && codeItems[jumpIndex].labelDef);
-      if (!jumpLabel || (refCounts.get(jumpLabel) || 0) === 0) end = jumpIndex + 1;
-    }
-    for (let j = i; j < end; j += 1) {
-      if (codeItems[j] && codeItems[j].instruction) codeItems[j].instruction = 'nop';
-    }
-    rewrites += 1;
-    i = end;
-  }
-  return rewrites;
-}
 
 function materializeConditionalIntConstantCompareBounds(codeItems, code) {
   let rewrites = 0;
@@ -7430,105 +6485,6 @@ function cloneSharedConditionalRenderTails(codeItems, code) {
   return rewrites;
 }
 
-function cloneSharedRenderChoiceTails(codeItems, code) {
-  let rewrites = 0;
-  const maxRewrites = Number(process.env.STRUCTURED_GOTO_SHARED_RENDER_CHOICE_TAIL_MAX_REWRITES || 8);
-  for (let falseStart = 0; falseStart < codeItems.length && rewrites < maxRewrites; falseStart += 1) {
-    const falseTail = readRenderChoiceFalseTail(codeItems, falseStart);
-    if (!falseTail) continue;
-    const falseLabel = labelName(codeItems[falseStart] && codeItems[falseStart].labelDef);
-    if (!falseLabel || isStructuredGotoCloneLabel(codeItems[falseStart], 'LCKRCT_')) continue;
-    const trueStart = findRenderChoiceTrueTailForJoin(codeItems, falseStart, falseTail.exitLabel);
-    if (trueStart < 0) continue;
-    const trueTail = readRenderChoiceTrueTail(codeItems, trueStart);
-    if (!trueTail || trueTail.exitLabel !== falseTail.exitLabel) continue;
-    if (rangeTouchesExceptionTable(code, codeItems, falseStart, falseTail.end)) continue;
-    if (rangeTouchesExceptionTable(code, codeItems, trueStart, trueTail.end)) continue;
-
-    const refs = collectLabelReferencesByLabel(codeItems);
-    const falseRefs = (refs.get(falseLabel) || [])
-      .filter((ref) => ref < falseStart && isConditionalBranch(op(codeItems[ref] && codeItems[ref].instruction)))
-      .sort((a, b) => b - a);
-    const trueLabel = labelName(codeItems[trueStart] && codeItems[trueStart].labelDef);
-    const trueRefs = (refs.get(trueLabel) || [])
-      .filter((ref) => ref < trueStart && op(codeItems[ref] && codeItems[ref].instruction) === 'goto')
-      .sort((a, b) => b - a);
-    if (falseRefs.length + trueRefs.length < 2) continue;
-
-    for (const ref of falseRefs) {
-      if (rewrites >= maxRewrites) break;
-      rewrites += cloneConditionalRangeAfterBranchWithFallthroughGoto(
-        codeItems,
-        code,
-        ref,
-        falseStart,
-        falseTail.end,
-        falseTail.exitLabel,
-        'LCKRCT',
-      );
-    }
-    for (const ref of trueRefs) {
-      if (rewrites >= maxRewrites) break;
-      rewrites += cloneGotoRangeAtWithFallthroughGoto(
-        codeItems,
-        code,
-        ref,
-        trueStart,
-        trueTail.end,
-        trueTail.exitLabel,
-        'LCKRCT',
-      );
-    }
-    falseStart = Math.max(falseStart, falseTail.end);
-  }
-  return rewrites;
-}
-
-function findRenderChoiceTrueTailForJoin(codeItems, falseStart, exitLabel) {
-  const limit = Math.min(codeItems.length, falseStart + 32);
-  for (let i = Math.max(0, falseStart - 24); i < limit; i += 1) {
-    const tail = readRenderChoiceTrueTail(codeItems, i);
-    if (tail && tail.exitLabel === exitLabel) return i;
-  }
-  return -1;
-}
-
-function readRenderChoiceTrueTail(codeItems, start) {
-  const indexes = nextInstructionIndexes(codeItems, start, 8);
-  if (indexes.length < 6) return null;
-  if (!isGetStaticDescriptor(codeItems[indexes[0]] && codeItems[indexes[0]].instruction, 'Lkv;')) return null;
-  if (intLoadLocal(codeItems[indexes[1]] && codeItems[indexes[1]].instruction) == null) return null;
-  if (integerConstantValue(codeItems[indexes[2]] && codeItems[indexes[2]].instruction) == null) return null;
-  if (integerConstantValue(codeItems[indexes[3]] && codeItems[indexes[3]].instruction) == null) return null;
-  if (!isInvokeDescriptor(codeItems[indexes[4]] && codeItems[indexes[4]].instruction, '(III)V')) return null;
-  const jump = codeItems[indexes[5]] && codeItems[indexes[5]].instruction;
-  if (op(jump) !== 'goto') return null;
-  const exitLabel = labelName(jump.arg);
-  if (!exitLabel || findLabelIndex(codeItems, exitLabel) <= indexes[5]) return null;
-  return { end: indexes[5], exitLabel };
-}
-
-function readRenderChoiceFalseTail(codeItems, start) {
-  const indexes = nextInstructionIndexes(codeItems, start, 16);
-  if (indexes.length < 12) return null;
-  const receiverLocal = refLoadLocal(codeItems[indexes[0]] && codeItems[indexes[0]].instruction);
-  if (receiverLocal == null) return null;
-  if (op(codeItems[indexes[1]] && codeItems[indexes[1]].instruction) !== 'checkcast') return null;
-  if (!isGetFieldDescriptor(codeItems[indexes[2]] && codeItems[indexes[2]].instruction, 'Llna;')) return null;
-  let invokeIndex = -1;
-  for (let i = 3; i < indexes.length; i += 1) {
-    if (isInvokeDescriptor(codeItems[indexes[i]] && codeItems[indexes[i]].instruction, '(IIIIII)V')) {
-      invokeIndex = indexes[i];
-      break;
-    }
-  }
-  if (invokeIndex < 0) return null;
-  const jumpIndex = nextInstructionIndex(codeItems, invokeIndex + 1);
-  if (jumpIndex < 0 || op(codeItems[jumpIndex] && codeItems[jumpIndex].instruction) !== 'goto') return null;
-  const exitLabel = labelName(codeItems[jumpIndex].instruction.arg);
-  if (!exitLabel || findLabelIndex(codeItems, exitLabel) <= jumpIndex) return null;
-  return { end: jumpIndex, exitLabel };
-}
 
 function readSharedConditionalRenderTail(codeItems, start) {
   const indexes = nextInstructionIndexes(codeItems, start, 16);
@@ -10176,148 +9132,6 @@ function isBooleanPutfield(insn) {
   return Array.isArray(arg) && Array.isArray(arg[2]) && arg[2][1] === 'Z';
 }
 
-function cloneEventLoopActionTails(codeItems, code) {
-  let rewrites = 0;
-  for (let i = 0; i < codeItems.length && rewrites < 2; i += 1) {
-    const loopCall = codeItems[i] && codeItems[i].instruction;
-    if (!isInvoke(loopCall, 'dl', 'f', '(I)Z')) continue;
-    const exitBranchIndex = nextInstructionIndex(codeItems, i + 1);
-    const exitBranch = codeItems[exitBranchIndex] && codeItems[exitBranchIndex].instruction;
-    if (exitBranchIndex !== i + 1 || op(exitBranch) !== 'ifeq') continue;
-    const loopExit = findLabelIndex(codeItems, exitBranch.arg);
-    if (loopExit <= exitBranchIndex) continue;
-
-    const branchIndex = findEiQEqualsBranch(codeItems, exitBranchIndex + 1, Math.min(loopExit, exitBranchIndex + 48), 13);
-    if (branchIndex < 0) continue;
-    const branch = codeItems[branchIndex] && codeItems[branchIndex].instruction;
-    const target = findLabelIndex(codeItems, branch.arg);
-    if (target <= branchIndex || target >= loopExit) continue;
-    if (!rangeContainsInvokeShape(codeItems, target, Math.min(loopExit, target + 420), 'q', 'a', '(IZII)V')) continue;
-    const changed = cloneConditionalRangeAfterBranchWithFallthroughGoto(
-      codeItems,
-      code,
-      branchIndex,
-      target,
-      loopExit,
-      labelName(codeItems[loopExit] && codeItems[loopExit].labelDef),
-      'LCKEVT',
-    );
-    if (changed) rewrites += changed;
-  }
-  return rewrites;
-}
-
-function cloneEventActionTails(codeItems, code) {
-  let rewrites = 0;
-  for (let i = 0; i < codeItems.length && rewrites < 3; i += 1) {
-    const insn = codeItems[i] && codeItems[i].instruction;
-    const target = findLabelIndex(codeItems, insn && insn.arg);
-    if (target <= i) continue;
-    const tail = readEventActionTail(codeItems, target);
-    if (!tail) continue;
-    let changed = 0;
-    if (op(insn) === 'goto') {
-      changed = cloneGotoRangeAtWithFallthroughGoto(codeItems, code, i, target, tail.end, tail.exitLabel, 'LCKACTION');
-    } else if (isConditionalBranch(op(insn))) {
-      changed = cloneConditionalRangeAfterBranchWithFallthroughGoto(codeItems, code, i, target, tail.end, tail.exitLabel, 'LCKACTION');
-    }
-    if (changed) rewrites += changed;
-  }
-  return rewrites;
-}
-
-function retargetObjectMergeLoopTrampolines(codeItems) {
-  let rewrites = 0;
-  for (let i = 0; i < codeItems.length && rewrites < 8; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    if (op(branch) !== 'ifnonnull' || refLoadLocal(codeItems[i - 1] && codeItems[i - 1].instruction) !== 1) continue;
-    const trampoline = findLabelIndex(codeItems, branch.arg);
-    if (trampoline <= i) continue;
-    const jump = codeItems[trampoline] && codeItems[trampoline].instruction;
-    if (op(jump) !== 'goto') continue;
-    const header = findLabelIndex(codeItems, jump.arg);
-    if (header < 0 || header >= trampoline) continue;
-    if (!looksLikeObjectMergeHeader(codeItems, header)) continue;
-    branch.arg = labelName(jump.arg);
-    rewrites += 1;
-  }
-  return rewrites;
-}
-
-function hasObjectMergeLoopTrampoline(codeItems) {
-  for (let i = 1; i < codeItems.length; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    if (op(branch) !== 'ifnonnull' || refLoadLocal(codeItems[i - 1] && codeItems[i - 1].instruction) !== 1) continue;
-    const trampoline = findLabelIndex(codeItems, branch.arg);
-    if (trampoline <= i) continue;
-    const jump = codeItems[trampoline] && codeItems[trampoline].instruction;
-    if (op(jump) !== 'goto') continue;
-    const header = findLabelIndex(codeItems, jump.arg);
-    if (header >= 0 && header < trampoline && looksLikeObjectMergeHeader(codeItems, header)) return true;
-  }
-  return false;
-}
-
-function looksLikeObjectMergeHeader(codeItems, start) {
-  return isGetStatic(codeItems[start] && codeItems[start].instruction, 'rd', 'rd_g', 'Lwa;') &&
-    isGetField(codeItems[start + 1] && codeItems[start + 1].instruction, 'wa', 'wa_g', 'I') &&
-    refLoadLocal(codeItems[start + 2] && codeItems[start + 2].instruction) === 1 &&
-    op(codeItems[start + 3] && codeItems[start + 3].instruction) === 'checkcast' &&
-    isGetField(codeItems[start + 4] && codeItems[start + 4].instruction, 'wa', 'wa_g', 'I') &&
-    isIntCompareBranch(op(codeItems[start + 5] && codeItems[start + 5].instruction));
-}
-
-function cloneRendererDispatchBodies(codeItems, code) {
-  let rewrites = 0;
-  for (let i = 0; i < codeItems.length && rewrites < 10; i += 1) {
-    const insn = codeItems[i] && codeItems[i].instruction;
-    if (!isBranchOp(op(insn))) continue;
-    const target = findLabelIndex(codeItems, insn.arg);
-    if (target <= i) continue;
-    const body = readRendererDispatchBody(codeItems, target);
-    if (!body) continue;
-    const changed = op(insn) === 'goto'
-      ? cloneGotoRangeAtWithFallthroughGoto(codeItems, code, i, target, body.end, body.exitLabel, 'LCKRENDER')
-      : cloneConditionalRangeAfterBranchWithFallthroughGoto(codeItems, code, i, target, body.end, body.exitLabel, 'LCKRENDER');
-    if (changed) rewrites += changed;
-  }
-  return rewrites;
-}
-
-function hasRendererDispatchBody(codeItems) {
-  for (let i = 0; i < codeItems.length; i += 1) {
-    if (readRendererDispatchBody(codeItems, i)) return true;
-  }
-  return false;
-}
-
-function readRendererDispatchBody(codeItems, start) {
-  if (op(codeItems[start] && codeItems[start].instruction) !== 'aload_0') return null;
-  if (!isGetField(codeItems[start + 1] && codeItems[start + 1].instruction, 'eg', 'eg_k', 'Lwe;')) return null;
-  let invokeIndex = -1;
-  for (let i = start + 2; i < Math.min(codeItems.length, start + 42); i += 1) {
-    const insn = codeItems[i] && codeItems[i].instruction;
-    if (isInvoke(insn, 'we', 'a', '(Ljava/lang/String;IIII)V') ||
-      isInvoke(insn, 'we', 'b', '(Ljava/lang/String;IIII)V') ||
-      isInvoke(insn, 'we', 'c', '(Ljava/lang/String;IIII)V')) {
-      invokeIndex = i;
-      break;
-    }
-  }
-  if (invokeIndex < 0) return null;
-  const jump = codeItems[invokeIndex + 1] && codeItems[invokeIndex + 1].instruction;
-  if (op(jump) !== 'goto') return null;
-  const exitLabel = labelName(jump.arg);
-  const exit = findLabelIndex(codeItems, exitLabel);
-  if (exit <= invokeIndex || !looksLikeRendererCleanup(codeItems, exit)) return null;
-  return { end: invokeIndex + 1, exitLabel };
-}
-
-function looksLikeRendererCleanup(codeItems, start) {
-  return intLoadLocal(codeItems[start] && codeItems[start].instruction) === 2 &&
-    isInvoke(codeItems[start + 1] && codeItems[start + 1].instruction, 'tk', 'b', '(Z)V') &&
-    op(codeItems[start + 2] && codeItems[start + 2].instruction) === 'return';
-}
 
 function cloneGridTileUpdateContinueHeaders(codeItems) {
   let rewrites = 0;
@@ -10452,142 +9266,6 @@ function hasGridTileWriteBefore(codeItems, start, end, indexLocal) {
   return false;
 }
 
-function cloneStateUpdateCreationBody(codeItems, code) {
-  const branch = findStateUpdateCreationBranch(codeItems);
-  if (!branch) return 0;
-  const joinLabel = ensureFreshLabel(codeItems, branch.bodyEnd, 'LCKSTATEQ_JOIN');
-  return cloneConditionalRangeAfterBranchWithFallthroughGoto(
-    codeItems,
-    code,
-    branch.branchIndex,
-    branch.bodyStart,
-    branch.bodyEnd,
-    joinLabel,
-    'LCKSTATEQ',
-  );
-}
-
-function findStateUpdateCreationBranch(codeItems) {
-  for (let i = 0; i < codeItems.length; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    if (op(branch) !== 'ifne') continue;
-    const bodyStart = findLabelIndex(codeItems, branch.arg);
-    if (bodyStart <= i) continue;
-    const bodyEnd = readStateUpdateCreationBodyEnd(codeItems, bodyStart);
-    if (bodyEnd <= bodyStart) continue;
-    if (!looksLikeQueueEmptyCheck(codeItems, i)) continue;
-    return { branchIndex: i, bodyStart, bodyEnd };
-  }
-  return null;
-}
-
-function looksLikeQueueEmptyCheck(codeItems, branchIndex) {
-  return op(codeItems[branchIndex - 6] && codeItems[branchIndex - 6].instruction) === 'aload_0' &&
-    isGetField(codeItems[branchIndex - 5] && codeItems[branchIndex - 5].instruction, 'al', 'al_u', 'Lko;') &&
-    intLoadLocal(codeItems[branchIndex - 4] && codeItems[branchIndex - 4].instruction) === 5 &&
-    integerConstantValue(codeItems[branchIndex - 3] && codeItems[branchIndex - 3].instruction) === -19063 &&
-    op(codeItems[branchIndex - 2] && codeItems[branchIndex - 2].instruction) === 'iadd' &&
-    isInvoke(codeItems[branchIndex - 1] && codeItems[branchIndex - 1].instruction, 'ko', 'c', '(I)Z');
-}
-
-function readStateUpdateCreationBodyEnd(codeItems, start) {
-  if (op(codeItems[start] && codeItems[start].instruction) !== 'aload_0') return -1;
-  if (!isGetField(codeItems[start + 1] && codeItems[start + 1].instruction, 'al', 'al_u', 'Lko;')) return -1;
-  if (integerConstantValue(codeItems[start + 2] && codeItems[start + 2].instruction) !== -58) return -1;
-  if (op(codeItems[start + 3] && codeItems[start + 3].instruction) !== 'new') return -1;
-  if ((codeItems[start + 3] && codeItems[start + 3].instruction || {}).arg !== 'qe') return -1;
-  if (op(codeItems[start + 4] && codeItems[start + 4].instruction) !== 'dup') return -1;
-  if (intLoadLocal(codeItems[start + 5] && codeItems[start + 5].instruction) !== 3) return -1;
-  if (intLoadLocal(codeItems[start + 6] && codeItems[start + 6].instruction) !== 4) return -1;
-  if (!isInvoke(codeItems[start + 7] && codeItems[start + 7].instruction, 'qe', '<init>', '(II)V')) return -1;
-  if (op(codeItems[start + 8] && codeItems[start + 8].instruction) !== 'dup') return -1;
-  const createdLocal = refStoreLocal(codeItems[start + 9] && codeItems[start + 9].instruction);
-  if (createdLocal == null) return -1;
-  if (refLoadLocal(codeItems[start + 10] && codeItems[start + 10].instruction) !== createdLocal) return -1;
-  if (refStoreLocal(codeItems[start + 11] && codeItems[start + 11].instruction) !== 6) return -1;
-  if (!isInvoke(codeItems[start + 12] && codeItems[start + 12].instruction, 'ko', 'b', '(BLma;)V')) return -1;
-  if (op(codeItems[start + 13] && codeItems[start + 13].instruction) !== 'aload_0') return -1;
-  if (!isGetField(codeItems[start + 14] && codeItems[start + 14].instruction, 'al', 'al_f', 'Lsq;')) return -1;
-  if (refLoadLocal(codeItems[start + 15] && codeItems[start + 15].instruction) !== createdLocal) return -1;
-  if (op(codeItems[start + 16] && codeItems[start + 16].instruction) !== 'iconst_0') return -1;
-  if (!isInvoke(codeItems[start + 17] && codeItems[start + 17].instruction, 'sq', 'a', '(Lqe;Z)V')) return -1;
-  if (op(codeItems[start + 18] && codeItems[start + 18].instruction) !== 'aload_0') return -1;
-  if (intLoadLocal(codeItems[start + 19] && codeItems[start + 19].instruction) !== 4) return -1;
-  return start + 18;
-}
-
-function cloneDisableBackwardTails(codeItems) {
-  let rewrites = 0;
-  for (let i = 0; i < codeItems.length && rewrites < 4; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    if (!isIntCompareBranch(op(branch))) continue;
-    if (!isMinusOneCompareBranch(codeItems, i, [8, 9, 10])) continue;
-    const tailStart = findLabelIndex(codeItems, branch.arg);
-    if (tailStart < 0 || tailStart >= i) continue;
-    const tail = readDisableTail(codeItems, tailStart);
-    if (!tail) continue;
-    const changed = cloneBackwardConditionalTailAtBranch(codeItems, i, tailStart, tail.end, 'LCKDISABLE');
-    if (changed) {
-      rewrites += changed;
-      i += tail.end - tailStart;
-    }
-  }
-  return rewrites;
-}
-
-function hasDisableBackwardTail(codeItems) {
-  for (let i = 0; i < codeItems.length; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    if (!isIntCompareBranch(op(branch))) continue;
-    if (!isMinusOneCompareBranch(codeItems, i, [8, 9, 10])) continue;
-    const tailStart = findLabelIndex(codeItems, branch.arg);
-    if (tailStart >= 0 && tailStart < i && readDisableTail(codeItems, tailStart)) return true;
-  }
-  return false;
-}
-
-function readDisableTail(codeItems, start) {
-  const indexes = nextInstructionIndexes(codeItems, start, 5);
-  if (indexes.length < 5) return null;
-  if (refLoadLocal(codeItems[indexes[0]] && codeItems[indexes[0]].instruction) !== 7) return null;
-  if (integerConstantValue(codeItems[indexes[1]] && codeItems[indexes[1]].instruction) !== 0) return null;
-  if (!isPutField(codeItems[indexes[2]] && codeItems[indexes[2]].instruction, 'ei', 'ei_c', 'Z')) return null;
-  const inc = readIincInstruction(codeItems[indexes[3]] && codeItems[indexes[3]].instruction);
-  if (!inc || inc.local !== 6 || inc.incr !== 1) return null;
-  const jump = codeItems[indexes[4]] && codeItems[indexes[4]].instruction;
-  if (op(jump) !== 'goto' || findLabelIndex(codeItems, jump.arg) >= start) return null;
-  return { end: indexes[4] + 1 };
-}
-
-function isMinusOneCompareBranch(codeItems, branchIndex, locals) {
-  const branch = codeItems[branchIndex] && codeItems[branchIndex].instruction;
-  if (!isIntCompareBranch(op(branch))) return false;
-  const leftIndex = previousInstructionIndex(codeItems, branchIndex - 2);
-  const rightIndex = previousInstructionIndex(codeItems, branchIndex - 1);
-  const left = codeItems[leftIndex] && codeItems[leftIndex].instruction;
-  const right = codeItems[rightIndex] && codeItems[rightIndex].instruction;
-  return (integerConstantValue(left) === -1 && locals.includes(intLoadLocal(right))) ||
-    (locals.includes(intLoadLocal(left)) && integerConstantValue(right) === -1);
-}
-
-function retargetColumnContinues(codeItems) {
-  const canonical = findCanonicalColumnContinue(codeItems);
-  if (!canonical) return 0;
-  let rewrites = 0;
-  for (let i = canonical.iincIndex - 1; i > canonical.headerStart && rewrites < 16; i -= 1) {
-    const inc = readIincInstruction(codeItems[i] && codeItems[i].instruction);
-    if (!inc || inc.local !== 21 || inc.incr !== 1) continue;
-    const jumpIndex = nextInstructionIndex(codeItems, i + 1);
-    if (jumpIndex !== i + 1) continue;
-    const jump = codeItems[jumpIndex] && codeItems[jumpIndex].instruction;
-    if (op(jump) !== 'goto' || labelName(jump.arg) !== canonical.headerLabel) continue;
-    if (!canRemoveUnreferencedInstruction(codeItems, jumpIndex)) continue;
-    codeItems[i].instruction = { op: 'goto', arg: canonical.tailLabel };
-    codeItems.splice(jumpIndex, 1);
-    rewrites += 1;
-  }
-  return rewrites;
-}
 
 function retargetIincBackedgesToCanonicalContinues(codeItems) {
   const groups = collectIincBackedgeGroups(codeItems);
@@ -10787,264 +9465,12 @@ function collectIincBackedgeGroups(codeItems) {
   return groups;
 }
 
-function findCanonicalColumnContinue(codeItems) {
-  for (let i = codeItems.length - 2; i >= 1; i -= 1) {
-    const inc = readIincInstruction(codeItems[i] && codeItems[i].instruction);
-    if (!inc || inc.local !== 21 || inc.incr !== 1) continue;
-    const jumpIndex = nextInstructionIndex(codeItems, i + 1);
-    if (jumpIndex !== i + 1) continue;
-    const jump = codeItems[jumpIndex] && codeItems[jumpIndex].instruction;
-    if (op(jump) !== 'goto') continue;
-    const headerStart = findLabelIndex(codeItems, jump.arg);
-    if (headerStart < 0 || headerStart >= i) continue;
-    if (!isColumnHeader(codeItems, headerStart)) continue;
-    const tailLabel = ensureFreshLabel(codeItems, i, 'LCKCOLUMNCONT');
-    return {
-      iincIndex: i,
-      headerStart,
-      headerLabel: labelName(jump.arg),
-      tailLabel,
-    };
-  }
-  return null;
-}
-
-function isColumnHeader(codeItems, start) {
-  const indexes = nextInstructionIndexes(codeItems, start, 6);
-  if (indexes.length < 6) return false;
-  if (integerConstantValue(codeItems[indexes[0]] && codeItems[indexes[0]].instruction) !== -2) return false;
-  if (intLoadLocal(codeItems[indexes[1]] && codeItems[indexes[1]].instruction) !== 21) return false;
-  const branch = codeItems[indexes[2]] && codeItems[indexes[2]].instruction;
-  if (op(branch) !== 'if_icmple') return false;
-  if (findLabelIndex(codeItems, branch.arg) <= indexes[5]) return false;
-  const rowInc = readIincInstruction(codeItems[indexes[3]] && codeItems[indexes[3]].instruction);
-  if (!rowInc || rowInc.local !== 12 || rowInc.incr !== 64) return false;
-  const tileInc = readIincInstruction(codeItems[indexes[4]] && codeItems[indexes[4]].instruction);
-  if (!tileInc || tileInc.local !== 20 || tileInc.incr !== 1) return false;
-  const jump = codeItems[indexes[5]] && codeItems[indexes[5]].instruction;
-  return op(jump) === 'goto' && findLabelIndex(codeItems, jump.arg) < start;
-}
-
-function hasConditionalGotoBridge(codeItems) {
-  for (let i = 0; i + 1 < codeItems.length; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    const branchOp = op(branch);
-    if (!isConditionalBranch(branchOp)) continue;
-    const gotoIndex = nextInstructionIndex(codeItems, i + 1);
-    if (gotoIndex !== i + 1) continue;
-    const jump = codeItems[gotoIndex] && codeItems[gotoIndex].instruction;
-    if (op(jump) !== 'goto') continue;
-    const fallthroughIndex = nextInstructionIndex(codeItems, gotoIndex + 1);
-    if (fallthroughIndex >= 0 && findLabelIndex(codeItems, branch.arg) === fallthroughIndex) return true;
-  }
-  return false;
-}
-
-function cloneInvalidEntryTails(codeItems) {
-  const tail = findInvalidEntryTail(codeItems);
-  if (!tail) return 0;
-  const cloneLabel = freshLabel(codeItems, 'LCKINVALID');
-  const clone = cloneItems(codeItems.slice(tail.sharedStart, tail.sharedEnd));
-  clone[0].labelDef = `${cloneLabel}:`;
-  clone[clone.length - 1].instruction = { op: 'goto', arg: tail.continueLabel };
-  for (const branchIndex of tail.invalidBranches) {
-    codeItems[branchIndex].instruction.arg = cloneLabel;
-  }
-  codeItems.splice(tail.insertIndex, 0, ...clone);
-  return 1;
-}
-
-function findInvalidEntryTail(codeItems) {
-  for (let i = 1; i + 3 < codeItems.length; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    if (op(branch) !== 'if_icmpgt') continue;
-    if (integerConstantValue(codeItems[i - 1] && codeItems[i - 1].instruction) !== -1) continue;
-    const sharedStart = findLabelIndex(codeItems, branch.arg);
-    if (!isRemoveEntryTail(codeItems, sharedStart)) continue;
-    const secondBranch = findSecondInvalidEntryBranch(codeItems, i + 1, sharedStart);
-    if (secondBranch < 0 || labelName(codeItems[secondBranch].instruction.arg) !== labelName(branch.arg)) continue;
-    const continueIndex = findInvalidEntryTailContinueIndex(codeItems, sharedStart);
-    if (continueIndex < 0) continue;
-    const continueLabel = labelName(codeItems[continueIndex].instruction.arg);
-    const insertIndex = findLabelIndex(codeItems, continueLabel);
-    if (insertIndex < 0) continue;
-    return {
-      invalidBranches: [i, secondBranch],
-      sharedStart,
-      sharedEnd: continueIndex + 1,
-      continueLabel,
-      insertIndex,
-    };
-  }
-  return null;
-}
-
-function findSecondInvalidEntryBranch(codeItems, start, end) {
-  for (let i = start; i < end; i += 1) {
-    const insn = codeItems[i] && codeItems[i].instruction;
-    if (op(insn) === 'if_icmple' && hasInstructionInWindow(codeItems, Math.max(start, i - 4), i, (candidate) =>
-      isGetField(candidate, 'tf', 'tf_r', 'I'))) {
-      return i;
-    }
-  }
-  return -1;
-}
-
-function hasInstructionInWindow(codeItems, start, end, predicate) {
-  for (let i = start; i < end; i += 1) {
-    if (predicate(codeItems[i] && codeItems[i].instruction)) return true;
-  }
-  return false;
-}
-
-function isRemoveEntryTail(codeItems, start) {
-  if (start < 0) return false;
-  const indexes = nextInstructionIndexes(codeItems, start, 4);
-  if (indexes.length < 4) return false;
-  return refLoadLocal(codeItems[indexes[0]] && codeItems[indexes[0]].instruction) === 2 &&
-    integerConstantValue(codeItems[indexes[1]] && codeItems[indexes[1]].instruction) === 1 &&
-    isInvoke(codeItems[indexes[2]] && codeItems[indexes[2]].instruction, 'da', 'a', '(Z)V') &&
-    op(codeItems[indexes[3]] && codeItems[indexes[3]].instruction) === 'goto';
-}
-
-function findInvalidEntryTailContinueIndex(codeItems, sharedStart) {
-  const indexes = nextInstructionIndexes(codeItems, sharedStart, 4);
-  return indexes.length >= 4 ? indexes[3] : -1;
-}
 
 function canRemoveUnreferencedInstruction(codeItems, index) {
   const label = labelName(codeItems[index] && codeItems[index].labelDef);
   return !label || (collectLabelReferenceCounts(codeItems).get(label) || 0) === 0;
 }
 
-function findEventActionTail(codeItems) {
-  for (let i = 0; i < codeItems.length; i += 1) {
-    if (readEventActionTail(codeItems, i)) return i;
-  }
-  return null;
-}
-
-function readEventActionTail(codeItems, start) {
-  const indexes = nextInstructionIndexes(codeItems, start, 20);
-  if (indexes.length < 20) return null;
-  if (!isGetStatic(codeItems[indexes[0]] && codeItems[indexes[0]].instruction, 'kc', 'kc_c', 'I')) return null;
-  if (integerConstantValue(codeItems[indexes[1]] && codeItems[indexes[1]].instruction) !== 1) return null;
-  if (op(codeItems[indexes[2]] && codeItems[indexes[2]].instruction) !== 'iadd') return null;
-  if (!isPutStatic(codeItems[indexes[3]] && codeItems[indexes[3]].instruction, 'kc', 'kc_c', 'I')) return null;
-  if (intLoadLocal(codeItems[indexes[4]] && codeItems[indexes[4]].instruction) !== 2) return null;
-  if (integerConstantValue(codeItems[indexes[5]] && codeItems[indexes[5]].instruction) !== -9410) return null;
-  if (op(codeItems[indexes[6]] && codeItems[indexes[6]].instruction) !== 'ixor') return null;
-  if (!isInvoke(codeItems[indexes[7]] && codeItems[indexes[7]].instruction, 'pg', 'a', '(I)V')) return null;
-  if (op(codeItems[indexes[8]] && codeItems[indexes[8]].instruction) !== 'new' || codeItems[indexes[8]].instruction.arg !== 'gh') return null;
-  if (op(codeItems[indexes[9]] && codeItems[indexes[9]].instruction) !== 'dup') return null;
-  if (op(codeItems[indexes[10]] && codeItems[indexes[10]].instruction) !== 'aload_0') return null;
-  const ownerDescriptor = fieldDescriptor(codeItems[indexes[11]] && codeItems[indexes[11]].instruction);
-  if (op(codeItems[indexes[11]] && codeItems[indexes[11]].instruction) !== 'getfield' ||
-    typeof ownerDescriptor !== 'string' || !/^L[^;]+;$/.test(ownerDescriptor)) return null;
-  if (intLoadLocal(codeItems[indexes[12]] && codeItems[indexes[12]].instruction) !== 3) return null;
-  if (!isInvoke(codeItems[indexes[13]] && codeItems[indexes[13]].instruction, 'gh', '<init>', `(${ownerDescriptor}Z)V`)) return null;
-  if (!isPutStatic(codeItems[indexes[14]] && codeItems[indexes[14]].instruction, 'el', 'el_o', 'Lgh;')) return null;
-  if (integerConstantValue(codeItems[indexes[15]] && codeItems[indexes[15]].instruction) !== -39) return null;
-  if (!isInvoke(codeItems[indexes[16]] && codeItems[indexes[16]].instruction, 'le', 'a', '(B)V')) return null;
-  if (integerConstantValue(codeItems[indexes[17]] && codeItems[indexes[17]].instruction) !== -1) return null;
-  if (!isPutStatic(codeItems[indexes[18]] && codeItems[indexes[18]].instruction, 'ai', 'ai_p', 'I')) return null;
-  const jump = codeItems[indexes[19]] && codeItems[indexes[19]].instruction;
-  if (op(jump) !== 'goto') return null;
-  const exitLabel = labelName(jump.arg);
-  if (!exitLabel || findLabelIndex(codeItems, exitLabel) <= indexes[19]) return null;
-  return { end: indexes[19], exitLabel };
-}
-
-function findEiQEqualsBranch(codeItems, start, end, value) {
-  for (let i = start; i + 2 < end; i += 1) {
-    if (!isBipush(codeItems[i] && codeItems[i].instruction, value) && !(value >= -1 && value <= 5 && op(codeItems[i] && codeItems[i].instruction) === `iconst_${value}`)) continue;
-    if (!isGetStatic(codeItems[i + 1] && codeItems[i + 1].instruction, 'ei', 'ei_q', 'I')) continue;
-    const branch = codeItems[i + 2] && codeItems[i + 2].instruction;
-    if (op(branch) === 'if_icmpeq') return i + 2;
-  }
-  return -1;
-}
-
-function rangeContainsInvokeShape(codeItems, start, end, owner, name, descriptor) {
-  for (let i = Math.max(0, start); i < Math.min(codeItems.length, end); i += 1) {
-    if (isInvoke(codeItems[i] && codeItems[i].instruction, owner, name, descriptor)) return true;
-  }
-  return false;
-}
-
-function cloneRasterRowScanContinueHeaders(codeItems, code) {
-  let rewrites = 0;
-  const maxHeaderSpan = Number(process.env.STRUCTURED_GOTO_RASTER_ROW_SCAN_HEADER_MAX_SPAN || 240);
-  for (let i = 0; i < codeItems.length && rewrites < 4; i += 1) {
-    const jump = codeItems[i] && codeItems[i].instruction;
-    if (op(jump) !== 'goto') continue;
-    const header = findLabelIndex(codeItems, jump.arg);
-    if (header < 0 || header >= i) continue;
-
-    const incrementIndex = previousInstructionIndex(codeItems, i - 1);
-    const increment = readIincInstruction(codeItems[incrementIndex] && codeItems[incrementIndex].instruction);
-    if (!increment || increment.incr !== 1) continue;
-    const sourceBranchIndex = previousInstructionIndex(codeItems, incrementIndex - 1);
-    const sourceBranch = codeItems[sourceBranchIndex] && codeItems[sourceBranchIndex].instruction;
-    if (!isIntCompareBranch(op(sourceBranch))) continue;
-    const sourceBody = findLabelIndex(codeItems, sourceBranch.arg);
-    if (sourceBody !== i + 1) continue;
-    if (sourceBranchIndex - header > maxHeaderSpan) continue;
-
-    const shape = readRasterRowScanHeaderShape(codeItems, header, sourceBranchIndex, increment.local);
-    if (!shape) continue;
-    const changed = cloneGotoRangeAtWithFallthroughGoto(
-      codeItems,
-      code,
-      i,
-      header,
-      shape.bodyStart,
-      shape.bodyLabel,
-      'LCKROW',
-    );
-    if (changed) {
-      rewrites += changed;
-      i += shape.bodyStart - header;
-    }
-  }
-  return rewrites;
-}
-
-function readRasterRowScanHeaderShape(codeItems, header, before, rowLocal) {
-  const first = codeItems[header] && codeItems[header].instruction;
-  const second = codeItems[header + 1] && codeItems[header + 1].instruction;
-  const exit = codeItems[header + 2] && codeItems[header + 2].instruction;
-  if (intLoadLocal(first) !== rowLocal) return null;
-  if (intLoadLocal(second) == null) return null;
-  if (!isIntCompareBranch(op(exit))) return null;
-  const exitTarget = findLabelIndex(codeItems, exit.arg);
-  if (exitTarget <= before) return null;
-
-  let bodyStart = -1;
-  let bodyLabel = null;
-  let guardCount = 0;
-  for (let i = header + 3; i < before; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    if (!isIntCompareBranch(op(branch))) continue;
-    const incrementIndex = nextInstructionIndex(codeItems, i + 1);
-    if (incrementIndex !== i + 1) continue;
-    const increment = readIincInstruction(codeItems[incrementIndex] && codeItems[incrementIndex].instruction);
-    if (!increment || increment.local !== rowLocal || increment.incr !== 1) continue;
-    const jumpIndex = nextInstructionIndex(codeItems, incrementIndex + 1);
-    if (jumpIndex !== incrementIndex + 1) continue;
-    const jump = codeItems[jumpIndex] && codeItems[jumpIndex].instruction;
-    if (op(jump) !== 'goto' || findLabelIndex(codeItems, jump.arg) !== header) continue;
-    const target = findLabelIndex(codeItems, branch.arg);
-    if (target <= jumpIndex || target > before) continue;
-    bodyStart = target;
-    bodyLabel = labelName(branch.arg);
-    guardCount += 1;
-    i = jumpIndex;
-  }
-  if (guardCount < 2 || bodyStart < 0 || !bodyLabel) return null;
-  if (!rangeContainsInvokeShape(codeItems, bodyStart, before, 'vn', 'a', '(II)I')) return null;
-  return { bodyStart, bodyLabel };
-}
 
 function cloneStringBase38SplitDecrementTails(codeItems, code) {
   let rewrites = 0;
@@ -11155,33 +9581,6 @@ function readBase38ForwardSplitGotoIndex(codeItems, splitStart) {
   return indexes[4];
 }
 
-function cloneStringBase38ForwardCharBodies(codeItems, code) {
-  let rewrites = 0;
-  for (let i = 0; i < codeItems.length && rewrites < 8; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    if (!isIntCompareBranch(op(branch))) continue;
-    const target = findLabelIndex(codeItems, branch.arg);
-    if (target <= i + 1) continue;
-    const shape = readStringBase38CharBody(codeItems, target);
-    if (!shape) continue;
-    if (rangeTouchesExceptionTable(code, codeItems, target, shape.end)) continue;
-    const exitLabel = shape.exitLabel || ensureFreshLabel(codeItems, shape.end, 'LCKB38B_EXIT');
-    const changed = cloneConditionalRangeAfterBranchWithFallthroughGoto(
-      codeItems,
-      code,
-      i,
-      target,
-      shape.end,
-      exitLabel,
-      'LCKB38B',
-    );
-    if (changed) {
-      rewrites += changed;
-      i += shape.end - target;
-    }
-  }
-  return rewrites;
-}
 
 function cloneDisableOptionContinueTails(codeItems, code) {
   let rewrites = 0;
@@ -11253,13 +9652,6 @@ function isByteArrayClearLoopExit(codeItems, branchIndex) {
   return sawArrayLength && sawClearStore && sawBackedge;
 }
 
-function findNearestPreviousLabel(codeItems, before) {
-  for (let i = before; i >= 0; i -= 1) {
-    const label = labelName(codeItems[i] && codeItems[i].labelDef);
-    if (label) return label;
-  }
-  return null;
-}
 
 function readSharedFieldCopyTail(codeItems, start) {
   const indexes = nextInstructionIndexes(codeItems, start, 16);
@@ -11484,54 +9876,6 @@ function findNextConditionalBranch(codeItems, start, end) {
   return -1;
 }
 
-function readStringBase38CharBody(codeItems, start) {
-  const stringLocal = refLoadLocal(codeItems[start] && codeItems[start].instruction);
-  const indexLocal = intLoadLocal(codeItems[start + 1] && codeItems[start + 1].instruction);
-  if (stringLocal == null || indexLocal == null) return null;
-  if (!isInvoke(codeItems[start + 2] && codeItems[start + 2].instruction, 'java/lang/String', 'charAt', '(I)C')) return null;
-  const charLocal = intStoreLocal(codeItems[start + 3] && codeItems[start + 3].instruction);
-  if (charLocal == null) return null;
-
-  for (let i = start + 4; i < Math.min(codeItems.length, start + 96); i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    if (!isIntCompareBranch(op(branch))) continue;
-    const compare = readMinusOneCompareConstant(codeItems, i);
-    if (!compare || compare.local !== indexLocal || compare.constant !== -11) continue;
-    const end = findBase38FinalWriteBlock(codeItems, i + 1, start + 260);
-    if (end < 0) continue;
-    const exitLabel = labelName(codeItems[end] && codeItems[end].labelDef);
-    return { end, exitLabel };
-  }
-  return null;
-}
-
-function findBase38FinalWriteBlock(codeItems, start, end) {
-  for (let i = start; i + 3 < Math.min(codeItems.length, end); i += 1) {
-    if (op(codeItems[i] && codeItems[i].instruction) !== 'aload_0') continue;
-    if (!isLongLoad(codeItems[i + 1] && codeItems[i + 1].instruction)) continue;
-    if (isBase38AccumulatorWrite(codeItems, i, 12, '(JB)V') &&
-      findSecondBase38AccumulatorWrite(codeItems, i + 4, end, 12, '(JB)V') >= 0) return i;
-    if (!isBipush(codeItems[i + 2] && codeItems[i + 2].instruction, 116)) continue;
-    if (isInvoke(codeItems[i + 3] && codeItems[i + 3].instruction, 'fs', 'a', '(JI)V')) return i;
-  }
-  return -1;
-}
-
-function findSecondBase38AccumulatorWrite(codeItems, start, end, marker, descriptor) {
-  for (let i = start; i + 3 < Math.min(codeItems.length, end); i += 1) {
-    if (isBase38AccumulatorWrite(codeItems, i, marker, descriptor)) return i;
-  }
-  return -1;
-}
-
-function isBase38AccumulatorWrite(codeItems, start, marker, descriptor) {
-  if (op(codeItems[start] && codeItems[start].instruction) !== 'aload_0') return false;
-  if (!isLongLoad(codeItems[start + 1] && codeItems[start + 1].instruction)) return false;
-  if (integerConstantValue(codeItems[start + 2] && codeItems[start + 2].instruction) !== marker) return false;
-  const actualDescriptor = methodDescriptor(codeItems[start + 3] && codeItems[start + 3].instruction);
-  return isInvokeInstruction(codeItems[start + 3] && codeItems[start + 3].instruction) &&
-    actualDescriptor === descriptor;
-}
 
 function readMinusOneCompareConstant(codeItems, branchIndex) {
   if (branchIndex < 4) return null;
@@ -11982,14 +10326,22 @@ function cloneForwardLoopBodyEntries(codeItems, method) {
   return rewrites;
 }
 
-function removeFalseReturnGuards(codeItems) {
+function removeFalseReturnGuards(codeItems, code) {
   let rewrites = 0;
+  const references = collectLabelReferenceCounts(codeItems);
   for (let i = 0; i + 2 < codeItems.length; i += 1) {
     if (op(codeItems[i] && codeItems[i].instruction) !== 'iconst_0') continue;
     if (op(codeItems[i + 1] && codeItems[i + 1].instruction) !== 'ifeq') continue;
     if (op(codeItems[i + 2] && codeItems[i + 2].instruction) !== 'return') continue;
+    const branch = codeItems[i + 1].instruction;
+    const branchLabel = labelName(codeItems[i + 1].labelDef);
+    if (branchLabel && (references.get(branchLabel) || 0) > 0) continue;
+    if (findLabelIndex(codeItems, branch.arg) < 0) continue;
+    if (rangeTouchesExceptionTable(code, codeItems, i, i + 2)) continue;
     codeItems[i].instruction = 'nop';
-    codeItems[i + 1].instruction = 'nop';
+    // The zero test is always taken. Keep its destination; falling through
+    // would execute the return that the original bytecode skipped.
+    branch.op = 'goto';
     rewrites += 1;
   }
   return rewrites;
@@ -12472,210 +10824,6 @@ function findPresenceBooleanBranch(codeItems, searchStart = 0) {
   return null;
 }
 
-function hasDuplicateQueueEntry(codeItems) {
-  return findDuplicateQueueEntry(codeItems) != null;
-}
-
-function retargetDuplicateQueueEntry(codeItems) {
-  const use = findDuplicateQueueEntry(codeItems);
-  if (!use) return 0;
-  for (const ref of use.refs) {
-    const insn = codeItems[ref] && codeItems[ref].instruction;
-    if (insn && labelName(insn.arg) === use.trampolineLabel) insn.arg = use.canonicalLabel;
-  }
-  const refCounts = collectLabelReferenceCounts(codeItems);
-  if ((refCounts.get(use.trampolineLabel) || 0) === 0 && !hasFallthroughPredecessor(codeItems, use.trampolineIndex)) {
-    codeItems.splice(use.trampolineIndex, 2);
-  }
-  return 1;
-}
-
-function findDuplicateQueueEntry(codeItems) {
-  for (let i = 0; i + 3 < codeItems.length; i += 1) {
-    const first = codeItems[i] && codeItems[i].instruction;
-    const jump = codeItems[i + 1] && codeItems[i + 1].instruction;
-    const second = codeItems[i + 2] && codeItems[i + 2].instruction;
-    if (!isGetStatic(first, 'kl', 'kl_c', '[I')) continue;
-    if (op(jump) !== 'goto') continue;
-    if (!sameInstructionOperand(first, second)) continue;
-    const trampolineLabel = labelName(codeItems[i] && codeItems[i].labelDef);
-    const canonicalLabel = labelName(codeItems[i + 2] && codeItems[i + 2].labelDef);
-    if (!trampolineLabel || !canonicalLabel) continue;
-    if (findLabelIndex(codeItems, jump.arg) !== i + 3) continue;
-    const refs = collectLabelReferencesDetailed(codeItems, trampolineLabel);
-    if (refs.length === 0 || refs.some((ref) => ref >= i)) continue;
-    if (rangeContainsInstructionLabels(codeItems, i, i + 2, new Set([canonicalLabel]))) continue;
-    return { trampolineIndex: i, trampolineLabel, canonicalLabel, refs };
-  }
-  return null;
-}
-
-function rangeContainsInstructionLabels(codeItems, start, end, labels) {
-  for (let i = start; i < end; i += 1) {
-    for (const label of collectInstructionLabels(codeItems[i] && codeItems[i].instruction)) {
-      if (labels.has(label)) return true;
-    }
-  }
-  return false;
-}
-
-function retargetDuplicateInitialPose(codeItems) {
-  const use = findDuplicateInitialPose(codeItems);
-  if (!use) return 0;
-  let changed = 0;
-  for (const ref of use.refs) {
-    const insn = codeItems[ref] && codeItems[ref].instruction;
-    if (!insn || labelName(insn.arg) !== use.laterLabel) continue;
-    insn.arg = use.earlierLabel;
-    changed += 1;
-  }
-  return changed > 0 ? 1 : 0;
-}
-
-function findDuplicateInitialPose(codeItems) {
-  for (let first = 0; first + 13 < codeItems.length; first += 1) {
-    if (!isInitialPoseBlock(codeItems, first)) continue;
-    const earlierLabel = labelName(codeItems[first] && codeItems[first].labelDef);
-    if (!earlierLabel) continue;
-    for (let second = first + 13; second + 13 < codeItems.length && second < first + 80; second += 1) {
-      if (!isInitialPoseBlock(codeItems, second)) continue;
-      if (!sameInstructionRangeExceptFinalBranch(codeItems, first, second, 13)) continue;
-      const laterLabel = labelName(codeItems[second] && codeItems[second].labelDef);
-      if (!laterLabel) continue;
-      const refs = collectLabelReferencesDetailed(codeItems, laterLabel).filter((ref) => ref < first);
-      if (refs.length === 0) continue;
-      return { earlierLabel, laterLabel, refs };
-    }
-  }
-  return null;
-}
-
-function isInitialPoseBlock(codeItems, start) {
-  return op(codeItems[start] && codeItems[start].instruction) === 'aload_0'
-    && integerConstantValue(codeItems[start + 1] && codeItems[start + 1].instruction) === 740
-    && isPutField(codeItems[start + 2] && codeItems[start + 2].instruction, 'gf', 'gf_f', 'I')
-    && op(codeItems[start + 3] && codeItems[start + 3].instruction) === 'aload_0'
-    && integerConstantValue(codeItems[start + 4] && codeItems[start + 4].instruction) === 450
-    && isPutField(codeItems[start + 5] && codeItems[start + 5].instruction, 'gf', 'E', 'I')
-    && op(codeItems[start + 6] && codeItems[start + 6].instruction) === 'aload_0'
-    && integerConstantValue(codeItems[start + 7] && codeItems[start + 7].instruction) === -50
-    && isPutField(codeItems[start + 8] && codeItems[start + 8].instruction, 'gf', 'gf_n', 'I')
-    && op(codeItems[start + 9] && codeItems[start + 9].instruction) === 'aload_0'
-    && integerConstantValue(codeItems[start + 10] && codeItems[start + 10].instruction) === 0
-    && isPutField(codeItems[start + 11] && codeItems[start + 11].instruction, 'gf', 'gf_e', 'I')
-    && op(codeItems[start + 12] && codeItems[start + 12].instruction) === 'goto';
-}
-
-function cloneIteratorBooleanTail(codeItems, code) {
-  const use = findIteratorBooleanTail(codeItems);
-  if (!use) return 0;
-  return cloneConditionalRangeAfterBranchWithFallthroughGoto(
-    codeItems,
-    code,
-    use.branchIndex,
-    use.tailStart,
-    use.tailEnd,
-    use.exitLabel,
-    'LCKITERBOOL',
-  );
-}
-
-function findIteratorBooleanTail(codeItems) {
-  const refCounts = collectLabelReferenceCounts(codeItems);
-  for (let i = 2; i + 3 < codeItems.length; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    if (op(branch) !== 'ifne') continue;
-    if (intLoadLocal(codeItems[i - 1] && codeItems[i - 1].instruction) !== 1) continue;
-    const targetLabel = labelName(branch.arg);
-    if (!targetLabel || (refCounts.get(targetLabel) || 0) < 2) continue;
-    const tailStart = findLabelIndex(codeItems, targetLabel);
-    if (tailStart <= i) continue;
-    const invokeIndex = tailStart + 1;
-    if (integerConstantValue(codeItems[tailStart] && codeItems[tailStart].instruction) !== 0) continue;
-    if (!isInvoke(codeItems[invokeIndex] && codeItems[invokeIndex].instruction, 'tg', 'a', '(Z)Lpi;')) continue;
-    const fallthrough = nextInstructionIndex(codeItems, i + 1);
-    if (fallthrough !== i + 1) continue;
-    if (integerConstantValue(codeItems[fallthrough] && codeItems[fallthrough].instruction) !== 1) continue;
-    const fallthroughJump = codeItems[fallthrough + 1] && codeItems[fallthrough + 1].instruction;
-    if (op(fallthroughJump) !== 'goto' || findLabelIndex(codeItems, fallthroughJump.arg) !== invokeIndex) continue;
-    const exitLabel = ensureFreshLabel(codeItems, invokeIndex + 1, 'LCKITERBOOL_EXIT');
-    return { branchIndex: i, tailStart, tailEnd: invokeIndex + 1, exitLabel };
-  }
-  return null;
-}
-
-function retargetDuplicateRadiusScans(codeItems, code) {
-  const plan = findDuplicateRadiusScans(codeItems);
-  if (!plan) return 0;
-  const canonicalLabel = labelName(codeItems[plan.canonicalStart] && codeItems[plan.canonicalStart].labelDef);
-  if (!canonicalLabel) return 0;
-  let rewrites = 0;
-  for (const duplicate of plan.duplicates.slice().sort((a, b) => b.start - a.start)) {
-    if (rangeTouchesExceptionTable(code, codeItems, duplicate.start, duplicate.end)) continue;
-    const replacement = cloneItemMetadata(codeItems[duplicate.start]);
-    replacement.instruction = { op: 'goto', arg: canonicalLabel };
-    codeItems.splice(duplicate.start, duplicate.end - duplicate.start, replacement);
-    rewrites += 1;
-  }
-  return rewrites;
-}
-
-function findDuplicateRadiusScans(codeItems) {
-  const starts = [];
-  for (let i = 0; i + 8 < codeItems.length; i += 1) {
-    if (looksLikeRadiusScanSetup(codeItems, i)) starts.push(i);
-  }
-  if (starts.length < 4) return null;
-  const canonicalStart = starts[starts.length - 1];
-  const canonicalLabel = labelName(codeItems[canonicalStart] && codeItems[canonicalStart].labelDef);
-  if (!canonicalLabel) return null;
-  const duplicates = [];
-  for (const start of starts.slice(0, -1)) {
-    const end = findExternallyTargetedLabelAfter(codeItems, start + 1, canonicalStart, start);
-    if (end <= start) return null;
-    if (!rangeHasOnlyInternalLabelReferences(codeItems, start, end)) return null;
-    duplicates.push({ start, end });
-  }
-  return duplicates.length >= 3 ? { canonicalStart, duplicates } : null;
-}
-
-function looksLikeRadiusScanSetup(codeItems, start) {
-  return isGetStatic(codeItems[start] && codeItems[start].instruction, 'uc', 'uc_d', '[[I') &&
-    intLoadLocal(codeItems[start + 1] && codeItems[start + 1].instruction) === 4 &&
-    op(codeItems[start + 2] && codeItems[start + 2].instruction) === 'aaload' &&
-    integerConstantValue(codeItems[start + 3] && codeItems[start + 3].instruction) === 7 &&
-    op(codeItems[start + 4] && codeItems[start + 4].instruction) === 'iaload' &&
-    intStoreLocal(codeItems[start + 5] && codeItems[start + 5].instruction) === 6 &&
-    intLoadLocal(codeItems[start + 6] && codeItems[start + 6].instruction) === 6 &&
-    intStoreLocal(codeItems[start + 7] && codeItems[start + 7].instruction) === 8;
-}
-
-function findExternallyTargetedLabelAfter(codeItems, start, limit, duplicateStart) {
-  const refsByLabel = collectLabelReferencesByLabel(codeItems);
-  for (let i = start; i < limit; i += 1) {
-    const label = labelName(codeItems[i] && codeItems[i].labelDef);
-    if (!label) continue;
-    const refs = refsByLabel.get(label) || [];
-    if (refs.some((ref) => ref < duplicateStart)) return i;
-  }
-  return -1;
-}
-
-function rangeHasOnlyInternalLabelReferences(codeItems, start, end) {
-  const labels = new Set();
-  for (let i = start + 1; i < end; i += 1) {
-    const label = labelName(codeItems[i] && codeItems[i].labelDef);
-    if (label) labels.add(label);
-  }
-  if (labels.size === 0) return true;
-  const refsByLabel = collectLabelReferencesByLabel(codeItems);
-  for (const label of labels) {
-    for (const ref of refsByLabel.get(label) || []) {
-      if (ref < start || ref >= end) return false;
-    }
-  }
-  return true;
-}
 
 function retargetDuplicateBase38EncoderEntry(codeItems) {
   const use = findDuplicateBase38EncoderEntry(codeItems);
@@ -12770,146 +10918,6 @@ function readForwardBase38CharBody(codeItems, start) {
   return null;
 }
 
-function cloneChatWidthTails(codeItems, code) {
-  let rewrites = 0;
-  const uses = findChatWidthTailUses(codeItems).sort((a, b) => b.branchIndex - a.branchIndex);
-  for (const use of uses) {
-    rewrites += cloneTailAfterConditionalBranch(codeItems, code, use.branchIndex, use.tailStart, use.tailEnd, 'LCKWIDTH');
-  }
-  return rewrites;
-}
-
-function findChatWidthTailUses(codeItems) {
-  const out = [];
-  const special = findCeEqualsTwoTail(codeItems);
-  if (special) out.push(special);
-  const channel = findNonMinusOnePrefixTail(codeItems);
-  if (channel) out.push(channel);
-  return out;
-}
-
-function findCeEqualsTwoTail(codeItems) {
-  for (let i = 2; i < codeItems.length; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    if (op(branch) !== 'if_icmpeq') continue;
-    if (integerConstantValue(codeItems[i - 2] && codeItems[i - 2].instruction) !== 2) continue;
-    if (!isGetStatic(codeItems[i - 1] && codeItems[i - 1].instruction, 'ce', 'ce_d', 'I')) continue;
-    const tailStart = findLabelIndex(codeItems, branch.arg);
-    if (!looksLikeDirectMessageWidthTail(codeItems, tailStart)) continue;
-    const tailEnd = findWidthCheckReturnEnd(codeItems, tailStart, 2, 340);
-    if (tailEnd <= tailStart) continue;
-    return { branchIndex: i, tailStart, tailEnd };
-  }
-  return null;
-}
-
-function findNonMinusOnePrefixTail(codeItems) {
-  for (let i = 3; i < codeItems.length; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    if (op(branch) !== 'if_icmpne') continue;
-    if (integerConstantValue(codeItems[i - 3] && codeItems[i - 3].instruction) !== -1) continue;
-    if (!isGetStatic(codeItems[i - 2] && codeItems[i - 2].instruction, 'ce', 'ce_d', 'I')) continue;
-    if (op(codeItems[i - 1] && codeItems[i - 1].instruction) !== 'ixor') continue;
-    const tailStart = findLabelIndex(codeItems, branch.arg);
-    if (!looksLikePrefixWidthTail(codeItems, tailStart)) continue;
-    const tailEnd = findWidthCheckReturnEnd(codeItems, tailStart, 1, 120);
-    if (tailEnd <= tailStart) continue;
-    return { branchIndex: i, tailStart, tailEnd };
-  }
-  return null;
-}
-
-function looksLikeDirectMessageWidthTail(codeItems, start) {
-  return start >= 0 &&
-    isGetStatic(codeItems[start] && codeItems[start].instruction, 'dg', 'dg_b', 'Ljava/lang/String;') &&
-    integerConstantValue(codeItems[start + 1] && codeItems[start + 1].instruction) === 116 &&
-    integerConstantValue(codeItems[start + 2] && codeItems[start + 2].instruction) === 1 &&
-    op(codeItems[start + 3] && codeItems[start + 3].instruction) === 'anewarray';
-}
-
-function looksLikePrefixWidthTail(codeItems, start) {
-  return start >= 0 &&
-    op(codeItems[start] && codeItems[start].instruction) === 'new' &&
-    op(codeItems[start + 1] && codeItems[start + 1].instruction) === 'dup' &&
-    op(codeItems[start + 2] && codeItems[start + 2].instruction) === 'invokespecial' &&
-    refLoadLocal(codeItems[start + 3] && codeItems[start + 3].instruction) === 8;
-}
-
-function findWidthCheckReturnEnd(codeItems, start, ordinal, maxInsns) {
-  let instructions = 0;
-  let widthChecks = 0;
-  for (let i = start; i < codeItems.length && instructions < maxInsns; i += 1) {
-    if (!codeItems[i] || !codeItems[i].instruction) continue;
-    instructions += 1;
-    if (!looksLikeWidthCheckStart(codeItems, i)) continue;
-    widthChecks += 1;
-    if (widthChecks !== ordinal) continue;
-    const end = findSecondIreturnAfter(codeItems, i, 48);
-    if (end > i) return end;
-  }
-  return -1;
-}
-
-function looksLikeWidthCheckStart(codeItems, start) {
-  return isGetStatic(codeItems[start] && codeItems[start].instruction, 'vl', 'Q', 'Ljl;') &&
-    isGetStatic(codeItems[start + 1] && codeItems[start + 1].instruction, 'mp', 'mp_a', 'Ljava/lang/StringBuilder;') &&
-    isInvoke(codeItems[start + 2] && codeItems[start + 2].instruction, 'java/lang/StringBuilder', 'toString', '()Ljava/lang/String;') &&
-    isInvoke(codeItems[start + 3] && codeItems[start + 3].instruction, 'jl', 'c', '(Ljava/lang/String;)I') &&
-    intLoadLocal(codeItems[start + 4] && codeItems[start + 4].instruction) === 6;
-}
-
-function findSecondIreturnAfter(codeItems, start, maxInsns) {
-  let instructions = 0;
-  let returns = 0;
-  for (let i = start; i < codeItems.length && instructions < maxInsns; i += 1) {
-    if (!codeItems[i] || !codeItems[i].instruction) continue;
-    instructions += 1;
-    if (op(codeItems[i].instruction) !== 'ireturn') continue;
-    returns += 1;
-    if (returns < 2) continue;
-    const next = nextInstructionIndex(codeItems, i + 1);
-    return next > 0 ? next : i + 1;
-  }
-  return -1;
-}
-
-function retargetBooleanDuplicateBase38Encoder(codeItems) {
-  const use = findBooleanDuplicateBase38Encoder(codeItems);
-  if (!use) return 0;
-  codeItems[use.jumpIndex].instruction.arg = use.canonicalLabel;
-  return 1;
-}
-
-function findBooleanDuplicateBase38Encoder(codeItems) {
-  for (let i = 2; i + 6 < codeItems.length; i += 1) {
-    const branch = codeItems[i] && codeItems[i].instruction;
-    if (op(branch) !== 'ifeq') continue;
-    if (intLoadLocal(codeItems[i - 1] && codeItems[i - 1].instruction) !== 2) continue;
-    if (op(codeItems[i - 2] && codeItems[i - 2].instruction) !== 'lstore_3') continue;
-    const canonicalIndex = findLabelIndex(codeItems, branch.arg);
-    if (!looksLikeBooleanBase38EncoderEntry(codeItems, canonicalIndex)) continue;
-    if (op(codeItems[i + 1] && codeItems[i + 1].instruction) !== 'aload_0') continue;
-    if (integerConstantValue(codeItems[i + 2] && codeItems[i + 2].instruction) !== -109) continue;
-    if (!isPutField(codeItems[i + 3] && codeItems[i + 3].instruction, 'qc', 'qc_f', 'I')) continue;
-    const jump = codeItems[i + 4] && codeItems[i + 4].instruction;
-    if (op(jump) !== 'goto') continue;
-    const duplicateIndex = findLabelIndex(codeItems, jump.arg);
-    if (!looksLikeBooleanBase38EncoderEntry(codeItems, duplicateIndex)) continue;
-    return { jumpIndex: i + 4, canonicalLabel: labelName(branch.arg) };
-  }
-  return null;
-}
-
-function looksLikeBooleanBase38EncoderEntry(codeItems, start) {
-  return start >= 0 &&
-    op(codeItems[start] && codeItems[start].instruction) === 'lconst_0' &&
-    op(codeItems[start + 1] && codeItems[start + 1].instruction) === 'lstore' &&
-    refLoadLocal(codeItems[start + 2] && codeItems[start + 2].instruction) === 1 &&
-    isInvoke(codeItems[start + 3] && codeItems[start + 3].instruction, 'java/lang/String', 'length', '()I') &&
-    intStoreLocal(codeItems[start + 4] && codeItems[start + 4].instruction) === 7 &&
-    integerConstantValue(codeItems[start + 5] && codeItems[start + 5].instruction) === 19 &&
-    intStoreLocal(codeItems[start + 6] && codeItems[start + 6].instruction) === 8;
-}
 
 function canCloneForwardContinuationTail(codeItems, code, source, target) {
   if (target <= source || target >= codeItems.length) return false;
@@ -13725,9 +11733,6 @@ function integerConstantValue(insn) {
   return null;
 }
 
-function isSipush(insn, value) {
-  return op(insn) === 'sipush' && Number(insn.arg) === value;
-}
 
 function isBipush(insn, value) {
   return op(insn) === 'bipush' && Number(insn.arg) === value;
@@ -13768,25 +11773,6 @@ function stableInstructionArg(insn) {
   return JSON.stringify(insn.arg, (_key, value) => typeof value === 'bigint' ? value.toString() : value);
 }
 
-function isGetStatic(insn, owner, name, descriptor) {
-  if (op(insn) !== 'getstatic') return false;
-  const arg = insn && insn.arg;
-  return Array.isArray(arg)
-    && arg[1] === owner
-    && Array.isArray(arg[2])
-    && arg[2][0] === name
-    && arg[2][1] === descriptor;
-}
-
-function isGetField(insn, owner, name, descriptor) {
-  if (op(insn) !== 'getfield') return false;
-  const arg = insn && insn.arg;
-  return Array.isArray(arg)
-    && arg[1] === owner
-    && Array.isArray(arg[2])
-    && arg[2][0] === name
-    && arg[2][1] === descriptor;
-}
 
 function intLoadLocal(insn) {
   const cur = op(insn);
@@ -13899,6 +11885,150 @@ function cloneInstruction(insn) {
   delete out.cp_index;
   if (Array.isArray(out.arg)) out.arg = cloneValue(out.arg);
   return out;
+}
+
+
+function hasSharedFallthroughSource(codeItems, target, branchIndex, refs) {
+  if (refs.some((ref) => ref !== branchIndex)) return true;
+  const previous = previousInstruction(codeItems, target - 1);
+  const prevOp = op(previous && previous.instruction);
+  return !!prevOp && prevOp !== 'goto' && !isConditionalBranch(prevOp) && !isReturnOp(prevOp) && prevOp !== 'athrow';
+}
+
+function isReceiverLoadInstruction(insn) {
+  const descriptor = fieldDescriptor(insn);
+  if (op(insn) === 'getstatic' && typeof descriptor === 'string' && (descriptor.startsWith('L') || descriptor.startsWith('['))) return true;
+  return refLoadLocal(insn) != null || op(insn) === 'aload_0';
+}
+
+function rangeHasOnlySimpleInvokeArguments(codeItems, start, end) {
+  if (end <= start) return false;
+  for (let i = start; i < end; i += 1) {
+    const insn = codeItems[i] && codeItems[i].instruction;
+    if (integerConstantValue(insn) != null) continue;
+    if (intLoadLocal(insn) != null) continue;
+    return false;
+  }
+  return true;
+}
+
+function readSharedInvokeExitTail(codeItems, start) {
+  if (!isReceiverLoadInstruction(codeItems[start] && codeItems[start].instruction)) return null;
+  for (let invokeIndex = start + 2; invokeIndex <= start + 4 && invokeIndex + 1 < codeItems.length; invokeIndex += 1) {
+    const invoke = codeItems[invokeIndex] && codeItems[invokeIndex].instruction;
+    if (!isInvokeInstruction(invoke)) continue;
+    const descriptor = methodDescriptor(invoke);
+    if (!['(Z)V', '(B)V', '(I)V', '(II)V'].includes(descriptor)) continue;
+    if (!rangeHasOnlySimpleInvokeArguments(codeItems, start + 1, invokeIndex)) continue;
+    const jump = codeItems[invokeIndex + 1] && codeItems[invokeIndex + 1].instruction;
+    if (op(jump) !== 'goto') continue;
+    const exitIndex = findLabelIndex(codeItems, jump.arg);
+    if (exitIndex <= invokeIndex + 1) continue;
+    return { end: invokeIndex + 1, exitIndex };
+  }
+  return null;
+}
+
+function readSharedFallthroughContinuationTail(codeItems, start) {
+  const invokeTail = readSharedInvokeExitTail(codeItems, start);
+  if (invokeTail) return invokeTail;
+  const first = op(codeItems[start] && codeItems[start].instruction);
+  const second = op(codeItems[start + 1] && codeItems[start + 1].instruction);
+  if (second !== 'putstatic') return null;
+  if (first !== 'aconst_null' && first !== 'getstatic') return null;
+  if (op(codeItems[start + 2] && codeItems[start + 2].instruction) === 'goto') {
+    const exitIndex = findLabelIndex(codeItems, codeItems[start + 2].instruction.arg);
+    if (exitIndex < 0) return null;
+    return { end: start + 3, exitIndex };
+  }
+  const fourth = op(codeItems[start + 3] && codeItems[start + 3].instruction);
+  if (intLoadLocal(codeItems[start + 2] && codeItems[start + 2].instruction) == null) return null;
+  if (!isConditionalBranch(fourth)) return null;
+  const branchTarget = findLabelIndex(codeItems, codeItems[start + 3].instruction.arg);
+  const exitIndex = nextInstructionIndex(codeItems, start + 4);
+  if (branchTarget <= start + 3 || exitIndex < 0) return null;
+  return { end: start + 4, exitIndex };
+}
+
+function cloneSharedFallthroughContinuationTails(codeItems, code) {
+  const maxRewrites = Number(process.env.STRUCTURED_GOTO_SHARED_FALLTHROUGH_CONTINUATION_TAIL_MAX_REWRITES || 4);
+  let rewrites = 0;
+  for (let i = 0; i < codeItems.length && rewrites < maxRewrites; i += 1) {
+    const insn = codeItems[i] && codeItems[i].instruction;
+    const cur = op(insn);
+    if (!isConditionalBranch(cur)) continue;
+    const target = findLabelIndex(codeItems, insn.arg);
+    if (target <= i) continue;
+    const targetLabel = labelName(codeItems[target] && codeItems[target].labelDef);
+    if (!targetLabel || targetLabel.startsWith('LCKSFTC_')) continue;
+    const refs = collectLabelReferencesDetailed(codeItems, targetLabel);
+    if (refs.length < 1 || !hasSharedFallthroughSource(codeItems, target, i, refs)) continue;
+    const tail = readSharedFallthroughContinuationTail(codeItems, target);
+    if (!tail) continue;
+    if (tail.kind === 'staticThenReceiverCleanup' && !isConstStaticIntModeBranch(codeItems, i)) continue;
+    if (tail.kind === 'staticThenReceiverCleanup' && !cleanupExitHasArgumentGuard(codeItems, tail.exitIndex)) continue;
+    const fallthrough = nextInstructionIndex(codeItems, i + 1);
+    if (fallthrough < 0 || fallthrough >= target) continue;
+    const fallthroughLabel = ensureFreshLabel(codeItems, fallthrough, 'LCKSFTC_FALL');
+    const exitLabel = ensureFreshLabel(codeItems, tail.exitIndex, 'LCKSFTC_EXIT');
+    const cloneId = structuredCloneId;
+    structuredCloneId += 1;
+    const clone = cloneItems(codeItems.slice(target, tail.end));
+    renameInternalLabels(clone, `LCKSFTC_${cloneId}_`);
+    clone.push({ instruction: { op: 'goto', arg: exitLabel } });
+    insn.op = invertConditionalBranch(cur);
+    insn.arg = fallthroughLabel;
+    codeItems.splice(i + 1, 0, ...clone);
+    rewrites += 1;
+    i += clone.length;
+  }
+  return rewrites;
+}
+
+function hasBufferedObjectValidationSharedTailShape(method, codeItems) {
+  if (method.descriptor !== '(B)V') return false;
+  let byteArrayFieldLoads = 0;
+  let intFieldLoads = 0;
+  let staticObjectClears = 0;
+  let checksumCalls = 0;
+  let messageCalls = 0;
+  for (let i = 0; i < codeItems.length; i += 1) {
+    const insn = codeItems[i] && codeItems[i].instruction;
+    if (isGetFieldDescriptor(insn, '[B')) byteArrayFieldLoads += 1;
+    if (isGetFieldDescriptor(insn, 'I')) intFieldLoads += 1;
+    if (op(insn) === 'aconst_null' && isPutStaticObjectDescriptor(codeItems[i + 1] && codeItems[i + 1].instruction)) {
+      staticObjectClears += 1;
+    }
+    if (isInvokeDescriptor(insn, '([BBI)J')) checksumCalls += 1;
+    if (isInvokeDescriptor(insn, '(BZILjava/lang/String;)V')) messageCalls += 1;
+  }
+  return byteArrayFieldLoads >= 1 &&
+    intFieldLoads >= 2 &&
+    staticObjectClears >= 1 &&
+    checksumCalls >= 1 &&
+    messageCalls >= 1;
+}
+
+function hasSharedInvokeExitTailCandidate(codeItems) {
+  const refsByLabel = collectLabelReferencesByLabel(codeItems);
+  for (let start = 0; start < codeItems.length; start += 1) {
+    const label = labelName(codeItems[start] && codeItems[start].labelDef);
+    if (!label) continue;
+    const tail = readSharedInvokeExitTail(codeItems, start);
+    if (!tail) continue;
+    const refs = refsByLabel.get(label) || [];
+    if (refs.some((idx) => idx < start && isConditionalBranch(op(codeItems[idx] && codeItems[idx].instruction))) &&
+      hasSharedFallthroughSource(codeItems, start, refs[0], refs)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function shouldRunSharedFallthroughContinuationTail(method, codeItems) {
+  if (!method || !Array.isArray(codeItems)) return false;
+  return hasBufferedObjectValidationSharedTailShape(method, codeItems) ||
+    hasSharedInvokeExitTailCandidate(codeItems);
 }
 
 module.exports = { runStructuredGotoClone, countIntComplements, restoreDroppedIntComplements };

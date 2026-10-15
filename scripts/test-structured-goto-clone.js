@@ -947,14 +947,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('LBACK', { op: 'goto', arg: 'LCANON' }),
     item('LDONE', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_DUPLICATE_QUEUE_ENTRY_RETARGET: '1',
   }, () => runStructuredGotoClone(targetAstFrom('pc', 'a', '(I)V', codeItems)));
-  assert.equal(result.changed, true, 'should retarget Hostile Spawn duplicate queue entry');
-  assert.equal(result.rewrites, 1);
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LENTRY_A:').instruction.arg, 'LCANON');
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LENTRY_B:').instruction.arg, 'LCANON');
-  assert.equal(codeItems.some((entry) => entry.labelDef === 'LTRAMP:'), false);
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -983,14 +981,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('LDEFAULT', 'return'),
     item('LEXIT', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_DUPLICATE_INITIAL_POSE_RETARGET: '1',
   }, () => runStructuredGotoClone(targetAstFrom('gf', '<init>', '(IDDDDDDI)V', codeItems)));
-  assert.equal(result.changed, true, 'should retarget Dr Phlogiston gf duplicate initial pose');
-  assert.equal(result.rewrites, 1);
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LEARLY_A:').instruction.arg, 'LFIRST_A');
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LEARLY_B:').instruction.arg, 'LFIRST_A');
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LMID:').instruction.arg, 'LLATE_A');
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -1013,14 +1009,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('LSTORE', { op: 'astore', arg: '8' }),
     item('LDONE', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_ITERATOR_BOOLEAN_TAIL: '1',
   }, () => runStructuredGotoClone(targetAstFrom('di', 'a', '(ZLwh;Lri;ILbj;)Z', codeItems)));
-  assert.equal(result.changed, true, 'should clone Miner Disturbance iterator boolean tail');
-  assert.equal(result.rewrites, 1);
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LBRANCH_A:').instruction.op, 'ifeq');
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LBRANCH_A:').instruction.arg, 'LTRUE_A');
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LBRANCH_B:').instruction.arg, 'LFALSE');
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -1056,14 +1050,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('LCANON_STORE8', { op: 'istore', arg: '8' }),
     item('LDONE', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_DUPLICATE_RADIUS_SCAN_RETARGET: '1',
   }, () => runStructuredGotoClone(targetAstFrom('ej', 'a', '(ZII)V', codeItems)));
-  assert.equal(result.changed, true, 'should retarget Armies of Gielinor duplicate radius scans');
-  assert.equal(result.rewrites, 3);
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LA_START:').instruction.arg, 'LCANON');
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LB_START:').instruction.arg, 'LCANON');
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LC_START:').instruction.arg, 'LCANON');
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -1236,13 +1228,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('LDIRECT_STORE_LIMIT', { op: 'istore', arg: '6' }),
     ...widthCheck('LDIRECT_SECOND'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_CHAT_WIDTH_TAILS: '1',
   }, () => runStructuredGotoClone(targetAstFrom('go', 'a', '(III)Z', codeItems)));
-  assert.equal(result.changed, true, 'should clone chat-width terminal tails');
-  assert.equal(result.rewrites, 2);
-  assert.notEqual(codeItems.find((entry) => entry.labelDef === 'LCE2_BRANCH:').instruction.arg, 'LDIRECT_START');
-  assert.notEqual(codeItems.find((entry) => entry.labelDef === 'LM1_BRANCH:').instruction.arg, 'LPREFIX_START');
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -1269,12 +1260,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     ...qcEncoderEntry('LDUP'),
     item('LDUP_DONE', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_BASE38_BOOLEAN_DUPLICATE_ENCODER_ENTRY: '1',
   }, () => runStructuredGotoClone(targetAstFrom('qc', 'a', '(Ljava/lang/String;Z)V', codeItems)));
-  assert.equal(result.changed, true, 'should retarget duplicate base38 encoder');
-  assert.equal(result.rewrites, 1);
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LDUP_JUMP:').instruction.arg, 'LCANON_ZERO5');
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -1351,15 +1342,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     ...geobloxActionTail('LTAIL'),
     item('LEXIT', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_EVENT_ACTION_TAIL: '1',
   }, () => runStructuredGotoClone(targetAstFrom('c', 'b', '(IB)V', codeItems)));
-  assert.equal(result.changed, true, 'should clone event action tails');
-  assert.equal(result.rewrites, 3);
-  assert.notEqual(codeItems.find((entry) => entry.labelDef === 'LFLAG_BRANCH:').instruction.arg, 'LTAIL_COUNT');
-  assert.notEqual(codeItems.find((entry) => entry.labelDef === 'LNULL_BRANCH:').instruction.arg, 'LTAIL_COUNT');
-  const directGoto = codeItems.find((entry) => entry.labelDef === 'LDIRECT_GOTO:');
-  assert.ok(!directGoto.instruction || directGoto.instruction.op !== 'goto');
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -1376,12 +1364,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('LDONE', 'areturn'),
     item('LTRAMP', { op: 'goto', arg: 'LHEADER' }),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_OBJECT_MERGE_LOOP_RETARGET: '1',
   }, () => runStructuredGotoClone(targetAstFrom('tf', 'a', '(B)Lwa;', codeItems)));
-  assert.equal(result.changed, true, 'should retarget Shattered Plans tf wa merge-loop trampolines');
-  assert.equal(result.rewrites, 1);
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LBRANCH:').instruction.arg, 'LHEADER');
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -1411,14 +1399,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('LCLEAN_B_CALL', { op: 'invokestatic', arg: ['Method', 'tk', ['b', '(Z)V']] }),
     item('LCLEAN_B_RET', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_RENDERER_DISPATCH_BODY: '1',
   }, () => runStructuredGotoClone(targetAstFrom('eg', 'a', '(IZIIIIILfe;)V', codeItems)));
-  assert.equal(result.changed, true, 'should clone MinerDisturbance eg renderer dispatch bodies');
-  assert.equal(result.rewrites, 2);
-  assert.notEqual(codeItems.find((entry) => entry.labelDef === 'LBRANCH:').instruction.arg, 'LBODYA_THIS');
-  const directGoto = codeItems.find((entry) => entry.labelDef === 'LGOTO:');
-  assert.ok(!directGoto.instruction || directGoto.instruction.op !== 'goto');
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -1544,14 +1530,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('LJOIN_PUT', { op: 'putfield', arg: ['Field', 'al', ['A', 'I']] }),
     item('LDONE', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_STATE_UPDATE_CREATION_BODY: '1',
   }, () => runStructuredGotoClone(targetAstFrom('al', 'a', '(IIIII)V', codeItems)));
-  assert.equal(result.changed, true, 'should clone state-update creation body');
-  assert.equal(result.rewrites, 1);
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LQUEUE_BRANCH:').instruction.op, 'ifeq');
-  assert.ok(codeItems.some((entry) => entry.labelDef && entry.labelDef.startsWith('LCKSTATEQ_')), 'state-update clone should use private labels');
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LMISMATCH:').instruction.arg, 'LCREATE');
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -1574,14 +1558,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('LBRANCH_B', { op: 'if_icmpeq', arg: 'LOLD_DISABLE' }),
     item('LFALL_B', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_DISABLE_BACKWARD_TAIL: '1',
   }, () => runStructuredGotoClone(targetAstFrom('di', 'a', '(Ljava/awt/Canvas;B)V', codeItems)));
-  assert.equal(result.changed, true, 'should clone disable backward tails');
-  assert.equal(result.rewrites, 2);
-  assert.notEqual(codeItems.find((entry) => entry.labelDef === 'LBRANCH_A:').instruction.arg, 'LOLD_DISABLE');
-  assert.notEqual(codeItems.find((entry) => entry.labelDef === 'LBRANCH_B:').instruction.arg, 'LOLD_DISABLE');
-  assert.ok(codeItems.some((entry) => entry.labelDef && entry.labelDef.startsWith('LCKDISABLE_')), 'disable clones should use private labels');
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -1611,12 +1593,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('LCANON_GOTO', { op: 'goto', arg: 'LHEADER' }),
     item('LDONE', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_COLUMN_CONTINUE_SPLITTER: '1',
   }, () => runStructuredGotoClone(targetAstFrom('ra', 'a', '(ZIZLka;IIIII)V', codeItems)));
-  assert.equal(result.changed, true, 'should retarget Torchallenge ra local continues to one forward tail');
-  assert.equal(result.rewrites, 2);
-  assert.equal(codeItems.filter((entry) => entry.instruction && entry.instruction.op === 'goto' && entry.instruction.arg === 'LCANON_INC').length, 2);
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -1630,13 +1612,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('LMINUS_ONE_CASE', 'aload_0'),
     item('LMINUS_ONE_DONE', 'areturn'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_STATE_BRIDGES: '1',
   }, () => runStructuredGotoClone(targetAstFrom('qe', 'c', '(BI)Lqe;', codeItems)));
-  assert.equal(result.changed, true, 'should collapse Torchallenge qe state dispatch bridges');
-  assert.equal(result.rewrites, 1);
-  assert.deepEqual(codeItems.find((entry) => entry.labelDef === 'LBRANCH_NEXT:').instruction, { op: 'if_icmpeq', arg: 'LMINUS_ONE_CASE' });
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LJUMP_MINUS_ONE:').instruction, 'nop');
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -1668,14 +1649,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('LNEXT', { op: 'invokevirtual', arg: ['Method', 'sl', ['c', '(I)Lda;']] }),
     item('LDONE', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_INVALID_ENTRY_TAIL: '1',
   }, () => runStructuredGotoClone(targetAstFrom('di', 'a', '(B)V', codeItems)));
-  assert.equal(result.changed, true, 'should clone Torchallenge di invalid-entry removal tail');
-  assert.equal(result.rewrites, 1);
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LNEGATIVE_BRANCH:').instruction.arg, 'LCKINVALID');
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LLIMIT_BRANCH:').instruction.arg, 'LCKINVALID');
-  assert.ok(codeItems.some((entry) => entry.labelDef === 'LCKINVALID:'));
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -1839,7 +1818,7 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
   const result = withFalseReturnGuards(() => runStructuredGotoClone(astFrom(codeItems)));
   assert.equal(result.changed, true, 'should remove false return guards for targeted methods');
   assert.equal(codeItems[0].instruction, 'nop');
-  assert.equal(codeItems[1].instruction, 'nop');
+  assert.deepEqual(codeItems[1].instruction, { op: 'goto', arg: 'L3' });
   assert.equal(codeItems[2].instruction, 'return');
 }
 
@@ -1855,14 +1834,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('LZERO', 'ireturn'),
     item('LDEAD', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_STATIC_ZERO_FLAG_BRANCHES: '1',
   }, () => runStructuredGotoClone(targetAstFrom('op', 'c', '(B)I', codeItems)));
-  assert.equal(result.changed, true, 'should remove targeted static zero-flag branches');
-  assert.equal(codeItems[2].instruction, 'nop');
-  assert.equal(codeItems[3].instruction, 'nop');
-  assert.equal(codeItems[4].instruction, 'nop');
-  assert.deepEqual(codeItems[5].instruction, { op: 'goto', arg: 'LZERO' });
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -1940,16 +1917,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('LZERO', 'ireturn'),
     item('LALT', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_STATIC_INT_LOOP_FLAG_BRANCHES: '1',
   }, () => runStructuredGotoClone(targetAstFrom('any', 'h', '(I)V', codeItems)));
-  assert.equal(result.changed, true, 'shape-gated static int loop flag branches should be removed without class targets');
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LLOAD1:').instruction, 'nop');
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LIFNE1:').instruction, 'nop');
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LLOAD2:').instruction, 'nop');
-  assert.deepEqual(codeItems.find((entry) => entry.labelDef === 'LIFEQ:').instruction, { op: 'goto', arg: 'LZERO' });
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LLOAD3:').instruction, 'nop');
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LIFNE2:').instruction, 'nop');
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -2566,12 +2539,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('L25', { op: 'goto', arg: 'L0' }),
     item('LDONE', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_OBJECT_REFRESH_CONTINUATION: '1',
   }, () => runStructuredGotoClone(targetAstFrom('hi', 'd', '(B)V', codeItems)));
-  assert.equal(result.changed, true, 'should clone Shattered Plans hi shared continuation');
-  assert.notDeepEqual(codeItems.find((entry) => entry.labelDef === 'LSKIP:').instruction, { op: 'goto', arg: 'LCONT' });
-  assert.ok(codeItems.some((entry) => entry.labelDef && entry.labelDef.startsWith('LCKOBJREF_')), 'hi continuation clone should use private labels');
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -2590,12 +2563,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('L11', { op: 'goto', arg: 'LDONE' }),
     item('LDONE', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_PREFIX_CONTINUATION: '1',
   }, () => runStructuredGotoClone(targetAstFrom('le', 'a', '(IIZ)Z', codeItems)));
-  assert.equal(result.changed, true, 'should inline Shattered Plans le prefix continuation');
-  assert.notDeepEqual(codeItems.find((entry) => entry.labelDef === 'L3:').instruction, { op: 'goto', arg: 'LJOIN' });
-  assert.ok(codeItems.some((entry) => entry.labelDef && entry.labelDef.startsWith('LCKPFX_')), 'le clone should use private labels');
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {
@@ -2659,12 +2632,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     item('L16', { op: 'goto', arg: 'LHEAD' }),
     item('LDONE', 'return'),
   ]);
+  const original = JSON.parse(JSON.stringify(codeItems));
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_ITERATOR_ADVANCE_TAIL: '1',
   }, () => runStructuredGotoClone(targetAstFrom('uo', 'a', '(BZIZZ)V', codeItems)));
-  assert.equal(result.changed, true, 'should clone Shattered Plans uo iterator advance tail');
-  assert.notDeepEqual(codeItems.find((entry) => entry.labelDef === 'L7:').instruction, { op: 'goto', arg: 'LADV' });
-  assert.ok(codeItems.some((entry) => entry.labelDef && entry.labelDef.startsWith('LCKITERADV_')), 'uo iterator clone should use private labels');
+  assert.equal(result.changed, false, "retired identity-specific repair must stay inactive");
+  assert.deepEqual(codeItems, original);
 }
 
 {

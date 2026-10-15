@@ -196,19 +196,54 @@ or earlier diagnostics are presented as current successful validation.
 JAVA_TOOLS_DIR=... node scripts/pipeline/bulk-pipeline.js <in-classes> <out-classes> [flags]
 ```
 
-Bulk mode is a single Node process — roughly 25 seconds for a 343-class
-gamepack. It round-trips the AST through the bytecode serializer between every
-pass, which normalizes stack-map frames, label aliases and constant-pool
-ordering.
+Bulk mode uses a single Node process and round-trips the AST through the
+bytecode serializer between passes to normalize labels and constant-pool
+ordering. It does **not** regenerate `StackMapTable`. Classes of major version
+51 or later are preserved unchanged; cross-class name/descriptor changes are
+also disabled for mixed inputs containing such classes. Version 50 and earlier
+continue through preprocessing and inference-based verification. This is a
+format limitation, not a game selector.
 
-### Profiles
+### Game-independent preprocessing
 
-`--profile <name>` selects a per-game JSON profile from
-`scripts/pipeline/profiles/`: `armiesofgielinor`, `brickabrac`, `chess`,
-`dekobloko`, `minerdisturbance`, `pixelate`, `tetralink`. The default is
-`none`. Use `--profile none` for a generic runtime-safe run that loads no
-game profile, and `--profile all` only when deliberately checking profile
-leakage.
+The default pipeline has no game profiles, built-in game class/member names or
+fixed bytecode-offset patches. `--profile none` remains accepted for historical
+drivers; named profiles, `all`, and named `PIPELINE_PROFILES` values fail before
+creating output. No flag is needed to select generic behavior.
+
+The old profile directory and nine repair modules containing application
+selectors are removed. Identity-dependent branches inside `structuredGotoClone`, including
+exact label and application log-message gates, are retired rather than made
+unconditionally applicable. Independent generic branches remain. Cache-join and
+raster-clip passes infer candidates from input structure. Java conflict renames
+are discovered from the input hierarchy rather than seeded with game symbols.
+The legacy unproved static-zero local folds are removed: an external nonzero
+field write must retain its original behavior. Whole-program flag discovery
+remains subject to the closed-world gates below.
+
+Per-game readable naming dictionaries, resource maps and relocations stay in
+`readable/`; they are application data, separate from bytecode preprocessing.
+
+Focused regression commands (with normal java-tools dependencies installed):
+
+```sh
+node --test scripts/test-game-agnostic-preprocessing.mjs
+node scripts/test-structured-goto-clone.js
+node scripts/test-pipeline-cache-provenance.js
+```
+
+The first command audits production preprocessors for application descriptors,
+member selectors and fixed offsets, checks 16 symbol/label renamings of a
+positive rewrite, rejects named profiles, and verifies complete native programs
+with externally written zero/nonzero flags. Both ordinary and `--safe-bytecode`
+modes are tested with original/renamed symbols and class versions 49, 50 and 52.
+The version-52 case must remain byte-identical; the older cases run the actual
+pipeline. A mixed-version native program checks that preserved callers retain
+valid references to rewritten libraries. A separate native branch oracle checks
+taken constant-jump destinations and a shared branch with a second incoming
+value; constant folding must preserve the former and reject the latter.
+Protected regions are excluded from these folds. The structured tests retain retired fixtures as unchanged-input
+regressions alongside the positive generic cases.
 
 ### Safety flags
 
@@ -234,9 +269,9 @@ The failure modes it fixes are generic, not game-specific:
 original local when non-rewritten loads remain or a store is a branch target,
 and refuses const-return merge targets that have fallthrough predecessors.
 
-`--runtime-safe` is the mode used by the owned-decompiler driver. The remaining
-flags are `--keep-runtime-handlers`, `--skip-cfdce`, `--skip-inline` and
-`--profiles`.
+`--runtime-safe` is used for the owned-decompiler driver’s runtime-safety
+retry; the initial run uses `--safe-bytecode`. Other flags include
+`--keep-runtime-handlers`, `--skip-cfdce` and `--skip-inline`.
 
 ### Experimental closed-world gates
 
@@ -324,36 +359,29 @@ checked exception propagated by arbitrary bytecode.
 | `structured-goto-clone` | Structured cloning, including duplicate drain-header canonicalization: it retargets an earlier duplicate loop/drain header to a later canonical header when the bytecode recognizer proves both have equivalent opcode/operand windows, the same exit/alternate/tail roles, and any separate redraw tail is instruction-equivalent. The decision is made from bytecode shape only. `STRUCTURED_GOTO_DUPLICATE_DRAIN_HEADER=0` is a debug kill switch. |
 | `compile-conflict-renames` | Exact owner/name/descriptor renames for Java source conflicts, expanded across override families so call sites and hierarchy members stay consistent. |
 
-Profile-selected passes live beside them in `scripts/pipeline/`:
-`eiTailClone`, `qcDoLoopTailClone`, `qkExceptionSplit`, `vlCacheJoin`,
-`rasterScanlineEntryClone`, `sourceScopeLocalInit`,
-`stackReceiverTailClone`, `ckClipFlag`, `pollLoopReturnNormalize`,
-`retargetBranches`, `removeShadowedExceptionHandlers`,
-`terminalActionExtract`, `terminalCleanupExtract`, `terminalIteratorExtract`,
-`structural-select-better`. Each checks the expected local block shape before
-editing; a profile entry selects a candidate site, it does not authorise a blind
-patch.
+Additional local passes (`vlCacheJoin`, `ckClipFlag`,
+`pollLoopReturnNormalize`, `terminalActionExtract`, `terminalIteratorExtract`)
+and the generic structural selector live in `scripts/pipeline/`. Their legacy
+filenames do not select an application.
 
 ## Transform development rules
 
-1. Build a reduced Krakatau/Jasmin or javac-produced example that reproduces the
-   structuring failure.
-2. Compare that bytecode shape to the obfuscated bytecode.
-3. Implement the smallest semantic-preserving bytecode rewrite.
-4. Put class/offset selectors in JSON profile data when a fully general gate is
-   too risky.
-5. Re-run the marker, verifier and compile harnesses.
-6. For a new gamepack, start with `--profile none`; if structuring improves
-   while the verifier fails, rerun with `--safe-bytecode` and inspect the
-   bytecode diff before accepting the result.
-
-A new game profile must not change the existing baselines.
+1. Build a reduced Krakatau/Jasmin or javac-produced example reproducing the
+   structuring failure, using arbitrary symbols and labels.
+2. Compare its CFG, stack behavior and exception regions with the original.
+3. Implement the smallest semantic-preserving generic reconstruction or rewrite.
+   If the proof is incomplete, leave the input unchanged; do not add a game,
+   member, log-message or fixed-offset selector.
+4. Check renamed variants, independent semantic counterexamples and native JVM
+   verification, then run the relevant catalog verifier and compile gates.
+5. Prefer default compiler reconstruction in `java-tools` when bytecode mutation
+   is unnecessary. Keep semantic names, maps and relocations in Deko.
 
 ### Moving reconstruction into the compiler
 
 The normal 44-game driver already selects `--profile none --safe-bytecode`.
-Its remaining preprocessing dependency is not synonymous with active game
-profiles: it also coordinates generic passes and local shape recognizers.
+Its remaining preprocessing dependency consists of generic passes and local
+shape recognizers, with no game profile selection.
 Standalone `java-tools` must learn the useful structural patterns without
 requiring this runner, class names, offsets or feature switches.
 
@@ -411,7 +439,7 @@ established for this migration.
 |---|---|
 | Generic bytecode passes in `java-tools` | Already independent algorithms; Deko still selects order and safety options. Prefer compiler analysis/reconstruction when mutation is unnecessary. |
 | `structuredGotoClone` and `pollLoopReturnNormalize` | Local, mixed shape-repair code. Reduce and prove individual patterns before migrating them; moving the files alone would preserve the dependency's assumptions. |
-| `eiTailClone`, `qcDoLoopTailClone`, `qkExceptionSplit` and other profile sites | Explicit game-selected legacy patches remain in Deko. Replace each with an arbitrary fixture and a general proof before removing its selector. |
+| Legacy profile sites and identity-gated local repairs | Removed. Reintroduce a useful pattern only with a generic proof and arbitrary fixtures. Removal alone is not evidence of improved readability or whole-game runtime equivalence. |
 | Dead flags and interclass constants | Generic engines exist; whole-program assumptions need evidence about the input set. A decompiler must not silently assume that outside callers or reflection cannot change a field. |
 | Semantic names, resource maps and relocations | Application data stays in Deko; it does not belong in the generic compiler. |
 
