@@ -2055,6 +2055,17 @@ with a fresh empty deque. RasterStackHelpers.popRaster names the owner of the
 existing snapshot restoration/pooling operation. Unrelated globals retain their
 separate names and storage owners.
 
+UiGeometryHelpers now names the shared owner of createScaledHalfSizeSprite,
+resetListVerticalBounds and clearSharedReferences. The sprite helper allocates
+half the source canvas dimensions, scales at the supplied destinationX and
+restores the software framebuffer. Its locals identify the output sprite,
+return carrier and exception context. It retains a different implementation
+from SpriteInputHelpers.createHalfSizeSprite; no new pixel-equivalence claim
+is made for this helper. spaceNearHalfSprite names the space_near scene cache;
+rankingSortModeLabels and goodGriefText retain their literal/localized roles.
+The reset method's name follows the audited original contract. Its frozen-input
+defect described below remains visible, and the naming pass preserves it.
+
 A subsequent bytecode audit found a correctness defect in the frozen input for
 `jh.a(boolean,mh)`, the list-layout reset helper used by friend/ignore list updates.
 The original JAR stores both the first child and each next child into slot 2, and
@@ -2108,8 +2119,14 @@ The same model also passes against all classes compiled from the corrected
 whole-game batch, with the same assertion count and trace. That raw Java tree
 has SHA-256 `29a4eb473e753435cfd6d57bc5c9a77ef3ca9b477d8503c53c321ab55762f7df`;
 only `jh.java` differs from the frozen input. This is a generated-Java tree
-identity, separate from the compiler-source tar hash above. All existing 14,803
+identity, separate from the compiler-source tar hash above. All existing 14,823
 naming rules still resolve with their expected original names in that input.
+An unpublished full naming round over the corrected input also passes the
+3,454,982 core assertions with the existing trace, and its original, raw and
+named list-reset variants agree on all 5,449 assertions and the reset trace.
+The temporary rule set deliberately made no Git source-pin claim, and its
+generated output was removed after validation. The real input pin and default
+reset-gate integration still require the complete catalog publication.
 The probe can also resolve raw/readable aliases from the
 dictionary for integration after the input migration. Both compiler and JVM
 probe processes have 30-second execution limits; temporary output is removed.
