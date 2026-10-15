@@ -63,10 +63,24 @@ test('production preprocessors contain no application descriptor or member ident
         const literals = node.arguments.filter(argument => argument.type === 'Literal' && typeof argument.value === 'string');
         assert.ok(!literals.some(argument => /^[a-z]{1,3}(?:_[a-z]+)?$/.test(argument.value)), site + ': application member selector');
       }
-      if (node.type === 'BinaryExpression' && node.left.type === 'MemberExpression'
-          && ['name', 'arg', 'className', 'owner'].includes(node.left.property.name)
-          && node.right.type === 'Literal' && typeof node.right.value === 'string')
-        assert.ok(!/^[a-z]{1,3}(?:_[a-z]+)?$/.test(node.right.value), site + ': application identity comparison');
+      if (node.type === 'BinaryExpression') {
+        for (const [member, literal] of [[node.left, node.right], [node.right, node.left]]) {
+          const property = member.type === 'MemberExpression'
+            ? (member.computed ? member.property.value : member.property.name) : null;
+          if (['name', 'arg', 'className', 'owner'].includes(property)
+              && literal.type === 'Literal' && typeof literal.value === 'string')
+            assert.match(literal.value, /^(?:(?:java|javax)\/|<init>$|<clinit>$)/,
+              site + ': fixed application identity comparison');
+        }
+      }
+      if (node.type === 'CallExpression' && node.callee.type === 'MemberExpression'
+          && ['includes', 'startsWith', 'endsWith'].includes(node.callee.property.name)
+          && node.callee.object.type === 'MemberExpression' && node.callee.object.property.name === 'arg') {
+        const literal = node.arguments[0];
+        if (literal?.type === 'Literal' && typeof literal.value === 'string')
+          assert.match(literal.value, /^(?:(?:java|javax)\/|LCK)/,
+            site + ': fixed application message/content selector');
+      }
     });
   }
 });
@@ -157,18 +171,20 @@ System.out.println(value+":"+guard+":"+object.${score});}}}`;
       if (reference === undefined) reference = expected;
       else assert.equal(expected, reference);
       const modernBytes = fs.readFileSync(path.join(input, className + '.class'));
-      for (const version of ['modern', 'version50', 'legacy']) {
+      for (const [version, major, preserve] of [['modern', 52, true], ['java7', 51, true], ['version50', 50, false], ['legacy', 49, false]]) {
         const bytes = Buffer.from(modernBytes);
         // This fixture uses only pre-Java-7 instructions. Exercise actual
         // rewriting as well as preservation of classes requiring stack maps.
-        if (version !== 'modern') bytes.writeUInt16BE(version === 'legacy' ? 49 : 50, 6);
+        bytes.writeUInt16BE(major, 6);
         fs.writeFileSync(path.join(input, className + '.class'), bytes);
         for (const mode of [[], ['--safe-bytecode']]) {
           const output = path.join(temporary, className, version + (mode.length ? '-safe' : '-default'));
           const stdout = run(process.execPath, [path.join(repository, 'scripts/pipeline/bulk-pipeline.js'), input, output, ...mode], {env: environment});
           assert.match(stdout, /Done: 1\/1 processed, 0 failed \(passthrough\), 0 copied/);
           assert.equal(run('java', ['-Xverify:all', '-cp', output, className], {env: environment}), expected);
-          if (version === 'modern') assert.deepEqual(fs.readFileSync(path.join(output, className + '.class')), modernBytes);
+          const emitted = fs.readFileSync(path.join(output, className + '.class'));
+          if (preserve) assert.deepEqual(emitted, bytes);
+          else assert.notDeepEqual(emitted, bytes, 'legacy fixtures must exercise preprocessing, not the modern preservation path');
         }
       }
     }

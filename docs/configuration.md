@@ -42,16 +42,17 @@ java-tools?" are reachable in a single checkout.
 
 | Strategy | Rule | Used by |
 |---|---|---|
-| `jtDirWithAuthorFallback` | `JAVA_TOOLS_DIR` → `JT_DIR` → `/home/kreijstal/git/java-tools` | `scripts/pipeline/bulk-pipeline.js`, `scripts/pipeline/ckClipFlag.js`, `scripts/pipeline/structural-select-better.js`, `scripts/cfr-marker-count.js`, `scripts/test-pipeline-pass-regressions.js`, `scripts/decompile-all-games.sh` |
+| `jtDirWithAuthorFallback` | `JAVA_TOOLS_DIR` → `JT_DIR` → `/home/kreijstal/git/java-tools` | `scripts/cfr-marker-count.js`, `scripts/test-pipeline-pass-regressions.js`, `scripts/decompile-all-games.sh` |
+| pipeline sibling fallback | `JAVA_TOOLS_DIR` → `JT_DIR` → `<repo>/../java-tools` | `bulk-pipeline.js`, `ckClipFlag.js`, `structural-select-better.js` |
 | `jtDirWithSiblingFallback` | `JAVA_TOOLS_DIR` → `<repo>/../java-tools` | no consumer remains; it is the default strategy of `describeJavaTools()` |
 | `jtDirWithHomeFallback` | `JAVA_TOOLS_DIR` → `~/git/java-tools` | `scripts/run-jvmjs.js` |
 | `jtRootWithSiblingFallback` | `JAVA_TOOLS_ROOT` → `<repo>/../java-tools` | `scripts/serve-game-library.js` only |
 | `jtDirOnlyWithAuthorFallback` | `JAVA_TOOLS_DIR` → `/home/kreijstal/git/java-tools` (no `JT_DIR`) | `scripts/find-unsafe-observable-call-duplications.js` |
 | `required` | `JAVA_TOOLS_DIR` → `JT_DIR` → **fail** | no consumer remains |
 
-`required` is the only portable rule, and the only one that fails loudly
-instead of handing a nonexistent path to a `require()` several frames later. It
-is the behaviour every call site should eventually adopt.
+`required` refuses to guess when neither explicit path is set. Sibling
+fallbacks work across machines when the repositories follow the documented
+layout; they still depend on that layout being present.
 
 Removing an author-specific implicit fallback changes behaviour on the author's
 machine, so it is a separately tested configuration migration and is **not**
@@ -77,7 +78,7 @@ both `scripts/pipeline/bulk-pipeline.js` and
 
 ### The portability ratchet
 
-`scripts/test-config-portability.js` scans **117** source files and enforces
+`scripts/test-config-portability.js` scans tracked source files and enforces
 three things:
 
 1. `JAVA_TOOLS_NODE_DEPS_DIR` never defaults to a literal path.
@@ -86,15 +87,14 @@ three things:
    whose value contains no `$` reference; every script must use the
    `${JT_DIR:-...}` convention.
 3. The number of author-path fallback sites may **fall, never rise**. The
-   current budget is **7**, and all seven sites are live. Files under
+   current budget is **4**, and all four sites are live. Files under
    `scripts/lib/` and the test itself are excluded: naming a bad default in
    order to document it is not the same as depending on it.
 
 The ratchet is a lock, not a ban. Lower `AUTHOR_FALLBACK_BUDGET` as each family
-migrates; the test tells you the new number when the count drops. The seven
-remaining sites are `bulk-pipeline.js`, `ckClipFlag.js`,
-`structural-select-better.js`, `cfr-marker-count.js`,
-`test-pipeline-pass-regressions.js`, `decompile-all-games.sh` and
+migrates; the test tells you the new number when the count drops. The four
+remaining sites are `cfr-marker-count.js`, `test-pipeline-pass-regressions.js`,
+`decompile-all-games.sh` and
 `find-unsafe-observable-call-duplications.js`.
 
 ## Ports and endpoints

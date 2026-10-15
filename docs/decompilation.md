@@ -236,8 +236,8 @@ The first command audits production preprocessors for application descriptors,
 member selectors and fixed offsets, checks 16 symbol/label renamings of a
 positive rewrite, rejects named profiles, and verifies complete native programs
 with externally written zero/nonzero flags. Both ordinary and `--safe-bytecode`
-modes are tested with original/renamed symbols and class versions 49, 50 and 52.
-The version-52 case must remain byte-identical; the older cases run the actual
+modes are tested with original/renamed symbols and class versions 49, 50, 51 and 52.
+The version-51/52 cases must remain byte-identical; the older cases run the actual
 pipeline. A mixed-version native program checks that preserved callers retain
 valid references to rewritten libraries. A separate native branch oracle checks
 taken constant-jump destinations and a shared branch with a second incoming

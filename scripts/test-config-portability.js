@@ -99,7 +99,7 @@ const read = (file) => fs.readFileSync(file, 'utf8');
 // scripts/pipeline/bulk-pipeline.js's second copy. Every remaining site is
 // listed in docs/configuration.md. Lower this number as families migrate to
 // the `required` strategy in scripts/lib/java-tools.js.
-const AUTHOR_FALLBACK_BUDGET = 7;
+const AUTHOR_FALLBACK_BUDGET = 4;
 
 // scripts/lib/ and this test DOCUMENT the author path -- naming a bad default
 // in order to describe it is not the same as depending on it. Counting them

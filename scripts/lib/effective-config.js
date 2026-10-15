@@ -41,9 +41,10 @@ const REGISTRY = [
     defaultText: 'no single default; see divergence note',
     divergent: true,
     note:
-      'Four different resolution rules exist across the nine consumers. ' +
-      'bulk-pipeline.js, cfr-marker-count.js, test-pipeline-pass-regressions.js, ' +
-      'ckClipFlag.js, structural-select-better.js and decompile-all-games.sh fall ' +
+      'Five different resolution rules exist across the nine consumers. ' +
+      'bulk-pipeline.js, ckClipFlag.js and structural-select-better.js use ' +
+      'JAVA_TOOLS_DIR, then JT_DIR, then the sibling java-tools checkout. ' +
+      'cfr-marker-count.js, test-pipeline-pass-regressions.js and decompile-all-games.sh fall ' +
       "back to JT_DIR and then to the hardcoded author path " +
       "'/home/kreijstal/git/java-tools'. " +
       'scripts/find-unsafe-observable-call-duplications.js:100 uses that same ' +
