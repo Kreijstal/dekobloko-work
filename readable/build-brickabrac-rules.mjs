@@ -367,6 +367,10 @@ classes.bp=["QuickChatContextMarker", "Empty interface implemented by FontReques
 classes.rm=["FontRequestHelpers", "Binary-mask font construction and email-availability request construction, plus an otherwise unused Quick Chat context marker and unrelated farm/UI globals."];
 classes.jl=['LogoRenderHelpers','Depth-orders and renders posed logo pieces with animated/pointer lighting; separately named input, social and network/time globals retain distinct roles.'];
 classes.ja=['BoardPresentationHelpers','Bouncing board-end logo/message presentation, level-sequence attribute aggregation and sprite-backed fullscreen-dialog style configuration; clock/archive/theme globals retain separate roles.'];
+classes.df=["AccountDateHelpers", "RSA birth-date submission, pending email-availability reply consumption and account-dialog polling; separately named CP1252/floor/achievement helpers retain distinct roles."];
+classes.un=["CalendarRankingHelpers", "Current local calendar year and packed ranking statistics, plus independently named dialog/layout globals."];
+classes.rh=["CalendarMatchmakingState", "Common-year month lengths and matchmaking choice mask; unrelated tutorial, sprite and text globals retain distinct roles."];
+classes.tq=["MeshAudioHelpers", "Interpolated mesh triangle dispatch and audio startup forwarding, alongside shared account packet scratch and unrelated labels."];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -1587,7 +1591,7 @@ for(const [ordinal,original,to] of [[0,'var5','dataBuffer'],[1,'var6','colorMode
 for(const [owner,original,type,to,evidence] of [
  ['qg','A','I','clientStage','Shared initialization/UI connection stage, progressing through10/11/20.'],
  ['qg','o','I','gameCrc','Parsed gamecrc applet parameter.'],['qg','x','Ljava/lang/String;','host','Code-base host, not game name.'],['qg','u','I','languageId','Parsed lang, values at least5 become0.'],['qg','C','I','affiliateId','Optional affid.'],['qg','w','J','instanceId','Parsed instanceid.'],['qg','s','Z','jagexHost','True for jagex.com host or subdomain.'],['qg','q','Z','memberAccount','Member parameter equals yes.'],['qg','v','I','gamePortOne','Parsed gameport1.'],['qg','p','I','gamePortTwo','Parsed gameport2.'],['qg','B','I','serverNumber','Optional servernum.'],['qg','y','Z','reconnectRequested','Forces connection-time check failure then clears.'],
- ['ch','g','[I','incomingPacketLengths','Opcode-indexed sizes, -1 byte prefix and -2 short prefix.'],['uf','d','[Z','enabledCommonPackets','Enabled common opcode dispatch flags.'],['jl','e','Lpi;','incomingPackets','Current input/cipher packet buffer.'],['k','h','Lpi;','outgoingPackets','Current output/cipher packet buffer.'],['eq','g','Lwh;','gameTransport','Game-session byte stream, distinct from archive transport.'],['ob','I','I','pendingPacketOpcode','Partially received opcode, -1 before next header.'],['ga','j','I','incomingPacketLength','Payload byte count or pending -1/-2 length prefix.'],['si','a','I','currentPacketOpcode','Most recently delivered opcode.'],['mh','gb','I','previousPacketOpcode','Previous delivered opcode.'],['we','a','I','secondPreviousPacketOpcode','Second prior delivered opcode.'],['r','z','I','thirdPreviousPacketOpcode','Third prior delivered opcode.'],['al','m','Lvl;','delayedPackets','Artificial-delay packet FIFO.'],['ue','d','I','packetDelayMillis','Artificial incoming packet delay;0 immediate delivery.'],['ej','J','D','packetDelayJitter','Gaussian delay deviation; negative resulting delay clamps0.'],['ji','e','Ljava/util/Random;','packetDelayRandom','Random generator used only for artificial delay jitter.'],['oj','t','J','lastGameReadMillis','Last successful game transport byte read, used for timeout.'],
+ ['ch','g','[I','incomingPacketLengths','Opcode-indexed sizes, -1 byte prefix and -2 short prefix.'],['uf','d','[Z','enabledCommonPackets','Enabled common opcode dispatch flags.'],['jl','e','Lpi;','incomingPackets','Current input/cipher packet buffer.'],['k','h','Lpi;','outgoingPackets','Current output/cipher packet buffer.'],['eq','g','Lwh;','gameTransport','Game-session byte stream, distinct from archive transport.'],['ob','I','I','pendingPacketOpcode','Partially received opcode, -1 before next header.'],['ga','j','I','incomingPacketLength','Payload byte count or pending -1/-2 length prefix.'],['si','a','I','currentPacketOpcode','Most recently delivered opcode.'],['mh','gb','I','previousPacketOpcode','Previous delivered opcode.'],['we','a','I','secondPreviousPacketOpcode','Second prior delivered opcode.'],['r','z','I','thirdPreviousPacketOpcode','Third prior delivered opcode.'],['al','m','Lvl;','delayedPackets','Artificial-delay packet FIFO.'],['ue','d','I','packetDelayMillis','Artificial incoming packet delay;0 immediate delivery.'],['ej','J','D','packetDelayJitter','Gaussian delay deviation; negative resulting delay clamps0.'],['ji','e','Ljava/util/Random;','packetRandom','Random used for artificial packet-delay jitter and nonce words in account/birth-date packets.'],['oj','t','J','lastGameReadMillis','Last successful game transport byte read, used for timeout.'],
  ['pg','r','I','opcodeOrByteCount','Incoming queue stores a decoded opcode; outgoing queue stores the payload byte count.'],['pg','l','[B','data','Retained payload array, constructor shares caller array.'],['pg','j','J','deliverAfterMillis','Strict delivery threshold: current time must be greater.'],
  ['ad','h','Lql;','readTask','Asynchronous stream reader task.'],['ad','k','Ljava/io/DataInputStream;','input','Opened response input.'],['ad','a','Ljava/net/URL;','url','Requested URL and fallback file path.'],['ad','f','Lwq;','packet','Fixed-capacity bytes and used-byte cursor.'],['ad','c','I','phase','0 URL,1 JAGGRAB fallback,2 failure,3 EOF success.'],['ad','g','Ltg;','services','Platform URL/socket/thread task provider.'],['ad','d','Lql;','urlTask','Pending/opened URL stream task.'],['ad','i','Lql;','socketTask','Pending/opened JAGGRAB socket task.'],['po','e','Lad;','countryListRequest','Temporary countrylist.ws request.'],['be','c','I','uiBootstrapStage','UI asset bootstrap stage advanced by controller.'],['al','j','Lwb;','uiLifecycle','Registered game UI lifecycle callbacks.'],
 ])field(owner,original,type,to,evidence);
@@ -4719,6 +4723,85 @@ local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby trans
  local("mj","a(IIZI)V",0,"var5","unusedBytes",evidence);
 }
 
+{
+ const evidence="Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.";
+ method("un","a","(I)I","getCurrentLocalYear",evidence,["obfuscationGuard"]);
+ method("gq","b","(II)Z","isLegacyLeapYear",evidence,["year", "obfuscationGuard"]);
+ method("bg","a","(III)I","getLegacyMonthLength",evidence,["year", "obfuscationGuard", "monthIndex"]);
+ method("p","a","(BIII)Z","isValidLegacyDate",evidence,["obfuscationGuard", "day", "year", "monthIndex"]);
+ method("df","a","(IBII)V","sendBirthDate",evidence,["year", "obfuscationGuard", "day", "monthIndex"]);
+ method("df","a","(I)Ljava/lang/Boolean;","takeEmailAvailabilityReply",evidence,["obfuscationGuard"]);
+ method("to","a","(ZI)V","completeEmailAvailabilityRequest",evidence,["available", "obfuscationGuard"]);
+ method("df","a","(IIIZ)I","pollAccountDialogResult",evidence,["obfuscationGuard", "unusedWheelDelta", "unusedLocaleId", "unusedFlag"]);
+ method("vi","c","(B)I","pollAccountDialogResult",evidence,["obfuscationGuard"]);
+ field("rh","b","[I","commonYearMonthLengths",evidence);
+ field("vn","F","Ljava/math/BigInteger;","accountRsaExponent",evidence);
+ field("to","g","Ljava/math/BigInteger;","accountRsaModulus",evidence);
+ field("tq","f","Lwq;","accountPacketScratch",evidence);
+ field("af","r","Ljava/lang/Boolean;","pendingEmailAvailabilityReply",evidence);
+ local("df","a(IBII)V",0,"fieldTemp$0","payloadStartAfterLength",evidence);
+ local("df","a(IBII)V",1,"var4","payloadStart",evidence);
+ local("df","a(IBII)V",2,"var4Lifetime1","alternatePayloadStart",evidence);
+ local("df","a(IBII)V",3,"fieldTemp$1","alternatePayloadStartAfterLength",evidence);
+ local("df","a(I)Ljava/lang/Boolean;",0,"var1","reply",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",0,"var7","byteIndex",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",1,"incrementValue$1","charIndexBeforeIncrement",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",2,"var4_int","guardCalculation",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",3,"var5","charsAlias",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",4,"var6","charCount",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",5,"var8","byteOrCharacter",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",6,"var9","extensionCharacter",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",7,"var10","unusedGameFlag",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",8,"var11","charsInitialAlias",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",9,"var12","chars",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",10,"stackIn_15_0","decodedText",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",11,"stackIn_18_0","failureContext",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",12,"stackIn_18_1","contextBuilder",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",13,"stackIn_19_2","dataSummary",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",14,"decompiledCaughtException","caughtFailure",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",15,"var4","failure",evidence);
+ local("df","a(II[BI)Ljava/lang/String;",16,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("na","a(B)I",0,"var2","ignoredInvalidNumber",evidence);
+ local("na","a(B)I",1,"stackIn_3_0","parsedDay",evidence);
+ local("na","a(B)I",2,"decompiledCaughtException","caughtFailure",evidence);
+ local("na","a(B)I",3,"decompiledCaughtParameter0","caughtNumberFailure",evidence);
+ local("na","i(B)I",0,"var2","ignoredInvalidNumber",evidence);
+ local("na","i(B)I",1,"stackIn_3_0","parsedMonthIndex",evidence);
+ local("na","i(B)I",2,"decompiledCaughtException","caughtFailure",evidence);
+ local("na","i(B)I",3,"decompiledCaughtParameter0","caughtNumberFailure",evidence);
+ local("na","i(I)I",0,"var2","ignoredInvalidNumber",evidence);
+ local("na","i(I)I",1,"stackIn_3_0","parsedYear",evidence);
+ local("na","i(I)I",2,"decompiledCaughtException","caughtFailure",evidence);
+ local("na","i(I)I",3,"decompiledCaughtParameter0","caughtNumberFailure",evidence);
+ local("an","c(I)Lqh;",1,"var2","ignoredInvalidNumber",evidence);
+ local("an","c(I)Lqh;",5,"stackIn_2_0","guardRejectedStatus",evidence);
+ local("an","c(I)Lqh;",6,"stackIn_6_0","yearTooOldStatus",evidence);
+ local("an","c(I)Lqh;",7,"stackIn_9_0","yearTooRecentStatus",evidence);
+ local("an","c(I)Lqh;",8,"stackIn_13_0","invalidDateStatus",evidence);
+ local("an","c(I)Lqh;",9,"decompiledCaughtException","caughtFailure",evidence);
+ local("an","c(I)Lqh;",10,"decompiledCaughtParameter0","caughtNumberFailure",evidence);
+ local("an","b(I)Ljava/lang/String;",1,"var2","ignoredInvalidNumber",evidence);
+ local("an","b(I)Ljava/lang/String;",5,"stackIn_2_0","guardRejectedMessage",evidence);
+ local("an","b(I)Ljava/lang/String;",6,"stackIn_7_0","yearRangeMessage",evidence);
+ local("an","b(I)Ljava/lang/String;",7,"stackIn_10_0","validMessage",evidence);
+ local("an","b(I)Ljava/lang/String;",8,"decompiledCaughtException","caughtFailure",evidence);
+ local("an","b(I)Ljava/lang/String;",9,"decompiledCaughtParameter0","caughtNumberFailure",evidence);
+ local("vi","c(B)I",0,"var1_int","guardCalculation",evidence);
+ local("vi","c(B)I",1,"var1","failure",evidence);
+ local("vi","c(B)I",2,"var2","dialogResult",evidence);
+ local("vi","c(B)I",3,"var3","unusedGameFlag",evidence);
+ local("vi","c(B)I",4,"stackIn_7_0","explicitDialogResult",evidence);
+ local("vi","c(B)I",5,"stackIn_11_0","messageDialogResult",evidence);
+ local("vi","c(B)I",6,"stackIn_15_0","matchedDialogPhaseResult",evidence);
+ local("vi","c(B)I",7,"stackIn_18_0","pendingEmailResult",evidence);
+ local("vi","c(B)I",8,"stackIn_21_0","matchedEmailPhaseResult",evidence);
+ local("vi","c(B)I",9,"stackIn_23_0","unexpectedPhaseResult",evidence);
+ local("vi","c(B)I",10,"decompiledCaughtException","caughtFailure",evidence);
+ local("vi","c(B)I",11,"decompiledCaughtParameter0","caughtParameter",evidence);
+}
+
+local('na','a(IIIBI)V',0,'var6','fieldStartX','Centered date-field origin shared by day/month ordering and fixed-width year input.');
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -5030,10 +5113,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 'A temporary recording JavaScript class is loaded with isolated game classes through a child-first loader; published signature stubs and their dependency hash remain unchanged. Fixtures verify all bridge guard boundaries, null and nonnull applet/function/argument inputs, caller argument identity, result identity, exact thrown-failure propagation and resize callback boxing/swallowing. Guard arithmetic outside the resize callback catch remains observable. DirectSound fixtures verify two distinct descriptor/cursor records per instance against signature stubs; marker interfaces are checked for empty contracts and implementer relationships. The owned reflective initializer name is included in binding/literal checks. No applet host, browser JavaScript engine, real DirectSound device or original-gamepack equivalence is verified.', '',
 'LogoRenderHelpers names logo piece depth ordering, camera and object poses, piece selection, original-center restoration and diffuse/highlight lighting. HuffmanCodec.updateLogoPiecePose exposes the per-piece pitch/yaw schedule; logoAnimationTicks, logoPiecePose and logoCameraPose identify shared presentation state. BoardPresentationHelpers names the bouncing board-end logo/message overlay and level-sequence attribute wrapper. Shared logo/game-over/game-completed sprites now have resource-backed names. Fullscreen style coordinators name their 21 arguments, frame/sprite roles and paint setter.', '',
 'Independent pose fixtures cover all piece sign cases and animation boundaries; no-face meshes verify depth-selected final pose/projection state, including the existing draw-ordinal original-center lookup. A real one-face triangle checks complete shaded pixels for default and pointer lighting. Board-end pixel references cover every tick0 through260, odd/even widths, clipping, fade/bounce cutoffs, delayed message opacity and signed high bytes from alpha blending. Additional checks cover sequence attribute ranges/guard sentinel and frame/sprite style parameter forwarding by values and array identity. Whole original logo imagery, multi-piece shaded overlap, original asset/browser rendering and original-gamepack equivalence remain unverified.', '',
+'AccountDateHelpers exposes RSA birth-date submission, pending email-availability reply consumption and account-dialog result polling. CalendarRankingHelpers exposes the current local year; CalendarMatchmakingState names the common-year month table. NameEntryPopup.isLegacyLeapYear, ReflectionCheck.getLegacyMonthLength and PlayerInputBatch.isValidLegacyDate identify the hybrid calendar contracts. MeshAudioHelpers identifies triangle/audio forwarding and shared account packet scratch. Account RSA fields, pending email Boolean, date parser/validation branches and CP1252 decode locals are named. packetRandom corrects the earlier delay-only name: account nonce words share the same Random.', '',
+'Independent calendar references cover Julian/Gregorian leap behavior, negative-year conversion, full year cycles, month/day bounds and integer extremes. Real date-field widgets check Unicode/overflow parsing, day/month order, validator/listener links, completeness, age limits, messages and debounce status. Deterministic nonce fixtures compare birth-date opcode18 framing and marker12 RSA bytes, including out-of-range truncation, scratch reset/reuse and guarded panel submission. Email Boolean replies are checked through consumption and request completion. Current-year checks use local Gregorian references without hashing wall-clock values. Live calendar rendering, pointer submission, complete account-dialog polling, server acceptance and original-gamepack equivalence remain unverified.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:90,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:91,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 90,
+  "version": 91,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -602,6 +602,13 @@
       "originalName": "de",
       "to": "MembershipBenefitsScreen",
       "evidence": "de.java: Screen ID12 loads members_benefits_screenshots and routes its slideshow input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:df",
+      "originalName": "df",
+      "to": "AccountDateHelpers",
+      "evidence": "df.java: RSA birth-date submission, pending email-availability reply consumption and account-dialog polling; separately named CP1252/floor/achievement helpers retain distinct roles.",
       "confidence": "reviewed"
     },
     {
@@ -2145,6 +2152,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:rh",
+      "originalName": "rh",
+      "to": "CalendarMatchmakingState",
+      "evidence": "rh.java: Common-year month lengths and matchmaking choice mask; unrelated tutorial, sprite and text globals retain distinct roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ri",
       "originalName": "ri",
       "to": "UsernameSuggestionPanel",
@@ -2404,6 +2418,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:tq",
+      "originalName": "tq",
+      "to": "MeshAudioHelpers",
+      "evidence": "tq.java: Interpolated mesh triangle dispatch and audio startup forwarding, alongside shared account packet scratch and unrelated labels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ua",
       "originalName": "ua",
       "to": "GameplayRenderHelpers",
@@ -2478,6 +2499,13 @@
       "originalName": "um",
       "to": "TextWidgetRenderer",
       "evidence": "um.java: Older-widget font renderer and text-layout provider with insets, alignment, wrapping, selection and caret painting. Static helpers retain separate roles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:un",
+      "originalName": "un",
+      "to": "CalendarRankingHelpers",
+      "evidence": "un.java: Current local calendar year and packed ranking statistics, plus independently named dialog/layout globals.",
       "confidence": "reviewed"
     },
     {
@@ -2912,6 +2940,13 @@
       "originalName": "field_E",
       "to": "descriptionLines",
       "evidence": "af.java: Scratch lines produced by description wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:af.field_r:Ljava/lang/Boolean;",
+      "originalName": "field_r",
+      "to": "pendingEmailAvailabilityReply",
+      "evidence": "af.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
       "confidence": "reviewed"
     },
     {
@@ -8811,8 +8846,8 @@
     {
       "symbol": "F:ji.field_e:Ljava/util/Random;",
       "originalName": "field_e",
-      "to": "packetDelayRandom",
-      "evidence": "ji.java: Random generator used only for artificial delay jitter.",
+      "to": "packetRandom",
+      "evidence": "ji.java: Random used for artificial packet-delay jitter and nonce words in account/birth-date packets.",
       "confidence": "reviewed"
     },
     {
@@ -14521,6 +14556,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rh.field_b:[I",
+      "originalName": "field_b",
+      "to": "commonYearMonthLengths",
+      "evidence": "rh.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rh.field_d:[B",
       "originalName": "field_d",
       "to": "matchmakingChoiceMask",
@@ -15858,6 +15900,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:to.field_g:Ljava/math/BigInteger;",
+      "originalName": "field_g",
+      "to": "accountRsaModulus",
+      "evidence": "to.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:to.field_i:I",
       "originalName": "field_i",
       "to": "canvasOffsetX",
@@ -15904,6 +15953,13 @@
       "originalName": "field_j",
       "to": "palette",
       "evidence": "tp.java: Caller-supplied RGB palette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tq.field_f:Lwq;",
+      "originalName": "field_f",
+      "to": "accountPacketScratch",
+      "evidence": "tq.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
       "confidence": "reviewed"
     },
     {
@@ -16730,6 +16786,13 @@
       "originalName": "field_E",
       "to": "centerXHistory256",
       "evidence": "vn.java: Match tick appends x256+radius256 to this history; reset paths set its latest index to -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vn.field_F:Ljava/math/BigInteger;",
+      "originalName": "field_F",
+      "to": "accountRsaExponent",
+      "evidence": "vn.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
       "confidence": "reviewed"
     },
     {
@@ -18861,6 +18924,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:an.b(I)Ljava/lang/String;#1",
+      "originalName": "var2",
+      "to": "ignoredInvalidNumber",
+      "evidence": "an.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:an.b(I)Ljava/lang/String;#2",
       "originalName": "var3",
       "to": "monthIndex",
@@ -18882,10 +18952,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:an.b(I)Ljava/lang/String;#5",
+      "originalName": "stackIn_2_0",
+      "to": "guardRejectedMessage",
+      "evidence": "an.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:an.b(I)Ljava/lang/String;#6",
+      "originalName": "stackIn_7_0",
+      "to": "yearRangeMessage",
+      "evidence": "an.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:an.b(I)Ljava/lang/String;#7",
+      "originalName": "stackIn_10_0",
+      "to": "validMessage",
+      "evidence": "an.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:an.b(I)Ljava/lang/String;#8",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "an.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:an.b(I)Ljava/lang/String;#9",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtNumberFailure",
+      "evidence": "an.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:an.c(I)Lqh;#0",
       "originalName": "var2_int",
       "to": "day",
       "evidence": "an.java: Reviewed validation input, parsed value or dependent validation source; lexical identity preserves source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:an.c(I)Lqh;#1",
+      "originalName": "var2",
+      "to": "ignoredInvalidNumber",
+      "evidence": "an.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:an.c(I)Lqh;#10",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtNumberFailure",
+      "evidence": "an.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
       "confidence": "reviewed"
     },
     {
@@ -18907,6 +19026,41 @@
       "originalName": "var5",
       "to": "currentYear",
       "evidence": "an.java: Reviewed validation input, parsed value or dependent validation source; lexical identity preserves source behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:an.c(I)Lqh;#5",
+      "originalName": "stackIn_2_0",
+      "to": "guardRejectedStatus",
+      "evidence": "an.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:an.c(I)Lqh;#6",
+      "originalName": "stackIn_6_0",
+      "to": "yearTooOldStatus",
+      "evidence": "an.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:an.c(I)Lqh;#7",
+      "originalName": "stackIn_9_0",
+      "to": "yearTooRecentStatus",
+      "evidence": "an.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:an.c(I)Lqh;#8",
+      "originalName": "stackIn_13_0",
+      "to": "invalidDateStatus",
+      "evidence": "an.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:an.c(I)Lqh;#9",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "an.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
       "confidence": "reviewed"
     },
     {
@@ -23590,6 +23744,160 @@
       "originalName": "decompiledCheckedException",
       "to": "checkedFailure",
       "evidence": "dd.java: Reviewed pointer/cursor image, callback branch or DirectDraw enumeration declaration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(I)Ljava/lang/Boolean;#0",
+      "originalName": "var1",
+      "to": "reply",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(IBII)V#0",
+      "originalName": "fieldTemp$0",
+      "to": "payloadStartAfterLength",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(IBII)V#1",
+      "originalName": "var4",
+      "to": "payloadStart",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(IBII)V#2",
+      "originalName": "var4Lifetime1",
+      "to": "alternatePayloadStart",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(IBII)V#3",
+      "originalName": "fieldTemp$1",
+      "to": "alternatePayloadStartAfterLength",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#0",
+      "originalName": "var7",
+      "to": "byteIndex",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#1",
+      "originalName": "incrementValue$1",
+      "to": "charIndexBeforeIncrement",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#10",
+      "originalName": "stackIn_15_0",
+      "to": "decodedText",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#11",
+      "originalName": "stackIn_18_0",
+      "to": "failureContext",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#12",
+      "originalName": "stackIn_18_1",
+      "to": "contextBuilder",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#13",
+      "originalName": "stackIn_19_2",
+      "to": "dataSummary",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#14",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#15",
+      "originalName": "var4",
+      "to": "failure",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#16",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#2",
+      "originalName": "var4_int",
+      "to": "guardCalculation",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#3",
+      "originalName": "var5",
+      "to": "charsAlias",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#4",
+      "originalName": "var6",
+      "to": "charCount",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#5",
+      "originalName": "var8",
+      "to": "byteOrCharacter",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#6",
+      "originalName": "var9",
+      "to": "extensionCharacter",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#7",
+      "originalName": "var10",
+      "to": "unusedGameFlag",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#8",
+      "originalName": "var11",
+      "to": "charsInitialAlias",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:df.a(II[BI)Ljava/lang/String;#9",
+      "originalName": "var12",
+      "to": "chars",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
       "confidence": "reviewed"
     },
     {
@@ -36333,6 +36641,97 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:na.a(B)I#0",
+      "originalName": "var2",
+      "to": "ignoredInvalidNumber",
+      "evidence": "na.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:na.a(B)I#1",
+      "originalName": "stackIn_3_0",
+      "to": "parsedDay",
+      "evidence": "na.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:na.a(B)I#2",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "na.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:na.a(B)I#3",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtNumberFailure",
+      "evidence": "na.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:na.a(IIIBI)V#0",
+      "originalName": "var6",
+      "to": "fieldStartX",
+      "evidence": "na.java: Centered date-field origin shared by day/month ordering and fixed-width year input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:na.i(B)I#0",
+      "originalName": "var2",
+      "to": "ignoredInvalidNumber",
+      "evidence": "na.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:na.i(B)I#1",
+      "originalName": "stackIn_3_0",
+      "to": "parsedMonthIndex",
+      "evidence": "na.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:na.i(B)I#2",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "na.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:na.i(B)I#3",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtNumberFailure",
+      "evidence": "na.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:na.i(I)I#0",
+      "originalName": "var2",
+      "to": "ignoredInvalidNumber",
+      "evidence": "na.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:na.i(I)I#1",
+      "originalName": "stackIn_3_0",
+      "to": "parsedYear",
+      "evidence": "na.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:na.i(I)I#2",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "na.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:na.i(I)I#3",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtNumberFailure",
+      "evidence": "na.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:nd.a(IILjava/lang/String;)Ldl;#0",
       "originalName": "var3",
       "to": "connector",
@@ -47463,6 +47862,90 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:vi.c(B)I#0",
+      "originalName": "var1_int",
+      "to": "guardCalculation",
+      "evidence": "vi.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vi.c(B)I#1",
+      "originalName": "var1",
+      "to": "failure",
+      "evidence": "vi.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vi.c(B)I#10",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "vi.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vi.c(B)I#11",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "vi.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vi.c(B)I#2",
+      "originalName": "var2",
+      "to": "dialogResult",
+      "evidence": "vi.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vi.c(B)I#3",
+      "originalName": "var3",
+      "to": "unusedGameFlag",
+      "evidence": "vi.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vi.c(B)I#4",
+      "originalName": "stackIn_7_0",
+      "to": "explicitDialogResult",
+      "evidence": "vi.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vi.c(B)I#5",
+      "originalName": "stackIn_11_0",
+      "to": "messageDialogResult",
+      "evidence": "vi.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vi.c(B)I#6",
+      "originalName": "stackIn_15_0",
+      "to": "matchedDialogPhaseResult",
+      "evidence": "vi.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vi.c(B)I#7",
+      "originalName": "stackIn_18_0",
+      "to": "pendingEmailResult",
+      "evidence": "vi.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vi.c(B)I#8",
+      "originalName": "stackIn_21_0",
+      "to": "matchedEmailPhaseResult",
+      "evidence": "vi.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:vi.c(B)I#9",
+      "originalName": "stackIn_23_0",
+      "to": "unexpectedPhaseResult",
+      "evidence": "vi.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:vj.<init>(Ljava/lang/String;Lmh;)V#0",
       "originalName": "var3",
       "to": "tabLabels",
@@ -50347,6 +50830,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bg.a(III)I",
+      "originalName": "a",
+      "to": "getLegacyMonthLength",
+      "evidence": "bg.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bg.a(IIIBIII)Z",
       "originalName": "a",
       "to": "containsRectanglePoint",
@@ -51208,10 +51698,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:df.a(I)Ljava/lang/Boolean;",
+      "originalName": "a",
+      "to": "takeEmailAvailabilityReply",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:df.a(IBI)I",
       "originalName": "a",
       "to": "divideFloorPositive",
       "evidence": "df.java: Original signed rounding formula produces floor division for a positive divisor; guard15.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(IBII)V",
+      "originalName": "a",
+      "to": "sendBirthDate",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(IIIZ)I",
+      "originalName": "a",
+      "to": "pollAccountDialogResult",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
       "confidence": "reviewed"
     },
     {
@@ -52689,6 +53200,13 @@
       "originalName": "a",
       "to": "updateAndPollNameInput",
       "evidence": "gq.java: Updates root; enabled path consumes queued keys/configured characters and bracket fallbacks, handles cancel/submit/outside press; guard at least88.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gq.b(II)Z",
+      "originalName": "b",
+      "to": "isLegacyLeapYear",
+      "evidence": "gq.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
       "confidence": "reviewed"
     },
     {
@@ -57606,6 +58124,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:p.a(BIII)Z",
+      "originalName": "a",
+      "to": "isValidLegacyDate",
+      "evidence": "p.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:p.c(I)Z",
       "originalName": "c",
       "to": "isConsumed",
@@ -60056,6 +60581,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:to.a(ZI)V",
+      "originalName": "a",
+      "to": "completeEmailAvailabilityRequest",
+      "evidence": "to.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:to.a(ZLsl;)V",
       "originalName": "a",
       "to": "removeEntry",
@@ -60574,6 +61106,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:un.a(I)I",
+      "originalName": "a",
+      "to": "getCurrentLocalYear",
+      "evidence": "un.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uo.a(BLmf;Ljava/lang/String;Ljava/lang/String;)Ltp;",
       "originalName": "a",
       "to": "loadIndexedSpriteByName",
@@ -60879,6 +61418,13 @@
       "originalName": "a",
       "to": "shuffleValues",
       "evidence": "vi.java: Runs requested passes of random-index swaps over the array using seeded bounded sampling; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.c(B)I",
+      "originalName": "c",
+      "to": "pollAccountDialogResult",
+      "evidence": "vi.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
       "confidence": "reviewed"
     },
     {
@@ -64109,6 +64655,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:bg.a(III)I#0",
+      "originalName": "param0",
+      "to": "year",
+      "evidence": "bg.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bg.a(III)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "bg.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bg.a(III)I#2",
+      "originalName": "param2",
+      "to": "monthIndex",
+      "evidence": "bg.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:bg.a(IIIBIII)Z#0",
       "originalName": "param0",
       "to": "left",
@@ -67161,6 +67728,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:df.a(I)Ljava/lang/Boolean;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:df.a(IBI)I#0",
       "originalName": "param0",
       "to": "divisor",
@@ -67179,6 +67753,62 @@
       "originalName": "param2",
       "to": "dividend",
       "evidence": "df.java: Original signed rounding formula produces floor division for a positive divisor; guard15.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(IBII)V#0",
+      "originalName": "param0",
+      "to": "year",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(IBII)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(IBII)V#2",
+      "originalName": "param2",
+      "to": "day",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(IBII)V#3",
+      "originalName": "param3",
+      "to": "monthIndex",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(IIIZ)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(IIIZ)I#1",
+      "originalName": "param1",
+      "to": "unusedWheelDelta",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(IIIZ)I#2",
+      "originalName": "param2",
+      "to": "unusedLocaleId",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:df.a(IIIZ)I#3",
+      "originalName": "param3",
+      "to": "unusedFlag",
+      "evidence": "df.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
       "confidence": "reviewed"
     },
     {
@@ -72289,6 +72919,20 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "gq.java: Updates root; enabled path consumes queued keys/configured characters and bracket fallbacks, handles cancel/submit/outside press; guard at least88.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gq.b(II)Z#0",
+      "originalName": "param0",
+      "to": "year",
+      "evidence": "gq.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gq.b(II)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "gq.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
       "confidence": "reviewed"
     },
     {
@@ -87762,6 +88406,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:p.a(BIII)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "p.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(BIII)Z#1",
+      "originalName": "param1",
+      "to": "day",
+      "evidence": "p.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(BIII)Z#2",
+      "originalName": "param2",
+      "to": "year",
+      "evidence": "p.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(BIII)Z#3",
+      "originalName": "param3",
+      "to": "monthIndex",
+      "evidence": "p.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:p.c(I)Z#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -94251,6 +94923,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:to.a(ZI)V#0",
+      "originalName": "param0",
+      "to": "available",
+      "evidence": "to.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:to.a(ZI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "to.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:to.a(ZLsl;)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -96064,6 +96750,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:un.a(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "un.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:uo.a(BLmf;Ljava/lang/String;Ljava/lang/String;)Ltp;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -96985,6 +97678,13 @@
       "originalName": "param3",
       "to": "random",
       "evidence": "vi.java: Runs requested passes of random-index swaps over the array using seeded bounded sampling; original arithmetic guard retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vi.c(B)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "vi.java: Calendar references verify Julian/Gregorian leap rules with negative-year conversion, month lengths and date bounds. Real date-field widgets verify parsing, field order and validator linkage; birth-date validation enforces1890 through current local year minus3, completeness and debounce status. Independent byte/RSA/ISAAC framing verifies marker12, two nonce words, day/month bytes and year short, including truncation and validated panel submission. Email reply consumption clears pending state; the shared Random also supplies account nonce words.",
       "confidence": "reviewed"
     },
     {
@@ -99089,9 +99789,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "fcdac78463f2f86be957729710180ed7ea1f2ad5a83ba440833c3c6737256aab",
+      "build-brickabrac-rules.mjs": "acfbd851d9e1abaf00356381482e772b92fcdb36a083b3f3a01366692f0e2003",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "d06a1aea1e2db505d0fc4ff5adee0f67bae719f699434560d315d388d6f4be33",
+      "tests/test-brickabrac-core.mjs": "b79ef613b1063745b883bbebfd781870473cd31239c5ce2d5f6cf347e122d2c2",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }
