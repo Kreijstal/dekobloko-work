@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "brickabrac",
-  "version": 86,
+  "version": 87,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "8f15143529e53929d7157a5393487342612a4180",
@@ -2299,6 +2299,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:tm",
+      "originalName": "tm",
+      "to": "OutgoingPacketHelpers",
+      "evidence": "tm.java: RSA-wrapped four-word keys and padded encrypted payloads, optional delayed outgoing writes, plus separately named chat filters, sprite-alpha state and an unused reflected CRC64 table.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:tn",
       "originalName": "tn",
       "to": "MusicCrossfadeStream",
@@ -3433,6 +3440,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bg.field_p:Ljava/security/SecureRandom;",
+      "originalName": "field_p",
+      "to": "payloadKeyRandom",
+      "evidence": "bg.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bg.field_q:[I",
       "originalName": "field_q",
       "to": "fieldSetValues",
@@ -3815,6 +3829,13 @@
       "originalName": "field_d",
       "to": "contextActions",
       "evidence": "bm.java: Active controller constructed by context initialization helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bn.field_r:Lwq;",
+      "originalName": "field_r",
+      "to": "encryptedKeyHeaderScratch",
+      "evidence": "bn.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
       "confidence": "reviewed"
     },
     {
@@ -4256,6 +4277,13 @@
       "originalName": "field_p",
       "to": "waypoints",
       "evidence": "cl.java: Intrusive deque of waypoint records; attachMotionPath copies its order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cl.field_q:J",
+      "originalName": "field_q",
+      "to": "lastGameWriteMillis",
+      "evidence": "cl.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
       "confidence": "reviewed"
     },
     {
@@ -6051,6 +6079,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fk.field_b:D",
+      "originalName": "field_b",
+      "to": "outgoingDelayJitterMillis",
+      "evidence": "fk.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fk.field_f:Lvl;",
       "originalName": "field_f",
       "to": "pendingRankingsRequests",
@@ -6951,6 +6986,13 @@
       "originalName": "field_K",
       "to": "backButton",
       "evidence": "he.java: Back route returning to prior account screen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hg.field_a:Lvl;",
+      "originalName": "field_a",
+      "to": "delayedOutgoingPackets",
+      "evidence": "hg.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
       "confidence": "reviewed"
     },
     {
@@ -11938,6 +11980,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oa.field_Ub:I",
+      "originalName": "field_Ub",
+      "to": "outgoingDelayMillis",
+      "evidence": "oa.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oa.field_Vb:I",
       "originalName": "field_Vb",
       "to": "selectedTab",
@@ -12990,8 +13039,8 @@
     {
       "symbol": "F:pg.field_r:I",
       "originalName": "field_r",
-      "to": "opcode",
-      "evidence": "pg.java: Decoded packet opcode.",
+      "to": "opcodeOrByteCount",
+      "evidence": "pg.java: Incoming queue stores a decoded opcode; outgoing queue stores the payload byte count.",
       "confidence": "reviewed"
     },
     {
@@ -15522,6 +15571,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:tm.field_c:[J",
+      "originalName": "field_c",
+      "to": "crc64LookupTable",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tm.field_f:Lvl;",
       "originalName": "field_f",
       "to": "pendingTableSubmissions",
@@ -16366,6 +16422,13 @@
       "originalName": "field_K",
       "to": "sectorCount",
       "evidence": "vh.java: Positive sector count used in angle rounding/wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vh.field_N:Lwq;",
+      "originalName": "field_N",
+      "to": "encryptedPayloadScratch",
+      "evidence": "vh.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
       "confidence": "reviewed"
     },
     {
@@ -23047,6 +23110,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:cr.a(II)V#0",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "cr.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(II)V#1",
+      "originalName": "var2",
+      "to": "writeFailure",
+      "evidence": "cr.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(II)V#2",
+      "originalName": "decompiledFrameRemainder0",
+      "to": "phaseAllowsWrite",
+      "evidence": "cr.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(II)V#3",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtWriteFailure",
+      "evidence": "cr.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(II)V#4",
+      "originalName": "decompiledUncheckedException",
+      "to": "uncheckedFailure",
+      "evidence": "cr.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:cr.a(II)V#5",
+      "originalName": "decompiledCheckedException",
+      "to": "checkedFailure",
+      "evidence": "cr.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:cr.a(IIIB)V#0",
       "originalName": "var5",
       "to": "destinationX",
@@ -24542,6 +24647,13 @@
       "originalName": "var4",
       "to": "packet",
       "evidence": "dn.java: Scoped outgoing request buffer, byte-length origin or packed option word verified from writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:dq.a(Lwq;Lwq;Ljava/math/BigInteger;BLjava/math/BigInteger;)V#0",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "dq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
       "confidence": "reviewed"
     },
     {
@@ -44376,6 +44488,293 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:tm.<initializer>()V#0",
+      "originalName": "var2",
+      "to": "tableIndex",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.<initializer>()V#1",
+      "originalName": "var3",
+      "to": "bitIndex",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.<initializer>()V#2",
+      "originalName": "var0",
+      "to": "remainder",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#0",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#1",
+      "originalName": "var2_long",
+      "to": "nowMillis",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#10",
+      "originalName": "var11",
+      "to": "payloadCopyAlias",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#11",
+      "originalName": "var13",
+      "to": "duePacket",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#12",
+      "originalName": "var14",
+      "to": "allocatedPayload",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#13",
+      "originalName": "var17",
+      "to": "queuedPayload",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#14",
+      "originalName": "var6Lifetime1",
+      "to": "discardedDeliveryStartIndex",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#15",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#2",
+      "originalName": "var2",
+      "to": "failure",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#3",
+      "originalName": "var4",
+      "to": "delayMillis",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#4",
+      "originalName": "var6",
+      "to": "copyIndex",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#5",
+      "originalName": "var6_ref_pg",
+      "to": "queuedPacket",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#6",
+      "originalName": "var7",
+      "to": "unusedGameFlag",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#7",
+      "originalName": "var8",
+      "to": "payloadCopy",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#8",
+      "originalName": "var9",
+      "to": "headPacket",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(BI)V#9",
+      "originalName": "var10",
+      "to": "deliveryIndex",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(IB)I#0",
+      "originalName": "var2",
+      "to": "filter",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(IB)I#1",
+      "originalName": "var3",
+      "to": "unusedModulus",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#0",
+      "originalName": "stackIn_24_0",
+      "to": "failureContext",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#1",
+      "originalName": "stackIn_24_1",
+      "to": "contextBuilder",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#10",
+      "originalName": "var7_int",
+      "to": "paddedLength",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#11",
+      "originalName": "var7",
+      "to": "failure",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#12",
+      "originalName": "var8",
+      "to": "keyWordsAlias",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#13",
+      "originalName": "var9",
+      "to": "randomWordIndex",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#14",
+      "originalName": "var10",
+      "to": "unusedGameFlag",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#15",
+      "originalName": "var11",
+      "to": "headerWordIndex",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#16",
+      "originalName": "var12",
+      "to": "keyWordsInitialAlias",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#17",
+      "originalName": "var13",
+      "to": "keyWords",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#18",
+      "originalName": "var9Lifetime1",
+      "to": "discardedHeaderStartIndex",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#19",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#2",
+      "originalName": "stackIn_25_2",
+      "to": "destinationSummary",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#3",
+      "originalName": "stackIn_27_1",
+      "to": "exponentContextBuilder",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#4",
+      "originalName": "stackIn_28_2",
+      "to": "exponentSummary",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#5",
+      "originalName": "stackIn_30_1",
+      "to": "sourceContextBuilder",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#6",
+      "originalName": "stackIn_31_2",
+      "to": "sourceSummary",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#7",
+      "originalName": "stackIn_33_1",
+      "to": "modulusContextBuilder",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#8",
+      "originalName": "stackIn_34_2",
+      "to": "modulusSummary",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#9",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:tn.a(I)V#0",
       "originalName": "var3",
       "to": "unusedGameFlag",
@@ -47694,6 +48093,153 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "L:wq.a(I[I)V#0",
+      "originalName": "incrementValue$0",
+      "to": "roundsBeforeDecrement",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(I[I)V#1",
+      "originalName": "stackIn_12_0",
+      "to": "failureContext",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(I[I)V#10",
+      "originalName": "var7",
+      "to": "roundSum",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(I[I)V#11",
+      "originalName": "var8",
+      "to": "roundDelta",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(I[I)V#12",
+      "originalName": "var9",
+      "to": "roundsRemaining",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(I[I)V#13",
+      "originalName": "var10",
+      "to": "unusedGameFlag",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(I[I)V#14",
+      "originalName": "decompiledCaughtParameter0",
+      "to": "caughtParameter",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(I[I)V#2",
+      "originalName": "stackIn_12_1",
+      "to": "contextBuilder",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(I[I)V#3",
+      "originalName": "stackIn_13_2",
+      "to": "keySummary",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(I[I)V#4",
+      "originalName": "decompiledCaughtException",
+      "to": "caughtFailure",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(I[I)V#5",
+      "originalName": "var3_int",
+      "to": "blockCount",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(I[I)V#6",
+      "originalName": "var3",
+      "to": "failure",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(I[I)V#7",
+      "originalName": "var4",
+      "to": "blockIndex",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(I[I)V#8",
+      "originalName": "var5",
+      "to": "leftWord",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(I[I)V#9",
+      "originalName": "var6",
+      "to": "rightWord",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V#0",
+      "originalName": "var4_int",
+      "to": "inputLength",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V#1",
+      "originalName": "var5",
+      "to": "inputBytes",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V#2",
+      "originalName": "var6",
+      "to": "plaintext",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V#3",
+      "originalName": "var7",
+      "to": "ciphertext",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V#4",
+      "originalName": "var8",
+      "to": "outputBytes",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V#5",
+      "originalName": "runtimeException",
+      "to": "failure",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "L:wq.a([BIII)V#0",
       "originalName": "var5_int",
       "to": "sourceIndex",
@@ -47712,6 +48258,20 @@
       "originalName": "var4",
       "to": "value",
       "evidence": "wq.java: Accumulated seven-bit groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.f(BI)V#0",
+      "originalName": "fieldTemp$0",
+      "to": "paddingIndex",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:wq.f(BI)V#1",
+      "originalName": "var4",
+      "to": "unusedGameFlag",
+      "evidence": "wq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
       "confidence": "reviewed"
     },
     {
@@ -49262,6 +49822,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cr.a(II)V",
+      "originalName": "a",
+      "to": "flushTransportPackets",
+      "evidence": "cr.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cr.a(IIIB)V",
       "originalName": "a",
       "to": "drawLayer",
@@ -49833,6 +50400,13 @@
       "originalName": "b",
       "to": "hasSprites",
       "evidence": "ki.java: Checks theme-required asset references; canonical guard below -91. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dq.a(Lwq;Lwq;Ljava/math/BigInteger;BLjava/math/BigInteger;)V",
+      "originalName": "a",
+      "to": "writeEncryptedPacketContents",
+      "evidence": "dq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
       "confidence": "reviewed"
     },
     {
@@ -51254,6 +51828,13 @@
       "originalName": "a",
       "to": "measureFullscreenDialogText",
       "evidence": "hm.java: Fullscreen prompt callers, message defaults and the renderer identify prompt kinds0 through5, row/button/action tables, countdown variants and geometry. Controlled-font fixtures independently verify rows, actions, dimensions and pointer/keyboard selection. Indexed placeholders and literal character replacement are checked against standard-library reference models; balanced wrapping and palette sprite construction retain original behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.a(B)V",
+      "originalName": "a",
+      "to": "closeGameTransport",
+      "evidence": "hn.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
       "confidence": "reviewed"
     },
     {
@@ -58054,10 +58635,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tm.a(BI)V",
+      "originalName": "a",
+      "to": "flushGamePackets",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tm.a(IB)I",
       "originalName": "a",
       "to": "getChatFilter",
       "evidence": "tm.java: Returns filter for channels0..2, otherwise0; guard18.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",
+      "originalName": "a",
+      "to": "writeEncryptedPayload",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
       "confidence": "reviewed"
     },
     {
@@ -64641,6 +65236,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:cr.a(II)V#0",
+      "originalName": "param0",
+      "to": "keepaliveOpcode",
+      "evidence": "cr.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cr.a(II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "cr.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cr.a(IIIB)V#0",
       "originalName": "param0",
       "to": "parentY",
@@ -66934,6 +67543,41 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "ki.java: Checks theme-required asset references; canonical guard below -91. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a(Lwq;Lwq;Ljava/math/BigInteger;BLjava/math/BigInteger;)V#0",
+      "originalName": "param0",
+      "to": "destination",
+      "evidence": "dq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a(Lwq;Lwq;Ljava/math/BigInteger;BLjava/math/BigInteger;)V#1",
+      "originalName": "param1",
+      "to": "sourcePacket",
+      "evidence": "dq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a(Lwq;Lwq;Ljava/math/BigInteger;BLjava/math/BigInteger;)V#2",
+      "originalName": "param2",
+      "to": "rsaExponent",
+      "evidence": "dq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a(Lwq;Lwq;Ljava/math/BigInteger;BLjava/math/BigInteger;)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "dq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dq.a(Lwq;Lwq;Ljava/math/BigInteger;BLjava/math/BigInteger;)V#4",
+      "originalName": "param4",
+      "to": "rsaModulus",
+      "evidence": "dq.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
       "confidence": "reviewed"
     },
     {
@@ -71946,6 +72590,13 @@
       "originalName": "param2",
       "to": "obfuscationGuard",
       "evidence": "hm.java: Fullscreen prompt callers, message defaults and the renderer identify prompt kinds0 through5, row/button/action tables, countdown variants and geometry. Controlled-font fixtures independently verify rows, actions, dimensions and pointer/keyboard selection. Indexed placeholders and literal character replacement are checked against standard-library reference models; balanced wrapping and palette sprite construction retain original behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hn.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "hn.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
       "confidence": "reviewed"
     },
     {
@@ -85665,21 +86316,21 @@
       "symbol": "P:pg.<init>(JI[B)V#0",
       "originalName": "param0",
       "to": "deliverAfterMillis",
-      "evidence": "pg.java: Retains delivery threshold, opcode and caller payload reference.",
+      "evidence": "pg.java: Retains delivery threshold, incoming opcode or outgoing byte count, and caller payload reference.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:pg.<init>(JI[B)V#1",
       "originalName": "param1",
-      "to": "opcode",
-      "evidence": "pg.java: Retains delivery threshold, opcode and caller payload reference.",
+      "to": "opcodeOrByteCount",
+      "evidence": "pg.java: Retains delivery threshold, incoming opcode or outgoing byte count, and caller payload reference.",
       "confidence": "reviewed"
     },
     {
       "symbol": "P:pg.<init>(JI[B)V#2",
       "originalName": "param2",
       "to": "data",
-      "evidence": "pg.java: Retains delivery threshold, opcode and caller payload reference.",
+      "evidence": "pg.java: Retains delivery threshold, incoming opcode or outgoing byte count, and caller payload reference.",
       "confidence": "reviewed"
     },
     {
@@ -91437,6 +92088,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tm.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(BI)V#1",
+      "originalName": "param1",
+      "to": "keepaliveOpcode",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tm.a(IB)I#0",
       "originalName": "param0",
       "to": "channel",
@@ -91448,6 +92113,55 @@
       "originalName": "param1",
       "to": "obfuscationGuard",
       "evidence": "tm.java: Returns filter for channels0..2, otherwise0; guard18.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#0",
+      "originalName": "param0",
+      "to": "destination",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#1",
+      "originalName": "param1",
+      "to": "length",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#3",
+      "originalName": "param3",
+      "to": "rsaExponent",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#4",
+      "originalName": "param4",
+      "to": "offset",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#5",
+      "originalName": "param5",
+      "to": "source",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tm.a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V#6",
+      "originalName": "param6",
+      "to": "rsaModulus",
+      "evidence": "tm.java: Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.",
       "confidence": "reviewed"
     },
     {
@@ -96534,9 +97248,9 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "b43eeaa58c27955f7e15b1764cf1e094e74da76a84ae5235fc503117c780c0f2",
+      "build-brickabrac-rules.mjs": "b812cc46484de10ed5cd389a141334f8c26ca03521d9d835ff56037799fac830",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
-      "tests/test-brickabrac-core.mjs": "27bbd26c2cf95e5ae5119c5e109131252b7c9d179d2ddf6cdc7efa0f87146d6d",
+      "tests/test-brickabrac-core.mjs": "878a1b3bd2fabe67e5bfdb6dc4e798a48c30d879b6269ad02c2038a39b291718",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

@@ -1980,6 +1980,10 @@ Integer helpers now name signed ASCII validation/parsing for bases 2 through 36,
 
 The shared widget-theme cache, fullscreen frame disposal and social-list panel dispatcher are named from their direct contracts. Fixtures verify an already installed theme is returned by identity. Theme construction, real OS fullscreen disposal, live social-panel dispatch and original-JAR equivalence remain unverified.
 
+OutgoingPacketHelpers exposes encrypted-payload construction and delayed flushing. RSA wraps marker10, four generated key words and the original 16-bit payload length; payload bytes are zero-padded to eight-byte blocks and encrypted with 32 XTEA rounds. Names now identify key randomness, both reusable scratch packets, delay/jitter settings, the outgoing FIFO and the last write time. DelayedPacket.opcodeOrByteCount explicitly covers incoming opcodes and outgoing byte counts. Packet encryption/RSA/padding locals and the packet-content wrapper are named as well.
+
+Deterministic key fixtures compare complete wire bytes against a separate unsigned-word XTEA model and BigInteger RSA framing, including zero-block known output, signed keys, input offsets, zero/unaligned lengths, 65535/65536 length truncation, untouched source bytes and scratch reuse/replacement. Additional checks cover random-generator initialization, contextual null failures and all 256 reflected CRC64 table entries. Controlled in-memory socket rings verify keepalive phase gates, unavailable transports, guarded writes, error closure, copied delayed payloads, future-head FIFO blocking, one-entry delivery, strict deadlines, jitter/clamping and disabled-delay behavior. No writer threads or real sockets are started. Live authentication/server interoperability and original-JAR equivalence remain unverified.
+
 ## Steel Sentinels
 
 The current pass names 33 reviewed classes: world/sentinel state, gameplay,

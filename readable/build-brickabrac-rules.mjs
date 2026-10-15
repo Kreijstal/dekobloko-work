@@ -354,6 +354,7 @@ classes.o=['ClientResourceHelpers','Static archive master-index polling, gamepla
 classes.ng=['ScreenNavigationHelpers','Requests game-screen transitions and polls/clears quick-chat help dialogs; unrelated quick-chat channel, labels and sprite globals retain separate roles.'];
 classes.sh=['IntegerValidationHelpers','Signed ASCII integer validation with radix2 through36 and checked32-bit accumulation; unrelated shared-widget-theme, heap-reporting, collision and UI globals retain separate roles.'];
 classes.sq=['IntegerParsingHelpers','Signed ASCII radix parsing and its validation failure paths; unrelated fullscreen disposal, social-panel updates, diagnostics, conditional text and quick-chat globals retain separate roles.'];
+classes.tm=['OutgoingPacketHelpers','RSA-wrapped four-word keys and padded encrypted payloads, optional delayed outgoing writes, plus separately named chat filters, sprite-alpha state and an unused reflected CRC64 table.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -1575,10 +1576,10 @@ for(const [owner,original,type,to,evidence] of [
  ['qg','A','I','clientStage','Shared initialization/UI connection stage, progressing through10/11/20.'],
  ['qg','o','I','gameCrc','Parsed gamecrc applet parameter.'],['qg','x','Ljava/lang/String;','host','Code-base host, not game name.'],['qg','u','I','languageId','Parsed lang, values at least5 become0.'],['qg','C','I','affiliateId','Optional affid.'],['qg','w','J','instanceId','Parsed instanceid.'],['qg','s','Z','jagexHost','True for jagex.com host or subdomain.'],['qg','q','Z','memberAccount','Member parameter equals yes.'],['qg','v','I','gamePortOne','Parsed gameport1.'],['qg','p','I','gamePortTwo','Parsed gameport2.'],['qg','B','I','serverNumber','Optional servernum.'],['qg','y','Z','reconnectRequested','Forces connection-time check failure then clears.'],
  ['ch','g','[I','incomingPacketLengths','Opcode-indexed sizes, -1 byte prefix and -2 short prefix.'],['uf','d','[Z','enabledCommonPackets','Enabled common opcode dispatch flags.'],['jl','e','Lpi;','incomingPackets','Current input/cipher packet buffer.'],['k','h','Lpi;','outgoingPackets','Current output/cipher packet buffer.'],['eq','g','Lwh;','gameTransport','Game-session byte stream, distinct from archive transport.'],['ob','I','I','pendingPacketOpcode','Partially received opcode, -1 before next header.'],['ga','j','I','incomingPacketLength','Payload byte count or pending -1/-2 length prefix.'],['si','a','I','currentPacketOpcode','Most recently delivered opcode.'],['mh','gb','I','previousPacketOpcode','Previous delivered opcode.'],['we','a','I','secondPreviousPacketOpcode','Second prior delivered opcode.'],['r','z','I','thirdPreviousPacketOpcode','Third prior delivered opcode.'],['al','m','Lvl;','delayedPackets','Artificial-delay packet FIFO.'],['ue','d','I','packetDelayMillis','Artificial incoming packet delay;0 immediate delivery.'],['ej','J','D','packetDelayJitter','Gaussian delay deviation; negative resulting delay clamps0.'],['ji','e','Ljava/util/Random;','packetDelayRandom','Random generator used only for artificial delay jitter.'],['oj','t','J','lastGameReadMillis','Last successful game transport byte read, used for timeout.'],
- ['pg','r','I','opcode','Decoded packet opcode.'],['pg','l','[B','data','Retained payload array, constructor shares caller array.'],['pg','j','J','deliverAfterMillis','Strict delivery threshold: current time must be greater.'],
+ ['pg','r','I','opcodeOrByteCount','Incoming queue stores a decoded opcode; outgoing queue stores the payload byte count.'],['pg','l','[B','data','Retained payload array, constructor shares caller array.'],['pg','j','J','deliverAfterMillis','Strict delivery threshold: current time must be greater.'],
  ['ad','h','Lql;','readTask','Asynchronous stream reader task.'],['ad','k','Ljava/io/DataInputStream;','input','Opened response input.'],['ad','a','Ljava/net/URL;','url','Requested URL and fallback file path.'],['ad','f','Lwq;','packet','Fixed-capacity bytes and used-byte cursor.'],['ad','c','I','phase','0 URL,1 JAGGRAB fallback,2 failure,3 EOF success.'],['ad','g','Ltg;','services','Platform URL/socket/thread task provider.'],['ad','d','Lql;','urlTask','Pending/opened URL stream task.'],['ad','i','Lql;','socketTask','Pending/opened JAGGRAB socket task.'],['po','e','Lad;','countryListRequest','Temporary countrylist.ws request.'],['be','c','I','uiBootstrapStage','UI asset bootstrap stage advanced by controller.'],['al','j','Lwb;','uiLifecycle','Registered game UI lifecycle callbacks.'],
 ])field(owner,original,type,to,evidence);
-method('nl','a','([IB)Z','readNextGamePacket','Decodes opcode, resolves body length, receives full payload, tracks history or delays FIFO delivery; guard64.',['packetLengths','obfuscationGuard']);method('um','b','(B)Z','ensureGamePacketBody','Resolves byte/short variable length prefixes and accumulates requested body; guard at most -40.',['obfuscationGuard']);method('vd','a','(II)Z','ensureGamePacketBytes','Accumulates available bytes until count, preserving partial cursor; reports timeout/EOF via disconnect; guard20.',['obfuscationGuard','length']);method('pg','<init>','(JI[B)V','<init>','Retains delivery threshold, opcode and caller payload reference.',['deliverAfterMillis','opcode','data']);
+method('nl','a','([IB)Z','readNextGamePacket','Decodes opcode, resolves body length, receives full payload, tracks history or delays FIFO delivery; guard64.',['packetLengths','obfuscationGuard']);method('um','b','(B)Z','ensureGamePacketBody','Resolves byte/short variable length prefixes and accumulates requested body; guard at most -40.',['obfuscationGuard']);method('vd','a','(II)Z','ensureGamePacketBytes','Accumulates available bytes until count, preserving partial cursor; reports timeout/EOF via disconnect; guard20.',['obfuscationGuard','length']);method('pg','<init>','(JI[B)V','<init>','Retains delivery threshold, incoming opcode or outgoing byte count, and caller payload reference.',['deliverAfterMillis','opcodeOrByteCount','data']);
 method('qg','m','(I)V','initializePacketLengths','Installs common fixed/variable incoming packet sizes; guard above116.',['obfuscationGuard']);method('qg','h','(Z)V','dispatchCommonPacket','Dispatches enabled common opcodes below64; unexpected opcode logs/disconnects; false guard.',['obfuscationGuard']);method('sa','j','(Z)V','dispatchIncomingPackets','Reads complete packets and tries game dispatch before common dispatch.',['obfuscationGuard']);method('qg','a','(ILjava/lang/String;III)V','loadAppletParameters','Checks host then parses connection parameters and initializes shell.',['obfuscationGuard','gameName','gameVersion','width','height']);method('qg','a','(Ljava/lang/String;II)V','initializeApplet','640x480 applet initialization; guard1686.',['gameName','gameVersion','obfuscationGuard']);method('qg','b','(ZI)V','updateConnection','Snapshots input and polls game/archive connection, timeout and UI state.',['obfuscationGuard','guardCode']);
 method('qg','i','(I)V','enableCommonPacket','Enables opcode flag.',['opcode']);method('qg','a','(IZ)V','configureCommonPackets','Sets selected flag and standard common opcodes.',['opcode','enabled']);method('qg','c','(B)V','enablePacketsElevenToThirteen','Enables common opcodes11,12,13; guard -19.',['obfuscationGuard']);method('qg','l','(I)V','enablePacketOne','Enables common opcode1; guard12.',['obfuscationGuard']);method('qg','j','(I)V','enablePacketSix','Enables common opcode6; guard above28.',['obfuscationGuard']);method('qg','e','(Z)V','enablePacketFive','Sets common opcode5 enabled state.',['enabled']);method('qg','b','(B)V','enablePacketFour','Enables common opcode4; guard -67.',['obfuscationGuard']);method('qg','a','(B)V','handleBrowserPayload','Reads flags plus ciphered body, converts bytes to text and invokes browser handler; guard120.',['obfuscationGuard']);
 method('ad','<init>','(Ltg;Ljava/net/URL;I)V','<init>','Retains services/URL and allocates fixed-capacity response packet.',['services','url','capacity']);method('ad','a','(I)Z','poll','Polls URL/socket/read tasks, reports terminal phase2/3; guard1.',['obfuscationGuard']);method('ad','a','(B)Lwq;','getResult','Returns packet only in success phase3; guard at least95.',['obfuscationGuard']);method('tg','a','(BLjava/net/URL;)Lql;','openUrl','Enqueues operation4 DataInputStream URL read.',['obfuscationGuard','url']);
@@ -4431,6 +4432,94 @@ local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby trans
  local("sq","a(ZII)V",6,"var4","guardCalculation",evidence);
 }
 
+{
+ const evidence="Outgoing encrypted payloads use four SecureRandom words, eight-byte zero padding, 32 XTEA rounds, a marker10/key/original-short-length RSA header and an append-only destination. Deterministic wire references check payload offsets, length truncation, reusable buffers and contextual failures. Outgoing delay/transport fixtures check copied FIFO entries, jitter clamping, one-entry release, disabled delay, keepalive phase gates and write-error closure without live threads or sockets.";
+ method("tm","a","(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V","writeEncryptedPayload",evidence,["destination", "length", "obfuscationGuard", "rsaExponent", "offset", "source", "rsaModulus"]);
+ method("tm","a","(BI)V","flushGamePackets",evidence,["obfuscationGuard", "keepaliveOpcode"]);
+ method("dq","a","(Lwq;Lwq;Ljava/math/BigInteger;BLjava/math/BigInteger;)V","writeEncryptedPacketContents",evidence,["destination", "sourcePacket", "rsaExponent", "obfuscationGuard", "rsaModulus"]);
+ method("cr","a","(II)V","flushTransportPackets",evidence,["keepaliveOpcode", "obfuscationGuard"]);
+ method("hn","a","(B)V","closeGameTransport",evidence,["obfuscationGuard"]);
+ field("bg","p","Ljava/security/SecureRandom;","payloadKeyRandom",evidence);
+ field("vh","N","Lwq;","encryptedPayloadScratch",evidence);
+ field("bn","r","Lwq;","encryptedKeyHeaderScratch",evidence);
+ field("hg","a","Lvl;","delayedOutgoingPackets",evidence);
+ field("oa","Ub","I","outgoingDelayMillis",evidence);
+ field("fk","b","D","outgoingDelayJitterMillis",evidence);
+ field("cl","q","J","lastGameWriteMillis",evidence);
+ field("tm","c","[J","crc64LookupTable",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",0,"stackIn_24_0","failureContext",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",1,"stackIn_24_1","contextBuilder",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",2,"stackIn_25_2","destinationSummary",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",3,"stackIn_27_1","exponentContextBuilder",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",4,"stackIn_28_2","exponentSummary",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",5,"stackIn_30_1","sourceContextBuilder",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",6,"stackIn_31_2","sourceSummary",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",7,"stackIn_33_1","modulusContextBuilder",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",8,"stackIn_34_2","modulusSummary",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",9,"decompiledCaughtException","caughtFailure",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",10,"var7_int","paddedLength",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",11,"var7","failure",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",12,"var8","keyWordsAlias",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",13,"var9","randomWordIndex",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",14,"var10","unusedGameFlag",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",15,"var11","headerWordIndex",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",16,"var12","keyWordsInitialAlias",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",17,"var13","keyWords",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",18,"var9Lifetime1","discardedHeaderStartIndex",evidence);
+ local("tm","a(Lwq;IBLjava/math/BigInteger;I[BLjava/math/BigInteger;)V",19,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("tm","a(BI)V",0,"decompiledCaughtException","caughtFailure",evidence);
+ local("tm","a(BI)V",1,"var2_long","nowMillis",evidence);
+ local("tm","a(BI)V",2,"var2","failure",evidence);
+ local("tm","a(BI)V",3,"var4","delayMillis",evidence);
+ local("tm","a(BI)V",4,"var6","copyIndex",evidence);
+ local("tm","a(BI)V",5,"var6_ref_pg","queuedPacket",evidence);
+ local("tm","a(BI)V",6,"var7","unusedGameFlag",evidence);
+ local("tm","a(BI)V",7,"var8","payloadCopy",evidence);
+ local("tm","a(BI)V",8,"var9","headPacket",evidence);
+ local("tm","a(BI)V",9,"var10","deliveryIndex",evidence);
+ local("tm","a(BI)V",10,"var11","payloadCopyAlias",evidence);
+ local("tm","a(BI)V",11,"var13","duePacket",evidence);
+ local("tm","a(BI)V",12,"var14","allocatedPayload",evidence);
+ local("tm","a(BI)V",13,"var17","queuedPayload",evidence);
+ local("tm","a(BI)V",14,"var6Lifetime1","discardedDeliveryStartIndex",evidence);
+ local("tm","a(BI)V",15,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("tm","a(IB)I",0,"var2","filter",evidence);
+ local("tm","a(IB)I",1,"var3","unusedModulus",evidence);
+ local("tm","<initializer>()V",0,"var2","tableIndex",evidence);
+ local("tm","<initializer>()V",1,"var3","bitIndex",evidence);
+ local("tm","<initializer>()V",2,"var0","remainder",evidence);
+ local("cr","a(II)V",0,"decompiledCaughtException","caughtFailure",evidence);
+ local("cr","a(II)V",1,"var2","writeFailure",evidence);
+ local("cr","a(II)V",2,"decompiledFrameRemainder0","phaseAllowsWrite",evidence);
+ local("cr","a(II)V",3,"decompiledCaughtParameter0","caughtWriteFailure",evidence);
+ local("cr","a(II)V",4,"decompiledUncheckedException","uncheckedFailure",evidence);
+ local("cr","a(II)V",5,"decompiledCheckedException","checkedFailure",evidence);
+ local("dq","a(Lwq;Lwq;Ljava/math/BigInteger;BLjava/math/BigInteger;)V",0,"runtimeException","failure",evidence);
+ local("wq","a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V",0,"var4_int","inputLength",evidence);
+ local("wq","a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V",1,"var5","inputBytes",evidence);
+ local("wq","a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V",2,"var6","plaintext",evidence);
+ local("wq","a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V",3,"var7","ciphertext",evidence);
+ local("wq","a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V",4,"var8","outputBytes",evidence);
+ local("wq","a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V",5,"runtimeException","failure",evidence);
+ local("wq","a(I[I)V",0,"incrementValue$0","roundsBeforeDecrement",evidence);
+ local("wq","a(I[I)V",1,"stackIn_12_0","failureContext",evidence);
+ local("wq","a(I[I)V",2,"stackIn_12_1","contextBuilder",evidence);
+ local("wq","a(I[I)V",3,"stackIn_13_2","keySummary",evidence);
+ local("wq","a(I[I)V",4,"decompiledCaughtException","caughtFailure",evidence);
+ local("wq","a(I[I)V",5,"var3_int","blockCount",evidence);
+ local("wq","a(I[I)V",6,"var3","failure",evidence);
+ local("wq","a(I[I)V",7,"var4","blockIndex",evidence);
+ local("wq","a(I[I)V",8,"var5","leftWord",evidence);
+ local("wq","a(I[I)V",9,"var6","rightWord",evidence);
+ local("wq","a(I[I)V",10,"var7","roundSum",evidence);
+ local("wq","a(I[I)V",11,"var8","roundDelta",evidence);
+ local("wq","a(I[I)V",12,"var9","roundsRemaining",evidence);
+ local("wq","a(I[I)V",13,"var10","unusedGameFlag",evidence);
+ local("wq","a(I[I)V",14,"decompiledCaughtParameter0","caughtParameter",evidence);
+ local("wq","f(BI)V",0,"fieldTemp$0","paddingIndex",evidence);
+ local("wq","f(BI)V",1,"var4","unusedGameFlag",evidence);
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -4734,10 +4823,12 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "Native fixtures compare row glyph events and frame geometry against independent controlled-font models, including singular/plural countdown alignment, selection paints and absent button frames. Clock bounds allow deterministic assertions across countdown boundaries. A coordinate-grid oracle checks hit rectangles; keyboard and pointer fixtures cover action IDs0 through5, Escape handling, timeout rebuilding prompt5 with action2, and explicit countdown-array cleanup. Closing retains row data. Font/frame configuration and size getters are exercised. Quick-chat help polling covers retained/dismissed/null dialogs. Original static references are restored. Actual OS fullscreen changes, caller action dispatch, sound asset loading/playback, malformed guards and original-JAR equivalence remain unverified.", '',
 'Integer helpers now name signed ASCII validation/parsing for bases 2 through 36, decimal/radix wrappers, and their digit/sign/overflow locals. Independent ASCII grammar and BigInteger bounds check signed limits, long inputs, leading zeroes, optional plus signs, mixed case, invalid radices and null precedence. Every UTF-16 code unit is checked against decimal validation; StringBuilder and a CharSequence that rejects toString verify direct character access. Raw/named traces retain contextual exception causes.', '',
 'The shared widget-theme cache, fullscreen frame disposal and social-list panel dispatcher are named from their direct contracts. Fixtures verify an already installed theme is returned by identity. Theme construction, real OS fullscreen disposal, live social-panel dispatch and original-JAR equivalence remain unverified.', '',
+'OutgoingPacketHelpers exposes encrypted-payload construction and delayed flushing. RSA wraps marker10, four generated key words and the original 16-bit payload length; payload bytes are zero-padded to eight-byte blocks and encrypted with 32 XTEA rounds. Names now identify key randomness, both reusable scratch packets, delay/jitter settings, the outgoing FIFO and the last write time. DelayedPacket.opcodeOrByteCount explicitly covers incoming opcodes and outgoing byte counts. Packet encryption/RSA/padding locals and the packet-content wrapper are named as well.', '',
+'Deterministic key fixtures compare complete wire bytes against a separate unsigned-word XTEA model and BigInteger RSA framing, including zero-block known output, signed keys, input offsets, zero/unaligned lengths, 65535/65536 length truncation, untouched source bytes and scratch reuse/replacement. Additional checks cover random-generator initialization, contextual null failures and all 256 reflected CRC64 table entries. Controlled in-memory socket rings verify keepalive phase gates, unavailable transports, guarded writes, error closure, copied delayed payloads, future-head FIFO blocking, one-entry delivery, strict deadlines, jitter/clamping and disabled-delay behavior. No writer threads or real sockets are started. Live authentication/server interoperability and original-JAR equivalence remain unverified.', '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:86,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:87,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');
