@@ -334,6 +334,9 @@ classes.ck=['DiagnosticTextLine','Intrusive mutable StringBuilder line used by t
 classes.vj=['SocialTabbedPanel','Wraps a caller-provided primary panel plus explicitly labelled Friends and Ignore tabs, and lays out their shared controls; unrelated static music/ranking/background helpers remain separate.'];
 classes.wn=['FriendListUi','Updates friend rows, location colors, rename indicators, name tooltips and footer actions; unrelated static keyboard, chat-filter and font helpers retain their separate roles.'];
 classes.nh=['LobbyUiHelpers','Static lobby controls, setting/start eligibility and status-expiry updates, plus nine-slice drawing and shared-font style setup; unrelated chat/configuration globals retain their separate roles.'];
+classes.gh=['TextChoiceDialogStyles','Configures the centered body/button text dialog fonts, frames, metrics, position and colors; unrelated game instructions, chat text and fireworks helpers retain separate roles.'];
+classes.aj=['TextChoiceDialogHitTest','Maps a pointer into selectable centered text-dialog rows; unrelated static archive/content accessors retain separate roles.'];
+classes.fq=['HorizontalFrameHelpers','Draws a left/middle/right tiled RGB strip and configures text-dialog colors; unrelated archive checksum and resource globals retain separate roles.'];
 const members={};
 function field(owner,original,descriptor,to,evidence){members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};}
 function method(owner,original,descriptor,to,evidence,parameters){const key=owner+'.'+original+descriptor;if(original!=='<init>')members['M:'+key]={to,evidence};for(const [ordinal,name] of Object.entries(parameters||{}))members['P:'+key+'#'+ordinal]={to:name,evidence};}
@@ -3124,7 +3127,6 @@ local("io","callbackEnumModes(Lcom/ms/directX/DDSurfaceDesc;Lcom/ms/com/IUnknown
  field("hc","c","Z","joinRequestsPanelOpen",evidence);
  method("nh","a","(I)V","advanceLobbyStatusTimers",evidence,["obfuscationGuard"]);
  method("nh","a","(ZZZIZ)V","updateLobbyControls",evidence,["obfuscationGuard", "suppressInput", "inputEnabled", "gameActionOpcode", "allowStartGame"]);
- method("nh","a","([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V","initializeUiStylesWithSharedFont",evidence,{"5": "font", "13": "obfuscationGuard"});
  method("nh","b","(I)V","clearSharedReferences",evidence,["obfuscationGuard"]);
  local("nh","a(IIII[Ljp;I)V",0,"stackIn_10_0","leftWidthValue",evidence);
  local("nh","a(IIII[Ljp;I)V",1,"stackIn_13_0","rightWidthValue",evidence);
@@ -3264,6 +3266,175 @@ method('co','a','(IZ)V','layoutLobbyTransition','Quadratic transition offsets po
 local("co","a(IZ)V",0,"var2","centerOffsetX","Quadratic lobby transition geometry; callers use the fixed positive transition span.");
 local("co","a(IZ)V",1,"var3","transitionSpanSquared","Quadratic lobby transition geometry; callers use the fixed positive transition span.");
 local("co","a(IZ)V",2,"var4","remainingTransitionSquared","Quadratic lobby transition geometry; callers use the fixed positive transition span.");
+
+
+// Centered text-choice dialogs and horizontal frame strips.
+{
+ const evidence="Traced centered text-choice dialog configuration through layout, drawing, hit testing and result handling; body and button font roles are kept distinct.";
+ field("oc","m","Ldh;","textChoiceBodyFont",evidence);
+ field("lj","r","Ldh;","textChoiceButtonFont",evidence);
+ field("gp","b","I","textChoiceBodyBaseline",evidence);
+ field("wh","m","I","textChoiceBodyLineHeight",evidence);
+ field("nq","i","I","textChoiceButtonLineHeight",evidence);
+ field("lj","i","I","textChoiceButtonBaseline",evidence);
+ field("vg","c","Lta;","textChoiceOuterFrame",evidence);
+ field("un","a","I","textChoiceOuterPaddingX",evidence);
+ field("vo","A","I","textChoiceOuterPaddingY",evidence);
+ field("uc","l","Lta;","textChoiceSelectedButtonFrame",evidence);
+ field("ag","F","Lta;","textChoiceButtonFrame",evidence);
+ field("wg","f","I","textChoiceButtonPaddingY",evidence);
+ field("ek","lb","I","textChoiceButtonPaddingX",evidence);
+ field("dj","g","I","textChoiceButtonGapY",evidence);
+ field("cc","J","I","textChoiceCenterX",evidence);
+ field("ea","e","I","textChoiceCenterY",evidence);
+ field("ug","I","I","textChoiceButtonTextColor",evidence);
+ field("qh","d","I","textChoiceBodyTextColor",evidence);
+ field("om","hc","I","textChoiceSelectedButtonTextColor",evidence);
+ field("re","q","[I","textChoiceLineActions",evidence);
+ field("kn","E","[Ljava/lang/String;","textChoiceLines",evidence);
+ field("hi","A","[I","textChoiceResultCodes",evidence);
+ field("fi","r","Lre;","textChoiceSelection",evidence);
+ field("ud","v","I","textChoiceMode",evidence);
+ field("va","a","Z","textChoiceDialogOpen",evidence);
+ field("nc","k","I","textChoiceLeft",evidence);
+ field("lk","p","I","textChoiceRight",evidence);
+ field("mi","d","I","textChoiceTop",evidence);
+ field("bg","r","I","textChoiceContentHeight",evidence);
+ field("pb","n","[I","horizontalFrameClipScratch",evidence);
+ method("gh","a","(ILta;IIIILdh;Ldh;IILta;Lta;IIIIIIII)V","configureTextChoiceDialog",evidence,["outerPaddingX", "selectedButtonFrame", "buttonPaddingX", "centerX", "bodyBaseline", "outerPaddingY", "buttonFont", "bodyFont", "obfuscationGuard", "centerY", "buttonFrame", "outerFrame", "bodyLineHeight", "buttonBaseline", "bodyTextColor", "buttonTextColor", "buttonLineHeight", "selectedButtonTextColor", "buttonPaddingY", "buttonGapY"]);
+ method("oa","a","(IIIIIIIII[Ljp;Ldh;[Ljp;IIIZI[Ljp;Ldh;I)V","configureTextChoiceDialogFromSprites",evidence,["centerX", "buttonLineHeight", "outerPaddingX", "buttonPaddingX", "bodyLineHeight", "buttonGapY", "centerY", "outerPaddingY", "buttonTextColor", "outerFrameSprites", "bodyFont", "selectedButtonFrameSprites", "selectedButtonTextColor", "bodyTextColor", "bodyBaseline", "obfuscationGuard", "buttonPaddingY", "buttonFrameSprites", "buttonFont", "buttonBaseline"]);
+ method("nh","a","([Ljp;IIIILdh;III[Ljp;I[Ljp;IBI)V","configureTextChoiceDialogWithFont",evidence,["outerFrameSprites", "centerY", "buttonPaddingX", "centerX", "buttonTextColor", "font", "bodyTextColor", "outerPaddingY", "selectedButtonTextColor", "buttonFrameSprites", "outerPaddingX", "selectedButtonFrameSprites", "buttonGapY", "obfuscationGuard", "buttonPaddingY"]);
+ method("lj","a","(IIIII)V","configureTextChoiceMetrics",evidence,["buttonLineHeight", "buttonBaseline", "bodyLineHeight", "obfuscationGuard", "bodyBaseline"]);
+ method("ka","a","(IIILta;)V","configureTextChoiceOuterFrame",evidence,["paddingX", "obfuscationGuard", "paddingY", "frame"]);
+ method("cd","a","(Lta;Lta;IIII)V","configureTextChoiceButtonFrames",evidence,["buttonFrame", "selectedButtonFrame", "gapY", "obfuscationGuard", "paddingY", "paddingX"]);
+ method("qg","a","(IIB)V","setTextChoiceCenter",evidence,["x", "y", "obfuscationGuard"]);
+ method("fq","a","(BIII)V","configureTextChoiceColors",evidence,["obfuscationGuard", "buttonColor", "selectedButtonColor", "bodyColor"]);
+ method("pl","a","(ILjava/lang/String;Z)I","measureTextChoiceLine",evidence,["obfuscationGuard", "text", "buttonLine"]);
+ method("aj","a","(III)I","hitTestTextChoiceDialog",evidence,["firstLineIndex", "pointerY", "pointerX"]);
+ method("jq","d","(I)V","drawTextChoiceLines",evidence,["obfuscationGuard"]);
+ method("dk","a","(Ljava/lang/String;ZIZI)V","showTextChoiceDialog",evidence,["message", "useLoginCaption", "mode", "usePointer", "obfuscationGuard"]);
+ method("gi","g","(I)V","drawTextChoiceDialog",evidence,["obfuscationGuard"]);
+ method("co","a","(B)I","getTextChoiceContentWidth",evidence,["obfuscationGuard"]);
+ method("ba","b","(Z)I","getTextChoiceContentHeight",evidence,["obfuscationGuard"]);
+ method("vh","h","(I)I","pollTextChoiceDialog",evidence,["obfuscationGuard"]);
+ method("ae","b","(B)V","closeTextChoiceDialog",evidence,["obfuscationGuard"]);
+ method("fq","a","(III[Ljp;I)V","drawHorizontalFrame",evidence,["width", "y", "obfuscationGuard", "sprites", "x"]);
+ local("gh","a(ILta;IIIILdh;Ldh;IILta;Lta;IIIIIIII)V",0,"stackIn_6_0","contextFailure",evidence);
+ local("gh","a(ILta;IIIILdh;Ldh;IILta;Lta;IIIIIIII)V",1,"stackIn_6_1","contextPrefix",evidence);
+ local("gh","a(ILta;IIIILdh;Ldh;IILta;Lta;IIIIIIII)V",2,"stackIn_7_2","firstFrameSummary",evidence);
+ local("gh","a(ILta;IIIILdh;Ldh;IILta;Lta;IIIIIIII)V",3,"stackIn_9_1","buttonFontContextPrefix",evidence);
+ local("gh","a(ILta;IIIILdh;Ldh;IILta;Lta;IIIIIIII)V",4,"stackIn_10_2","buttonFontSummary",evidence);
+ local("gh","a(ILta;IIIILdh;Ldh;IILta;Lta;IIIIIIII)V",5,"stackIn_12_1","bodyFontContextPrefix",evidence);
+ local("gh","a(ILta;IIIILdh;Ldh;IILta;Lta;IIIIIIII)V",6,"stackIn_13_2","bodyFontSummary",evidence);
+ local("gh","a(ILta;IIIILdh;Ldh;IILta;Lta;IIIIIIII)V",7,"stackIn_15_1","buttonFrameContextPrefix",evidence);
+ local("gh","a(ILta;IIIILdh;Ldh;IILta;Lta;IIIIIIII)V",8,"stackIn_16_2","buttonFrameSummary",evidence);
+ local("gh","a(ILta;IIIILdh;Ldh;IILta;Lta;IIIIIIII)V",9,"stackIn_18_1","outerFrameContextPrefix",evidence);
+ local("gh","a(ILta;IIIILdh;Ldh;IILta;Lta;IIIIIIII)V",10,"stackIn_19_2","outerFrameSummary",evidence);
+ local("gh","a(ILta;IIIILdh;Ldh;IILta;Lta;IIIIIIII)V",11,"decompiledCaughtException","caughtFailure",evidence);
+ local("gh","a(ILta;IIIILdh;Ldh;IILta;Lta;IIIIIIII)V",12,"var20","configurationFailure",evidence);
+ local("gh","a(ILta;IIIILdh;Ldh;IILta;Lta;IIIIIIII)V",13,"decompiledCaughtParameter0","caughtConfigurationFailure",evidence);
+ local("oa","a(IIIIIIIII[Ljp;Ldh;[Ljp;IIIZI[Ljp;Ldh;I)V",0,"stackIn_6_0","contextFailure",evidence);
+ local("oa","a(IIIIIIIII[Ljp;Ldh;[Ljp;IIIZI[Ljp;Ldh;I)V",1,"stackIn_6_1","contextPrefix",evidence);
+ local("oa","a(IIIIIIIII[Ljp;Ldh;[Ljp;IIIZI[Ljp;Ldh;I)V",2,"stackIn_7_2","outerSpritesSummary",evidence);
+ local("oa","a(IIIIIIIII[Ljp;Ldh;[Ljp;IIIZI[Ljp;Ldh;I)V",3,"stackIn_9_1","bodyFontContextPrefix",evidence);
+ local("oa","a(IIIIIIIII[Ljp;Ldh;[Ljp;IIIZI[Ljp;Ldh;I)V",4,"stackIn_10_2","bodyFontSummary",evidence);
+ local("oa","a(IIIIIIIII[Ljp;Ldh;[Ljp;IIIZI[Ljp;Ldh;I)V",5,"stackIn_12_1","selectedSpritesContextPrefix",evidence);
+ local("oa","a(IIIIIIIII[Ljp;Ldh;[Ljp;IIIZI[Ljp;Ldh;I)V",6,"stackIn_13_2","selectedSpritesSummary",evidence);
+ local("oa","a(IIIIIIIII[Ljp;Ldh;[Ljp;IIIZI[Ljp;Ldh;I)V",7,"stackIn_15_1","buttonSpritesContextPrefix",evidence);
+ local("oa","a(IIIIIIIII[Ljp;Ldh;[Ljp;IIIZI[Ljp;Ldh;I)V",8,"stackIn_16_2","buttonSpritesSummary",evidence);
+ local("oa","a(IIIIIIIII[Ljp;Ldh;[Ljp;IIIZI[Ljp;Ldh;I)V",9,"stackIn_18_1","buttonFontContextPrefix",evidence);
+ local("oa","a(IIIIIIIII[Ljp;Ldh;[Ljp;IIIZI[Ljp;Ldh;I)V",10,"stackIn_19_2","buttonFontSummary",evidence);
+ local("oa","a(IIIIIIIII[Ljp;Ldh;[Ljp;IIIZI[Ljp;Ldh;I)V",11,"decompiledCaughtException","caughtFailure",evidence);
+ local("oa","a(IIIIIIIII[Ljp;Ldh;[Ljp;IIIZI[Ljp;Ldh;I)V",12,"var20","configurationFailure",evidence);
+ local("oa","a(IIIIIIIII[Ljp;Ldh;[Ljp;IIIZI[Ljp;Ldh;I)V",13,"decompiledCaughtParameter0","caughtConfigurationFailure",evidence);
+ local("ka","a(IIILta;)V",0,"runtimeException","configurationFailure",evidence);
+ local("ka","a(IIILta;)V",1,"stackIn_6_0","contextFailure",evidence);
+ local("ka","a(IIILta;)V",2,"stackIn_6_1","contextPrefix",evidence);
+ local("ka","a(IIILta;)V",3,"stackIn_7_2","frameArgumentSummary",evidence);
+ local("ka","a(IIILta;)V",4,"decompiledCaughtException","caughtFailure",evidence);
+ local("ka","a(IIILta;)V",5,"decompiledCaughtParameter0","caughtConfigurationFailure",evidence);
+ local("cd","a(Lta;Lta;IIII)V",0,"runtimeException","configurationFailure",evidence);
+ local("pl","a(ILjava/lang/String;Z)I",0,"var3","measurementFailure",evidence);
+ local("pl","a(ILjava/lang/String;Z)I",1,"stackIn_4_0","buttonWidth",evidence);
+ local("pl","a(ILjava/lang/String;Z)I",2,"stackIn_6_0","bodyWidth",evidence);
+ local("pl","a(ILjava/lang/String;Z)I",3,"stackIn_9_0","contextFailure",evidence);
+ local("pl","a(ILjava/lang/String;Z)I",4,"stackIn_9_1","contextPrefix",evidence);
+ local("pl","a(ILjava/lang/String;Z)I",5,"stackIn_10_2","textArgumentSummary",evidence);
+ local("pl","a(ILjava/lang/String;Z)I",6,"decompiledCaughtException","caughtFailure",evidence);
+ local("pl","a(ILjava/lang/String;Z)I",7,"decompiledCaughtParameter0","caughtMeasurementFailure",evidence);
+ local("aj","a(III)I",0,"var3_int","lineIndex",evidence);
+ local("aj","a(III)I",1,"var4","lineTop",evidence);
+ local("aj","a(III)I",2,"var5","actionIndex",evidence);
+ local("aj","a(III)I",3,"var6","textWidth",evidence);
+ local("aj","a(III)I",4,"var7","textLeft",evidence);
+ local("aj","a(III)I",5,"var8","unusedClientFlag",evidence);
+ local("aj","a(III)I",6,"stackIn_7_0","hitAction",evidence);
+ local("aj","a(III)I",7,"stackIn_13_0","noAction",evidence);
+ local("aj","a(III)I",8,"decompiledCaughtException","caughtFailure",evidence);
+ local("aj","a(III)I",9,"var3","hitTestFailure",evidence);
+ local("aj","a(III)I",10,"decompiledCaughtParameter0","caughtHitTestFailure",evidence);
+ local("jq","d(I)V",0,"var3","lineIndex",evidence);
+ local("jq","d(I)V",1,"stackIn_12_0","measureGuard",evidence);
+ local("jq","d(I)V",2,"stackIn_12_1","textForMeasurement",evidence);
+ local("jq","d(I)V",3,"stackIn_13_2","isButtonLine",evidence);
+ local("jq","d(I)V",4,"stackIn_17_0","buttonFrame",evidence);
+ local("jq","d(I)V",5,"decompiledCaughtException","caughtFailure",evidence);
+ local("jq","d(I)V",6,"var1_int","contentWidth",evidence);
+ local("jq","d(I)V",7,"var1","drawingFailure",evidence);
+ local("jq","d(I)V",8,"var2","lineTop",evidence);
+ local("jq","d(I)V",9,"var4","actionIndex",evidence);
+ local("jq","d(I)V",10,"var5","textColor",evidence);
+ local("jq","d(I)V",11,"var6","text",evidence);
+ local("jq","d(I)V",12,"var7","textWidth",evidence);
+ local("jq","d(I)V",13,"var8","textLeft",evidence);
+ local("jq","d(I)V",14,"var9","frame",evidence);
+ local("jq","d(I)V",15,"var10","unusedClientFlag",evidence);
+ local("jq","d(I)V",16,"decompiledCaughtParameter0","caughtDrawingFailure",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",0,"stackIn_4_0","actionCaptionValue",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",1,"stackIn_25_0","measureGuard",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",2,"stackIn_25_1","textForMeasurement",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",3,"stackIn_26_2","isButtonLine",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",4,"stackIn_38_0","contentHeightValue",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",5,"stackIn_38_1","lineAction",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",6,"stackIn_41_1","lineHeight",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",7,"stackIn_47_0","contextFailure",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",8,"stackIn_47_1","contextPrefix",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",9,"stackIn_48_2","messageArgumentSummary",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",10,"decompiledCaughtException","caughtFailure",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",11,"var5","layoutFailure",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",12,"var6","actionCaption",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",13,"var7","bodyLineCount",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",14,"var8","totalLineCount",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",15,"var9","lineIndex",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",16,"var10","unusedClientFlag",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",17,"var11","messageToWrap",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",18,"var7Lifetime1","contentWidth",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",19,"var9Lifetime1","lineWidth",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",20,"var8Lifetime1","measureLineIndex",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",21,"var8Lifetime2","heightLineIndex",evidence);
+ local("dk","a(Ljava/lang/String;ZIZI)V",22,"decompiledCaughtParameter0","caughtLayoutFailure",evidence);
+ local("gi","g(I)V",0,"var1","contentWidth",evidence);
+ local("gi","g(I)V",1,"var2","contentHeight",evidence);
+ local("vh","h(I)I",0,"var1_int","activated",evidence);
+ local("vh","h(I)I",1,"var3","unusedClientFlag",evidence);
+ local("vh","h(I)I",2,"stackIn_14_0","returnedResult",evidence);
+ local("vh","h(I)I",3,"decompiledCaughtException","caughtFailure",evidence);
+ local("vh","h(I)I",4,"var1","inputFailure",evidence);
+ local("vh","h(I)I",5,"var2","resultCode",evidence);
+ local("vh","h(I)I",6,"decompiledCaughtParameter0","caughtInputFailure",evidence);
+ local("fq","a(III[Ljp;I)V",0,"stackIn_13_0","contextFailure",evidence);
+ local("fq","a(III[Ljp;I)V",1,"stackIn_13_1","contextPrefix",evidence);
+ local("fq","a(III[Ljp;I)V",2,"stackIn_14_2","spritesArgumentSummary",evidence);
+ local("fq","a(III[Ljp;I)V",3,"decompiledCaughtException","caughtFailure",evidence);
+ local("fq","a(III[Ljp;I)V",4,"var5_int","leftWidth",evidence);
+ local("fq","a(III[Ljp;I)V",5,"var5","drawingFailure",evidence);
+ local("fq","a(III[Ljp;I)V",6,"var6","rightWidth",evidence);
+ local("fq","a(III[Ljp;I)V",7,"var7","tileWidth",evidence);
+ local("fq","a(III[Ljp;I)V",8,"var8","tileStartX",evidence);
+ local("fq","a(III[Ljp;I)V",9,"var9","tileEndX",evidence);
+ local("fq","a(III[Ljp;I)V",10,"var10","unusedClientFlag",evidence);
+ local("fq","a(III[Ljp;I)V",11,"decompiledCaughtParameter0","caughtDrawingFailure",evidence);
+}
 
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
@@ -3544,12 +3715,14 @@ export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}]
 "Native fixtures verify text normalization/defaults, decimal append/scratch reuse, line selection/order, render-rate caching and disabled-line removal. Independent decimal expectations preserve negative signed-remainder characters below zero and the omitted scratch minus. Independent overlay pixels/glyph events cover strict next100-pixel rounding, an exact100 boundary, spaces, reversed glyph order, row spacing, empty lists and no-op drawing guards. Heap contents are checked only for format/range and excluded from deterministic traces. Static state and original scratch contents are restored. The displayed fps is a render-loop rate, not presented FPS. Full handshake behavior, arbitrary malformed text/guards, live presentation, memory budgets and original-JAR equivalence remain unverified.", '',
 "SocialTabbedPanel names the primary/Friends/Ignore wrapper and retained tabs/bounds. FriendListUi names friend-row updates; updateIgnoreList and initializeSocialPanels expose related helpers on their existing owners. Shared panel/pane references, headings, status text, rename sprite and scrollbar width have reviewed names. Four ScrollPaneWithFooter parameter names are corrected: the content gap and actual scrollbar width were previously reversed. Unrelated static helpers retain separate roles.", '',
 "Native fixtures initialize panels from an in-memory named sprite archive and verify tab identities/labels, initial selection, bounds/guards, row-height and scrollbar variations. Unequal gap/scrollbar geometry checks verify the corrected parameter roles and footer separation. Friend/ignore fixtures cover fresh/reused labels, ordering, retained layout, rename icons/tooltips, truncated-name tooltips, availability states and four footer action modes. Friend location colors preserve server String reference identity, including equal text in a distinct object. Independent fixed-advance truncation expectations retain the extra dropped character before the ellipsis; nonpositive name widths keep the full name. The ignore false guard returns after scroll layout, before availability mutation. Static state is restored. Real assets, live input/servers, friend-row context menus, all narrow positive truncation widths, arbitrary invalid guards and original-JAR equivalence remain unverified.", '',
-"LobbyUiHelpers names lobby controls/status timers, create-game cancel and report-security references, and the shared-font style wrapper. updateLobbyControls names setting-rule, restriction-pass, eligibility, request-caption and root-gating locals; reused locals retain qualified phase names. Unresolved numeric style parameters remain qualified. layoutLobbyTransition exposes quadratic root positioning.", '',
-"Independent per-pixel nine-slice fixtures cover missing pieces, transparent RGB, edge/center tiling, clipping, small dimensions and proportional border overlap with original tile anchors. Clip restoration and no-op dimensions/guards use the real painter. Timer fixtures cover three row collections, negative/zero/one/two/max-int timers, adjacent removals, indexed/unindexed rows and repeated ticks. Only transition to zero clears status; only unindexed rows unlink. No-game controller fixtures check three transition positions, all input/suppression/request-panel gates and tab activation. Static state and prior scratch contents are restored. Trimmed/alpha frame pieces, malformed arrays, nested scratch use, wrong client flags, full game-present eligibility/actions, style initialization effects, real assets, live input/servers, invalid guards and original-JAR equivalence remain unverified.", '',
+"LobbyUiHelpers names lobby controls/status timers, create-game cancel and report-security references, and the shared-font style wrapper. updateLobbyControls names setting-rule, restriction-pass, eligibility, request-caption and root-gating locals; reused locals retain qualified phase names. layoutLobbyTransition exposes quadratic root positioning.", '',
+"Independent per-pixel nine-slice fixtures cover missing pieces, transparent RGB, edge/center tiling, clipping, small dimensions and proportional border overlap with original tile anchors. Clip restoration and no-op dimensions/guards use the real painter. Timer fixtures cover three row collections, negative/zero/one/two/max-int timers, adjacent removals, indexed/unindexed rows and repeated ticks. Only transition to zero clears status; only unindexed rows unlink. No-game controller fixtures check three transition positions, all input/suppression/request-panel gates and tab activation. Static state and prior scratch contents are restored. Trimmed/alpha frame pieces, malformed arrays, nested scratch use, wrong client flags, full game-present eligibility/actions, real assets, live input/servers, invalid guards and original-JAR equivalence remain unverified.", '',
+"TextChoiceDialogStyles/TextChoiceDialogHitTest name centered-dialog configuration and pointer selection. Reviewed fields cover body/button fonts, baselines, line heights, frames/padding, colors, position/bounds, line/action/result maps and selection/open state. Configuration setters and sprite/font wrappers expose these roles. configureTextChoiceDialogWithFont replaces the earlier broad UI-style name. Mode0 adds a Members or Log in/Create account action plus Close; mode1 adds only Close. Result1 stays open and result2 closes.", '',
+"Native fixtures use distinct body/button fonts, heights and baselines to verify stored styles. Sprite wrappers check frame-array identities and the shared-font wrapper checks derived metrics. One/two-body-line fixtures independently compare centered geometry, glyph/frame calls, selected colors, half-open hit boundaries, result maps and queued-key activation/closure. HorizontalFrameHelpers has independent RGB pixel fixtures for cap overlap, middle tiling, transparency and clip restoration; caps retain their full size even with a smaller requested width. Static state and original mutable scratch arrays are restored. Frame probes replace dialog artwork. General word wrapping/markup, complete pointer event flows, alpha/trimmed strip pieces, malformed arrays/guards, live resize/presentation, server actions and original-JAR equivalence remain unverified.", '',
 `Decompiler source commit: ${rules.generators.javaTools.commit}. Tracked-source Git tar SHA-256: ${rules.generators.javaTools.trackedSourceTarSha256}. This identifies decompiler source, not a gamepack JAR.`, ''].join('\n');}
 export function buildBrickManifest(){const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'brick-naming-rules-'));try{
  const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout),record=catalog.publication.games.brickabrac;
- const rules={schema:1,game:'brickabrac',version:76,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
+ const rules={schema:1,game:'brickabrac',version:77,source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/brickabrac'},inputTreeSha256:record.sources.sha256};
  const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary),helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);
  captureProcess('javac',['-encoding','UTF-8','-d',helper,path.join(workflowRoot,'tools/lib/ReadableJava.java')]);const files=path.join(temporary,'files'),audit=path.join(temporary,'audit.tsv');fs.writeFileSync(files,sourceInventory(input).map(f=>f.path).join('\n')+'\n');captureProcess('java',['-Xmx1024m','-cp',helper,'ReadableJava',input,files,audit,compiled,stubs.jar,'--class-name-literals','--labels']);const rows=fs.readFileSync(audit,'utf8').trimEnd().split('\n').map(l=>l.split('\t'));
  rules.renames=buildBrickRules(input,rows);const symbols=new Set(rules.renames.map(r=>r.symbol));rules.classNameLiterals={policy:'direct-owned-class-for-name',expectedEdits:rows.filter(r=>r[0]==='S'&&symbols.has(r[4])).length};rules.labels={policy:'lexical-targets',expectedEdits:rows.filter(r=>['T','B','N'].includes(r[0])&&symbols.has(r[4])).length};if(rows.some(r=>r[0]==='U'&&symbols.has(r[4])))throw new Error('Unsupported escaped class-name literal');

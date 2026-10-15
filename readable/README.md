@@ -1745,8 +1745,8 @@ LobbyUiHelpers names the lobby-control and status-timer helper bag, its
 create-game cancel button and report-security heading. updateLobbyControls
 exposes restriction-pass, setting-rule, eligibility, request-caption and root
 input-gating locals. Shared locals keep qualified names where the export reuses
-them for different phases. initializeUiStylesWithSharedFont names the font
-wrapper and metric locals; unresolved numeric style parameters stay qualified.
+them for different phases. configureTextChoiceDialogWithFont uses the reviewed centered-dialog font
+and metric roles.
 layoutLobbyTransition names the quadratic root-positioning helper.
 
 Independent per-pixel nine-slice fixtures cover missing pieces, transparent
@@ -1765,8 +1765,33 @@ Indexed rows remain linked. Adjacent removals and repeated ticks are checked.
 No-game controller fixtures check three transition positions, all input/
 suppression/request-panel gates and tab activation. Static state and the prior
 mutable clip scratch are restored. The full game-present owner/eligibility and
-request-action branches, style initialization effects, real assets, live input/
+request-action branches, real assets, live input/
 servers, invalid guards and original-JAR equivalence remain unverified.
+
+TextChoiceDialogStyles and TextChoiceDialogHitTest name the centered dialog
+configuration and pointer selection helpers. Body/button fonts, baselines, line
+heights, outer/button frames, padding, colors, bounds, lines, action/result maps
+and open/selection state now have traced identities. Configuration setters and
+both sprite/font wrappers expose those roles through their parameters.
+configureTextChoiceDialogWithFont replaces the earlier broad UI-style name.
+
+showTextChoiceDialog mode 0 adds a Members or Log in / Create account action
+plus Close; mode 1 adds only Close. Result 1 leaves the dialog open; result 2
+closes it. Drawing and hit testing use centered text widths with padded button
+rectangles and half-open bounds. Native fixtures use distinct body/button fonts,
+line heights and baselines, and compare all stored style values. Sprite wrappers
+check retained frame-array identities; the shared-font wrapper checks derived
+metrics. One/two-body-line fixtures compare layout, glyph/frame calls, selection
+colors, edge hit tests, result maps and real queued-key activation/closure.
+
+HorizontalFrameHelpers names the three-piece strip painter. Independent pixel
+fixtures preserve full cap drawing even when their combined width exceeds the
+requested width: the right cap paints after the left, followed by middle tiles
+inside their clipped interval. Transparency and clip restoration are checked.
+Static state and original mutable scratch arrays are restored. Frame probes
+replace dialog artwork. General word wrapping/markup, full pointer event flows,
+alpha/trimmed strip pieces, malformed arrays/guards, live resize/presentation,
+server actions and original-JAR equivalence remain unverified.
 
 ## Steel Sentinels
 
