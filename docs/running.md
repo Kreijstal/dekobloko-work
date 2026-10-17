@@ -667,7 +667,11 @@ Playback remains 6.65 times the capped native duration, and startup regressed.
 This establishes a failed performance fix, not acceptance. The runtime bundle
 and host entry also changed, so the small playback difference does not isolate
 AOT's contribution. Generated-code execution and runtime overhead remain to be
-improved. The normal launcher artifact was not replaced. No CPU-throttled,
+improved. The normal launcher artifact was not replaced. A follow-up
+`preparedLoopLeafWasm` experiment increased complete Wasm modules from three to
+60, retained zero post-entry compilations and matched the same reference image,
+but its separate local diagnostic pass took 15.128 s versus the earlier
+10.754 s. It was reverted; this was not a release acceptance measurement. No CPU-throttled,
 heap-limited or phone acceptance is claimed for this candidate.
 
 For an independent colour check, open `/?verify`: at tick 80, the browser
