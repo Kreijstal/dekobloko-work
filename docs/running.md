@@ -678,6 +678,60 @@ For an independent colour check, open `/?verify`: at tick 80, the browser
 compares a canvas RGB readback with the native reference hash. The timed
 comparison omits this extra readback and hashing work. No screenshots are saved.
 
+#### TeaVM Wasm GC comparison
+
+Compile the same cached intro renderer with TeaVM 0.16.0, then open
+`http://127.0.0.1:5188/teavm` on the existing intro host:
+
+```bash
+node apps/intro/build-teavm.mjs
+node apps/intro/serve-intro.mjs
+DISPLAY=:0 node apps/intro/compare-teavm.cjs
+```
+
+The build uses Maven, JDK 21 and TeaVM's `WEBASSEMBLY_GC` target with `FULL`
+optimization. It reads the existing player classes and writes only to
+`~/.cache/dekobloko/geoblox-intro/teavm`. No generated Java, JARs or Wasm binaries
+are committed. Rebuilding the native class files discards the TeaVM artifact.
+The timing harness adds one `teavm` result to the existing comparison report,
+reusing its saved native timing and reference hash; it does not run HotSpot.
+
+Only browser host services differ: local JS5 assets, JPEG decoding and canvas
+presentation. The original mesh/lighting/rasterizer methods are compiled from
+the cached game classes. The AWT Sprite image constructor delegates to the
+browser decoder. Desktop AWT/applet/Swing/audio, socket and object-input services
+are unavailable in this intro: their host constructors/initializers are inert,
+and other concrete service methods throw if reached. This is an intro port,
+not a full game or multiplayer port. Direct NIO memory carries the RGBA frame
+out of Wasm; pixel conversion stays in Java/Wasm.
+
+The first builds lacked desktop type declarations and two serialization catch
+types (`OptionalDataException`, `StreamCorruptedException`) absent from TeaVM's
+class library. The latter produced invalid `br_on_cast` instructions even though
+Maven reported success. Supplying the JDK declarations fixed validation. The
+builder now validates the Wasm binary before replacing the current artifact.
+
+On kreijstalaptop, Firefox 148.0.2, one fresh 251-frame pass with no warmup:
+
+| Runtime | Animation duration |
+| --- | ---: |
+| Existing HotSpot reference | 5.020 s |
+| Our prepared JVM | 33.404 s |
+| TeaVM Wasm GC | **18.468 s** |
+
+TeaVM loaded/instantiated its module in 0.593 s and prepared the intro in
+0.542 s. The page's load-to-Java-return interval was 20.082 s; the harness's
+Firefox-launch-to-completion interval was 26.801 s. Compilation took about
+25.65 s on the build host with dependencies cached. The Wasm SHA-256 was
+`ff16855309703ceb92e9b66a2f161004dbb8bf80c8432d5b0e6ff8aaa21a53cd`.
+The existing full RGB reference hash matched at tick 80; hashing ran after the
+timed pass. TeaVM was 1.81 times faster than our JVM in this comparison, but still
+3.68 times the capped native duration. This does not meet the rendering target.
+
+TeaVM setup and interop follow its [Maven configuration](https://teavm.org/docs/tooling/maven.html),
+[Wasm GC loader](https://teavm.org/docs/wasm-gc-backend/loader.html) and
+[direct NIO buffer interop](https://teavm.org/docs/runtime/jso.html) documentation.
+
 ---
 
 ## 6. Protocol servers

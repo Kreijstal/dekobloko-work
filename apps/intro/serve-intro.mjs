@@ -25,15 +25,25 @@ function dataManifest() {
 const page=`<!doctype html><meta charset="utf-8"><title>Jagex Intro · Firefox JVM</title>
 <style>html,body{margin:0;background:#000;width:100%;height:100%;overflow:hidden}body{display:grid;place-items:center}canvas{width:640px;height:480px;image-rendering:pixelated}</style>
 <canvas width="640" height="480"></canvas><script src="/runtime/jvm-debug.js"></script><script type="module" src="/browser.mjs"></script>`;
+const teaPage=page.replace('Firefox JVM','TeaVM Wasm GC')
+  .replace('/runtime/jvm-debug.js','/teavm/intro.wasm-runtime.js').replace('/browser.mjs','/teavm/browser.mjs');
 const knownAssets=new Set(Object.keys(receipt.assets));
 const server=http.createServer((request,response)=>{
   try {
     const route=new URL(request.url,'http://localhost').pathname;
     response.setHeader('Cache-Control','no-store');
     if(route==='/') {response.setHeader('Content-Type','text/html');response.end(page);return;}
+    if(route==='/teavm') {response.setHeader('Content-Type','text/html');response.end(teaPage);return;}
+    if(route==='/teavm/data.json'){
+      response.setHeader('Content-Type','application/json');
+      response.end(JSON.stringify({provenance:JSON.parse(fs.readFileSync(path.join(options.player,'provenance.json'))),
+        teavm:JSON.parse(fs.readFileSync(path.join(options.player,'teavm/build.json')))}));return;
+    }
     if(route==='/data.json'){response.setHeader('Content-Type','application/json');response.end(dataManifest());return;}
     let file;
     if(route==='/browser.mjs')file=path.join(here,'browser.mjs');
+    else if(route==='/teavm/browser.mjs')file=path.join(here,'teavm-browser.mjs');
+    else if(['/teavm/intro.wasm','/teavm/intro.wasm-runtime.js'].includes(route))file=path.join(options.player,route.slice(1));
     else if(route==='/intro/runtime.mjs')file=path.join(here,'runtime.mjs');
     else if(['/launcher/browser-loader/browser-image-decoder.mjs','/launcher/browser-loader/browser-inflater.mjs','/launcher/browser-loader/code-pack.mjs'].includes(route))file=path.resolve(here,'..'+route);
     else if(route==='/intro.aot')file=path.join(options.player,'intro.aot');
@@ -43,7 +53,7 @@ const server=http.createServer((request,response)=>{
     else if(route.startsWith('/assets/')&&knownAssets.has(route.slice(8)))file=path.join(options.player,'assets',route.slice(8));
     else if(/^\/runtime\/[A-Za-z0-9.-]+\.js$/.test(route))file=path.join(options.runtime,path.basename(route));
     else {response.writeHead(404);response.end();return;}
-    response.setHeader('Content-Type',file.endsWith('.js')||file.endsWith('.mjs')?'text/javascript':'application/octet-stream');
+    response.setHeader('Content-Type',file.endsWith('.wasm')?'application/wasm':file.endsWith('.js')||file.endsWith('.mjs')?'text/javascript':'application/octet-stream');
     response.end(fs.readFileSync(file));
   } catch(error) {response.writeHead(500);response.end(String(error));}
 });

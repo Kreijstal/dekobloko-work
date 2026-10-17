@@ -30,7 +30,7 @@ if (fs.existsSync(output)) {
   assert.ok(!fs.lstatSync(output).isSymbolicLink(), 'Output cannot be a symlink');
   assert.equal(JSON.parse(fs.readFileSync(path.join(output, 'provenance.json'))).generatedBy, kind,
     'Refusing to replace an unrelated directory');
-  assert.ok(fs.readdirSync(output).every(name => ['classes', 'assets', 'run.sh', 'provenance.json', 'intro.aot', 'runtime'].includes(name)),
+  assert.ok(fs.readdirSync(output).every(name => ['classes', 'assets', 'run.sh', 'provenance.json', 'intro.aot', 'runtime', 'teavm'].includes(name)),
     'Output contains unrelated files');
 }
 
