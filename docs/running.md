@@ -641,6 +641,18 @@ installation/preparation time, cache coverage and execution compilation counters
 An existing valid comparison without AOT is retained inside the same report as
 `baseline`; failed runs leave that report intact.
 
+For subsequent runtime comparisons, reuse that report's native timing and hash:
+
+```bash
+DISPLAY=:0 node apps/intro/compare-intro.cjs --reuse-native \
+  --output ~/.cache/dekobloko/intro-comparison.json
+```
+
+This launches only a fresh Firefox process. It preserves the TeaVM result and
+keeps up to eight JVM trials in the same report. Source/assets must still match
+the saved native provenance. Every pass captures tick 80 in memory and checks
+its RGB hash after the animation timer stops; no screenshots are saved.
+
 Each run returns after 251 frames, targeting a 20 ms cadence. The report records
 the Java animation duration and the whole Java entry-point duration. Dividing
 251 by animation seconds gives average render throughput. Slower hosts stretch
@@ -674,9 +686,9 @@ but its separate local diagnostic pass took 15.128 s versus the earlier
 10.754 s. It was reverted; this was not a release acceptance measurement. No CPU-throttled,
 heap-limited or phone acceptance is claimed for this candidate.
 
-For an independent colour check, open `/?verify`: at tick 80, the browser
-compares a canvas RGB readback with the native reference hash. The timed
-comparison omits this extra readback and hashing work. No screenshots are saved.
+For an independent canvas colour check, open `/?verify`: at tick 80, the browser
+captures a canvas RGB readback instead of the submitted RGBA buffer. Both paths
+hash after the animation timer stops and reuse the saved native reference.
 
 #### TeaVM Wasm GC comparison
 
@@ -731,6 +743,80 @@ timed pass. TeaVM was 1.81 times faster than our JVM in this comparison, but sti
 TeaVM setup and interop follow its [Maven configuration](https://teavm.org/docs/tooling/maven.html),
 [Wasm GC loader](https://teavm.org/docs/wasm-gc-backend/loader.html) and
 [direct NIO buffer interop](https://teavm.org/docs/runtime/jso.html) documentation.
+
+The next JVM comparison isolated an execution overhead. A separate Firefox
+sampling pass put about a quarter of animation samples under face-order
+compaction, including repeated frame restoration and generic dispatch around
+the integer-array copy. The compiler already recognized that copy, but refused
+its direct call path while the owner was cold during preparation. java-tools
+`85b8a0f` retains the original invoke's initialization guard and uses the direct
+intrinsic after initialization. It adds no game names or opt-in policy. The
+compaction body's restoring entry shrank from 18,098 to 9,958 source characters
+and no longer contains generic invoke dispatch.
+
+With the same cached classes/assets, a fresh unprofiled baseline took 37.820 s
+(the earlier run was 33.404 s). The guarded-copy candidate took **20.839 s and
+19.329 s** in separate fresh Firefox processes, each exactly 251 frames with
+zero post-entry compilations and a matching saved RGB hash. A fresh TeaVM
+comparison remained about 18.49 s. These are intro-only duration results; the
+normal launcher bundle remains unchanged and the full-game performance target
+is not established.
+
+The same profile showed the large adaptive mesh-face renderer remaining in
+SpiderMonkey's baseline tier. Enabling the existing proven straight-line
+partitioner split its adaptive entry into four segments. Two fresh single-pass
+runs took **18.359 s and 15.333 s**, with matching RGB hashes and zero runtime
+compilations, versus the fresh TeaVM result of **18.490 s**. java-tools
+`8f16dc1` makes this generic pass automatic, using a 98,304-character unit
+threshold and a 49,152-character segment budget. Unsafe/opaque boundaries keep
+their existing representation. The consumer's disable flag and size overrides
+have been removed; no intro-specific compiler policy is needed.
+
+The rebuild with default settings produced byte-identical source for all
+1,301 recorded generated bodies. Its three Firefox passes took 21.438 s,
+16.263 s and 19.182 s (19.182 s median); subsequent fresh TeaVM passes took
+17.812 s and 17.497 s. The slower JVM passes are retained in the comparison
+report. The first size policy therefore did not establish typical parity.
+
+Reducing the generic unit/segment budgets to 49,152/24,576 characters split
+the mesh renderer into seven segments. Two fresh passes took **15.402 s and
+18.560 s**, a **16.981 s median**, versus **17.655 s** for the two latest
+TeaVM passes. java-tools `0735505` selects those budgets by default. This
+establishes a large execution improvement, but not uniform per-launch parity
+or the original FPS floor. Every pass still runs just once, without warmup or
+profiling; startup remains a separate unresolved cost.
+
+The final default-settings rebuild again reproduced all 1,301 generated bodies
+byte for byte. Its fresh Firefox pass took **18.095 s**, with no partitioning
+options in the consumer configuration. The three smaller-budget passes thus
+have an **18.095 s median**, about **2.5% longer** than recent TeaVM's
+17.655 s median; their range is 15.402–18.560 s. All match the saved RGB hash
+and execute zero JVM compilations after entry. The final artifact replays all
+962 entries without misses/refusals/errors. Its browser-launch-to-completion
+interval was 67.468 s, so animation parity does not imply startup parity.
+
+Focused validation:
+
+```bash
+# In java-tools; NODE_PATH may select an existing dependency installation.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/preparedArrayCopyIntrinsic.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/preparedIntegerInline.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/workerIntrinsicTransport.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/structuredAdaptivePartition.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/structuredSwitchPartition.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/structuredFramedWrapper.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/structuredResumeEntryBranches.test.js
+# In dekobloko-work.
+node apps/intro/build-aot.mjs
+node apps/intro/build-aot.mjs --mode replay
+node --test tests/intro-pixels.test.mjs
+```
+
+The compiler tests passed 70, 47, 10, 105, 51, 29 and 166 assertions respectively; offline
+record/replay covered all 962 cache entries without misses, refusals or guest
+execution. Pixel tests cover primary colours and alpha masking. An aligned
+32-bit framebuffer packing experiment took 19.497 s, providing no improvement
+over the 19.329 s byte-store run; it was reverted.
 
 ---
 

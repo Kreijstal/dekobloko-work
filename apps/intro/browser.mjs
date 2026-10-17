@@ -8,6 +8,7 @@ const image=context.createImageData(640,480);
 const rgba=image.data;
 const stats=window.intro={state:'preparing',frames:0,provenance:null,runtimeSha256:null};
 const verifyColours=new URLSearchParams(location.search).has('verify');
+let referenceRgba=null;
 try {
   const data=await (await fetch('/data.json')).json();
   stats.provenance=data.provenance;stats.runtimeSha256=data.runtimeSha256;
@@ -52,15 +53,8 @@ try {
         copyRgbToRgba(pixels,rgba);
         context.putImageData(image,0,0);
         const reference=data.provenance.reference;
-        if(verifyColours&&reference&&tick===reference.tick&&!stats.referenceRgbSha256){
-          const actual=context.getImageData(0,0,640,480).data;
-          const rgb=new Uint8Array((pixels.length-reference.skipPixels)*3);
-          for(let i=reference.skipPixels,p=0;i<pixels.length;i++){
-            rgb[p++]=actual[i*4];rgb[p++]=actual[i*4+1];rgb[p++]=actual[i*4+2];
-          }
-          stats.referenceRgbSha256=[...new Uint8Array(await crypto.subtle.digest('SHA-256',rgb))]
-            .map(value=>value.toString(16).padStart(2,'0')).join('');
-          if(stats.referenceRgbSha256!==reference.rgbSha256)throw new Error('Firefox colours/geometry differ from the native reference frame: '+stats.referenceRgbSha256);
+        if(reference&&tick===reference.tick){
+          referenceRgba=verifyColours?context.getImageData(0,0,640,480).data:rgba.slice();
         }
         stats.state='playing';
         stats.frames++;
@@ -78,6 +72,17 @@ try {
     javaRunMs:performance.now()-stats.runStartedAt};
   if(stats.frames!==251||stats.timings.frames!==251)throw new Error('Incomplete intro');
   stats.aot.execution=controller.jvm.jit.syncCompileCensus();
+  const reference=data.provenance.reference;
+  if(reference){
+    if(!referenceRgba)throw new Error('Reference frame was not produced');
+    const rgb=new Uint8Array((referenceRgba.length/4-reference.skipPixels)*3);
+    for(let i=reference.skipPixels*4,p=0;i<referenceRgba.length;i+=4){
+      rgb[p++]=referenceRgba[i];rgb[p++]=referenceRgba[i+1];rgb[p++]=referenceRgba[i+2];
+    }
+    stats.referenceRgbSha256=[...new Uint8Array(await crypto.subtle.digest('SHA-256',rgb))]
+      .map(value=>value.toString(16).padStart(2,'0')).join('');
+    if(stats.referenceRgbSha256!==reference.rgbSha256)throw new Error('Firefox colours/geometry differ from the native reference frame: '+stats.referenceRgbSha256);
+  }
   stats.state='completed';
 } catch(error) {
   stats.state='failed';

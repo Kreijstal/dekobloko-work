@@ -29,9 +29,11 @@ for(let i=2;i<process.argv.length;i++) {
     assert.equal(result.state,'completed',result.error);assert.deepEqual(errors,[]);
     assert.equal(result.frames,251);assert.equal(result.runtime,'TeaVM Wasm GC');
     assert.equal(result.referenceRgbSha256,previous.provenance.reference.rgbSha256);
+    const trials=[...(previous.teavmTrials||(previous.teavm?[previous.teavm]:[]))].slice(-7);
     previous.teavm={...result,firefoxVersion:browser.version(),launchToCompletionMs:performance.now()-started,
       machine:{hostname:os.hostname(),cpu:os.cpus()[0].model},nativeReferenceReused:true,
       animationRatioToHotspot:result.timings.animationMs/previous.hotspot.animationMs};
+    previous.teavmTrials=[...trials,previous.teavm];
     fs.writeFileSync(options.output,JSON.stringify(previous,null,2)+'\n');
     console.log(JSON.stringify(previous.teavm,null,2));
   } finally {await browser.close();}
