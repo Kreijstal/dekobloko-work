@@ -611,6 +611,76 @@ passes that would execute an observable call twice.
 runtime boundary check that catches launcher/AWT/cache regressions after
 bytecode or harness changes. It is not part of any decompiler oracle.
 
+### Playing the published GeoBlox sources on HotSpot
+
+`readable/tests/test-geoblox-hotspot.mjs` compiles the 303 published Java files
+directly from `funorb-decompiled/games/geoblox`, checks their naming-provenance
+tree hash, and builds compatibility stubs from published source. Its runtime
+classpath contains only those fresh classes and stubs. The applet also checks
+its actual code-source directory. No original game classes or gamepack JAR are
+loaded, and no game-source edits or browser patches are applied.
+
+Use a modern javac supporting `--release 8` and a HotSpot runtime with applets:
+
+```sh
+JAVA=/usr/lib/jvm/java-8-openjdk/bin/java \
+FUNORB_DECOMPILED_DIR=/path/to/funorb-decompiled \
+node readable/tests/test-geoblox-hotspot.mjs \
+  --assets /path/to/geoblox-js5 --output /tmp/geoblox-hotspot-result \
+  --seconds 60 --display :0
+```
+
+`--display :0` opens a real desktop window and sends keyboard input to its
+canvas; omit it to use an isolated Xvfb display. Assets are served only over
+loopback, and the installed cache is copied to temporary storage. The test
+follows all five instruction pages, tutorial continue/skip, rotation, scoring
+and piece release, then pause/resume. Normal game-over is checked and followed
+through the result menus into a new session; requested gameplay samples count
+across sessions rather than treating an ordinary loss as a crash. Screenshots,
+compiler/runtime logs and one current `report.json` go to the output directory;
+temporary Java, compiled classes, stubs and cache copies are removed afterwards.
+This is a desktop smoke test, not full original-game equivalence or a browser,
+phone, heap or presented-FPS acceptance result.
+
+On 2026-10-17 the source was compiled with javac 27 and played on
+`kreijstalaptop`'s actual X11 desktop (`:0`) using OpenJDK 8u504 HotSpot. The
+successful isolated run used this exact command from
+`/tmp/geoblox-hotspot.1Cgswt`:
+
+```sh
+env -u JAVA_TOOL_OPTIONS \
+  JAVA=/usr/lib/jvm/java-8-openjdk/bin/java \
+  JAVAC=/usr/lib/jvm/java-27-openjdk/bin/javac \
+  FUNORB_DECOMPILED_DIR=/tmp/geoblox-hotspot.1Cgswt/funorb \
+  node workflow/readable/tests/test-geoblox-hotspot.mjs \
+  --assets /tmp/geoblox-hotspot.1Cgswt/assets \
+  --output /tmp/geoblox-hotspot.1Cgswt/result --seconds 60 --display :0
+```
+
+Exit 0: all five instruction pages and previous/menu navigation, tutorial
+continue/skip, rotation input, 60 gameplay samples, scoring and pause/resume
+passed. Gameplay sampling lasted 61,127 ms, with 8,906 observed tick advances,
+a maximum sampled score of 2,244 and maximum per-theme release count of 65.
+The final gameplay screenshot shows 2,274 points. Twelve canvas screenshots
+were saved. The local JS5 server reported no errors.
+
+The 303-source readable tree SHA-256 was
+`e9234157c5106f14405291578674b14151ef2c73d2614d499c12d1d6a584e6d0`, matching
+published naming provenance. The runner SHA-256 was
+`a8141f488c34c78efc181044bcce2829645629985de7a663b629210bfdc229b1`.
+Only source and assets were transferred; the uploaded input contained no JARs
+or class files, and the applet verified its fresh compiled code-source path.
+
+An earlier attempt reached an ordinary game-over at score 1,536, exposing the
+runner's incorrect assumption that a single life must last the requested minute.
+A second attempt lost desktop keyboard focus before tutorial continue. The
+runner now recognizes normal losses and checks canvas keyboard focus before
+input, recovering it with a safe canvas click when necessary. The successful
+final run had no game-over, so its new loss/replay recovery branch was not
+exercised; no successful replay claim is made. Game Java remained unchanged.
+The single current report and screenshots remain in the result directory;
+transferred source/asset inputs and temporary builds were removed after review.
+
 ## Inspecting one class
 
 ```bash

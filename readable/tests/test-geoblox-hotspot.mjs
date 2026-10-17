@@ -5,12 +5,17 @@ import path from 'node:path';
 import net from 'node:net';
 import crypto from 'node:crypto';
 import assert from 'node:assert/strict';
+import {fileURLToPath} from 'node:url';
 import {spawn} from 'node:child_process';
 import {once} from 'node:events';
-import {publishedReadableRoot, workflowRepository} from '../layout.mjs';
+import {buildCompilationStubs} from '../compilation-stubs.mjs';
 import {sourceInventory, sourceIdentity} from '../tools/readable-java.mjs';
 import {captureProcess} from '../tools/lib/capture-process.mjs';
 import {createBrowserGameServer} from '../../apps/launcher/browser-loader/browser-game-server.mjs';
+
+const workflowRepository = fileURLToPath(new URL('../../', import.meta.url)).replace(/\/$/, '');
+const funorbRepository = path.resolve(process.env.FUNORB_DECOMPILED_DIR ||
+  path.join(workflowRepository, '../funorb-decompiled'));
 
 const javaSource = String.raw`import java.applet.*;
 import java.awt.*;
@@ -108,17 +113,61 @@ public class ReadableGameProbe implements AppletStub, AppletContext {
     return n;
   }
   static void key(int key) throws Exception {
+    focus();
     robot.keyPress(key);
     Thread.sleep(80);
     robot.keyRelease(key);
   }
   static void focus() throws Exception {
     Component c = (Component) get("MessageDialog", "gameCanvas");
-    SwingUtilities.invokeAndWait(() -> c.requestFocusInWindow());
+    SwingUtilities.invokeAndWait(() -> {
+      frame.toFront();
+      frame.requestFocus();
+      c.requestFocusInWindow();
+    });
+    if (!c.isFocusOwner()) {
+      Point p = c.getLocationOnScreen();
+      robot.mouseMove(p.x + 10, p.y + 10);
+      robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+      robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+    }
+    await(() -> c.isFocusOwner(), "canvas keyboard focus", 5);
     Thread.sleep(150);
   }
   static Object session() throws Exception {
     return get("UiWidget", "gameplaySession");
+  }
+  static void replayAfterGameOver(int number) throws Exception {
+    Object endedSession = session();
+    check((Boolean) member(endedSession, "sessionEnding")
+        && (Boolean) member(endedSession, "showGameOverOverlay"), "normal game-over state");
+    snap("game-over");
+    focus();
+    key(KeyEvent.VK_ESCAPE);
+    await(() -> {
+      int id = (Integer) get("SettingsCookieSupport", "currentScreenId");
+      return id >= 0 && screen(id);
+    }, "game-over result menu " + number, 15);
+    int id = (Integer) get("SettingsCookieSupport", "currentScreenId");
+    if (id != 0) {
+      int[] actions = ((int[][]) get("InstrumentEnvelope", "menuActionIds"))[id];
+      int back = -1;
+      for (int i = 0; i < actions.length; i++)
+        if (actions[i] == 5 || actions[i] == 14) { back = i; break; }
+      check(back >= 0, "result menu has a return-to-menu action");
+      activate(back);
+      await(() -> screen(0), "game-over return to menu " + number, 10);
+    }
+    activate(0);
+    await(() -> screen(-1) && session() != endedSession, "new gameplay session " + number, 15);
+    if ((Boolean) member(session(), "tutorialMode")) {
+      focus();
+      key(KeyEvent.VK_SPACE);
+      await(() -> !(Boolean) member(session(), "tutorialMode"), "replay tutorial skip", 5);
+    }
+    await(() -> !(Boolean) member(session(), "sceneTransitionInProgress")
+        && !(Boolean) member(session(), "sceneTransitionRequested"), "replay gameplay transition", 15);
+    focus();
   }
   static void run(int seconds) throws Exception {
     Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
@@ -127,6 +176,10 @@ public class ReadableGameProbe implements AppletStub, AppletContext {
       e.printStackTrace();
     });
     game = (Applet) Class.forName("Geoblox").getConstructor().newInstance();
+    check(Paths.get(game.getClass().getProtectionDomain().getCodeSource().getLocation().toURI())
+        .equals(Paths.get(System.getProperty("readable.expectedClasses"))),
+        "game loaded from freshly compiled readable classes");
+    System.out.println("GAME CODE SOURCE " + game.getClass().getProtectionDomain().getCodeSource().getLocation());
     game.setStub(new ReadableGameProbe());
     SwingUtilities.invokeAndWait(() -> {
       frame = new JFrame("Readable GeoBlox - HotSpot");
@@ -134,7 +187,9 @@ public class ReadableGameProbe implements AppletStub, AppletContext {
       frame.add(game);
       game.setPreferredSize(new Dimension(640, 480));
       frame.pack();
+      frame.setLocationRelativeTo(null);
       frame.setVisible(true);
+      frame.toFront();
       game.init();
       game.start();
     });
@@ -193,20 +248,26 @@ public class ReadableGameProbe implements AppletStub, AppletContext {
     int tickBefore = (Integer) member(session(), "updateTick");
     int scoreBefore = (Integer) member(session(), "score");
     long gameplayStart = System.nanoTime();
-    int samples = 0, maxReleased = 0, maxScore = scoreBefore, ended = 0;
+    int samples = 0, maxReleased = 0, maxScore = scoreBefore, ended = 0, tickAdvance = 0;
     int[] directions = {KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT};
     while (samples < seconds) {
       check(screen(-1), "gameplay stays visible");
       Object s = session();
       if ((Boolean) member(s, "sessionEnding")) {
         ended++;
-        break;
+        replayAfterGameOver(ended);
+        continue;
       }
+      int sampleTickBefore = (Integer) member(s, "updateTick");
+      if (!((Component) get("MessageDialog", "gameCanvas")).isFocusOwner()) focus();
       robot.keyPress(directions[samples % 2]);
       robot.keyPress(KeyEvent.VK_DOWN);
-      Thread.sleep(1000);
-      robot.keyRelease(KeyEvent.VK_DOWN);
-      robot.keyRelease(directions[samples % 2]);
+      try {Thread.sleep(1000);}
+      finally {
+        robot.keyRelease(KeyEvent.VK_DOWN);
+        robot.keyRelease(directions[samples % 2]);
+      }
+      tickAdvance += (Integer) member(s, "updateTick") - sampleTickBefore;
       maxReleased =
           Math.max(maxReleased, (Integer) get("MatchCandidateSupport", "releasedInCurrentTheme"));
       maxScore = Math.max(maxScore, (Integer) member(s, "score"));
@@ -220,12 +281,13 @@ public class ReadableGameProbe implements AppletStub, AppletContext {
     }
     BufferedImage last = snap("gameplay-end");
     int tickAfter = (Integer) member(session(), "updateTick");
-    check(tickAfter > tickBefore + 100, "game ticks advance");
+    check(tickAdvance > 100, "game ticks advance across played sessions");
     check(maxReleased > 0, "entities released");
     check(difference(first, last) > 1000, "presented gameplay changes");
     check(samples == seconds, "complete requested gameplay duration");
     check(maxScore > scoreBefore, "matching awards points");
     long gameplayElapsedMillis = (System.nanoTime() - gameplayStart) / 1000000;
+    if ((Boolean) member(session(), "sessionEnding")) replayAfterGameOver(++ended);
     focus();
     key(KeyEvent.VK_ESCAPE);
     await(() -> screen(1), "pause menu input", 10);
@@ -243,7 +305,8 @@ public class ReadableGameProbe implements AppletStub, AppletContext {
         + "true,\"tutorialSkip\":true,\"pauseResume\":true,\"gameplaySamples\":"
         + samples + ",\"gameplayElapsedMillis\":" + gameplayElapsedMillis
         + ",\"gameEnded\":" + ended + ",\"ticksBefore\":" + tickBefore
-        + ",\"ticksAfter\":" + tickAfter + ",\"maximumReleased\":" + maxReleased
+        + ",\"ticksAfter\":" + tickAfter + ",\"gameplayTickAdvance\":" + tickAdvance
+        + ",\"maximumReleased\":" + maxReleased
         + ",\"maximumScore\":" + maxScore + ",\"pixelDifference\":" + difference(first, last)
         + "}";
     Files.write(out.resolve("result.txt"), json.getBytes("UTF-8"));
@@ -315,8 +378,8 @@ public class ReadableGameProbe implements AppletStub, AppletContext {
 const options = {};
 for (let i = 2; i < process.argv.length; i += 2) {
   const key = process.argv[i];
-  assert.ok(['--assets', '--output', '--cache', '--seconds'].includes(key) && process.argv[i + 1],
-    'Usage: node readable/tests/test-geoblox-hotspot.mjs --assets JS5_DIR --output OUTPUT [--cache CACHE_DIR] [--seconds 60]');
+  assert.ok(['--assets', '--output', '--cache', '--seconds', '--display'].includes(key) && process.argv[i + 1],
+    'Usage: node readable/tests/test-geoblox-hotspot.mjs --assets JS5_DIR --output OUTPUT [--cache CACHE_DIR] [--seconds 60] [--display :0]');
   assert.ok(!Object.hasOwn(options, key), 'Duplicate option: ' + key);
   options[key] = process.argv[i + 1];
 }
@@ -338,6 +401,7 @@ const digest = value => crypto.createHash('sha256').update(value).digest('hex');
 const report = {status: 'failed', scope: 'Readable GeoBlox desktop instructions/tutorial/gameplay smoke test',
   startedAt: new Date().toISOString(), requestedGameplaySeconds: seconds, simpleMode: true,
   runnerSha256: digest(fs.readFileSync(new URL(import.meta.url))),
+  display: options['--display'] ?? 'isolated Xvfb',
   wholeGameEquivalenceVerified: false, browserPhoneAndFpsVerified: false};
 let server, child, processExit, timer;
 const sockets = new Set();
@@ -345,16 +409,16 @@ const served = new Map();
 const errors = [];
 const log = path.join(output, 'hotspot.log');
 try {
-  const sources = path.join(publishedReadableRoot, 'geoblox/src');
-  const provenance = JSON.parse(fs.readFileSync(path.join(publishedReadableRoot, 'geoblox/provenance.json')));
+  const sources = path.join(funorbRepository, 'games/geoblox');
+  const {provenance} = JSON.parse(fs.readFileSync(path.join(funorbRepository, 'decompilation/geoblox-naming.json')));
   const inventory = sourceInventory(sources);
   assert.equal(inventory.length, 303);
   const sourceSha256 = sourceIdentity(inventory);
   assert.equal(sourceSha256, provenance.outputTreeSha256, 'Published readable bytes differ from provenance');
-  const stub = path.join(publishedReadableRoot, 'funorb-stubs.jar');
-  assert.equal(digest(fs.readFileSync(stub)), provenance.classpath[0].sha256, 'Compilation stubs changed');
+  const stubs = buildCompilationStubs(funorbRepository, temporary);
+  const stub = stubs.jar;
   Object.assign(report, {sourceSha256, sourceFiles: inventory.length, rawSourceCommit: provenance.source.commit,
-    stubSha256: provenance.classpath[0].sha256});
+    stubSha256: digest(fs.readFileSync(stub)), stubSourceSha256: stubs.sourceTreeSha256});
   const installed = path.resolve(options['--cache'] ?? path.join(os.homedir(), '.alterorb/caches/geoblox'));
   if (fs.existsSync(installed)) {
     const files = fs.readdirSync(installed).filter(name => /^main_file_cache\.(dat2|idx[0-9]+)$/.test(name)).sort();
@@ -419,12 +483,18 @@ try {
   });
   server.listen(0, '127.0.0.1');await once(server, 'listening');
   const port = server.address().port;
-  const args = ['-a', '--server-args=-screen 0 800x600x24 -nolisten tcp', java, '-Xmx512m',
+  const args = ['-Xmx512m', '-Dreadable.expectedClasses=' + classes,
     '-Dalterorb.cacheRoot=' + cacheRoot, '-Djavax.sound.sampled.SourceDataLine=#default',
     '-Djavax.sound.sampled.Clip=#default', '-cp', classes + path.delimiter + stub,
     'ReadableGameProbe', runtime, String(port), String(seconds)];
   const descriptor = fs.openSync(log, 'w');
-  try {child = spawn('xvfb-run', args, {detached: true, stdio: ['ignore', descriptor, descriptor]});}
+  try {
+    child = options['--display']
+      ? spawn(java, args, {detached: true, stdio: ['ignore', descriptor, descriptor],
+        env: {...process.env, DISPLAY: options['--display']}})
+      : spawn('xvfb-run', ['-a', '--server-args=-screen 0 800x600x24 -nolisten tcp', java, ...args],
+        {detached: true, stdio: ['ignore', descriptor, descriptor]});
+  }
   finally {fs.closeSync(descriptor);}
   processExit = new Promise((resolve, reject) => {child.once('error', reject);
     child.once('exit', (code, signal) => resolve({code, signal}));});
