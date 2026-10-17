@@ -591,6 +591,40 @@ launcher and one provenance receipt. Generated files stay outside the repository
 `--build-only` builds without checking or opening a window. Omit both mode
 options to build and immediately play.
 
+For the same class files in Firefox, start the loopback-only host and open its
+printed URL. This host uses the normal launcher JVM options, loads only the
+intro containers, and has no loading UI or game bootstrap:
+
+```bash
+node apps/intro/serve-intro.mjs
+```
+
+Run the comparison on the visible X11 desktop, with Playwright Firefox,
+Python 3, libX11 and xdotool available:
+
+```bash
+DISPLAY=:0 node apps/intro/compare-intro.cjs \
+  --output ~/.cache/dekobloko/intro-comparison.json
+```
+
+`PLAYWRIGHT_ROOT` selects an installed Playwright package; `--url` selects the
+loopback host and `--player` the matching desktop build. The harness rejects
+mismatched provenance. It also compares a canvas RGB readback at tick 80 with
+the checked native frame before measuring. Each host runs alone, with two
+warmup cycles followed by a 30-second sample (`--seconds` changes its duration).
+Both measured modes are silent, and Firefox uses the launcher options recorded
+in the report, without CPU slowdown. This is an intro diagnostic, not a release
+acceptance run.
+
+The optional `--measure` desktop argument and `?measure` browser query add a
+64-pixel black/white frame-ID strip. `observe-x11.py` samples it in the X11 root at 120 Hz,
+reporting visible updates, rolling one-second minimum/median FPS, worst frame
+gap, unseen IDs, observer cost and obscured samples. It never saves images.
+These are X11-visible updates with about 8.3 ms sampling resolution, not physical
+panel scanout telemetry. A missing or obscured marker invalidates the run.
+The measured window stays above other windows until it closes. The binary
+marker tolerates desktop dimming without changing compositor preferences.
+
 ---
 
 ## 6. Protocol servers

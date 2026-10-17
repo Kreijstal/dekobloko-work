@@ -38,7 +38,7 @@ export function installBrowserInflater(jvm, decoder = globalThis.pako) {
     if (!length || !state.input?.length) return 0;
     if (!state.output) {
       try {
-        state.output = state.nowrap ? decoder.inflateRaw(state.input) : decoder.inflate(state.input);
+        state.output = await (state.nowrap ? decoder.inflateRaw(state.input) : decoder.inflate(state.input));
       } catch (error) {
         throw {type: 'java/util/zip/DataFormatException', message: String(error.message || error)};
       }

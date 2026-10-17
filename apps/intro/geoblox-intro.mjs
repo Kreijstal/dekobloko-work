@@ -38,7 +38,6 @@ const player = String.raw`import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.nio.file.*;
-import java.util.*;
 import java.util.concurrent.locks.LockSupport;
 import java.util.zip.CRC32;
 import javax.sound.sampled.*;
@@ -46,8 +45,14 @@ import javax.swing.*;
 
 public final class GeobloxIntro {
   static final int WIDTH=640, HEIGHT=480, LAST_TICK=250;
-  final BufferedImage image=new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
-  final int[] pixels=((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+  // These two host boundaries let Firefox execute these exact class files.
+  // Native desktop playback never calls them.
+  static native byte[] browserAsset(String name);
+  static native void browserPresent(int[] pixels,int tick);
+  static boolean browserMode, measure;
+  static int frameId;
+  final BufferedImage image;
+  final int[] pixels;
   final PcmSample sound;
   volatile boolean closed, replay;
   volatile int pointerX=-1, pointerY=-1;
@@ -58,24 +63,33 @@ public final class GeobloxIntro {
   static final class LocalArchive extends ArchiveSource {
     final Path root;
     final ArchiveIndex index;
-    final Set<Integer> opened=new TreeSet<Integer>();
+    int openedMask;
     LocalArchive(Path root)throws Exception {
       this.root=root;
-      byte[] bytes=Files.readAllBytes(root.resolve("255-10.bin"));
-      CRC32 crc=new CRC32();crc.update(bytes);
+      byte[] bytes=asset(root,"255-10.bin");
+      CRC32 crc=new CRC32();crc.update(bytes,0,bytes.length);
       index=new ArchiveIndex(bytes,(int)crc.getValue(),null);
     }
     int getGroupProgress(int guard,int group){return 100;}
     ArchiveIndex getIndex(byte guard){return index;}
     byte[] getPackedGroup(int guard,int group) {
       if(group<1||group>4)throw new AssertionError("Non-intro archive group requested: "+group);
-      opened.add(group);
-      try{return Files.readAllBytes(root.resolve("10-"+group+".bin"));}
+      openedMask|=1<<group;
+      try{return asset(root,"10-"+group+".bin");}
       catch(Exception error){throw new RuntimeException(error);}
     }
   }
 
+  static byte[] asset(Path root,String name)throws Exception {
+    return browserMode?browserAsset(name):Files.readAllBytes(root.resolve(name));
+  }
+
   GeobloxIntro(Path assets)throws Exception {
+    if(browserMode){image=null;pixels=new int[WIDTH*HEIGHT];}
+    else {
+      image=new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
+      pixels=((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+    }
     MessageDialog.gameCanvas=new Canvas();
     Geoblox.clientControlFlowFlag=0;
     SoftwareRasterizer.setRasterTarget(pixels,WIDTH,HEIGHT);
@@ -88,7 +102,7 @@ public final class GeobloxIntro {
     MusicDecoder.decodeSetup(archive.getNamedFile(0,"","headers.packvorbis"));
     sound=MusicDecoder.loadByName(archive,"jagex logo2.packvorbis","").decodePcm();
     require(sound!=null&&sound.samples.length>0,"intro sound decoded");
-    require(local.opened.equals(new TreeSet<Integer>(Arrays.asList(1,2,3,4))),"only intro assets opened");
+    require(local.openedMask==30,"only intro assets opened");
     System.out.println("INTRO READY meshes="+ArchiveIndex.logoMeshes.length+" samples="+sound.samples.length+" sampleRate="+sound.sampleRateHz);
   }
 
@@ -104,6 +118,14 @@ public final class GeobloxIntro {
     DequeCursor.logoAnimationTick=tick;
     LogoCompositor.drawLogoAnimation(HEIGHT/2,WIDTH/2,-51);
     require(MatchingTextValidator.rasterTargetStack.isEmpty(13519),"raster target restored");
+    if(measure) {
+      int id=++frameId&0xffffff;
+      for(int bit=0;bit<64;bit++) {
+        int value=bit<16?(0xd5a3>>>(15-bit)):
+          bit<40?(id>>>(39-bit)):((id^0xffffff)>>>(63-bit));
+        pixels[bit]=(value&1)==0?0:0xffffff;
+      }
+    }
   }
 
   long pixelHash() {
@@ -112,7 +134,7 @@ public final class GeobloxIntro {
     return crc.getValue();
   }
 
-  void check() {
+  void check()throws Exception {
     long[] first=new long[LAST_TICK+1];int visibleFrames=0;
     for(int pass=0;pass<2;pass++)for(int tick=0;tick<=LAST_TICK;tick++) {
       render(tick);
@@ -125,6 +147,14 @@ public final class GeobloxIntro {
     require(visibleFrames>150,"animated visible logo");
     require(first[25]!=first[75]&&first[75]!=first[150],"mesh motion and final-frame transition");
     render(250);for(int pixel:pixels)require((pixel&0xffffff)==0,"fade ends on black");
+    render(80);
+    java.security.MessageDigest digest=java.security.MessageDigest.getInstance("SHA-256");
+    // Exclude the optional observer marker strip on both hosts.
+    for(int i=64;i<pixels.length;i++) {
+      int pixel=pixels[i];digest.update((byte)(pixel>>>16));digest.update((byte)(pixel>>>8));digest.update((byte)pixel);
+    }
+    StringBuilder hex=new StringBuilder();for(byte value:digest.digest())hex.append(String.format("%02x",value&255));
+    System.out.println("REFERENCE tick=80 rgbSha256="+hex);
     pointerX=20;pointerY=20;render(80);long left=pixelHash();
     pointerX=620;pointerY=460;render(80);require(left!=pixelHash(),"pointer controls original lighting");
     require(VisualPropertyOverrides.clientBootstrapStage==0
@@ -144,7 +174,7 @@ public final class GeobloxIntro {
   }
 
   void play()throws Exception {
-    openAudio();
+    if(!measure)openAudio();
     Canvas canvas=new Canvas();canvas.setPreferredSize(new Dimension(WIDTH,HEIGHT));canvas.setIgnoreRepaint(true);
     canvas.setBackground(Color.BLACK);
     final JFrame frame=new JFrame("Jagex Intro");
@@ -181,8 +211,14 @@ public final class GeobloxIntro {
   }
 
   public static void main(String[] args)throws Exception {
+    browserMode=args.length>1&&args[1].equals("--browser");
+    for(String argument:args)if(argument.equals("--measure"))measure=true;
     GeobloxIntro intro=new GeobloxIntro(Paths.get(args[0]));
-    if(args.length>1&&args[1].equals("--check"))intro.check();else intro.play();
+    if(browserMode) {
+      for(int tick=0;;tick=(tick+1)%(LAST_TICK+1)) {
+        intro.render(tick);browserPresent(intro.pixels,tick);
+      }
+    } else if(args.length>1&&args[1].equals("--check"))intro.check();else intro.play();
   }
 }
 `;
@@ -225,8 +261,15 @@ try {
     '-classpath', stubs.jar, '-d', classes, '@' + list]);
   if (compilation.stderr.length) process.stderr.write(compilation.stderr);
   const runtime = javaRuntime();
-  if (options.check) process.stdout.write(captureProcess(runtime, ['-Djava.awt.headless=true', '-Xmx256m',
-    '-cp', classes, 'GeobloxIntro', assets, '--check']).stdout);
+  let reference;
+  if (options.check) {
+    const check=captureProcess(runtime, ['-Djava.awt.headless=true', '-Xmx256m',
+      '-cp', classes, 'GeobloxIntro', assets, '--check']);
+    process.stdout.write(check.stdout);
+    const match=check.stdout.toString().match(/REFERENCE tick=80 rgbSha256=([a-f0-9]{64})/);
+    assert.ok(match,'Missing reference frame');
+    reference={tick:80,skipPixels:64,rgbSha256:match[1]};
+  }
   const run = `#!/bin/sh\nset -eu\nintro_root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)\n` +
     `if [ -z "\${JAVA:-}" ]; then\n` +
     `  for candidate in /usr/lib/jvm/java-8-openjdk/bin/java /usr/lib/jvm/java-17-openjdk/bin/java /usr/lib/jvm/java-21-openjdk/bin/java /usr/lib/jvm/java-11-openjdk/bin/java; do\n` +
@@ -236,7 +279,7 @@ try {
   fs.writeFileSync(path.join(build, 'provenance.json'), JSON.stringify({generatedBy: kind,
     readableSourceSha256: sourceIdentity(files), compiler: dictionary.generators,
     builderSha256: crypto.createHash('sha256').update(fs.readFileSync(fileURLToPath(import.meta.url))).digest('hex'),
-    stubSourceSha256: stubs.sourceTreeSha256, assets: hashes, checked: !!options.check}, null, 2) + '\n');
+    stubSourceSha256: stubs.sourceTreeSha256, assets: hashes, checked: !!options.check, reference}, null, 2) + '\n');
   if (fs.existsSync(output)) fs.rmSync(output, {recursive: true});
   fs.renameSync(build, output);
   console.log('Built intro only: ' + path.join(output, 'run.sh'));
