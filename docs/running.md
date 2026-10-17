@@ -565,6 +565,34 @@ A direct-ALSA launch shows open fds such as `/dev/snd/pcmC0D0p`,
 
 ---
 
+### Jagex intro only (GeoBlox)
+
+Build a standalone desktop player from the published readable GeoBlox sources
+in the sibling `funorb-decompiled` checkout:
+
+```bash
+node apps/intro/geoblox-intro.mjs --assets ../public/jvm-assets/geoblox-js5 --check
+~/.cache/dekobloko/geoblox-intro/run.sh
+```
+
+The first command compiles and checks two complete animation cycles headlessly.
+The second opens only the original intro, looping every five seconds. Click,
+Space or R restarts it; Escape closes it. Mouse movement controls the original
+mesh lighting. All five intro containers, including audio, load before the
+window opens. No applet, loading screen, game bootstrap or server is started.
+Sound uses Java Sound when an output device is available.
+
+Use a JDK whose `javac` supports `--release 8` to build and Java 8–25 to run
+(the game classes reference the removed Applet API). `JAVA` and `JAVAC` select
+executables; the player automatically prefers an installed Java 8, 17, 21 or 11.
+`FUNORB_DECOMPILED_DIR` selects another publication checkout. `--output DIR`
+changes the generated player directory; it contains classes, five assets, a
+launcher and one provenance receipt. Generated files stay outside the repository.
+`--build-only` builds without checking or opening a window. Omit both mode
+options to build and immediately play.
+
+---
+
 ## 6. Protocol servers
 
 ```bash
