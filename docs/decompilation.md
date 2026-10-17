@@ -340,6 +340,47 @@ This batch validates bytecode provenance and source exports. It provides no
 browser memory, presented-FPS or Android gameplay measurements. Generated Java
 and binaries from this check remain temporary validation outputs.
 
+#### Focused shadowed-handler recovery, 2026-10-17
+
+java-tools `38d997531b96ef40c4d47735047e1e230fba8b76` adds automatic generic
+recognition of completely shadowed exception-handler/type cases. Earlier table
+rows must cover every catch alternative; uncovered instruction ranges are
+allowed only when authoritative bytecode PCs prove them nonthrowing. Partly
+live catches retain their complete range sets, and monitor handlers retain
+their existing lowering path. Original first-match routing, region-flow and
+exit contracts remain checked. There are no application selectors or opt-in
+flags in this recovery.
+
+The Stellar Shard method identified above was reproduced through generic safe
+preprocessing from the fixed original `qe.class`. With all other compiler
+sources held at `c6a2025`, its isolated class-and-method excerpt changes from
+352 lines and the documented 16-state fallback to 93 lines, a structured
+`try/catch` and an ordinary loop, with no fallback diagnostic. Both excerpts
+compile with `javac --release 8 -proc:none -encoding UTF-8 -sourcepath ''`,
+using the original sibling classes and compatibility stubs. External field
+spellings are preserved for that binary dependency check; it is not a complete
+source-only game build or a live request to the game's error-reporting service.
+
+An isolated tracked-source checkout, excluding unrelated working edits, passed:
+
+```sh
+NODE_PATH=/path/to/node_modules node --test \
+  test/exceptionStructurer.test.js test/cfrExceptionLoopExits.test.js \
+  test/exceptionRegionSplitting.test.js test/cfrFragmentedTerminalCatch.test.js
+```
+
+All 55 tests pass. The new fragmented-catch native fixture adds 5,000 comparisons
+of original JVM bytecode against default/forced-dispatcher source rebuilds,
+including early returns, throwing cleanup, uncaught outside failures and
+throwable identity. Existing native fixtures now require structured output for
+fully shadowed sibling and nested catches while checking their original traces.
+
+The new decompiler **source archive** SHA-256 is
+`2c6fd7351139e7734542306abdc0838a7f53b64e4c5b2958ca82c80263d69b5b`, reproduced
+with `git archive --format=tar 38d997531b96ef40c4d47735047e1e230fba8b76 | sha256sum`
+in java-tools. No full-catalog recount or publication was performed for this
+focused change; the 19-fallback batch above remains a historical result.
+
 ### Safety flags
 
 `--safe-bytecode` enables stricter variants of a few local-splitting and
