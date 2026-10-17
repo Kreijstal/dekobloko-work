@@ -30,7 +30,7 @@ if (fs.existsSync(output)) {
   assert.ok(!fs.lstatSync(output).isSymbolicLink(), 'Output cannot be a symlink');
   assert.equal(JSON.parse(fs.readFileSync(path.join(output, 'provenance.json'))).generatedBy, kind,
     'Refusing to replace an unrelated directory');
-  assert.ok(fs.readdirSync(output).every(name => ['classes', 'assets', 'run.sh', 'provenance.json'].includes(name)),
+  assert.ok(fs.readdirSync(output).every(name => ['classes', 'assets', 'run.sh', 'provenance.json', 'intro.aot', 'runtime'].includes(name)),
     'Output contains unrelated files');
 }
 
@@ -49,12 +49,13 @@ public final class GeobloxIntro {
   // Native desktop playback never calls them.
   static native byte[] browserAsset(String name);
   static native void browserPresent(int[] pixels,int tick);
-  static boolean browserMode, measure;
-  static int frameId;
+  static boolean browserMode, silent;
+  static int framesRendered;
+  static long animationElapsedNanos, totalElapsedNanos;
   final BufferedImage image;
   final int[] pixels;
   final PcmSample sound;
-  volatile boolean closed, replay;
+  volatile boolean closed;
   volatile int pointerX=-1, pointerY=-1;
   Clip clip;
 
@@ -84,26 +85,46 @@ public final class GeobloxIntro {
     return browserMode?browserAsset(name):Files.readAllBytes(root.resolve(name));
   }
 
-  GeobloxIntro(Path assets)throws Exception {
-    if(browserMode){image=null;pixels=new int[WIDTH*HEIGHT];}
-    else {
-      image=new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
-      pixels=((DataBufferInt)image.getRaster().getDataBuffer()).getData();
-    }
+  ResourceArchive prepareLogo(LocalArchive local)throws Exception {
     MessageDialog.gameCanvas=new Canvas();
     Geoblox.clientControlFlowFlag=0;
     SoftwareRasterizer.setRasterTarget(pixels,WIDTH,HEIGHT);
-    LocalArchive local=new LocalArchive(assets);
     ResourceArchive archive=new ResourceArchive(local,false,0);
     MessageDialogContent.loadLogoMeshesAndMaterials(archive,0);
     MatchCandidateSupport.prepareFinalFrameSlices(-21541,archive);
     FullscreenSupport.prepareMeshSpecularResponse((byte)-91);
     MidiNoteMixer.prepareLogoGlowRaster((byte)-32);
-    MusicDecoder.decodeSetup(archive.getNamedFile(0,"","headers.packvorbis"));
-    sound=MusicDecoder.loadByName(archive,"jagex logo2.packvorbis","").decodePcm();
-    require(sound!=null&&sound.samples.length>0,"intro sound decoded");
-    require(local.openedMask==30,"only intro assets opened");
-    System.out.println("INTRO READY meshes="+ArchiveIndex.logoMeshes.length+" samples="+sound.samples.length+" sampleRate="+sound.sampleRateHz);
+    return archive;
+  }
+
+  // Browser playback has no image/audio initialization path to prepare.
+  GeobloxIntro(Path assets,int[] browserPixels)throws Exception {
+    image=null;pixels=browserPixels;sound=null;
+    LocalArchive local=new LocalArchive(assets);
+    prepareLogo(local);
+    require(local.openedMask==12,"only intro meshes and final frame opened");
+    ready();
+  }
+
+  GeobloxIntro(Path assets)throws Exception {
+    image=new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
+    pixels=((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+    LocalArchive local=new LocalArchive(assets);
+    ResourceArchive archive=prepareLogo(local);
+    if(silent) {
+      sound=null; // The browser comparison is silent; skip unused Vorbis work.
+      require(local.openedMask==12,"only intro meshes and final frame opened");
+    } else {
+      MusicDecoder.decodeSetup(archive.getNamedFile(0,"","headers.packvorbis"));
+      sound=MusicDecoder.loadByName(archive,"jagex logo2.packvorbis","").decodePcm();
+      require(sound!=null&&sound.samples.length>0,"intro sound decoded");
+      require(local.openedMask==30,"only intro assets opened");
+    }
+    ready();
+  }
+
+  void ready() {
+    System.out.println("INTRO READY meshes="+ArchiveIndex.logoMeshes.length+" samples="+(sound==null?0:sound.samples.length));
   }
 
   static void require(boolean valid,String message) {
@@ -118,14 +139,6 @@ public final class GeobloxIntro {
     DequeCursor.logoAnimationTick=tick;
     LogoCompositor.drawLogoAnimation(HEIGHT/2,WIDTH/2,-51);
     require(MatchingTextValidator.rasterTargetStack.isEmpty(13519),"raster target restored");
-    if(measure) {
-      int id=++frameId&0xffffff;
-      for(int bit=0;bit<64;bit++) {
-        int value=bit<16?(0xd5a3>>>(15-bit)):
-          bit<40?(id>>>(39-bit)):((id^0xffffff)>>>(63-bit));
-        pixels[bit]=(value&1)==0?0:0xffffff;
-      }
-    }
   }
 
   long pixelHash() {
@@ -149,8 +162,7 @@ public final class GeobloxIntro {
     render(250);for(int pixel:pixels)require((pixel&0xffffff)==0,"fade ends on black");
     render(80);
     java.security.MessageDigest digest=java.security.MessageDigest.getInstance("SHA-256");
-    // Exclude the optional observer marker strip on both hosts.
-    for(int i=64;i<pixels.length;i++) {
+    for(int i=0;i<pixels.length;i++) {
       int pixel=pixels[i];digest.update((byte)(pixel>>>16));digest.update((byte)(pixel>>>8));digest.update((byte)pixel);
     }
     StringBuilder hex=new StringBuilder();for(byte value:digest.digest())hex.append(String.format("%02x",value&255));
@@ -174,7 +186,7 @@ public final class GeobloxIntro {
   }
 
   void play()throws Exception {
-    if(!measure)openAudio();
+    if(!silent)openAudio();
     Canvas canvas=new Canvas();canvas.setPreferredSize(new Dimension(WIDTH,HEIGHT));canvas.setIgnoreRepaint(true);
     canvas.setBackground(Color.BLACK);
     final JFrame frame=new JFrame("Jagex Intro");
@@ -183,19 +195,16 @@ public final class GeobloxIntro {
     canvas.addMouseMotionListener(new MouseMotionAdapter(){public void mouseMoved(MouseEvent e){pointerX=e.getX();pointerY=e.getY();}
       public void mouseDragged(MouseEvent e){mouseMoved(e);}});
     canvas.addMouseListener(new MouseAdapter(){public void mouseExited(MouseEvent e){pointerX=-1;pointerY=-1;}
-      public void mousePressed(MouseEvent e){replay=true;}});
+    });
     canvas.addKeyListener(new KeyAdapter(){public void keyPressed(KeyEvent e){
       if(e.getKeyCode()==KeyEvent.VK_ESCAPE)closed=true;
-      else if(e.getKeyCode()==KeyEvent.VK_SPACE||e.getKeyCode()==KeyEvent.VK_R)replay=true;
     }});
-    render(0);
     SwingUtilities.invokeAndWait(()->{frame.add(canvas);frame.pack();frame.setResizable(false);
       frame.setLocationRelativeTo(null);frame.setVisible(true);frame.toFront();canvas.requestFocusInWindow();});
     canvas.createBufferStrategy(2);BufferStrategy buffers=canvas.getBufferStrategy();
-    int tick=0;long next=System.nanoTime();
+    long started=System.nanoTime(), next=started;
     try {
-      while(!closed) {
-        if(replay){tick=0;replay=false;}
+      for(int tick=0;tick<=LAST_TICK&&!closed;tick++) {
         if(tick==0&&clip!=null){clip.stop();clip.setFramePosition(0);clip.start();}
         render(tick);
         do {
@@ -203,22 +212,41 @@ public final class GeobloxIntro {
           while(buffers.contentsRestored());
           buffers.show();Toolkit.getDefaultToolkit().sync();
         } while(buffers.contentsLost()&&!closed);
-        tick=(tick+1)%(LAST_TICK+1);
+        framesRendered++;
         next+=20000000L;long wait=next-System.nanoTime();
         if(wait>0)LockSupport.parkNanos(wait);else if(wait < -200000000L)next=System.nanoTime();
       }
+      animationElapsedNanos=System.nanoTime()-started;
     } finally {if(clip!=null)clip.close();SwingUtilities.invokeAndWait(()->frame.dispose());}
   }
 
-  public static void main(String[] args)throws Exception {
-    browserMode=args.length>1&&args[1].equals("--browser");
-    for(String argument:args)if(argument.equals("--measure"))measure=true;
-    GeobloxIntro intro=new GeobloxIntro(Paths.get(args[0]));
-    if(browserMode) {
-      for(int tick=0;;tick=(tick+1)%(LAST_TICK+1)) {
+  // A separate entry keeps desktop callbacks and validation-only code outside
+  // the browser's statically reachable compilation scope.
+  public static final class Browser {
+    public static void main(String[] args)throws Exception {
+      long entryStarted=System.nanoTime();
+      browserMode=true;silent=true;
+      GeobloxIntro intro=new GeobloxIntro(Paths.get(args[0]),new int[WIDTH*HEIGHT]);
+      long started=System.nanoTime();
+      for(int tick=0;tick<=LAST_TICK;tick++) {
         intro.render(tick);browserPresent(intro.pixels,tick);
+        framesRendered++;
       }
-    } else if(args.length>1&&args[1].equals("--check"))intro.check();else intro.play();
+      animationElapsedNanos=System.nanoTime()-started;
+      finish(entryStarted);
+    }
+  }
+  static void finish(long entryStarted) {
+    totalElapsedNanos=System.nanoTime()-entryStarted;
+    System.out.println("INTRO FINISHED frames="+framesRendered+" animationNanos="+animationElapsedNanos+" totalNanos="+totalElapsedNanos);
+  }
+  public static void main(String[] args)throws Exception {
+    long entryStarted=System.nanoTime();
+    for(String argument:args)if(argument.equals("--silent"))silent=true;
+    GeobloxIntro intro=new GeobloxIntro(Paths.get(args[0]));
+    if(args.length>1&&args[1].equals("--check")){intro.check();return;}
+    intro.play();
+    finish(entryStarted);
   }
 }
 `;
@@ -268,7 +296,7 @@ try {
     process.stdout.write(check.stdout);
     const match=check.stdout.toString().match(/REFERENCE tick=80 rgbSha256=([a-f0-9]{64})/);
     assert.ok(match,'Missing reference frame');
-    reference={tick:80,skipPixels:64,rgbSha256:match[1]};
+    reference={tick:80,skipPixels:0,rgbSha256:match[1]};
   }
   const run = `#!/bin/sh\nset -eu\nintro_root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)\n` +
     `if [ -z "\${JAVA:-}" ]; then\n` +
@@ -280,6 +308,9 @@ try {
     readableSourceSha256: sourceIdentity(files), compiler: dictionary.generators,
     builderSha256: crypto.createHash('sha256').update(fs.readFileSync(fileURLToPath(import.meta.url))).digest('hex'),
     stubSourceSha256: stubs.sourceTreeSha256, assets: hashes, checked: !!options.check, reference}, null, 2) + '\n');
+  // The runtime depends on java-tools, not these class files. The AOT pack
+  // does depend on them and is intentionally discarded on a player rebuild.
+  if (fs.existsSync(path.join(output, 'runtime'))) fs.cpSync(path.join(output, 'runtime'), path.join(build, 'runtime'), {recursive: true});
   if (fs.existsSync(output)) fs.rmSync(output, {recursive: true});
   fs.renameSync(build, output);
   console.log('Built intro only: ' + path.join(output, 'run.sh'));

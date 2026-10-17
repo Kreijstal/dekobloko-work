@@ -1,12 +1,13 @@
-import {installBrowserImageDecoder} from '/decoder.mjs';
-import {installBrowserInflater} from '/inflater.mjs';
+import {configureIntro,installIntroNatives} from '/intro/runtime.mjs';
+import {decodeCodePack,codePackIdentity,sameIdentity,createCodePackStore,installCodePack} from '/launcher/browser-loader/code-pack.mjs';
 import {copyRgbToRgba} from '/pixels.mjs';
 
 const canvas=document.querySelector('canvas');
 const context=canvas.getContext('2d',{alpha:false});
 const image=context.createImageData(640,480);
 const rgba=image.data;
-const stats=window.intro={state:'preparing',submissions:[],ticks:[],provenance:null,runtimeSha256:null};
+const stats=window.intro={state:'preparing',frames:0,provenance:null,runtimeSha256:null};
+const verifyColours=new URLSearchParams(location.search).has('verify');
 try {
   const data=await (await fetch('/data.json')).json();
   stats.provenance=data.provenance;stats.runtimeSha256=data.runtimeSha256;
@@ -20,32 +21,38 @@ try {
   await debug.initialize({dataPackage:{classes:data.classes}});
   data.classes=null; // The class provider now owns the decoded bytes.
   const controller=debug.debugController;
-  const {jit,...runtimeOptions}=data.jvmOptions;
-  Object.assign(controller.options,runtimeOptions);
-  controller.options.jit={...controller.options.jit,...jit};
-  stats.jvmOptions=data.jvmOptions;
+  configureIntro(controller,data.jvmOptions);
+  stats.jvmOptions={...data.jvmOptions,prepareBeforeMain:true,jit:controller.options.jit};
+  const response=await fetch('/intro.aot');
+  if(!response.ok)throw new Error('Build the intro AOT artifact before playing');
+  let pack=decodeCodePack(await response.arrayBuffer());
+  const identity=codePackIdentity({runtimeVersion:data.runtimeSha256,
+    jarVersion:data.sourceSha256+':'+data.integrationSha256,options:controller.options});
+  if(!sameIdentity(identity,pack.identity))throw new Error('Intro AOT artifact is stale; rebuild it');
+  const store=createCodePackStore('replay',pack);
+  pack=null;
+  stats.aot={bytes:Number(response.headers.get('Content-Length')),identity};
   let next=0;
-  const args=['/intro','--browser'];
-  if(new URLSearchParams(location.search).has('measure'))args.push('--measure');
-  stats.run=debug.run('GeobloxIntro',{args,beforeRun:({jvm})=>{
-    installBrowserImageDecoder(jvm);
-    const decompress=async (bytes,format)=>new Uint8Array(await new Response(
-      new Blob([bytes]).stream().pipeThrough(new DecompressionStream(format))).arrayBuffer());
-    installBrowserInflater(jvm,{inflate:bytes=>decompress(bytes,'deflate'),
-      inflateRaw:bytes=>decompress(bytes,'deflate-raw')});
-    jvm.jre.GeobloxIntro={applicationFallback:true,staticMethods:{
-      'browserAsset(Ljava/lang/String;)[B':(_jvm,_object,args)=>{
-        const name=String(args[0]?.value??args[0]);
+  stats.runStartedAt=performance.now();
+  stats.run=debug.run('GeobloxIntro$Browser',{args:['/intro'],beforeRun:({jvm})=>{
+    installCodePack(jvm,{identity,store,onReport:(result,cache)=>{
+      stats.aot={...stats.aot,preparationMs:performance.now()-stats.runStartedAt,report:result.report,cache};
+      const prepared=result.report.preparedCache;
+      if(!prepared||prepared.misses||prepared.refused||prepared.errors)throw new Error('Incomplete intro AOT replay');
+    }});
+    installIntroNatives(jvm,{
+      asset:name=>{
         if(!assets.has(name))throw new Error('Non-intro asset: '+name);
         return assets.get(name);
       },
-      'browserPresent([II)V':async (_jvm,_object,[pixels,tick])=>{
+      present:async (pixels,tick)=>{
+        if(tick!==stats.frames)throw new Error('Intro tick skipped or repeated: '+tick);
         const now=performance.now();
         if(!next)next=now;
         copyRgbToRgba(pixels,rgba);
         context.putImageData(image,0,0);
         const reference=data.provenance.reference;
-        if(reference&&tick===reference.tick&&!stats.referenceRgbSha256){
+        if(verifyColours&&reference&&tick===reference.tick&&!stats.referenceRgbSha256){
           const actual=context.getImageData(0,0,640,480).data;
           const rgb=new Uint8Array((pixels.length-reference.skipPixels)*3);
           for(let i=reference.skipPixels,p=0;i<pixels.length;i++){
@@ -56,14 +63,22 @@ try {
           if(stats.referenceRgbSha256!==reference.rgbSha256)throw new Error('Firefox colours/geometry differ from the native reference frame: '+stats.referenceRgbSha256);
         }
         stats.state='playing';
-        if(stats.submissions.length<100000){stats.submissions.push(performance.now());stats.ticks.push(tick);}
+        stats.frames++;
         next+=20;const delay=next-performance.now();
         if(delay < -200)next=performance.now();
         await new Promise(resolve=>setTimeout(resolve,Math.max(0,delay)));
       },
-    }};
+    });
   }});
   await stats.run;
+  const fields=controller.jvm.classes.GeobloxIntro.staticFields;
+  stats.timings={frames:Number(fields.get('framesRendered:I')),
+    animationMs:Number(fields.get('animationElapsedNanos:J'))/1e6,
+    javaEntryMs:Number(fields.get('totalElapsedNanos:J'))/1e6,
+    javaRunMs:performance.now()-stats.runStartedAt};
+  if(stats.frames!==251||stats.timings.frames!==251)throw new Error('Incomplete intro');
+  stats.aot.execution=controller.jvm.jit.syncCompileCensus();
+  stats.state='completed';
 } catch(error) {
   stats.state='failed';
   const seen=new WeakSet();

@@ -575,32 +575,57 @@ node apps/intro/geoblox-intro.mjs --assets ../public/jvm-assets/geoblox-js5 --ch
 ~/.cache/dekobloko/geoblox-intro/run.sh
 ```
 
-The first command compiles and checks two complete animation cycles headlessly.
-The second opens only the original intro, looping every five seconds. Click,
-Space or R restarts it; Escape closes it. Mouse movement controls the original
-mesh lighting. All five intro containers, including audio, load before the
-window opens. No applet, loading screen, game bootstrap or server is started.
-Sound uses Java Sound when an output device is available.
+The first command compiles and checks two animation cycles in a separate
+headless validation JVM. This is a correctness test, not benchmark warmup.
+The second plays the original intro once and closes the window after its fade.
+Escape aborts it. Mouse movement controls the original mesh lighting. Intro
+assets load before the window opens. No applet, loading screen, game bootstrap
+or server is started. Sound uses Java Sound when an output device is available;
+`run.sh --silent` skips audio decoding and playback.
 
 Use a JDK whose `javac` supports `--release 8` to build and Java 8–25 to run
 (the game classes reference the removed Applet API). `JAVA` and `JAVAC` select
 executables; the player automatically prefers an installed Java 8, 17, 21 or 11.
 `FUNORB_DECOMPILED_DIR` selects another publication checkout. `--output DIR`
 changes the generated player directory; it contains classes, five assets, a
-launcher and one provenance receipt. Generated files stay outside the repository.
+launcher and one provenance receipt. The browser build adds its runtime and one
+`intro.aot` artifact alongside them. Generated files stay outside the repository.
 `--build-only` builds without checking or opening a window. Omit both mode
 options to build and immediately play.
 
-For the same class files in Firefox, start the loopback-only host and open its
-printed URL. This host uses the normal launcher JVM options, loads only the
-intro containers, and has no loading UI or game bootstrap:
+For the same class files in Firefox, compile the browser artifact ahead of time,
+then start the loopback-only host and open its printed URL:
 
 ```bash
+node apps/intro/build-aot.mjs
+node apps/intro/build-aot.mjs --mode replay
 node apps/intro/serve-intro.mjs
 ```
 
-Run the comparison on the visible X11 desktop, with Playwright Firefox,
-Python 3, libX11 and xdotool available:
+The compiler builds a separate browser runtime from the sibling java-tools
+repository's committed HEAD, excluding working-tree edits. The selected launcher
+bundle stays intact. Runtime builds use the sibling dependency installation, or
+`~/git/java-tools/node_modules`. `--runtime DIR` selects an existing bundle
+instead. Both compilation and the fresh-JVM replay check stop before any Java
+class initializer or `main()` runs; they do not warm up the animation. Rebuilding
+the desktop player invalidates the browser artifact, so run these commands after
+each player rebuild.
+
+The build selects known call and allocation dependencies of the dedicated
+browser entry; unused desktop callbacks and audio stay outside that scope. It
+stores independently compressed method entries, expands one entry at a time,
+and bounds compressed transport plus two decoded-entry copies to 64 MiB. This
+accounting budget is separate from total JVM heap. Unknown dynamic/native targets retain
+normal execution fallbacks.
+
+The page automatically replays the prepared JavaScript bodies. Its identity
+checks cover class bytes, runtime bundle, compiler options and native integration.
+Wasm lowering and linking still occur during preparation; the report exposes
+cache misses/refusals and compilation during execution. This is not yet a fully
+serialized Wasm executable. The host loads only intro containers and has no
+loading UI or game bootstrap.
+
+Run the comparison on a visible desktop with Playwright Firefox available:
 
 ```bash
 DISPLAY=:0 node apps/intro/compare-intro.cjs \
@@ -609,21 +634,45 @@ DISPLAY=:0 node apps/intro/compare-intro.cjs \
 
 `PLAYWRIGHT_ROOT` selects an installed Playwright package; `--url` selects the
 loopback host and `--player` the matching desktop build. The harness rejects
-mismatched provenance. It also compares a canvas RGB readback at tick 80 with
-the checked native frame before measuring. Each host runs alone, with two
-warmup cycles followed by a 30-second sample (`--seconds` changes its duration).
-Both measured modes are silent, and Firefox uses the launcher options recorded
-in the report, without CPU slowdown. This is an intro diagnostic, not a release
-acceptance run.
+mismatched provenance. Each host gets a fresh JVM and exactly one pass through
+ticks 0–250: no warmup, replay, frame-ID strip or external frame observer.
+Both runs are silent and skip unused audio decoding. The report includes AOT
+installation/preparation time, cache coverage and execution compilation counters.
+An existing valid comparison without AOT is retained inside the same report as
+`baseline`; failed runs leave that report intact.
 
-The optional `--measure` desktop argument and `?measure` browser query add a
-64-pixel black/white frame-ID strip. `observe-x11.py` samples it in the X11 root at 120 Hz,
-reporting visible updates, rolling one-second minimum/median FPS, worst frame
-gap, unseen IDs, observer cost and obscured samples. It never saves images.
-These are X11-visible updates with about 8.3 ms sampling resolution, not physical
-panel scanout telemetry. A missing or obscured marker invalidates the run.
-The measured window stays above other windows until it closes. The binary
-marker tolerates desktop dimming without changing compositor preferences.
+Each run returns after 251 frames, targeting a 20 ms cadence. The report records
+the Java animation duration and the whole Java entry-point duration. Dividing
+251 by animation seconds gives average render throughput. Slower hosts stretch
+the animation rather than skipping work. This is a duration comparison, not a
+presented-FPS or rolling-window acceptance test. The native process wall time
+also includes JVM startup/shutdown; browser wall time includes its host startup.
+
+The first visible laptop AOT comparison (Firefox 148.0.2, HotSpot 8u504,
+251 frames, silent, no warmup) failed the performance objective:
+
+| Duration | Previous browser path | AOT browser path | HotSpot |
+| --- | ---: | ---: | ---: |
+| Animation | 35.603 s | 33.404 s | 5.020 s |
+| Browser launch to Java return | 66.062 s | 83.420 s | — |
+
+AOT preparation took 32.837 s, including 11.368 s restoring generated bodies.
+All 962 cache entries replayed without misses/refusals. Synchronous compilation
+after Java started was **zero**. The 9,654,482-byte artifact covers 924 selected
+methods (916 prepared bodies, eight retained execution fallbacks). Offline
+compilation and replay executed no guest code; a separate Firefox correctness
+run matched the full native reference hash at tick 80.
+
+Playback remains 6.65 times the capped native duration, and startup regressed.
+This establishes a failed performance fix, not acceptance. The runtime bundle
+and host entry also changed, so the small playback difference does not isolate
+AOT's contribution. Generated-code execution and runtime overhead remain to be
+improved. The normal launcher artifact was not replaced. No CPU-throttled,
+heap-limited or phone acceptance is claimed for this candidate.
+
+For an independent colour check, open `/?verify`: at tick 80, the browser
+compares a canvas RGB readback with the native reference hash. The timed
+comparison omits this extra readback and hashing work. No screenshots are saved.
 
 ---
 

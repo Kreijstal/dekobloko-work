@@ -4,35 +4,23 @@ import fs from 'node:fs';
 import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
-import crypto from 'node:crypto';
+import {introManifest} from './manifest.mjs';
 import {fileURLToPath} from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const options = {player: path.join(os.homedir(), '.cache/dekobloko/geoblox-intro'),
-  runtime: path.resolve(here, '../../../java-tools/browser-runtime'), port: 5188};
+  runtime: null, port: 5188};
 for (let i=2;i<process.argv.length;i++) {
   const name=process.argv[i].slice(2);
   if (!['player','runtime','port'].includes(name)||!process.argv[i+1])
     throw new Error('Usage: node apps/intro/serve-intro.mjs [--player DIR] [--runtime DIR] [--port PORT]');
   options[name]=name==='port'?Number(process.argv[++i]):path.resolve(process.argv[++i]);
 }
+options.runtime??=path.join(options.player,'runtime');
 const receipt=JSON.parse(fs.readFileSync(path.join(options.player,'provenance.json')));
 if(receipt.generatedBy!=='dekobloko-geoblox-intro')throw new Error('Not an intro player');
 function dataManifest() {
-  const receipt=JSON.parse(fs.readFileSync(path.join(options.player,'provenance.json')));
-  const classes=[];
-  function visit(directory,prefix='') {
-    for(const entry of fs.readdirSync(directory,{withFileTypes:true}).sort((a,b)=>a.name.localeCompare(b.name))) {
-      const name=prefix+entry.name, file=path.join(directory,entry.name);
-      if(entry.isDirectory())visit(file,name+'/');
-      else if(name.endsWith('.class'))classes.push({filename:name,content:fs.readFileSync(file).toString('base64')});
-    }
-  }
-  visit(path.join(options.player,'classes'));
-  return Buffer.from(JSON.stringify({classes,provenance:receipt,
-    jvmOptions:{...JSON.parse(fs.readFileSync(path.resolve(here,'../launcher/browser-runtime.json'))).jvmOptions,
-      prepareWasmPreparedUpgradesOnly:true},
-    runtimeSha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(options.runtime,'jvm-debug.js'))).digest('hex')}));
+  return Buffer.from(JSON.stringify(introManifest(options.player,options.runtime)));
 }
 const page=`<!doctype html><meta charset="utf-8"><title>Jagex Intro · Firefox JVM</title>
 <style>html,body{margin:0;background:#000;width:100%;height:100%;overflow:hidden}body{display:grid;place-items:center}canvas{width:640px;height:480px;image-rendering:pixelated}</style>
@@ -46,6 +34,9 @@ const server=http.createServer((request,response)=>{
     if(route==='/data.json'){response.setHeader('Content-Type','application/json');response.end(dataManifest());return;}
     let file;
     if(route==='/browser.mjs')file=path.join(here,'browser.mjs');
+    else if(route==='/intro/runtime.mjs')file=path.join(here,'runtime.mjs');
+    else if(['/launcher/browser-loader/browser-image-decoder.mjs','/launcher/browser-loader/browser-inflater.mjs','/launcher/browser-loader/code-pack.mjs'].includes(route))file=path.resolve(here,'..'+route);
+    else if(route==='/intro.aot')file=path.join(options.player,'intro.aot');
     else if(route==='/pixels.mjs')file=path.join(here,'pixels.mjs');
     else if(route==='/decoder.mjs')file=path.resolve(here,'../launcher/browser-loader/browser-image-decoder.mjs');
     else if(route==='/inflater.mjs')file=path.resolve(here,'../launcher/browser-loader/browser-inflater.mjs');

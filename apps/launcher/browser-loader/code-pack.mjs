@@ -84,19 +84,21 @@ export function codePackIdentity({runtimeVersion, jarVersion, options}) {
 }
 
 // entries: iterable of [key, text]. Returns a Uint8Array.
-export function encodeCodePack({identity, entries, meta = {}}) {
+export function encodeCodePack({identity, entries, meta = {}, compressEntry = null}) {
   const encoder = new TextEncoder();
   const index = [];
   const chunks = [];
   let offset = 0;
   for (const [key, text] of entries) {
-    const bytes = encoder.encode(text);
+    const raw = encoder.encode(text);
+    const bytes = compressEntry ? compressEntry(raw) : raw;
     index.push([key, offset, bytes.length]);
     chunks.push(bytes);
     offset += bytes.length;
   }
   const header = encoder.encode(JSON.stringify(
-    {format: CODE_PACK_FORMAT, identity, meta, entries: index}) + '\n');
+    {format: compressEntry ? 'jvmjs-code-pack/2' : CODE_PACK_FORMAT,
+      ...(compressEntry ? {compression: 'gzip'} : {}), identity, meta, entries: index}) + '\n');
   const out = new Uint8Array(header.length + offset);
   out.set(header, 0);
   let at = header.length;
@@ -110,9 +112,11 @@ export function decodeCodePack(buffer) {
   if (newline < 0) throw new Error('code pack has no header');
   const decoder = new TextDecoder();
   const header = JSON.parse(decoder.decode(bytes.subarray(0, newline)));
-  if (header.format !== CODE_PACK_FORMAT) {
+  if (header.format !== CODE_PACK_FORMAT && header.format !== 'jvmjs-code-pack/2') {
     throw new Error('unsupported code pack format ' + header.format);
   }
+  if (header.format === 'jvmjs-code-pack/2' && header.compression !== 'gzip')
+    throw new Error('unsupported code pack compression');
   const base = newline + 1;
   const index = new Map(header.entries.map(([key, offset, length]) =>
     [key, [base + offset, length]]));
@@ -124,7 +128,13 @@ export function decodeCodePack(buffer) {
     has: key => index.has(key),
     get(key) {
       const at = index.get(key);
-      return at ? decoder.decode(bytes.subarray(at[0], at[0] + at[1])) : null;
+      if (!at) return null;
+      const entry = bytes.subarray(at[0], at[0] + at[1]);
+      // Keep compressed transport, expanding only the requested method. Never
+      // retain a second, fully decompressed copy of the complete code pack.
+      return header.compression === 'gzip'
+        ? new Response(new Blob([entry]).stream().pipeThrough(new DecompressionStream('gzip'))).text()
+        : decoder.decode(entry);
     },
   };
 }
@@ -159,7 +169,7 @@ export function createCodePackStore(mode, pack = null) {
     async get(key) {
       stats.gets++;
       if (mode !== 'replay' || !pack) return null;
-      const text = pack.get(key);
+      const text = await pack.get(key);
       if (text == null) { stats.absent++; return null; }
       stats.served++;
       stats.servedBytes += text.length;
@@ -169,7 +179,7 @@ export function createCodePackStore(mode, pack = null) {
       stats.puts++;
       if (mode === 'record') { written.set(key, text); return; }
       if (mode !== 'verify' || !pack) return;
-      const expected = pack.get(key);
+      const expected = await pack.get(key);
       if (expected == null) {
         stats.missingInPack++;
         stats.firstDifference ??= {key: JSON.parse(key)[1], reason: 'not in pack'};
