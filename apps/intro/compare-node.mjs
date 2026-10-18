@@ -249,7 +249,9 @@ public final class IntroHeadless {
   const comparison={measuredAt:new Date().toISOString(),
     workload:'One uncapped offscreen pass, ticks 0–250, 640x480, RGB→RGBA conversion; no pacing, warmup, replay or display',
     note:'Render throughput only; not presented FPS, a browser test, CPU-throttled acceptance or a heap measurement.',
-    machine:{hostname:os.hostname(),cpu:os.cpus()[0].model,platform:os.release()},
+    machine:{hostname:os.hostname(),cpu:os.cpus()[0].model,platform:os.release(),
+      cpuAffinity:process.platform==='linux'
+        ? fs.readFileSync('/proc/self/status','utf8').match(/^Cpus_allowed_list:\s*(.+)$/m)?.[1]??null : null},
     provenance:receipt,hotspot,node,teavm,valid:true};
   const previous=fs.existsSync(options.output)?JSON.parse(fs.readFileSync(options.output)):{};
   const trials=[...(previous.nodeComparisonTrials??(previous.nodeComparison?[previous.nodeComparison]:[])),comparison].slice(-8);

@@ -870,6 +870,95 @@ completed three full comparisons, and
 passed all three tests. The benchmark changes no compiler defaults or selected
 launcher artifacts.
 
+#### Default array views ignore handler-only diagnostics
+
+java-tools `2ead3b1` enables the existing normal-CFG array-optionality analysis
+by default. A null check used only to construct an exception report no longer
+makes a required array optional on the normal rendering path. Ordinary nullable
+branches retain checked execution; throwing paths materialize the original JVM
+state and execute their handlers. No consumer flag or game identity is needed.
+
+Three fresh-process pairs on this computer, with **both** baseline and candidate
+commands prefixed by `taskset -c 2`, measured:
+
+| Pair | Previous JVM | Default normal-CFG analysis |
+| --- | ---: | ---: |
+| 1 | 2.832 s | 2.704 s |
+| 2 | 2.821 s | 2.749 s |
+| 3 | 3.040 s | 2.945 s |
+| Median | **2.832 s** | **2.749 s** |
+
+This is a modest **2.9% reduction**, not TeaVM parity. All child processes
+inherited affinity to P core 2, including their host compiler threads; these
+times should be compared within the pairs, not against the unrestricted table
+above. Every pair rendered exactly 251 frames, matched the saved RGB hash,
+replayed all 962 prepared entries, and compiled zero guest methods during
+animation. No profiling or warmup ran alongside these six measurements. The
+benchmark now records `machine.cpuAffinity` automatically. The current report's
+`nodeOptimization.comparison` preserves this summary as its bounded trial list
+advances.
+
+The baseline is java-tools `0735505`, runtime SHA-256
+`870ec5072844b1bae1f002cb742f0d2e32ee8bbce412fec3d63161ddeea4eb16`.
+The isolated candidate's SHA-256 is
+`ab613575466b1de4ea997fde5c17f648c06aca3c27d00550ca364adf8111638c`.
+The normal launcher artifact remains unchanged. A fresh headless Firefox
+correctness pass also matched the stored reference, replayed all 962 entries
+without misses/refusals/errors, and compiled zero guest methods after Java
+entry. It ran alongside compiler tests and is not a browser timing result.
+
+Rebuilding committed `2ead3b1` sources reproduced all 2,216 serialized generated
+source records byte for byte (digest
+`4501b7f3b25e56e9346301d4c67854553e2d8a332ace59eb9634ed95322df82f`).
+The rebuilt runtime hash is
+`4dd27b3350685eb0ca2e8d741f86ba052b08b0f1a19120064e018ca269d48cda`;
+Webpack assigns different dependency module IDs at the two build directory
+depths. Its 9,832,108-byte AOT artifact replayed all 962 entries without misses,
+refusals, errors or guest execution. A final unrestricted Node check took
+2.215 s with the saved pixels matching and zero post-entry guest compilations;
+this is a correctness/rebuild check, not another matched performance pair.
+
+Earlier experiments in this pass were discarded:
+
+- Conditional range proofs for cold-linked static arrays passed null, bounds,
+  partial-write and transport checks, but a single 2.225 s exploratory result
+  did not establish an improvement.
+- Extending counted-loop recognition to several positive counter updates in
+  one backedge block required preserving each intermediate SSA offset,
+  retaining null checks for conditional storage, and proving termination
+  without signed overflow. Focused tests caught an initially unsound merged
+  range predicate that skipped a failing store partway through an unrolled
+  iteration. The corrected prototype passed 173 assertions.
+- Separating the long unrolled loop's bounds proof from its atomic trip budget
+  retained scheduler polling and invalidated stale array proofs after a
+  continuation; 186 assertions passed. The timing differences remained small
+  and inconsistent. One exploratory pair overlapped a V8 optimization trace
+  and was excluded. These broader renderer changes and their experimental
+  fixture were removed; no opt-in policy was added.
+- A separate V8 trace confirmed that the hot generated methods do reach
+  TurboFan. Their remaining gap cannot be attributed solely to never reaching
+  the optimizing host tier. Sampling/tracing outputs were diagnostic only.
+
+Validation on the selected default:
+
+```bash
+# java-tools; the handler test now uses defaults, without the former opt-in.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/handlerArrayView.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/jitCompiler.test.js
+# dekobloko-work; committed sources are rebuilt in isolation.
+node apps/intro/build-aot.mjs
+node apps/intro/build-aot.mjs --mode replay
+node apps/intro/compare-node.mjs
+```
+
+The handler test passed all 43 assertions, including interpreter comparisons
+for caught null/bounds exceptions, zero-trip null input, optional/sibling arrays
+and transported code. The compiler suite passed 2,361/2,364 assertions; the three
+failures also reproduce using the unchanged baseline renderer: one existing
+rethrow-wrapper eligibility assertion and two existing Wasm OSR return-box
+assertions. They are not new failures from this default change. Browser/phone
+presented FPS, constrained heap/startup and full-game stability remain unverified.
+
 ---
 
 ## 6. Protocol servers
