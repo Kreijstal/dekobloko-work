@@ -2769,6 +2769,93 @@ post-commit source audit matches all 682 committed source files and only the
 generated JRE index is extra. Only the owned temporary server was closed;
 the user's existing intro server remains running.
 
+#### Single-entry scalar field-cache bypass: rejected after native-code comparison
+
+A structural compiler census confirmed one unused scalar static read in each
+hot span. Those values also appear in exception/fuel snapshots (slots 17 and
+8). Static-cell getters can change after compilation. Directly dropping reads
+without a proof for continuation liveness and host effects would therefore be
+unsafe. No additional CPU attribution run was needed to identify these sites.
+
+A small generic prototype kept every field access, class-initialization guard,
+exception site and captured SSA value, but omitted the cache value/filled pair
+for a scalar static field read only once in an entry block with no incoming
+edges. Repeated sites, loop entries, and reference/array generation caches
+kept their existing paths. It added no runtime flag or application names.
+The actual gradient and solid spans each reported one bypass. Integer-copy
+entry count stayed 240,639, so this was compared against retained `7e194e5`,
+not the older pre-omission baseline.
+
+The isolated build passed with four existing warnings and a 682-source audit;
+only generated JRE indexing was extra, with protected decompiler WIP excluded.
+Offline AOT recording executed no Java. The fresh diagnostic completed 251
+frames with the saved tick-80 pixels. Candidate runtime SHA-256:
+`1fe76cdbd3406c3d08cf28738d9a093196de1c74f42baca93c989279299311f9`.
+
+| Round | Retained JVM | Cache bypass | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 780.000 ms | 760.000 ms | 600.827 ms |
+| 2 | 767.000 ms | 785.000 ms | 604.260 ms |
+| 3 | 768.000 ms | 760.000 ms | 605.170 ms |
+| 4 | 783.000 ms | 779.000 ms | 605.210 ms |
+| 5 | 849.000 ms | 772.000 ms | 603.344 ms |
+
+The usual five fresh matched pairs used CPU2, 1,024 MiB Node old-space, identical
+policy and presentation, 251 frames once, no warmup/replay and no overlapping
+build/tests/profiling. Every run matched the saved pixels. Median
+**780 -> 772 ms**, **1.03% lower**, four wins/one regression, did not establish
+a useful further gain. No run was excluded.
+
+A separate eager TurboFan diagnostic then compared the real gradient method's
+compact forwarded-array entry (function index 48), in an initialized-class
+compilation context. The prototype shrank the module **5,477 -> 5,417 bytes**,
+but both emitted **848 instructions, 3,872 bytes**, with identical instruction
+text after normalizing addresses. This establishes equality for that optimized
+entry/context, not every method or V8 tier. The comparison used:
+
+```bash
+node --no-liftoff --no-wasm-lazy-compilation --print-wasm-code \
+  --print-wasm-code-function-index=48 -e \
+  "new WebAssembly.Module(require('fs').readFileSync('/tmp/teavm-hot-span-baseline.wasm'))"
+```
+
+The equivalent candidate command selects `teavm-hot-span-candidate.wasm`.
+Both isolated modules were dumped from the compiled method's `meta.bytes`. These flags were diagnostic only; timing
+processes used the normal engine. No Java or animation was executed for the
+native-code comparison. Both normalized instruction SHA-256 values are in the
+existing single comparison JSON. Removing this Wasm bookkeeping did not remove
+any optimized native instruction in the inspected entry.
+
+The prototype and optimization-specific assertions were removed. Focused
+prototype suites passed **463 assertions** (42 new, 26 static cells, 95 class
+initialization, 121 compact calls, 83 empty copies, 96 array ABI). Meaningful
+static-snapshot semantics were retained as a generic regression suite:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/staticFieldContinuations.test.js
+```
+
+**37 assertions pass** on the retained runtime: fuel continuations, mutation
+before an exception, captured handler values, live accessor replacement,
+throwable identity/original PC, cold/reset initialization, repeated writes,
+entry back edges, and wide/floating values. The focused prototype initially
+expected status -5 for a guest getter failure; the correct existing protocol is
+-3 with an owned precise-PC spill, now asserted together with throwable identity.
+
+The private runtime/AOT and source were restored to `7e194e5`; a fresh restored
+run completed 251 frames and matched the reference. Its previous ten-pair
+**773.500 ms versus TeaVM 603.240 ms** remains the retained result. The selected
+persistent player, user server and protected decompiler WIP remain unchanged.
+No screenshot, native-reference rerun or browser smoke was needed for the
+rejected prototype. The goal is still unmet.
+
+The next architectural candidate is native primitive static storage that owns
+both reads and writes. This differs from the rejected read-only mirrors, which
+kept JS-owned writes and added mirror maintenance. A bounded correctness proof
+must precede integration: preserve host-accessor fallback, Map membership,
+coercion timing, cell replacement, live memory and collectible ownership. No
+performance gain from that design has yet been demonstrated.
+
 ## 6. Protocol servers
 
 ```bash
