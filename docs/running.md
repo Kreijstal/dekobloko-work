@@ -3035,6 +3035,119 @@ proved ordinary nonvolatile static reads behind live capability/readiness
 guards. Preserve argument effects, low-fuel continuation and replacement
 revocation. No speed gain or 10% completion is claimed for that direction.
 
+### General empty-invocation proof: measured and rejected
+
+A bounded partial interpreter proved an entire void invocation returned without
+observable effects for known constant arguments and one runtime zero argument.
+Unknown branches forked; reachable writes, calls, array access, monitor work,
+possible faults, arithmetic overflow uncertainty, non-returning paths and work
+limits refused the proof. It admitted ordinary integer static reads only as
+explicit obligations. Emitted guards checked the exact published body, its
+independent host-owned fuel, class readiness, and native field capability words.
+Custom accessors, volatile/inherited/unknown declarations, missing fuel metadata,
+allocation refusal, replacement and withdrawal kept the original invocation.
+Argument expressions still executed in order before the guard. No game identity,
+method name or new runtime/environment flag selected the optimization.
+
+The first prototype short-circuited the dependency guards for nonzero arguments.
+Runtime SHA-256
+`b1d277b6237c29500dd263a0a2a6ac64e0a98a0461339c001b3e5683d06d2fa3`:
+five pairs **738.000 -> 732.000 ms**, **0.81% lower**, TeaVM **608.223 ms**.
+This was too small to select. The final version also kept no-effect calls from
+invalidating field caches and refused missing/invalid fuel bounds. Source base
+`java-tools` `40eb1c4`; final runtime SHA-256
+`935fc2a4e2619c3b8844cff3a40d65dea05fa5e40d85f496630e2079c2ff52d7`.
+
+Final artifact, fifteen alternating pairs of fresh CPU2 Node processes with
+1,024 MiB old-space, identical policies, 251 frames once, no warmup/replay:
+
+| Round | Retained integer statics | Empty-invocation guards | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 853.000 ms | 840.000 ms | 673.892 ms |
+| 2 | 833.000 ms | 888.000 ms | 677.371 ms |
+| 3 | 836.000 ms | 812.000 ms | 666.149 ms |
+| 4 | 879.000 ms | 804.000 ms | 670.072 ms |
+| 5 | 866.000 ms | 825.000 ms | 752.735 ms |
+| 6 | 719.000 ms | 731.000 ms | 602.372 ms |
+| 7 | 755.000 ms | 827.000 ms | 610.802 ms |
+| 8 | 748.000 ms | 729.000 ms | 692.083 ms |
+| 9 | 767.000 ms | 760.000 ms | 603.557 ms |
+| 10 | 742.000 ms | 730.000 ms | 604.109 ms |
+| 11 | 845.000 ms | 765.000 ms | 621.448 ms |
+| 12 | 820.000 ms | 745.000 ms | 659.346 ms |
+| 13 | 745.000 ms | 741.000 ms | 603.827 ms |
+| 14 | 733.000 ms | 738.000 ms | 603.849 ms |
+| 15 | 761.000 ms | 765.000 ms | 600.030 ms |
+
+The three five-pair batches had medians **853 -> 825**, **748 -> 731** and
+**761 -> 745 ms**. However, the pooled fifteen-pair medians were only
+**767.000 -> 765.000 ms**, **0.26% lower**. Ten pairs won; the median matched-pair
+ratio was **0.98476**. At ten pairs, pooled raw medians actually regressed
+**800 -> 808 ms**. All results and outliers remain included. A separately owned
+`virtuoso` process was observed busy during the first batch and absent by the
+end of confirmation; it was left untouched. This observation does not measure
+its causal impact. The extra five-pair batch did not establish a material
+repeatable gain in the stated whole-animation metric.
+
+TeaVM's pooled median **621.448 ms** leaves **23.10%** deviation, above the
+required 10%. No build, tests, browser or profiling overlapped these timings.
+All 45 final-artifact comparison processes completed 251 frames and matched the
+saved tick-80 RGB reference. The preliminary five pairs also matched. Source
+classes, assets, presentation and the 32 KiB/sampling-off policy stayed fixed.
+
+Separate post-timer coverage proved **1,215,400 gradient** and **233,055 solid**
+native span calls were omitted: **1,448,455 calls** in total. There were 15
+proved caller sites among the recorded methods. The reduced count did not
+establish enough elapsed-time improvement to justify the machinery.
+
+Focused checks passed **806 assertions**. These were experiment-only proof and
+invocation suites plus the retained regression suites. Commands from
+`java-tools`, with `NODE_PATH=/home/kreijstal/git/java-tools/node_modules`:
+
+```bash
+node test/emptyInvocationProof.test.js                  # 28, prototype removed
+node --expose-gc test/emptyCanonicalInvocation.test.js   # 63, prototype removed
+node --expose-gc test/staticFieldContinuations.test.js  # 37
+node --expose-gc test/emptyCanonicalCopy.test.js         # 83
+node --expose-gc test/canonicalDirectFrames.test.js     # 109
+node --expose-gc test/compactCanonicalFrames.test.js    # 121
+node --expose-gc test/hostOwnedCanonicalFuel.test.js    # 160
+node --expose-gc test/wasmCompilerRetention.test.js      # 84
+node test/workerBooleanSnapshot.test.js                # 30
+node --expose-gc test/nativeStaticFields.test.js        # 34
+node --expose-gc test/wasmDirectStaticLinkContract.test.js # 57
+```
+
+Proof checks covered constant guards/arithmetic, unknown branches, integer
+wraparound, null/reference branches, unreachable exception regions, and work
+bounds. Compiled checks covered actual native omission, nonempty effects,
+argument effects and faults, getter revocation/restoration, volatile reads,
+low fuel, live dependency readiness, replacement, retirement/collection, guard
+reclamation and allocation refusal. The final cache/fuel corrections reran the
+invocation, static-continuation and empty-copy checks. Both isolated webpack
+builds passed with four existing warnings; the final audit covered 684 source
+files and matching AOT recording executed no Java.
+
+Rejected and removed the runtime changes, proof module and prototype tests.
+Restored the isolated runtime/AOT and source to `40eb1c4`; restoration reran
+`node --expose-gc test/emptyCanonicalCopy.test.js` (**83 passed**) and
+`node --expose-gc test/nativeStaticFields.test.js` (**34 passed**), with the same
+`NODE_PATH`. Failed timing did not trigger another browser/full-frame check,
+screenshot or native reference regeneration. The selected persistent player,
+user server and protected decompiler work remain unchanged. The existing
+comparison JSON contains current results and bounded history.
+
+Next hypothesis: structured-Wasm exception/deoptimization spills currently walk
+all defined frame slots rather than backward local liveness. This may retain
+otherwise dead temporary values and increase native register/stack pressure.
+It is not a measured attribution or implemented speedup. A proof must include
+normal and exception successors, wide/overlapping locals, original PCs across
+inlining, caller operand stacks, monitors and boolean snapshot metadata. The
+existing `regionSafety.computeLocalLiveness` needs an input/coverage audit before
+using it: its exception-successor builder consumes numeric item PCs, while
+other compiler paths also accept label-based tables. Unknown/unsupported input
+must retain the current full spill, and analysis must be bounded and released.
+
 ## 6. Protocol servers
 
 ```bash
