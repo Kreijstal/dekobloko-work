@@ -1984,6 +1984,62 @@ improvement; neither another broad backend flag nor assuming TeaVM parity from
 fewer imports is sufficient. The original memory/startup/presented-FPS/phone and
 stability gates remain open.
 
+
+#### Within-block bounds reuse: measured and rejected
+
+A small automatic compiler prototype reused a successful heap bounds check for
+an identical SSA array/index pair later in the same block. Pure arithmetic
+preserved facts; calls and other effects cleared them. Each block started fresh,
+so loop iterations and branch joins inherited no checks. The original imported
+path for null/plain arrays remained intact. Only numeric elision counts survived
+compiler cleanup; no user flag was introduced.
+
+Focused commands passed **318 assertions** (54 new, 109 canonical, 96 array ABI,
+59 heap arrays):
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/reusedArrayBounds.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/canonicalDirectFrames.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmParameterArrayAbi.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmHeapArrays.test.js
+```
+
+The new fixture checks invalid/negative indices before writes, different indices,
+branch joins, zero-trip nulls, iteration changes, exact partial writes, native
+boundaries, exception handlers and owned low-fuel continuations. The isolated
+webpack build passed with four existing warnings and a 681-file source audit
+with zero mismatches/unexpected sources. Matching offline AOT recording executed
+no Java. Prototype runtime SHA-256:
+`20ad44f7b988a4029f3e0fec72bf16763890b496464359a0e2578ccb9240f3a8`.
+The initial driver description incorrectly still called this a raster experiment;
+its recorded baseline runtime SHA was the correct `c9025f7` artifact. The label
+has been corrected in the single current JSON.
+
+| Round | Native-raster baseline | Within-block bounds reuse | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 835.000 ms | 821.000 ms | 598.300 ms |
+| 2 | 817.000 ms | 863.000 ms | 599.566 ms |
+| 3 | 824.000 ms | 823.000 ms | 603.471 ms |
+| 4 | 823.000 ms | 982.000 ms | 608.646 ms |
+| 5 | 830.000 ms | 1007.000 ms | 601.332 ms |
+
+All 15 fresh processes completed 251 frames and matched the reference under the
+same CPU-2/1-GiB/no-warmup protocol, without concurrent validation/profiling.
+Median **824.000 -> 863.000 ms** is **4.73% worse**, with three regressing pairs.
+No elisions were reported in the busiest 32 methods. Inline helper returns split
+read-modify-write sequences across blocks; repeated static-field readers also
+use distinct SSA array values. The fixture's useful shape therefore did not
+translate into useful coverage here. Tiny winning pairs are not a speed claim.
+
+The prototype and its new tests were removed. It was not browser-tested or
+selected. The private runtime and AOT were restored to `c9025f7`, while selected
+and published artifacts remain unchanged. The retained comparison is still the
+native raster's ten-pair result (842.500 ms versus TeaVM 605.076 ms, ratio 1.392).
+A successor needs bounded must-facts across pure inline-helper edges, intersected
+at joins and invalidated by phi/node reassignment, loop re-entry and calls.
+That broader proof must first demonstrate actual hot-method coverage, then an
+elapsed-time win. The 10% target and original release gates remain open.
+
 ---
 
 ## 6. Protocol servers
