@@ -1281,14 +1281,178 @@ compiler-graph collection. After reverting the prototype, the retained
 runtime/test edits were removed from the worktree; the unrelated decompiler
 changes were preserved. The normal launcher and selected player were unchanged.
 
-The next ownership attempt should keep ordinary array-base queries cheap and
-amortize proof acquisition in callers, only for callees that compare array
-parameters. A verified internal entry must distinguish those captures from
-ordinary metadata, keep original public signatures, and sanitize unproved
-captures before native identity use. Late binding, replacement, readiness
-refusal and field-cache generations must preserve that distinction. This is a
-proposed implementation, not an existing optimized path. A leaner native
-leaf-call return protocol and bounded loop-range proofs remain other candidates.
+#### Amortized ownership: measured and rejected
+
+The caller-side ownership proposal was implemented and tested. Ordinary bases
+remained cheap; a separate internal entry accepted verified captures, and the
+ordinary expanded entry sanitized unproved bases. Callers obtained ownership
+only for known comparison-bearing callees, once per immutable parameter or
+field-cache fill. The implementation preserved old signatures, replacement,
+recursion, category-two slots, readiness refusal and unsupported-export fallback.
+A weak map reused the allocator's finalizer records. A captured intrinsic buffer
+getter avoided executing a host accessor during ownership validation.
+
+It passed 888 focused assertions. The separate counter run reduced ownership
+queries from 2,224,279 in the global variant to **10,122**, while copy-helper
+identity imports stayed at **zero**. Counts include setup/current modules and
+are not timing measurements. The final bundle SHA-256 was
+`872c7c856afd55fbd9cfb53f5ddf624b0f96c427f534cd27f9993a93d633b204`;
+the matching offline AOT pack was 9,833,849 bytes.
+
+Five fresh paired rounds used the same 32 KiB policy, CPU 2, 1 GiB Node old
+space, no animation warmup/replay and no concurrent profiling, counters, builds
+or tests. Baseline/candidate order alternated; unchanged TeaVM followed each
+pair. All 15 processes completed 251 frames and matched the saved reference.
+
+| Round | `102fd83` baseline | Amortized ownership | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 1,724.000 ms | 1,641.000 ms | 750.665 ms |
+| 2 | 1,944.000 ms | 1,497.000 ms | 750.585 ms |
+| 3 | 1,889.000 ms | 1,731.000 ms | 761.265 ms |
+| 4 | 1,712.000 ms | 2,168.000 ms | 744.569 ms |
+| 5 | 1,732.000 ms | 1,706.000 ms | 842.847 ms |
+| Median | **1,732.000 ms** | **1,706.000 ms** | **750.665 ms** |
+
+Four pairs improved, but the median reduction was only **1.50%** and one pair
+regressed **26.64%**. This did not justify the extra allocation bookkeeping and
+ABI machinery. The ownership implementation and its added tests were removed;
+no ownership option, extra entry ABI or allocator weak map remains from it.
+
+#### Proved empty invocations: measured and rejected
+
+A subsequent generic prototype proved when a static void method could return
+without effects under a zero integer argument. It interpreted locals and the
+operand stack with constants/reference symbols and single-variable affine
+integers, explored both possible reference-alias branches, and used difference-
+bound matrices for signed branch constraints. Every symbolic addition had to
+stay within the signed i32 interval. Reachable memory operations, calls,
+class-initialization reads, throws and monitors refused the proof. All feasible
+paths had to reach a void return; an unresolved or nonterminating path refused
+it. Successful full re-proofs removed unnecessary nonnegative-argument guards.
+
+The analysis was bounded to 2,048 code items, 12 parameters, 4,096 steps per
+attempt, 16,384 steps total and 128 pending states. Budget exhaustion retained
+the original body. The emitted entry checked block zero and reserved more
+callee fuel than the proved maximum path cost. Numeric proof metadata was
+frozen. There was no user flag or game/method-name rule.
+
+For the intro's integer-copy method, the proof found argument 4 equal to zero,
+argument 1 nonnegative and a maximum of 27 bytecode steps. A separate diagnostic
+showed **3,884,089 of 4,124,743** calls, about 94%, taking that empty path. The
+next variant let callers omit these invocations entirely after argument
+evaluation. A native readiness/fuel export was reached through the existing
+function table, with target/plan identity and revocation on replacement or
+withdrawal. Custom JavaScript readiness hooks retained ordinary invocation.
+Low fuel retained the original owned interpreter continuation.
+
+The final diagnostic counted **3,883,074 caller omissions**, 240,639 remaining
+direct copy entries, 1,015 remaining empty returns and 240,654 identity imports.
+The copy method queried only 30 bases and 30 lengths. All 251 frames completed and the saved reference
+hash matched. These were separate counter runs, including setup/current
+modules, not performance trials.
+
+The prototype passed 127 new assertions and related focused tests: 651 total.
+Coverage included duplicated loops and local copies, signed overflow, nulls,
+argument side effects, reachable effects/faults, nontermination and branching
+budgets, fuel/spill continuation state, publication/withdrawal, replacement,
+custom readiness, table-slot retirement and collection of compiler graphs and
+superseded contexts. The final runtime SHA-256 was
+`4320a13bfd5822c91ac0f023223d1041045869bd12fb9d83bc765334ad95e7a6`;
+the matching offline AOT pack was 9,832,663 bytes, recorded without Java execution.
+
+The same five-round alternating protocol produced:
+
+| Round | `102fd83` baseline | Empty entry/caller omission | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 1,681.000 ms | 1,736.000 ms | 740.408 ms |
+| 2 | 1,749.000 ms | 1,761.000 ms | 743.940 ms |
+| 3 | 1,668.000 ms | 1,714.000 ms | 814.352 ms |
+| 4 | 1,875.000 ms | 1,685.000 ms | 746.489 ms |
+| 5 | 1,694.000 ms | 1,640.000 ms | 764.893 ms |
+| Median | **1,694.000 ms** | **1,714.000 ms** | **746.489 ms** |
+
+Three pairs regressed; the candidate median was **1.18% higher**. Eliminating
+millions of these calls did not produce a useful elapsed-time improvement.
+The proof, entry guard, caller omission and readiness API were removed. Neither
+rejected optimization was browser-tested or selected for the normal player.
+The 10% TeaVM target remains unmet; the retained baseline in this group was
+still about 2.27 times TeaVM.
+
+#### Retained cleanup: omit unused canonical-table imports
+
+java-tools `81e29d4` retains only the table-import cleanup. The GC stress checks
+uncovered a separate retention bug. Every structured
+module imported the canonical table whenever that policy was enabled, including
+leaves that never called through it. A focused heap snapshot showed the shared
+table retaining a superseded importing instance, whose runtime-import closure
+retained its compiler's execution metadata. Starting table usage at false and
+marking actual canonical calls during discovery removes that unnecessary edge.
+Real callers keep the import. Discovery still determines the table order before
+final emission, including a raw-table call preceding a canonical call.
+
+Another retaining path was legitimate: a live dispatcher OSR companion can pin
+its original direct import. The regression test retires those callers too
+before requiring all superseded leaf metadata and frame owners to collect. It
+also checks that canonical, raw-only and mixed-table callers still return the
+exact result after publication and replacement. This does not discard metadata
+needed by an active or pinned fallback.
+
+Running the new regression with the original table-import policy produced four
+expected failures: unused leaf/raw-only imports and retained old metadata/owners.
+The cleanup passes these commands in java-tools:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/canonicalDirectFrames.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmParameterArrayAbi.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmDirectStaticLinkContract.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmDirectInstanceLinkContract.test.js
+```
+
+They pass 109, 96, 57 and 68 assertions: **330 total**. The GC checks use Boolean
+probes; the first diagnostic assertion tried to format the retained JVM object
+and was terminated. The temporary heap snapshots and diagnostic hooks were
+removed. Only the table-import cleanup and its regression coverage were retained from
+these experiments; unrelated decompiler changes were left untouched. This is a verified retention fix, not a claimed FPS or
+animation-time gain. Full heap, startup, presented-frame and phone gates remain
+open.
+
+The isolated cleanup runtime matches committed java-tools `81e29d4` (excluding
+only the generated JRE index); protected decompiler work was excluded. Its
+SHA-256 is
+`edbce3d14b26ac00badd7544bee90d943633028aac8720d2aea74d28b633acd0`,
+and offline AOT recording produced 9,831,153 bytes without Java execution. A
+fresh Node correctness smoke completed 251 frames and matched the saved hash.
+Headless Firefox 148.0.2 also completed 251 frames, matched that hash and served
+962 AOT hits with zero misses, refusals or errors. Its paced animation was
+5.065 s. These two smoke processes overlapped, so neither is a timing comparison;
+no screenshot or native-reference image was regenerated. The owned HTTP server
+was stopped afterward.
+
+The unpaired Node smoke appeared faster (1.234 s), but a further isolated,
+five-round alternating comparison showed that the baseline and TeaVM had also
+sped up. All 15 matched processes completed 251 frames and matched the reference:
+
+| Round | `102fd83` baseline | `81e29d4` cleanup | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 1,336.000 ms | 1,340.000 ms | 609.249 ms |
+| 2 | 1,342.000 ms | 1,226.000 ms | 601.018 ms |
+| 3 | 1,340.000 ms | 1,369.000 ms | 598.579 ms |
+| 4 | 1,391.000 ms | 1,182.000 ms | 605.872 ms |
+| 5 | 1,165.000 ms | 1,307.000 ms | 600.733 ms |
+| Median | **1,340.000 ms** | **1,307.000 ms** | **601.018 ms** |
+
+The reduction between medians is **2.46%**, but three pairs regressed. Retain
+this change for its demonstrated collection behavior, without claiming a
+repeatable elapsed-time gain. The candidate remains about **2.175 times TeaVM**;
+the required maximum is 1.10. The normal launcher policy and selected default
+artifact remain unchanged.
+
+The next elapsed-time experiment should compare the existing native primitive
+object-field representation with dense JS fields. Dense storage takes priority
+in allocation, so simply enabling native fields while leaving dense storage on
+would not test that backend. Keep matching runtime/AOT identities, the same
+251-frame input and saved reference, and compare fresh matched processes before
+changing the normal policy.
 
 A small earlier Node 22 Wasm-GC proof compiled `any.convert_extern` plus an
 `eqref` cast: it trapped on JS arrays, whether same or different, and succeeded
