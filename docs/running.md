@@ -2105,6 +2105,124 @@ calls with inline heap reads, preserving custom accessors/coercion and cell
 lifetime; the earlier native-getter experiment retained cross-instance calls.
 The 10% target and original release gates remain unmet.
 
+
+#### Inline integer static words: both write variants rejected
+
+This generic prototype replaced structured Wasm integer-static getter calls
+with a validity-word guard and inline heap load. A cold declaration, ordinary
+number, boolean, null or undefined kept its original stored Map value and a
+native i32 mirror. Host objects, BigInts, symbols, strings and custom accessors
+used the original getter at read time, preserving deferred coercion, errors and
+side effects. Writes stayed on the existing setter path. Integer cells observed
+assignment, definition and deletion through a Proxy installed before any JS
+binding could capture the cell. Reference/wide/legacy-key cells stayed ordinary.
+
+One eight-byte slot per cell/memory remained reserved for imported code's
+lifetime. Memory references and address keys were weak; growth used the live
+buffer, and native writes could still reach imported memory after its heap
+wrapper died. Compiler metadata retained only numeric addresses/counts, with
+compile-time maps cleared when diagnostics were disabled. No game-specific
+logic, new user flag, moved worker allocation or changed guest execution ABI
+was introduced. Ordinary Maps and exhausted/unsupported heaps kept callable
+access. Integer dimension reads in the existing bulk-clear entry used the same
+helper.
+
+Review found that repeated binding must use the same first cell as the
+already-deduplicated getter import, even when a host changes its cell resolver.
+The address cache now remembered both the first successful binding and refusal.
+Dedicated tests exercised alternating cells and a plain first cell. This was
+fixed before these measured variants.
+
+The initial version inspected the current descriptor and created a typed view
+on each mirrored write. Its focused suites passed **596 assertions**. The
+isolated build passed with four existing warnings; a 682-file source audit had
+zero mismatches/unexpected sources. Separate coverage completed 251 frames,
+matched the saved reference and showed 24 executed inline-reader methods,
+including both spans, triangles, face processing, projection and compaction.
+The returned eligible-method list was capped at 64, not a total catalog count.
+Runtime SHA-256:
+`37f47726539ff559128643b098205962245cd0931d8a313f4480fce292828187`.
+
+| Round | Native-raster baseline | Descriptor/view per write | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 820.000 ms | 1241.000 ms | 606.342 ms |
+| 2 | 824.000 ms | 1421.000 ms | 602.305 ms |
+| 3 | 834.000 ms | 1262.000 ms | 604.325 ms |
+| 4 | 859.000 ms | 1358.000 ms | 606.733 ms |
+| 5 | 880.000 ms | 1440.000 ms | 601.663 ms |
+
+All five pairs regressed: median **834.000 -> 1,358.000 ms**, **62.83% worse**.
+The native read saved crossings, but its overall write representation was
+unacceptable. It was extended before selection, not published or browser-tested.
+
+The second version cached whether the target still had a writable own data
+property. Ordinary writes could update that private target directly; descriptor
+changes/deletion refreshed the proof, and alternate receivers/custom setters
+kept normal Reflect behavior. It weakly cached each typed view, refreshed a
+collected/detached view, and skipped unchanged native values. New mirror
+registration forced initialization even when the value had not changed.
+This removed repeated descriptor/view allocation without retaining dead buffers.
+
+Focused commands passed **603 assertions** across the candidate work:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/staticI32HeapCells.test.js # 116, rerun after final write changes
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmStaticCells.test.js # 26
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/intZeroClearEntry.test.js # 90
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/classInitializationToken.test.js # 95
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/canonicalDirectFrames.test.js # 109
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmParameterArrayAbi.test.js # 96
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/workerBooleanSnapshot.test.js # 14
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmDirectStaticLinkContract.test.js # 57
+```
+
+New coverage includes raw Map values versus native conversion, all write paths,
+custom getter/setter and thrown identity, invalid coercion at read time,
+readiness/reset refusal, deletion/clear and key membership, distinct receivers,
+readonly/sealed/frozen cells, descriptor semantics, new-memory initialization,
+weak heaps/memories/stores/cells, replaced-value collection and old imported
+memory updates. The second build and 682-file source audit passed with the same
+four existing warnings. Matching offline AOT recording ran no Java. The fresh
+coverage run again completed 251 frames and matched the reference. Runtime SHA:
+`a3fc8b3d072936d9b54f414b35d9bb6a3caa65cef477a63c655a7939396a09dc`.
+
+| Round | Native-raster baseline | Fast observed writes | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 819.000 ms | 912.000 ms | 601.702 ms |
+| 2 | 1001.000 ms | 875.000 ms | 604.945 ms |
+| 3 | 822.000 ms | 897.000 ms | 604.487 ms |
+| 4 | 830.000 ms | 881.000 ms | 611.845 ms |
+| 5 | 1435.000 ms | 896.000 ms | 605.926 ms |
+
+Median **830.000 -> 896.000 ms** is **7.95% worse**, with three regressing
+pairs. The large baseline outliers (1,001 and 1,435 ms) remain included; isolated
+winning pairs do not establish a gain. Candidate/TeaVM is **1.481**.
+Both five-pair batches used fresh CPU-2/1-GiB processes, identical native-raster
+host and policy, 32 KiB parameter versions and scheduler sampling off. Every
+process completed ticks 0..250 once and matched the saved reference. No warmup,
+replay or concurrent tests/builds/profiling occurred during timing.
+
+Both variants and their new tests were removed. No browser smoke or artifact
+selection followed failed timing. The private runtime/AOT was restored to
+`c9025f7`; the selected/default player and published artifacts remain unchanged.
+The one current JSON keeps bounded results/history and current diagnostic
+coverage, without additional report files. The retained result is still the
+native raster's ten-pair 842.500 ms versus TeaVM 605.076 ms (ratio 1.392).
+The 10% target and original release gates remain unmet.
+
+#### Next: native call result protocol
+
+The current native canonical call returns status, invocation id, owner reference
+and optional primitive value. Even a successful void call returns the owner
+reference, although consumers need it only on an exit. A controlled successor
+should keep the public canonical ABI, and test a compact native entry returning
+status/id/value with exact owner transfer on exceptional/deoptimization paths.
+This targets call-result machinery rather than another property mirror. No gain
+is presumed from fewer results: verify recursion, cold refusal, exceptions,
+low fuel, replacement while a callee is active, retired-owner collection and
+fallback entries before fresh matched timing. The exit protocol must identify
+the exact old module, not whichever replacement occupies a table slot later.
+
 ---
 
 ## 6. Protocol servers
