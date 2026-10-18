@@ -2210,18 +2210,168 @@ coverage, without additional report files. The retained result is still the
 native raster's ten-pair 842.500 ms versus TeaVM 605.076 ms (ratio 1.392).
 The 10% target and original release gates remain unmet.
 
-#### Next: native call result protocol
+#### Compact native returns: first wrapper-only experiment (2026-10-18)
 
-The current native canonical call returns status, invocation id, owner reference
-and optional primitive value. Even a successful void call returns the owner
-reference, although consumers need it only on an exit. A controlled successor
-should keep the public canonical ABI, and test a compact native entry returning
-status/id/value with exact owner transfer on exceptional/deoptimization paths.
-This targets call-result machinery rather than another property mirror. No gain
-is presumed from fewer results: verify recursion, cold refusal, exceptions,
-low fuel, replacement while a callee is active, retired-owner collection and
-fallback entries before fresh matched timing. The exit protocol must identify
-the exact old module, not whichever replacement occupies a table slot later.
+The public canonical entry returns status, invocation id, owner and optional
+primitive value. A prototype retained that ABI while adding native entries
+returning only status/value. Exact ownership moves through a weak, synchronously
+consumed exit channel only on exceptional/deoptimization paths. Cold refusal
+and supported bridge stubs retain the existing behavior; normal native calls
+publish no exit record. Foreign exit managers cannot publish into these slots.
+
+Five alternating fresh-process comparisons against `c9025f7` produced:
+
+| Round | Native-raster baseline | Compact wrapper | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 876.000 ms | 835.000 ms | 611.614 ms |
+| 2 | 827.000 ms | 831.000 ms | 606.714 ms |
+| 3 | 858.000 ms | 815.000 ms | 599.401 ms |
+| 4 | 848.000 ms | 816.000 ms | 600.459 ms |
+| 5 | 819.000 ms | 867.000 ms | 607.106 ms |
+
+Median **848.000 -> 831.000 ms** is 2.00% lower, but two pairs regress.
+This is inconclusive and was not selected or committed as an improvement.
+All 15 processes completed ticks 0..250 once and matched the saved RGB
+reference; no warmup/replay or concurrent builds/tests/profiling occurred.
+The separate coverage run confirmed the compact native calls actually execute.
+
+The successor extends the prototype with bounded duplication of small method
+bodies into their compact entries, removing the wrapper-to-main call and
+active-id global handoff. One 16 KiB duplication budget covers both native
+entries, prioritizing forwarded array metadata. Larger bodies retain wrappers.
+Identity emission tokens mark returns and id capture; scanning raw opcode
+bytes would corrupt immediates that happen to equal a return opcode.
+The original public entries, exception payload capture, fuel checks and
+supported older-engine paths remain covered.
+
+Focused validation for the combined prototype (602 passing assertions):
+
+```sh
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/compactCanonicalFrames.test.js # 121
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/canonicalDirectFrames.test.js # 109
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmParameterArrayAbi.test.js # 96
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/primitiveArrayCopyEntry.test.js # 91
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/intZeroClearEntry.test.js # 90
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/classInitializationToken.test.js # 95
+```
+
+The new cases cover all scalar/void returns, local-index preservation, opcode-
+valued immediates, the shared duplication budget and executable large-method
+fallback, alongside recursion, low fuel, partial exception effects, active
+replacement, exact retired ownership, weak collection and old-engine entries.
+The isolated browser-debug/worker webpack build passed with four existing
+warnings; the 681-source audit passed, exempting only generated JRE indexing.
+An AOT identity check rejected a pack recorded before the final bundle was
+ready. It was regenerated; runtime/AOT identity was checked before any timing.
+A fresh diagnostic then completed 251 frames and matched the saved reference.
+Both compact entries are inlined in the hottest copy/gradient/solid leaf methods
+(4,123,713 / 3,473,053 / 1,168,526 native entries respectively).
+
+The combined inline-entry prototype completed these five matched pairs:
+
+| Round | Native-raster baseline | Inline compact entries | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 821.000 ms | 799.000 ms | 602.980 ms |
+| 2 | 842.000 ms | 789.000 ms | 602.835 ms |
+| 3 | 832.000 ms | 955.000 ms | 601.478 ms |
+| 4 | 838.000 ms | 814.000 ms | 599.428 ms |
+| 5 | 1081.000 ms | 789.000 ms | 599.885 ms |
+
+Median **838.000 -> 799.000 ms** is **4.65% lower**, with four pairs faster.
+Both large baseline/candidate observations remain included. Candidate/TeaVM is
+**1.328**, still above 1.10. Every process completed 251 frames and matched the
+saved reference under the same fresh-process CPU-2/1-GiB constraints.
+Runtime SHA-256: `e28b80b9dc152ad6e91bd7afec24826003069f27acba49984a94057e3ec0c8f1`.
+
+#### Deferred ownership ids: measured and removed
+
+A successor deferred ownership-id allocation in compact inline entries until
+an exit needed a frame. It reserved a local sentinel and allocated before the
+first spill, leaving public entries unchanged. All 606 focused assertions
+passed, including exact exception/fuel ownership, normal returns without ids,
+and wraparound of both reserved ids. The isolated build and 681-source audit
+passed; matching offline AOT and the fresh 251-frame reference check passed.
+Diagnostics explicitly stopped treating the id counter as an exact call count.
+
+| Round | Native-raster baseline | Deferred compact ids | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 843.000 ms | 816.000 ms | 622.485 ms |
+| 2 | 851.000 ms | 791.000 ms | 602.879 ms |
+| 3 | 832.000 ms | 859.000 ms | 622.162 ms |
+| 4 | 836.000 ms | 850.000 ms | 605.792 ms |
+| 5 | 837.000 ms | 798.000 ms | 596.667 ms |
+
+Median **837.000 -> 816.000 ms** is **2.51% lower**, with three winning pairs;
+candidate/TeaVM is **1.347**. This does not establish an added benefit over the
+simpler inline prototype's 4.65% result. Separate batches do not prove an
+incremental regression, either. The extra id mechanism, sentinel and telemetry
+change were removed before selection. Runtime SHA-256:
+`4a625536a7ad769cdbd46d4fb6a41e7a98a2b3526461e47429e3e22cd9a56b63`.
+All 15 fresh CPU-2/1-GiB processes completed 251 frames and matched the saved
+reference, with no warmup/replay or concurrent tests/builds/profiling.
+
+#### Inline compact entries: confirmation and retained source
+
+Rebuilding the restored source reproduced runtime SHA-256 `e28b80b9...` exactly.
+The second five-pair batch used those same runtime bytes and matching AOT:
+
+| Round | Native-raster baseline | Inline compact entries | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 812.000 ms | 972.000 ms | 600.189 ms |
+| 2 | 824.000 ms | 813.000 ms | 605.288 ms |
+| 3 | 817.000 ms | 790.000 ms | 603.014 ms |
+| 4 | 890.000 ms | 790.000 ms | 605.270 ms |
+| 5 | 811.000 ms | 794.000 ms | 605.086 ms |
+
+This batch's medians are **817.000 -> 794.000 ms**, with four winning pairs.
+Across both byte-identical batches, all observations included, the ten-pair
+medians are **828.000 -> 796.500 ms**: **3.80% lower**, with **8/10 pairs faster**.
+TeaVM median is **602.908 ms**, giving **1.321x**; the required 1.10x is unmet.
+Every fresh process completed 251 frames and matched the saved RGB reference;
+no warmup/replay or concurrent builds/tests/profiling occurred during timing.
+The second batch's report initially carried the preceding prototype's coverage
+annotation; that annotation was corrected from a completed first-batch process
+with matching runtime bytes. Timing/runtime/AOT identity was unaffected.
+
+The matching AOT pack is 9,831,921 bytes, SHA-256
+`a575875bebce645d7d6325bc8096e23db8a9773fc0c3ce32d542e344fe59dca1`.
+
+Retained java-tools source commit: `c49fc8d5820b784ae11d59851a0ba232be270700` (master).
+
+The final source has the simpler eager ownership ids, bounded inline entries,
+compact native results and weak exact-exit transfer. The 121 new assertions
+were rerun after reverting deferred ids. Together with the five unchanged
+focused suites listed above, the retained implementation has 602 passing
+assertions. No new user/runtime flag or application rule was introduced.
+The final isolated build passed with four existing warnings; the 681-source
+audit passed and protected decompiler WIP stayed outside the bundle.
+
+Headless Firefox 148.0.2 passed `node /tmp/teavm-intro-firefox-proof.cjs`: all
+251 frames, saved tick-80 canvas readback hash exact, 962 AOT hits and zero
+misses/refusals/errors/page errors. This was a paced correctness smoke, with
+no screenshot or native reference regeneration. The owned ephemeral-port
+server was stopped; the existing user's server remained running.
+
+Two separate instrumented fresh-process GC diagnostics (excluded from matched
+timing) completed 251 frames and matched the reference. With CPU 2 and 1 GiB
+old space, baseline/candidate animation times were 820.000/810.000 ms. Actual
+first-to-last-presentation windows were 785.272/772.269 ms, overlapping only
+**1.933/2.707 ms** of observed GC. Heap used at the last presentation was
+403,882,744/362,112,288 bytes. These are sparse per-process diagnostics, not peak
+heap or page-plus-workers acceptance. The observer's full-window inference was
+unavailable because the result used stdout rather than console; no full-window
+claim is made. Neither process reproduced the rare long outlier, so its cause
+remains unproven. This evidence does not support blaming GC for the steady gap
+in these runs. The private diagnostic hook was removed afterward.
+
+The one comparison JSON retains the current measurements, bounded history,
+source/runtime identities, browser proof and GC summary. No new report JSON or
+generated Java/binary is committed. Selected/default and published artifacts
+remain unchanged. The 10% execution target and original memory/startup/
+presented-FPS/phone/stability release gates remain open. The next compiler
+investigation should target bounded affine-loop versions that can prove a
+whole range safe, preserving partial faults and low-fuel fallbacks, rather than
+repeat the rejected local bounds reuse or static-field mirrors.
 
 ---
 
