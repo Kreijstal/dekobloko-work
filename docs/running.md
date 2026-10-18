@@ -1661,13 +1661,130 @@ presented-frame acceptance run. No screenshot was saved. The owned local HTTP
 server and browser were stopped; the preexisting server was left alone.
 The selected default JVM/runtime artifact was not replaced or published.
 
-The rejected runtime prototypes above are removed; java-tools retains only
-its previously committed table-retention fix. Compiler work should next prove
-independent counted integer-array loops for SIMD, with full-range guards,
-scalar tails and exact fuel/exception continuation. Merely removing more tiny
-call bridges or exception wrappers has repeatedly failed to improve elapsed
-time. Any new loop transform must be generic and automatic after its proof,
-with unsupported cases retaining existing execution.
+The rejected runtime prototypes above were removed; java-tools retained only
+its previously committed table-retention fix from those experiments.
+
+#### Automatic integer-array SIMD: inline prototype
+
+The next generic prototype proves an independent `int[]` countdown loop with
+one contiguous store and loads from the same array/index. The loop must have a
+linear normal body, unit index increment and a decrement-before-test counter.
+Supported scalar recurrences use wrapping integer addition/subtraction and
+uniform steps; shifts require a uniform shift count. Neighbor loads, reductions,
+other effects, unknown recurrences and unsupported shapes retain scalar code.
+Bounds are 16 blocks, 128 body nodes, 32 header phis and eight plans per method.
+Spliced callee loops are excluded because their original fuel protocol differs.
+There is no application/method-name rule or user flag; engines without SIMD
+retain the scalar path.
+
+A four-lane path requires a heap-backed parameter, four remaining iterations,
+a complete in-bounds range and more than four units of fuel. It consumes exactly
+four scalar header polls, uses wrapping SIMD arithmetic, and updates the full
+parallel header state, including reference aliases and inlined/dead-looking
+temporaries. Guard failure uses the original scalar loop, preserving partial
+writes, exception PCs and low-fuel continuations. Short invocations test the
+count before the more expensive representation/range guards.
+
+The inline prototype passed these focused commands: 168 vector assertions,
+96 array ABI assertions and 109 canonical-call assertions, with an earlier
+59-assertion heap-array check also passing:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/vectorArrayLoops.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmParameterArrayAbi.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/canonicalDirectFrames.test.js
+```
+
+The vector tests compare scalar and SIMD output, every spilled local and exact
+fault PCs across fuel boundaries, null/plain arrays, bounds failures, counter
+underflow and integer overflow. A test-only scalar-poll hook proves that three
+vector batches execute twelve iterations. Inlined/reference temporaries agree
+with the scalar continuation; GC releases installed SSA/proof graphs. Both hot
+intro span methods qualify. Eligibility alone does not prove a timing gain.
+
+The isolated build passed with four existing warnings. Both hosts now use the
+retained packed conversion, and **scheduler sampling is disabled in both JVM
+variants** (`schedulerTimingRate: 0`). The unchanged `81e29d4` baseline received
+its own newly recorded AOT pack for that policy (9,832,376 bytes); the inline
+SIMD pack was 9,833,282 bytes. Neither recording executed Java. Runtime SHA-256:
+`60269ebdc2057506a53b6f628a13c57e5e2dc98f4897eb5eb1aab39a15b2e096`.
+Inline vector source SHA-256:
+`fc8663594ca8c6748a4ef24ac53e916ad29fd201e2bb42646a242f880dc95419`.
+
+| Round | Scalar baseline | Inline SIMD | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 1,216.000 ms | 1,447.000 ms | 601.868 ms |
+| 2 | 1,828.000 ms | 1,244.000 ms | 855.206 ms |
+| 3 | 1,209.000 ms | 1,228.000 ms | 608.823 ms |
+| 4 | 1,209.000 ms | 1,133.000 ms | 600.631 ms |
+| 5 | 1,213.000 ms | 1,217.000 ms | 597.043 ms |
+| Median | **1,213.000 ms** | **1,228.000 ms** | **601.868 ms** |
+
+All 15 fresh processes completed 251 frames and matched the saved reference;
+CPU 2, 1 GiB Node old space, no warmup/replay or concurrent profiling/tests/builds.
+The candidate median was **1.24% higher**, with three regressing pairs. The
+outliers remain included. It was not selected or browser-tested; its ratio to
+TeaVM was **2.040**, so the 10% target remains unmet.
+
+#### Outlined SIMD kernels: measured and rejected
+
+The next variant put SIMD into a separate native Wasm kernel. The ordinary method
+kept its scalar frame for empty/short calls. A successful range/fuel guard entered
+the kernel, which processed complete groups and returned the full integer header
+state and remaining fuel; reference aliases stayed in the parent. The kernel
+imported only shared memory. No JavaScript callback, class-init shortcut, new
+user flag or retained compiler graph was added. Metadata counted its extra code
+bytes separately.
+
+The vector suite passed **176 assertions**, including collection of three retired
+kernel imports after replacement while current code remained callable. The same
+96-assertion array ABI and 109-assertion canonical suites passed: **381 total**.
+The first lifetime check itself held its last local across an async suspension;
+retiring instances in a synchronous helper removed that test root and verified
+all three weak imports collected. This was not a production retention fix.
+The isolated build passed with four existing warnings; offline AOT recording
+produced 9,833,481 bytes without executing Java. Runtime SHA-256:
+`eca8b0da9380fd55b3d6fc71a4270391801040e7bf4fac3d5f8e7f07acb439a0`.
+Outlined vector source SHA-256:
+`3b609cead6a33261ade38ff8d4b0da301979e9aa2a64a2488371146dc150f6fa`.
+
+The same sampling-disabled policy and packed host as the inline comparison produced:
+
+| Round | Scalar baseline | Outlined SIMD | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 1,231.000 ms | 1,249.000 ms | 602.432 ms |
+| 2 | 1,253.000 ms | 1,082.000 ms | 603.598 ms |
+| 3 | 1,237.000 ms | 1,278.000 ms | 602.030 ms |
+| 4 | 1,132.000 ms | 1,212.000 ms | 602.665 ms |
+| 5 | 1,106.000 ms | 1,241.000 ms | 603.643 ms |
+| Median | **1,231.000 ms** | **1,241.000 ms** | **602.665 ms** |
+
+All 15 fresh processes completed 251 frames and matched the saved reference;
+no warmup/replay or concurrent tests/builds/profiling. Four pairs regressed; the
+median was **0.81% higher**, and candidate/TeaVM was **2.059**. The isolated faster
+pair does not establish a gain. This variant was not selected or browser-tested.
+
+A subsequent separate counter process completed 251 frames and matched the
+reference. It recorded **426,359** gradient-kernel entries against 3,473,053
+canonical gradient-span entries, and **458,251** solid-kernel entries against
+1,168,526 canonical solid-span entries. Both reported zero imported integer loads.
+Those counts include setup/current modules; they are not animation timings or
+CPU attribution. They confirm that the new kernels ran, so simple lack of
+eligibility does not explain the failed elapsed-time result.
+
+Both SIMD prototypes, integration and added tests were removed. The private
+candidate runtime/AOT was restored to the `81e29d4` baseline for the new sampling-
+disabled policy. The selected default player/runtime was unchanged. Only the
+previously retained host conversion remains from this phase. The one comparison
+JSON retains bounded history and these diagnostics; no new report or screenshot
+was created. Original memory/startup/presented-FPS/phone gates remain open.
+
+Each canonical wrapper still calls a separate native readiness getter on entry.
+The next controlled experiment should replace that call with an inline readiness
+read, while preserving resets, cold refusal, custom-token fallbacks and artifact
+ownership. This is a concrete call path to test, not a claim that its cost alone
+explains the remaining gap. It must beat the same sampling-disabled baseline in
+fresh matched runs before selection.
 
 A small earlier Node 22 Wasm-GC proof compiled `any.convert_extern` plus an
 `eqref` cast: it trapped on JS arrays, whether same or different, and succeeded
