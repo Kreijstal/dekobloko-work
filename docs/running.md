@@ -3148,6 +3148,144 @@ using it: its exception-successor builder consumes numeric item PCs, while
 other compiler paths also accept label-based tables. Unknown/unsupported input
 must retain the current full spill, and analysis must be bounded and released.
 
+### Original-PC local liveness for native frame spills: retained
+
+Structured-Wasm spill callbacks previously materialized every typed, defined
+local, including temporary values that interpretation could never read again.
+The retained generic proof computes bounded backward local liveness over the
+original method's normal and exception edges. Fuel, call handoff and exception
+spills now retain the required locals and clear proved-dead slots in reused
+frames. Operand-stack restoration stays separate; boolean snapshot metadata
+keeps its existing conservative capture contract. Original PCs remain the basis
+across inlining. Observable producers still execute even when their result is
+dead. A compiled fixture proves a 1 MiB dead object collects while its spill
+frame and native module remain alive.
+
+The proof resolves numeric PCs and label-based exception tables explicitly,
+including labels without instructions; it tracks wide/overlapping local slots,
+branches, switches and loops. Legacy subroutines, raw wide instructions,
+incomplete/ambiguous metadata, unknown operations, excessive graph size,
+storage, edge count or work retain full spills. Limits are 4,096 code items,
+1,024 slots, 65,536 bitset words, 32,768 counted edges and four million word/edge
+operations. All analysis roots and omitted-slot plans are released when
+compiler diagnostic retention is off. Only scalar coverage counts remain in
+execution metadata. No game identity, symbol or new opt-in flag is involved.
+
+An initial implementation passed the then-965 focused assertions but regressed
+the real intro: median **743.000 -> 3,445.000 ms**, TeaVM **604.292 ms**, across
+five alternating pairs. Runtime SHA-256
+`28a44d663d2eafc5ba16a5e2c3661113f671f136a5f76eebcc381a7fa693737e`.
+All 15 processes completed 251 frames and matched the reference; none was
+excluded. Compiled body count fell **426 -> 404**, and regular Wasm runs rose
+**4,292 -> 669,877** in the first pair. This was a rejected implementation,
+not evidence that live-local filtering itself must be slow.
+
+The cause was an import-identity bug: retrying an invocation can need locals
+used by its catch handler, while resuming after that invocation can omit them.
+Both used `call_spill_<pc>` even when their argument signatures and clear plans
+differed. Native module validation failed, forcing slower execution paths. A
+new generic fixture with a catch-only local and a call at the end of a protected
+region reproduced the validation failure. Distinct retry/after-call imports
+fix it and retain both normal and exceptional behavior.
+
+Retained source: **`java-tools` `fc284ac0cfab1342757336b4641e151faa2bcfc6`**, master.
+Isolated source base: `40eb1c4`. Final runtime SHA-256:
+`54d93378c28b10f7d871d8e9538eea32e318787e6f659cef6aacc8d3625906a4`.
+The debug/worker webpack build passed with four existing warnings; all 684
+source files were audited against the base plus the two intended overlays,
+excluding protected decompiler WIP. Matching AOT recording executed no Java.
+
+Ten alternating matched comparisons used exactly those final runtime bytes and
+AOT. Fresh CPU2 Node processes, 1,024 MiB old-space, 251 frames once, no animation
+warmup/replay; dense instance fields, native integer statics, native RGB-to-RGBA,
+32 KiB parameter specialization and sampling-off policies unchanged:
+
+| Round | Retained integer statics | Local-liveness spills | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 732.000 ms | 697.000 ms | 609.191 ms |
+| 2 | 768.000 ms | 710.000 ms | 610.060 ms |
+| 3 | 749.000 ms | 718.000 ms | 609.626 ms |
+| 4 | 738.000 ms | 698.000 ms | 602.981 ms |
+| 5 | 742.000 ms | 691.000 ms | 616.296 ms |
+| 6 | 742.000 ms | 738.000 ms | 605.781 ms |
+| 7 | 741.000 ms | 701.000 ms | 606.763 ms |
+| 8 | 745.000 ms | 708.000 ms | 609.567 ms |
+| 9 | 739.000 ms | 691.000 ms | 602.807 ms |
+| 10 | 827.000 ms | 697.000 ms | 736.559 ms |
+
+First five-pair medians **742.000 -> 698.000 ms**; confirmation with opposite
+starting order **742.000 -> 701.000 ms**. Pooled medians **742.000 -> 699.500 ms**,
+**5.73% lower**, all **10/10 pairs faster**. Median paired ratio **0.94591**.
+TeaVM median **609.379 ms** leaves **14.79% deviation**. The 10% target remains
+unmet: its threshold is **670.317 ms**, about **29.183 ms** below this result.
+Every process completed 251 frames and matched the saved reference; all
+outliers, including the final slow baseline/TeaVM pair, remain included. No
+build, tests, browser or profiling overlapped performance timing.
+
+All ten candidate processes preserved **426 compiled bodies**, **4,292 regular
+Wasm runs**, and every recorded direct entry count compared with its matched
+baseline. Thus the measured improvement preserves the established execution
+paths rather than relying on a different fallback configuration. Separate
+post-timer coverage confirms liveness admission for the hot spans, triangles,
+mesh rotation and mesh projection pipeline. Omitted-slot counters count unique
+proved-dead original-point/kind/slot entries, including unavailable SSA entries;
+they are proof coverage, not newly removed arguments or executed spill counts.
+The reported storage bytes count the live-in matrix, not total analysis or VM
+heap. No 512 MiB peak-heap or sustained-gameplay claim follows from these data.
+
+Focused checks passed **975 assertions**. Commands from `java-tools`, with
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules`:
+
+```bash
+node test/frameLocalLiveness.test.js                    # 120
+node --expose-gc test/frameLocalSpills.test.js           # 40
+node --expose-gc test/wasmCompilerRetention.test.js       # 88
+node --expose-gc test/staticFieldContinuations.test.js   # 37
+node --expose-gc test/canonicalDirectFrames.test.js      # 109
+node --expose-gc test/compactCanonicalFrames.test.js     # 121
+node --expose-gc test/wasmExplicitMonitors.test.js        # 40
+node --expose-gc test/wasmDeepInline.test.js              # 8
+node --expose-gc test/wasmJsExceptionTags.test.js         # 20
+node test/workerBooleanSnapshot.test.js                 # 30
+node --expose-gc test/wasmInlineInitialization.test.js   # 50
+node --expose-gc test/hostOwnedCanonicalFuel.test.js     # 160
+node --expose-gc test/emptyCanonicalCopy.test.js         # 83
+node --expose-gc test/synchronizedMethodMonitor.test.js  # 6
+node --expose-gc test/wasmInstanceInline.test.js          # 63
+```
+
+The new compiled checks cover dead-reference release from a reused frame,
+correct live array/bound/static snapshot spill, low-fuel continuation, effects
+before a caught fault, host mutation before an exception, exact wide BigInt
+values, observable unused getters, and the retry/after-call validation
+regression. Cleanup checks cover both successful and failed compilation.
+
+Separate diagnostic processes compared all **251 RGBA frames exactly**, with
+**225 distinct frames**, sequence SHA-256
+`a275416200c6a79aa927777ada094644d46fd628a0ce7541a5ed1239ca81f8d3`.
+Hashing occurred inside their presentation callbacks, so those durations are
+excluded from performance data; the private harness was restored exactly.
+`node /tmp/teavm-intro-firefox-proof.cjs` also passed: Firefox **148.0.2**, 251
+frames, matching tick-80 canvas RGB, **962 AOT hits**, zero misses/refusals/errors
+and no page errors. This is a paced correctness smoke, not presented-FPS or
+Android acceptance. No screenshots or native reference regeneration were needed.
+
+The selected persistent player and user server stay unchanged. Only source and
+tests are retained in java-tools; application measurements remain here and in
+the existing comparison JSON with bounded history. No generated Java/binary is
+committed. Full-game memory, warm startup, rolling presented FPS, five launches,
+sustained play, supported-catalog and actual-phone gates remain unverified.
+
+Next: prove a guarded native kernel entry for bounded primitive loops. Its fast
+arm must establish ordinary field storage, readiness, array ownership/ranges,
+integer-overflow safety and sufficient fuel before guest effects, then avoid
+unnecessary per-element fault/frame protocol. Every rejected guard must retain
+the original entry, including null/nonheap arrays, custom metadata/accessors,
+low fuel, revocation and replacement. This is not implemented or credited as a
+gain. Do not repeat the earlier fuel-only, SIMD, cache-bypass, empty-invocation
+or deferred-id variants unchanged; a new experiment needs a distinct proof and
+an incremental matched comparison against this retained liveness version.
+
 ## 6. Protocol servers
 
 ```bash
