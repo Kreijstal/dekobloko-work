@@ -818,6 +818,58 @@ execution. Pixel tests cover primary colours and alpha masking. An aligned
 32-bit framebuffer packing experiment took 19.497 s, providing no improvement
 over the 19.329 s byte-store run; it was reverted.
 
+#### Local Node.js and HotSpot rendering comparison
+
+Run a fresh, uncapped, offscreen pass on the current computer:
+
+```bash
+node apps/intro/compare-node.mjs
+```
+
+The harness uses the existing checked class files and AOT pack. Each process
+renders ticks 0–250 once at 640×480, including RGB-to-RGBA framebuffer conversion.
+There is no 20 ms pacing, display, warmup, replay or reference-image regeneration.
+Tick 80 is captured in memory and checked against the saved native RGB hash
+after timing stops. HotSpot's small host wrapper is compiled in a temporary
+directory and deleted; game classes are not rebuilt. If the existing TeaVM
+artifact is present, a separate fresh Node process also runs that exact Wasm
+binary, checking its SHA-256 and readable-source identity first.
+
+On the build computer (Intel i7-1360P, Node 22.23.2/V8 12.4, HotSpot 17.0.20.1),
+three complete fresh-process comparisons produced:
+
+| Runtime | Animation median | Range | Average render throughput at median |
+| --- | ---: | ---: | ---: |
+| HotSpot | **0.315 s** | 0.302–0.320 s | 796.9 frames/s |
+| TeaVM Wasm GC in Node | **0.542 s** | 0.541–0.546 s | 463.2 frames/s |
+| Our prepared JVM in Node | **2.263 s** | 2.230–2.266 s | 110.9 frames/s |
+
+Median process wall times, including startup, were 0.517 s, 0.699 s and 7.736 s
+respectively. Every runtime matched the saved reference hash on every pass.
+Our JVM replayed all 962 AOT entries without misses/refusals/errors and compiled
+zero guest methods after Java entry. V8/HotSpot's own machine-code compilation
+remains part of the measurements. Node uses `jpeg-js` for image decoding during
+setup, outside the animation timer; this is not an all-frame pixel comparison.
+`JAVA`, `JAVAC` and `JAVA_TOOLS_NODE_MODULES` can select installed dependencies.
+
+Results and at most eight recent comparisons occupy `nodeComparison` and
+`nodeComparisonTrials` in the same local
+`~/.cache/dekobloko/intro-comparison.json`; other report fields are preserved.
+`valid` means the workload and reference checks passed, not FPS acceptance.
+
+These measurements show substantial execution headroom on this machine,
+including with TeaVM's unchanged Wasm artifact. They are not directly comparable
+to the paced laptop Firefox runs: CPU, engine, presentation and pacing differ.
+In particular, the saved laptop HotSpot duration of 5.020 s was cadence-capped.
+Headless render throughput does not establish presented FPS, any rolling-window
+minimum, the 6× slowdown/heap targets, full-game performance or phone acceptance.
+
+Validation: `node --check apps/intro/compare-node.mjs` passed, the command above
+completed three full comparisons, and
+`node --test tests/intro-pixels.test.mjs tests/code-pack-compression.test.mjs`
+passed all three tests. The benchmark changes no compiler defaults or selected
+launcher artifacts.
+
 ---
 
 ## 6. Protocol servers
