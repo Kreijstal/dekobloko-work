@@ -2040,6 +2040,71 @@ at joins and invalidated by phi/node reassignment, loop re-entry and calls.
 That broader proof must first demonstrate actual hot-method coverage, then an
 elapsed-time win. The 10% target and original release gates remain open.
 
+
+#### Cross-block bounds must-facts: measured and rejected
+
+The successor propagated successful primitive-array checks through pure SSA
+blocks, intersected facts at joins, and killed facts when their array/index
+phi or producer was reassigned. Entry/handler roots started empty. Calls,
+field operations, strings and class literals discarded facts; numeric constants
+were retained because they lower to immediate Wasm values. An initial diagnostic
+found that treating numeric `ldc` masks as runtime operations lost both span
+proofs; separating numeric constants corrected that refusal without weakening
+string/class behavior. Limits were 512 blocks, 8,192 nodes/phis, 1,024 pairs and
+200,000 work units. Budget exhaustion discarded the entire partial proof.
+No new flag or game-specific compiler rule was added.
+
+Focused commands passed **338 assertions** (20 proof, 54 integration, 109
+canonical, 96 array ABI, 59 heap array):
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/arrayBoundsFacts.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/reusedArrayBounds.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/canonicalDirectFrames.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmParameterArrayAbi.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmHeapArrays.test.js
+```
+
+Coverage includes pure helper edges, different/untaken branch paths, invalid
+indices, partial writes, loop and producer re-entry, exception-handler roots,
+actual work-budget exhaustion, numeric/string constants, native boundaries,
+exact exception locals, low-fuel continuation and frame release. The isolated
+webpack build passed with four existing warnings. Source audit: 682 files,
+zero mismatches/unexpected sources; unrelated decompiler WIP excluded. Matching
+offline AOT recording executed no Java. Prototype runtime SHA-256:
+`21d20968bf605c02d5b59bcdf485af02ca9b0c0ea53c65bcafbe141eb61dad56`.
+
+A separate fresh-process diagnostic completed 251 frames and matched the saved
+reference. There were 38 methods with eliminated checks; seven had executed.
+Each span lost one check: gradient span reported 3,473,053 canonical entries and
+solid span 1,168,526. Face processing lost three checks, column blur fifteen,
+and three sprite paths one each. Counts include setup/current instances and
+are coverage evidence, not CPU attribution or acceptance timings.
+
+| Round | Native-raster baseline | Cross-block bounds proof | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 826.000 ms | 820.000 ms | 605.835 ms |
+| 2 | 1002.000 ms | 892.000 ms | 600.795 ms |
+| 3 | 815.000 ms | 814.000 ms | 601.504 ms |
+| 4 | 820.000 ms | 839.000 ms | 601.304 ms |
+| 5 | 853.000 ms | 824.000 ms | 612.587 ms |
+
+All 15 fresh timing processes completed 251 frames and matched the saved
+reference, with the same CPU-2/1-GiB/32-KiB/native-raster/sampling-off policy,
+alternating JVM order and unchanged TeaVM after each pair. No warmup/replay,
+profiling, tests or builds overlapped timings. Median **826.000 -> 824.000 ms**
+is only **0.24% lower**; four pairs improved, one regressed. Despite proven hot
+coverage, this does not establish a useful elapsed-time gain. Candidate/TeaVM
+was **1.370**. No browser smoke was run after this rejection.
+
+The analysis, integration and new tests were removed, and the private runtime/
+AOT was restored to `c9025f7`. Source diagnostics remain bounded in the one
+comparison JSON. The selected/default player and published artifacts were not
+changed. The next controlled experiment should replace integer static getter
+calls with inline heap reads, preserving custom accessors/coercion and cell
+lifetime; the earlier native-getter experiment retained cross-instance calls.
+The 10% target and original release gates remain unmet.
+
 ---
 
 ## 6. Protocol servers
