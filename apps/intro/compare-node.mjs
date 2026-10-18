@@ -122,6 +122,11 @@ async function runNode() {
     wasm:{enabled:controller.jvm.jit.wasmJit.enabled,
       runs:controller.jvm.jit.wasmJit.runCount,
       compiled:controller.jvm.jit.wasmJit.compiled.length,
+      arrayMetadataQueries:controller.jvm.jit.wasmJit.compiled.some(state=>state.meta?.importStats)
+        ? controller.jvm.jit.wasmJit.compiled.reduce((total,state)=>({
+          base:total.base+(state.meta?.importStats?.get('abase')||0),
+          length:total.length+(state.meta?.importStats?.get('alen0')||0),
+        }),{base:0,length:0}) : null,
       methods:controller.jvm.jit.wasmJit.compiled.map(state=>({
         key:state.key,status:state.status,runs:state.runs,exits:state.exits,
         fuelExits:state.fuelExits,fullyCompiled:state.meta?.fullyCompiled,
@@ -130,6 +135,10 @@ async function runNode() {
         deferredFrames:state.meta?.directFrameContext?.createdFrames||0,
         bulkClearCalls:state.meta?.box?.intZeroClearCalls||0,
         heapVersionBytes:state.meta?.parameterHeapSpecializationBytes||0,
+        arrayMetadataParameters:state.meta?.parameterArrayABI?.length||0,
+        arrayBaseQueries:state.meta?.importStats ? state.meta.importStats.get('abase')||0 : null,
+        arrayLengthQueries:state.meta?.importStats ? state.meta.importStats.get('alen0')||0 : null,
+        referenceEqualityQueries:state.meta?.importStats ? state.meta.importStats.get('ref_eq')||0 : null,
       })).sort((a,b)=>(b.runs+b.directEntries)-(a.runs+a.directEntries)).slice(0,32)}};
 }
 

@@ -1094,32 +1094,116 @@ caught null/bounds failures, partial writes, mixed backing and aliasing. Three
 fresh matched rounds gave baseline/candidate pairs of 3,764/3,060 ms,
 2,179/1,942 ms and 1,828/2,042 ms. The median difference was only 6.29%, with a
 regression in the third pair. The prototype and its added test were removed;
-no default budget or selection changed. The current report marks that pass
-`discarded` and keeps the earlier committed pass under bounded `completedPasses`,
-within the same JSON file. A stale-pack probe exited before Java entry while its
+no default budget or selection changed. That discarded pass and earlier committed passes remain under bounded
+`completedPasses` within the same JSON file. A stale-pack probe exited before Java entry while its
 replacement pack was still building; it was not a timing trial.
 
 The bounded census also exposed millions of direct calls in one fresh pass:
 about 4.12 million integer-copy entries, 3.47 million gradient-span entries and
 1.17 million solid-span entries. These are current-module counters, including
-setup, not presented frames. `arrayCacheFill` still calls JavaScript imports
-for base and length at every array-parameter entry. A guarded heap body removes
+setup, not presented frames. At that point `arrayCacheFill` called JavaScript
+imports for base and length at every array-parameter entry. A guarded heap body removes
 backing branches inside a loop but does not remove those entry crossings.
 
-The next implementation should forward already captured array bases and lengths
-between compiled callers and callees, using an expanded internal Wasm export.
-Keep ordinary JS entry and the current canonical fallback ABI intact. Capture
-incoming metadata into invocation-local storage before recursion, and install it
-only after the callee owner-readiness check succeeds so a cold entry cannot
-poison a later call. Caller caches must keep their existing generation/alias
-rules. Late, partial or replaced callees must retain the original Java arguments,
-exact-once invocation and owned exception/deopt frames. Test cold initialization,
-plain/heap/null arrays, aliasing, recursive/reentrant calls, payload release and
-replacement before comparing full intro passes. This attacks the observed
-boundary directly; it does not require another broad CPU-attribution exercise.
-After that, a bounded range/trip proof can remove redundant checks and fuel
-polls from a loop only when the reserved budget guarantees no exit; retain the
-original checked and resumable body for every failing guard.
+#### Forwarded array metadata
+
+java-tools `102fd83f9036ab7e0c9696a91aead3cea8d0a8b3` implements that transfer.
+Eligible canonical calls automatically forward captured primitive-array bases
+and lengths in an internal `canonicalHeapRun` signature. The ordinary `run`,
+raw `runv` and canonical `canonicalRun` signatures stay intact. All entries share
+one compiled method body; the change does not duplicate that body or create an
+additional array representation. Java local slots remain separate from hidden
+Wasm parameter ordinals, including category-two arguments.
+
+An uncaptured base is `-2`; a captured non-heap/null base remains `-1`. Metadata
+lives in invocation-local parameters, so recursion cannot overwrite its caller's
+capture. Nonparameter caches query only after owner readiness permits it. A
+refused fill explicitly leaves `-2`, so even a readiness change before entry
+cannot forward an old/default pointer. Cache generation and alias rules remain
+in force. Missing, late, partial and replaced exports keep the legacy Java-args
+fallback and existing owned exception/fuel continuations. Compiler maps are
+released with diagnostics disabled; retained callbacks do not capture SSA nodes.
+
+The first forwarding variant removed the queries but retained redundant guards:
+matched medians were 1,891 ms baseline and 1,955 ms candidate, with mixed pairwise
+results. It was superseded. Folding the metadata-fill guards and eliminating
+redundant result guards produced the retained variant. The comparison kept the
+broader policy above and a 32 KiB parameter heap-version budget in **both**
+variants, on CPU 2 with 1 GiB Node old space, sequential fresh processes, no
+warmup/replay, and no counters, profiling, builds or tests alongside timing:
+
+| Round | `eeffa15` baseline | `102fd83` candidate | Unchanged TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 1,928.000 ms | 1,753.000 ms | 751.379 ms |
+| 2 | 2,165.000 ms | 1,810.000 ms | 745.272 ms |
+| 3 | 1,980.000 ms | 1,604.000 ms | 837.934 ms |
+| Median | **1,980.000 ms** | **1,753.000 ms** | **751.379 ms** |
+
+Every candidate pair improved; the reduction between medians is **11.46%**.
+The ratio to TeaVM is still **2.333**, so the required 1.10 target is not met.
+Each process rendered 251 frames and matched the saved reference hash. The
+candidate SHA-256 is
+`6ee73ed498a158d9643a6ba95d7e1edaa9cbbf414b2945b80db93a9bb1cf6e0a`;
+the baseline is the prior candidate
+`a89ccdefecc541f30c4d9c84f1186cf41d88a106838c346460346f89fe965e76`.
+The isolated build's four runtime source files matched the committed sources.
+
+Separate fresh diagnostic processes enabled import counters. Across the main
+integer-copy, gradient-span and solid-span kernels, base-plus-length queries
+fell from **25,782,134 to 4,124**. The candidate's current modules recorded
+2,224,279 base queries and the same number of length queries overall. These
+include setup, are current-module counters rather than counts of retired
+modules, and are not timing trials. The integer-copy kernel still made
+**4,124,743 JavaScript reference-equality queries**. Generic bounded diagnostics
+now expose parameter counts, metadata queries and reference-equality queries;
+these counters are absent/null in ordinary timing runs. One early private
+measurement driver failed JSON serialization before recording a complete pair;
+its unpaired probe was excluded and the driver was corrected.
+
+Validation commands in java-tools:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmParameterArrayAbi.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/canonicalDirectFrames.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmJsExceptionTags.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmHeapArrays.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmDirectStaticLinkContract.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmDirectInstanceLinkContract.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmLeafInitialization.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmColdIntegerInline.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/sharedFieldArrayCaches.test.js
+```
+
+They passed 96, 80, 20, 59, 57, 68, 21, 54 and 32 assertions respectively. The new
+suite covers legacy entry compatibility, zero callee metadata queries, plain and
+null arrays, recursive argument swapping, category-two slots, shared field
+versions, cold/readiness transitions, unavailable expanded exports, fuel exits,
+partial effects, exception payload release, and replacement during an active
+throwing call. With `--expose-gc`, the SSA function and parameter/uses graph were
+collected while the runtime imports remained live.
+
+The isolated browser bundle rebuilt successfully. Offline record/replay served
+all 962 AOT entries without misses, refusals, errors or Java execution. A fresh
+headless Firefox 148.0.2 pass completed 251 frames and matched the reference; its
+paced animation took 5.664 s. It ran alongside offline replay and is a correctness
+check, not a browser performance acceptance result. The Deko syntax check and
+three pixel/code-pack tests passed again. The nine post-Java-entry Wasm compiles
+remain a preparation limitation. The normal launcher policy and selected player
+artifact were preserved; no game export, screenshot or native reference was
+regenerated.
+
+The next candidate should remove the remaining small-call overhead without
+weakening exits: native reference equality where array identity can be proved,
+and a leaner native leaf-call return path with cold exception/fuel handoff. A
+small Node 22 Wasm-GC proof compiled `any.convert_extern` plus an `eqref` cast:
+it trapped on JS arrays (same or different) and succeeded only for null. A
+simple opcode substitution therefore does not replace the current `ref_eq`
+import here. An allocator-base proof must distinguish zero-length arrays that
+share offsets, foreign/overlapping views, freed/reused extents and restored heaps;
+retain reference fallback whenever ownership or uniqueness is unproved. A
+bounded range/trip proof may later remove redundant checks and fuel polls only
+when its reserved budget guarantees no exit. No extra application flag or
+method-name/signature heuristic should substitute for those proofs.
 
 ---
 
