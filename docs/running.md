@@ -2483,6 +2483,170 @@ primitive-constant rematerialization in the Wasm compiler: avoid dedicated
 locals/assignments for literals, preserving phi copies, spills and exception
 order. The 10% target and original release gates remain open.
 
+
+#### Primitive-constant rematerialization: measured and removed
+
+A generic compiler prototype emitted primitive/null literals at uses rather
+than allocating a dedicated local for each occurrence. Phi copies and frame
+spills used the same exact typed encoding; string/class resolution retained
+its original order and identity. Temporary literal maps/encodings were released
+when compiler diagnostics were disabled. It added no runtime flag.
+
+The new suite passed 58 assertions covering integer/long limits, f32 rounding,
+signed zero, ordinary/compact returns, stack phis, null/string identity, partial
+faults, literal locals in handlers/fuel spills and collection while runtime
+import metadata stayed alive. Related suites passed 121 compact-call, 109
+canonical-frame, 96 array-ABI, 59 heap-array, 91 bulk-copy, 90 integer-clear,
+95 readiness-token and 30 division assertions: **749 focused assertions total**.
+The broader structured-Wasm suite remained 420/426 with precisely the same six
+committed-baseline failures. The isolated build passed with four warnings and
+681-source audit; matching offline AOT and fresh 251-frame reference passed.
+The hot gradient/solid/triangle modules removed 33/13/188 literal locals; all
+existing native compact entry choices remained available. No gain is inferred
+from those counts.
+
+| Round | Retained compact baseline | Immediate literals | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 828.000 ms | 811.000 ms | 601.088 ms |
+| 2 | 797.000 ms | 799.000 ms | 599.742 ms |
+| 3 | 815.000 ms | 800.000 ms | 601.337 ms |
+| 4 | 791.000 ms | 779.000 ms | 599.174 ms |
+| 5 | 797.000 ms | 808.000 ms | 694.844 ms |
+
+Median **797.000 -> 800.000 ms**, **0.38% worse**, with three winning and two
+regressing pairs. Candidate/TeaVM is **1.331**. All 15 fresh CPU-2/1-GiB
+processes completed 251 frames and matched the saved reference, no warmup or
+replay, no concurrent build/test/profiling. Runtime SHA-256:
+`72413247182d0a487a019cd66021cd00ebad701de8e54ba933e1bd203c14065a`.
+The prototype and its new tests were removed. No browser smoke or artifact
+selection followed. Retained source remains `c49fc8d`.
+
+Reviewing the older native-object-field experiment found a concrete blocker
+for revisiting it: object fields call allocObject, but unlike array views their
+field containers never register for reclamation. Raw object free bins exist,
+but normal allocation never reports dead field containers to them. That must
+be fixed and tested before wider slab allocation, irrespective of any speedup.
+The 10% execution target and original release gates remain open.
+
+
+#### Native object-slab reclamation: retained correctness fix
+
+`newFields` now registers binnable native field-storage containers with the
+heap's existing finalization registry. Holdings contain only allocation
+identity/address/size, with no Java wrapper or storage reference. Tracking the
+container lets reflection/host aliases retain storage after its Java wrapper
+collects. Explicit frees unregister records; queued stale records cannot free
+a replacement using the same address. Existing <=4 KiB free-bin limits and
+unsupported-registry/large-allocation policy remain unchanged. Recycled slabs
+are zeroed. Native raw-base caches are invocation-local, so cleanup between
+host turns cannot reuse bytes while a synchronous native invocation uses them.
+
+Retained java-tools commit: `27bf7727683902023a45948a667f623d4382d791`.
+These focused commands passed **368 assertions**, including **47 new cases**:
+
+```sh
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/objectSlabReclamation.test.js # 47
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmHeapFreeList.test.js # 71
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmHeapGrowth.test.js # 35
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmHeapBulkCopy.test.js # 21
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/slabFields.test.js # 49
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/denseFields.test.js # 20
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/workerDenseFields.test.js # 3
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmHeapArrays.test.js # 59
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmInstanceInline.test.js # 63
+```
+
+The native callback test ends WeakRef construction's keep-alive job first,
+then proves that GC actually clears the storage container inside a synchronous
+Wasm callback. Its extent is still unavailable to nested allocation; native
+code reads the original field value before returning. Only after a host turn
+can reclamation reuse it. Other cases cover retained containers, reference
+cycles, explicit frees, wrong-size/duplicate tracking, stale callbacks, zeroed
+long/int/reference defaults, array liveness remaining independent, memory
+growth and native-storage recovery after bump-space exhaustion.
+
+The isolated debug/worker build passed with four existing warnings. All 681
+source files match the committed source, excluding generated JRE indexing;
+protected decompiler edits were excluded. A formatting rebuild reproduced
+identical runtime bytes, so its matching dense AOT remained valid. Fresh dense
+and native-storage diagnostics each completed 251 frames and matched the saved
+reference. Native storage tracked 371 field containers; dense tracked zero.
+Neither intro reproduced field-container reclamation (freed/reused counts
+were zero); forced-GC tests provide that evidence. Native fields consumed
+4,728 additional bytes of the fixed linear heap. This is not a peak-heap,
+512 MiB, long-session or phone acceptance claim.
+
+Firefox 148.0.2 passed the restored dense policy with this runtime: 251 frames,
+exact saved tick-80 canvas hash, 962 AOT hits, zero misses/refusals/errors and
+no page errors. No screenshot or native reference regeneration. Only the owned
+ephemeral server was stopped; the user's existing server remained running.
+The memory fix adds no storage flag and does not change allocation defaults.
+Runtime SHA-256:
+`5d471143a0767c6bf4258eaccfe8234cbdb0f417c1ecb3909f19c4e02c2a17e8`.
+
+#### Same-runtime field storage comparison: native allocation rejected
+
+Both modes used the identical reclaiming runtime above and independently
+recorded matching AOT packs. Dense allocation takes priority even though the
+debug controller's defaults enable native-field support; the initial assertion
+that absent configuration meant native support was off was incorrect. Actual
+storage options and tracked counts are reported. Baseline: dense true;
+candidate: dense false/native true. No source/runtime difference is attributed
+to the following comparison.
+
+| Round | Dense JS fields | Native primitive fields | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 791.000 ms | 806.000 ms | 601.639 ms |
+| 2 | 798.000 ms | 811.000 ms | 604.328 ms |
+| 3 | 816.000 ms | 826.000 ms | 603.520 ms |
+| 4 | 829.000 ms | 818.000 ms | 607.505 ms |
+| 5 | 805.000 ms | 809.000 ms | 602.474 ms |
+
+Median **805.000 -> 811.000 ms** is **0.75% worse**; four pairs regress.
+TeaVM median is **603.520 ms**: dense/native ratios **1.334/1.344**. Every
+fresh CPU-2/1-GiB process completed 251 frames and matched the saved reference;
+no warmup/replay or concurrent build/test/profiling. Each row validates actual
+allocation mode and tracked field containers, not configuration alone.
+Native-field sites were installed in face rendering (12), projection (6),
+logo rendering (12) and mesh bounds (18), among others. Correctness and native
+coverage did not establish a speedup. Dense private policy/AOT was restored;
+normal/default and published artifacts remain unchanged. No storage-default
+switch followed this failed comparison. The GC fix remains for correctness.
+
+#### Next call-site proof: ownership of numeric control globals
+
+The earlier empty-call experiment still made an indirect native eligibility
+call before omitting the empty callee. It therefore did not remove the call
+boundary on that path. A successor can test eligibility in the caller only if
+it reads live fuel/readiness controls without pinning retired compiled bodies.
+
+Two separate Node 22.23.2 `--expose-gc` proofs kept a numeric fuel global alive
+in another native module while retiring a module that owned an externref owner
+and an import closure. After twelve host turns/forced collections, borrowing a
+module-defined exported fuel global kept its owner, instance, function and
+module alive. Numeric reads and prototype-setter updates worked, but its
+retention violates the intended cleanup contract.
+
+Creating the mutable i32 control with `new WebAssembly.Global` on the host,
+then importing/re-exporting it from the callee, preserved re-export identity.
+The owner, original instance, function and module all collected while another
+module still read the live fuel (100,000,000). Calling the standard prototype
+setter changed that reader to 1. The host control contains no back-reference
+to the retired execution context. These are substrate/ownership POCs, not an
+implemented runtime optimization, Firefox lifetime validation or speed result.
+
+The next implementation should use host-owned control globals and symbolic
+global-index relocation in the assembler, preserving existing public entries.
+It must then prove caller-side omission without an eligibility call, preserving
+argument effects, owner readiness, low fuel, replacement/revocation and retired
+metadata collection. Reuse the bounded generic primitive-copy proof rather
+than game/method names. Do not scan opcode bytes to relocate globals. Measure
+fresh unchanged-workload timings before retaining an optimization.
+The 10% execution target and original release gates remain open. The private
+benchmark still uses the documented 32 KiB version budget and scheduler timing
+sampling disabled; the normal integration defaults have not been switched to
+those experimental settings or to native field allocation.
+
 ---
 
 ## 6. Protocol servers
