@@ -2986,6 +2986,55 @@ existing validation until separately proved. After that, a guarded native
 kernel entry could reduce the remaining short-call/frame ABI overhead. Neither
 extension is implemented or counted as a speed gain here.
 
+### Native reference statics: rejected
+
+Tested independent host-created mutable `externref` globals for reference
+statics, using the integer cell's capability word to revoke native access on
+descriptor changes. Mutable cells cleared their raw property slot, so native
+replacement did not retain the previous object. Readonly properties retained
+their exact reflected value; volatile/custom accessors and unsupported memory
+kept the original imports. Return scratch remained separate from field globals.
+The isolated source base was `java-tools` `40eb1c4`; candidate runtime SHA-256
+`047de13457eced0337b2961f6eca8905e53ccfd8e95aaa988b00a609dd693ac0`.
+
+The prototype passed **1,073 focused assertions**, including real compiled
+reference exchange, 130 imported globals, return-global relocation, low-fuel
+captures, mutation before an exception, descriptor/receiver invariants, replaced
+object collection, retired cell/module collection, and worker transport of a
+native-written array reference. Debug/worker webpack and matching AOT passed.
+Separate coverage confirmed reference readers in triangle and mesh methods.
+
+Five alternating fresh-process comparisons, CPU2, Node old-space 1,024 MiB,
+251 frames once, identical 32 KiB specialization and sampling-off policies:
+
+| Round | Retained integer statics | Native reference statics | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 779.000 ms | 879.000 ms | 671.681 ms |
+| 2 | 737.000 ms | 840.000 ms | 603.201 ms |
+| 3 | 742.000 ms | 723.000 ms | 608.081 ms |
+| 4 | 750.000 ms | 751.000 ms | 601.866 ms |
+| 5 | 757.000 ms | 725.000 ms | 601.604 ms |
+
+Medians **750.000 -> 751.000 ms**, **0.13% worse**, two winning pairs and
+three regressions. TeaVM median **603.201 ms** leaves a **24.50%** gap.
+Every run completed and matched the existing tick-80 RGB hash; no result was
+excluded. No build, tests, browser or profiling overlapped these timings.
+Fewer native-to-JS calls did not establish an execution gain. Canonical reference
+storage also makes JS readers/writers access the host global, a possible cost;
+this is an explanation to investigate, not measured attribution.
+
+Rejected and removed the prototype and its experiment-only tests. Restored the
+four source overlays, worker fixture, isolated runtime and matching AOT to
+`40eb1c4`. Restoration check:
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/nativeStaticFields.test.js`
+passed **34 assertions**. The selected persistent player and user server remain
+unchanged. Results stay in the existing comparison JSON with bounded history.
+
+Next experiment: bounded proof of a call's zero-effect path, including only
+proved ordinary nonvolatile static reads behind live capability/readiness
+guards. Preserve argument effects, low-fuel continuation and replacement
+revocation. No speed gain or 10% completion is claimed for that direction.
+
 ## 6. Protocol servers
 
 ```bash
