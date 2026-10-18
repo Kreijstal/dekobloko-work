@@ -1192,18 +1192,110 @@ remain a preparation limitation. The normal launcher policy and selected player
 artifact were preserved; no game export, screenshot or native reference was
 regenerated.
 
-The next candidate should remove the remaining small-call overhead without
-weakening exits: native reference equality where array identity can be proved,
-and a leaner native leaf-call return path with cold exception/fuel handoff. A
-small Node 22 Wasm-GC proof compiled `any.convert_extern` plus an `eqref` cast:
-it trapped on JS arrays (same or different) and succeeded only for null. A
-simple opcode substitution therefore does not replace the current `ref_eq`
-import here. An allocator-base proof must distinguish zero-length arrays that
-share offsets, foreign/overlapping views, freed/reused extents and restored heaps;
-retain reference fallback whenever ownership or uniqueness is unproved. A
-bounded range/trip proof may later remove redundant checks and fuel polls only
-when its reserved budget guarantees no exit. No extra application flag or
-method-name/signature heuristic should substitute for those proofs.
+#### Rejected reference-identity experiments
+
+Two further candidates were tested against `102fd83`, with the same policy,
+CPU 2 affinity and 1 GiB Node old-space limit. Every worker was a fresh process
+rendering ticks 0–250 once, with no animation warmup or replay. The nine processes
+in each group ran sequentially without profiling, counters, builds or tests
+alongside timing. TeaVM was unchanged. All workers completed 251 frames and
+matched the saved reference. Neither candidate was retained.
+
+The first candidate used an existing immutable parameter-base cache to prove
+**inequality** when bases differed. Equal offsets retained JavaScript reference
+comparison, covering empty arrays and distinct overlapping views without any
+ownership assumption or new metadata queries.
+
+| Round | `102fd83` baseline | Unequal-base candidate | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 1,845.000 ms | 1,671.000 ms | 732.462 ms |
+| 2 | 1,678.000 ms | 1,860.000 ms | 809.229 ms |
+| 3 | 1,682.000 ms | 1,590.000 ms | 749.682 ms |
+| Median | **1,682.000 ms** | **1,671.000 ms** | **749.682 ms** |
+
+The 0.65% reduction between medians and mixed pairwise results did not establish
+a useful repeatable improvement. A separate fresh counter run explained the
+limited opportunity: the copy helper still made **4,124,736** identity imports,
+only seven fewer. Its hot caller passes the same face-order array as both source
+and destination. Proving only inequality leaves that case on the fallback.
+The candidate runtime SHA-256 was
+`a436890d878bbdfe8ecc927171f6da8fd281466b608ff023c355d2c570363a8a`.
+
+The second candidate added a weak map of allocated views to their existing
+finalizer extent records. An owned, live, nonempty allocation has a unique base;
+empty arrays, foreign views, other heaps and freed/detached views refused that
+proof. Structured base queries used this ownership check, allowing native
+reference equality and inequality for captured owned parameter arrays. Missing
+proof retained JavaScript identity. The shared bulk-copy kind guard also needed
+the ownership condition: otherwise an accepted foreign view could use a refused
+base of `-1`. Foreign overlapping views then used the original overlap-safe
+native fallback. Explicit frees removed ownership, used the recorded extent and
+refused duplicate/foreign frees.
+
+| Round | `102fd83` baseline | Owned-base candidate | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 1,667.000 ms | 1,796.000 ms | 733.965 ms |
+| 2 | 1,642.000 ms | 1,628.000 ms | 706.016 ms |
+| 3 | 2,015.000 ms | 1,886.000 ms | 868.753 ms |
+| Median | **1,667.000 ms** | **1,796.000 ms** | **733.965 ms** |
+
+The median was **7.74% higher**, with mixed pairwise results: no repeatable win.
+The separate counter process showed **zero** copy-helper identity imports,
+compared with 4,124,743 before the change. It also recorded 2,224,279 structured
+base queries, each now performing ownership validation, plus the same number of
+length queries. Those counters include Java setup and current modules only;
+they do not isolate animation time or prove a CPU-cost attribution. The next
+experiment should distinguish the cost of the ownership checks from the saved
+identity crossings, rather than treating a lower import count as success.
+
+The owned-base runtime SHA-256 was
+`6911c62d19effedeb4317aa4940740fc29c39d96774548d772645e7240dc9308`;
+the baseline was
+`6ee73ed498a158d9643a6ba95d7e1edaa9cbbf414b2945b80db93a9bb1cf6e0a`.
+Its isolated browser/worker build passed with the same four warnings. Offline
+AOT recording produced 9,830,992 bytes without executing Java; timing workers
+replayed that matching pack. No Firefox/native image run was needed after
+rejecting the candidate.
+
+The discarded ownership variant passed these focused commands in java-tools:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmParameterArrayAbi.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmHeapFreeList.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmHeapGrowth.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmHeapArrays.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/sharedFieldArrayCaches.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmHeapBulkCopy.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/primitiveArrayCopyEntry.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/primitiveByteCopyEntry.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/intZeroClearEntry.test.js
+```
+
+They passed 164, 106, 35, 59, 32, 21, 91, 108 and 80 assertions: **696 total**.
+Coverage included both comparison directions, ordinary/raw/expanded entries,
+forwarded aliases, nulls, empty arrays sharing offsets, foreign views, forged
+annotations, other heaps, changing receivers, ownership removal/reuse, detached
+buffers, disabled finalizers, GC reclamation, exception/fuel continuations and
+compiler-graph collection. After reverting the prototype, the retained
+`wasmParameterArrayAbi` suite passed its original 96 assertions again. Rejected
+runtime/test edits were removed from the worktree; the unrelated decompiler
+changes were preserved. The normal launcher and selected player were unchanged.
+
+The next ownership attempt should keep ordinary array-base queries cheap and
+amortize proof acquisition in callers, only for callees that compare array
+parameters. A verified internal entry must distinguish those captures from
+ordinary metadata, keep original public signatures, and sanitize unproved
+captures before native identity use. Late binding, replacement, readiness
+refusal and field-cache generations must preserve that distinction. This is a
+proposed implementation, not an existing optimized path. A leaner native
+leaf-call return protocol and bounded loop-range proofs remain other candidates.
+
+A small earlier Node 22 Wasm-GC proof compiled `any.convert_extern` plus an
+`eqref` cast: it trapped on JS arrays, whether same or different, and succeeded
+only for null. Simply replacing `ref_eq` with a GC opcode therefore does not
+work with this representation. No additional application flag, signature/name
+heuristic, larger heap or moved allocation should substitute for a proven
+execution path and an elapsed-time win. The 10% TeaVM target remains unmet.
 
 ---
 
