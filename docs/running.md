@@ -1087,6 +1087,40 @@ selection against the selected runtime. Full-game memory, presented FPS,
 constrained startup, stability and phone acceptance remain separate unresolved
 gates. No release artifact or launcher policy was replaced by this experiment.
 
+A follow-up extended the existing guarded heap-body version to call-free methods
+with local handlers and static scalar caches. Its 32 KiB per-method budget was
+the same in both variants. All 79 focused heap assertions passed, including
+caught null/bounds failures, partial writes, mixed backing and aliasing. Three
+fresh matched rounds gave baseline/candidate pairs of 3,764/3,060 ms,
+2,179/1,942 ms and 1,828/2,042 ms. The median difference was only 6.29%, with a
+regression in the third pair. The prototype and its added test were removed;
+no default budget or selection changed. The current report marks that pass
+`discarded` and keeps the earlier committed pass under bounded `completedPasses`,
+within the same JSON file. A stale-pack probe exited before Java entry while its
+replacement pack was still building; it was not a timing trial.
+
+The bounded census also exposed millions of direct calls in one fresh pass:
+about 4.12 million integer-copy entries, 3.47 million gradient-span entries and
+1.17 million solid-span entries. These are current-module counters, including
+setup, not presented frames. `arrayCacheFill` still calls JavaScript imports
+for base and length at every array-parameter entry. A guarded heap body removes
+backing branches inside a loop but does not remove those entry crossings.
+
+The next implementation should forward already captured array bases and lengths
+between compiled callers and callees, using an expanded internal Wasm export.
+Keep ordinary JS entry and the current canonical fallback ABI intact. Capture
+incoming metadata into invocation-local storage before recursion, and install it
+only after the callee owner-readiness check succeeds so a cold entry cannot
+poison a later call. Caller caches must keep their existing generation/alias
+rules. Late, partial or replaced callees must retain the original Java arguments,
+exact-once invocation and owned exception/deopt frames. Test cold initialization,
+plain/heap/null arrays, aliasing, recursive/reentrant calls, payload release and
+replacement before comparing full intro passes. This attacks the observed
+boundary directly; it does not require another broad CPU-attribution exercise.
+After that, a bounded range/trip proof can remove redundant checks and fuel
+polls from a loop only when the reserved budget guarantees no exit; retain the
+original checked and resumable body for every failing guard.
+
 ---
 
 ## 6. Protocol servers

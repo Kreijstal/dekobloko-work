@@ -129,6 +129,7 @@ async function runNode() {
         directEntries:state.meta?.canonicalEntries?.value||0,
         deferredFrames:state.meta?.directFrameContext?.createdFrames||0,
         bulkClearCalls:state.meta?.box?.intZeroClearCalls||0,
+        heapVersionBytes:state.meta?.parameterHeapSpecializationBytes||0,
       })).sort((a,b)=>(b.runs+b.directEntries)-(a.runs+a.directEntries)).slice(0,32)}};
 }
 
