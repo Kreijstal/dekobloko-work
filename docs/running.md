@@ -2373,6 +2373,116 @@ investigation should target bounded affine-loop versions that can prove a
 whole range safe, preserving partial faults and low-fuel fallbacks, rather than
 repeat the rejected local bounds reuse or static-field mirrors.
 
+
+#### Whole-range countdown loops: first experiment (2026-10-18)
+
+A generic SSA proof recognizes a countdown header (--count >= 0), one linear
+body/backedge, and primitive array accesses indexed by header phis stepping
+by one. Calls, other throwing effects, branching bodies, different strides,
+non-parameter arrays, extra entries and demoted blocks refuse the proof.
+Numeric integer constants are admitted without treating class/string ldc as
+pure. The fast version guards the full initial range without signed overflow
+and reserves exactly count+1 header checks. Low fuel or an invalid range uses
+the original loop, retaining partial writes, exact resume PCs and handlers.
+The fast path drops proved array representation/bounds/exception wrappers and
+per-iteration fuel checks; a shared 16 KiB budget bounds extra loop code.
+A method with these range versions does not also duplicate a representation-
+only whole-method version. No user flag or game-specific core data was added.
+
+Initial validation passed 740 focused assertions (79 new countdown cases,
+121 compact calls, 109 canonical frames, 96 array ABI, 59 heap arrays, 91 bulk
+copies, 90 integer clears and 95 class-readiness tokens). The broader
+structured-Wasm suite passed 420/426; all six failure names reproduce exactly
+with the committed HEAD compiler loaded instead of the candidate. Those
+failures concern conservative admission/diagnostics for a partial reference
+return, not these primitive loops; no assertions were weakened.
+
+The isolated debug/worker build passed with four existing warnings. The
+682-source audit passed, excluding only generated JRE indexing and leaving
+protected decompiler WIP outside the bundle. Matching offline AOT ran no Java.
+Fresh coverage completed 251 frames and matched the saved RGB reference. Both
+hot span methods have one version removing two checks (460/368 extra bytes),
+and retained compact native entries. Native entry counts were 3,473,053 and
+1,168,526. Installing a version alone does not prove a dynamic guard arm ran.
+
+| Round | Retained compact baseline | Countdown versions | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 799.000 ms | 786.000 ms | 599.319 ms |
+| 2 | 797.000 ms | 774.000 ms | 617.777 ms |
+| 3 | 896.000 ms | 794.000 ms | 602.661 ms |
+| 4 | 827.000 ms | 798.000 ms | 605.525 ms |
+| 5 | 788.000 ms | 941.000 ms | 603.705 ms |
+
+Median **799.000 -> 794.000 ms** is only **0.63% lower**, with four winning
+pairs. Candidate/TeaVM is **1.315**. All 15 fresh CPU-2/1-GiB processes completed
+251 frames, no warmup/replay, saved reference exact, no concurrent build/test/
+profiling during timing. Runtime SHA-256:
+`d92fd5827b3313bf69b7f506441963939256e129db3599e7beabb02cea479cce`.
+This modest result is unselected pending a profitability adjustment.
+
+A separate adapter diagnostic records the actual native entry operands and
+whether readiness/range/fuel conditions hold. It is excluded from timing and
+heap acceptance. Every recorded hot entry satisfies the conditions, with no
+uncaptured array metadata. Solid counts (1,168,526 total): zero 233,056; one
+182,706; two/three 294,514; four/seven 257,931; eight/31 196,170; 32/127 4,149.
+Gradient counts (3,473,053 total): zero 1,215,400; one 1,023,742; two/three
+807,552; four/seven 259,282; eight/31 165,125; 32/127 1,952. There are no
+negative or >=128 counts. These are observed operands satisfying the guard,
+not an injected counter inside the generated fast arm. The diagnostic
+completed 251 frames and matched the saved reference; its hook was removed.
+
+Only 12.3% of gradient entries and 39.2% of solid entries have >=4 iterations.
+The successor tests size first, skipping the full range/fuel guard for shorter
+loops, with the original loop as fallback. The guard cost needs amortization;
+validity alone is insufficient. The 10% goal and original release gates remain
+open; selected/default and published artifacts are unchanged.
+
+
+#### Short-loop size guard: two batches, removed
+
+The successor checks count >=4 before evaluating the range/fuel guard. Its
+105 new assertions pass, including older calling/exception paths, native
+forwarded entries, actual collection of proof graphs, budget exhaustion,
+primitive coercions, aliases, partial faults and exact fuel resume state.
+Together with the unchanged related suites, 766 focused assertions pass.
+The broader structured-Wasm result remains 420/426, with the same six failures
+reproduced using committed HEAD. The isolated build and 682-source audit passed;
+matching offline AOT and the fresh 251-frame saved-reference check passed.
+Runtime SHA-256: `cd88d200ed4362c668113f60c02ad092d782ac520cc3776affe56af053a4c990`.
+The hot gradient/solid versions add 465/373 bytes and keep both compact entries.
+
+| Batch / round | Retained compact baseline | Size guard | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 / 1 | 844.000 ms | 789.000 ms | 605.470 ms |
+| 1 / 2 | 806.000 ms | 1109.000 ms | 604.584 ms |
+| 1 / 3 | 798.000 ms | 904.000 ms | 694.757 ms |
+| 1 / 4 | 1082.000 ms | 785.000 ms | 1288.168 ms |
+| 1 / 5 | 789.000 ms | 789.000 ms | 608.130 ms |
+| 2 / 1 | 795.000 ms | 794.000 ms | 601.395 ms |
+| 2 / 2 | 816.000 ms | 777.000 ms | 603.882 ms |
+| 2 / 3 | 799.000 ms | 791.000 ms | 599.245 ms |
+| 2 / 4 | 795.000 ms | 784.000 ms | 601.138 ms |
+| 2 / 5 | 824.000 ms | 831.000 ms | 728.357 ms |
+
+All 30 fresh CPU-2/1-GiB processes completed 251 frames and matched the saved
+reference, with no warmup/replay or concurrent tests/builds/profiling.
+Ten-pair medians are **802.500 -> 790.000 ms**, **1.56% lower**, versus TeaVM
+**605.027 ms** (ratio **1.306**). There are six material wins, three regressions
+and one 0.000256-ms difference that is effectively a timer-resolution tie.
+Large observations are retained, including TeaVM's 1,288 ms run. Other
+long-running QEMU processes and host CPU pressure were observed; no external
+process or system setting was changed and no specific outlier is attributed.
+
+Both countdown variants, their proof helper and their tests were removed:
+validity and observed guard satisfaction did not establish a useful repeatable
+elapsed-time gain. No browser smoke or artifact selection followed. The retained
+source remains `c49fc8d`, with its ten-pair 796.500 ms versus 602.908 ms TeaVM.
+The operand census stays attached to this bounded experiment record rather
+than masquerading as current runtime coverage. The next experiment tests
+primitive-constant rematerialization in the Wasm compiler: avoid dedicated
+locals/assignments for literals, preserving phi copies, spills and exception
+order. The 10% target and original release gates remain open.
+
 ---
 
 ## 6. Protocol servers
