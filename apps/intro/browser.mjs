@@ -18,6 +18,7 @@ try {
     return [name,new Int8Array(await response.arrayBuffer())];
   })));
   const debug=new window.JVMDebug.BrowserJVMDebug();
+  const convertPixels=window.JVMDebug.raster?.copyRgbToRgba || copyRgbToRgba;
   window.introDebug=debug;
   await debug.initialize({dataPackage:{classes:data.classes}});
   data.classes=null; // The class provider now owns the decoded bytes.
@@ -50,7 +51,7 @@ try {
         if(tick!==stats.frames)throw new Error('Intro tick skipped or repeated: '+tick);
         const now=performance.now();
         if(!next)next=now;
-        copyRgbToRgba(pixels,rgba);
+        convertPixels(pixels,rgba);
         context.putImageData(image,0,0);
         const reference=data.provenance.reference;
         if(reference&&tick===reference.tick){

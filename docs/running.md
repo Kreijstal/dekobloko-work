@@ -1889,6 +1889,101 @@ handle fallback representations automatically, and demonstrate another fresh
 matched elapsed-time win before retention. Removing callback counts alone is
 not evidence of meeting the remaining 10% target.
 
+
+#### Shared native raster conversion: retained (2026-10-18)
+
+Generic runtime commit `c9025f7` extracts AWT's native RGB swizzle into a shared
+raster utility and converts four pixels at a time with SIMD. Engines without
+SIMD use its scalar Wasm module; unavailable Wasm, failed staging allocation,
+plain/small arrays and unaligned destinations keep automatic JavaScript
+fallbacks. The source raster is never modified. One native staging memory and
+its current view are reused across frames and refreshed after growth. At
+640x480 this adds about 1.2 MiB of native staging storage, in place of the
+presenter's existing scalar staging allocation. No frame-sized JavaScript array,
+game-specific runtime rule, rendering-thread guest compiler or user flag is added.
+
+The browser runtime exports the same generic converter used by AWT. Both the
+intro browser host and Node host select it when available; older selected
+runtimes keep the existing packed converter. TeaVM and all Java source/classes
+remain unchanged. This measures a presentation-path gain, not a faster guest
+interpreter claim.
+
+The first five matched pairs gave medians 934.000 -> 842.000 ms (9.85% lower),
+but one pair regressed. Five additional unchanged pairs were run to resolve
+that concern, without another build or AOT recording. All ten are included:
+
+| Round | Readiness-word baseline | Native raster | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 1103.000 ms | 824.000 ms | 607.190 ms |
+| 2 | 939.000 ms | 838.000 ms | 605.458 ms |
+| 3 | 921.000 ms | 842.000 ms | 607.191 ms |
+| 4 | 934.000 ms | 893.000 ms | 604.623 ms |
+| 5 | 924.000 ms | 999.000 ms | 601.647 ms |
+| 6 | 940.000 ms | 843.000 ms | 620.695 ms |
+| 7 | 922.000 ms | 850.000 ms | 599.818 ms |
+| 8 | 927.000 ms | 826.000 ms | 604.694 ms |
+| 9 | 912.000 ms | 827.000 ms | 606.253 ms |
+| 10 | 919.000 ms | 902.000 ms | 601.235 ms |
+
+Across ten pairs the medians are **925.500 -> 842.500 ms**, **8.97% lower**;
+nine pairs improve and one regresses. TeaVM's median is **605.076 ms**;
+candidate/TeaVM is **1.392**, so the 10% target remains unmet. The last candidate
+of the first batch (999.000 ms) remains included. Both JVM variants use the same
+updated host, identical policy and fresh processes on CPU 2 with 1 GiB old space.
+Each animation plays ticks 0..250 once, includes RGB conversion, and matches the
+saved reference. No warmup/replay or concurrent tests/builds/profiling ran during
+these 30 processes. Startup is outside this execution comparison.
+
+Focused checks:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/raster.test.js # 104 assertions passed
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/awtRasterPrefix.test.js # 18 assertions passed
+node --test tests/intro-pixels.test.mjs # 2 integration tests passed, from dekobloko-work
+```
+
+New tests exercise actual SIMD and scalar native modules, absent Wasm and
+allocation failure, every vector tail length, buffer growth/reuse, full colour
+and alpha conversion, unchanged guest input, source/destination offsets,
+unaligned and plain-array fallbacks, bad lengths, element wrappers and visible
+prefixes with unchanged padding. The isolated browser-debug/worker webpack build
+passed with four existing warnings. An archive-based source audit checked 681
+files with zero mismatches or unexpected sources, excluding the generated JRE
+index. Protected decompiler WIP was not bundled. Matching offline AOT recording
+ran no Java: 9,833,417 bytes, SHA-256
+`fb0b5cdafd0c88b5805b44bc906f33418dfe72a46f82e5a93763245775f2f626`.
+Candidate runtime SHA-256:
+`93029f7d36a48b4ce604ce53b2837c80950591a06081111538652787ad2e1f97`.
+
+Firefox 148.0.2 passed one paced 251-frame canvas-reference check using the new
+runtime's exported converter: 962 AOT hits and zero misses/refusals/errors,
+with no page errors. The reference was reused, not regenerated. This is a
+correctness check; presented-FPS targets and Android remain unverified. Only
+the owned temporary server was stopped. Selected/default artifacts and the
+existing user's server remain unchanged.
+
+A separate post-first-render candidate sample (excluded from the timings)
+contains 728 samples over 1,159,961 microseconds; its largest sampling gap was
+337,600 microseconds. The readiness getter is absent from the reported top
+contexts. Native staging/conversion now has 34 self samples in its JavaScript
+wrapper and 9 in its native function, versus the earlier JavaScript loop's 140
+baseline samples. Those runs have different totals and sampling gaps; do not
+interpret the counts as an exact speedup. The remaining largest reported guest
+contexts include sorted triangles, face processing, alpha rectangles and
+half-size sprite blits. Static-cell access remains visible, but is no longer
+the single obvious dominant cost. Minified JS columns are retained to identify
+specific accessors instead of conflating anonymous functions. Only one current
+bounded diagnostic summary remains in the existing comparison JSON.
+
+The next compiler experiment should target repeated per-element range and
+representation checks inside those compiled loops. A guarded fast version can
+omit a check only after proving the entire touched range safe, without changing
+partial writes, null/exception order, aliasing, low-fuel continuations or cold
+initialization. This requires a bounded generic proof and measured elapsed-time
+improvement; neither another broad backend flag nor assuming TeaVM parity from
+fewer imports is sufficient. The original memory/startup/presented-FPS/phone and
+stability gates remain open.
+
 ---
 
 ## 6. Protocol servers

@@ -53,7 +53,8 @@ async function runNode() {
     hardwareConcurrency:4,language:'en-US'}});
   globalThis.importScripts=()=>{};
   globalThis.location=new URL('http://localhost/');
-  const {BrowserJVMDebug}=require(path.join(runtime,'jvm-debug.js'));
+  const {BrowserJVMDebug,raster}=require(path.join(runtime,'jvm-debug.js'));
+  const convertPixels=raster?.copyRgbToRgba || copyRgbToRgba;
   delete globalThis.importScripts;
   delete globalThis.location;
   const debug=new BrowserJVMDebug();
@@ -84,7 +85,7 @@ async function runNode() {
       asset:name=>{assert.ok(assets.has(name),'Unexpected asset '+name);return assets.get(name);},
       present:async (pixels,tick)=>{
         assert.equal(tick,frames,'Skipped or repeated tick');
-        copyRgbToRgba(pixels,rgba);
+        convertPixels(pixels,rgba);
         if(tick===receipt.reference.tick)reference=rgba.slice();
         frames++;
       },
