@@ -12,3 +12,26 @@ test('packed raster colours survive clamped ImageData conversion', () => {
   ]);
   assert.throws(() => copyRgbToRgba(colours, new Uint8ClampedArray(4)), RangeError);
 });
+
+test('framebuffer conversion respects offsets, alignment and destination bounds', () => {
+  const pixels = new Int32Array(1024);
+  let state = 0x12345678;
+  const expected = [];
+  for (let i = 0; i < pixels.length; i++) {
+    state ^= state << 13;state ^= state >>> 17;state ^= state << 5;
+    pixels[i] = state;
+    expected.push((state >>> 16) & 255, (state >>> 8) & 255, state & 255, 255);
+  }
+  for (const offset of [0, 1, 4, 7, 16]) {
+    const storage = new Uint8Array(offset + pixels.length * 4 + 9).fill(73);
+    const output = new Uint8ClampedArray(storage.buffer, offset, pixels.length * 4);
+    copyRgbToRgba(pixels, output);
+    assert.deepEqual([...output], expected);
+    assert.ok(storage.subarray(0, offset).every(value => value === 73));
+    assert.ok(storage.subarray(offset + output.length).every(value => value === 73));
+  }
+  const plain = new Array(pixels.length * 4);
+  copyRgbToRgba(pixels, plain);
+  assert.deepEqual(plain, expected);
+  copyRgbToRgba(new Int32Array(), new Uint8ClampedArray());
+});

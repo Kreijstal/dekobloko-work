@@ -1447,12 +1447,227 @@ repeatable elapsed-time gain. The candidate remains about **2.175 times TeaVM**;
 the required maximum is 1.10. The normal launcher policy and selected default
 artifact remain unchanged.
 
-The next elapsed-time experiment should compare the existing native primitive
-object-field representation with dense JS fields. Dense storage takes priority
-in allocation, so simply enabling native fields while leaving dense storage on
-would not test that backend. Keep matching runtime/AOT identities, the same
-251-frame input and saved reference, and compare fresh matched processes before
-changing the normal policy.
+#### Native primitive object fields: not selected
+
+The next five-round comparison used identical `81e29d4` runtime bytes and the
+same 32 KiB compiler policy. The baseline used dense JS fields; the candidate
+used existing native primitive field slabs with dense allocation disabled.
+Dense storage takes allocation priority, so enabling slabs alone would not
+exercise them. Each variant replayed its own matching offline AOT pack (dense:
+9,831,153 bytes; slabs: 9,763,366 bytes). No runtime source changed in this test.
+
+| Round | Dense JS fields | Native primitive fields | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 1,321.000 ms | 1,238.000 ms | 611.412 ms |
+| 2 | 1,337.000 ms | 1,236.000 ms | 602.443 ms |
+| 3 | 1,332.000 ms | 1,397.000 ms | 600.983 ms |
+| 4 | 1,367.000 ms | 1,359.000 ms | 618.498 ms |
+| 5 | 1,510.000 ms | 1,189.000 ms | 602.902 ms |
+| Median | **1,337.000 ms** | **1,238.000 ms** | **602.902 ms** |
+
+All 15 fresh processes completed 251 frames and matched the saved reference.
+The native-field median was **7.40% lower**, with four pairs improving and one
+regressing. The varying pairwise reductions (0.59% to 21.26%) do not yet establish
+a reliable storage improvement; the candidate was still **2.053 times TeaVM**.
+It was not selected or browser-tested. The slab allocator also needs production
+reclamation validation before considering a wider switch. The private config
+was restored to dense fields, and the normal player remained unchanged.
+
+#### Protected parameter-array versions: measured and rejected
+
+A generic prototype lifted the existing parameter-array version's exclusions
+for live exception ranges and field caches. It retained the 32 KiB code budget,
+immutable parameter requirement, per-operation exception wrappers, precise spill
+PCs, field invalidation, fuel and null/plain-array fallback. Native object-cache
+and raw linker exclusions stayed in place. The hot gradient and solid span loops
+received 911-byte and 623-byte versions respectively.
+
+The isolated build passed with four existing warnings. These focused commands
+passed 114 and 59 assertions (173 total), including static field updates, unused
+and used nulls, mixed storage, exact partial effects and catch locals, low-fuel
+continuations, and replacement during an active throwing call:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmParameterArrayAbi.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmHeapArrays.test.js
+```
+
+Five fresh alternating pairs with unchanged TeaVM after each pair produced:
+
+| Round | `81e29d4` baseline | Protected parameter versions | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 1,406.000 ms | 1,238.000 ms | 606.875 ms |
+| 2 | 1,315.000 ms | 1,321.000 ms | 606.457 ms |
+| 3 | 1,318.000 ms | 1,311.000 ms | 605.573 ms |
+| 4 | 1,316.000 ms | 1,229.000 ms | 608.468 ms |
+| 5 | 1,231.000 ms | 1,345.000 ms | 615.518 ms |
+| Median | **1,316.000 ms** | **1,311.000 ms** | **606.875 ms** |
+
+All 15 processes completed 251 frames and matched the saved reference. The
+**0.38%** median reduction, with two regressing pairs, did not establish a useful
+elapsed-time improvement. The prototype and added tests were removed; it was
+not browser-tested or selected. The candidate remained **2.160 times TeaVM**.
+The normal policy and default player were unchanged.
+
+#### Native i32 static-cell getters: measured and rejected
+
+This prototype replaced eligible integer static reads with native Wasm getter
+imports over mirrored mutable globals. It applied automatically to the normal
+static-field store. JavaScript/interpreter/resolved writes still updated the
+same cell; deletion and clear invalidated its mirror. Nonprimitive host values
+used the original conversion at read time. Ordinary Maps, references and other
+primitive types retained the existing accessors. The import signatures and
+artifact format were unchanged. One cached tiny module created one getter per
+claimed cell, without a rendering-thread compiler or new user flag.
+
+These commands passed 87, 109, 96 and 57 assertions respectively (349 total):
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmStaticCells.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/canonicalDirectFrames.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmParameterArrayAbi.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmDirectStaticLinkContract.test.js
+```
+
+Coverage included exact stored Map values versus Wasm i32 conversion, boolean
+values, JS cell writes, membership restoration, deferred host coercion/errors,
+GC of replaced values and dead stores/getter instances, and existing canonical
+exception/replacement continuations. `node test/coldPreparedWasmStatics.test.js`
+with the same `NODE_PATH` passed 42 and failed four assertions, identically with
+the prototype and unchanged `81e29d4`. The four existing failures expect a
+reached-join guard exit/stack operand where the structured backend hoists the
+readiness guard to entry. No new failure was attributed to this prototype.
+
+The isolated build passed with four existing warnings; offline AOT recording
+produced 9,831,710 bytes without running Java. The candidate runtime SHA-256 was
+`38e2379db2fcfd5cf945460ce89228a869e9a8f10497102fd682474df4b8e294`.
+The first timing pair was excluded because focused tests might have overlapped;
+it was replaced with round 6 after validation processes exited. The five valid
+fresh pairs used identical 32 KiB policy, CPU 2 and 1 GiB Node old space, no
+animation warmup/replay, with unchanged TeaVM after each pair:
+
+| Round | `81e29d4` baseline | Native static getters | TeaVM |
+| --- | ---: | ---: | ---: |
+| 2 | 1,402.000 ms | 1,385.000 ms | 600.520 ms |
+| 3 | 1,399.000 ms | 1,390.000 ms | 601.472 ms |
+| 4 | 1,327.000 ms | 1,464.000 ms | 605.794 ms |
+| 5 | 1,256.000 ms | 1,413.000 ms | 610.315 ms |
+| 6 | 1,324.000 ms | 1,434.000 ms | 601.453 ms |
+| Median | **1,327.000 ms** | **1,413.000 ms** | **601.472 ms** |
+
+All 15 valid processes completed 251 frames and matched the saved reference.
+The candidate median was **6.48% higher**, with three pairs regressing. Removing
+these JavaScript read crossings did not help this workload. The prototype and
+added tests were removed; no globals/accessor machinery from it remains. It was
+not browser-tested or selected. The normal policy and default player remain
+unchanged; the 10% TeaVM target is unmet.
+
+#### Shared exception regions: measured and rejected
+
+A subsequent generic prototype grouped two to sixteen throwing operations in a
+basic block under one native exception region. An invocation-local selector
+recorded the active operation before it ran; the exceptional dispatcher used
+that operation's original bytecode PC and reaching locals. Initialization guards
+stayed outside the shared region, and host errors kept their original propagation.
+No new user flag or method-name rule was added.
+
+These focused commands passed 98, 96, 109 and 40 assertions (343 total):
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmReporterHandlers.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmParameterArrayAbi.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/canonicalDirectFrames.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmExplicitMonitors.test.js
+```
+
+The new fixture faulted separately at loads, stores and division, checking the
+exact spill instruction, bytecode PC, partial local value and selected catch for
+both recording imports and native JS tags. Existing tests covered low fuel,
+replacement during a throw, exception ownership and monitor continuation.
+The isolated build passed with four existing warnings. Runtime SHA-256:
+`869aa05e5d6479b691161be5c21f94e6ec27277e95e972f9561c9c2fe35591cd`.
+
+| Round | `81e29d4` baseline | Shared exception regions | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 1,220.000 ms | 1,240.000 ms | 604.577 ms |
+| 2 | 1,214.000 ms | 1,215.000 ms | 619.741 ms |
+| 3 | 1,328.000 ms | 1,328.000 ms | 606.107 ms |
+| 4 | 1,322.000 ms | 1,347.000 ms | 603.158 ms |
+| 5 | 1,323.000 ms | 1,325.000 ms | 656.639 ms |
+| Median | **1,322.000 ms** | **1,325.000 ms** | **606.107 ms** |
+
+All 15 fresh processes completed 251 frames and matched the saved reference.
+Four pairs were slower and one equal; the candidate median was **0.23% higher**.
+The prototype and added tests were removed, with no browser run or default change.
+The candidate remained **2.186 times TeaVM**. Fewer exception regions alone did
+not improve this workload.
+
+#### Retained intro-host conversion: two matched batches
+
+The intro host now writes packed 32-bit RGBA output on little-endian hosts with
+an aligned byte destination, instead of four clamped-byte stores per pixel.
+Other destinations keep the existing scalar conversion. RGB channel order and
+opaque alpha are preserved, including nonzero destination offsets. No new flag,
+generated output or JVM policy change is involved. The ordinary AWT presenter
+already used packed conversion; this fixes a difference in the intro helper.
+TeaVM also already writes packed 32-bit output.
+
+`node --test tests/intro-pixels.test.mjs` passes both tests, covering known colors,
+1,024 deterministic packed values, aligned/unaligned views, sentinel boundaries,
+plain output arrays, empty buffers and wrong-size rejection.
+
+Two five-pair batches compared the two host helper versions with **identical**
+`81e29d4` runtime and AOT bytes, the same 32 KiB policy, CPU 2 and 1 GiB Node old
+space. Every process was fresh, ran ticks 0–250 once, and matched the saved
+reference. There was no animation warmup/replay, native-reference regeneration
+or concurrent test/build/browser process. The existing policy still has
+`schedulerTimingRate: 256`; these are execution comparisons under that policy,
+not uninstrumented release acceptance. Import profilers were off. Final
+acceptance must disable scheduler sampling and revalidate matching artifacts.
+
+| Batch / round | Byte stores | Packed stores | Unchanged TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 / 1 | 1,329.000 ms | 1,229.000 ms | 615.011 ms |
+| 1 / 2 | 1,343.000 ms | 1,728.000 ms | 600.310 ms |
+| 1 / 3 | 1,325.000 ms | 1,208.000 ms | 603.009 ms |
+| 1 / 4 | 1,214.000 ms | 1,144.000 ms | 613.989 ms |
+| 1 / 5 | 1,314.000 ms | 1,225.000 ms | 600.807 ms |
+| **Batch 1 median** | **1,325.000 ms** | **1,225.000 ms** | **603.009 ms** |
+| 2 / 1 | 1,323.000 ms | 1,230.000 ms | 1,560.881 ms |
+| 2 / 2 | 1,525.000 ms | 1,109.000 ms | 602.655 ms |
+| 2 / 3 | 2,418.000 ms | 1,223.000 ms | 605.924 ms |
+| 2 / 4 | 1,315.000 ms | 1,237.000 ms | 604.010 ms |
+| 2 / 5 | 1,325.000 ms | 1,240.000 ms | 601.312 ms |
+| **Batch 2 median** | **1,325.000 ms** | **1,230.000 ms** | **604.010 ms** |
+
+Packed conversion won **9 of 10 pairs**. The median reductions were **7.55%**
+and **7.17%**, respectively. The substantial outliers in candidate, baseline
+and TeaVM remain in the table; their cause was not established. This supports
+a modest host-conversion improvement, not a guaranteed latency/fps floor.
+The latest candidate/TeaVM ratio is **2.036**, well above the required **1.10**.
+
+Both runtime hashes were
+`edbce3d14b26ac00badd7544bee90d943633028aac8720d2aea74d28b633acd0`,
+with the same 9,831,153-byte AOT pack. Host helper SHA-256 before/after:
+`b8daaf3b40d5f6102f1749cadb1e69cd723cdd8e3ed80f44b76f411718660e58` /
+`e18afa2a2b696d619af8c18a87da18d56c24e21fdc774f14e3e9444ff0abe3b1`.
+The one current comparison report retains bounded batch history and the host
+hashes; no extra JSON report was created.
+
+A separate headless Firefox 148.0.2 correctness smoke completed all 251 frames,
+matched the saved RGB hash and replayed 962 AOT hits with zero misses, refusals
+or errors. Its paced animation was 5.066 s. It was not a timing comparison or
+presented-frame acceptance run. No screenshot was saved. The owned local HTTP
+server and browser were stopped; the preexisting server was left alone.
+The selected default JVM/runtime artifact was not replaced or published.
+
+The rejected runtime prototypes above are removed; java-tools retains only
+its previously committed table-retention fix. Compiler work should next prove
+independent counted integer-array loops for SIMD, with full-range guards,
+scalar tails and exact fuel/exception continuation. Merely removing more tiny
+call bridges or exception wrappers has repeatedly failed to improve elapsed
+time. Any new loop transform must be generic and automatic after its proof,
+with unsupported cases retaining existing execution.
 
 A small earlier Node 22 Wasm-GC proof compiled `any.convert_extern` plus an
 `eqref` cast: it trapped on JS arrays, whether same or different, and succeeded
