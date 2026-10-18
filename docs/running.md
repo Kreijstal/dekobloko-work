@@ -959,6 +959,134 @@ rethrow-wrapper eligibility assertion and two existing Wasm OSR return-box
 assertions. They are not new failures from this default change. Browser/phone
 presented FPS, constrained heap/startup and full-game stability remain unverified.
 
+
+#### Prepared Wasm execution versus TeaVM
+
+The current target compares **animation execution for the same 251 frames**,
+with our duration no more than 1.10 times TeaVM's. Startup is recorded separately.
+Each trial is a fresh process, without an animation warmup or replay. This target
+remains unmet.
+
+The Node harness now keeps its DOM shim until `run()` creates the executing JVM.
+Previously it removed `document` after `initialize()`, silently disabling the
+Wasm backend in the replacement JVM. Historical Node results above consequently
+measure the JavaScript execution path. Correcting the shim alone took 2.234 s:
+Wasm was enabled, but none of the twelve prepared modules executed. The harness
+now reports backend enablement and a bounded census of entries, exits, direct
+entries, deferred frames and bulk clears. It flushes the complete worker result
+before exiting, including when stdout is a pipe; an early paired-run attempt
+exposed truncated JSON and was discarded.
+
+Inspecting the existing TeaVM binary with `wasm-dis` showed native GC-array
+loads/stores and integer arithmetic in its raster spans. Small helper calls stay
+inside its Wasm module. Our wider Wasm preparation initially took 7.130 s: live
+handler ranges prevented integer-helper inlining, and nested helper calls crossed
+JavaScript with canonical frames. Enabling the existing deep-inline machinery
+allowed those helpers to inline, but selecting the remaining normal-flow bodies
+still took 4.932 s. Existing direct canonical links reduced that exploratory
+result to 2.275 s. These unrestricted single trials identified costs; they are
+not the matched performance result below.
+
+java-tools `eeffa15127f076cdb2727d665fffb948efd84e8e` fixes three generic cases:
+
+- Native JavaScript-tag wrappers capture the original throwable across nested
+  Wasm calls. Complete handler-free callers can therefore publish their native
+  canonical exports, retaining all coverage, synchronization, speculation,
+  spill and replacement guards. Older engines retain the existing bridge.
+- Call-free normal paths check static class readiness once before guest effects.
+  Cold dependencies return to the original entry without initializing an untaken
+  branch. Calls, allocations and monitor operations retain local guards.
+- The zero-fill entry proves consecutive zero stores, induction, the unrolled
+  bound and scalar tail using symbolic locals. Temporary index copies and dead
+  local initializations no longer defeat it. Mutable loop inputs, stale values
+  across loops, zero-iteration assumptions, other field reads, altered branches
+  and nonzero writes refuse the proof. Existing type, range, fuel, volatile-field
+  and maximum-operation guards retain the original checked loop on failure.
+
+The source adds no game identities or new configuration flags. The zero-fill
+entry remains under its existing experimental policy. On the intro it executed
+all 503 clear calls and preserved the saved reference hash.
+
+For a controlled comparison, both runtimes used the same isolated preparation
+policy: `prepareWasmPreparedUpgradesOnly:false`, with existing JIT options
+`preparedCompleteWasm`, `preparedLoopLeafWasm`,
+`wasmNormalFlowPreparedUpgrades`, `preparedWasmPositionalFrames`, and existing
+`jit.wasm` options `deepInline`, `inlineColdIntegerLeaves`, `canonicalEhLinks`,
+`canonicalDirectCalls`, `canonicalLeafCalls`, `nativeJsExceptionTags` and
+`intZeroClearEntry` set true. These were changes in an isolated copy of the
+consumer configuration, not a change to the selected launcher or normal player.
+The baseline runtime was `2ead3b1`; the candidate was built from that archive plus
+the three runtime files now committed in `eeffa15`. Unrelated decompiler working
+changes were excluded.
+
+Every command ran sequentially with `taskset -c 2`, Node's 1 GiB old-space limit,
+and no profiler or concurrent build/test jobs:
+
+| Fresh-process round | Baseline | Candidate | Existing TeaVM binary |
+| --- | ---: | ---: | ---: |
+| 1 | 2,920.000 ms | 2,046.000 ms | 826.252 ms |
+| 2 | 3,539.000 ms | 1,765.000 ms | 832.279 ms |
+| 3 | 5,278.000 ms | 2,371.000 ms | 1,027.717 ms |
+| Median | **3,539.000 ms** | **2,046.000 ms** | **832.279 ms** |
+
+The candidate improved every pair; the reduction between medians was **42.19%**.
+Absolute durations varied substantially, so retain the ranges and per-pair
+comparisons. Candidate/TeaVM ratios were 2.476, 2.121 and 2.307; the ratio of
+medians is **2.458**, well outside the required 1.10. This is a comparison of
+broader-Wasm policies, not proof of a 42% improvement to the current default
+JavaScript selection. Each pass rendered exactly 251 frames and matched the
+saved tick-80 RGB hash. The Wasm preparation policy still allowed nine post-entry
+compilations, which must also be resolved before an execution-only rollout.
+
+The baseline runtime SHA-256 is
+`4dd27b3350685eb0ca2e8d741f86ba052b08b0f1a19120064e018ca269d48cda`;
+the measured candidate is
+`a89ccdefecc541f30c4d9c84f1186cf41d88a106838c346460346f89fe965e76`.
+TeaVM's unchanged binary SHA-256 is
+`ff16855309703ceb92e9b66a2f161004dbb8bf80c8432d5b0e6ff8aaa21a53cd`.
+The exact policy, bounded trials, identities and backend census occupy
+`nodeOptimization.wasmExperiment` in the single current
+`~/.cache/dekobloko/intro-comparison.json` report.
+
+Reproduction uses the existing intro scripts in isolated checkouts: apply the
+policy above to the copied `apps/launcher/browser-runtime.json` and manifest,
+then build each isolated runtime and its matching pack. For each of three
+sequential rounds, substitute that player directory in:
+
+```bash
+node apps/intro/build-aot.mjs --player PLAYER --runtime RUNTIME
+node apps/intro/build-aot.mjs --mode replay --player PLAYER --runtime RUNTIME
+taskset -c 2 node --max-old-space-size=1024 apps/intro/compare-node.mjs --worker --player PLAYER
+taskset -c 2 node --max-old-space-size=1024 apps/intro/compare-node.mjs --teavm-worker --player PLAYER
+```
+
+Focused validation in java-tools, using
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/FILE`:
+`canonicalDirectFrames.test.js` passed 80 assertions;
+`wasmLeafInitialization.test.js` 21; `intZeroClearEntry.test.js` 80;
+`wasmColdIntegerInline.test.js` 54; `wasmNormalFlowCalls.test.js` 62;
+`sharedFieldArrayCaches.test.js` 32; `wasmHeapArrays.test.js` 59;
+`wasmJsExceptionTags.test.js` 20. The new tests exercise nested guest/host throw
+identity, exactly-once effects, frame release, cold/reset readiness, symbolic
+loop rejection, checked partial writes, overflow and fuel exits. The browser
+bundle rebuilt successfully in isolation. In Deko,
+`node --check apps/intro/compare-node.mjs` and
+`node --test tests/intro-pixels.test.mjs tests/code-pack-compression.test.mjs`
+passed (three tests).
+
+The candidate AOT pack replayed all 962 entries without misses, refusals, errors
+or guest execution. A fresh headless Firefox 148 pass also completed 251 frames
+and matched the saved hash; it supported the native JavaScript tag and replayed
+all 962 entries. Its paced animation took 6.106 s, but this was a correctness
+smoke test, not a matched browser performance or presented-FPS acceptance run.
+No screenshots or native reference images were regenerated.
+
+Next work is reducing the remaining generated-loop checks and transitions,
+finishing preparation before Java entry, and comparing any proposed default
+selection against the selected runtime. Full-game memory, presented FPS,
+constrained startup, stability and phone acceptance remain separate unresolved
+gates. No release artifact or launcher policy was replaced by this experiment.
+
 ---
 
 ## 6. Protocol servers

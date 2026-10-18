@@ -58,7 +58,6 @@ async function runNode() {
   delete globalThis.location;
   const debug=new BrowserJVMDebug();
   await debug.initialize({dataPackage:{classes:data.classes}});
-  delete globalThis.document; // AWT's native Canvas already supports headless execution.
   data.classes=null;
   const controller=debug.debugController;
   configureIntro(controller,data.jvmOptions);
@@ -73,6 +72,9 @@ async function runNode() {
   const rgba=new Uint8ClampedArray(640*480*4);
   let frames=0,reference,preparation;
   await debug.run('GeobloxIntro$Browser',{args:['/intro'],beforeRun:({jvm})=>{
+    // Select the same backends as the browser before removing its DOM shim.
+    // Removing document earlier silently disables Wasm when run() creates JVM.
+    delete globalThis.document; // AWT's Canvas supports headless execution.
     installCodePack(jvm,{identity,store,onReport:result=>{
       preparation={elapsedMs:performance.now()-started,report:result.report};
       const cache=result.report.preparedCache;
@@ -116,7 +118,18 @@ async function runNode() {
     javaEntryMs:Number(fields.get('totalElapsedNanos:J'))/1e6,
     runToJavaReturnMs:completed-started,referenceRgbSha256,preparation,execution,
     sourceSha256:data.sourceSha256,runtimeSha256:data.runtimeSha256,identity,
-    imageDecoder:'jpeg-js (setup only)',maxOldSpaceMiB:1024};
+    imageDecoder:'jpeg-js (setup only)',maxOldSpaceMiB:1024,
+    wasm:{enabled:controller.jvm.jit.wasmJit.enabled,
+      runs:controller.jvm.jit.wasmJit.runCount,
+      compiled:controller.jvm.jit.wasmJit.compiled.length,
+      methods:controller.jvm.jit.wasmJit.compiled.map(state=>({
+        key:state.key,status:state.status,runs:state.runs,exits:state.exits,
+        fuelExits:state.fuelExits,fullyCompiled:state.meta?.fullyCompiled,
+        normalFlowFullyCompiled:state.meta?.normalFlowFullyCompiled,
+        directEntries:state.meta?.canonicalEntries?.value||0,
+        deferredFrames:state.meta?.directFrameContext?.createdFrames||0,
+        bulkClearCalls:state.meta?.box?.intZeroClearCalls||0,
+      })).sort((a,b)=>(b.runs+b.directEntries)-(a.runs+a.directEntries)).slice(0,32)}};
 }
 
 async function runTeaVm() {
@@ -262,6 +275,13 @@ public final class IntroHeadless {
 }
 
 try {
-  if(worker){console.log('INTRO_NODE_RESULT '+JSON.stringify(await (worker==='worker'?runNode():runTeaVm())));process.exit(0);}
+  if(worker){
+    const result=await (worker==='worker'?runNode():runTeaVm());
+    // The explicit exit releases JVM message channels. Flush the complete
+    // result first: pipe-backed stdout is asynchronous for larger reports.
+    await new Promise((resolve,reject)=>process.stdout.write(
+      'INTRO_NODE_RESULT '+JSON.stringify(result)+'\n',error=>error?reject(error):resolve()));
+    process.exit(0);
+  }
   else await compare();
 } catch(error){console.error(error.stack||error);process.exitCode=1;}
