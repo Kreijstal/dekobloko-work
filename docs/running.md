@@ -1793,6 +1793,102 @@ work with this representation. No additional application flag, signature/name
 heuristic, larger heap or moved allocation should substitute for a proven
 execution path and an elapsed-time win. The 10% TeaVM target remains unmet.
 
+
+#### Live class-readiness words: retained (2026-10-18)
+
+Generic runtime commit `84ea76a` replaces canonical-owner and structured
+static-dependency readiness function imports with aligned reads from the existing
+Wasm heap. One eight-byte allocation per token/memory remains reserved for that
+memory's lifetime, since compiled imports can outlive the token or heap wrapper.
+Tokens weakly track the memory, write through its current buffer after growth,
+and publish every reset, erroneous state, deletion and refresh. Custom guards,
+missing heap support and allocation refusal retain the callable path. Cold
+checks still return through the original interpreter continuation; they never
+initialize an untaken dependency early. Compiler guard maps are released when
+diagnostics are disabled. No game names, new user flag or execution ABI change
+was added.
+
+An owner-wrapper-only preliminary comparison gave medians 1,224.000 -> 1,194.000
+ms (2.45% lower), TeaVM 610.123 ms. Four pairs improved; one regressed 0.74%.
+All five rounds (baseline / candidate / TeaVM, ms) were:
+1,975.000 / 1,219.000 / 600.441;
+1,213.000 / 1,222.000 / 600.577;
+1,224.000 / 1,194.000 / 635.042;
+1,351.000 / 1,189.000 / 613.242;
+1,128.000 / 1,043.000 / 610.123. The slow first baseline remains included.
+That prototype was extended before selection.
+
+A separate baseline-only CPU diagnostic then sampled after the first render,
+through the final conversion: 988 samples over 1,539,065 microseconds. A native
+readiness getter accounted for 147 self samples; its Wasm script URL was verified
+against a fresh token getter. Many callers were dependency checks inside compiled
+bodies, which the wrapper-only prototype had left in place. RGB conversion had
+140 self samples. The largest sampling gap was 442,555 microseconds, so sample
+counts cannot be treated as precise elapsed CPU attribution. This run executed
+251 frames once and matched the saved reference; it is excluded from timings.
+Only a bounded summary is retained in the single comparison JSON, without raw
+profiles or new screenshots.
+
+The extended implementation also covers structured entry/block checks, lazy
+parameter-array forwarding and bulk-clear dependency guards. Five fresh matched
+comparisons against unchanged `81e29d4`, alternating JVM order and running the
+unchanged TeaVM after each pair, produced:
+
+| Round | Baseline | Live readiness words | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 1,216.000 ms | 923.000 ms | 600.722 ms |
+| 2 | 1,205.000 ms | 931.000 ms | 597.479 ms |
+| 3 | 1,118.000 ms | 916.000 ms | 605.172 ms |
+| 4 | 1,279.000 ms | 936.000 ms | 599.667 ms |
+| 5 | 1,408.000 ms | 946.000 ms | 610.232 ms |
+| Median | **1,216.000 ms** | **931.000 ms** | **600.722 ms** |
+
+All five pairs improved, with nonoverlapping JVM ranges: **23.44% lower median**.
+Candidate/TeaVM is **1.550**, so the 10% target is still unmet. Every process
+completed the same 251-frame animation once, including 640x480 RGB-to-RGBA output,
+and matched the saved tick-80 reference. CPU 2, Node 22.23.2, 1 GiB old space,
+identical packed host and 32 KiB parameter specialization policy, scheduler
+sampling disabled in both JVMs; no warmup, replay, concurrent builds/tests or
+profiling. Timings measure animation execution, not startup or presented FPS.
+
+Focused validation passed **486 assertions**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/classInitializationToken.test.js # 95
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/intZeroClearEntry.test.js # 90
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/canonicalDirectFrames.test.js # 109
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/wasmParameterArrayAbi.test.js # 96
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmHeapGrowth.test.js # 35
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmHeapBulkCopy.test.js # 21
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/wasmArrayCopyFieldCache.test.js # 40
+```
+
+New cases check state transitions, custom guard refusal, exhausted heaps, growth,
+weak collection of heaps and memories, updates when memory outlives its heap
+wrapper, ordinary/expanded canonical ABIs, exact results and bulk boundaries,
+untaken cold dependencies, reset-before-access and no fabricated invocation
+frames. Existing suites cover array ownership, fuel, safe replacement and copying.
+The isolated webpack browser-debug/worker build passed with four existing
+warnings. An archive-based audit checked 680 source files with zero mismatches,
+excluding the generated JRE index; unrelated decompiler WIP was not included.
+Offline AOT recording executed no Java. Runtime SHA-256:
+`6c631007933dbaf422179113653fd2424d2b762b3d54e41fe759107b72fde04a`.
+
+Firefox 148.0.2 completed 251 paced frames and matched actual canvas
+`getImageData` against the saved tick-80 reference
+`349844b46ebe62959fb6cf3fc354377423f061d2cbc812bb614800ac0db013e6`.
+There were 962 AOT hits, zero misses/refusals/errors and no page errors. This was
+a correctness smoke, not an FPS claim. The owned temporary server was stopped;
+the existing user's server was left running. Source is retained, but the selected
+player/runtime and published artifacts remain unchanged. Original memory,
+startup, rolling presented-FPS, phone and stability gates remain open.
+
+Next, test a shared native RGB conversion path: the current host still performs
+that large loop in JavaScript. Any converter must preserve the guest raster,
+handle fallback representations automatically, and demonstrate another fresh
+matched elapsed-time win before retention. Removing callback counts alone is
+not evidence of meeting the remaining 10% target.
+
 ---
 
 ## 6. Protocol servers
