@@ -2854,7 +2854,137 @@ both reads and writes. This differs from the rejected read-only mirrors, which
 kept JS-owned writes and added mirror maintenance. A bounded correctness proof
 must precede integration: preserve host-accessor fallback, Map membership,
 coercion timing, cell replacement, live memory and collectible ownership. No
-performance gain from that design has yet been demonstrated.
+performance gain had been demonstrated at that point; the implementation and
+measurements follow below.
+
+#### Canonical native integer statics: retained
+
+The generic runtime now gives eligible integer static fields one canonical
+native value shared by the interpreter, generated JS and structured Wasm.
+Native reads and writes avoid JS field imports while normal data descriptors
+are valid. A public cell/Map read observes the latest native write. This is
+not the earlier read-only mirror: native putstatic updates canonical storage
+directly, rather than calling a JS setter to maintain a second integer value.
+A guarded fallback preserves custom accessors and coercion timing.
+
+Each bound cell owns 16 aligned bytes: read/write capability bits, i32 value,
+JS representation tag and padding. Exact JS booleans, null, undefined, -0 and
+non-i32 numeric values retain their public representation until a native write.
+Objects, BigInts, symbols, strings and accessor descriptors retain callable
+reads; unsupported values are not coerced at assignment time. Descriptor,
+delete and present-property transitions revoke native access before callbacks.
+Materialization/refresh preserves reentrant native writes from a foreign
+receiver's property trap. Readonly/sealed/frozen property contracts and Map
+membership restoration remain observable through the original paths.
+
+The existing heap's object finalizer reclaims the cell extent after its
+references die. A live native cell retains its canonical memory, not the heap
+wrapper or a compiled module. Growth refreshes its 16-byte typed view. New
+bindings refuse shared memory, out-of-range signed-i32 addresses and exhausted
+heaps; a cell already bound to another memory keeps its original accessors.
+Reference, wide, volatile, legacy-key and custom/ordinary-Map storage retain
+supported paths. Import deduplication preserves the first actual cell or refusal
+when a host cell resolver changes. Only small counts/addresses survive compiler
+cleanup; temporary cell/import maps are released with the other analyses.
+
+Activation is automatic for JVMs that already have a Wasm heap. JVM and JRE
+class loaders create native-capable cells before bindings can escape; runtimes
+without that heap and compiler-only shadows retain ordinary cells. There is no
+new public option, environment flag, application name or source-symbol map in
+the generic implementation.
+
+Implementation/tests are committed on `java-tools` master as
+`40eb1c41eb09205aa68ac83cc194694c3cd827c4`. The final isolated build passed with four existing webpack
+warnings. All 683 committed source files match the build source; only generated
+JRE indexing is extra. Protected decompiler worktree edits stayed excluded.
+Matching offline AOT recording executed no Java. Final runtime SHA-256:
+`f5a21cdd2d56f658910b7e4edf85c0ac993b7a321f18e4f94a4f6c1d0e8d3c4a`.
+
+Three successive candidates were measured separately, without pooling them:
+
+- Initial protocol (`a6bed557…`), five pairs: **773 -> 749 ms**, four wins,
+  one regression; TeaVM **605.280 ms**.
+- Automatic heap-capability gating (`953af468…`), ten pairs: **766.500 ->
+  738.000 ms**, **3.72% lower**, ten wins; TeaVM **603.120 ms**.
+- Final range/shared-memory refusals, five pairs below; same retained
+  `7e194e5` baseline. A slow candidate result remains included.
+
+| Round | Retained JVM | Final native statics | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 763.000 ms | 738.000 ms | 601.948 ms |
+| 2 | 761.000 ms | 903.000 ms | 598.190 ms |
+| 3 | 760.000 ms | 740.000 ms | 599.433 ms |
+| 4 | 766.000 ms | 744.000 ms | 609.280 ms |
+| 5 | 778.000 ms | 759.000 ms | 598.893 ms |
+
+Final medians: **763 -> 744 ms**, **2.49% lower**, four winning pairs and
+one regression. TeaVM **599.433 ms** leaves this artifact **24.12% slower**;
+the 10% target remains unmet. All processes are fresh CPU2 Node processes
+with 1,024 MiB old-space; 251 frames once, no replay/warmup. Allocation,
+presentation, 32 KiB specialization and sampling-off policies are identical.
+No build, tests, browser or profiling overlapped these performance runs.
+Every result matched the saved reference and no run was excluded.
+
+Fresh final coverage found 63 bound scalar cells, 1,008 additional bytes in the
+existing linear heap, with dense instance fields unchanged. Both hot spans,
+triangles and mesh methods contain native reader sites. Write behavior was
+proved by real compiled fixtures with zero getter/setter imports on the native
+path, not inferred from potential-site counters. The integer-copy count remains
+240,639, retaining the earlier 3,883,074 omitted calls. This is not a peak-JS-heap
+or long-session memory acceptance claim.
+
+Focused checks passed **933 assertions**. Commands from `java-tools`, with
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules`:
+
+```bash
+node --expose-gc test/nativeStaticCell.test.js           # 109
+node --expose-gc test/nativeStaticFields.test.js         # 34
+node --expose-gc test/staticFieldContinuations.test.js   # 37
+node --expose-gc test/wasmStaticCells.test.js             # 26
+node --expose-gc test/classInitializationToken.test.js   # 95
+node --expose-gc test/canonicalDirectFrames.test.js      # 109
+node --expose-gc test/compactCanonicalFrames.test.js      # 121
+node --expose-gc test/emptyCanonicalCopy.test.js          # 83
+node --expose-gc test/wasmParameterArrayAbi.test.js       # 96
+node --expose-gc test/intZeroClearEntry.test.js          # 90
+node test/workerBooleanSnapshot.test.js                 # 30
+node --expose-gc test/wasmDirectStaticLinkContract.test.js # 57
+node test/workerDirectJreTransport.test.js               # 27
+node test/jitShadowCompile.test.js                      # 19
+```
+
+Worker checks include native-written booleans consumed by both Node and browser
+mirror snapshots. Native cell checks include reflected values after direct
+stores, cold/deleted membership, metadata refusal, deferred coercion/throwable
+identity, accessor receiver identity, foreign-receiver reentrancy, memory growth,
+readonly/frozen cells, old-object release, heap-wrapper collection and cell
+reclamation. Continuation checks retain exact captured values and PCs after
+fuel exhaustion and mutation before an exception. The initial heap-wrapper GC
+test helper accidentally captured the wrapper in its module factory; capturing
+only the memory corrected the fixture, and the actual ownership assertion passes.
+
+A separate pair of diagnostic passes hashed every RGBA output frame. All
+**251 frames matched exactly**, with **225 distinct frames**. SHA-256 of the
+concatenated frame-hash sequence:
+`a275416200c6a79aa927777ada094644d46fd628a0ce7541a5ed1239ca81f8d3`.
+Hashing ran inside those diagnostic callbacks, so their elapsed times are
+excluded from performance results. The private measurement harness was restored
+exactly afterward. No screenshots or native reference regeneration were needed.
+
+Firefox 148.0.2 also completed 251 frames and matched saved tick-80 canvas RGB,
+with 962 AOT hits, zero cache misses/refusals/errors and no page errors. This is
+a paced correctness smoke, not presented-FPS or Android acceptance. Only the
+owned ephemeral server was closed. The selected persistent player and user
+server remain unchanged; all results live in the existing comparison JSON with
+bounded history. Original full-game heap, startup, rolling-FPS and phone gates
+are still open.
+
+Next: reference statics can potentially use independent host-created externref
+globals with the same revocation/property protocol. They must release replaced
+references and keep return scratch separate; array metadata should retain its
+existing validation until separately proved. After that, a guarded native
+kernel entry could reduce the remaining short-call/frame ABI overhead. Neither
+extension is implemented or counted as a speed gain here.
 
 ## 6. Protocol servers
 
