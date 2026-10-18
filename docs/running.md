@@ -2649,6 +2649,126 @@ those experimental settings or to native field allocation.
 
 ---
 
+#### Host-owned fuel and caller-side empty-copy omission
+
+The old empty-call trial still entered a native eligibility function for every
+omitted copy. The new experiment imports the callee's mutable numeric fuel
+global directly and tests a revocable word in the shared heap, without calling
+an eligibility helper. A host-created `WebAssembly.Global` is necessary:
+importing a module-defined exported global pinned its retired module in the
+forced-GC proof. Importing the independent host-created global allowed the
+owner, instance, module and function to collect. Prototype-set fuel changes
+remain visible to native readers; there is no setter interception or mirror.
+
+The assembler now relocates explicitly tagged defined-global instructions
+around imported globals. Public run/runv, scalar return scratch, speculative
+class flags, legacy canonical entries, compact entries and forwarded-array
+entries retain their calling conventions. Relocation tests cross index 127
+and use opcode-valued literal bytes, so byte scanning cannot corrupt immediates.
+
+A foundation-only build passed the reference but installed no omission guards:
+the whole-copy recognizer rejected the exported source's duplicated forward
+branches. Five matched pairs measured baseline **805.000 ms**, candidate
+**810.000 ms**, TeaVM **604.018 ms**; this was not a speed improvement. Its
+runtime SHA was
+`21dd4baaec692d49de711d133de135809f7e08a81ebc1ac67073f73c0d4550cb`.
+
+The final proof follows all possible paths for zero count and nonnegative
+source position, using bounded integer expressions, ranges and comparison
+facts. It rejects reachable effects, unresolved arithmetic, handlers and
+possible overflow, and stops after 2,048 instructions, 4,096 proof steps or
+64 pending paths. It does not require a particular layout of copy loops or a
+game name. The exact whole-copy proof remains separate from this no-effect
+proof. Conservative fuel bounds include all structured loop headers. The
+zero-count entry and caller optimization apply automatically when proved;
+no new runtime flag was introduced, and optional bulk copying remains separate.
+
+A caller's guard retains an independent host fuel global and numeric facts,
+not retired callee metadata. Publication validates the current native target,
+parameter layout, fuel identity, readiness address and fuel bound. Withdrawal,
+incompatible replacement and retirement revoke omission. Argument effects
+execute first; deferred array reads refuse omission. Low fuel, cold/custom
+readiness and guard-allocation failure keep supported invocation paths. The
+guard's eight-byte extent is recycled when its binding retires.
+
+Fresh actual-game coverage reduced integer-copy native entries from
+**4,123,713 to 240,639**, removing **3,883,074 function entries**, and retained
+the saved tick-80 RGB hash across 251 frames. It does not count an eligibility
+call as elimination. The diagnostic run was 775.000 ms; repeated comparisons
+below decide retention, not this individual run.
+
+Candidate runtime SHA-256:
+`43e9921fcaaaf519e84eb7b6ff35571112d45a50e542064440c26c2caf1cfe8e`.
+The isolated build passed with four existing webpack warnings. The source
+audit checked 682 source files plus the generated JRE index and excluded the
+unrelated decompiler worktree edits. Offline AOT recording executed no Java.
+
+| Round | Baseline JVM | Candidate JVM | TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 827.000 ms | 765.000 ms | 605.279 ms |
+| 2 | 798.000 ms | 773.000 ms | 610.794 ms |
+| 3 | 792.000 ms | 811.000 ms | 597.337 ms |
+| 4 | 927.000 ms | 785.000 ms | 599.222 ms |
+| 5 | 1068.000 ms | 778.000 ms | 600.447 ms |
+| 6 | 793.000 ms | 779.000 ms | 599.458 ms |
+| 7 | 795.000 ms | 771.000 ms | 604.137 ms |
+| 8 | 1434.000 ms | 766.000 ms | 991.026 ms |
+| 9 | 800.000 ms | 763.000 ms | 602.343 ms |
+| 10 | 817.000 ms | 774.000 ms | 606.010 ms |
+
+Two batches alternate first-process order. Each measurement is a fresh CPU2
+Node process with `--max-old-space-size=1024`; all 251 frames execute once,
+without replay or warmup. Both sides use identical dense-field allocation,
+native pixel conversion, 32 KiB heap-specialization policy and disabled
+scheduler sampling. No profiling, test, build or browser process overlapped
+these measurements. No run was excluded, including slow baseline and TeaVM
+outliers.
+
+Batch medians: **827 -> 778 ms** and **800 -> 771 ms**. Combined medians:
+**808.500 -> 773.500 ms**, **4.33% lower**, with **nine wins and one regression**.
+TeaVM median **603.240 ms** leaves the candidate **28.22% slower**. Reaching
+1.10× would require another approximately **14.2% reduction** from this
+candidate. This is a retained incremental improvement, not achievement of the
+goal or the full-game/phone acceptance gates.
+
+Focused validation: **845 assertions** passed. Commands (from `java-tools`,
+with `NODE_PATH=/home/kreijstal/git/java-tools/node_modules`):
+
+```bash
+node --expose-gc test/hostOwnedCanonicalFuel.test.js   # 160
+node --expose-gc test/emptyCanonicalCopy.test.js       # 83
+node --expose-gc test/compactCanonicalFrames.test.js   # 121
+node --expose-gc test/canonicalDirectFrames.test.js    # 109
+node --expose-gc test/wasmParameterArrayAbi.test.js     # 96
+node --expose-gc test/primitiveArrayCopyEntry.test.js  # 91
+node --expose-gc test/intZeroClearEntry.test.js        # 90
+node --expose-gc test/classInitializationToken.test.js # 95
+```
+
+The new coverage includes real javac fixtures, duplicated branch layouts,
+argument side effects and faults, scalar ABIs, reference-return scratch cleanup,
+low fuel and prototype-set globals, class initialization, custom readiness,
+allocation failure, withdrawal/replacement, reclamation and forced-GC ownership.
+Only the generic compiler/runtime and its focused tests belong in `java-tools`;
+this application profile, timings and artifact selection stay here. The selected
+persistent player is unchanged. No screenshot or native reference regeneration.
+The existing single comparison JSON holds the current result and bounded history.
+
+The next useful target is surviving render-kernel overhead. Dead nonvolatile
+static reads are a candidate for elimination with preserved initialization and
+spill semantics; this is different from the rejected static-value heap mirrors.
+Short-span specialization is another possibility. Neither is implemented or
+credited as a performance gain in these results.
+
+Generic runtime and tests committed on `java-tools` master as
+`7e194e52a880d25216890ff21687a64b96b824c2`. Firefox 148.0.2 completed 251 frames and matched the saved
+canvas RGB hash, with 962 AOT hits, zero cache misses/refusals/errors and no
+page errors. The paced browser smoke is correctness evidence; its timing is
+not used in the Node comparison or as presented-FPS/phone acceptance. The
+post-commit source audit matches all 682 committed source files and only the
+generated JRE index is extra. Only the owned temporary server was closed;
+the user's existing intro server remains running.
+
 ## 6. Protocol servers
 
 ```bash
