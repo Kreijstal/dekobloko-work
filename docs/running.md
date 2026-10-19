@@ -3733,6 +3733,129 @@ avoid general bulk-copy range/alias work while preserving the original low-fuel,
 identity, bounds and physical-fault behavior. That next step remains unmeasured.
 Do not credit its potential as a gain.
 
+### Single-element copy entry: rejected experiment
+
+The native copy census found 149,158 length-one operations after frame 0.
+A cheap length-one branch now selects a guarded raw load/store without general
+interval-alias checks or `memory.copy`. Overlapping views preserve the original
+single-read/single-write order. Equal Java indices with inconsistent captured
+bases still retain the reference-identity/early-return rule. Whole logical and
+physical bounds plus a constant conservative fuel threshold must pass; refusal
+uses the original method body, and longer copies retain the bulk path. Byte
+copy behavior is unchanged. Unrepresentable conservative fuel constants refuse
+optimization before enabling zero-call omission. No public option is added.
+
+Focused commands from `java-tools`, with
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules`, pass 486 assertions:
+
+```bash
+node test/primitiveArrayCopyEntry.test.js # 199
+node test/primitiveByteCopyEntry.test.js # 108
+node --expose-gc test/emptyCanonicalCopy.test.js # 83
+node --expose-gc test/wasmParameterArrayAbi.test.js # 96
+```
+
+The additional checks cover actual one-element execution, overlapping distinct
+views, negative/zero/boundary fuel with equal/distinct Java references, and
+oversized fuel-proof refusal. Existing physical-overrun, wrapping and inconsistent
+capture tests still pass. The isolated debug/worker build passed with four
+existing warnings; source audit: 686 files, one explicit overlay on retained
+`e25da1c`, excluding protected decompiler WIP. Runtime SHA-256:
+`4749cfb787564c817b15b90fb8acb0de1dc5b9fcfbd7a9e80bd1b87f747ea228`.
+The comparison baseline fixture is verified `943b6388` plus its matching AOT.
+Five matched pairs measured **686.000128 -> 684.000000 ms**, only **0.29%**
+lower, with inconsistent pair direction. TeaVM median was 605.803677 ms. All
+15 fresh CPU2/1,024 MiB processes finished 251 frames and matched the saved
+reference; no observation was excluded and no build/test/profile/browser
+work overlapped timing. This does not confirm a gain beyond run variation.
+The prototype source/tests, including its additional defensive fuel bound,
+were removed. Retained source remains `e25da1c` and runtime `943b6388`.
+No browser/full-frame acceptance is claimed for this rejected binary.
+
+### Guarded nested array loops: retained implementation
+
+Generic java-tools commit: `778f8d3af68eb3f59527ac9645f954bd335a16a2`.
+
+The next prototype versions small, two-block counted loops nested inside an
+outer loop. It requires static int-array reads, unit-step index/counter phis,
+total integer arithmetic, no calls, live handlers, demotion, or inlined-callee
+fuel protocol. The first cold row uses the original loop. Later rows may use
+the original SSA body with repeated field/cache/bounds/fuel checks removed only
+when filled-cache flags, complete logical/physical ranges, and enough fuel for
+all iterations plus the final test are proven. Fuel is prepaid exactly. Stores
+keep scalar order, including overlapping captures. Any refusal uses the
+original loop and its exception/partial-write/continuation behavior. Duplication
+is bounded to 8 KiB per method. No application names or public opt-in flags are
+added. Temporary proof graphs are released after installation.
+
+Focused commands from `java-tools`, with
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules`, pass 366 assertions:
+
+```bash
+node --expose-gc test/guardedNestedArrayLoops.test.js # 70
+node --expose-gc test/wasmCompilerRetention.test.js # 88
+node --expose-gc test/frameLocalSpills.test.js # 40
+node --expose-gc test/hostOwnedCanonicalFuel.test.js # 160
+node test/wasmDeepInline.test.js # 8
+```
+
+The fixture proves warmed execution actually skips polls, while exhausted fuel,
+short/physical-overrun arrays, null/plain arrays, changing metadata getters,
+overlapping views, unsupported recurrence/effects, shared metadata and code
+budget refusal keep original behavior. Weak references prove the analysis is
+collectible while installed code remains executable. The actual rectangle
+alpha method receives one version with 372 additional body bytes. The isolated
+build audits 687 files with two explicit overlays on `e25da1c`, excluding
+protected decompiler WIP. Runtime SHA-256:
+`dd7013198f5ea437919b6c17b769c39e7b70585ebc642cad107d3a5f3284bb7c`.
+Matching AOT is 9,833,872 bytes and records without Java execution.
+
+Fifteen alternating matched pairs, with TeaVM after each pair, measured:
+
+| Batch | Retained RGB baseline | Guarded loops | TeaVM |
+|---|---:|---:|---:|
+| First five | 684.000000 ms | 663.000064 ms | 602.132204 ms |
+| Confirmation five | 688.000000 ms | 660.000000 ms | 600.915409 ms |
+| Additional five | 685.999872 ms | 662.000128 ms | 600.761637 ms |
+| All fifteen | 685.999872 ms | 662.000128 ms | 600.915409 ms |
+
+All fifteen candidate runs beat their paired baseline. The pooled reduction is
+**3.50%**, but TeaVM deviation is **10.1653%**, so the 10% objective remains
+unmet. The ten-pair interim result was only 0.18 ms inside the threshold, below
+our approximately 1 ms clock resolution; the additional batch is included rather
+than retaining a favorable stopping point. All 45 processes were fresh CPU2
+Node processes with 1,024 MiB old-space, one 251-frame pass, no warmup/replay,
+and the same RGB-to-RGBA/output work. No tests, builds, profiling or browser runs
+overlapped acceptance timing, and no observations were excluded. All 425 entry
+layouts remain identical, with 426 installed methods in both variants.
+
+Exact per-process commands from the isolated Deko runner are:
+
+```bash
+taskset -c 2 node --max-old-space-size=1024 apps/intro/compare-node.mjs --worker --player BASELINE_PLAYER
+taskset -c 2 node --max-old-space-size=1024 apps/intro/compare-node.mjs --worker --player CANDIDATE_PLAYER
+taskset -c 2 node --max-old-space-size=1024 apps/intro/compare-node.mjs --teavm-worker --player CANDIDATE_PLAYER
+```
+
+A separate diagnostic resets import counters after frame 0 and confirms
+**17,236 actual fast-loop entries** in frames 1–250. Diagnostic timings are
+excluded. `python3 /tmp/teavm-full-frames.py` verifies all **251 complete RGBA
+frames** exactly match across the retained baseline, candidate, and existing
+TeaVM artifact, with 225 distinct frames and sequence SHA-256
+`a275416200c6a79aa927777ada094644d46fd628a0ce7541a5ed1239ca81f8d3`.
+No native reference or screenshots were regenerated.
+`node /tmp/teavm-intro-firefox-proof.cjs` passes an uninstrumented Firefox
+148.0.2 correctness smoke: 251 frames, saved tick-80 reference, no page errors,
+962 AOT hits and zero misses/refusals/errors. This paced smoke is not a
+presented-FPS or Android performance gate. The latest focused 70-assertion test
+was rerun successfully after the final analysis shortcut. The selected default
+player remains unchanged at runtime `4dd27b33`; no artifacts were published.
+
+The next bounded experiment will guard equality of separately captured bases
+for the same static array and reuse one base inside the proven loop. This could
+permit native address reuse while inconsistent captures keep the original loop.
+It is not yet implemented or credited as a gain.
+
 ## 6. Protocol servers
 
 ```bash
