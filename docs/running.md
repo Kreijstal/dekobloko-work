@@ -3915,11 +3915,13 @@ is claimed for this rejected binary. Retained source is `778f8d3`, runtime
 `dd701319`, with its 15-pair comparison still 10.1653% behind TeaVM. The goal
 remains active rather than claiming a robust margin from noisy observations.
 
-### Next counted-loop proof: concrete shape inspected
+### Conditional counted-loop proof: retained implementation
 
-A separate compilation-only inspection of the exported alpha-blit method
-(`Sprite.blitColorKeyAlpha`) reaches native-ready state but emits zero guarded
-versions. Its nested header uses `iflt`, with one entry and two backedges.
+Generic java-tools commit: `d5ec5ad76a07b47724a82cbdab92a24ef7587393`.
+
+Before this change, a separate compilation-only inspection of the exported
+alpha-blit method (`Sprite.blitColorKeyAlpha`) reached native-ready state but
+emitted zero guarded versions. Its nested header uses `iflt`, with one entry and two backedges.
 Both backedges advance the counter and destination index by one; a source-index
 increment dominates both paths. The body has only parameter-array int loads/
 stores, total integer arithmetic, and one conditional zero-pixel path. There
@@ -3927,13 +3929,91 @@ are no intraloop calls, allocations, or reference writes. Array metadata is
 already captured by the ordinary parameter-entry protocol. The original SSA
 and structured tree make all of this explicit; no CPU profiling was repeated.
 
-The present proof rejects that combination of inverted condition, three header
-predecessors, internal branch and parameter arrays. The next implementation can
-accept a bounded acyclic body with proven unit recurrence on every backedge,
-require complete ranges plus exact fuel as before, and clone the original SSA
-control flow. Unsafe ranges, partial faults, low fuel, nonunit paths and
-unsupported effects must keep the original execution. This is a proposed
-extension, not an implemented optimization or claimed gain.
+The retained proof rejected that combination of inverted condition, three
+header predecessors, internal branch and parameter arrays. The new implementation
+accepts negative-counter `ifge`/`iflt` headers with a bounded acyclic body: at
+most 16 blocks and 256 instructions, pure integer branches, no extra entry,
+early exit or internal cycle, and a unit counter/index recurrence on every
+backedge. A topological check proves all body paths reach the header. The
+original SSA branches and edge copies are cloned, with complete logical and
+physical ranges plus exact prepaid fuel as before. Already-captured parameter
+metadata needs no extra host callback or filled-flag query. Static arrays keep
+their existing warm-cache proof. Unsafe ranges, partial faults, low fuel,
+nonunit paths and unsupported effects retain original execution. There are no
+application names or new public flags. The existing 8 KiB duplication budget
+and analysis cleanup remain in force.
+
+Focused commands from `java-tools`, with
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules`, pass 543 assertions:
+
+```bash
+node --expose-gc test/guardedNestedArrayLoops.test.js # 159
+node --expose-gc test/hostOwnedCanonicalFuel.test.js # 160
+node --expose-gc test/wasmParameterArrayAbi.test.js # 96
+node --expose-gc test/wasmCompilerRetention.test.js # 88
+node --expose-gc test/frameLocalSpills.test.js # 40
+```
+
+The new fixture proves actual fast-loop activation for every row and zero
+repeated inner polls, both branch directions, exact fuel/partial-write states,
+source/destination logical and physical faults, unused/used nulls, plain arrays,
+overlapping views, inconsistent getter snapshots, and collection of installed
+parameter proof graphs. Unsupported backedge counter/index deltas, an early
+exit, internal cycle and field effects emit no version. Initial test harness
+failures came from supplying internal ABI metadata to the public wrapper and
+expecting status 0 instead of the normal -1 completion; both assertions are
+corrected. The actual exported alpha-blit method compiles with one guarded
+version instead of zero.
+
+The isolated build audits 687 files with one explicit helper overlay on
+`778f8d3`, excluding protected decompiler WIP; four existing webpack warnings.
+Runtime SHA-256:
+`23b00b90f2b171025d18f1cdc675650970ea04e883d64289042e55f1be03d889`.
+Matching AOT is 9,833,756 bytes and records without Java execution. The first
+five matched pairs against verified `dd701319` plus its matching AOT measure
+**664.999936 -> 660.000000 ms**, TeaVM **603.110023 ms**. There are four wins
+and one regression; the possible 0.75% gain requires confirmation. A separate
+instrumented run resets counters after frame 0 and observes 7,847 alpha-blit,
+2,660 intensity-additive, and 770 additive guarded rows, plus the existing
+17,236 rectangle rows. These 11,277 new entries are actual animation execution,
+not merely preparation metadata; their diagnostic timing is excluded.
+The same native entry choices remain available. Specialized bodies grow for
+nine eligible methods, with unchanged entry choices elsewhere.
+
+| Batch | Retained loop baseline | Conditional loops | TeaVM | Deviation |
+|---|---:|---:|---:|---:|
+| First five | 664.999936 ms | 660.000000 ms | 603.110023 ms | 9.4328% |
+| Confirmation five | 664.999936 ms | 660.000000 ms | 602.257550 ms | 9.5877% |
+| All ten | 664.999936 ms | 660.000000 ms | 602.622404 ms | 9.5213% |
+
+Both independent batches improve the paired baseline and satisfy the selected
+**at most 10% deviation in animation execution time**. The pooled incremental
+gain is **0.7519%**, with seven paired wins and three regressions; every sample
+is retained, including the 770.00 ms first baseline and 689.00 ms last candidate.
+All 30 processes were fresh CPU2 Node processes with 1,024 MiB old-space, ticks
+0–250 exactly once, no warmup/replay, and unchanged RGB conversion/output and
+host/compiler policies. No build/test/profile/browser overlapped acceptance
+timing. Source, integration, assets, TeaVM artifact and runtime identities are
+recorded in the one comparison JSON. This demonstrates the selected Node
+animation target; it does not establish a worst-run bound or full-game FPS.
+
+`python3 /tmp/teavm-full-frames.py` independently verifies all **251 complete
+RGBA frames** exactly match across the retained baseline, candidate and existing
+TeaVM artifact, with 225 distinct frames and unchanged sequence SHA-256
+`a275416200c6a79aa927777ada094644d46fd628a0ce7541a5ed1239ca81f8d3`.
+`node /tmp/teavm-intro-firefox-proof.cjs` passes the uninstrumented Firefox
+148.0.2 correctness smoke: 251 frames, saved tick-80 reference, no page errors,
+962 AOT hits and zero misses/refusals/errors. Diagnostic/browser timings are
+excluded from acceptance; no native rerun or screenshot is generated.
+
+Generic proofs recover some of the advantage TeaVM gets from compiling known
+Java types and control flow directly: these loops need no repeated array/fuel
+checks once the complete range and exact trip count are established. Their
+fallbacks and frame protocol remain available. This is an improvement within
+the existing architecture and requires no game-specific kernel or new flag.
+The selected persistent player remains runtime `4dd27b33`; nothing is published.
+The original full-game 512 MiB, startup, presented-FPS, stability, 6x-browser and
+actual-phone release gates remain unverified by this standalone benchmark.
 
 ## 6. Protocol servers
 
