@@ -3851,10 +3851,89 @@ presented-FPS or Android performance gate. The latest focused 70-assertion test
 was rerun successfully after the final analysis shortcut. The selected default
 player remains unchanged at runtime `4dd27b33`; no artifacts were published.
 
-The next bounded experiment will guard equality of separately captured bases
-for the same static array and reuse one base inside the proven loop. This could
-permit native address reuse while inconsistent captures keep the original loop.
-It is not yet implemented or credited as a gain.
+### Shared addresses within guarded loops: rejected experiment
+
+The next bounded prototype adds equality guards for separately captured bases
+of the same cached static-array field. Once those snapshots agree, both raw
+accesses use the same base local so the native compiler can reuse their address.
+All captured lengths and physical ranges are still checked. Inconsistent
+snapshots retain the original loop, preserving the previous getter captures and
+scalar memory order. No application-specific rules or opt-in options are added.
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/guardedNestedArrayLoops.test.js`
+passes 71 assertions, including proof that inconsistent base snapshots do not
+enter the optimized loop. An initial test run caught use of an optional shared
+metadata map; the implementation now uses the ordinary field-cache ownership
+proof and needs no shared-cache option. The isolated baseline is the verified
+`dd701319` bundle plus matching AOT. The candidate audits 687 source files on
+`778f8d3` plus two explicit overlays, builds with four existing warnings, and
+records matching AOT (9,833,332 bytes) without Java execution. Candidate runtime
+SHA-256: `a816c51664858cfa11f7870ae16775482805dbc6372ace0ba64353894e3f1f49`.
+Five matched pairs measured **662.000128 -> 662.000128 ms**, with three wins,
+one regression and one tie. TeaVM median was 602.490466 ms; both baseline and
+candidate happened to be within 10% in this batch, so this does not demonstrate
+an optimization. All 15 fresh processes completed 251 frames with the saved
+reference matching; entry layouts were identical. No observations were excluded
+and no other validation overlapped timing. The source/test delta was removed;
+retained source remains `778f8d3` / runtime `dd701319`, whose larger 15-pair
+comparison still misses the target. No additional full-frame/browser check is
+claimed for the rejected binary.
+
+### Sixteen-pixel native RGB groups: rejected experiment
+
+The native RGB converter now unrolls its four-pixel vector loop into sixteen-
+pixel groups, followed by four-pixel vector and zero-to-three-pixel scalar tails.
+Memory instruction offsets address each vector within its group; source/output
+ordering, alpha fill, staging and direct-heap behavior, feature probing and all
+fallbacks are preserved. This targets loop/address overhead in shared
+presentation, with no benchmark-host changes or new public options.
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/raster.test.js`
+passes 277 assertions, including every remainder 0–15 for both staging and
+actual heap input, complete output colours, unchanged input and destination
+sentinels. Existing scalar/unavailable/spent-memory/custom-length/proxy/GC tests
+also pass. The isolated build audits 687 files with one raster overlay on
+`778f8d3`, with four existing build warnings. Runtime SHA-256:
+`51df9301c4af2692a26c4b6c80a1c00f986c1fc149e0300c79d7b61c9f588aad`.
+Matching AOT is 9,833,231 bytes and records without Java execution.
+
+| Batch | Retained loop baseline | Sixteen-pixel presenter | TeaVM |
+|---|---:|---:|---:|
+| First five | 664.999936 ms | 661.000192 ms | 603.372149 ms |
+| Confirmation five | 657.999872 ms | 660.999936 ms | 602.846369 ms |
+| All ten | 660.000000 ms | 661.000064 ms | 603.109259 ms |
+
+The confirmation reverses the first batch's small apparent gain. Overall there
+are four wins and six regressions; the candidate median is 0.15% slower. All 30
+fresh CPU2/1,024 MiB processes finish the same 251 frames and match the saved
+reference, with unchanged hosts/policies and no validation overlap. No samples
+are excluded, including TeaVM's 624.64/640.17 ms observations. A favorable
+candidate/TeaVM ratio in this batch is not evidence that the candidate improved
+the retained runtime; the concurrent baseline is faster. The source/test delta
+is removed. The original command
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/raster.test.js`
+passes all 179 assertions after restoration. No full-frame/Firefox acceptance
+is claimed for this rejected binary. Retained source is `778f8d3`, runtime
+`dd701319`, with its 15-pair comparison still 10.1653% behind TeaVM. The goal
+remains active rather than claiming a robust margin from noisy observations.
+
+### Next counted-loop proof: concrete shape inspected
+
+A separate compilation-only inspection of the exported alpha-blit method
+(`Sprite.blitColorKeyAlpha`) reaches native-ready state but emits zero guarded
+versions. Its nested header uses `iflt`, with one entry and two backedges.
+Both backedges advance the counter and destination index by one; a source-index
+increment dominates both paths. The body has only parameter-array int loads/
+stores, total integer arithmetic, and one conditional zero-pixel path. There
+are no intraloop calls, allocations, or reference writes. Array metadata is
+already captured by the ordinary parameter-entry protocol. The original SSA
+and structured tree make all of this explicit; no CPU profiling was repeated.
+
+The present proof rejects that combination of inverted condition, three header
+predecessors, internal branch and parameter arrays. The next implementation can
+accept a bounded acyclic body with proven unit recurrence on every backedge,
+require complete ranges plus exact fuel as before, and clone the original SSA
+control flow. Unsafe ranges, partial faults, low fuel, nonunit paths and
+unsupported effects must keep the original execution. This is a proposed
+extension, not an implemented optimization or claimed gain.
 
 ## 6. Protocol servers
 
