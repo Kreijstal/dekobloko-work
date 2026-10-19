@@ -3286,6 +3286,373 @@ gain. Do not repeat the earlier fuel-only, SIMD, cache-bypass, empty-invocation
 or deferred-id variants unchanged; a new experiment needs a distinct proof and
 an incremental matched comparison against this retained liveness version.
 
+
+### Single-iteration native kernels: seven layouts, prototype removed
+
+The next generic proof partially interprets normal SSA flow with one integer
+parameter equal to one. It requires all paths to return within bounded work,
+refuses repeated nonconstant definitions, and admits only total integer math,
+parameter-array accesses with pure parameter-derived indices, and directly
+declared ordinary nonvolatile integer statics. Unknown branches fork within a
+small budget. Calls, division, shared memory, unknown indices, volatile fields,
+reference operations and excessive work retain the original execution path.
+
+Before executing a trace, native guards establish class/inline readiness,
+ordinary field capabilities, unsigned index bounds, memory extent without
+address wrap, and store disjointness from protected readiness/native-cell
+storage. Host-owned fuel must cover the proof's conservative bound. Custom
+accessors, partial faults and low fuel keep the original canonical invocation,
+its exception handling and exact spill owner. Only bounded instruction/type
+arrays survive; SSA/proof graphs are released. There is no game identifier or
+new public flag in this code.
+
+Seven variants were compared incrementally against retained `fc284ac0` / runtime
+`54d93378c28b10f7d871d8e9538eea32e318787e6f659cef6aacc8d3625906a4`:
+
+| Layout | Baseline median | Candidate median | TeaVM median | Decision |
+| --- | ---: | ---: | ---: | --- |
+| Guarded callee-entry prefix | 694.000 ms | 702.000 ms | 603.167 ms | Rejected |
+| Trace directly in caller | 705.000 ms | 712.000 ms | 601.892 ms | Rejected |
+| Caller trace plus constant-argument propagation | 695.000 ms | 718.000 ms | 606.479 ms | Rejected |
+| Constant trace, cheap count/publication check first | 696.000 ms | 701.000 ms | 606.119 ms | Rejected |
+| Separate small native function | 698.000 ms | 698.000 ms | 605.493 ms | No gain |
+| Small function, temporal field alias guards | 704.000 ms | 697.000 ms | 603.548 ms | Unconfirmed 1% gain, unselected |
+| Temporal guards, dead trace pruning, packed arguments | 703.000 ms | 706.000 ms | 603.238 ms | Rejected |
+
+Each row is five alternating baseline/candidate pairs with TeaVM after each
+pair: 15 fresh CPU2 Node processes, 1,024 MiB old-space, 251 frames exactly once,
+no warmup/replay. RGB-to-RGBA and policies are unchanged. All processes completed
+and matched the saved reference; no outlier was removed. No profiling, browser,
+build or tests overlapped timing. Do not pool the different candidate binaries.
+Candidate runtime SHA-256, in table order:
+
+- `46e44e7f49151e6bb8f33c3ff5140ae2cb7aa9e974d097c5705b35b4440bbbd3`
+- `dbf09a85ed8a385392671ea4e7641b759b40cdf6240517f50f6a3131b82f73f1`
+- `945a50d048f8fa3f7df6fa981ecb57b72d0e100c8e2c14e0821bed4f39dc95de`
+- `471c023706842b4ccfeae4984429efc5255fca20c5030feef6953b6ff1e8bedb`
+- `c9466cccfd5d98e7a887d96f15edf84241f237c638ae01a61033573c0ff222eb`
+- `2b1aa45720e5741045daa415a54f59f180d22d2306ce16d42ef42511939f4c8b`
+- `7f73db16f0ed62cdb60e940d955de78d420f15f4f4c07ad493afbae2ddbcd429`
+
+Separate post-timer diagnostics proved the caller traces reached all six hot
+triangle sites and removed exactly **1,023,742** gradient-span native entries
+(**3,473,053 -> 2,449,311**). Removing calls alone did not establish a speedup.
+Independent mutable host globals revoke a caller trace on callee replacement,
+withdrawal or binding release. Their exact metadata reference is weak; imported
+fuel is independent of the retired instance. Refreshing legacy dispatcher
+companions permits old metadata/frame-owner collection. Constant propagation
+requires an exact integer SSA literal at the call site; unknown/different
+arguments retain the general trace. Its hot template shrank **398 -> 318 bytes**.
+
+The first caller versions incorrectly evaluated the expensive total guard for
+nonunit counts too. The count-first successor skips it, including when
+publication is revoked; an intentionally trapping guard/call test verifies the
+short circuit. That correction improved this layout's result but still did
+not beat its matched baseline. It must not be credited as a retained gain.
+
+Before removing the prototype, latest focused commands from `java-tools` with
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules`, passed **732 assertions**:
+
+```bash
+node test/singleIterationKernel.test.js                 # 57
+node --expose-gc test/inlineSingleIterationKernel.test.js # 91
+node test/wasmCompilerRetention.test.js                  # 88
+node test/canonicalDirectFrames.test.js                  # 107
+node test/compactCanonicalFrames.test.js                 # 119
+node test/hostOwnedCanonicalFuel.test.js                 # 155
+node test/nativeStaticFields.test.js                    # 34
+node test/emptyCanonicalCopy.test.js                     # 81
+```
+
+The new checks cover actual omitted nonempty invocation, conditional canonical
+field writes, unknown/incorrect constants, custom getters/setters, low fuel,
+class readiness, forged/wrapped/overlapping array metadata, foreign-realm shared
+memory, native bytecode relocation with multi-byte local indices, malformed
+instruction refusal, publication lifecycle, collection after refreshing legacy
+companions, and a 32-site caller that exhausts the code budget while preserving
+every remaining fallback effect exactly once. The earlier callee-prefix ABI
+fixture also tested public/meta entry refusal and preserving both original
+16 KiB compact-entry choices; that prefix was removed after its failed timing.
+
+Isolated debug/worker webpack builds passed with four existing warnings, and
+matching AOT recording ran no Java. Source audits excluded protected decompiler
+WIP (687 files for the caller experiments, six explicit overlays on `fc284ac0`).
+The selected persistent player/user server and release artifacts are unchanged.
+No Firefox/full-frame acceptance is claimed for these rejected binaries.
+
+Keeping the operation in a small separate native function avoided adding its
+scratch locals/body to the large caller but only tied the retained baseline.
+Temporal alias analysis then protected field capabilities/readiness only when
+an array store precedes a later field access. Entry guards and already-finished
+reads need no store-alias protection. This passed both late-read protection and
+safe final-store guard tests; the hot constant template shrank to 231 bytes.
+Its five-pair 1% observation was not confirmed. Dead-trace pruning kept effects
+and dependencies under the existing nonthrowing/ordinary-storage guards; it
+removed dead loop updates and snapshot loads while preserving their failure
+fallbacks. Decoding/relocating the remaining operand uses reduced every hot
+kernel signature from 12 operands to six, and its template to 195 bytes. Actual
+argument increments and faults still occurred before the call, even when the
+native signature omitted their values. A synthetic native-module compilation
+failure also retained the original invocation without installing imports.
+The packed version still did not improve matched timing.
+
+All kernel prototype source/tests were removed. None of these seven layouts is
+retained as a speedup; the selected source remains `fc284ac0`. They do not prove
+that call overhead alone explains the remaining gap. No public flag or generated
+output was added. The one comparison JSON keeps bounded history; this journal
+preserves the discarded experiment results after that history rolls forward.
+
+### Exception-only spill liveness: rejected experiments
+
+The retained local-liveness analysis merges normal and exceptional successors.
+That union remains necessary for fuel exits and retry/resume handoff. A dedicated
+exception spill has a narrower successor set: the operation threw, so only the
+method's possible handlers can execute. Full liveness at each handler entry
+still includes its normal continuation, nested handlers/finally paths and wide
+locals. A new bounded matrix unions those handler live-ins at each original
+throw PC. Boolean specialization captures retain their conservative contract.
+If the shared storage/work budget cannot accommodate the extra matrix, the
+existing full-flow proof remains the fallback. Unknown inputs still retain
+full spills; no public option or application identity is involved.
+
+Compiled checks now demonstrate that an object needed only on the normal path
+collects after an access fault while the fault frame/native module remain live,
+and that the handler still receives its exact object. Normal return, existing
+low-fuel continuations, pre-mutation snapshots, wide BigInts and the distinct
+retry/after-call import regression remain covered. Interpreter handler selection
+uses method/PC/exception metadata, and monitor release uses frame monitor
+ownership; neither requires the discarded normal-only locals. Focused monitor,
+inlining, boolean, exception and metadata cleanup checks pass. The first five matched pairs regressed **700.999936 -> 795.000064 ms**
+(TeaVM 605.449664 ms), runtime
+`08b1761a23957cd37995f31e18f0a2bc327af3bcb7cb4e6de187ef679e4ce6fd`.
+Shrinking exception spills crossed a 16 KiB duplication threshold and enabled
+a large mesh renderer's inline entry. A second version charged the removed
+operand bytes to the duplication budget, preserving all 425 method entry-policy
+choices. It still failed to improve: **691.000064 -> 701.999872 ms**
+(TeaVM 601.841520 ms), runtime
+`984abad0bdaeef04fddf12f53c038ed1be04e210ac96b1af0b3366f2d317c030`.
+All 15 processes per version completed with exact reference pixels. Both
+prototypes and their added tests were removed; neither is a retained gain.
+
+### Deferred compact ownership IDs: rejected experiment
+
+Allocating independent ownership IDs only at terminal compact exits removed
+normal inline-entry ID increments. A separate host-owned namespace preserved
+legacy negative IDs, wraparound, nested exit ownership and collection of retired
+modules. Focused validation passed 1,127 assertions, including low-fuel frames,
+exceptions, active replacement and ownership lifetime. Five matched pairs tied:
+**696.000000 -> 697.999872 ms**, TeaVM **603.508205 ms**. Runtime SHA-256:
+`6b7ca9ea71b6056ceadc8f31c17bb3f0be0b84989a8bb1e3c26ce9aa3e143432`.
+All 15 fresh processes completed 251 frames and matched the reference. No sample
+was excluded. No runtime import calls were removed. The source/test prototype
+was removed after this result; retained source remains `fc284ac0`.
+
+A separate instrumented diagnostic counted **8,120,570 Wasm-to-JavaScript
+imports** after presentation 0 through Java return (remaining 250 frames plus
+final bookkeeping). Import counters were explicitly enabled on the VM before
+preparation; setting an environment variable alone in the browser bundle had
+not enabled them, and that earlier zero-count probe was discarded. Instrumented
+timing and heap observations are excluded from acceptance. The valid census
+found zero scalar return callbacks during animation, so that possible change
+has no measured benefit here. The largest import totals were:
+
+| Import | Calls |
+| --- | ---: |
+| `abase` | 2,121,930 |
+| `alen0` | 2,121,930 |
+| `alen` | 719,500 |
+| `aget_r` | 671,000 |
+| framebuffer static read | 651,773 |
+| row-offset static read | 651,250 |
+| material RGB field read | 651,000 |
+| reference equality | 248,187 |
+
+The next experiment combines a base/length pair into one import, with immediate
+consumption of a module-owned linear-memory scratch word. It preserves getter
+and conversion order, keeps reentrant calls from publishing partial metadata,
+and falls back to the two existing imports when tracked scratch allocation is
+unavailable. The isolated runtime
+`44b80ad1294b22b6919a16cfa206d76a0167362cac0b96aa14f8908bd7a4e0c3`
+passed 242 focused assertions (`arrayMetadataImport`:23,
+`wasmParameterArrayAbi`:96, `sharedFieldArrayCaches`:32,
+`primitiveArrayCopyEntry`:91). A growth fixture initially requested less than
+its existing capacity; correcting its request exercised actual growth.
+Five matched pairs measured **708.000000 -> 702.000128 ms** (0.85% lower),
+TeaVM **603.555834 ms**, still **16.31% slower**. Two pairs regressed. All 15
+fresh processes completed 251 frames and matched the reference; no run was
+excluded and no profiling/tests/build overlapped timing. A separate diagnostic
+including setup counted 2,221,746 combined queries, zero separate base/length
+queries; its timing is excluded. This confirms execution, not a robust gain.
+The prototype and added tests were removed, rather than adding complexity for
+an unconfirmed sub-percent result. The 10%
+execution goal and all full-game release gates remain open.
+
+### Fixed reference-array lengths: rejected experiment
+
+Runtime-created reference arrays now have a nonwritable length, matching Java's
+fixed-length rule. Private weak membership proves this property without pinning
+arrays or trusting public type/base fields. The structured compiler can reuse a
+captured length for these arrays; its internal negative marker never enables raw
+element access. Host arrays, proxies, worker clones and forged markers retain
+the original length imports and null checks. Multidimensional reference arrays
+use the same proof. No method name, application identity or public flag is used.
+
+Focused commands from `java-tools`, with
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules`, pass 210 assertions:
+
+```bash
+node test/fixedReferenceArrayLengths.test.js # 34
+node --expose-gc test/wasmParameterArrayAbi.test.js # 96
+node test/sharedFieldArrayCaches.test.js # 32
+node test/multianewarrayRuntime.test.js # 4
+node test/arrayAssignability.test.js # 14
+node test/workerBooleanSnapshot.test.js # 30
+```
+
+An initial test incorrectly read reference returns from the scalar box; it now
+consumes and clears the actual native `retv` reference. Another exposed that
+multidimensional allocation had its own array construction, which now fixes all
+reference levels too. The isolated runtime
+`8565adee7a2e781f2d354be9b23c5f0effdc5f7e76683e9c6930a12e21a752b4`
+regressed in all five matched pairs: **700.000000 -> 811.000064 ms**, TeaVM
+**612.356918 ms**. All 15 fresh processes completed 251 frames with matching
+reference pixels; none was excluded. There was no build/test/profile overlap.
+The 425 method entry selections were identical, so an entry-selection threshold
+does not explain this regression. A separate diagnostic including setup confirmed that reference-array length
+imports fell below the 23,869-call top-import cutoff (the previous artifact
+had 723,275); instrumented timing is excluded. Avoiding those imports did not
+prove a speedup. Its cause is not established. The prototype
+and its new tests were removed; no fixed-length allocation change is retained.
+
+### Bounded copy control-flow equivalence: current experiment
+
+The whole-copy recognizer previously required instruction-for-instruction layout
+identity. A bounded graph bisimulation now allows unconditional-jump forwarding,
+inverted comparisons with swapped successors and duplicated equivalent blocks.
+It still matches every load, update, conditional and array effect. Missing edges,
+epsilon cycles, changed element operations and proof-budget exhaustion refuse
+the optimization. Inputs are bounded to 4,096 instructions, 32,769 state pairs
+and 131,072 work units per template. There is no application identity.
+
+The actual exported integer copy now proves equivalent to the existing width-8
+memmove template (372 normalized instructions). Conservative fuel bounds for
+nonidentical layouts charge instruction count and structured loop headers;
+signed division avoids multiplication overflow in the bulk-entry guard. Low
+fuel keeps the original continuation. Integer bulk copying is automatic in
+this experimental bundle. Host overrides, stale captured bases/lengths, wrapped
+views, wrong element kinds and shared buffers retain ordinary execution. The
+strict eligibility probe invokes no custom metadata getters. Byte copies keep
+their existing optional policy.
+
+Focused commands from `java-tools`, with
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules`, pass 553 assertions:
+
+```bash
+node test/primitiveArrayCopyEntry.test.js # 178
+node test/primitiveByteCopyEntry.test.js # 108
+node --expose-gc test/emptyCanonicalCopy.test.js # 83
+node --expose-gc test/wasmParameterArrayAbi.test.js # 96
+node --expose-gc test/wasmCompilerRetention.test.js # 88
+```
+
+The copy tests mutate all 36 loads across duplicated forward/reverse tails,
+compare overlapping/disjoint copies and invalid ranges, and preserve exact
+negative/zero/low-fuel spill state. The default-policy check requires actual
+emission without an opt-in. The isolated source audit covers 686 source files,
+three explicit overlays on `fc284ac0`, excluding protected decompiler WIP.
+Debug/worker webpack builds passed with four existing warnings. Runtime:
+`fbb06e9d46172c5e0403f5f48a92a6e68d065146bb749589600375dbae6a9049`.
+Matching AOT recording executed no Java. Five matched pairs regressed
+**697.000192 -> 759.000064 ms**, TeaVM **601.558612 ms**. All 15 fresh
+processes finished 251 frames and matched the saved reference; no sample was
+excluded and no profiling/tests/build overlapped timing. Actual copy entries
+remain 240,639, preserving the earlier empty-call omission. The new path also
+adds two strict JavaScript eligibility imports per nonempty call. The plain
+inline copy entry became unavailable; its heap inline entry remains present.
+This first layout is rejected, not a retained improvement.
+
+The successor uses the original compiled scalar loop's captured raw-i32 access
+contract. It proves the whole Java-index range and the whole physical byte
+range in Wasm. Unsigned 64-bit address calculations reject wrapping/overrun
+cases, which must preserve original scalar partial stores and traps. The
+memory's unshared brand is checked once during compilation. Native disjointness
+also bypasses the pure reference-equality import; overlapping distinct views
+still use the scalar forward-copy behavior. There is no per-copy JavaScript
+eligibility import or new option. Byte-copy policy/guards are unchanged.
+
+The successor initially passed **546 focused assertions** with the same commands above:
+integer-copy 171, byte-copy 108, empty-call 83, array ABI 96, retention 88. The
+integer suite now demonstrates actual nonempty bulk execution by copying data
+without entering the original body's reference-equality import. It separately
+compares source/target physical overruns and wrapped addresses with the scalar
+method, including partial effects before traps. An initial emission error used
+the array operand instead of its index in the wide range expression; native
+module validation rejected it, and correcting the index made the suite pass.
+
+Its isolated debug/worker build passed with four existing warnings, 686 audited
+source files and four explicit overlays. Runtime SHA-256:
+`ce467946c99f90456e7243fb4d6529ebc593f2e45dcd11c30e92f497c3d09f5c`.
+Before timing, review identified another malformed-host case: the same Java
+reference may yield different captured bases. Equal Java indices return without
+copying; differing indices choose direction from Java indices, not physical
+addresses. The alias guard now requires matching captures for overlapping
+same-reference ranges, and tests Java identity when equal indices could trigger
+the original early return. Two new compiled cases compare exact effects with
+the original loop. Integer-copy validation now passes 173 assertions. The
+`ce467946` bundle above was superseded before any performance comparison;
+corrected source requires its own build and AOT pack. The corrected bundle is
+`cd6907f6cc15ed6681071bf170b405075fd7059cb8ba0b6ce50c0e2aa16bbfa5`;
+its matching AOT pack is 9,833,800 bytes and recording executed no Java. The
+source audit again passed for 686 files/four overlays, and the isolated build
+passed with four existing warnings.
+
+Ten matched pairs of this exact corrected binary measured **700.999936 ->
+693.000064 ms**, **1.14% lower** median, eight wins and two regressions. The
+first five measured 726.000128 -> 693.999872 ms; the confirming five measured
+697.999872 -> 692.000256 ms. The smaller confirmation gain limits the claim;
+the first batch's 4.41% magnitude did not repeat. No sample was excluded. All
+30 processes were fresh CPU2 Node processes with a 1,024 MiB old-space limit,
+251 frames once, no warmup/replay, unchanged RGB/RGBA and preparation policies,
+and no overlapping profiling/tests/build/browser. TeaVM's ten-run median was
+**602.970368 ms**: the candidate is still **14.93% slower**, missing the 10%
+goal by about 29.73 ms.
+
+Final focused validation on the corrected source reran all five commands above
+and passed **548 assertions** (173/108/83/96/88). Separate full-frame validation:
+
+```bash
+python3 /tmp/teavm-full-frames.py
+node /tmp/teavm-intro-firefox-proof.cjs
+```
+
+All 251 RGBA frame hashes equal the retained baseline (225 distinct frames),
+sequence `a275416200c6a79aa927777ada094644d46fd628a0ce7541a5ed1239ca81f8d3`.
+Firefox 148.0.2 completed 251 frames, matched the saved reference and reported no
+page errors. AOT replay served all 962 requests with zero misses/refusals/errors.
+There were nine post-main Wasm compilations; this phase counter does not locate
+them relative to the Java animation timer. The browser check is paced canvas
+correctness, not a presented-FPS, Android, constrained heap or full-game gate.
+No screenshot or new native reference was made. The default player/server and
+published artifacts remain unchanged.
+
+A separate post-frame-0 native-wrapper diagnostic counted all **240,187** later
+integer-copy entries, exactly matching the native entry-counter delta, without
+replacing method metadata or changing arguments/results. Count distribution:
+149,158 length-one; 43,253 length-two; 10,639 length-three; remaining lengths
+4..16. It matched the reference; its timing is excluded. This supports a future
+small-copy specialization, rather than assuming typical copy sizes.
+
+Retained generic source is committed on `java-tools` master as
+`3cf454a14aaa036eecade843a3a377985fc8d02f`. This does not select or publish a runtime artifact.
+
+The next independent experiment is the presenter's RGB staging input copy.
+Current native swizzling copies the heap-backed framebuffer to a private staging
+memory, converts it, then copies RGBA to the host. TeaVM already converts into
+its direct output buffer before its host copy. A feature-probed multi-memory
+converter could read our original heap directly and preserve that same output
+handoff. Local Node supports multiple memories; unsupported engines must retain
+the existing converter. This is not yet an implemented or measured gain.
+
 ## 6. Protocol servers
 
 ```bash
