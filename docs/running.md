@@ -3524,7 +3524,7 @@ had 723,275); instrumented timing is excluded. Avoiding those imports did not
 prove a speedup. Its cause is not established. The prototype
 and its new tests were removed; no fixed-length allocation change is retained.
 
-### Bounded copy control-flow equivalence: current experiment
+### Bounded copy control-flow equivalence: retained native guards
 
 The whole-copy recognizer previously required instruction-for-instruction layout
 identity. A bounded graph bisimulation now allows unconditional-jump forwarding,
@@ -3651,7 +3651,87 @@ memory, converts it, then copies RGBA to the host. TeaVM already converts into
 its direct output buffer before its host copy. A feature-probed multi-memory
 converter could read our original heap directly and preserve that same output
 handoff. Local Node supports multiple memories; unsupported engines must retain
-the existing converter. This is not yet an implemented or measured gain.
+the existing converter. The follow-up implementation and measurements are recorded below.
+
+### Direct-heap RGB conversion: retained implementation
+
+A weak buffer-to-Memory lookup lets the presenter recognize a genuine JVM heap
+view. A feature-probed two-memory Wasm converter reads that input directly and
+writes RGBA into its private output memory, retaining the existing host output
+copy. It never mutates the input framebuffer or caches its byte offset across
+calls. Module/instance caches use weak ownership and release retired VMs. The
+same implementation generates SIMD and scalar variants. Unsupported multi-memory,
+allocation failure, custom length getters and prefix/subarray behavior keep the
+existing conversion path; no public flag or application identity is added.
+TeaVM's renderer/converter/output handoff is unchanged.
+
+Focused commands from `java-tools`, with
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules`, pass 256 assertions:
+
+```bash
+node --expose-gc test/raster.test.js # 179
+node test/awtRasterPrefix.test.js # 18
+node test/wasmHeapArrays.test.js # 59
+```
+
+Tests cover actual zero-input-copy execution, colours/alpha, tail counts,
+nonzero offsets, scalar/SIMD/missing/spent backends, unchanged input, destination
+sentinels, custom length evaluation counts and prefix behavior, native output
+memory reuse/growth and collection of three retired guest memories while the
+presenter module remains loaded. The fixed output copy is still present.
+
+The isolated debug/worker build passed with four existing warnings. Source audit:
+686 files, two explicit overlays on retained `3cf454a`; protected decompiler WIP
+excluded. Runtime SHA-256:
+`943b6388fa03edb44682430310044b9493542d11ce7be63058c08fca041c8b20`.
+The earlier `029bf69f` build was superseded before timing after adding an
+ArrayBuffer.isView guard: typed-array proxies preserve the original native
+staging path and exactly one instanceof prototype probe. The final matching
+AOT pack is 9,833,745 bytes; recording executed no Java.
+The comparison baseline fixture now holds the verified `cd6907f6` runtime and
+matching AOT, not an unverified experiment. The selected persistent player and
+published artifacts remain unchanged.
+
+Ten matched pairs of the final binary measured **699.000064 -> 684.499968 ms**,
+**2.07% lower** median, with eight winning pairs, one regression and one
+effectively tied pair. First five: 694.000128 -> 685.999872 ms; confirmation:
+700.999936 -> 683.000064 ms. All observations remain included, including a
+first-batch pair effectively tied at millisecond clock resolution. TeaVM median:
+**600.503444 ms**. The candidate is still **13.99% slower**, about **23.95 ms**
+above the 10% target. Each of the 30 processes was fresh, CPU2, 1,024 MiB
+old-space, 251 frames once, with no warmup/replay or overlapping build, test,
+profile or browser work. Pixel/output and preparation policies are unchanged;
+the input staging removal is solely inside the shared runtime renderer.
+
+Final focused validation reran all three commands above: **256 assertions**
+(179/18/59). Separate validation commands:
+
+```bash
+python3 /tmp/teavm-full-frames.py
+node /tmp/teavm-intro-firefox-proof.cjs
+python3 /tmp/teavm-rgb-census.py
+```
+
+All 251 RGBA hashes equal the verified copy-optimized baseline, including the
+same 225 distinct frames and sequence
+`a275416200c6a79aa927777ada094644d46fd628a0ce7541a5ed1239ca81f8d3`.
+The ordinary Firefox 148.0.2 check completed 251 frames with matching saved
+canvas readback, zero page errors and all 962 AOT requests served without
+misses/refusals/errors. Separate instrumented Node and Firefox runs each
+confirmed **one direct-memory converter instance, used for all 251 frames**.
+Their timings are excluded. The browser converter is active, not merely a
+supported but unused feature. No new screenshot/native reference was made.
+These remain correctness/activation checks, not presented-FPS, constrained
+full-game, Android, heap-peak or long-session acceptance.
+
+Retained generic source is committed on `java-tools` master as
+`e25da1c0321e869792c65b4b332068c7c15d218a`. The default runtime artifact was not selected or published.
+
+The remaining execution gap is about 24 ms. The prior native copy census found
+149,158 length-one copies after frame 0; a specialized one-element entry could
+avoid general bulk-copy range/alias work while preserving the original low-fuel,
+identity, bounds and physical-fault behavior. That next step remains unmeasured.
+Do not credit its potential as a gain.
 
 ## 6. Protocol servers
 
