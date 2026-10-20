@@ -6,6 +6,24 @@ import {fileURLToPath} from 'node:url';
 const here=path.dirname(fileURLToPath(import.meta.url));
 export const sha256=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 
+// Class-manifest identity covers the original classes and standalone patch.
+// These loop-free dependencies otherwise compile synchronously on frame 0.
+const profiledSource='d1e394b07ecc5cabd0f5a4aa0801bfa3345db13811a5104e0fa85f0720740b98';
+const rotationHelpers=[
+  'DelegatingCanvas.sineQ16(BI)I',
+  'IntrusiveNodeHashTable.cosineQ16(II)I',
+  'ArchiveIndex.buildLogoRotationTransform(IBI)[I',
+  'Geoblox.prepareLogoMeshRotation(BI)V',
+];
+export function introPreparationPolicy(sourceSha256) {
+  const policy={entryMethods:['GeobloxIntro$Browser.main([Ljava/lang/String;)V']};
+  if(sourceSha256===profiledSource) {
+    policy.priorityMethods=[...rotationHelpers];
+    policy.wasmCalleeMethods=[...rotationHelpers];
+  }
+  return policy;
+}
+
 export function introManifest(player,runtime) {
   const provenance=JSON.parse(fs.readFileSync(path.join(player,'provenance.json')));
   if(provenance.generatedBy!=='dekobloko-geoblox-intro')throw new Error('Not an intro player');
@@ -22,8 +40,10 @@ export function introManifest(player,runtime) {
     'runtime.mjs','../launcher/browser-loader/browser-image-decoder.mjs',
     '../launcher/browser-loader/browser-inflater.mjs','../launcher/browser-loader/code-pack.mjs',
   ].map(name=>fs.readFileSync(path.resolve(here,name)))));
-  return {classes,provenance,sourceSha256:sha256(JSON.stringify(classes)),integrationSha256,
-    jvmOptions:{...JSON.parse(fs.readFileSync(path.resolve(here,'../launcher/browser-runtime.json'))).jvmOptions,
+  const sourceSha256=sha256(JSON.stringify(classes));
+  const options=JSON.parse(fs.readFileSync(path.resolve(here,'../launcher/browser-runtime.json'))).jvmOptions;
+  return {classes,provenance,sourceSha256,integrationSha256,
+    jvmOptions:{...options,jit:{...options.jit,preparationPolicy:introPreparationPolicy(sourceSha256)},
       prepareWasmPreparedUpgradesOnly:true},
     runtimeSha256:sha256(fs.readFileSync(path.join(runtime,'jvm-debug.js')))};
 }

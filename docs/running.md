@@ -4015,6 +4015,378 @@ The selected persistent player remains runtime `4dd27b33`; nothing is published.
 The original full-game 512 MiB, startup, presented-FPS, stability, 6x-browser and
 actual-phone release gates remain unverified by this standalone benchmark.
 
+### Receiver upper bounds: compiler capability, no intro timing gain
+
+The structured Wasm inliner now feeds bytecode-proven receiver bounds into
+virtual/interface target selection. A stable `this` is bounded by its declaring
+class; an explicit successful `checkcast` establishes a nullable upper bound.
+Selection and class-epoch dependencies use that narrower cone, including inside
+inlined bodies. Unrelated sibling implementations no longer exhaust the inline
+limit or force invalidation. Casts still execute; null guards, original-PC
+fallback, ambiguous-flow rejection, and invalidation for late overrides remain.
+This is generic compiler logic in java-tools, with no new application flag or
+assumption that preparation has discovered every possible allocation.
+
+Focused validation commands, from java-tools, each with
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules`:
+
+```bash
+node test/wasmInstanceInline.test.js         # 100 assertions
+node test/wasmInlineBudget.test.js           # 67 assertions
+node test/wasmDeepInline.test.js             # 8 assertions
+node test/wasmInlineInitialization.test.js   # 50 assertions
+node test/classHierarchy.test.js            # 16 assertions
+```
+
+All **241 assertions pass**. The new fixture proves that a declared superclass
+with five implementations can specialize through a narrower receiver, including
+ordinary Java interface dispatch after a cast. It checks nested calls, wide
+arguments, ambiguous joins, casts belonging to arguments, null/CCE behavior,
+unrelated sibling loads, and newly loaded overrides. Before the change, the
+initial regression fixture failed 12 assertions because those sites did not
+specialize. Existing initialization, budget and receiver-proof tests still pass.
+
+`python3 /tmp/teavm-array-build.py` built an isolated debug/worker bundle from
+`d5ec5ad76a07b47724a82cbdab92a24ef7587393` with only `src/jit/wasmInline.js`
+overlaid, auditing 687 files and excluding protected decompiler WIP. Webpack
+finished with its four existing warnings. Source-file SHA-256 is
+`24c27a9ee2de575fa41107add61a3623102d358998c6b9027d34e144901179a3`;
+runtime SHA-256 is
+`70f2e0a8a516b4c31935cc30223c1930f7f0165b8c29fe7a27643bfa05f86776`.
+`node apps/intro/build-aot.mjs --player /tmp/teavm-parity-ORXsjp/player --runtime /tmp/teavm-parity-ORXsjp/player/runtime`
+recorded a matching 9,833,871-byte pack without executing Java.
+
+`python3 /tmp/teavm-parity-paired.py` compared five alternating pairs against
+the preceding `23b00b90` runtime and matching AOT, with TeaVM after each pair.
+All 15 fresh processes used CPU2, a 1,024 MiB old-space limit, ticks 0–250 once,
+unchanged host/output policies, and no profiling, build or test overlap.
+
+| Measure | Previous runtime | Receiver bounds | TeaVM |
+|---|---:|---:|---:|
+| Median animation | 654.000128 ms | 654.000128 ms | 602.380502 ms |
+| Range | 652.999936–675.000064 ms | 651.000064–992.999936 ms | 600.385548–606.272112 ms |
+
+There are two paired wins, two regressions and one tie; the 993 ms candidate
+outlier is retained. **No intro speedup is established.** Both runtime medians
+are 8.5693% above TeaVM in this batch; that differs from the historical batch
+and is not an improvement attributable to this change. Comparing every decoded
+prepared payload, preserving compiler variants and removing only runtime
+identity, finds **all 962 entries identical** with no additions. This compares
+prepared JavaScript payloads; it does not by itself establish native Wasm body
+identity. The paired timing establishes no execution gain for this pass.
+
+`python3 /tmp/teavm-full-frames.py` independently verifies all 251 complete RGBA
+frames match the preceding runtime and TeaVM, with 225 distinct frames and
+unchanged sequence SHA-256
+`a275416200c6a79aa927777ada094644d46fd628a0ce7541a5ed1239ca81f8d3`.
+Those diagnostic times are excluded. Results update the existing single
+`intro-comparison.json`; no screenshot, native reference rerun, extra report,
+default artifact selection or publication is performed. Firefox was not
+repeated for this pass. Full-game memory, startup, presented-FPS, stability and
+phone gates remain unverified.
+
+### Shared SSA reference facts: implemented, no reliable intro gain established
+
+java-tools now exposes one lazy `fn.referenceFacts` object per shared SSA graph.
+`get(value)` supplies nullable/non-null/null knowledge, reference upper bounds,
+and exact allocation types where proven. `at(value, node)` adds knowledge valid
+before that instruction; a block id queries its terminator. Parameters, casts,
+copies, reference phis, allocations, field descriptors, method-return
+descriptors and reference-array elements participate. Nullable fields and
+method results stay nullable. This remains intraprocedural: it does not infer
+callee return summaries, global points-to sets, escape or alias summaries.
+
+The inliner consumes these facts when its existing cheap receiver trace cannot
+follow a reference through locals or joins. Its additional SSA analysis is
+bounded to 2,048 code items, retaining existing selection/fallback beyond that.
+The structured Wasm emitter consumes the same API for redundant null branches
+and known-null casts/instanceof, including nulls established by preceding
+branches or phi joins. Arbitrary casts retain their existing admission policy;
+this does not introduce a general-cast opt-in. An entry cast can therefore
+still require fallback even when SSA separately proves a later call's target.
+The JavaScript renderer has not been converted to consume these facts.
+
+Normal-edge facts are intersected at joins. Successful dereferences prove only
+later uses; handler locals start opaque. A loop re-entry kills facts about its
+fresh definitions before merging incoming phi facts, preventing a previous
+iteration's non-null load from proving a new load safe. The analysis reuses SSA
+def-use links, delays edge state until needed, retains existing literal-null
+shortcuts, and compresses cast-identity paths. Value/path work and sparse-state
+budgets conservatively fall back to unknown, with the state budget checked
+during individual switch edges. These are compiler-work bounds, not a wall-time
+or presented-FPS guarantee. Graphs and caches remain temporary and are released
+with compiler diagnostics; no proof counters or graphs are added to hot
+execution metadata or prepared transport. No application data or new JVM flag
+is involved.
+
+Focused checks total **706 passing assertions**. Commands below ran from
+java-tools, each prefixed with
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules`:
+
+```bash
+node test/ssaReferenceFacts.test.js          # 70
+node test/wasmSsaReferenceFacts.test.js       # 26
+node test/ssa.test.js                       # 59
+node test/wasmInstanceInline.test.js         # 118
+node test/structuredNullCast.test.js         # 26
+node test/wasmInlineBudget.test.js           # 67
+node test/wasmDeepInline.test.js             # 8
+node test/wasmInlineInitialization.test.js   # 50
+node test/wasmCompilerRetention.test.js      # 88
+node test/hostOwnedCanonicalFuel.test.js     # 155
+node test/frameLocalSpills.test.js           # 39
+```
+
+Tests cover receiver types across aliases/joins/parameters, wide parameter
+slots, nullable call returns and fields, identity, side-effect ordering,
+original NPE/CCE behavior, opaque handlers, entry-loop seeds, fresh loads on
+backedges, budget fallback, wide switches, cleanup, and late subclasses. A
+1,024-cast chain needs 9,225 node-op reads in its regression test, avoiding
+quadratic rescanning. A direct emitter test verifies that an unknown condition
+retains its reference load/test while a dominated non-null condition emits a
+constant, without adding diagnostic fields to runtime metadata.
+
+`python3 /tmp/teavm-array-build.py` audits 688 source files from `d5ec5ad` plus
+four explicit overlays: `ssa.js`, `referenceFacts.js`, `wasmInline.js`, and
+`StructuredWasmCompiler.js`. Protected decompiler WIP is excluded. The final
+bundle builds with the four existing webpack warnings. Runtime SHA-256:
+`c5ac25edb37ede64a8d9e28988a55b379918146814ce311502acd4f5aba851fe`.
+Reference-facts source SHA-256:
+`a759d5f2c66c10b53a0a3064965fb97ed44ca8ca938c9f617ad7cea475122521`.
+`node apps/intro/build-aot.mjs --player /tmp/teavm-parity-ORXsjp/player --runtime /tmp/teavm-parity-ORXsjp/player/runtime`
+records the matching 9,832,396-byte pack without executing Java.
+
+Five matched pairs per variant, always against `70f2e0a8` plus its matching
+pack, produced the following animation medians (milliseconds):
+
+| Variant | Previous runtime | Candidate |
+|---|---:|---:|
+| Initial shared analysis, `08cf5c5b` | 652 | 664 |
+| Less eager allocation, `6ae65f26` | 652 | 691 |
+| Proof counters removed from execution metadata, `1f95ac2a` | 656 | 655 |
+| Memoized cast identities, `5f370ffb` | 679 | 697 |
+| Final switch-budget guard, `c5ac25ed` | 665 | 660 |
+
+The earlier slower variants are recorded, not selected or pooled with the
+final binary. Removing the experimental execution-metadata counter coincided
+with a near-baseline batch; subsequent variation prevents attributing a
+reliable speedup to this work. The final batch's incremental reduction is only
+0.7519%; TeaVM's median is 605.671164 ms, putting the candidate 8.9700% above it.
+Every sample, including outliers, is retained. Each batch used 15 fresh
+CPU2-pinned processes with 1,024 MiB old-space, ticks 0–250 once, unchanged
+host/output/compiler policies, no warmup/replay, and no overlapping build,
+test, profiling or browser work. This validates capability rather than a new
+performance win; it does not replace the earlier retained-runtime evidence.
+
+The one existing comparison JSON holds source identities, trials and separate
+correctness diagnostics. Prepared JavaScript payload equality alone does not
+establish native Wasm identity; the final diagnostic separately compares all
+WebAssembly module compilations, including specializations. Selected persistent
+artifacts remain unchanged. Full-game memory, startup, presented-FPS, stability,
+6x-browser and phone acceptance remain unverified by this standalone exercise.
+
+Final correctness commands:
+
+```bash
+python3 /tmp/teavm-full-frames.py
+python3 /tmp/teavm-ssa-facts-proof.py
+node /tmp/teavm-intro-firefox-proof.cjs
+```
+
+The full-frame check passes all **251 complete RGBA frames**, with 225 distinct
+frames and unchanged sequence SHA-256
+`a275416200c6a79aa927777ada094644d46fd628a0ce7541a5ed1239ca81f8d3`.
+The separate native-code diagnostic captures every WebAssembly module
+compilation: **all 1,274 module byte sequences match** the preceding runtime,
+including specializations. All 962 prepared JavaScript payloads also match
+after removing runtime identity. Thus this intro does not receive additional
+executable-code optimization from the shared facts, despite the focused
+fixtures demonstrating new capabilities. The Firefox 148.0.2 correctness smoke
+passes 251 frames, the saved tick-80 hash, zero page errors, and 962 AOT hits
+with zero misses/refusals/errors. All diagnostic and paced-browser timings are
+excluded from the matched execution measurements. No screenshot or native
+reference rerun is generated.
+
+### TeaVM parity attempt: seven rejected runtime prototypes
+
+This pass first tried seven generic compiler/runtime variants against the same
+`c5ac25ed` VM and matching baseline pack. Each row is five alternating matched
+pairs, with TeaVM after each pair: 15 fresh processes per binary, CPU2 affinity,
+1,024 MiB old-space, ticks 0–250 once, no Java warmup or animation replay. Every
+trial completed 251 frames and matched the saved tick-80 RGB hash. All 105
+observations are retained in the existing single comparison JSON; the history
+labels these prototypes as rejected. No extra report files are produced.
+
+| Runtime prefix | Prototype | Baseline ms | Candidate ms | TeaVM ms |
+|---|---|---:|---:|---:|
+| 66f0382a | Explicit repeated bounds checks | 664 | 727 | 605.326 |
+| ae8843e5 | Non-returning error path | 655 | 682 | 603.237 |
+| d16b1504 | Guarded countdown loops | 665 | 666 | 600.636 |
+| 334d6f18 | Initial SIMD | 675 | 662 | 605.136 |
+| f2a8a137 | Corrected and hoisted SIMD | 666 | 681 | 602.559 |
+| 2d961f46 | SSA use-aware SIMD | 667 | 679 | 608.131 |
+| 6eb22356 | Nested-only SIMD | 684 | 702 | 606.869 |
+
+The repeated-check proof reused successful primitive accesses only inside one
+basic block. Tests covered independent arrays/indices, nulls, bounds failures,
+loop re-entry, partial stores, fuel continuations and proof cleanup. It passed
+383 focused assertions but regressed. Marking the bounds-error import
+non-returning passed the 59 heap-array assertions and also regressed. Neither
+change remains.
+
+The loop prototypes extended the existing proof to predecrement countdowns,
+root parameter loops, inlined arithmetic and reporter ranges, with complete
+logical/physical range and exact `n+1` fuel guards. SIMD processed four independent
+integer iterations, guarded physical aliasing, retained scalar tails and refused
+shared memory and reductions. Later variants used SSA def-use counts and outside
+frame liveness to reduce vector temporaries, and restricted SIMD to nested loops.
+An oversized vector version fell back to the existing scalar proof within its
+8 KiB code budget. These capabilities passed focused tests but did not establish
+a safe, repeatable improvement for this intro, so they were removed.
+
+Review found two issues in the experimental SIMD work. A diagnostic callback
+initially retained its lexical proof graph; moving it outside the emitter scope
+made the collection regression pass. More significantly, copying a loop header
+once per four iterations did not preserve values copied from previous iterations.
+The initial `334d6f18` binary matched all 251 intro frames but failed added generic
+history tests; it is not safe to retain. Later variants reconstructed four exact
+phi-copy iterations, including reference histories and swaps. The final rejected
+variant passed 701 focused assertions. An intermediate `01668a92` build was not
+benchmarked and is not counted in the table. All experimental source and test
+changes were removed; the original 159-assertion guarded-loop suite passes again.
+
+The four retained runtime source overlays match their pre-pass hashes exactly.
+The isolated rebuild again audits 688 files, excludes the unrelated decompiler
+work, and produces runtime SHA-256
+`c5ac25edb37ede64a8d9e28988a55b379918146814ce311502acd4f5aba851fe`
+with the four existing webpack warnings. No SIMD or repeated-bounds prototype is
+selected or shipped.
+
+### Intro dependency preparation: faster animation, parity still open
+
+A diagnostic at the actual Java `System.nanoTime()` calls found a preparation
+gap. Counting everything after `main()` had mixed constructor/setup compilation
+with animation compilation. On the unchanged `c5ac25ed` baseline, the animation
+window itself contained four nested synchronous Wasm compiles:
+
+- `DelegatingCanvas.sineQ16(BI)I`
+- `IntrusiveNodeHashTable.cosineQ16(II)I`
+- `ArchiveIndex.buildLogoRotationTransform(IBI)[I`
+- `Geoblox.prepareLogoMeshRotation(BI)V`
+
+Their combined outermost diagnostic wall time was **24.654 ms**; nested inclusive
+times must not be added together. An earlier 52.8 ms observation used the rejected
+heavier compiler, not this retained baseline.
+
+`apps/intro/manifest.mjs` now supplies these dependencies and their preparation
+order through the VM's existing generic `wasmCalleeMethods`/`priorityMethods`
+policy. `apps/intro/runtime.mjs` preserves that supplied policy. The profile
+applies only to class-manifest SHA-256
+`d1e394b07ecc5cabd0f5a4aa0801bfa3345db13811a5104e0fa85f0720740b98`,
+which covers the original classes and standalone patch. Unknown identities use
+the entry-method-only policy. The VM receives no application-specific rules or
+new flags. Java class files and the 251-frame animation are unchanged.
+
+A separate diagnostic confirms that all four owners remain uninitialized after
+preparation. Ordinary Java setup initializes them before the animation timer.
+With the profile, the native method count is already 426 at that timer and remains
+426 at completion; synchronous post-main compilation stays at five, all from
+Java setup. **VM compilation inside the animation drops from four operations to
+zero.** One 255-byte native presenter module still compiles at presentation 0,
+measuring 0.064 ms in that diagnostic. These diagnostic times are excluded from
+the performance comparison. Required compiler work now runs before Java entry;
+Java setup and every animation frame still execute once.
+
+Ten alternating matched pairs plus TeaVM produced 30 fresh-process observations:
+
+| Animation median | Old preparation | Profiled preparation | TeaVM |
+|---|---:|---:|---:|
+| First five pairs | 671 ms | 635 ms | 608.620 ms |
+| Independent confirmation | 711 ms | 642 ms | 607.300 ms |
+| All ten pairs | 685 ms | 639 ms | 607.960 ms |
+
+The pooled reduction is **6.7%**, with nine paired wins and one regression.
+Every sample, including slow outliers, is kept. The remaining measured deviation
+from TeaVM is **5.1%**; parity is still open. Both variants use the **same VM
+binary**, fixed Java classes and assets, CPU2 and the 1,024 MiB limit. The
+changed variables are Deko's preparation policy and matching pack. The first
+baseline process briefly overlapped a cold-static correctness check during
+untimed preparation; its animation did not overlap the check. The independent
+confirmation processes had no build, test or profiling overlap throughout.
+
+This comparison keeps the preceding benchmark's
+`prepareWasmPreparedUpgradesOnly:false` setting on both sides. The normal intro
+still defaults to true; a focused test verifies that explicit helper selection
+works with that filter enabled. This is a standalone execution comparison,
+not full normal-loading-path acceptance.
+
+Both packs have runtime identity `c5ac25ed…` and 962 prepared entries. Baseline:
+9,832,396 bytes, SHA-256
+`c0089d4c3cf3b6691e66a1e714d1a3f7d01e694f9f7a80cff6fa55eacfeca03c`.
+Profiled pack: 9,832,174 bytes, SHA-256
+`3faeb12d5f6ea7c26f698a5a23e32bf8c99a61e150a0ad39bf5b07852ff593de`.
+The integration digests are respectively `2bb785a9…` and `18933dc9…`;
+configuration identities are `c20276743828fbe5` and `7b120e15d54643fb`.
+The comparison driver uses the matching old/new `runtime.mjs` and `manifest.mjs`
+for each pack. Baseline host source is Deko commit `a5641071`; the new source
+is the working profile change. Only the manifest's pre-existing benchmark
+filter override is applied to both private hosts. Runtime source is JVM
+`d5ec5ad` plus the four previously recorded SSA/receiver overlays.
+
+Focused commands, from the indicated repository:
+
+```bash
+# dekobloko-work: 2 tests pass
+node --test tests/intro-preparation.test.mjs
+
+# java-tools: 20 + 46 assertions pass
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/preparationWasmHelpers.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/coldPreparedWasmStatics.test.js
+
+# java-tools: 159 assertions pass after removing the prototypes
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc test/guardedNestedArrayLoops.test.js
+```
+
+The helper tests include explicit selections with both ordinary and upgrades-only
+preparation. The manifest test checks identity mismatch fallback, profile isolation
+and configuration merging. Four old cold-static assertions expected an exit at
+a later join even though the retained structured compiler hoists the readiness
+check before pure selection. The test now accepts a valid entry retry with live
+arguments or a later exit with the selected operand, and still verifies no early
+initialization, resumability and the exact final field value. No runtime guard
+was weakened to make the test pass.
+
+Build and measurement commands used the existing isolated workspace:
+
+```bash
+python3 /tmp/teavm-array-build.py
+node apps/intro/build-aot.mjs --player /tmp/teavm-parity-ORXsjp/player --runtime /tmp/teavm-parity-ORXsjp/player/runtime
+python3 /tmp/teavm-parity-paired.py
+python3 /tmp/teavm-parity-confirm.py
+python3 /tmp/teavm-full-frames.py
+node /tmp/teavm-intro-firefox-proof.cjs
+```
+
+Recording the pack executes no Java. For manual repetition, run
+`apps/intro/compare-node.mjs --worker --player DIR` in a fresh
+`taskset -c 2 node --max-old-space-size=1024` process for each matching host/pack,
+then `--teavm-worker` after the pair; alternate pair order and retain every
+observation. The comparison JSON records both host digests, pack identities,
+source hashes, all 30 observations and the seven rejected trials above.
+
+The full-frame check passes **all 251 complete RGBA frames** across old
+preparation, profiled preparation and TeaVM, with 225 distinct frames and sequence
+SHA-256 `a275416200c6a79aa927777ada094644d46fd628a0ce7541a5ed1239ca81f8d3`.
+Firefox **148.0.2** completes 251 frames with the saved tick-80 RGB hash, zero page
+errors, and **962 AOT hits with no misses, refusals or errors**. Its paced
+correctness timing is excluded. No screenshots or native reference reruns are
+created. The selected persistent runtime and pack remain unchanged.
+
+Further parity work must address the remaining measured execution gap. The
+rejected SIMD and bounds variants are not a retained improvement. Full-game
+memory, startup, rolling presented-FPS, stability, 6x-browser and phone targets
+remain unverified by this standalone pass.
+
 ## 6. Protocol servers
 
 ```bash

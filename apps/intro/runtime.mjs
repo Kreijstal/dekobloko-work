@@ -7,7 +7,8 @@ export function configureIntro(controller, options) {
   const {jit,...rest}=options;
   Object.assign(controller.options,rest,{prepareBeforeMain:true});
   controller.options.jit={...controller.options.jit,...jit,
-    preparationPolicy:{entryMethods:['GeobloxIntro$Browser.main([Ljava/lang/String;)V']}};
+    preparationPolicy:{...jit?.preparationPolicy,
+      entryMethods:['GeobloxIntro$Browser.main([Ljava/lang/String;)V']}};
 }
 
 export function installIntroNatives(jvm, {asset, present}) {
