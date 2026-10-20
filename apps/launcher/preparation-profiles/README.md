@@ -3,6 +3,15 @@ does not load them automatically. Only a validated policy should be added to a
 game's `preparationProfiles`, with the exact source and patch identity required
 by the browser loader.
 
+The shared rotation dependencies in `../browser-loader/preparation-profile.mjs`
+are separate from these historical JSON experiments. The standalone intro and
+normal GeoBlox launcher both use that one list, with their own exact source and
+patch identities. It is selected automatically for the current readable export;
+other games and unknown revisions retain their existing policies. The measured
+intro improvement does not establish a full-game performance improvement. The
+published JVM bundle must also support `wasmCalleeMethods` to prepare these
+loop-free helpers as Wasm; updating Deko source alone does not update that bundle.
+
 `geoblox-startup.json` covers startup, a visually confirmed menu, and initial
 game entry. It does not cover the complete tutorial or sustained gameplay. Its
 combined entry counters rank observed execution; they are not exclusive call

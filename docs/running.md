@@ -4387,6 +4387,50 @@ rejected SIMD and bounds variants are not a retained improvement. Full-game
 memory, startup, rolling presented-FPS, stability, 6x-browser and phone targets
 remain unverified by this standalone pass.
 
+### Shared intro and applet preparation dependencies
+
+The four rotation dependencies from the intro pass now live once in
+`apps/launcher/browser-loader/preparation-profile.mjs`. The standalone manifest
+and the normal GeoBlox applet launcher consume that same policy. The intro keeps
+its browser-main entry point; no standalone entry point is added to applet
+preparation. Existing host budgets, root filters and additional priorities/callees
+are preserved, with shared dependencies placed first and duplicates removed.
+
+The applet selection requires funorb-decompiled commit
+`b168d7edeb104599156b5f908df62dfdc9f3b250` and source patch ABI
+`catalog-account-server-v11-voice-cursor`. That source commit matches the current
+remote master, and all four method signatures exist in its readable Java export.
+The intro retains its existing class-manifest identity, which includes its patch.
+Unknown revisions and other games retain ordinary or explicitly supplied policies.
+No new flag, profile JSON, source patch or JVM game data is introduced. The shared
+module is already in the cloner's ordered loader manifest; no cloner transport
+change is required. Its bytes now participate in the intro integration digest,
+so existing intro AOT packs must be regenerated when using the updated host.
+
+Validation:
+
+```bash
+node --test tests/intro-preparation.test.mjs scripts/test-browser-loader.mjs
+git diff --check
+```
+
+All **9 tests pass**, covering shared helper selection, independent entry points,
+source/patch/game isolation, fresh arrays, supplied-policy merging, budgets and
+both synchronous and asynchronous reset/reinstallation. A separate direct call
+to the actual cloner's `loadClonedModuleBundle` imports all nine Deko modules from
+this checkout and verifies that the configured applet VM receives the same four
+helpers, with one preparation call and no standalone entry point. These are
+configuration and integration checks, not a full-game execution benchmark.
+
+Compiler optimizations themselves remain generic and are not selected by these
+profiles. The cloner still consumes java-tools' committed `browser-runtime/`
+artifact; its receipt currently identifies source `00d399b8…`, and its bundle
+does not yet contain `wasmCalleeMethods`. No runtime artifact was replaced by
+this consolidation. A rebuilt, validated bundle is still required before the
+normal GitHub-loading path can use the full helper preparation behavior or
+the newly committed SSA compiler work. Full-game performance and original
+memory/startup/presented-FPS/phone acceptance remain unverified.
+
 ## 6. Protocol servers
 
 ```bash

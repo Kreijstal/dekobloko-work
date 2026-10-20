@@ -2,26 +2,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {fileURLToPath} from 'node:url';
+import {geobloxPreparationPolicy} from '../launcher/browser-loader/preparation-profile.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
 export const sha256=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 
-// Class-manifest identity covers the original classes and standalone patch.
-// These loop-free dependencies otherwise compile synchronously on frame 0.
-const profiledSource='d1e394b07ecc5cabd0f5a4aa0801bfa3345db13811a5104e0fa85f0720740b98';
-const rotationHelpers=[
-  'DelegatingCanvas.sineQ16(BI)I',
-  'IntrusiveNodeHashTable.cosineQ16(II)I',
-  'ArchiveIndex.buildLogoRotationTransform(IBI)[I',
-  'Geoblox.prepareLogoMeshRotation(BI)V',
-];
 export function introPreparationPolicy(sourceSha256) {
-  const policy={entryMethods:['GeobloxIntro$Browser.main([Ljava/lang/String;)V']};
-  if(sourceSha256===profiledSource) {
-    policy.priorityMethods=[...rotationHelpers];
-    policy.wasmCalleeMethods=[...rotationHelpers];
-  }
-  return policy;
+  return {entryMethods:['GeobloxIntro$Browser.main([Ljava/lang/String;)V'],
+    ...geobloxPreparationPolicy(sourceSha256,'standalone-intro-v1')};
 }
 
 export function introManifest(player,runtime) {
@@ -39,6 +27,7 @@ export function introManifest(player,runtime) {
   const integrationSha256=sha256(Buffer.concat([
     'runtime.mjs','../launcher/browser-loader/browser-image-decoder.mjs',
     '../launcher/browser-loader/browser-inflater.mjs','../launcher/browser-loader/code-pack.mjs',
+    '../launcher/browser-loader/preparation-profile.mjs',
   ].map(name=>fs.readFileSync(path.resolve(here,name)))));
   const sourceSha256=sha256(JSON.stringify(classes));
   const options=JSON.parse(fs.readFileSync(path.resolve(here,'../launcher/browser-runtime.json'))).jvmOptions;

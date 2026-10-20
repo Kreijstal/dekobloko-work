@@ -1,4 +1,4 @@
-import {selectPreparationProfile} from './preparation-profile.mjs';
+import {selectGamePreparationProfile} from './preparation-profile.mjs';
 import {createBrowserGameServer, LOGIN_MODULUS} from './browser-game-server.mjs';
 import {patchLoginEncryption, patchSocketWriter, selectGameSources, patchGameCompatibility, patchGeobloxSource} from './game-source-patches.mjs';
 import {installBrowserInflater} from './browser-inflater.mjs';
@@ -41,8 +41,8 @@ export function createGameLauncher({game, storage, fetchAsset, diagnostics = {}}
         const prepare = jvm.precompileInitializedClasses?.bind(jvm);
         if (prepare) jvm.precompileInitializedClasses = (options = {}) => prepare({
           ...options, wasm: game.prepareWasm ?? options.wasm,
-          preparationPolicy: selectPreparationProfile(game.preparationProfiles,
-            sourceIdentity, sourcePatchAbi) ?? options.preparationPolicy,
+          preparationPolicy: selectGamePreparationProfile(game,
+            sourceIdentity, sourcePatchAbi, options.preparationPolicy),
           wasmPreparedUpgradesOnly: options.wasmPreparedUpgradesOnly ?? controller.options.prepareWasmPreparedUpgradesOnly,
         });
         server.install(jvm);
