@@ -4431,6 +4431,92 @@ normal GitHub-loading path can use the full helper preparation behavior or
 the newly committed SSA compiler work. Full-game performance and original
 memory/startup/presented-FPS/phone acceptance remain unverified.
 
+### Build the cloned JVM source in the browser
+
+The cloner's default runtime path now builds the selected java-tools source
+revision instead of reading committed `browser-runtime/` output. The new source
+configuration `java-tools/config/browser-build.json` supplies both entry points,
+browser aliases, Node polyfills and disabled Node modules. Webpack consumes the
+same configuration for the standalone JVM site. The browser uses the pinned
+esbuild-wasm 0.28.0 [browser API](https://esbuild.github.io/api/#browser) with a
+virtual filesystem plugin; it generates the JRE index from sorted source paths
+in memory and preserves the existing guarded utilium buffer-growth integration.
+
+The build worker downloads only requested dependencies, resolves nested locked
+packages, browser maps and conditional/wildcard exports, and checks npm tarball
+integrity against the cloned lockfile before extraction. It accepts registry npm
+tarballs, rejects archive traversal/corruption, bounds simultaneous package loads
+to four, and limits compressed/decompressed package sizes to 16/64 MiB. Verified
+tarballs use optional CacheStorage. Cache corruption triggers a fresh verified
+download; cache quota errors do not stop the build. The disposable worker shuts
+down after either completion or error, releasing its analysis and Wasm compiler.
+
+One persistent runtime cache replaces older revisions. Its identity includes
+the Git source commit, lockfile text, source build configuration, build options
+and hashes of the pinned bundler and its integration source. Both output hashes
+are checked on reuse. A hit avoids reading the source graph or starting a build
+worker; a failed build cannot replace the last good runtime cache. The main JVM
+and JIT worker are always generated together. Local A/B bundle overrides remain
+explicit development paths. Generated build tools are staged under ignored
+`public/jvm-bundler/`; no new generated JavaScript or Wasm is committed.
+The compiler switches to the `javac-source-v1` class-cache ABI and drops the
+obsolete bundle-era cache migration. Older compiled classes are rebuilt once
+instead of assuming compatibility with the older bundled compiler. Subsequent
+runtime-only commits continue to reuse the source-built class cache.
+
+The source build uncovered an existing `const call` assignment in the decompiler's
+MethodHandle rendering, rejected by esbuild. The declaration is now `let`, with
+three focused int/long/reference-return regression assertions. Unrelated
+decompiler lifetime-recovery edits remain excluded. The broader existing
+`cfrAdditionalFeatures.test.js` suite has three baseline failures (boolean guard
+formatting, Object-array refinement and wrapped buffer branching), reproduced
+with clean HEAD decompiler modules: 74/77 pass. They were not changed to accept
+the bundling migration.
+
+Focused commands and results:
+
+```bash
+# blank-github-cloner: 8 tests pass
+npm run test:jvm-source
+
+# java-tools: 3 assertions pass
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node test/cfrMethodHandleReturn.test.js
+
+# blank-github-cloner: each browser source-build integration passes
+node scripts/test-jvm-source-browser.mjs
+BROWSER=firefox node scripts/test-jvm-source-browser.mjs
+
+# Production build and the relevant generated-HTML check pass
+npm run build
+node --test --test-name-pattern='production catalog' tests/rendered-html.test.mjs
+```
+
+The browser script builds the exact Java Git-index snapshot, excluding unrelated
+unstaged edits. It exercises the actual cloner `publishClonedJvmAssets` function,
+including persisted-cache writes and reuse, compiles a Java class in the real
+cloner compilation worker, runs it to obtain the expected result 45, and requests
+and installs a transported JIT body. Chromium 147 installed one body and Firefox
+148 installed two, with no refusals, failed requests or page errors. Neither
+test reads a committed JVM bundle. The generated JVM/JIT-worker outputs are
+5,608,068 and 3,856,259 characters in both browsers. Observed cold/warm smoke
+durations were approximately 10.9s/177ms in Chromium and 44.7s/153ms in Firefox.
+These are unthrottled, unisolated integration observations, not performance
+comparisons or evidence of the full-game startup, memory or frame targets.
+
+The cloner CI now runs the same path in Chromium and Firefox. java-tools CI also
+exercises this source consumer when its sources change. The production build
+stages the bundler automatically, and the built deployment contains its worker,
+Wasm and source loader. Lint on the new bundling implementation and test files
+passes. The current changes remove the eight legacy tracked browser-runtime
+artifacts and ignore that output directory; generated files remain in builds
+or browser storage.
+
+Rollout is not atomic across the repositories and deployment: publish the source
+configuration first, deploy the cloner source-loading change, then publish the
+legacy artifact removal. An older deployed cloner still requires the old files.
+This turn validates and prepares the migration locally; it does not publish a
+new deployment or establish the original full-game/phone acceptance gates.
+
 ## 6. Protocol servers
 
 ```bash
