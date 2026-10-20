@@ -4536,3 +4536,65 @@ identical to a server that is logging nothing.
 `apps/server-js/` is a mechanical port of the same protocol, validated against
 Python golden vectors (`cd apps/server-js && npm test`). It is not wired into
 any launcher. The wire formats both implement are in [protocol.md](protocol.md).
+
+### GeoBlox loading: TeaVM versus JVM.js (2026-10-21)
+
+`apps/loading/` compares the original four-track music preparation, initial
+sound effects, and the available shared-UI, game-graphics and font archive
+files. Both VMs receive identical `javac --release 8` class files and asset
+bytes. This isolates loading work; it excludes Git/network transfers, source
+compilation, loading-screen drawing, audio-device playback and menu transitions.
+It is **not** a complete navigation-to-usable-menu or FPS acceptance test. The
+live cloner's Java frontend emits different bytecode, so its exact elapsed
+times can differ from this controlled VM comparison.
+
+Each observation uses a fresh browser process and one loading pass, without
+warmup or replay. Checksums run after the timed decoding phases. Six observations
+must match the HotSpot reference: 18 initial effect samples, 218,292 PCM bytes,
+PCM CRC32 `2368412830`, 205 archive files, 7,597,510 decoded bytes and archive
+CRC32 `3045679678`. Music preparation also populates the game's instrument
+sample cache; the PCM checksum covers the initial effects, not every instrument.
+
+Three alternating pairs in headless Firefox 148.0, pinned with `taskset -c 2`,
+without CPU slowdown, using JVM source `5403010` and TeaVM 0.16.0 Wasm GC:
+
+| Phase, median | TeaVM | JVM.js | JVM.js / TeaVM |
+| --- | ---: | ---: | ---: |
+| Initial music and effects | 1.246 s | 15.062 s | 12.09x |
+| UI, graphics and font archive decoding | 0.522 s | 4.102 s | 7.86x |
+| Combined loading work | 1.768 s | 18.769 s | 10.62x |
+
+Combined time is the median of each run's sum, rather than the sum of separate
+medians. JVM.js preparation is reported separately (median 78.757 s). Despite
+preparing 2,558 methods, every run records 211 synchronous compilations after
+Java entry, with median outermost compilation time 9.647 s. That census includes
+validation and printing outside the phase timers, so do not subtract its total
+from a phase or claim an exact fraction of decoding time. The initial
+entry-scoped harness was rejected for this comparison because its preparation
+policy differed from the app's full preparation; its observations are retained
+under `preparationDiagnostic` in the same report.
+
+Reproduction from this repository, with the adjacent cloner and java-tools
+checkouts and their installed dependencies:
+
+```bash
+node apps/loading/build-runtime.mjs --revision 5403010 --output /tmp/geoblox-loading-runtime
+node apps/loading/build.mjs --runtime /tmp/geoblox-loading-runtime
+taskset -c 2 node apps/loading/compare.mjs --browser firefox --pairs 3
+```
+
+The default player directory is `~/.cache/dekobloko/geoblox-loading/`. Build
+commands refuse to overwrite existing outputs; reuse the retained player for
+comparisons or explicitly remove only these generated benchmark caches before
+rebuilding. Relocated checkouts can use `--cloner`, `--java-tools`, `--sources`,
+`--assets`, `--output` and `--player` paths. The sole `benchmark.json` stores
+class/asset/bundle SHA-256 hashes, VM options, raw observations and the summary,
+and is updated in place. Generated class files, bundles and Wasm stay in cache.
+Rebuilding the source bundle reproduced both retained bundle hashes exactly.
+
+Validation: both Java/TeaVM builds passed; `node --check` passed for all five
+loading scripts; the six Firefox observations matched the HotSpot checksums.
+The full-app diagnostic separately spent roughly 20-25 seconds in music
+preparation and then made very slow progress through audio servicing, often
+blocking the game thread on the audio-output monitor. That stall remains a
+separate investigation; the intro-only parity result does not cover it.
