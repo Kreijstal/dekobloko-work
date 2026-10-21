@@ -6643,3 +6643,14 @@ artifacts are unchanged. The small archive demonstrates a specific fallback
 problem, not an explanation of the remaining full-loading gap. Further work
 must isolate another small matched case before changing runtime policy. These
 Node results establish no browser/phone, presented-FPS or total-heap acceptance.
+
+The post-campaign instrumented archive check initially disagreed with the
+uninstrumented entry counts: its wrapper dropped the new checkpoint method's
+canonical argument and thereby forced interpretation. That diagnostic row is
+retained but explicitly excluded from attribution in the receipt. The corrected
+wrapper forwards every argument. Repeating `microbench.mjs diagnose
+3732b9b768d7ad9af3b75ffc8c9d3ae8c28330a4 bzip-block` passes the checksum/AOT
+checks and records 10,490 native bit-reader entries, zero legacy entries and
+the exact checkpoint at item 61. Its instrumented elapsed time is not used in
+any timing comparison. `node --check apps/loading/microbench.mjs` and
+`git diff --check` both pass after the harness fix.

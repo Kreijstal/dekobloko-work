@@ -448,8 +448,8 @@ async function one(engine,name,revision,inspection) {
     }
     return result;
    };
-   if(checkpoint)w.structuredResumeCheckpoint=frame=>{
-    const pc=checkpoint(frame),key=j.jit.methodIdentity(frame.method);
+   if(checkpoint)w.structuredResumeCheckpoint=(frame,...args)=>{
+    const pc=checkpoint(frame,...args),key=j.jit.methodIdentity(frame.method);
     if(ownsMethod(key)&&checkpointTrace.length<30)checkpointTrace.push({key,entry:frame.pc,checkpoint:pc,
      canonical:w.canonicalResumeFrames.has(frame),frameEntryOnly:!!w.state.get(frame.method)?.meta?.frameEntryOnly});
     return pc;
