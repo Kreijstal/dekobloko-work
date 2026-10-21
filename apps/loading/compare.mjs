@@ -104,6 +104,7 @@ try {
         assert.deepEqual(errors,[]);
         assert.equal(result.error,undefined,'Workload execution failed');
         if(backend==='jvm'){
+          assert.ok(!result.instrumented,'Instrumented diagnostics cannot establish performance acceptance');
           assert.deepEqual(result.lateCompiles,[],'AOT failed: compiler entered during guest execution');
           assert.equal(result.compilation.postMainSyncCompileCount,0,'AOT failed: late compilation');
         }

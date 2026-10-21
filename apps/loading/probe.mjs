@@ -184,6 +184,12 @@ try {
   publication:w.canonicalDirectLinks&&{eligible:!!w.canonicalDirectLinks.constructor.eligible(s),slots:(w.canonicalDirectLinks.bindings.get(s.key)||[]).map(b=>({compact:b.compact,stub:w.canonicalDirectLinks.table.get(b.slot)===b.stub}))},
   frameEntryOnly:s.meta?.frameEntryOnly,veto:s.linkVetoed,nested:s.nestedCalls,nestedDeopts:s.nestedDeopts,demotes:s.meta?.demoteReasons&&[...s.meta.demoteReasons],pending:[...new Set(s.meta?.linkBindings?.filter(b=>b.pending).map(b=>b.key)||[])],flags:s.meta&&{deoptable:s.meta.deoptableCalls,usedEh:s.meta.usedEh,boxed:s.meta.boxedCount}},js:g&&{restoring:!!g.jvmRestoringDirectPositionalBody,rejection:g.jvmStructuredRestoringDirectRejection}});}
  const result={runtimeRevision:revision||'working-tree',sourceLoader:revision?'archive-with-generated-jre-index':'working-tree',engine:process.version,execArgv:process.execArgv,heapLimitBytes:getHeapStatistics().heap_size_limit,
+  instrumented:!!w.importStatsEnabled,
+  ...(w.importStatsEnabled?{importCensus:w.compiled.flatMap(state=>[
+    ['entry',state.meta],['callee',state.callee?.meta],['osr',state.osr?.meta]
+   ].flatMap(([tier,meta])=>[...(meta?.importStats||[])].filter(([,count])=>count>0)
+    .map(([name,count])=>({method:state.key,tier,name,count}))))
+   .sort((a,b)=>b.count-a.count).slice(0,120)}:{}),
   fixtureSha256:temporary?hash(fs.readFileSync(path.join(temporary,'LoadingKernelProbe.class'))):receipt.workloadSha256,
   fixtureKind:temporary?'kernel-class':'loading-workload-source',
   options,mode,asset,kernel,reference:kernel==='loading'?'Recorded HotSpot checksum':kernel==='vorbis'?'HotSpot':'Python bz2',elapsed,executionMs,executionCpuMs:cpu&&(cpu.user+cpu.system)/1000,
