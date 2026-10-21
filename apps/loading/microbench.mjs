@@ -18,7 +18,8 @@ const cases=['scalar','byte-array','boolean-array','bits-local','bits-static','b
  'bits-cross-owner','sin','bits-instance','bits-instance-call','butterfly-static','butterfly-local',
  'float-load-static','float-load-cached','float-load-parameter','butterfly-cached',
  'butterfly-no-readback','butterfly-loads','float-store-parameter','float-store-readback','float-arithmetic',
- 'bzip-block','bzip-ready-owner','int-load-parameter','int-load-cast','cold-prefix-loop','ready-prefix-loop'];
+ 'bzip-block','bzip-ready-owner','int-load-parameter','int-load-cast','cold-prefix-loop','ready-prefix-loop',
+ 'cast-only','reference-only','array-result-loop','object-result-loop'];
 const iterations=1_000_000,seed='q',version='0.16.0';
 // Compile Wasm with V8's optimizing tier before execution on BOTH backends.
 // This removes lazy Wasm compilation/tiering from these operation diagnostics.
@@ -40,7 +41,7 @@ const source=`public class LoadingMicroKernel {
  static byte[] bytes;
  static float[] samples,weights,transformed;
  static long elapsedNanos;
- static int loopPrefixes,loopSteps,loopTails,initializerPrefixes;
+ static int loopPrefixes,loopSteps,loopTails,initializerPrefixes,resultLoopChecksum;
  static int scalar(int n,int seed) {
   int x=seed,sum=0;
   for(int i=0;i<n;i++){x=x*1664525+1013904223;sum=sum*33+x;}
@@ -239,6 +240,26 @@ const source=`public class LoadingMicroKernel {
   loopTails++;
   return sum;
  }
+ static int castOnly(int n,Object data) {
+  int sum=0;
+  for(int i=0;i<n;i++){int[] a=(int[])data;sum=sum*33+(a==null?0:i);}
+  return sum;
+ }
+ static int referenceOnly(int n,int[] data) {
+  int sum=0;
+  for(int i=0;i<n;i++){int[] a=data;sum=sum*33+(a==null?0:i);}
+  return sum;
+ }
+ static int[] arrayResultLoop(int n,int[] data) {
+  int sum=0;
+  for(int i=0;i<n;i++)sum=sum*33+data[i&1023];
+  resultLoopChecksum=sum;return data;
+ }
+ static Object objectResultLoop(int n,int[] data) {
+  int sum=0;
+  for(int i=0;i<n;i++)sum=sum*33+data[i&1023];
+  resultLoopChecksum=sum;return data;
+ }
  public static void main(String[] args) {
   int mode=Integer.parseInt(args[0]),n=Integer.parseInt(args[1]),seed=args[2].charAt(0);
   byte[] a=new byte[1024];boolean[] z=new boolean[1024];bytes=new byte[1024];
@@ -288,6 +309,10 @@ const source=`public class LoadingMicroKernel {
    case 25:checksum=intLoadParameter(n,integers);break;
    case 26:checksum=intLoadCast(n,integers);break;
    case 27:case 28:checksum=coldPrefixLoop(n);break;
+   case 29:checksum=castOnly(n,integers);break;
+   case 30:checksum=referenceOnly(n,integers);break;
+   case 31:checksum=arrayResultLoop(n,integers)==integers?resultLoopChecksum:-7;break;
+   case 32:checksum=objectResultLoop(n,integers)==integers?resultLoopChecksum:-7;break;
    default:throw new IllegalArgumentException();
   }
   elapsedNanos=System.nanoTime()-start;
@@ -383,6 +408,9 @@ public class TeaVmMicro {
   assert.equal(referenceChecks[20],referenceChecks[21],'Store with and without readback differs');
   assert.equal(referenceChecks[23],referenceChecks[24],'Cold and initialized-owner archive decodes differ');
   assert.equal(referenceChecks[25],referenceChecks[26],'Typed and cast integer loads differ');
+  assert.equal(referenceChecks[29],referenceChecks[30],'Typed and cast reference checks differ');
+  assert.equal(referenceChecks[31],referenceChecks[32],'Array and object result loops differ');
+  assert.equal(referenceChecks[25],referenceChecks[31],'Array-result loop differs from integer load control');
   for(const index of [15,16])assert.equal(referenceChecks[14],referenceChecks[index],cases[index]+' differs');
   save({purpose:'Small causal diagnostics; not full-loading or FPS acceptance',version,cases,iterations,seed,
    codec:{asset:codecAsset,inputSha256:hash(codecInput),outputBytes:codecOutputBytes,classes:codecClasses,decodesPerProcess:1},

@@ -6654,3 +6654,135 @@ checks and records 10,490 native bit-reader entries, zero legacy entries and
 the exact checkpoint at item 61. Its instrumented elapsed time is not used in
 any timing comparison. `node --check apps/loading/microbench.mjs` and
 `git diff --check` both pass after the harness fix.
+
+### Cast-only controls and withdrawn array-result experiment
+
+The next pass continues with reduced matched cases rather than changing broad
+runtime policies. Two additional kernels perform the same reference comparison
+and scalar checksum, with no array element access. One accepts `int[]`; the
+other accepts `Object` and casts it to `int[]` inside the loop. Fixture source
+`b1c080c904582b22e0b0522a2f45cc437ebe1944fc5f5cb5ee2adda6bd3926a6`
+contains the same eight-class inventory structure as the prior fixture.
+
+At one million iterations, control `3732b9b7` takes **38.743 ms** for casts
+versus **1.290 ms** for the reference-only control; TeaVM takes **1.068** and
+**1.061 ms** respectively. Thus array element access is not needed to reproduce
+the cast penalty. Our installed Wasm imports `cast__I`; the TeaVM artifact uses
+GC reference types/casts and has no cast-type JavaScript runtime import. This
+comparison does not justify eliding observable host type getters or deriving
+Java array types from untyped native base/length headers.
+
+Prototype `b78d424ae430fda39599201eeb4879a45db1b3b2` shortcuts subtype-map lookup
+when the runtime type exactly equals the cast target, preserving each original
+type read. The focused cast/null/retention/dispatcher suite passes **290/290**
+assertions, including changed host type metadata, nullish values, exact returned
+identity and throwing type getters. Its cast-only median is **35.927 ms**,
+but its reference control drifts to **4.444 ms** and the array-load-with-cast
+case remains **39.979 ms**. That is not a reliable useful gain. No full-loading
+campaign was run for this prototype. Commit
+`90d093bb0bfb6d292bfd30d4d4199e379c8c4f2f` withdraws the runtime change and retains
+the functional host-metadata regressions; its runtime tree matches `3732b9b7`.
+
+A separate shape check finds that the loop-resume admission rule categorically
+rejects methods with primitive-array result transport. The next pair changes
+only the declared return type, `int[]` versus `Object`; both return the same
+input array after the same integer-load/checksum loop. `javap -c -p` verifies
+identical bytecode listings for both bodies (listing SHA-256
+`a0e64f78445a5a33a4219400f29bdb7ce917ebc83cbb41d6ec2fd7f11511e462`).
+Current fixture source is
+`5c62aaa70ceec6ea67dd61293c537ccc4bd48ed8c59d0f845390634ec25c0d2b`.
+At eight million iterations, with three fresh process pairs:
+
+| Source and case | JVM median ms | TeaVM median ms |
+| --- | ---: | ---: |
+| `3732b9b7`, `int[]` return | 23.557 | 8.470 |
+| `3732b9b7`, `Object` return | 17.911 | 8.480 |
+| `f1f402b5`, `int[]` return | 18.286 | 8.484 |
+| `f1f402b5`, `Object` return | 18.157 | 8.482 |
+
+The candidate removes the observed return-type penalty: the array-returning
+loop is **22.4% faster**, but remains approximately **2.16x** TeaVM. Native entry
+counts fall from three entries/two exits to two entries/one exit, with a proved
+header at item 4 in every candidate run. Checksums, reference identity and zero
+execution-time Java compilation pass. This is not full-loading acceptance.
+
+The change separates numeric result transport from entry-only object argument
+ownership. A primitive-array result's base/length are published only on completed
+return, so both ordinary and resumed entries clear them before executing Java
+work. Resumption still restores the existing exact Frame at the proved empty
+stack header. It never repeats an object argument transfer, allocation, prefix
+effect or copy/clear operation. No new flag or application rule is introduced.
+
+The final focused suite passes **1,248/1,248 assertions**. Added cases cover
+foreign/native arrays, overwritten parameter aliases, an allocated float-array
+result, null returns, clearing deliberately stale result transport at every
+yield, and subsequent invocation metadata. A native instance child is also
+forced to yield under a synchronized caller, then either return its saved array
+or throw a bounds exception after re-entry. Tests verify exact writes, prefix
+and tail effects, handler result, lock retention while suspended, final monitor
+release and empty consumed result transport. Static reference-return calls use
+a different established bridge; the monitored-child regression deliberately
+exercises the existing native instance reference-return protocol. Source
+`8225ca1af0ec479961142a563d9aa7a9b743004f` adds only those expanded tests to the
+measured `f1f402b5b7d47ec01f36c7f56e42656b92bfcae2` runtime.
+
+```bash
+# java-tools:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/structuredLoopResume.test.js test/structuredColdResume.test.js test/wasmParameterArrayAbi.test.js test/nativeObjectForwarding.test.js test/arrayIdentityCaches.test.js test/wasmCompilerRetention.test.js
+# dekobloko-work:
+node --check apps/loading/microbench.mjs
+node apps/loading/microbench.mjs build
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 3732b9b768d7ad9af3b75ffc8c9d3ae8c28330a4 cast-only reference-only
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run b78d424ae430fda39599201eeb4879a45db1b3b2 cast-only reference-only int-load-cast
+MICRO_ITERATIONS=8000000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 3732b9b768d7ad9af3b75ffc8c9d3ae8c28330a4 array-result-loop object-result-loop
+MICRO_ITERATIONS=8000000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run f1f402b5b7d47ec01f36c7f56e42656b92bfcae2 array-result-loop object-result-loop
+```
+
+Builds replace the current generated fixture; prior source and class identities
+remain in the same `benchmark.json`. No generated Java, class, Wasm or report is
+added to either source repository. Selected player artifacts remain unchanged.
+
+The full-loading control/candidate/candidate/control campaign rejects this
+prototype too:
+
+| Source | JVM loading ms | TeaVM loading ms | JVM/TeaVM |
+| --- | ---: | ---: | ---: |
+| `3732b9b7` control | 1980.009 | 327.796 | 6.040x |
+| `f1f402b5` candidate | 2304.559 | 322.297 | 7.150x |
+| `f1f402b5` candidate | 2053.487 | 323.440 | 6.349x |
+| `3732b9b7` control | 2008.090 | 325.395 | 6.171x |
+
+Candidate loading median is **2179.023 ms**, versus **1994.050 ms** control
+(**9.27% slower**). Its graphics observations vary substantially: 783.740 and
+526.425 ms, versus 472.328 and 486.974 ms control. All samples remain in the
+receipt; none is dropped. Asset/PCM checks and zero execution-time compilation
+pass in all four runs, but every 1.10x gate fails (expected comparison exit 1).
+The candidate's median paired ratio is **6.750x**.
+
+The native entry/exit census does not show an affected continuation in this
+workload. In particular, `MusicDecoder.decodePacket` makes **5119 native calls
+with zero exits** in both sources; `SynthesizedSoundInstrument.synthesize`
+also completes its native calls without an exit. Thus extending their resume
+admission does not address the active full-loading bottleneck. The timing
+variation alone does not identify why the candidate's graphics phase slows.
+
+Commit `3c7b6dafaf3036331f4b1761eb7a26d3725dcf92` withdraws the compiler and its
+feature-dependent tests after the failed full gate. Only the three owned files
+are restored; unrelated changes are untouched. The resulting runtime tree
+matches `3732b9b7` exactly; the retained host-metadata tests are the sole tree
+difference. The same six-file focused command above now passes **1025/1025**
+assertions. Both tested prototypes, expanded tests and withdrawal remain in the
+experimental branch history. No runtime default or deployed artifact changes.
+
+```bash
+# Each command runs twice, in control/candidate/candidate/control order:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 3732b9b768d7ad9af3b75ffc8c9d3ae8c28330a4 --options diagnostic
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision f1f402b5b7d47ec01f36c7f56e42656b92bfcae2 --options diagnostic
+```
+
+The next reduced workload must exercise an active full-loading path, rather
+than another unused resume opportunity. The existing single-sample Vorbis
+probe currently has only a JVM/HotSpot reference; giving that exact sample a
+matched TeaVM entry is the next useful measurement. Do not repeat full loading
+or change more runtime policy until that reduced comparison identifies a
+specific cost. The full-loading goal remains **at most 1.10x TeaVM**.
