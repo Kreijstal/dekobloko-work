@@ -16,13 +16,21 @@ const directory=path.join(player,'microbench');
 const receiptPath=path.join(player,'benchmark.json');
 const cases=['scalar','byte-array','boolean-array','bits-local','bits-static','bits-call','bits-static-cursors','bits-static-array',
  'bits-cross-owner','sin','bits-instance','bits-instance-call','butterfly-static','butterfly-local',
- 'float-load-static','float-load-cached','float-load-parameter','butterfly-cached'];
+ 'float-load-static','float-load-cached','float-load-parameter','butterfly-cached',
+ 'butterfly-no-readback','butterfly-loads','float-store-parameter','float-store-readback','float-arithmetic',
+ 'bzip-block','bzip-ready-owner','int-load-parameter','int-load-cast'];
 const iterations=1_000_000,seed='q',version='0.16.0';
 // Compile Wasm with V8's optimizing tier before execution on BOTH backends.
 // This removes lazy Wasm compilation/tiering from these operation diagnostics.
 const nodeArgs=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const hash=data=>crypto.createHash('sha256').update(data).digest('hex');
 const read=()=>JSON.parse(fs.readFileSync(receiptPath));
+const codecAsset='0-27.bin';
+const codecClassNames=['Bzip2Decoder.class','Bzip2DecoderState.class','UsernameResponseSupport.class','ContextualRuntimeException.class'];
+const codecInput=fs.readFileSync(path.join(player,'assets',codecAsset));
+assert.equal(hash(codecInput),read().assets[codecAsset],'Changed codec input');
+assert.equal(codecInput[0],1,'Expected a Jagex Bzip archive');
+const codecOutputBytes=codecInput.readUInt32BE(5);
 const save=microbenchmarks=>{
  const receipt=read();receipt.microbenchmarks=microbenchmarks;
  fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
@@ -157,19 +165,90 @@ const source=`public class LoadingMicroKernel {
   for(int i=0;i<n;i++)sum=sum*33+(int)(data[i&1023]*1048576.0f);
   return sum;
  }
+ static int butterflyNoReadback(int n,float[] data,float[] factors,float[] out) {
+  int sum=0;
+  for(int i=0;i<n;i++){
+   int p=i&1023,q=(p+512)&1023;
+   float a=data[p],b=data[q],c=(a-b)*factors[p];
+   out[p]=c;out[q]=a+b;
+   sum=sum*33+(int)(c*1048576.0f);
+  }
+  return sum;
+ }
+ static int butterflyLoads(int n,float[] data,float[] factors) {
+  int sum=0;
+  for(int i=0;i<n;i++){
+   int p=i&1023,q=(p+512)&1023;
+   float a=data[p],b=data[q],c=(a-b)*factors[p];
+   sum=sum*33+(int)(c*1048576.0f);
+  }
+  return sum;
+ }
+ static int floatStoreParameter(int n,float[] out) {
+  int sum=0;
+  for(int i=0;i<n;i++){
+   int p=i&1023;float v=p*0.0009765625f;
+   out[p]=v;sum=sum*33+(int)(v*1048576.0f);
+  }
+  return sum;
+ }
+ static int floatStoreReadback(int n,float[] out) {
+  int sum=0;
+  for(int i=0;i<n;i++){
+   int p=i&1023;float v=p*0.0009765625f;
+   out[p]=v;sum=sum*33+(int)(out[p]*1048576.0f);
+  }
+  return sum;
+ }
+ static int floatArithmetic(int n) {
+  int sum=0;
+  for(int i=0;i<n;i++){
+   int p=i&1023;float v=p*0.0009765625f;
+   sum=sum*33+(int)(v*1048576.0f);
+  }
+  return sum;
+ }
+ static byte[] bzipInput() {
+  String hex="${codecInput.toString('hex')}";
+  byte[] data=new byte[hex.length()/2];
+  for(int i=0;i<data.length;i++){
+   int a=hex.charAt(i*2)-48,b=hex.charAt(i*2+1)-48;
+   if(a>9)a-=39;if(b>9)b-=39;
+   data[i]=(byte)((a<<4)|b);
+  }
+  return data;
+ }
+ static int bzipBlock(byte[] input,byte[] output) {
+  return Bzip2Decoder.decompressInto(output,output.length,input,input.length-9,9);
+ }
+ static int intLoadParameter(int n,int[] data) {
+  int sum=0;
+  for(int i=0;i<n;i++)sum=sum*33+data[i&1023];
+  return sum;
+ }
+ static int intLoadCast(int n,Object data) {
+  int sum=0;
+  for(int i=0;i<n;i++)sum=sum*33+((int[])data)[i&1023];
+  return sum;
+ }
  public static void main(String[] args) {
   int mode=Integer.parseInt(args[0]),n=Integer.parseInt(args[1]),seed=args[2].charAt(0);
   byte[] a=new byte[1024];boolean[] z=new boolean[1024];bytes=new byte[1024];
   samples=new float[1024];weights=new float[1024];transformed=new float[1024];
+  int[] integers=new int[1024];
   int x=seed;
   for(int i=0;i<1024;i++){
    x=x*1664525+1013904223;a[i]=(byte)(x&1);z[i]=a[i]!=0;bytes[i]=(byte)(x>>>24);
+   integers[i]=x;
    samples[i]=((x&1023)-512)/512.0f;weights[i]=((x>>>8)&1023)/1024.0f;
   }
   byteCursor=0;bitCursor=0;
   MicroBitReader.bytes=bytes;MicroBitReader.byteCursor=0;MicroBitReader.bitCursor=0;
   if(readerInitializations!=1)throw new AssertionError();
   MicroCursor cursor=new MicroCursor();
+  byte[] packed=null,unpacked=null;
+  if(mode==23||mode==24){new Bzip2Decoder();packed=bzipInput();unpacked=new byte[${codecOutputBytes}];}
+  if(mode==24&&UsernameResponseSupport.accountUiViewportWidth!=640)throw new AssertionError();
   long start=System.nanoTime();
   switch(mode){
    case 0:checksum=scalar(n,seed);break;
@@ -190,10 +269,21 @@ const source=`public class LoadingMicroKernel {
    case 15:checksum=floatLoadCached(n);break;
    case 16:checksum=floatLoadParameter(n,samples);break;
    case 17:checksum=butterflyCached(n);break;
+   case 18:checksum=butterflyNoReadback(n,samples,weights,transformed);break;
+   case 19:checksum=butterflyLoads(n,samples,weights);break;
+   case 20:checksum=floatStoreParameter(n,transformed);break;
+   case 21:checksum=floatStoreReadback(n,transformed);break;
+   case 22:checksum=floatArithmetic(n);break;
+   case 23:checksum=bzipBlock(packed,unpacked);break;
+   case 24:checksum=bzipBlock(packed,unpacked);break;
+   case 25:checksum=intLoadParameter(n,integers);break;
+   case 26:checksum=intLoadCast(n,integers);break;
    default:throw new IllegalArgumentException();
   }
   elapsedNanos=System.nanoTime()-start;
-  if(mode==12||mode==13||mode==17)for(int i=0;i<1024;i++)checksum=checksum*31+(int)(transformed[i]*1048576.0f);
+  if(mode==12||mode==13||mode==17||mode==18||mode==20||mode==21)
+   for(int i=0;i<1024;i++)checksum=checksum*31+(int)(transformed[i]*1048576.0f);
+  if(mode==23||mode==24)for(int i=0;i<unpacked.length;i++)checksum=checksum*31+unpacked[i];
  }
 }
 final class MicroBitReader {
@@ -217,15 +307,27 @@ final class MicroCursor {
 function build() {
  const previous=read().microbenchmarks;
  const fixtures=previous?.fixtures||[];
- if(previous&&!fixtures.some(f=>f.sourceSha256===previous.sourceSha256))fixtures.push({
-  sourceSha256:previous.sourceSha256,classSha256:previous.classSha256,wasmSha256:previous.wasmSha256,
-  runtimeSha256:previous.runtimeSha256,classes:previous.classes,source:fs.readFileSync(path.join(directory,'LoadingMicroKernel.java'),'utf8')});
+ if(previous&&!fixtures.some(f=>f.sourceSha256===previous.sourceSha256)){
+  const previousSource=fs.readFileSync(path.join(directory,'LoadingMicroKernel.java'),'utf8');
+  assert.equal(hash(previousSource),previous.sourceSha256,'Cannot archive a mismatched previous fixture');
+  fixtures.push({sourceSha256:previous.sourceSha256,classSha256:previous.classSha256,wasmSha256:previous.wasmSha256,
+   runtimeSha256:previous.runtimeSha256,classes:previous.classes,source:previousSource});
+  // Persist this identity before replacing generated files, even if javac,
+  // TeaVM or a reference check fails during the subsequent build.
+  save({...previous,fixtures});
+ }
  // Replace only this generated fixture; never rebuild the full game here.
  fs.mkdirSync(directory,{recursive:true});
  fs.rmSync(path.join(directory,'current.wat'),{force:true});
  const classes=path.join(directory,'classes');fs.rmSync(classes,{recursive:true,force:true});fs.mkdirSync(classes);
+ const codecClasses={};
+ for(const name of codecClassNames){
+  const bytes=fs.readFileSync(path.join(player,'classes',name));
+  assert.equal(hash(bytes),read().classes[name],'Changed original codec class: '+name);
+  codecClasses[name]=hash(bytes);fs.writeFileSync(path.join(classes,name),bytes);
+ }
  fs.writeFileSync(path.join(directory,'LoadingMicroKernel.java'),source);
- execFileSync('javac',['--release','8','-proc:none','-d',classes,path.join(directory,'LoadingMicroKernel.java')]);
+ execFileSync('javac',['--release','8','-proc:none','-classpath',classes,'-d',classes,path.join(directory,'LoadingMicroKernel.java')]);
  const classHashes=Object.fromEntries(fs.readdirSync(classes).filter(n=>n.endsWith('.class')).sort()
   .map(name=>[name,hash(fs.readFileSync(path.join(classes,name)))]));
  const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'loading-micro-build-'));
@@ -259,8 +361,13 @@ public class TeaVmMicro {
   for(const index of [8,10,11])assert.equal(referenceChecks[3],referenceChecks[index],cases[index]+' differs');
   assert.equal(referenceChecks[12],referenceChecks[13],'Static and local float butterflies differ');
   assert.equal(referenceChecks[12],referenceChecks[17],'Static and cached float butterflies differ');
+  assert.equal(referenceChecks[12],referenceChecks[18],'Butterfly without readback differs');
+  assert.equal(referenceChecks[20],referenceChecks[21],'Store with and without readback differs');
+  assert.equal(referenceChecks[23],referenceChecks[24],'Cold and initialized-owner archive decodes differ');
+  assert.equal(referenceChecks[25],referenceChecks[26],'Typed and cast integer loads differ');
   for(const index of [15,16])assert.equal(referenceChecks[14],referenceChecks[index],cases[index]+' differs');
   save({purpose:'Small causal diagnostics; not full-loading or FPS acceptance',version,cases,iterations,seed,
+   codec:{asset:codecAsset,inputSha256:hash(codecInput),outputBytes:codecOutputBytes,classes:codecClasses,decodesPerProcess:1},
    sourceSha256:hash(source),classSha256:classHashes['LoadingMicroKernel.class'],classes:classHashes,
    wasmSha256:hash(fs.readFileSync(path.join(directory,'teavm/micro.wasm'))),
    runtimeSha256:hash(fs.readFileSync(path.join(directory,'teavm/micro.wasm-runtime.js'))),referenceChecks,
@@ -276,9 +383,10 @@ async function one(engine,name,revision,inspection) {
  assert.deepEqual(fs.readdirSync(path.join(directory,'classes')).sort(),Object.keys(classes).sort(),'Unexpected fixture classes');
  for(const [name,expected]of Object.entries(classes))assert.equal(hash(fs.readFileSync(path.join(directory,'classes',name))),expected);
  const ownsMethod=key=>Object.keys(classes).some(name=>key.startsWith(name.slice(0,-6)+'.'));
- const count=Number(process.env.MICRO_ITERATIONS||fixture.iterations);
+ const codec=name.startsWith('bzip-');
+ const count=codec?1:Number(process.env.MICRO_ITERATIONS||fixture.iterations);
  assert.ok(Number.isSafeInteger(count)&&count>0&&count<=100_000_000,'Invalid iteration count');
- const expected=count===fixture.iterations?fixture.referenceChecks[index]:fixture.references?.[count]?.[index];
+ const expected=codec||count===fixture.iterations?fixture.referenceChecks[index]:fixture.references?.[count]?.[index];
  assert.ok(Number.isInteger(expected),'Run the paired harness to establish the HotSpot reference for this count');
  const args=[String(index),String(count),fixture.seed];
  const result={case:name,engine,sourceRevision:revision,iterations:count,node:process.version,execArgv:process.execArgv,
@@ -372,7 +480,7 @@ function run(revision,names) {
    assert.ok(line,output);const result=JSON.parse(line.slice('MICRO_RESULT '.length));
    result.runId=runId;result.pair=pair;result.measuredAt=new Date().toISOString();
    const fixture=read().microbenchmarks;fixture.runs.push(result);save(fixture);
-   console.log(`${name} n=${count} pair ${pair+1} ${engine}: ${result.elapsedMs.toFixed(3)} ms, check ${result.checksum}`);
+   console.log(`${name} n=${result.iterations} pair ${pair+1} ${engine}: ${result.elapsedMs.toFixed(3)} ms, check ${result.checksum}`);
   }
  }
 }

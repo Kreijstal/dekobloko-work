@@ -6370,3 +6370,158 @@ The next reduction should separate butterfly loads, stores and readback while
 holding the reference source fixed. It should establish which combination
 reproduces the gap before another compiler change. These operation diagnostics
 neither explain the entire full-loading gap nor satisfy loading/FPS acceptance.
+
+### Smaller operation controls and native-resumption cliffs
+
+The next reductions keep array parameters fixed and separate butterfly loads,
+stores and output readback. Three fresh process pairs per case use eight million
+iterations, the same checksums, eager optimizing Wasm and no workload warmup.
+This table uses fixture source `11618723d54e47db9061077b2dfc705baa2a04986a9248e00cf246bdf928b229`
+and JVM source `471defcc7230b458bf621daef0d65f47cae601e5`:
+
+| Case | JVM median ms | TeaVM median ms | Median paired ratio |
+| --- | ---: | ---: | ---: |
+| Original parameter butterfly | 34.759 | 16.212 | 2.144x |
+| Butterfly with scalar output readback | 30.823 | 18.875 | 1.633x |
+| Butterfly loads without stores | 21.757 | 19.107 | 1.139x |
+| Scalar float arithmetic | 13.038 | 12.144 | 1.074x |
+| Single float store | 16.420 | 19.325 | 0.850x |
+| Single float store plus readback | 18.723 | 19.700 | 0.948x |
+
+The last control batch is shown when a case was repeated. All raw batches remain
+in the receipt. The scalar readback variant still performs both output stores
+and checks the final array after timing. The loads-only and arithmetic controls
+have their own HotSpot references. Faster individual operations do not prove
+that their combination is fast; do not add these independent timings together
+to attribute the full decoder's cost.
+
+A small prototype combined the representation and bounds predicates into one
+native fast-path branch, preserving separate native exceptions and checked
+foreign/null fallbacks. Source `cb4c00abb2e4dcdd19bf20b1374d87221bb91eef`
+passes **152/152** heap-array/array-ABI assertions, but regresses the loads-only
+case to **26.278 ms** and the no-readback butterfly to **34.430 ms**. Restoring
+the control returns them to **21.757** and **30.823 ms**. The prototype is
+withdrawn; `598634f5c7207bb28555408822353660feef2601` has exactly the retained
+`471defcc` source tree. No full-loading comparison was spent on this regression.
+
+The emitted TeaVM Wasm uses typed GC arrays and ordinary arithmetic; it does not
+remove the butterfly's output readback. Our emitted Wasm has separate heap
+representation and bounds paths. The rejected branch experiment shows that
+simply combining those predicates is not a demonstrated improvement.
+
+The harness also now copies four **unchanged** original fixture classes for one
+small real decoder case: `Bzip2Decoder`, `Bzip2DecoderState`,
+`UsernameResponseSupport` and its verification dependency
+`ContextualRuntimeException`. Each class hash must match the pinned full-loading
+inventory, and TeaVM must consume those same class bytes. The input is the
+recorded `0-27.bin` archive: 1,649 packed bytes and 10,750 output bytes.
+Each process decodes it **once**, with no repetitions or decoder warmup. Inputs,
+the decoder-state class initializer and output allocation precede timing;
+the output checksum follows it.
+
+An explicit diagnostic control reads the transform-table holder's ordinary
+static integer before timing. It initializes only that holder class, with no
+archive decoding. In three fresh pairs, the ordinary case takes **348.751 ms JVM
+versus 0.411 ms TeaVM**; the initialized-holder control takes **8.644 versus
+0.392 ms**. The control changes 10,488 legacy bit-reader entries into native
+entries, with zero execution-time Java compilation in both cases. This isolates
+a severe cold-initialization continuation penalty. Moving initialization out
+of a timer is **not** a runtime fix or loading acceptance result.
+
+A separate instrumented initialized-holder run records **20,336** primitive-array
+cast imports. This confirms the previously documented Bzip cast issue; import
+counts alone do not assign the remaining time to casts. The new matched integer
+load pair changes only an array parameter into an `Object` parameter cast to
+`int[]` inside the loop. At one million iterations the JVM takes **1.878 ms**
+typed and **29.943 ms** with casts, while TeaVM takes **1.063 ms** in either form.
+
+At eight million iterations a second effect dominates: the original cast loop
+exits its native body and continues on a slower tier, taking **2,526.719 ms**
+versus **8.472 ms** TeaVM. Thus the long observation is not a clean measurement
+of cast cost. The loop-resume proof rejected every method with an object
+argument, including unused native argument storage.
+
+Source **`1e797c67ffbfec6aaee8b392434b0d24116957ad`** first permits unused
+native inputs. The same cast loop then remains in structured Wasm across its
+yield, taking **117.262 ms** versus **8.471 ms** TeaVM. Checksums match and there
+is zero execution-time Java compilation. Four full-loading observations in
+control/candidate/candidate/control order also pass correctness and AOT checks,
+but do not establish a repeatable loading gain: the controls take **2,260.901**
+and **1,958.397 ms**, while candidates take **1,970.439** and **1,976.356 ms**.
+The first control has an unusually slow graphics phase; it is retained, not
+discarded or used alone to claim an improvement.
+
+Source **`e81bfff21caf6a82f09660f582a1291a446b1ae3`** extends that proof to used
+object inputs. On a resumed invocation, the native storage locals start empty;
+the existing lazy lookup rebuilds them from the **restored Java reference**.
+It does not repeat the entry-only transfer from a caller's argument globals.
+Array-result ownership, live exception regions and the other existing proof
+restrictions remain in place. There is no new flag, loop copy or game rule.
+
+The field-reader kernel now takes **73.205 ms** instead of **959.255 ms** at
+eight million iterations; TeaVM takes **8.581** and **8.603 ms**, respectively.
+These remain far from parity. Forced-yield tests cover object aliases whose
+argument slot was overwritten, native field reads, forwarding recovered storage
+to child calls, exact prefix/loop/tail effects, field-container replacement
+between yields, metadata-global cleanup, and zero execution-time compilation.
+The focused suite passes **615/615 assertions**:
+
+```bash
+# From java-tools:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/structuredLoopResume.test.js test/wasmParameterArrayAbi.test.js test/nativeObjectForwarding.test.js test/preparedWasmConstructors.test.js test/wasmCompilerRetention.test.js
+# From dekobloko-work:
+node --check apps/loading/microbench.mjs
+node apps/loading/microbench.mjs build
+MICRO_ITERATIONS=8000000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 471defcc7230b458bf621daef0d65f47cae601e5 butterfly-local butterfly-no-readback butterfly-loads float-arithmetic float-store-parameter float-store-readback
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 471defcc7230b458bf621daef0d65f47cae601e5 bzip-block bzip-ready-owner int-load-parameter int-load-cast
+MICRO_ITERATIONS=8000000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 471defcc7230b458bf621daef0d65f47cae601e5 int-load-parameter int-load-cast
+MICRO_ITERATIONS=8000000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 1e797c67ffbfec6aaee8b392434b0d24116957ad int-load-parameter int-load-cast bits-instance
+MICRO_ITERATIONS=8000000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run e81bfff21caf6a82f09660f582a1291a446b1ae3 bits-instance
+```
+
+Builds replace the one current generated microbenchmark fixture. Earlier Java
+fixture source and exact run identities remain in the single `benchmark.json`;
+all ten archived fixture-source hashes verify. Building now saves the verified
+previous fixture identity **before** replacing generated files, so a failed
+TeaVM or reference build cannot lose it. The current cast/field fixture source
+is `19b9af7c1d147cc72ef6937e4c6fc120b0079d5bc7140d53431c9f65da63c623`;
+the earlier Bzip initialization-control fixture is
+`b28ee797ec7808c974542f76e48470185b29dbfb12c40846c5deef92d5780c8f`.
+Do not pool observations across fixture-source identities.
+
+The final object-input change also completes four fresh full-loading comparisons
+in control/candidate/candidate/control order:
+
+| Source | JVM loading ms | TeaVM loading ms | JVM/TeaVM |
+| --- | ---: | ---: | ---: |
+| `1e797c67` control | 2,255.162 | 327.092 | 6.895x |
+| `e81bfff2` candidate | 1,956.160 | 328.853 | 5.948x |
+| `e81bfff2` candidate | 1,936.909 | 329.307 | 5.882x |
+| `1e797c67` control | 1,968.824 | 328.409 | 5.995x |
+
+All outputs match `18:218292:2368412830:205:7597510:3045679678`, and all runs
+attempt and complete zero execution-time Java compilations. The candidate's
+median is **1,946.535 ms** versus **329.080 ms TeaVM**, with median paired ratio
+**5.915x**. The first control again has a slow graphics phase. These small
+campaigns do not establish a repeatable full-loading improvement, despite the
+large, verified microbenchmark gains. Every **1.10x gate fails**.
+
+```bash
+# Each command executed twice, in control/candidate/candidate/control order:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 1e797c67ffbfec6aaee8b392434b0d24116957ad --options diagnostic
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision e81bfff21caf6a82f09660f582a1291a446b1ae3 --options diagnostic
+```
+
+Each comparison records `status: complete` and correctly exits 1 for failed
+parity, after passing correctness and AOT checks. Raw comparisons and selected
+microbenchmark run IDs are in `optimizationTrials.unusedObjectInputResume` and
+`optimizationTrials.nativeObjectInputResume`, alongside the reduced-operation
+and withdrawn-guard records in the existing single receipt. The verified runtime
+source is saved on `experiment/teavm-native-parity`; master, the selected player
+bundles and pinned full-loading TeaVM artifact remain unchanged. No browser,
+phone, FPS or heap-peak acceptance is inferred from these Node diagnostics.
+
+The next small case should reduce the cold-initialization continuation into a
+generic guard-exit/re-entry test, preserving initializer and caller effects
+exactly once. Readying the game class beforehand is only the diagnostic control.
+The required end state remains full loading within **1.10x** TeaVM.
