@@ -1,3 +1,16 @@
+// Reproducible default for this execution-only comparison. Production launcher
+// policy is separate; this fixture admits only its entry's reachable closure.
+export function preparedLoadingOptions(base) {
+  return {...base,prepareBeforeMain:true,prepareWasmPreparedUpgradesOnly:false,
+    wasmFields:false,denseInstanceFields:true,
+    jit:{...base.jit,preparedCompleteWasm:true,preparedLoopLeafWasm:true,
+      preparationPolicy:{...base.jit?.preparationPolicy,
+        entryMethods:['GeobloxLoading.main([Ljava/lang/String;)V']},
+      wasm:{...base.jit?.wasm,canonicalDirectCalls:true,canonicalEhLinks:true,
+        nativeJsExceptionTags:true,nativeInstanceExits:true,inlineColdIntegerLeaves:true,
+        reuseNestedArguments:true,compileConstructors:true}}};
+}
+
 // Browser fixture only: all class files and compressed assets arrive before
 // either runtime starts. Each invocation executes the workload exactly once.
 export async function runLoading(backend, fixture) {
@@ -20,7 +33,7 @@ export async function runLoading(backend, fixture) {
   await debug.initialize({dataPackage:{classes:fixture.classes}});
   const controller=debug.debugController;
   const {jit,...rest}=fixture.options;
-  Object.assign(controller.options,rest,{prepareBeforeMain:true,prepareWasmPreparedUpgradesOnly:true});
+  Object.assign(controller.options,rest,{prepareBeforeMain:true,prepareWasmPreparedUpgradesOnly:rest.prepareWasmPreparedUpgradesOnly??true});
   controller.options.jit={...controller.options.jit,...jit,compileWorker:false};
   const {installBrowserInflater}=await import('/inflater.mjs');
   let preparation,executionError;

@@ -4674,3 +4674,130 @@ node --check apps/loading/compare.mjs
 
 Temporary builds/logs are removed after comparison; only the single canonical
 player cache is retained. No generated output is committed or deployed.
+
+#### Native call-chain and resumption pass
+
+The loading target is JVM.js execution time **at most 1.10 times TeaVM**, with
+zero attempted JVM.js compilation after preparation. `compare.mjs` now records
+that ratio and returns a failing exit status when the performance target is
+missed, even when all decoding and compilation checks pass. It records the
+runtime revision, bundle hashes and exact JVM options with each result.
+
+Java tools source `cbcf8ad` adds generic changes:
+
+- AOT settles helper dependencies in dispatcher resumption companions as well
+  as entry modules. The archive decoder previously left Wasm on every resumed
+  call despite those helpers already being prepared.
+- Dispatcher modules access owned primitive arrays directly, with metadata
+  invalidation for local replacement, aliased field writes and transitive
+  calls. Null, bounds, boolean, wrapped, plain and foreign-heap arrays retain
+  the supported checked paths. Temporary array-analysis maps are released.
+- Both Wasm backends guard first-use initialization of ordinary static callees.
+  Settling previously missed helpers exposed a missing initializer; the new
+  test first failed with initializer trace `1` instead of `12`.
+- Canonical native calls support instance methods and reference results, with
+  closed receiver guards, later-subclass fallback, precise suspended frames,
+  recursive publication, typed result signatures and released result scratch.
+- Native returns skip the legacy JavaScript numeric-result callback. Ordinary
+  JavaScript entries keep that callback and their existing return ABI.
+- AOT respects the existing ordinary-constructor policy. Canonical constructor
+  links preserve unfinished objects, prior effects and caller exception handlers.
+
+These are general runtime mechanisms. No game identities were added to Java
+tools. Existing opt-in execution policies are exercised by the benchmark;
+production launcher defaults have not been promoted based on a failed gate.
+The benchmark prepares the closure of its synthetic Java entry method, selects
+already prepared complete Wasm bodies, and enables existing canonical-call and
+ordinary-constructor options. This reduces preparation scope; it does not put
+compilation inside the timed loading work. The default fixture options are shared by `build.mjs` and `browser.mjs`; a
+focused assertion confirmed they exactly match the measured options without
+mutating launcher policy. Exact options remain in the single cache report.
+
+The final committed-bundle Firefox comparison is recorded below after rebuilding
+from source. It uses the same classes, assets and unchanged TeaVM artifact, one
+workload execution per fresh process, alternating backend order and CPU 2.
+No timing run uses the profiler, method counters that disable optimization, or
+workload warmup/replay.
+
+| Phase, median | TeaVM | JVM.js | JVM.js / TeaVM |
+| --- | ---: | ---: | ---: |
+| Initial music and effects | 0.990 s | 4.257 s | 4.30x |
+| UI, graphics and font archive decoding | 0.385 s | 1.460 s | 3.79x |
+| Combined loading work | 1.372 s | 5.717 s | 4.17x |
+
+The exact combined ratio was **4.1669097609**, so the 1.10 gate **failed**.
+All six observations matched the unchanged HotSpot checksum, and all three JVM
+observations had zero attempted and completed guest-time compiler entries.
+JVM preparation took 35.999 s median; that time is additional to loading execution.
+The historical prepared baseline was 8.716 s combined and a 5.68 ratio; neither
+that baseline nor this improved candidate establishes 10% parity.
+
+Measured bundles rebuilt from committed source `cbcf8ad`:
+
+```text
+jvm-debug.js          4d76c67a8390f236b96793fb6907f301b6853772aaed468a617da455fdc42243
+jvm-compile-worker.js 9c82995537f3a198261b92cf0fb35049a68258506d0eb7e215b9302117ac50a2
+```
+
+This remains an asset-decoding comparison, not full game/menu acceptance.
+Networking, drawing and audio device playback are excluded. Preparation is
+outside the decoding timers and is still a real startup cost. No result here
+establishes the aggregate heap, constrained-browser, presented-FPS, stability or
+phone targets. Nothing from this pass has been deployed or pushed.
+
+Diagnostic iterations and rejected approaches are retained as bounded entries
+in the same `benchmark.json`, never a new report per attempt:
+
+- Broad complete-Wasm selection on the earlier runtime failed archive output
+  correctness. It was rejected rather than counted as a speed improvement.
+- The first native instance-link trial rejected self-recursive methods during
+  preparation, causing repeated audio-decoder exits and an approximately
+  11-second profiled Node music phase. A recursion/publication test exposed
+  and fixes that failure; those timings are not acceptance results.
+- Switching every object to slab fields and enabling broad/deep inlining did
+  not provide a repeatable overall improvement. Bounded deeper inlining also
+  regressed the diagnostic workload. Neither policy was made a default.
+- Constructor and compact-call diagnostics alone did not close the gap. Node
+  diagnostic times are not mixed with the Firefox comparison.
+
+The remaining execution work includes repeated host imports for object fields,
+array metadata and type checks, plus JavaScript execution of the control-flow
+heavy MIDI parser. The next substantive direction is reducing those data-access
+boundaries and increasing complete native coverage without losing resumable
+exceptions. Moving more compilation outside the timer cannot explain away this
+remaining execution gap. Replacing the benchmark backend with TeaVM, dropping
+assets, caching decoded results or changing its workload would not establish
+JVM.js parity.
+
+Reproduction and validation:
+
+```bash
+# Deko: rebuild the committed runtime in an empty, disposable output directory.
+node apps/loading/build-runtime.mjs --revision cbcf8ad --output /tmp/geoblox-loading-runtime
+# For a fresh player, build.mjs consumes the above runtime and prepares inputs.
+# It retains one benchmark.json. Existing player inputs can be reused only when
+# their recorded hashes and selected runtime/options match.
+node apps/loading/build.mjs --runtime /tmp/geoblox-loading-runtime
+# Repeated unprofiled gate: correct output and zero late compilation are required
+# separately from the <=1.10 performance ratio. A missed ratio exits nonzero.
+taskset -c 2 node apps/loading/compare.mjs --browser firefox --pairs 3
+# Diagnostic only: samples execution of the exact browser source bundle in Node.
+node apps/loading/diagnose-node.mjs
+# Diagnostic only: checks one original archive byte-for-byte against Python bz2.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node apps/loading/probe.mjs canonical
+# Java tools: 633 focused assertions passed, including forced-GC lifetime checks.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/canonicalInstanceFrames.test.js test/canonicalDirectFrames.test.js test/compactCanonicalFrames.test.js test/hostOwnedCanonicalFuel.test.js test/dispatcherHeapArrays.test.js test/preparedOsrDependencies.test.js test/preparedWasmConstructors.test.js test/preparationWasmHelpers.test.js test/preparedWasmCallees.test.js test/classInitializationToken.test.js
+node --check apps/loading/build.mjs
+node --check apps/loading/browser.mjs
+node --check apps/loading/compare.mjs
+node --check apps/loading/diagnose-node.mjs
+node --check apps/loading/probe.mjs
+```
+
+An earlier, broader 390-assertion batch passed 384 assertions and failed six
+read-import-count assertions in `wasmArrayCopyFieldCache.test.js`. The same six
+failures were reproduced using the unchanged HEAD implementations of the three
+runtime files modified at that point: 34/40 baseline assertions passed. The
+array-copy value/alias correctness assertions passed in both cases; the count
+expectations conflict with the existing native-static-cell path. This pass does
+not change those expectations or claim that broader batch passed.

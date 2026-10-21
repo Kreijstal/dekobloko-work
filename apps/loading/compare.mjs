@@ -39,6 +39,7 @@ for(const [name,expected] of Object.entries(receipt.runtime))assert.equal(hash(f
 assert.equal(hash(fs.readFileSync(path.join(options.player,'teavm/loading.wasm'))),receipt.teavm.wasmSha256);
 const fixture={classes,assets,options:receipt.jvmOptions||JSON.parse(fs.readFileSync(path.resolve(here,'../launcher/browser-runtime.json'))).jvmOptions};
 receipt.jvmOptions=fixture.options;
+const provenance={runtimeRevision:receipt.runtimeRevision,runtime:receipt.runtime,jvmOptions:fixture.options};
 const server=createServer((req,res)=>{
   try {
     const name=new URL(req.url,'http://localhost').pathname;
@@ -79,20 +80,23 @@ try {
         if(observations.length)assert.equal(result.check,observations[0].check,'Decoded results differ between VMs');
         assert.ok(result.musicMs>0&&result.graphicsMs>0);
       } catch(error) {
-        receipt.results={scope:receipt.workload,browser:options.browser,status:'failed',observations,
+        receipt.results={...provenance,scope:receipt.workload,browser:options.browser,status:'failed',observations,
           failedObservation:result,error:error.message,fullMenuLoading:false};
         fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
         throw error;
       }
       observations.push({...result,loadingMs:result.musicMs+result.graphicsMs,pair});
-      receipt.results={scope:receipt.workload,browser:options.browser,status:'running',observations,fullMenuLoading:false};
+      receipt.results={...provenance,scope:receipt.workload,browser:options.browser,status:'running',observations,fullMenuLoading:false};
       fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
       console.log(JSON.stringify(observations.at(-1)));
     } finally {await browser.close();}
   }
   const median=values=>{const s=values.sort((a,b)=>a-b);return s.length%2?s[s.length>>1]:(s[s.length/2-1]+s[s.length/2])/2;};
   const summary=Object.fromEntries(['jvm','teavm'].map(backend=>[backend,Object.fromEntries(['musicMs','graphicsMs','loadingMs'].map(key=>[key,median(observations.filter(r=>r.backend===backend).map(r=>r[key]))]))]));
-  receipt.results={scope:receipt.workload,browser:options.browser,status:'complete',observations,summary,assetAndPcmResultsMatch:true,zeroGuestCompilation:true,fullMenuLoading:false};
+  const ratio=summary.jvm.loadingMs/summary.teavm.loadingMs;
+  const parity={maximumRatio:1.1,ratio,met:ratio<=1.1};
+  receipt.results={...provenance,scope:receipt.workload,browser:options.browser,status:'complete',observations,summary,parity,assetAndPcmResultsMatch:true,zeroGuestCompilation:true,fullMenuLoading:false};
   fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
-  console.log(JSON.stringify({scope:receipt.workload,summary,ratio:summary.jvm.loadingMs/summary.teavm.loadingMs,report:receiptPath}));
+  console.log(JSON.stringify({scope:receipt.workload,summary,ratio,parity,report:receiptPath}));
+  assert.ok(parity.met,'Loading parity target failed: JVM.js must take at most 110% of TeaVM execution time');
 } finally {await new Promise(resolve=>server.close(resolve));}

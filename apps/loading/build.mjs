@@ -8,6 +8,7 @@ import {execFileSync} from 'node:child_process';
 import {buildCompilationStubs} from '../../readable/compilation-stubs.mjs';
 import {sourceInventory, sourceIdentity} from '../../readable/tools/readable-java.mjs';
 import {loadingWorkloadSource} from './workload.mjs';
+import {preparedLoadingOptions} from './browser.mjs';
 
 const repository=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
 const options={output:path.join(os.homedir(),'.cache/dekobloko/geoblox-loading'),
@@ -99,7 +100,7 @@ for module in ['java.desktop','java.datatransfer','java.base']:
   }
   const classHashes={};
   const visit=(dir,prefix='')=>{for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const name=prefix+entry.name;if(entry.isDirectory())visit(path.join(dir,entry.name),name+'/');else if(name.endsWith('.class'))classHashes[name]=hash(fs.readFileSync(path.join(dir,entry.name)));}};visit(classes);
-  fs.writeFileSync(path.join(output,'benchmark.json'),JSON.stringify({schema:1,referenceCheck,jvmOptions:JSON.parse(fs.readFileSync(path.resolve(repository,'apps/launcher/browser-runtime.json'))).jvmOptions,workload:'Initial four music tracks and initial sound effects, then available graphics/UI/font archive files; excludes networking, drawing, device playback and menu transitions',sourceTreeSha256:sourceIdentity(inventory),workloadSha256:hash(workload),assets:assetHashes,classes:classHashes,runtime:runtimeHashes,teavm:{version,wasmSha256:hash(fs.readFileSync(path.join(output,'teavm/loading.wasm')))},results:[]},null,2)+'\n');
+  fs.writeFileSync(path.join(output,'benchmark.json'),JSON.stringify({schema:1,referenceCheck,jvmOptions:preparedLoadingOptions(JSON.parse(fs.readFileSync(path.resolve(repository,'apps/launcher/browser-runtime.json'))).jvmOptions),workload:'Initial four music tracks and initial sound effects, then available graphics/UI/font archive files; excludes networking, drawing, device playback and menu transitions',sourceTreeSha256:sourceIdentity(inventory),workloadSha256:hash(workload),assets:assetHashes,classes:classHashes,runtime:runtimeHashes,teavm:{version,wasmSha256:hash(fs.readFileSync(path.join(output,'teavm/loading.wasm')))},results:[]},null,2)+'\n');
   console.log('Built loading benchmark: '+output);
 } catch(error) {fs.rmSync(output,{recursive:true,force:true});throw error;}
 finally {fs.rmSync(temporary,{recursive:true,force:true});}
