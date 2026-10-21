@@ -6888,3 +6888,132 @@ excluded diagnostics under `vorbisBenchmark` and
 in the reproducible private benchmark cache. The pinned full-loading TeaVM
 artifact is unchanged. Full loading remains far above **1.10x**; these Node
 diagnostics establish no browser, phone, presented-FPS or peak-heap acceptance.
+
+### Receiver-tree controls and primitive-array class identity
+
+The next reduction retains the scalar-codebook algorithm's data-dependent tree
+walk, receiver-owned integer array, and separate static bit reader. A complete
+eight-bit tree and a deterministic input byte stream are prepared before timing.
+Each fresh process decodes 100,000 symbols and consumes exactly 100,000 bytes;
+there is no stream wrap, reset or decode warmup. The tree is synthetic, so this
+is an operation control, not a replacement for the original-sample comparison.
+
+The separate instrumented run verifies 100,000 native `readScalar` entries and
+800,000 native bit-reader entries, no inlining and no exits. Thus the intended
+call path survives compilation. All three timing variants use fixture source
+`543e4ee86984488a993c3070da165c370b73382e7c8885a0f92a06b14c04c9c9`
+and the same ten class files on both backends:
+
+| Tree variant | JVM median ms | TeaVM median ms |
+| --- | ---: | ---: |
+| Receiver field with bit-reader calls | 16.013 | 7.644 |
+| Tree captured in a local, same calls | 14.004 | 7.132 |
+| Bit-reader body manually inlined | 13.277 | 7.291 |
+
+All checksums and final stream positions match HotSpot; no JVM timing run
+attempts Java compilation. The field/local and call/inline controls reduce the
+penalty, but do not reproduce or explain the original decoder's 4x ratio.
+Do not infer that removing calls alone would fix full loading: the previously
+withdrawn broad cold-static inline experiment already tested that proposal.
+
+Code inspection identifies a separate missing type hint: ordinary VM-created
+objects carry a dense `cidx` used by cast imports, while primitive Java arrays
+did not. Prototype `592f30f0076c7e7b987cc03da95ba276786af4af` supplies the same
+numeric class identity from `newarray` and each primitive `multianewarray` leaf.
+The eight primitive-array identities occupy fixed initial indices before
+ordinary classes. This prevents primitive hints from colliding with unrelated
+object classes when an array comes from a VM with a different class-loading
+order. Reference-array class indexing is unchanged. The existing cast import
+still executes at every original check; only its established verdict cache gets
+a numeric key. Host-created arrays without a hint retain their old path.
+There is no new flag, game identity or preprocessing rule.
+
+A fresh baseline is measured on the current fixture, rather than comparing
+with an earlier 39 ms cast observation:
+
+| One million iterations | Control JVM ms | Candidate JVM ms | Candidate TeaVM ms |
+| --- | ---: | ---: | ---: |
+| Cast without element access | 11.708 | 7.705 | 1.064 |
+| Cast plus integer load | 12.781 | 8.551 | 1.063 |
+
+The original 1,649-byte archive control remains too variable to rank small
+differences reliably. `MICRO_BZIP_ASSET` now selects a pinned archive input for
+the same unchanged original decoder. Larger embedded hex input is split below
+javac's 64 KiB UTF constant limit and joined before timing. Rebuilds replace the
+one current operation fixture; its recorded asset is reused by subsequent runs.
+
+For `1-2.bin`, 87,159 packed bytes decode to 520,357 output bytes in one call.
+Both backends consume the same ten class files and exact original codec class
+bytes. Fixture source is
+`3f066b63ebe8aa6f4f38c2b94539b9f0596fe491168c6484ff519b38e2c71a92`:
+
+| Source | JVM observations ms | JVM median ms | TeaVM median ms |
+| --- | --- | ---: | ---: |
+| Control `3c7b6daf` | 54.231, 54.304, 53.870 | 54.231 | 9.782 |
+| Numeric array classes `592f30f0` | 45.342, 46.211, 47.355 | 46.211 | 9.540 |
+
+This is **14.8% lower JVM decode time**, with matching output checksums and zero
+guest-time compilation in all pairs. It remains well above TeaVM's time, and
+does not itself establish a full-loading gain.
+
+The nine-file focused suite passes **505/505 assertions**, covering primitive
+casts for all eight types, nulls, changed foreign host metadata, cross-VM class
+ordering, multidimensional rows, native object/reference storage, array
+allocation and compiler-retention behavior. An initial five-file batch passed
+260 assertions and failed one reference-array extent-finalization timing check;
+both weak references were already collected. The isolated reference-array file
+then passes 86/86, the repeated five-file batch passes 261/261, and the final
+nine-file batch passes 505/505. No test was changed to waive that failure.
+
+```bash
+# dekobloko-work:
+node --check apps/loading/microbench.mjs
+MICRO_BZIP_ASSET=0-27.bin node apps/loading/microbench.mjs build
+MICRO_ITERATIONS=100000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose 3c7b6dafaf3036331f4b1761eb7a26d3725dcf92 huffman-helper
+MICRO_ITERATIONS=100000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 3c7b6dafaf3036331f4b1761eb7a26d3725dcf92 huffman-helper huffman-cached huffman-inline
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 3c7b6dafaf3036331f4b1761eb7a26d3725dcf92 cast-only int-load-cast bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af cast-only int-load-cast bzip-ready-owner
+MICRO_BZIP_ASSET=1-2.bin node apps/loading/microbench.mjs build
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 3c7b6dafaf3036331f4b1761eb7a26d3725dcf92 bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af bzip-ready-owner
+# java-tools:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/arrayIdentityCaches.test.js test/multianewarrayRuntime.test.js test/nativeObjectFieldCodegen.test.js test/multianewarrayCodegen.test.js test/nativeReferenceArray.test.js test/nativeObjectStorage.test.js test/wasmHeapArrays.test.js test/wasmCompilerRetention.test.js test/objectCheckcast.test.js
+```
+
+The subsequent full-loading B/C/C/B campaign confirms a modest gain:
+
+| Source | Music ms | Graphics ms | Total ms | TeaVM total ms |
+| --- | ---: | ---: | ---: | ---: |
+| Control `3c7b6daf` | 1496.793 | 479.730 | 1976.523 | 334.249 |
+| Candidate `592f30f0` | 1497.999 | 423.102 | 1921.102 | 343.027 |
+| Candidate `592f30f0` | 1483.154 | 417.730 | 1900.884 | 342.265 |
+| Control `3c7b6daf` | 1501.210 | 477.589 | 1978.799 | 340.306 |
+
+Both candidate observations are below both controls. Candidate median loading
+is **1910.993 ms** versus **1977.661 ms** control, **3.37% lower**. Most of the
+gain is in graphics decoding; the music observations are effectively flat.
+TeaVM medians differ slightly between the two pairs of observations, so retain
+the raw backend times alongside ratios. The candidate's median paired ratio
+is approximately **5.577x**, versus **5.864x** control. This does not approach
+the mandatory **1.10x** target.
+
+All four original full-loading checks match
+`18:218292:2368412830:205:7597510:3045679678`; every attempted/completed
+post-main Java compilation count is zero. The comparisons complete and then
+exit 1 for failed parity, rather than timing out or crashing. Post-timer
+`validateGraphics` retains two entries/two exits. Native heap allocation remains
+47,507,074 bytes in each run; that is not a measurement of total JavaScript
+peak heap, and no memory/FPS/browser/phone acceptance is claimed here.
+
+```bash
+# Each command twice, in control/candidate/candidate/control order:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 3c7b6dafaf3036331f4b1761eb7a26d3725dcf92 --options diagnostic
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 592f30f0076c7e7b987cc03da95ba276786af4af --options diagnostic
+```
+
+The measured source is retained on `experiment/teavm-native-parity`. JVM master,
+selected bundles and deployed artifacts remain unchanged. Reduced controls,
+class identities, test attempts and all raw full-loading rows are recorded in
+the existing single `benchmark.json`, under `optimizationTrials.huffmanTraversal`
+and `optimizationTrials.primitiveArrayClassIdentity`. No generated Java,
+class files, Wasm or additional report file is committed.

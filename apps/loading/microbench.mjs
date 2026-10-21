@@ -19,19 +19,27 @@ const cases=['scalar','byte-array','boolean-array','bits-local','bits-static','b
  'float-load-static','float-load-cached','float-load-parameter','butterfly-cached',
  'butterfly-no-readback','butterfly-loads','float-store-parameter','float-store-readback','float-arithmetic',
  'bzip-block','bzip-ready-owner','int-load-parameter','int-load-cast','cold-prefix-loop','ready-prefix-loop',
- 'cast-only','reference-only','array-result-loop','object-result-loop','window-parameter','window-static'];
+ 'cast-only','reference-only','array-result-loop','object-result-loop','window-parameter','window-static',
+ 'huffman-helper','huffman-cached','huffman-inline'];
 const iterations=1_000_000,seed='q',version='0.16.0';
 // Compile Wasm with V8's optimizing tier before execution on BOTH backends.
 // This removes lazy Wasm compilation/tiering from these operation diagnostics.
 const nodeArgs=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const hash=data=>crypto.createHash('sha256').update(data).digest('hex');
 const read=()=>JSON.parse(fs.readFileSync(receiptPath));
-const codecAsset='0-27.bin';
+const codecAsset=process.env.MICRO_BZIP_ASSET||read().microbenchmarks?.codec?.asset||'0-27.bin';
+assert.match(codecAsset,/^\d+-\d+\.bin$/,'Use a pinned archive asset name');
 const codecClassNames=['Bzip2Decoder.class','Bzip2DecoderState.class','UsernameResponseSupport.class','ContextualRuntimeException.class'];
 const codecInput=fs.readFileSync(path.join(player,'assets',codecAsset));
 assert.equal(hash(codecInput),read().assets[codecAsset],'Changed codec input');
 assert.equal(codecInput[0],1,'Expected a Jagex Bzip archive');
 const codecOutputBytes=codecInput.readUInt32BE(5);
+const codecHex=codecInput.toString('hex');
+// Keep javac UTF-8 constants below 64 KiB for the larger real archive control.
+const codecHexSource=codecHex.length<=60000?`String hex="${codecHex}";`:
+ `StringBuilder joined=new StringBuilder();
+  for(String part:new String[]{${codecHex.match(/.{1,60000}/g).map(part=>JSON.stringify(part)).join(',')}})joined.append(part);
+  String hex=joined.toString();`;
 const save=microbenchmarks=>{
  const receipt=read();receipt.microbenchmarks=microbenchmarks;
  fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
@@ -212,7 +220,7 @@ const source=`public class LoadingMicroKernel {
   return sum;
  }
  static byte[] bzipInput() {
-  String hex="${codecInput.toString('hex')}";
+  ${codecHexSource}
   byte[] data=new byte[hex.length()/2];
   for(int i=0;i<data.length;i++){
    int a=hex.charAt(i*2)-48,b=hex.charAt(i*2+1)-48;
@@ -273,6 +281,20 @@ const source=`public class LoadingMicroKernel {
    windowSamples[i]=windowSamples[i]*(float)Math.sin(1.5707963267948966*(double)sine*(double)sine);
   }
  }
+ static int tree(int[] nodes,int at,int depth,int value) {
+  if(depth==0){nodes[at]=~value;return at+1;}
+  int right=tree(nodes,at+1,depth-1,value);nodes[at]=right;
+  return tree(nodes,right,depth-1,value|(1<<(depth-1)));
+ }
+ static int huffmanHelper(int n,MicroHuffmanBook book) {
+  int sum=0;for(int i=0;i<n;i++)sum=sum*33+book.readScalar();return sum;
+ }
+ static int huffmanCached(int n,MicroHuffmanBook book) {
+  int sum=0;for(int i=0;i<n;i++)sum=sum*33+book.readScalarCached();return sum;
+ }
+ static int huffmanInline(int n,MicroHuffmanBook book) {
+  int sum=0;for(int i=0;i<n;i++)sum=sum*33+book.readScalarInline();return sum;
+ }
  public static void main(String[] args) {
   int mode=Integer.parseInt(args[0]),n=Integer.parseInt(args[1]),seed=args[2].charAt(0);
   byte[] a=new byte[1024];boolean[] z=new boolean[1024];bytes=new byte[1024];
@@ -293,6 +315,13 @@ const source=`public class LoadingMicroKernel {
   if(mode==24&&UsernameResponseSupport.accountUiViewportWidth!=640)throw new AssertionError();
   if(mode==28&&MicroColdHolder.seed!=17)throw new AssertionError();
   if(mode==33||mode==34){windowSamples=new float[n];for(int i=0;i<n;i++)windowSamples[i]=0.5f+(i&1023)/1024.0f;}
+  MicroHuffmanBook book=null;
+  if(mode>=35&&mode<=37){
+   int[] nodes=new int[511];if(tree(nodes,0,8,0)!=nodes.length)throw new AssertionError();
+   book=new MicroHuffmanBook(nodes);MicroHuffmanReader.bytes=new byte[n];
+   for(int i=0;i<n;i++){x=x*1664525+1013904223;MicroHuffmanReader.bytes[i]=(byte)(x>>>24);}
+   MicroHuffmanReader.byteCursor=0;MicroHuffmanReader.bitCursor=0;
+  }
   long start=System.nanoTime();
   switch(mode){
    case 0:checksum=scalar(n,seed);break;
@@ -329,6 +358,9 @@ const source=`public class LoadingMicroKernel {
    case 32:checksum=objectResultLoop(n,integers)==integers?resultLoopChecksum:-7;break;
    case 33:windowParameter(n,windowSamples);break;
    case 34:windowStatic(n);break;
+   case 35:checksum=huffmanHelper(n,book);break;
+   case 36:checksum=huffmanCached(n,book);break;
+   case 37:checksum=huffmanInline(n,book);break;
    default:throw new IllegalArgumentException();
   }
   elapsedNanos=System.nanoTime()-start;
@@ -340,6 +372,10 @@ const source=`public class LoadingMicroKernel {
    checksum=checksum*31+initializerPrefixes;
   }
   if(mode==33||mode==34)for(int i=0;i<n;i++)checksum=checksum*31+(int)(windowSamples[i]*1048576.0f);
+  if(mode>=35&&mode<=37){
+   if(MicroHuffmanReader.byteCursor!=n||MicroHuffmanReader.bitCursor!=0)throw new AssertionError();
+   checksum=checksum*31+MicroHuffmanReader.byteCursor;
+  }
  }
 }
 final class MicroBitReader {
@@ -362,6 +398,38 @@ final class MicroCursor {
 final class MicroColdHolder {
  static int seed;
  static {LoadingMicroKernel.initializerPrefixes=LoadingMicroKernel.loopPrefixes;seed=17;}
+}
+final class MicroHuffmanReader {
+ static int ready;static {ready=1;}
+ static byte[] bytes;static int byteCursor,bitCursor;
+ static int readBit(){
+  int value=bytes[byteCursor]>>bitCursor&1;bitCursor=bitCursor+1;
+  byteCursor=byteCursor+(bitCursor>>3);bitCursor=bitCursor&7;return value;
+ }
+}
+final class MicroHuffmanBook {
+ private int[] tree;
+ MicroHuffmanBook(int[] nodes){tree=nodes;}
+ final int readScalar(){
+  int at=0;
+  while(tree[at]>=0)at=MicroHuffmanReader.readBit()!=0?tree[at]:at+1;
+  return ~tree[at];
+ }
+ final int readScalarCached(){
+  int at=0;int[] nodes=tree;
+  while(nodes[at]>=0)at=MicroHuffmanReader.readBit()!=0?nodes[at]:at+1;
+  return ~nodes[at];
+ }
+ final int readScalarInline(){
+  int at=0;
+  while(tree[at]>=0){
+   int bit=MicroHuffmanReader.bytes[MicroHuffmanReader.byteCursor]>>MicroHuffmanReader.bitCursor&1;
+   MicroHuffmanReader.bitCursor++;
+   MicroHuffmanReader.byteCursor+=MicroHuffmanReader.bitCursor>>3;MicroHuffmanReader.bitCursor&=7;
+   at=bit!=0?tree[at]:at+1;
+  }
+  return ~tree[at];
+ }
 }`;
 
 function build() {
@@ -429,6 +497,8 @@ public class TeaVmMicro {
   assert.equal(referenceChecks[31],referenceChecks[32],'Array and object result loops differ');
   assert.equal(referenceChecks[25],referenceChecks[31],'Array-result loop differs from integer load control');
   assert.equal(referenceChecks[33],referenceChecks[34],'Parameter and static window outputs differ');
+  assert.equal(referenceChecks[35],referenceChecks[36],'Field and local Huffman trees differ');
+  assert.equal(referenceChecks[35],referenceChecks[37],'Called and inline Huffman bit readers differ');
   for(const index of [15,16])assert.equal(referenceChecks[14],referenceChecks[index],cases[index]+' differs');
   save({purpose:'Small causal diagnostics; not full-loading or FPS acceptance',version,cases,iterations,seed,
    codec:{asset:codecAsset,inputSha256:hash(codecInput),outputBytes:codecOutputBytes,classes:codecClasses,decodesPerProcess:1},
