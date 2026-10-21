@@ -5560,3 +5560,211 @@ Results: **297/297 assertions**, **3/3 statistics tests**, syntax check passes.
 `git diff --check` passes. The parent checkout status fingerprint remains
 `230025b6f6ed4821fc55c7d52ff4a0a165c98358a75caf8745daf02356b99b1c`;
 unrelated decompiler edits are excluded from the experimental source commits.
+
+
+### Guarded counted loops over primitive arrays
+
+Source `a5e5f50bb45a820935591a828d90b82ed321f743` extends the experimental
+compiler with a bounded, application-independent proof for signed increasing
+counted loops. It supports captured primitive arrays, float/double/long and
+narrow stores, affine indices (including reversed and strided accesses), and
+already-cached nonvolatile static arrays. There is no application opt-in.
+Calls, callbacks, allocations, internal cycles, unproved counter updates and
+additional loop exits retain the ordinary path. This first version deliberately
+does not treat a Math import as a callback-free operation.
+
+The guard proves mathematical index endpoints, physical memory coverage,
+metadata generations, remaining trip count and sufficient fuel. If metadata is
+missing, an ordinary iteration runs and its original backedge retries the guard;
+there are no speculative getters or replayed guest effects. A successful version
+charges exactly the original header-poll count. The structurer sometimes places
+an entire continuation on a loop's exit arm: the implementation extracts that
+continuation once, avoiding duplicate following loops, calls or writes.
+Temporary plans are released. Candidate discovery and extra emitted bytes have
+fixed bounds; loops with more removable memory guards are considered first.
+
+The initial `70af609` version selects six decoder loops and matches every byte of
+the largest HotSpot Vorbis sample. Its 243.299 ms sample timing is not evidence
+of a gain. The final version changes prioritization, literal handling and code
+accounting, so that observation is not relabeled as the final revision.
+
+Final focused validation (from `java-tools`):
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/guardedPrimitiveArrayLoops.test.js test/guardedNestedArrayLoops.test.js test/wasmCompilerRetention.test.js test/arrayIdentityCaches.test.js test/frameLocalSpills.test.js
+```
+
+**414/414 assertions pass.** The new suite contributes 82, including actual fast
+branch execution, exact continuation state at fuel boundaries, partial writes,
+nulls, short arrays, signed extremes, affine ranges, aliases, observable host
+metadata, NaN/infinity/negative-zero bits, 64-bit overflow, narrow stores,
+sequential continuation effects, volatile/callback/early-exit refusal, code
+budget refusal and GC of installed proof graphs. Three older ownership getter
+expectations also failed with the new optimization disabled: allocator-owned
+metadata already bypasses shadow base/length properties. Those expectations are
+corrected to the existing behavior; separate untracked-host tests still verify
+real getter calls and their exact order against the scalar control.
+
+Six fresh full-loading comparisons use B/C/C/B/B/C order, control `72c10fde`
+(tree-identical to `6f716373`), candidate `a5e5f50`, CPU 2 and 1 GiB old-space.
+Each observation includes a fresh unchanged TeaVM process. No workload is
+replayed and all Java preparation stays outside the guest timer. Commands:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision REVISION --options diagnostic
+```
+
+Use the recorded control/candidate revisions in the stated order. The unchanged
+comparison/statistics scripts come from Deko `f3f44bd`; the probe additionally
+records loop count/byte metadata, with measured source SHA-256
+`aec533e1de2aee3ebd7d8a26f7943cf7430cf9ea4c03b7bd0372382e7b46a13a`.
+
+| Median | Control | Candidate |
+| --- | ---: | ---: |
+| Music | 2,020.683 ms | 1,966.110 ms |
+| Graphics archives | 797.594 ms | 786.003 ms |
+| Combined | 2,818.277 ms | 2,757.493 ms |
+| Median paired JVM/TeaVM ratio | 6.050x | 5.926x |
+
+Music improves in all three adjacent comparisons; combined time improves in two
+and regresses in one. Median music is 2.70% lower and combined time 2.16% lower.
+Both graphics stalls (candidate 1,084.001 ms, control 1,109.411 ms) are retained.
+Every checksum and zero guest-compilation gate passes; every 1.10 gate fails.
+These are small execution-time gains, not proof of startup, heap, FPS or phone
+acceptance. The selected `cbcf8ad` artifact remains unchanged. Data lives only in
+`optimizationTrials.guardedPrimitiveLoopsFullNode` in the canonical receipt.
+
+A separate diagnostic confirms actual guard execution, not just installed code:
+six `decodePacket` branches run **5,118 times each**, and the residue branch runs
+5,119 times. It matches the full checksum with zero guest compiler attempts.
+Its times are excluded. Commands:
+
+```bash
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 apps/loading/probe.mjs slab all a5e5f50bb45a820935591a828d90b82ed321f743 loading
+node apps/loading/build-runtime.mjs --revision a5e5f50bb45a820935591a828d90b82ed321f743 --output /tmp/geoblox-native-parity-7zCq8O/runtime
+```
+
+The isolated rebuild succeeds, with debug/worker SHA-256 respectively:
+`f5f3aae1d87ff8cd519dbc8138e3086a3b54b5c5f90b0c96e84b14cbe21b6562`
+and `cb5bad33436f377279cf6389124714745258c899fe7676435d434e8a3a6b28fb`.
+These outputs are temporary and rebuildable, not committed binaries. Firefox
+performance has not yet been measured for this source.
+
+### Two additional hypotheses ruled out in Node
+
+The frame-liveness instruction limit does not block the two large decoders.
+Direct class inspection finds `decodePacket`: 1,401 items, liveness proved,
+22,416 bytes; `decodeBlocks`: 1,186 items, liveness proved, 9,488 bytes.
+Analysis takes about 9 and 3 ms respectively. No analysis limit is raised.
+
+A one-pass diagnostic also replaces 15 direct double `sin` imports with a tiny
+Wasm-to-Wasm forwarding function, leaving the original host Math.sin and all
+arguments/results unchanged. It tests whether a small separately compiled
+callee changes the import cost in a large caller. On unchanged control source
+`72c10fde`, music is **1,997.454 ms**, graphics **801.987 ms**, combined
+**2,799.441 ms**. The checksum and zero guest compilation gates pass. This does
+not establish a useful gain. The hook is diagnostic only and is not integrated
+into the runtime. The single receipt records its exact hash and bytecode under
+`optimizationTrials.mathImportWasmBridge`.
+
+For reproducibility, the exact temporary diagnostic hook was:
+
+```javascript
+const fs=require('node:fs'),crypto=require('node:crypto');
+const Original=WebAssembly.Instance,cache=new WeakMap();
+const bytes=Uint8Array.from([0,97,115,109,1,0,0,0,1,6,1,96,1,124,1,124,2,10,1,3,101,110,118,2,102,110,0,0,3,2,1,0,7,7,1,3,114,117,110,0,1,10,8,1,6,0,32,0,16,0,11]);
+const bridgeModule=new WebAssembly.Module(bytes);let sites=0;
+WebAssembly.Instance=new Proxy(Original,{construct(target,args,newTarget){
+ const env=args[1]?.env;
+ if(env?.math_sin__D_D===Math.sin){
+  let fn=cache.get(Math.sin);if(!fn){fn=new Original(bridgeModule,{env:{fn:Math.sin}}).exports.run;cache.set(Math.sin,fn);}
+  env.math_sin__D_D=fn;sites++;
+ }
+ return Reflect.construct(target,args,newTarget);
+}});
+process.argv=['node','probe.mjs','slab','all','72c10fdea7db6cb5c98239d4514350baeace8d8e','loading'];
+(async()=>{try{await import('/home/kreijstal/git/blank-github-cloner/dekobloko-work/apps/loading/probe.mjs');}
+finally{
+ WebAssembly.Instance=Original;
+ const file='/home/kreijstal/.cache/dekobloko/geoblox-loading/benchmark.json';
+ const data=JSON.parse(fs.readFileSync(file)),d=data.kernelDiagnostic;
+ d.instrumented=true;
+ data.optimizationTrials.mathImportWasmBridge={diagnosticOnly:true,bridgeSites:sites,
+  hookSha256:crypto.createHash('sha256').update(fs.readFileSync(__filename)).digest('hex'),
+  wasmSha256:crypto.createHash('sha256').update(bytes).digest('hex'),
+  ...Object.fromEntries(['runtimeRevision','harnessSha256','equal','musicMs','graphicsMs','loadingMs','compilation','lateCompiles'].map(k=>[k,d[k]]))};
+ fs.writeFileSync(file,JSON.stringify(data,null,2)+'\n');console.log('MATH_BRIDGE',sites);
+}})().catch(e=>{console.error(e);process.exitCode=1;});
+```
+
+Save it as `/tmp/geoblox-native-parity-7zCq8O/inspect.cjs`, then execute with
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 /tmp/geoblox-native-parity-7zCq8O/inspect.cjs`.
+The hook marks its result as instrumented/diagnostic so it cannot become a
+performance-acceptance observation. It does not alter the pinned TeaVM artifact.
+
+
+#### Bounded scalar fallback and final decision
+
+Review found that an unqualified array would repeat the expensive affine guard
+on every iteration. Source `1d0368e8ec168393fcd2c25475b1739ce9dc22a5` limits the
+proof to two attempts per dynamic loop invocation and short-circuits cheap
+trip/fuel/readiness failures. Thereafter the scalar loop has only a cheap
+bypass. Tests verify the exact guard-attempt count on real plain-array execution.
+`6287c3a1cc6429951ec56dc3751d9708a65d76e1` adds tests of older captured field
+references after a newer field generation, with native object storage enabled;
+its runtime source is byte-identical to `1d0368e`.
+
+The final five-file compiler command above passes **423/423 assertions** before
+the prototype is removed. A fresh six-command B/C/C/B/B/C comparison rechecks
+`1d0368e`; earlier `a5e5f50` timings are not substituted for this source:
+
+| Median | Control `72c10fde` | Bounded candidate `1d0368e` |
+| --- | ---: | ---: |
+| Music | 2,041.319 ms | 1,989.959 ms |
+| Graphics archives | 809.408 ms | 838.437 ms |
+| Combined | 2,838.642 ms | 2,923.600 ms |
+| Median paired JVM/TeaVM ratio | 6.045x | 6.237x |
+| Preparation/entry outside execution | 49,142.924 ms | 50,324.909 ms |
+| Synchronous Java preparation compilation | 44,531.961 ms | 45,831.708 ms |
+
+Music remains faster in all three adjacent raw comparisons. Combined improves in
+two and regresses in one, but its median is now 3.0% higher. The third control
+and its TeaVM observation are both slower than earlier observations (3,170.441
+and 549.674 ms); they are retained without attributing a particular cause or
+normalizing them away. The first candidate graphics stall (1,096.152 ms) is
+retained too. Neither raw combined medians nor paired ratios establish an
+overall gain. Every checksum and zero guest-compilation gate passes, and every
+1.10 gate fails. Preparation times are now retained separately, not hidden by
+excluding them from the execution target. Data is in the existing trial's
+`boundedRetryFollowup` member in the single receipt.
+
+**The prototype is removed from the active source** in
+`8e7283a85494cf1dbd12565d00e8ee92a1643a52`. Its runtime tree is identical to
+`72c10fde`; the only retained diff is the three corrected ownership expectations
+in the old regression test. The full implementation and 423-assertion test set
+remain reproducible from the parent commits. The selected runtime and default
+artifacts are unchanged. No Firefox timing, phone, heap or FPS acceptance is
+claimed. This rejects the optimization as sufficient progress on full loading;
+the earlier 2.16% preliminary median is not promoted as the final outcome.
+
+The final largest-sample check on `a5e5f50` also matches every HotSpot PCM byte
+with zero guest compilation (244.507 ms decode, diagnostic only). It remains
+labeled `a5e5f50`, not the later bounded source. Reproduce it with:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 apps/loading/probe.mjs slab 3-0.bin a5e5f50bb45a820935591a828d90b82ed321f743 vorbis
+```
+
+After removing the prototype, validate the retained ownership expectations and
+compiler cleanup with:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/guardedNestedArrayLoops.test.js test/wasmCompilerRetention.test.js
+```
+
+
+The retained two-file command passes **247/247 assertions**. The statistics suite
+passes **3/3**; probe syntax and `git diff --check` pass. The cached selected
+bundle hashes and parent checkout fingerprint remain unchanged. Final status:
+**full loading parity is still unproven and contradicted by every measured
+1.10 gate**. No runtime publication or deployment is performed.

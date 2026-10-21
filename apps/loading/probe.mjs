@@ -177,6 +177,8 @@ try {
  const owners=kernel==='bzip'?['Bzip2Decoder','Bzip2DecoderState']:['MusicDecoder','VorbisCodebook','VorbisResidue','MusicDecodeStage',...(kernel==='loading'?['Bzip2Decoder','Bzip2DecoderState']:[])];
  const layout=meta=>meta&&{structured:!!meta.structured,canonical:!!meta.canonicalRun,normalFlow:meta.normalFlowFullyCompiled,
   omittedPhiCopies:meta.omittedPhiCopies||0,
+  guardedPrimitiveArrayLoopCount:meta.guardedPrimitiveArrayLoopCount||0,
+  guardedPrimitiveArrayLoopBytes:meta.guardedPrimitiveArrayLoopBytes||0,
   nativeTags:!!meta.nativeJsExceptionTags,specSites:meta.specSites?.length||0,inlined:meta.inlinedCalls,
   nativeStaticLeafBytes:meta.nativeStaticLeafVersionBytes||0,
   params:meta.paramSlots?.map(p=>({slot:p.slot,type:p.t})),entryGuards:meta.entryInitializationGuards,
