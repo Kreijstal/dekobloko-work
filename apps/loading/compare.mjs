@@ -22,6 +22,9 @@ options.player=path.resolve(options.player);options.pairs=Number(options.pairs);
 assert.ok(Number.isSafeInteger(options.pairs)&&options.pairs>0&&options.pairs<=20);
 assert.ok(['firefox','chromium','node'].includes(options.browser));
 const node=options.browser==='node';
+// Match the microbenchmarks: eager optimizing Wasm on both backends, with no
+// guest workload warmup. Native Wasm compilation belongs to preparation too.
+const nodeExecutionFlags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 if(node&&options.runtime)throw Error('Node probes use --revision source directly; no --runtime bundle');
 const require=createRequire(import.meta.url);
 const playwright=node?null:require(process.env.PLAYWRIGHT_ROOT||path.join(os.homedir(),'git/java-tools/node_modules/playwright'));
@@ -56,7 +59,7 @@ if(!options.options&&!node)receipt.jvmOptions=fixture.options;
 const provenance={runtimeRevision,runtime:node?{sourceLoader:'archive-with-generated-jre-index'}:runtimeHashes,jvmOptions:fixture.options,
  comparisonHarnessSha256:hash(fs.readFileSync(fileURLToPath(import.meta.url))),
  comparisonStatisticsSha256:hash(fs.readFileSync(new URL('./statistics.mjs',import.meta.url))),
- ...(node?{diagnosticOnly:true,engine:process.version,oldSpaceLimitMiB:1024}:{})};
+ ...(node?{diagnosticOnly:true,engine:process.version,oldSpaceLimitMiB:1024,nodeExecutionFlags}:{})};
 const resultKey=node?'nodeComparison':'results';
 const server=createServer((req,res)=>{
   try {
@@ -86,7 +89,7 @@ try {
       const errors=[];let result;
       if(node){
         const mode=backend==='teavm'?'teavm':options.options==='diagnostic'?'slab':'canonical';
-        const child=spawnSync(process.execPath,['--max-old-space-size=1024',path.join(here,'probe.mjs'),mode,'all',
+        const child=spawnSync(process.execPath,[...nodeExecutionFlags,path.join(here,'probe.mjs'),mode,'all',
           backend==='jvm'?runtimeRevision:'-','loading',options.player],{encoding:'utf8',maxBuffer:16*1024*1024});
         Object.assign(receipt,JSON.parse(fs.readFileSync(receiptPath)));
         result=child.status===0?{...receipt.kernelDiagnostic,backend,browser:'Node.js '+process.version}:

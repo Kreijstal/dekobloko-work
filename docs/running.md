@@ -6205,3 +6205,115 @@ kernel, and primitive instance-field access. Use those measurements before
 another runtime change; the existing whole-workload import census alone does
 not establish their individual costs. Browser/phone, memory and presented-frame
 acceptance have not been revalidated by these Node diagnostics.
+
+
+#### Causal kernels and dominated native receiver-fill checks
+
+The next pass starts from `ad82ae4` and measures smaller cases before changing
+the runtime. `microbench.mjs` now includes a separate-owner bit reader, a sine
+loop, primitive instance-field reads/writes, and a float butterfly with static
+arrays versus array parameters. Every generated class is hashed and the same
+bytes are supplied to TeaVM. Rebuilding removes stale fixture classes and the
+single `current.wat` inspection output. Decimal case parsing also covers case
+indices above nine. All output remains in the one existing benchmark cache and
+results remain only in `benchmark.json`.
+
+The first separate-owner helper still inlined and therefore did not measure a
+call transition. The corrected fixture has an observable class initializer,
+executed once before the timer. The AOT graph sees its cold owner; execution
+counters confirm **one million canonical helper entries and zero inlined calls**.
+Its median is **8.295 ms JVM versus 2.482 ms TeaVM**. The sine loop is
+**10.124 versus 8.846 ms**, a median paired ratio of **1.148x**. These cases do not
+explain the entire loading gap.
+
+Primitive instance fields were a clearer isolated problem. The loop completes
+inside structured Wasm with zero exits, and an instrumented check records only
+one storage lookup and one array base/length lookup for the invocation, with no
+per-iteration JS imports. Inspection of the installed Wasm shows repeated tests
+of the same receiver's `filled` flag before every field access. TeaVM emits
+typed struct accesses. Reproduce the inspection, which overwrites one diagnostic
+text file and is excluded from timing comparisons:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs inspect ad82ae4915cd69f90265867fb0e49114794fd6ef bits-instance
+```
+
+Java-tools source **`471defcc7230b458bf621daef0d65f47cae601e5`** removes only
+provably redundant receiver-base fill tests. A completed primitive slab access
+leaves its cache filled on every continuing path, including the checked fallback
+arm. Subsequent accesses to that exact receiver in the same basic block can
+omit the fill test. Facts reset at basic-block boundaries and are killed when
+SSA redefines a receiver. Field values, representation branches, data loads,
+stores and bounds checks remain unchanged. There is no new flag or game rule.
+The temporary fact sets are released with the other compiler analyses.
+
+Focused validation:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectFieldCodegen.test.js test/nativeObjectForwarding.test.js test/nativeReferenceArray.test.js test/preparedWasmConstructors.test.js test/wasmInstanceInline.test.js test/structuredLoopResume.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 471defcc7230b458bf621daef0d65f47cae601e5 bits-instance bits-instance-call
+```
+
+The focused suite passes **634/634 assertions**, including aliased writes,
+receiver replacement across loop iterations, inherited fields, foreign memory,
+replaced field containers, null failures, constructor/continuation behavior and
+analysis cleanup. The direct-field kernel omits eight redundant fill sites.
+Two candidate batches and two control batches provide six fresh pairs per
+case/version. All checksums match HotSpot and there are zero execution-time
+Java compilations:
+
+| One-million-iteration case | Control JVM ms | Candidate JVM ms | Control JVM/TeaVM | Candidate JVM/TeaVM |
+| --- | ---: | ---: | ---: | ---: |
+| Direct instance fields | 12.233 | 5.070 | 10.586x | 4.728x |
+| Instance-helper form (inlined) | 12.741 | 5.685 | 11.675x | 5.218x |
+
+The ratios are medians of paired ratios; they need not equal a ratio of medians.
+All observations, including the initial slower control samples, are retained.
+
+Full loading was then run in control/candidate/candidate/control order. The
+first ordinary-V8 campaign is retained but has a slow final control observation.
+To match the microbenchmark's AOT execution regime, **Node comparisons now
+always use eager optimizing Wasm on both backends**:
+`--no-liftoff --no-wasm-lazy-compilation`, alongside the unchanged 1 GB JS heap
+limit. No guest workload is warmed up or replayed. The controller records these
+flags in provenance. This changes only the Node benchmark driver, not browser
+runtime defaults. Historical ordinary-tier results are not pooled with these
+new observations.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision ad82ae4915cd69f90265867fb0e49114794fd6ef --options diagnostic
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 471defcc7230b458bf621daef0d65f47cae601e5 --options diagnostic
+```
+
+Each command was executed twice in the stated source order. All four paired
+comparisons complete the output and AOT checks, then correctly exit 1 because
+parity fails. Median JVM execution is **2,003.507 ms control versus 1,968.369 ms
+candidate**, about **1.75% lower** in this small campaign. The candidate median
+paired JVM/TeaVM ratio remains **6.099x**, far above **1.10x**. Most of the measured
+gain is in graphics; music changes little. This is a modest diagnostic gain,
+not proof of release performance or phone compatibility. Eager native compilation
+makes both VMs faster than the historical ordinary-tier figures; it does not
+remove the relative gap.
+
+A further matched case follows the decoder's float-array butterfly shape. Both
+versions perform identical arithmetic and observe output contents after the
+timer; one reads arrays through static fields and one receives array parameters.
+Three fresh pairs per version pass all checksum/AOT checks:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 471defcc7230b458bf621daef0d65f47cae601e5 butterfly-static butterfly-local
+```
+
+The static-array version takes **9.855 ms JVM versus 2.531 ms TeaVM**; the
+parameter version takes **4.668 versus 2.009 ms**. An instrumented static-array
+run records zero loop imports and zero exits. This identifies additional cost
+inside the generated Wasm's array/reference handling, rather than per-iteration
+JS callbacks. It is not yet a proof that this accounts for the whole music gap.
+Use this case to measure a specific metadata optimization before implementing
+one; do not substitute another whole-workload guess.
+
+The receiver-fill source is retained on `experiment/teavm-native-parity`.
+Java-tools master and the selected runtime artifact remain unchanged; no new
+runtime has been deployed. The 1.10x goal remains unmet. Benchmark syntax checks
+and `node --test tests/loading-statistics.test.mjs tests/loading-wasm-optimizer.test.mjs`
+also pass (**8/8**).
