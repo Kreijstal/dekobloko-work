@@ -6016,7 +6016,192 @@ coverage gap is boolean arrays: `nativeArrayBase` and published array headers
 explicitly exclude `[Z`, while the existing `castIdentityOwnedFullNode` import
 census records 388,968 boolean loads and 388,968 stores in floor sorting, plus
 193,216 boolean stores in floor reconstruction. This is older census evidence,
-not a newly sampled profile. A next implementation can test a native boolean
-array representation with explicit truthy loads and low-bit stores, keeping
-byte-array semantics, host getters, foreign arrays, null/bounds errors and
-metadata lifetime intact. No unchecked diagnostic is deployed.
+not a newly sampled profile. Native boolean arrays remain a hypothesis, not the next authorized runtime
+change: first isolate their cost with the matched small kernels below. No
+unchecked diagnostic is deployed.
+
+
+#### Small matched kernels before further runtime changes
+
+`apps/loading/microbench.mjs` generates one small Java fixture and compiles the
+same release-8 class bytes with TeaVM 0.16.0 FULL WasmGC and the exact archived
+JVM source. Its eight cases isolate arithmetic, equivalent byte/boolean array
+updates, and a bit reader with local state, static state, a helper, static
+cursors only, or a static array only. Runtime arguments initialize the data;
+checksums keep the operations observable. HotSpot establishes every checksum,
+including equal results for the equivalent variants. Initialization and JVM
+preparation precede the Java timer. No measured workload is replayed or warmed
+up. Each observation runs in a fresh Node process with a 1 GB JS heap limit;
+three pairs alternate backend order. The driver eagerly compiles optimizing
+Wasm on **both** backends (`--no-liftoff --no-wasm-lazy-compilation`) to remove
+lazy Wasm compilation from the operation comparison. Host JavaScript remains
+part of the runtime being measured.
+
+Generated classes/Wasm stay only in the existing loading cache's `microbench/`
+subdirectory. Results, prior fixture source identities and diagnostic runs go
+only under `microbenchmarks` in the existing `benchmark.json`. There are no new
+result JSON files or runtime changes. `archive-jvm.mjs` extracts the existing
+probe's immutable loader without changing its archive/JRE inventory checks;
+both tools now share it.
+
+From Deko:
+
+```bash
+node apps/loading/microbench.mjs build
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 176c3c4b0c43d62c34a93039939f64e178f0093b
+MICRO_ITERATIONS=8000000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose 176c3c4b0c43d62c34a93039939f64e178f0093b bits-static
+MICRO_ITERATIONS=8000000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose 176c3c4b0c43d62c34a93039939f64e178f0093b bits-call
+```
+
+Default one-million-iteration kernels complete their compiled bodies without
+exits. The initial eager-Wasm comparison passes **48/48 checksum checks** and
+attempts no Java compilation during execution. Its medians are:
+
+| Case | JVM ms | TeaVM ms |
+| --- | ---: | ---: |
+| Arithmetic | 5.319 | 2.054 |
+| Byte array | 13.457 | 2.275 |
+| Boolean array | 243.266 | 3.339 |
+| Local bit reader | 11.016 | 3.132 |
+| Static bit reader | 23.258 | 4.943 |
+| Helper form | 16.312 | 3.443 |
+| Static cursors, local array | 14.220 | 4.474 |
+| Static array, local cursors | 16.187 | 2.948 |
+
+These are diagnostics, **not precise parity estimates**: the machine was busy
+with unrelated QEMU, C compiler and database processes (sampled load average
+27.35). All outliers remain recorded. In particular, millisecond timings are
+noisy and do not justify ranking small differences between the bit-reader
+variants or claiming a full-loading gain. Boolean access clearly warrants
+isolation, but this kernel alone does not show its contribution to loading.
+
+The first, ordinary-tier eight-million-iteration comparison revealed a second
+problem: crossing the default five-million native loop budget caused a huge
+performance cliff. The helper form takes a median **10,709.961 ms** at eight
+million versus **26.988 ms** at one million in the same ordinary-tier regime.
+The shorter helper executes once in structured Wasm with zero exits; the
+longer helper exits its native body and does not return to it. The static
+reader similarly rises from **30.755 ms** to **3,949.118 ms**. This is evidence
+about the resume path, not an intrinsic 60–130x static-field/call cost. Separate
+instrumented diagnostics record entry/exit PCs, selected OSR/structured modules,
+import counts and time inside native entries. Their timings are excluded from
+paired comparisons. The eager-Wasm static-reader diagnostic confirms the
+module change explicitly: its initial structured entry takes 25.119 ms, then
+unstructured dispatcher OSR entries take 833.082 and 155.936 ms. These are
+instrumented observations used to identify the path, not acceptance timings.
+
+After finalizing the one-million default and paired-run identifiers, the
+focused driver smoke command also passes **6/6 checks**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 176c3c4b0c43d62c34a93039939f64e178f0093b bits-call
+```
+
+The resumption experiment below now tests this specific loss of the native
+path against the small reproducer and then against full loading. Separately, isolate the boolean array import path.
+Do not infer that either explains the entire game-loading gap. The 1.10x
+full-loading target remains unmet, and no runtime default or artifact was
+promoted by this investigation.
+
+Validation:
+
+```bash
+node --check apps/loading/microbench.mjs
+node --check apps/loading/archive-jvm.mjs
+node --check apps/loading/probe.mjs
+node --test tests/loading-wasm-optimizer.test.mjs tests/loading-statistics.test.mjs
+```
+
+Syntax checks pass; the existing focused tests pass **8/8**. The executable
+kernel comparisons are the focused validation of fixture correctness, archived
+source loading, and the absence of execution-time Java compilation.
+
+
+#### Proved outer-loop resumption experiment
+
+The corrected source is java-tools commit
+`ad82ae4915cd69f90265867fb0e49114794fd6ef`, retained on
+`experiment/teavm-native-parity` through `eece78a17b580c41b0860459cca4cd653fa5bf7b`.
+The branch also preserves the two measured intermediate source revisions. Master
+and the selected runtime artifact remain `cbcf8ad`; this experiment is **not a
+full-loading improvement or deployment**.
+
+`src/jit/structuredLoopResume.js` proves one outer-loop entry automatically,
+without an application flag or game identity. The header must have an original
+Java PC and an empty operand stack, and be reachable through only sequence/block
+wrappers. No resumed successor may enter the skipped prefix. Every needed SSA
+input must be reconstructed from a typed, live Java frame slot or a total
+literal. Existing protected boolean-capture metadata is also restored, even
+when ordinary Java liveness no longer needs it. Unusable verifier slots,
+including wide-value second words, are omitted exactly as in the spill path.
+Exception regions, conditional-arm entries, irreducible copies, guarded nested
+kernels and GC argument/result transports retain their existing entry protocol.
+Canonical nested-callee ownership remains a separate restriction.
+
+The existing native loop body is shared; only its prefix is skipped at the
+proved resume entry. Entry-only copying, clearing and ownership transfers are
+not replayed. A weak frame marker is set **only by a real fuel exit**. The
+scheduler preserves the empty header stack and yields before executing another
+canonical bytecode, then prioritizes the proved entry. Readiness-guard failures
+do not set this marker, so they can advance through canonical initialization
+instead of spinning at the header. The five-million execution budget is
+unchanged. Runtime restore callbacks capture scalar slot/type metadata; the
+SSA plan is released with the other compiler analyses.
+
+The first PC-only prototype (`d0469a0`) was superseded by an actual-fuel marker
+and a mid-resume readiness-invalidation regression. The next prototype
+(`d2e6bcd`) was superseded by preserving protected captured state across every
+subsequent spill. Those observations remain in the one canonical report.
+
+Validation on the corrected source:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/structuredLoopResume.test.js test/wasmLiteralContinuations.test.js test/wasmColdIntegerInline.test.js test/wasmStaticInlineHandlers.test.js test/canonicalDirectFrames.test.js test/hostOwnedCanonicalFuel.test.js test/wasmCompilerRetention.test.js test/preparedResumeEntries.test.js test/wasmSynchronizedCalls.test.js
+MICRO_ITERATIONS=8000000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run ad82ae4915cd69f90265867fb0e49114794fd6ef bits-static bits-call
+```
+
+The focused tests pass **760/760 assertions**, covering repeated tiny-budget
+spills, integer/wide/reference values, negative zero, branching prefixes,
+foreign array writes, helper side effects, protected captures, readiness
+invalidation, monitor behavior and analysis cleanup. The executable kernel
+comparison passes all **12 checksum checks** and attempts no guest compilation.
+The comparison uses the same fixture bytes, three fresh pairs, CPU 2, a 1 GB JS
+heap limit and eager optimizing Wasm on both backends. Host load changed during
+the investigation (sampled load average fell from 27.35 to 5.61), so raw times
+from the older overloaded control must not be treated as a precise speedup.
+Paired JVM/TeaVM ratio medians quantify the large isolated cliff:
+
+| Eight-million-iteration case | Control JVM/TeaVM | Corrected JVM/TeaVM |
+| --- | ---: | ---: |
+| Static bit reader | 116.737x | 3.193x |
+| Helper form (inlined body) | 399.589x | 3.705x |
+
+These kernels remain slower than TeaVM. Their gain does not establish game
+loading parity. Full loading was tested next, using the unchanged full-loading
+fixture and its existing ordinary-tier Node comparison regime:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 176c3c4b0c43d62c34a93039939f64e178f0093b --options diagnostic
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision ad82ae4915cd69f90265867fb0e49114794fd6ef --options diagnostic
+```
+
+Source order was **control, corrected, corrected, control**, with a fresh paired
+TeaVM observation for each JVM observation. Both corrected observations match
+the recorded checksum and attempt/complete zero guest Java compilations. Both
+versions also pass their control checks. Median JVM loading time is
+**2,757.022 ms control versus 2,752.865 ms corrected**: a **0.15% difference**,
+which is not evidence of a repeatable full-loading gain. The corrected JVM's
+median paired ratio is **6.004x**, far above **1.10x**. All four comparison
+commands therefore correctly exit 1 for unmet performance parity after
+completing their correctness/AOT checks. Earlier overloaded control/prototype
+runs are retained separately and are not pooled with this final campaign.
+Execution counters in the initial campaign change materially only for
+`VorbisCodebook.computeLookupValueCount` (ten exits become two), reinforcing
+that the large synthetic resume cliff is not the dominant full-loading cost.
+
+Keep the resumption fix experimental. The next causal cases should distinguish
+a separate-owner static helper (the current helper form inlines), a Math.sin
+kernel, and primitive instance-field access. Use those measurements before
+another runtime change; the existing whole-workload import census alone does
+not establish their individual costs. Browser/phone, memory and presented-frame
+acceptance have not been revalidated by these Node diagnostics.
