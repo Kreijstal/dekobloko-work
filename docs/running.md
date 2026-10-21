@@ -5896,3 +5896,127 @@ call-boundary overhead and consider compiler-proved direct leaf entries or
 joint native compilation while preserving fuel, exception, class-readiness and
 replacement semantics. Existing broad deep-inlining experiments are not new
 evidence and should not simply be rerun.
+
+#### Cold static inlining: measured regression, withdrawn
+
+The preceding goal turn is progress: it added checked measurements and runnable
+diagnostics, rather than treating a passing checksum as the 1.10 performance
+goal. The selected runtime still has not changed.
+
+Source `3f6c9b3f8dfbd027e3d065ab17f65fd4dff63725` tested a specific cause of
+remaining calls. During preparation, a class with an initializer is cold;
+`planStaticInline` previously admitted only pure integer operations in that
+state. The prototype admitted bounded, loop-free static bodies, including heap
+writes and division, with a readiness guard after argument evaluation. A miss
+reconstructed the original call's argument slots and resume PC, preserving
+preceding caller effects. It kept entry dependencies, handled wide operands,
+and did not flatten loops or raise inline budgets. A separate generic check
+refused static callees with meaningful exception handlers: their handler table
+cannot be dropped during splicing.
+
+The prototype's three-file focused command passed **182 assertions**. Its
+nine-file inline/ABI batch passed **824 assertions**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmGuardedStaticInline.test.js test/wasmColdIntegerInline.test.js test/wasmInlineInitialization.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmGuardedStaticInline.test.js test/wasmInlineBudget.test.js test/wasmInstanceInline.test.js test/wasmDeepInline.test.js test/canonicalDirectFrames.test.js test/compactCanonicalFrames.test.js test/hostOwnedCanonicalFuel.test.js test/wasmParameterArrayAbi.test.js test/preparedWasmConstructors.test.js
+```
+
+These commands require the historical prototype test source. Cold, untaken,
+mid-argument reset, inherited initialization, wide argument restoration and
+guest exceptions were exercised. The test originally tried preparing two
+methods after its no-compilation marker; the assertion rejected that attempt,
+so preparation was moved before the marker and the batch was rerun.
+
+Four fresh Node comparisons ran in C/B/C/B order, each against fresh pinned
+TeaVM, with CPU 2, 1 GiB old-space and no overlapping tests/builds:
+
+| Source | Music ms | Graphics ms | Combined ms | TeaVM ms |
+| --- | ---: | ---: | ---: | ---: |
+| Candidate `3f6c9b3` | 2,038.271 | 799.714 | 2,837.985 | 455.636 |
+| Control `d39e5e3` | 1,941.873 | 785.886 | 2,727.759 | 455.962 |
+| Candidate `3f6c9b3` | 2,150.513 | 794.507 | 2,945.020 | 456.655 |
+| Control `d39e5e3` | 1,923.246 | 790.354 | 2,713.600 | 456.091 |
+
+Every checksum and zero guest-compiler gate passes; every parity gate fails.
+The candidate's combined median is **2,891.502 vs 2,720.680 ms**, 6.3% higher.
+It removes all **3,148,442** separate music single-bit-reader entries, yet both
+observations are slower than both controls. Call count alone is therefore not
+a useful optimization objective. The trial is retained under
+`optimizationTrials.guardedStaticInliningFullNode` in the one receipt.
+
+`176c3c4b0c43d62c34a93039939f64e178f0093b` withdraws the broader admission,
+per-site guards and default-policy change. It retains only the static-callee
+handler check and its regression test. The test exercises cold/warm classes,
+native/plain arrays, exact callee catch results, propagation to a caller catch,
+once-only writes and zero execution-time compilation. Its helper initially
+assumed `runNested` always pushed a return value onto the carrier frame; it now
+uses that API's immediate returned value when present. Retained validation:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmStaticInlineHandlers.test.js test/wasmColdIntegerInline.test.js test/wasmInlineInitialization.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmStaticInlineHandlers.test.js test/wasmInstanceInline.test.js test/wasmDeepInline.test.js test/canonicalDirectFrames.test.js test/compactCanonicalFrames.test.js test/hostOwnedCanonicalFuel.test.js test/wasmCompilerRetention.test.js
+```
+
+Both pass, **144/144** and **644/644**. A fresh full-loading comparison on this
+retained source also matches the reference and attempts no guest compilation:
+music **1,974.569 ms**, graphics **787.686 ms**, combined **2,762.255 ms** versus
+TeaVM **456.041 ms**, approximately **6.057x**. This is a correctness check and
+a diagnostic control, not a repeated speedup result or runtime promotion.
+
+#### Unchecked memory-cost diagnostics
+
+`apps/loading/unchecked-memory-probe.cjs` is an explicitly unsafe Node-only
+causal diagnostic, not imported by a launcher. It temporarily changes compiler
+emission in the exact archived source, restores the loader hook afterwards,
+marks the resulting observation instrumented, and appends only to the existing
+`benchmark.json`. It records source/harness/hook hashes, assumptions, compile-site
+counts, output checks and errors. Site counts are compile-time observations,
+including dry runs; they are not executed-operation counts. Reproduce from Deko:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 176c3c4b0c43d62c34a93039939f64e178f0093b --options diagnostic
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 apps/loading/unchecked-memory-probe.cjs 176c3c4b0c43d62c34a93039939f64e178f0093b /home/kreijstal/.cache/dekobloko/geoblox-loading bounds
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 apps/loading/unchecked-memory-probe.cjs 176c3c4b0c43d62c34a93039939f64e178f0093b /home/kreijstal/.cache/dekobloko/geoblox-loading statics
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 apps/loading/unchecked-memory-probe.cjs 176c3c4b0c43d62c34a93039939f64e178f0093b /home/kreijstal/.cache/dekobloko/geoblox-loading casts
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 apps/loading/probe.mjs teavm all - loading
+```
+
+Each component was executed once in its own process, followed by fresh pinned
+TeaVM. No result is a safe implementation, acceptance run or statistically
+verified improvement. Current figures:
+
+| Diagnostic | Music ms | Graphics ms | Combined ms | JVM/TeaVM |
+| --- | ---: | ---: | ---: | ---: |
+| Checked control | 1,974.569 | 787.686 | 2,762.255 | 6.057x |
+| Skip native numeric-array bounds; retain representation fallbacks | 1,848.037 | 736.148 | 2,584.185 | 5.738x |
+| Skip numeric static-cell capability checks | 1,968.420 | 814.876 | 2,783.296 | 6.151x |
+| Assume primitive-array checkcasts succeed | 1,956.083 | 700.298 | 2,656.380 | 5.850x |
+
+The three narrower diagnostics match the recorded outputs and attempt no Java
+compilation during execution. Their skipped bounds/type/capability semantics
+make them ineligible regardless. The initial combined unchecked experiment on
+`d39e5e3` trapped in `MusicDecoder.decodePcmBudgeted`; it is retained as a failure,
+not timed evidence. That trap alone does not identify which removed check or
+experimental rewrite caused it. The final script preserves separate components
+and their exact hook hashes; earlier bounds/statics observations used the
+version before the cast-only component was added.
+
+Post-timer heap accounting is now included in the normal probe. The checked
+control allocates **47,474,290 bytes** of its **268,435,456-byte** linear heap,
+with no growth, reclamation or exhaustion warning. Linear-heap exhaustion is
+not an explanation of this run. This accounting is not a JavaScript heap peak
+or browser memory-acceptance measurement.
+
+Removing all these checks individually is insufficient to approach 1.10x.
+Before implementing more complicated cast memoization, use the cast-only
+screening result: even discarding its semantics saves only 3.8% of the control's
+full-loading time in this single observation. One concrete remaining native
+coverage gap is boolean arrays: `nativeArrayBase` and published array headers
+explicitly exclude `[Z`, while the existing `castIdentityOwnedFullNode` import
+census records 388,968 boolean loads and 388,968 stores in floor sorting, plus
+193,216 boolean stores in floor reconstruction. This is older census evidence,
+not a newly sampled profile. A next implementation can test a native boolean
+array representation with explicit truthy loads and low-bit stores, keeping
+byte-array semantics, host getters, foreign arrays, null/bounds errors and
+metadata lifetime intact. No unchecked diagnostic is deployed.

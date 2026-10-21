@@ -205,6 +205,7 @@ try {
     structured:!!state.meta?.structured,full:!!state.meta?.fullyCompiled,
     canonical:!!state.meta?.canonicalRun,directEntries:state.meta?.canonicalEntries?.value||0}))
    .filter(state=>state.runs||state.directEntries),
+  heapUsage:j.wasmHeap?.usage(),
   ...(w.importStatsEnabled?{importCensus:w.compiled.flatMap(state=>[
     ['entry',state.meta],['callee',state.callee?.meta],['osr',state.osr?.meta]
    ].flatMap(([tier,meta])=>[...(meta?.importStats||[])].filter(([,count])=>count>0)
