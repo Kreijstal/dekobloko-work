@@ -6525,3 +6525,121 @@ The next small case should reduce the cold-initialization continuation into a
 generic guard-exit/re-entry test, preserving initializer and caller effects
 exactly once. Readying the game class beforehand is only the diagnostic control.
 The required end state remains full loading within **1.10x** TeaVM.
+
+### Cold initialization: recovering native execution at a proved checkpoint
+
+A smaller generic case now reproduces the cold archive's continuation failure.
+Its initializer records a preceding caller-side prefix increment, followed by
+10,000 bit-reader iterations and one tail increment. The benchmark checks the
+initializer's observation and every effect count as well as the HotSpot checksum.
+The initialized-holder control performs no decoder or loop warmup; its different
+initializer observation has its own reference checksum.
+
+All observations below use identical Java fixture source
+`0c442c79fe51457bc9d7eaa803f43339d7c8a03f5a43cca8d795984ad3695195`
+and the same eight class files in TeaVM and JVM, including the unchanged four
+original codec classes. Each cell is a median of three fresh-process pairs.
+No guest workload is replayed, and there is zero execution-time Java compilation.
+
+| JVM source | Generic cold loop ms | Cold archive ms | Reason for the next step |
+| --- | ---: | ---: | --- |
+| `e81bfff2` control | 88.707 | 338.932 | Native code exists but the cold continuation does not regain it |
+| `9e0b0940` | 7.879 | 332.693 | Scalar/baseline JS handoff fixes the ordinary frame, not the canonical child |
+| `08b155ce` | — | 334.092 | Per-bytecode tests pass, but production interpreter batches pass the checkpoint |
+| `d63902df` | — | 18.181 | Batch boundary fixes the real archive; later full validation exposes repeated handoffs |
+| `3732b9b7` | 8.713 | 11.769 | Final bounded handoff, retaining normal native fuel resumption |
+
+For the final source, TeaVM takes **0.029 ms** in the generic cold case and
+**0.380 ms** for the archive. The initialized controls take **0.375 ms JVM
+versus 0.029 ms TeaVM** for the loop, and **8.171 versus 0.412 ms** for the
+archive. The cold archive improves substantially, but these figures still fail
+1.10x. Small absolute timings and variation in the archive's ready-owner samples
+do not support a claim that its remaining gap has disappeared.
+
+The causal sequence is now explicit:
+
+1. A cold guard materializes the precise child Java Frame. A native caller's
+   exit marks that child for canonical interpretation, even if the child's own
+   method has no handlers.
+2. The completed initializer leaves a valid, fully materialized loop state, but
+   the blanket continuation policy prevents native re-entry. In the control,
+   the decoder makes 10,488 legacy bit-reader entries.
+3. Permitting only the existing proved empty-stack checkpoint is insufficient
+   if interpreter batching walks past that point without a JIT probe. The new
+   production-loop regression demonstrates this difference from single-tick
+   unit execution.
+4. Eligible interpreter batches now stop at that boundary after actual bytecode
+   progress. Re-entry keeps the exact Java Frame and its canonical ancestry;
+   native locals and lazy metadata are reconstructed from that frame. The
+   synchronized parent and its handler/monitor obligations keep their existing
+   continuation. The final archive run makes all **10,490** bit-reader entries
+   through native calls.
+
+This does not enter arbitrary blocks or initialize an untaken class early.
+Only an existing complete module with a reconstruction proof, initialized guard
+owners, no pending child/exception state, and an empty stack can use the
+checkpoint. Owned JS continuations retain their lexical locals. Debugger checks,
+denied methods, class initializers, entry-only ownership shapes and the existing
+array-result restriction retain their previous paths. No new runtime flag or
+game identity is involved.
+
+The first full campaign on `d63902df` passed correctness and AOT checks, but
+`validateGraphics` then showed **64 native entries and exits**, versus two in
+the control. This validation occurs after the loading timer; omitting it would
+hide a real continuation regression. The final source permits one non-fuel
+checkpoint attempt per invocation. A further refusal keeps the invocation on
+its supported fallback. Genuine native fuel spills retain their explicit
+resumption marker; fresh/recycled frame entries and normal returns clear the
+attempt bookkeeping. This prevents a new handoff storm without interpreting a
+prefix twice.
+
+The focused suite passes **1,421/1,421 assertions**. New functional regressions
+cover cold initializer ordering, exact prefix/loop/tail effects, both heap modes,
+native synchronized parents, exceptions thrown after re-entry, monitor release,
+guard invalidation between request and entry, repeated native refusal, and the
+actual production batched execution loop. The refusal case permits only one
+attempt and still produces the exact output without Java compilation.
+
+```bash
+# java-tools:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/structuredColdResume.test.js test/structuredLoopResume.test.js test/resumeDispatcher.test.js test/preparedResumeEntries.test.js test/scalarPositionalCalls.test.js test/scalarSpillOutlining.test.js test/coldResumeHandlers.test.js test/staticFieldContinuations.test.js test/restoringCalleeCaughtException.test.js test/wasmCompilerRetention.test.js test/schedulerPerformance.test.js test/canonicalDirectFrames.test.js test/opaqueNormalFlowWasm.test.js test/wasmExplicitMonitors.test.js
+# dekobloko-work:
+node --check apps/loading/microbench.mjs
+node apps/loading/microbench.mjs build
+MICRO_ITERATIONS=10000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run e81bfff21caf6a82f09660f582a1291a446b1ae3 cold-prefix-loop ready-prefix-loop
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run e81bfff21caf6a82f09660f582a1291a446b1ae3 bzip-block bzip-ready-owner
+MICRO_ITERATIONS=10000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 3732b9b768d7ad9af3b75ffc8c9d3ae8c28330a4 cold-prefix-loop ready-prefix-loop bzip-block bzip-ready-owner
+```
+
+Instrumented diagnostics now also count canonical-continuation refusals and
+record checkpoint decisions, independently of timing comparisons. The archive
+control records **10,939** canonical refusals for `decodeBlocks` and no JS
+checkpoint attempt. `inspect` writes only the current Wasm text and can include
+the installed JS fallback source in its diagnostic output; it does not create
+another generated preview or timing report. All raw timings, prototype identities
+and diagnostic data remain in the existing single `benchmark.json`.
+
+The final full-loading B/C/C/B campaign does **not** establish an improvement:
+
+| Source | JVM loading, ms | TeaVM loading, ms | Median paired ratio |
+| --- | --- | --- | --- |
+| Control `e81bfff2` | 1944.377, 1946.997 | 326.103, 327.313 | 5.955x |
+| Bounded checkpoint `3732b9b7` | 1959.095, 1978.260 | 325.424, 327.398 | 6.031x |
+
+The candidate median is **1.18% slower** than the control. All four runs match
+the recorded asset/PCM checks and perform zero post-main Java compilation.
+`validateGraphics` has two native entries and two exits in every run, so the
+intermediate 64-exit regression is gone. Each comparison exits 1 because its
+1.10x acceptance condition fails; none crashes or times out. Run order is
+control, candidate, candidate, control, with one fresh pair per command:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision e81bfff21caf6a82f09660f582a1291a446b1ae3 --options diagnostic
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 3732b9b768d7ad9af3b75ffc8c9d3ae8c28330a4 --options diagnostic
+```
+
+This source remains on the experimental branch; selected runtime and deployed
+artifacts are unchanged. The small archive demonstrates a specific fallback
+problem, not an explanation of the remaining full-loading gap. Further work
+must isolate another small matched case before changing runtime policy. These
+Node results establish no browser/phone, presented-FPS or total-heap acceptance.

@@ -18,7 +18,7 @@ const cases=['scalar','byte-array','boolean-array','bits-local','bits-static','b
  'bits-cross-owner','sin','bits-instance','bits-instance-call','butterfly-static','butterfly-local',
  'float-load-static','float-load-cached','float-load-parameter','butterfly-cached',
  'butterfly-no-readback','butterfly-loads','float-store-parameter','float-store-readback','float-arithmetic',
- 'bzip-block','bzip-ready-owner','int-load-parameter','int-load-cast'];
+ 'bzip-block','bzip-ready-owner','int-load-parameter','int-load-cast','cold-prefix-loop','ready-prefix-loop'];
 const iterations=1_000_000,seed='q',version='0.16.0';
 // Compile Wasm with V8's optimizing tier before execution on BOTH backends.
 // This removes lazy Wasm compilation/tiering from these operation diagnostics.
@@ -40,6 +40,7 @@ const source=`public class LoadingMicroKernel {
  static byte[] bytes;
  static float[] samples,weights,transformed;
  static long elapsedNanos;
+ static int loopPrefixes,loopSteps,loopTails,initializerPrefixes;
  static int scalar(int n,int seed) {
   int x=seed,sum=0;
   for(int i=0;i<n;i++){x=x*1664525+1013904223;sum=sum*33+x;}
@@ -231,6 +232,13 @@ const source=`public class LoadingMicroKernel {
   for(int i=0;i<n;i++)sum=sum*33+((int[])data)[i&1023];
   return sum;
  }
+ static int coldPrefixLoop(int n) {
+  loopPrefixes++;
+  int sum=MicroColdHolder.seed;
+  for(int i=0;i<n;i++){loopSteps++;sum=sum*33+MicroBitReader.readBit();}
+  loopTails++;
+  return sum;
+ }
  public static void main(String[] args) {
   int mode=Integer.parseInt(args[0]),n=Integer.parseInt(args[1]),seed=args[2].charAt(0);
   byte[] a=new byte[1024];boolean[] z=new boolean[1024];bytes=new byte[1024];
@@ -249,6 +257,7 @@ const source=`public class LoadingMicroKernel {
   byte[] packed=null,unpacked=null;
   if(mode==23||mode==24){new Bzip2Decoder();packed=bzipInput();unpacked=new byte[${codecOutputBytes}];}
   if(mode==24&&UsernameResponseSupport.accountUiViewportWidth!=640)throw new AssertionError();
+  if(mode==28&&MicroColdHolder.seed!=17)throw new AssertionError();
   long start=System.nanoTime();
   switch(mode){
    case 0:checksum=scalar(n,seed);break;
@@ -278,12 +287,17 @@ const source=`public class LoadingMicroKernel {
    case 24:checksum=bzipBlock(packed,unpacked);break;
    case 25:checksum=intLoadParameter(n,integers);break;
    case 26:checksum=intLoadCast(n,integers);break;
+   case 27:case 28:checksum=coldPrefixLoop(n);break;
    default:throw new IllegalArgumentException();
   }
   elapsedNanos=System.nanoTime()-start;
   if(mode==12||mode==13||mode==17||mode==18||mode==20||mode==21)
    for(int i=0;i<1024;i++)checksum=checksum*31+(int)(transformed[i]*1048576.0f);
   if(mode==23||mode==24)for(int i=0;i<unpacked.length;i++)checksum=checksum*31+unpacked[i];
+  if(mode==27||mode==28){
+   if(loopPrefixes!=1||loopSteps!=n||loopTails!=1||initializerPrefixes!=(mode==27?1:0))throw new AssertionError();
+   checksum=checksum*31+initializerPrefixes;
+  }
  }
 }
 final class MicroBitReader {
@@ -302,6 +316,10 @@ final class MicroCursor {
   int v=a[byteCursor]>>bitCursor&1;bitCursor=bitCursor+1;
   byteCursor=(byteCursor+(bitCursor>>3))&1023;bitCursor=bitCursor&7;return v;
  }
+}
+final class MicroColdHolder {
+ static int seed;
+ static {LoadingMicroKernel.initializerPrefixes=LoadingMicroKernel.loopPrefixes;seed=17;}
 }`;
 
 function build() {
@@ -418,26 +436,45 @@ async function one(engine,name,revision,inspection) {
    if(j.jit.mainStarted)late.push(j.jit.methodIdentity(method));
    return compile(method,entryPath);
   };
-  const transitions=[];
+  const transitions=[],canonicalCensus=new Map(),checkpointTrace=[];
   if(j.jit.wasmJit.importStatsEnabled){
    const w=j.jit.wasmJit,execute=w.execute.bind(w);
+   const canonical=w.requiresCanonicalResume.bind(w),checkpoint=w.structuredResumeCheckpoint?.bind(w);
+   w.requiresCanonicalResume=frame=>{
+    const result=canonical(frame),key=frame?.method&&j.jit.methodIdentity(frame.method);
+    if(key&&ownsMethod(key)){
+     let row=canonicalCensus.get(key);if(!row)canonicalCensus.set(key,row={key,required:0,ordinary:0});
+     row[result?'required':'ordinary']++;
+    }
+    return result;
+   };
+   if(checkpoint)w.structuredResumeCheckpoint=frame=>{
+    const pc=checkpoint(frame),key=j.jit.methodIdentity(frame.method);
+    if(ownsMethod(key)&&checkpointTrace.length<30)checkpointTrace.push({key,entry:frame.pc,checkpoint:pc,
+     canonical:w.canonicalResumeFrames.has(frame),frameEntryOnly:!!w.state.get(frame.method)?.meta?.frameEntryOnly});
+    return pc;
+   };
    w.execute=(frame,thread,state,...rest)=>{
-    const before=frame.pc,start=performance.now(),out=execute(frame,thread,state,...rest);
+    const before=frame.pc,canonicalBefore=w.canonicalResumeFrames.has(frame),start=performance.now(),out=execute(frame,thread,state,...rest);
     if(ownsMethod(state.key)&&transitions.length<30)
      transitions.push({key:state.key,before,after:frame.pc,osr:!!rest[2],
       structured:!!(rest[2]&&state.osr?state.osr.meta:state.meta)?.structured,
-      elapsedMs:performance.now()-start,result:out});
+      elapsedMs:performance.now()-start,canonicalBefore,canonicalAfter:w.canonicalResumeFrames.has(frame),result:out});
     return out;
    };
   }
   await j.run('LoadingMicroKernel',{args});
   if(inspection==='code'){
-   const method=name==='sin'?'sine':name.replace(/-([a-z])/g,(_,c)=>c.toUpperCase());
-   const state=j.jit.wasmJit.compiled.find(s=>s.key.startsWith('LoadingMicroKernel.'+method+'('));
+   const method=name==='sin'?'sine':name==='ready-prefix-loop'?'coldPrefixLoop':name.replace(/-([a-z])/g,(_,c)=>c.toUpperCase());
+   const prefix=name.startsWith('bzip-')?'Bzip2Decoder.decodeBlocks(':'LoadingMicroKernel.'+method+'(';
+   const state=j.jit.wasmJit.compiled.find(s=>s.key.startsWith(prefix));
    assert.ok(state?.meta?.bytes,'Installed kernel bytes are unavailable');
    const output=path.join(directory,'current.wat');
    fs.writeFileSync(output,execFileSync('wasm-dis',['--all-features','-'],{input:state.meta.bytes}));
    result.code={output,sha256:hash(state.meta.bytes),method:state.key};
+   const generated=j.jit.codegenCache.get(state.method);
+   result.code.javascript={flags:Object.keys(generated||{}).filter(key=>generated[key]===true),
+    source:String(generated?.jvmResumeBodyFn||generated)};
   }
   const fields=j.classes.LoadingMicroKernel.staticFields;
   Object.assign(result,{elapsedMs:Number(fields.get('elapsedNanos:J'))/1e6,checksum:fields.get('checksum:I'),
@@ -452,7 +489,7 @@ async function one(engine,name,revision,inspection) {
     specSites:s.meta?.specSites,entryGuards:s.meta?.entryInitializationGuards,
     links:s.meta?.linkBindings?.map(b=>({key:b.key,pending:b.pending,canonical:!!b.canonicalDirect})),
     jsRestoring:!!j.jit.codegenCache.get(s.method)?.jvmRestoringDirectPositionalBody})),
-   ...(j.jit.wasmJit.importStatsEnabled?{transitions,importCensus:j.jit.wasmJit.compiled.flatMap(s=>[
+   ...(j.jit.wasmJit.importStatsEnabled?{transitions,canonicalCensus:[...canonicalCensus.values()],checkpointTrace,importCensus:j.jit.wasmJit.compiled.flatMap(s=>[
     ['entry',s.meta],['callee',s.callee?.meta],['osr',s.osr?.meta]
    ].flatMap(([tier,meta])=>[...(meta?.importStats||[])].filter(([,count])=>count>0)
     .map(([name,count])=>({method:s.key,tier,name,count})))).sort((a,b)=>b.count-a.count).slice(0,40)}:{})});
