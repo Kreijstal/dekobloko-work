@@ -5415,3 +5415,148 @@ deferred frame materialization and identity-preserving provenance, retaining
 null normalization, original exception order and the unknown-class fallback.
 This is a specific code-generation finding, not a new generic CPU-profiling
 plan. The full 1.10 goal remains active.
+
+
+### Node iteration: deferred dispatcher cast transport
+
+The dispatcher now tests casts with a one-reference predicate. Typed Java locals
+and operands below the cast travel to JavaScript only on an unknown-class deopt.
+Null/undefined normalization, CCE identity, getter order, category-2 locals,
+under-stack store operands and original resume PCs remain covered. Runtime source
+`c452c2be1ca2c906a5a84d34c07a36b0c5c54ab9` is saved on the experimental branch;
+`6f716373f57d37474e64def747a40084bb9caf95` adds four test assertions only.
+
+Six fresh Node observations in B/C/C/B/B/C order use CPU 2, 1 GiB old-space,
+unchanged pinned classes/assets/TeaVM, one workload pass and no guest compilation.
+Bzip median improves **404.905 -> 383.788 ms (5.2%)**, with all three candidate
+observations faster. Full loading does **not** establish an improvement:
+
+| Median | Baseline `ba22815` | Candidate `c452c2b` |
+| --- | ---: | ---: |
+| Music | 2,002.323 ms | 2,013.409 ms |
+| Graphics archives | 798.795 ms | 815.871 ms |
+| Combined | 2,801.575 ms | 2,829.280 ms |
+| Paired JVM/TeaVM ratio | 6.007x | 6.105x |
+
+Every checksum and zero guest-compilation gate passes; every 1.10 parity gate
+fails. Records remain in the single `benchmark.json`, under
+`optimizationTrials.deferredDispatcherCastsBzip` and
+`optimizationTrials.deferredDispatcherCastsFullNode`. These results do not justify
+promoting a runtime. The selected `cbcf8ad` runtime remains unchanged.
+
+Validation from `java-tools` (dependency prefix omitted below only for brevity):
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/deferredDispatcherCasts.test.js test/wasmInstanceLink.test.js test/dispatcherCanonicalCalls.test.js test/dispatcherHeapArrays.test.js
+```
+
+Result: **209/209 assertions pass**. The separate compiler-retention command
+passes **88/88** before the subsequent merge-copy experiment adds retention checks.
+
+A one-pass logical-work check wraps `Math.sin` before loading the **unchanged**
+pinned TeaVM artifact: **10,515,712 calls**. This is stored as explicitly
+instrumented evidence under `optimizationTrials.teavmLogicalWorkCensus`; its times
+are excluded from acceptance. The existing JVM census reports 10,481,664 calls in
+`MusicDecoder.decodePacket` alone; the game also initializes a 32,768-entry sine
+table and the MDCT setup tables. This rules out the simple hypothesis that the
+pinned oracle skips all music decoding. It does not extend the existing PCM
+checksum to instrument samples cached during score preparation: that checksum
+currently covers the 18 initial sound-effect samples only.
+
+
+### Rejected merge-copy pruning experiment
+
+A compiler-only backwards slice seeds real normal operands, call/EH spills,
+entry guards, fuel exits and deopt stubs, then follows SSA arguments. Unobserved
+merge cycles need no native edge copies; producers remain in place. There is no
+runtime opt-in. The tested source is `07e9a96bcb3c4fb331bb94a3bc2a966573ec3802`;
+`85ffa8e4e5fbed52c39ea2dd36b16d1c2ad6e830` additionally resets analysis on diagnostic
+compiler reuse and adds two regression assertions. Analysis data is released with
+other compiler diagnostics. No extra spill imports are installed for analysis.
+
+The prototype removes 513 static copy sites in `decodePacket` and 288 in
+`decodeBlocks`. All 226 focused assertions pass, covering exact results and frame
+state at several fuel budgets, wide handler-only locals, reference identity,
+parallel swaps, observable unused producers, existing aliases and retention:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmDeadPhiCopies.test.js test/frameLocalSpills.test.js test/wasmCompilerRetention.test.js test/arrayIdentityCaches.test.js test/wasmSsaReferenceFacts.test.js
+```
+
+An initial source `10caee6` also matches every HotSpot byte for the largest
+Vorbis sample with no guest compilation. That initial source temporarily
+created analysis-only spill imports; `07e9a96` removes those unused imports.
+The sample result is not relabeled as a later revision.
+
+Full-loading B/C/C/B/B/C comparisons use control `6f716373` and candidate
+`07e9a96`, the same CPU/heap/artifacts and fresh paired TeaVM observations:
+
+| Median | Control | Candidate |
+| --- | ---: | ---: |
+| Music | 1,989.272 ms | 1,996.105 ms |
+| Graphics archives | 798.334 ms | 794.815 ms |
+| Combined | 2,780.993 ms | 2,791.806 ms |
+| Median paired JVM/TeaVM ratio | 5.935x | 6.004x |
+
+Combined time is 0.39% higher; this does not establish a speedup. The last
+candidate graphics observation (1,088.341 ms) is retained. All decoded checks and
+zero guest compiler gates pass; all six parity gates fail. Data is in
+`optimizationTrials.deadPhiCopiesFullNode` in the existing single receipt.
+The probe records copy counts, with source hash
+`2fb69f841ad18229bac434fe8d5dde07058eb5e282027444cf58752e7dadf015`.
+`node --check apps/loading/probe.mjs` and all three statistics tests pass.
+
+The optimization and its specific test are removed from the active experiment
+in `72c10fdea7db6cb5c98239d4514350baeace8d8e`; the entire saved tree is identical
+to `6f716373`. The attempted implementation and tests remain reproducible in its
+parent history. No default or browser runtime is promoted.
+
+
+### Eager host-native tier diagnostic
+
+Both unchanged runtimes also ran one fresh full-loading pass under:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/probe.mjs slab all 6f716373f57d37474e64def747a40084bb9caf95 loading
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/probe.mjs teavm all - loading
+```
+
+These are diagnostic engine flags only, equally applied; they are not a runtime option or release
+configuration. Each pass has fresh process/VM state and no guest replay. Node
+must compile Wasm with its optimizing tier before executing it. Both results
+match the recorded checksum; JVM.js has zero attempted/completed guest-time
+Java compilation.
+
+| Full pass | JVM.js `6f716373` | Pinned TeaVM |
+| --- | ---: | ---: |
+| Music | 1,528.446 ms | 217.178 ms |
+| Graphics archives | 514.101 ms | 116.186 ms |
+| Combined | 2,042.547 ms | 333.364 ms |
+
+The ratio is **6.127x**. This is one causal diagnostic pair, not a repeated
+performance acceptance result. Eager optimization makes both runtimes faster
+than their normal fresh-process observations but leaves the gap. Host Wasm
+warmup alone cannot explain it. Source, flags, harness hash, checks and times
+are in `optimizationTrials.eagerNativeTierFullNode` in the single receipt.
+The original artifacts and selected runtime hashes remain unchanged.
+
+A concrete next code-generation direction is expanding the existing bounded
+loop-versioning proof beyond its current negative-counter, integer-array shape.
+Counted DSP loops over already captured primitive arrays could guard owned
+representation and ranges once, then avoid repeated cache/type/bounds branches.
+This needs exact exception order and fuel continuation tests, plus fresh full
+Node comparisons before any Firefox confirmation; no new CPU-sampling exercise
+is required to start that implementation. The 1.10 goal remains unmet.
+
+Final validation after removing the non-improving merge-copy experiment:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/deferredDispatcherCasts.test.js test/wasmInstanceLink.test.js test/dispatcherCanonicalCalls.test.js test/dispatcherHeapArrays.test.js test/wasmCompilerRetention.test.js
+node --test tests/loading-statistics.test.mjs
+node --check apps/loading/probe.mjs
+```
+
+Results: **297/297 assertions**, **3/3 statistics tests**, syntax check passes.
+`git diff --check` passes. The parent checkout status fingerprint remains
+`230025b6f6ed4821fc55c7d52ff4a0a165c98358a75caf8745daf02356b99b1c`;
+unrelated decompiler edits are excluded from the experimental source commits.
