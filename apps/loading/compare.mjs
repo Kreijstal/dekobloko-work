@@ -10,6 +10,7 @@ import {createServer} from 'node:http';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {spawnSync,execFileSync} from 'node:child_process';
+import {summarizeLoading} from './statistics.mjs';
 const here=path.dirname(fileURLToPath(import.meta.url));
 const options={player:path.join(os.homedir(),'.cache/dekobloko/geoblox-loading'),browser:'firefox',pairs:3};
 for(let i=2;i<process.argv.length;i++) {
@@ -54,6 +55,7 @@ const fixture={classes,assets,options:(options.options==='diagnostic'?receipt.di
 if(!options.options&&!node)receipt.jvmOptions=fixture.options;
 const provenance={runtimeRevision,runtime:node?{sourceLoader:'archive-with-generated-jre-index'}:runtimeHashes,jvmOptions:fixture.options,
  comparisonHarnessSha256:hash(fs.readFileSync(fileURLToPath(import.meta.url))),
+ comparisonStatisticsSha256:hash(fs.readFileSync(new URL('./statistics.mjs',import.meta.url))),
  ...(node?{diagnosticOnly:true,engine:process.version,oldSpaceLimitMiB:1024}:{})};
 const resultKey=node?'nodeComparison':'results';
 const server=createServer((req,res)=>{
@@ -123,10 +125,7 @@ try {
       console.log(JSON.stringify(observations.at(-1)));
     } finally {if(browser)await browser.close();}
   }
-  const median=values=>{const s=values.sort((a,b)=>a-b);return s.length%2?s[s.length>>1]:(s[s.length/2-1]+s[s.length/2])/2;};
-  const summary=Object.fromEntries(['jvm','teavm'].map(backend=>[backend,Object.fromEntries(['musicMs','graphicsMs','loadingMs'].map(key=>[key,median(observations.filter(r=>r.backend===backend).map(r=>r[key]))]))]));
-  const ratio=summary.jvm.loadingMs/summary.teavm.loadingMs;
-  const parity={maximumRatio:1.1,ratio,met:ratio<=1.1};
+  const {summary,ratio,parity}=summarizeLoading(observations,options.pairs);
   receipt[resultKey]={...provenance,scope:receipt.workload,browser:options.browser,status:'complete',observations,summary,parity,assetAndPcmResultsMatch:true,zeroGuestCompilation:true,fullMenuLoading:false};
   fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
   console.log(JSON.stringify({scope:receipt.workload,summary,ratio,parity,report:receiptPath}));
