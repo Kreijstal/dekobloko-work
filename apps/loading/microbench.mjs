@@ -20,7 +20,8 @@ const cases=['scalar','byte-array','boolean-array','bits-local','bits-static','b
  'butterfly-no-readback','butterfly-loads','float-store-parameter','float-store-readback','float-arithmetic',
  'bzip-block','bzip-ready-owner','int-load-parameter','int-load-cast','cold-prefix-loop','ready-prefix-loop',
  'cast-only','reference-only','array-result-loop','object-result-loop','window-parameter','window-static',
- 'huffman-helper','huffman-cached','huffman-inline'];
+ 'huffman-helper','huffman-cached','huffman-inline',
+ 'huffman-many-fields','huffman-many-cached','huffman-many-local'];
 const iterations=1_000_000,seed='q',version='0.16.0';
 // Compile Wasm with V8's optimizing tier before execution on BOTH backends.
 // This removes lazy Wasm compilation/tiering from these operation diagnostics.
@@ -295,6 +296,9 @@ const source=`public class LoadingMicroKernel {
  static int huffmanInline(int n,MicroHuffmanBook book) {
   int sum=0;for(int i=0;i<n;i++)sum=sum*33+book.readScalarInline();return sum;
  }
+ static int huffmanManyFields(int n,MicroHuffmanBook book){return book.readManyFields(n);}
+ static int huffmanManyCached(int n,MicroHuffmanBook book){return book.readManyCached(n);}
+ static int huffmanManyLocal(int n,MicroHuffmanBook book){return book.readManyLocal(n);}
  public static void main(String[] args) {
   int mode=Integer.parseInt(args[0]),n=Integer.parseInt(args[1]),seed=args[2].charAt(0);
   byte[] a=new byte[1024];boolean[] z=new boolean[1024];bytes=new byte[1024];
@@ -316,7 +320,7 @@ const source=`public class LoadingMicroKernel {
   if(mode==28&&MicroColdHolder.seed!=17)throw new AssertionError();
   if(mode==33||mode==34){windowSamples=new float[n];for(int i=0;i<n;i++)windowSamples[i]=0.5f+(i&1023)/1024.0f;}
   MicroHuffmanBook book=null;
-  if(mode>=35&&mode<=37){
+  if(mode>=35&&mode<=40){
    int[] nodes=new int[511];if(tree(nodes,0,8,0)!=nodes.length)throw new AssertionError();
    book=new MicroHuffmanBook(nodes);MicroHuffmanReader.bytes=new byte[n];
    for(int i=0;i<n;i++){x=x*1664525+1013904223;MicroHuffmanReader.bytes[i]=(byte)(x>>>24);}
@@ -361,6 +365,9 @@ const source=`public class LoadingMicroKernel {
    case 35:checksum=huffmanHelper(n,book);break;
    case 36:checksum=huffmanCached(n,book);break;
    case 37:checksum=huffmanInline(n,book);break;
+   case 38:checksum=huffmanManyFields(n,book);break;
+   case 39:checksum=huffmanManyCached(n,book);break;
+   case 40:checksum=huffmanManyLocal(n,book);break;
    default:throw new IllegalArgumentException();
   }
   elapsedNanos=System.nanoTime()-start;
@@ -372,7 +379,7 @@ const source=`public class LoadingMicroKernel {
    checksum=checksum*31+initializerPrefixes;
   }
   if(mode==33||mode==34)for(int i=0;i<n;i++)checksum=checksum*31+(int)(windowSamples[i]*1048576.0f);
-  if(mode>=35&&mode<=37){
+  if(mode>=35&&mode<=40){
    if(MicroHuffmanReader.byteCursor!=n||MicroHuffmanReader.bitCursor!=0)throw new AssertionError();
    checksum=checksum*31+MicroHuffmanReader.byteCursor;
   }
@@ -429,6 +436,52 @@ final class MicroHuffmanBook {
    at=bit!=0?tree[at]:at+1;
   }
   return ~tree[at];
+ }
+ // Causal controls on valid input, not proposed guest-code rewrites. A single
+ // traversal stream is consumed once. Each step removes only one category:
+ // per-symbol calls, repeated tree fields, then static reader state per bit.
+ final int readManyFields(int n){
+  int sum=0;
+  for(int i=0;i<n;i++){
+   int at=0;
+   while(tree[at]>=0){
+    int bit=MicroHuffmanReader.bytes[MicroHuffmanReader.byteCursor]>>MicroHuffmanReader.bitCursor&1;
+    MicroHuffmanReader.bitCursor++;
+    MicroHuffmanReader.byteCursor+=MicroHuffmanReader.bitCursor>>3;MicroHuffmanReader.bitCursor&=7;
+    at=bit!=0?tree[at]:at+1;
+   }
+   sum=sum*33+~tree[at];
+  }
+  return sum;
+ }
+ final int readManyCached(int n){
+  int sum=0;int[] nodes=tree;
+  for(int i=0;i<n;i++){
+   int at=0;
+   while(nodes[at]>=0){
+    int bit=MicroHuffmanReader.bytes[MicroHuffmanReader.byteCursor]>>MicroHuffmanReader.bitCursor&1;
+    MicroHuffmanReader.bitCursor++;
+    MicroHuffmanReader.byteCursor+=MicroHuffmanReader.bitCursor>>3;MicroHuffmanReader.bitCursor&=7;
+    at=bit!=0?nodes[at]:at+1;
+   }
+   sum=sum*33+~nodes[at];
+  }
+  return sum;
+ }
+ final int readManyLocal(int n){
+  int sum=0;int[] nodes=tree;byte[] input=MicroHuffmanReader.bytes;
+  int byteCursor=MicroHuffmanReader.byteCursor,bitCursor=MicroHuffmanReader.bitCursor;
+  for(int i=0;i<n;i++){
+   int at=0;
+   while(nodes[at]>=0){
+    int bit=input[byteCursor]>>bitCursor&1;
+    bitCursor++;byteCursor+=bitCursor>>3;bitCursor&=7;
+    at=bit!=0?nodes[at]:at+1;
+   }
+   sum=sum*33+~nodes[at];
+  }
+  MicroHuffmanReader.byteCursor=byteCursor;MicroHuffmanReader.bitCursor=bitCursor;
+  return sum;
  }
 }`;
 
@@ -499,6 +552,7 @@ public class TeaVmMicro {
   assert.equal(referenceChecks[33],referenceChecks[34],'Parameter and static window outputs differ');
   assert.equal(referenceChecks[35],referenceChecks[36],'Field and local Huffman trees differ');
   assert.equal(referenceChecks[35],referenceChecks[37],'Called and inline Huffman bit readers differ');
+  for(const index of [38,39,40])assert.equal(referenceChecks[35],referenceChecks[index],cases[index]+' differs');
   for(const index of [15,16])assert.equal(referenceChecks[14],referenceChecks[index],cases[index]+' differs');
   save({purpose:'Small causal diagnostics; not full-loading or FPS acceptance',version,cases,iterations,seed,
    codec:{asset:codecAsset,inputSha256:hash(codecInput),outputBytes:codecOutputBytes,classes:codecClasses,decodesPerProcess:1},
@@ -509,7 +563,7 @@ public class TeaVmMicro {
  } finally {fs.rmSync(temporary,{recursive:true,force:true});}
 }
 
-async function one(engine,name,revision,inspection) {
+async function one(engine,name,revision,inspection,inspectionPrefix) {
  const fixture=read().microbenchmarks,index=cases.indexOf(name);
  assert.ok(fixture&&index>=0,'Build the fixture and select a known case');
  assert.equal(hash(source),fixture.sourceSha256,'Rebuild changed fixture');
@@ -582,7 +636,7 @@ async function one(engine,name,revision,inspection) {
   await j.run('LoadingMicroKernel',{args});
   if(inspection==='code'){
    const method=name==='sin'?'sine':name==='ready-prefix-loop'?'coldPrefixLoop':name.replace(/-([a-z])/g,(_,c)=>c.toUpperCase());
-   const prefix=name.startsWith('bzip-')?'Bzip2Decoder.decodeBlocks(':'LoadingMicroKernel.'+method+'(';
+   const prefix=inspectionPrefix||(name.startsWith('bzip-')?'Bzip2Decoder.decodeBlocks(':'LoadingMicroKernel.'+method+'(');
    const state=j.jit.wasmJit.compiled.find(s=>s.key.startsWith(prefix));
    assert.ok(state?.meta?.bytes,'Installed kernel bytes are unavailable');
    const output=path.join(directory,'current.wat');
@@ -604,6 +658,8 @@ async function one(engine,name,revision,inspection) {
     structuredResumeEntry:s.meta?.structuredResumeEntry,
     specSites:s.meta?.specSites,entryGuards:s.meta?.entryInitializationGuards,
     links:s.meta?.linkBindings?.map(b=>({key:b.key,pending:b.pending,canonical:!!b.canonicalDirect})),
+    ...(j.jit.wasmJit.importStatsEnabled?{imports:[['entry',s.meta],['callee',s.callee?.meta],['osr',s.osr?.meta]]
+     .flatMap(([tier,meta])=>[...(meta?.importStats||[])].filter(([,count])=>count>0).map(([name,count])=>({tier,name,count})))}:{}),
     jsRestoring:!!j.jit.codegenCache.get(s.method)?.jvmRestoringDirectPositionalBody})),
    ...(j.jit.wasmJit.importStatsEnabled?{transitions,canonicalCensus:[...canonicalCensus.values()],checkpointTrace,importCensus:j.jit.wasmJit.compiled.flatMap(s=>[
     ['entry',s.meta],['callee',s.callee?.meta],['osr',s.osr?.meta]
@@ -666,5 +722,5 @@ if(command==='build')build();
 else if(command==='one')await one(...args);
 else if(command==='run')run(args[0],args.slice(1));
 else if(command==='diagnose')diagnose(...args);
-else if(command==='inspect')await one('jvm',args[1],args[0],'code');
-else throw Error('Usage: microbench.mjs build | run EXACT_REVISION [CASE ...] | diagnose EXACT_REVISION CASE | inspect EXACT_REVISION CASE | one jvm|teavm CASE EXACT_REVISION');
+else if(command==='inspect')await one('jvm',args[1],args[0],'code',args[2]);
+else throw Error('Usage: microbench.mjs build | run EXACT_REVISION [CASE ...] | diagnose EXACT_REVISION CASE | inspect EXACT_REVISION CASE [METHOD_PREFIX] | one jvm|teavm CASE EXACT_REVISION');

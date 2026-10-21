@@ -7017,3 +7017,113 @@ class identities, test attempts and all raw full-loading rows are recorded in
 the existing single `benchmark.json`, under `optimizationTrials.huffmanTraversal`
 and `optimizationTrials.primitiveArrayClassIdentity`. No generated Java,
 class files, Wasm or additional report file is committed.
+
+
+### Conditional field-header reuse: rejected by reduced controls
+
+The next candidate tested a specific source-level hypothesis: repeated native
+field reads reseed each SSA reader's array base/length even when the metadata is
+already complete. Candidate `e4301c68` preserves a complete reader cache until
+field refill. Unknown/customized field headers still query metadata at every
+original access. No application identity or new option is involved.
+
+The three controls use the same ten-class fixture
+`3f066b63ebe8aa6f4f38c2b94539b9f0596fe491168c6484ff519b38e2c71a92`.
+Each observation is a fresh process with no guest warmup; both backends use the
+eager native Wasm flags, CPU 2 and the same one GiB Node heap limit.
+
+| Control | Baseline JVM median ms | Candidate JVM median ms | Baseline TeaVM median ms | Candidate TeaVM median ms |
+| --- | ---: | ---: | ---: | ---: |
+| window-static | 18.331 | 18.763 | 14.319 | 14.385 |
+| window-parameter | 17.021 | 16.997 | 14.295 | 14.268 |
+| huffman-helper | 16.564 | 16.113 | 8.342 | 7.680 |
+
+This does not justify a compiler change. Static window execution gets worse,
+the parameter control is flat, and TeaVM's tree timing also shifts. **No full
+loading campaign was run for this failed reduction.** Withdrawal `4ebb7265`
+restores exactly the retained `592f30f0` runtime, keeping only useful fallback
+tests and an existing arraycopy-test observation fix.
+
+New fallback checks cover positive native-base foreign views with observable
+length getters, a changing length that throws at the original access, and exact
+preceding effects. The initial six-file suite exposed six old arraycopy import
+counter failures: the unchanged `592f30f0` control fails the same assertions
+because native fields bypass those imports. Giving that fixture an explicit
+checked field accessor makes the existing counter test its intended path. The
+corrected arraycopy test passes on the unchanged control; the candidate suite
+passes 282/282, and the withdrawal suite passes **280/280** (the two candidate
+codegen assertions are removed). No functional expectation was waived.
+
+```bash
+# dekobloko-work, once for each exact control/candidate revision:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run REVISION window-static window-parameter
+MICRO_ITERATIONS=100000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run REVISION huffman-helper
+# java-tools, candidate and withdrawal:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticReferenceCodegen.test.js test/nativeObjectFieldCodegen.test.js test/nativeObjectForwarding.test.js test/wasmArrayCopyFieldCache.test.js test/sharedFieldArrayCaches.test.js test/wasmCompilerRetention.test.js
+```
+
+Raw observations and the rejection are retained in the existing single
+`benchmark.json`, under `optimizationTrials.conditionalFieldHeaderSeeding`.
+Runtime master, selected artifacts and deployment are unchanged.
+
+
+### Smaller Huffman controls before further compiler changes
+
+At the user's request, stop speculative compiler changes and reduce the
+remaining cost first. The runtime stays at retained `592f30f0`. Three added
+source controls consume the same stream once, changing one category at a time:
+combine the per-symbol calls into one method, cache the tree reference, then
+keep the reader array and cursors locally until the end. These are diagnostics
+on valid input, not replacements for arbitrary guest programs; moving field
+accesses can change observable behavior on exceptional/foreign paths.
+
+The new ten-class fixture source is
+`4c9dfc9fbabb177703a3a29d6d6580d142ad4faee1f4512529e0461ef841cb3c`.
+All four modes consume one million symbols, assert the exact final byte/bit
+cursors, and match fresh HotSpot checksum `-1268584370`. JVM.js and TeaVM consume
+identical class files. No guest warmup, replay or timed preparation is added.
+Three fresh process pairs per case use the same eager native Wasm flags, one
+GiB Node heap limit and CPU 2 as the earlier controls.
+
+| Reduced control | JVM.js median ms | TeaVM median ms | Ratio of medians |
+| --- | ---: | ---: | ---: |
+| Original one call per symbol; bit reader inlined | 115.391 | 72.604 | 1.589x |
+| One method; tree and reader fields | 99.878 | 72.229 | 1.383x |
+| Tree reference cached; reader fields | 86.096 | 72.668 | 1.185x |
+| Tree and reader arrays/cursors local | 73.335 | 41.905 | 1.750x |
+
+Each JVM observation has zero guest-time Java compilation. The original mode
+records one million native `readScalarInline` entries with zero exits; each
+combined method records one native entry with zero exits. Removing static
+reader state also removes its associated initialization/capability/cache work;
+the timing does not isolate the cost of a store instruction alone.
+
+The important remaining reduction is `readManyLocal`: the gap persists inside
+one method with locally held arrays and cursors. A separate import-instrumented
+run reports one native entry, zero frame/fuel exits and zero imported calls in
+that method, with the same checksum. This diagnostic is excluded from the
+24 timing observations. Generated code still contains bounds/fallback branches
+and loop polling. Their presence is not yet evidence of how much time each
+costs; reduce the array operations and loop control before changing them.
+
+The inspection command now accepts a method prefix so it can inspect the actual
+worker method rather than only its thin benchmark wrapper. Diagnostics include
+per-method import counters across available entry/callee/OSR modules, avoiding
+the global top-40 display's loss of rare calls. Inspection keeps just the one
+existing `microbench/current.wat` preview.
+
+```bash
+node --check apps/loading/microbench.mjs
+node apps/loading/microbench.mjs build
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af huffman-inline huffman-many-fields huffman-many-cached huffman-many-local
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose 592f30f0076c7e7b987cc03da95ba276786af4af huffman-many-local
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs inspect 592f30f0076c7e7b987cc03da95ba276786af4af huffman-many-local 'MicroHuffmanBook.readManyLocal('
+```
+
+Syntax, fixture build, all HotSpot reference checks, all 24 paired observations
+and the focused method inspection pass. Raw rows and this analysis are in the
+same single `benchmark.json`, under
+`optimizationTrials.huffmanFieldStateIsolation`. These source-level controls
+do not establish a runtime optimization or alter the full-loading result:
+approximately 5.58x remains far from the 1.10x target. No full-loading campaign
+or promotion is justified by these controls alone.
