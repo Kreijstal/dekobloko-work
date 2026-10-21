@@ -4801,3 +4801,135 @@ runtime files modified at that point: 34/40 baseline assertions passed. The
 array-copy value/alias correctness assertions passed in both cases; the count
 expectations conflict with the existing native-static-cell path. This pass does
 not change those expectations or claim that broader batch passed.
+
+### Node-first native-storage experiments (not released)
+
+The 1.10× TeaVM loading goal remains open. The selected runtime in the canonical
+player is still `cbcf8ad`; none of the experiments below replace that artifact or
+the production launcher policy. No generated Java, bundles, class files, Wasm,
+heap snapshots, screenshots or profiler output are committed by this work.
+
+TeaVM's pinned 0.16.0 Wasm GC binary was inspected with Binaryen 129. Its Java
+fields and arrays use native GC structs/arrays rather than general JVM field and
+array imports. The pinned source is available from
+[Maven Central](https://repo.maven.apache.org/maven2/org/teavm/teavm-core/0.16.0/teavm-core-0.16.0-sources.jar).
+The asset bridge also converts JS bytes into Java arrays. Our fixture now calls
+`newByteArray`, which copies fresh I/O into owned primitive storage when enabled;
+that copy stays inside the measured phase. This change alone did not explain or
+close the loading gap. Existing resource-buffer copies already owned some of
+those inputs.
+
+Implemented and tested in the experimental java-tools source:
+
+- Native GC object-reference storage, superclass-compatible layouts and native
+  primitive-array field headers. Foreign heaps and replaced field containers
+  retain checked imports. Finalizers follow the native store's lifetime.
+- Storage forwarding across canonical calls, with consumed/cleared publications
+  on normal, recursive, exceptional, withdrawn-target and cold-owner paths.
+- Inline GC field instructions, typed storage locals and bounded positive class
+  checks, preserving ordinary checks for unknown or later classes.
+- AOT allocation guarded at execution time rather than refusing every cold
+  class during compilation. Preparation never runs class initializers.
+- Canonical constructor entry and selection based on actual guard-only coverage,
+  including shallow inlining. The MIDI parser entered Wasm four times with zero
+  exits without an application-specific method list. Unsupported bodies retain
+  fallback and exit-storm checks.
+- Bulk NIO byte-buffer copies for ordinary byte views. Bounds failures, signed
+  values, slice offsets, host getters and destructive forward aliases preserve
+  their previous behavior.
+- Revocable native reference-array mirrors and per-element primitive-array
+  headers, preserving captured aliases, host customization and GC cycles.
+- Native primitive-array return metadata, consumed between canonical calls.
+  Recursive calls, withdrawn targets and JavaScript fallback results retain
+  checked behavior; unused host length getters are never queried by transport.
+  Bulk copies still validate element representation before trusting a header.
+
+A broad loop-free-caller selection experiment regressed the Node diagnostic and
+was withdrawn. An earlier broad static-reference-cell experiment was also kept
+out of the selected runtime. The narrower primitive-static-array implementation
+uses allocator-owned metadata; it does not add native cells to every object
+reference.
+
+The last three-pair, fresh-process Firefox run of source `0ca9f72` measured
+**5.390 s JVM.js / 1.324 s TeaVM = 4.071×**. All results matched and execution
+attempted no compilation. The performance gate correctly exited nonzero.
+A subsequent one-pair run added end-of-phase execution counters; it is diagnostic
+and does not replace the repeated comparison. Node results are not browser
+acceptance results.
+
+For faster iteration, `probe.mjs` can load an exact Git revision into an isolated
+CommonJS cache in memory. It uses the same dependency installation and pinned
+input classes/assets, creates no extra checkout or bundle, executes once in a
+fresh process, and updates only the existing `benchmark.json`. Bzip output is
+checked byte for byte against Python bz2; the Vorbis probe decodes the largest
+sample in the pinned music archive and checks every PCM byte against HotSpot.
+The optional argument after the asset name is the source revision; omitting it
+tests the working tree. A final `vorbis` selects that kernel instead of Bzip.
+Neither kernel repeats the measured decode for warmup. Timings stop before
+result and method diagnostics are collected. Compilation during guest execution
+fails the command. Node version, effective options, heap limit, fixture hash,
+harness hash and source identity are recorded with the result.
+
+The loader regenerates the ignored JRE index **in memory from that revision**,
+resolves source imports against the archive, and rejects missing source modules
+or a different JRE file inventory. An earlier implementation fell back to the
+working tree's generated index and therefore shared some JRE/core helpers with
+the working tree. Its archive A/B results, including the apparent 4.6% Vorbis
+gain, are invalid for performance comparisons and marked accordingly in the
+single report. Bundled-runtime Firefox comparisons are unaffected.
+
+```bash
+# Run from dekobloko-work. Each invocation prepares and executes once.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --max-old-space-size=1024 apps/loading/probe.mjs slab 1-2.bin 9be0494cee811d6b87e2f863d1c028cbae0886ab
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --max-old-space-size=1024 apps/loading/probe.mjs slab 3-0.bin 9be0494cee811d6b87e2f863d1c028cbae0886ab vorbis
+# Use taskset -c 2 for both sides when comparing on the same fixed CPU.
+```
+
+Source `9be0494` is saved in `experiment/teavm-native-parity`. It remains
+experimental. Reference-array stores still use the existing runtime store
+bridge; this prototype does not claim to add missing covariance checks.
+
+With the corrected loader, three alternating fresh-process Vorbis pairs on CPU
+2 (`--max-old-space-size=1024`) compared `3c83f00` against `9be0494`. Median
+decode time was **240.591 / 238.683 ms**; total guest execution was
+**643.513 / 646.606 ms**. This is effectively flat, with no demonstrated overall
+gain. Every PCM byte matched HotSpot and all six runs attempted zero guest-time
+compilations. No further Firefox run or default promotion follows that result.
+The complete prepare-plus-execute probe takes about 45 seconds on that pinned
+CPU. Six corrected Bzip runs (`0ca9f72` versus `9be0494`) matched Python bz2,
+attempted zero guest-time compilations and took about 5.3 seconds each for
+preparation plus execution. Median execution was **390.680 / 396.750 ms**, also
+no gain. Neither probe needs a browser or bundle build. The measured source
+commits remain reachable from the experimental branch for reproduction.
+
+Node is the first iteration tool; Firefox remains an occasional release gate.
+The next execution experiments need a repeatable Node gain before another
+browser run, including safe bounds-check proofs where metadata transport alone
+does not help. Removing checks or silently weakening Java semantics would not
+establish parity.
+[TeaVM documents a strict option that adds Java checks](https://teavm.org/docs/tooling/gradle.html);
+that is relevant to understanding generated code, not a reason to change the
+fixed reference artifact or relax this VM's supported behavior.
+
+Validation completed during this pass:
+
+```bash
+# java-tools: the pre-reference-array batch passed 1,204 assertions.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectStorage.test.js test/nativeObjectFieldCodegen.test.js test/nativeObjectForwarding.test.js test/nativeStaticReferenceCell.test.js test/nativeStaticReferenceCodegen.test.js test/nativeByteArrayIngress.test.js test/byteBufferBulkCopy.test.js test/preparedWasmConstructors.test.js test/canonicalInstanceFrames.test.js test/canonicalDirectFrames.test.js test/compactCanonicalFrames.test.js test/hostOwnedCanonicalFuel.test.js test/wasmHeapFreeList.test.js test/wasmHeapGrowth.test.js test/objectSlabReclamation.test.js test/slabFields.test.js test/dispatcherHeapArrays.test.js test/nativeStaticCell.test.js test/nativeStaticFields.test.js test/classInitializationToken.test.js test/wasmInlineInitialization.test.js
+# Reference-array integration passed 194 assertions; later cache/alias tests
+# passed 80 assertions in the two directly affected files.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReferenceArray.test.js test/nativeObjectStorage.test.js test/nativeObjectFieldCodegen.test.js test/nativeObjectForwarding.test.js test/dispatcherHeapArrays.test.js test/slabFields.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReferenceArray.test.js test/nativeObjectFieldCodegen.test.js
+# Array-return and bulk-copy compatibility: 347 assertions passed.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReferenceArray.test.js test/nativeObjectForwarding.test.js test/canonicalInstanceFrames.test.js test/compactCanonicalFrames.test.js test/dispatcherHeapArrays.test.js test/wasmHeapBulkCopy.test.js test/nativeStaticReferenceCodegen.test.js
+# Deko: both inflater integration tests passed.
+node --test tests/browser-inflater-async.test.mjs
+# Deko: isolated browser comparison leaves the selected runtime intact.
+node apps/loading/compare.mjs --browser firefox --pairs 3 --runtime /tmp/geoblox-native-parity-7zCq8O/runtime --revision SOURCE_COMMIT --options diagnostic
+```
+
+`--options diagnostic` uses the candidate options already recorded in the single
+report and requires an isolated runtime. Rebuild that disposable runtime with
+`build-runtime.mjs` before using the browser command; Node revision probes need
+no bundle. The 512 MiB heap, 24 FPS, sustained gameplay and phone targets have not
+been revalidated by this execution-only investigation.

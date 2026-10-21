@@ -13,7 +13,7 @@ const here=path.dirname(fileURLToPath(import.meta.url));
 const options={player:path.join(os.homedir(),'.cache/dekobloko/geoblox-loading'),browser:'firefox',pairs:3};
 for(let i=2;i<process.argv.length;i++) {
   const key=process.argv[i].slice(2);
-  if(!['player','browser','pairs'].includes(key)||!process.argv[i+1])throw Error('Expected --player DIR --browser firefox|chromium --pairs N');
+  if(!['player','browser','pairs','runtime','revision','options'].includes(key)||!process.argv[i+1])throw Error('Expected --player DIR --browser firefox|chromium --pairs N');
   options[key]=process.argv[++i];
 }
 options.player=path.resolve(options.player);options.pairs=Number(options.pairs);
@@ -23,6 +23,9 @@ const require=createRequire(import.meta.url);
 const playwright=require(process.env.PLAYWRIGHT_ROOT||path.join(os.homedir(),'git/java-tools/node_modules/playwright'));
 const receiptPath=path.join(options.player,'benchmark.json');
 const receipt=JSON.parse(fs.readFileSync(receiptPath));
+const runtimeDirectory=path.resolve(options.runtime||path.join(options.player,'runtime'));
+if(options.runtime&&!options.revision)throw Error('An isolated runtime requires --revision');
+const runtimeRevision=options.revision||receipt.runtimeRevision;
 assert.equal(receipt.schema,1);
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 const classes=[];
@@ -35,16 +38,27 @@ for(const [name,expected] of Object.entries(receipt.assets)) {
   const bytes=fs.readFileSync(path.join(options.player,'assets',name));assert.equal(hash(bytes),expected,name);
   assets[name]=bytes.toString('base64');
 }
-for(const [name,expected] of Object.entries(receipt.runtime))assert.equal(hash(fs.readFileSync(path.join(options.player,'runtime',name))),expected,name);
+const runtimeHashes={};
+for(const [name,expected] of Object.entries(receipt.runtime)){
+ const actual=hash(fs.readFileSync(path.join(runtimeDirectory,name)));
+ if(!options.runtime)assert.equal(actual,expected,name);
+ runtimeHashes[name]=actual;
+}
 assert.equal(hash(fs.readFileSync(path.join(options.player,'teavm/loading.wasm'))),receipt.teavm.wasmSha256);
-const fixture={classes,assets,options:receipt.jvmOptions||JSON.parse(fs.readFileSync(path.resolve(here,'../launcher/browser-runtime.json'))).jvmOptions};
-receipt.jvmOptions=fixture.options;
-const provenance={runtimeRevision:receipt.runtimeRevision,runtime:receipt.runtime,jvmOptions:fixture.options};
+if(options.options && (!options.runtime || options.options!=='diagnostic'))throw Error('--options diagnostic requires an isolated runtime');
+const fixture={classes,assets,options:(options.options==='diagnostic'?receipt.diagnosticOptions:receipt.jvmOptions)||JSON.parse(fs.readFileSync(path.resolve(here,'../launcher/browser-runtime.json'))).jvmOptions};
+if(!options.options)receipt.jvmOptions=fixture.options;
+const provenance={runtimeRevision,runtime:runtimeHashes,jvmOptions:fixture.options};
 const server=createServer((req,res)=>{
   try {
     const name=new URL(req.url,'http://localhost').pathname;
     if(name==='/'){res.setHeader('content-type','text/html');res.end('<!doctype html><title>GeoBlox asset loading</title>');return;}
     if(name==='/fixture.json'){res.setHeader('content-type','application/json');res.end(JSON.stringify(fixture));return;}
+    if(name.startsWith('/runtime/')){
+      const runtimeFile=path.resolve(runtimeDirectory,name.slice('/runtime/'.length));
+      if(!runtimeFile.startsWith(runtimeDirectory+path.sep))throw Error('Invalid runtime path');
+      res.setHeader('content-type','text/javascript');res.end(fs.readFileSync(runtimeFile));return;
+    }
     const file=name==='/browser.mjs'?path.join(here,'browser.mjs'):name==='/inflater.mjs'?path.resolve(here,'../launcher/browser-loader/browser-inflater.mjs'):path.resolve(options.player,'.'+name);
     if(!['/browser.mjs','/inflater.mjs'].includes(name)&&!file.startsWith(options.player+path.sep))throw Error('Invalid path');
     res.setHeader('content-type',name.endsWith('.wasm')?'application/wasm':'text/javascript');res.end(fs.readFileSync(file));

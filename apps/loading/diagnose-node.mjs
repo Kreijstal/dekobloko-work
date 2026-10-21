@@ -12,12 +12,18 @@ import {installBrowserInflater} from '../launcher/browser-loader/browser-inflate
 const player=path.resolve(process.argv[2]||path.join(os.homedir(),'.cache/dekobloko/geoblox-loading'));
 const reportPath=path.join(player,'benchmark.json');
 const receipt=JSON.parse(fs.readFileSync(reportPath));
-for(const category of ['runtime','classes','assets'])for(const [name,expected] of Object.entries(receipt[category]))
+const runtimeDirectory=path.resolve(process.argv[3]||path.join(player,'runtime'));
+const runtimeRevision=process.argv[3]?process.argv[4]:receipt.runtimeRevision;
+if(process.argv[3]&&!runtimeRevision)throw Error('An isolated runtime needs its source revision');
+const runtimeHashes=Object.fromEntries(Object.keys(receipt.runtime).map(name=>[name,
+ crypto.createHash('sha256').update(fs.readFileSync(path.join(runtimeDirectory,name))).digest('hex')]));
+if(!process.argv[3])for(const [name,expected] of Object.entries(receipt.runtime))assert.equal(runtimeHashes[name],expected,'runtime/'+name);
+for(const category of ['classes','assets'])for(const [name,expected] of Object.entries(receipt[category]))
  assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(player,category,name))).digest('hex'),expected,category+'/'+name);
 globalThis.window=globalThis;globalThis.document={};
 Object.defineProperty(globalThis,'navigator',{configurable:true,value:{userAgent:'Firefox',hardwareConcurrency:4,language:'en-US'}});
 globalThis.importScripts=()=>{};globalThis.location=new URL('http://localhost/');
-vm.runInThisContext(fs.readFileSync(path.join(player,'runtime/jvm-debug.js'),'utf8'),{filename:'jvm-debug.js'});
+vm.runInThisContext(fs.readFileSync(path.join(runtimeDirectory,'jvm-debug.js'),'utf8'),{filename:'jvm-debug.js'});
 const {BrowserJVMDebug}=globalThis.JVMDebug;
 delete globalThis.importScripts;delete globalThis.location;
 const debug=new BrowserJVMDebug();
@@ -36,7 +42,7 @@ await debug.run('GeobloxLoading',{args:[],beforeRun:({jvm})=>{
  delete globalThis.document;
  const decompress=async(data,format)=>new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream(format))).arrayBuffer());
  installBrowserInflater(jvm,{inflate:b=>decompress(b,'deflate'),inflateRaw:b=>decompress(b,'deflate-raw')});
- jvm.jre.GeobloxLoading={applicationFallback:true,staticMethods:{'browserAsset(Ljava/lang/String;)[B':(_vm,_object,args)=>{const name=String(args[0]?.value??args[0]);assert.ok(assets[name],name);return assets[name];}}};
+ jvm.jre.GeobloxLoading={applicationFallback:true,staticMethods:{'browserAsset(Ljava/lang/String;)[B':(_vm,_object,args)=>{const name=String(args[0]?.value??args[0]);assert.ok(assets[name],name);return _vm.newByteArray(assets[name]);}}};
  jvm.jit.wasmJit.traceMethodPattern='MusicDecoder.decodePacket';jvm.jit.wasmJit.traceExitsOnly=true;
  jvm.jit._syncCompileEnvironment={trace:false,assert:true};
  const startCompile=jvm.jit.startSynchronousCompile.bind(jvm.jit);
@@ -63,8 +69,8 @@ const jvm=controller.jvm,fields=jvm.classes.GeobloxLoading.staticFields;
 const read=name=>Number(fields.get(name));
 const check=['pcmSamples:I','pcmBytes:J','pcmCrc:J','archiveFiles:I','decodedBytes:J','graphicsCrc:J'].map(read).join(':');
 assert.deepEqual(lateCompiles,[]);assert.equal(check,receipt.referenceCheck);assert.equal(jvm.jit.syncCompileCensus().postMainSyncCompileCount,0);
-const selectedWasm=jvm.jit.wasmJit.compiled.filter(s=>/MusicDecodeStage|decodePacket|readVector/.test(s.key)).map(s=>({key:s.key,runs:s.runs,exits:s.exits,status:s.status,meta:s.meta&&{full:s.meta.fullyCompiled,normal:s.meta.normalFlowFullyCompiled,canonical:!!s.meta.canonicalRun,boxed:s.meta.boxedCount,specSites:s.meta.specSites,demotes:[...s.meta.demoteReasons],init:s.meta.initializationGuardTokens?.map(t=>t.initialized)},callee:s.callee?.meta&&{full:s.callee.meta.fullyCompiled,demotes:[...s.callee.meta.demoteReasons]},osr:s.osr?.meta&&{full:s.osr.meta.fullyCompiled,demotes:[...s.osr.meta.demoteReasons]}}));
-const diagnostic={runtimeRevision:receipt.runtimeRevision,runtime:receipt.runtime,lateCompiles,selectedWasm,engine:process.version,profiled:true,options:effectiveOptions,preparationMs,musicMs:read('musicNanos:J')/1e6,graphicsMs:read('graphicsNanos:J')/1e6,check,self:top(self),guest:top(guest),profile,
- wasm:jvm.jit.wasmJit.compiled.map(s=>({key:s.key,runs:s.runs,exits:s.exits,fuelExits:s.fuelExits,fullReason:s.failReason,direct:s.meta?.canonicalEntries?.value||0,fullyCompiled:s.meta?.fullyCompiled,canonicalSites:s.meta?.canonicalDirectSites,partialDeps:s.partialDeps,demotes:s.meta?.demoteReasons&&[...s.meta.demoteReasons],osrDemotes:s.osr?.meta?.demoteReasons&&[...s.osr.meta.demoteReasons],imports:s.meta?.importStats?[...s.meta.importStats]:null})).filter(s=>s.runs||s.direct).sort((a,b)=>(b.runs+b.direct)-(a.runs+a.direct)).slice(0,60)};
+const selectedWasm=jvm.jit.wasmJit.compiled.filter(s=>/MusicDecodeStage|MusicScore|MidiTrackReader|decodePacket|readVector/.test(s.key)).map(s=>({key:s.key,runs:s.runs,exits:s.exits,status:s.status,meta:s.meta&&{full:s.meta.fullyCompiled,normal:s.meta.normalFlowFullyCompiled,canonical:!!s.meta.canonicalRun,boxed:s.meta.boxedCount,specSites:s.meta.specSites,demotes:[...s.meta.demoteReasons],init:s.meta.initializationGuardTokens?.map(t=>t.initialized)},callee:s.callee?.meta&&{full:s.callee.meta.fullyCompiled,demotes:[...s.callee.meta.demoteReasons]},osr:s.osr?.meta&&{full:s.osr.meta.fullyCompiled,demotes:[...s.osr.meta.demoteReasons]}}));
+const diagnostic={runtimeRevision,runtime:runtimeHashes,lateCompiles,selectedWasm,engine:process.version,profiled:true,options:effectiveOptions,preparationMs,musicMs:read('musicNanos:J')/1e6,graphicsMs:read('graphicsNanos:J')/1e6,check,self:top(self),guest:top(guest),profile,
+ wasm:jvm.jit.wasmJit.compiled.map(s=>({key:s.key,runs:s.runs,exits:s.exits,fuelExits:s.fuelExits,fullReason:s.failReason,direct:s.meta?.canonicalEntries?.value||0,fullyCompiled:s.meta?.fullyCompiled,structured:s.meta?.structured,objectInputs:s.meta?.objectStorageInputCount,nativeReferenceSites:s.meta?.nativeObjectReferenceSites,referenceArraySites:s.meta?.nativeReferenceArraySites,canonicalSites:s.meta?.canonicalDirectSites,partialDeps:s.partialDeps,demotes:s.meta?.demoteReasons&&[...s.meta.demoteReasons],osrDemotes:s.osr?.meta?.demoteReasons&&[...s.osr.meta.demoteReasons],imports:s.meta?.importStats?[...s.meta.importStats]:null})).filter(s=>s.runs||s.direct).sort((a,b)=>(b.runs+b.direct)-(a.runs+a.direct)).slice(0,60)};
 const current=JSON.parse(fs.readFileSync(reportPath));current.nodeDiagnostic=diagnostic;fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify({...diagnostic,profile:undefined},null,2));
 } finally {session.disconnect();}

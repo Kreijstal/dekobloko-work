@@ -46,7 +46,7 @@ export async function runLoading(backend, fixture) {
       'browserAsset(Ljava/lang/String;)[B':(_jvm,_object,args)=>{
         const name=String(args[0]?.value??args[0]);
         if(!assets[name])throw Error('Unexpected asset '+name);
-        return assets[name];
+        return _jvm.newByteArray(assets[name]);
       },
     }};
     // Reject late compiler entry before it performs work. Record attempts
@@ -59,8 +59,15 @@ export async function runLoading(backend, fixture) {
   }});}catch(error){executionError=error.message;}
   const jvm=controller.jvm,fields=jvm.classes.GeobloxLoading.staticFields;
   const read=name=>Number(fields.get(name));
+  const h=jvm.jit,w=h.wasmJit;
+  const executionMethods=w.compiled.map(state=>({key:state.key,runs:state.runs,exits:state.exits,
+    structured:!!state.meta?.structured,full:!!state.meta?.fullyCompiled,guarded:!!state.meta?.guardOnlyNormalFlowGaps,
+    canonical:!!state.meta?.canonicalRun,prepared:h.preparedCodegenMethods.has(state.method),
+    upgrade:h.hasPreparedFullWasmUpgrade(state.method),nativeReferences:state.meta?.nativeObjectReferenceSites||0,
+    nativeCasts:state.meta?.nativeCastSites||0,directEntries:state.meta?.canonicalEntries?.value||0}))
+    .filter(state=>state.runs||state.guarded||state.directEntries);
   const check=['pcmSamples:I','pcmBytes:J','pcmCrc:J','archiveFiles:I','decodedBytes:J','graphicsCrc:J'].map(read).join(':');
   return {backend,hostAndModuleMs:ready-started,entryAndPreparationMs:performance.now()-ready,
     musicMs:read('musicNanos:J')/1e6,graphicsMs:read('graphicsNanos:J')/1e6,check,preparation,
-    compilation:jvm.jit.syncCompileCensus(),lateCompiles,error:executionError};
+    compilation:jvm.jit.syncCompileCensus(),executionMethods,lateCompiles,error:executionError};
 }
