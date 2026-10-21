@@ -5768,3 +5768,131 @@ passes **3/3**; probe syntax and `git diff --check` pass. The cached selected
 bundle hashes and parent checkout fingerprint remain unchanged. Final status:
 **full loading parity is still unproven and contradicted by every measured
 1.10 gate**. No runtime publication or deployment is performed.
+
+#### Node-first post-optimization and numeric-local experiments
+
+Node is the iteration runner; Firefox remains a later confirmation gate.
+These measurements use the same pinned full-loading classes/assets, CPU 2,
+1 GiB old-space limit, fresh processes, and zero attempted/completed Java
+compiles during execution. They exclude preparation from the execution target,
+but record its time separately. None establishes memory, FPS, menu or phone
+acceptance. The selected runtime remains `cbcf8ad`.
+
+`apps/loading/wasm-optimizer.mjs` is a Node-only diagnostic, installed by
+`JVM_WASM_OPT_DIAGNOSTIC=1` in `probe.mjs`. It transforms valid generated modules
+of at least 16 KiB during preparation and restores the original constructor
+before guest timing. It records tool/options, module hashes, byte counts,
+optimization time and errors in the existing `benchmark.json`. It marks runs
+instrumented, so `compare.mjs` rejects them for acceptance. Neither the normal
+launcher nor the pinned TeaVM module uses this hook. Reproduce an observation:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules JVM_WASM_OPT_DIAGNOSTIC=1 taskset -c 2 node --max-old-space-size=1024 apps/loading/probe.mjs slab all 8e7283a85494cf1dbd12565d00e8ee92a1643a52 loading
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 apps/loading/probe.mjs teavm all - loading
+node --test tests/loading-wasm-optimizer.test.mjs tests/loading-statistics.test.mjs
+```
+
+The tool is Binaryen `wasm-opt version 132 (version_132-49-gd03c25ea43)`, binary
+SHA-256 `61e16362e5e9f6b90615c9fc780d369657a0a18a953886a7917eda0e71565516`.
+Its exact restricted feature arguments are in the diagnostic source and each
+receipt. An initial `--all-features` attempt emitted compact imports unsupported
+by Node 22. It failed validation and is retained under
+`optimizationTrials.binaryenPostOptimization.unsupportedFeatureAttempt`;
+its timings are not evidence of performance. The restricted-feature test
+preserves JS-tag throw identity and GC type identity across transformed and
+untransformed modules. The command above passes **8/8 tests**.
+
+Six B/C/C/B/B/C runs, each followed by an unchanged fresh TeaVM process, give:
+
+| Median | Control `8e7283` | Binaryen diagnostic |
+| --- | ---: | ---: |
+| Music | 2,020.401 ms | 1,832.279 ms |
+| Graphics | 797.164 ms | 657.714 ms |
+| Combined execution | 2,817.418 ms | 2,494.243 ms |
+| Paired JVM/TeaVM ratio | 6.079x | 5.351x |
+| Preparation/entry | 49,131.283 ms | 77,450.597 ms |
+
+All three adjacent raw comparisons improve and all checksums/zero guest-compile
+checks pass. The 11.5% execution gain demonstrates avoidable generated-code
+overhead, but leaves the 1.10 target far away. A representative run optimizes
+120 modules, reducing 3,701,333 bytes to 2,457,170 bytes, at 30,283.175 ms extra
+optimization work. This tool is not enabled in the runtime or deployed.
+
+The generic compiler prototype `af23c1d143eef0fa1fd73ff4016e0baa1a755a2c`
+stackifies single-use total numeric expressions within a block, protecting all
+frame/operand snapshots, with a 512-value and depth-16 bound. It passes
+262 focused and 614 ABI assertions. Six fresh B/C/C/B/B/C comparisons against
+`8e7283` give combined medians **2,830.378 -> 2,792.630 ms**, just 1.3% lower;
+paired ratios are **6.184x -> 6.132x**. Preparation/entry increases from
+48,501.251 to 49,527.197 ms. All checks pass and every parity gate fails.
+These results remain separately labeled under `numericStackificationFullNode`.
+They are not the results of the later local-coalescing prototype.
+
+`20c487c8050c0f7ae094b7d547da4e5d0dc63ac7` additionally limits expression
+movement to gaps without effects and reuses numeric local slots only after
+their complete last consumer. A value referenced by any frame/operand snapshot
+or another block cannot share its slot. Reuse waits until the following
+instruction so cold call-retry paths retain their original arguments.
+The current focused command passes **269/269**, and the ABI command
+**621/621**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmNumericStackification.test.js test/frameLocalSpills.test.js test/wasmCompilerRetention.test.js test/wasmLiteralContinuations.test.js test/arrayIdentityCaches.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmNumericStackification.test.js test/canonicalDirectFrames.test.js test/compactCanonicalFrames.test.js test/hostOwnedCanonicalFuel.test.js test/wasmParameterArrayAbi.test.js test/preparedWasmConstructors.test.js
+```
+
+The first two commands run from `java-tools`; loading commands run from
+`dekobloko-work`. Compare the local-coalescing source with:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 20c487c8050c0f7ae094b7d547da4e5d0dc63ac7 --options diagnostic
+```
+
+Repeat six times in B/C/C/B/B/C source order, substituting `8e7283` for B.
+Exit 1 after completed output/checks is the expected failing parity gate, not
+a successful acceptance result. The single receipt retains all observations
+under `numericLocalReuseFullNode`. No default artifact is promoted here.
+
+The six-run local-coalescing comparison completes with matching checksums and
+zero guest compiles. Combined medians are **2,827.119 -> 2,811.475 ms** (0.6%
+lower), and paired ratios **6.233x -> 6.205x**. Only two of three adjacent
+raw comparisons improve. The first candidate graphics observation stalls at
+1,103.715 ms; it remains in the receipt. Preparation/entry medians are
+49,055.914 and 49,545.054 ms. This does not establish a consistent useful gain;
+the candidate remains experimental and fails the target.
+
+Source `d39e5e301f4c66e850dd3dfcbb3ef324b681fe9e` adds a more direct
+redundant-check elimination: after an ordinary array access completes, a later
+access to the same SSA reference in the same basic block can omit its metadata
+filled-flag test. The runtime bounds and representation checks remain. Proofs
+reset at each block, are invalidated by emitted reference-cache kills, and do
+not follow conditional call-argument fills or shared field-reader generations.
+The focused/ABI commands above now pass **272/272** and **624/624**, including
+host getters, original throwable identity, null and all intermediate bounds
+failures. An initial test fixture lacked its required existing checkcast
+capability; it failed at compilation, was corrected, and both commands were
+rerun before measuring.
+
+A single preliminary fresh-process Node screening pair gives music
+1,981.174 ms, graphics 793.423 ms, combined **2,774.598 ms**, versus the pinned
+TeaVM's **451.899 ms**: **6.140x**, so the parity gate fails. Checksums and
+zero guest compilation pass. This is not a repeated matched improvement result;
+the preceding control median is 2,827.119 ms under an earlier probe hash. The
+trial is retained under `dominatedArrayFillFullNode`; no Firefox promotion or
+default change follows this screening observation. Substitute the full source
+revision above into the Node comparison command to reproduce it.
+
+The probe now includes the already-existing compiled-method entry counters in
+its post-timer report, matching the browser report's scope. No CPU sampling or
+new guest-time counters were added. They show 3,605,524 canonical entries into
+the Bzip bit reader, 3,148,442 into the music bit reader, 2,328,178 into the Bzip
+single-bit wrapper, and 1,006,390 into the codebook scalar reader. All four have
+fully compiled normal flow and zero recorded exits. Thus late Java compilation
+or an interpreted bit-reader loop does not explain their costs. Entry counts
+alone do not measure time or prove which part of the call protocol dominates.
+The small expression/local/flag-check changes have not captured most of the
+independent optimizer gain. The next larger experiment should isolate native
+call-boundary overhead and consider compiler-proved direct leaf entries or
+joint native compilation while preserving fuel, exception, class-readiness and
+replacement semantics. Existing broad deep-inlining experiments are not new
+evidence and should not simply be rerun.

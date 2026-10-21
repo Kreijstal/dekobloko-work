@@ -16,6 +16,7 @@ const hash=data=>crypto.createHash('sha256').update(data).digest('hex');
 const harnessFiles=Object.fromEntries([
  ['probe.mjs',import.meta.url],['browser.mjs',new URL('./browser.mjs',import.meta.url)],
  ['browser-inflater.mjs',new URL('../launcher/browser-loader/browser-inflater.mjs',import.meta.url)],
+ ['wasm-optimizer.mjs',new URL('./wasm-optimizer.mjs',import.meta.url)],
 ].map(([name,url])=>[name,hash(fs.readFileSync(new URL(url)))]));
 const assetBytes=name=>{
  const data=fs.readFileSync(path.join(player,'assets',name));assert.equal(hash(data),receipt.assets[name],name);
@@ -35,9 +36,11 @@ const save=result=>{
   assert.equal(result.compilation.postMainSyncCompileCount,0,'Probe compiled during guest execution');
  }
  assert.ok(result.equal,'Decoded output differs from reference');
+ if(result.wasmOptimizer)assert.deepEqual(result.wasmOptimizer.errors,[],'Wasm optimization failed');
 };
 for(const [name,expected] of Object.entries(receipt.classes))assert.equal(hash(fs.readFileSync(path.join(player,'classes',name))),expected,name);
 if(mode==='teavm'){
+ assert.ok(!process.env.JVM_WASM_OPT_DIAGNOSTIC,'Pinned TeaVM bytes are not post-optimized');
  assert.equal(kernel,'loading','TeaVM mode uses the unchanged full-loading artifact');
  assert.ok(!process.argv[4]||process.argv[4]==='-','TeaVM mode takes no JVM source revision');
  const wasm=fs.readFileSync(path.join(player,'teavm/loading.wasm'));
@@ -110,6 +113,7 @@ const input=kernel==='loading'?null:assetBytes(asset);
 let reference=kernel==='bzip'?execFileSync('python3',['-c',`import bz2,sys
 b=sys.stdin.buffer.read();sys.stdout.buffer.write(bz2.decompress(b'BZh1'+b[9:9+int.from_bytes(b[1:5],'big')]))`],{input:Buffer.from(input),maxBuffer:16*1024*1024}):null;
 const temporary=kernel==='loading'?null:fs.mkdtempSync(path.join(os.tmpdir(),'loading-kernel-'));
+let optimizer;
 try {
  if(temporary){
  fs.writeFileSync(path.join(temporary,'LoadingKernelProbe.java'),kernel==='vorbis'?`public class LoadingKernelProbe {
@@ -136,6 +140,10 @@ try {
  }
  if(kernel==='vorbis')reference=execFileSync('java',['-Xmx1g','-Djava.awt.headless=true','-cp',temporary+path.delimiter+path.join(player,'classes'),'LoadingKernelProbe',path.join(player,'assets')],{maxBuffer:64*1024*1024});
  const {JVM}=loadJvm();
+ if(process.env.JVM_WASM_OPT_DIAGNOSTIC==='1'){
+  const {installWasmOptimizer}=await import('./wasm-optimizer.mjs');
+  optimizer=installWasmOptimizer();
+ }
  const options=structuredClone(kernel==='loading'?(mode==='slab'?receipt.diagnosticOptions||receipt.jvmOptions:receipt.jvmOptions):receipt.executionBaseline.jvmOptions);
  const mainClass=kernel==='loading'?'GeobloxLoading':'LoadingKernelProbe';
  options.classpath=[...(temporary?[temporary]:[]),path.join(player,'classes')];
@@ -162,7 +170,8 @@ try {
   if(j.jit.mainStarted&&lateCompiles.length<100)lateCompiles.push({method:j.jit.methodIdentity(method),entryPath});
   return startCompile(method,entryPath);
  };
- let guestStart,guestCpu;const mark=j.jit.markMainStarted.bind(j.jit);j.jit.markMainStarted=()=>{guestCpu=process.cpuUsage();guestStart=performance.now();mark();};
+ let guestStart,guestCpu;const mark=j.jit.markMainStarted.bind(j.jit);j.jit.markMainStarted=()=>{
+  optimizer?.finishPreparation();guestCpu=process.cpuUsage();guestStart=performance.now();mark();};
  const w=j.jit.wasmJit;
  const transitions=[];const execute=w.execute.bind(w);
  w.execute=(frame,thread,state,...args)=>{const before=frame.pc,r=execute(frame,thread,state,...args);if(state.key?.includes('Bzip2Decoder')&&state.exits&&transitions.length<100)transitions.push({key:state.key,before,after:frame.pc,result:r,fuels:state.fuelExits});return r;};
@@ -177,6 +186,9 @@ try {
  const owners=kernel==='bzip'?['Bzip2Decoder','Bzip2DecoderState']:['MusicDecoder','VorbisCodebook','VorbisResidue','MusicDecodeStage',...(kernel==='loading'?['Bzip2Decoder','Bzip2DecoderState']:[])];
  const layout=meta=>meta&&{structured:!!meta.structured,canonical:!!meta.canonicalRun,normalFlow:meta.normalFlowFullyCompiled,
   omittedPhiCopies:meta.omittedPhiCopies||0,
+  stackifiedNumericValueCount:meta.stackifiedNumericValueCount||0,
+  reusedNumericLocalCount:meta.reusedNumericLocalCount||0,
+  omittedArrayFillCount:meta.omittedArrayFillCount||0,
   guardedPrimitiveArrayLoopCount:meta.guardedPrimitiveArrayLoopCount||0,
   guardedPrimitiveArrayLoopBytes:meta.guardedPrimitiveArrayLoopBytes||0,
   nativeTags:!!meta.nativeJsExceptionTags,specSites:meta.specSites?.length||0,inlined:meta.inlinedCalls,
@@ -187,7 +199,12 @@ try {
   publication:w.canonicalDirectLinks&&{eligible:!!w.canonicalDirectLinks.constructor.eligible(s),slots:(w.canonicalDirectLinks.bindings.get(s.key)||[]).map(b=>({compact:b.compact,stub:w.canonicalDirectLinks.table.get(b.slot)===b.stub}))},
   frameEntryOnly:s.meta?.frameEntryOnly,veto:s.linkVetoed,nested:s.nestedCalls,nestedDeopts:s.nestedDeopts,demotes:s.meta?.demoteReasons&&[...s.meta.demoteReasons],pending:[...new Set(s.meta?.linkBindings?.filter(b=>b.pending).map(b=>b.key)||[])],flags:s.meta&&{deoptable:s.meta.deoptableCalls,usedEh:s.meta.usedEh,boxed:s.meta.boxedCount}},js:g&&{restoring:!!g.jvmRestoringDirectPositionalBody,rejection:g.jvmStructuredRestoringDirectRejection}});}
  const result={runtimeRevision:revision||'working-tree',sourceLoader:revision?'archive-with-generated-jre-index':'working-tree',engine:process.version,execArgv:process.execArgv,heapLimitBytes:getHeapStatistics().heap_size_limit,
-  instrumented:!!w.importStatsEnabled,
+  instrumented:!!w.importStatsEnabled||!!optimizer,
+  ...(optimizer?{wasmOptimizer:optimizer.finishPreparation()}:{}),
+  executionMethods:w.compiled.map(state=>({key:state.key,runs:state.runs,exits:state.exits,
+    structured:!!state.meta?.structured,full:!!state.meta?.fullyCompiled,
+    canonical:!!state.meta?.canonicalRun,directEntries:state.meta?.canonicalEntries?.value||0}))
+   .filter(state=>state.runs||state.directEntries),
   ...(w.importStatsEnabled?{importCensus:w.compiled.flatMap(state=>[
     ['entry',state.meta],['callee',state.callee?.meta],['osr',state.osr?.meta]
    ].flatMap(([tier,meta])=>[...(meta?.importStats||[])].filter(([,count])=>count>0)
@@ -200,5 +217,5 @@ try {
     loadingMs:(Number(fields.get('musicNanos:J'))+Number(fields.get('graphicsNanos:J')))/1e6}:{}),
   decodeMs:kernel==='vorbis'?Number(fields.get('decodeNanos:J'))/1e6:undefined,equal,firstDifference,error,lateCompiles,compilation:j.jit.syncCompileCensus(),preparation:j.preparationReport,transitions,methods};
  save(result);
-}finally{if(temporary)fs.rmSync(temporary,{recursive:true});}
+}finally{optimizer?.finishPreparation();if(temporary)fs.rmSync(temporary,{recursive:true});}
 }
