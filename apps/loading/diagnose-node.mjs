@@ -9,6 +9,7 @@ import crypto from 'node:crypto';
 import inspector from 'node:inspector';
 import vm from 'node:vm';
 import {installBrowserInflater} from '../launcher/browser-loader/browser-inflater.mjs';
+import {freshLoadingBytes} from './browser.mjs';
 const player=path.resolve(process.argv[2]||path.join(os.homedir(),'.cache/dekobloko/geoblox-loading'));
 const reportPath=path.join(player,'benchmark.json');
 const receipt=JSON.parse(fs.readFileSync(reportPath));
@@ -42,7 +43,7 @@ await debug.run('GeobloxLoading',{args:[],beforeRun:({jvm})=>{
  delete globalThis.document;
  const decompress=async(data,format)=>new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream(format))).arrayBuffer());
  installBrowserInflater(jvm,{inflate:b=>decompress(b,'deflate'),inflateRaw:b=>decompress(b,'deflate-raw')});
- jvm.jre.GeobloxLoading={applicationFallback:true,staticMethods:{'browserAsset(Ljava/lang/String;)[B':(_vm,_object,args)=>{const name=String(args[0]?.value??args[0]);assert.ok(assets[name],name);return _vm.newByteArray(assets[name]);}}};
+ jvm.jre.GeobloxLoading={applicationFallback:true,staticMethods:{'browserAsset(Ljava/lang/String;)[B':(_vm,_object,args)=>{const name=String(args[0]?.value??args[0]);assert.ok(assets[name],name);return freshLoadingBytes(_vm,assets[name]);}}};
  jvm.jit.wasmJit.traceMethodPattern='MusicDecoder.decodePacket';jvm.jit.wasmJit.traceExitsOnly=true;
  jvm.jit._syncCompileEnvironment={trace:false,assert:true};
  const startCompile=jvm.jit.startSynchronousCompile.bind(jvm.jit);

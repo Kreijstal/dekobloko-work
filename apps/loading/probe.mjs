@@ -1,19 +1,64 @@
 #!/usr/bin/env node
-// Small archive-decoder reproducer for compiler debugging, outside acceptance.
+// Fresh-process decoder/full-loading diagnostics, outside browser acceptance.
 import fs from 'node:fs';import os from 'node:os';import path from 'node:path';
 import assert from 'node:assert/strict';import crypto from 'node:crypto';import {pathToFileURL} from 'node:url';import {createRequire,Module} from 'node:module';
 import {execFileSync} from 'node:child_process';
 import {getHeapStatistics} from 'node:v8';
+import {freshLoadingBytes} from './browser.mjs';
 const require=createRequire(import.meta.url),root=path.resolve(new URL('../../../java-tools/',import.meta.url).pathname);
-const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
+const player=path.resolve(process.argv[6]||path.join(os.homedir(),'.cache/dekobloko/geoblox-loading'));
 const receiptPath=path.join(player,'benchmark.json'),receipt=JSON.parse(fs.readFileSync(receiptPath));
 const mode=process.argv[2]||'js',asset=process.argv[3]||'1-2.bin',kernel=process.argv[5]||'bzip';
-assert.ok(['js','wasm','canonical','slab'].includes(mode));assert.ok(['bzip','vorbis'].includes(kernel));
+assert.ok(['js','wasm','canonical','slab','teavm'].includes(mode));assert.ok(['bzip','vorbis','loading'].includes(kernel));
 if(kernel==='vorbis')assert.equal(asset,'3-0.bin','Vorbis probe consumes the recorded sample archive');
+if(kernel==='loading')assert.equal(asset,'all','Full loading consumes all recorded assets');
+const hash=data=>crypto.createHash('sha256').update(data).digest('hex');
+const harnessFiles=Object.fromEntries([
+ ['probe.mjs',import.meta.url],['browser.mjs',new URL('./browser.mjs',import.meta.url)],
+ ['browser-inflater.mjs',new URL('../launcher/browser-loader/browser-inflater.mjs',import.meta.url)],
+].map(([name,url])=>[name,hash(fs.readFileSync(new URL(url)))]));
+const assetBytes=name=>{
+ const data=fs.readFileSync(path.join(player,'assets',name));assert.equal(hash(data),receipt.assets[name],name);
+ return new Int8Array(data);
+};
+const save=result=>{
+ Object.assign(result,{engine:process.version,execArgv:process.execArgv,heapLimitBytes:getHeapStatistics().heap_size_limit,
+  harnessSha256:harnessFiles['probe.mjs'],harnessFilesSha256:harnessFiles,mode,asset,kernel});
+ const current=JSON.parse(fs.readFileSync(receiptPath));
+ result.recent=[...(current.kernelDiagnostic?.recent||[]),{runtimeRevision:result.runtimeRevision,sourceLoader:result.sourceLoader,
+  mode,asset,kernel,executionMs:result.executionMs,decodeMs:result.decodeMs,musicMs:result.musicMs,graphicsMs:result.graphicsMs,
+  equal:result.equal,lateCompiles:result.compilation?.postMainSyncCompileCount}].slice(-6);
+ current.kernelDiagnostic=result;fs.writeFileSync(receiptPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(result,null,2));
+ assert.equal(result.error,undefined,'Guest execution failed');
+ if(mode!=='teavm'){
+  assert.deepEqual(result.lateCompiles,[],'Probe attempted compilation during guest execution');
+  assert.equal(result.compilation.postMainSyncCompileCount,0,'Probe compiled during guest execution');
+ }
+ assert.ok(result.equal,'Decoded output differs from reference');
+};
+for(const [name,expected] of Object.entries(receipt.classes))assert.equal(hash(fs.readFileSync(path.join(player,'classes',name))),expected,name);
+if(mode==='teavm'){
+ assert.equal(kernel,'loading','TeaVM mode uses the unchanged full-loading artifact');
+ assert.ok(!process.argv[4]||process.argv[4]==='-','TeaVM mode takes no JVM source revision');
+ const wasm=fs.readFileSync(path.join(player,'teavm/loading.wasm'));
+ assert.equal(hash(wasm),receipt.teavm.wasmSha256,'Pinned TeaVM artifact differs');
+ globalThis.loadingAssets=Object.fromEntries(Object.keys(receipt.assets).map(name=>[name,assetBytes(name)]));
+ const start=performance.now();
+ await import(pathToFileURL(path.join(player,'teavm/loading.wasm-runtime.js')));
+ const module=await TeaVM.wasmGC.load(wasm),ready=performance.now(),cpuStart=process.cpuUsage();
+ await module.exports.main([]);
+ const finished=performance.now(),cpu=process.cpuUsage(cpuStart),check=module.exports.check();
+ const musicMs=module.exports.musicMs(),graphicsMs=module.exports.graphicsMs();
+ save({runtimeRevision:'TeaVM '+receipt.teavm.version,sourceLoader:'pinned-wasm',wasmSha256:hash(wasm),
+  runtimeSha256:hash(fs.readFileSync(path.join(player,'teavm/loading.wasm-runtime.js'))),reference:'Recorded HotSpot checksum',
+  fixtureSha256:receipt.workloadSha256,fixtureKind:'loading-workload-source',elapsed:finished-start,hostAndModuleMs:ready-start,
+  executionMs:finished-ready,executionCpuMs:(cpu.user+cpu.system)/1000,musicMs,graphicsMs,loadingMs:musicMs+graphicsMs,
+  check,equal:check===receipt.referenceCheck});
+}else{
 // Load immutable source in memory for fast A/B checks, without another
 // checkout, generated bundle or copied source directory. Ordinary dependency
 // resolution is retained for packages outside java-tools/src.
-const revision=process.argv[4] && execFileSync('git',['rev-parse','--verify',process.argv[4]+'^{commit}'],{cwd:root,encoding:'utf8'}).trim();
+const revision=process.argv[4] && process.argv[4]!=='-' && execFileSync('git',['rev-parse','--verify',process.argv[4]+'^{commit}'],{cwd:root,encoding:'utf8'}).trim();
 let loadJvm=()=>require(path.join(root,'src/core/jvm'));
 if(revision){
  const parent=path.dirname(root),cloner=[parent,path.join(parent,'blank-github-cloner')].find(directory=>fs.existsSync(path.join(directory,'public/jvm-source-bundler.js')));
@@ -61,12 +106,12 @@ if(revision){
  };
  loadJvm=()=>load(path.join(root,'src/core/jvm.js'));
 }
-const input=new Int8Array(fs.readFileSync(path.join(player,'assets',asset)));
-assert.equal(crypto.createHash('sha256').update(input).digest('hex'),receipt.assets[asset],'Archive bytes differ from recorded input');
+const input=kernel==='loading'?null:assetBytes(asset);
 let reference=kernel==='bzip'?execFileSync('python3',['-c',`import bz2,sys
 b=sys.stdin.buffer.read();sys.stdout.buffer.write(bz2.decompress(b'BZh1'+b[9:9+int.from_bytes(b[1:5],'big')]))`],{input:Buffer.from(input),maxBuffer:16*1024*1024}):null;
-const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'loading-kernel-'));
+const temporary=kernel==='loading'?null:fs.mkdtempSync(path.join(os.tmpdir(),'loading-kernel-'));
 try {
+ if(temporary){
  fs.writeFileSync(path.join(temporary,'LoadingKernelProbe.java'),kernel==='vorbis'?`public class LoadingKernelProbe {
  static byte[] output;static int written;static long decodeNanos;
  public static void main(String[] args)throws Exception {
@@ -88,51 +133,62 @@ try {
  }
 }`);
  execFileSync('javac',['--release','8','-classpath',path.join(player,'classes'),'-d',temporary,path.join(temporary,'LoadingKernelProbe.java')]);
- for(const [name,expected] of Object.entries(receipt.classes))assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(player,'classes',name))).digest('hex'),expected,name);
+ }
  if(kernel==='vorbis')reference=execFileSync('java',['-Xmx1g','-Djava.awt.headless=true','-cp',temporary+path.delimiter+path.join(player,'classes'),'LoadingKernelProbe',path.join(player,'assets')],{maxBuffer:64*1024*1024});
  const {JVM}=loadJvm();
- const options=structuredClone(receipt.executionBaseline.jvmOptions);
- options.classpath=[temporary,path.join(player,'classes')];
- options.jit.preparationPolicy={entryMethods:['LoadingKernelProbe.main([Ljava/lang/String;)V']};
+ const options=structuredClone(kernel==='loading'?(mode==='slab'?receipt.diagnosticOptions||receipt.jvmOptions:receipt.jvmOptions):receipt.executionBaseline.jvmOptions);
+ const mainClass=kernel==='loading'?'GeobloxLoading':'LoadingKernelProbe';
+ options.classpath=[...(temporary?[temporary]:[]),path.join(player,'classes')];
+ options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
  options.jit.compileWorker=false;
  if(mode!=='js'){options.prepareWasmPreparedUpgradesOnly=false;options.jit.preparedCompleteWasm=true;options.jit.preparedLoopLeafWasm=true;}
- if(mode==='canonical'||mode==='slab')options.jit.wasm={canonicalDirectCalls:true,canonicalEhLinks:true,nativeJsExceptionTags:true,nativeInstanceExits:true};
+ if(mode==='canonical'||mode==='slab')options.jit.wasm={...options.jit.wasm,canonicalDirectCalls:true,canonicalEhLinks:true,nativeJsExceptionTags:true,nativeInstanceExits:true};
+ if(kernel==='loading'){options.wasmFields=mode==='slab';options.denseInstanceFields=mode!=='slab';}
  if(mode==='slab'){options.wasmFields=true;options.denseInstanceFields=false;}
  globalThis.window=globalThis;globalThis.document={};
  const j=new JVM(options);delete globalThis.document;
- j.jre.LoadingKernelProbe={applicationFallback:true,staticMethods:{'input()[B':vm=>vm.newByteArray(input)}};
- if(kernel==='vorbis'){
-  const assets=Object.fromEntries(['3-0.bin','255-3.bin'].map(name=>{const data=fs.readFileSync(path.join(player,'assets',name));
-   assert.equal(crypto.createHash('sha256').update(data).digest('hex'),receipt.assets[name],name);return [name,new Int8Array(data)];}));
+ if(temporary)j.jre.LoadingKernelProbe={applicationFallback:true,staticMethods:{'input()[B':vm=>freshLoadingBytes(vm,input)}};
+ if(kernel!=='bzip'){
+  const assets=Object.fromEntries((kernel==='loading'?Object.keys(receipt.assets):['3-0.bin','255-3.bin']).map(name=>[name,assetBytes(name)]));
   j.jre.GeobloxLoading={applicationFallback:true,staticMethods:{'browserAsset(Ljava/lang/String;)[B':(vm,_obj,args)=>{
-   const name=String(args[0]?.value??args[0]);assert.ok(assets[name],name);return vm.newByteArray(assets[name]);}}};
+   const name=String(args[0]?.value??args[0]);assert.ok(assets[name],name);return freshLoadingBytes(vm,assets[name]);}}};
   const {installBrowserInflater}=await import('../launcher/browser-loader/browser-inflater.mjs');
   const decompress=async(data,format)=>new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream(format))).arrayBuffer());
   installBrowserInflater(j,{inflate:b=>decompress(b,'deflate'),inflateRaw:b=>decompress(b,'deflate-raw')});
  }
  j.jit._syncCompileEnvironment={trace:false,assert:true};
+ const lateCompiles=[],startCompile=j.jit.startSynchronousCompile.bind(j.jit);
+ j.jit.startSynchronousCompile=(method,entryPath)=>{
+  if(j.jit.mainStarted&&lateCompiles.length<100)lateCompiles.push({method:j.jit.methodIdentity(method),entryPath});
+  return startCompile(method,entryPath);
+ };
  let guestStart,guestCpu;const mark=j.jit.markMainStarted.bind(j.jit);j.jit.markMainStarted=()=>{guestCpu=process.cpuUsage();guestStart=performance.now();mark();};
  const w=j.jit.wasmJit;
  const transitions=[];const execute=w.execute.bind(w);
  w.execute=(frame,thread,state,...args)=>{const before=frame.pc,r=execute(frame,thread,state,...args);if(state.key?.includes('Bzip2Decoder')&&state.exits&&transitions.length<100)transitions.push({key:state.key,before,after:frame.pc,result:r,fuels:state.fuelExits});return r;};
  let error;const start=performance.now();
- try{await j.run('LoadingKernelProbe');}catch(caught){error={type:caught.type||caught.name,message:caught.message,location:caught.jvmGuestLocation};}
+ try{await j.run(mainClass);}catch(caught){error={type:caught.type||caught.name,message:caught.message,location:caught.jvmGuestLocation};}
  const finished=performance.now(),cpu=guestCpu&&process.cpuUsage(guestCpu),elapsed=finished-start,executionMs=finished-guestStart;
- const fields=j.classes.LoadingKernelProbe.staticFields,out=fields.get('output:[B');
- const actual=out&&Buffer.from(out),equal=actual?.equals(reference)||false;
+ const fields=j.classes[mainClass].staticFields,out=fields.get('output:[B');
+ const check=kernel==='loading'?['pcmSamples:I','pcmBytes:J','pcmCrc:J','archiveFiles:I','decodedBytes:J','graphicsCrc:J'].map(name=>String(fields.get(name))).join(':'):undefined;
+ const actual=out&&Buffer.from(out),equal=kernel==='loading'?check===receipt.referenceCheck:actual?.equals(reference)||false;
  let firstDifference=-1;if(actual&&!equal)firstDifference=actual.findIndex((value,i)=>value!==reference[i]);
  const methods=[];
- const owners=kernel==='vorbis'?['MusicDecoder','VorbisCodebook','VorbisResidue','MusicDecodeStage']:['Bzip2Decoder','Bzip2DecoderState'];
- for(const owner of owners)for(const item of j.classes[owner]?.ast.classes[0].items||[]){if(item.type!=='method')continue;const m=item.method,s=w.state.get(m),g=j.jit.codegenCache.get(m);methods.push({key:owner+'.'+m.name+m.descriptor,wasm:s&&{status:s.status,runs:s.runs,directEntries:s.meta?.canonicalEntries?.value||0,exits:s.exits,fuelExits:s.fuelExits,full:s.meta?.fullyCompiled,calleeFull:s.callee?.meta?.fullyCompiled,frameEntryOnly:s.meta?.frameEntryOnly,veto:s.linkVetoed,nested:s.nestedCalls,nestedDeopts:s.nestedDeopts,demotes:s.meta?.demoteReasons&&[...s.meta.demoteReasons],pending:[...new Set(s.meta?.linkBindings?.filter(b=>b.pending).map(b=>b.key)||[])],flags:s.meta&&{deoptable:s.meta.deoptableCalls,usedEh:s.meta.usedEh,boxed:s.meta.boxedCount}},js:g&&{restoring:!!g.jvmRestoringDirectPositionalBody,rejection:g.jvmStructuredRestoringDirectRejection}});}
+ const owners=kernel==='bzip'?['Bzip2Decoder','Bzip2DecoderState']:['MusicDecoder','VorbisCodebook','VorbisResidue','MusicDecodeStage',...(kernel==='loading'?['Bzip2Decoder','Bzip2DecoderState']:[])];
+ const layout=meta=>meta&&{structured:!!meta.structured,canonical:!!meta.canonicalRun,normalFlow:meta.normalFlowFullyCompiled,
+  nativeTags:!!meta.nativeJsExceptionTags,specSites:meta.specSites?.length||0,inlined:meta.inlinedCalls,
+  params:meta.paramSlots?.map(p=>({slot:p.slot,type:p.t})),entryGuards:meta.entryInitializationGuards,
+  links:meta.linkBindings?.map(b=>({key:b.key,pending:b.pending,canonical:!!b.canonicalDirect}))};
+ for(const owner of owners)for(const item of j.classes[owner]?.ast.classes[0].items||[]){if(item.type!=='method')continue;const m=item.method,s=w.state.get(m),g=j.jit.codegenCache.get(m);methods.push({key:owner+'.'+m.name+m.descriptor,wasm:s&&{status:s.status,runs:s.runs,directEntries:s.meta?.canonicalEntries?.value||0,exits:s.exits,fuelExits:s.fuelExits,full:s.meta?.fullyCompiled,calleeFull:s.callee?.meta?.fullyCompiled,layout:layout(s.meta),calleeLayout:layout(s.callee?.meta),
+  publication:w.canonicalDirectLinks&&{eligible:!!w.canonicalDirectLinks.constructor.eligible(s),slots:(w.canonicalDirectLinks.bindings.get(s.key)||[]).map(b=>({compact:b.compact,stub:w.canonicalDirectLinks.table.get(b.slot)===b.stub}))},
+  frameEntryOnly:s.meta?.frameEntryOnly,veto:s.linkVetoed,nested:s.nestedCalls,nestedDeopts:s.nestedDeopts,demotes:s.meta?.demoteReasons&&[...s.meta.demoteReasons],pending:[...new Set(s.meta?.linkBindings?.filter(b=>b.pending).map(b=>b.key)||[])],flags:s.meta&&{deoptable:s.meta.deoptableCalls,usedEh:s.meta.usedEh,boxed:s.meta.boxedCount}},js:g&&{restoring:!!g.jvmRestoringDirectPositionalBody,rejection:g.jvmStructuredRestoringDirectRejection}});}
  const result={runtimeRevision:revision||'working-tree',sourceLoader:revision?'archive-with-generated-jre-index':'working-tree',engine:process.version,execArgv:process.execArgv,heapLimitBytes:getHeapStatistics().heap_size_limit,
-  harnessSha256:crypto.createHash('sha256').update(fs.readFileSync(new URL(import.meta.url))).digest('hex'),
-  fixtureSha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(temporary,'LoadingKernelProbe.class'))).digest('hex'),
-  options,mode,asset,kernel,reference:kernel==='vorbis'?'HotSpot':'Python bz2',elapsed,executionMs,executionCpuMs:cpu&&(cpu.user+cpu.system)/1000,
-  decodeMs:kernel==='vorbis'?Number(fields.get('decodeNanos:J'))/1e6:undefined,equal,firstDifference,error,compilation:j.jit.syncCompileCensus(),preparation:j.preparationReport,transitions,methods};
- result.recent=[...(receipt.kernelDiagnostic?.recent||[]),{runtimeRevision:result.runtimeRevision,sourceLoader:result.sourceLoader,mode,asset,kernel,executionMs:result.executionMs,decodeMs:result.decodeMs,equal,lateCompiles:result.compilation.postMainSyncCompileCount}].slice(-6);
- const current=JSON.parse(fs.readFileSync(receiptPath));current.kernelDiagnostic=result;
- fs.writeFileSync(receiptPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(result,null,2));
- assert.equal(error,undefined,'Guest execution failed');
- assert.equal(result.compilation.postMainSyncCompileCount,0,'Probe compiled during guest execution');
- assert.ok(equal,'Decoded bytes differ from reference decoder');
-}finally{fs.rmSync(temporary,{recursive:true});}
+  fixtureSha256:temporary?hash(fs.readFileSync(path.join(temporary,'LoadingKernelProbe.class'))):receipt.workloadSha256,
+  fixtureKind:temporary?'kernel-class':'loading-workload-source',
+  options,mode,asset,kernel,reference:kernel==='loading'?'Recorded HotSpot checksum':kernel==='vorbis'?'HotSpot':'Python bz2',elapsed,executionMs,executionCpuMs:cpu&&(cpu.user+cpu.system)/1000,
+  ...(kernel==='loading'?{check,musicMs:Number(fields.get('musicNanos:J'))/1e6,graphicsMs:Number(fields.get('graphicsNanos:J'))/1e6,
+    loadingMs:(Number(fields.get('musicNanos:J'))+Number(fields.get('graphicsNanos:J')))/1e6}:{}),
+  decodeMs:kernel==='vorbis'?Number(fields.get('decodeNanos:J'))/1e6:undefined,equal,firstDifference,error,lateCompiles,compilation:j.jit.syncCompileCensus(),preparation:j.preparationReport,transitions,methods};
+ save(result);
+}finally{if(temporary)fs.rmSync(temporary,{recursive:true});}
+}

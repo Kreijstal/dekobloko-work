@@ -4903,8 +4903,8 @@ no gain. Neither probe needs a browser or bundle build. The measured source
 commits remain reachable from the experimental branch for reproduction.
 
 Node is the first iteration tool; Firefox remains an occasional release gate.
-The next execution experiments need a repeatable Node gain before another
-browser run, including safe bounds-check proofs where metadata transport alone
+The next execution experiments need a repeatable full-workload Node gain before
+another browser run, including safe bounds-check proofs where metadata transport alone
 does not help. Removing checks or silently weakening Java semantics would not
 establish parity.
 [TeaVM documents a strict option that adds Java checks](https://teavm.org/docs/tooling/gradle.html);
@@ -4933,3 +4933,106 @@ report and requires an isolated runtime. Rebuild that disposable runtime with
 `build-runtime.mjs` before using the browser command; Node revision probes need
 no bundle. The 512 MiB heap, 24 FPS, sustained gameplay and phone targets have not
 been revalidated by this execution-only investigation.
+
+### Full Node comparison and native calls during resumption
+
+The same probe now supports the **complete existing loading workload** and the
+unchanged TeaVM 0.16.0 Wasm GC artifact, without bundling or opening a browser.
+The classes, assets and TeaVM binary are hash-checked against the existing
+receipt. Both runtimes execute once per fresh Node process with a 1,024 MiB
+old-space limit. This is a Node diagnostic, not browser or phone acceptance.
+The Java music/graphics timers and the recorded HotSpot checksum are unchanged.
+The probe additionally rejects attempted compiler entry, even if an assertion
+were swallowed before the completed-compilation census could count it.
+
+```bash
+# From dekobloko-work: exact complete-workload probes, not profiled.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --max-old-space-size=1024 apps/loading/probe.mjs slab all d7f8962d6a204b44b69fe3c7407773141a54e145 loading
+node --max-old-space-size=1024 apps/loading/probe.mjs teavm all - loading
+# Paired comparison, with the same mandatory 1.10 gate as the browser tool.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node apps/loading/compare.mjs --browser node --pairs 3 --revision d7f8962d6a204b44b69fe3c7407773141a54e145 --options diagnostic
+```
+
+Node writes `nodeComparison` and `kernelDiagnostic` in the **same**
+`benchmark.json`, preserving the selected runtime, JVM options and browser
+results. `--revision` loads archived JVM source and generates its JRE index in
+memory. Node comparisons need no `--runtime` directory. Omit `--options
+diagnostic` to use the selected preparation profile; an optional `--player`
+continues to select the existing fixture directory. A failed parity gate exits
+nonzero after recording the actual result; it is never reported as acceptance.
+The asset bridge unwraps legacy byte-array factory results to preserve the
+fixture's typed-view representation while keeping fresh bytes and retaining
+owned typed views from newer runtimes. A selected-runtime smoke run at `cbcf8ad`
+then matched the checksum with zero late compilation; its one-pair 6.766× Node
+parity result still failed. Harness hashes are captured before execution and
+include the shared asset/inflater helpers.
+
+The broader cold-static-inlining experiment (`cdc85b1`) passed semantics tests
+but regressed the Vorbis diagnostic: **238.543 / 324.778 ms** median decode time
+for baseline/candidate. A loop-restricted variant (`e68ecec`) did not establish
+a full-loading improvement either. Both source revisions remain reproducible
+in the experimental branch, and both were removed from the current prototype.
+The cold-integer test's forced-fuel harness now freezes automatic compilation
+between explicit rebuilds; the previous harness could capture an executable
+after dependency refresh had already withdrawn it. That test failure was also
+reproduced with the pre-experiment compiler.
+
+The useful execution finding was a **fuel-exit transition to the dispatcher**.
+The structured entry could call native helpers, but the OSR companion still
+used JavaScript scratch-frame bridges for those calls. In the Bzip probe one
+ready helper took that bridge about 320,000 times, even though its canonical
+native export was eligible and published. The dispatcher now has a Wasm adapter
+to the same mutable canonical table. Its successful path spills no Java frame;
+refusal, suspension and exception paths preserve the original operands, PCs,
+callee frames and exception identity. Replacement/withdrawal follow the live
+table. Rejected translations and collectible retired modules release their
+slots. The new calls are explicitly marked deoptable, so an outer legacy caller
+cannot mistake them for never-exiting raw links. Primary/OSR replacement is
+validated before changing the published executable pair.
+
+The initial three Bzip pairs (`9be0494` / `417d90d`) measured **396.888 /
+340.566 ms**, a 14.2% kernel gain, with exact Python bz2 output and no guest
+compiler attempts. A final repeat with corrected source `d7f8962` and the
+updated bridge measured **447.983 / 378.387 ms** (15.5%); absolute timings
+drifted, but each of its three fresh-process pairs improved. This **did not
+establish a full-loading gain**. Three
+counterbalanced complete-workload source comparisons on CPU 2 used `9be0494`
+and corrected candidate `d7f8962`, each against a fresh TeaVM process:
+
+| Median | Baseline | Candidate |
+| --- | ---: | ---: |
+| Music | 2,024.487 ms | 2,033.954 ms |
+| Graphics | 1,036.981 ms | 1,008.012 ms |
+| Total loading | 3,045.136 ms | 3,038.385 ms |
+| JVM.js / TeaVM ratio | 6.497× | 6.515× |
+
+Total loading is effectively flat (0.2% difference); **every 1.10 gate failed**.
+The component medians need not sum to the median total. Every PCM/archive
+checksum matched and every JVM observation had zero attempted or completed
+guest-time compilations. No Firefox run or release promotion follows this
+result. The remaining gap also exists on paths that already execute native
+calls; removing that one bridge is insufficient.
+
+The exact measured full-loading harness is saved as Deko commit
+`7286e18b8126167602877368bfff0023f6c830da` in
+`experiment/node-loading-oracle`; its probe SHA-256 is
+`9131f3ea787095ae523344289f5e0722e90e6c9b0f8ff63b5a5c998e80f06814`.
+The current harness adds the legacy byte-wrapper fix and captures dependency
+hashes before execution. The final java-tools test snapshot is `94aa985`; its
+runtime source is byte-identical to measured source `d7f8962`.
+
+Focused validation (java-tools):
+
+```bash
+# 849 assertions passed before the final additional lifetime/spill tests.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/dispatcherCanonicalCalls.test.js test/canonicalDirectFrames.test.js test/compactCanonicalFrames.test.js test/canonicalInstanceFrames.test.js test/dispatcherHeapArrays.test.js test/preparedOsrDependencies.test.js test/hostOwnedCanonicalFuel.test.js test/nativeObjectForwarding.test.js test/nativeReferenceArray.test.js test/classInitializationToken.test.js test/preparedWasmConstructors.test.js test/wasmColdIntegerInline.test.js
+# The final focused file passed 57 assertions, including zero normal spill
+# imports, nested fuel exits, EH propagation, atomic replacement and slot GC.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/dispatcherCanonicalCalls.test.js
+```
+
+`node --check apps/loading/probe.mjs`, `node --check apps/loading/compare.mjs`
+and `git diff --check` passed. All implementation and test sources are saved in
+the experimental java-tools branch; generated outputs remain outside Git.
+`node --test tests/loading-byte-ingress.test.mjs tests/browser-inflater-async.test.mjs`
+passed all three Deko integration tests.

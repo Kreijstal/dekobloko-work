@@ -11,6 +11,14 @@ export function preparedLoadingOptions(base) {
         reuseNestedArguments:true,compileConstructors:true}}};
 }
 
+// Older runtime exports wrap fresh native I/O bytes; newer exports may return
+// an owned typed view directly. This fixture's asset bridge has always exposed
+// a typed view, so preserve that representation across source revisions.
+export function freshLoadingBytes(jvm,bytes) {
+  const array=jvm.newByteArray(bytes);
+  return ArrayBuffer.isView(array)?array:array.array;
+}
+
 // Browser fixture only: all class files and compressed assets arrive before
 // either runtime starts. Each invocation executes the workload exactly once.
 export async function runLoading(backend, fixture) {
@@ -46,7 +54,7 @@ export async function runLoading(backend, fixture) {
       'browserAsset(Ljava/lang/String;)[B':(_jvm,_object,args)=>{
         const name=String(args[0]?.value??args[0]);
         if(!assets[name])throw Error('Unexpected asset '+name);
-        return _jvm.newByteArray(assets[name]);
+        return freshLoadingBytes(_jvm,assets[name]);
       },
     }};
     // Reject late compiler entry before it performs work. Record attempts

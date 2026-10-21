@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Fresh browser process and one loading pass per observation; never warm up
+// Fresh process and one loading pass per observation; never warm up
 // by repeating the workload inside the measured VM.
 import fs from 'node:fs';
 import os from 'node:os';
@@ -9,23 +9,27 @@ import crypto from 'node:crypto';
 import {createServer} from 'node:http';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
+import {spawnSync,execFileSync} from 'node:child_process';
 const here=path.dirname(fileURLToPath(import.meta.url));
 const options={player:path.join(os.homedir(),'.cache/dekobloko/geoblox-loading'),browser:'firefox',pairs:3};
 for(let i=2;i<process.argv.length;i++) {
   const key=process.argv[i].slice(2);
-  if(!['player','browser','pairs','runtime','revision','options'].includes(key)||!process.argv[i+1])throw Error('Expected --player DIR --browser firefox|chromium --pairs N');
+  if(!['player','browser','pairs','runtime','revision','options'].includes(key)||!process.argv[i+1])throw Error('Expected --player DIR --browser firefox|chromium|node --pairs N');
   options[key]=process.argv[++i];
 }
 options.player=path.resolve(options.player);options.pairs=Number(options.pairs);
 assert.ok(Number.isSafeInteger(options.pairs)&&options.pairs>0&&options.pairs<=20);
-assert.ok(['firefox','chromium'].includes(options.browser));
+assert.ok(['firefox','chromium','node'].includes(options.browser));
+const node=options.browser==='node';
+if(node&&options.runtime)throw Error('Node probes use --revision source directly; no --runtime bundle');
 const require=createRequire(import.meta.url);
-const playwright=require(process.env.PLAYWRIGHT_ROOT||path.join(os.homedir(),'git/java-tools/node_modules/playwright'));
+const playwright=node?null:require(process.env.PLAYWRIGHT_ROOT||path.join(os.homedir(),'git/java-tools/node_modules/playwright'));
 const receiptPath=path.join(options.player,'benchmark.json');
 const receipt=JSON.parse(fs.readFileSync(receiptPath));
 const runtimeDirectory=path.resolve(options.runtime||path.join(options.player,'runtime'));
 if(options.runtime&&!options.revision)throw Error('An isolated runtime requires --revision');
-const runtimeRevision=options.revision||receipt.runtimeRevision;
+const runtimeRevision=node?execFileSync('git',['rev-parse','--verify',(options.revision||receipt.runtimeRevision)+'^{commit}'],
+ {cwd:path.resolve(here,'../../../java-tools'),encoding:'utf8'}).trim():options.revision||receipt.runtimeRevision;
 assert.equal(receipt.schema,1);
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 const classes=[];
@@ -39,16 +43,19 @@ for(const [name,expected] of Object.entries(receipt.assets)) {
   assets[name]=bytes.toString('base64');
 }
 const runtimeHashes={};
-for(const [name,expected] of Object.entries(receipt.runtime)){
+for(const [name,expected] of Object.entries(node?{}:receipt.runtime)){
  const actual=hash(fs.readFileSync(path.join(runtimeDirectory,name)));
  if(!options.runtime)assert.equal(actual,expected,name);
  runtimeHashes[name]=actual;
 }
 assert.equal(hash(fs.readFileSync(path.join(options.player,'teavm/loading.wasm'))),receipt.teavm.wasmSha256);
-if(options.options && (!options.runtime || options.options!=='diagnostic'))throw Error('--options diagnostic requires an isolated runtime');
+if(options.options && ((!options.runtime&&!node) || options.options!=='diagnostic'))throw Error('--options diagnostic requires an isolated runtime or Node source probe');
 const fixture={classes,assets,options:(options.options==='diagnostic'?receipt.diagnosticOptions:receipt.jvmOptions)||JSON.parse(fs.readFileSync(path.resolve(here,'../launcher/browser-runtime.json'))).jvmOptions};
-if(!options.options)receipt.jvmOptions=fixture.options;
-const provenance={runtimeRevision,runtime:runtimeHashes,jvmOptions:fixture.options};
+if(!options.options&&!node)receipt.jvmOptions=fixture.options;
+const provenance={runtimeRevision,runtime:node?{sourceLoader:'archive-with-generated-jre-index'}:runtimeHashes,jvmOptions:fixture.options,
+ comparisonHarnessSha256:hash(fs.readFileSync(fileURLToPath(import.meta.url))),
+ ...(node?{diagnosticOnly:true,engine:process.version,oldSpaceLimitMiB:1024}:{})};
+const resultKey=node?'nodeComparison':'results';
 const server=createServer((req,res)=>{
   try {
     const name=new URL(req.url,'http://localhost').pathname;
@@ -64,25 +71,35 @@ const server=createServer((req,res)=>{
     res.setHeader('content-type',name.endsWith('.wasm')?'application/wasm':'text/javascript');res.end(fs.readFileSync(file));
   }catch {res.statusCode=404;res.end('Not found');}
 });
-await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
-if(!receipt.baselineResults)receipt.baselineResults=receipt.results;
+if(!node)await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+if(!node&&!receipt.baselineResults)receipt.baselineResults=receipt.results;
 const observations=[];
 console.log('Comparing '+options.pairs+' fresh-process pairs in '+options.browser);
 
 try {
   for(let pair=0;pair<options.pairs;pair++)for(const backend of pair%2?['teavm','jvm']:['jvm','teavm']) {
     console.log('Pair '+(pair+1)+'/'+options.pairs+': '+backend);
-    const browser=await playwright[options.browser].launch({headless:true});
+    const browser=node?null:await playwright[options.browser].launch({headless:true});
     try {
-      const page=await browser.newPage();const errors=[];
+      const errors=[];let result;
+      if(node){
+        const mode=backend==='teavm'?'teavm':options.options==='diagnostic'?'slab':'canonical';
+        const child=spawnSync(process.execPath,['--max-old-space-size=1024',path.join(here,'probe.mjs'),mode,'all',
+          backend==='jvm'?runtimeRevision:'-','loading',options.player],{encoding:'utf8',maxBuffer:16*1024*1024});
+        Object.assign(receipt,JSON.parse(fs.readFileSync(receiptPath)));
+        result=child.status===0?{...receipt.kernelDiagnostic,backend,browser:'Node.js '+process.version}:
+          {backend,error:child.error?.message||child.stderr?.slice(-2000)||'Node observation failed with status '+child.status};
+      }else{
+      const page=await browser.newPage();
       page.on('pageerror',e=>errors.push(e.message));
       page.on('console',m=>{if(m.type()==='error')console.error(m.text());});
       await page.goto('http://127.0.0.1:'+server.address().port);
-      const result=await page.evaluate(async backend=>{
+      result=await page.evaluate(async backend=>{
         const {runLoading}=await import('/browser.mjs');
         const fixture=await(await fetch('/fixture.json')).json();
         return {...await runLoading(backend,fixture),browser:navigator.userAgent};
       },backend);
+      }
       try {
         assert.deepEqual(errors,[]);
         assert.equal(result.error,undefined,'Workload execution failed');
@@ -94,23 +111,23 @@ try {
         if(observations.length)assert.equal(result.check,observations[0].check,'Decoded results differ between VMs');
         assert.ok(result.musicMs>0&&result.graphicsMs>0);
       } catch(error) {
-        receipt.results={...provenance,scope:receipt.workload,browser:options.browser,status:'failed',observations,
+        receipt[resultKey]={...provenance,scope:receipt.workload,browser:options.browser,status:'failed',observations,
           failedObservation:result,error:error.message,fullMenuLoading:false};
         fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
         throw error;
       }
       observations.push({...result,loadingMs:result.musicMs+result.graphicsMs,pair});
-      receipt.results={...provenance,scope:receipt.workload,browser:options.browser,status:'running',observations,fullMenuLoading:false};
+      receipt[resultKey]={...provenance,scope:receipt.workload,browser:options.browser,status:'running',observations,fullMenuLoading:false};
       fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
       console.log(JSON.stringify(observations.at(-1)));
-    } finally {await browser.close();}
+    } finally {if(browser)await browser.close();}
   }
   const median=values=>{const s=values.sort((a,b)=>a-b);return s.length%2?s[s.length>>1]:(s[s.length/2-1]+s[s.length/2])/2;};
   const summary=Object.fromEntries(['jvm','teavm'].map(backend=>[backend,Object.fromEntries(['musicMs','graphicsMs','loadingMs'].map(key=>[key,median(observations.filter(r=>r.backend===backend).map(r=>r[key]))]))]));
   const ratio=summary.jvm.loadingMs/summary.teavm.loadingMs;
   const parity={maximumRatio:1.1,ratio,met:ratio<=1.1};
-  receipt.results={...provenance,scope:receipt.workload,browser:options.browser,status:'complete',observations,summary,parity,assetAndPcmResultsMatch:true,zeroGuestCompilation:true,fullMenuLoading:false};
+  receipt[resultKey]={...provenance,scope:receipt.workload,browser:options.browser,status:'complete',observations,summary,parity,assetAndPcmResultsMatch:true,zeroGuestCompilation:true,fullMenuLoading:false};
   fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
   console.log(JSON.stringify({scope:receipt.workload,summary,ratio,parity,report:receiptPath}));
   assert.ok(parity.met,'Loading parity target failed: JVM.js must take at most 110% of TeaVM execution time');
-} finally {await new Promise(resolve=>server.close(resolve));}
+} finally {if(server.listening)await new Promise(resolve=>server.close(resolve));}
