@@ -50,6 +50,7 @@ const server=createServer((req,res)=>{
   }catch {res.statusCode=404;res.end('Not found');}
 });
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+if(!receipt.baselineResults)receipt.baselineResults=receipt.results;
 const observations=[];
 console.log('Comparing '+options.pairs+' fresh-process pairs in '+options.browser);
 
@@ -67,10 +68,22 @@ try {
         const fixture=await(await fetch('/fixture.json')).json();
         return {...await runLoading(backend,fixture),browser:navigator.userAgent};
       },backend);
-      assert.deepEqual(errors,[]);
-      assert.equal(result.check,receipt.referenceCheck,'Decoded results differ from HotSpot');
-      if(observations.length)assert.equal(result.check,observations[0].check,'Decoded results differ between VMs');
-      assert.ok(result.musicMs>0&&result.graphicsMs>0);
+      try {
+        assert.deepEqual(errors,[]);
+        assert.equal(result.error,undefined,'Workload execution failed');
+        if(backend==='jvm'){
+          assert.deepEqual(result.lateCompiles,[],'AOT failed: compiler entered during guest execution');
+          assert.equal(result.compilation.postMainSyncCompileCount,0,'AOT failed: late compilation');
+        }
+        assert.equal(result.check,receipt.referenceCheck,'Decoded results differ from HotSpot');
+        if(observations.length)assert.equal(result.check,observations[0].check,'Decoded results differ between VMs');
+        assert.ok(result.musicMs>0&&result.graphicsMs>0);
+      } catch(error) {
+        receipt.results={scope:receipt.workload,browser:options.browser,status:'failed',observations,
+          failedObservation:result,error:error.message,fullMenuLoading:false};
+        fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
+        throw error;
+      }
       observations.push({...result,loadingMs:result.musicMs+result.graphicsMs,pair});
       receipt.results={scope:receipt.workload,browser:options.browser,status:'running',observations,fullMenuLoading:false};
       fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
@@ -79,7 +92,7 @@ try {
   }
   const median=values=>{const s=values.sort((a,b)=>a-b);return s.length%2?s[s.length>>1]:(s[s.length/2-1]+s[s.length/2])/2;};
   const summary=Object.fromEntries(['jvm','teavm'].map(backend=>[backend,Object.fromEntries(['musicMs','graphicsMs','loadingMs'].map(key=>[key,median(observations.filter(r=>r.backend===backend).map(r=>r[key]))]))]));
-  receipt.results={scope:receipt.workload,browser:options.browser,observations,summary,assetAndPcmResultsMatch:true,fullMenuLoading:false};
+  receipt.results={scope:receipt.workload,browser:options.browser,status:'complete',observations,summary,assetAndPcmResultsMatch:true,zeroGuestCompilation:true,fullMenuLoading:false};
   fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
   console.log(JSON.stringify({scope:receipt.workload,summary,ratio:summary.jvm.loadingMs/summary.teavm.loadingMs,report:receiptPath}));
 } finally {await new Promise(resolve=>server.close(resolve));}

@@ -4555,8 +4555,9 @@ PCM CRC32 `2368412830`, 205 archive files, 7,597,510 decoded bytes and archive
 CRC32 `3045679678`. Music preparation also populates the game's instrument
 sample cache; the PCM checksum covers the initial effects, not every instrument.
 
-Three alternating pairs in headless Firefox 148.0, pinned with `taskset -c 2`,
-without CPU slowdown, using JVM source `5403010` and TeaVM 0.16.0 Wasm GC:
+Baseline: three alternating pairs in headless Firefox 148.0, pinned with
+`taskset -c 2`, without CPU slowdown, using JVM source `5403010` and
+TeaVM 0.16.0 Wasm GC:
 
 | Phase, median | TeaVM | JVM.js | JVM.js / TeaVM |
 | --- | ---: | ---: | ---: |
@@ -4578,10 +4579,15 @@ Reproduction from this repository, with the adjacent cloner and java-tools
 checkouts and their installed dependencies:
 
 ```bash
-node apps/loading/build-runtime.mjs --revision 5403010 --output /tmp/geoblox-loading-runtime
+node apps/loading/build-runtime.mjs --output /tmp/geoblox-loading-runtime
 node apps/loading/build.mjs --runtime /tmp/geoblox-loading-runtime
 taskset -c 2 node apps/loading/compare.mjs --browser firefox --pairs 3
 ```
+
+The current comparison requires AOT preparation and rejects any attempted
+guest-time compilation, including attempts whose assertion was caught by a
+fallback. The historical `5403010` baseline therefore fails this stricter check;
+build the current JVM source for a compilation-free comparison.
 
 The default player directory is `~/.cache/dekobloko/geoblox-loading/`. Build
 commands refuse to overwrite existing outputs; reuse the retained player for
@@ -4598,3 +4604,73 @@ The full-app diagnostic separately spent roughly 20-25 seconds in music
 preparation and then made very slow progress through audio servicing, often
 blocking the game thread on the audio-output monitor. That stall remains a
 separate investigation; the intro-only parity result does not cover it.
+
+#### AOT comparison without late compilation
+
+JVM source `cc2b774` prepares guarded initialized-storage variants before guest
+entry and follows static dependencies of every prepared Wasm module, including
+children compiled recursively while preparing a root. It reserves static field
+cells without evaluating guest initializers or capturing their default values.
+Class initialization later publishes an existing body instead of rebuilding it.
+Declared JRE fields use the same storage rule. Application names and policies
+remain in Deko; the compiler change is generic and requires no game opt-in.
+
+The baseline audit attributed all 205 JavaScript rebuilds to lazy static relinking
+and six Wasm compilations to cold helper links. Two preliminary AOT candidates
+were rejected by the strict harness: one missed helpers of already compiled child
+modules, and the other missed two JRE-field variants. Neither failed candidate is
+included in the accepted performance summary. The final harness rejects compiler
+entry **before** it performs work and records attempted entries too, so catching
+an assertion and continuing through a fallback cannot produce a passing run.
+
+Three new alternating pairs, with the same Firefox version, CPU affinity,
+bytecode, compressed assets and TeaVM artifact as the baseline:
+
+| Phase, median | TeaVM | AOT-prepared JVM.js | JVM.js / TeaVM |
+| --- | ---: | ---: | ---: |
+| Initial music and effects | 1.108 s | 6.173 s | 5.57x |
+| UI, graphics and font archive decoding | 0.426 s | 2.853 s | 6.70x |
+| Combined loading work | 1.534 s | 8.716 s | 5.68x |
+
+All three JVM observations recorded zero attempted post-preparation compiler
+entries, zero completed post-main compilations and zero post-main compiler time.
+All six observations matched the unchanged HotSpot checksums. Each VM executes
+one loading pass in a fresh browser, without warming up or replaying the workload.
+The combined JVM median decreased 53.6% from the historical baseline. The 10%
+TeaVM parity target is **not met**, even with JVM.js compilation excluded.
+
+The extra preparation has a cost: JVM preparation rose from 78.757 s to
+101.026 s median, with 780 initialized-storage variants ready before execution.
+That time is outside the decoding timers, not removed from startup. These results
+do not establish the 60-second startup target, memory target, full-menu behavior,
+presented FPS or phone compatibility. Browser engine optimization remains part
+of ordinary execution for both runtimes; the zero-compilation assertion concerns
+JVM.js compiler entry, not the browser's own machine-code tiers.
+
+The sole cache report now contains the historical `baselineResults`, a bounded
+compilation audit, rejected-case descriptions and the current `results`. Current
+bundles rebuilt from the committed source matched both measured SHA-256 hashes:
+
+```text
+jvm-debug.js          958a39ae133981b81de936a301a76df2662638d2aaafae7672ff71f3c0a15ab2
+jvm-compile-worker.js 741867c6e7ed9ec5dc983e8748780a3e1f463bf3cb1a1bd6ab7a2ea23471f2ae
+```
+
+Validation commands and results:
+
+```bash
+# Deko: exact committed runtime rebuild; both hashes above matched.
+node apps/loading/build-runtime.mjs --revision cc2b774 --output /tmp/geoblox-aot-7Wjd0Z/verified-runtime
+# Deko: six accepted observations, zero late compiler entries, matching checksums.
+taskset -c 2 node apps/loading/compare.mjs --browser firefox --pairs 3
+# Java tools: 219 assertions passed, including initialization order, untaken
+# branches, mutable static arrays/scalars, JRE fields, Wasm child dependencies,
+# method-budget boundaries, prepared-code replay and readiness token lifetimes.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/lazyStaticRelink.test.js test/preparationWasmHelpers.test.js test/preparationFixedPoint.test.js test/preparationStableIdentity.test.js test/preparedWasmCallees.test.js test/preparedReplay.test.js test/classInitializationToken.test.js
+# Deko: both syntax checks passed.
+node --check apps/loading/browser.mjs
+node --check apps/loading/compare.mjs
+```
+
+Temporary builds/logs are removed after comparison; only the single canonical
+player cache is retained. No generated output is committed or deployed.

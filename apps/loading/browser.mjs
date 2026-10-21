@@ -23,9 +23,10 @@ export async function runLoading(backend, fixture) {
   Object.assign(controller.options,rest,{prepareBeforeMain:true,prepareWasmPreparedUpgradesOnly:true});
   controller.options.jit={...controller.options.jit,...jit,compileWorker:false};
   const {installBrowserInflater}=await import('/inflater.mjs');
-  let preparation;
+  let preparation,executionError;
+  const lateCompiles=[];
   const ready=performance.now();
-  await debug.run('GeobloxLoading',{args:[],beforeRun:({jvm})=>{
+  try {await debug.run('GeobloxLoading',{args:[],beforeRun:({jvm})=>{
     const decompress=async(data,format)=>new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream(format))).arrayBuffer());
     installBrowserInflater(jvm,{inflate:b=>decompress(b,'deflate'),inflateRaw:b=>decompress(b,'deflate-raw')});
     jvm.jre.GeobloxLoading={applicationFallback:true,staticMethods:{
@@ -35,13 +36,18 @@ export async function runLoading(backend, fixture) {
         return assets[name];
       },
     }};
+    // Reject late compiler entry before it performs work. Record attempts
+    // too: swallowing an assertion into a slower fallback must not pass.
+    jvm.jit._syncCompileEnvironment={trace:false,assert:true};
+    const startCompile=jvm.jit.startSynchronousCompile.bind(jvm.jit);
+    jvm.jit.startSynchronousCompile=(method,path)=>{if(jvm.jit.mainStarted)lateCompiles.push({method:jvm.jit.methodIdentity(method),path});return startCompile(method,path);};
     const prepare=jvm.precompileInitializedClasses.bind(jvm);
-    jvm.precompileInitializedClasses=async options=>{const t=performance.now();const result=await prepare(options);preparation={ms:performance.now()-t,methods:result.methods,wasmMethods:result.wasmMethods};return result;};
-  }});
+    jvm.precompileInitializedClasses=async options=>{const t=performance.now();const result=await prepare(options);preparation={ms:performance.now()-t,methods:result.methods,wasmMethods:result.wasmMethods,report:result.report};return result;};
+  }});}catch(error){executionError=error.message;}
   const jvm=controller.jvm,fields=jvm.classes.GeobloxLoading.staticFields;
   const read=name=>Number(fields.get(name));
   const check=['pcmSamples:I','pcmBytes:J','pcmCrc:J','archiveFiles:I','decodedBytes:J','graphicsCrc:J'].map(read).join(':');
   return {backend,hostAndModuleMs:ready-started,entryAndPreparationMs:performance.now()-ready,
     musicMs:read('musicNanos:J')/1e6,graphicsMs:read('graphicsNanos:J')/1e6,check,preparation,
-    compilation:jvm.jit.syncCompileCensus()};
+    compilation:jvm.jit.syncCompileCensus(),lateCompiles,error:executionError};
 }
