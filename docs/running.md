@@ -6317,3 +6317,56 @@ Java-tools master and the selected runtime artifact remain unchanged; no new
 runtime has been deployed. The 1.10x goal remains unmet. Benchmark syntax checks
 and `node --test tests/loading-statistics.test.mjs tests/loading-wasm-optimizer.test.mjs`
 also pass (**8/8**).
+
+### Reduced float-array cases before further compiler changes
+
+The next investigation makes **no compiler or runtime change**. The butterfly
+case still combines too many operations to justify a metadata optimization.
+Three smaller cases perform just one float-array load, one multiply/conversion
+and the same integer checksum per iteration. They differ only in how they get
+the array: repeated static-field reads, a static field captured before the loop,
+or a method parameter. A fourth new case captures all three butterfly arrays
+before the loop. It preserves the original butterfly arithmetic and stores;
+the output array is checked after timing, just as in the other butterfly cases.
+
+```bash
+node --check apps/loading/microbench.mjs
+node apps/loading/microbench.mjs build
+MICRO_ITERATIONS=8000000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 471defcc7230b458bf621daef0d65f47cae601e5 butterfly-static butterfly-cached butterfly-local
+MICRO_ITERATIONS=8000000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 471defcc7230b458bf621daef0d65f47cae601e5 float-load-static float-load-cached float-load-parameter
+```
+
+All commands pass. The build verifies identical fixture class bytes in both
+backends and establishes HotSpot checksums. Every case above has three fresh
+process pairs, with the middle pair reversing backend order, no workload
+warmup, eager optimizing Wasm on both backends, and the same 1 GB JS heap limit.
+All checksums match; there are zero execution-time Java compilations.
+
+| Eight-million-iteration case | JVM median ms | TeaVM median ms | Median paired JVM/TeaVM |
+| --- | ---: | ---: | ---: |
+| Single load, repeated static field | 19.056 | 20.572 | 0.926x |
+| Single load, cached static field | 13.214 | 19.307 | 0.684x |
+| Single load, array parameter | 14.245 | 19.304 | 0.738x |
+| Butterfly, repeated static fields | 77.057 | 20.662 | 3.729x |
+| Butterfly, cached static fields | 48.040 | 16.178 | 2.964x |
+| Butterfly, array parameters | 35.188 | 16.117 | 2.192x |
+
+These six rows use the same fixture source SHA-256
+`b8ee15d343abcd07f320e7a124288b864e6ffe173c623ef4743c2447e86276fb`.
+Raw observations and earlier one-million-iteration controls remain in the
+single `benchmark.json`; `optimizationTrials.smallArrayIsolation` selects the
+exact source identity and run IDs for this table. No generated source or Wasm
+is committed.
+
+The single-load cases do **not** reproduce the slowdown. Repeated static-field
+reads add cost within JVM, but local caching leaves a substantial butterfly gap.
+The cached-field butterfly is also slower than its parameter counterpart even
+though both capture their array references before entering the loop. Inspection
+of its installed Wasm shows cache-filled tests for the three arrays in the loop,
+alongside representation and bounds checks. That identifies code to investigate,
+not a measured attribution of the remaining time.
+
+The next reduction should separate butterfly loads, stores and readback while
+holding the reference source fixed. It should establish which combination
+reproduces the gap before another compiler change. These operation diagnostics
+neither explain the entire full-loading gap nor satisfy loading/FPS acceptance.

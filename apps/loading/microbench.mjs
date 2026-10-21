@@ -15,7 +15,8 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench');
 const receiptPath=path.join(player,'benchmark.json');
 const cases=['scalar','byte-array','boolean-array','bits-local','bits-static','bits-call','bits-static-cursors','bits-static-array',
- 'bits-cross-owner','sin','bits-instance','bits-instance-call','butterfly-static','butterfly-local'];
+ 'bits-cross-owner','sin','bits-instance','bits-instance-call','butterfly-static','butterfly-local',
+ 'float-load-static','float-load-cached','float-load-parameter','butterfly-cached'];
 const iterations=1_000_000,seed='q',version='0.16.0';
 // Compile Wasm with V8's optimizing tier before execution on BOTH backends.
 // This removes lazy Wasm compilation/tiering from these operation diagnostics.
@@ -128,6 +129,34 @@ const source=`public class LoadingMicroKernel {
   }
   return sum;
  }
+ static int butterflyCached(int n) {
+  float[] data=samples,factors=weights,out=transformed;
+  int sum=0;
+  for(int i=0;i<n;i++){
+   int p=i&1023,q=(p+512)&1023;
+   float a=data[p],b=data[q];
+   out[p]=(a-b)*factors[p];out[q]=a+b;
+   sum=sum*33+(int)(out[p]*1048576.0f);
+  }
+  return sum;
+ }
+ // A single array load isolates reference handling from butterfly stores/math.
+ static int floatLoadStatic(int n) {
+  int sum=0;
+  for(int i=0;i<n;i++)sum=sum*33+(int)(samples[i&1023]*1048576.0f);
+  return sum;
+ }
+ static int floatLoadCached(int n) {
+  float[] data=samples;
+  int sum=0;
+  for(int i=0;i<n;i++)sum=sum*33+(int)(data[i&1023]*1048576.0f);
+  return sum;
+ }
+ static int floatLoadParameter(int n,float[] data) {
+  int sum=0;
+  for(int i=0;i<n;i++)sum=sum*33+(int)(data[i&1023]*1048576.0f);
+  return sum;
+ }
  public static void main(String[] args) {
   int mode=Integer.parseInt(args[0]),n=Integer.parseInt(args[1]),seed=args[2].charAt(0);
   byte[] a=new byte[1024];boolean[] z=new boolean[1024];bytes=new byte[1024];
@@ -157,10 +186,14 @@ const source=`public class LoadingMicroKernel {
    case 11:checksum=bitsInstanceCall(n,cursor,bytes);break;
    case 12:checksum=butterflyStatic(n);break;
    case 13:checksum=butterflyLocal(n,samples,weights,transformed);break;
+   case 14:checksum=floatLoadStatic(n);break;
+   case 15:checksum=floatLoadCached(n);break;
+   case 16:checksum=floatLoadParameter(n,samples);break;
+   case 17:checksum=butterflyCached(n);break;
    default:throw new IllegalArgumentException();
   }
   elapsedNanos=System.nanoTime()-start;
-  if(mode==12||mode==13)for(int i=0;i<1024;i++)checksum=checksum*31+(int)(transformed[i]*1048576.0f);
+  if(mode==12||mode==13||mode==17)for(int i=0;i<1024;i++)checksum=checksum*31+(int)(transformed[i]*1048576.0f);
  }
 }
 final class MicroBitReader {
@@ -225,6 +258,8 @@ public class TeaVmMicro {
   assert.equal(referenceChecks[3],referenceChecks[7],'Static array bit reader differs');
   for(const index of [8,10,11])assert.equal(referenceChecks[3],referenceChecks[index],cases[index]+' differs');
   assert.equal(referenceChecks[12],referenceChecks[13],'Static and local float butterflies differ');
+  assert.equal(referenceChecks[12],referenceChecks[17],'Static and cached float butterflies differ');
+  for(const index of [15,16])assert.equal(referenceChecks[14],referenceChecks[index],cases[index]+' differs');
   save({purpose:'Small causal diagnostics; not full-loading or FPS acceptance',version,cases,iterations,seed,
    sourceSha256:hash(source),classSha256:classHashes['LoadingMicroKernel.class'],classes:classHashes,
    wasmSha256:hash(fs.readFileSync(path.join(directory,'teavm/micro.wasm'))),
