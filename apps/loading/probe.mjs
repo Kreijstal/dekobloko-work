@@ -6,11 +6,14 @@ import {execFileSync} from 'node:child_process';
 import {getHeapStatistics} from 'node:v8';
 import {freshLoadingBytes} from './browser.mjs';
 import {loadArchivedJvm} from './archive-jvm.mjs';
+import {vorbisProbeSource} from './workload.mjs';
 const require=createRequire(import.meta.url),root=path.resolve(new URL('../../../java-tools/',import.meta.url).pathname);
 const player=path.resolve(process.argv[6]||path.join(os.homedir(),'.cache/dekobloko/geoblox-loading'));
 const receiptPath=path.join(player,'benchmark.json'),receipt=JSON.parse(fs.readFileSync(receiptPath));
 const mode=process.argv[2]||'js',asset=process.argv[3]||'1-2.bin',kernel=process.argv[5]||'bzip';
+const inspectMethod=process.argv[7];
 assert.ok(['js','wasm','canonical','slab','teavm'].includes(mode));assert.ok(['bzip','vorbis','loading'].includes(kernel));
+if(inspectMethod)assert.ok(kernel==='vorbis'&&mode==='slab','Method inspection uses the reduced Vorbis diagnostic');
 if(kernel==='vorbis')assert.equal(asset,'3-0.bin','Vorbis probe consumes the recorded sample archive');
 if(kernel==='loading')assert.equal(asset,'all','Full loading consumes all recorded assets');
 const hash=data=>crypto.createHash('sha256').update(data).digest('hex');
@@ -18,6 +21,7 @@ const harnessFiles=Object.fromEntries([
  ['probe.mjs',import.meta.url],['archive-jvm.mjs',new URL('./archive-jvm.mjs',import.meta.url)],['browser.mjs',new URL('./browser.mjs',import.meta.url)],
  ['browser-inflater.mjs',new URL('../launcher/browser-loader/browser-inflater.mjs',import.meta.url)],
  ['wasm-optimizer.mjs',new URL('./wasm-optimizer.mjs',import.meta.url)],
+ ['workload.mjs',new URL('./workload.mjs',import.meta.url)],
 ].map(([name,url])=>[name,hash(fs.readFileSync(new URL(url)))]));
 const assetBytes=name=>{
  const data=fs.readFileSync(path.join(player,'assets',name));assert.equal(hash(data),receipt.assets[name],name);
@@ -68,20 +72,7 @@ const temporary=kernel==='loading'?null:fs.mkdtempSync(path.join(os.tmpdir(),'lo
 let optimizer;
 try {
  if(temporary){
- fs.writeFileSync(path.join(temporary,'LoadingKernelProbe.java'),kernel==='vorbis'?`public class LoadingKernelProbe {
- static byte[] output;static int written;static long decodeNanos;
- public static void main(String[] args)throws Exception {
-  GeobloxLoading.browserMode=args.length==0;GeobloxLoading.assetRoot=args.length==0?null:args[0];Geoblox.clientControlFlowFlag=0;
-  GeobloxLoading.LocalArchive local=new GeobloxLoading.LocalArchive(3);ResourceArchive archive=new ResourceArchive(local,false,0);archive.ensureIndexLoaded(0);
-  int count=local.index.fileCounts[0],chosen=-1,size=-1;int[] files=local.index.fileIds[0];
-  for(int i=0;i<count;i++){int file=files==null?i:files[i];if(file==0)continue;byte[] data=archive.getFile(0,-28153,file);if(data.length>size){size=data.length;chosen=file;}}
-  if(chosen<0)throw new AssertionError("No sample");
-  MusicDecoder decoder=MusicDecoder.loadById(archive,0,chosen);if(decoder==null)throw new AssertionError("No decoder");
-  long start=System.nanoTime();PcmSample sample=decoder.decodePcmBudgeted(null);decodeNanos=System.nanoTime()-start;
-  if(sample==null)throw new AssertionError("No PCM");output=sample.samples;written=output.length;
-  if(args.length>0)System.out.write(output);
- }
-}`:`public class LoadingKernelProbe {
+ fs.writeFileSync(path.join(temporary,'LoadingKernelProbe.java'),kernel==='vorbis'?vorbisProbeSource():`public class LoadingKernelProbe {
  static native byte[] input(); static byte[] output; static int written;
  public static void main(String[] args) {
   byte[] data=input();int n=((data[5]&255)<<24)|((data[6]&255)<<16)|((data[7]&255)<<8)|(data[8]&255);
@@ -95,7 +86,8 @@ try {
   const {installWasmOptimizer}=await import('./wasm-optimizer.mjs');
   optimizer=installWasmOptimizer();
  }
- const options=structuredClone(kernel==='loading'?(mode==='slab'?receipt.diagnosticOptions||receipt.jvmOptions:receipt.jvmOptions):receipt.executionBaseline.jvmOptions);
+ const options=structuredClone(mode==='slab'&&kernel!=='bzip'?receipt.diagnosticOptions||receipt.jvmOptions:
+   kernel==='loading'?receipt.jvmOptions:receipt.executionBaseline.jvmOptions);
  const mainClass=kernel==='loading'?'GeobloxLoading':'LoadingKernelProbe';
  options.classpath=[...(temporary?[temporary]:[]),path.join(player,'classes')];
  options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
@@ -134,6 +126,14 @@ try {
  const actual=out&&Buffer.from(out),equal=kernel==='loading'?check===receipt.referenceCheck:actual?.equals(reference)||false;
  let firstDifference=-1;if(actual&&!equal)firstDifference=actual.findIndex((value,i)=>value!==reference[i]);
  const methods=[];
+ let inspection;
+ if(inspectMethod){
+  const state=w.compiled.find(s=>s.key===inspectMethod);
+  assert.ok(state?.meta?.bytes,'Installed method bytes unavailable: '+inspectMethod);
+  const output=path.join(player,'vorbis/current.wat');
+  fs.writeFileSync(output,execFileSync('wasm-dis',['--all-features','-'],{input:state.meta.bytes}));
+  inspection={method:state.key,sha256:hash(state.meta.bytes),output};
+ }
  const owners=kernel==='bzip'?['Bzip2Decoder','Bzip2DecoderState']:['MusicDecoder','VorbisCodebook','VorbisResidue','MusicDecodeStage',...(kernel==='loading'?['Bzip2Decoder','Bzip2DecoderState']:[])];
  const layout=meta=>meta&&{structured:!!meta.structured,canonical:!!meta.canonicalRun,normalFlow:meta.normalFlowFullyCompiled,
   omittedPhiCopies:meta.omittedPhiCopies||0,
@@ -150,7 +150,8 @@ try {
   publication:w.canonicalDirectLinks&&{eligible:!!w.canonicalDirectLinks.constructor.eligible(s),slots:(w.canonicalDirectLinks.bindings.get(s.key)||[]).map(b=>({compact:b.compact,stub:w.canonicalDirectLinks.table.get(b.slot)===b.stub}))},
   frameEntryOnly:s.meta?.frameEntryOnly,veto:s.linkVetoed,nested:s.nestedCalls,nestedDeopts:s.nestedDeopts,demotes:s.meta?.demoteReasons&&[...s.meta.demoteReasons],pending:[...new Set(s.meta?.linkBindings?.filter(b=>b.pending).map(b=>b.key)||[])],flags:s.meta&&{deoptable:s.meta.deoptableCalls,usedEh:s.meta.usedEh,boxed:s.meta.boxedCount}},js:g&&{restoring:!!g.jvmRestoringDirectPositionalBody,rejection:g.jvmStructuredRestoringDirectRejection}});}
  const result={runtimeRevision:revision||'working-tree',sourceLoader:revision?'archive-with-generated-jre-index':'working-tree',engine:process.version,execArgv:process.execArgv,heapLimitBytes:getHeapStatistics().heap_size_limit,
-  instrumented:!!w.importStatsEnabled||!!optimizer,
+  instrumented:!!w.importStatsEnabled||!!optimizer||!!inspection,
+  ...(inspection?{inspection}:{}),
   ...(optimizer?{wasmOptimizer:optimizer.finishPreparation()}:{}),
   executionMethods:w.compiled.map(state=>({key:state.key,runs:state.runs,exits:state.exits,
     structured:!!state.meta?.structured,full:!!state.meta?.fullyCompiled,

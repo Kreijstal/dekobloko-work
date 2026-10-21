@@ -19,7 +19,7 @@ const cases=['scalar','byte-array','boolean-array','bits-local','bits-static','b
  'float-load-static','float-load-cached','float-load-parameter','butterfly-cached',
  'butterfly-no-readback','butterfly-loads','float-store-parameter','float-store-readback','float-arithmetic',
  'bzip-block','bzip-ready-owner','int-load-parameter','int-load-cast','cold-prefix-loop','ready-prefix-loop',
- 'cast-only','reference-only','array-result-loop','object-result-loop'];
+ 'cast-only','reference-only','array-result-loop','object-result-loop','window-parameter','window-static'];
 const iterations=1_000_000,seed='q',version='0.16.0';
 // Compile Wasm with V8's optimizing tier before execution on BOTH backends.
 // This removes lazy Wasm compilation/tiering from these operation diagnostics.
@@ -40,6 +40,7 @@ const source=`public class LoadingMicroKernel {
  static int checksum, byteCursor, bitCursor, readerInitializations;
  static byte[] bytes;
  static float[] samples,weights,transformed;
+ static float[] windowSamples;
  static long elapsedNanos;
  static int loopPrefixes,loopSteps,loopTails,initializerPrefixes,resultLoopChecksum;
  static int scalar(int n,int seed) {
@@ -260,6 +261,18 @@ const source=`public class LoadingMicroKernel {
   for(int i=0;i<n;i++)sum=sum*33+data[i&1023];
   resultLoopChecksum=sum;return data;
  }
+ static void windowParameter(int n,float[] data) {
+  for(int i=0;i<n;i++){
+   float sine=(float)Math.sin(((double)(i&1023)+0.5)/1024.0*0.5*3.141592653589793);
+   data[i]=data[i]*(float)Math.sin(1.5707963267948966*(double)sine*(double)sine);
+  }
+ }
+ static void windowStatic(int n) {
+  for(int i=0;i<n;i++){
+   float sine=(float)Math.sin(((double)(i&1023)+0.5)/1024.0*0.5*3.141592653589793);
+   windowSamples[i]=windowSamples[i]*(float)Math.sin(1.5707963267948966*(double)sine*(double)sine);
+  }
+ }
  public static void main(String[] args) {
   int mode=Integer.parseInt(args[0]),n=Integer.parseInt(args[1]),seed=args[2].charAt(0);
   byte[] a=new byte[1024];boolean[] z=new boolean[1024];bytes=new byte[1024];
@@ -279,6 +292,7 @@ const source=`public class LoadingMicroKernel {
   if(mode==23||mode==24){new Bzip2Decoder();packed=bzipInput();unpacked=new byte[${codecOutputBytes}];}
   if(mode==24&&UsernameResponseSupport.accountUiViewportWidth!=640)throw new AssertionError();
   if(mode==28&&MicroColdHolder.seed!=17)throw new AssertionError();
+  if(mode==33||mode==34){windowSamples=new float[n];for(int i=0;i<n;i++)windowSamples[i]=0.5f+(i&1023)/1024.0f;}
   long start=System.nanoTime();
   switch(mode){
    case 0:checksum=scalar(n,seed);break;
@@ -313,6 +327,8 @@ const source=`public class LoadingMicroKernel {
    case 30:checksum=referenceOnly(n,integers);break;
    case 31:checksum=arrayResultLoop(n,integers)==integers?resultLoopChecksum:-7;break;
    case 32:checksum=objectResultLoop(n,integers)==integers?resultLoopChecksum:-7;break;
+   case 33:windowParameter(n,windowSamples);break;
+   case 34:windowStatic(n);break;
    default:throw new IllegalArgumentException();
   }
   elapsedNanos=System.nanoTime()-start;
@@ -323,6 +339,7 @@ const source=`public class LoadingMicroKernel {
    if(loopPrefixes!=1||loopSteps!=n||loopTails!=1||initializerPrefixes!=(mode==27?1:0))throw new AssertionError();
    checksum=checksum*31+initializerPrefixes;
   }
+  if(mode==33||mode==34)for(int i=0;i<n;i++)checksum=checksum*31+(int)(windowSamples[i]*1048576.0f);
  }
 }
 final class MicroBitReader {
@@ -411,6 +428,7 @@ public class TeaVmMicro {
   assert.equal(referenceChecks[29],referenceChecks[30],'Typed and cast reference checks differ');
   assert.equal(referenceChecks[31],referenceChecks[32],'Array and object result loops differ');
   assert.equal(referenceChecks[25],referenceChecks[31],'Array-result loop differs from integer load control');
+  assert.equal(referenceChecks[33],referenceChecks[34],'Parameter and static window outputs differ');
   for(const index of [15,16])assert.equal(referenceChecks[14],referenceChecks[index],cases[index]+' differs');
   save({purpose:'Small causal diagnostics; not full-loading or FPS acceptance',version,cases,iterations,seed,
    codec:{asset:codecAsset,inputSha256:hash(codecInput),outputBytes:codecOutputBytes,classes:codecClasses,decodesPerProcess:1},

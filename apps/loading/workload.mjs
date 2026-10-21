@@ -1,5 +1,22 @@
 // The same original audio preparation and archive decoder execute in both VMs.
 // Drawing, network transfer and audio-device playback are outside this workload.
+export function vorbisProbeSource() {
+  return `public class LoadingKernelProbe {
+ static byte[] output;static int written;static long decodeNanos;
+ public static void main(String[] args)throws Exception {
+  GeobloxLoading.browserMode=args.length==0;GeobloxLoading.assetRoot=args.length==0?null:args[0];Geoblox.clientControlFlowFlag=0;
+  GeobloxLoading.LocalArchive local=new GeobloxLoading.LocalArchive(3);ResourceArchive archive=new ResourceArchive(local,false,0);archive.ensureIndexLoaded(0);
+  int count=local.index.fileCounts[0],chosen=-1,size=-1;int[] files=local.index.fileIds[0];
+  for(int i=0;i<count;i++){int file=files==null?i:files[i];if(file==0)continue;byte[] data=archive.getFile(0,-28153,file);if(data.length>size){size=data.length;chosen=file;}}
+  if(chosen<0)throw new AssertionError("No sample");
+  MusicDecoder decoder=MusicDecoder.loadById(archive,0,chosen);if(decoder==null)throw new AssertionError("No decoder");
+  long start=System.nanoTime();PcmSample sample=decoder.decodePcmBudgeted(null);decodeNanos=System.nanoTime()-start;
+  if(sample==null)throw new AssertionError("No PCM");output=sample.samples;written=output.length;
+  if(args.length>0)System.out.write(output);
+ }
+}`;
+}
+
 export function loadingWorkloadSource(groups) {
   return String.raw`import java.nio.file.*;
 import java.util.zip.CRC32;

@@ -6786,3 +6786,105 @@ probe currently has only a JVM/HotSpot reference; giving that exact sample a
 matched TeaVM entry is the next useful measurement. Do not repeat full loading
 or change more runtime policy until that reduced comparison identifies a
 specific cost. The full-loading goal remains **at most 1.10x TeaVM**.
+
+### Matched original-sample Vorbis comparison
+
+`apps/loading/vorbis.mjs` now builds the missing TeaVM side of the existing
+single-sample probe. `vorbisProbeSource()` in `workload.mjs` supplies the exact
+same Java source to both paths; an explicit source comparison verifies that
+extracting it did not change the previous probe body. The full-loading workload
+source is also unchanged. The slab Vorbis probe now uses the same diagnostic
+JVM options as full loading, instead of the older execution-baseline profile.
+
+The probe selects the largest compressed sample in the pinned archive,
+constructs its decoder and completes setup before starting `decodeNanos`.
+It invokes the original `decodePcmBudgeted(null)` once, with no replay or guest
+warmup. The same probe class and every pinned game/support class are checked
+byte for byte on the TeaVM input classpath. The builder preserves the pinned
+desktop stub declarations while adding only missing host declarations; any
+desktop service call remains fail-fast. Its first attempted build caught an
+overwritten stub hash, and was corrected rather than waiving the check.
+
+The sample produces **348,249 PCM bytes**. Both backends compare every byte
+against the fresh HotSpot output, not just an aggregate checksum. TeaVM's
+exported byte-access helpers run only after the Java decode timer stops.
+Provenance includes:
+
+- Shared Java source SHA-256:
+  `2dcae936ac0b79471fb318163d413022de26b650f4b041a52072e8be513f2cd3`.
+- Probe class SHA-256:
+  `a661e07cfa7756426ab9e07d8286f5925a8df57fa23349382f868188aefcb6ad`.
+- PCM SHA-256:
+  `4818b5b6214fb59b971bbdce866dc25fc1aa69681d28b2cad6570b9c0a0b32cc`.
+- Reduced TeaVM Wasm SHA-256:
+  `973be9907f1164722b192d1278510a05e6c390bb09d1389dd28e7ebd0099261c`.
+
+Three fresh process pairs use CPU 2, the 1 GiB old-space limit and eager
+optimizing Wasm on both backends, reversing engine order in the middle pair:
+
+| Pair | JVM decode ms | TeaVM decode ms | JVM/TeaVM |
+| --- | ---: | ---: | ---: |
+| 1 | 114.667 | 27.490 | 4.171x |
+| 2 | 103.853 | 36.653 | 2.833x |
+| 3 | 100.138 | 25.019 | 4.003x |
+
+The median paired ratio is **4.003x**; the ratio of backend medians is
+**3.778x** (103.853 / 27.490 ms). All bytes match and every JVM run attempts and
+completes zero guest-time Java compilations. The active decoder methods stay
+native without exits: 682 packet/residue calls, 151,257 scalar-codebook calls
+and 443,635 single-bit-reader calls. Thus this measured gap remains after
+removing archive extraction and decoder setup from the timer; it is not an
+interpreter fallback or first-use Java compilation explanation.
+
+A separate `inspect` command collects import counters and writes exactly one
+current method WAT, excluding its timing from the comparison. In this sample,
+`decodePacket` makes **1,396,736** `Math.sin` imports. Inspection of TeaVM's
+reduced artifact identifies its single-bit reader as function 58: it uses typed
+GC array access and scalar globals. Our installed reader uses guarded native
+headers/cells; its ordinary native path makes no observed runtime import.
+Counts identify exercised operations; they do not assign their CPU cost.
+
+The next reduction copies the two-sine, float-rounded window operation into
+the existing microbenchmark. Each of one million distinct output elements is
+updated once; array initialization precedes timing and output hashing follows
+it. The phase index wraps at 1024 to match a finite window's arithmetic range.
+The parameter and static variants share the same operations and HotSpot output
+checksum. Fixture source is
+`11835c454188715c9f1bd1ada77b8323ab680c0856095c0a4dcdf7251fa7a7d1`:
+
+| Window source | JVM median ms | TeaVM median ms | Ratio of medians |
+| --- | ---: | ---: | ---: |
+| Array parameter | 16.903 | 14.262 | 1.185x |
+| Static array | 18.329 | 14.317 | 1.280x |
+
+All six pairs match their reference checksum and perform zero guest-time Java
+compilation. These smaller loops do not reproduce the original decoder's 4x
+penalty. The sine count alone therefore does not justify changing its math
+runtime, and these independent timings cannot be added to attribute the entire
+decoder. The existing math-binding test also confirms that double `sin` already
+binds `Math.sin` directly; all **11/11 assertions** pass. No compiler/runtime
+change follows this pass. A further reduction should retain the original
+codebook's dynamic tree traversal, native receiver-array access and helper-call
+shape, with emitted-code/counter checks that it exercises the intended path.
+
+```bash
+# dekobloko-work:
+node --check apps/loading/vorbis.mjs
+node --check apps/loading/probe.mjs
+node --check apps/loading/workload.mjs
+node --check apps/loading/microbench.mjs
+node apps/loading/vorbis.mjs build
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run 3c7b6dafaf3036331f4b1761eb7a26d3725dcf92
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 3c7b6dafaf3036331f4b1761eb7a26d3725dcf92
+node apps/loading/microbench.mjs build
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 3c7b6dafaf3036331f4b1761eb7a26d3725dcf92 window-parameter window-static
+# java-tools:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmMathBindings.test.js
+```
+
+The one canonical `benchmark.json` retains all observations, identities and
+excluded diagnostics under `vorbisBenchmark` and
+`optimizationTrials.matchedVorbisReduction`. Generated probe/PCM/Wasm files stay
+in the reproducible private benchmark cache. The pinned full-loading TeaVM
+artifact is unchanged. Full loading remains far above **1.10x**; these Node
+diagnostics establish no browser, phone, presented-FPS or peak-heap acceptance.
