@@ -5036,3 +5036,133 @@ and `git diff --check` passed. All implementation and test sources are saved in
 the experimental java-tools branch; generated outputs remain outside Git.
 `node --test tests/loading-byte-ingress.test.mjs tests/browser-inflater-async.test.mjs`
 passed all three Deko integration tests.
+
+
+#### Node-first native leaf proof experiments
+
+The full-loading Node oracle is now the primary iteration path. Firefox remains
+a later browser gate after a repeatable full-workload improvement; kernel gains
+alone do not trigger another browser bundle/run. Source is loaded from an exact
+Git archive, with no generated bundle or additional checkout. All comparisons
+below use CPU 2, Node 22.23.2, 1,024 MiB old-space, unchanged pinned classes,
+assets and TeaVM binary, and one workload execution per fresh process. They are
+loading diagnostics, not browser/phone, memory, presentation or gameplay passes.
+
+A bounded static-leaf version (`af3334633332e1bf9e1aa60045a6350b1b64ed61`)
+proved field capabilities, numeric write tags and owned primitive-array headers
+at entry, then omitted repeated checks in a callback-free body. It excluded
+calls, allocations, volatile accesses, handlers, object fields and unsupported
+operations. Cold/reset owner tokens deferred to the original entry without
+initializing an untaken path. The generic checked body remained available for
+accessors, foreign/off-heap arrays, readonly cells and host representations.
+The initial focused tests passed 106 assertions; the compatibility batch passed
+464. A single full-loading baseline/candidate pair measured music
+1,999.752 / 2,216.894 ms and graphics 1,338.836 / 1,003.529 ms. That tradeoff
+did not establish a useful gain. Coverage confirmed the version ran in the
+3,148,442-entry bit-reader, rather than silently remaining unused.
+
+The follow-up (`5eebf40694f367331717b3ca4e18a3a3cc5a7a13`) cached positive
+proofs using a host-owned numeric epoch. Field capability/tag changes and array
+reference replacement invalidated it synchronously. Negative proofs were
+retried, and epoch saturation disabled caching rather than wrapping. Cached
+metadata contained only numeric addresses/lengths; retired arrays remained
+collectible. Forced fuel, Java bounds/null errors, getter/setter ordering, cold
+foreign owners, descriptor replacement, GC and saturation all passed. Exact
+focused validation, **418 assertions passed**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticLeafVersion.test.js test/nativeStaticFields.test.js test/nativeStaticReferenceCodegen.test.js test/nativeStaticCell.test.js test/nativeStaticReferenceCell.test.js test/dispatcherCanonicalCalls.test.js test/classInitializationToken.test.js
+```
+
+Two baseline and two candidate fresh-process comparisons ran in B/C/C/B order
+against a fresh TeaVM process each time. No observation was excluded:
+
+| Source | Music ms | Graphics ms | Total ms | TeaVM total ms | Ratio |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Baseline `94aa985` | 2,012.598 | 1,004.999 | 3,017.596 | 465.304 | 6.485× |
+| Cached proof `5eebf40` | 2,615.521 | 1,488.222 | 4,103.743 | 542.037 | 7.571× |
+| Cached proof `5eebf40` | 2,030.780 | 997.026 | 3,027.806 | 467.915 | 6.471× |
+| Baseline `94aa985` | 2,008.775 | 1,022.698 | 3,031.473 | 464.004 | 6.533× |
+
+One candidate observation was flat and one regressed; its two-run median was
+17.9% worse. Host timings varied, but the data establish no repeatable full
+loading gain. All checksums matched and all attempted/completed guest compiler
+counts were zero. Every 1.10 gate failed. Both leaf versions and their epoch
+mechanism were withdrawn from the current candidate. Their handwritten source
+and tests remain reproducible in experimental Git history; no runtime defaults
+or selected artifact changed. Compact results live under
+`optimizationTrials.nativeStaticLeafFullNode` and
+`optimizationTrials.nativeStaticLeafEpochFullNode` in the same `benchmark.json`.
+The measured Deko harness is `3afa353`; it adds only post-timer version coverage.
+
+Reproduction, substituting either exact source revision above:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 5eebf40694f367331717b3ca4e18a3a3cc5a7a13 --options diagnostic
+```
+
+A nonzero exit after completed observations is the mandatory parity failure,
+not an ignored correctness failure. Source snapshots are on
+`experiment/teavm-native-parity`; use the matching historical test sources to
+re-run tests for withdrawn prototypes. No generated outputs were committed.
+
+
+#### Literal rematerialization on full loading: withdrawn
+
+The earlier intro experiment found no gain from literal rematerialization.
+A smaller new prototype checked that result on the complete asset-loading
+workload (`cab078930067bc1071758d0e8cf365548e0892dd`). It emitted only numeric
+literals at uses, including phi copies and interpreter frame spills, and omitted
+their dedicated locals. It did not rematerialize string/class resolution. The
+new test verified actual local omission as well as exact wide integers, f32
+rounding, negative zero, NaN, branch joins, fuel exits and handler locals.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmLiteralRematerialization.test.js test/dispatcherCanonicalCalls.test.js test/nativeStaticFields.test.js test/wasmColdIntegerInline.test.js test/wasmInlineInitialization.test.js
+```
+
+That prototype batch passed **227 assertions**. The forced handler test uses
+the VM's continuation path; expecting every handled guest exception to return
+directly from a raw canonical export was an incorrect test assumption.
+
+The same B/C/C/B Node protocol produced these complete-loading results, all
+retained under `optimizationTrials.literalRematerializationFullNode`:
+
+| Source | Music ms | Graphics ms | Total ms | TeaVM total ms | Ratio |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Baseline `94aa985` | 2,257.530 | 1,137.373 | 3,394.903 | 548.088 | 6.194× |
+| Literals `cab0789` | 2,003.921 | 1,043.021 | 3,046.943 | 466.139 | 6.537× |
+| Literals `cab0789` | 2,114.862 | 1,028.885 | 3,143.747 | 467.642 | 6.723× |
+| Baseline `94aa985` | 2,015.925 | 1,057.615 | 3,073.541 | 517.003 | 5.945× |
+
+The raw two-run JVM medians improve 4.3%, but TeaVM also varied substantially
+and the candidate/TeaVM ratios worsen. Two observations per source do not
+establish a repeatable optimization. All checksums and zero guest-compiler
+attempt/count checks passed; every 1.10 gate failed. The compiler change was
+withdrawn. No Firefox run, artifact change or deployment followed.
+
+The semantic cases remain in `test/wasmLiteralContinuations.test.js`; the
+implementation-specific local-omission assertions were removed with the
+prototype. Numeric literal optimization remains a measured rejection for both
+the intro and this full-loading workload, rather than an untested next step.
+The remaining loading gap requires improvements beyond this bookkeeping.
+
+
+Retained validation after withdrawing both prototypes:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmLiteralContinuations.test.js test/structuredSsaCatchLocal.test.js test/structuredWasmDivision.test.js test/wasmStringConstants.test.js test/wasmParameterArrayAbi.test.js
+```
+
+**225 assertions passed.** The first retained batch exposed three stale array
+ABI assertions: an ordinary static array now supplies native metadata without
+a JavaScript base query, and the refusal fixture stopped at an earlier static
+readiness guard before reaching its intended lazy-fill guard. The updated test
+checks replacement static-array metadata, explicitly reaches and refuses the
+lazy fill using an uncaptured accessor value, verifies one getter evaluation,
+and still requires the callee's original-reference query. No runtime guard was
+weakened to satisfy it. The final source snapshot is
+`bb2b71327729b897640ecaf4e6eae03b85e9c566`; its runtime source equals
+`94aa985` (the differences are the retained tests). The selected runtime remains
+`cbcf8ad`. Unrelated decompiler edits and the parent cloner workspace were
+preserved. `git diff --check` passed in both changed repositories.
