@@ -5166,3 +5166,252 @@ weakened to satisfy it. The final source snapshot is
 `94aa985` (the differences are the retained tests). The selected runtime remains
 `cbcf8ad`. Unrelated decompiler edits and the parent cloner workspace were
 preserved. `git diff --check` passed in both changed repositories.
+
+
+#### SSA cast identity and native array metadata
+
+The previous CPU profile predates the native storage work. A narrower import
+census of source `bb2b713` identified a concrete remaining boundary: the Bzip
+block decoder performed 5,798,139 `cast__I` calls and 5,798,183 each of `abase`
+and `alen0`. The full workload also calls `Math.sin` 10,481,664 times; the
+unchanged TeaVM binary imports that operation too, and the VM already binds
+the native Math function directly. No new CPU sampling was needed.
+
+Deko harness `441bb59` records a post-timer import census when the existing
+`JVM_WASM_IMPORT_STATS=1` diagnostic is enabled. Counting wraps imports and can
+change native engine treatment of them, so these times are not performance
+evidence. The comparison tool explicitly rejects instrumented JVM observations.
+The same pinned fixture, checksums and no-guest-compilation checks still apply.
+Diagnostic commands, from Deko:
+
+```bash
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 apps/loading/probe.mjs slab all bb2b71327729b897640ecaf4e6eae03b85e9c566 loading
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 apps/loading/probe.mjs slab all 89619e8a5bf190bea1e8b1f60e25c5cc45b05251 loading
+```
+
+A successful checkcast changes type knowledge but preserves reference identity.
+The compiler previously gave its result a new array metadata cache, discarded
+on every loop iteration. Generic source `f0d5377` shares positive native
+base/length proofs across checked aliases. Negative/uncaptured results retain
+their original queries; casts still execute and no getter moves before a Java
+access. In the same full-loading census that reduced each Bzip query count to
+3,699,197. It was an intermediate source trial, not a timing result.
+
+Source `89619e8` additionally transfers these numeric proofs through SSA phi
+copies. Every source is captured before any destination proof is overwritten,
+including cyclic swaps. The backward phi slice includes intermediate joins
+that never access an array themselves. Captured native row headers can supply
+a proof without a query; unknown or deferred metadata clears the destination
+and cannot cause an early access. Reference definitions invalidate their proof.
+No Java reference or cast verdict is stored by this analysis.
+
+In the full-loading candidate census, each Bzip query count falls to **at most
+53** (neither appears in the positive top-120 census, whose final entry is 53),
+while all **5,798,139 casts remain**. Both decoded checksums match HotSpot and
+there were zero attempted/completed guest-time compilations. The exact census
+and its intermediate result are kept in
+`optimizationTrials.castIdentityMetadata` in the existing `benchmark.json`.
+
+Focused compatibility initially passed 211 assertions; the first alias proof
+passed another 24. The phi/capture version passed 242 assertions, and final
+GC cases bring the new focused file to 34 assertions. Those cases cover
+simultaneous swaps, conditional row joins, reference replacement, negative
+proofs, unused/failed casts, exception order, partial effects, forced fuel and
+collection while installed runtime imports remain alive. Java-tools commands:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/arrayIdentityCaches.test.js test/wasmParameterArrayAbi.test.js test/nativeReferenceArray.test.js test/wasmSsaReferenceFacts.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/arrayIdentityCaches.test.js
+```
+
+The final test/source snapshot is `34532acbd82773e4b44384df4071dc0592a9c312`
+on `experiment/teavm-native-parity`; its runtime matches `89619e8` exactly.
+The mechanism is generic, enabled with the existing compiler and adds no
+application identity or optimization flag. Generated output remains outside
+Git; selected runtime `cbcf8ad` is unchanged.
+
+
+The first uninstrumented full-loading batch used B/C/C/B/B/C source order,
+three observations per source, and a fresh TeaVM process after each observation.
+All observations are retained in `optimizationTrials.castIdentityFullNode`:
+
+| Median | Baseline `bb2b713` | Candidate `34532ac` |
+| --- | ---: | ---: |
+| Music | 2,182.657 ms | 2,287.284 ms |
+| Graphics/UI/font archives | 1,167.918 ms | 976.311 ms |
+| Combined loading | 3,350.790 ms | 3,263.595 ms |
+| TeaVM combined | 520.266 ms | 519.362 ms |
+
+Graphics improves 16.4%, and each candidate graphics observation is faster than
+its paired baseline. Combined loading improves only 2.6%; music regresses 4.8%
+in this batch. This does not establish the full 1.10 target. Every correctness
+and zero-guest-compilation check passes; every performance gate fails.
+
+The follow-up source `0bf1a3999198b88b1adefed3b87fa1424f097c09` limits proof
+sharing to casts inside repeated structured regions. A one-off cast cannot
+amortize phi-copy overhead. It also caps the entire backward proof slice at
+64 groups, refusing before allocating locals or changing existing caches when
+the limit is exceeded. New tests check refusal, swaps with different lengths,
+and replacement with a shorter array. The same four-file focused command above
+now passes **253 assertions**.
+
+
+The repeated-region version was measured in a second fresh B/C/C/B/B/C batch
+with the same source baseline and unchanged harness `441bb59`. The sole report
+retains all twelve JVM/TeaVM observations in
+`optimizationTrials.castIdentityRepeatedFullNode`:
+
+| Median | Baseline `bb2b713` | Repeated regions `0bf1a39` |
+| --- | ---: | ---: |
+| Music | 2,213.574 ms | 2,259.440 ms |
+| Graphics/UI/font archives | 1,172.916 ms | 909.745 ms |
+| Combined loading | 3,386.490 ms | 3,190.760 ms |
+| TeaVM combined | 530.294 ms | 549.653 ms |
+| Median individual JVM/TeaVM ratio | 6.542× | 5.805× |
+
+Graphics improves **22.4%**; combined loading improves **5.8%**. Music is 2.1%
+slower in this batch. Each of the three graphics pairs improves; no large or
+small observation was excluded. TeaVM timings also vary, so these are the
+actual medians rather than a claim that host conditions are identical. The
+combined target remains far from met: **every 1.10 gate fails**, despite all
+checksums matching and every attempted/completed guest compiler count being
+zero. The version remains experimental and has not changed runtime selection.
+
+Exact uninstrumented reproduction command (substitute the baseline source for
+its control observations):
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 0bf1a3999198b88b1adefed3b87fa1424f097c09 --options diagnostic
+```
+
+The orchestration repeats that command with source order B/C/C/B/B/C, retaining
+each complete result before the next command. A fresh TeaVM process follows
+every source observation. Each individual command correctly exits 1 for the
+failed parity gate after writing a complete checked result. Counter-bearing
+diagnostics are never mixed into these timing batches.
+
+The remaining Bzip cast imports are a different problem: this pass transports
+location and length, not runtime type identity. TeaVM's pinned bit reader
+(function 48 in the inspected WAT) uses typed GC fields/arrays directly. A
+further native array-type representation would need to preserve Java class
+identity, CCE fallback, host-customized storage and array lifetime through GC;
+merely deleting checks based on a declared field type would not prove those
+requirements. That is a more substantive next direction than repeating the
+rejected literal or guard-bookkeeping experiments.
+
+
+The largest-sample Vorbis probe for `0bf1a39` matched **every PCM byte** against
+a fresh HotSpot run, with zero guest-time compiler attempts or completions:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 apps/loading/probe.mjs slab 3-0.bin 0bf1a3999198b88b1adefed3b87fa1424f097c09 vorbis
+node apps/loading/build-runtime.mjs --revision 0bf1a3999198b88b1adefed3b87fa1424f097c09 --output /tmp/geoblox-native-parity-7zCq8O/runtime
+taskset -c 2 node apps/loading/compare.mjs --browser firefox --pairs 3 --runtime /tmp/geoblox-native-parity-7zCq8O/runtime --revision 0bf1a3999198b88b1adefed3b87fa1424f097c09 --options diagnostic
+```
+
+The isolated build succeeded. Bundle SHA-256 values were
+`e37e76b023c399d0b87058e60ffa1b655bafd01fc785daa75f361ce865f5a9bc`
+(`jvm-debug.js`) and
+`6ff083b8043a1531ff4884157e8587fab45488afa8275df62e479c7d1ae68bf4`
+(`jvm-compile-worker.js`). These are generated temporary artifacts, not Git
+outputs or a selected deployment.
+
+#### Firefox exposed an invalid parity statistic
+
+The three Firefox pairs all matched the checksum and executed without guest
+compilation, but timings changed markedly during the batch:
+
+| Pair | JVM total ms | TeaVM total ms | Paired ratio |
+| --- | ---: | ---: | ---: |
+| 0 | 19,839.000 | 4,963.000 | 3.997× |
+| 1 | 5,358.000 | 5,515.000 | 0.972× |
+| 2 | 5,272.000 | 1,365.000 | 3.862× |
+
+The old tool divided independently calculated backend medians, producing
+**1.079589× and a false passing exit**. That does not establish parity: the
+median paired ratio is **3.862271×**. No observation is discarded and no
+particular cause of the timing shift is asserted.
+
+Deko commit `f32bf43` adds a tested statistics helper. Acceptance now requires
+**both** the median paired ratio and the ratio of backend medians to be <=1.10.
+Pairs must be complete, unique and finite; they cannot be pooled independently
+to hide the gap. Provenance records the helper's source hash as well as the
+comparison script hash. `node --test tests/loading-statistics.test.mjs` passes
+all three tests, including the exact observed false-pass case, the 1.10
+boundary, conflicting estimators, missing observations and duplicated pairs.
+`node --check apps/loading/compare.mjs` passes.
+
+The saved Firefox observations were reevaluated with the tested helper;
+`results.parityAudit` preserves the original passing statistic, the new helper
+hash, reevaluation commit and a hash of the **unchanged** observations. The
+corrected gate fails. This is a statistical correction to the old observations,
+not a claim that the new helper ran during their execution. Node source trials
+above used one pair per command; their per-command ratios are unchanged.
+The browser result is saved in the existing trial record too.
+
+#### Ownership compatibility follow-up
+
+Review found that a positive base alone is insufficient for alias sharing:
+untracked host TypedArray views into the same memory can have observable
+length getters. Source `ba22815e88f01bf2fd5ce4119789d20aae5d3283` restricts
+publication to allocator-owned arrays in the same memory. Joins accept only
+an existing ownership proof or an allocator-derived native row header, not a
+generic raw array cache. Untracked positive-base views retain every original
+metadata query and length getter; the new regression verifies that exact case.
+The existing four-file compiler command now passes **256 assertions**, including
+GC retention tests. This additional guard is being remeasured; the `0bf1a39`
+timings and Firefox bundle above are not relabeled as this newer source.
+
+
+The ownership-safe source completed another B/C/C/B/B/C uninstrumented Node
+batch, using the corrected `f32bf43` harness. Results are retained in
+`optimizationTrials.castIdentityOwnedFullNode`:
+
+| Median | Baseline `bb2b713` | Ownership-safe `ba22815` |
+| --- | ---: | ---: |
+| Music | 2,015.812 ms | 1,996.154 ms |
+| Graphics/UI/font archives | 1,013.681 ms | 791.524 ms |
+| Combined loading | 3,018.418 ms | 3,024.090 ms |
+| TeaVM combined | 467.228 ms | 467.066 ms |
+| Median individual JVM/TeaVM ratio | 6.460× | 6.437× |
+
+Two candidate/control combined pairs improve and one is essentially tied
+(0.2% slower). One candidate graphics observation takes 1,062.775 ms; it is
+retained along with the 791.524 and 790.710 ms observations. Component medians
+do not necessarily belong to the same run and cannot be summed into an
+overall gain. **Combined medians are flat; no repeatable overall speedup is
+established.** The graphics median improves 21.9%, which is a component result,
+not the full target. All checksums and zero guest-compiler attempt/count gates
+pass. Every individual 1.10 gate fails. No runtime was promoted.
+
+A final instrumented census on `ba22815` confirms each Bzip base/length query
+count remains <=53 and all 5,798,139 casts still execute. Its times are excluded
+from performance evidence. The final largest-sample Vorbis probe again matches
+every HotSpot PCM byte with zero attempted/completed guest-time compilation.
+The final isolated browser rebuild also succeeds. Exact commands:
+
+```bash
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 apps/loading/probe.mjs slab all ba22815e88f01bf2fd5ce4119789d20aae5d3283 loading
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 apps/loading/probe.mjs slab 3-0.bin ba22815e88f01bf2fd5ce4119789d20aae5d3283 vorbis
+node apps/loading/build-runtime.mjs --revision ba22815e88f01bf2fd5ce4119789d20aae5d3283 --output /tmp/geoblox-native-parity-7zCq8O/runtime
+```
+
+The final build hashes are
+`3269f39ce4d11b1131f0dfe268f1865bacface4140a6883717450aad8edb9e23`
+and `b776ec41b9454c43fab44c5ab4ea6b07b3d37848bb3d8aa4f8c442969a7b9c1b`
+(debug/worker respectively). This temporary directory now contains `ba22815`,
+not the earlier Firefox-tested `0bf1a39`; rebuild the matching revision in an
+empty output directory when reproducing that historical observation. The
+selected cached `cbcf8ad` bundle hashes were rechecked and remain unchanged.
+
+A concrete remaining compiler issue was found by reading the dispatcher:
+`MethodTranslator.checkcastImport` eagerly passes every typed Java local and
+the operands below a cast into a rest-argument JavaScript import. Those values
+are needed only on the unknown-class deoptimization path. Its successful cast
+also discards the original array provenance. The structured import census does
+not count those dispatcher imports, because that backend's import registry has
+no counter wrapper. A useful next implementation is a fast cast predicate with
+deferred frame materialization and identity-preserving provenance, retaining
+null normalization, original exception order and the unknown-class fallback.
+This is a specific code-generation finding, not a new generic CPU-profiling
+plan. The full 1.10 goal remains active.
