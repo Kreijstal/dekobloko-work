@@ -10029,3 +10029,92 @@ cost. Next inspect the remaining generated operations in the dominant kernels
 against the existing matched TeaVM WAT, and choose another bounded reduction;
 do not rerun known baselines, repeat CPU attribution, or resurrect rejected
 cloned/epoch versions unchanged.
+
+
+### Stable static array captures: safe, but no demonstrated speedup
+
+Experimental runtime `e232bc35f1ba9a40e549d23b5e0d34c148a4abcd` shares a guarded
+base/length pair for references with one transitive static-field origin. A
+bounded monotone fixed point handles cyclic phis; incomplete/multiple-origin
+results retain separate metadata and parallel edge copies. The existing closed
+native-body proof excludes writes to those fields and successful callbacks.
+Static reference values can also be captured once after a successful body/region
+entry guard. Separate region entry captures keep replacements after callbacks
+observable. This adds no flag, class name or game identity to java-tools.
+
+Five focused files pass **673 assertions**: same-origin loop phis, two-array
+cyclic swaps, different representations, suspension followed by replacement,
+partial writes before bounds failures, region re-entry after a callback,
+initialization ordering and collection after replacement. The first positive
+phi fixture folded to one SSA reference and therefore had no phi copy to remove;
+the corrected fixture reloads the same field on one loop branch, producing a
+real cyclic same-origin phi. This was a fixture correction, not a relaxed proof.
+
+The actual captured transform matches all **698,368 float words**. It captures
+nine static references, shares metadata for 13 reference values, but omits
+**zero** phi-edge copies. Thus the initial phi hypothesis does not explain any
+actual gain in this kernel. Static reference/metadata read copies are removed:
+the typed body has 653 `local.set` sites versus the saved body's 670, and 10
+`global.get` sites after captures. Extra declared locals are not physical
+register counts. The module SHA-256 is
+`67bca0fe82b07b5d9ebcc7912e44c5d9a0c92e564d268b9e157242a9476e883a`;
+matching TeaVM artifact
+`981e7b99849859f56ae09b07d43753466f16e2fd84fc40f2bd7479527da55068`.
+The known cold Math exit remains: 682 direct entries, one native exit at item
+988, zero recorded throws. Instrumentation is excluded from timing.
+
+| Changed-candidate workload | Three fresh-process times ms | Median ms |
+| --- | --- | ---: |
+| Captured transform/windows | 53.162, 44.567, 46.669 | 46.669 |
+| Original music, every PCM byte exact | 93.392, 110.309, 103.621 | 103.621 |
+
+The transform median is about 5% below the historical readiness-region cohort's
+49.120 ms but above the earlier native-body cohort's 43.510 ms; ranges overlap.
+Original music does not improve on the recorded 98.751 ms readiness-region
+median. These are historical, not simultaneous paired comparisons. No unchanged
+JVM source, TeaVM process or HotSpot oracle is run again. No clear gain is
+established, so no full-loading campaign follows. Restore the known predecessor
+in `34c5c0fa7c960aa9e638140e8e377143fa220672`, preserving the source/tests and all
+observations in history and `optimizationTrials.stableNativeArrayCaptures`.
+No restoration tests, timings or baseline hashes follow. Normal selection and
+deployment remain unchanged.
+
+```bash
+# java-tools: 673/673 pass before measurement.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticArrayBody.test.js test/nativeStaticReferenceCodegen.test.js test/wasmCompilerRetention.test.js test/wasmParameterArrayAbi.test.js test/structuredLoopResume.test.js
+# Deko: inspect the changed method, then candidate-only timing sequentially.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs inspect e232bc35f1ba9a40e549d23b5e0d34c148a4abcd
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs run-jvm e232bc35f1ba9a40e549d23b5e0d34c148a4abcd
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm e232bc35f1ba9a40e549d23b5e0d34c148a4abcd
+node --check apps/loading/mdct.mjs
+node --check apps/loading/probe.mjs
+git diff --check
+```
+
+### Expose known memory limits: compile-only evidence
+
+WasmHeap creates memories with a known physical maximum and normally reserves
+that maximum initially. Generated structured modules nevertheless import
+`(memory 1)`, withholding that fact from the native compiler. This is separate
+from the withdrawn capture pass. Before changing the runtime, reassemble its
+saved matched WAT twice, with the existing declaration and with
+`(memory 4096 4096)`. Compile both using Node 22.23.2, eager TurboFan and native
+code printing; instantiate neither and execute **no guest code**. Only the
+memory declaration differs. This is new compiler-output evidence, not another
+baseline correctness or timing run.
+
+The same function (index 73) has **20,300** native instruction bytes with the
+existing declaration and **19,752** with fixed limits. The inline canonical
+companion is 20,572 versus 20,484 bytes. The main native stack reservation grows
+from 0x178 to 0x180 bytes, so smaller code is not a claim of less spilling or a
+speed result. These observations justify testing the missing type information,
+not attributing the full loading gap to it.
+
+The successful compile-only command pipes WAT through
+`wasm-as - --all-features --disable-compact-imports -o -`, then constructs a
+`WebAssembly.Module` under
+`node --no-liftoff --no-wasm-lazy-compilation --print-wasm-code --print-wasm-code-function-index=73`.
+Native output occupies the existing scratch log only. An initial missing stdin
+argument and then Binaryen's newer compact-import encoding prevented compilation;
+using `-` and disabling that encoding fixes this diagnostic. Neither failed
+attempt executes a workload. No generated binaries or assembly enter Git.
