@@ -178,3 +178,11 @@ test('cold exits preserve updated snapshots without capturing cold-only referenc
  assert.equal(result.exports.run(5,2,token),-7);assert.deepEqual(seen.at(-1),[1,token,1]);
  throwing=true;assert.throws(()=>result.exports.run(5,2,token),e=>e===failure);assert.deepEqual(seen.at(-1),[1,token,1]);
 });
+
+test('import selection targets the loop body rather than its cold continuation',()=>{
+ const source=scalar.replace('(module','(module (import "env" "work" (func $work))')
+  .replace('(local.set $last (i32.const 9))','(call $work)(local.set $last (i32.const 9))');
+ let calls=0;const result=build(source,{requiredImportName:'work'},{env:{work:()=>calls++,spill:()=>{},tail:()=>{}}});
+ assert.equal(result.outlinedLoops[0].requiredCallSites,1);assert.equal(result.exports.run(3,100),179729);assert.equal(calls,3);
+ const absent=outlineWat(source,{minimumMemoryOps:0,requiredImportName:'tail'});assert.equal(absent.outlinedLoops.length,0);
+});

@@ -99,7 +99,8 @@ try {
   assert.equal(kernel,'vorbis','Loop outlining currently uses the reduced original-music diagnostic');
   assert.ok(!inspectMethod&&!process.env.JVM_WASM_OPT_DIAGNOSTIC,'Use outlining without another optimizer/inspection');
   const {installWasmLoopOutliner}=await import('./wasm-loop-outline.mjs');
-  optimizer=installWasmLoopOutliner({functionPrefix:'$jvm$wasm$MusicDecoder$decodePacket',outputPath:path.join(player,'vorbis/current.wat')});
+  optimizer=installWasmLoopOutliner({functionPrefix:'$jvm$wasm$MusicDecoder$decodePacket',requiredImportName:'math_sin__D_D',maxHelpers:2,
+   outputPath:path.join(player,'vorbis/current.wat')});
  }
  if(process.env.JVM_WASM_OPT_DIAGNOSTIC==='1'){
   const {installWasmOptimizer}=await import('./wasm-optimizer.mjs');

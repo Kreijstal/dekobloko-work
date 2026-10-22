@@ -35,8 +35,9 @@ const int=value=>['i32.const',String(value)];
 const tuple=values=>['tuple.make',String(values.length),...values];
 const declaration=node=>Array.isArray(node)&&['type','param','result','local','export'].includes(node[0]);
 
-export function outlineWat(source,{functionPrefix='',minimumMemoryOps=4,maxHelpers=1,maxInputs=64,maxOutputs=32}={}){
+export function outlineWat(source,{functionPrefix='',requiredImportName,minimumMemoryOps=4,maxHelpers=1,maxInputs=64,maxOutputs=32}={}){
  const module=parseWat(source),helpers=[],rows=[],refusals={},names=new Set();
+ const requiredCalls=new Set(module.filter(n=>Array.isArray(n)&&n[0]==='import'&&n[2]===JSON.stringify(requiredImportName)&&n[3]?.[0]==='func').map(n=>n[3][1]));
  walk(module,n=>{for(const token of n)if(typeof token==='string'&&token.startsWith('$'))names.add(token);});
  const fresh=prefix=>{let i=0;while(names.has(prefix+i))i++;const name=prefix+i;names.add(name);return name;};
  const refuse=reason=>{refusals[reason]=(refusals[reason]||0)+1;};
@@ -62,9 +63,11 @@ export function outlineWat(source,{functionPrefix='',minimumMemoryOps=4,maxHelpe
    while(exitIndex>=0&&parts[exitIndex]?.[0]==='unreachable')exitIndex--;
    const exit=parts[exitIndex];
    if(typeof label!=='string'||!label.startsWith('$')||exit?.[0]!=='if'||exit.length!==4||exit[2]?.[0]!=='then'||exit[3]?.[0]!=='else')continue;
-   const continuation=exit[2].slice(1),body=exit[3].slice(1);let nested=false,memory=0;
-   for(const item of body)walk(item,n=>{if(n[0]==='loop')nested=true;if(/^(?:i32|i64|f32|f64)\.(?:load|store)/.test(n[0]))memory++;});
-   if(nested||memory<minimumMemoryOps)continue;
+   const continuation=exit[2].slice(1),body=exit[3].slice(1);let nested=false,memory=0,requiredCallSites=0;
+   for(const item of body)walk(item,n=>{if(n[0]==='loop')nested=true;if(/^(?:i32|i64|f32|f64)\.(?:load|store)/.test(n[0]))memory++;
+    if(n[0]==='call'&&requiredCalls.has(n[1]))requiredCallSites++;
+   });
+   if(nested||memory<minimumMemoryOps||requiredImportName&&!requiredCallSites)continue;
    let resumesLoop=false;
    for(const item of continuation)walk(item,n=>{if(n[0].startsWith('br')&&n.slice(1).includes(label))resumesLoop=true;});
    if(resumesLoop){refuse('exit-arm-backedge');continue;}
@@ -129,7 +132,7 @@ export function outlineWat(source,{functionPrefix='',minimumMemoryOps=4,maxHelpe
    fn.splice(declarationEnd,0,['local',scratch,['tuple',...resultTypes]]);
    // Top-level insertion may shift a candidate's index; find it by identity.
    parent[parent.indexOf(node)]=replacement;
-   helpers.push(helper);rows.push({function:fn[1],loop:label,helper:helperName,memorySites:memory,inputs:inputs.length,outputs:outputs.length,sideExits:sideExits.length});
+   helpers.push(helper);rows.push({function:fn[1],loop:label,helper:helperName,memorySites:memory,inputs:inputs.length,outputs:outputs.length,sideExits:sideExits.length,requiredCallSites});
    outlined=true;break;
   }
   if(!outlined)break;
@@ -160,6 +163,6 @@ export function installWasmLoopOutliner({functionPrefix,outputPath,...limits}){
    if(outputPath)fs.writeFileSync(outputPath,execFileSync('wasm-dis',['--all-features','-'],{input:bytes}));
    preview={inputSha256,outputSha256:hash(bytes),output:outputPath};outputs.clear();return preview;
   },
-  finishPreparation(){return {...optimizer.finishPreparation(),transformation:'closed-loop-outline',outlinedLoops:rows,refusals,preview};},
+  finishPreparation(){return {...optimizer.finishPreparation(),transformation:'closed-loop-outline',selection:{functionPrefix,...limits},outlinedLoops:rows,refusals,preview};},
  };
 }
