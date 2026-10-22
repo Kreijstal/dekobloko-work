@@ -9970,3 +9970,62 @@ report under `optimizationTrials.nativeObjectBody`. The full harness did not yet
 serialize object-body site counts; do not infer full-workload proof coverage
 from the reader component. Adding future output metadata does not justify
 rerunning the workload solely to fill those fields.
+
+
+#### Measure the previously unmeasured non-returning bounds contract
+
+The earlier `0c34ab1` bounds annotation was correctness-checked but never timed;
+it was withdrawn when the native-exit accounting error was discovered. A new
+trial `253b665d39e286f31fd9cf3b727ea92c8adba0ad` applies that contract to the
+current native object/static-array bodies and regions. It keeps every bounds
+predicate and the original throwing helper, placing Wasm `unreachable` only
+after that always-throwing call. No Java exception behavior is intentionally
+removed. Four focused files pass **513 assertions**, including new native array
+stores, Java bounds handlers, partial state before failure and foreign-array
+store continuations.
+
+Changed-candidate-only timings do **not** establish a gain:
+
+| Case | Three observations ms | Median ms |
+| --- | --- | ---: |
+| Direct reader | 4.917, 4.901, 4.156 | 4.901 |
+| Wrapped reader | 7.699, 8.211, 9.334 | 8.211 |
+| Captured transform plus windows | 60.782, 43.263, 60.549 | 60.549 |
+
+The reader medians exceed the recorded immediate predecessor's 4.484/7.592 ms.
+The transform does not improve on the historical readiness-region cohort's
+49.120 ms median either; that is a historical comparator, not an isolated fresh
+control. All captured reader results/state and all **698,368 transform float
+words** match cached oracles. Every transform observation records one true native
+exit at item 988, zero recorded throws and 682 direct entries. These first-use
+observations include the known cold Math handoff and are not described as pure
+native compute. No unchanged baseline, old bounds prototype, TeaVM or HotSpot
+oracle is executed again.
+
+```bash
+# java-tools: 513/513 pass before measurement.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectBody.test.js test/nativeStaticArrayBody.test.js test/automaticArrayVersions.test.js test/canonicalDirectFrames.test.js
+# Deko: changed runtime only, sequential, no concurrent tests/profiling.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 253b665d39e286f31fd9cf3b727ea92c8adba0ad buffered-ready-helper buffered-ready-wrapped
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs run-jvm 253b665d39e286f31fd9cf3b727ea92c8adba0ad
+# Future full-probe object-body metadata only; passes, no workload replay:
+node --check apps/loading/probe.mjs
+git diff --check
+```
+
+The annotation is **withdrawn**, with source/tests preserved in experimental
+history. `bfcb5a2870b6109dd38f09e64cd261fc01c4e3ea` restores the known `5cea8b4`
+runtime and retains the new array-store tests. No restoration test, timing or
+baseline hash check follows. Raw measurements, exact source identities and the
+withdrawal are in the existing `nativeObjectBody.nonReturningBounds` report
+entry. No additional full-loading campaign, acceptance or deployment follows
+this unsuccessful small-case screen.
+
+The remaining work is still the full 1.1x target. The object proof demonstrates
+that per-field selectors can be removed safely and improves a real reader,
+but the full loading result remains essentially flat. The deferred array guard
+and non-returning bounds trials do not justify further claims about their CPU
+cost. Next inspect the remaining generated operations in the dominant kernels
+against the existing matched TeaVM WAT, and choose another bounded reduction;
+do not rerun known baselines, repeat CPU attribution, or resurrect rejected
+cloned/epoch versions unchanged.
