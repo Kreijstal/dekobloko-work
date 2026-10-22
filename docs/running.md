@@ -9825,3 +9825,85 @@ and measured proof, not an accepted optimization. Do not repeat those older
 versions unchanged or propose another CPU attribution campaign. Any future claim
 about pure transform execution must also account for its cold transfer or use
 authentic original setup, never an artificial warmup.
+
+
+### Single native body for stateful object/array loops
+
+Experimental runtime `e87d2e59e4256de7fb4e777a46cbe7e0a9616821` replaces
+per-field representation selection with one guarded body for bounded,
+callback-free loops over one formal receiver. This differs from the rejected
+cloned typed-object version: it emits no second checked method body. Unknown
+object/array ownership hands off before any Java effect. The proof accepts only
+native primitive fields and directly read primitive-array fields, refuses
+volatile fields, reference writes, calls, allocation and exception regions, and
+keeps bounds checks and fuel suspension. External native resume is disabled so
+continuations cannot bypass the entry proof. Primitive stores retain their
+original order; no primitive field-value forwarding is added.
+
+The focused changed-code suite passes **1,330 assertions**. It checks native
+selection, foreign storage and arrays, nulls, exact partial state on bounds
+failure, caller exception handlers, getter order, fuel continuation, changed
+field storage during suspension, volatile refusal, exact long/double values,
+and release of analysis graphs/receivers. An initial test driver needed normal
+VM exception dispatch, and a function-leading loop can validly suspend at item
+zero; the test now checks progressed state instead of requiring a positive PC.
+
+The matched captured reader diagnostic verifies all **490,954** requests,
+checksum `1418269787`, and final state `[1,1304428078,87150,87141]`.
+All requests select the new body, with **zero true native status exits and zero
+recorded throws**. Its only executed reader import is the excluded diagnostic
+selection counter. The module SHA-256 is
+`d8d29f1fe18aa488980ef2be7aa99e0a8f43f9cab449a1c3965dda1c31c69419`.
+The matching TeaVM artifact remains
+`5beb55421087681123409c3cfe790fc0e3f13fc885f9718d48197d5766cffc81`.
+Static inspection of the typed entry finds two signed-negative storage guards,
+replacing the previously recorded 15 per-field native-base selectors. Ordinary
+entry reconstruction, fuel polling and bounds checks remain. TeaVM's matching
+function `$30` has seven `struct.get`, one signed byte `array.get_s`, one `if`
+and no explicit calls; its GC operations still carry implicit safety checks.
+The JVM body still materializes an array reference and eagerly proves its
+ownership on calls which do not refill. These are remaining code-shape
+observations, not reasons to delete Java exception semantics.
+
+The first measurements of predecessor `8ed198ed76ba78f5eac0b778edcb826a179552dc`
+on these exact reader cases were already completed and are reused. No unchanged
+JVM source, TeaVM process or HotSpot oracle is rerun. Three fresh candidate
+processes per case, CPU 2, Node 22.23.2, 1 GiB old-space, eager optimizing Wasm,
+no workload warmup and no concurrent profiling/tests give:
+
+| Case | Recorded predecessor ms | Candidate ms | Median change |
+| --- | --- | --- | ---: |
+| Captured direct reader | 6.197, 6.117, 6.120 | 4.367, 4.510, 4.266 | -28.6% |
+| Captured receiver wrapper | 10.503, 10.560, 10.271 | 8.139, 9.092, 7.356 | -22.5% |
+
+All checksums and mutable states match the cached oracle. Recorded TeaVM helper
+medians are 2.014 and 2.084 ms in identified earlier cohorts; the new helper is
+still about **2.10–2.17x** those values. This does not establish the 1.1x full
+loading target. Original archive/music screening also matches the cached output oracles:
+cold archive 46.932, 42.610, 44.853 ms; ready-owner archive 52.392, 42.234,
+50.245 ms; original music 93.834, 104.027, 151.823 ms (every PCM byte exact).
+The music outlier is preserved. These cohorts do not establish a clear broader
+improvement, so the candidate is not promoted and no full-loading campaign is
+launched merely to re-demonstrate the known large gap. The next distinct change
+defers array ownership to its first use block, keeping exact block-entry spills
+so already-completed effects cannot be replayed.
+
+```bash
+# java-tools: 1,330/1,330 assertions pass.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectBody.test.js test/nativeObjectFieldCodegen.test.js test/nativeObjectForwarding.test.js test/nativeReferenceArray.test.js test/wasmParameterArrayAbi.test.js test/compactCanonicalFrames.test.js test/wasmCompilerRetention.test.js test/structuredLoopResume.test.js test/structuredColdResume.test.js
+# Deko: changed method inspection, excluded from timing.
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs inspect e87d2e59e4256de7fb4e777a46cbe7e0a9616821 buffered-ready-helper 'MicroBufferedReader.readBits('
+# Deko: only changed candidate processes; reuse recorded references.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm e87d2e59e4256de7fb4e777a46cbe7e0a9616821 buffered-ready-helper buffered-ready-wrapped
+```
+
+The runtime source and tests are preserved on `experiment/teavm-native-parity`;
+Deko harness `d6e5041` streams WAT and reports the new body/true-exit counters.
+There is still one report and one WAT preview per inspection location, all
+outside Git. Normal benchmark selection and deployment remain unchanged.
+
+```bash
+# Additional changed-candidate screens; original output/PCM oracles reused.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm e87d2e59e4256de7fb4e777a46cbe7e0a9616821 bzip-block bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm e87d2e59e4256de7fb4e777a46cbe7e0a9616821
+```
