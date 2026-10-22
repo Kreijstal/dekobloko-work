@@ -10415,3 +10415,141 @@ Next, use the existing WAT/import evidence to identify an actually executed
 metadata/callback boundary outside these native proofs. Require a bounded
 semantic proof and convincing changed-component result before expanding to full
 loading. Do not repeat the withdrawn threshold tuning or CPU attribution campaign.
+
+
+### Transitive field-write proof through fixed instance calls
+
+A different gap exists at an executed boundary: the previous instance write
+summary returns unknown for every nested instance call. `VorbisCodebook.readVector`
+calls final `readScalar`, which in turn updates only two static bit-reader
+cursors. Unknown effects unnecessarily invalidate the residue caller's field
+caches. This follows the existing code/import evidence; no new CPU profile or
+unchanged-baseline execution is used.
+
+Prototype `a8ad3c8a414585ea2fda6a081d0258779a350f52`, with budget tests preserved
+in child `c96d5fc9ca7217ce47c943b0596db3fbed9fcc31`, adds a generic bounded
+fallback when the previous instance summary is unknown. It follows static calls
+and instance targets fixed by final/private methods or a final symbolic owner.
+It resolves loaded inheritance without speculative CHA, executes nothing, and
+rejects unknown, overridable, native, synchronized, special/interface/dynamic
+calls, object allocation and monitor operations. It scans handler instructions too.
+The root owns one visited set and field-write union, so recursive cycles cannot
+publish incomplete per-callee summaries. At most 64 methods and 50,000 units of
+analysis are examined; exhaustion returns unknown. Only field names/descriptors
+are retained, matching the existing conservative cache invalidation keys. Array
+element cache invalidation, class-init guards, exceptions, fuel and fallback
+protocols remain in place. There is no application identifier or opt-in flag.
+
+The four-file focused suite passes **280/280 assertions**, no skips. Coverage
+includes inherited final targets, final-owner dispatch to inherited methods,
+rejection of open dispatch and host/native replacements, nested aliased stores,
+static writes, mutual and mixed static/instance recursion, caught-handler
+writes, and both proof budgets. A real compiled loop observes all nested writes
+while reading its unaffected cached field only once; it has zero native exits.
+The first 24-assertion test attempt passed 23 and failed only because its final
+assertion used the wrong diagnostic property (`directFrames` instead of
+`directFrameContext`); the corrected tests and subsequent budget cases pass.
+
+A compile-only inspection of the pinned decoder classes obtains exact write
+sets `{bitCursor:I, byteCursor:I}` for `readScalar`, `readVector` and
+`decodeResidue`. `decodeFloorPacket` remains unknown (its native array-copy call
+is outside this proof). `executeInstruction` is replaced with a throwing guard;
+**zero Java instructions execute**.
+
+Changed-source diagnostic `a8ad3c8` matches every recorded PCM byte, with no late
+Java compilation. `readVector` has 134,216 native entries and `decodeResidue`
+has 682, both with zero actual native exits/throws. Compared with the saved
+`6a8018d` diagnostic on the same original sample, residue's static-codebook
+imports fall **12,421 -> 682**, and its object-storage queries fall
+**33,433 -> 20,605**. Array base/length queries remain 17,444 each. These are
+executed operation counts, not attributed CPU shares or performance acceptance.
+Diagnostic timing is excluded. The inspected residue module SHA-256 is
+`9cb27ebe3580df21ddd0597280e6ca6f6d4bbc81d454c4fe3da44d8b3bed8e0e`;
+its paired existing TeaVM artifact is
+`973be9907f1164722b192d1278510a05e6c390bb09d1389dd28e7ebd0099261c`.
+
+The locally cached TeaVM 0.16.0 sources explain the relevant distinction:
+`Devirtualization.java:108-130` replaces a single known implementation with a
+direct special call, and `Inlining.java:380-390` can expose that implementation's
+body. `RepeatedFieldReadElimination.java:425-427` itself invalidates all fields
+on an opaque invoke. Thus the evidence does **not** establish that TeaVM uses
+this same transitive summary. Our proof recovers effects without inlining or
+changing Java exception semantics. No TeaVM artifact is rebuilt or rerun.
+
+```bash
+# java-tools, expanded test source at c96d5fc: 280/280 pass, no skips.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/fixedInstanceFieldWrites.test.js test/sharedFieldArrayCaches.test.js test/wasmCompilerRetention.test.js test/nativeObjectBody.test.js
+# Deko: instrumented changed candidate, excluded from timing.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect a8ad3c8a414585ea2fda6a081d0258779a350f52 'VorbisResidue.decodeResidue([FIZ)V'
+# Changed candidate only, three fresh processes; reuse recorded comparators.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm c96d5fc9ca7217ce47c943b0596db3fbed9fcc31
+```
+
+
+Three fresh-process original-music observations on `c96d5fc` are **96.965549,
+99.817606, 95.208657 ms**, median **96.965549 ms**, all PCM exact and no late
+Java compilation. Run ID `ba28b2d7-b6be-4ea4-9f5a-3e74e921d2d2`. This is about
+5% below the recorded default JVM cohort's 102.049793 ms median. It justifies a
+changed-candidate-only full-loading screen, not promotion or an attribution of
+the overall gap to these imports.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision c96d5fc9ca7217ce47c943b0596db3fbed9fcc31 --options diagnostic
+```
+
+| Changed-candidate full sample | Music ms | Graphics ms | Loading ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1786.375082 | 373.413952 | 2159.789034 |
+| 2 | 1546.914941 | 377.732756 | 1924.647697 |
+| 3 | 1635.338662 | 385.714392 | 2021.053054 |
+
+Full-loading median **2021.053054 ms** shows no improvement over recorded default
+`aa23806` (**2015.857769 ms**) or preceding full candidate `5cea8b4`
+(**1990.716503 ms**). All three recorded HotSpot checksums match; there is no
+late Java compilation. Candidate-to-recorded-TeaVM ratio is **5.618x**, not 1.1x.
+No baseline, TeaVM or HotSpot process is repeated. No test/build/profile runs
+alongside timed processes. These measurements still exclude networking,
+presentation and menu transitions; browser/phone acceptance is not established.
+
+The optimization is **withdrawn** in
+`f42858ec8a281dc6e216acc28c21aa31c2b66234`. Only the owned runtime file is restored
+from `a1dcba8`; the new helper and tests remain preserved at `c96d5fc` in
+experimental history. No restoration test, timing or identity replay follows.
+All observations, source/fixture identities, diagnostic import counts, local
+TeaVM source findings and the decision are in the same single report under
+`optimizationTrials.fixedInstanceFieldWrites`. No generated artifacts enter Git.
+Normal runtime master, the selected default and deployment are unchanged.
+
+This rules out another specific explanation for the major gap: more precise
+field invalidation reduces executed imports but does not establish lower full
+loading time. Next inspect recovery of inlined loop activations rather than
+another field-cache/region threshold variation. Generic effectful loop inlining
+needs precise fuel/exception recovery for the inner method; restarting its
+outer invocation after stores would replay side effects. Existing counted-loop
+admission is already supported, so extending loop support must address the
+remaining non-counted shapes rather than merely enabling a larger inline budget.
+
+
+A final compile-only feasibility check uses the current pure inline analyzers
+(`analyzeCallee`, `countedBackEdge`) temporarily exported from an in-memory module;
+repository source stays unchanged. With a deliberately generous 4096-item budget
+and counted/static/instance traversal enabled:
+
+| Method | Bytecode items | Admission | Backedge proof |
+| --- | ---: | --- | --- |
+| `VorbisCodebook.readScalar()I` | 27 | rejected | 18 -> 2, not counted |
+| `VorbisCodebook.readVector()[F` | 7 | accepted | none |
+| `MusicDecoder.readBit()I` | 25 | accepted | none |
+| `MusicDecodeStage.sortFloorPoints(II)V` | 106 | accepted | 75 -> 28, counted |
+
+This is admission feasibility, not evidence that every accepted method is
+actually inlined after all planner checks. No Java instruction executes, main
+never runs, and no baseline correctness, timing or identity is replayed. The
+same report records it as `fixedInstanceFieldWrites.nextFeasibility`.
+`wasmInline.js:117-193` explains the refusal: spliced loops lack a caller PC at
+which to yield. `StructuredWasmCompiler.resumeItemOf` rejects negative original
+indices as `resume inside inlined code`. A safe extension must reconstruct the
+inner activation and the outer continuation, preserving both locals/operand
+stacks and prior stores, rather than calling the reader again. The existing
+counted-loop optimization cannot assume that an arbitrary Huffman table is
+acyclic; malformed tables and input must retain fuel and Java exception behavior.
