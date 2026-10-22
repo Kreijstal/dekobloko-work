@@ -189,12 +189,12 @@ function build(reuseCapture=false){
  }finally{fs.rmSync(temporary,{recursive:true,force:true});}
 }
 
-async function one(engine,revision){
+async function one(engine,revision,inspection=false){
  const fixture=read().mdctBenchmark;assert.ok(fixture,'Build the transform fixture first');
  const input=fs.readFileSync(path.join(directory,'input.bin')),expected=fs.readFileSync(path.join(directory,'expected.bin'));
  assert.equal(hash(input),fixture.inputSha256);assert.equal(hash(expected),fixture.expectedSha256);
  assert.equal(hash(fs.readFileSync(path.join(directory,'classes/MdctTransformKernel.class'))),fixture.kernelClassSha256);
- let elapsedMs,output,methods,compilation;
+ let elapsedMs,output,methods,compilation,code;
  if(engine==='teavm'){
   const wasm=fs.readFileSync(path.join(directory,'teavm/mdct.wasm'));assert.equal(hash(wasm),fixture.wasmSha256);
   assert.equal(hash(fs.readFileSync(path.join(directory,'teavm/mdct.wasm-runtime.js'))),fixture.runtimeSha256);
@@ -210,6 +210,13 @@ async function one(engine,revision){
   j.jre.MdctTransformKernel={applicationFallback:true,staticMethods:{'input()[B':vm=>freshLoadingBytes(vm,new Int8Array(input))}};
   const late=[],compile=j.jit.startSynchronousCompile.bind(j.jit);j.jit._syncCompileEnvironment={trace:false,assert:true};j.jit.startSynchronousCompile=(method,entry)=>{if(j.jit.mainStarted)late.push(j.jit.methodIdentity(method));return compile(method,entry);};
   await j.run('MdctTransformKernel');const fields=j.classes.MdctTransformKernel.staticFields;elapsedMs=Number(fields.get('transformNanos:J'))/1e6;
+  if(inspection){
+   const state=j.jit.wasmJit.compiled.find(s=>s.key.startsWith('MdctTransformKernel.transform('));assert.ok(state?.meta?.bytes);
+   const target=path.join(player,'vorbis/current.wat'),teaTarget=path.join(player,'vorbis/current-teavm.wat');
+   fs.writeFileSync(target,execFileSync('wasm-dis',['--all-features','-'],{input:state.meta.bytes}));
+   fs.writeFileSync(teaTarget,execFileSync('wasm-dis',['--all-features','-'],{input:fs.readFileSync(path.join(directory,'teavm/mdct.wasm'))}));
+   code={method:state.key,sha256:hash(state.meta.bytes),output:target,teavm:{sha256:fixture.wasmSha256,output:teaTarget}};
+  }
   const rows=fields.get('rows:[[F');assert.equal(rows.length,fixture.records);output=Buffer.alloc(expected.length);let at=0;
   const put=n=>{output.writeInt32BE(n,at);at+=4;};put(0x4d44434f);put(1);put(fixture.records);
   const scratch=new DataView(new ArrayBuffer(4)),little=new Uint8Array(new Uint32Array([1]).buffer)[0]===1;
@@ -218,7 +225,10 @@ async function one(engine,revision){
    if(view)put(view.getInt32(k*4,little));
    else{scratch.setFloat32(0,row[k]);put(scratch.getInt32(0));}
   }}assert.equal(at,output.length);
-  methods=j.jit.wasmJit.compiled.filter(s=>s.key.startsWith('MdctTransformKernel.')).map(s=>({key:s.key,runs:s.runs,directEntries:s.meta?.canonicalEntries?.value||0,exits:s.exits,fuelExits:s.fuelExits,full:!!s.meta?.fullyCompiled,structured:!!s.meta?.structured,demotes:[...(s.meta?.demoteReasons||[])]}));
+  methods=j.jit.wasmJit.compiled.filter(s=>s.key.startsWith('MdctTransformKernel.')).map(s=>({key:s.key,runs:s.runs,directEntries:s.meta?.canonicalEntries?.value||0,exits:s.exits,fuelExits:s.fuelExits,full:!!s.meta?.fullyCompiled,structured:!!s.meta?.structured,demotes:[...(s.meta?.demoteReasons||[])],
+   ...(inspection?{omittedArrayFillCount:s.meta?.omittedArrayFillCount,slabFieldSites:s.meta?.slabFieldSites,
+    imports:[...s.meta?.importStats||[]].filter(([,count])=>count>0).map(([name,count])=>({name,count}))}:{}),
+  }));
   compilation=j.jit.syncCompileCensus();assert.deepEqual(late,[]);assert.equal(compilation.postMainSyncCompileCount,0);
   const transform=methods.find(s=>s.key.startsWith('MdctTransformKernel.transform('));assert.ok(transform?.full&&transform.directEntries+transform.runs>=fixture.records,'Transform did not run natively');
   const driver=methods.find(s=>s.key==='MdctTransformKernel.runTransforms()V');
@@ -227,22 +237,31 @@ async function one(engine,revision){
  }
  const equal=output.equals(expected),firstDifference=equal?-1:output.findIndex((value,i)=>value!==expected[i]);assert.ok(equal,'Transform output float bits differ at byte '+firstDifference);
  assert.ok(elapsedMs>0);assert.ok(nodeArgs.every(flag=>process.execArgv.includes(flag)),'Eager native compilation flags missing');
- console.log('MDCT_RESULT '+JSON.stringify({engine,sourceRevision:engine==='jvm'?revision:'TeaVM '+version,elapsedMs,equal,outputSha256:hash(output),fixture:{sourceSha256:fixture.sourceSha256,kernelClassSha256:fixture.kernelClassSha256,inputSha256:fixture.inputSha256,expectedSha256:fixture.expectedSha256},methods,compilation,node:process.version,execArgv:process.execArgv,instrumented:false,fixtureTransport:workerFixture?.supplied?'stdin-projected':'file-projected'}));
+ console.log('MDCT_RESULT '+JSON.stringify({engine,sourceRevision:engine==='jvm'?revision:'TeaVM '+version,elapsedMs,equal,outputSha256:hash(output),fixture:{sourceSha256:fixture.sourceSha256,kernelClassSha256:fixture.kernelClassSha256,inputSha256:fixture.inputSha256,expectedSha256:fixture.expectedSha256,...(engine==='teavm'?{wasmSha256:fixture.wasmSha256}:{})},methods,compilation,code,node:process.version,execArgv:process.execArgv,instrumented:inspection||process.env.JVM_WASM_IMPORT_STATS==='1',fixtureTransport:workerFixture?.supplied?'stdin-projected':'file-projected'}));
 }
 function run(revision,engines=['jvm','teavm']){
+ assert.notEqual(process.env.JVM_WASM_IMPORT_STATS,'1','Keep profiling out of timing runs');
  const runId=crypto.randomUUID(),input=JSON.stringify(projectMeasurementFixture(read()));
  for(let pair=0;pair<3;pair++)for(const engine of pair===1?[...engines].reverse():engines){
   const stdout=execFileSync(process.execPath,[...nodeArgs,script,'one',engine,revision,fixtureStdinFlag],{input,encoding:'utf8',maxBuffer:16*1024*1024});
-  const result=parseMeasurementResult(stdout,'MDCT_RESULT '),fixture=read().mdctBenchmark;fixture.runs.push({...result,runId,pair,measuredAt:new Date().toISOString()});save(fixture);
+  const result=parseMeasurementResult(stdout,'MDCT_RESULT '),fixture=read().mdctBenchmark;assert.ok(!result.instrumented);fixture.runs.push({...result,runId,pair,measuredAt:new Date().toISOString()});save(fixture);
   console.log('pair '+(pair+1)+' '+engine+': '+result.elapsedMs.toFixed(3)+' ms; all float words exact');
  }
 }
+function inspect(revision){
+ const stdout=execFileSync(process.execPath,[...nodeArgs,script,'one','jvm',revision,'inspect',fixtureStdinFlag],{
+  input:JSON.stringify(projectMeasurementFixture(read())),encoding:'utf8',maxBuffer:16*1024*1024,env:{...process.env,JVM_WASM_IMPORT_STATS:'1'}});
+ const result=parseMeasurementResult(stdout,'MDCT_RESULT ');assert.ok(result.instrumented&&result.code&&result.equal);
+ const fixture=read().mdctBenchmark;(fixture.diagnostics||=[]).push({...result,excludedFromTiming:true,measuredAt:new Date().toISOString()});save(fixture);
+ console.log('Inspected '+result.code.method+'; code/import counts excluded from timings');
+}
 if(process.argv[1]&&pathToFileURL(path.resolve(process.argv[1])).href===import.meta.url){
  const [command,...args]=process.argv.slice(2);
- if(command==='one'){workerFixture=readMeasurementFixture(receiptPath);await one(args[0],args[1]);}
+ if(command==='one'){workerFixture=readMeasurementFixture(receiptPath);await one(args[0],args[1],args[2]==='inspect');}
  else if(command==='build')build();
  else if(command==='rebuild')build(true);
  else if(command==='run')run(selectBenchmarkRevision(args[0]));
  else if(command==='run-jvm')run(selectBenchmarkRevision(args[0]),['jvm']);
- else throw Error('Usage: mdct.mjs build | rebuild | run [EXACT_REVISION] | run-jvm EXACT_REVISION | one jvm|teavm EXACT_REVISION');
+ else if(command==='inspect')inspect(selectBenchmarkRevision(args[0]));
+ else throw Error('Usage: mdct.mjs build | rebuild | inspect EXACT_REVISION | run [EXACT_REVISION] | run-jvm EXACT_REVISION | one jvm|teavm EXACT_REVISION');
 }
