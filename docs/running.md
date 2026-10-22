@@ -10332,3 +10332,86 @@ boundary tests; inspect actual coverage and time only changed archive candidates
 against existing recorded observations. The single report's
 `optimizationTrials.mixedStateArrayBody.compileOnly` preserves the bounded graph
 facts. No new compiler change for this hypothesis is implemented yet.
+
+
+### Smaller streaming array regions: proved coverage, no convincing overall gain
+
+The follow-up implements the preceding hypothesis in generic compiler code.
+Trial `93e66ea5d23d3f3f7af5a6e822f6849fd31b455a` admits smaller captured-array
+regions when they have a loop, at least 32 SSA nodes, at least four memory sites
+and an array store. Final candidate
+`ce2c670efecf36da81f6b2bce72ab0901696d392` additionally preserves the existing
+array-parameter specialization. There are no game identities or flags. The
+existing ownership, single-entry, bounds, fuel, callback and bounded-analysis
+proofs stay in place; object-field prefix and reference writebacks remain in the
+ordinary compiled method.
+
+The focused suite passes **735/735 assertions**, with no skips. New cases cover
+null/plain/foreign-memory arrays, zero-trip loops, exact bytes and scalar state,
+reference identity, late bounds faults with preceding stores preserved, Java
+exception handling, suspension with replacement of source/output fields, and a
+prefix callback changing the static table after capture. The resumed loop must
+use its captured references and restore those references in its terminal
+writebacks. Tests also ensure the guard runs on outside entry rather than each
+backedge, read-only small loops remain excluded, and array-parameter methods keep
+their previous specialization.
+
+A separate diagnostic on `93e66ea` selects one region in the actual archive
+helper: **26 blocks, eight array sites and two captured external references**.
+Three invocations make six owned-header imports and three region entries, with
+zero actual native exits/throws and exact recorded checksum `-1415522687`.
+Uninstrumented final-source observations independently record the same region
+coverage and three native entries with zero exits/throws. Bounds checks remain;
+this is entry metadata reuse, not unchecked memory access. The diagnostic's time
+is excluded from acceptance.
+
+Only changed candidate `ce2c670` is timed. CPU 2, Node 22.23.2, 1 GiB old-space,
+eager optimizing Wasm, sequential fresh processes, no warmup or concurrent
+profiling/tests. Existing baseline timings and recorded oracles are reused.
+
+| Case | Three changed-candidate execution times ms | Median ms |
+| --- | --- | ---: |
+| Archive, cold owner | 44.017729, 48.139457, 44.816035 | 44.816035 |
+| Archive, ready owner | 43.335320, 45.214595, 46.028147 | 45.214595 |
+| Original music decode | 107.137238, 101.292816, 93.372410 | 101.292816 |
+
+Archive run ID: `0117c34c-3e61-4277-84e0-ffd001117aab`.
+Music run ID: `74547a65-5171-4c01-9d37-f893278035a3`.
+All checksums/PCM match the existing recorded results; no late Java compilation.
+
+The recorded `e87d2e5` archive medians are 44.853043 ms cold and 50.245214 ms
+ready. Cold is flat; ready is about 10% lower but ranges overlap. That historical
+source also predates the lazy object-array guard, so this is not an isolated
+causal comparison. Recorded original-music medians include 102.049793 ms (`aa23806`),
+98.750520 ms (`6a8018d`) and 104.027230 ms (`e87d2e5`); the candidate shows no
+convincing gain there. The new small region in `VorbisCodebook.buildHuffmanTree`
+has zero timed entries. Coverage does not establish reduced time in the measured
+path. No full-loading campaign follows this flat component screen.
+
+```bash
+# java-tools, ce2c670: 735/735 pass, no skips.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/smallNativeArrayRegions.test.js test/nativeStaticArrayBody.test.js test/wasmParameterArrayAbi.test.js test/wasmCompilerRetention.test.js test/structuredLoopResume.test.js
+# Deko, before measurement: syntax and diff checks pass.
+node --check apps/loading/microbench.mjs
+git diff --check
+# Instrumented coverage only, initial candidate; timing excluded.
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs inspect 93e66ea5d23d3f3f7af5a6e822f6849fd31b455a bzip-block 'Bzip2Decoder.emitBlockRuns('
+# Changed-source measurements only; known baselines are not rerun.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm ce2c670efecf36da81f6b2bce72ab0901696d392 bzip-block bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm ce2c670efecf36da81f6b2bce72ab0901696d392
+```
+
+The runtime experiment is **withdrawn** in
+`a1dcba8d11b891c8cf15e4be9c23af47e860f454`, restoring the previously selected
+experimental source from `4436bbb`. Trial source/tests remain in Git history.
+No restored-baseline test, timing or identity check follows. Generic region
+coverage reporting stays in the Deko harness. The same single report stores
+samples, source/fixture identities, diagnostics and the decision under
+`optimizationTrials.mixedStateArrayBody`; no additional JSON reports are made.
+Runtime master, normal selection and deployment are unchanged. Full-loading
+acceptance remains unmet: the latest recorded full ratio is **5.534x** TeaVM.
+
+Next, use the existing WAT/import evidence to identify an actually executed
+metadata/callback boundary outside these native proofs. Require a bounded
+semantic proof and convincing changed-component result before expanding to full
+loading. Do not repeat the withdrawn threshold tuning or CPU attribution campaign.
