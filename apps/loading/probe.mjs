@@ -158,7 +158,11 @@ try {
   assert.ok(state?.meta?.bytes,'Installed method bytes unavailable: '+inspectMethod);
   const output=path.join(player,'vorbis/current.wat');
   fs.writeFileSync(output,execFileSync('wasm-dis',['--all-features','-'],{input:state.meta.bytes}));
-  inspection={method:state.key,sha256:hash(state.meta.bytes),output};
+  const teaBytes=fs.readFileSync(path.join(player,'vorbis/teavm/vorbis.wasm'));
+  assert.equal(hash(teaBytes),receipt.vorbisBenchmark.wasmSha256);
+  const teaOutput=path.join(player,'vorbis/current-teavm.wat');
+  fs.writeFileSync(teaOutput,execFileSync('wasm-dis',['--all-features','-'],{input:teaBytes}));
+  inspection={method:state.key,sha256:hash(state.meta.bytes),output,teavm:{sha256:hash(teaBytes),output:teaOutput}};
  }
  const owners=kernel==='bzip'?['Bzip2Decoder','Bzip2DecoderState']:['MusicDecoder','VorbisCodebook','VorbisResidue','MusicDecodeStage',...(kernel==='loading'?['Bzip2Decoder','Bzip2DecoderState']:[])];
  const layout=meta=>meta&&{structured:!!meta.structured,canonical:!!meta.canonicalRun,normalFlow:meta.normalFlowFullyCompiled,
@@ -177,6 +181,8 @@ try {
   stackifiedNumericValueCount:meta.stackifiedNumericValueCount||0,
   reusedNumericLocalCount:meta.reusedNumericLocalCount||0,
   omittedArrayFillCount:meta.omittedArrayFillCount||0,
+  nativeStaticArrayBodySites:meta.nativeStaticArrayBodySites||0,
+  nativeStaticArrayRegions:meta.nativeStaticArrayRegions||[],
   guardedPrimitiveArrayLoopCount:meta.guardedPrimitiveArrayLoopCount||0,
   guardedPrimitiveArrayLoopBytes:meta.guardedPrimitiveArrayLoopBytes||0,
   nativeTags:!!meta.nativeJsExceptionTags,specSites:meta.specSites?.length||0,inlined:meta.inlinedCalls,
