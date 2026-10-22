@@ -11531,3 +11531,96 @@ Java/host exception behavior and fuel/resume semantics; do not restore an
 unchanged rejected region variant. Validate smaller cases and the changed-source
 original archive before another full campaign. The **1.1x objective remains
 unmet**, and browser/phone FPS, aggregate heap and stability gates remain open.
+
+### Loop-entry array type proof (2026-10-23)
+
+This experiment addresses the measured cost of local per-cast proof state. It
+uses one integer validity local for a bounded, callback-free natural loop.
+The compiler proves the absence of reference writes, allocations and unknown
+callbacks; the entry checks private array/object ownership, current and saved
+references, static capabilities and captured native callee versions. Positive
+casts return the original reference. Negative entry checks execute the original
+checked cast imports in the same Wasm body, preserving host getter/throwable
+behavior. There is still one branch per selected cast; this is not a claim that
+all checks were removed. Array bounds, original fuel checks and resume points
+remain. Resume entry validates the saved references again, without replaying
+prefix effects. No game information, runtime opt-in flag, loop clone or per-call
+cast epoch is added to java-tools.
+
+Initial source `b4576a25d4ff8fd472b9293092aa4376c5989374` selected an 11-block
+inner loop: 35,280 entry queries and 578,537 remaining checked integer casts in
+the original ready-owner archive diagnostic. It was not timed. A separate shape
+trace showed duplicate field and incoming-phi dependencies exhausting the
+16-source budget for the enclosing loop. Source
+`6a898dac4f691840604a09d1dff4df2b9f78af8e` deduplicates equivalent private-storage
+recipes and validates current header-phi references instead of redundant outside
+incoming values. It preserves the budget. The original decoder now selects a
+44-block loop, six cast sites and 13 sources. Diagnostic counts are **three
+entry queries, three successful guards and 30 checked integer casts**, with
+checksum `-1415522687`, zero exits/throws and zero late compilation. Instrumented
+elapsed times are excluded from performance comparisons.
+
+Negative-case testing found a real reference-array cache bug: a checked field
+import supplies no private storage, so a later field-cache hit could overwrite
+storage obtained by the array's own read with null while retaining its valid
+base. Copy captured field storage only when available. The separate reference
+array test covers repeated native array reads through a plain receiver's getter;
+the new region tests cover checked getter ordering, exact host throwable identity,
+wrong/foreign arrays, row budget, reference phi swaps, native callee replacement,
+resumed saved matrices and collection of compiler graphs and completed Java
+arrays. The focused 11-file set passes **1203/1203** assertions; after dependency
+deduplication the three directly affected files pass **231/231**.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeCastRegion.test.js test/nativeCallbackProof.test.js test/nativeObjectBody.test.js test/arrayIdentityCaches.test.js test/nativeReferenceArray.test.js test/structuredLoopResume.test.js test/canonicalDirectFrames.test.js test/wasmCompilerRetention.test.js test/wasmSsaReferenceFacts.test.js test/wasmStaticInlineHandlers.test.js test/guardedNestedArrayLoops.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeCastRegion.test.js test/nativeCallbackProof.test.js test/nativeReferenceArray.test.js
+node --check apps/loading/microbench.mjs
+node --check apps/loading/probe.mjs
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs one jvm bzip-ready-owner 6a898dac4f691840604a09d1dff4df2b9f78af8e
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs run-jvm 6a898dac4f691840604a09d1dff4df2b9f78af8e bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision 6a898dac4f691840604a09d1dff4df2b9f78af8e --options diagnostic
+```
+
+Fresh-process archive samples are **28.643177, 35.477449 and 30.115194 ms**;
+median **30.115194 ms**. The historical same-fixture archive comparator at
+`ce2c670efecf36da81f6b2bce72ab0901696d392` has median **45.214595 ms** (33.39%
+less time). This is not a freshly measured archive value for the full-loading f2
+baseline. Node22.23.2 runs use CPU2, one GiB old-space and eager optimizing Wasm,
+without guest warmup or replay. All checksums match the saved oracle. Neither
+unchanged comparator nor TeaVM/HotSpot oracle was rerun, restored or revalidated.
+The only report remains the existing cache `benchmark.json`; source exports,
+binaries, WAT, bundles and new JSON report files are not committed.
+
+
+| Full sample | Music ms | Graphics ms | Total ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1570.603876 | 363.457325 | 1934.061201 |
+| 2 | 1844.478463 | 354.938208 | 2199.416671 |
+| 3 | 1523.260579 | 330.937559 | 1854.198138 |
+
+Full median **1934.061201 ms** is **3.21% slower** than the recorded f2 median
+1873.955270 ms and **5.3763x** the saved TeaVM median 359.739597 ms. The checksum
+matches `18:218292:2368412830:205:7597510:3045679678` in all samples; compilation
+remains zero during guest execution. That checksum is not an independent hash
+of every decoded PCM byte. The only selected method in full loading is the
+original decoder above: the proof does not cover the dominant music kernels.
+The result does not identify the specific CPU cause of the aggregate regression.
+It establishes no full-loading gain and cannot satisfy the 1.10x target.
+
+**Withdraw the loop-entry optimization** at
+`863b2c89e4c3adfc351009a46e57ecd880c7d392`. Preserve the independently tested
+reference-array cache fix and its focused regression in the experimental source;
+source/tests for both guard variants remain in Git history. No restored-baseline
+tests, timings or fingerprints run. Production selection and the f2 performance
+baseline remain unchanged. The canonical report records the compact observations
+under `optimizationTrials.loopEntryCastProof`. Consuming scripts merely expose
+selected-region metadata; no diagnostic data is retained by ordinary compiler
+execution. The 1.10x objective and browser/phone FPS, heap and stability gates
+remain unmet.
+
+Continue from the existing music census and generated-code comparisons, not
+another unchanged baseline or broad CPU attribution campaign. A future compiler
+change must select an original hot music kernel before full loading is timed.
+Reuse the saved call/status/GC-field controls and rejected variants when deciding
+whether a proposed representation or call-boundary change is actually new; do
+not infer that removing the remaining terminal float cast will close this gap.

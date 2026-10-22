@@ -967,6 +967,7 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     inlineAtomicStaticSiteCount:s.meta?.inlineAtomicStaticSiteCount||0,
     nativeObjectBodyFieldSites:s.meta?.nativeObjectBodyFieldSites||0,
     nativeObjectBodyArraySites:s.meta?.nativeObjectBodyArraySites||0,
+    nativeCastRegion:s.meta?.nativeCastRegion||null,
     nativeStaticArrayBodySites:s.meta?.nativeStaticArrayBodySites||0,
     nativeStaticArrayRegions:s.meta?.nativeStaticArrayRegions||[],
     fuelExits:s.fuelExits,nestedCalls:s.nestedCalls,nestedDeopts:s.nestedDeopts,
