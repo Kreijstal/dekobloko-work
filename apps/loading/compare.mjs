@@ -10,20 +10,23 @@ import {createServer} from 'node:http';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {spawnSync,execFileSync} from 'node:child_process';
-import {summarizeLoading} from './statistics.mjs';
+import {summarizeLoading,summarizeLoadingCandidate} from './statistics.mjs';
 import {selectBenchmarkRevision} from './benchmark-baseline.mjs';
 import {projectMeasurementFixture,fixtureStdinFlag,parseMeasurementResult,recordProbeObservation} from './measurement-fixture.mjs';
 const here=path.dirname(fileURLToPath(import.meta.url));
 const options={player:path.join(os.homedir(),'.cache/dekobloko/geoblox-loading'),browser:'firefox',pairs:3};
 for(let i=2;i<process.argv.length;i++) {
   const key=process.argv[i].slice(2);
-  if(!['player','browser','pairs','runtime','revision','options'].includes(key)||!process.argv[i+1])throw Error('Expected --player DIR --browser firefox|chromium|node --pairs N');
+  if(!['player','browser','pairs','runtime','revision','options','backends'].includes(key)||!process.argv[i+1])throw Error('Expected --player DIR --browser firefox|chromium|node --pairs N');
   options[key]=process.argv[++i];
 }
 options.player=path.resolve(options.player);options.pairs=Number(options.pairs);
 assert.ok(Number.isSafeInteger(options.pairs)&&options.pairs>0&&options.pairs<=20);
 assert.ok(['firefox','chromium','node'].includes(options.browser));
 const node=options.browser==='node';
+assert.ok(options.backends===undefined||options.backends==='jvm','Only --backends jvm selects a candidate-only run');
+const candidateOnly=options.backends==='jvm';
+assert.ok(!candidateOnly||node,'Candidate-only source probes require --browser node');
 // Match the microbenchmarks: eager optimizing Wasm on both backends, with no
 // guest workload warmup. Native Wasm compilation belongs to preparation too.
 const nodeExecutionFlags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
@@ -54,7 +57,7 @@ for(const [name,expected] of Object.entries(node?{}:receipt.runtime)){
  if(!options.runtime)assert.equal(actual,expected,name);
  runtimeHashes[name]=actual;
 }
-assert.equal(hash(fs.readFileSync(path.join(options.player,'teavm/loading.wasm'))),receipt.teavm.wasmSha256);
+if(!candidateOnly)assert.equal(hash(fs.readFileSync(path.join(options.player,'teavm/loading.wasm'))),receipt.teavm.wasmSha256);
 if(options.options && ((!options.runtime&&!node) || options.options!=='diagnostic'))throw Error('--options diagnostic requires an isolated runtime or Node source probe');
 const fixture={classes,assets,options:(options.options==='diagnostic'?receipt.diagnosticOptions:receipt.jvmOptions)||JSON.parse(fs.readFileSync(path.resolve(here,'../launcher/browser-runtime.json'))).jvmOptions};
 if(!options.options&&!node)receipt.jvmOptions=fixture.options;
@@ -62,7 +65,8 @@ const provenance={runtimeRevision,runtime:node?{sourceLoader:'archive-with-gener
  comparisonHarnessSha256:hash(fs.readFileSync(fileURLToPath(import.meta.url))),
  comparisonStatisticsSha256:hash(fs.readFileSync(new URL('./statistics.mjs',import.meta.url))),
  ...(node?{diagnosticOnly:true,engine:process.version,oldSpaceLimitMiB:1024,nodeExecutionFlags}:{})};
-const resultKey=node?'nodeComparison':'results';
+const resultKey=candidateOnly?'nodeCandidateComparison':node?'nodeComparison':'results';
+if(candidateOnly)provenance.candidateOnly=true;
 const server=createServer((req,res)=>{
   try {
     const name=new URL(req.url,'http://localhost').pathname;
@@ -83,11 +87,11 @@ if(!node&&!receipt.baselineResults)receipt.baselineResults=receipt.results;
 const observations=[];
 const measurementInput=node?JSON.stringify(projectMeasurementFixture(receipt)):null;
 if(node)Object.assign(provenance,{fixtureTransport:'stdin-projected',measurementFixtureSha256:hash(measurementInput)});
-console.log('Comparing '+options.pairs+' fresh-process pairs in '+options.browser);
+console.log(candidateOnly?'Measuring '+options.pairs+' fresh JVM processes, reusing recorded baselines':'Comparing '+options.pairs+' fresh-process pairs in '+options.browser);
 
 try {
-  for(let pair=0;pair<options.pairs;pair++)for(const backend of pair%2?['teavm','jvm']:['jvm','teavm']) {
-    console.log('Pair '+(pair+1)+'/'+options.pairs+': '+backend);
+  for(let pair=0;pair<options.pairs;pair++)for(const backend of candidateOnly?['jvm']:pair%2?['teavm','jvm']:['jvm','teavm']) {
+    console.log((candidateOnly?'Sample ':'Pair ')+(pair+1)+'/'+options.pairs+': '+backend);
     const browser=node?null:await playwright[options.browser].launch({headless:true});
     try {
       const errors=[];let result;
@@ -139,9 +143,9 @@ try {
       console.log(JSON.stringify(observations.at(-1)));
     } finally {if(browser)await browser.close();}
   }
-  const {summary,ratio,parity}=summarizeLoading(observations,options.pairs);
+  const {summary,ratio,parity}=candidateOnly?summarizeLoadingCandidate(observations,options.pairs):summarizeLoading(observations,options.pairs);
   receipt[resultKey]={...provenance,scope:receipt.workload,browser:options.browser,status:'complete',observations,summary,parity,assetAndPcmResultsMatch:true,zeroGuestCompilation:true,fullMenuLoading:false};
   fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
   console.log(JSON.stringify({scope:receipt.workload,summary,ratio,parity,report:receiptPath}));
-  assert.ok(parity.met,'Loading parity target failed: JVM.js must take at most 110% of TeaVM execution time');
+  if(!candidateOnly)assert.ok(parity.met,'Loading parity target failed: JVM.js must take at most 110% of TeaVM execution time');
 } finally {if(server.listening)await new Promise(resolve=>server.close(resolve));}

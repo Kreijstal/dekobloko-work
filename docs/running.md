@@ -8838,3 +8838,247 @@ policy. A new candidate should remove repeated representation selection under
 a bounded generic native-entry proof, preserve ordinary/resume/fallback paths
 and measure only that changed candidate. This is not authorization to change
 the accepted comparator or declare the 1.10x target met.
+
+
+### Native array invariants and entry range proofs (2026-10-22)
+
+The unchanged runtime and TeaVM baselines are reused. No baseline correctness,
+identity or timing run is needed merely to establish that the baseline is still
+itself. `run-jvm` measures changed candidates in fresh processes against the
+existing immutable HotSpot/PCM oracles. Generated artifacts remain outside Git.
+
+A controlled native-Wasm model compares linear float storage and GC float-array
+storage using the same metadata shape, arithmetic, explicit bounds errors, fuel
+polling, initialization and one-pass workload. These models deliberately omit
+VM representation selection and frame transport; they are not JVM performance
+or parity results. The generator is `apps/loading/float-array-controls.mjs`.
+At eight million butterflies, readback medians are 24.193 ms for linear storage
+and 27.606 ms for GC storage with an independent stored length. Encoding the
+bounds-error import as non-returning gives 21.749 ms for linear storage; GC with
+physical `array.len` gives 25.720 ms, or 20.994 ms when the error is also
+non-returning. No-readback medians respectively are 27.361, 26.477, 24.186,
+28.003 and 23.584 ms. Samples and outliers remain in the existing report. This
+does not justify a GC-array backend rewrite. It supports giving the native
+compiler accurate representation, length and error-flow information instead.
+
+Generator commits: `f85a66e` introduces the matched storage controls;
+`5f4001b` adds physical-length and non-returning-error variants and allows
+selecting only new controls without rerunning the old ones. The focused command
+`node --test --test-name-pattern='float array element storage' tests/loading-fixture.test.mjs`
+passes its selected test, including exact element bits, aliases, partial writes,
+negative/out-of-range access, zero trips and fuel. The control-only runs never
+load the archived JVM or execute TeaVM. Both retain the immutable fixture
+source and full HotSpot checksum oracle.
+
+The actual JVM experiment automatically permits a bounded native parameter-array
+version (4 KiB of additional generated body/guard bytes). Explicit caller
+budgets still win. Nonparameter arrays and field accesses retain their original
+lazy checks, rather than making their mere presence disqualify the entire
+method. Live exception regions, unsupported demotion, deoptimization and link
+shapes retain the original exclusions. The generic body remains available for
+null, checked or foreign inputs. No application identity or opt-in flag is used.
+
+Stage A, `487b7c40d815901ed93b53a6a1792efc077bd5ee`, selects native parameter
+storage once before its loop. Its readback median is 26.170 ms and no-readback
+23.881 ms. Stage B, `fe8e0f81caffbf6b0a1133b7623a8015090fadbb`, additionally
+marks a failing bounds-error import as non-returning only in the selected native
+body. Medians are 23.377 and 24.543 ms. Both pass 1,314 assertions from the
+array, retention and resume suites. All twelve timing samples match checksum
+-1814122496 and compile zero Java during execution. The older scalar controls
+36.251 and 32.251 ms predate typed-object parameter source `8789ccca`; they are
+historical context, not a fresh paired control. Historical TeaVM observations
+are also reused rather than retimed.
+
+Stage B WAT SHA-256 is
+`3cdbab599f6dcbdeaa34d3d3f576f8cf229367ae1f77a7b81cdf6a481e0c36b2`.
+Its selected body removes per-access representation selection but still has six
+bounds checks. The version adds 406 bytes. At the eight-million workload the
+method uses the frame entry twice with one normal fuel exit, so canonical direct
+entry counts alone would incorrectly suggest the kernel was unused.
+
+Stage C, `19243e3a6da8700bbcdd4fd750fd03ad4453be98`, adds a bounded, generic
+range proof: a nonnegative literal mask proves `0 <= (x & mask) <= mask`, even
+when x wraps. An entry guard proving native storage and a sufficient captured
+length selects a body that omits only those proved bounds checks. Literal
+indices use the same proof. Unknown or negative indices retain their checked
+operations; a short array selects the untouched original body. Boolean arrays
+keep their checked storage and cannot prevent independently proved float arrays
+from using the native version. Merely forwarding an array header does not
+request an unnecessary version. The source analysis stops after 50,000 nodes.
+
+The dedicated changed-code test passes 126 assertions covering every supported
+primitive width, long precision, wide argument slots, instance receivers,
+nulls, exact partial effects, masks after signed overflow, foreign arrays,
+unknown indices in the native body, active recompilation and SSA collection.
+A scheduler test changes an array argument while the native loop is yielded;
+resume revalidates the length, chooses the checked body and raises the Java
+bounds error without replaying a completed iteration. Instrumented branch
+counters verify actual selection and are absent from timed builds. Scalar
+layout diagnostics report code bytes, bounds sites and entry length guards;
+they retain no proof graph.
+
+The combined changed-compiler command passes **1,401/1,401 assertions**:
+
+```bash
+# java-tools
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/automaticArrayVersions.test.js test/wasmHeapArrays.test.js test/wasmParameterArrayAbi.test.js test/wasmCompilerRetention.test.js test/structuredLoopResume.test.js test/structuredColdResume.test.js test/guardedNestedArrayLoops.test.js test/nativeReferenceArray.test.js
+# dekobloko-work
+node --check apps/loading/microbench.mjs
+node --check apps/loading/probe.mjs
+```
+
+The first Stage C diagnostic caught a missing constant representation:
+`iconst` masks worked, but the class reader stores `sipush` immediates as text
+and `ldc` integers as tagged objects. Thus `1023` received no range proof.
+One candidate sample (58.191 ms) was saved before that batch was interrupted;
+it remains in the report and is not evidence for bounds elimination. No old
+baseline was retested. Refinement
+`aa23806e673abe4b80c6072b83df8929884c77e9` recognizes exactly those integer
+forms; Java string constants are not parsed as integers. The focused
+`test/automaticArrayVersions.test.js` now passes **161/161 assertions**, adding
+byte-push, short-push, constant-pool, literal-index and negative-mask cases.
+
+The refined butterfly diagnostic confirms **six source bounds sites omitted by
+three entry length guards**, with both actual invocations selecting the native
+version. The version costs **337 bytes**. In the first function's selected
+loop, WAT contains four float loads and two stores, zero bounds-error calls and
+zero per-element representation selections. The fallback retains six unsigned
+bounds tests, six bounds-error calls and six representation selections. Both
+preserve the original signed loop termination test, fuel spill and entry ABI.
+The instrumented module SHA-256 is
+`9d32d575ae644d8a898ac60004b1c843d8a4002c7d0b5e0c6c09d632ae9c49ea`;
+its native selection count is two. The unchanged TeaVM artifact remains
+`5beb55421087681123409c3cfe790fc0e3f13fc885f9718d48197d5766cffc81`.
+Disassembly and instrumented execution are excluded from timing acceptance.
+
+```bash
+# java-tools: 161 assertions pass after the constant-form refinement.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/automaticArrayVersions.test.js
+# dekobloko-work: inspect only the changed JVM, then time it without counters.
+MICRO_ITERATIONS=8000000 JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs inspect aa23806e673abe4b80c6072b83df8929884c77e9 butterfly-local 'LoadingMicroKernel.butterflyLocal('
+MICRO_ITERATIONS=8000000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm aa23806e673abe4b80c6072b83df8929884c77e9 butterfly-local butterfly-no-readback
+```
+
+The refined candidate-only timing batch completes with exact checksums and no
+Java compilation during guest execution. Readback samples are **20.547196,
+19.600674, 22.052063 ms**, median **20.547196 ms**. No-readback samples are
+**25.169270, 20.812882, 26.432785 ms**, median **25.169270 ms**. The recorded
+TeaVM medians for the same fixture/iteration count are 19.226208 and 21.107761
+ms (historical run `e79e0f36-4f82-4ada-b4cd-9c6bc26df75b`); the ratios are
+**1.069x** and **1.192x**. The new runtime run ID is
+`5f2bc178-2020-472e-bd0a-51c933cf83f4`. Only the first reduced case meets the
+1.10x timing target. This is not full-loading, browser or phone acceptance,
+and these historical comparisons are not simultaneous paired observations.
+
+Before a larger gate, inspect actual original-music branch selections rather
+than assuming an installed version is used. `decodePacket` itself has no
+primitive array formal parameter, so this proof cannot specialize its local
+transform arrays. Existing loop callers may also retain their unsupported-link
+exclusion. A diagnostic must establish where this candidate actually applies.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect aa23806e673abe4b80c6072b83df8929884c77e9 'MusicDecoder.decodePacket(I)[F'
+```
+
+The original-music diagnostic confirms native selection in
+`MusicDecodeStage.applyFloorLine` (**7,916** entries) and both neighbor helpers
+(**11,594** each). Their indices are not masked, so this pass removes their
+repeated representation tests and communicates non-returning bounds errors,
+while preserving element bounds checks. `decodePcmBudgeted` has a version but
+selects its checked body once for the probe's null budget array. Do not confuse
+that installed version with an executed native proof. `decodePacket` remains
+unversioned; all PCM bytes match. Its diagnostic WAT SHA-256 is
+`6ace3fe59653505abc848bd97f432378a36037fb35649508a779af8746eb7593`.
+
+Original-music candidate-only samples are **102.049793, 120.267686,
+101.959951 ms**, median **102.049793 ms**, from run
+`461f26ab-9f75-448f-8f12-04f25ab5feed`. Every PCM byte matches and every run
+compiles zero Java during execution. This is about **12.5% below** the recorded
+`8789ccca` median **116.627659 ms** (run
+`40ccd9e3-0a84-4f69-bb60-51f8299f90ce`), using the same one-pass fixture and
+constraints. It is historical evidence, not a newly paired control. It justifies
+the next full-loading candidate-only screen; it does not establish parity.
+
+The full-loading harness accepts `--backends jvm` with `--browser node`, records
+`nodeCandidateComparison` in the same report and preserves the previous
+`nodeComparison`. It does not load, hash or execute the unused TeaVM artifact.
+Candidate summaries explicitly say parity is not evaluated, and never invent
+paired ratios from old timings. The default two-backend paired acceptance gate
+is unchanged. The focused statistics suite passes **4/4 tests**; the new case
+rejects missing, duplicate, foreign-backend and invalid-duration observations
+and verifies that a single backend cannot receive a parity verdict.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm aa23806e673abe4b80c6072b83df8929884c77e9
+node --test tests/loading-statistics.test.mjs
+node --check apps/loading/compare.mjs
+node --check apps/loading/microbench.mjs
+node --check apps/loading/probe.mjs
+git diff --check
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --backends jvm --pairs 3 --revision aa23806e673abe4b80c6072b83df8929884c77e9 --options diagnostic
+```
+
+A static comparison with the already cached TeaVM WAT (no TeaVM execution)
+finds the matching three-float-array butterfly bodies at `$174` and `$175`.
+The readback body has four `array.get` and two `array.set`; no-readback has
+three gets and two sets. Both have one signed loop condition, no explicit
+bounds branches and no calls. The refined JVM selected readback body likewise
+has four float loads, two stores, one signed loop condition and no bounds-error
+calls. Its entry guards, linear-address arithmetic and scheduler fuel protocol
+remain. TeaVM's GC array operations still carry physical trap checks; its pinned
+non-strict build does not promise the same recoverable Java exception policy.
+The JVM proof preserves that policy by selecting its checked fallback whenever
+the stronger entry conditions fail. The observed reduced gap is compatible
+with those emitted differences, without claiming an additive attribution of
+individual instructions or changing the accepted comparator.
+
+#### Full-loading result and working-baseline selection
+
+All three candidate-only processes complete successfully, match the recorded
+HotSpot asset/PCM checksum `18:218292:2368412830:205:7597510:3045679678`,
+remain uninstrumented and compile zero Java after main starts:
+
+| Sample | Music ms | Graphics ms | Combined ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1579.272220 | 403.975688 | 1983.247908 |
+| 2 | 1615.951072 | 399.906697 | 2015.857769 |
+| 3 | 1713.416771 | 404.779667 | 2118.196438 |
+
+The candidate median is **2015.857769 ms**. All four recorded `8789ccca`
+full-loading observations remain the comparator: 1953.850469, 1966.254812,
+2150.572821 and 2159.945351 ms, median **2058.4138165 ms**. Their associated
+recorded TeaVM median is **359.739597 ms**. The observed candidate reduction
+is **2.07%**, and the ratio to recorded TeaVM is **5.604x**, still far outside
+1.10x. This small full-loading difference lies within historical variation;
+it is not proof of a stable causal 2.07% improvement. No baseline or TeaVM
+process is rerun to verify that it is unchanged. The fixture projection hash
+remains `5e9ae4a5e018da37114adc8df7ac9570399021437579606843b41bca1fe5dd69`;
+Node v22.23.2, CPU2 affinity, 1 GiB old-space and eager optimizing Wasm flags
+are preserved. The candidate-only harness intentionally reports parity as
+unevaluated; the historical ratio above does not invent simultaneous pairs.
+
+Keep `aa23806e673abe4b80c6072b83df8929884c77e9` as the **working experimental
+baseline** for the next changed candidate: the focused kernel improves,
+original music and full-loading screens retain exact results and show no
+median regression against the recorded controls. Update
+`apps/loading/benchmark-baseline.mjs` accordingly; historical source IDs are
+not relabeled. Generic runtime changes and tests are preserved on the
+`java-tools` experimental ref, with no generated artifacts. The deployed
+artifact and runtime master remain unchanged. This does not establish Firefox,
+phone, rolling presented FPS, aggregate heap or launch-stability acceptance.
+
+The complete decision, candidates, raw timing rows, bounded proof counts,
+original-music selection counters and retained historical comparator paths
+are under `optimizationTrials.automaticNativeArrayVersions` in the one existing
+`benchmark.json`. There is still one current WAT preview at each existing
+inspection location, outside Git. No new JSON report or generated source
+export is created.
+
+The next concrete gap is the largest original transform method: it captures
+local/static arrays rather than receiving them as parameters. Parameter entry
+facts cannot remove its repeated array selection. Start from a matched small
+original transform loop and inspect which native/length facts its emitted code
+loses; do not rerun the old CPU attribution or blindly restore the rejected
+standalone representation-loop and affine-version prototypes. Any extension
+must combine a demonstrably useful proof with bounded code growth and preserve
+Java failure order, fuel/resume and foreign-array fallbacks.

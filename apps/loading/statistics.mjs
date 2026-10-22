@@ -28,3 +28,18 @@ export function summarizeLoading(observations,pairs){
   method:'median paired ratios and ratio of backend medians',met:ratio<=1.1&&ratioOfMedians<=1.1};
  return {summary,ratio,parity};
 }
+
+// Candidate-only runs reuse recorded controls. Never invent pairing or a live
+// parity verdict from a single backend; keep the original paired gate intact.
+export function summarizeLoadingCandidate(observations,samples){
+ assert.equal(observations.length,samples,'Incomplete candidate loading observations');
+ for(let sample=0;sample<samples;sample++){
+  const rows=observations.filter(row=>row.pair===sample&&row.backend==='jvm');
+  assert.equal(rows.length,1,'Expected one JVM observation for sample '+sample);
+  for(const key of ['musicMs','graphicsMs','loadingMs'])assert.ok(
+   Number.isFinite(rows[0][key])&&rows[0][key]>0,'Invalid '+key);
+ }
+ const summary={jvm:Object.fromEntries(['musicMs','graphicsMs','loadingMs'].map(key=>
+  [key,median(observations.map(row=>row[key]))]))};
+ return {summary,parity:{evaluated:false,reason:'Candidate only; compare with recorded controls'}};
+}
