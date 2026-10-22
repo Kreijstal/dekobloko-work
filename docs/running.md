@@ -10930,3 +10930,136 @@ still links to a stateful reader loop. Inspect the existing combined TeaVM flow
 and recorded call counts, prove original-frame/fuel recovery and class-init
 ordering on a small generic fixture, then measure changed source. Do not restore
 these same guarded-region variants or remeasure retained baselines unchanged.
+
+
+### Static reader-loop wrappers: recoverable cold AOT preparation (2026-10-22)
+
+The previous turn made progress by screening and withdrawing guarded storage
+regions; its evidence redirected work toward static call boundaries. This pass
+adds no CPU-attribution campaign and executes no retained JVM/TeaVM/HotSpot
+baseline. The rolling comparator stays `f2c8ad04a4b035ee863cd3abc29ae44c5b88f083`
+(recorded full median **1873.955270 ms**).
+
+Candidate `47ff0e03a017d9c6a8f8e7fb0ff7e0f9f0c1496f` extends the existing original
+activation recovery to static loop callees. It handles slot-zero arguments,
+category-2 caller prefixes, exact expansion cost, fuel handoff without replay,
+Java exceptions and class readiness. It is bounded to a loop-free caller with
+one guest call: merging into another loop can lose the callee's whole-body
+native-storage proof. The existing single native-object body is admitted only
+when entry and interior array guards have valid original-frame checkpoints.
+No game identifiers, new opt-in flags or larger inlining budgets are introduced.
+
+The matched wrapped-reader diagnostic selects one activation and 16 native
+object-field sites in each bit/byte wrapper, with no remaining reader links.
+Across **490,954** requests, **320,218** bit-wrapper and **40** byte-wrapper
+entries no longer enter the nested reader: standalone reader entries fall from
+recorded 490,954 to **170,696**. All checksum/final-state values match the cached
+independent HotSpot oracle; native exits/throws are zero. Changed bit-wrapper
+module SHA-256 is
+`fa84b58dbc12c9207f70713180a5f634732c8337e2376973d2c8e3e30f4fc1ea`.
+
+```bash
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs inspect 47ff0e03a017d9c6a8f8e7fb0ff7e0f9f0c1496f buffered-ready-wrapped 'MicroBufferedReader.readBit('
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 47ff0e03a017d9c6a8f8e7fb0ff7e0f9f0c1496f buffered-ready-wrapped
+```
+
+Fresh uninstrumented samples: **6.306495, 6.238172, 7.598408 ms**, median
+**6.306495 ms**. Recorded same-fixture `5cea8b4` cohort median is 7.592211 ms
+(run `da35550c-cc51-4580-a9cf-60640be421ec`); the new median is **16.93% lower**,
+but the slow third sample overlaps that cohort. New run ID:
+`56245ef9-8328-4c2c-9183-cbedb1c9edd4`. This is a component screen against a
+historical component cohort, not proof of the full-loading target.
+
+The original decoder initially does **not** select the splice: its owner has a
+class initializer and is still cold at AOT preparation, unlike the fixture
+helper. That inspection is diagnostic evidence of a selection gap, not accepted
+original-archive timing for the warm-only variant. Cold-capable revision
+`fd71bfa5dfe08a5dc9f739d7524e6599434a8125` prepares the loop behind a live owner
+readiness guard. A cold token returns to original caller entry; it never donates
+an uninitialized callee, initializes an untaken invocation, or runs clinit early.
+The same prebuilt body becomes usable after normal initialization, without Java
+compilation during execution.
+
+The final focused command, run against this candidate source, passes
+**876/876 assertions**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/staticInlineActivation.test.js test/nativeObjectBody.test.js test/inlineActivationResume.test.js test/inlineAtomicLeaf.test.js test/wasmInlineBudget.test.js test/wasmInlineInitialization.test.js test/wasmColdIntegerInline.test.js test/wasmStaticInlineHandlers.test.js test/wasmCompilerRetention.test.js test/wasmDeepInline.test.js test/wasmInstanceInline.test.js
+```
+
+Coverage includes cold first use and warm reuse, zero-argument cold guards,
+untaken calls, initialization after caller prefix effects, slot/stack identity,
+wide values, exact-budget refusal, synchronization and meaningful-handler
+rejection, changed arrays after a yield, zero-trip null arrays, supported array
+fallbacks, partial writes before bounds faults, original outer handlers and
+collection of donated frames. An older counter assertion was corrected to
+attribute both null/bounds native exits to the caller containing the spliced
+reader, rather than the unentered standalone callee; exception results and all
+partial-state checks remain. Earlier failed attempts are not counted as passes.
+
+The original archive now selects the transformation in both wrappers: one
+activation, 16 native field sites, complete native flow, zero exits/throws and
+no reader links. Standalone reader entries are **170,696**, bit entries
+**320,218**, byte entries **40**. Original bit-wrapper module SHA-256:
+`af8cf3849794403328eebc36f2f83926ae71a689d9b93e4eb54e0228d04f85da`.
+
+```bash
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs inspect fd71bfa5dfe08a5dc9f739d7524e6599434a8125 bzip-ready-owner 'Bzip2Decoder.readBit('
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm fd71bfa5dfe08a5dc9f739d7524e6599434a8125 bzip-block bzip-ready-owner
+```
+
+bzip-block: **47.024501, 51.416978, 43.003283 ms**; median **47.024501 ms**.
+
+bzip-ready-owner: **45.842655, 38.597487, 44.194823 ms**; median **44.194823 ms**.
+
+Every archive checksum matches `-1415522687`, with zero late Java compilation.
+These results are mixed, despite the wrapper-level improvement. No unchanged
+component is rerun just to compare it with itself. Deko `93e5dc7` exposes the
+already-existing activation counters in microbenchmark output; `node --check
+apps/loading/microbench.mjs` passes.
+
+Inspecting the existing matched TeaVM WAT gives a more precise next direction.
+TeaVM artifact SHA-256:
+`5beb55421087681123409c3cfe790fc0e3f13fc885f9718d48197d5766cffc81`.
+Function `$172` calls shared reader `$30` directly with widths 1, 8 and variable;
+original decoder `$193` likewise calls shared reader `$7`. The two reader
+functions each have one loop, five struct stores and no calls. Thus TeaVM removes
+the forwarding wrapper while retaining a shared loop. This candidate instead
+copies the reader into each wrapper. That is an observed code-shape difference;
+its exact CPU contribution has not been established. No TeaVM baseline executes
+again for this inspection.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision fd71bfa5dfe08a5dc9f739d7524e6599434a8125 --options diagnostic
+```
+
+| Full sample | Music ms | Graphics ms | Loading ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1620.479428 | 359.848305 | 1980.327733 |
+| 2 | 1561.102501 | 384.459270 | 1945.561771 |
+| 3 | 1513.679407 | 676.472190 | 2190.151597 |
+
+All checksums match `18:218292:2368412830:205:7597510:3045679678`, with zero
+late Java compilation. Full workload wrappers retain **2,328,178** bit and
+**617** byte native entries, each with a recovered activation and 16 native
+field sites, complete flow and zero exits/throws. The saved vector-reader
+framework remains native too. The **1980.327733 ms** full median is **5.68%
+slower** than recorded f2. The slow graphics third sample is retained. The
+component win does not satisfy the full task.
+
+**Withdraw this variant.** Commit
+`cf04c7aa55bc8e4f41616ff793ac085dcaec03d2` restores the f2 runtime and retains the
+previously validated heap-fixture isolation. Source/tests for both variants
+remain in experimental Git history. Do not run restored-baseline tests, timing
+or fingerprints. Normal source/artifact selection and deployment are unchanged.
+All diagnostic/timing records and the decision remain in the one canonical
+`benchmark.json`, under `optimizationTrials.staticLoopWrappers`; no generated
+Java, binaries or WAT are committed.
+
+Next, match TeaVM's forwarding shape: inline small acyclic static forwarders
+into their callers while retaining the shared reader. Reuse original-activation
+donation for a yielding nested call; prove return conversion, operand prefixes,
+caller effects, cold initialization and Java exceptions on a small generic
+fixture, then inspect original decoder selection before timing. Do not repeat
+reader-loop cloning or an unchanged baseline. The **1.1x goal remains unmet**;
+browser/phone, presented-FPS, aggregate-heap and stability gates remain unproven.
