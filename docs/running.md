@@ -9389,3 +9389,86 @@ full-loading and original-music fixtures and their known measurements intact.
 This separates transform code generation from packet/codebook/driver work and
 can show whether a compiler change reaches the actual remaining discrepancy.
 It is not a claim that the discrepancy has been localized or solved.
+
+
+### Full original MDCT and windows: matched component, parity still open
+
+`apps/loading/mdct.mjs` now extracts the original nonsilent transform and both
+window loops from the readable decoder, preserving its arithmetic and statements.
+It copies the original bit-length helper and relocates only its owner. Capture
+hooks surround this exact region in a temporary build of the readable decoder;
+its final PCM must equal the recorded original PCM. The captured table/work
+buffers and dimensions then drive the extracted Java component. Its output must
+match **all 698,368 raw float words** across **682 packets**, including the whole
+work buffer, rather than just a checksum of selected samples. All captured blocks
+are 1,024 floats. The initial HotSpot capture and extracted component agree.
+
+The same `MdctTransformKernel.class` is input to both the JVM and TeaVM 0.16.0.
+Parsing and allocating captured inputs occur before the timer; each captured
+packet is transformed once. There is no warmup or workload replay. Compilation
+is eager, CPU affinity is CPU 2, Node is v22.23.2 and old-space is limited to
+1,024 MiB. Archive, floor/codebook reconstruction, overlap mixing and PCM packing
+are excluded, so this component cannot stand in for complete loading or rendering.
+
+The first component had a call-shape confound: its native-input handoff left JS
+driving per-packet native entries. Its 42.723 ms median vs TeaVM's 16.926 ms is
+preserved separately, with the 82.920 ms sample. The corrected fixture moves only
+the packet loop into `runTransforms`, matching the original native packet driver.
+Every corrected run takes **682 direct native transform entries**, with zero
+transform exits and zero guest Java compilation during execution. Do not combine
+these cohorts or use their difference to attribute CPU time.
+
+| Corrected component | Samples ms | Median ms |
+| --- | --- | ---: |
+| JVM `aa23806` | 58.980222, 53.011841, 58.724721 | 58.724721 |
+| TeaVM 0.16.0 | 16.965252, 18.947579, 16.969647 | 16.969647 |
+
+This is **3.461x**, failing 1.10x. It reproduces a large gap in the complete
+original transform. Do not subtract it from separately measured music timings
+to claim an attribution. The historical full-loading result remains **5.604x**;
+no unchanged JVM, TeaVM or HotSpot baseline is rerun. No default/deployed artifact
+is changed, and no browser/phone FPS or heap acceptance is implied.
+
+Current component identities:
+
+- Source SHA-256: `2b4cebd006b55125536eb78530060d27115d8ec19a24f4cadb64b26cbb56c89f`.
+- Class SHA-256: `fc383cf344e2c85e93a158f69f53f132729e5fdc667d0cfc6344413fd6b8b130`.
+- Input SHA-256: `90e6187eeb91e4e8374cef3acb31ac3595f7b4a02bebf27ccb279201bb465be3`.
+- Expected output SHA-256: `268773fa76645c98d711515e7306df2d188ee8e9c67c9882893fa68e8cfb9f00`.
+- TeaVM Wasm SHA-256: `981e7b99849859f56ae09b07d43753466f16e2fd84fc40f2bd7479527da55068`.
+
+Handwritten generators are committed as `52648cd`, `4872081` (corrected driver and
+capture reuse), and `7b7c145` (code inspection, diagnostic/timing separation).
+Generated Java, classes, captures, Wasm and WAT remain outside Git, under the
+existing loading cache. All observations, fixture cohorts, diagnostic results
+and summary live in the **same** `benchmark.json`, under `mdctBenchmark`.
+
+```bash
+# Initial new dataset only; already completed, do not recapture unchanged data.
+node apps/loading/mdct.mjs build
+# Recompile a changed Java component against the pinned capture; no recapture.
+node apps/loading/mdct.mjs rebuild
+node --test tests/loading-mdct.test.mjs tests/loading-fixture.test.mjs
+# 12/12 tests pass; after driver change the MDCT-only suite passes 3/3.
+node --check apps/loading/mdct.mjs
+git diff --check
+# First measurements of the corrected new component; already recorded:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs run aa23806e673abe4b80c6072b83df8929884c77e9
+# Future changed JVM code: reuse recorded TeaVM, three fresh processes only.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs run-jvm EXACT_CHANGED_REVISION
+# Separate code/import diagnostic, never included in timing summaries:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs inspect EXACT_CHANGED_REVISION
+```
+
+Inspection verifies exact output and writes just the current WAT pair to the
+existing `vorbis/current.wat` and `vorbis/current-teavm.wat` previews. The inspected
+JVM module SHA-256 is
+`63b5190106e9613f9cf9e67808642d976bf1e0288395ed7fb650f5f914d17771`.
+Both versions import `Math.sin` directly. The JVM's 2,728 `abase` and 2,728 `alen0`
+queries across 682 packets are per-packet metadata work, not per-element calls.
+The WAT still contains representation/bounds guards, field-cache flag checks and
+many loop-carried copies. TeaVM moves the invariant window-denominator conversion
+outside its loops. Dead-phi pruning and loop outlining were already measured
+rejections; neither should be repeated as a new proposed fix. The next bounded
+compiler experiment is moving only proven total numeric invariants to loop
+preheaders, preserving operation order, memory checks and resumption semantics.
