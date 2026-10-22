@@ -187,6 +187,7 @@ try {
   reusedNumericLocalCount:meta.reusedNumericLocalCount||0,
   omittedArrayFillCount:meta.omittedArrayFillCount||0,
   nativeStaticArrayBodySites:meta.nativeStaticArrayBodySites||0,
+  nativeArrayRematerializedReferenceCount:meta.nativeArrayRematerializedReferenceCount||0,
   nativeStaticArrayCapturedReferenceCount:meta.nativeStaticArrayCapturedReferenceCount||0,
   nativeArraySharedMetadataValueCount:meta.nativeArraySharedMetadataValueCount||0,
   nativeArrayMetadataPhiCopiesOmittedCount:meta.nativeArrayMetadataPhiCopiesOmittedCount||0,
