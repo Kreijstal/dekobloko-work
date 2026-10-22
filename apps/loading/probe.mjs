@@ -199,6 +199,7 @@ try {
   guardedPrimitiveArrayLoopCount:meta.guardedPrimitiveArrayLoopCount||0,
   guardedPrimitiveArrayLoopBytes:meta.guardedPrimitiveArrayLoopBytes||0,
   nativeTags:!!meta.nativeJsExceptionTags,specSites:meta.specSites?.length||0,inlined:meta.inlinedCalls,
+  inlineActivationSiteCount:meta.inlineActivationSiteCount||0,
   nativeStaticLeafBytes:meta.nativeStaticLeafVersionBytes||0,
   params:meta.paramSlots?.map(p=>({slot:p.slot,type:p.t})),entryGuards:meta.entryInitializationGuards,
   links:meta.linkBindings?.map(b=>({key:b.key,pending:b.pending,canonical:!!b.canonicalDirect}))};
@@ -217,6 +218,7 @@ try {
     nativeThrowCount:state.meta?.directFrameContext?.throwCount??null,
     nativeObjectBodyFieldSites:state.meta?.nativeObjectBodyFieldSites||0,
     nativeObjectBodyArraySites:state.meta?.nativeObjectBodyArraySites||0,
+    inlineActivationSiteCount:state.meta?.inlineActivationSiteCount||0,
     lastNativeExitStatus:state.meta?.directFrameContext?.lastExitStatus??null,
     calleeNativeExitCount:state.callee?.meta?.directFrameContext?.exitCount??null,
     omittedNativeBoundsCheckCount:state.meta?.omittedNativeBoundsCheckCount||0,
