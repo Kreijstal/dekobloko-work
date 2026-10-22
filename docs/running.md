@@ -11063,3 +11063,152 @@ caller effects, cold initialization and Java exceptions on a small generic
 fixture, then inspect original decoder selection before timing. Do not repeat
 reader-loop cloning or an unchanged baseline. The **1.1x goal remains unmet**;
 browser/phone, presented-FPS, aggregate-heap and stability gates remain unproven.
+
+
+### Static forwarder collapse and precise parent-frame liveness (2026-10-22)
+
+This turn made progress by testing the actual shared-reader shape visible in
+TeaVM, then testing a concrete liveness omission found in the generated recovery
+stubs. Both variants are withdrawn: neither establishes a full-loading gain.
+The comparator stays `f2c8ad04a4b035ee863cd3abc29ae44c5b88f083`, with recorded
+full median **1873.955270 ms**. No unchanged baseline executes again.
+
+Candidate `0b2dd1aa63da23ddfcc00a36062f9c2dd8285cbd` recognizes a generic acyclic
+static forwarder: one static call, locals, numeric constants/conversions and
+return, with no field/array effects, branches, allocation or monitors. It splices
+the forwarder into the caller and retains the actual implementation as a shared
+callee. An original wrapper frame is donated only on nested-call retry/after
+handoff. Live readiness guards preserve cold/untaken/zero-argument class
+initialization; budgets are unchanged and no game names or opt-in flags appear.
+
+The candidate source passes **897/897 focused assertions**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/staticForwarderInline.test.js test/inlineActivationResume.test.js test/inlineAtomicLeaf.test.js test/nativeObjectBody.test.js test/wasmInlineBudget.test.js test/wasmInlineInitialization.test.js test/wasmColdIntegerInline.test.js test/wasmStaticInlineHandlers.test.js test/wasmCompilerRetention.test.js test/wasmDeepInline.test.js test/wasmInstanceInline.test.js
+```
+
+Tests cover signed-byte conversion after a yielding shared reader, exact caller
+arithmetic and reference prefixes, category-2 values through both original static
+frames, changed arrays after yield, native faults with and without prior fuel
+exit, partial writes and original outer handlers, synchronization/handler/effect
+rejection, exact budget refusal, cold/untaken/zero-argument initialization,
+reference-return identity and one-time updates, collection of donated frames and
+zero late compilation. The reference-returning fixture uses the existing
+synchronous ABI; a discarded test assumption that canonical fuel controls that
+path was corrected. It is not counted as a reference-yield proof.
+
+The actual archive decoder selects **22** forwarding sites in `decodeBlocks`,
+links directly to shared `readBits`, has no wrapper native entries, and retains
+**490,954** shared reader entries. There are zero native exits/throws in this
+ready-owner diagnostic; the checksum matches `-1415522687` with no late Java
+compilation. The changed decoder module SHA-256 is
+`3d6d0c99b1ac6de0de198b7070282fbf4ad7b7ef749b44179b65e6dd7379955c`.
+This matches TeaVM's observed forwarding structure without copying reader loops.
+
+```bash
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs inspect 0b2dd1aa63da23ddfcc00a36062f9c2dd8285cbd bzip-ready-owner 'Bzip2Decoder.decodeBlocks('
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 0b2dd1aa63da23ddfcc00a36062f9c2dd8285cbd buffered-ready-wrapped bzip-ready-owner
+```
+
+buffered-ready-wrapped: **6.170268, 7.777553, 6.003796 ms**; median **6.170268 ms**.
+
+bzip-ready-owner: **42.925177, 39.476429, 40.888692 ms**; median **40.888692 ms**.
+
+All results match the saved independent oracles. The first component's recorded
+same-fixture comparator is 7.592211 ms (`5cea8b4`, run
+`da35550c-cc51-4580-a9cf-60640be421ec`); these are historical component sources,
+not a freshly measured f2 control. Component gains justify checking the full
+changed workload, with no new TeaVM or HotSpot process:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision 0b2dd1aa63da23ddfcc00a36062f9c2dd8285cbd --options diagnostic
+```
+
+| Full sample | Music ms | Graphics ms | Loading ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1679.458529 | 439.665547 | 2119.124076 |
+| 2 | 1518.118618 | 365.088209 | 1883.206827 |
+| 3 | 1913.840218 | 401.652465 | 2315.492683 |
+
+All three checksums match `18:218292:2368412830:205:7597510:3045679678`, with
+zero late compilation. Median **2119.124076 ms** is **13.08% slower** than the
+recorded f2 median. The normal exit counters checked against the already-saved
+f2 log match: decoder has 34 runs/two exits/two native exits, synthesis reset has
+three runs/three exits/two native exits. Their full-coverage flags stay true.
+This does not identify lost native coverage as the source of the slowdown.
+These baseline counter values are copied into the canonical trial record;
+there is no baseline process or restoration verification.
+
+Source inspection identifies an actual omission in recovery lowering:
+`inlineActivationResume.emit` retains every parent local, while ordinary call
+exits already use existing frame liveness. The actual decoder has **44** inline
+spill imports, up to **45** arguments each, totaling **1936** arguments. Those
+cold-stub uses can constrain value lifetimes; their exact CPU contribution is
+not established by argument counts alone.
+
+Refinement `c048bb0dfe8aa6afc2bd58dc7834d8a66cb719a2` uses the original caller
+invoke's live-in set, including exception successors. It deliberately does not
+use only call+1: a handler dependency can die on the normal path immediately
+after a protected call. Child state, operand prefixes and boolean capture
+requirements remain. **904/904** focused and **112/112** extra spill assertions
+pass against this candidate:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/staticForwarderInline.test.js test/inlineActivationResume.test.js test/inlineAtomicLeaf.test.js test/frameLocalLiveness.test.js test/nativeObjectBody.test.js test/wasmInlineBudget.test.js test/wasmInlineInitialization.test.js test/wasmColdIntegerInline.test.js test/wasmStaticInlineHandlers.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/frameLocalSpills.test.js test/explicitFrameSpills.test.js
+```
+
+The new fixture clears a dead caller temporary on donation and still returns
+the exact result. A valid narrowed exception table ends immediately after the
+invoke; the handler-only saved value survives donation and a subsequent child
+fault. An initial fixture mistake omitted the runtime numeric exception PCs;
+matching numeric/label endpoints fixes the fixture without weakening the proof.
+The refinement diagnostic retains the 22 sites, full native coverage, exact
+checksum, zero exits/throws and zero late compilation. Module SHA-256:
+`72b4bb46f3cfd5c82fb4552e01e7271d727b7648e4ad8323306dcfb55d77549d`.
+The same 44 spill imports now have at most **17** arguments and **428** total,
+down from 45 and 1936.
+
+```bash
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs inspect c048bb0dfe8aa6afc2bd58dc7834d8a66cb719a2 bzip-ready-owner 'Bzip2Decoder.decodeBlocks('
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm c048bb0dfe8aa6afc2bd58dc7834d8a66cb719a2 bzip-ready-owner
+```
+
+Archive results: **45.141451, 40.394990, 47.186866 ms**; median **45.141451 ms**.
+
+They do not establish improvement over recorded ready-owner 45.214595 ms and
+are slower than the first forwarding candidate's 40.889477 ms. No additional
+full-loading cohort is justified solely by smaller spill signatures.
+
+**Withdraw both forwarding variants**, including the liveness refinement.
+`3ab0b26b0004d1c9c11d939e790f1a497d4eed97` restores the f2 runtime and preserves
+previous heap-fixture isolation. Source/tests remain in experimental history.
+No restored-baseline tests, timing or fingerprints run; performance selector,
+production artifact and deployment are unchanged. All observations/diagnostics,
+including failed test attempts and the slow full samples, are described or
+retained under `optimizationTrials.staticForwarderCollapse` in the one canonical
+`benchmark.json`. No generated source, binaries or WAT are committed.
+
+The saved diagnostic exposes **813,758 `cast__I` imports** per original archive,
+while the decoder has only three each of `abase` and `alen0`. SSA already
+propagates `aaload` component bounds; missing facts are not the immediate issue.
+Primitive-array casts still lower to checked JS imports. The old JS cast helper
+trial (`2d461`, withdrawn by `90d093b`) also retained this boundary and did not
+establish a useful gain; do not restore it unchanged.
+
+Declared Java component types alone do not justify removing these checks under
+the current host interoperability contract. Private allocation descriptors are
+available, but public type/cidx metadata can change, and native reference-array
+proxies accept arbitrary host element replacement. A new positive cast proof
+must validate owned canonical data properties without invoking getters, preserve
+ordinary/foreign/custom-getter fallbacks, and expire when an actual host callback
+can mutate metadata. Reuse callback-free native execution proofs so pure native
+reader calls need not invalidate it. Investigate existing epoch experiments
+before implementing this: per-call epoch guards previously regressed static-leaf
+workloads, so they are not an unchanged next step. Validate callback changes,
+replacement, frame reentry, epoch exhaustion, getter/exception order, null and
+reference identity before any original-workload screen. Use the existing
+census/WAT; no new CPU-attribution campaign or baseline repetition is needed.
+
+The **1.1x goal remains unmet**. Browser/phone presented-FPS, aggregate-heap and
+stability acceptance remain unproven.
