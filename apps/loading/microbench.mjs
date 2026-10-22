@@ -21,7 +21,8 @@ const cases=['scalar','byte-array','boolean-array','bits-local','bits-static','b
  'bzip-block','bzip-ready-owner','int-load-parameter','int-load-cast','cold-prefix-loop','ready-prefix-loop',
  'cast-only','reference-only','array-result-loop','object-result-loop','window-parameter','window-static',
  'huffman-helper','huffman-cached','huffman-inline',
- 'huffman-many-fields','huffman-many-cached','huffman-many-local','huffman-many-value'];
+ 'huffman-many-fields','huffman-many-cached','huffman-many-local','huffman-many-value',
+ 'byte-field-call','boolean-field-call'];
 const iterations=1_000_000,seed='q',version='0.16.0';
 // Compile Wasm with V8's optimizing tier before execution on BOTH backends.
 // This removes lazy Wasm compilation/tiering from these operation diagnostics.
@@ -49,6 +50,7 @@ const save=microbenchmarks=>{
 const source=`public class LoadingMicroKernel {
  static int checksum, byteCursor, bitCursor, readerInitializations;
  static byte[] bytes;
+ static byte[] byteFields;static boolean[] booleanFields;
  static float[] samples,weights,transformed;
  static float[] windowSamples;
  static long elapsedNanos;
@@ -68,6 +70,12 @@ const source=`public class LoadingMicroKernel {
   for(int i=0;i<n;i++){int p=i&1023;a[p]=!a[p];sum=sum*33+(a[p]?1:0);}
   return sum;
  }
+ // A bounded recursive prefix retains real method entries under the normal
+ // inliner. The runner verifies that fact rather than disabling inlining.
+ static int byteFieldStep(int i,int depth){if(depth>0)return byteFieldStep(i,depth-1);byteFields[i]=(byte)(byteFields[i]^1);return byteFields[i];}
+ static int booleanFieldStep(int i,int depth){if(depth>0)return booleanFieldStep(i,depth-1);booleanFields[i]=!booleanFields[i];return booleanFields[i]?1:0;}
+ static int byteFieldCall(int n){int sum=0;for(int i=0;i<n;i++)sum=sum*33+byteFieldStep(i&1023,1);return sum;}
+ static int booleanFieldCall(int n){int sum=0;for(int i=0;i<n;i++)sum=sum*33+booleanFieldStep(i&1023,1);return sum;}
  static int bitsLocal(int n,byte[] a) {
   int sum=0,b=0,k=0;
   for(int i=0;i<n;i++){
@@ -313,6 +321,7 @@ const source=`public class LoadingMicroKernel {
    samples[i]=((x&1023)-512)/512.0f;weights[i]=((x>>>8)&1023)/1024.0f;
   }
   byteCursor=0;bitCursor=0;
+  byteFields=a;booleanFields=z;
   MicroBitReader.bytes=bytes;MicroBitReader.byteCursor=0;MicroBitReader.bitCursor=0;
   if(readerInitializations!=1)throw new AssertionError();
   MicroCursor cursor=new MicroCursor();
@@ -371,6 +380,8 @@ const source=`public class LoadingMicroKernel {
    case 39:checksum=huffmanManyCached(n,book);break;
    case 40:checksum=huffmanManyLocal(n,book);break;
    case 41:checksum=huffmanManyValue(n,book);break;
+   case 42:checksum=byteFieldCall(n);break;
+   case 43:checksum=booleanFieldCall(n);break;
    default:throw new IllegalArgumentException();
   }
   elapsedNanos=System.nanoTime()-start;
@@ -555,6 +566,8 @@ public class TeaVmMicro {
   fs.copyFileSync(path.join(temporary,'MicroReference.class'),path.join(directory,'MicroReference.class'));
   const referenceChecks=cases.map((_,i)=>Number(execFileSync('java',['-Xmx1g','-cp',temporary+path.delimiter+classes,'MicroReference',String(i),String(iterations),seed],{encoding:'utf8'}).trim()));
   assert.equal(referenceChecks[1],referenceChecks[2],'Byte and boolean variants differ');
+  assert.equal(referenceChecks[1],referenceChecks[42],'Byte field helper differs');
+  assert.equal(referenceChecks[2],referenceChecks[43],'Boolean field helper differs');
   assert.equal(referenceChecks[3],referenceChecks[4],'Local and static bit readers differ');
   assert.equal(referenceChecks[3],referenceChecks[5],'Inline and helper bit readers differ');
   assert.equal(referenceChecks[3],referenceChecks[6],'Static cursor bit reader differs');
@@ -736,6 +749,8 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     full:!!s.meta?.fullyCompiled,canonical:!!s.meta?.canonicalRun,inlined:s.meta?.inlinedCalls,
     slabFieldSites:s.meta?.slabFieldSites,omittedSlabFillCount:s.meta?.omittedSlabFillCount||0,
     nativeArrayReadReuseSites:s.meta?.nativeArrayReadReuseSites||0,
+    booleanArrayCacheCount:s.meta?.booleanArrayCacheCount||0,
+    booleanFieldArrayGroupCount:s.meta?.booleanFieldArrayGroupCount||0,
     normalFlow:!!s.meta?.normalFlowFullyCompiled,demotes:[...(s.meta?.demoteReasons||[])],
     structuredResumeEntry:s.meta?.structuredResumeEntry,
     specSites:s.meta?.specSites,entryGuards:s.meta?.entryInitializationGuards,
@@ -749,6 +764,11 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     .map(([name,count])=>({method:s.key,tier,name,count})))).sort((a,b)=>b.count-a.count).slice(0,40)}:{})});
   assert.deepEqual(late,[],'Java compilation occurred during execution');
   assert.equal(result.compilation.postMainSyncCompileCount,0);
+  if(['byte-field-call','boolean-field-call'].includes(name)){
+   const prefix='LoadingMicroKernel.'+(name==='byte-field-call'?'byte':'boolean')+'FieldStep(';
+   const step=result.executionMethods.find(method=>method.key.startsWith(prefix));
+   assert.ok(step?.full&&step.directEntries>=count&&step.exits===0,'Per-call control lost its native method boundary');
+  }
  }
  assert.ok(Number.isFinite(result.elapsedMs)&&result.elapsedMs>0,'Timer failed');
  assert.equal(result.checksum,expected,'HotSpot checksum mismatch');

@@ -155,6 +155,8 @@ try {
   ...(optimizer?{wasmOptimizer:optimizer.finishPreparation()}:{}),
   executionMethods:w.compiled.map(state=>({key:state.key,runs:state.runs,exits:state.exits,
     nativeArrayReadReuseSites:state.meta?.nativeArrayReadReuseSites||0,
+    booleanArrayCacheCount:state.meta?.booleanArrayCacheCount||0,
+    booleanFieldArrayGroupCount:state.meta?.booleanFieldArrayGroupCount||0,
     structured:!!state.meta?.structured,full:!!state.meta?.fullyCompiled,
     canonical:!!state.meta?.canonicalRun,directEntries:state.meta?.canonicalEntries?.value||0}))
    .filter(state=>state.runs||state.directEntries),

@@ -7262,3 +7262,106 @@ same single `benchmark.json`, under
 `optimizationTrials.reducedArrayReadControls`. No performance acceptance has
 been redefined: the full-loading objective is still 1.10x, and the retained
 runtime remains approximately 5.58x on that workload.
+
+### Boolean arrays: reducing the representation boundary before changing defaults
+
+The byte/boolean control led to a generic native `[Z` capability in java-tools,
+kept separate from the signed-byte ABI. It normalizes loads as nonzero-to-true
+and stores as `value & 1`. Private allocation ownership, exact view kind and
+same unshared memory are required. Null, foreign arrays, custom observable
+metadata and unsupported representations retain the checked path. Metadata
+caches are invalidated before callbacks that could change those properties.
+
+The first prototype (`47780461`) reduces the boolean parameter-loop median
+from **51.155 to 3.391 ms**; the byte control stays approximately 2.24 ms.
+However, it makes the original audio sample worse: **113.858 ms** versus the
+fresh baseline's **102.087 ms**. The large loop amortizes metadata publication;
+the original floor sorter repeatedly enters short methods. The initial
+prototype is therefore unsuitable for retention despite its loop-kernel win.
+
+Two new matched controls isolate that difference. Both call a small static
+field-array helper with bounded recursion, once per iteration, and assert the
+actual native helper-entry count and zero exits after execution. A first
+nonrecursive helper was inlined; those earlier observations remain associated
+with their own fixture identity and are excluded from this per-call comparison.
+There is no flag disabling the normal inliner. All controls still compare
+HotSpot checksums, use fresh processes and exclude preparation from timing.
+
+| Runtime | Boolean field-call median ms | Byte field-call median ms |
+| --- | ---: | ---: |
+| Baseline `592f30f0` | 109.771 | 10.276 |
+| Initial boolean path `47780461` | 576.396 | 10.242 |
+| Reusable scratch header `9e16211d` | 298.291 | 10.202 |
+| Cheaper safe validation `cf8f45ff` | 205.149 | 10.152 |
+| Share validated field generations `8996cad6` | 78.997 | 10.214 |
+
+These successive changes each address the isolated publication cost. One
+8-byte scratch header per VM replaces the Wasm multi-result handoff. Captured
+intrinsics inspect canonical views without invoking public diagnostic getters.
+Repeated readers of the same cached field generation share validated metadata,
+while each captured Java reference retains its own metadata and generation.
+Unknown generations on external resume never share: old and fresh references
+can differ after suspension. Callback invalidation clears both the private
+reader cache and the shared capability. The scratch header adds neither a
+per-method retained payload nor a compiler-analysis root.
+
+The field-call result now improves over baseline, but its paired TeaVM median
+is still approximately **1.11 ms**. This diagnoses a representation-boundary
+cost; it is not TeaVM parity. The final test-only child `16d603d9` adds instance
+receiver/alias replacement and shared-capability revocation coverage without
+changing the `8996cad6` runtime. The eight-file focused suite passes **499/499**:
+
+```bash
+# java-tools:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeBooleanArrays.test.js test/wasmHeapArrays.test.js test/nativeStaticReferenceCodegen.test.js test/nativeObjectFieldCodegen.test.js test/wasmParameterArrayAbi.test.js test/wasmCompilerRetention.test.js test/sharedFieldArrayCaches.test.js test/dispatcherHeapArrays.test.js
+# dekobloko-work; use each complete runtime SHA recorded in benchmark.json:
+node --check apps/loading/microbench.mjs
+node --check apps/loading/probe.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 8996cad63d4052856ead5b8b1cae61331aacf0d3 byte-field-call boolean-field-call
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run 8996cad63d4052856ead5b8b1cae61331aacf0d3
+```
+
+The original sample now has a **97.496 ms** candidate median (three fresh JVM
+observations: 97.496, 99.868, 95.842 ms), compared with baseline observations
+102.087, 101.458, 103.344 ms. Paired TeaVM remains approximately **25.115 ms**.
+Every candidate PCM byte matches the 348,249-byte HotSpot reference, with zero
+Java compilation during execution. The baseline-after observations are
+101.754, 98.256 and 103.222 ms (median **101.754 ms**); its paired TeaVM median
+is **25.143 ms**. The candidate is approximately 4.2–4.5% lower than the two
+baseline medians, although individual observations overlap. This remains
+approximately 3.88x TeaVM for this single sample. This justified screening the
+candidate on the unchanged full-loading workload, rather than another runtime
+change. The four fresh-process observations reject retention:
+
+| Revision in execution order | Music ms | Graphics ms | Combined ms | Paired TeaVM ms |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline `592f30f0` | 1494.771 | 428.094 | 1922.866 | 348.774 |
+| Candidate `16d603d9` | 1523.054 | 428.492 | 1951.546 | 347.823 |
+| Candidate `16d603d9` | 1498.001 | 422.338 | 1920.338 | 348.342 |
+| Baseline `592f30f0` | 1496.188 | 420.506 | 1916.695 | 348.951 |
+
+The candidate median is **1935.942 ms** versus **1919.780 ms** baseline,
+approximately 0.84% higher. There is no repeatable full-loading gain. The
+original floor sorter does execute in this workload (107,478 native entries,
+zero exits), so the feature is not merely optimizing an unused method.
+All four full-loading checks match
+`18:218292:2368412830:205:7597510:3045679678`, with zero attempted/completed
+execution-time Java compilation. Each comparison completes and exits 1 for
+failed 1.10x parity; these are neither timeouts nor workload crashes.
+
+```bash
+# Each command twice, baseline/candidate/candidate/baseline:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 592f30f0076c7e7b987cc03da95ba276786af4af --options diagnostic
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 16d603d93d84632f25cf2015be344de00390214b --options diagnostic
+```
+
+Withdrawal `9e3e1483` restores the retained runtime exactly; its seven-file
+focused array/codegen/retention suite passes **390/390**. The candidate,
+successive reduced controls and focused tests remain in experimental history;
+the consuming benchmark scripts remain useful. All raw measurements and
+fixture identities are in the same single `benchmark.json`, with the selected
+campaigns recorded under `optimizationTrials.nativeBooleanArrayPath`. The
+retained full-loading runtime is approximately **5.50x** TeaVM in these new
+controls. The target remains **1.10x**; no browser, FPS, total JavaScript heap
+or phone acceptance follows from these Node measurements. Master, selected
+bundles and deployed artifacts have not changed.
