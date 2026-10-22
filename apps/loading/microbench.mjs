@@ -12,6 +12,7 @@ import {selectBenchmarkRevision} from './benchmark-baseline.mjs';
 import {projectMeasurementFixture,readMeasurementFixture,fixtureStdinFlag,parseMeasurementResult,summarizeExecutionOutcome} from './measurement-fixture.mjs';
 import {captureBufferedWorkload,bufferedReplayArgs} from './buffered-replay.mjs';
 import {bufferedCallKinds,measureBufferedCallControl} from './buffered-call-controls.mjs';
+import {floatArrayKinds,measureFloatArrayControl} from './float-array-controls.mjs';
 
 const script=fileURLToPath(import.meta.url);
 const root=path.resolve(path.dirname(script),'../../../java-tools');
@@ -861,7 +862,9 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
   measurementFixtureSha256:hash(JSON.stringify(workerFixture.receipt)),
   harnessSha256:hash(fs.readFileSync(script)),loaderSha256:hash(fs.readFileSync(new URL('./archive-jvm.mjs',import.meta.url))),
   fixtureSha256:hash(JSON.stringify(classes)),fixtureKind:'class-inventory',sourceSha256:fixture.sourceSha256};
- if(linearKinds.has(engine)){
+ if(floatArrayKinds.includes(engine)){
+  Object.assign(result,measureFloatArrayControl(engine,name,count,fixture.seed,expected));
+ }else if(linearKinds.has(engine)){
   Object.assign(result,linearReadControl(name,count,engine));
  }else if(bufferedCallKinds.includes(engine)){
   assert.equal(name,'buffered-ready-helper','Native call controls use the direct original request stream');
@@ -1069,6 +1072,7 @@ if(command==='build')build();
 else if(command==='one')await one(...args);
 else if(command==='run')run(args[0],args.slice(1));
 else if(command==='run-jvm')run(args[0],args.slice(1),['jvm']);
+else if(command==='float-arrays')run(args[0],args.slice(1),floatArrayKinds);
 else if(command==='linear'){
  assert.ok(linearKinds.has(args[1]),'Select '+[...linearKinds].join(', '));
  run(args[0],args.slice(2),[args[1],'teavm']);
@@ -1080,4 +1084,4 @@ else if(command==='calls'){
  run(args[0],['buffered-ready-helper'],engines.length?engines:[...bufferedCallKinds,'teavm']);
 }
 else if(command==='inspect')await one('jvm',args[1],selectBenchmarkRevision(args[0]),'code',args[2]);
-else throw Error('Usage: microbench.mjs build | run [baseline|EXACT_REVISION] [CASE ...] | run-jvm EXACT_REVISION [CASE ...] | calls baseline|EXACT_REVISION [CALL_KIND ...] | linear baseline|EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | diagnose baseline|EXACT_REVISION CASE | inspect baseline|EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');
+else throw Error('Usage: microbench.mjs build | run [baseline|EXACT_REVISION] [CASE ...] | run-jvm EXACT_REVISION [CASE ...] | float-arrays EXACT_REVISION CASE ... | calls baseline|EXACT_REVISION [CALL_KIND ...] | linear baseline|EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | diagnose baseline|EXACT_REVISION CASE | inspect baseline|EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');

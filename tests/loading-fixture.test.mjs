@@ -117,3 +117,38 @@ test('native call controls preserve bit-stream values and partial state across e
  verifyCallControls(t,bufferedCallKinds.filter(kind=>kind!=='buffered-call-gc-parameter')));
 test('GC scalar state preserves bit-stream values, bounds exceptions and metadata refusals',t=>
  verifyCallControls(t,['buffered-call-gc-parameter']));
+
+test('float array element storage controls preserve arithmetic, aliases and Java bounds',async t=>{
+ const {floatArrayKinds,createFloatArrayControl}=await import('../apps/loading/float-array-controls.mjs');
+ if(!WebAssembly.validate(Uint8Array.of(0,97,115,109,1,0,0,0,1,5,1,0x5f,1,0x7f,0))){t.skip('requires Wasm GC');return;}
+ if(spawnSync('wasm-as',['--version']).error?.code==='ENOENT'){t.skip('requires Binaryen');return;}
+ const f=Math.fround,toInt=x=>Number.isNaN(x)?0:Math.max(-2147483648,Math.min(2147483647,Math.trunc(x)))|0;
+ const reference=(n,data,factors,out)=>{
+  let sum=0;
+  for(let i=0;i<n;i++){
+   const p=i&1023,q=(p+512)&1023,a=data[p],b=data[q],c=f(f(a-b)*factors[p]);
+   out[p]=c;out[q]=f(a+b);sum=(Math.imul(sum,33)+toInt(f(out[p]*1048576)))|0;
+  }return sum;
+ };
+ const data=Float32Array.from({length:1024},(_,i)=>(i-400)/256),factors=Float32Array.from({length:1024},(_,i)=>(i&31)/32);
+ for(const kind of floatArrayKinds)for(const name of ['butterfly-local','butterfly-no-readback']){
+  const c=createFloatArrayControl(kind,name),a=c.newArray(64,data),b=c.newArray(4160,factors),out=c.newArray(8256,new Float32Array(1024));
+  const expectedOut=new Float32Array(1024),expected=reference(1027,data.slice(),factors,expectedOut);
+  assert.deepEqual(c.exports.run(1027,a.store,b.store,out.store,10000),[-1,expected]);c.exports.copyOut(out.store);
+  assert.deepEqual(new Uint32Array(out.view.buffer,out.view.byteOffset,1024),new Uint32Array(expectedOut.buffer),'every finite output bit matches');
+  // Alias the complete output with the input, not a copied payload.
+  const alias=c.newArray(64,data),expectedAlias=data.slice(),aliasSum=reference(1027,expectedAlias,factors,expectedAlias);
+  assert.deepEqual(c.exports.run(1027,alias.store,b.store,alias.store,10000),[-1,aliasSum]);c.exports.copyOut(alias.store);
+  assert.deepEqual(new Uint32Array(alias.view.buffer,alias.view.byteOffset,1024),new Uint32Array(expectedAlias.buffer),'alias writes remain visible to later reads');
+  const input=data.slice();input[0]=2;input[512]=1;
+  const left=c.newArray(64,input),weights=c.newArray(4160,new Float32Array(1024).fill(0.5)),short=c.newArray(8256,[-9]);
+  assert.throws(()=>c.exports.run(1,left.store,weights.store,short.store,100),e=>e.type==='java/lang/ArrayIndexOutOfBoundsException'&&e.index===512&&e.length===1);
+  c.exports.copyOut(short.store);assert.equal(short.view[0],0.5,'first store precedes failure of the second store');
+  for(const index of [-1,1,2147483647,-2147483648])assert.throws(()=>c.exports.readOne(short.store,index),e=>e.type==='java/lang/ArrayIndexOutOfBoundsException'&&e.index===index&&e.length===1);
+  const empty=c.newArray(8256,[]);assert.deepEqual(c.exports.run(0,empty.store,empty.store,empty.store,10),[-1,0]);
+  assert.throws(()=>c.exports.run(1,left.store,weights.store,short.store,1),e=>e.type==='ControlFuelExhausted');
+  const zeroFactors=c.newArray(4160,[]),untouched=c.newArray(8256,[9]);
+  assert.throws(()=>c.exports.run(1,left.store,zeroFactors.store,untouched.store,100),e=>e.type==='java/lang/ArrayIndexOutOfBoundsException'&&e.index===0&&e.length===0);
+  c.exports.copyOut(untouched.store);assert.equal(untouched.view[0],9,'input/factor failures do not execute output stores');
+ }
+});
