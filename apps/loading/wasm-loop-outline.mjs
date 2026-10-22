@@ -72,13 +72,27 @@ export function outlineWat(source,{functionPrefix='',minimumMemoryOps=4,maxHelpe
    // The normal exit arm becomes the single post-call continuation.
    const done=fresh('$outline_done_'),region=['loop',label,...parts.slice(0,exitIndex).map(copy),
     ['if',copy(exit[1]),['then',['br',done]],copy(exit[3])],...parts.slice(exitIndex+1).map(copy)];
+   // Keep cold status exits in the caller. Their Java-frame snapshots often
+   // reference many values unrelated to the loop's arithmetic. A side-exit
+   // tag returns modified live values first, then runs the exact old branch.
+   const sideExits=[];
+   const splitCold=n=>{if(!Array.isArray(n))return n;
+    const then=n.find?.(child=>Array.isArray(child)&&child[0]==='then');
+    if(n[0]==='if'&&then&&!n.some(child=>Array.isArray(child)&&child[0]==='else')&&then.at(-1)?.[0]==='return'&&sideExits.length<16){
+     let unsafe=false;walk(then,child=>{if(child[0].startsWith('br')||['loop','try','try_table'].includes(child[0]))unsafe=true;});
+     if(!unsafe){const tag=sideExits.length+2;sideExits.push({tag,body:then.slice(1)});
+      return n.map(child=>child===then?['then',['outline.side_exit',String(tag)]]:splitCold(child));}
+    }
+    return n.map(splitCold);
+   };
+   const hotRegion=splitCold(region);
    const gets=new Set(),sets=new Set();let unsafe=false;
    const control=(n,scope)=>{if(!Array.isArray(n))return;
     if(['block','loop','if'].includes(n[0])&&typeof n[1]==='string'&&n[1].startsWith('$'))scope=[...scope,n[1]];
     if(['br','br_if'].includes(n[0])&&!scope.includes(n[1]))unsafe=true;
     for(const child of n)control(child,scope);
-   };control(region,[done]);
-   walk(region,n=>{
+   };control(hotRegion,[done]);
+   walk(hotRegion,n=>{
     if(n[0].startsWith('br_')&&n[0]!=='br_if'||n[0].startsWith('return_call')||
       ['try','try_table','throw','throw_ref','rethrow','delegate'].includes(n[0]))unsafe=true;
     if(n[0]==='return'&&n.length!==2)unsafe=true;
@@ -89,6 +103,7 @@ export function outlineWat(source,{functionPrefix='',minimumMemoryOps=4,maxHelpe
    const outsideGets=new Set();
    const outside=n=>{if(n===node||!Array.isArray(n))return;if(n[0]==='local.get')outsideGets.add(n[1]);for(const child of n)outside(child);};outside(fn);
    for(const item of continuation)outside(item);
+   for(const side of sideExits)for(const item of side.body)outside(item);
    const outputs=[...sets].filter(name=>outsideGets.has(name)),inputs=[...new Set([...gets,...outputs])];
    const used=new Set([...gets,...sets]);
    if([...used].some(name=>!types.has(name)||Array.isArray(types.get(name))&&types.get(name)[0]==='tuple')||
@@ -98,13 +113,15 @@ export function outlineWat(source,{functionPrefix='',minimumMemoryOps=4,maxHelpe
    const resultTypes=['i32','i32',...outputs.map(name=>types.get(name))];
    const returnValues=status=>tuple([int(1),status,...outputs.map(localGet)]);
    const rewriteReturns=n=>{if(!Array.isArray(n))return n;
+    if(n[0]==='outline.side_exit')return ['return',tuple([int(n[1]),int(0),...outputs.map(localGet)])];
     if(n[0]==='return')return ['return',returnValues(rewriteReturns(n[1]))];return n.map(rewriteReturns);};
    const helper=['func',helperName,...inputs.map(name=>['param',name,types.get(name)]),['result',...resultTypes],
     ...[...used].filter(name=>!inputs.includes(name)).map(name=>['local',name,types.get(name)]),
-    ['block',done,rewriteReturns(region)],tuple([int(0),int(0),...outputs.map(localGet)])];
+    ['block',done,rewriteReturns(hotRegion)],tuple([int(0),int(0),...outputs.map(localGet)])];
    const extract=slot=>['tuple.extract',String(resultTypes.length),String(slot),localGet(scratch)];
    const replacement=['block',['local.set',scratch,['call',helperName,...inputs.map(localGet)]],
     ...outputs.map((name,i)=>['local.set',name,extract(i+2)]),
+    ...sideExits.map(side=>['if',['i32.eq',extract(0),int(side.tag)],['then',...side.body]]),
     ['if',extract(0),['then',['return',extract(1)]]],...continuation];
    // New helper locals are private; all externally live writes are returned
    // exactly once. A thrown import never repeats effects or the continuation.
@@ -112,7 +129,7 @@ export function outlineWat(source,{functionPrefix='',minimumMemoryOps=4,maxHelpe
    fn.splice(declarationEnd,0,['local',scratch,['tuple',...resultTypes]]);
    // Top-level insertion may shift a candidate's index; find it by identity.
    parent[parent.indexOf(node)]=replacement;
-   helpers.push(helper);rows.push({function:fn[1],loop:label,helper:helperName,memorySites:memory,inputs:inputs.length,outputs:outputs.length});
+   helpers.push(helper);rows.push({function:fn[1],loop:label,helper:helperName,memorySites:memory,inputs:inputs.length,outputs:outputs.length,sideExits:sideExits.length});
    outlined=true;break;
   }
   if(!outlined)break;

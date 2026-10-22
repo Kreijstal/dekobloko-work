@@ -179,6 +179,7 @@ function inspect(revision,method='MusicDecoder.readBit()I'){
 function outline(revision){
  assert.match(revision,/^[0-9a-f]{40}$/);assert.notEqual(process.env.JVM_WASM_IMPORT_STATS,'1');
  const runId=crypto.randomUUID(),input=JSON.stringify(projectMeasurementFixture(read()));
+ const generatorRevision=execFileSync('git',['rev-parse','HEAD'],{cwd:path.resolve(here,'../..'),encoding:'utf8'}).trim();
  for(let sample=0;sample<3;sample++){
   const stdout=execFileSync(process.execPath,[...nodeArgs,path.join(here,'probe.mjs'),'slab','3-0.bin',revision,'vorbis',player,fixtureStdinFlag],{
    input,encoding:'utf8',maxBuffer:16*1024*1024,env:{...process.env,JVM_WASM_OUTLINE_DIAGNOSTIC:'1'}});
@@ -192,7 +193,7 @@ function outline(revision){
   assert.ok(changed&&changed.outputSha256!==inputSha,'Active decoder must use changed bytes');
   assert.equal(result.wasmOptimizer.preview.inputSha256,inputSha);
   const trial=(current.optimizationTrials.wasmLoopOutlining||={observations:[]});
-  trial.observations.push({...result,runId,sample,measuredAt:new Date().toISOString(),excludedFromAcceptance:true});
+  trial.observations.push({...result,runId,generatorRevision,sample,measuredAt:new Date().toISOString(),excludedFromAcceptance:true});
   fs.writeFileSync(receiptPath,JSON.stringify(current,null,2)+'\n');
   console.log('outline sample '+(sample+1)+': '+result.decodeMs.toFixed(3)+' ms; PCM exact; active module '+changed.outputSha256);
  }

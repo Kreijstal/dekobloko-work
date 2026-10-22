@@ -158,3 +158,23 @@ test('outer JS-tag handlers still catch throws through an outlined helper',()=>{
  assert.equal(exports.run(),-5);assert.equal(seen[0],thrown);
  throwing=false;assert.equal(exports.run(),42);assert.equal(seen.length,1);
 });
+
+test('cold exits preserve updated snapshots without capturing cold-only references',()=>{
+ const source=`(module(import "env" "spill"(func $spill(param i32 externref i32)))
+ (func $core(export "run")(param $n i32)(param $fuel i32)(param $token externref)(result i32)(local $i i32)
+ (loop $again
+  (local.set $fuel(i32.sub(local.get $fuel)(i32.const 1)))
+  (if(i32.le_s(local.get $fuel)(i32.const 0))(then(call $spill(i32.const 1)(local.get $token)(local.get $i))(return(i32.const -7))))
+  (if(i32.eq(local.get $i)(i32.const 2))(then(call $spill(i32.const 2)(local.get $token)(local.get $i))(return(i32.const -9))))
+  (if(i32.ge_s(local.get $i)(local.get $n))(then(return(local.get $i)))
+   (else(local.set $i(i32.add(local.get $i)(i32.const 1)))(br $again))))))`;
+ const token={identity:'snapshot'},seen=[],failure={identity:'spill-throw'};let throwing=false;
+ const result=build(source,{}, {env:{spill:(tag,ref,i)=>{seen.push([tag,ref,i]);if(throwing)throw failure;}}});
+ const helper=parseWat(result.wat).find(n=>Array.isArray(n)&&n[0]==='func'&&n[1]===result.outlinedLoops[0].helper);
+ assert.ok(!helper.some(n=>Array.isArray(n)&&n[0]==='param'&&n[1]==='$token'),'cold-only reference stays in the caller');
+ assert.equal(result.outlinedLoops[0].sideExits,2);
+ assert.equal(result.exports.run(1,100,token),1);assert.deepEqual(seen,[]);
+ assert.equal(result.exports.run(5,100,token),-9);assert.deepEqual(seen,[[2,token,2]]);
+ assert.equal(result.exports.run(5,2,token),-7);assert.deepEqual(seen.at(-1),[1,token,1]);
+ throwing=true;assert.throws(()=>result.exports.run(5,2,token),e=>e===failure);assert.deepEqual(seen.at(-1),[1,token,1]);
+});
