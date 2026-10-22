@@ -38,7 +38,7 @@ test('captured stream validates dimensions, per-record sizes and truncation',()=
  const window=Buffer.from(input);window.writeInt32BE(9,(5+16+3)*4);assert.throws(()=>inspectCapture(window,expected));
 });
 test('transform workers receive only pinned inputs, never accumulated history',()=>{
- const fixture={sourceSha256:'source',kernelClassSha256:'class',inputSha256:'input',expectedSha256:'output',records:682,floatWords:100};
+ const fixture={sourceSha256:'source',kernelClassSha256:'class',inputSha256:'input',expectedSha256:'output',records:682,floatWords:100,setupKind:'original-table-generation',setupRegionSha256:'setup',reverseRegionSha256:'reverse'};
  for(const key of ['runs','source','capture','diagnostics'])Object.defineProperty(fixture,key,{get(){throw Error('history accessed');}});
- assert.deepEqual(projectMeasurementFixture({mdctBenchmark:fixture}),{mdctBenchmark:{sourceSha256:'source',kernelClassSha256:'class',inputSha256:'input',expectedSha256:'output',records:682,floatWords:100}});
+ assert.deepEqual(projectMeasurementFixture({mdctBenchmark:fixture}),{mdctBenchmark:{sourceSha256:'source',kernelClassSha256:'class',inputSha256:'input',expectedSha256:'output',records:682,floatWords:100,setupKind:'original-table-generation',setupRegionSha256:'setup',reverseRegionSha256:'reverse'}});
 });
