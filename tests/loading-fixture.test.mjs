@@ -4,6 +4,7 @@ import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {projectMeasurementFixture,parseMeasurementResult,recordProbeObservation,summarizeExecutionOutcome} from '../apps/loading/measurement-fixture.mjs';
 import {validateBufferedWorkload,bufferedReplayArgs} from '../apps/loading/buffered-replay.mjs';
+import {bufferedCallKinds,bufferedCallSources,measureBufferedCallControl} from '../apps/loading/buffered-call-controls.mjs';
 
 test('worker projection preserves inputs without traversing accumulated profiles',()=>{
  const forbidden=()=>{throw Error('history must stay in the recorder');};
@@ -68,4 +69,27 @@ test('reader replays preserve exact request order and reject malformed wrapper m
  const large=Buffer.alloc(123456,1),chunks=bufferedReplayArgs(fixture(large));
  assert.ok(chunks.length>1&&chunks.every(chunk=>chunk.length<=60000));
  assert.deepEqual(Buffer.from(chunks.join(''),'hex'),large,'chunking never wraps or repeats the request stream');
+});
+test('native call controls preserve bit-stream values and partial state across every call form',t=>{
+ if(!WebAssembly.JSTag){t.skip('Native call controls require JavaScript exception tags');return;}
+ const assembler=spawnSync('wasm-as',['--version']);
+ if(assembler.error?.code==='ENOENT'){t.skip('Native call controls require Binaryen wasm-as');return;}
+ assert.equal(assembler.status,0,assembler.stderr?.toString());
+ const input=Buffer.concat([Buffer.alloc(9),Buffer.from([0xa6,0x39,0xf0])]);
+ const requests=Buffer.from([1,2,3,5,136,3,2]);
+ const digest=value=>createHash('sha256').update(value).digest('hex');
+ const workload={encoded:requests.toString('base64'),requests:requests.length,
+  traceSha256:digest(requests),inputSha256:digest(input)};
+ // Independent oracle: extract non-overlapping prefixes from a known bit string.
+ const bits='101001100011100111110000';let at=0,sum=0;
+ for(const code of requests){const width=code&31;sum=(Math.imul(sum,33)+parseInt(bits.slice(at,at+width),2))|0;at+=width;}
+ assert.equal(at,24);const finalState=[0,0xa639f0,12,3];
+ const expected=[finalState.reduce((value,field)=>(Math.imul(value,31)+field)|0,sum),...finalState];
+ const reader=bufferedCallSources(bufferedCallKinds[0]).readerCore;
+ for(const kind of bufferedCallKinds){
+  assert.equal(bufferedCallSources(kind).readerCore,reader,'The same reader arithmetic and field operations remain');
+  const result=measureBufferedCallControl(kind,input,workload,requests.length,expected);
+  assert.equal(result.checksum,expected[0]);assert.deepEqual(result.bufferedState,expected.slice(1));
+  assert.equal(result.postTimerBoundsChecks,2);assert.equal(result.postTimerNoRefillCheck,true);
+ }
 });

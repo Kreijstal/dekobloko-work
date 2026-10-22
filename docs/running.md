@@ -8023,3 +8023,80 @@ node --test tests/loading-fixture.test.mjs tests/loading-statistics.test.mjs
 node --check apps/loading/microbench.mjs
 node --check apps/loading/probe.mjs
 ```
+
+### Measure the native call boundary without changing the JVM
+
+`apps/loading/buffered-call-controls.mjs` generates a small native reader and
+caller over the same 490,954 original requests and pinned input. Three forms
+share identical reader instructions: a same-module call, an imported Wasm
+function and a table call to that native function in another instance. A
+fourth table form adds a status/value return and a caller status check. Its
+reader arithmetic and field operations are generated from the same source;
+only the return protocol differs. Both cross-instance forms share memory with
+the caller; the table stores the exported Wasm function itself, with no JS
+wrapper on the measured call edge.
+
+These controls retain explicit input bounds checks, signed reader arithmetic,
+field-write order and fuel checks. They are **valid-data controls**, not Java
+implementations: state is a linear-memory address, widths are packed bytes,
+and they omit Java object metadata, class initialization guards, frame spills
+and interpreter recovery. They cannot establish Java exception/deoptimization
+correctness or runtime parity. This distinction also prevents treating their
+absolute difference from TeaVM as a complete cost attribution.
+
+Each worker constructs modules and installs data before its timer, then reads
+the stream once. It independently matches checksum `1418269787` and state
+`[1,1304428078,87150,87141]` from the original Java oracle. After timing, it
+checks negative/end input indices through the selected caller, preserving all
+reader fields on failure, and consumes buffered bits with exhausted input.
+No measured guest warmup or request wrapping occurs. All three original forms
+retain exactly the same generated source and Wasm hashes when the status
+variant is added; the common reader source hash is
+`159489d1b998dd7383ab16837bcee7ffc903846218b9c8701bd5df6abc9cc911`.
+
+Medians from separate batches, three fresh processes per form, CPU 2, 1-GiB
+old-space and eager optimizing Wasm on both controls and TeaVM:
+
+| Batch, ms | Local | Wasm import | Table | Table + status | TeaVM |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Initial | 2.257 | 2.585 | 2.723 | unavailable | 1.759 |
+| Repeat | 2.534 | 2.815 | 2.769 | unavailable | 1.752 |
+| Status control | 2.256 | 2.888 | 2.741 | 2.743 | 1.743 |
+| Status repeat | 2.878 | 2.925 | 2.769 | 2.856 | 1.778 |
+
+The table edge has a modest, variable cost here; it does not reproduce the
+actual reader's multi-fold gap. Adding status return/checking does not show a
+stable substantial penalty. The last batch's local/table ordering reverses,
+so do not infer a precise inlining benefit or a general cross-instance cost
+from these short timings. These observations give no reason to rewrite the
+runtime return protocol. The remaining object-transfer and entry bookkeeping
+need their own controls, matched to emitted code. The excluded code inspection
+confirms that the real compact entry consumes an externref metadata global,
+checks class readiness, allocates an entry identity, polls fuel and uses a
+status/value return; none of those costs is assumed equal to the table edge.
+
+The first original-stream check rejects the control because it omitted the
+fixture's final-state checksum fold; the reader state itself already matches.
+The fold now runs after timing, as in Java. The status extension's focused test
+also catches the missing Binaryen multivalue feature switch before timing.
+Neither failure contributes accepted timing evidence. The tests use an
+independent bit-string oracle and exercise every call form. Execution tests
+require Binaryen `wasm-as` and native JS exception tags; hosts lacking either
+report a prerequisite skip. This host passes **10/10 tests with zero skips**.
+
+```bash
+# Three fresh processes per form, reverse form order in the middle group.
+# Repeat the exact command for an independent batch; Java/TeaVM artifacts stay pinned.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs calls 592f30f0076c7e7b987cc03da95ba276786af4af
+node --test tests/loading-fixture.test.mjs tests/loading-statistics.test.mjs
+node --check apps/loading/buffered-call-controls.mjs
+node --check apps/loading/microbench.mjs
+# Inspection is excluded from timing and overwrites only the current Wasm view:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs inspect 592f30f0076c7e7b987cc03da95ba276786af4af buffered-ready-helper 'MicroBufferedReader.readBits('
+```
+
+The same single report stores all 54 accepted observations and their artifact
+hashes under `microbenchmarks.runs`; its summary is nested in
+`optimizationTrials.bufferedReaderReplay.receiverEntry.nativeCallControls`.
+There is no runtime ABI change, new selected artifact, generated output in Git
+or deployment. Full-loading 1.10x parity remains unmet.

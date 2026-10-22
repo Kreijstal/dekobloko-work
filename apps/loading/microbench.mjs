@@ -10,6 +10,7 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 import {loadArchivedJvm} from './archive-jvm.mjs';
 import {projectMeasurementFixture,readMeasurementFixture,fixtureStdinFlag,parseMeasurementResult,summarizeExecutionOutcome} from './measurement-fixture.mjs';
 import {captureBufferedWorkload,bufferedReplayArgs} from './buffered-replay.mjs';
+import {bufferedCallKinds,measureBufferedCallControl} from './buffered-call-controls.mjs';
 
 const script=fileURLToPath(import.meta.url);
 const root=path.resolve(path.dirname(script),'../../../java-tools');
@@ -861,6 +862,10 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
   fixtureSha256:hash(JSON.stringify(classes)),fixtureKind:'class-inventory',sourceSha256:fixture.sourceSha256};
  if(linearKinds.has(engine)){
   Object.assign(result,linearReadControl(name,count,engine));
+ }else if(bufferedCallKinds.includes(engine)){
+  assert.equal(name,'buffered-ready-helper','Native call controls use the direct original request stream');
+  Object.assign(result,measureBufferedCallControl(engine,codecInput,fixture.bufferedWorkload,count,fixture.bufferedReferences[count]),{
+   callControlHarnessSha256:hash(fs.readFileSync(new URL('./buffered-call-controls.mjs',import.meta.url)))});
  }else if(engine==='teavm'){
   const wasm=fs.readFileSync(path.join(directory,'teavm/micro.wasm'));
   assert.equal(hash(wasm),fixture.wasmSha256);
@@ -1054,5 +1059,6 @@ else if(command==='linear'){
  run(args[0],args.slice(2),[args[1],'teavm']);
 }
 else if(command==='diagnose')diagnose(...args);
+else if(command==='calls')run(args[0],['buffered-ready-helper'],[...bufferedCallKinds,'teavm']);
 else if(command==='inspect')await one('jvm',args[1],args[0],'code',args[2]);
-else throw Error('Usage: microbench.mjs build | run EXACT_REVISION [CASE ...] | linear EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | diagnose EXACT_REVISION CASE | inspect EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');
+else throw Error('Usage: microbench.mjs build | run EXACT_REVISION [CASE ...] | calls EXACT_REVISION | linear EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | diagnose EXACT_REVISION CASE | inspect EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');
