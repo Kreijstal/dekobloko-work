@@ -11624,3 +11624,164 @@ change must select an original hot music kernel before full loading is timed.
 Reuse the saved call/status/GC-field controls and rejected variants when deciding
 whether a proposed representation or call-boundary change is actually new; do
 not infer that removing the remaining terminal float cast will close this gap.
+
+### Revocable boolean storage without per-call validation (2026-10-23)
+
+The previous loop-entry cast turn made progress by finding a real cache bug and
+rejecting a component-only speedup. The next experiment uses existing reader and
+boolean evidence, not new CPU attribution or unchanged baseline/oracle runs.
+The rejected boolean implementation repeatedly validated ordinary TypedArray
+metadata at short method boundaries (saved native-path control median 78.997 ms,
+saved checked-path control 109.771 ms). That cost is distinct from its efficient
+large parameter loop. TeaVM's typed boolean arrays need neither this JS metadata
+boundary nor repeated descriptor checks.
+
+Source `e3bc5a10260e49a4b126b0c3172b649816f4f0a7` gives allocator-created boolean
+arrays a revocable capability. The existing two-word array header carries a
+negative encoded pointer to **eight native bytes per array**: validity and data
+base. Boolean Wasm accesses check validity, retain Java bounds/fuel behavior,
+normalize nonzero loads and mask stores. Metadata edits revoke validity before
+any host callback; a cached pointer can therefore fall back at the original
+access even when other caches survive the callback. Future metadata queries
+refuse the revoked pointer. Signed bytes and booleans keep distinct semantics;
+known nonboolean byte sources do not get the additional boolean arm. Static
+and instance headers are reused; there is no per-call scratch publication,
+descriptor query, epoch or new user option. Missing ownership, spent heaps or
+unavailable reclamation retain checked storage.
+
+A draft that revoked only published headers was replaced before timing: local
+copies can outlive a host callback. The final capability word covers those
+copies directly and eliminates subscriber lists. Its wrapper is weakly indexed,
+uses ordinary heap finalization, and never exposes raw backing storage through
+callback array arguments or self-returning TypedArray methods. Species/custom
+join methods revoke before their receiver could escape. The supported array
+recognizer, generated JS lookup, Java clone, class transport and portable state
+codec recognize the wrapper. Portable state preserves backing bytes and sharing;
+workers transport a view rather than attempting to clone a Proxy. This is a
+representation experiment, not proof of all browser/native integration surfaces.
+It does not remove every runtime check or claim that public host metadata is a
+compile-time constant.
+
+The focused 13-file suite passes **965/965 assertions**; the final dedicated
+file passes **90/90**, including additional interop and real fuel-slice tests.
+Tests cover noncanonical backing bytes, masked stores, zero import/query counts
+across 1,000 actual native helper entries, instance fields, a host callback
+revoking an already-cached pointer, exact throwable identity/getter ordering,
+reference sharing, Java clone, worker packets, snapshots, weak ownership and
+collection. Forced three-unit slices revoke metadata between native entries,
+preserve all 64 preceding effects exactly once, return the correct result,
+release the frame and compile no Java during execution. Test-only child
+`01b3827ac5a230145c55eff800b065b45e9b71b4` preserves that extra fuel coverage;
+performance observations retain the runtime revision actually executed.
+
+```bash
+# java-tools: 965/965.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/revocableBooleanArrays.test.js test/nativeStaticReferenceCell.test.js test/wasmHeapArrays.test.js test/nativeStaticReferenceCodegen.test.js test/nativeObjectFieldCodegen.test.js test/wasmParameterArrayAbi.test.js test/sharedFieldArrayCaches.test.js test/nativeReferenceArray.test.js test/wasmCompilerRetention.test.js test/wasmHeapGrowth.test.js test/arraycopyTypedViews.test.js test/classMirrorTransport.test.js test/saveState.test.js
+# java-tools: final dedicated cases, 90/90.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/revocableBooleanArrays.test.js
+# Deko: syntax checks, both pass.
+node --check apps/loading/microbench.mjs
+node --check apps/loading/probe.mjs
+# Separate changed-source diagnostics, excluded from timing.
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs one jvm boolean-field-call e3bc5a10260e49a4b126b0c3172b649816f4f0a7
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/probe.mjs slab 3-0.bin e3bc5a10260e49a4b126b0c3172b649816f4f0a7 vorbis /home/kreijstal/.cache/dekobloko/geoblox-loading
+# Sequential, changed JVM only; no workload warmup/replay.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs run-jvm e3bc5a10260e49a4b126b0c3172b649816f4f0a7 boolean-field-call boolean-array
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/vorbis.mjs run-jvm e3bc5a10260e49a4b126b0c3172b649816f4f0a7
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision e3bc5a10260e49a4b126b0c3172b649816f4f0a7 --options diagnostic
+```
+
+The original small call diagnostic takes **2,000,000 native helper entries**,
+with no checked element or metadata imports in that helper. Checksum remains
+`1489330464`. Timing results (Node22.23.2, CPU2, 1 GiB old-space and eager Wasm):
+
+| Changed-source control | Three samples ms | Median ms |
+| --- | --- | ---: |
+| One million boolean field-call iterations | 13.427395, 17.058317, 16.390680 | 16.390680 |
+| One million boolean parameter-loop iterations | 3.540895, 3.811418, 3.963114 | 3.811418 |
+| Largest original Vorbis decode | 88.794122, 83.144397, 81.285937 | 83.144397 |
+
+The short-call median is 79.25% below the historical earlier native boolean
+implementation; this historical comparator has its own fixture/revision cohort.
+The original decoder median is **13.47% below** the saved f2 median 96.087914 ms.
+Every PCM byte matches the saved 348,249-byte reference, with zero execution-time
+Java compilation. A separate diagnostic selects six boolean sites in the original
+floor sorter (14,322 native entries), seven in the floor-curve method (682) and
+one in the packet decoder (682), with zero native exits/throws in those methods.
+That diagnostic's elapsed time is excluded from the timing cohort. The top-120
+import census cannot prove that every rare import is zero.
+
+One initial diagnostic invocation used `all` instead of the required `3-0.bin`;
+it failed argument validation before JVM preparation or Java execution, then
+was corrected. The source, diagnostic and timing evidence remain in the one
+existing `benchmark.json`; no new JSON, generated Java, binaries or WAT enter Git.
+
+| Original-capability full sample | Music ms | Graphics ms | Total ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1468.748070 | 398.815596 | 1867.563666 |
+| 2 | 1478.208429 | 365.782243 | 1843.990672 |
+| 3 | 1819.635224 | 389.689304 | 2209.324528 |
+
+Full median **1867.563666 ms** is just **0.34% below** saved f2 (1873.955270),
+within the observed spread; it does not establish a full-loading improvement.
+Every checksum matches and late compilation remains zero.
+
+A separate full diagnostic confirms selection: **107,478** complete native
+floor-sort entries, **5,118** floor-curve entries and **5,119** packet entries;
+zero exits/throws in these three methods. The retained top-120 census contains
+none of the high-volume checked boolean load/store imports or floor-sort
+base/length queries present in the previous saved census. Its minimum retained
+positive count is 53, so this does not prove every rare import is zero. The
+10,481,664 sine imports and other remaining operations are counts, not CPU-share
+attribution. The optimization being unused is therefore not the explanation for
+its lack of full-loading benefit.
+
+```bash
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/probe.mjs slab all e3bc5a10260e49a4b126b0c3172b649816f4f0a7 loading /home/kreijstal/.cache/dekobloko/geoblox-loading
+```
+
+Review found that the new JavaScript recognizer was also called on ordinary
+arrays in the `arrayData` helper and Java clone. Refinement
+`d94662da92b2a657ff36e4ade6041633237d75ae` restores their old direct fast checks;
+only wrapped/unknown storage needs the new recognizer. The native boolean
+emitter is untouched. The focused boolean/portable-state command passes
+**102/102** assertions. Only full loading is retimed because that is the changed
+path; neither reduced control nor baseline/oracle executes again.
+
+```bash
+# java-tools: 102/102.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/revocableBooleanArrays.test.js test/saveState.test.js
+# Deko: changed source only, three fresh sequential processes.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision d94662da92b2a657ff36e4ade6041633237d75ae --options diagnostic
+```
+
+| Fast-check-refinement full sample | Music ms | Graphics ms | Total ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1658.359627 | 409.474088 | 2067.833715 |
+| 2 | 1499.114374 | 418.406501 | 1917.520875 |
+| 3 | 1744.136405 | 405.307770 | 2149.444175 |
+
+All checksums match, with no late compilation. Median **2067.833715 ms** is
+**10.35% slower** than the saved f2 median and **5.7481x** recorded TeaVM.
+The change does not establish a performance gain; aggregate measurements do not
+identify why the code-local fast-check refinement changes this cohort.
+
+**Withdraw the boolean prototype** at
+`fbb3094993bc50e5538ef5546087f7a9618a9be9`, preserving the already-tested prior
+reference-array cache correctness fix. No restored-source test, timing or
+fingerprint runs. Source/tests remain in the experimental parent commits and
+all measurements remain in the single canonical report, under
+`optimizationTrials.revocableBooleanStorage`. The f2 performance baseline,
+java-tools master, selected artifacts and deployment are unchanged. The 1.10x
+objective remains unmet; browser/phone FPS, aggregate heap and stability gates
+are unverified. No generated output is committed.
+
+This rules out high-volume boolean imports as a sufficient fix, even after
+avoiding repeated JS validation and proving coverage in the original decoder.
+Do not resurrect the unchanged prototype or repeat CPU attribution. Before
+another full campaign, compare actual generated call structures, not just source
+operation counts: the reduced field-call fixture passes literal recursion depth
+one, which may let TeaVM eliminate call boundaries that our control explicitly
+retains. Inspect the saved TeaVM WAT for that possibility before treating its
+1.11 ms result as a call-ABI comparison. This is a hypothesis, not an observed
+TeaVM transformation or a proved cause of the full-loading discrepancy.
