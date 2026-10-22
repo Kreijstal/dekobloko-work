@@ -10815,3 +10815,118 @@ static stores as barriers, so restoring that withdrawn prototype unchanged
 would not address this body. Preserve native ownership, static-cell writeback
 synchronization, Java bounds/exception behavior, fuel and original-frame recovery.
 No new CPU-attribution campaign or unchanged-baseline timing is needed.
+
+### Guarded regions within recovered inline loops (2026-10-22)
+
+The rolling comparator remains `f2c8ad04a4b035ee863cd3abc29ae44c5b88f083`.
+Its recorded original-sample median is **96.087914 ms** and full-loading median
+is **1873.955270 ms**. Those JVM, TeaVM and HotSpot baselines are reused;
+no unchanged-baseline timing, replay or restoration check is needed.
+
+Generic candidate `5e367914475d4d4635fa23dd23249a7d72908c97` adds one bounded,
+callback-free region inside a recoverable inline activation. A positive outside
+entry guard proves private receiver storage, primitive-array ownership, integer
+static-cell read/write capabilities and initialization readiness. It removes
+repeated representation and capability tests inside the region. Java bounds,
+exceptions, fuel donation, preceding effects, and static-cell value/tag writeback
+remain. No game identifiers, new flags or duplicate unchecked body are added.
+Fresh ownership is queried after prefixes that might invoke accessors; a
+callback-free prefix may reuse the existing incoming receiver proof.
+
+The real `VorbisCodebook.readVector()[F` selects a seven-block region with four
+array sites, two integer cells, one object array and one static array. All
+**134,216** native entries enter the region, with zero native exits or throws.
+Every PCM byte matches the recorded reference; no Java code compiles late.
+Instrumented module SHA-256:
+`40569d122ff5390d2587b9165dc1ea548e500d657c01f8287341e205e0641a67`.
+The matched existing TeaVM artifact remains recorded with the diagnostic.
+
+A combined test run initially failed 11 later array-leaf assertions. The cause
+was the heap-array test harness: two constructions in one test saved environment
+variables twice, then FIFO teardown restored the second construction's inherited
+`JVM_WASM_HEAP=1` after the original environment. Configuring heap/structured
+execution per VM removes that leak. Candidate `b446d0328e29ca6cc2dfb055f3d76318d96f0e5a`
+adds only that harness fix to the preceding runtime. The exact passing command:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeInlineArrayRegion.test.js test/inlineAtomicLeaf.test.js test/inlineActivationResume.test.js test/nativeStaticArrayBody.test.js test/wasmHeapArrays.test.js test/canonicalDirectFrames.test.js test/wasmCalleeRanking.test.js test/wasmCompilerRetention.test.js test/structuredLoopResume.test.js test/wasmDeepInline.test.js test/wasmInstanceInline.test.js test/wasmStaticInlineHandlers.test.js test/inlineFinalReceiverCalls.test.js test/wasmInlineInitialization.test.js test/wasmColdIntegerInline.test.js test/wasmInlineBudget.test.js
+```
+
+Result: **1415/1415 assertions pass**. Coverage includes native and unknown or
+foreign storage, custom field/static accessors, replaced field containers,
+zero-trip null dependencies, late bounds faults after preceding stores, fuel
+handoff to original inner frames, changed references on resume, and collection
+of receivers, donated frames and compiler SSA graphs with modules still live.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 5e367914475d4d4635fa23dd23249a7d72908c97 'VorbisCodebook.readVector()[F'
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm b446d0328e29ca6cc2dfb055f3d76318d96f0e5a
+```
+
+Fresh uninstrumented samples: **98.923369, 101.514519, 93.515256 ms**; median
+**98.923369 ms**, **1.02951x** recorded f2. Run ID
+`52d2047b-9fb7-4943-ab9c-3d355672b037`. All PCM exact, zero late compilation.
+This does **not** establish an improvement and does not advance the baseline.
+No full-loading cohort is justified by this result alone. Smaller WAT and fewer
+explicit checks do not establish a runtime speedup.
+
+WAT still had cached-read hit/refill branches within the guarded loop. Refinement
+`5606b42696d63ed69a8a6c688387ee797cc1aa68` reads the proved native fields directly,
+without repeating those branches or capturing their metadata again. It keeps
+reference values available for original-frame recovery; consumers beyond the
+region refill ordinary metadata lazily on their original paths. Its affected
+validation command passes **576/576 assertions**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeInlineArrayRegion.test.js test/inlineAtomicLeaf.test.js test/inlineActivationResume.test.js test/nativeStaticArrayBody.test.js test/nativeStaticReferenceCodegen.test.js test/nativeObjectFieldCodegen.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 5606b42696d63ed69a8a6c688387ee797cc1aa68 'VorbisCodebook.readVector()[F'
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 5606b42696d63ed69a8a6c688387ee797cc1aa68
+```
+
+The refinement diagnostic retains the same region and **134,216** complete
+native entries, with zero exits/throws and exact PCM. Changed module SHA-256:
+`d671a2b8d45c13559b560a2feec171aaa1f8e3e7b1d6665427c78ad059b33d54`.
+Diagnostics are excluded from timed samples. Raw observations and decisions stay
+in the single canonical `benchmark.json` under `optimizationTrials.inlineNativeArrayRegion`;
+generated Java, binaries and WAT are not committed.
+
+Direct-read original-sample results are **98.776644, 89.949195, 90.775747 ms**,
+median **90.775747 ms**, **5.53% below** recorded f2; run ID
+`83bcad80-e2f0-437a-8856-9a7b0f3e501c`. All PCM exact, no late compilation.
+That component signal justified this changed-source full-loading screen:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision 5606b42696d63ed69a8a6c688387ee797cc1aa68 --options diagnostic
+```
+
+| Full sample | Music ms | Graphics ms | Loading ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1476.526368 | 393.297358 | 1869.823726 |
+| 2 | 1430.247280 | 386.824984 | 1817.072264 |
+| 3 | 1815.175263 | 411.523895 | 2226.699158 |
+
+All three match checksum `18:218292:2368412830:205:7597510:3045679678`, with
+zero late Java compilation. Each uses the region for **883,256** complete native
+vector reads, with zero native exits or throws. The full median is
+**1869.823726 ms**, only **0.22% below** recorded f2 (1873.955270 ms), with a
+slower third sample. This is within observed variation, not convincing evidence
+of a full-loading improvement. No sample is discarded.
+
+**Withdraw both region variants.** Experimental source history preserves them;
+`d36fa3904c40b1e10297507c0f0aca0ab32085e7` restores the known f2 runtime while
+retaining the already-validated per-VM heap-fixture correction. Do not run
+restoration tests, timings or source fingerprints. The rolling performance
+baseline stays f2; java-tools master and production selection are unchanged.
+The generic observation fields in Deko `bbe64d4` remain backward-compatible
+(empty when a compiler does not report regions). This pass is recorded in
+`optimizationTrials.inlineNativeArrayRegion` in the same canonical report.
+
+The withdrawn candidate's full ratio is **5.198x** recorded TeaVM; retained f2
+is **5.209x**. The **1.1x goal remains unmet**. No browser presented-FPS, phone,
+aggregate-heap or stability acceptance claim follows from these headless runs.
+The next bounded direction is recoverable inlining of **static loop callees**:
+the current root-static expansion refuses non-counted loops, so a small wrapper
+still links to a stateful reader loop. Inspect the existing combined TeaVM flow
+and recorded call counts, prove original-frame/fuel recovery and class-init
+ordering on a small generic fixture, then measure changed source. Do not restore
+these same guarded-region variants or remeasure retained baselines unchanged.
