@@ -205,6 +205,11 @@ try {
   ...(inspection?{inspection}:{}),
   ...(optimizer?{wasmOptimizer:optimizer.finishPreparation()}:{}),
   executionMethods:w.compiled.map(state=>({key:state.key,runs:state.runs,exits:state.exits,
+    nativeExitCount:state.meta?.directFrameContext?.exitCount??null,
+    directNativeExitCount:state.meta?.directFrameContext?.directExitCount??null,
+    nativeThrowCount:state.meta?.directFrameContext?.throwCount??null,
+    lastNativeExitStatus:state.meta?.directFrameContext?.lastExitStatus??null,
+    calleeNativeExitCount:state.callee?.meta?.directFrameContext?.exitCount??null,
     omittedNativeBoundsCheckCount:state.meta?.omittedNativeBoundsCheckCount||0,
     crossBlockArrayFillCount:state.meta?.crossBlockArrayFillCount||0,
     arrayMetadataFlowStatus:state.meta?.arrayMetadataFlowStatus||'unavailable',
@@ -222,7 +227,7 @@ try {
     representationLoopBytes:state.meta?.representationLoopBytes||0,
     structured:!!state.meta?.structured,full:!!state.meta?.fullyCompiled,
     canonical:!!state.meta?.canonicalRun,directEntries:state.meta?.canonicalEntries?.value||0}))
-   .filter(state=>state.runs||state.directEntries),
+   .filter(state=>state.runs||state.directEntries||state.nativeExitCount||state.nativeThrowCount||state.calleeNativeExitCount),
   heapUsage:j.wasmHeap?.usage(),
   ...(w.importStatsEnabled?{importCensus:w.compiled.flatMap(state=>[
     ['entry',state.meta],['callee',state.callee?.meta],['osr',state.osr?.meta]
