@@ -942,6 +942,7 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     fuelExits:s.fuelExits,nestedCalls:s.nestedCalls,nestedDeopts:s.nestedDeopts,
     full:!!s.meta?.fullyCompiled,canonical:!!s.meta?.canonicalRun,inlined:s.meta?.inlinedCalls,
     slabFieldSites:s.meta?.slabFieldSites,omittedSlabFillCount:s.meta?.omittedSlabFillCount||0,
+    parameterObjectSpecializationBytes:s.meta?.parameterObjectSpecializationBytes||0,
     slabGuardCount:s.meta?.slabGuardCount||0,slabGuardBytes:s.meta?.slabGuardBytes||0,
     nativeArrayReadReuseSites:s.meta?.nativeArrayReadReuseSites||0,
     booleanArrayCacheCount:s.meta?.booleanArrayCacheCount||0,

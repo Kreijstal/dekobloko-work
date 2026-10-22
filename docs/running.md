@@ -7902,3 +7902,124 @@ their existing lazy path. The current array-parameter versioning pass refuses
 object/field caches, so extending it requires a separate safety proof before
 timing. Use this exact replay as the first gate, then the unchanged archive and
 full-loading gates. The 1.10x full-loading objective remains unmet.
+
+### Select a receiver representation at the compact native entry
+
+The next reduced experiment uses the same original request stream, source,
+TeaVM artifact and state oracle above. It selects the native receiver storage
+once per helper entry, using only immutable metadata already transferred by
+the caller. It does not hoist Java field values or an object-storage query.
+Null, foreign and missing metadata retain the checked path. Array bounds,
+exception order, field stores and fuel checkpoints remain at their original
+positions. The generic compiler knows no game symbols or request data.
+
+The first prototype, `e8238681a062dd2925de2895d538eb107d6be13f`, also embeds
+this version in the ordinary function. Its helper medians improve, but the
+inline-field control rises from 4.041 to 4.473 ms. Its original-archive screen
+is mixed: cold 53.651 ms versus adjacent baselines 48.564/51.447, initialized
+49.804 versus 51.375/51.508. That form is not promoted.
+
+Revision `82c5f91c4db82ad699cf9d02316d8a1e832fdd8a` installs the alternative
+body only in compact native entries. The ordinary/resume body stays original;
+a binary regression compares its entire defined function body against output
+with the pass disabled. Existing compact-entry duplication limits also apply,
+with the original body or wrapper retained if the alternative does not fit.
+Each specialization has a fixed 4,096-byte accounting cap, not an application
+option. The real reader's extra-body accounting is 414 bytes; this is not a
+measurement of total generated-code or JavaScript heap usage.
+
+Three fresh-process pairs per case, one original stream per process, CPU 2,
+1-GiB old-space limit and eagerly optimized native Wasm on both engines:
+
+| Median ms | Direct helper JVM / TeaVM | Wrappers JVM / TeaVM | Inline fields JVM / TeaVM | Local state JVM / TeaVM |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline before the first form | 9.057 / 1.805 | 13.277 / 3.712 | 4.041 / 1.503 | 2.590 / 1.379 |
+| Compact-only candidate | 5.967 / 1.739 | 10.517 / 3.972 | 4.091 / 1.503 | 2.546 / 1.584 |
+| Fresh baseline after | 8.920 / 2.258 | 14.042 / 3.841 | 4.275 / 1.539 | 2.618 / 1.645 |
+
+The candidate reader retains all 490,954 native entries and zero exits. The
+instrumented first-form diagnostic records 490,954 native receiver selections;
+its timing is excluded. All timed checksums and four reader-state values match
+the original-method oracle, with zero guest-time Java compilation. TeaVM's
+baseline timing also varies, so these batches support a helper improvement,
+not a precise transferable percentage or full-loading parity.
+
+The unchanged original archive is the next gate, still one decode per fresh
+process. In B/C/B order, cold JVM medians are **50.609 / 48.510 / 52.398 ms**;
+initialized-owner medians are **51.062 / 51.201 / 54.333 ms**. Paired TeaVM
+medians are 10.843 / 10.806 / 10.222 ms cold and 9.781 / 10.564 / 10.525 ms
+initialized. The cold result suggests a modest gain; the initialized result
+does not establish one. All outputs match. This justifies a full-loading check
+of this same candidate, rather than another runtime change.
+
+The focused compiler suite passes **626/626 assertions**, including positive
+native selection, budget refusal, null/plain/foreign fallback, checked getter
+side effects, bounds exception ordering, reference replacement and identity,
+exact wide values, fuel spills, resumption after field-container replacement,
+active compiled-body replacement and analysis collection. The binary check
+covers the ordinary/resume body; it is not a claim that every method's entire
+module remains byte-identical. Probe and microbench output now expose the
+retained specialization byte accounting as a scalar diagnostic.
+
+```bash
+# java-tools at 82c5f91c:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/parameterObjectVersion.test.js test/wasmCompilerRetention.test.js test/nativeObjectFieldCodegen.test.js test/nativeObjectForwarding.test.js test/nativeReferenceArray.test.js test/wasmParameterArrayAbi.test.js test/compactCanonicalFrames.test.js
+# dekobloko-work, candidate then baseline, three fresh pairs per case:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 82c5f91c4db82ad699cf9d02316d8a1e832fdd8a buffered-ready-helper buffered-ready-wrapped buffered-inline buffered-local
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af buffered-ready-helper buffered-ready-wrapped buffered-inline buffered-local
+# Archive screen: run these in baseline/candidate/baseline order.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af bzip-block bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 82c5f91c4db82ad699cf9d02316d8a1e832fdd8a bzip-block bzip-ready-owner
+node --check apps/loading/microbench.mjs
+node --check apps/loading/probe.mjs
+```
+
+Full loading then runs in B/C/C/B order, one fresh JVM/TeaVM pair per command:
+
+| Source | JVM loading ms | TeaVM loading ms | Paired ratio |
+| --- | ---: | ---: | ---: |
+| Baseline `592f30f0` | 2137.025 | 388.053 | 5.507x |
+| Candidate `82c5f91c` | 2050.244 | 375.046 | 5.467x |
+| Candidate `82c5f91c` | 2133.856 | 342.373 | 6.233x |
+| Baseline `592f30f0` | 2311.629 | 380.847 | 6.070x |
+
+The candidate's raw JVM median is 5.95% lower, but the median paired ratio is
+**5.850x versus baseline 5.788x**, about 1.06% worse. Neither estimator is near
+1.10x. These observations do not establish a transferable full-loading gain.
+All eight processes match the recorded asset/PCM result; all four JVM runs
+perform zero guest-time Java compilation. The candidate really installs the
+version in the original reader (3,605,524 direct entries) and Vorbis symbol
+reader (1,006,390 direct entries), both with zero exits. Missing compilation
+or an unused optimization does not explain this outcome.
+
+```bash
+# Execute in baseline/candidate/candidate/baseline order:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 592f30f0076c7e7b987cc03da95ba276786af4af --options diagnostic
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 82c5f91c4db82ad699cf9d02316d8a1e832fdd8a --options diagnostic
+```
+
+Each command completes its measurements and exits 1 on the explicit 1.10x
+acceptance assertion; none crashes or times out. Prototype and tests remain
+in experimental Git history. Withdrawal
+`66866a0726a5532a19b75d34d560bffff6fa1054` restores runtime source exactly to
+`592f30f0`. JVM master, selected artifacts and deployment are unchanged. The
+single canonical report retains raw micro observations and the four full
+comparisons under `optimizationTrials.bufferedReaderReplay.receiverEntry`.
+The next small control should separate native call-boundary overhead from the
+reader body, using identical requests and helper instructions with local,
+imported and table calls. That is a measurement question, not authorization
+to change the runtime ABI without evidence. Browser/phone FPS, startup and
+aggregate peak-heap acceptance remain unverified.
+
+Post-withdrawal verification passes **486/486 assertions**; harness tests pass
+**9/9**, and both changed scripts pass `node --check`:
+
+```bash
+# java-tools at 66866a07:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmCompilerRetention.test.js test/nativeObjectFieldCodegen.test.js test/nativeObjectForwarding.test.js test/nativeReferenceArray.test.js test/wasmParameterArrayAbi.test.js test/compactCanonicalFrames.test.js
+git diff --exit-code 592f30f0076c7e7b987cc03da95ba276786af4af 66866a0726a5532a19b75d34d560bffff6fa1054 -- src
+# dekobloko-work:
+node --test tests/loading-fixture.test.mjs tests/loading-statistics.test.mjs
+node --check apps/loading/microbench.mjs
+node --check apps/loading/probe.mjs
+```
