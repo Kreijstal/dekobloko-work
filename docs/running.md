@@ -10178,3 +10178,157 @@ lifetimes). Start with singleton static origins in a closed body, preserve
 multi-origin phis and exact saved references across a yield/replacement, and
 inspect changed WAT/native code before timing a new candidate. This is an
 unimplemented hypothesis, not a measured explanation or acceptance claim.
+
+
+### Cold-only reference reconstruction and an initialization-matched component
+
+Trial `c00f19059370071eee109715006d652febad51b3` reconstructs array references
+with one transitive static-field origin at their actual reference/cold-spill
+uses. The closed-body proof excludes callbacks and reference replacement;
+volatile/custom storage retains its fallback. A bounded origin fixed point
+must complete before a fact is used. Multi-origin/cyclic swaps keep their
+actual reference and parallel metadata copies. No reference is captured early
+merely to retain it for a later spill. The normal fast array path uses the
+already-guarded headers. Six focused files pass **796 assertions**, including a
+suspension test where the static field is replaced: the spilled old array and
+reference identity survive, and the new array is untouched.
+
+On the old captured-table fixture, all 698,368 words match and 13 values are
+rematerialized, but the known cold Math handoff remains. Times 47.563, 45.427,
+48.015 ms do not establish a gain. A new **compile-only** native-code comparison
+executes neither backend's guest code: the candidate function is 20,880 native
+instruction bytes, 376 bytes of stack reservation and 58 safepoints; saved
+TeaVM function index 135 is 10,396 bytes, 248 bytes and 39 safepoints. These are
+static facts, not proof of CPU attribution or an execution-speed explanation.
+The native printer uses `--print-wasm-code-function-index` without the
+print-all flag; WAT reassembly disables Binaryen compact imports for Node 22.
+
+The old component loaded captured trig tables, omitting their original setup
+work. It therefore reached Math uninitialized, unlike the original music
+benchmark, where setup generates those tables before decoding. Keep all old
+observations in their original scope; do not relabel them as pure execution.
+The full-loading counter evidence still has no native packet-decoder exits,
+so this cold component transfer does not excuse the full-loading gap.
+
+The component generator now extracts the original table-generation loop from
+`MusicDecoder.decodeSetup`, uses the captured block sizes, and generates the
+actual tables once before timing. It also extracts the total primitive-integer
+bit-reversal slice of the original helper; that slice cannot throw the helper's
+RuntimeException catch. The timed transform arithmetic is unchanged. Captured
+table words are skipped in the input stream rather than loaded as dependencies.
+All captured rows and the exact output oracle are reused. The original decoder
+capture is **not rerun**. The changed generated setup/kernel is validated once
+with HotSpot against that cached oracle; TeaVM is rebuilt for this new source.
+Generated source/classes/Wasm remain outside Git in the one existing component
+directory. There is no repeated transform, warmup pass or special VM option.
+
+The new fixture identities are:
+
+- Generated source SHA-256: `480e34cec3b2342c8cfbc208c82ab7f63623abd3e7c4573910cdc5c92f8fedbf`.
+- Kernel class: `283e7b0726e8d1c409de9e1d030d5324339fc7bc906f14fca6a7b40e412d70a8`.
+- TeaVM artifact: `f2019b6faaeed336eadabff86f6bccdbdc127fbf138b146cee856babf211b298`.
+- Setup source region: `da12fe43fabe3f52453d2ff249dca0fe413ce2762cfc74ba557ee0d815a4303c`.
+
+The changed-fixture build and all **3 focused harness tests pass**. In a separate
+instrumented diagnostic, setup runs exactly once; all **682** timed transforms
+are native, with **zero actual native exits/throws**, and all **698,368** float
+words match. There is no Java compilation after main. Timed workers now require
+exactly the recorded number of transform entries, zero native exits/throws and
+one setup call. Missing native-exit counters cannot masquerade as zero.
+
+These are the **first measurements of the new fixture**, not another run of an
+unchanged baseline. Three fresh-process pairs use CPU 2, Node 22.23.2, 1 GiB
+old-space and eager optimizing Wasm, with no concurrent tests/profiling:
+
+| Backend on new fixture | Three execution times ms | Median ms |
+| --- | --- | ---: |
+| JVM trial `c00f190` | 22.276, 22.812, 26.395 | 22.812 |
+| New TeaVM artifact | 16.967, 17.185, 17.021 | 17.021 |
+
+Ratio **1.340x**, still above 1.1x. This narrows the native-transform comparison;
+it is **not** a full-loading result or evidence assigning the difference to
+reference reconstruction. The old fixture's timings are not comparable as a
+controlled speedup. Full-loading scope and acceptance remain unchanged.
+
+```bash
+# java-tools, c00f190: 796/796 assertions pass.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticArrayBody.test.js test/nativeStaticReferenceCodegen.test.js test/wasmCompilerRetention.test.js test/wasmParameterArrayAbi.test.js test/structuredLoopResume.test.js test/compactCanonicalFrames.test.js
+# Deko: 3/3 focused tests pass; rebuild reuses the original capture/oracle.
+node --test tests/loading-mdct.test.mjs
+node apps/loading/mdct.mjs rebuild
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs inspect c00f19059370071eee109715006d652febad51b3
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs run c00f19059370071eee109715006d652febad51b3
+```
+
+### Shared intrinsic readiness: no useful measured gain
+
+Trial `6aa664518de36afd802bd080cf91da35f056d71f` uses the existing callback-free
+proof to check intrinsic-owner readiness once at body/region entry. A cold guard
+hands off; it does not initialize the class early. Per-block checks can reuse
+that positive fact because no successful operation can invalidate it. This
+extends the earlier field-owner readiness facts to intrinsic calls rather than
+repeating the prior implementation unchanged.
+
+The same six-file suite passes **814 assertions**. New cases cover cold whole
+body refusal with no stores, cold zero-trip refusal without initialization,
+region prefix/tail effects exactly once, and initialization observing a preceding
+Java array store. The changed transform's diagnostic still has one setup call,
+682 native entries, zero native exits/throws, all float words exact and no late
+Java compilation. It records one shared intrinsic-owner guard and 13 reused
+readiness sites in total. Native instruction bytes are 20,688 with 376 bytes
+stack reservation and 56 safepoints; smaller static code is not acceptance.
+
+Only the changed JVM candidate is timed on the new fixture, reusing the just
+recorded JVM/TeaVM comparators: **22.634, 22.069, 26.807 ms**, median **22.634**.
+The observed 0.78% median reduction is within the spread. No original-music or
+full-loading campaign is justified by that result.
+
+```bash
+# Same six-file java-tools command above: 814/814 pass at 6aa6645.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs inspect 6aa664518de36afd802bd080cf91da35f056d71f
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs run-jvm 6aa664518de36afd802bd080cf91da35f056d71f
+node --check apps/loading/mdct.mjs
+node --check apps/loading/probe.mjs
+git diff --check
+```
+
+Both runtime experiments are **withdrawn** in
+`4436bbb046bf222429f48a4973cace5eb92891e7`; source/tests remain in experimental
+history. The corrected original-setup fixture and strict measurement checks are
+retained. No restored runtime test, timing or identity check follows. All data
+remain in the same report under `coldStaticArrayReferenceRematerialization` and
+`sharedIntrinsicReadiness`. Normal selection, runtime master and deployment are
+unchanged; the latest full-loading ratio is still **5.534x** recorded TeaVM.
+
+### Next coverage gap on the actual archive path
+
+Reuse the recorded full-call census: both music decode and archive output execute
+native helpers, but native status-exit counts alone do not exclude successful
+JS imports. Recorded full execution CPU time (1909.830 ms) closely tracks wall
+execution (1910.388 ms); the remaining time is not explained by scheduler waits.
+The saved original-music import census shows Boolean-array imports, reference
+array lookup, object metadata and static reference access outside the transform.
+These are operation counts, not CPU-share attribution. No new CPU profile runs.
+
+A new compile-only census of `Bzip2Decoder.emitBlockRuns` finds **29 blocks,
+78 SSA nodes, eight primitive-array operation sites, 21 object-field operations
+and one static array read**. Neither current whole-object nor static-region body
+proof selects it. The formal receiver is stable; its two terminal reference
+writebacks take the exact references read at entry. An initial census script
+tried to access the lazily loaded compiler too early; the corrected module-load
+hook compiles this method directly, with `executeInstruction` set to throw.
+**Zero Java instructions execute**, and main is never called. This is coverage
+inspection, not an archive baseline execution.
+
+The existing region proof can leave all object-field accesses and writebacks in
+the generic compiled prefix/tail, then guard the captured arrays for the pure
+array-storing loop. Its present **128-node / 16-memory-site minimum exceeds the
+entire helper**, which explains this exclusion. Investigate a generic admission
+rule for smaller array-storing loops with backedges, preserving the same native
+ownership, bounds, fuel, callback-boundary and fallback proofs. Start there
+rather than eliding reference writes or introducing a new mixed whole-object
+backend. Require foreign-array, partial-store/bounds, suspension and callback
+boundary tests; inspect actual coverage and time only changed archive candidates
+against existing recorded observations. The single report's
+`optimizationTrials.mixedStateArrayBody.compileOnly` preserves the bounded graph
+facts. No new compiler change for this hypothesis is implemented yet.
