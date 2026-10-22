@@ -8740,3 +8740,101 @@ unmet; these diagnostics do not establish browser or phone performance.
 
 The GC control now has a separately named test, so that command validates only
 the changed control and leaves prior controls unexecuted.
+
+### Bounds facts from an earlier native array access
+
+Experimental source `01019d2630c9735645e45f064066b23a22bbc8d5` adds a
+block-local bounds proof. Refinement
+`3be507be60a8f60db146e6d21fdcc2d562b3c10a` also recognizes equal total i32
+subscript expressions rather than requiring the exact same SSA node.
+Both are saved on `java-tools` branch `experiment/teavm-native-parity`.
+The retained baseline remains `8789ccca`.
+
+A normally completed primitive access establishes: either this captured
+array base is negative (the checked fallback ran), or its index is within
+its captured length. A later access to the same array/index/element width
+in the same basic block keeps the native-versus-checked selection. In its
+native arm the earlier fact proves the bounds check redundant; in its
+checked arm the original import still checks each access. This specifically
+preserves host getters that shrink an ordinary array between operations.
+A store can change an element without changing that bounds fact, so this
+proof does not forward the earlier element value.
+
+Facts do not cross block boundaries, calls, field operations, other unknown
+effects or generation-checked field-array metadata. Equal expression keys
+include only total integer operations, numeric constants and opaque SSA
+leaves. Java i32 wrapping is preserved; differently computed/updated indices
+retain their checks. Discovery is capped at 50,000 work units, 128 available
+facts per block, expression depth six, 1,024 memo entries per block and 256
+characters per expression key. Exceeding the work budget discards the entire
+proof. No execution flag, new runtime local, validity test, cloned method body
+or application-specific rule is introduced.
+
+The initial focused suite passes **626/626 assertions**; the refined suite
+**639/639**. The new test file contributes **86**, covering all primitive widths,
+wide precision, signed overflow, distinct expressions, changed indices, nulls,
+negative/large bounds, checked getter order and dynamic lengths, foreign heaps,
+partial writes before failure, floating NaN/infinity/negative zero, loop
+behavior and collection of the proof/SSA graph. Numeric `ldc` constants initially
+cleared the proof between a read and float/long store; the analysis now treats
+those primitive constants as total. String/class constants keep the barrier.
+Existing array-ABI, copying and loop-resume suites validate the changed compiler.
+
+The original music diagnostic matches every PCM byte. It removes **25 distinct
+source bounds-check sites** in `MusicDecoder.decodePacket`, two in residue
+processing and one in floor processing. `decodePacket` executes all **682**
+native entries with zero exits. The current decoder WAT has SHA-256
+`7d145051da313bde065fe838428953407650f8ed4c134ff0354d2f94700b17f0`.
+These instrumented observations are excluded from performance acceptance.
+
+The first, exact-SSA-only butterfly inspection has module SHA-256
+`3686b8124ec6fb38a08f1c6e3cc0b98fbdb8b9ade2eb5a962498f0a1b76aae71`
+and removes one bounds site. It is not relabeled as the refined source.
+There remains one current WAT preview per existing inspection location,
+outside Git; no generated Java/class/JAR/Wasm/WAT output is committed.
+
+The harness now offers `run-jvm` for both micro and original-music cases.
+This measures only the changed runtime, preserving fresh processes, one
+workload pass and the original HotSpot/PCM oracles while reusing recorded
+JVM/TeaVM baseline timings. It does not rebuild or retime a baseline.
+
+```bash
+# java-tools, refined source: 639 assertions pass.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeArrayBoundsProof.test.js test/wasmHeapArrays.test.js test/wasmParameterArrayAbi.test.js test/structuredLoopResume.test.js test/wasmArrayCopyFieldCache.test.js
+# dekobloko-work, inspect and measure only the new candidate:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 3be507be60a8f60db146e6d21fdcc2d562b3c10a 'MusicDecoder.decodePacket(I)[F'
+MICRO_ITERATIONS=8000000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 3be507be60a8f60db146e6d21fdcc2d562b3c10a butterfly-local butterfly-no-readback
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 3be507be60a8f60db146e6d21fdcc2d562b3c10a
+node --check apps/loading/microbench.mjs
+node --check apps/loading/probe.mjs
+node --check apps/loading/vorbis.mjs
+```
+
+Candidate-only observations do not establish an improvement. At eight million
+iterations the butterfly/readback median is **39.193 ms** (39.193, 47.949,
+34.617) and no-readback **39.260 ms** (41.884, 38.975, 39.260). The recorded
+scalar controls in `679bcfba` were 36.251 and 32.251 ms. Those controls predate
+the current typed-object ABI; this is a historical comparison, not a fresh
+paired measurement or evidence assigning the difference to any instruction.
+No unchanged control, JVM baseline or TeaVM process is rerun.
+
+The original music sample gives **125.052, 132.473, 307.077 ms**, median
+**132.473 ms**, versus the recorded `8789ccca` median **116.628 ms**. Every PCM
+byte matches; all three runs compile zero Java after main begins. The 307 ms
+outlier remains recorded without a speculative causal explanation. This fails
+the reduced performance gate, so no full-loading campaign or deployment runs.
+Withdrawal `4ffd72732f1283cc6f3cd24e93ac500bf026e160` restores the retained source
+from its known Git revision. As requested, restoring unchanged source triggers
+no baseline tests, baseline identity check or baseline timing run. The proof,
+tests and refinement remain in experimental history. All nine candidate timing
+observations, diagnostics and decision are under
+`optimizationTrials.blockLocalNativeBoundsProof` in the same `benchmark.json`.
+
+The remaining concrete code-generation question is native array representation
+selection. The existing parameter-array versioning option defaults to a zero
+code budget, and the recorded diagnostic profile does not enable it. Inspect
+its entry/ABI restrictions and earlier rejected versions before changing a
+policy. A new candidate should remove repeated representation selection under
+a bounded generic native-entry proof, preserve ordinary/resume/fallback paths
+and measure only that changed candidate. This is not authorization to change
+the accepted comparator or declare the 1.10x target met.

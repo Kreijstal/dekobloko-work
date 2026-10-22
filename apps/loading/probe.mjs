@@ -140,6 +140,7 @@ try {
  }
  const owners=kernel==='bzip'?['Bzip2Decoder','Bzip2DecoderState']:['MusicDecoder','VorbisCodebook','VorbisResidue','MusicDecodeStage',...(kernel==='loading'?['Bzip2Decoder','Bzip2DecoderState']:[])];
  const layout=meta=>meta&&{structured:!!meta.structured,canonical:!!meta.canonicalRun,normalFlow:meta.normalFlowFullyCompiled,
+  omittedNativeBoundsCheckCount:meta.omittedNativeBoundsCheckCount||0,
   parameterObjectSpecializationBytes:meta.parameterObjectSpecializationBytes||0,
   reusedPrimitiveFieldReadCount:meta.reusedPrimitiveFieldReadCount||0,
   primitiveFieldCaptureCount:meta.primitiveFieldCaptureCount||0,
@@ -162,6 +163,7 @@ try {
   ...(inspection?{inspection}:{}),
   ...(optimizer?{wasmOptimizer:optimizer.finishPreparation()}:{}),
   executionMethods:w.compiled.map(state=>({key:state.key,runs:state.runs,exits:state.exits,
+    omittedNativeBoundsCheckCount:state.meta?.omittedNativeBoundsCheckCount||0,
     parameterObjectSpecializationBytes:state.meta?.parameterObjectSpecializationBytes||0,
     nativeArrayReadReuseSites:state.meta?.nativeArrayReadReuseSites||0,
     reusedPrimitiveFieldReadCount:state.meta?.reusedPrimitiveFieldReadCount||0,

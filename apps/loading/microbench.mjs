@@ -954,6 +954,7 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     key:s.key,runs:s.runs,directEntries:s.meta?.canonicalEntries?.value||0,exits:s.exits,
     fuelExits:s.fuelExits,nestedCalls:s.nestedCalls,nestedDeopts:s.nestedDeopts,
     full:!!s.meta?.fullyCompiled,canonical:!!s.meta?.canonicalRun,inlined:s.meta?.inlinedCalls,
+    omittedNativeBoundsCheckCount:s.meta?.omittedNativeBoundsCheckCount||0,
     slabFieldSites:s.meta?.slabFieldSites,omittedSlabFillCount:s.meta?.omittedSlabFillCount||0,
     parameterObjectSpecializationBytes:s.meta?.parameterObjectSpecializationBytes||0,
     slabGuardCount:s.meta?.slabGuardCount||0,slabGuardBytes:s.meta?.slabGuardBytes||0,
@@ -1067,6 +1068,7 @@ const [command,...args]=process.argv.slice(2);
 if(command==='build')build();
 else if(command==='one')await one(...args);
 else if(command==='run')run(args[0],args.slice(1));
+else if(command==='run-jvm')run(args[0],args.slice(1),['jvm']);
 else if(command==='linear'){
  assert.ok(linearKinds.has(args[1]),'Select '+[...linearKinds].join(', '));
  run(args[0],args.slice(2),[args[1],'teavm']);
@@ -1078,4 +1080,4 @@ else if(command==='calls'){
  run(args[0],['buffered-ready-helper'],engines.length?engines:[...bufferedCallKinds,'teavm']);
 }
 else if(command==='inspect')await one('jvm',args[1],selectBenchmarkRevision(args[0]),'code',args[2]);
-else throw Error('Usage: microbench.mjs build | run [baseline|EXACT_REVISION] [CASE ...] | calls baseline|EXACT_REVISION [CALL_KIND ...] | linear baseline|EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | diagnose baseline|EXACT_REVISION CASE | inspect baseline|EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');
+else throw Error('Usage: microbench.mjs build | run [baseline|EXACT_REVISION] [CASE ...] | run-jvm EXACT_REVISION [CASE ...] | calls baseline|EXACT_REVISION [CALL_KIND ...] | linear baseline|EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | diagnose baseline|EXACT_REVISION CASE | inspect baseline|EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');

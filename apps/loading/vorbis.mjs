@@ -148,12 +148,12 @@ async function one(engine,revision){
  console.log('VORBIS_RESULT '+JSON.stringify({...result,...provenance}));
 }
 
-function run(revision){
+function run(revision,engines=['jvm','teavm']){
  assert.match(revision||'',/^[0-9a-f]{40}$/);
  assert.notEqual(process.env.JVM_WASM_IMPORT_STATS,'1','Keep profiling out of timing comparisons');
  const measurementInput=JSON.stringify(projectMeasurementFixture(read())),measurementHash=hash(measurementInput);
  const runId=crypto.randomUUID();
- for(let pair=0;pair<3;pair++)for(const engine of pair===1?['teavm','jvm']:['jvm','teavm']){
+ for(let pair=0;pair<3;pair++)for(const engine of pair===1?[...engines].reverse():engines){
   const stdout=execFileSync(process.execPath,[...nodeArgs,script,'one',engine,revision,fixtureStdinFlag],{
    input:measurementInput,encoding:'utf8',maxBuffer:16*1024*1024});
   const observation={...parseMeasurementResult(stdout,'VORBIS_RESULT '),runId,pair,measuredAt:new Date().toISOString()};
@@ -180,5 +180,6 @@ const [command,...args]=process.argv.slice(2);
 if(command==='build')build();
 else if(command==='one')await one(...args);
 else if(command==='run')run(selectBenchmarkRevision(args[0]));
+else if(command==='run-jvm')run(selectBenchmarkRevision(args[0]),['jvm']);
 else if(command==='inspect')inspect(selectBenchmarkRevision(args[0]),args[1]);
-else throw Error('Usage: vorbis.mjs build | run [baseline|EXACT_REVISION] | one jvm|teavm EXACT_REVISION | inspect baseline|EXACT_REVISION [METHOD]');
+else throw Error('Usage: vorbis.mjs build | run-jvm EXACT_REVISION | run [baseline|EXACT_REVISION] | one jvm|teavm EXACT_REVISION | inspect baseline|EXACT_REVISION [METHOD]');
