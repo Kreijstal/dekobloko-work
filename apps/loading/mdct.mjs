@@ -230,6 +230,9 @@ async function one(engine,revision,inspection=false){
    lastNativeExitStatus:s.meta?.directFrameContext?.lastExitStatus??null,calleeNativeExitCount:s.callee?.meta?.directFrameContext?.exitCount??null,
    full:!!s.meta?.fullyCompiled,structured:!!s.meta?.structured,demotes:[...(s.meta?.demoteReasons||[])],
    ...(inspection?{omittedArrayFillCount:s.meta?.omittedArrayFillCount,slabFieldSites:s.meta?.slabFieldSites,loopInvariantNumericValueCount:s.meta?.loopInvariantNumericValueCount,nativeStaticArrayBodySites:s.meta?.nativeStaticArrayBodySites,
+    nativeStaticArrayCapturedReferenceCount:s.meta?.nativeStaticArrayCapturedReferenceCount,
+    nativeArraySharedMetadataValueCount:s.meta?.nativeArraySharedMetadataValueCount,
+    nativeArrayMetadataPhiCopiesOmittedCount:s.meta?.nativeArrayMetadataPhiCopiesOmittedCount,
     imports:[...s.meta?.importStats||[]].filter(([,count])=>count>0).map(([name,count])=>({name,count}))}:{}),
   }));
   compilation=j.jit.syncCompileCensus();assert.deepEqual(late,[]);assert.equal(compilation.postMainSyncCompileCount,0);
