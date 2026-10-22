@@ -9534,3 +9534,116 @@ recoverable Java exceptions and supported foreign-array fallback; repeating
 unchanged baselines, CPU attribution, dead-phi pruning or outlining is not useful.
 No claim is made that native-only method/region specialization is already safe
 or will reach parity; earlier cloned leaf/loop versions were measured rejections.
+
+
+### Guard one native static-array body: positive component result, not promoted
+
+`3829e0f688dcd3733b5409df5bb45ed6734b221c` tests a different representation
+strategy from the rejected cloned leaf/loop versions. An eligible substantial,
+callback-free static numeric kernel gets **one native body**, rather than a
+native clone beside a generic body. Entry guards check ordinary field-cell
+capabilities, genuine owned array headers in this memory and class readiness.
+A failed guard spills the original entry and uses the existing interpreter/OSR
+handoff before any Java effects. It never calls customized getters early.
+Every native bounds check and original numeric operation remains. Source and
+return references, field writes, allocations, untrusted calls and live exception
+regions refuse this first proof. Math intrinsics use the compiler's existing
+pure-intrinsic classification, not a new general host-callback assumption.
+
+Captured base/length metadata follows native reference phis with simultaneous
+copies, including swaps and cycles. Compiled callers are explicitly told that
+entry can refuse, so a caller cannot pin an unconditional non-exiting call.
+External native resumption is disabled for this specialized body: fuel/guard
+handoffs retain the existing saved Java frame and finish through the supported
+fallback. Replacing a field during suspension must not replace its captured old
+array. This sacrifices a resume opportunity in exchange for a bounded, auditable
+first experiment; fallback performance is not automatically accepted.
+
+Discovery is bounded to 4,096 nodes, 16 static array cells, 128 reference values
+and 50,000 reference-analysis work. The substantial-kernel threshold is 128
+nodes/16 array sites. Metadata graphs release after translation; replacing an
+array permits collection while compiled modules remain live. No application
+identifier, public flag or generated artifact is added to java-tools.
+
+| Full captured transform component | Samples ms | Median ms |
+| --- | --- | ---: |
+| Recorded retained JVM | 58.980222, 53.011841, 58.724721 | 58.724721 |
+| One guarded native body `3829e0f` | 43.510201, 43.322255, 50.974985 | 43.510201 |
+| Recorded TeaVM | 16.965252, 18.947579, 16.969647 | 16.969647 |
+
+The candidate median is **25.91% lower**, still **2.564x TeaVM** and far from
+1.10x. All three changed-process observations match every one of the 698,368
+float words, take 682 direct native transform entries with zero exits and compile
+zero Java during execution. All samples, including 50.975 ms, are retained.
+A separate, excluded diagnostic proves **682 actual guarded-body entries** at
+91 static array-access sites, with no `abase`/`alen0` imports. Its module SHA-256
+is `9fc5c216fd83c53e12f511bfb8db9aee25027a486a7ad17d8b134a9a9bc57ef9`.
+No unchanged JVM/TeaVM reference or HotSpot oracle is run again. This establishes
+a useful component observation, not a full-loading improvement or attribution
+of all remaining time to any one check.
+
+```bash
+# java-tools, at 3829e0f; 708/708 focused assertions pass.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticArrayBody.test.js test/nativeStaticReferenceCodegen.test.js test/canonicalDirectFrames.test.js test/structuredLoopResume.test.js test/wasmHeapArrays.test.js test/wasmCompilerRetention.test.js
+# Extended tests at 854ef733; 64/64 pass, runtime source unchanged.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticArrayBody.test.js
+node --check src/jit/nativeStaticArrayBody.js
+git diff --check
+# Deko, generator f648064; changed runtime only, three fresh processes.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs inspect 3829e0f688dcd3733b5409df5bb45ed6734b221c
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs run-jvm 3829e0f688dcd3733b5409df5bb45ed6734b221c
+```
+
+The first tiny test harness accidentally selected the dispatcher instead of the
+structured compiler and failed positive-proof assertions. Explicitly selecting
+the intended structured test backend corrected the harness; the proof was not
+weakened. Subsequent tests exercise actual positive native selection, native-call
+fallbacks, foreign-memory arrays, customized getters, null/zero-trip behavior,
+late store faults with every preceding write intact, caller handlers, field
+replacement, cyclic reference swaps, saved old arrays after suspension and GC.
+
+#### Compile-only original-decoder region census
+
+Whole-method eligibility does **not** cover the original instance decoder, which
+also performs allocations and other calls. Do not promote this source or claim
+the full-loading target from the standalone result. The next step is a general
+region proof, supported by a compile-only census rather than another CPU profile.
+
+Deko generator `12d41d5` adds an optional archive-module observer and the command:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 apps/loading/vorbis.mjs regions 3829e0f688dcd3733b5409df5bb45ed6734b221c
+node --check apps/loading/archive-jvm.mjs
+node --check apps/loading/vorbis.mjs
+git diff --check
+```
+
+It scans the actual compiler CFG, serializes bounded candidate descriptions and
+stops preparation at the Java-main boundary with an exact sentinel. Assertions
+verify the stop, target graph capture and **zero asset calls**. No decoder Java,
+recorded baseline or oracle executes. Two translations of the target were
+observed; both report the same candidates. The one existing `benchmark.json`
+retains this census and all component results under
+`optimizationTrials.nativeStaticArrayBody`; no additional JSON preview is made.
+
+The original decoder has 118 blocks, no live exception range in the captured
+normal-flow compiler graph and no inlining in these translations. Its largest
+candidate starts at block 62, contains **43 blocks, 402 nodes and 69 array sites**,
+and exits to block 105. An earlier candidate at block 33 contains **28 blocks,
+154 nodes and 23 sites**, exiting to block 61 or 105. The intervening block calls
+the bit-length helper; block 105 reads an instance field. These are measured
+structural observations in Deko diagnostics, not game-specific compiler rules.
+The whole-method specialization correctly reports zero covered sites here.
+
+The next implementation must guard **edges entering a closed region**, authenticate
+already-captured incoming array references without invoking getters, and carry
+native metadata through internal phis. Backedges must not bypass metadata updates,
+external resumes must not bypass guards, and failures must spill at the region
+entry without replaying earlier effects. Static cells are guarded for readiness
+and owned storage at that region boundary. Accesses outside the region retain
+the generic path. The 43-block candidate begins at a loop header, so checking
+only lexical method entry or silently treating every captured array as its
+current field value would be incorrect. No such region implementation is claimed
+yet. The default baseline remains `aa23806`; runtime master, selected/deployed
+artifacts, the historical **5.604x** full-loading result and browser/phone gates
+remain unchanged. The new source is preserved only as an unpromoted experiment.
