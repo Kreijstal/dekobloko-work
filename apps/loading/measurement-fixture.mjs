@@ -19,7 +19,7 @@ export function projectMeasurementFixture(receipt){
    ['sourceSha256','probeClassSha256','classesInventorySha256','assets','referencePcmSha256','referencePcmBytes',
     'wasmSha256','runtimeSha256','wrapperSha256','transformerSha256','version'])}:{}),
   ...(receipt.mdctBenchmark?{mdctBenchmark:pick(receipt.mdctBenchmark,
-   ['sourceSha256','kernelClassSha256','inputSha256','expectedSha256','wasmSha256','runtimeSha256','records','floatWords','version'])}:{}),
+   ['sourceSha256','kernelClassSha256','inputSha256','expectedSha256','wasmSha256','runtimeSha256','records','floatWords','version','setupKind','setupRegionSha256','reverseRegionSha256'])}:{}),
  };
 }
 export function readMeasurementFixture(reportPath){
