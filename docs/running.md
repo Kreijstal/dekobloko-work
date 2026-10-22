@@ -10118,3 +10118,63 @@ Native output occupies the existing scratch log only. An initial missing stdin
 argument and then Binaryen's newer compact-import encoding prevented compilation;
 using `-` and disabling that encoding fixes this diagnostic. Neither failed
 attempt executes a workload. No generated binaries or assembly enter Git.
+
+
+#### Implemented memory contract and matched-workload screen
+
+Trial `335d2e7eb74b99f1246965915ed645e62ac93a6d` records the physical maximum
+in a private WeakMap when WasmHeap constructs a memory. The minimum comes from
+the actual current buffer size. Mutating public heap counters or a returned
+limits object cannot falsify that contract. Unknown memories retain the legacy
+minimum-only declaration. The structured compiler supplies the known limits to
+the generic assembler automatically, with wasm32 range/consistency validation.
+Growable memories remain growable within their real maximum. No heap-size,
+allocation, worker-placement, profile or environment-flag change is involved.
+
+Five focused files pass **452 assertions** (including 21 new contract assertions),
+and the existing heap-growth file passes **35 assertions**. Tests include actual
+native loads, rejection of an incompatible larger physical maximum or smaller
+capacity, correct loads before/after real growth, new compilation at the grown
+maximum, unknown-memory compatibility and invalid limits. The changed transform
+WAT actually imports `(memory 4096 4096)`, has module SHA-256
+`989ec8de548adc78d5b8dada14f69eb618a89e3753e3f5a16be8e3c55b27aa30`, and matches
+all 698,368 float words. It still records the known one cold Math exit at item
+988, 682 direct entries and zero native throws. No guest Java compiles after
+main.
+
+| Changed-candidate workload | Three fresh-process times ms | Median ms |
+| --- | --- | ---: |
+| Captured transform/windows | 44.199, 49.336, 66.226 | 49.336 |
+| Original music, every PCM byte exact | 99.573, 109.030, 96.362 | 99.573 |
+
+These do not improve on the recorded readiness-region medians of 49.120 and
+98.751 ms. Comparisons are historical; no unchanged baseline process, TeaVM
+process or HotSpot oracle is run again. Smaller native code does not establish
+a speed gain, so the runtime change is **withdrawn** in
+`22ae9264d26124e8c2f0fcc772ec9ddc9b215307`, preserving the implementation/tests
+and results in history. The same existing report now contains
+`optimizationTrials.knownHeapImportLimits`. No full-loading campaign or
+restoration test/timing/hash check follows. Normal benchmark selection and
+deployment remain unchanged; the latest full-loading evidence remains 5.534x
+recorded TeaVM, not the required 1.1x.
+
+```bash
+# java-tools: 452/452 and 35/35 pass before measurement.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmMemoryLimits.test.js test/wasmHeapArrays.test.js test/nativeStaticArrayBody.test.js test/nativeObjectBody.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmHeapGrowth.test.js
+# Deko: changed runtime only; inspect separately, then time sequentially.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs inspect 335d2e7eb74b99f1246965915ed645e62ac93a6d
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs run-jvm 335d2e7eb74b99f1246965915ed645e62ac93a6d
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 335d2e7eb74b99f1246965915ed645e62ac93a6d
+```
+
+A distinct next hypothesis concerns continuation-only references. TeaVM does not
+need the VM's exact fuel/initialization/exception reconstruction state. Our cold
+spill operands can keep reference SSA values live through hot native imports.
+The existing closed-body proof might permit reloading a stable static reference
+**only when a cold exit actually needs it**, reducing that lifetime. This is
+not the withdrawn capture-on-entry pass (which instead extends reference
+lifetimes). Start with singleton static origins in a closed body, preserve
+multi-origin phis and exact saved references across a yield/replacement, and
+inspect changed WAT/native code before timing a new candidate. This is an
+unimplemented hypothesis, not a measured explanation or acceptance claim.
