@@ -11177,7 +11177,7 @@ NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loa
 Archive results: **45.141451, 40.394990, 47.186866 ms**; median **45.141451 ms**.
 
 They do not establish improvement over recorded ready-owner 45.214595 ms and
-are slower than the first forwarding candidate's 40.889477 ms. No additional
+are slower than the first forwarding candidate's 40.888692 ms. No additional
 full-loading cohort is justified solely by smaller spill signatures.
 
 **Withdraw both forwarding variants**, including the liveness refinement.
