@@ -10,6 +10,7 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 import {vorbisProbeSource} from './workload.mjs';
 import {selectBenchmarkRevision} from './benchmark-baseline.mjs';
 import {projectMeasurementFixture,readMeasurementFixture,fixtureStdinFlag,parseMeasurementResult,recordProbeObservation} from './measurement-fixture.mjs';
+import {loadArchivedJvm} from './archive-jvm.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
 const script=fileURLToPath(import.meta.url);
@@ -199,6 +200,68 @@ function outline(revision){
  }
 }
 
+// Compile-only CFG census. This stops at the main-entry boundary; neither
+// decoding, the recorded control nor its HotSpot oracle executes.
+async function regions(revision){
+ assert.match(revision,/^[0-9a-f]{40}$/);pinnedClasses();
+ const target='MusicDecoder.decodePacket(I)[F',censuses=[],seen=new WeakSet();
+ const pure=/^(?:[ilfd]const_(?:m1|[0-5])|bipush|sipush|ldc(?:_w|2_w)?|iinc|[ilfd](?:add|sub|mul|div|rem|neg)|[il](?:shl|shr|ushr|and|or|xor)|[ilfd]2[ilfdbcs]|lcmp|[fd]cmp[lg])$/;
+ const analyze=c=>{
+  const fn=c.fn,cfg=c.cfg,rows=[];
+  for(const block of fn.blocks){
+   const rejected=[],ops={};let arrays=0;
+   for(const node of block.body){
+    ops[node.op]=(ops[node.op]||0)+1;
+    if(/^[ilfdbcs]a(?:load|store)$/.test(node.op)||node.op==='arraylength'){arrays++;continue;}
+    if(pure.test(node.op)&&'IJFD'.includes(node.kind)||node.op==='nop'||node.op==='aconst_null'||
+      node.op==='getstatic'&&c.nativeStaticArrayReads?.has(node.id)||
+      node.op==='invokestatic'&&node.imm?.[1]==='java/lang/Math')continue;
+    rejected.push(node.op+(node.imm?.[1]?':'+node.imm[1]:''));
+   }
+   rows.push({id:block.id,predecessors:block.predIds,successors:cfg.succ[block.id],
+    instructions:cfg.blocks[block.id].insns.length,nodes:block.body.length,arraySites:arrays,
+    firstItem:cfg.blocks[block.id].insns[0],lastItem:cfg.blocks[block.id].insns.at(-1),ops,
+    rejected:[...new Set(rejected)],good:!rejected.length&&['return','goto','fall','cond','switch'].includes(block.term.kind)});
+  }
+  const groups=[];
+  for(const entry of rows.filter(row=>row.good&&(row.id===cfg.entry||row.predecessors.some(p=>!rows[p]?.good)))){
+   const region=new Set(),pending=[entry.id];
+   while(pending.length){const id=pending.pop();if(region.has(id)||!rows[id]?.good)continue;region.add(id);pending.push(...rows[id].successors);}
+   let changed=true;while(changed){changed=false;for(const id of [...region])if(id!==entry.id&&rows[id].predecessors.some(p=>!region.has(p))){region.delete(id);changed=true;}}
+   const selected=[...region].map(id=>rows[id]),arraySites=selected.reduce((sum,row)=>sum+row.arraySites,0);
+   if(arraySites)groups.push({entry:entry.id,blocks:[...region].sort((a,b)=>a-b),arraySites,nodes:selected.reduce((sum,row)=>sum+row.nodes,0),
+    exits:[...new Set(selected.flatMap(row=>row.successors.filter(id=>!region.has(id))))]});
+  }
+  return {method:target,blocks:rows,regions:groups.sort((a,b)=>b.arraySites-a.arraySites).slice(0,16),
+   originalIndices:!!c.origIdx,liveExceptionRanges:c.liveRanges.length,handlerEntries:fn.handlerEntries,
+   wholeMethodSites:c.nativeStaticArrayBody?.sites||0};
+ };
+ const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{observeModule({filename,exports:Compiler}){
+  if(!filename.endsWith('/jit/StructuredWasmCompiler.js'))return;
+  const lower=Compiler.prototype.lowerNode;
+  Compiler.prototype.lowerNode=function(...args){
+   if(this.className+'.'+this.method.name+this.method.descriptor===target&&!seen.has(this)){
+    seen.add(this);censuses.push(analyze(this));
+   }
+   return lower.apply(this,args);
+  };
+ }});
+ const options=structuredClone(read().diagnosticOptions);options.classpath=[directory,path.join(player,'classes')];
+ options.jit.preparationPolicy={entryMethods:['LoadingKernelProbe.main([Ljava/lang/String;)V']};options.jit.compileWorker=false;
+ options.prepareWasmPreparedUpgradesOnly=false;options.jit.preparedCompleteWasm=true;options.jit.preparedLoopLeafWasm=true;
+ globalThis.window=globalThis;globalThis.document={};const j=new JVM(options);delete globalThis.document;
+ let assetCalls=0,stopped=false;const stop=new Error('Compile-only region census stopped before Java main');
+ j.jre.GeobloxLoading={applicationFallback:true,staticMethods:{'browserAsset(Ljava/lang/String;)[B':()=>{assetCalls++;throw Error('Region census must not decode');}}};
+ j.jit.markMainStarted=()=>{stopped=true;throw stop;};
+ let failure;try{await j.run('LoadingKernelProbe');}catch(error){failure=error;}
+ assert.ok(stopped,'Preparation did not reach the controlled stop');assert.equal(failure,stop);
+ assert.equal(assetCalls,0);assert.ok(censuses.length,'No target compiler graph captured');
+ const receipt=read(),trial=(receipt.optimizationTrials.nativeStaticArrayBody||={});
+ (trial.regionCensuses||=[]).push({revision,censuses,mainExecuted:false,assetCalls,excludedFromTiming:true,measuredAt:new Date().toISOString()});
+ fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
+ console.log(JSON.stringify({revision,mainExecuted:false,censuses:censuses.map(c=>({regions:c.regions,wholeMethodSites:c.wholeMethodSites,originalIndices:c.originalIndices,liveExceptionRanges:c.liveExceptionRanges}))},null,2));
+}
+
 const [command,...args]=process.argv.slice(2);
 if(command==='build')build();
 else if(command==='one')await one(...args);
@@ -206,4 +269,5 @@ else if(command==='run')run(selectBenchmarkRevision(args[0]));
 else if(command==='run-jvm')run(selectBenchmarkRevision(args[0]),['jvm']);
 else if(command==='inspect')inspect(selectBenchmarkRevision(args[0]),args[1]);
 else if(command==='outline')outline(selectBenchmarkRevision(args[0]));
-else throw Error('Usage: vorbis.mjs build | outline EXACT_REVISION | run-jvm EXACT_REVISION | run [baseline|EXACT_REVISION] | one jvm|teavm EXACT_REVISION | inspect baseline|EXACT_REVISION [METHOD]');
+else if(command==='regions')await regions(selectBenchmarkRevision(args[0]));
+else throw Error('Usage: vorbis.mjs build | regions EXACT_REVISION | outline EXACT_REVISION | run-jvm EXACT_REVISION | run [baseline|EXACT_REVISION] | one jvm|teavm EXACT_REVISION | inspect baseline|EXACT_REVISION [METHOD]');
