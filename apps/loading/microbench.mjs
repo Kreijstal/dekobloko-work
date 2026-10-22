@@ -963,6 +963,8 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     nativeExitCount:s.meta?.directFrameContext?.exitCount??null,
     directNativeExitCount:s.meta?.directFrameContext?.directExitCount??null,
     nativeThrowCount:s.meta?.directFrameContext?.throwCount??null,
+    inlineActivationSiteCount:s.meta?.inlineActivationSiteCount||0,
+    inlineAtomicStaticSiteCount:s.meta?.inlineAtomicStaticSiteCount||0,
     nativeObjectBodyFieldSites:s.meta?.nativeObjectBodyFieldSites||0,
     nativeObjectBodyArraySites:s.meta?.nativeObjectBodyArraySites||0,
     nativeStaticArrayBodySites:s.meta?.nativeStaticArrayBodySites||0,
