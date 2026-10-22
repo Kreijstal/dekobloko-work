@@ -7637,3 +7637,93 @@ and deployments remain unchanged; 1.10x loading parity, browser/FPS, phone and
 total JS peak-heap acceptance remain unproved. All raw rows, rejected fixture
 attempts and integration results are in the existing single report under
 `optimizationTrials.measurementFixtureTransport`.
+
+### Reduce receiver-field overhead before another loading run
+
+The next experiment uses the existing local/instance bit-reader controls,
+with the same input, one million iterations and HotSpot checksum `-768271193`.
+It does not add a preparation profile, a game-specific compiler rule or a
+runtime flag. The generic candidate shares a receiver-representation guard
+across a straight-line group of primitive field operations. It still performs
+every field load/store, preserves evaluation order and fills metadata at the
+first actual field access. It does not hoist field accesses before a loop.
+Volatile fields, calls, reference operations and exception regions are excluded;
+code growth is bounded to 8 KiB per method. The checked representation remains
+available, and only facts established by both arms survive their join.
+
+Baseline is `592f30f0076c7e7b987cc03da95ba276786af4af`. The initial candidate
+`77b87ea5e51fc424dafe1bd1930408b10a77b8ba` and final safety-test snapshot
+`5df53b4443a8552111d1722c60865e8cfd1cc14d` have identical runtime source.
+Three fresh-process pairs per row, eager native Wasm on both engines, CPU 2,
+one-GiB heap cap, no workload warmup or replay:
+
+| Revision/run | JVM local ms | TeaVM local ms | JVM fields ms | TeaVM fields ms |
+| --- | ---: | ---: | ---: | ---: |
+| Earlier projected baseline | 1.751 | 1.068 | 5.107 | 1.156 |
+| Candidate first | 1.838 | 1.065 | 3.832 | 1.249 |
+| Fresh baseline | 1.794 | 1.101 | 5.669 | 1.118 |
+| Candidate repeat | 2.019 | 1.137 | 3.760 | 1.135 |
+
+The instance-field reduction repeats, but the local control varies and the
+candidate still takes about 3.31x TeaVM in the final field comparison. This
+does not establish full-loading parity or explain the remaining difference.
+A separate, excluded-from-timing diagnostic confirms one native metadata lookup,
+one million selections of the shared native arm, no checked field imports and
+zero exits/fuel exits in the bit-reader method. Uninstrumented guard code growth
+is 150 bytes for that method; diagnostic counters add two bytes.
+
+The focused JVM suite passes **287/287** assertions. It covers native/checked
+receivers, observable getters/setters, mutations from array getters, null and
+zero-trip behavior, bounds failures and partial field writes, exact long/double
+values, volatile exclusion, loop-carried receiver changes, code-budget refusal,
+fuel recovery and release of positive guard-analysis graphs. Syntax and
+`git diff --check` also pass.
+
+```bash
+# java-tools at candidate 5df53b44: focused correctness and analysis lifetime checks
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/guardedSlabBlocks.test.js test/nativeObjectFieldCodegen.test.js test/wasmHeapArrays.test.js test/wasmCompilerRetention.test.js
+# dekobloko-work: repeated matched field/local controls
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af bits-local bits-instance
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 5df53b4443a8552111d1722c60865e8cfd1cc14d bits-local bits-instance
+# One original archive per fresh process; run baseline/candidate/baseline
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af bzip-block bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 5df53b4443a8552111d1722c60865e8cfd1cc14d bzip-block bzip-ready-owner
+# Diagnostic only, excluded from performance comparisons
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose 5df53b4443a8552111d1722c60865e8cfd1cc14d bits-instance
+node --check apps/loading/microbench.mjs
+```
+
+The next gate is one original `1-2.bin` decode per fresh process, producing
+520,357 bytes and checksum `-1415522687`, with the same pinned inputs as the
+earlier archive controls. Initialization mode initializes only the holder; it
+does not warm the decoder. Three pairs per mode, baseline/candidate/baseline:
+
+| JVM run | Cold decode ms | Initialized-owner decode ms |
+| --- | ---: | ---: |
+| Baseline before | 52.390 | 48.153 |
+| Candidate | 48.113 | 47.121 |
+| Fresh baseline after | 49.266 | 49.268 |
+
+The cold difference shrinks from 8.2% to 2.3% against the final baseline;
+initialized-owner samples also overlap. Paired candidate TeaVM medians are
+10.423/10.719 ms, so the JVM remains about 4.62x/4.40x slower on this reduction.
+This does not demonstrate a convincing original-code improvement, and no
+full-loading rerun or promotion follows. Withdrawal
+`0abc1e32d5c52a4a0838927fdb9a2d9c0cf2a6b9` restores runtime source exactly to
+`592f30f0`. Candidate code and its safety tests remain reproducible from
+`5df53b44` in the experimental branch's history. The selected artifact, JVM
+master and deployments are unchanged.
+
+The focused withdrawal suite passes **245/245** assertions:
+
+```bash
+# java-tools at withdrawal 0abc1e32
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectFieldCodegen.test.js test/wasmHeapArrays.test.js test/wasmCompilerRetention.test.js
+git diff --exit-code 592f30f0076c7e7b987cc03da95ba276786af4af 0abc1e32d5c52a4a0838927fdb9a2d9c0cf2a6b9 -- src
+```
+
+All raw observations, batch identities, matched input hashes and summaries
+remain in the existing single `benchmark.json`, under
+`optimizationTrials.basicBlockReceiverGuards`. The next step is a further
+reduction of original decoder work, rather than expanding this optimization
+based on the synthetic field win. The 1.10x full-loading goal remains unmet.
