@@ -157,11 +157,16 @@ try {
   const state=w.compiled.find(s=>s.key===inspectMethod);
   assert.ok(state?.meta?.bytes,'Installed method bytes unavailable: '+inspectMethod);
   const output=path.join(player,'vorbis/current.wat');
-  fs.writeFileSync(output,execFileSync('wasm-dis',['--all-features','-'],{input:state.meta.bytes}));
+  const disassemble=(bytes,target)=>{
+   const fd=fs.openSync(target,'w');
+   try{execFileSync('wasm-dis',['--all-features','-'],{input:bytes,stdio:['pipe',fd,'pipe']});}
+   finally{fs.closeSync(fd);}
+  };
+  disassemble(state.meta.bytes,output);
   const teaBytes=fs.readFileSync(path.join(player,'vorbis/teavm/vorbis.wasm'));
   assert.equal(hash(teaBytes),receipt.vorbisBenchmark.wasmSha256);
   const teaOutput=path.join(player,'vorbis/current-teavm.wat');
-  fs.writeFileSync(teaOutput,execFileSync('wasm-dis',['--all-features','-'],{input:teaBytes}));
+  disassemble(teaBytes,teaOutput);
   inspection={method:state.key,sha256:hash(state.meta.bytes),output,teavm:{sha256:hash(teaBytes),output:teaOutput}};
  }
  const owners=kernel==='bzip'?['Bzip2Decoder','Bzip2DecoderState']:['MusicDecoder','VorbisCodebook','VorbisResidue','MusicDecodeStage',...(kernel==='loading'?['Bzip2Decoder','Bzip2DecoderState']:[])];
