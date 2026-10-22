@@ -934,13 +934,18 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
    const state=j.jit.wasmJit.compiled.find(s=>s.key.startsWith(prefix));
    assert.ok(state?.meta?.bytes,'Installed kernel bytes are unavailable');
    const output=path.join(directory,'current.wat');
-   fs.writeFileSync(output,execFileSync('wasm-dis',['--all-features','-'],{input:state.meta.bytes}));
+   const disassemble=(bytes,target)=>{
+    const fd=fs.openSync(target,'w');
+    try{execFileSync('wasm-dis',['--all-features','-'],{input:bytes,stdio:['pipe',fd,'pipe']});}
+    finally{fs.closeSync(fd);}
+   };
+   disassemble(state.meta.bytes,output);
    // Keep exactly one current preview for each compiler, from the same
    // pinned Java fixture. These disassemblies are diagnostics, never timings.
    const teaBytes=fs.readFileSync(path.join(directory,'teavm/micro.wasm'));
    assert.equal(hash(teaBytes),fixture.wasmSha256,'TeaVM inspection artifact changed');
    const teaOutput=path.join(directory,'current-teavm.wat');
-   fs.writeFileSync(teaOutput,execFileSync('wasm-dis',['--all-features','-'],{input:teaBytes}));
+   disassemble(teaBytes,teaOutput);
    result.code={output,sha256:hash(state.meta.bytes),method:state.key,
     teavm:{output:teaOutput,wasmSha256:fixture.wasmSha256}};
    const generated=j.jit.codegenCache.get(state.method);
@@ -955,6 +960,11 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
    compilation:j.jit.syncCompileCensus(),lateCompiles:late,options,
    executionMethods:j.jit.wasmJit.compiled.filter(s=>ownsMethod(s.key)).map(s=>({
     key:s.key,runs:s.runs,directEntries:s.meta?.canonicalEntries?.value||0,exits:s.exits,
+    nativeExitCount:s.meta?.directFrameContext?.exitCount??null,
+    directNativeExitCount:s.meta?.directFrameContext?.directExitCount??null,
+    nativeThrowCount:s.meta?.directFrameContext?.throwCount??null,
+    nativeObjectBodyFieldSites:s.meta?.nativeObjectBodyFieldSites||0,
+    nativeObjectBodyArraySites:s.meta?.nativeObjectBodyArraySites||0,
     fuelExits:s.fuelExits,nestedCalls:s.nestedCalls,nestedDeopts:s.nestedDeopts,
     full:!!s.meta?.fullyCompiled,canonical:!!s.meta?.canonicalRun,inlined:s.meta?.inlinedCalls,
     omittedNativeBoundsCheckCount:s.meta?.omittedNativeBoundsCheckCount||0,
@@ -1034,6 +1044,7 @@ function run(revision,names,engines=['jvm','teavm']) {
    const output=execFileSync(process.execPath,[...nodeArgs,script,'one',engine,name,revision,fixtureStdinFlag],{
     input:measurementInput,encoding:'utf8',maxBuffer:16*1024*1024});
    const result=parseMeasurementResult(output,'MICRO_RESULT ');
+   assert.ok(!result.instrumented,'Keep inspection/import counters out of timing observations');
    assert.equal(result.measurementFixtureSha256,measurementHash,'Worker did not use the supplied fixture');
    result.runId=runId;result.pair=pair;result.measuredAt=new Date().toISOString();
    const fixture=read().microbenchmarks;fixture.runs.push(result);save(fixture);
