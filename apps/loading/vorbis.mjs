@@ -234,6 +234,7 @@ async function regions(revision){
   }
   return {method:target,blocks:rows,regions:groups.sort((a,b)=>b.arraySites-a.arraySites).slice(0,16),
    originalIndices:!!c.origIdx,liveExceptionRanges:c.liveRanges.length,handlerEntries:fn.handlerEntries,
+   repeatedCastProofSites:c.nativeArrayCastProof?.nodes.size||0,
    wholeMethodSites:c.nativeStaticArrayBody?.sites||0};
  };
  const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{observeModule({filename,exports:Compiler}){
@@ -259,7 +260,7 @@ async function regions(revision){
  const receipt=read(),trial=(receipt.optimizationTrials.nativeStaticArrayBody||={});
  (trial.regionCensuses||=[]).push({revision,censuses,mainExecuted:false,assetCalls,excludedFromTiming:true,measuredAt:new Date().toISOString()});
  fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
- console.log(JSON.stringify({revision,mainExecuted:false,censuses:censuses.map(c=>({regions:c.regions,wholeMethodSites:c.wholeMethodSites,originalIndices:c.originalIndices,liveExceptionRanges:c.liveExceptionRanges}))},null,2));
+ console.log(JSON.stringify({revision,mainExecuted:false,censuses:censuses.map(c=>({regions:c.regions,repeatedCastProofSites:c.repeatedCastProofSites,wholeMethodSites:c.wholeMethodSites,originalIndices:c.originalIndices,liveExceptionRanges:c.liveExceptionRanges}))},null,2));
 }
 
 const [command,...args]=process.argv.slice(2);

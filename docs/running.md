@@ -11389,3 +11389,145 @@ foreign storage, callbacks that throw, and graph/body collection first. Inspect
 the prior pure-leaf/capability experiments before implementing; do not restore
 unchanged variants. Use only changed-source archive/Vorbis screens and saved
 controls; advance to full loading only on evidence of an overall benefit.
+
+## Local callback-effect proofs and terminal cast selection (2026-10-23)
+
+The prior process-wide callback protocol regressed loading. The next prototype,
+`de9c5e68732a77670324f9089bcaa2f6e49755bb`, keeps positive array-type proofs and
+their callback epoch local to cast-bearing compiled methods. A bounded compiler
+summary recognizes native object bodies and acyclic numeric static wrappers
+which call only other proved bodies. It carries at most 16 host-owned scalar
+version conditions, without retaining callee metadata, old exports or SSA graphs.
+Unknown calls fence before invocation. A canonical binding's version changes
+on target replacement, withdrawal or release; saturation declines new proofs
+and physical slot reuse creates an independent condition. Do not weaken this
+rule merely because two bodies appear equivalent.
+
+These are generic compiler/linker changes, with no game identity or new runtime
+flag. Native Math bindings retain the earlier checked purity recognition;
+JavaScript replacements, bound functions and proxies do not receive it. Whole
+normal-return proofs reject volatile fields, handlers, reference writes and
+unsupported operations. Existing negative guards, exact exception identity,
+original frame recovery and fuel behavior remain available.
+
+The nine-file focused command passes **680/680 assertions**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeCallbackProof.test.js test/nativeArrayCastProof.test.js test/arrayIdentityCaches.test.js test/nativeObjectBody.test.js test/wasmSsaReferenceFacts.test.js test/nativeReferenceArray.test.js test/wasmCompilerRetention.test.js test/wasmStaticInlineHandlers.test.js test/canonicalDirectFrames.test.js
+```
+
+New cases execute the numeric wrapper chain, replace its native reader with a
+normal body that calls host getters, then observe mutation in the caller's next
+cast. Withdrawal uses the established fallback and preserves a thrown host
+object exactly, with caller effects once and zero late compilation. Generation
+saturation, physical slot reuse and collection of a superseded Wasm export are
+covered, alongside existing phi/fuel/foreign/accessor/budget/graph cleanup cases.
+
+A separate changed-source original-archive inspection records **10,248**
+owned-array cast queries and zero checked `cast__I` calls, full native coverage,
+no native reader exits and no late compilation. The original checksum stays
+`-1415522687`; the reader receives **490,954** native entries. Decoder module
+SHA-256: `d74554c1f5f32092d9892a8c51f5cb964d802b54a76cb8e7750f0c655c77cc9b`.
+The imported guards survive preparation in this reduced fixture.
+
+Only changed source is timed: sequential fresh Node 22.23.2 processes on CPU 2,
+1 GiB old-space, eager optimizing Wasm, no guest warmup, no concurrent tests or
+profiles. Recorded JVM, TeaVM and HotSpot controls are reused throughout.
+
+| Initial local-proof component | Three times ms | Median ms |
+| --- | --- | ---: |
+| Original archive, ready owner | 34.833860, 37.864386, 59.253199 | 37.864386 |
+| Largest original Vorbis sample | 111.628100, 97.231108, 105.549609 | 105.549609 |
+
+The archive checksum and every Vorbis PCM byte match, with zero late compilation.
+Retain every observation, including the slow archive sample. The saved archive
+comparator is 45.214595 ms at historical source `ce2c670`; this is not a new
+isolated f2 control. Vorbis remains slower than recorded f2's 96.087914 ms.
+
+Bytecode inspection identifies a concrete selection error: the sole float-array
+cast in `MusicDecoder.decodePacket(I)[F` occurs at **2348**, followed by
+**2351 areturn**. It executes once per invocation. Structured tree membership
+can place a terminal exit inside a loop even though that block cannot repeat.
+The old selection therefore introduces persistent proof locals around a large
+numerical method for no amortized type-check savings.
+
+Refinement `1e8acb5a50e5c87d7bc32f27e424d18a58fdc038` excludes return/throw exits
+from invocation-local repeated-cast proofs. This is a generic terminal-block
+rule. A while-loop fixture returning a cast reference preserves the exact
+result, all preceding effects and the original late ClassCastException.
+The two-file command passes **108/108 assertions**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeArrayCastProof.test.js test/nativeCallbackProof.test.js
+```
+
+An initial test expectation of one type read on a failed checked cast was wrong:
+the existing runtime reads it for the verdict and again for the exception
+message. Correcting the expectation to two preserves that behavior; runtime
+semantics were not changed to satisfy the test.
+
+The existing compile-only Vorbis census now records repeated-cast site counts.
+For the refined source both captured decoder compilations have **zero** sites,
+with Java main unexecuted and zero asset calls. There is no reason to re-time
+that rejected Vorbis path, and no unchanged baseline fingerprint is needed.
+The full changed loading path is then timed once as a three-process cohort:
+
+```bash
+node --check apps/loading/vorbis.mjs
+node --check apps/loading/probe.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/vorbis.mjs regions 1e8acb5a50e5c87d7bc32f27e424d18a58fdc038
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision 1e8acb5a50e5c87d7bc32f27e424d18a58fdc038 --options diagnostic
+```
+
+| Full sample | Music ms | Graphics ms | Total ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1933.621810 | 378.273768 | 2311.895578 |
+| 2 | 1786.824805 | 349.578754 | 2136.403559 |
+| 3 | 1584.755981 | 380.677016 | 1965.432997 |
+
+All three match `18:218292:2368412830:205:7597510:3045679678`, with zero late
+compilation. Median **2136.403559 ms** is **14.01% slower** than recorded f2's
+1873.955270 ms, about **5.94x** the recorded TeaVM median 359.739597 ms. The
+component win does not justify advancing the full-loading comparator.
+
+A new preparation-only probe inspects the actual full entry graph without
+running Java main or requesting assets. It observes compiler plans through the
+archive loader's existing module hook; it does not retain diagnostics in the
+runtime or alter ordinary timing behavior. All **28** captured decoder-call
+proofs remain valid at the preparation boundary: **no stale condition** occurs.
+The proposed stale-replacement explanation is rejected by evidence, so no
+special relaxation of safe replacement is implemented.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/probe.mjs slab all 1e8acb5a50e5c87d7bc32f27e424d18a58fdc038 loading /home/kreijstal/.cache/dekobloko/geoblox-loading prepare
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/probe.mjs slab all 1e8acb5a50e5c87d7bc32f27e424d18a58fdc038 loading /home/kreijstal/.cache/dekobloko/geoblox-loading
+```
+
+The separate full import census confirms use of the fast paths: **76,638**
+owned integer-array proof queries, **3,605,524** native reader entries and
+**656,207** native refill entries. There is no high-volume checked integer cast
+in the retained census. This census keeps only the top 120 positive counts,
+whose minimum is 56, so it does not prove every rare checked import is zero.
+The original float cast runs **5,119** times across the full workload. The full
+checksum matches and late compilation stays zero. Diagnostic elapsed time is
+excluded from timing cohorts. The linear heap has ample space (47.5 MB used
+out of 256 MB in the first timing sample); exhaustion is not the explanation.
+
+**Withdraw the local per-cast protocol**, including the terminal-selection
+refinement, at `a8628f1d73b98019999db9ce65d92ccb0217dfa7`. This restores the f2
+runtime and prior heap-fixture isolation. No restored-source tests, timings or
+fingerprints run. The compiler/linker source and tests remain in experimental
+history. The useful consuming diagnostics remain committed; no generated Java,
+WAT, binary, bundle or additional report file is committed. The one canonical
+report records this under `optimizationTrials.localCallbackProof`.
+
+The evidence rules out an unused optimization and stale preparation guards.
+It does not isolate the precise CPU cost of each extra branch/local. The next
+prototype should inspect existing guarded-loop and rejected native-region
+experiments first, then investigate a bounded loop-entry type/ownership/version
+proof that permits omitting per-cast flags and per-call guards inside a genuinely
+callback-free region. Keep the complete checked fallback, exact saved references,
+Java/host exception behavior and fuel/resume semantics; do not restore an
+unchanged rejected region variant. Validate smaller cases and the changed-source
+original archive before another full campaign. The **1.1x objective remains
+unmet**, and browser/phone FPS, aggregate heap and stability gates remain open.

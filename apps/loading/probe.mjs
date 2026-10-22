@@ -13,9 +13,10 @@ const player=path.resolve(process.argv[6]||path.join(os.homedir(),'.cache/dekobl
 const receiptPath=path.join(player,'benchmark.json');
 const {receipt,supplied:fixtureSupplied}=readMeasurementFixture(receiptPath);
 const mode=process.argv[2]||'js',asset=process.argv[3]||'1-2.bin',kernel=process.argv[5]||'bzip';
-const inspectMethod=process.argv[7];
+const inspectMethod=process.argv[7],prepareOnly=inspectMethod==='prepare';
 assert.ok(['js','wasm','canonical','slab','teavm'].includes(mode));assert.ok(['bzip','vorbis','loading'].includes(kernel));
-if(inspectMethod)assert.ok(kernel==='vorbis'&&mode==='slab','Method inspection uses the reduced Vorbis diagnostic');
+if(inspectMethod)assert.ok(mode==='slab'&&(prepareOnly||kernel==='vorbis'),'Inspection requires slab mode; prepare stops before guest execution');
+if(prepareOnly)assert.equal(kernel,'loading','Preparation census uses the full loading entry graph');
 if(kernel==='vorbis')assert.equal(asset,'3-0.bin','Vorbis probe consumes the recorded sample archive');
 if(kernel==='loading')assert.equal(asset,'all','Full loading consumes all recorded assets');
 const hash=data=>crypto.createHash('sha256').update(data).digest('hex');
@@ -70,7 +71,23 @@ if(mode==='teavm'){
   check,equal:check===receipt.referenceCheck});
 }else{
 const revision=process.argv[4] && process.argv[4]!=='-' && execFileSync('git',['rev-parse','--verify',process.argv[4]+'^{commit}'],{cwd:root,encoding:'utf8'}).trim();
-const {JVM}=revision?await loadArchivedJvm(root,revision):require(path.join(root,'src/core/jvm'));
+const compilerProofs=[];
+const observeModule=prepareOnly?({filename,exports:Compiler})=>{
+ if(!filename.endsWith('/jit/StructuredWasmCompiler.js'))return;
+ const translate=Compiler.prototype.translateBody;
+ Compiler.prototype.translateBody=function(...args){
+  const meta=translate.apply(this,args);
+  if(this.nativeArrayCastProof){
+   const nodes=new Map(this.fn.blocks.flatMap(b=>b.body).map(n=>[n.id,n]));
+   compilerProofs.push({meta,key:this.className+'.'+this.method.name+this.method.descriptor,
+    castSites:this.nativeArrayCastProof.nodes.size,
+    calls:[...this.nativeCallbackCalls].filter(([,proof])=>proof).map(([id,proof])=>({
+     callee:nodes.get(id)?.imm?.slice(1),conditions:proof.map(c=>({...c}))}))});
+  }
+  return meta;
+ };
+}:undefined;
+const {JVM}=revision?await loadArchivedJvm(root,revision,{observeModule}):require(path.join(root,'src/core/jvm'));
 const input=kernel==='loading'?null:assetBytes(asset);
 let reference=kernel==='bzip'?execFileSync('python3',['-c',`import bz2,sys
 b=sys.stdin.buffer.read();sys.stdout.buffer.write(bz2.decompress(b'BZh1'+b[9:9+int.from_bytes(b[1:5],'big')]))`],{input:Buffer.from(input),maxBuffer:16*1024*1024}):null;
@@ -117,7 +134,8 @@ try {
  if(kernel==='loading'){options.wasmFields=mode==='slab';options.denseInstanceFields=mode!=='slab';}
  if(mode==='slab'){options.wasmFields=true;options.denseInstanceFields=false;}
  globalThis.window=globalThis;globalThis.document={};
- const j=new JVM(options);delete globalThis.document;
+ const j=new JVM(options);delete globalThis.document;let assetCalls=0;
+ const preparationStop=new Error('Preparation-only census stops before Java main');
  if(temporary)j.jre.LoadingKernelProbe={applicationFallback:true,staticMethods:{'input()[B':vm=>freshLoadingBytes(vm,input)}};
  if(kernel!=='bzip'){
   const assets=Object.fromEntries((kernel==='loading'?Object.keys(receipt.assets):['3-0.bin','255-3.bin']).map(name=>[name,assetBytes(name)]));
@@ -127,6 +145,7 @@ try {
   const decompress=async(data,format)=>new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream(format))).arrayBuffer());
   installBrowserInflater(j,{inflate:b=>decompress(b,'deflate'),inflateRaw:b=>decompress(b,'deflate-raw')});
  }
+ if(prepareOnly)j.jre.GeobloxLoading.staticMethods['browserAsset(Ljava/lang/String;)[B']=()=>{assetCalls++;throw Error('Preparation census must not request assets');};
  j.jit._syncCompileEnvironment={trace:false,assert:true};
  const lateCompiles=[],startCompile=j.jit.startSynchronousCompile.bind(j.jit);
  j.jit.startSynchronousCompile=(method,entryPath)=>{
@@ -134,6 +153,7 @@ try {
   return startCompile(method,entryPath);
  };
  let guestStart,guestCpu;const mark=j.jit.markMainStarted.bind(j.jit);j.jit.markMainStarted=()=>{
+  if(prepareOnly)throw preparationStop;
   const optimization=optimizer?.finishPreparation();
   if(optimization?.transformation==='closed-loop-outline')assert.ok(optimization.outlinedLoops.length,'No loop outlined; do not time unchanged code');
   guestCpu=process.cpuUsage();guestStart=performance.now();mark();};
@@ -141,7 +161,21 @@ try {
  const transitions=[];const execute=w.execute.bind(w);
  w.execute=(frame,thread,state,...args)=>{const before=frame.pc,r=execute(frame,thread,state,...args);if(state.key?.includes('Bzip2Decoder')&&state.exits&&transitions.length<100)transitions.push({key:state.key,before,after:frame.pc,result:summarizeExecutionOutcome(r),fuels:state.fuelExits});return r;};
  let error;const start=performance.now();
- try{await j.run(mainClass);}catch(caught){error={type:caught.type||caught.name,message:caught.message,location:caught.jvmGuestLocation};}
+ let caughtPreparation;
+ try{await j.run(mainClass);}catch(caught){
+  if(prepareOnly)caughtPreparation=caught;
+  else error={type:caught.type||caught.name,message:caught.message,location:caught.jvmGuestLocation};
+ }
+ if(prepareOnly){
+  assert.equal(caughtPreparation,preparationStop);assert.equal(assetCalls,0);
+  const active=new Set(w.compiled.flatMap(s=>[s.meta,s.callee?.meta]));
+  const proofConditions=compilerProofs.filter(p=>active.has(p.meta)).map(({meta,key,castSites,calls})=>({key,castSites,
+   calls:calls.map(({callee,conditions})=>({callee,conditions:conditions.map(({global,version})=>({expected:version,current:global.value,valid:global.value===version}))}))}));
+  const diagnostic={revision,mainExecuted:false,assetCalls,proofConditions,excludedFromTiming:true,measuredAt:new Date().toISOString()};
+  const current=JSON.parse(fs.readFileSync(receiptPath)),trial=(current.optimizationTrials.localCallbackProof||={});
+  (trial.preparationDiagnostics||=[]).push(diagnostic);fs.writeFileSync(receiptPath,JSON.stringify(current,null,2)+'\n');
+  console.log('PREPARATION_RESULT '+JSON.stringify(diagnostic));
+ }else{
  const finished=performance.now(),cpu=guestCpu&&process.cpuUsage(guestCpu),elapsed=finished-start,executionMs=finished-guestStart;
  if(optimizer?.writePreview){
   const state=w.compiled.find(s=>s.key==='MusicDecoder.decodePacket(I)[F');
@@ -256,5 +290,6 @@ try {
     loadingMs:(Number(fields.get('musicNanos:J'))+Number(fields.get('graphicsNanos:J')))/1e6}:{}),
   decodeMs:kernel==='vorbis'?Number(fields.get('decodeNanos:J'))/1e6:undefined,equal,firstDifference,error,lateCompiles,compilation:j.jit.syncCompileCensus(),preparation:j.preparationReport,transitions,methods};
  save(result);
+ }
 }finally{optimizer?.finishPreparation();if(temporary)fs.rmSync(temporary,{recursive:true});}
 }
