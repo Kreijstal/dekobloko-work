@@ -70,7 +70,7 @@ test('reader replays preserve exact request order and reject malformed wrapper m
  assert.ok(chunks.length>1&&chunks.every(chunk=>chunk.length<=60000));
  assert.deepEqual(Buffer.from(chunks.join(''),'hex'),large,'chunking never wraps or repeats the request stream');
 });
-test('native call controls preserve bit-stream values and partial state across every call form',t=>{
+function verifyCallControls(t,kinds){
  if(!WebAssembly.JSTag){t.skip('Native call controls require JavaScript exception tags');return;}
  if(!WebAssembly.validate(Uint8Array.of(0,97,115,109,1,0,0,0,1,5,1,0x5f,1,0x7f,0))){
   t.skip('Metadata transfer controls require native Wasm GC');return;
@@ -89,15 +89,21 @@ test('native call controls preserve bit-stream values and partial state across e
  assert.equal(at,24);const finalState=[0,0xa639f0,12,3];
  const expected=[finalState.reduce((value,field)=>(Math.imul(value,31)+field)|0,sum),...finalState];
  const reader=bufferedCallSources(bufferedCallKinds[0]).readerCore;
- for(const kind of bufferedCallKinds){
-  assert.equal(bufferedCallSources(kind).readerCore,reader,'The same reader arithmetic and field operations remain');
+ for(const kind of kinds){
+  if(kind!=='buffered-call-gc-parameter')assert.equal(bufferedCallSources(kind).readerCore,reader,'The same reader arithmetic and field operations remain');
+  else {
+   assert.match(bufferedCallSources(kind).reader,/struct\.get \$fields/);
+   assert.match(bufferedCallSources(kind).reader,/i32\.ge_u/,'explicit Java array bounds check remains');
+   assert.match(bufferedCallSources(kind).reader,/i32\.load8_s/,'byte input stays in linear memory');
+  }
   const result=measureBufferedCallControl(kind,input,workload,requests.length,expected);
   assert.equal(result.checksum,expected[0]);assert.deepEqual(result.bufferedState,expected.slice(1));
   assert.equal(result.postTimerBoundsChecks,2);assert.equal(result.postTimerNoRefillCheck,true);
   if(kind==='buffered-call-transfer'){
    assert.equal(result.postTimerMetadataReleaseChecks,6);assert.equal(result.postTimerMetadataRefusals,2);
   }
-  if(kind==='buffered-call-typed-parameter'){
+  if(kind==='buffered-call-gc-parameter')assert.equal(result.stateRepresentation,'typed-gc-struct');
+  if(kind==='buffered-call-typed-parameter'||kind==='buffered-call-gc-parameter'){
    assert.equal(result.nativeCallProtocol,'typed-store-parameter-and-status');assert.equal(result.postTimerMetadataRefusals,2);
    assert.doesNotMatch(bufferedCallSources(kind).reader,/any\.convert_extern|ref\.cast|ref\.test/,'callee receives its already typed storage');
   }
@@ -105,4 +111,9 @@ test('native call controls preserve bit-stream values and partial state across e
    assert.equal(result.nativeCallProtocol,'store-parameter-and-status');assert.equal(result.postTimerMetadataRefusals,2);
   }
  }
-});
+}
+
+test('native call controls preserve bit-stream values and partial state across every call form',t=>
+ verifyCallControls(t,bufferedCallKinds.filter(kind=>kind!=='buffered-call-gc-parameter')));
+test('GC scalar state preserves bit-stream values, bounds exceptions and metadata refusals',t=>
+ verifyCallControls(t,['buffered-call-gc-parameter']));

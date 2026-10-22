@@ -1,11 +1,12 @@
 // Valid-data controls for native call boundaries, not a Java implementation.
-// Every mode uses the same reader instructions, requests, memory and checks.
+// The GC-state mode changes only field storage; requests, arithmetic, bounds,
+// fuel and call/status protocol match the typed linear-state control.
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {validateBufferedWorkload} from './buffered-replay.mjs';
 
-export const bufferedCallKinds=['buffered-call-local','buffered-call-import','buffered-call-table','buffered-call-status','buffered-call-transfer','buffered-call-parameter','buffered-call-typed-parameter'];
+export const bufferedCallKinds=['buffered-call-local','buffered-call-import','buffered-call-table','buffered-call-status','buffered-call-transfer','buffered-call-parameter','buffered-call-typed-parameter','buffered-call-gc-parameter'];
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const signature=(status,transfer,parameter,typed)=>`(type $reader (func (param i32 ${transfer?'externref':'i32'}${parameter?typed?' (ref null $storage)':' externref':''}) (result i32${status?' i32':''})))`;
 // Same structural store shape as the inspected JVM's private metadata.
@@ -48,8 +49,53 @@ const baseImports=`(import "env" "memory" (memory 1))
 const readerImports=`(import "env" "bounds" (tag $bounds (param externref)))
  (import "env" "error" (func $error (param i32 i32) (result externref)))`;
 
+// Same native metadata shape plus a typed field payload. Byte input remains in
+// the SAME linear memory: this isolates scalar-field representation/aliasing,
+// without silently removing the explicit Java-index check or fuel accounting.
+function gcStateSources(){
+ const types='(type $fields (struct '+Array(6).fill('(field (mut i32))').join(' ')+'))\n '+
+  storageTypes.replace('(field (ref $references))))',
+   '(field (ref $references)) (field (ref $fields))))');
+ const get=i=>`(struct.get $fields ${i} (local.get $fields))`;
+ const put=(i,value)=>`(struct.set $fields ${i} (local.get $fields) ${value})`;
+ const read=`(func $read (export "read") (type $reader)
+  (param $count i32)(param $receiver externref)(param $incoming (ref null $storage))(result i32 i32)
+  (local $fields (ref $fields))(local $state i32)(local $index i32)(local $length i32)(local $value i32)
+  (local.set $state (struct.get $storage 0 (local.get $incoming)))
+  (if (i32.lt_s (local.get $state) (i32.const 0)) (then unreachable))
+  (local.set $fields (struct.get $storage 3 (local.get $incoming)))
+  (block $ready (loop $refill
+   (br_if $ready (i32.ge_s ${get(0)} (local.get $count)))
+   ${poll}
+   (local.set $index ${get(2)})(local.set $length ${get(5)})
+   (if (i32.ge_u (local.get $index) (local.get $length))
+    (then (throw $bounds (call $error (local.get $index) (local.get $length)))))
+   ${put(1,`(i32.or (i32.shl ${get(1)} (i32.const 8))
+    (i32.and (i32.load8_s (i32.add ${get(4)} (local.get $index))) (i32.const 255)))`)}
+   ${put(0,`(i32.add ${get(0)} (i32.const 8))`)}
+   ${put(2,`(i32.add ${get(2)} (i32.const 1))`)}
+   ${put(3,`(i32.add ${get(3)} (i32.const 1))`)} (br $refill)))
+  (local.set $value (i32.and (i32.shr_s ${get(1)} (i32.sub ${get(0)} (local.get $count)))
+   (i32.sub (i32.shl (i32.const 1) (local.get $count)) (i32.const 1))))
+  ${put(0,`(i32.sub ${get(0)} (local.get $count))`)}
+  (i32.const -1)(local.get $value))`;
+ const base=bufferedCallSources('buffered-call-typed-parameter');
+ const factory=`(func (export "newStore") (param $base i32) (result externref)
+  (extern.convert_any (struct.new $storage (local.get $base) (i32.const 1)
+   (array.new_default $references (i32.const 0))
+   (struct.new $fields ${Array.from({length:6},(_,i)=>`(i32.load offset=${i*4} (local.get $base))`).join(' ')}))))`;
+ const sync=`(func (export "syncState") (param $raw externref)(param $base i32)
+  (local $fields (ref $fields))
+  (local.set $fields (struct.get $storage 3 (ref.cast (ref $storage) (any.convert_extern (local.get $raw)))))
+  ${Array.from({length:6},(_,i)=>`(i32.store offset=${i*4} (local.get $base) ${get(i)})`).join('\n  ')})`;
+ return {reader:read,readerCore:read,
+  provider:base.provider.replace(storageTypes,types).replace(base.reader,read).replace(makeStorage,factory+'\n '+sync),
+  caller:base.caller.replace(storageTypes,types)};
+}
+
 export function bufferedCallSources(kind){
  assert.ok(bufferedCallKinds.includes(kind),'Unknown native call control');
+ if(kind==='buffered-call-gc-parameter')return gcStateSources();
  const local=kind==='buffered-call-local',typed=kind==='buffered-call-typed-parameter',parameter=kind==='buffered-call-parameter'||typed;
  const transfer=kind==='buffered-call-transfer'||parameter;
  const status=kind==='buffered-call-status'||transfer;
@@ -91,7 +137,7 @@ export function measureBufferedCallControl(kind,input,workload,count,reference){
  fields.set([0,0,9,0,inputBase,input.length]);
  const fuel=new WebAssembly.Global({value:'i32',mutable:true},100_000_000);
  const bounds=WebAssembly.JSTag;assert.ok(bounds,'Native JavaScript exception tags are required');
- const typed=kind==='buffered-call-typed-parameter',parameter=kind==='buffered-call-parameter'||typed,transfer=kind==='buffered-call-transfer'||parameter;
+ const gc=kind==='buffered-call-gc-parameter',typed=gc||kind==='buffered-call-typed-parameter',parameter=kind==='buffered-call-parameter'||typed,transfer=kind==='buffered-call-transfer'||parameter;
  const inputGlobal=transfer&&!parameter?new WebAssembly.Global({value:'externref',mutable:true},null):null;
  const env={memory,fuel,bounds,...(inputGlobal?{input:inputGlobal}:{}),error:(index,length)=>({type:'java/lang/ArrayIndexOutOfBoundsException',index,length})};
  const sources=bufferedCallSources(kind);
@@ -107,26 +153,28 @@ export function measureBufferedCallControl(kind,input,workload,count,reference){
  const callerBytes=assemble(sources.caller),module=new WebAssembly.Module(callerBytes);
  const caller=new WebAssembly.Instance(module,{env});
  provider||=caller;
- const receiver={},store=transfer?provider.exports.newStore(state):null;
+ const receiver={};let store=transfer?provider.exports.newStore(state):null;
+ const reset=()=>{if(gc)store=provider.exports.newStore(state);};
+ const sync=()=>{if(gc)provider.exports.syncState(store,state);};
  const run=n=>transfer?caller.exports.run(n,receiver,widthsBase,store):caller.exports.run(n,state,widthsBase);
  // Exactly one execution: module construction and data installation are outside timing.
  const start=performance.now(),streamChecksum=run(count),elapsedMs=performance.now()-start;
  if(inputGlobal)assert.equal(inputGlobal.value,null,'Entry must consume and release transferred metadata');
- const bufferedState=Array.from(fields.subarray(0,4));
+ sync();const bufferedState=Array.from(fields.subarray(0,4));
  // The Java fixture folds final state after stopping its timer too.
  const checksum=bufferedState.reduce((sum,value)=>(Math.imul(sum,31)+value)|0,streamChecksum);
  assert.deepEqual([checksum,...bufferedState],reference,'Native control differs from original Java reader');
  // Negative and end indices fail before any field writes, as in the original reader.
  for(const index of [-1,input.length]){
-  fields.set([0,123,index,17]);const before=Array.from(fields);
+  fields.set([0,123,index,17]);reset();const before=Array.from(fields);
   assert.throws(()=>run(1),error=>error.type==='java/lang/ArrayIndexOutOfBoundsException'&&
    error.index===index&&error.length===input.length);
-  assert.deepEqual(Array.from(fields),before,'Failed input access changed reader state');
+  sync();assert.deepEqual(Array.from(fields),before,'Failed input access changed reader state');
   if(inputGlobal)assert.equal(inputGlobal.value,null,'Exceptional entry must release transferred metadata');
  }
- fields.set([requests[0]&31,1,input.length,17]);
+ fields.set([requests[0]&31,1,input.length,17]);reset();
  assert.equal(run(1),1,'Buffered bits must not touch exhausted input');
- assert.deepEqual(Array.from(fields.subarray(0,4)),[0,1,input.length,17]);
+ sync();assert.deepEqual(Array.from(fields.subarray(0,4)),[0,1,input.length,17]);
  if(transfer){
   if(inputGlobal)assert.equal(inputGlobal.value,null,'No-refill entry must release transferred metadata');
   for(const invalid of [null,{}]){
@@ -137,10 +185,12 @@ export function measureBufferedCallControl(kind,input,workload,count,reference){
   }
  }
  return {elapsedMs,checksum,bufferedState,readerSourceSha256:hash(sources.reader),readerCoreSourceSha256:hash(sources.readerCore),
+  ...(gc?{stateRepresentation:'typed-gc-struct',byteInputRepresentation:'linear-memory',postTimerStateSync:true}:{}),
   nativeCallProtocol:typed?'typed-store-parameter-and-status':parameter?'store-parameter-and-status':transfer?'transferred-store-and-status':kind==='buffered-call-status'?'status-and-value':'value-only',
   ...(transfer?{postTimerMetadataRefusals:2}:{}),...(inputGlobal?{postTimerMetadataReleaseChecks:6}:{}),
   callerSourceSha256:hash(sources.caller),callerWasmSha256:hash(callerBytes),
   ...(providerBytes?{providerSourceSha256:hash(sources.provider),providerWasmSha256:hash(providerBytes)}:{}),
   postTimerBoundsChecks:2,postTimerNoRefillCheck:true,
-  purpose:'Identical valid-data reader with local, imported or table native calls; explicit bounds/fuel; not Java runtime or parity acceptance'};
+  purpose:gc?'GC scalar-state control; same requests, byte input, bounds, fuel and table/status protocol; not Java runtime or parity acceptance':
+   'Identical valid-data reader with local, imported or table native calls; explicit bounds/fuel; not Java runtime or parity acceptance'};
 }

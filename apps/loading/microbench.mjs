@@ -1072,6 +1072,10 @@ else if(command==='linear'){
  run(args[0],args.slice(2),[args[1],'teavm']);
 }
 else if(command==='diagnose')diagnose(...args);
-else if(command==='calls')run(args[0],['buffered-ready-helper'],[...bufferedCallKinds,'teavm']);
+else if(command==='calls'){
+ const engines=args.slice(1);
+ for(const engine of engines)assert.ok(bufferedCallKinds.includes(engine)||engine==='teavm','Unknown call control: '+engine);
+ run(args[0],['buffered-ready-helper'],engines.length?engines:[...bufferedCallKinds,'teavm']);
+}
 else if(command==='inspect')await one('jvm',args[1],selectBenchmarkRevision(args[0]),'code',args[2]);
-else throw Error('Usage: microbench.mjs build | run [baseline|EXACT_REVISION] [CASE ...] | calls baseline|EXACT_REVISION | linear baseline|EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | diagnose baseline|EXACT_REVISION CASE | inspect baseline|EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');
+else throw Error('Usage: microbench.mjs build | run [baseline|EXACT_REVISION] [CASE ...] | calls baseline|EXACT_REVISION [CALL_KIND ...] | linear baseline|EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | diagnose baseline|EXACT_REVISION CASE | inspect baseline|EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');

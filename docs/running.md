@@ -8582,3 +8582,161 @@ loading. Inspect and adapt its proof rather than restoring it blindly. Keep
 ordinary/resume and unknown/null/foreign paths correct, show the selected
 native WAT loses the 15 tests, then measure the original reduced cases before
 spending another full-loading campaign. The full 1.10x objective remains unmet.
+
+
+### Private typed-entry representation proof
+
+Prototype `bd1eccd7a0f2b7f05562854f9288495774f42d16`, on
+`java-tools` branch `experiment/teavm-native-parity`, adapts the earlier entry
+specialization to the retained typed-storage ABI. The rolling control remains
+`8789cccad5c3b6bc22d585f0a58082de5d44ea08`. This is an experimental source
+snapshot, not the selected bundle, deployed runtime or a parity claim.
+
+The private storage parameter already has GC type `(ref null $1)`, proving its
+structural layout at compilation/validation. The internal caller validates heap
+ownership when producing this hidden argument; the GC type alone does not prove
+ownership of an arbitrary payload supplied by a host. At entry, one guard checks that
+metadata exists and its immutable base denotes native object storage. The
+selected body can use that base and GC reference storage directly. It does
+not repeat object metadata fills or native-versus-checked field selection.
+It does not hoist Java field values or a host metadata lookup. Unknown, null,
+foreign and reference-array metadata take the original checked body. Ordinary,
+legacy compact and resume entries keep the original lowering.
+
+The extra native body is capped at 4 KiB and still shares the existing 16 KiB
+compact-entry duplication limit. Unsupported exception/deoptimization/resume
+shapes retain their existing compilation path. No application names or new
+runtime opt-in flag are introduced. The clone may allocate extra scratch
+locals, so its private export receives its own declaration list; ordinary
+functions retain their original declarations and indices.
+
+The focused suite passes **1401/1401 assertions**. The dedicated new file passes
+**154/154**. Coverage includes native/plain/mixed/foreign receivers, null and
+bounds exceptions, partial writes, getter ordering, reference replacement,
+wide values, exact fuel spill state, resume after replacing a field container,
+active-body replacement, budget exhaustion, ordinary-body byte equality and
+collection of the proof/SSA graph. A reference-array field loop explicitly
+exercises scratch locals allocated only while cloning.
+
+The matching original-reader WAT has JVM module SHA-256
+`61c93e2b24eaf14d1600c7aa65a4ac0971d7ee4c8897ab789a77969cdae5eb8d`.
+The unchanged TeaVM artifact is
+`5beb55421087681123409c3cfe790fc0e3f13fc885f9718d48197d5766cffc81`.
+In JVM private export `$4`, the selected native body has **zero** per-field
+receiver-storage tests, versus **15** in its checked body and in the old body;
+one receiver selection remains before the selected body. Its byte-array
+storage selection is separate and still remains. The native body has eight
+`if` sites versus TeaVM reader `$30`'s one; these counts include cold paths,
+not dynamic CPU attribution.
+
+TeaVM's absence of explicit null/bounds branches is not a compile-time proof
+that every input is non-null and in range: `struct.get` and `array.get_s`
+include runtime checks. Typed storage proves layout; moving representation
+selection to entry needs an invariant; eliminating array bounds checks needs
+a separate range/dominance proof. The prototype preserves array bounds,
+readiness, scheduling/fuel and exception behavior.
+
+The original archive diagnostic confirms **490,954 native selections** in
+`Bzip2Decoder.readBits`, with zero checked selections/exits. Alphabet building
+and block-run emission also use their selected native versions three times
+each. These instrumented observations are excluded from timing comparisons.
+
+Fresh-process reader medians in B/C/B order are **7.086 / 5.340 / 6.462 ms**;
+wrapped-reader medians are **10.755 / 7.384 / 10.537 ms**. The unchanged archive
+is mixed: cold B/C/B/C medians **52.326 / 58.040 / 48.176 / 47.368 ms**;
+initialized-owner medians **46.867 / 43.763 / 50.797 / 44.097 ms**. All checksums
+and state oracles match. The 126.091 ms candidate cold sample and 61.885 ms
+baseline initialized sample remain in the report. Do not reduce these results
+to a universal percentage or silently discard the outliers.
+
+```bash
+# java-tools at candidate bd1eccd7: 1401 assertions passed, zero skips.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/parameterObjectVersion.test.js test/nativeObjectForwarding.test.js test/nativeObjectFieldCodegen.test.js test/nativeReferenceArray.test.js test/wasmParameterArrayAbi.test.js test/compactCanonicalFrames.test.js test/wasmCompilerRetention.test.js test/structuredLoopResume.test.js test/structuredColdResume.test.js
+# Historical commands already executed; reuse recorded baseline observations.
+# For new measurements select only the changed candidate/control.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs inspect bd1eccd7a0f2b7f05562854f9288495774f42d16 buffered-ready-helper 'MicroBufferedReader.readBits('
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run baseline buffered-ready-helper buffered-ready-wrapped
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run bd1eccd7a0f2b7f05562854f9288495774f42d16 buffered-ready-helper buffered-ready-wrapped
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run baseline bzip-block bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run bd1eccd7a0f2b7f05562854f9288495774f42d16 bzip-block bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose bd1eccd7a0f2b7f05562854f9288495774f42d16 bzip-block
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run baseline
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run bd1eccd7a0f2b7f05562854f9288495774f42d16
+```
+
+
+The unchanged original music sample also matches every PCM byte, but its JVM
+median rises from **116.628 to 141.233 ms** (three fresh observations per
+revision). Baseline samples are 124.687, 102.878 and 116.628 ms; candidate
+samples 142.089, 134.760 and 141.233 ms. The corresponding TeaVM medians are
+34.135 and 27.016 ms; the 64.109 ms TeaVM sample remains recorded. This does
+not pass the reduced performance gate, so no new full-loading campaign runs.
+Withdrawal `0ad67af106e6095cf9716f99fafe8b0ec3f57f9e` restores the retained
+`8789ccca` source; the restored focused suite passes **1247/1247**. Prototype
+and tests remain in experimental Git history. The baseline pin, JVM master,
+selected bundles and deployment remain unchanged.
+
+All 84 reduced timing observations, 12 original-music observations, WAT
+comparison and decision remain in the single canonical `benchmark.json`,
+under `optimizationTrials.typedNativeEntryProof`. Removing this class of
+checks is sound under the invariant, but is not a demonstrated general speedup.
+
+### GC scalar-state control and TeaVM exception policy
+
+A smaller control, `buffered-call-gc-parameter`, moves the six scalar state
+slots to a mutable GC struct, behind one extra immutable metadata pointer.
+It retains the original request sequence, linear-memory byte input, explicit
+unsigned Java-index check, fuel accounting and native table/status returns.
+This tests field representation rather than quietly removing checks. Like
+the existing controls it models valid data, not every JVM fallback. The
+independent bit-string oracle, negative/end bounds exceptions, unchanged
+state before failed writes, zero-refill case and invalid metadata tests pass.
+The focused fixture/statistics command passes **10/10**, zero skips. An initial
+WAT forward-type declaration failure is fixed by declaring the field payload
+before the metadata type. All seven previous controls retain their original
+generated sources; that one-time compatibility check happened before the
+user requested no more unchanged-baseline rechecks.
+
+The first GC-state median is **2.842 ms**, versus previously recorded typed
+linear-state control 2.973 ms and TeaVM 2.084 ms in that set. A subsequent
+candidate-only set is **6.687 ms** (6.687, 6.594, 6.863), despite identical
+caller/provider Wasm hashes. Preserve both sets: this is not evidence of a
+stable GC-field gain and does not justify a whole-runtime representation
+rewrite. The new caller/provider hashes are respectively
+`3c3ace09cc170a5924d7da51f3e1a89d9f44e907fed527d1265806821ac955a9` and
+`2e422a415e6fe2258eba6849e7ad19fcb127de8c5ca11bcb1d486974a64e1c32`.
+The observations are nested under `typedNativeEntryProof.gcScalarStateControl`.
+
+**Correction to the check comparison above:** GC instructions check for null
+and out-of-range access by trapping, but that is not the same as delivering
+catchable Java `NullPointerException` / `ArrayIndexOutOfBoundsException`.
+TeaVM 0.16.0's [WasmGCTarget insertion passes](https://github.com/konsoletyper/teavm/blob/0.16.0/core/src/main/java/org/teavm/backend/wasm/WasmGCTarget.java#L225-L234)
+run null/bounds insertion only with `strict` enabled. The
+[Maven default](https://github.com/konsoletyper/teavm/blob/0.16.0/tools/maven/plugin/src/main/java/org/teavm/maven/TeaVMCompileMojo.java#L98-L99)
+is `false`; the loading, microbench and Vorbis fixture POM generators do not
+enable it. Installed 0.16.0 core/plugin bytecode confirms both the conditional
+passes and default. Thus missing explicit checks cannot all be attributed to
+compile-time proofs. The previous artifacts, timings and 1.10x target remain
+unchanged; do not disable JVM Java exceptions to imitate this policy.
+This finding comes from source/configuration inspection, not a baseline rerun.
+
+For future work, **reuse recorded baseline observations**. Do not remeasure
+unchanged controls or rerun baseline correctness/identity checks. The call
+control command now accepts selected engines, so measuring one new mode no
+longer requires replaying all prior cases:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs calls baseline buffered-call-gc-parameter
+node --test --test-name-pattern='GC scalar state' tests/loading-fixture.test.mjs
+node --check apps/loading/buffered-call-controls.mjs
+node --check apps/loading/microbench.mjs
+```
+
+The first command measures only the new control (three fresh processes).
+Focused tests validate changed control code, not an unchanged JVM baseline.
+No strict-mode TeaVM rebuild, baseline rerun or replacement is performed.
+The full loading, aggregate-memory, startup and presented-FPS targets remain
+unmet; these diagnostics do not establish browser or phone performance.
+
+The GC control now has a separately named test, so that command validates only
+the changed control and leaves prior controls unexecuted.
