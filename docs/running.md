@@ -8275,3 +8275,210 @@ node --check apps/loading/vorbis.mjs
 All observations and this retention decision remain in the existing single
 `benchmark.json`. Music still dominates candidate loading; use the existing
 small Vorbis/float controls against the new baseline for the next experiment.
+
+### Typed private storage parameters: reduce conversion at native calls
+
+Continue from the rolling `679bcfba` baseline, not from the superseded
+`592f30f0` control. Existing float controls first re-establish the remaining
+small-loop gap at eight million iterations, three fresh pairs per case:
+
+| Case | JVM median ms | TeaVM median ms |
+| --- | ---: | ---: |
+| Butterfly including output readback | 36.251 | 19.226 |
+| Butterfly with scalar readback | 32.251 | 21.108 |
+| Butterfly loads only | 24.146 | 20.660 |
+| Float arithmetic only | 14.570 | 13.885 |
+
+Every checksum matches. Arithmetic alone remains close; the larger combined
+operation gap persists. This does not identify bounds checks as its sole cause.
+Earlier non-returning-error and repeated-read prototypes are already rejected;
+this pass does not reinstate them.
+
+Add one valid-data native call control, `buffered-call-typed-parameter`.
+The caller captures and converts the store once; its table call passes a
+nullable, structurally shared GC store reference. The callee reads the same
+state through this typed parameter instead of testing/converting/casting an
+externref. The stream, field arithmetic, bounds errors, polling, status result
+and checks remain. Invalid metadata is refused before state writes. The
+existing six variants retain their protocols. All seven share the same core
+reader and match the original 490,954-request oracle.
+
+Three fresh groups give a 2.905 ms typed-parameter median versus 3.505 ms for
+externref parameters; TeaVM is 1.902 ms. The status-only control is 3.159 ms,
+with a retained 5.609 ms observation, so do not attribute precise additive costs
+from these medians. These are valid-data reductions, not full Java semantics.
+The first assembler attempt requires the storage types to precede the function
+type that references them; correcting declaration order passes all controls.
+The focused fixture/statistics command passes **10/10**, zero skips.
+
+Runtime prototype `3d9bc14bf7373f99047a4ba3b27347eec663c3f8` changes the private
+storage parameters to nullable canonical GC references. Callers already hold
+these typed caches. Callees reuse that structural type proof and convert back
+to an externref only where existing raw cache/legacy paths require it. Missing
+metadata retains the original lazy receiver query; old public/frame/raw
+signatures remain unchanged. The canonical fallback stubs declare the same GC
+types, strip private arguments before Java execution and validate storage type
+and Java reference positions independently before native publication.
+
+Follow-up `8789cccad5c3b6bc22d585f0a58082de5d44ea08` changes comments and tests
+only. In particular, a wrong-position test now supplies the correct storage
+type, so a separate type mismatch cannot conceal a broken position check.
+The final eight-file focused suite passes **1247/1247 assertions**. Its forwarding
+subset passes **52/52**, including typed signature identity, null metadata,
+wide locals, legacy global consumption, plain/null receivers, recursion,
+withdrawal, readiness, replacement, exact exceptions and fuel spills.
+
+| Original-reader replay | Candidate JVM / TeaVM ms | Fresh baseline JVM / TeaVM ms |
+| --- | ---: | ---: |
+| Direct helper | 6.409 / 1.788 | 6.736 / 1.985 |
+| Original wrappers | 10.039 / 4.161 | 10.066 / 3.623 |
+
+The helper difference is small and the wrapper case flat; backend timing also
+varies. It is insufficient for promotion on its own. On the unchanged original
+Vorbis sample, all 348,249 PCM bytes match and no guest-time Java compilation
+occurs. Candidate JVM observations are 105.477, 109.912 and 99.734 ms; the fresh
+baseline gives 132.478, 116.533 and 111.402 ms. No observation is removed.
+Medians are **105.477 versus 116.533 ms** (9.49% lower), with paired TeaVM
+backend medians 27.993 and 26.828 ms. This passes the reduced screening gate;
+full loading must still decide retention.
+
+```bash
+# dekobloko-work:
+MICRO_ITERATIONS=8000000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run baseline butterfly-local butterfly-no-readback butterfly-loads float-arithmetic
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs calls baseline
+# Original reader: candidate 3d9bc14b, then baseline 679bcfba, using exact SHAs:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run REVISION buffered-ready-helper buffered-ready-wrapped
+# Original sample: candidate 8789ccca, then baseline 679bcfba, using exact SHAs:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run REVISION
+node --test tests/loading-fixture.test.mjs tests/loading-statistics.test.mjs
+# java-tools:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectForwarding.test.js test/nativeObjectFieldCodegen.test.js test/nativeReferenceArray.test.js test/wasmParameterArrayAbi.test.js test/compactCanonicalFrames.test.js test/wasmCompilerRetention.test.js test/structuredLoopResume.test.js test/structuredColdResume.test.js
+```
+
+All reduced observations, exact source identities and the gate decision are in
+the existing single `benchmark.json`, under
+`optimizationTrials.bufferedReaderReplay.receiverEntry.typedStorageParameters`.
+
+Full loading completes twice in baseline/candidate/candidate/baseline order:
+
+| Campaign | Source | JVM loading ms | TeaVM loading ms |
+| --- | --- | ---: | ---: |
+| Initial | `679bcfba` | 2028.698 | 341.052 |
+| Initial | `8789ccca` | 1953.850 | 364.896 |
+| Initial | `8789ccca` | 1966.255 | 358.501 |
+| Initial | `679bcfba` | 2728.954 | 400.542 |
+| Replication | `679bcfba` | 2067.373 | 341.381 |
+| Replication | `8789ccca` | 2150.573 | 360.978 |
+| Replication | `8789ccca` | 2159.945 | 347.779 |
+| Replication | `679bcfba` | 2340.557 | 364.169 |
+
+The unusually slow initial closing control is retained. It reports 16,235
+reclaimed array extents; the other initial rows report none. This is evidence
+of different GC activity, not a measurement of its CPU share. It motivates the
+complete replication rather than excluding an inconvenient observation.
+
+Across all rows, backend medians are **2203.965 ms baseline / 2058.414 ms
+candidate** (6.60% lower). Median paired ratios are **6.242 / 5.721**. In the
+replication alone, medians are **2203.965 / 2155.259 ms** (2.21% lower), with
+paired ratios **6.242 / 6.084**. Timing variation makes the exact gain uncertain;
+retain a modest improvement, not the large percentage suggested by the first
+campaign. All eight asset/PCM checks and zero-guest-compilation checks pass.
+Every comparison exits 1 because 1.10x parity remains unmet.
+
+Advance the rolling source baseline to
+`8789cccad5c3b6bc22d585f0a58082de5d44ea08`. Both complete campaigns support the
+same direction, and the focused suite passes 1247 assertions. Java-tools
+master and deployment remain unchanged. This is a Node optimization baseline,
+not browser, phone, FPS, memory or whole-launch acceptance.
+
+```bash
+# Run each revision twice per campaign in B/C/C/B order, using exact SHAs:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision REVISION --options diagnostic
+```
+
+### Compare the emitted reader WAT against TeaVM directly
+
+At the user's request, inspect both compiler outputs for the same
+`MicroBufferedReader.readBits(int, Bzip2DecoderState)` class file, instead of
+inferring its cost from source or operation counts. The inspection command now
+checks the pinned TeaVM binary hash and exports both current disassemblies:
+
+- JVM: `/home/kreijstal/.cache/dekobloko/geoblox-loading/microbench/current.wat`.
+- TeaVM: `/home/kreijstal/.cache/dekobloko/geoblox-loading/microbench/current-teavm.wat`.
+
+There is one current preview per compiler. Generated WAT is outside Git.
+The JVM preview is generated from the current `8789ccca` source, method module
+SHA-256 `49afb142bc1d8cca92d544488d2940d53855b5f075772c06500db21a96dc063d`.
+TeaVM's pinned fixture remains
+`5beb55421087681123409c3cfe790fc0e3f13fc885f9718d48197d5766cffc81`.
+No fixture, checksum or input is changed to obtain a shorter method.
+
+In this pinned disassembly, TeaVM function `$51` is the helper wrapper: it
+loops over widths masked by 31, multiplies the checksum by 33 and directly
+calls `$30`. The main dispatcher uses `$51` for the original helper and the
+ready-owner version. `$30` is the matching reader, with the same refill loop,
+255 mask, field updates and final buffered-bit extraction. It is **not** the
+initialization-checking original Bzip reader `$7`, nor the manually inlined
+and local source controls `$170`/`$171`.
+
+Our matching exported entry is `canonicalCompactStorageRun`, function `$4`.
+Its body spans lines 1052-1971; TeaVM `$30` spans lines 11721-11840. Counts below
+are static sites across hot and cold paths, not execution counts or latency:
+
+| Emitted work in matching reader | JVM | TeaVM |
+| --- | ---: | ---: |
+| Explicit native-base tests for primitive field accesses | 15 | 0 |
+| `bufferedBitCount` raw load sites | 4 | 1 |
+| Explicit `ref.is_null` sites | 14 | 0 |
+| Explicit `if` sites, including fallback/spill/error paths | 47 | 1 |
+| Wasm `global.get` / `global.set` sites | 7 / 3 | 0 / 0 |
+
+The meaningful distinction is the proof represented by the instructions:
+
+| Check or operation | TeaVM output | Our output | What may be removed safely |
+| --- | --- | --- | --- |
+| Object layout / representation | Parameter is `(ref null $19)`; fixed `struct.get` / `struct.set` | Java receiver is `externref`, private metadata is nullable `(ref null $1)`; each primitive access selects linear memory or a checked field helper | A proved native entry/region can fix representation once and remove repeated selection; genuinely unknown metadata retains fallback |
+| Receiver null | `struct.get` implicitly traps on null | Explicit metadata/base selection followed by the Java fallback on unsupported/null receivers | A dominating successful access can prove non-null; nullable inputs cannot simply lose their required fault |
+| Byte-array index | `array.get_s $14` implicitly checks bounds | Explicit unsigned index/length comparison before `i32.load8_s`, otherwise checked fallback | A range/dominance proof can remove a redundant Java-array check; linear-memory bounds alone do not prove Java-array bounds |
+| Repeated bit-count reads | Header `struct.get $19 15` uses `local.tee`; its value is reused in the final subtraction | Repeated guarded `i32.load offset=24` | SSA memory facts can reuse the value when no intervening write or observable fallback can change it |
+| Owner readiness | No class-init guard in this reader | Readiness cell test at native entry | A proof of trivial initialization must cover ancestors/native initialization too |
+| Scheduling and resumability | No fuel or canonical-frame bookkeeping in this reader | Fuel poll, invocation identity, spill and exception envelope | A bounded-loop/call proof may reduce polling; the VM still must support suspension and exact continuations |
+
+For example, the essential TeaVM field read is:
+
+```wat
+(struct.get $19 15 (local.get $1))
+```
+
+Our corresponding native/checked selection is:
+
+```wat
+(if (result i32)
+ (i32.ge_s (local.get $14) (i32.const 0))
+ (then (i32.load offset=24 (local.get $14)))
+ (else (call $fimport$27 (local.get $1))))
+```
+
+The field offset is already known in both compilers. Our missing proof is that
+this continuing region can keep using the native representation, plus the
+availability of earlier primitive field values. TeaVM's lack of explicit null
+or bounds branches must not be mislabeled as a compile-time bounds proof:
+those checks are built into its typed GC instructions. WAT size and static
+branch counts expose generated work but do not attribute the full loading
+ratio to a single category.
+
+The next compiler work should target these specific native-region and
+primitive-field SSA proofs. Avoid another broad tuning campaign before showing
+that the matched emitted hot path actually loses the identified redundant
+work. This comparison and preview provenance are diagnostic only.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs inspect baseline buffered-ready-helper 'MicroBufferedReader.readBits('
+node --check apps/loading/microbench.mjs
+node --test tests/loading-fixture.test.mjs tests/loading-statistics.test.mjs
+```
+
+The paired export command completes with the original reader checksum/state;
+the fixture/statistics suite passes **10/10**, zero skips. The runtime source
+used for the previews is committed on `experiment/teavm-native-parity`; the
+exporting script is source in dekobloko-work.

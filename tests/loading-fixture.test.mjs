@@ -97,6 +97,10 @@ test('native call controls preserve bit-stream values and partial state across e
   if(kind==='buffered-call-transfer'){
    assert.equal(result.postTimerMetadataReleaseChecks,6);assert.equal(result.postTimerMetadataRefusals,2);
   }
+  if(kind==='buffered-call-typed-parameter'){
+   assert.equal(result.nativeCallProtocol,'typed-store-parameter-and-status');assert.equal(result.postTimerMetadataRefusals,2);
+   assert.doesNotMatch(bufferedCallSources(kind).reader,/any\.convert_extern|ref\.cast|ref\.test/,'callee receives its already typed storage');
+  }
   if(kind==='buffered-call-parameter'){
    assert.equal(result.nativeCallProtocol,'store-parameter-and-status');assert.equal(result.postTimerMetadataRefusals,2);
   }

@@ -932,7 +932,14 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
    assert.ok(state?.meta?.bytes,'Installed kernel bytes are unavailable');
    const output=path.join(directory,'current.wat');
    fs.writeFileSync(output,execFileSync('wasm-dis',['--all-features','-'],{input:state.meta.bytes}));
-   result.code={output,sha256:hash(state.meta.bytes),method:state.key};
+   // Keep exactly one current preview for each compiler, from the same
+   // pinned Java fixture. These disassemblies are diagnostics, never timings.
+   const teaBytes=fs.readFileSync(path.join(directory,'teavm/micro.wasm'));
+   assert.equal(hash(teaBytes),fixture.wasmSha256,'TeaVM inspection artifact changed');
+   const teaOutput=path.join(directory,'current-teavm.wat');
+   fs.writeFileSync(teaOutput,execFileSync('wasm-dis',['--all-features','-'],{input:teaBytes}));
+   result.code={output,sha256:hash(state.meta.bytes),method:state.key,
+    teavm:{output:teaOutput,wasmSha256:fixture.wasmSha256}};
    const generated=j.jit.codegenCache.get(state.method);
    result.code.javascript={flags:Object.keys(generated||{}).filter(key=>generated[key]===true),
     source:String(generated?.jvmResumeBodyFn||generated)};

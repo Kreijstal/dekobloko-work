@@ -5,9 +5,9 @@ import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {validateBufferedWorkload} from './buffered-replay.mjs';
 
-export const bufferedCallKinds=['buffered-call-local','buffered-call-import','buffered-call-table','buffered-call-status','buffered-call-transfer','buffered-call-parameter'];
+export const bufferedCallKinds=['buffered-call-local','buffered-call-import','buffered-call-table','buffered-call-status','buffered-call-transfer','buffered-call-parameter','buffered-call-typed-parameter'];
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
-const signature=(status,transfer,parameter)=>`(type $reader (func (param i32 ${transfer?'externref':'i32'}${parameter?' externref':''}) (result i32${status?' i32':''})))`;
+const signature=(status,transfer,parameter,typed)=>`(type $reader (func (param i32 ${transfer?'externref':'i32'}${parameter?typed?' (ref null $storage)':' externref':''}) (result i32${status?' i32':''})))`;
 // Same structural store shape as the inspected JVM's private metadata.
 const storageTypes=`(type $references (array (mut externref)))
  (type $storage (struct (field i32) (field i32) (field (ref $references))))`;
@@ -21,9 +21,9 @@ const makeStorage=`(func (export "newStore") (param $base i32) (result externref
   (array.new_default $references (i32.const 0)))))`;
 const poll=`(global.set $fuel (i32.sub (global.get $fuel) (i32.const 1)))
  (if (i32.le_s (global.get $fuel) (i32.const 0)) (then unreachable))`;
-const reader=(status=false,transfer=false,parameter=false)=>`(func $read (export "read") (type $reader) (param $count i32) (param ${transfer?'$receiver externref':'$state i32'})${parameter?' (param $incoming externref)':''} (result i32${status?' i32':''})
+const reader=(status=false,transfer=false,parameter=false,typed=false)=>`(func $read (export "read") (type $reader) (param $count i32) (param ${transfer?'$receiver externref':'$state i32'})${parameter?` (param $incoming ${typed?'(ref null $storage)':'externref'})`:''} (result i32${status?' i32':''})
  (local $index i32)(local $length i32)(local $value i32)${transfer?'\n (local $state i32)'+(parameter?'':'(local $incoming externref)')+'(local $native (ref null $storage)) '+
-  (parameter?'':'(local.set $incoming (global.get $input))\n (global.set $input (ref.null extern))\n ')+storeGuard:''}
+  (parameter?'':'(local.set $incoming (global.get $input))\n (global.set $input (ref.null extern))\n ')+(typed?'(local.set $native (local.get $incoming))\n (local.set $state (struct.get $storage 0 (local.get $native)))\n (if (i32.lt_s (local.get $state) (i32.const 0)) (then unreachable))':storeGuard):''}
  (block $ready (loop $refill
   (br_if $ready (i32.ge_s (i32.load (local.get $state)) (local.get $count)))
   ${poll}
@@ -50,11 +50,11 @@ const readerImports=`(import "env" "bounds" (tag $bounds (param externref)))
 
 export function bufferedCallSources(kind){
  assert.ok(bufferedCallKinds.includes(kind),'Unknown native call control');
- const local=kind==='buffered-call-local',parameter=kind==='buffered-call-parameter';
+ const local=kind==='buffered-call-local',typed=kind==='buffered-call-typed-parameter',parameter=kind==='buffered-call-parameter'||typed;
  const transfer=kind==='buffered-call-transfer'||parameter;
  const status=kind==='buffered-call-status'||transfer;
- const table=kind==='buffered-call-table'||status,read=reader(status,transfer,parameter);
- const call=table?`(call_indirect (type $reader) (local.get $width) (local.get $${transfer?'receiver':'state'})${parameter?' (local.get $store)':''} (i32.const 0))`:
+ const table=kind==='buffered-call-table'||status,read=reader(status,transfer,parameter,typed);
+ const call=table?`(call_indirect (type $reader) (local.get $width) (local.get $${transfer?'receiver':'state'})${parameter?` (local.get $${typed?'typedStore':'store'})`:''} (i32.const 0))`:
   '(call $read (local.get $width) (local.get $state))';
  const consume=status?`${call} (local.set $value) (local.set $status)
    (if (i32.ge_s (local.get $status) (i32.const 0)) (then unreachable))
@@ -62,6 +62,7 @@ export function bufferedCallSources(kind){
   `(local.set $sum (i32.add (i32.mul (local.get $sum) (i32.const 33)) ${call}))`;
  const caller=`(func (export "run") (param $n i32) (param ${transfer?'$receiver externref':'$state i32'}) (param $widths i32)${transfer?' (param $store externref)':''} (result i32)
   (local $i i32)(local $sum i32)(local $width i32)${status?'(local $status i32)(local $value i32)':''}
+  ${typed?'(local $typedStore (ref null $storage)) (local.set $typedStore (ref.cast (ref $storage) (any.convert_extern (local.get $store))))':''}
   (block $done (loop $next
    (br_if $done (i32.ge_s (local.get $i) (local.get $n)))
    ${poll}
@@ -69,8 +70,8 @@ export function bufferedCallSources(kind){
    ${transfer&&!parameter?'(global.set $input (local.get $store))\n   ':''}${consume}
    (local.set $i (i32.add (local.get $i) (i32.const 1))) (br $next)))
   (local.get $sum))`;
- return {reader:read,readerCore:reader(),provider:`(module ${signature(status,transfer,parameter)} ${transfer?storageTypes+' ':''}${baseImports} ${readerImports} ${transfer&&!parameter?transferImport+' ':''}${read}${transfer?' '+makeStorage:''})`,
-  caller:`(module ${signature(status,transfer,parameter)} ${transfer?storageTypes+' ':''}${baseImports}
+ return {reader:read,readerCore:reader(),provider:`(module ${typed?storageTypes+' ':''}${signature(status,transfer,parameter,typed)} ${transfer&&!typed?storageTypes+' ':''}${baseImports} ${readerImports} ${transfer&&!parameter?transferImport+' ':''}${read}${transfer?' '+makeStorage:''})`,
+  caller:`(module ${typed?storageTypes+' ':''}${signature(status,transfer,parameter,typed)} ${transfer&&!typed?storageTypes+' ':''}${baseImports}
    ${local?readerImports:table?'(import "env" "table" (table 1 funcref))':
     '(import "env" "read" (func $read (type $reader)))'}
    ${transfer&&!parameter?transferImport+' ':''}${local?read:''} ${caller})`};
@@ -90,7 +91,7 @@ export function measureBufferedCallControl(kind,input,workload,count,reference){
  fields.set([0,0,9,0,inputBase,input.length]);
  const fuel=new WebAssembly.Global({value:'i32',mutable:true},100_000_000);
  const bounds=WebAssembly.JSTag;assert.ok(bounds,'Native JavaScript exception tags are required');
- const parameter=kind==='buffered-call-parameter',transfer=kind==='buffered-call-transfer'||parameter;
+ const typed=kind==='buffered-call-typed-parameter',parameter=kind==='buffered-call-parameter'||typed,transfer=kind==='buffered-call-transfer'||parameter;
  const inputGlobal=transfer&&!parameter?new WebAssembly.Global({value:'externref',mutable:true},null):null;
  const env={memory,fuel,bounds,...(inputGlobal?{input:inputGlobal}:{}),error:(index,length)=>({type:'java/lang/ArrayIndexOutOfBoundsException',index,length})};
  const sources=bufferedCallSources(kind);
@@ -136,7 +137,7 @@ export function measureBufferedCallControl(kind,input,workload,count,reference){
   }
  }
  return {elapsedMs,checksum,bufferedState,readerSourceSha256:hash(sources.reader),readerCoreSourceSha256:hash(sources.readerCore),
-  nativeCallProtocol:parameter?'store-parameter-and-status':transfer?'transferred-store-and-status':kind==='buffered-call-status'?'status-and-value':'value-only',
+  nativeCallProtocol:typed?'typed-store-parameter-and-status':parameter?'store-parameter-and-status':transfer?'transferred-store-and-status':kind==='buffered-call-status'?'status-and-value':'value-only',
   ...(transfer?{postTimerMetadataRefusals:2}:{}),...(inputGlobal?{postTimerMetadataReleaseChecks:6}:{}),
   callerSourceSha256:hash(sources.caller),callerWasmSha256:hash(callerBytes),
   ...(providerBytes?{providerSourceSha256:hash(sources.provider),providerWasmSha256:hash(providerBytes)}:{}),
