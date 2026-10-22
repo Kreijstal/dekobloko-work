@@ -10690,3 +10690,128 @@ still calls the bit reader inside its loop. Removing just the outer boundary was
 insufficient. Later, nested inline-frame metadata can remove the remaining
 vector/traversal boundary in its caller. Do not substitute another inline-budget
 increase or CPU-attribution campaign for those concrete missing transformations.
+
+
+### Flattening the short static helper inside a recovered loop
+
+Candidate `f2c8ad04a4b035ee863cd3abc29ae44c5b88f083` builds on the tested recovery
+framework `b8fc713`. A recoverable root instance loop can now splice an acyclic,
+bytecode-backed static leaf without requiring deep inlining. It reuses the
+existing per-callee and total expansion budgets. Calls with native/synchronized
+implementations, meaningful handlers, casts, unsupported operations or backward
+edges retain their ordinary call path. Non-intrinsic nested guest calls also
+prevent leaf admission. There are no application identities or new user flags.
+
+Here "atomic" means the leaf has no internal fuel/guest-call handoff; Java
+exceptions still occur after any preceding stores. A loop-header entry marker
+retains the enclosing original activation and call PC, so a zero-argument helper
+at the first instruction of a loop cannot accidentally suppress its fuel poll.
+Leaf scratch slots sit outside that activation's original local range and need
+not be donated when execution yields later at the enclosing loop header.
+
+The helper's owner is an explicit readiness dependency, even when its body
+reads no static fields or the owner has no explicit initializer. Existing entry
+readiness guards only test the token: a cold owner returns to the original
+outer entry without executing guest effects or initializing it early. Original
+bytecode then performs first-use initialization at the helper invocation after
+any prefixes. Untaken/zero-trip dependencies remain uninitialized. Warm bodies
+retain the dependency so an initialization reset cannot bypass the guard.
+This is conservative cold fallback, not early class initialization.
+
+The focused 13-file suite passes **1,117/1,117 assertions**, no skips. New tests
+exercise cold and warm composition, an untaken helper, initializer observation
+of a prior prefix, no-static-field dependencies after readiness reset, partial
+array stores before bounds/null faults, a fuel yield at a helper call in the
+loop header, a later fault after suspension, and real handler-bearing helper
+continuations. Existing recovery, canonical ownership, cold inlining, expansion
+budget, receiver, exception and retention tests also pass.
+
+Two fixture assumptions were corrected before that pass: class initialization
+correctly resets the leaf's static fields, so input is supplied through the
+already initialized probe class and read by the real initializer; and a caught
+fault in a non-inlined helper correctly donates its handler continuation instead
+of returning synchronously. Early failures are not counted as passes.
+
+```bash
+# java-tools, f2c8ad0: 1,117/1,117 pass, no skips.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/inlineAtomicLeaf.test.js test/inlineActivationResume.test.js test/canonicalDirectFrames.test.js test/wasmCalleeRanking.test.js test/wasmCompilerRetention.test.js test/structuredLoopResume.test.js test/wasmDeepInline.test.js test/wasmInstanceInline.test.js test/wasmStaticInlineHandlers.test.js test/inlineFinalReceiverCalls.test.js test/wasmInlineInitialization.test.js test/wasmColdIntegerInline.test.js test/wasmInlineBudget.test.js
+# Deko observation field; syntax/whitespace checks pass.
+node --check apps/loading/probe.mjs
+git diff --check
+# Instrumented changed-source coverage; excluded from timing.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect f2c8ad04a4b035ee863cd3abc29ae44c5b88f083 'VorbisCodebook.readVector()[F'
+# Only changed candidate is timed, using recorded comparators/oracles.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm f2c8ad04a4b035ee863cd3abc29ae44c5b88f083
+```
+
+The real original-sample diagnostic confirms one recovered loop plus one static
+leaf in `VorbisCodebook.readVector`: **134,216 native entries**, complete normal
+flow, zero native exits/throws, no remaining guest-call links. The saved WAT has
+no `call_indirect` or canonical call-table import for this body. The global bit
+reader's direct entries fall from recorded `b8fc713` **443,635 -> 71,306**;
+the 372,329 removed entries are code-path evidence, not a CPU-share estimate.
+Floor packet decoding retains 682 complete native entries. Every PCM byte
+matches the existing HotSpot reference, and there is no late Java compilation.
+
+The inspected vector module SHA-256 is
+`e66393d6fd4638c1e23e6b903715b8961b01547aab12512e5fdaa70d94e48732`;
+paired existing TeaVM remains
+`973be9907f1164722b192d1278510a05e6c390bb09d1389dd28e7ebd0099261c`.
+Deko observation field `inlineAtomicStaticSiteCount` is committed in `1a94a0e`.
+No generated code is committed; all samples/diagnostics stay in the same report.
+
+
+Three uninstrumented original-music samples are **93.371235, 96.087914,
+105.619141 ms**, median **96.087914 ms**, run ID
+`6f16ec55-c5b9-4cf1-b7c3-077c3680579c`. All PCM matches and no Java compiles
+late. The median is 5.23% below recorded recovery-only `b8fc713` (101.389471 ms)
+and 5.84% below recorded default `aa23806` (102.049793 ms), but ranges overlap.
+The full-loading screen uses only this changed candidate, without another
+TeaVM/JVM/HotSpot baseline process:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision f2c8ad04a4b035ee863cd3abc29ae44c5b88f083 --options diagnostic
+```
+
+| Full sample | Music ms | Graphics ms | Loading ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1493.852946 | 380.102324 | 1873.955270 |
+| 2 | 1447.646260 | 361.484285 | 1809.130545 |
+| 3 | 1595.440599 | 400.208123 | 1995.648722 |
+
+All three checksums match `18:218292:2368412830:205:7597510:3045679678`, with
+zero late Java compilation. Each observation records **883,256** complete native
+vector-reader entries with one recovered activation and one static leaf, zero
+native exits/throws. Floor packet decoding retains **5,119** complete native
+entries, also with zero native exits/throws; bit-reader native entries are
+508,755. The transformation is therefore used on the full workload too.
+
+Full-loading median **1873.955270 ms** is **5.87% lower** than recorded preceding
+full candidate `5cea8b4` (1990.716503 ms) and **7.04% lower** than recorded default
+`aa23806` (2015.857769 ms). The ranges overlap, so the exact gain is uncertain.
+This is the combined source candidate: the preceding full cohort predates the
+inline-frame framework, so do not attribute the whole difference to static-leaf
+inlining alone. All observations, including the slow third sample, are retained.
+
+The rolling optimization comparator in `apps/loading/benchmark-baseline.mjs`
+advances to **f2c8ad0**. Future changed candidates should reuse this cohort, not
+run the selected source against itself. This selector serves optimization tools;
+it does not change production runtime selection, java-tools master or deployment.
+The single report's `optimizationBaseline` now agrees with that selector (the
+previous report metadata still referred to an older source and is preserved in
+the trial's baseline-advance history). Raw historical observations are unchanged.
+
+Current full ratio is **1873.955270 / 359.739597 = 5.209x** recorded TeaVM.
+The **1.1x target remains unmet**. Full-loading measurements exclude networking,
+drawing, device playback and menu transitions; presented FPS, total JS heap,
+browser slowdown and phone stability remain unverified.
+
+The single report records source/fixture identities, diagnostics, all six fresh
+candidate observations, full native counters, validation and the decision under
+`optimizationTrials.inlineAtomicStaticLeaves`. Next inspect whether the newly
+fused traversal can use one guarded native region for its remaining object/static
+representation checks. Earlier available-array-read reuse treats fields and
+static stores as barriers, so restoring that withdrawn prototype unchanged
+would not address this body. Preserve native ownership, static-cell writeback
+synchronization, Java bounds/exception behavior, fuel and original-frame recovery.
+No new CPU-attribution campaign or unchanged-baseline timing is needed.
