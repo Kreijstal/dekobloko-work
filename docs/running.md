@@ -8482,3 +8482,103 @@ The paired export command completes with the original reader checksum/state;
 the fixture/statistics suite passes **10/10**, zero skips. The runtime source
 used for the previews is committed on `experiment/teavm-native-parity`; the
 exporting script is source in dekobloko-work.
+
+### Native primitive-field value proofs: correct code, mixed performance
+
+Starting from retained `8789ccca`, prototype
+`4e69af7965ac62c264d48428845248d65940c6aa` implements bounded, normal-flow
+must-available definitions for primitive instance fields. It forwards only the
+same receiver/physical field definition present on every incoming edge.
+Another receiver, arrays, reference fields, calls, volatile accesses and
+unknown operations invalidate facts. Loop headers are fresh roots, so
+interpreter/fuel re-entry cannot reuse a private snapshot from an earlier run.
+Methods with live exception regions keep block-local proofs. Original checked
+field accesses still run on every fallback path; no new runtime validity flag
+or application-specific opt-in is added.
+
+The analysis is bounded at 32,768 IR nodes, 100,000 transfer visits and 64
+captured definitions. It runs after demotion discovery and discards incomplete
+proofs. The first version uses independent locals for native snapshots. The
+refinement, `a00e61e0d56ef1f1724e74eaf2c72a788e4472a8`, reuses the producer's SSA
+local. If the allocator had shared its physical slot, that value is pinned to
+a unique slot before final emission and before constructing resume bindings.
+Stackified store operands retain a capture at their original native store.
+
+The initial focused suite passes **1075/1075 assertions**, and the refined
+suite **1076/1076**. Coverage includes native/fallback getter order and thrown
+identity, setters that mutate another field, aliasing receivers, observable
+array callbacks, volatile barriers, inherited shadowed fields, joins with
+matching and differing definitions, wide integers, floating values, partial
+effects before failure, handler snapshots, capture budgets and graph cleanup.
+A real loop-resume test mutates the field between several native runs and
+compares exact final state with the unoptimized control. An initial test
+incorrectly compared two different receiver identities in an exception
+snapshot; it is corrected to use the same receiver.
+
+The emitted original-reader WAT changes as intended: three field reads are
+forwarded, and `bufferedBitCount` raw load sites fall **4 to 2**. The refinement
+shares two SSA locals without extra capture instructions. Native reader
+entries remain **490,954**, with zero exits and matching original checksum and
+final state. Its module hashes are:
+
+- First proof: `76f09ab9c833bac7783e354938bb8bea5ad4544fb720ad487f37ea7d7f21ea1a`.
+- Shared SSA locals: `3857438f1b44101323e4fabae7ce24042869bb357abda723048f6fb175c47d32`.
+
+The **15 native-base selection tests remain**. The remaining refill-side load
+crosses an array access whose checked fallback may invoke observable host code;
+this proof does not pretend that path is pure. Inspection timings are excluded.
+
+Three fresh JVM/TeaVM pairs per case give the following JVM medians. Reader
+controls run baseline/first-candidate/baseline; archive controls run first
+candidate/baseline. The shared-local refinement then runs all four cases once
+per fresh process, three pairs each. No workload is replayed for warmup.
+
+| Case | Baseline ms | First proof ms | Shared-local refinement ms |
+| --- | ---: | ---: | ---: |
+| Original direct reader | 6.573 before / 7.288 after | 7.546 | 6.471 |
+| Original reader wrappers | 9.887 before / 9.912 after | 9.651 | 11.001 |
+| Original archive, cold owner | 50.116 | 54.569 | 55.065 |
+| Original archive, initialized owner | 53.460 | 51.544 | 52.748 |
+
+Every checksum/output and no-Java-compilation check passes. The original
+archive exercises the proof in `readBits` (490,954 native entries), plus
+`decodeBlocks` and `emitBlockRuns`; this is not an unused-code experiment.
+Timing variation is substantial: retained observations include a 4.561 ms
+TeaVM reader, an 8.385 ms TeaVM wrapper, and a 124.190 ms JVM archive paired
+with a 22.456 ms TeaVM archive. All rows remain in the report.
+
+Nevertheless, the refinement does not demonstrate a combined gain: the
+wrapper is about 11% slower and the cold archive about 10% slower than their
+fresh controls. Shorter WAT and correct memory proofs are insufficient for
+retention. **No full-loading campaign is run for these mixed reduced gates.**
+
+Withdrawal `908a5551152a47c87f80c66c032b30721bea7f2e` restores the complete tree
+of `8789ccca` exactly. Feature-dependent tests remain reviewable with both
+experimental commits. The retained six-file suite passes **1010/1010**.
+The working baseline stays `8789ccca`; deployment and selected artifacts are
+unchanged. Both current WAT previews are regenerated from that retained source.
+
+```bash
+# java-tools, initial and refined prototypes:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/primitiveFieldValues.test.js test/nativeObjectForwarding.test.js test/nativeObjectFieldCodegen.test.js test/wasmCompilerRetention.test.js test/wasmNumericStackification.test.js test/structuredLoopResume.test.js test/structuredColdResume.test.js
+# Same command after withdrawal, omitting primitiveFieldValues.test.js: 1010 pass.
+# dekobloko-work, use complete SHAs recorded above:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run REVISION buffered-ready-helper buffered-ready-wrapped
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run REVISION bzip-block bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs inspect REVISION buffered-ready-helper 'MicroBufferedReader.readBits('
+```
+
+All **84 timing observations**, exact source/run identities, WAT evidence and
+withdrawal are in the existing single `benchmark.json`, under
+`optimizationTrials.primitiveFieldValueProof`. Probe summaries now expose field
+proof/capture/shared-local counts when a compiler supplies them, defaulting to
+zero otherwise. Those counters do not instrument execution.
+
+The next concrete target is the **representation proof at private native
+entry**, to remove the repeated per-field selection inside its native body.
+The earlier compact-only specialization `82c5f91c` is relevant history, but it
+predates the retained typed-storage parameter ABI and previously failed full
+loading. Inspect and adapt its proof rather than restoring it blindly. Keep
+ordinary/resume and unknown/null/foreign paths correct, show the selected
+native WAT loses the 15 tests, then measure the original reduced cases before
+spending another full-loading campaign. The full 1.10x objective remains unmet.
