@@ -8143,3 +8143,135 @@ node --check apps/loading/buffered-call-controls.mjs
 
 All 78 new observations remain in the existing single report. Their summary
 is nested under the existing `nativeCallControls.metadataTransport` record.
+
+### Prototype native storage parameters without changing public entries
+
+Runtime source `f09fa780a35d39bcba9b83737535df435b55d7b1` replaces global
+publication/clearing at eligible compact call sites with private externref
+parameters. Expanded array headers precede storage parameters in the internal
+body signature. A separate `canonicalCompactStorageRun` receives both; the
+existing frame, raw, canonical and compact entry signatures remain unchanged
+and supply uncaptured metadata through wrappers. Legacy global publications
+remain consumable by those entries. The body retains its original lazy object
+queries, checked field/array fallback, class readiness, fuel and exceptions.
+No native-only field-body version is combined with this change.
+
+Static calls can forward array headers and object stores together. Instance
+calls with primitive-array arguments retain their existing ABI until their
+call site can provide all headers required by the combined entry. This is a
+generic signature restriction, not a game profile or environment flag. Native
+publication validates Java parameter slots, array headers, storage reference
+positions and return types before publishing the new entry. Unready, withdrawn
+or incompatible callees keep their existing bridge, which strips private
+arguments before Java execution. The compact-body duplication cap remains
+16 KiB shared across entries.
+
+The original reader replay is the first timing gate, three fresh pairs per
+case, one stream per process and the same eager native compilation constraints:
+
+| Median ms | Helper JVM / TeaVM | Wrappers JVM / TeaVM | Inline JVM / TeaVM | Local JVM / TeaVM |
+| --- | ---: | ---: | ---: | ---: |
+| Storage-parameter candidate | 7.268 / 1.763 | 10.723 / 3.725 | 4.215 / 1.400 | 2.747 / 1.387 |
+| Fresh baseline after | 8.016 / 1.802 | 12.998 / 3.728 | 4.317 / 1.600 | 2.687 / 1.514 |
+
+The helper improves 9.3% and the wrapper-preserving case 17.5% in this fresh
+comparison. All values and reader state match, and no JVM run compiles Java
+after main begins. The local control varies slightly in the other direction;
+these observations do not establish a precise full-loading gain. The unchanged
+original archive is the next gate, with cold and initialized owners.
+
+Focused tests initially pass **501/501 assertions**. Expanded coverage passes
+**506/506**, adding two independent references mixed with `long`/`double`
+arguments, exact results beyond 2^53 and mixed captured/plain stores. A further
+publication-identity regression passes within **49/49** focused forwarding
+assertions. It proves that a mismatched storage-reference position cannot
+publish the native entry. Tests also verify the actual native function in its
+call slot, unchanged public arities, consumed legacy publication, raw entries,
+precise fuel-spill Java arguments, recursion, null/plain fallback, cold owners,
+later virtual overrides and replacement. No frame receives a private metadata
+argument as a Java local.
+
+One GC extent check initially observes both weak references collected while
+their finalizer is still queued. The test now yields once after its final
+forced GC before checking extent release. The full focused suite then passes;
+no runtime collection policy is changed. The initial straight-line fuel fixture
+does not poll fuel, so the spill regression uses a real loop, not an assumption
+that zero fuel must interrupt every method.
+
+Snapshot `679bcfba5dc05b9d991f81838b1a3c4fd265a039` saves the expanded tests;
+its runtime source is byte-identical to `f09fa780`. The source is experimental,
+with JVM master, selected artifacts and deployment unchanged.
+
+```bash
+# java-tools:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectForwarding.test.js test/nativeObjectFieldCodegen.test.js test/nativeReferenceArray.test.js test/wasmParameterArrayAbi.test.js test/compactCanonicalFrames.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectForwarding.test.js
+git diff --exit-code f09fa780a35d39bcba9b83737535df435b55d7b1 679bcfba5dc05b9d991f81838b1a3c4fd265a039 -- src
+# dekobloko-work:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run f09fa780a35d39bcba9b83737535df435b55d7b1 buffered-ready-helper buffered-ready-wrapped buffered-inline buffered-local
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af buffered-ready-helper buffered-ready-wrapped buffered-inline buffered-local
+# Unchanged archive: baseline/candidate/baseline, three fresh pairs per case.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af bzip-block bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run f09fa780a35d39bcba9b83737535df435b55d7b1 bzip-block bzip-ready-owner
+```
+
+### Retain storage parameters and advance the working baseline
+
+The unchanged original archive passes the next gate. Cold-owner medians are
+50.107 / 49.319 / 51.814 ms in baseline/candidate/baseline order; initialized
+owner medians are 51.487 / 45.403 / 53.220 ms. Each batch has three fresh JVM /
+TeaVM pairs. Every decoded output matches and no Java compilation occurs after
+main begins. The candidate's first cold observation (56.75 ms) is retained.
+
+Full loading then completes in baseline/candidate/candidate/baseline order:
+
+| Source | JVM loading ms | TeaVM loading ms | Paired ratio |
+| --- | ---: | ---: | ---: |
+| `592f30f0` | 2122.585 | 354.359 | 5.990 |
+| `f09fa780` | 1998.040 | 383.427 | 5.211 |
+| `f09fa780` | 1950.938 | 341.846 | 5.707 |
+| `592f30f0` | 2242.069 | 372.388 | 6.021 |
+
+JVM median loading falls from 2182.327 to 1974.489 ms (9.52%). TeaVM medians
+are 363.374 and 362.636 ms. The median paired ratio falls from 6.005 to 5.459.
+All asset/PCM results match and all JVM runs report zero Java compilation
+within execution. Each comparison exits 1 because the 1.10 parity target
+remains unmet; these are completed measurements, not execution failures.
+These Node diagnostics do not establish browser or phone acceptance.
+
+Retain the change. The final focused suite passes **1244/1244 assertions**:
+
+```bash
+# java-tools:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectForwarding.test.js test/nativeObjectFieldCodegen.test.js test/nativeReferenceArray.test.js test/wasmParameterArrayAbi.test.js test/compactCanonicalFrames.test.js test/wasmCompilerRetention.test.js test/structuredLoopResume.test.js test/structuredColdResume.test.js
+# dekobloko-work, run once for each revision in the table above:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision REVISION --options diagnostic
+```
+
+`apps/loading/benchmark-baseline.mjs` is the authoritative rolling source
+baseline, now `679bcfba5dc05b9d991f81838b1a3c4fd265a039`. This includes expanded
+tests and has identical runtime source to the measured `f09fa780` revision.
+Keep a fixed control within an experiment; after the correctness, reduced-case
+and full-loading gates support retaining an improvement, update this source
+pin before the next experiment. New candidates must include retained changes.
+The original controls remain available by exact revision; historical results
+keep their actual source identities. Selected/deployed bundles are separate.
+
+Node `compare.mjs` defaults to this pin. `microbench.mjs` and `vorbis.mjs`
+accept `baseline` in place of an exact revision; their `run` command also uses
+it when the revision is omitted. Selection happens before launching workers,
+so measurements still record exact immutable commits. Browser comparisons
+continue to use the revision belonging to their selected bundle.
+
+```bash
+node --test tests/loading-fixture.test.mjs tests/loading-statistics.test.mjs
+# 10/10 pass, zero skips.
+node --check apps/loading/benchmark-baseline.mjs
+node --check apps/loading/compare.mjs
+node --check apps/loading/microbench.mjs
+node --check apps/loading/vorbis.mjs
+```
+
+All observations and this retention decision remain in the existing single
+`benchmark.json`. Music still dominates candidate loading; use the existing
+small Vorbis/float controls against the new baseline for the next experiment.

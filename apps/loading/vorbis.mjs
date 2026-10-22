@@ -8,6 +8,7 @@ import crypto from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {vorbisProbeSource} from './workload.mjs';
+import {selectBenchmarkRevision} from './benchmark-baseline.mjs';
 import {projectMeasurementFixture,readMeasurementFixture,fixtureStdinFlag,parseMeasurementResult,recordProbeObservation} from './measurement-fixture.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
@@ -178,6 +179,6 @@ function inspect(revision,method='MusicDecoder.readBit()I'){
 const [command,...args]=process.argv.slice(2);
 if(command==='build')build();
 else if(command==='one')await one(...args);
-else if(command==='run')run(...args);
-else if(command==='inspect')inspect(...args);
-else throw Error('Usage: vorbis.mjs build | run EXACT_REVISION | one jvm|teavm EXACT_REVISION | inspect EXACT_REVISION [METHOD]');
+else if(command==='run')run(selectBenchmarkRevision(args[0]));
+else if(command==='inspect')inspect(selectBenchmarkRevision(args[0]),args[1]);
+else throw Error('Usage: vorbis.mjs build | run [baseline|EXACT_REVISION] | one jvm|teavm EXACT_REVISION | inspect baseline|EXACT_REVISION [METHOD]');

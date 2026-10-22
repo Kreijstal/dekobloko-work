@@ -11,6 +11,7 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {spawnSync,execFileSync} from 'node:child_process';
 import {summarizeLoading} from './statistics.mjs';
+import {selectBenchmarkRevision} from './benchmark-baseline.mjs';
 import {projectMeasurementFixture,fixtureStdinFlag,parseMeasurementResult,recordProbeObservation} from './measurement-fixture.mjs';
 const here=path.dirname(fileURLToPath(import.meta.url));
 const options={player:path.join(os.homedir(),'.cache/dekobloko/geoblox-loading'),browser:'firefox',pairs:3};
@@ -33,7 +34,7 @@ const receiptPath=path.join(options.player,'benchmark.json');
 const receipt=JSON.parse(fs.readFileSync(receiptPath));
 const runtimeDirectory=path.resolve(options.runtime||path.join(options.player,'runtime'));
 if(options.runtime&&!options.revision)throw Error('An isolated runtime requires --revision');
-const runtimeRevision=node?execFileSync('git',['rev-parse','--verify',(options.revision||receipt.runtimeRevision)+'^{commit}'],
+const runtimeRevision=node?execFileSync('git',['rev-parse','--verify',selectBenchmarkRevision(options.revision)+'^{commit}'],
  {cwd:path.resolve(here,'../../../java-tools'),encoding:'utf8'}).trim():options.revision||receipt.runtimeRevision;
 assert.equal(receipt.schema,1);
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');

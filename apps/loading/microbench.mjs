@@ -8,6 +8,7 @@ import crypto from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {loadArchivedJvm} from './archive-jvm.mjs';
+import {selectBenchmarkRevision} from './benchmark-baseline.mjs';
 import {projectMeasurementFixture,readMeasurementFixture,fixtureStdinFlag,parseMeasurementResult,summarizeExecutionOutcome} from './measurement-fixture.mjs';
 import {captureBufferedWorkload,bufferedReplayArgs} from './buffered-replay.mjs';
 import {bufferedCallKinds,measureBufferedCallControl} from './buffered-call-controls.mjs';
@@ -999,6 +1000,7 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
 }
 
 function run(revision,names,engines=['jvm','teavm']) {
+ revision=selectBenchmarkRevision(revision);
  assert.notEqual(process.env.JVM_WASM_IMPORT_STATS,'1','Keep instrumented diagnostics out of timing comparisons');
  assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact JVM source commit');
  if(!names.length)names=cases;
@@ -1040,6 +1042,7 @@ function ensureReference() {
 }
 
 function diagnose(revision,name) {
+ revision=selectBenchmarkRevision(revision);
  assert.match(revision||'',/^[0-9a-f]{40}$/);
  ensureReference();
  const output=execFileSync(process.execPath,[...nodeArgs,script,'one','jvm',name,revision,fixtureStdinFlag],{
@@ -1060,5 +1063,5 @@ else if(command==='linear'){
 }
 else if(command==='diagnose')diagnose(...args);
 else if(command==='calls')run(args[0],['buffered-ready-helper'],[...bufferedCallKinds,'teavm']);
-else if(command==='inspect')await one('jvm',args[1],args[0],'code',args[2]);
-else throw Error('Usage: microbench.mjs build | run EXACT_REVISION [CASE ...] | calls EXACT_REVISION | linear EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | diagnose EXACT_REVISION CASE | inspect EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');
+else if(command==='inspect')await one('jvm',args[1],selectBenchmarkRevision(args[0]),'code',args[2]);
+else throw Error('Usage: microbench.mjs build | run [baseline|EXACT_REVISION] [CASE ...] | calls baseline|EXACT_REVISION | linear baseline|EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | diagnose baseline|EXACT_REVISION CASE | inspect baseline|EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');
