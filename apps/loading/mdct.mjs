@@ -56,10 +56,13 @@ export function extractMdctSources(decoder,helper){
   for(int i=0;i<records;i++){for(int j=0;j<8;j++)dimensions[i*8+j]=readInt();rows[i]=readFloats();}
   if(cursor!=bytes.length||small<=0||large<small)throw new IllegalArgumentException();
   long start=System.nanoTime();
+  runTransforms();
+  transformNanos=System.nanoTime()-start;
+ }
+ static void runTransforms(){
   for(int i=0;i<records;i++){int p=i*8;workBlock=rows[i];
    transform(${parameterNames.map((_,i)=>'dimensions[p'+(i?'+'+i:'')+']').join(',')});
   }
-  transformNanos=System.nanoTime()-start;
  }
  ${bitMethod}
  static void transform(${parameterNames.map(name=>'int '+name).join(',')}){
@@ -135,19 +138,31 @@ export function inspectCapture(input,expected){
  assert.equal(at,expected.length);assert.equal(total,floats);return {records:count,floatWords:floats,shortBlockSize:small,longBlockSize:large,tableLengths:tables,blockCounts:sizes};
 }
 
-function build(){
+function build(reuseCapture=false){
  const r=read(),sourceRoot=path.resolve(here,'../../../funorb-decompiled/games/geoblox');
- for(const [name,sha]of Object.entries(r.classes))assert.equal(hash(fs.readFileSync(path.join(player,'classes',name))),sha);
+ if(!reuseCapture)for(const [name,sha]of Object.entries(r.classes))assert.equal(hash(fs.readFileSync(path.join(player,'classes',name))),sha);
  const decoder=fs.readFileSync(path.join(sourceRoot,'MusicDecoder.java'),'utf8'),helper=fs.readFileSync(path.join(sourceRoot,'SpriteConstructionSupport.java'),'utf8');
  const sources=extractMdctSources(decoder,helper),capture=captureSource();
  const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'mdct-component-'));
  try{
-  console.log('Capturing the changed decoder around its original transform...');
   const captureDir=path.join(temporary,'capture');fs.mkdirSync(captureDir);
+  let pcm,patchedDecoderSha256;
+  if(!reuseCapture){
+  console.log('Capturing the changed decoder around its original transform...');
   for(const [name,text]of Object.entries({'MusicDecoder.java':sources.captured,'MdctCapture.java':capture}))fs.writeFileSync(path.join(captureDir,name),text);
   execFileSync('javac',['--release','8','-proc:none','-classpath',path.join(player,'classes')+path.delimiter+path.join(player,'vorbis'),'-d',captureDir,...['MusicDecoder.java','MdctCapture.java'].map(n=>path.join(captureDir,n))]);
-  const pcm=execFileSync('java',['-Xmx1g','-Djava.awt.headless=true','-cp',[captureDir,path.join(player,'vorbis'),path.join(player,'classes')].join(path.delimiter),'MdctCapture',path.join(player,'assets'),captureDir],{maxBuffer:64*1024*1024});
+  pcm=execFileSync('java',['-Xmx1g','-Djava.awt.headless=true','-cp',[captureDir,path.join(player,'vorbis'),path.join(player,'classes')].join(path.delimiter),'MdctCapture',path.join(player,'assets'),captureDir],{maxBuffer:64*1024*1024});
   assert.equal(hash(pcm),r.vorbisBenchmark.referencePcmSha256,'Capture instrumentation changed the known PCM');
+  patchedDecoderSha256=hash(fs.readFileSync(path.join(captureDir,'MusicDecoder.class')));
+  }else{
+   const previous=r.mdctBenchmark;assert.ok(previous,'No captured fixture to reuse');
+   assert.equal(hash(decoder),previous.decoderSourceSha256);assert.equal(hash(helper),previous.helperSourceSha256);
+   assert.equal(sources.regionSha256,previous.regionSha256);assert.equal(sources.helperMethodSha256,previous.helperMethodSha256);
+   for(const [name,key]of [['input.bin','inputSha256'],['expected.bin','expectedSha256']]){
+    const bytes=fs.readFileSync(path.join(directory,name));assert.equal(hash(bytes),previous[key]);fs.writeFileSync(path.join(captureDir,name),bytes);
+   }
+   patchedDecoderSha256=previous.patchedDecoderSha256;console.log('Reusing captured packet data; no decoder capture rerun.');
+  }
   const input=fs.readFileSync(path.join(captureDir,'input.bin')),expected=fs.readFileSync(path.join(captureDir,'expected.bin')),shape=inspectCapture(input,expected);
   const classes=path.join(temporary,'classes');fs.mkdirSync(classes);
   fs.writeFileSync(path.join(temporary,'MdctTransformKernel.java'),sources.generated);
@@ -167,7 +182,9 @@ function build(){
   fs.mkdirSync(path.join(directory,'classes'),{recursive:true});fs.copyFileSync(path.join(classes,'MdctTransformKernel.class'),path.join(directory,'classes/MdctTransformKernel.class'));
   fs.writeFileSync(path.join(directory,'MdctTransformKernel.java'),sources.generated);fs.writeFileSync(path.join(directory,'input.bin'),input);fs.writeFileSync(path.join(directory,'expected.bin'),expected);
   fs.cpSync(path.join(temporary,'target/wasm'),path.join(directory,'teavm'),{recursive:true});
-  save({version,...shape,sourceSha256:hash(sources.generated),regionSha256:sources.regionSha256,helperMethodSha256:sources.helperMethodSha256,decoderSourceSha256:hash(decoder),helperSourceSha256:hash(helper),captureSourceSha256:hash(capture),patchedDecoderSha256:hash(fs.readFileSync(path.join(captureDir,'MusicDecoder.class'))),originalDecoderClassSha256:r.classes['MusicDecoder.class'],capturedPcmSha256:hash(pcm),kernelClassSha256:hash(kernel),inputSha256:hash(input),expectedSha256:hash(expected),wrapperSha256:hash(wrapper),transformerSha256:hash(transformer),wasmSha256:hash(fs.readFileSync(path.join(directory,'teavm/mdct.wasm'))),runtimeSha256:hash(fs.readFileSync(path.join(directory,'teavm/mdct.wasm-runtime.js'))),runs:[],purpose:'Original MDCT and both windows for every captured nonsilent packet, once each; archive/codebook/overlap/PCM packing excluded; exact full-array float bits'});
+  const previous=r.mdctBenchmark,fixtures=previous?.fixtures||[];
+  if(previous&&previous.sourceSha256!==hash(sources.generated))fixtures.push({...previous,runs:undefined,fixtures:undefined});
+  save({version,...shape,sourceSha256:hash(sources.generated),regionSha256:sources.regionSha256,helperMethodSha256:sources.helperMethodSha256,decoderSourceSha256:hash(decoder),helperSourceSha256:hash(helper),captureSourceSha256:hash(capture),patchedDecoderSha256,originalDecoderClassSha256:r.classes['MusicDecoder.class'],capturedPcmSha256:pcm?hash(pcm):previous.capturedPcmSha256,kernelClassSha256:hash(kernel),inputSha256:hash(input),expectedSha256:hash(expected),wrapperSha256:hash(wrapper),transformerSha256:hash(transformer),wasmSha256:hash(fs.readFileSync(path.join(directory,'teavm/mdct.wasm'))),runtimeSha256:hash(fs.readFileSync(path.join(directory,'teavm/mdct.wasm-runtime.js'))),fixtures,runs:previous?.runs||[],purpose:'Original MDCT and both windows for every captured nonsilent packet, once each; native packet driver; archive/codebook/overlap/PCM packing excluded; exact full-array float bits'});
   console.log('Built matched original-transform fixture at '+directory);
  }finally{fs.rmSync(temporary,{recursive:true,force:true});}
 }
@@ -201,9 +218,12 @@ async function one(engine,revision){
    if(view)put(view.getInt32(k*4,little));
    else{scratch.setFloat32(0,row[k]);put(scratch.getInt32(0));}
   }}assert.equal(at,output.length);
-  methods=j.jit.wasmJit.compiled.filter(s=>s.key.startsWith('MdctTransformKernel.')).map(s=>({key:s.key,runs:s.runs,directEntries:s.meta?.canonicalEntries?.value||0,exits:s.exits,full:!!s.meta?.fullyCompiled,structured:!!s.meta?.structured,demotes:[...(s.meta?.demoteReasons||[])]}));
+  methods=j.jit.wasmJit.compiled.filter(s=>s.key.startsWith('MdctTransformKernel.')).map(s=>({key:s.key,runs:s.runs,directEntries:s.meta?.canonicalEntries?.value||0,exits:s.exits,fuelExits:s.fuelExits,full:!!s.meta?.fullyCompiled,structured:!!s.meta?.structured,demotes:[...(s.meta?.demoteReasons||[])]}));
   compilation=j.jit.syncCompileCensus();assert.deepEqual(late,[]);assert.equal(compilation.postMainSyncCompileCount,0);
   const transform=methods.find(s=>s.key.startsWith('MdctTransformKernel.transform('));assert.ok(transform?.full&&transform.directEntries+transform.runs>=fixture.records,'Transform did not run natively');
+  const driver=methods.find(s=>s.key==='MdctTransformKernel.runTransforms()V');
+  assert.ok(driver?.full&&driver.runs+driver.directEntries>0,'Packet driver must execute natively');
+  assert.ok(transform.directEntries>=fixture.records-2,'Per-packet calls must use native links');
  }
  const equal=output.equals(expected),firstDifference=equal?-1:output.findIndex((value,i)=>value!==expected[i]);assert.ok(equal,'Transform output float bits differ at byte '+firstDifference);
  assert.ok(elapsedMs>0);assert.ok(nodeArgs.every(flag=>process.execArgv.includes(flag)),'Eager native compilation flags missing');
@@ -221,7 +241,8 @@ if(process.argv[1]&&pathToFileURL(path.resolve(process.argv[1])).href===import.m
  const [command,...args]=process.argv.slice(2);
  if(command==='one'){workerFixture=readMeasurementFixture(receiptPath);await one(args[0],args[1]);}
  else if(command==='build')build();
+ else if(command==='rebuild')build(true);
  else if(command==='run')run(selectBenchmarkRevision(args[0]));
  else if(command==='run-jvm')run(selectBenchmarkRevision(args[0]),['jvm']);
- else throw Error('Usage: mdct.mjs build | run [EXACT_REVISION] | run-jvm EXACT_REVISION | one jvm|teavm EXACT_REVISION');
+ else throw Error('Usage: mdct.mjs build | rebuild | run [EXACT_REVISION] | run-jvm EXACT_REVISION | one jvm|teavm EXACT_REVISION');
 }
