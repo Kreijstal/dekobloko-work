@@ -7127,3 +7127,138 @@ same single `benchmark.json`, under
 do not establish a runtime optimization or alter the full-loading result:
 approximately 5.58x remains far from the 1.10x target. No full-loading campaign
 or promotion is justified by these controls alone.
+
+
+### Reduced array reads: two rejected prototypes and a boolean-array lead
+
+The next reduction adds `huffman-many-value`: read each tree value once, rather
+than rereading it on the right-child edge and after the leaf test. All other
+reader operations remain unchanged. The ten-class fixture source is now
+`611544f92c1024d6c1c3bd5cdad97f4e670b5ef6e781a25fb1f287ad9b069a03`.
+The builder archives the previous source in the same report before replacing
+its one current generated fixture. All tree controls retain HotSpot checksum
+`-1268584370` and exact final cursors for one million symbols.
+
+| Control, retained `592f30f0` | JVM median ms | TeaVM median ms |
+| --- | ---: | ---: |
+| Repeated tree values | 73.008 | 41.910 |
+| One read per tree value | 56.176 | 41.288 |
+
+This establishes a concrete opportunity, but a source rewrite is not a safe
+replacement for arbitrary guest code. Prototype `d6e7d8f2` performs a bounded
+available-read analysis for the exact same SSA array/index pair. It captures
+only successful native reads; checked fallbacks and metadata queries invalidate
+captures before any host getter can change memory. Calls, stores, fields and
+exception regions remain conservative barriers. Dedicated locals do not extend
+reused SSA-slot lifetimes, and every entry/resume starts invalid.
+
+The ten-file focused suite passes **736/736 assertions**, including foreign
+getters that mutate the captured native array, positive-base metadata getters,
+throwable identity, bounds/null faults, aliasing stores, partial predecessor
+paths, loop-carried array swaps, fuel spills, between-slice mutations, wide and
+floating values, capture budgets and graph cleanup. The prototype reduces the
+repeated-value kernel to **68.231 ms**, approximately 6.54% lower. The manually
+cached control remains flat at 56.064 ms.
+
+However, the original matched Vorbis sample executes **no methods with eligible
+reuse sites**. Its separately instrumented decode still matches all 348,249
+HotSpot PCM bytes. The narrow proof does not cover the real decoder's fields,
+calls, stores and recomputed index expressions. Consequently withdrawal
+`789e6a58` restores the retained runtime. The prototype and its tests remain in
+experimental branch history. No full-loading campaign was spent on it.
+
+A second diagnostic supplies handwritten linear-memory Wasm for the same tree
+loop. It uses the same deterministic byte stream/tree, explicit bounds checks,
+the same per-loop fuel accounting and one fresh invocation. It does not use the
+VM's reference/metadata fallback machinery. Three variants change only the
+bounds-error edge: an ordinary error import, the same import followed by
+`unreachable`, or a trap. The trap variant intentionally changes fault semantics
+and is only a valid-input diagnostic, never a Java runtime replacement.
+
+| Handwritten model | Repeated-value median ms | Cached-value median ms |
+| --- | ---: | ---: |
+| Error import may return in Wasm's type system | 57.347 | 56.096 |
+| Error import explicitly non-returning | 46.722 | 43.370 |
+| Trap on failed bounds | 45.893 | 46.426 |
+
+Paired TeaVM medians are approximately 41–42 ms. The trap repeated-value model
+is **1.093x** its paired TeaVM median; the non-returning cached-value model is
+**1.048x**. This is evidence that a reduced linear-memory kernel can approach
+the target with bounds checks and polling. It is not evidence of whole-runtime,
+full-loading, memory, browser, FPS or phone acceptance. The nonmonotonic cached
+variant also cautions against inferring native performance from source/Wasm
+instruction counts alone.
+
+The models record their WAT/binary hashes and input/tree hashes. New JVM tree
+observations additionally hash their actual Java input after timing; all
+available input hashes agree at
+`3c2ff2fd992bd7b389b0c9cf15f927d7ed4c988ff8f5b9dea49fe70d5dc2c081`.
+Generated Wasm stays in memory; no additional report or binary is committed.
+The local `wasm-as` is version 132. An initial `--all-features` build enabled
+compact imports unsupported by Node 22; the MVP model now uses default assembler
+features and validates successfully.
+
+Prototype `60e3190e` marks the existing always-throwing native bounds imports as
+non-returning in both structured and dispatcher tiers. The error import and
+recording wrapper still throw the original Java exception before `unreachable`;
+this does not substitute a trap for the exception. The six-file focused suite
+passes **407/407**, and the dispatcher native-array suite passes **20/20**.
+The performance result nevertheless rejects the change:
+
+| JVM observation | Repeated-value median ms | Cached-value median ms |
+| --- | ---: | ---: |
+| Baseline before | 73.008 | 56.176 |
+| Non-returning bounds prototype | 70.974 | 64.809 |
+| Fresh baseline after | 73.123 | 55.954 |
+
+The cached-value regression repeats and is not explained by control drift.
+Withdrawal `092db48f` restores exactly `4ebb7265` (and the retained `592f30f0`
+runtime). The post-withdrawal dispatcher/heap-array checks pass **79/79**. Both
+failed experiments remain reviewable in experimental Git history; master and
+selected/deployed artifacts are unchanged.
+
+The existing byte/boolean pair exposes a substantially larger, real-workload
+lead. Both kernels perform the same logical work over 1,024 elements in one
+million-iteration invocation and match HotSpot checksum `1489330464`:
+
+| Array kind | JVM observations ms | JVM median ms | TeaVM median ms |
+| --- | --- | ---: | ---: |
+| Byte | 2.160, 2.256, 2.234 | 2.234 | 1.069 |
+| Boolean | 52.623, 49.973, 51.155 | 51.155 | 1.106 |
+
+This is the kernel's working-set access pattern, not an additional warmup or
+benchmark replay. Private native array metadata explicitly excludes `[Z`.
+The original Vorbis floor sorter also accesses boolean arrays through host
+imports. The next implementation target is a generic native boolean-array
+path: preserve nonzero-to-true load normalization, `value & 1` stores, exact
+bounds/null failures and foreign/observable checked fallbacks. Measure the
+existing pair first, then the unchanged original sample; do not assume call
+counts alone establish its share of total loading time.
+
+```bash
+# dekobloko-work:
+node --check apps/loading/microbench.mjs
+node --check apps/loading/probe.mjs
+node apps/loading/microbench.mjs build
+# Run once for baseline, d6e7d8f2, 60e3190e, then baseline again, using full SHAs:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af huffman-many-local huffman-many-value
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect d6e7d8f2aeb6555bf4fb57a2a788a2d2a3c2b781 'MusicDecoder.decodePacket(I)[F'
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs linear 592f30f0076c7e7b987cc03da95ba276786af4af linear-import huffman-many-local huffman-many-value
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs linear 592f30f0076c7e7b987cc03da95ba276786af4af linear-unreachable huffman-many-local huffman-many-value
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs linear 592f30f0076c7e7b987cc03da95ba276786af4af linear-trap huffman-many-local huffman-many-value
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af byte-array boolean-array
+# java-tools, d6e7d8f2 only (test source preserved in experimental history):
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeArrayReadReuse.test.js test/wasmNumericStackification.test.js test/arrayIdentityCaches.test.js test/nativeStaticReferenceCodegen.test.js test/nativeObjectFieldCodegen.test.js test/guardedNestedArrayLoops.test.js test/wasmParameterArrayAbi.test.js test/wasmCompilerRetention.test.js test/sharedFieldArrayCaches.test.js test/wasmHeapArrays.test.js
+# java-tools, 60e3190e:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmHeapArrays.test.js test/nativeStaticReferenceCodegen.test.js test/nativeObjectFieldCodegen.test.js test/wasmNumericStackification.test.js test/wasmParameterArrayAbi.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/dispatcherHeapArrays.test.js
+# java-tools, final withdrawal:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/dispatcherHeapArrays.test.js test/wasmHeapArrays.test.js
+```
+
+All eight reduced campaigns (96 observations), source/input identities,
+excluded diagnostics, exact revisions, test attempts and withdrawals are in the
+same single `benchmark.json`, under
+`optimizationTrials.reducedArrayReadControls`. No performance acceptance has
+been redefined: the full-loading objective is still 1.10x, and the retained
+runtime remains approximately 5.58x on that workload.

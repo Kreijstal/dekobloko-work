@@ -21,11 +21,12 @@ const cases=['scalar','byte-array','boolean-array','bits-local','bits-static','b
  'bzip-block','bzip-ready-owner','int-load-parameter','int-load-cast','cold-prefix-loop','ready-prefix-loop',
  'cast-only','reference-only','array-result-loop','object-result-loop','window-parameter','window-static',
  'huffman-helper','huffman-cached','huffman-inline',
- 'huffman-many-fields','huffman-many-cached','huffman-many-local'];
+ 'huffman-many-fields','huffman-many-cached','huffman-many-local','huffman-many-value'];
 const iterations=1_000_000,seed='q',version='0.16.0';
 // Compile Wasm with V8's optimizing tier before execution on BOTH backends.
 // This removes lazy Wasm compilation/tiering from these operation diagnostics.
 const nodeArgs=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
+const linearKinds=new Set(['linear-import','linear-unreachable','linear-trap']);
 const hash=data=>crypto.createHash('sha256').update(data).digest('hex');
 const read=()=>JSON.parse(fs.readFileSync(receiptPath));
 const codecAsset=process.env.MICRO_BZIP_ASSET||read().microbenchmarks?.codec?.asset||'0-27.bin';
@@ -299,6 +300,7 @@ const source=`public class LoadingMicroKernel {
  static int huffmanManyFields(int n,MicroHuffmanBook book){return book.readManyFields(n);}
  static int huffmanManyCached(int n,MicroHuffmanBook book){return book.readManyCached(n);}
  static int huffmanManyLocal(int n,MicroHuffmanBook book){return book.readManyLocal(n);}
+ static int huffmanManyValue(int n,MicroHuffmanBook book){return book.readManyValue(n);}
  public static void main(String[] args) {
   int mode=Integer.parseInt(args[0]),n=Integer.parseInt(args[1]),seed=args[2].charAt(0);
   byte[] a=new byte[1024];boolean[] z=new boolean[1024];bytes=new byte[1024];
@@ -320,7 +322,7 @@ const source=`public class LoadingMicroKernel {
   if(mode==28&&MicroColdHolder.seed!=17)throw new AssertionError();
   if(mode==33||mode==34){windowSamples=new float[n];for(int i=0;i<n;i++)windowSamples[i]=0.5f+(i&1023)/1024.0f;}
   MicroHuffmanBook book=null;
-  if(mode>=35&&mode<=40){
+  if(mode>=35&&mode<=41){
    int[] nodes=new int[511];if(tree(nodes,0,8,0)!=nodes.length)throw new AssertionError();
    book=new MicroHuffmanBook(nodes);MicroHuffmanReader.bytes=new byte[n];
    for(int i=0;i<n;i++){x=x*1664525+1013904223;MicroHuffmanReader.bytes[i]=(byte)(x>>>24);}
@@ -368,6 +370,7 @@ const source=`public class LoadingMicroKernel {
    case 38:checksum=huffmanManyFields(n,book);break;
    case 39:checksum=huffmanManyCached(n,book);break;
    case 40:checksum=huffmanManyLocal(n,book);break;
+   case 41:checksum=huffmanManyValue(n,book);break;
    default:throw new IllegalArgumentException();
   }
   elapsedNanos=System.nanoTime()-start;
@@ -379,7 +382,7 @@ const source=`public class LoadingMicroKernel {
    checksum=checksum*31+initializerPrefixes;
   }
   if(mode==33||mode==34)for(int i=0;i<n;i++)checksum=checksum*31+(int)(windowSamples[i]*1048576.0f);
-  if(mode>=35&&mode<=40){
+  if(mode>=35&&mode<=41){
    if(MicroHuffmanReader.byteCursor!=n||MicroHuffmanReader.bitCursor!=0)throw new AssertionError();
    checksum=checksum*31+MicroHuffmanReader.byteCursor;
   }
@@ -483,6 +486,23 @@ final class MicroHuffmanBook {
   MicroHuffmanReader.byteCursor=byteCursor;MicroHuffmanReader.bitCursor=bitCursor;
   return sum;
  }
+ // Same loop, but read each tree value once rather than again on the
+ // right-child edge and after the leaf test. Reader operations are unchanged.
+ final int readManyValue(int n){
+  int sum=0;int[] nodes=tree;byte[] input=MicroHuffmanReader.bytes;
+  int byteCursor=MicroHuffmanReader.byteCursor,bitCursor=MicroHuffmanReader.bitCursor;
+  for(int i=0;i<n;i++){
+   int at=0,node;
+   while((node=nodes[at])>=0){
+    int bit=input[byteCursor]>>bitCursor&1;
+    bitCursor++;byteCursor+=bitCursor>>3;bitCursor&=7;
+    at=bit!=0?node:at+1;
+   }
+   sum=sum*33+~node;
+  }
+  MicroHuffmanReader.byteCursor=byteCursor;MicroHuffmanReader.bitCursor=bitCursor;
+  return sum;
+ }
 }`;
 
 function build() {
@@ -552,7 +572,7 @@ public class TeaVmMicro {
   assert.equal(referenceChecks[33],referenceChecks[34],'Parameter and static window outputs differ');
   assert.equal(referenceChecks[35],referenceChecks[36],'Field and local Huffman trees differ');
   assert.equal(referenceChecks[35],referenceChecks[37],'Called and inline Huffman bit readers differ');
-  for(const index of [38,39,40])assert.equal(referenceChecks[35],referenceChecks[index],cases[index]+' differs');
+  for(const index of [38,39,40,41])assert.equal(referenceChecks[35],referenceChecks[index],cases[index]+' differs');
   for(const index of [15,16])assert.equal(referenceChecks[14],referenceChecks[index],cases[index]+' differs');
   save({purpose:'Small causal diagnostics; not full-loading or FPS acceptance',version,cases,iterations,seed,
    codec:{asset:codecAsset,inputSha256:hash(codecInput),outputBytes:codecOutputBytes,classes:codecClasses,decodesPerProcess:1},
@@ -561,6 +581,63 @@ public class TeaVmMicro {
    runtimeSha256:hash(fs.readFileSync(path.join(directory,'teavm/micro.wasm-runtime.js'))),referenceChecks,
    fixtures,runs:previous?.runs||[],diagnostics:previous?.diagnostics||[]});
  } finally {fs.rmSync(temporary,{recursive:true,force:true});}
+}
+
+function linearReadControl(name,count,kind) {
+ assert.ok(['huffman-many-local','huffman-many-value'].includes(name),'Linear control only models the reduced tree loop');
+ // Same valid input and arithmetic as Java. Error edges are deliberately
+ // varied to isolate optimizer knowledge, not proposed as Java replacements.
+ const memory=new WebAssembly.Memory({initial:4096,maximum:4096});
+ const nodes=new Int32Array(memory.buffer,16,511),input=new Int8Array(memory.buffer,4096,count);
+ const tree=(at,depth,value)=>{
+  if(depth===0){nodes[at]=~value;return at+1;}
+  const right=tree(at+1,depth-1,value);nodes[at]=right;
+  return tree(right,depth-1,value|(1<<(depth-1)));
+ };
+ assert.equal(tree(0,8,0),511);
+ let x=seed.charCodeAt(0);
+ for(let i=0;i<1024;i++)x=Math.imul(x,1664525)+1013904223|0;
+ for(let i=0;i<count;i++){x=Math.imul(x,1664525)+1013904223|0;input[i]=x>>>24;}
+ const fail=kind==='linear-trap'?'unreachable':`(call $error (local.get $index) (local.get $length))${kind==='linear-unreachable'?' unreachable':''}`;
+ const load=(base,index,length,byte=false)=>`(block (result i32)
+  (local.set $index ${index})(local.set $length ${length})
+  (if (i32.ge_u (local.get $index) (local.get $length)) (then ${fail}))
+  (${byte?'i32.load8_s':'i32.load'} (i32.add (local.get $${base}) ${byte?'(local.get $index)':'(i32.shl (local.get $index) (i32.const 2))'})))`;
+ const treeLoad=load('tree','(local.get $at)','(local.get $treeLength)');
+ const byteLoad=load('input','(local.get $byteCursor)','(local.get $inputLength)',true);
+ const value=name==='huffman-many-value'?'(local.get $node)':treeLoad;
+ const poll=`(local.set $fuel (i32.sub (local.get $fuel) (i32.const 1)))
+  (if (i32.le_s (local.get $fuel) (i32.const 0)) (then unreachable))`;
+ const wat=`(module (import "env" "mem" (memory 1))
+  (import "env" "error" (func $error (param i32 i32)))
+  (func (export "decode") (param $n i32) (param $tree i32) (param $treeLength i32)
+   (param $input i32) (param $inputLength i32) (param $fuel i32) (result i32)
+   (local $sum i32)(local $symbol i32)(local $at i32)(local $node i32)
+   (local $byteCursor i32)(local $bitCursor i32)(local $bit i32)(local $index i32)(local $length i32)
+   (block $done (loop $outer ${poll}
+    (br_if $done (i32.ge_s (local.get $symbol) (local.get $n)))
+    (local.set $at (i32.const 0))
+    (block $leaf (loop $inner ${poll}
+     (local.set $node ${treeLoad})
+     (br_if $leaf (i32.lt_s (local.get $node) (i32.const 0)))
+     (local.set $bit (i32.and (i32.shr_s ${byteLoad} (local.get $bitCursor)) (i32.const 1)))
+     (local.set $bitCursor (i32.add (local.get $bitCursor) (i32.const 1)))
+     (local.set $byteCursor (i32.add (local.get $byteCursor) (i32.shr_s (local.get $bitCursor) (i32.const 3))))
+     (local.set $bitCursor (i32.and (local.get $bitCursor) (i32.const 7)))
+     (local.set $at (if (result i32) (local.get $bit) (then ${value})
+      (else (i32.add (local.get $at) (i32.const 1)))))
+     (br $inner)))
+    (local.set $sum (i32.add (i32.mul (local.get $sum) (i32.const 33)) (i32.xor ${value} (i32.const -1))))
+    (local.set $symbol (i32.add (local.get $symbol) (i32.const 1)))(br $outer)))
+   (if (i32.or (i32.ne (local.get $byteCursor) (local.get $n)) (local.get $bitCursor)) (then unreachable))
+   (i32.add (i32.mul (local.get $sum) (i32.const 31)) (local.get $byteCursor))))`;
+ const bytes=execFileSync('wasm-as',['-','-o','-'],{input:wat});
+ const module=new WebAssembly.Module(bytes),instance=new WebAssembly.Instance(module,{env:{mem:memory,
+  error:(index,length)=>{throw {type:'java/lang/ArrayIndexOutOfBoundsException',index,length};}}});
+ const inputSha256=hash(input),treeSha256=hash(new Uint8Array(nodes.buffer,nodes.byteOffset,nodes.byteLength));
+ const start=performance.now(),checksum=instance.exports.decode(count,nodes.byteOffset,nodes.length,input.byteOffset,input.length,100000000);
+ return {elapsedMs:performance.now()-start,checksum,linearSourceSha256:hash(wat),wasmSha256:hash(bytes),inputSha256,treeSha256,
+  purpose:'Handwritten linear-memory diagnostic on valid data; explicit bounds and fuel polling; no runtime/Java acceptance claim'};
 }
 
 async function one(engine,name,revision,inspection,inspectionPrefix) {
@@ -583,7 +660,9 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
   nativeAot:nodeArgs.slice(1).every(flag=>process.execArgv.includes(flag)),
   harnessSha256:hash(fs.readFileSync(script)),loaderSha256:hash(fs.readFileSync(new URL('./archive-jvm.mjs',import.meta.url))),
   fixtureSha256:hash(JSON.stringify(classes)),fixtureKind:'class-inventory',sourceSha256:fixture.sourceSha256};
- if(engine==='teavm'){
+ if(linearKinds.has(engine)){
+  Object.assign(result,linearReadControl(name,count,engine));
+ }else if(engine==='teavm'){
   const wasm=fs.readFileSync(path.join(directory,'teavm/micro.wasm'));
   assert.equal(hash(wasm),fixture.wasmSha256);
   assert.equal(hash(fs.readFileSync(path.join(directory,'teavm/micro.wasm-runtime.js'))),fixture.runtimeSha256);
@@ -647,6 +726,8 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     source:String(generated?.jvmResumeBodyFn||generated)};
   }
   const fields=j.classes.LoadingMicroKernel.staticFields;
+  if(name.startsWith('huffman-'))result.inputSha256=hash(Uint8Array.from(
+   j.classes.MicroHuffmanReader.staticFields.get('bytes:[B')));
   Object.assign(result,{elapsedMs:Number(fields.get('elapsedNanos:J'))/1e6,checksum:fields.get('checksum:I'),
    compilation:j.jit.syncCompileCensus(),lateCompiles:late,options,
    executionMethods:j.jit.wasmJit.compiled.filter(s=>ownsMethod(s.key)).map(s=>({
@@ -654,6 +735,7 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     fuelExits:s.fuelExits,nestedCalls:s.nestedCalls,nestedDeopts:s.nestedDeopts,
     full:!!s.meta?.fullyCompiled,canonical:!!s.meta?.canonicalRun,inlined:s.meta?.inlinedCalls,
     slabFieldSites:s.meta?.slabFieldSites,omittedSlabFillCount:s.meta?.omittedSlabFillCount||0,
+    nativeArrayReadReuseSites:s.meta?.nativeArrayReadReuseSites||0,
     normalFlow:!!s.meta?.normalFlowFullyCompiled,demotes:[...(s.meta?.demoteReasons||[])],
     structuredResumeEntry:s.meta?.structuredResumeEntry,
     specSites:s.meta?.specSites,entryGuards:s.meta?.entryInitializationGuards,
@@ -673,7 +755,7 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
  console.log('MICRO_RESULT '+JSON.stringify(result));
 }
 
-function run(revision,names) {
+function run(revision,names,engines=['jvm','teavm']) {
  assert.notEqual(process.env.JVM_WASM_IMPORT_STATS,'1','Keep instrumented diagnostics out of timing comparisons');
  assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact JVM source commit');
  if(!names.length)names=cases;
@@ -682,7 +764,7 @@ function run(revision,names) {
  const runId=crypto.randomUUID();
  // Three fresh-process pairs; reverse engine order in the middle pair.
  for(const name of names)for(let pair=0;pair<3;pair++){
-  const order=pair===1?['teavm','jvm']:['jvm','teavm'];
+  const order=pair===1?[...engines].reverse():engines;
   for(const engine of order){
    const output=execFileSync(process.execPath,[...nodeArgs,script,'one',engine,name,revision],{encoding:'utf8',maxBuffer:16*1024*1024});
    const line=output.split('\n').find(line=>line.startsWith('MICRO_RESULT '));
@@ -721,6 +803,10 @@ const [command,...args]=process.argv.slice(2);
 if(command==='build')build();
 else if(command==='one')await one(...args);
 else if(command==='run')run(args[0],args.slice(1));
+else if(command==='linear'){
+ assert.ok(linearKinds.has(args[1]),'Select linear-import, linear-unreachable or linear-trap');
+ run(args[0],args.slice(2),[args[1],'teavm']);
+}
 else if(command==='diagnose')diagnose(...args);
 else if(command==='inspect')await one('jvm',args[1],args[0],'code',args[2]);
-else throw Error('Usage: microbench.mjs build | run EXACT_REVISION [CASE ...] | diagnose EXACT_REVISION CASE | inspect EXACT_REVISION CASE [METHOD_PREFIX] | one jvm|teavm CASE EXACT_REVISION');
+else throw Error('Usage: microbench.mjs build | run EXACT_REVISION [CASE ...] | linear EXACT_REVISION linear-import|linear-unreachable|linear-trap CASE ... | diagnose EXACT_REVISION CASE | inspect EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');
