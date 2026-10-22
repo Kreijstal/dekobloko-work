@@ -8,6 +8,7 @@ import crypto from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {loadArchivedJvm} from './archive-jvm.mjs';
+import {projectMeasurementFixture,readMeasurementFixture,fixtureStdinFlag,parseMeasurementResult} from './measurement-fixture.mjs';
 
 const script=fileURLToPath(import.meta.url);
 const root=path.resolve(path.dirname(script),'../../../java-tools');
@@ -22,14 +23,16 @@ const cases=['scalar','byte-array','boolean-array','bits-local','bits-static','b
  'cast-only','reference-only','array-result-loop','object-result-loop','window-parameter','window-static',
  'huffman-helper','huffman-cached','huffman-inline',
  'huffman-many-fields','huffman-many-cached','huffman-many-local','huffman-many-value',
- 'byte-field-call','boolean-field-call'];
+ 'byte-field-call','boolean-field-call','tail-cold','tail-ready','tail-zero-cold','tail-zero-ready'];
 const iterations=1_000_000,seed='q',version='0.16.0';
 // Compile Wasm with V8's optimizing tier before execution on BOTH backends.
 // This removes lazy Wasm compilation/tiering from these operation diagnostics.
 const nodeArgs=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const linearKinds=new Set(['linear-import','linear-unreachable','linear-trap','linear-tag','linear-js-tag','linear-guarded']);
 const hash=data=>crypto.createHash('sha256').update(data).digest('hex');
-const read=()=>JSON.parse(fs.readFileSync(receiptPath));
+const worker=['one','inspect'].includes(process.argv[2]);
+const workerFixture=worker?readMeasurementFixture(receiptPath):null;
+const read=()=>worker?workerFixture.receipt:JSON.parse(fs.readFileSync(receiptPath));
 const codecAsset=process.env.MICRO_BZIP_ASSET||read().microbenchmarks?.codec?.asset||'0-27.bin';
 assert.match(codecAsset,/^\d+-\d+\.bin$/,'Use a pinned archive asset name');
 const codecClassNames=['Bzip2Decoder.class','Bzip2DecoderState.class','UsernameResponseSupport.class','ContextualRuntimeException.class'];
@@ -51,6 +54,9 @@ const source=`public class LoadingMicroKernel {
  static int checksum, byteCursor, bitCursor, readerInitializations;
  static byte[] bytes;
  static byte[] byteFields;static boolean[] booleanFields;
+ static int[] tailData;
+ static int tailCalls,tailInitializationPhase,tailLoopFinished,tailPrepareCalls;
+ static volatile int tailInitializations;
  static float[] samples,weights,transformed;
  static float[] windowSamples;
  static long elapsedNanos;
@@ -76,6 +82,17 @@ const source=`public class LoadingMicroKernel {
  static int booleanFieldStep(int i,int depth){if(depth>0)return booleanFieldStep(i,depth-1);booleanFields[i]=!booleanFields[i];return booleanFields[i]?1:0;}
  static int byteFieldCall(int n){int sum=0;for(int i=0;i<n;i++)sum=sum*33+byteFieldStep(i&1023,1);return sum;}
  static int booleanFieldCall(int n){int sum=0;for(int i=0;i<n;i++)sum=sum*33+booleanFieldStep(i&1023,1);return sum;}
+ // The cold operation follows a pure captured-array loop. Recursion keeps
+ // its real call boundary under the normal inliner, without a runtime flag.
+ static int tailHelper(int value,int depth){
+  if(depth>0)return tailHelper(value,depth-1);
+  tailCalls++;return value^MicroTailHolder.seed;
+ }
+ static int tailLoop(int n){
+  int[] a=tailData;int sum=0;
+  for(int i=0;i<n;i++){int p=i&1023;a[p]=a[p]*3+i;sum=sum*33+a[(p+1)&1023];}
+  tailLoopFinished=1;return sum+tailHelper(sum,1);
+ }
  static int bitsLocal(int n,byte[] a) {
   int sum=0,b=0,k=0;
   for(int i=0;i<n;i++){
@@ -322,6 +339,7 @@ const source=`public class LoadingMicroKernel {
   }
   byteCursor=0;bitCursor=0;
   byteFields=a;booleanFields=z;
+  tailData=integers;
   MicroBitReader.bytes=bytes;MicroBitReader.byteCursor=0;MicroBitReader.bitCursor=0;
   if(readerInitializations!=1)throw new AssertionError();
   MicroCursor cursor=new MicroCursor();
@@ -329,6 +347,11 @@ const source=`public class LoadingMicroKernel {
   if(mode==23||mode==24){new Bzip2Decoder();packed=bzipInput();unpacked=new byte[${codecOutputBytes}];}
   if(mode==24&&UsernameResponseSupport.accountUiViewportWidth!=640)throw new AssertionError();
   if(mode==28&&MicroColdHolder.seed!=17)throw new AssertionError();
+  if(mode>=44&&mode<=47){
+   tailCalls=0;tailInitializations=0;tailInitializationPhase=0;tailLoopFinished=0;tailPrepareCalls=0;
+   if((mode&1)!=0)MicroTailHolder.prepare();
+   if(tailInitializations!=(mode&1)||tailCalls!=0||tailPrepareCalls!=(mode&1))throw new AssertionError();
+  }
   if(mode==33||mode==34){windowSamples=new float[n];for(int i=0;i<n;i++)windowSamples[i]=0.5f+(i&1023)/1024.0f;}
   MicroHuffmanBook book=null;
   if(mode>=35&&mode<=41){
@@ -382,6 +405,8 @@ const source=`public class LoadingMicroKernel {
    case 41:checksum=huffmanManyValue(n,book);break;
    case 42:checksum=byteFieldCall(n);break;
    case 43:checksum=booleanFieldCall(n);break;
+   case 44:case 45:checksum=tailLoop(n);break;
+   case 46:case 47:checksum=tailLoop(0);break;
    default:throw new IllegalArgumentException();
   }
   elapsedNanos=System.nanoTime()-start;
@@ -397,7 +422,17 @@ const source=`public class LoadingMicroKernel {
    if(MicroHuffmanReader.byteCursor!=n||MicroHuffmanReader.bitCursor!=0)throw new AssertionError();
    checksum=checksum*31+MicroHuffmanReader.byteCursor;
   }
+  if(mode>=44&&mode<=47){
+   if(tailCalls!=1||tailInitializations!=1||tailLoopFinished!=1||tailInitializationPhase!=1-(mode&1)||tailPrepareCalls!=(mode&1))throw new AssertionError();
+   for(int value:tailData)checksum=checksum*31+value;
+  }
  }
+}
+final class MicroTailHolder {
+ static int seed=initialize();
+ static void prepare(){LoadingMicroKernel.tailPrepareCalls++;}
+ static int initialize(){LoadingMicroKernel.tailInitializations++;
+  LoadingMicroKernel.tailInitializationPhase=LoadingMicroKernel.tailLoopFinished;return 17;}
 }
 final class MicroBitReader {
  static int initialization=initialize();
@@ -519,11 +554,11 @@ final class MicroHuffmanBook {
 function build() {
  const previous=read().microbenchmarks;
  const fixtures=previous?.fixtures||[];
- if(previous&&!fixtures.some(f=>f.sourceSha256===previous.sourceSha256)){
+ if(previous&&!fixtures.some(f=>f.sourceSha256===previous.sourceSha256&&f.wasmSha256===previous.wasmSha256)){
   const previousSource=fs.readFileSync(path.join(directory,'LoadingMicroKernel.java'),'utf8');
   assert.equal(hash(previousSource),previous.sourceSha256,'Cannot archive a mismatched previous fixture');
   fixtures.push({sourceSha256:previous.sourceSha256,classSha256:previous.classSha256,wasmSha256:previous.wasmSha256,
-   runtimeSha256:previous.runtimeSha256,classes:previous.classes,source:previousSource});
+   runtimeSha256:previous.runtimeSha256,wrapperSha256:previous.wrapperSha256,classes:previous.classes,source:previousSource});
   // Persist this identity before replacing generated files, even if javac,
   // TeaVM or a reference check fails during the subsequent build.
   save({...previous,fixtures});
@@ -546,12 +581,18 @@ function build() {
  try {
   const src=path.join(temporary,'src/main/java');fs.mkdirSync(src,{recursive:true});
   fs.cpSync(classes,path.join(temporary,'target/classes'),{recursive:true});
-  fs.writeFileSync(path.join(src,'TeaVmMicro.java'),`import org.teavm.jso.JSExport;
+  const wrapper=`import org.teavm.jso.JSExport;
 public class TeaVmMicro {
  public static void main(String[] args){LoadingMicroKernel.main(args);}
  @JSExport public static double elapsedMs(){return LoadingMicroKernel.elapsedNanos/1e6;}
  @JSExport public static int checksum(){return LoadingMicroKernel.checksum;}
-}`);
+ @JSExport public static int tailState(int key){switch(key){
+  case 0:return LoadingMicroKernel.tailCalls;case 1:return LoadingMicroKernel.tailInitializations;
+  case 2:return LoadingMicroKernel.tailInitializationPhase;case 3:return LoadingMicroKernel.tailLoopFinished;
+  case 4:return LoadingMicroKernel.tailPrepareCalls;default:return LoadingMicroKernel.readerInitializations;
+ }}
+}`;
+  fs.writeFileSync(path.join(src,'TeaVmMicro.java'),wrapper);
   fs.writeFileSync(path.join(temporary,'pom.xml'),`<project xmlns="http://maven.apache.org/POM/4.0.0"><modelVersion>4.0.0</modelVersion><groupId>local.loading</groupId><artifactId>micro</artifactId><version>1</version><properties><maven.compiler.release>11</maven.compiler.release></properties><dependencies>${['teavm-classlib','teavm-jso'].map(n=>`<dependency><groupId>org.teavm</groupId><artifactId>${n}</artifactId><version>${version}</version></dependency>`).join('')}</dependencies><build><plugins><plugin><artifactId>maven-resources-plugin</artifactId><version>3.4.0</version></plugin><plugin><artifactId>maven-compiler-plugin</artifactId><version>3.13.0</version></plugin><plugin><groupId>org.teavm</groupId><artifactId>teavm-maven-plugin</artifactId><version>${version}</version><configuration><mainClass>TeaVmMicro</mainClass><targetType>WEBASSEMBLY_GC</targetType><targetDirectory>\${project.build.directory}/wasm</targetDirectory><targetFileName>micro.wasm</targetFileName><optimizationLevel>FULL</optimizationLevel><minifying>true</minifying><runtimeFileName>micro.wasm-runtime.js</runtimeFileName></configuration></plugin></plugins></build></project>`);
   execFileSync('mvn',['-o','-B','-ntp','compile',`org.teavm:teavm-maven-plugin:${version}:compile`,`org.teavm:teavm-maven-plugin:${version}:copy-webassembly-gc-runtime`],{
    cwd:temporary,stdio:'inherit',env:{...process.env,JAVA_HOME:'/usr/lib/jvm/java-21-openjdk',MAVEN_OPTS:'-Xmx1g'}});
@@ -568,6 +609,8 @@ public class TeaVmMicro {
   assert.equal(referenceChecks[1],referenceChecks[2],'Byte and boolean variants differ');
   assert.equal(referenceChecks[1],referenceChecks[42],'Byte field helper differs');
   assert.equal(referenceChecks[2],referenceChecks[43],'Boolean field helper differs');
+  assert.equal(referenceChecks[44],referenceChecks[45],'Cold and initialized tail controls differ');
+  assert.equal(referenceChecks[46],referenceChecks[47],'Zero-trip tail controls differ');
   assert.equal(referenceChecks[3],referenceChecks[4],'Local and static bit readers differ');
   assert.equal(referenceChecks[3],referenceChecks[5],'Inline and helper bit readers differ');
   assert.equal(referenceChecks[3],referenceChecks[6],'Static cursor bit reader differs');
@@ -591,7 +634,7 @@ public class TeaVmMicro {
    codec:{asset:codecAsset,inputSha256:hash(codecInput),outputBytes:codecOutputBytes,classes:codecClasses,decodesPerProcess:1},
    sourceSha256:hash(source),classSha256:classHashes['LoadingMicroKernel.class'],classes:classHashes,
    wasmSha256:hash(fs.readFileSync(path.join(directory,'teavm/micro.wasm'))),
-   runtimeSha256:hash(fs.readFileSync(path.join(directory,'teavm/micro.wasm-runtime.js'))),referenceChecks,
+   runtimeSha256:hash(fs.readFileSync(path.join(directory,'teavm/micro.wasm-runtime.js'))),wrapperSha256:hash(wrapper),referenceChecks,
    fixtures,runs:previous?.runs||[],diagnostics:previous?.diagnostics||[]});
  } finally {fs.rmSync(temporary,{recursive:true,force:true});}
 }
@@ -698,9 +741,12 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
  assert.ok(Number.isInteger(expected),'Run the paired harness to establish the HotSpot reference for this count');
  const args=[String(index),String(count),fixture.seed];
  const result={case:name,engine,sourceRevision:revision,iterations:count,node:process.version,execArgv:process.execArgv,
+  ...(name.startsWith('tail-')?{loopIterations:name.startsWith('tail-zero-')?0:count}:{}),
   loadAverageAtStart:os.loadavg(),availableParallelism:os.availableParallelism(),
   instrumented:process.env.JVM_WASM_IMPORT_STATS==='1'||!!inspection,
   nativeAot:nodeArgs.slice(1).every(flag=>process.execArgv.includes(flag)),
+  fixtureTransport:workerFixture.supplied?'stdin-projected':'file-projected',
+  measurementFixtureSha256:hash(JSON.stringify(workerFixture.receipt)),
   harnessSha256:hash(fs.readFileSync(script)),loaderSha256:hash(fs.readFileSync(new URL('./archive-jvm.mjs',import.meta.url))),
   fixtureSha256:hash(JSON.stringify(classes)),fixtureKind:'class-inventory',sourceSha256:fixture.sourceSha256};
  if(linearKinds.has(engine)){
@@ -711,8 +757,14 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
   assert.equal(hash(fs.readFileSync(path.join(directory,'teavm/micro.wasm-runtime.js'))),fixture.runtimeSha256);
   await import(pathToFileURL(path.join(directory,'teavm/micro.wasm-runtime.js')));
   const module=await TeaVM.wasmGC.load(wasm);
-  await module.exports.main(args);
+  try{await module.exports.main(args);}catch(error){
+   throw Error('TeaVM microkernel failed: '+JSON.stringify({case:name,error:String(error),
+    elapsedMs:module.exports.elapsedMs(),checksum:module.exports.checksum(),
+    ...(name.startsWith('tail-')?{tailState:Array.from({length:6},(_,key)=>module.exports.tailState(key))}:{})}));
+  }
   Object.assign(result,{elapsedMs:module.exports.elapsedMs(),checksum:module.exports.checksum(),wasmSha256:fixture.wasmSha256});
+  if(name.startsWith('tail-'))result.tail={calls:module.exports.tailState(0),initializations:module.exports.tailState(1),
+   initializationPhase:module.exports.tailState(2),loopFinished:module.exports.tailState(3),prepareCalls:module.exports.tailState(4)};
  }else{
   assert.equal(engine,'jvm');
   const {JVM}=await loadArchivedJvm(root,revision);
@@ -801,7 +853,18 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
    const step=result.executionMethods.find(method=>method.key.startsWith(prefix));
    assert.ok(step?.full&&step.directEntries>=count&&step.exits===0,'Per-call control lost its native method boundary');
   }
+  if(name.startsWith('tail-')){
+   const loop=result.executionMethods.find(method=>method.key.startsWith('LoadingMicroKernel.tailLoop('));
+   const helper=result.executionMethods.find(method=>method.key.startsWith('LoadingMicroKernel.tailHelper('));
+   assert.ok(loop?.full&&loop.directEntries+loop.runs>=1,'Tail loop lost its compiled method boundary');
+   assert.ok(helper?.full&&helper.directEntries+helper.runs>=1,'Tail helper lost its compiled method boundary');
+   result.tail={calls:fields.get('tailCalls:I'),initializations:fields.get('tailInitializations:I'),
+    initializationPhase:fields.get('tailInitializationPhase:I'),loopFinished:fields.get('tailLoopFinished:I'),prepareCalls:fields.get('tailPrepareCalls:I')};
+  }
  }
+ if(name.startsWith('tail-'))assert.deepEqual(result.tail,{calls:1,initializations:1,
+  initializationPhase:name.endsWith('-ready')?0:1,loopFinished:1,prepareCalls:name.endsWith('-ready')?1:0},
+  'Host-observed tail state differs from the class-initialization contract');
  assert.ok(Number.isFinite(result.elapsedMs)&&result.elapsedMs>0,'Timer failed');
  assert.equal(result.checksum,expected,'HotSpot checksum mismatch');
  console.log('MICRO_RESULT '+JSON.stringify(result));
@@ -813,14 +876,16 @@ function run(revision,names,engines=['jvm','teavm']) {
  if(!names.length)names=cases;
  for(const name of names)assert.ok(cases.includes(name),name);
  const count=ensureReference();
+ const measurementInput=JSON.stringify(projectMeasurementFixture(read())),measurementHash=hash(measurementInput);
  const runId=crypto.randomUUID();
  // Three fresh-process pairs; reverse engine order in the middle pair.
  for(const name of names)for(let pair=0;pair<3;pair++){
   const order=pair===1?[...engines].reverse():engines;
   for(const engine of order){
-   const output=execFileSync(process.execPath,[...nodeArgs,script,'one',engine,name,revision],{encoding:'utf8',maxBuffer:16*1024*1024});
-   const line=output.split('\n').find(line=>line.startsWith('MICRO_RESULT '));
-   assert.ok(line,output);const result=JSON.parse(line.slice('MICRO_RESULT '.length));
+   const output=execFileSync(process.execPath,[...nodeArgs,script,'one',engine,name,revision,fixtureStdinFlag],{
+    input:measurementInput,encoding:'utf8',maxBuffer:16*1024*1024});
+   const result=parseMeasurementResult(output,'MICRO_RESULT ');
+   assert.equal(result.measurementFixtureSha256,measurementHash,'Worker did not use the supplied fixture');
    result.runId=runId;result.pair=pair;result.measuredAt=new Date().toISOString();
    const fixture=read().microbenchmarks;fixture.runs.push(result);save(fixture);
    console.log(`${name} n=${result.iterations} pair ${pair+1} ${engine}: ${result.elapsedMs.toFixed(3)} ms, check ${result.checksum}`);
@@ -842,10 +907,9 @@ function ensureReference() {
 function diagnose(revision,name) {
  assert.match(revision||'',/^[0-9a-f]{40}$/);
  ensureReference();
- const output=execFileSync(process.execPath,[...nodeArgs,script,'one','jvm',name,revision],{
-  encoding:'utf8',maxBuffer:16*1024*1024,env:{...process.env,JVM_WASM_IMPORT_STATS:'1'}});
- const line=output.split('\n').find(line=>line.startsWith('MICRO_RESULT '));assert.ok(line,output);
- const result=JSON.parse(line.slice('MICRO_RESULT '.length));
+ const output=execFileSync(process.execPath,[...nodeArgs,script,'one','jvm',name,revision,fixtureStdinFlag],{
+  input:JSON.stringify(projectMeasurementFixture(read())),encoding:'utf8',maxBuffer:16*1024*1024,env:{...process.env,JVM_WASM_IMPORT_STATS:'1'}});
+ const result=parseMeasurementResult(output,'MICRO_RESULT ');
  result.measuredAt=new Date().toISOString();
  const fixture=read().microbenchmarks;(fixture.diagnostics||=[]).push(result);save(fixture);
  console.log(JSON.stringify(result,null,2));

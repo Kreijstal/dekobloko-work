@@ -8,6 +8,7 @@ import crypto from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {vorbisProbeSource} from './workload.mjs';
+import {projectMeasurementFixture,readMeasurementFixture,fixtureStdinFlag,parseMeasurementResult,recordProbeObservation} from './measurement-fixture.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
 const script=fileURLToPath(import.meta.url);
@@ -17,7 +18,9 @@ const receiptPath=path.join(player,'benchmark.json');
 const version='0.16.0';
 const nodeArgs=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const hash=data=>crypto.createHash('sha256').update(data).digest('hex');
-const read=()=>JSON.parse(fs.readFileSync(receiptPath));
+const worker=process.argv[2]==='one';
+const workerFixture=worker?readMeasurementFixture(receiptPath):null;
+const read=()=>worker?workerFixture.receipt:JSON.parse(fs.readFileSync(receiptPath));
 const save=fixture=>{const data=read();data.vorbisBenchmark=fixture;fs.writeFileSync(receiptPath,JSON.stringify(data,null,2)+'\n');};
 const source=vorbisProbeSource();
 const pinnedClasses=()=>{
@@ -114,12 +117,15 @@ async function one(engine,revision){
  const reference=fs.readFileSync(path.join(directory,'reference.pcm'));assert.equal(hash(reference),fixture.referencePcmSha256);
  const provenance={sourceSha256:fixture.sourceSha256,fixtureSha256:fixture.probeClassSha256,
   classesInventorySha256:fixture.classesInventorySha256,assets:fixture.assets,referencePcmSha256:fixture.referencePcmSha256,
-  harnessSha256:hash(fs.readFileSync(script)),node:process.version,execArgv:process.execArgv};
+  harnessSha256:hash(fs.readFileSync(script)),node:process.version,execArgv:process.execArgv,
+  fixtureTransport:workerFixture.supplied?'stdin-projected':'file-projected',
+  measurementFixtureSha256:hash(JSON.stringify(workerFixture.receipt))};
  let result;
  if(engine==='jvm'){
   assert.match(revision||'',/^[0-9a-f]{40}$/);
-  execFileSync(process.execPath,[...nodeArgs,path.join(here,'probe.mjs'),'slab','3-0.bin',revision,'vorbis',player],{maxBuffer:16*1024*1024});
-  result={...read().kernelDiagnostic,engine,sourceRevision:revision};
+  const stdout=execFileSync(process.execPath,[...nodeArgs,path.join(here,'probe.mjs'),'slab','3-0.bin',revision,'vorbis',player,fixtureStdinFlag],{
+   input:JSON.stringify(projectMeasurementFixture(read())),encoding:'utf8',maxBuffer:16*1024*1024});
+  result={...parseMeasurementResult(stdout,'PROBE_RESULT '),engine,sourceRevision:revision};
   assert.equal(result.fixtureSha256,fixture.probeClassSha256,'JVM did not execute the identical probe class');
   assert.equal(result.compilation.postMainSyncCompileCount,0);assert.deepEqual(result.lateCompiles,[]);
  }else{
@@ -144,11 +150,13 @@ async function one(engine,revision){
 function run(revision){
  assert.match(revision||'',/^[0-9a-f]{40}$/);
  assert.notEqual(process.env.JVM_WASM_IMPORT_STATS,'1','Keep profiling out of timing comparisons');
+ const measurementInput=JSON.stringify(projectMeasurementFixture(read())),measurementHash=hash(measurementInput);
  const runId=crypto.randomUUID();
  for(let pair=0;pair<3;pair++)for(const engine of pair===1?['teavm','jvm']:['jvm','teavm']){
-  const stdout=execFileSync(process.execPath,[...nodeArgs,script,'one',engine,revision],{encoding:'utf8',maxBuffer:16*1024*1024});
-  const line=stdout.split('\n').find(line=>line.startsWith('VORBIS_RESULT '));assert.ok(line,stdout);
-  const observation={...JSON.parse(line.slice('VORBIS_RESULT '.length)),runId,pair,measuredAt:new Date().toISOString()};
+  const stdout=execFileSync(process.execPath,[...nodeArgs,script,'one',engine,revision,fixtureStdinFlag],{
+   input:measurementInput,encoding:'utf8',maxBuffer:16*1024*1024});
+  const observation={...parseMeasurementResult(stdout,'VORBIS_RESULT '),runId,pair,measuredAt:new Date().toISOString()};
+  assert.equal(observation.measurementFixtureSha256,measurementHash,'Worker did not use the supplied fixture');
   const fixture=read().vorbisBenchmark;fixture.runs.push(observation);save(fixture);
   console.log(`pair ${pair+1} ${engine}: ${observation.decodeMs.toFixed(3)} ms; PCM matches every byte`);
  }
@@ -156,12 +164,14 @@ function run(revision){
 
 function inspect(revision,method='MusicDecoder.readBit()I'){
  assert.match(revision||'',/^[0-9a-f]{40}$/);
- execFileSync(process.execPath,[...nodeArgs,path.join(here,'probe.mjs'),'slab','3-0.bin',revision,'vorbis',player,method],{
-  maxBuffer:16*1024*1024,env:{...process.env,JVM_WASM_IMPORT_STATS:'1'}});
- const result=read().kernelDiagnostic,fixture=read().vorbisBenchmark;
+ const stdout=execFileSync(process.execPath,[...nodeArgs,path.join(here,'probe.mjs'),'slab','3-0.bin',revision,'vorbis',player,method,fixtureStdinFlag],{
+  input:JSON.stringify(projectMeasurementFixture(read())),encoding:'utf8',maxBuffer:16*1024*1024,env:{...process.env,JVM_WASM_IMPORT_STATS:'1'}});
+ const result=parseMeasurementResult(stdout,'PROBE_RESULT '),current=read(),fixture=current.vorbisBenchmark;
  assert.ok(result.instrumented&&result.equal&&result.inspection,'Invalid method diagnostic');
  assert.equal(result.fixtureSha256,fixture.probeClassSha256);
- (fixture.diagnostics||=[]).push({...result,measuredAt:new Date().toISOString(),excludedFromTiming:true});save(fixture);
+ recordProbeObservation(current,result);
+ (fixture.diagnostics||=[]).push({...result,measuredAt:new Date().toISOString(),excludedFromTiming:true});
+ fs.writeFileSync(receiptPath,JSON.stringify(current,null,2)+'\n');
  console.log('Inspected '+method+' at '+result.inspection.output+'; counts excluded from timing pairs');
 }
 

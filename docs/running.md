@@ -7555,3 +7555,85 @@ cold helper, then test extracting the continuation once. That is a concrete
 code-generation issue to reduce, not a demonstrated explanation for either
 observed regression. Require the one-archive controls to improve before
 repeating full loading or expanding eligibility.
+
+### Keep measurement history out of workers; test the cold-tail hypothesis
+
+Review found that Node workers parsed the entire single `benchmark.json`,
+including old observations and diagnostics. The report had reached about
+45–49 MB. A small isolated post-GC retention check measured **27.834 MiB** for
+the complete receipt versus **0.109 MiB** for its 46,624-byte input projection.
+This is harness retention, not JVM peak heap, and removing it is not claimed
+as a production VM speedup or an explanation of the previous graphics stall.
+
+The recorder now sends only input identities, checksums and options over stdin.
+Workers return their result through an explicit stdout record and echo the
+fixture hash; the recorder checks that hash before accepting the observation.
+It alone updates the existing canonical report. Full loading, microbenchmarks
+and the nested Vorbis worker use the same transport automatically. Existing
+commands require no additional user flag. Standalone worker/inspection calls
+project the file instead of retaining its history. No second JSON file is
+created, and previous observations remain untouched. New records identify
+`stdin-projected`/`file-projected` and must not be silently pooled with legacy
+history-retaining observations.
+
+Focused transport/statistics tests pass **7/7**. They verify that projection
+does not traverse profiles, stdin works when no report file exists, missing or
+duplicated stdout records cannot reuse stale results, and the recorder keeps
+only bounded recent summaries. Syntax and `git diff --check` pass. One full
+loading integration pair matches the original checksum and zero guest-time
+compilation, then exits 1 for the unchanged parity gate: **2088.475 ms JVM vs
+346.441 ms TeaVM**. It is a pipeline check, not a repeated baseline or gain.
+One observation per backend also verifies the nested Vorbis path, all 348,249
+PCM bytes, fixture identity and zero JVM late compilation (99.459/25.487 ms).
+
+The new 48-case fixture then isolates a captured-array loop followed by a
+recursive helper that first touches an uninitialized holder. Separate modes
+initialize only the holder before timing or execute zero loop iterations.
+Counters and phase markers verify exactly one initialization, one helper
+effect, correct ordering and unchanged final array/checksum. The first
+ordinary-counter variants fail the initialized-owner pre-timing assertion on
+TeaVM; exported state shows the expected values. Those incomplete batches are
+excluded. A volatile observation counter passes the same Java assertions and
+independent host-state checks on both backends. No assertion is relaxed.
+Fixture archives now distinguish source **and Wasm identity**, preserving
+adapter changes even when the Java source is unchanged.
+
+| Control, JVM median ms | Retained `592f30f0` | Rejected `0ebdbef4` |
+| --- | ---: | ---: |
+| Loop, then cold helper | 4.210 | 2.864 |
+| Loop, then initialized helper | 2.836 | 2.301 |
+| Zero iterations, cold helper | 1.072 | 1.048 |
+| Zero iterations, initialized helper | 0.346 | 0.297 |
+
+Each row has three fresh process pairs, eager native Wasm on both engines,
+CPU 2 and the same one-GiB heap cap. Paired TeaVM loop times are about 1.1 ms;
+zero-iteration times are about 0.002–0.003 ms. Checksums are `-1331829071` for
+the loop and `-1527642607` for zero iterations. All post-timer host-state
+checks pass. This model **does not reproduce the regression** and does not
+justify changing the compiler to extract continuations as a performance fix.
+The rejected pass remains withdrawn. The valid fixture source is
+`a825df5efc7c1aeccece64245e4c3d9e1002a422b697681d1b1cf0ee8a392676`.
+
+```bash
+node --test tests/loading-fixture.test.mjs tests/loading-statistics.test.mjs
+node --check apps/loading/measurement-fixture.mjs
+node --check apps/loading/microbench.mjs
+node --check apps/loading/probe.mjs
+node --check apps/loading/compare.mjs
+node --check apps/loading/vorbis.mjs
+node apps/loading/microbench.mjs build
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af tail-cold tail-ready tail-zero-cold tail-zero-ready
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 0ebdbef477c0b6315a1772363dda3bf03e238c43 tail-cold tail-ready tail-zero-cold tail-zero-ready
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af bits-local bits-instance
+```
+
+The final matched field/local bit-reader pair still reproduces a real gap:
+instance fields take **5.107 ms JVM vs 1.156 ms TeaVM**. Both variants consume
+the same input and match checksum `-768271193`. This is the next small control
+for testing receiver-representation guards; the generated slab path repeats
+`base >= 0` at each field access even after filling its metadata. No new VM
+change is retained from this pass. JVM master, selected artifacts, game code
+and deployments remain unchanged; 1.10x loading parity, browser/FPS, phone and
+total JS peak-heap acceptance remain unproved. All raw rows, rejected fixture
+attempts and integration results are in the existing single report under
+`optimizationTrials.measurementFixtureTransport`.

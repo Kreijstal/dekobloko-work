@@ -11,6 +11,7 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {spawnSync,execFileSync} from 'node:child_process';
 import {summarizeLoading} from './statistics.mjs';
+import {projectMeasurementFixture,fixtureStdinFlag,parseMeasurementResult,recordProbeObservation} from './measurement-fixture.mjs';
 const here=path.dirname(fileURLToPath(import.meta.url));
 const options={player:path.join(os.homedir(),'.cache/dekobloko/geoblox-loading'),browser:'firefox',pairs:3};
 for(let i=2;i<process.argv.length;i++) {
@@ -79,6 +80,8 @@ const server=createServer((req,res)=>{
 if(!node)await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
 if(!node&&!receipt.baselineResults)receipt.baselineResults=receipt.results;
 const observations=[];
+const measurementInput=node?JSON.stringify(projectMeasurementFixture(receipt)):null;
+if(node)Object.assign(provenance,{fixtureTransport:'stdin-projected',measurementFixtureSha256:hash(measurementInput)});
 console.log('Comparing '+options.pairs+' fresh-process pairs in '+options.browser);
 
 try {
@@ -90,10 +93,17 @@ try {
       if(node){
         const mode=backend==='teavm'?'teavm':options.options==='diagnostic'?'slab':'canonical';
         const child=spawnSync(process.execPath,[...nodeExecutionFlags,path.join(here,'probe.mjs'),mode,'all',
-          backend==='jvm'?runtimeRevision:'-','loading',options.player],{encoding:'utf8',maxBuffer:16*1024*1024});
-        Object.assign(receipt,JSON.parse(fs.readFileSync(receiptPath)));
-        result=child.status===0?{...receipt.kernelDiagnostic,backend,browser:'Node.js '+process.version}:
-          {backend,error:child.error?.message||child.stderr?.slice(-2000)||'Node observation failed with status '+child.status};
+          backend==='jvm'?runtimeRevision:'-','loading',options.player,fixtureStdinFlag],{
+          input:measurementInput,encoding:'utf8',maxBuffer:16*1024*1024});
+        let observed;
+        if(child.status===0)observed=parseMeasurementResult(child.stdout,'PROBE_RESULT ');
+        else if(child.stdout?.includes('PROBE_RESULT '))observed=parseMeasurementResult(child.stdout,'PROBE_RESULT ');
+        result={...observed,backend,browser:'Node.js '+process.version,
+          ...(child.status===0?{}:{error:observed?.error||child.error?.message||child.stderr?.slice(-2000)||'Node observation failed with status '+child.status})};
+        if(observed){
+          assert.equal(observed.measurementFixtureSha256,provenance.measurementFixtureSha256,'Worker did not use the supplied fixture');
+          recordProbeObservation(receipt,result);
+        }
       }else{
       const page=await browser.newPage();
       page.on('pageerror',e=>errors.push(e.message));

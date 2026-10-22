@@ -7,9 +7,11 @@ import {getHeapStatistics} from 'node:v8';
 import {freshLoadingBytes} from './browser.mjs';
 import {loadArchivedJvm} from './archive-jvm.mjs';
 import {vorbisProbeSource} from './workload.mjs';
+import {readMeasurementFixture,recordProbeObservation} from './measurement-fixture.mjs';
 const require=createRequire(import.meta.url),root=path.resolve(new URL('../../../java-tools/',import.meta.url).pathname);
 const player=path.resolve(process.argv[6]||path.join(os.homedir(),'.cache/dekobloko/geoblox-loading'));
-const receiptPath=path.join(player,'benchmark.json'),receipt=JSON.parse(fs.readFileSync(receiptPath));
+const receiptPath=path.join(player,'benchmark.json');
+const {receipt,supplied:fixtureSupplied}=readMeasurementFixture(receiptPath);
 const mode=process.argv[2]||'js',asset=process.argv[3]||'1-2.bin',kernel=process.argv[5]||'bzip';
 const inspectMethod=process.argv[7];
 assert.ok(['js','wasm','canonical','slab','teavm'].includes(mode));assert.ok(['bzip','vorbis','loading'].includes(kernel));
@@ -22,6 +24,7 @@ const harnessFiles=Object.fromEntries([
  ['browser-inflater.mjs',new URL('../launcher/browser-loader/browser-inflater.mjs',import.meta.url)],
  ['wasm-optimizer.mjs',new URL('./wasm-optimizer.mjs',import.meta.url)],
  ['workload.mjs',new URL('./workload.mjs',import.meta.url)],
+ ['measurement-fixture.mjs',new URL('./measurement-fixture.mjs',import.meta.url)],
 ].map(([name,url])=>[name,hash(fs.readFileSync(new URL(url)))]));
 const assetBytes=name=>{
  const data=fs.readFileSync(path.join(player,'assets',name));assert.equal(hash(data),receipt.assets[name],name);
@@ -29,12 +32,13 @@ const assetBytes=name=>{
 };
 const save=result=>{
  Object.assign(result,{engine:process.version,execArgv:process.execArgv,heapLimitBytes:getHeapStatistics().heap_size_limit,
-  harnessSha256:harnessFiles['probe.mjs'],harnessFilesSha256:harnessFiles,mode,asset,kernel});
- const current=JSON.parse(fs.readFileSync(receiptPath));
- result.recent=[...(current.kernelDiagnostic?.recent||[]),{runtimeRevision:result.runtimeRevision,sourceLoader:result.sourceLoader,
-  mode,asset,kernel,executionMs:result.executionMs,decodeMs:result.decodeMs,musicMs:result.musicMs,graphicsMs:result.graphicsMs,
-  equal:result.equal,lateCompiles:result.compilation?.postMainSyncCompileCount}].slice(-6);
- current.kernelDiagnostic=result;fs.writeFileSync(receiptPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(result,null,2));
+  harnessSha256:harnessFiles['probe.mjs'],harnessFilesSha256:harnessFiles,mode,asset,kernel,
+  fixtureTransport:fixtureSupplied?'stdin-projected':'file-projected',measurementFixtureSha256:hash(JSON.stringify(receipt))});
+ if(fixtureSupplied)console.log('PROBE_RESULT '+JSON.stringify(result));
+ else {
+  const current=JSON.parse(fs.readFileSync(receiptPath));recordProbeObservation(current,result);
+  fs.writeFileSync(receiptPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(result,null,2));
+ }
  assert.equal(result.error,undefined,'Guest execution failed');
  if(mode!=='teavm'){
   assert.deepEqual(result.lateCompiles,[],'Probe attempted compilation during guest execution');
