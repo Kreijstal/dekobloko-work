@@ -262,6 +262,8 @@ async function one(engine,revision,inspection=false){
    lastNativeExitStatus:s.meta?.directFrameContext?.lastExitStatus??null,calleeNativeExitCount:s.callee?.meta?.directFrameContext?.exitCount??null,
    full:!!s.meta?.fullyCompiled,structured:!!s.meta?.structured,demotes:[...(s.meta?.demoteReasons||[])],
    ...(inspection?{omittedArrayFillCount:s.meta?.omittedArrayFillCount,slabFieldSites:s.meta?.slabFieldSites,loopInvariantNumericValueCount:s.meta?.loopInvariantNumericValueCount,nativeStaticArrayBodySites:s.meta?.nativeStaticArrayBodySites,
+    nativeStaticIntrinsicReadinessGuardCount:s.meta?.nativeStaticIntrinsicReadinessGuardCount,
+    nativeReadinessGuardsReusedCount:s.meta?.nativeReadinessGuardsReusedCount,
     nativeArrayRematerializedReferenceCount:s.meta?.nativeArrayRematerializedReferenceCount,
     nativeStaticArrayCapturedReferenceCount:s.meta?.nativeStaticArrayCapturedReferenceCount,
     nativeArraySharedMetadataValueCount:s.meta?.nativeArraySharedMetadataValueCount,
@@ -273,6 +275,11 @@ async function one(engine,revision,inspection=false){
   const driver=methods.find(s=>s.key==='MdctTransformKernel.runTransforms()V');
   assert.ok(driver?.full&&driver.runs+driver.directEntries>0,'Packet driver must execute natively');
   assert.ok(transform.directEntries>=fixture.records-2,'Per-packet calls must use native links');
+  if(fixture.setupKind==='original-table-generation'){
+   assert.equal(transform.runs+transform.directEntries,fixture.records,'No transform replay or warmup');
+   assert.equal(transform.nativeExitCount,0,'Original setup must leave the timed transform entirely native');
+   assert.equal(transform.nativeThrowCount,0,'Timed transform must not throw');
+  }
  }
  assert.equal(setupCount,1,'The original dependency setup must run exactly once, without transform warmup');
  const equal=output.equals(expected),firstDifference=equal?-1:output.findIndex((value,i)=>value!==expected[i]);assert.ok(equal,'Transform output float bits differ at byte '+firstDifference);
