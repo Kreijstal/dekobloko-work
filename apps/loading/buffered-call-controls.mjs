@@ -5,13 +5,25 @@ import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {validateBufferedWorkload} from './buffered-replay.mjs';
 
-export const bufferedCallKinds=['buffered-call-local','buffered-call-import','buffered-call-table','buffered-call-status'];
+export const bufferedCallKinds=['buffered-call-local','buffered-call-import','buffered-call-table','buffered-call-status','buffered-call-transfer','buffered-call-parameter'];
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
-const signature=status=>`(type $reader (func (param i32 i32) (result i32${status?' i32':''})))`;
+const signature=(status,transfer,parameter)=>`(type $reader (func (param i32 ${transfer?'externref':'i32'}${parameter?' externref':''}) (result i32${status?' i32':''})))`;
+// Same structural store shape as the inspected JVM's private metadata.
+const storageTypes=`(type $references (array (mut externref)))
+ (type $storage (struct (field i32) (field i32) (field (ref $references))))`;
+const transferImport='(import "env" "input" (global $input (mut externref)))';
+const storeGuard=`(if (i32.eqz (ref.test (ref $storage) (any.convert_extern (local.get $incoming)))) (then unreachable))
+ (local.set $native (ref.cast (ref $storage) (any.convert_extern (local.get $incoming))))
+ (local.set $state (struct.get $storage 0 (local.get $native)))
+ (if (i32.lt_s (local.get $state) (i32.const 0)) (then unreachable))`;
+const makeStorage=`(func (export "newStore") (param $base i32) (result externref)
+ (extern.convert_any (struct.new $storage (local.get $base) (i32.const 1)
+  (array.new_default $references (i32.const 0)))))`;
 const poll=`(global.set $fuel (i32.sub (global.get $fuel) (i32.const 1)))
  (if (i32.le_s (global.get $fuel) (i32.const 0)) (then unreachable))`;
-const reader=(status=false)=>`(func $read (export "read") (type $reader) (param $count i32) (param $state i32) (result i32${status?' i32':''})
- (local $index i32)(local $length i32)(local $value i32)
+const reader=(status=false,transfer=false,parameter=false)=>`(func $read (export "read") (type $reader) (param $count i32) (param ${transfer?'$receiver externref':'$state i32'})${parameter?' (param $incoming externref)':''} (result i32${status?' i32':''})
+ (local $index i32)(local $length i32)(local $value i32)${transfer?'\n (local $state i32)'+(parameter?'':'(local $incoming externref)')+'(local $native (ref null $storage)) '+
+  (parameter?'':'(local.set $incoming (global.get $input))\n (global.set $input (ref.null extern))\n ')+storeGuard:''}
  (block $ready (loop $refill
   (br_if $ready (i32.ge_s (i32.load (local.get $state)) (local.get $count)))
   ${poll}
@@ -38,28 +50,30 @@ const readerImports=`(import "env" "bounds" (tag $bounds (param externref)))
 
 export function bufferedCallSources(kind){
  assert.ok(bufferedCallKinds.includes(kind),'Unknown native call control');
- const local=kind==='buffered-call-local',status=kind==='buffered-call-status';
- const table=kind==='buffered-call-table'||status,read=reader(status);
- const call=table?'(call_indirect (type $reader) (local.get $width) (local.get $state) (i32.const 0))':
+ const local=kind==='buffered-call-local',parameter=kind==='buffered-call-parameter';
+ const transfer=kind==='buffered-call-transfer'||parameter;
+ const status=kind==='buffered-call-status'||transfer;
+ const table=kind==='buffered-call-table'||status,read=reader(status,transfer,parameter);
+ const call=table?`(call_indirect (type $reader) (local.get $width) (local.get $${transfer?'receiver':'state'})${parameter?' (local.get $store)':''} (i32.const 0))`:
   '(call $read (local.get $width) (local.get $state))';
  const consume=status?`${call} (local.set $value) (local.set $status)
    (if (i32.ge_s (local.get $status) (i32.const 0)) (then unreachable))
    (local.set $sum (i32.add (i32.mul (local.get $sum) (i32.const 33)) (local.get $value)))`:
   `(local.set $sum (i32.add (i32.mul (local.get $sum) (i32.const 33)) ${call}))`;
- const caller=`(func (export "run") (param $n i32) (param $state i32) (param $widths i32) (result i32)
+ const caller=`(func (export "run") (param $n i32) (param ${transfer?'$receiver externref':'$state i32'}) (param $widths i32)${transfer?' (param $store externref)':''} (result i32)
   (local $i i32)(local $sum i32)(local $width i32)${status?'(local $status i32)(local $value i32)':''}
   (block $done (loop $next
    (br_if $done (i32.ge_s (local.get $i) (local.get $n)))
    ${poll}
    (local.set $width (i32.and (i32.load8_u (i32.add (local.get $widths) (local.get $i))) (i32.const 31)))
-   ${consume}
+   ${transfer&&!parameter?'(global.set $input (local.get $store))\n   ':''}${consume}
    (local.set $i (i32.add (local.get $i) (i32.const 1))) (br $next)))
   (local.get $sum))`;
- return {reader:read,readerCore:reader(),provider:`(module ${signature(status)} ${baseImports} ${readerImports} ${read})`,
-  caller:`(module ${signature(status)} ${baseImports}
+ return {reader:read,readerCore:reader(),provider:`(module ${signature(status,transfer,parameter)} ${transfer?storageTypes+' ':''}${baseImports} ${readerImports} ${transfer&&!parameter?transferImport+' ':''}${read}${transfer?' '+makeStorage:''})`,
+  caller:`(module ${signature(status,transfer,parameter)} ${transfer?storageTypes+' ':''}${baseImports}
    ${local?readerImports:table?'(import "env" "table" (table 1 funcref))':
     '(import "env" "read" (func $read (type $reader)))'}
-   ${local?read:''} ${caller})`};
+   ${transfer&&!parameter?transferImport+' ':''}${local?read:''} ${caller})`};
 }
 
 export function measureBufferedCallControl(kind,input,workload,count,reference){
@@ -76,9 +90,11 @@ export function measureBufferedCallControl(kind,input,workload,count,reference){
  fields.set([0,0,9,0,inputBase,input.length]);
  const fuel=new WebAssembly.Global({value:'i32',mutable:true},100_000_000);
  const bounds=WebAssembly.JSTag;assert.ok(bounds,'Native JavaScript exception tags are required');
- const env={memory,fuel,bounds,error:(index,length)=>({type:'java/lang/ArrayIndexOutOfBoundsException',index,length})};
+ const parameter=kind==='buffered-call-parameter',transfer=kind==='buffered-call-transfer'||parameter;
+ const inputGlobal=transfer&&!parameter?new WebAssembly.Global({value:'externref',mutable:true},null):null;
+ const env={memory,fuel,bounds,...(inputGlobal?{input:inputGlobal}:{}),error:(index,length)=>({type:'java/lang/ArrayIndexOutOfBoundsException',index,length})};
  const sources=bufferedCallSources(kind);
- const assemble=source=>execFileSync('wasm-as',['--enable-exception-handling','--enable-reference-types','--enable-multivalue','-','-o','-'],{input:source});
+ const assemble=source=>execFileSync('wasm-as',['--enable-exception-handling','--enable-reference-types','--enable-multivalue',...(transfer?['--enable-gc']:[]),'-','-o','-'],{input:source});
  let provider,providerBytes;
  if(kind!=='buffered-call-local'){
   providerBytes=assemble(sources.provider);
@@ -90,8 +106,11 @@ export function measureBufferedCallControl(kind,input,workload,count,reference){
  const callerBytes=assemble(sources.caller),module=new WebAssembly.Module(callerBytes);
  const caller=new WebAssembly.Instance(module,{env});
  provider||=caller;
+ const receiver={},store=transfer?provider.exports.newStore(state):null;
+ const run=n=>transfer?caller.exports.run(n,receiver,widthsBase,store):caller.exports.run(n,state,widthsBase);
  // Exactly one execution: module construction and data installation are outside timing.
- const start=performance.now(),streamChecksum=caller.exports.run(count,state,widthsBase),elapsedMs=performance.now()-start;
+ const start=performance.now(),streamChecksum=run(count),elapsedMs=performance.now()-start;
+ if(inputGlobal)assert.equal(inputGlobal.value,null,'Entry must consume and release transferred metadata');
  const bufferedState=Array.from(fields.subarray(0,4));
  // The Java fixture folds final state after stopping its timer too.
  const checksum=bufferedState.reduce((sum,value)=>(Math.imul(sum,31)+value)|0,streamChecksum);
@@ -99,15 +118,26 @@ export function measureBufferedCallControl(kind,input,workload,count,reference){
  // Negative and end indices fail before any field writes, as in the original reader.
  for(const index of [-1,input.length]){
   fields.set([0,123,index,17]);const before=Array.from(fields);
-  assert.throws(()=>caller.exports.run(1,state,widthsBase),error=>error.type==='java/lang/ArrayIndexOutOfBoundsException'&&
+  assert.throws(()=>run(1),error=>error.type==='java/lang/ArrayIndexOutOfBoundsException'&&
    error.index===index&&error.length===input.length);
   assert.deepEqual(Array.from(fields),before,'Failed input access changed reader state');
+  if(inputGlobal)assert.equal(inputGlobal.value,null,'Exceptional entry must release transferred metadata');
  }
  fields.set([requests[0]&31,1,input.length,17]);
- assert.equal(caller.exports.run(1,state,widthsBase),1,'Buffered bits must not touch exhausted input');
+ assert.equal(run(1),1,'Buffered bits must not touch exhausted input');
  assert.deepEqual(Array.from(fields.subarray(0,4)),[0,1,input.length,17]);
+ if(transfer){
+  if(inputGlobal)assert.equal(inputGlobal.value,null,'No-refill entry must release transferred metadata');
+  for(const invalid of [null,{}]){
+   const before=Array.from(fields);
+   assert.throws(()=>caller.exports.run(1,receiver,widthsBase,invalid),WebAssembly.RuntimeError);
+   if(inputGlobal)assert.equal(inputGlobal.value,null,'Refused metadata must also be released');
+   assert.deepEqual(Array.from(fields),before,'Refused metadata must not touch reader state');
+  }
+ }
  return {elapsedMs,checksum,bufferedState,readerSourceSha256:hash(sources.reader),readerCoreSourceSha256:hash(sources.readerCore),
-  nativeCallProtocol:kind==='buffered-call-status'?'status-and-value':'value-only',
+  nativeCallProtocol:parameter?'store-parameter-and-status':transfer?'transferred-store-and-status':kind==='buffered-call-status'?'status-and-value':'value-only',
+  ...(transfer?{postTimerMetadataRefusals:2}:{}),...(inputGlobal?{postTimerMetadataReleaseChecks:6}:{}),
   callerSourceSha256:hash(sources.caller),callerWasmSha256:hash(callerBytes),
   ...(providerBytes?{providerSourceSha256:hash(sources.provider),providerWasmSha256:hash(providerBytes)}:{}),
   postTimerBoundsChecks:2,postTimerNoRefillCheck:true,

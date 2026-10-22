@@ -72,6 +72,9 @@ test('reader replays preserve exact request order and reject malformed wrapper m
 });
 test('native call controls preserve bit-stream values and partial state across every call form',t=>{
  if(!WebAssembly.JSTag){t.skip('Native call controls require JavaScript exception tags');return;}
+ if(!WebAssembly.validate(Uint8Array.of(0,97,115,109,1,0,0,0,1,5,1,0x5f,1,0x7f,0))){
+  t.skip('Metadata transfer controls require native Wasm GC');return;
+ }
  const assembler=spawnSync('wasm-as',['--version']);
  if(assembler.error?.code==='ENOENT'){t.skip('Native call controls require Binaryen wasm-as');return;}
  assert.equal(assembler.status,0,assembler.stderr?.toString());
@@ -91,5 +94,11 @@ test('native call controls preserve bit-stream values and partial state across e
   const result=measureBufferedCallControl(kind,input,workload,requests.length,expected);
   assert.equal(result.checksum,expected[0]);assert.deepEqual(result.bufferedState,expected.slice(1));
   assert.equal(result.postTimerBoundsChecks,2);assert.equal(result.postTimerNoRefillCheck,true);
+  if(kind==='buffered-call-transfer'){
+   assert.equal(result.postTimerMetadataReleaseChecks,6);assert.equal(result.postTimerMetadataRefusals,2);
+  }
+  if(kind==='buffered-call-parameter'){
+   assert.equal(result.nativeCallProtocol,'store-parameter-and-status');assert.equal(result.postTimerMetadataRefusals,2);
+  }
  }
 });

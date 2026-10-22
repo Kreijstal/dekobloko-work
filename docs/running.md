@@ -8100,3 +8100,46 @@ hashes under `microbenchmarks.runs`; its summary is nested in
 `optimizationTrials.bufferedReaderReplay.receiverEntry.nativeCallControls`.
 There is no runtime ABI change, new selected artifact, generated output in Git
 or deployment. Full-loading 1.10x parity remains unmet.
+
+### Separate private-store transport from native dispatch
+
+The next controls retain the same reader core and add the inspected native
+receiver metadata shape: a GC store `{base, classId, refs}` with an immutable
+linear-memory base. `buffered-call-transfer` publishes the store through a
+mutable externref global, consumes/clears it at callee entry, then tests/casts
+it and reads its base. `buffered-call-parameter` passes that same store as an
+extra externref argument and retains the same test/cast/base guard. Both use
+status/value returns and the same native table boundary. Neither implements
+Java fallback semantics; absent/wrong metadata is explicitly refused before
+reader effects. The original four forms keep their generated Wasm unchanged.
+
+| Batch median ms | Table + status | Store global | Store parameter | TeaVM |
+| --- | ---: | ---: | ---: | ---: |
+| Transfer | 2.720 | 6.125 | unavailable | 1.893 |
+| Transfer repeat | 2.920 | 6.744 | unavailable | 1.915 |
+| Parameter | 2.851 | 6.069 | 3.597 | 1.871 |
+| Parameter repeat | 2.739 | 6.276 | 3.334 | 2.065 |
+
+Each cell retains three fresh processes and the same 490,954 requests. Every
+checksum and final state matches the original-method oracle. The parameter
+batches contain one 5.633 ms parameter outlier; it is retained. Metadata global
+ownership is checked after completion and both bounds failures; no-refill and
+null/wrong metadata refusals also release it without reader effects. The
+focused command passes **10/10 tests**, with zero skips on this host. The new
+execution control additionally requires native Wasm GC. Java/TeaVM fixtures
+are not rebuilt and the JVM is unchanged during these measurements.
+
+This establishes a large transport cost in this reduced case and supports an
+isolated compiler prototype using native metadata parameters. It does not
+establish an equivalent gain for actual Java calls or full loading. Preserve
+legacy/frame entry signatures and checked/fuel/exception/replacement behavior,
+then gate the prototype on the exact replay before a wider loading comparison.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs calls 592f30f0076c7e7b987cc03da95ba276786af4af
+node --test tests/loading-fixture.test.mjs tests/loading-statistics.test.mjs
+node --check apps/loading/buffered-call-controls.mjs
+```
+
+All 78 new observations remain in the existing single report. Their summary
+is nested under the existing `nativeCallControls.metadataTransport` record.
