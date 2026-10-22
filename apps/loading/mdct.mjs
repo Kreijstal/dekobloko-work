@@ -226,7 +226,7 @@ async function one(engine,revision,inspection=false){
    else{scratch.setFloat32(0,row[k]);put(scratch.getInt32(0));}
   }}assert.equal(at,output.length);
   methods=j.jit.wasmJit.compiled.filter(s=>s.key.startsWith('MdctTransformKernel.')).map(s=>({key:s.key,runs:s.runs,directEntries:s.meta?.canonicalEntries?.value||0,exits:s.exits,fuelExits:s.fuelExits,full:!!s.meta?.fullyCompiled,structured:!!s.meta?.structured,demotes:[...(s.meta?.demoteReasons||[])],
-   ...(inspection?{omittedArrayFillCount:s.meta?.omittedArrayFillCount,slabFieldSites:s.meta?.slabFieldSites,loopInvariantNumericValueCount:s.meta?.loopInvariantNumericValueCount,
+   ...(inspection?{omittedArrayFillCount:s.meta?.omittedArrayFillCount,slabFieldSites:s.meta?.slabFieldSites,loopInvariantNumericValueCount:s.meta?.loopInvariantNumericValueCount,nativeStaticArrayBodySites:s.meta?.nativeStaticArrayBodySites,
     imports:[...s.meta?.importStats||[]].filter(([,count])=>count>0).map(([name,count])=>({name,count}))}:{}),
   }));
   compilation=j.jit.syncCompileCensus();assert.deepEqual(late,[]);assert.equal(compilation.postMainSyncCompileCount,0);
