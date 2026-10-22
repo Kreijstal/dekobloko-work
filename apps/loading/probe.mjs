@@ -141,6 +141,8 @@ try {
  const owners=kernel==='bzip'?['Bzip2Decoder','Bzip2DecoderState']:['MusicDecoder','VorbisCodebook','VorbisResidue','MusicDecodeStage',...(kernel==='loading'?['Bzip2Decoder','Bzip2DecoderState']:[])];
  const layout=meta=>meta&&{structured:!!meta.structured,canonical:!!meta.canonicalRun,normalFlow:meta.normalFlowFullyCompiled,
   omittedNativeBoundsCheckCount:meta.omittedNativeBoundsCheckCount||0,
+  crossBlockArrayFillCount:meta.crossBlockArrayFillCount||0,
+  arrayMetadataFlowStatus:meta.arrayMetadataFlowStatus||'unavailable',
   parameterHeapSpecializationBytes:meta.parameterHeapSpecializationBytes||0,
   parameterHeapBoundsElisionCount:meta.parameterHeapBoundsElisionCount||0,
   parameterHeapRangeGuardCount:meta.parameterHeapRangeGuardCount||0,
@@ -167,6 +169,8 @@ try {
   ...(optimizer?{wasmOptimizer:optimizer.finishPreparation()}:{}),
   executionMethods:w.compiled.map(state=>({key:state.key,runs:state.runs,exits:state.exits,
     omittedNativeBoundsCheckCount:state.meta?.omittedNativeBoundsCheckCount||0,
+    crossBlockArrayFillCount:state.meta?.crossBlockArrayFillCount||0,
+    arrayMetadataFlowStatus:state.meta?.arrayMetadataFlowStatus||'unavailable',
     parameterHeapSpecializationBytes:state.meta?.parameterHeapSpecializationBytes||0,
     parameterHeapBoundsElisionCount:state.meta?.parameterHeapBoundsElisionCount||0,
     parameterHeapRangeGuardCount:state.meta?.parameterHeapRangeGuardCount||0,

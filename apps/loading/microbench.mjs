@@ -958,6 +958,8 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     fuelExits:s.fuelExits,nestedCalls:s.nestedCalls,nestedDeopts:s.nestedDeopts,
     full:!!s.meta?.fullyCompiled,canonical:!!s.meta?.canonicalRun,inlined:s.meta?.inlinedCalls,
     omittedNativeBoundsCheckCount:s.meta?.omittedNativeBoundsCheckCount||0,
+    crossBlockArrayFillCount:s.meta?.crossBlockArrayFillCount||0,
+    arrayMetadataFlowStatus:s.meta?.arrayMetadataFlowStatus||'unavailable',
     slabFieldSites:s.meta?.slabFieldSites,omittedSlabFillCount:s.meta?.omittedSlabFillCount||0,
     parameterHeapSpecializationBytes:s.meta?.parameterHeapSpecializationBytes||0,
     parameterHeapBoundsElisionCount:s.meta?.parameterHeapBoundsElisionCount||0,

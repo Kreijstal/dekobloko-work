@@ -9082,3 +9082,146 @@ loses; do not rerun the old CPU attribution or blindly restore the rejected
 standalone representation-loop and affine-version prototypes. Any extension
 must combine a demonstrably useful proof with bounded code growth and preserve
 Java failure order, fuel/resume and foreign-array fallbacks.
+
+
+### Must-available array headers across control flow (2026-10-22)
+
+First rule out an inactive option rather than timing it. A block-local extension
+for shared field-array metadata passed **63/63 assertions** under its supported
+explicit option, including captured old arrays after replacement, partial
+failure effects, plain/native storage, getter identity/order and fuel exits.
+However, the selected diagnostic and full-loading profiles do not enable
+`sharedFieldArrayCaches`, whose generic default is false. The initial test
+activation assertion caught that fact. This proof cannot improve this workload
+under the current policy. Preserve prototype
+`f7796e6a41f0eab03a261a9d6e1731d24f7e73ee`, withdraw it in
+`9d2205a6d6c56cb4c568138b41c018833bfd6f68`, and restore the known retained
+source without retesting or hashing the unchanged baseline. No timing run is
+performed for that inactive change. The test and source remain recoverable in
+experimental history, not in the active tree.
+
+The active candidate instead extends the existing immutable per-reference
+header proof across **normal CFG edges**. If every continuing predecessor has
+filled the same SSA reference's header, a successor need not retest its filled
+flag. The original native/foreign representation selection and every Java bounds
+check remain. This is metadata availability, not element-value reuse or loop
+cloning. `arrayMetadataFlow.js` performs a bounded must-dataflow analysis from
+empty facts; changed references and phi definitions kill their facts, and field
+reads conservatively clear all facts because a refill can invalidate sibling
+readers. A missing predecessor fact prevents a join proof. Exception regions,
+demotion, deoptimization, irreducible splitting and existing guarded-loop
+versions retain block-local checks. Normal function entry and a supported
+external resume header are empty roots: a resumed invocation must refill its
+fresh metadata locals rather than inherit a skipped prefix's proof.
+
+The analysis caps tracked caches at 128, blocks at 512 and total work at 50,000;
+exhaustion discards the entire partial result. Proof maps and diagnostic site
+sets are released after translation. Only scalar omitted-site counts survive.
+The behavior runs automatically with no new option, game identity or profile.
+Source snapshot: `2e57bc37d4071d2416364cad1ea722379c13491c`, based on retained
+`aa23806e673abe4b80c6072b83df8929884c77e9`.
+
+The changed compiler suite passes **835/835 assertions**. The new file
+contributes **62**, covering both-arm joins, missing-arm refusal, zero trips,
+null/short arrays, changing loop references, field replacement while retaining
+older references, exact checked getter/throw ordering, live-EH refusal, bounded
+analysis refusal, cleanup and actual native scheduler resumptions. The scheduler
+fixture explicitly enables structured Wasm; an initial setup omitted that
+selection and its activation assertion failed rather than accepting dispatcher
+execution as proof. With the intended backend active, fuel forces multiple
+structured entries and the captured prefix result is not replayed.
+
+```bash
+# java-tools; 835 assertions pass:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/arrayMetadataFlow.test.js test/wasmNumericStackification.test.js test/arrayIdentityCaches.test.js test/wasmParameterArrayAbi.test.js test/wasmCompilerRetention.test.js test/structuredLoopResume.test.js test/wasmHeapArrays.test.js
+# dekobloko-work; diagnostic only, not a timed comparator:
+MICRO_ITERATIONS=1000000 JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs inspect 2e57bc37d4071d2416364cad1ea722379c13491c huffman-cached 'MicroHuffmanBook.readScalarCached('
+MICRO_ITERATIONS=1000000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 2e57bc37d4071d2416364cad1ea722379c13491c huffman-cached
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 2e57bc37d4071d2416364cad1ea722379c13491c 'MusicDecoder.decodePacket(I)[F'
+```
+
+The cached-tree diagnostic confirms **two distinct source metadata checks
+removed**, **1,000,000 direct native entries**, zero exits and checksum
+`-1268584370`. It is unversioned by the preceding parameter-array feature; this
+is the new flow proof. Instrumented WAT SHA-256 is
+`6bd4cf571500230a6961c12a695f018896d1c7c4f95f69808376e866caa49011`.
+The counter measures source sites, not a claimed dynamic check frequency.
+The cached TeaVM artifact is read for WAT only and is never executed.
+
+The candidate-only tree samples at one million calls are **135.752, 123.035,
+147.539 ms**. Historical cached-tree runs used 100,000 calls, so they are **not
+comparable timings**; do not scale them or claim a speedup. The candidate
+still establishes one-pass correctness and actual use of the changed native
+body. Reuse the exact recorded original-music/whole-loading baselines for the
+application gate instead of launching an unchanged control. All observations
+and this limitation remain in the existing single report.
+
+The first original-music inspection is byte-exact but finds the new flow proof
+only in codebook construction outside the decode timer (seven sites). The
+packet decoder WAT remains the previously recorded hash, with no new timed
+omissions. **Do not time that unchanged decode path.** Diagnostic source
+`bcf37479e9d45de4e39b9ef60ff83a0d8da7bb2c` adds a scalar refusal status to
+distinguish eligibility from lack of usable facts. The dedicated 62 assertions
+pass. The next diagnostic reports `proved` for the timed packet, residue and
+scalar-codebook methods, not a safety exclusion: the analysis ran, but its
+conservative transfer function removed every fact at unrelated scalar field
+reads. No method eligibility gate is removed.
+
+Refinement `19e0b00dbb1b1b4937e380c168de6c1f197354eb` uses each discovered
+field-cache entry's actual sibling-reader IDs to compute its metadata kills.
+It mirrors the existing `cacheKillsFor` behavior, conservatively treating every
+potential refill as taken. Scalar fields no longer erase unrelated array facts;
+unknown reference readers retain the full barrier. Reference redefinitions,
+phi copies, external resume roots, exception and existing-version exclusions
+remain. This is compile-time precision, not weaker runtime checks or a new
+flag. The seven-file command above now passes **842/842 assertions**, including
+an additional scalar-field side effect across a branch. Saved code-generation
+snapshots preserve both earlier forms; baseline timings are not rerun.
+
+#### Refined inspection: no timed benefit, withdraw without a timing run
+
+The precise invalidation form still reports **zero** additional metadata checks
+removed in the timed packet, residue and scalar-codebook methods. Each reports
+`proved`, so this is not a method-level rejection. Codebook construction has
+seven omissions and is outside the original-music timer. Every PCM byte still
+matches; packet-decoder WAT remains
+`6ace3fe59653505abc848bd97f432378a36037fb35649508a779af8746eb7593`.
+That is evidence that no changed decoder instructions need timing, not a reason
+to launch another baseline verification. Neither original-music timing nor
+full-loading timing is run for this candidate.
+
+A separate compile-only inspection retains the temporary IR with all classes
+loaded and readiness marked, then translates with inlining disabled. This is
+not the prepared measurement artifact and executes no guest workload. It finds
+118 CFG blocks and zero inlined calls. The dominant captured static transform
+array has **74 element-use nodes in 14 body blocks**, with **no available header
+fact at any of their entries**. Each loop may execute zero times, and the
+already-optimized accesses mostly share a basic block. A completed access inside
+one such body therefore cannot establish a must-fact at its loop entry or after
+its zero-trip exit. Local available-expression reasoning does not replace the
+need for an explicit safe entry guard. The bounded IR summary, including block
+IDs and predecessors, is in `optimizationTrials.arrayMetadataFlow.compileOnlyIr`.
+
+Withdraw in `fc69f02037a7cfcc25cdefd8dc8787b3e5eacb1c`. Restore the known
+`aa23806e673abe4b80c6072b83df8929884c77e9` compiler file and remove the new
+analysis/test from the active tree after saving them in history. No restored
+baseline tests, baseline hashes or baseline timing runs follow. The working
+source baseline, deployed artifact and runtime master remain unchanged. The
+seven-file **842-assertion** suite belongs to refinement `19e0b00`, not the
+restored source. Reproduce those tests in an isolated checkout of that candidate;
+the benchmark commands can load the exact saved revision directly.
+
+A useful next candidate must reach these loop bodies without assuming an earlier
+iteration happened. Review the existing rejected representation/affine versions
+and isolate one actual transform region before changing the compiler again.
+One distinct question is whether outlining a guarded native region can reduce
+the large method's live metadata/local pressure and code layout cost; that
+requires emitted-code evidence and a small matched control, not a claim that
+array checks explain the entire gap. This turn establishes no new performance
+gain and does not change the retained **5.604x** full-loading comparison.
+
+Diagnostics add scalar `crossBlockArrayFillCount` and `arrayMetadataFlowStatus`
+fields to the existing probe reports; they do not retain the IR or introduce a
+runtime option. All experiment decisions remain in the same `benchmark.json`.
+The inactive shared-cache proof and both flow refinements are preserved in Git,
+and no generated Java, JAR, Wasm, WAT or extra JSON report is committed.
