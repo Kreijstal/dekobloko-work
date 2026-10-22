@@ -9472,3 +9472,65 @@ outside its loops. Dead-phi pruning and loop outlining were already measured
 rejections; neither should be repeated as a new proposed fix. The next bounded
 compiler experiment is moving only proven total numeric invariants to loop
 preheaders, preserving operation order, memory checks and resumption semantics.
+
+
+#### Total numeric loop invariants: rejected component experiment
+
+The first proof (`1128de04c80196cf851acba34bdfb4a07fa993bd`) passed its focused
+correctness checks but refused expanded bytecode. Its separate code diagnostic
+found zero moved transform values and unchanged transform WAT. It was **not
+timed**. The expanded-SSA proof (`d4881f19f2299830a45781e044d7ae90caff67ab`)
+proved the invariant slice using SSA dependencies and dominance and moved **66
+values, including constants**, into loop preheaders. It uses dedicated locals
+because the original block-local allocator did not account for longer lifetimes.
+The diagnostic output is exact; its module SHA-256 is
+`1e1cc46d3dc8a757b1e53bd6c4ce86583243f72e5f69f8c49a99f47f8338d9a7`.
+
+This proof moves only total numeric operations, retaining their original
+arithmetic tree. It never hoists loads, calls or integer division; it neither
+reassociates floats nor removes bounds/representation checks. Limits are 256
+blocks, 32 loops, 256 moved values, 50,000 analysis work and depth 64. Split
+irreducible regions, demotions and inline deopt stubs retain their existing code.
+Tests cover nested/branch-local availability, wide arithmetic, NaN/signed zero,
+zero trips, integer faults, partial array effects, handler/fuel snapshots,
+expanded SSA, external native resumption, cleanup and excessive/cyclic proofs.
+
+The final bounded source is `ea3038711d11ad3a01768a517d3e20c5e85e3f37`.
+Three fresh changed-JVM-only processes measure **58.076563, 55.503291 and
+80.715502 ms**, all retained. Their median **58.076563 ms** is only **1.104%**
+below the recorded 58.724721 ms reference, with overlapping historical spread.
+It remains **3.422x** the recorded TeaVM median. Every sample matches all 698,368
+float words, enters the transform directly 682 times, has zero transform exits
+and compiles zero Java during execution. No unchanged JVM/TeaVM control is rerun.
+This does **not** establish a useful improvement, and the compiler prototype is
+withdrawn rather than promoted or subjected to another full-loading campaign.
+
+```bash
+# java-tools; first prototype: 166/166 assertions passed.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/loopInvariantNumericValues.test.js test/wasmNumericStackification.test.js test/frameLocalSpills.test.js
+# Expanded SSA/native resume version: 174/174 passed.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/loopInvariantNumericValues.test.js test/wasmCompilerRetention.test.js
+# Final recursion/work-bounded proof: 78/78 passed.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/loopInvariantNumericValues.test.js
+node --check src/jit/loopInvariantNumericValues.js
+git diff --check
+# Deko; changed JVM only, recorded TeaVM reused:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs run-jvm ea3038711d11ad3a01768a517d3e20c5e85e3f37
+```
+
+The handwritten prototype and tests remain on `experiment/teavm-native-parity`;
+use its exact source revision to reproduce withdrawn tests. Withdrawal revision
+`153524da708afc1dc7854671599009ce256bf162` restores the retained compiler directly
+from known source `aa23806`, removes only this prototype's new files, and performs
+**no baseline correctness/timing/hash revalidation**. The one existing report
+keeps the raw measurements under `mdctBenchmark.runs` and the grouped decision
+under `optimizationTrials.totalNumericLoopInvariants`. Master, selected runtime,
+full-loading baseline and deployment remain unchanged.
+
+The result rules out this small invariant-motion change as sufficient. The WAT
+comparison still shows a large difference in array representation and access
+control flow. The next experiment needs to address that structure while retaining
+recoverable Java exceptions and supported foreign-array fallback; repeating
+unchanged baselines, CPU attribution, dead-phi pruning or outlining is not useful.
+No claim is made that native-only method/region specialization is already safe
+or will reach parity; earlier cloned leaf/loop versions were measured rejections.
