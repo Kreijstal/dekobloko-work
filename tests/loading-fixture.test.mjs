@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
-import {projectMeasurementFixture,parseMeasurementResult,recordProbeObservation} from '../apps/loading/measurement-fixture.mjs';
+import {projectMeasurementFixture,parseMeasurementResult,recordProbeObservation,summarizeExecutionOutcome} from '../apps/loading/measurement-fixture.mjs';
 
 test('worker projection preserves inputs without traversing accumulated profiles',()=>{
  const forbidden=()=>{throw Error('history must stay in the recorder');};
@@ -43,4 +43,14 @@ test('the recorder retains bounded recent summaries outside the worker',()=>{
  assert.equal(receipt.kernelDiagnostic,result);assert.equal(result.recent.length,6);
  assert.equal(result.recent[0].runtimeRevision,'1');assert.equal(result.recent.at(-1).runtimeRevision,'current');
  assert.equal('methods' in result.recent.at(-1),false);assert.equal(result.recent.at(-1).lateCompiles,0);
+});
+test('execution summaries retain status without retaining guest return graphs',()=>{
+ const guest={};Object.defineProperty(guest,'toJSON',{get(){throw Error('guest graph traversed');}});
+ const result=summarizeExecutionOutcome({handled:true,returned:true,value:guest});
+ assert.deepEqual(result,{handled:true,returned:true,valueKind:'object'});
+ assert.equal(JSON.stringify(result),'{"handled":true,"returned":true,"valueKind":"object"}');
+ assert.deepEqual(summarizeExecutionOutcome({handled:true,returned:true,value:42}),
+  {handled:true,returned:true,valueKind:'number',value:42});
+ assert.equal(summarizeExecutionOutcome({value:9223372036854775807n}).value,'9223372036854775807');
+ assert.equal(summarizeExecutionOutcome({value:'x'.repeat(1_000_000)}).value.length,160);
 });

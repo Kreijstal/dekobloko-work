@@ -14,7 +14,7 @@ export function projectMeasurementFixture(receipt){
   ...(receipt.teavm?{teavm:pick(receipt.teavm,['version','wasmSha256','runtimeSha256'])}:{}),
   ...(receipt.executionBaseline?{executionBaseline:pick(receipt.executionBaseline,['jvmOptions'])}:{}),
   ...(receipt.microbenchmarks?{microbenchmarks:pick(receipt.microbenchmarks,
-   ['cases','iterations','seed','codec','sourceSha256','classSha256','classes','wasmSha256','runtimeSha256','wrapperSha256','referenceChecks','references'])}:{}),
+   ['cases','iterations','seed','codec','sourceSha256','classSha256','classes','wasmSha256','runtimeSha256','wrapperSha256','referenceChecks','references','bufferedReferences'])}:{}),
   ...(receipt.vorbisBenchmark?{vorbisBenchmark:pick(receipt.vorbisBenchmark,
    ['sourceSha256','probeClassSha256','classesInventorySha256','assets','referencePcmSha256','referencePcmBytes',
     'wasmSha256','runtimeSha256','wrapperSha256','transformerSha256','version'])}:{}),
@@ -31,6 +31,16 @@ export function parseMeasurementResult(stdout,prefix){
  const result=JSON.parse(lines[0].slice(prefix.length));
  assert.ok(result&&typeof result==='object'&&!Array.isArray(result),'Invalid measurement result');
  return result;
+}
+export function summarizeExecutionOutcome(result){
+ const summary=pick(result,['handled','returned','isVoid','deopted']);
+ if(result&&Object.hasOwn(result,'value')){
+  const value=result.value;summary.valueKind=value===null?'null':typeof value;
+  if(value===null||['number','boolean'].includes(typeof value))summary.value=value;
+  else if(typeof value==='bigint')summary.value=String(value);
+  else if(typeof value==='string')summary.value=value.slice(0,160);
+ }
+ return summary;
 }
 export function recordProbeObservation(receipt,result){
  result.recent=[...(receipt.kernelDiagnostic?.recent||[]),{

@@ -7,7 +7,7 @@ import {getHeapStatistics} from 'node:v8';
 import {freshLoadingBytes} from './browser.mjs';
 import {loadArchivedJvm} from './archive-jvm.mjs';
 import {vorbisProbeSource} from './workload.mjs';
-import {readMeasurementFixture,recordProbeObservation} from './measurement-fixture.mjs';
+import {readMeasurementFixture,recordProbeObservation,summarizeExecutionOutcome} from './measurement-fixture.mjs';
 const require=createRequire(import.meta.url),root=path.resolve(new URL('../../../java-tools/',import.meta.url).pathname);
 const player=path.resolve(process.argv[6]||path.join(os.homedir(),'.cache/dekobloko/geoblox-loading'));
 const receiptPath=path.join(player,'benchmark.json');
@@ -121,7 +121,7 @@ try {
   optimizer?.finishPreparation();guestCpu=process.cpuUsage();guestStart=performance.now();mark();};
  const w=j.jit.wasmJit;
  const transitions=[];const execute=w.execute.bind(w);
- w.execute=(frame,thread,state,...args)=>{const before=frame.pc,r=execute(frame,thread,state,...args);if(state.key?.includes('Bzip2Decoder')&&state.exits&&transitions.length<100)transitions.push({key:state.key,before,after:frame.pc,result:r,fuels:state.fuelExits});return r;};
+ w.execute=(frame,thread,state,...args)=>{const before=frame.pc,r=execute(frame,thread,state,...args);if(state.key?.includes('Bzip2Decoder')&&state.exits&&transitions.length<100)transitions.push({key:state.key,before,after:frame.pc,result:summarizeExecutionOutcome(r),fuels:state.fuelExits});return r;};
  let error;const start=performance.now();
  try{await j.run(mainClass);}catch(caught){error={type:caught.type||caught.name,message:caught.message,location:caught.jvmGuestLocation};}
  const finished=performance.now(),cpu=guestCpu&&process.cpuUsage(guestCpu),elapsed=finished-start,executionMs=finished-guestStart;

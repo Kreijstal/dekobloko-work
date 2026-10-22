@@ -7727,3 +7727,89 @@ remain in the existing single `benchmark.json`, under
 `optimizationTrials.basicBlockReceiverGuards`. The next step is a further
 reduction of original decoder work, rather than expanding this optimization
 based on the synthetic field win. The 1.10x full-loading goal remains unmet.
+
+### Reduce the decoder's actual bit-reading algorithm
+
+The 52-case fixture adds four buffered-reader controls before making another
+VM change. They copy the pinned decoder's refill and arithmetic order and use
+the original `Bzip2DecoderState` class. HotSpot independently calls the original
+private `Bzip2Decoder.readBits` through reflection outside timing, checking both
+the result checksum and all four changed state values. Helper, inline-field
+and local-state variants must match that oracle. The local version is only a
+valid-input reduction; it changes partial state on exceptions and is not a
+proposed rewrite of guest code.
+
+Each row has three fresh JVM/TeaVM process pairs, CPU 2, eager native Wasm on
+both engines and a one-GiB heap limit. Preparation and input creation precede
+timing. There is no warmup or replay. The ready-helper variant constructs only
+the otherwise empty helper owner before timing; it never reads any bits and
+must report zero caller exits.
+
+| One million requests, median ms | JVM | TeaVM |
+| --- | ---: | ---: |
+| Helper with cold owner | 27.179 | 3.907 |
+| Same helper, initialized owner | 25.822 | 3.743 |
+| Same field operations inline | 14.073 | 2.838 |
+| Local state | 5.098 | 2.508 |
+
+At 10,000 requests, the cold/ready helper medians are **1.741/0.784 ms** in the
+JVM versus **0.037/0.037 ms** in TeaVM. Moving initialization out removes the
+first caller exit, but the million-request ready control remains about 6.90x
+TeaVM. The local control still takes 2.03x TeaVM. These contrasts separate
+first-use effects, helper-boundary overhead and field-state overhead; they do
+not uniquely attribute every instruction's cost or prove full-loading gains.
+
+An earlier three-control fixture independently gives 26.398/14.145/5.252 ms
+JVM at one million requests and 1.697/0.398/0.350 ms at 10,000. Its source hash
+is `4ffaa46e073d1b9c198f4d2acaea3a144aeb353852915662b43803ccadcc72df`.
+The final source hash is
+`6cdb5274cecfe92dc511b809c9ecf24d6336546fcbfe4e07892a44d83d76507d`;
+TeaVM Wasm is `25b135c6d1de92100cf383c14ce2cd2f515c4fe46303c36134f4f65ea32ad117`.
+The canonical report preserves the fixture source history and separates the
+72 observations by source identity, count and batch. Checksums are `884180336`
+at one million requests and `-2008522736` at 10,000, with independent final
+states `[0,1743069440,1093750,1093750]` and `[4,361996909,10938,10938]`.
+
+TeaVM's emitted reader uses GC `struct.get/set` and `array.get_s` directly.
+The reduced helper retains its own function, so its result is not explained
+solely by TeaVM source inlining. The JVM's helper is fully compiled: an excluded
+diagnostic reports 999,999 direct entries plus one ordinary entry, zero callee
+exits/fuel exits and just one metadata lookup. Repeated JS fallback or Java
+compilation does not explain the sustained helper gap.
+
+One diagnostic initially fails with `ENOBUFS`: transition records serialize
+returned guest arrays and exceed the existing 16-MiB worker-output bound.
+Both microbench and kernel diagnostics now retain scalar status summaries
+instead of guest return graphs. The same diagnostic then succeeds at about
+100 KiB. Its timing is excluded. Focused transport/statistics checks pass
+**8/8**, including a return graph whose serializer throws if traversed.
+The standalone original-archive probe also passes its byte comparison with
+zero late compilation. Its 62.541 ms observation validates the probe path;
+it is not pooled with paired microbenchmark timings.
+
+The old uninstrumented original-archive run `cd2a19e2-a560-4b93-b775-e160a023ba42`
+already records **490,954 `readBits` entries** and **320,218 `readBit` entries**.
+No new CPU profile is needed to establish relevance. However, the synthetic
+request pattern averages 8.75 bits; that overweights refill work relative to
+this 87,159-byte archive. Before selecting a compiler change, capture and replay
+the original request widths and wrapper boundaries. Do not project these
+synthetic deltas directly onto total loading time.
+
+```bash
+# dekobloko-work: rebuild only the reduced fixture and its HotSpot oracle
+node apps/loading/microbench.mjs build
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af buffered-helper buffered-ready-helper buffered-inline buffered-local
+MICRO_ITERATIONS=10000 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af buffered-helper buffered-ready-helper
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose 592f30f0076c7e7b987cc03da95ba276786af4af buffered-helper
+node --test tests/loading-fixture.test.mjs tests/loading-statistics.test.mjs
+node --check apps/loading/microbench.mjs
+node --check apps/loading/measurement-fixture.mjs
+node --check apps/loading/probe.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/probe.mjs slab 1-2.bin 592f30f0076c7e7b987cc03da95ba276786af4af bzip
+```
+
+No runtime optimization, selected artifact, JVM master or deployment changes
+in this pass. All evidence remains in the same `benchmark.json`, under
+`optimizationTrials.bufferedReaderReduction`. Full-loading 1.10x parity remains
+unmet; browser FPS, phone and peak-heap acceptance are not inferred from this
+reduction.
