@@ -157,6 +157,8 @@ try {
     nativeArrayReadReuseSites:state.meta?.nativeArrayReadReuseSites||0,
     booleanArrayCacheCount:state.meta?.booleanArrayCacheCount||0,
     booleanFieldArrayGroupCount:state.meta?.booleanFieldArrayGroupCount||0,
+    representationLoopCount:state.meta?.representationLoopCount||0,
+    representationLoopBytes:state.meta?.representationLoopBytes||0,
     structured:!!state.meta?.structured,full:!!state.meta?.fullyCompiled,
     canonical:!!state.meta?.canonicalRun,directEntries:state.meta?.canonicalEntries?.value||0}))
    .filter(state=>state.runs||state.directEntries),

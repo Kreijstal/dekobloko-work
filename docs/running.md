@@ -7365,3 +7365,193 @@ retained full-loading runtime is approximately **5.50x** TeaVM in these new
 controls. The target remains **1.10x**; no browser, FPS, total JavaScript heap
 or phone acceptance follows from these Node measurements. Master, selected
 bundles and deployed artifacts have not changed.
+
+### Reduced error edges: native tags rejected before full loading
+
+The same one-million-symbol tree control now also supports a native two-integer
+Wasm exception tag and the engine's JavaScript tag carrying the original error
+object. These keep the original deterministic input/tree, explicit bounds and
+fuel polling. Post-timer malformed-input checks verify both tree and input
+bounds; the JavaScript-tag form additionally preserves payload identity at the
+JS boundary. Neither handwritten model implements a Java runtime.
+
+The JavaScript-tag model repeats at 47.267/47.263 ms for repeated tree values
+and 44.962/44.741 ms for cached values, versus the matched ordinary-import
+control's 57.263/55.884 ms. Its paired TeaVM medians remain around 41–42 ms.
+The separate integer-payload tag is slightly slower (approximately 49/46 ms).
+The assembler needs explicit exception-handling and multivalue features for
+the two-argument tag; the first attempt without multivalue validation fails
+before any observation is accepted. No guest warmup or replay is added.
+
+VM prototype `803cce0f` then creates the existing guest bounds-error object in
+a cold host import and throws it through the already-supported JavaScript tag
+in Wasm. Engines/configurations without that protocol keep the original
+throwing import. It changes only native primitive/reference-array bounds
+failures. Five focused files pass **427/427** assertions, including exact tag
+payloads, partial effects and nearest local/caller exception handlers. The
+actual compiler nevertheless rejects the optimization on reduced performance:
+
+| JVM revision | Repeated-value median ms | Cached-value median ms |
+| --- | ---: | ---: |
+| Baseline before `592f30f0` | 72.689 | 55.925 |
+| Native-tag prototype `803cce0f` | 62.753 | 62.190 |
+| Fresh baseline after `592f30f0` | 73.845 | 56.253 |
+
+The cached-value regression survives the baseline-after control. Withdrawal
+`91b27348` restores the prior runtime exactly, retaining only useful generic
+exception-boundary tests. The same five-file suite again passes **427/427**.
+No full-loading campaign is run for this failed small-case change.
+
+```bash
+# java-tools, prototype and withdrawal:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmJsExceptionTags.test.js test/wasmHeapArrays.test.js test/wasmParameterArrayAbi.test.js test/nativeReferenceArray.test.js test/wasmCompilerRetention.test.js
+# dekobloko-work; use each complete recorded revision for the VM comparison:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 803cce0fceed59d8e8d3efe20e456ff2ff69c76b huffman-many-local huffman-many-value
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs linear 592f30f0076c7e7b987cc03da95ba276786af4af linear-tag huffman-many-local huffman-many-value
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs linear 592f30f0076c7e7b987cc03da95ba276786af4af linear-js-tag huffman-many-local huffman-many-value
+```
+
+### Representation-only loop versions from a smaller branch control
+
+A second handwritten model changes only the per-access native/checked
+representation branch. Both versions declare the same imports, use the same
+positive pointers and preserve every explicit bounds/fuel check. The cold
+checked path is validated after timing with malformed inputs. In
+plain/guarded/guarded/plain order, the repeated-value medians are
+57.271/74.630/71.377/63.895 ms and cached-value medians
+59.504/70.745/70.240/58.900 ms. TeaVM also shifts (roughly 42–47 ms), so these
+are evidence of a branch cost, not a precise attribution of the VM's entire
+gap. The existing single receipt retains all observations and their times.
+
+This motivates a different proof from the earlier rejected affine-range pass.
+`1d4f4538` checks already-filled array metadata and nonnegative native bases
+once before a loop, then selects either a representation-specialized loop or
+the complete original loop. It does not query metadata early. Every Java
+bounds check and every original fuel poll remains inside both versions.
+Captured array references must be defined outside the natural loop; changing
+receivers, shared generation-dependent caches, callbacks, allocations and
+live exception regions are refused. Discovery is bounded, and total extra
+emitted bytes are capped at 8 KiB per compilation. No game identity or new
+option is used. `0ebdbef4` excludes statically known boolean storage, which
+cannot take the current native primitive-array path, and extends validation.
+
+The six-file suite passes **870/870** assertions. A final two-file follow-up
+passes **237/237**, including actual fast-branch execution, all supported
+primitive widths, every storage byte for nonfinite floating-point inputs,
+narrowing, foreign/plain/observable arrays, exact partial writes and fuel
+spills, unchanged poll counts, code-budget refusal and GC of proof graphs.
+External resume tests replace the source field after suspension and verify
+that execution still uses the saved old Java array. These counts are separate
+suite results, not disjoint totals.
+
+| Runtime | Repeated-value median ms | Cached-value median ms |
+| --- | ---: | ---: |
+| Preceding fresh baseline `592f30f0` | 73.845 | 56.253 |
+| Initial version `1d4f4538` | 63.756 | 54.359 |
+| Final version `0ebdbef4` | 62.702 | 54.253 |
+| Fresh baseline after `592f30f0` | 74.078 | 56.601 |
+
+All checksums match HotSpot `-1268584370`; both timed tree kernels remain
+native with zero exits and zero execution-time compilation. A separate,
+excluded diagnostic confirms **1,000,000 actual fast-loop selections**, one
+native entry and zero exits in `readManyLocal`. Its 351 added bytes include
+diagnostic instrumentation; uninstrumented code has its own byte count.
+The fixture source remains
+`8273d10a7a0e94447891ababc74838cacd330625cad9b8e3a43c0555f470e045`
+and input SHA-256 remains
+`3c2ff2fd992bd7b389b0c9cf15f927d7ed4c988ff8f5b9dea49fe70d5dc2c081`.
+
+```bash
+# java-tools:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/representationLoops.test.js test/guardedNestedArrayLoops.test.js test/wasmHeapArrays.test.js test/nativeReferenceArray.test.js test/structuredLoopResume.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/representationLoops.test.js test/wasmCompilerRetention.test.js
+# dekobloko-work; final candidate, then fresh baseline with the same cases:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 0ebdbef477c0b6315a1772363dda3bf03e238c43 huffman-many-local huffman-many-value
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af huffman-many-local huffman-many-value
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose 0ebdbef477c0b6315a1772363dda3bf03e238c43 huffman-many-local
+```
+
+These small-case wins justify screening the unchanged full-loading workload;
+they do not establish whole-loading parity, Firefox/FPS, heap or phone results.
+
+#### Representation-only full-loading screening
+
+The four fresh-process pairs use the unchanged full-loading workload.
+
+| Revision in order | Music ms | Graphics ms | Combined ms | Paired TeaVM ms |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline `592f30f0` | 1500.161 | 422.658 | 1922.819 | 351.558 |
+| Candidate `0ebdbef4` | 1477.721 | 422.378 | 1900.099 | 349.347 |
+| Candidate `0ebdbef4` | 1465.579 | 727.226 | 2192.804 | 353.390 |
+| Baseline `592f30f0` | 1563.601 | 435.916 | 1999.517 | 350.257 |
+
+Both candidate music times are below both controls. However, the second
+candidate graphics phase takes **727.226 ms**. That observation is retained.
+Combined median is **2046.452 ms** candidate versus **1961.168 ms** control,
+**4.35% higher**. This does not establish an overall loading improvement.
+The extra time appears in process CPU as well as wall time; its cause has
+not been established. The same 34 recorded Bzip transitions and two Bzip
+exits occur in all four runs, so those counts alone do not explain the stall.
+
+All four full checks match `18:218292:2368412830:205:7597510:3045679678`
+with zero attempted/completed execution-time Java compilation. The original
+1.10x parity gate fails in all four comparisons; commands complete and then
+exit 1 for that gate. No default artifact, JVM master or deployment is
+promoted. The following single-archive reduction determines whether the new
+code also regresses a small real decoder workload.
+
+```bash
+# Each command twice in baseline/candidate/candidate/baseline order:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 592f30f0076c7e7b987cc03da95ba276786af4af --options diagnostic
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 1 --revision 0ebdbef477c0b6315a1772363dda3bf03e238c43 --options diagnostic
+```
+
+All reduced controls, prototype/withdrawal identities, exact commands and
+full-loading observations remain in the existing single `benchmark.json`,
+under `optimizationTrials.nativeBoundsTags` and
+`optimizationTrials.representationOnlyLoops`. No generated Java, Wasm,
+binary bundle or additional report file is committed.
+
+#### One original archive: cold-path regression and withdrawal
+
+The next control decodes original `1-2.bin` exactly once per fresh process,
+yielding 520,357 bytes with HotSpot checksum `-1415522687`. Source classes,
+archive SHA-256 `1a584d617e11ccf7ee461639149215812e3cb92a03f1a4f78f484f0ffea5a1e9`
+and eager native flags are unchanged. The initialized-owner mode performs only
+the ordinary holder initialization before timing; it does not decode or warm
+the archive. Three fresh pairs per mode, in baseline/candidate/baseline order:
+
+| JVM revision | Cold decode median ms | Initialized-owner median ms |
+| --- | ---: | ---: |
+| Baseline before `592f30f0` | 49.024 | 46.177 |
+| Candidate `0ebdbef4` | 57.146 | 46.172 |
+| Fresh baseline after `592f30f0` | 50.642 | 46.488 |
+
+The cold regression survives the control, while the initialized-owner median
+is flat. All raw observations remain, including the final control's 65.033 ms
+initialized-owner outlier and variation in paired TeaVM observations. This
+does **not** establish the cause of the separate 727.226 ms graphics phase.
+It is an additional reason to reject retention despite the synthetic tree wins.
+
+Withdrawal `cd2ea3e` restores exactly the `91b27348` tree, with the earlier
+generic exception-boundary tests preserved. The five-file focused withdrawal
+suite passes **427/427** assertions. The 1.10x target remains unmet; current
+runtime source, selected bundles and deployment do not include the loop pass.
+The implementation, safety tests, small-case wins and failures remain in the
+experimental branch's parent history.
+
+```bash
+# dekobloko-work, baseline/candidate/baseline with complete recorded revisions:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 0ebdbef477c0b6315a1772363dda3bf03e238c43 bzip-block bzip-ready-owner
+# java-tools, final withdrawal:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmJsExceptionTags.test.js test/wasmHeapArrays.test.js test/wasmParameterArrayAbi.test.js test/nativeReferenceArray.test.js test/wasmCompilerRetention.test.js
+```
+
+The next structural question is narrower than increasing optimization scope.
+The structurer can place a continuation inside a loop's exit arm. This version
+rejects cases containing following loops and can duplicate following non-loop
+code into both versions. First isolate a captured-array loop followed by a
+cold helper, then test extracting the continuation once. That is a concrete
+code-generation issue to reduce, not a demonstrated explanation for either
+observed regression. Require the one-archive controls to improve before
+repeating full loading or expanding eligibility.

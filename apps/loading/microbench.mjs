@@ -27,7 +27,7 @@ const iterations=1_000_000,seed='q',version='0.16.0';
 // Compile Wasm with V8's optimizing tier before execution on BOTH backends.
 // This removes lazy Wasm compilation/tiering from these operation diagnostics.
 const nodeArgs=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
-const linearKinds=new Set(['linear-import','linear-unreachable','linear-trap']);
+const linearKinds=new Set(['linear-import','linear-unreachable','linear-trap','linear-tag','linear-js-tag','linear-guarded']);
 const hash=data=>crypto.createHash('sha256').update(data).digest('hex');
 const read=()=>JSON.parse(fs.readFileSync(receiptPath));
 const codecAsset=process.env.MICRO_BZIP_ASSET||read().microbenchmarks?.codec?.asset||'0-27.bin';
@@ -611,11 +611,18 @@ function linearReadControl(name,count,kind) {
  let x=seed.charCodeAt(0);
  for(let i=0;i<1024;i++)x=Math.imul(x,1664525)+1013904223|0;
  for(let i=0;i<count;i++){x=Math.imul(x,1664525)+1013904223|0;input[i]=x>>>24;}
- const fail=kind==='linear-trap'?'unreachable':`(call $error (local.get $index) (local.get $length))${kind==='linear-unreachable'?' unreachable':''}`;
- const load=(base,index,length,byte=false)=>`(block (result i32)
+ const tagged=kind==='linear-tag',jsTagged=kind==='linear-js-tag',hasTag=tagged||jsTagged;
+ const fail=jsTagged?'(throw $bounds (call $make_error (local.get $index) (local.get $length)))':
+  tagged?'(throw $bounds (local.get $index) (local.get $length))':
+  kind==='linear-trap'?'unreachable':`(call $error (local.get $index) (local.get $length))${kind==='linear-unreachable'?' unreachable':''}`;
+ const load=(base,index,length,byte=false)=>{
+  const native=`(block (result i32)
   (local.set $index ${index})(local.set $length ${length})
   (if (i32.ge_u (local.get $index) (local.get $length)) (then ${fail}))
   (${byte?'i32.load8_s':'i32.load'} (i32.add (local.get $${base}) ${byte?'(local.get $index)':'(i32.shl (local.get $index) (i32.const 2))'})))`;
+  return kind==='linear-guarded'?`(if (result i32) (i32.ge_s (local.get $${base}) (i32.const 0))
+   (then ${native})(else (call $${base}_get ${index} ${length})))`:native;
+ };
  const treeLoad=load('tree','(local.get $at)','(local.get $treeLength)');
  const byteLoad=load('input','(local.get $byteCursor)','(local.get $inputLength)',true);
  const value=name==='huffman-many-value'?'(local.get $node)':treeLoad;
@@ -623,6 +630,10 @@ function linearReadControl(name,count,kind) {
   (if (i32.le_s (local.get $fuel) (i32.const 0)) (then unreachable))`;
  const wat=`(module (import "env" "mem" (memory 1))
   (import "env" "error" (func $error (param i32 i32)))
+  (import "env" "tree_get" (func $tree_get (param i32 i32) (result i32)))
+  (import "env" "input_get" (func $input_get (param i32 i32) (result i32)))
+  ${hasTag?`(import "env" "bounds" (tag $bounds (param ${jsTagged?'externref':'i32 i32'})))`:''}
+  ${jsTagged?'(import "env" "make_error" (func $make_error (param i32 i32) (result externref)))':''}
   (func (export "decode") (param $n i32) (param $tree i32) (param $treeLength i32)
    (param $input i32) (param $inputLength i32) (param $fuel i32) (result i32)
    (local $sum i32)(local $symbol i32)(local $at i32)(local $node i32)
@@ -644,12 +655,31 @@ function linearReadControl(name,count,kind) {
     (local.set $symbol (i32.add (local.get $symbol) (i32.const 1)))(br $outer)))
    (if (i32.or (i32.ne (local.get $byteCursor) (local.get $n)) (local.get $bitCursor)) (then unreachable))
    (i32.add (i32.mul (local.get $sum) (i32.const 31)) (local.get $byteCursor))))`;
- const bytes=execFileSync('wasm-as',['-','-o','-'],{input:wat});
+ const bytes=execFileSync('wasm-as',['-','-o','-',...(hasTag?['--enable-exception-handling','--enable-multivalue']:[]),
+  ...(jsTagged?['--enable-reference-types']:[])],{input:wat});
+ const bounds=jsTagged?WebAssembly.JSTag:tagged?new WebAssembly.Tag({parameters:['i32','i32']}):undefined;
+ let madeError;
+ const error=(index,length)=>{throw {type:'java/lang/ArrayIndexOutOfBoundsException',index,length};};
+ const checked=array=>(index,length)=>{if((index>>>0)>=(length>>>0))error(index,length);return array[index];};
  const module=new WebAssembly.Module(bytes),instance=new WebAssembly.Instance(module,{env:{mem:memory,
-  error:(index,length)=>{throw {type:'java/lang/ArrayIndexOutOfBoundsException',index,length};}}});
+  tree_get:checked(nodes),input_get:checked(input),
+  ...(hasTag?{bounds}:{}),
+  ...(jsTagged?{make_error:(index,length)=>(madeError={type:'java/lang/ArrayIndexOutOfBoundsException',index,length})}:{}),
+  error}});
  const inputSha256=hash(input),treeSha256=hash(new Uint8Array(nodes.buffer,nodes.byteOffset,nodes.byteLength));
  const start=performance.now(),checksum=instance.exports.decode(count,nodes.byteOffset,nodes.length,input.byteOffset,input.length,100000000);
- return {elapsedMs:performance.now()-start,checksum,linearSourceSha256:hash(wat),wasmSha256:hash(bytes),inputSha256,treeSha256,
+ const elapsedMs=performance.now()-start;
+ // These malformed-input checks run after timing. Tagged exceptions must
+ // identify the original failing index/length; a native trap is not a tag.
+ const paths=kind==='linear-guarded'?[true,false]:[true];
+ for(const native of paths)for(const [treeLength,inputLength]of [[0,input.length],[nodes.length,0]]){
+  assert.throws(()=>instance.exports.decode(1,native?nodes.byteOffset:-1,treeLength,native?input.byteOffset:-1,inputLength,100000000),error=>{
+   if(tagged)return error instanceof WebAssembly.Exception&&error.is(bounds)&&error.getArg(bounds,0)===0&&error.getArg(bounds,1)===0;
+   if(kind==='linear-trap')return error instanceof WebAssembly.RuntimeError;
+   return (!jsTagged||error===madeError)&&error.type==='java/lang/ArrayIndexOutOfBoundsException'&&error.index===0&&error.length===0;
+  },'Bounds error edge did not preserve its diagnostic contract');
+ }
+ return {elapsedMs,checksum,linearSourceSha256:hash(wat),wasmSha256:hash(bytes),inputSha256,treeSha256,postTimerBoundsChecks:2*paths.length,
   purpose:'Handwritten linear-memory diagnostic on valid data; explicit bounds and fuel polling; no runtime/Java acceptance claim'};
 }
 
@@ -751,6 +781,8 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     nativeArrayReadReuseSites:s.meta?.nativeArrayReadReuseSites||0,
     booleanArrayCacheCount:s.meta?.booleanArrayCacheCount||0,
     booleanFieldArrayGroupCount:s.meta?.booleanFieldArrayGroupCount||0,
+    representationLoopCount:s.meta?.representationLoopCount||0,
+    representationLoopBytes:s.meta?.representationLoopBytes||0,
     normalFlow:!!s.meta?.normalFlowFullyCompiled,demotes:[...(s.meta?.demoteReasons||[])],
     structuredResumeEntry:s.meta?.structuredResumeEntry,
     specSites:s.meta?.specSites,entryGuards:s.meta?.entryInitializationGuards,
@@ -824,9 +856,9 @@ if(command==='build')build();
 else if(command==='one')await one(...args);
 else if(command==='run')run(args[0],args.slice(1));
 else if(command==='linear'){
- assert.ok(linearKinds.has(args[1]),'Select linear-import, linear-unreachable or linear-trap');
+ assert.ok(linearKinds.has(args[1]),'Select '+[...linearKinds].join(', '));
  run(args[0],args.slice(2),[args[1],'teavm']);
 }
 else if(command==='diagnose')diagnose(...args);
 else if(command==='inspect')await one('jvm',args[1],args[0],'code',args[2]);
-else throw Error('Usage: microbench.mjs build | run EXACT_REVISION [CASE ...] | linear EXACT_REVISION linear-import|linear-unreachable|linear-trap CASE ... | diagnose EXACT_REVISION CASE | inspect EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');
+else throw Error('Usage: microbench.mjs build | run EXACT_REVISION [CASE ...] | linear EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | diagnose EXACT_REVISION CASE | inspect EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');
