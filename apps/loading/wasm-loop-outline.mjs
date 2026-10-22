@@ -163,6 +163,8 @@ export function installWasmLoopOutliner({functionPrefix,outputPath,...limits}){
    if(outputPath)fs.writeFileSync(outputPath,execFileSync('wasm-dis',['--all-features','-'],{input:bytes}));
    preview={inputSha256,outputSha256:hash(bytes),output:outputPath};outputs.clear();return preview;
   },
-  finishPreparation(){return {...optimizer.finishPreparation(),transformation:'closed-loop-outline',selection:{functionPrefix,...limits},outlinedLoops:rows,refusals,preview};},
+  finishPreparation(){return {...optimizer.finishPreparation(),transformation:'closed-loop-outline',
+   options:{disassemble:['--all-features','-'],assemble:[...features,'-','-o','-']},
+   selection:{functionPrefix,...limits},outlinedLoops:rows,refusals,preview};},
  };
 }

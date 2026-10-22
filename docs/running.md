@@ -9225,3 +9225,167 @@ fields to the existing probe reports; they do not retain the IR or introduce a
 runtime option. All experiment decisions remain in the same `benchmark.json`.
 The inactive shared-cache proof and both flow refinements are preserved in Git,
 and no generated Java, JAR, Wasm, WAT or extra JSON report is committed.
+
+
+### Preparation-only outlining of original transform regions (2026-10-22)
+
+Test a distinct code-layout hypothesis rather than restore the rejected inline
+loop versions. `apps/loading/wasm-loop-outline.mjs` outlines a closed loop into
+a private function in the **same Wasm module**. Existing array checks, metadata
+queries, arithmetic, fuel predicates, spills, native imports and caller ABI are
+preserved. The normal exit arm stays in the caller and executes exactly once;
+early status returns carry a tag and modified live values back to the caller.
+Potentially zero-trip loops keep their exact original behavior. Unknown control
+escapes, exception regions, tuple/nonnullable captures and excessive capture
+counts are refused. Only named, single-status core functions qualify. The WAT
+parser bounds source size, expression count and depth; selected loops have at
+most 64 inputs and 32 outputs. This Node diagnostic is not a browser compiler
+change or an enabled runtime policy.
+
+The existing preparation optimizer hook applies the transformation before eager
+native Wasm compilation and restores `WebAssembly.Module` before guest timing.
+It fails before timing if no region was changed. Diagnostics match the active
+decoder's original byte hash to its transformed hash and verify native entries,
+zero exits and exact PCM. One current preview is written from the **actual
+active transformed module**, not from the original `state.meta.bytes`. Changed
+buffers are bounded and released after that preview. Neither TeaVM's module
+nor an unchanged JVM control is executed. Wasm disassembly uses all features,
+but assembly explicitly selects only the existing engine features; an initial
+all-features assembly emitted an unsupported encoding and was corrected before
+guest execution.
+
+The first source, Deko `66decd7`, passes **10/10 focused tests**. They cover
+zero/negative trips, wrapping integers, wide precision, NaN/infinity/signed zero,
+unchanged fuel exits, checked exception identity and partial writes, sequential
+continuations, escaping-label and capture-budget refusal, fresh names, nested
+comments, untransformed GC producers, constructor restoration and outer JS-tag
+handlers. Test fixture syntax/setup failures were fixed before the tests passed.
+The test command instantiates changed modules against explicit semantic oracles;
+it does not rerun a known performance baseline against itself.
+
+The first actual region is core loop `$label15`: eight static memory-operation
+sites, **42 inputs and 12 outputs**. Active decoder input hash is
+`6ace3fe59653505abc848bd97f432378a36037fb35649508a779af8746eb7593`,
+28,821 bytes; transformed hash is
+`2de01d65280ae3c38059ead6abc22c67e0a8fc74fdfa1a8b7cf2890dd89136e6`,
+29,742 bytes. Every sample runs 682 native packet-decoder entries with zero exits
+and matches every PCM byte, with zero guest-time Java compilation.
+Candidate-only music samples are **105.571118, 112.202309, 110.454753 ms**,
+median **110.454753 ms**, versus the recorded retained median
+**102.049793 ms**. This is an observed 8.24% higher median, within overlapping
+historical ranges; it does not establish a causal or stable penalty. It provides
+no reason to promote this transformation. No full-loading benchmark follows.
+
+Refinement `15249db` keeps cold status-exit branches in the original caller.
+The helper returns a side-exit tag and modified live values first; the caller
+then runs the exact old spill/return branch. Java-frame values needed only by
+cold code no longer have to be arguments to the hot function. The same selected
+loop reduces to **28 inputs, 12 outputs and one side exit**, without removing its
+fuel predicate. The focused suite passes **11/11 tests**, adding updated cold
+snapshots, cold-only reference exclusion, multiple exit tags, and identity of
+exceptions thrown by a moved spill. Its samples are **104.441190, 115.133662,
+110.935132 ms**, median **110.935132 ms**, and do not establish an improvement.
+The first two input modules use the hash above, transformed to
+`8e803897424c238bf0918f16e0d409676e5ff9833aabd28dc64305ac282ccc62`.
+The third prepared input is
+`b1f5a2ca8f43a084c525aaf4d339bc2c848a00eb5976b895ee849e1764ff7f4b`,
+transformed to `f7c1087283f79263c3350622de24b14926a9c2b1d61b8c323e92880975e6ef06`.
+Both retain the same selected loop/capture counts. Preserve the distinct
+prepared identities rather than relabel them as byte-identical controls.
+
+A further, evidence-driven selection comes from the **already recorded** import
+census: the packet decoder invokes double `sin` **1,396,736 times**, while the
+small matched window loops were much closer to TeaVM. No new CPU profile is
+collected. Source `f609dfa` selects the two original loop bodies containing
+`math_sin__D_D`, so outlining directly tests the live-state context around those
+imports rather than only a mostly arithmetic loop. The generic selector matches
+an imported function name; the game/function choice remains in Deko's diagnostic
+profile. The focused suite passes **12/12 tests**, including selection of a body
+call rather than a call appearing only in its normal continuation.
+
+```bash
+# Deko; first source has 10 tests, side-exit source 11, selected-math source 12.
+node --test tests/loading-wasm-outline.test.mjs
+node --check apps/loading/wasm-loop-outline.mjs
+node --check apps/loading/probe.mjs
+node --check apps/loading/vorbis.mjs
+git diff --check
+# Run only the changed diagnostic in three fresh processes, using the desired
+# saved Deko generator revision. The JVM source baseline is reused:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs outline aa23806e673abe4b80c6072b83df8929884c77e9
+```
+
+`outline` observations are explicitly instrumented/excluded from acceptance,
+record their generator commit and transformed module identities, and live in
+`optimizationTrials.wasmLoopOutlining` in the **same** existing `benchmark.json`.
+Even a useful diagnostic gain would need a generic compiler implementation and
+ordinary acceptance runs before changing the retained source or deployment.
+WAT roundtripping also re-encodes the module; do not attribute a timing difference
+solely to outlining without supporting generated-code evidence. No unchanged
+roundtrip-control run is added merely to prove it stays itself.
+
+The Vorbis probe also stops regenerating its known oracle on every invocation:
+it now reads the cached `LoadingKernelProbe.class` and `reference.pcm`, pinned
+by the existing source/class/PCM hashes. Actual runs verify the fixture class
+and every output byte. No `javac` or HotSpot process runs for this unchanged
+reduced fixture. This affects preparation only and is **not** reported as a
+Java execution speedup. The full-loading reference and accepted TeaVM artifact
+remain unchanged. No additional JSON, generated source, binary or WAT file is
+committed; the only preview remains outside Git.
+
+#### Window-region result and decision
+
+The selected-math variant outlines two original window loops. Each contains
+two static `sin` call sites and ten static linear-memory-operation sites.
+Both helpers take **31 inputs**; the first returns **12 live outputs**, the
+second **14**, and each has **three cold side exits** in the caller. These
+are static site counts, not an inferred execution count or CPU attribution.
+All three samples use decoder input
+`6ace3fe59653505abc848bd97f432378a36037fb35649508a779af8746eb7593` and
+transformed module
+`4d7b4f2716fed8091b4c26af0f0ab3d71124c748ac9972cd70561a7e4874c4b6`.
+Every sample matches every PCM byte, runs 682 direct native packet-decoder
+entries with zero exits, and compiles zero Java during execution.
+
+| Outlining diagnostic | Samples ms | Median ms |
+| --- | --- | ---: |
+| One mostly arithmetic region | 105.571, 112.202, 110.455 | 110.455 |
+| Same region, cold spills in caller | 104.441, 115.134, 110.935 | 110.935 |
+| Two regions containing `sin` imports | 129.399, 103.979, 102.360 | 103.979 |
+| Recorded retained JVM music reference | 102.050, 120.268, 101.960 | 102.050 |
+
+The final diagnostic median is **1.89% above** the recorded reference and is
+within the overlapping historical spread; the 129.399 ms sample remains in
+all records. No variant establishes an improvement, and none approaches the
+full 1.10x target. Do **not** port these variants into java-tools, run a larger
+loading campaign, or deploy them based on this data. The outlining code remains
+a disabled, reproducible preparation diagnostic. The retained JVM source is
+still `aa23806e673abe4b80c6072b83df8929884c77e9`, and its recorded full-loading
+ratio remains **5.604x**. Runtime master and deployed artifacts are unchanged.
+
+All nine fresh-process observations, their individual input/output module
+identities and three run summaries remain in
+`optimizationTrials.wasmLoopOutlining` in the existing single report. No known
+JVM/TeaVM control or unchanged HotSpot oracle is executed again. Historical
+observations retain the original source IDs and harness hashes.
+
+The shared optimizer hook initially reported its default `-O3` option list even
+when supplied this custom transformation. **No `wasm-opt -O3` was run by the
+outliner**: the saved source invokes `wasm-dis` and `wasm-as` only. Raw historical
+metadata is preserved with this caveat; the outliner now reports its actual
+assembly/disassembly arguments. The narrow validation for that reporting fix is
+`node --test --test-name-pattern='preparation hook' tests/loading-wasm-outline.test.mjs`
+(**1/1 passes**). The full selected-math transformation suite previously passed
+**12/12** at `f609dfa`. `node --check apps/loading/probe.mjs` and
+`git diff --check` pass. Future probe results label the cached oracle explicitly
+as `Recorded HotSpot PCM`; old rows are not relabeled.
+
+The next useful reduction is the **complete original MDCT-plus-window stream**,
+not another handpicked instruction or another CPU profile. Capture the original
+per-packet work buffers, dimensions and trig/reversal tables, run that complete
+transform sequence once per captured packet, and check all output float bits.
+A new component needs its own first JVM/TeaVM measurements; keep existing
+full-loading and original-music fixtures and their known measurements intact.
+This separates transform code generation from packet/codebook/driver work and
+can show whether a compiler change reaches the actual remaining discrepancy.
+It is not a claim that the discrepancy has been localized or solved.

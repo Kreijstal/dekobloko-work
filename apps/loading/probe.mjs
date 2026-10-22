@@ -217,7 +217,7 @@ try {
    .sort((a,b)=>b.count-a.count).slice(0,120)}:{}),
   fixtureSha256:probeDirectory?hash(fs.readFileSync(path.join(probeDirectory,'LoadingKernelProbe.class'))):receipt.workloadSha256,
   fixtureKind:probeDirectory?'kernel-class':'loading-workload-source',
-  options,mode,asset,kernel,reference:kernel==='loading'?'Recorded HotSpot checksum':kernel==='vorbis'?'HotSpot':'Python bz2',elapsed,executionMs,executionCpuMs:cpu&&(cpu.user+cpu.system)/1000,
+  options,mode,asset,kernel,reference:kernel==='loading'?'Recorded HotSpot checksum':kernel==='vorbis'?'Recorded HotSpot PCM':'Python bz2',elapsed,executionMs,executionCpuMs:cpu&&(cpu.user+cpu.system)/1000,
   ...(kernel==='loading'?{check,musicMs:Number(fields.get('musicNanos:J'))/1e6,graphicsMs:Number(fields.get('graphicsNanos:J'))/1e6,
     loadingMs:(Number(fields.get('musicNanos:J'))+Number(fields.get('graphicsNanos:J')))/1e6}:{}),
   decodeMs:kernel==='vorbis'?Number(fields.get('decodeNanos:J'))/1e6:undefined,equal,firstDifference,error,lateCompiles,compilation:j.jit.syncCompileCensus(),preparation:j.preparationReport,transitions,methods};

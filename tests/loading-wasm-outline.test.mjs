@@ -138,6 +138,7 @@ test('preparation hook transforms the active module and restores the constructor
  const before=outliner.finishPreparation();assert.ok(before.outlinedLoops.length,JSON.stringify(before));
  const digest=createHash('sha256').update(input).digest('hex'),preview=outliner.writePreview(digest),stats=outliner.finishPreparation();
  assert.notEqual(preview.outputSha256,digest);assert.equal(stats.outlinedLoops.length,1);assert.deepEqual(stats.errors,[]);
+ assert.ok(stats.options.assemble.includes('--enable-gc'));assert.ok(!JSON.stringify(stats.options).includes('-O3'));
  let tails=0;const instance=new WebAssembly.Instance(module,{env:{spill:()=>{},tail:()=>tails++}});
  assert.equal(instance.exports.run(0,100),22);assert.equal(tails,1);assert.equal(stats.optimizedCount,1);
 });
