@@ -7813,3 +7813,92 @@ in this pass. All evidence remains in the same `benchmark.json`, under
 `optimizationTrials.bufferedReaderReduction`. Full-loading 1.10x parity remains
 unmet; browser FPS, phone and peak-heap acceptance are not inferred from this
 reduction.
+
+### Replay the original reader requests before changing compilation
+
+`buffered-replay.mjs` captures the widths and `readBit`/`readByte` wrapper
+markers from one original `1-2.bin` decode on HotSpot. ASM 9.6 instruments only
+temporary class copies; the original class hashes are checked before and after.
+The capture's output SHA-256 matches Python bz2, and its returned-value checksum
+and final reader state independently match reflection calls to the unmodified
+private method. Neither measured engine receives instrumented classes.
+The source build needs ASM 9.6 in the Maven cache, alongside the existing JDK
+and TeaVM dependencies. All temporary capture classes are deleted.
+
+The stream contains **490,954 requests**: 320,218 through `readBit`, 40 through
+`readByte` and 170,696 direct. Width counts are `{1:320218, 2:135571, 3:35104,
+5:18, 8:40, 15:3}`: **1.41994 bits/request**, rather than the earlier synthetic
+8.75. Each measured process consumes this stream once from the original input,
+starting at offset 9. Chunked arguments carry it into both engines before
+timing; they do not wrap or repeat it. The wrapper-preserving case includes the
+dispatch needed to select those wrappers, so its delta is not pure call cost.
+
+Current source SHA-256 is
+`94b1eaa68dde161247798b40ca9dbc9db6328903e98f2ea0658cbbd17223c519`;
+TeaVM Wasm is `5beb55421087681123409c3cfe790fc0e3f13fc885f9718d48197d5766cffc81`;
+the packed request stream is
+`328270cd183a6854d18b01ec72d910bec1e0c7a17a89c032563a88ae42cc37b1`.
+The reference is `[1418269787,1,1304428078,87150,87141]`: checksum followed by
+buffered count, bit buffer, input position and input bytes read. All 108 paired
+observations match it, with zero guest-time Java compilation. The JVM's wrapped
+case also records exactly 490,954 reader, 320,218 bit-wrapper and 40 byte-wrapper
+native entries, with zero exits or fuel exits.
+
+Three fresh pairs per case, CPU 2, one-GiB heap and eager native Wasm on both
+engines; preparation and owner initialization are outside timing:
+
+| JVM median ms | Direct helper | With wrappers | Fields inline | Local state |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline before | 8.108 | 12.815 | 3.951 | 2.641 |
+| Saved block-guard prototype `5df53b44` | 7.574 | 11.955 | 4.104 | 2.387 |
+| Fresh baseline | 10.219 | 12.516 | 3.973 | 2.446 |
+| Typed transport prototype `8f8def74` | 7.909 | 12.109 | 3.951 | 2.473 |
+| Final baseline helper checks | 9.018 | 12.686 | unavailable | unavailable |
+
+Paired TeaVM medians are about 1.74–1.88 ms for direct helpers, 3.48–3.92 ms
+with wrapper dispatch, 1.38–1.46 ms with fields inline and 1.37–1.70 ms for
+local state. Raw observations and pairing remain separate; the direct-helper
+variation prevents ranking candidates by a single favorable batch.
+
+The new prototype transports private native storage as a nullable GC reference
+instead of `externref`, preserving its known type across calls. It removes the
+common-path recast, retains checked lookup for absent metadata, and passes
+**376/376** focused assertions for typing, graph collection, recursion,
+publication release, cold owners, exceptions, reference arrays, fuel recovery
+and compiler retention. However, the original wrapper stream shows no
+convincing gain. It also creates one Wasm instance per input global. No
+full-loading or memory rollout is justified by these observations.
+
+Withdrawal `417cf67d48036086f130b0f92e9f9bf65d983ca2` restores runtime source
+exactly to `592f30f0`; its focused suite passes **365/365**. Both prototypes and
+their tests remain in experimental branch history. JVM master, selected
+artifacts and deployment are unchanged. The replay/harness tests pass **9/9**,
+including malformed marker/hash/count rejection and lossless argument chunking.
+A cached fixture rebuild preserves the exact source, Wasm and stream hashes.
+Only the existing single `benchmark.json` stores observations and capture data;
+historical captures stay out of workers and are archived only when replaced.
+
+```bash
+# dekobloko-work: capture automatically, build and check the original-method oracle
+node apps/loading/microbench.mjs build
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af buffered-ready-helper buffered-ready-wrapped buffered-inline buffered-local
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 5df53b4443a8552111d1722c60865e8cfd1cc14d buffered-ready-helper buffered-ready-wrapped buffered-inline buffered-local
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 8f8def7483e396e1dda3b81a8abe84c4ba81d35a buffered-ready-helper buffered-ready-wrapped buffered-inline buffered-local
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run 592f30f0076c7e7b987cc03da95ba276786af4af buffered-ready-helper buffered-ready-wrapped
+node --test tests/loading-fixture.test.mjs tests/loading-statistics.test.mjs
+node --check apps/loading/buffered-replay.mjs
+node --check apps/loading/microbench.mjs
+# java-tools at prototype 8f8def74
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectInputs.test.js test/nativeObjectForwarding.test.js test/nativeObjectFieldCodegen.test.js test/nativeReferenceArray.test.js test/wasmCompilerRetention.test.js test/wasmParameterArrayAbi.test.js
+# java-tools at withdrawal 417cf67d
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectForwarding.test.js test/nativeObjectFieldCodegen.test.js test/nativeReferenceArray.test.js test/wasmCompilerRetention.test.js test/wasmParameterArrayAbi.test.js
+git diff --exit-code 592f30f0076c7e7b987cc03da95ba276786af4af 417cf67d48036086f130b0f92e9f9bf65d983ca2 -- src
+```
+
+The next compilation question is whether a guarded native entry can select the
+receiver representation once for a whole helper, rather than repeat field/base
+and filled-state tests. The null/foreign metadata and resume entries must keep
+their existing lazy path. The current array-parameter versioning pass refuses
+object/field caches, so extending it requires a separate safety proof before
+timing. Use this exact replay as the first gate, then the unchanged archive and
+full-loading gates. The 1.10x full-loading objective remains unmet.

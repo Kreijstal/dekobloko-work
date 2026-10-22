@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
 import {projectMeasurementFixture,parseMeasurementResult,recordProbeObservation,summarizeExecutionOutcome} from '../apps/loading/measurement-fixture.mjs';
+import {validateBufferedWorkload,bufferedReplayArgs} from '../apps/loading/buffered-replay.mjs';
 
 test('worker projection preserves inputs without traversing accumulated profiles',()=>{
  const forbidden=()=>{throw Error('history must stay in the recorder');};
@@ -10,7 +12,7 @@ test('worker projection preserves inputs without traversing accumulated profiles
   executionBaseline:{jvmOptions:{wasmHeap:true}},microbenchmarks:{cases:['example'],classes:{'Example.class':'class-sha'},referenceChecks:[42]}};
  Object.defineProperty(receipt,'optimizationTrials',{get:forbidden});
  Object.defineProperty(receipt.executionBaseline,'results',{get:forbidden});
- for(const key of ['runs','diagnostics','fixtures','source'])Object.defineProperty(receipt.microbenchmarks,key,{get:forbidden});
+ for(const key of ['runs','diagnostics','fixtures','source','bufferedWorkloads'])Object.defineProperty(receipt.microbenchmarks,key,{get:forbidden});
  const fixture=projectMeasurementFixture(receipt);
  assert.deepEqual(projectMeasurementFixture(fixture),fixture,'wire projection is stable across nested workers');
  assert.deepEqual(fixture.classes,receipt.classes);assert.deepEqual(fixture.diagnosticOptions,receipt.diagnosticOptions);
@@ -53,4 +55,17 @@ test('execution summaries retain status without retaining guest return graphs',(
   {handled:true,returned:true,valueKind:'number',value:42});
  assert.equal(summarizeExecutionOutcome({value:9223372036854775807n}).value,'9223372036854775807');
  assert.equal(summarizeExecutionOutcome({value:'x'.repeat(1_000_000)}).value.length,160);
+});
+test('reader replays preserve exact request order and reject malformed wrapper markers',()=>{
+ const fixture=bytes=>({encoded:bytes.toString('base64'),requests:bytes.length,
+  traceSha256:createHash('sha256').update(bytes).digest('hex')});
+ const valid=fixture(Buffer.from([65,3,136]));
+ const {widths,wrappers,bits}=validateBufferedWorkload(valid);
+ assert.deepEqual(widths,{1:1,3:1,8:1});assert.deepEqual(wrappers,{direct:1,bit:1,byte:1});assert.equal(bits,12);
+ for(const bytes of [[0],[66],[129],[193],[33]])assert.throws(()=>validateBufferedWorkload(fixture(Buffer.from(bytes))));
+ assert.throws(()=>validateBufferedWorkload({...valid,requests:4}));
+ assert.throws(()=>validateBufferedWorkload({...valid,traceSha256:'wrong'}));
+ const large=Buffer.alloc(123456,1),chunks=bufferedReplayArgs(fixture(large));
+ assert.ok(chunks.length>1&&chunks.every(chunk=>chunk.length<=60000));
+ assert.deepEqual(Buffer.from(chunks.join(''),'hex'),large,'chunking never wraps or repeats the request stream');
 });

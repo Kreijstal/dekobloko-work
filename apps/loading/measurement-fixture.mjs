@@ -14,7 +14,7 @@ export function projectMeasurementFixture(receipt){
   ...(receipt.teavm?{teavm:pick(receipt.teavm,['version','wasmSha256','runtimeSha256'])}:{}),
   ...(receipt.executionBaseline?{executionBaseline:pick(receipt.executionBaseline,['jvmOptions'])}:{}),
   ...(receipt.microbenchmarks?{microbenchmarks:pick(receipt.microbenchmarks,
-   ['cases','iterations','seed','codec','sourceSha256','classSha256','classes','wasmSha256','runtimeSha256','wrapperSha256','referenceChecks','references','bufferedReferences'])}:{}),
+   ['cases','iterations','seed','codec','sourceSha256','classSha256','classes','wasmSha256','runtimeSha256','wrapperSha256','referenceChecks','references','bufferedReferences','bufferedWorkload'])}:{}),
   ...(receipt.vorbisBenchmark?{vorbisBenchmark:pick(receipt.vorbisBenchmark,
    ['sourceSha256','probeClassSha256','classesInventorySha256','assets','referencePcmSha256','referencePcmBytes',
     'wasmSha256','runtimeSha256','wrapperSha256','transformerSha256','version'])}:{}),

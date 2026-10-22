@@ -9,6 +9,7 @@ import {execFileSync} from 'node:child_process';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {loadArchivedJvm} from './archive-jvm.mjs';
 import {projectMeasurementFixture,readMeasurementFixture,fixtureStdinFlag,parseMeasurementResult,summarizeExecutionOutcome} from './measurement-fixture.mjs';
+import {captureBufferedWorkload,bufferedReplayArgs} from './buffered-replay.mjs';
 
 const script=fileURLToPath(import.meta.url);
 const root=path.resolve(path.dirname(script),'../../../java-tools');
@@ -24,7 +25,7 @@ const cases=['scalar','byte-array','boolean-array','bits-local','bits-static','b
  'huffman-helper','huffman-cached','huffman-inline',
  'huffman-many-fields','huffman-many-cached','huffman-many-local','huffman-many-value',
  'byte-field-call','boolean-field-call','tail-cold','tail-ready','tail-zero-cold','tail-zero-ready',
- 'buffered-helper','buffered-inline','buffered-local','buffered-ready-helper'];
+ 'buffered-helper','buffered-inline','buffered-local','buffered-ready-helper','buffered-ready-wrapped'];
 const iterations=1_000_000,seed='q',version='0.16.0';
 // Compile Wasm with V8's optimizing tier before execution on BOTH backends.
 // This removes lazy Wasm compilation/tiering from these operation diagnostics.
@@ -65,7 +66,6 @@ const bufferedRead=prefix=>`
   }
   int value=${prefix}bitBuffer>>${prefix}bufferedBitCount-bitCount&(1<<bitCount)-1;
   ${prefix}bufferedBitCount=${prefix}bufferedBitCount-bitCount;`;
-const bufferedWidths=[1,3,5,8,15,24,2,12];
 const source=`public class LoadingMicroKernel {
  static int checksum, byteCursor, bitCursor, readerInitializations;
  static byte[] bytes;
@@ -277,21 +277,34 @@ const source=`public class LoadingMicroKernel {
  static int bzipBlock(byte[] input,byte[] output) {
   return Bzip2Decoder.decompressInto(output,output.length,input,input.length-9,9);
  }
- static byte[] bufferedInput(int n,int seed){
-  byte[] data=new byte[n*3+1];int x=seed;
-  for(int i=0;i<data.length;i++){x=x*1664525+1013904223;data[i]=(byte)(x>>>24);}return data;
+ static int[] bufferedWidths(String[] args){
+  int length=0;for(int i=3;i<args.length;i++)length+=args[i].length();
+  int[] widths=new int[length/2];int at=0;
+  for(int i=3;i<args.length;i++)for(int k=0;k<args[i].length();k+=2){
+   int a=args[i].charAt(k)-48,b=args[i].charAt(k+1)-48;
+   if(a>9)a-=39;if(b>9)b-=39;widths[at++]=(a<<4)|b;
+  }
+  return widths;
  }
  static int bufferedHelper(int n,Bzip2DecoderState state,int[] widths){
-  int sum=0;for(int i=0;i<n;i++)sum=sum*33+MicroBufferedReader.readBits(widths[i&7],state);return sum;
+  int sum=0;for(int i=0;i<n;i++)sum=sum*33+MicroBufferedReader.readBits(widths[i]&31,state);return sum;
+ }
+ static int bufferedWrapped(int n,Bzip2DecoderState state,int[] widths){
+  int sum=0;for(int i=0;i<n;i++){int code=widths[i],value;
+   if((code&64)!=0)value=MicroBufferedReader.readBit(state);
+   else if((code&128)!=0)value=MicroBufferedReader.readByte(state)&255;
+   else value=MicroBufferedReader.readBits(code&31,state);
+   sum=sum*33+value;
+  }return sum;
  }
  static int bufferedInline(int n,Bzip2DecoderState state,int[] widths){
-  int sum=0;for(int i=0;i<n;i++){int bitCount=widths[i&7];${bufferedRead('state.')}
+  int sum=0;for(int i=0;i<n;i++){int bitCount=widths[i]&31;${bufferedRead('state.')}
    sum=sum*33+value;}return sum;
  }
  static int bufferedLocal(int n,Bzip2DecoderState state,int[] widths){
   byte[] inputBytes=state.inputBytes;int bufferedBitCount=state.bufferedBitCount,bitBuffer=state.bitBuffer;
   int inputPosition=state.inputPosition,inputBytesRead=state.inputBytesRead,sum=0;
-  for(int i=0;i<n;i++){int bitCount=widths[i&7];${bufferedRead('')}
+  for(int i=0;i<n;i++){int bitCount=widths[i]&31;${bufferedRead('')}
    sum=sum*33+value;}
   state.bufferedBitCount=bufferedBitCount;state.bitBuffer=bitBuffer;
   state.inputPosition=inputPosition;state.inputBytesRead=inputBytesRead;return sum;
@@ -384,10 +397,10 @@ const source=`public class LoadingMicroKernel {
   if(mode==23||mode==24){new Bzip2Decoder();packed=bzipInput();unpacked=new byte[${codecOutputBytes}];}
   if(mode==24&&UsernameResponseSupport.accountUiViewportWidth!=640)throw new AssertionError();
   int[] widths=null;
-  if(mode>=48&&mode<=51){bufferedState=new Bzip2DecoderState();bufferedState.inputBytes=bufferedInput(n,seed);
-   widths=new int[]{${bufferedWidths.join(',')}};}
+  if(mode>=48&&mode<=52){bufferedState=new Bzip2DecoderState();bufferedState.inputBytes=bzipInput();
+   bufferedState.inputPosition=9;widths=bufferedWidths(args);n=Math.min(n,widths.length);}
   // Initialize only the helper's owner before timing, never read any bits.
-  if(mode==51)new MicroBufferedReader();
+  if(mode==51||mode==52)new MicroBufferedReader();
   if(mode==28&&MicroColdHolder.seed!=17)throw new AssertionError();
   if(mode>=44&&mode<=47){
    tailCalls=0;tailInitializations=0;tailInitializationPhase=0;tailLoopFinished=0;tailPrepareCalls=0;
@@ -453,6 +466,7 @@ const source=`public class LoadingMicroKernel {
    case 49:checksum=bufferedInline(n,bufferedState,widths);break;
    case 50:checksum=bufferedLocal(n,bufferedState,widths);break;
    case 51:checksum=bufferedHelper(n,bufferedState,widths);break;
+   case 52:checksum=bufferedWrapped(n,bufferedState,widths);break;
    default:throw new IllegalArgumentException();
   }
   elapsedNanos=System.nanoTime()-start;
@@ -472,7 +486,7 @@ const source=`public class LoadingMicroKernel {
    if(tailCalls!=1||tailInitializations!=1||tailLoopFinished!=1||tailInitializationPhase!=1-(mode&1)||tailPrepareCalls!=(mode&1))throw new AssertionError();
    for(int value:tailData)checksum=checksum*31+value;
   }
-  if(mode>=48&&mode<=51){
+  if(mode>=48&&mode<=52){
    bufferedFinalState=new int[]{bufferedState.bufferedBitCount,bufferedState.bitBuffer,
     bufferedState.inputPosition,bufferedState.inputBytesRead};
    for(int value:bufferedFinalState)checksum=checksum*31+value;
@@ -481,6 +495,8 @@ const source=`public class LoadingMicroKernel {
 }
 final class MicroBufferedReader {
  static int readBits(int bitCount,Bzip2DecoderState state){${bufferedRead('state.')}return value;}
+ static byte readBit(Bzip2DecoderState state){return (byte)readBits(1,state);}
+ static byte readByte(Bzip2DecoderState state){return (byte)readBits(8,state);}
 }
 final class MicroTailHolder {
  static int seed=initialize();
@@ -608,10 +624,13 @@ final class MicroHuffmanBook {
 function build() {
  const previous=read().microbenchmarks;
  const fixtures=previous?.fixtures||[];
- if(previous&&!fixtures.some(f=>f.sourceSha256===previous.sourceSha256&&f.wasmSha256===previous.wasmSha256)){
+ const previousWorkloadSha=previous?.bufferedWorkload?hash(JSON.stringify(previous.bufferedWorkload)):null;
+ if(previous&&!fixtures.some(f=>f.sourceSha256===previous.sourceSha256&&f.wasmSha256===previous.wasmSha256&&
+    (f.bufferedWorkloadSha256||null)===previousWorkloadSha)){
   const previousSource=fs.readFileSync(path.join(directory,'LoadingMicroKernel.java'),'utf8');
   assert.equal(hash(previousSource),previous.sourceSha256,'Cannot archive a mismatched previous fixture');
   fixtures.push({sourceSha256:previous.sourceSha256,classSha256:previous.classSha256,wasmSha256:previous.wasmSha256,
+   ...(previousWorkloadSha?{bufferedWorkloadSha256:previousWorkloadSha}:{}),
    runtimeSha256:previous.runtimeSha256,wrapperSha256:previous.wrapperSha256,classes:previous.classes,source:previousSource});
   // Persist this identity before replacing generated files, even if javac,
   // TeaVM or a reference check fails during the subsequent build.
@@ -627,6 +646,12 @@ function build() {
   assert.equal(hash(bytes),read().classes[name],'Changed original codec class: '+name);
   codecClasses[name]=hash(bytes);fs.writeFileSync(path.join(classes,name),bytes);
  }
+ const bufferedWorkload=captureBufferedWorkload({player,asset:codecAsset,inputSha256:hash(codecInput),
+  classes:codecClasses,previous:previous?.bufferedWorkload});
+ const bufferedWorkloads={...previous?.bufferedWorkloads},workloadSha=hash(JSON.stringify(bufferedWorkload));
+ if(previousWorkloadSha&&previousWorkloadSha!==workloadSha)bufferedWorkloads[previousWorkloadSha]=previous.bufferedWorkload;
+ delete bufferedWorkloads[workloadSha];
+ const replayArgs=bufferedReplayArgs(bufferedWorkload);
  fs.writeFileSync(path.join(directory,'LoadingMicroKernel.java'),source);
  execFileSync('javac',['--release','8','-proc:none','-classpath',classes,'-d',classes,path.join(directory,'LoadingMicroKernel.java')]);
  const classHashes=Object.fromEntries(fs.readdirSync(classes).filter(n=>n.endsWith('.class')).sort()
@@ -656,22 +681,22 @@ public class TeaVmMicro {
   fs.cpSync(path.join(temporary,'target/wasm'),path.join(directory,'teavm'),{recursive:true});
   // HotSpot checks exactly the same bytes in separate fresh processes.
   fs.writeFileSync(path.join(temporary,'MicroReference.java'),`public class MicroReference {
- static int[] bufferedOracle(int n,int seed)throws Exception{
-  Bzip2DecoderState state=new Bzip2DecoderState();state.inputBytes=LoadingMicroKernel.bufferedInput(n,seed);
-  int[] widths={${bufferedWidths.join(',')}};int sum=0;
+ static int[] bufferedOracle(String[] args)throws Exception{
+  Bzip2DecoderState state=new Bzip2DecoderState();state.inputBytes=LoadingMicroKernel.bzipInput();state.inputPosition=9;
+  int[] widths=LoadingMicroKernel.bufferedWidths(args);int n=Math.min(Integer.parseInt(args[1]),widths.length),sum=0;
   java.lang.reflect.Method read=Bzip2Decoder.class.getDeclaredMethod("readBits",int.class,Bzip2DecoderState.class);
   read.setAccessible(true);
-  for(int i=0;i<n;i++)sum=sum*33+(Integer)read.invoke(null,widths[i&7],state);
+  for(int i=0;i<n;i++)sum=sum*33+(Integer)read.invoke(null,widths[i]&31,state);
   int[] result={0,state.bufferedBitCount,state.bitBuffer,state.inputPosition,state.inputBytesRead};
   for(int i=1;i<result.length;i++)sum=sum*31+result[i];result[0]=sum;return result;
  }
  public static void main(String[] args)throws Exception{
   if(args[0].equals("buffered-oracle")){
-   System.out.println(java.util.Arrays.toString(bufferedOracle(Integer.parseInt(args[1]),args[2].charAt(0))));return;
+   System.out.println(java.util.Arrays.toString(bufferedOracle(args)));return;
   }
   LoadingMicroKernel.main(args);
   if(Integer.parseInt(args[0])>=48){
-   int[] expected=bufferedOracle(Integer.parseInt(args[1]),args[2].charAt(0));
+   int[] expected=bufferedOracle(args);
    if(expected[0]!=LoadingMicroKernel.checksum||!java.util.Arrays.equals(
     java.util.Arrays.copyOfRange(expected,1,5),LoadingMicroKernel.bufferedFinalState))throw new AssertionError("Original bit reader differs");
   }
@@ -680,10 +705,12 @@ public class TeaVmMicro {
 }`);
   execFileSync('javac',['--release','8','-classpath',classes,'-d',temporary,path.join(temporary,'MicroReference.java')]);
   fs.copyFileSync(path.join(temporary,'MicroReference.class'),path.join(directory,'MicroReference.class'));
-  const referenceChecks=cases.map((_,i)=>Number(execFileSync('java',['-Xmx1g','-cp',temporary+path.delimiter+classes,'MicroReference',String(i),String(iterations),seed],{encoding:'utf8'}).trim()));
-  const bufferedReferences={[iterations]:JSON.parse(execFileSync('java',['-Xmx1g','-cp',temporary+path.delimiter+classes,
-   'MicroReference','buffered-oracle',String(iterations),seed],{encoding:'utf8'}))};
-  for(const index of [48,49,50,51])assert.equal(referenceChecks[index],bufferedReferences[iterations][0],cases[index]+' differs from original readBits');
+  const referenceChecks=cases.map((_,i)=>Number(execFileSync('java',['-Xmx1g','-cp',temporary+path.delimiter+classes,'MicroReference',String(i),String(iterations),seed,
+   ...(i>=48?replayArgs:[])],{encoding:'utf8'}).trim()));
+  const bufferedReferences={[bufferedWorkload.requests]:JSON.parse(execFileSync('java',['-Xmx1g','-cp',temporary+path.delimiter+classes,
+   'MicroReference','buffered-oracle',String(bufferedWorkload.requests),seed,...replayArgs],{encoding:'utf8'}))};
+  assert.deepEqual(bufferedReferences[bufferedWorkload.requests],bufferedWorkload.readerReference,'Replay differs from captured original return values/state');
+  for(const index of [48,49,50,51,52])assert.equal(referenceChecks[index],bufferedWorkload.readerReference[0],cases[index]+' differs from original readBits');
   assert.equal(referenceChecks[1],referenceChecks[2],'Byte and boolean variants differ');
   assert.equal(referenceChecks[1],referenceChecks[42],'Byte field helper differs');
   assert.equal(referenceChecks[2],referenceChecks[43],'Boolean field helper differs');
@@ -712,7 +739,7 @@ public class TeaVmMicro {
    codec:{asset:codecAsset,inputSha256:hash(codecInput),outputBytes:codecOutputBytes,classes:codecClasses,decodesPerProcess:1},
    sourceSha256:hash(source),classSha256:classHashes['LoadingMicroKernel.class'],classes:classHashes,
    wasmSha256:hash(fs.readFileSync(path.join(directory,'teavm/micro.wasm'))),
-   runtimeSha256:hash(fs.readFileSync(path.join(directory,'teavm/micro.wasm-runtime.js'))),wrapperSha256:hash(wrapper),referenceChecks,bufferedReferences,
+   runtimeSha256:hash(fs.readFileSync(path.join(directory,'teavm/micro.wasm-runtime.js'))),wrapperSha256:hash(wrapper),referenceChecks,bufferedReferences,bufferedWorkload,bufferedWorkloads,
    fixtures,runs:previous?.runs||[],diagnostics:previous?.diagnostics||[]});
  } finally {fs.rmSync(temporary,{recursive:true,force:true});}
 }
@@ -813,12 +840,17 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
  for(const [name,expected]of Object.entries(classes))assert.equal(hash(fs.readFileSync(path.join(directory,'classes',name))),expected);
  const ownsMethod=key=>Object.keys(classes).some(name=>key.startsWith(name.slice(0,-6)+'.'));
  const codec=name.startsWith('bzip-');
- const count=codec?1:Number(process.env.MICRO_ITERATIONS||fixture.iterations);
+ const buffered=name.startsWith('buffered-');
+ const count=codec?1:buffered?Math.min(Number(process.env.MICRO_ITERATIONS||fixture.bufferedWorkload?.requests),fixture.bufferedWorkload?.requests):Number(process.env.MICRO_ITERATIONS||fixture.iterations);
  assert.ok(Number.isSafeInteger(count)&&count>0&&count<=100_000_000,'Invalid iteration count');
- const expected=codec||count===fixture.iterations?fixture.referenceChecks[index]:fixture.references?.[count]?.[index];
+ const expected=buffered?fixture.bufferedReferences?.[count]?.[0]:codec||count===fixture.iterations?fixture.referenceChecks[index]:fixture.references?.[count]?.[index];
  assert.ok(Number.isInteger(expected),'Run the paired harness to establish the HotSpot reference for this count');
- const args=[String(index),String(count),fixture.seed];
+ if(buffered)assert.equal(fixture.bufferedWorkload.inputSha256,hash(codecInput),'Replay input changed');
+ const args=[String(index),String(count),fixture.seed,...(buffered?bufferedReplayArgs(fixture.bufferedWorkload):[])];
  const result={case:name,engine,sourceRevision:revision,iterations:count,node:process.version,execArgv:process.execArgv,
+  ...(buffered?{replayTraceSha256:fixture.bufferedWorkload.traceSha256,replayInputSha256:fixture.bufferedWorkload.inputSha256,
+   replayLoaderSha256:hash(fs.readFileSync(new URL('./buffered-replay.mjs',import.meta.url))),
+   partialReplay:count<fixture.bufferedWorkload.requests}:{}),
   ...(name.startsWith('tail-')?{loopIterations:name.startsWith('tail-zero-')?0:count}:{}),
   loadAverageAtStart:os.loadavg(),availableParallelism:os.availableParallelism(),
   instrumented:process.env.JVM_WASM_IMPORT_STATS==='1'||!!inspection,
@@ -888,7 +920,7 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
   }
   await j.run('LoadingMicroKernel',{args});
   if(inspection==='code'){
-   const method=name==='sin'?'sine':name==='ready-prefix-loop'?'coldPrefixLoop':name==='buffered-ready-helper'?'bufferedHelper':name.replace(/-([a-z])/g,(_,c)=>c.toUpperCase());
+   const method=name==='sin'?'sine':name==='ready-prefix-loop'?'coldPrefixLoop':name==='buffered-ready-helper'?'bufferedHelper':name==='buffered-ready-wrapped'?'bufferedWrapped':name.replace(/-([a-z])/g,(_,c)=>c.toUpperCase());
    const prefix=inspectionPrefix||(name.startsWith('bzip-')?'Bzip2Decoder.decodeBlocks(':'LoadingMicroKernel.'+method+'(');
    const state=j.jit.wasmJit.compiled.find(s=>s.key.startsWith(prefix));
    assert.ok(state?.meta?.bytes,'Installed kernel bytes are unavailable');
@@ -942,8 +974,9 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
    result.tail={calls:fields.get('tailCalls:I'),initializations:fields.get('tailInitializations:I'),
     initializationPhase:fields.get('tailInitializationPhase:I'),loopFinished:fields.get('tailLoopFinished:I'),prepareCalls:fields.get('tailPrepareCalls:I')};
   }
-  if(name==='buffered-ready-helper'){
-   const caller=result.executionMethods.find(method=>method.key.startsWith('LoadingMicroKernel.bufferedHelper('));
+  if(['buffered-ready-helper','buffered-ready-wrapped'].includes(name)){
+   const prefix=name==='buffered-ready-wrapped'?'LoadingMicroKernel.bufferedWrapped(':'LoadingMicroKernel.bufferedHelper(';
+   const caller=result.executionMethods.find(method=>method.key.startsWith(prefix));
    assert.equal(caller?.exits,0,'Owner preparation did not remove the first helper transition');
   }
  }
@@ -988,12 +1021,13 @@ function ensureReference() {
  let changed=false;
  if(count!==fixture.iterations&&!fixture.references?.[count]){
   (fixture.references||={})[count]=cases.map((_,i)=>Number(execFileSync('java',['-Xmx1g','-cp',directory+path.delimiter+path.join(directory,'classes'),
-   'MicroReference',String(i),String(count),fixture.seed],{encoding:'utf8'}).trim()));
+   'MicroReference',String(i),String(count),fixture.seed,...(i>=48?bufferedReplayArgs(fixture.bufferedWorkload):[])],{encoding:'utf8'}).trim()));
   changed=true;
  }
- if(!fixture.bufferedReferences?.[count]){
-  (fixture.bufferedReferences||={})[count]=JSON.parse(execFileSync('java',['-Xmx1g','-cp',directory+path.delimiter+path.join(directory,'classes'),
-   'MicroReference','buffered-oracle',String(count),fixture.seed],{encoding:'utf8'}));changed=true;
+ const bufferedCount=Math.min(count,fixture.bufferedWorkload.requests);
+ if(!fixture.bufferedReferences?.[bufferedCount]){
+  (fixture.bufferedReferences||={})[bufferedCount]=JSON.parse(execFileSync('java',['-Xmx1g','-cp',directory+path.delimiter+path.join(directory,'classes'),
+   'MicroReference','buffered-oracle',String(bufferedCount),fixture.seed,...bufferedReplayArgs(fixture.bufferedWorkload)],{encoding:'utf8'}));changed=true;
  }
  if(changed)save(fixture);
  return count;
