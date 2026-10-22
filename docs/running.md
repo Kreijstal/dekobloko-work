@@ -10553,3 +10553,140 @@ inner activation and the outer continuation, preserving both locals/operand
 stacks and prior stores, rather than calling the reader again. The existing
 counted-loop optimization cannot assume that an arbitrary Huffman table is
 acyclic; malformed tables and input must retain fuel and Java exception behavior.
+
+
+### Resumable inline loop activations
+
+The preceding feasibility finding is implemented in isolated runtime candidate
+`2f27b82ed207f54c788c6e8a80422e8df02d9850`. Refined child
+`df1fb75a7762bb70e33300f47e4a8606085e2fff` restricts the new admission path to
+bodies containing an actual backward edge. It does not enable deep inlining or
+raise the existing per-callee/caller code budgets. This is generic JVM code with
+no application identities or new user options. The backend supplies the internal
+capability only when existing canonical frame handoffs and native JS exception
+tags are available; unsupported configurations keep their established path.
+
+A root instance-loop body may now retain its nested calls and carry the original
+callee PC, relocated local-slot range and caller operand-prefix length. Fuel
+polling remains active for these loops. On fuel exhaustion, a demoted instruction
+or a nested-call handoff, the compiler materializes a real callee frame at its
+precise bytecode PC and restores the outer frame at the instruction AFTER the
+invoke. The operand prefix stays with its original caller, including references
+and category-2 values; the remaining stack belongs to the child. Deeper pending
+canonical children precede this new frame in the existing handoff chain. Normal
+execution allocates no new JavaScript activation. Closures retain scalar spill
+plans and original method metadata, not compiler/SSA graphs or donated frames.
+
+Meaningful callee exception handlers and synchronized methods remain excluded
+from splicing. Exceptions from the inlined body use the existing outer-call PC
+mapping; after a yield, the real interpreted child unwinds through the normal
+Java handler path. New loop sites in live OUTER handler ranges can use that
+mapping without broadening admission of the older loop-free shapes. Fixed final
+methods/final symbolic owners no longer carry a class-epoch speculation record:
+later valid Java subclasses cannot change those implementations. This is needed
+for the recovered normal-flow body to remain eligible for canonical native calls;
+open dispatch retains its checks and speculation metadata.
+
+The final nine-file focused suite passes **879/879 assertions**, no skips. New
+coverage includes normal and zero-trip loops, forced fuel exits after stores,
+long values beneath the call, captured array references with field replacement
+during suspension, a deeper yielding native call, nonzero direct invocation IDs,
+exceptions both before and after suspension, a cyclic table repaired after a
+yield, and collection of donated child frames while compiled modules stay live.
+Existing canonical-frame, receiver-ranking, compiler-retention, structured-resume,
+deep/instance inlining and handler suites also pass.
+
+Early tests exposed two integration details rather than a semantic escape:
+nullable guarded sites correctly preferred their complete non-inlined callee,
+so the receiver-is-this fixture was used to exercise the intended admission;
+and fixed final calls needed removal of their unnecessary epoch speculation to
+exercise an actual nonzero native invocation ID. Two nested-result assertions
+also had incorrect handwritten expected sums, corrected from 81/92 to 43/54.
+Those failures are not counted as passes. The final suite above runs after all
+runtime refinements.
+
+```bash
+# java-tools, final source df1fb75: 879/879 pass, no skips.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/inlineActivationResume.test.js test/canonicalDirectFrames.test.js test/wasmCalleeRanking.test.js test/wasmCompilerRetention.test.js test/structuredLoopResume.test.js test/wasmDeepInline.test.js test/wasmInstanceInline.test.js test/wasmStaticInlineHandlers.test.js test/inlineFinalReceiverCalls.test.js
+# Deko generic observation field; syntax and whitespace checks pass.
+node --check apps/loading/probe.mjs
+git diff --check
+# Instrumented initial candidate, explicitly excluded from timing.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 2f27b82ed207f54c788c6e8a80422e8df02d9850 'VorbisCodebook.readVector()[F'
+# Uninstrumented refined candidate only; existing comparators are reused.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm df1fb75a7762bb70e33300f47e4a8606085e2fff
+```
+
+The actual original-sample diagnostic confirms one recovered inline activation
+in `VorbisCodebook.readVector`, with one inlined call and zero speculation sites.
+It executes 134,216 native entries, zero native exits/throws, all PCM bytes exact,
+and no late Java compilation. The inspected module SHA-256 is
+`280d224aaab94164d9dd5b29ea0a4d797052f1127d29c70720e1e894099aaae6`;
+its paired existing TeaVM artifact remains
+`973be9907f1164722b192d1278510a05e6c390bb09d1389dd28e7ebd0099261c`.
+This proves actual use, not a speedup. Generic observation field
+`inlineActivationSiteCount` is committed in Deko `5ee2a47`; generated Wasm/WAT
+stay outside Git in the existing cache locations.
+
+
+The first uninstrumented refined-source cohort (`df1fb75`) regresses: **139.781185,
+138.021150, 142.477102 ms**, median **139.781185 ms**, run ID
+`be118fd7-8480-4476-b3d6-6e7a38becf04`. All PCM remains exact. This cohort is
+rejected; the number of removed call boundaries is not a performance result.
+
+The existing diagnostic reveals a specific integration failure without another
+CPU profile. Two guarded loop splices in `MusicDecodeStage.decodeFloorPacket`
+leave it partial (`full=false`, `normalFlow=false`), dropping its 682 direct native
+entries to zero. Meanwhile the scalar reader gains 11,585 ordinary `ret_i` /
+`object_storage` imports. That fallback is distinct from the confirmed productive
+`readVector` splice. It accounts for an actual coverage loss; import counts alone
+do not assign a measured CPU share to it.
+
+Candidate `b8fc713303117ff5f5879715926956a54d4b1176` rejects newly recoverable loop
+sites that still require a receiver guard. They keep the previous complete call
+path. The new path currently requires the inliner's existing non-null-this proof;
+it does not weaken guards or change the old counted/loop-free admissions. A new
+ordinary caller-loop fixture with a nullable receiver asserts that complete
+normal-flow coverage survives without forcing a callee preference. The same
+nine-file command passes **883/883 assertions**, no skips, after this change.
+Changed-source-only music measurement is:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm b8fc713303117ff5f5879715926956a54d4b1176
+```
+
+The first uninstrumented observation confirms the intended coverage: the floor
+packet helper has 682 direct native entries, complete normal flow and zero native
+exits; the scalar reader has 17,041 direct entries; the vector reader still has
+134,216 direct entries and one recovered inline activation. These are final-source
+observations, not a relabeling of the initial diagnostic.
+
+
+The corrected cohort finishes at **101.389471, 144.804447, 97.781836 ms**, median
+**101.389471 ms**, run ID `5f063ee0-18d5-4e3c-896c-54bf859ca1d6`. Every sample's
+PCM is exact with no late Java compilation. The 144.804447 ms observation is
+retained; nothing is discarded or replayed as a warmup. All three final-source
+observations have the same confirmed coverage: floor packet 682 direct native
+entries, vector 134,216 direct entries with one recovered inline activation,
+scalar 17,041 direct entries, all three complete and with zero native exits.
+The coverage fix therefore holds even in the slow observation; its elapsed-time
+variation is not attributed to a new profile or guessed cause.
+
+This remains flat against recorded default JVM music median **102.049793 ms**.
+There is no demonstrated performance win and **no full-loading campaign**. The
+frame-recovery capability stays isolated in experimental `b8fc713` as the tested
+prerequisite for further loop/helper flattening. It is not promoted as an accepted
+optimization; normal runtime selection, master and deployment remain unchanged.
+The latest retained full-loading result is still **1990.716503 ms / 359.739597 ms
+= 5.534x** TeaVM, not 1.1x. No browser, phone, presented-FPS or total-heap claim
+follows from this pass.
+
+The same single report stores source IDs, complete cohorts, selected native
+counters, the excluded diagnostic and decision under
+`optimizationTrials.resumableInlineActivations`. Next use the recovered loop
+activation to flatten its short static leaf helper, retaining class-initialization
+guards and exception ordering. The traversal is now in the vector wrapper but
+still calls the bit reader inside its loop. Removing just the outer boundary was
+insufficient. Later, nested inline-frame metadata can remove the remaining
+vector/traversal boundary in its caller. Do not substitute another inline-budget
+increase or CPU-attribution campaign for those concrete missing transformations.
