@@ -1072,7 +1072,11 @@ if(command==='build')build();
 else if(command==='one')await one(...args);
 else if(command==='run')run(args[0],args.slice(1));
 else if(command==='run-jvm')run(args[0],args.slice(1),['jvm']);
-else if(command==='float-arrays')run(args[0],args.slice(1),floatArrayKinds);
+else if(command==='float-arrays'){
+ const engines=(args[1]||'').split(',');
+ for(const engine of engines)assert.ok(floatArrayKinds.includes(engine),'Select a float-array control');
+ run(args[0],args.slice(2),engines);
+}
 else if(command==='linear'){
  assert.ok(linearKinds.has(args[1]),'Select '+[...linearKinds].join(', '));
  run(args[0],args.slice(2),[args[1],'teavm']);
@@ -1084,4 +1088,4 @@ else if(command==='calls'){
  run(args[0],['buffered-ready-helper'],engines.length?engines:[...bufferedCallKinds,'teavm']);
 }
 else if(command==='inspect')await one('jvm',args[1],selectBenchmarkRevision(args[0]),'code',args[2]);
-else throw Error('Usage: microbench.mjs build | run [baseline|EXACT_REVISION] [CASE ...] | run-jvm EXACT_REVISION [CASE ...] | float-arrays EXACT_REVISION CASE ... | calls baseline|EXACT_REVISION [CALL_KIND ...] | linear baseline|EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | diagnose baseline|EXACT_REVISION CASE | inspect baseline|EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');
+else throw Error('Usage: microbench.mjs build | run [baseline|EXACT_REVISION] [CASE ...] | run-jvm EXACT_REVISION [CASE ...] | float-arrays EXACT_REVISION ENGINE[,ENGINE...] CASE ... | calls baseline|EXACT_REVISION [CALL_KIND ...] | linear baseline|EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | diagnose baseline|EXACT_REVISION CASE | inspect baseline|EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');

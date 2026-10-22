@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
-export const floatArrayKinds=['float-linear-array','float-gc-array'];
+export const floatArrayKinds=['float-linear-array','float-gc-array','float-linear-noreturn','float-gc-physical','float-gc-physical-noreturn'];
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const arrays=['a','b','out'];
 const types=`(type $floats (array (mut f32)))
@@ -11,7 +11,7 @@ const types=`(type $floats (array (mut f32)))
 export function floatArraySource(kind,name){
  assert.ok(floatArrayKinds.includes(kind));
  assert.ok(['butterfly-local','butterfly-no-readback'].includes(name));
- const gc=kind==='float-gc-array';
+ const gc=kind.startsWith('float-gc-'),physical=kind.includes('physical'),noreturn=kind.endsWith('noreturn');
  const value=(array,index)=>gc?`(array.get $floats (local.get $${array}Data) ${index})`:
   `(f32.load (i32.add (local.get $${array}Base) (i32.shl ${index} (i32.const 2))))`;
  const load=(array,index)=>`(block (result f32) ${bounds(array,index)} ${value(array,index)})`;
@@ -19,12 +19,13 @@ export function floatArraySource(kind,name){
   `(array.set $floats (local.get $${array}Data) ${index} ${expression})`:
   `(f32.store (i32.add (local.get $${array}Base) (i32.shl ${index} (i32.const 2))) ${expression})`);
  function bounds(array,index){return `(if (i32.ge_u ${index} (local.get $${array}Len))
-  (then (call $bounds ${index} (local.get $${array}Len))))`;}
+  (then (call $bounds ${index} (local.get $${array}Len))${noreturn?' unreachable':''}))`;}
  const locals=arrays.map(a=>`(local $${a}Base i32)(local $${a}Len i32)(local $${a}Data (ref $floats))(local $${a}Store (ref $store))`).join('\n ');
  const capture=arrays.map(a=>`(local.set $${a}Store (ref.cast (ref $store) (any.convert_extern (local.get $${a}))))
   (local.set $${a}Base (struct.get $store 0 (local.get $${a}Store)))
-  (local.set $${a}Len (struct.get $store 1 (local.get $${a}Store)))
-  (local.set $${a}Data (struct.get $store 2 (local.get $${a}Store)))`).join('\n ');
+  ${physical?`(local.set $${a}Data (struct.get $store 2 (local.get $${a}Store)))
+  (local.set $${a}Len (array.len (local.get $${a}Data)))`:`(local.set $${a}Len (struct.get $store 1 (local.get $${a}Store)))
+  (local.set $${a}Data (struct.get $store 2 (local.get $${a}Store)))`}`).join('\n ');
  return `(module ${types}
  (import "env" "memory" (memory 1))
  (import "env" "bounds" (func $bounds (param i32 i32)))
@@ -91,7 +92,8 @@ export function measureFloatArrayControl(kind,name,count,seed,expected){
  for(const index of [-1,1024])assert.throws(()=>c.exports.readOne(out.store,index),e=>e.type==='java/lang/ArrayIndexOutOfBoundsException'&&e.index===index&&e.length===1024);
  assert.deepEqual(c.exports.run(0,a.store,b.store,out.store,100),[-1,0]);
  return {elapsedMs,checksum,inputSha256,modelSourceSha256:c.sourceSha256,modelWasmSha256:c.wasmSha256,
-  elementStorage:kind==='float-gc-array'?'wasm-gc-f32-array':'wasm-linear-memory',explicitJavaBounds:true,
+  elementStorage:kind.startsWith('float-gc-')?'wasm-gc-f32-array':'wasm-linear-memory',explicitJavaBounds:true,
+  boundsLengthSource:kind.includes('physical')?'gc-array-length':'stored-length',boundsNoreturn:kind.endsWith('noreturn'),
   postTimerBoundsChecks:2,postTimerZeroTripCheck:true,
   purpose:'Native-only element-storage control with identical bounds/fuel/math; excludes VM representation selection, frames and foreign/null arrays; not JVM or parity acceptance'};
 }
