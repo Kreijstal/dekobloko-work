@@ -9414,8 +9414,8 @@ The first component had a call-shape confound: its native-input handoff left JS
 driving per-packet native entries. Its 42.723 ms median vs TeaVM's 16.926 ms is
 preserved separately, with the 82.920 ms sample. The corrected fixture moves only
 the packet loop into `runTransforms`, matching the original native packet driver.
-Every corrected run takes **682 direct native transform entries**, with zero
-transform exits and zero guest Java compilation during execution. Do not combine
+Every corrected run takes **682 direct native transform entries**, with zero legacy host-entry
+exit counts and zero guest Java compilation during execution. Do not combine
 these cohorts or use their difference to attribute CPU time.
 
 | Corrected component | Samples ms | Median ms |
@@ -9500,7 +9500,7 @@ Three fresh changed-JVM-only processes measure **58.076563, 55.503291 and
 80.715502 ms**, all retained. Their median **58.076563 ms** is only **1.104%**
 below the recorded 58.724721 ms reference, with overlapping historical spread.
 It remains **3.422x** the recorded TeaVM median. Every sample matches all 698,368
-float words, enters the transform directly 682 times, has zero transform exits
+float words, enters the transform directly 682 times, has zero legacy host-entry exit counts
 and compiles zero Java during execution. No unchanged JVM/TeaVM control is rerun.
 This does **not** establish a useful improvement, and the compiler prototype is
 withdrawn rather than promoted or subjected to another full-loading campaign.
@@ -9573,7 +9573,7 @@ identifier, public flag or generated artifact is added to java-tools.
 
 The candidate median is **25.91% lower**, still **2.564x TeaVM** and far from
 1.10x. All three changed-process observations match every one of the 698,368
-float words, take 682 direct native transform entries with zero exits and compile
+float words, take 682 direct native transform entries with zero legacy host-entry exit counts and compile
 zero Java during execution. All samples, including 50.975 ms, are retained.
 A separate, excluded diagnostic proves **682 actual guarded-body entries** at
 91 static array-access sites, with no `abase`/`alen0` imports. Its module SHA-256
@@ -9647,3 +9647,181 @@ current field value would be incorrect. No such region implementation is claimed
 yet. The default baseline remains `aa23806`; runtime master, selected/deployed
 artifacts, the historical **5.604x** full-loading result and browser/phone gates
 remain unchanged. The new source is preserved only as an unpromoted experiment.
+
+
+### Native array regions and readiness reuse: implemented, not promoted
+
+`9aa5104d16c7250a2f127a203bff7e6fae9d55b8` extends the single-body proof to
+closed CFG regions. Candidate discovery is generic: good blocks contain numeric
+operations, primitive array operations, authenticated static array reads or the
+existing pure Math intrinsics. A region has one entry block, no outside edges
+into its other blocks and no successful callback/initializer/allocation/field
+write inside. Live exception regions, inlining, irreducible splits, demotions
+and existing guarded-loop plans are conservatively excluded in this first pass.
+Discovery is bounded to 256 method blocks, 128 blocks per region, 16 candidates,
+four disjoint selected regions and 50,000 analysis work. Known null/boolean
+storage is refused. Existing generic code remains outside selected regions.
+
+Guards execute on **outside edges after simultaneous reference phi copies**,
+not on internal backedges. They validate static-cell readiness/capabilities and
+owned array headers, then authenticate already-captured incoming references
+through allocator metadata without invoking host getters. Captured references
+are not silently replaced with their current field values. Private base/length
+locals prevent introducing early parameter length queries or lending a proof
+to generic accesses after callbacks. Internal phi metadata copies are parallel,
+including cycles and entry-header backedges. Refusal spills at that region's
+entry, without replaying earlier effects or prefix allocations. External native
+resumption is disabled so that it cannot bypass a guard. Bounds checks remain.
+
+The original packet decoder selects the previously identified two regions:
+43 blocks/69 array sites and 28 blocks/23 sites, **92 sites total**. The first
+needs five captured incoming array references and one static cell; the second
+uses nine static cells. A separate original-sample inspection records 682
+entries into **each** guarded region and matches every original PCM byte.
+The JVM WAT module SHA-256 for that inspection is
+`dd39273c0df7b4273bece2cad2e2ca12f58ead26a2e19f52adae201557fb3a7d`.
+Inspection now refreshes the matching TeaVM WAT preview too. Its first attempt
+hit `ENOBUFS` while buffering the full TeaVM disassembly; Deko `0e760a5` streams
+both previews to the existing files instead. No valid diagnostic was persisted
+from the failed attempt. The corrected changed-code inspection succeeds.
+
+`6a8018dda0a5a705a05035eb7d0204abcfe80f74` additionally reuses an **existing
+positive entry readiness guard** inside the closed region. Owned array extents
+cannot overlap readiness cells, and no successful operation can run a callback
+or change that readiness. It does not initialize an untaken dependency early or
+hoist new cold dependencies. The real decoder reuses **12 static guard sites**.
+A dedicated cold-owner test verifies that refusal occurs after prefix effects,
+a zero-trip fallback leaves the dependency uninitialized, and a ready region
+still computes exactly. Graphs and proof-site sets release after translation.
+
+| Original largest-sample music | Samples ms | Median ms |
+| --- | --- | ---: |
+| Recorded retained JVM `aa23806` | 102.049793, 120.267686, 101.959951 | 102.049793 |
+| Guarded regions `9aa5104d` | 108.483822, 95.070760, 100.163076 | 100.163076 |
+| Reused readiness facts `6a8018dd` | 102.627840, 98.750520, 92.315666 | 98.750520 |
+
+All six fresh changed-JVM-only observations match every PCM byte and compile
+zero Java during execution. The medians are only **1.85%** and **3.23%** below
+the recorded reference, with overlapping spreads; neither establishes a clear
+full-decoder improvement or a release. No unchanged JVM/TeaVM control or HotSpot
+oracle runs again. The same `6a8018dd` source's first isolated-transform samples
+are **50.501230, 49.119580 and 48.145803 ms**, median **49.119580 ms**, worse than
+the earlier 43.510201 ms native-body component observation. Do not substitute
+the earlier component win for these real-decoder results.
+
+```bash
+# java-tools; focused region/canonical/fallback suite: 755/755 assertions pass.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticArrayBody.test.js test/nativeStaticReferenceCodegen.test.js test/canonicalDirectFrames.test.js test/structuredLoopResume.test.js test/wasmHeapArrays.test.js test/wasmCompilerRetention.test.js
+# Focused region tests: 103/103; after the cold-owner test: 116/116.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticArrayBody.test.js
+# Deko, with source 9aa5104d or 6a8018dd as described above:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 6a8018dda0a5a705a05035eb7d0204abcfe80f74 'MusicDecoder.decodePacket(I)[F'
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 6a8018dda0a5a705a05035eb7d0204abcfe80f74
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs run-jvm 6a8018dda0a5a705a05035eb7d0204abcfe80f74
+```
+
+The tests cover region guards after prefix side effects/allocations, null and
+foreign zero trips, observable metadata, saved continuations, reference-return
+callers, two regions separated by a field-changing callback, private metadata,
+class readiness and the previously covered bounds/GC/phi cases. A reference-return
+assertion initially read the obsolete scalar return box; using the existing
+`takeWasmReturnValue` contract corrected that test, without weakening the proof.
+
+#### Correction: host-entry exit counts omitted direct native transfers
+
+Earlier descriptions of **zero exits** used `state.exits`, which counts exits
+observed by the host execution wrapper. It does **not** establish that direct
+native invocations never transferred to a Java continuation. Historical raw
+observations retain their original fields and source IDs. Their timings and
+output checks remain valid **first-use stream** measurements; they must not be
+relabeled as pure native computation or warm execution.
+
+Runtime `5c2104a8ec16add93ab56f619d04055cb975e9c5` adds bounded scalar counters
+to the existing direct-frame context: status spills, nonzero-invocation-ID spills,
+last status and JS-tag-recorded throws. It allocates nothing on a normal native
+return. JS-tagged throws are separate from status exits; neither is inferred
+from the old host counter. Deko reports unsupported counters as `null`, not zero,
+and reports companion exits separately. No generated-code baseline identity or
+timing is rechecked merely to validate restoration.
+
+A new excluded transform diagnostic proves **one actual direct native status
+exit**, while the old host counter reports zero. It records resume **item 988**,
+one `spill_h78` and one `canonical_exit_spill`, with no recorded native throws.
+The boundary is the cold Math initialization check at the first window. Older
+component diagnostics already recorded that spill even though their exit labels
+were too broad. This correction is essential before attributing their remaining
+time to native arithmetic or arrays. It is not an excuse for the full workload.
+
+A bounds-contract prototype `0c34ab11ec2deffc0a18e1eeb22d87d87f357766` exposed
+the existing bounds-error helper's non-returning behavior only in selected native
+bodies. Its 116 region assertions and 161 automatic-array-version assertions
+pass; all transform float bits match in a separate diagnostic. It is **not timed
+or promoted**: the exit-accounting discovery changes the next action. Its native
+bounds change is withdrawn in `5c2104a`; all source/tests remain in experimental
+history. No known baseline restoration test, timing or hash check follows.
+
+```bash
+# java-tools: new counter + native-region tests, 231/231 pass.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/canonicalDirectFrames.test.js test/nativeStaticArrayBody.test.js
+# Bounds-contract compatibility check: 161/161 pass.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/automaticArrayVersions.test.js
+# Final region/native-exception counter test: 117/117 pass.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticArrayBody.test.js
+# Deko; diagnostic only, no timing cohort is created:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs inspect 5c2104a8ec16add93ab56f619d04055cb975e9c5
+```
+
+The runtime diagnostic uses `5c2104a`; final handwritten counter/exception tests
+are preserved at `8ed198ed76ba78f5eac0b778edcb826a179552dc` on
+`experiment/teavm-native-parity`. The latter adds only test preservation/coverage
+relative to that diagnostic runtime; no new performance result is assigned to it.
+
+#### Full-loading counter check and next direction
+
+One **new instrumented JVM-only** loading diagnostic checks the counters across
+the real 18-sample/205-file workload, using eager native compilation, CPU 2 and
+the 1,024 MiB old-space limit. It matches
+`18:218292:2368412830:205:7597510:3045679678` and compiles zero guest Java after
+main. The detailed method-family records show **5,119 direct native packet-decoder
+entries, zero native status exits and zero recorded throws**. The component's
+cold handoff therefore does **not** explain this full-loading discrepancy.
+
+| Already-native reader in that full diagnostic | Direct entries | Native exits | Covered array-region sites |
+| --- | ---: | ---: | ---: |
+| Bzip `readBits` | 3,605,524 | 0 | 0 |
+| Music `readBit` | 3,148,442 | 0 | 0 |
+| Bzip `readBit` | 2,328,178 | 0 | 0 |
+| Codebook `readScalar` | 1,006,390 | 0 | 0 |
+
+These are call counts, **not CPU attribution**. The named family records also
+show two host/native status exits in the Bzip block decoder, two in lookup-value
+count setup and one in the PCM driver. The diagnostic's universal executed-method
+summary did not yet include the new counters; detailed native coverage is limited
+to the named families. Deko `d546074` adds those fields/filtering for future
+changed runs, without repeating this diagnostic just to populate them.
+
+```bash
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/probe.mjs slab all 5c2104a8ec16add93ab56f619d04055cb975e9c5 loading /home/kreijstal/.cache/dekobloko/geoblox-loading
+node --check apps/loading/probe.mjs
+node --check apps/loading/mdct.mjs
+git diff --check
+```
+
+All results/corrections are in the **same** existing report under
+`optimizationTrials.nativeStaticArrayRegions`; compact full-loading counters
+are preserved there before the recent diagnostic slot rolls forward. Profiling
+is excluded from timing/acceptance. No full-loading ratio is derived from this
+instrumented run, and no browser/phone heap or presented-FPS acceptance is claimed.
+The retained normal benchmark source remains `aa23806`, with its historical
+**5.604x** full-loading ratio. Master, selected bundle and deployment are unchanged.
+
+The next compiler work must improve **already-native** code. Compare the integer
+state and object storage lowering of these readers with TeaVM, then test a matched
+real reader before changing another broad policy. The present array proof excludes
+static integer writes and instance field operations, which leaves these readers
+uncovered. A single guarded storage body could differ from the previously rejected
+cloned/epoch leaf versions, but that is a hypothesis requiring code comparison
+and measured proof, not an accepted optimization. Do not repeat those older
+versions unchanged or propose another CPU attribution campaign. Any future claim
+about pure transform execution must also account for its cold transfer or use
+authentic original setup, never an artificial warmup.
