@@ -9907,3 +9907,66 @@ outside Git. Normal benchmark selection and deployment remain unchanged.
 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm e87d2e59e4256de7fb4e777a46cbe7e0a9616821 bzip-block bzip-ready-owner
 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm e87d2e59e4256de7fb4e777a46cbe7e0a9616821
 ```
+
+
+#### Defer array ownership to the block which uses it
+
+Source `5cea8b4d00a17bcf5c98234cebb7a91046bb89ad` retains the receiver proof at
+entry and checks each array only on its first use-block entry. The callback-free,
+reference-write-free proof keeps that positive capture valid for this invocation.
+Each refusal spills the original block **before** any effect in that block,
+after its incoming phi copies. Effects in earlier blocks/iterations are retained.
+This does not restart the method. An untaken branch can keep a null/foreign array
+without refusing native execution. Fuel exits still abandon metadata; external
+native resume remains disabled.
+
+The same focused suite now passes **1,356 assertions**, adding exact fallback
+after a prefix write, same-block stores before an array access, two independently
+guarded array branches, a foreign array first reached in a later iteration, and
+a canonical caller consuming that later refusal. The real captured reader still
+matches every request and final state, with **490,954** native selections and
+zero native exits/throws. Only **87,138** calls capture array ownership, instead
+of all 490,954 (82.25% fewer). Diagnostic counters are excluded from timing. There
+are no late Java compiles. This is a changed-code diagnostic, not a baseline
+recheck. Candidate-only timing follows, comparing with the recorded first body.
+
+```bash
+# Same nine-file focused command above: now 1,356/1,356 pass.
+JVM_WASM_IMPORT_STATS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs inspect 5cea8b4d00a17bcf5c98234cebb7a91046bb89ad buffered-ready-helper 'MicroBufferedReader.readBits('
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 5cea8b4d00a17bcf5c98234cebb7a91046bb89ad buffered-ready-helper buffered-ready-wrapped
+```
+
+
+The deferred-check candidate's fresh-process direct-reader times are **4.310,
+4.484, 4.795 ms**, median **4.484**; wrapped times **7.617, 7.560, 7.592 ms**,
+median **7.592**. Compared with the first body's recorded medians this is 2.7%
+worse direct and 6.7% lower wrapped: **mixed, no clear additional win**. All
+requests/final mutable state match. The complete candidate remains an
+experimental working point; fewer guard executions alone are not acceptance.
+Both reader cases remain substantially below the recorded predecessor. A full
+loading candidate-only trial now screens the combined runtime (including earlier
+native static-array/region work), using historical JVM/TeaVM results rather than
+new baseline processes. Any resulting full-loading difference cannot be assigned
+solely to the object proof or deferred guard.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision 5cea8b4d00a17bcf5c98234cebb7a91046bb89ad --options diagnostic
+```
+
+
+The three full-loading candidate-only observations match the cached checksum
+`18:218292:2368412830:205:7597510:3045679678` and compile no guest Java during
+execution. Music/graphics/total ms are 1638.342/402.942/**2041.285**,
+1567.443/423.274/**1990.717**, and 1516.642/365.183/**1881.824**.
+Median total **1990.717 ms** is only **1.25%** lower than the retained AA median
+2015.858 ms, within the observed spread. Against the recorded TeaVM median
+359.740 ms this remains **5.534x**, far above 1.1x. This is a historical comparison,
+not a simultaneous paired cohort. Neither unchanged backend nor a reference
+oracle was rerun. No end-to-end gain or acceptance is claimed; the combined
+runtime stays experimental, with normal selection/deployment unchanged.
+
+All observations and compact diagnostics are preserved in the same existing
+report under `optimizationTrials.nativeObjectBody`. The full harness did not yet
+serialize object-body site counts; do not infer full-workload proof coverage
+from the reader component. Adding future output metadata does not justify
+rerunning the workload solely to fill those fields.
