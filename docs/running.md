@@ -11212,3 +11212,180 @@ census/WAT; no new CPU-attribution campaign or baseline repetition is needed.
 
 The **1.1x goal remains unmet**. Browser/phone presented-FPS, aggregate-heap and
 stability acceptance remain unproven.
+
+## Primitive-array cast proof caches: archive gain, loading regression (2026-10-22)
+
+Reuse the recorded f2 full-loading median **1873.955270 ms**, original Vorbis
+median **96.087914 ms**, and TeaVM loading median **359.739597 ms**. No unchanged
+baseline, TeaVM/HotSpot oracle execution, restored-source verification, timing,
+or fingerprint runs. Only changed source is measured, in sequential fresh
+Node 22.23.2 processes pinned to CPU 2 with 1 GiB old-space, eager optimizing
+Wasm, and no workload warmup. Import diagnostics remain separate from timing.
+One canonical report remains
+`~/.cache/dekobloko/geoblox-loading/benchmark.json`, under
+`optimizationTrials.nativeArrayCastProof`.
+
+The saved archive decoder census has **813,758 checked `cast__I` JS imports**.
+Private primitive-array allocation descriptors alone do not prove that a checked
+cast can disappear: supported host objects can change public type/class-index
+metadata, expose accessors, or substitute foreign arrays. The prototype caches
+only a positive owned-memory/type proof after non-observing data-property checks.
+Unknown host callbacks expire that proof; null, custom getters, proxies,
+foreign/plain objects and failed proofs retain checked execution. Exact SSA
+phi copies preserve proof state, including cyclic swaps. Epoch saturation disables
+proofs, rather than wrapping. Analysis is bounded, and installed callbacks do not
+retain compiler/SSA graphs.
+
+The three variants are archived in the java-tools experimental history:
+
+| Variant | Source revision | Three ready-archive times ms | Median ms |
+| --- | --- | --- | ---: |
+| Per-method epoch | `d025b556e4b23524b227daf55143dad91a1c8b51` | 80.146450, 84.542000, 79.638749 | 80.146450 |
+| Shared Wasm global | `67774005ef82e1d6a6721dce997d6f9e07ee0e7f` | 38.680954, 38.479976, 49.422139 | 38.680954 |
+| Shared heap cell | `fb73048180a0d1fe4dc8090887f913e3852e6445` | 38.916390, 35.396669, 34.680661 | 35.396669 |
+
+For context, the saved same-fixture archive comparator is **45.214595 ms** at
+`ce2c670efecf36da81f6b2bce72ab0901696d392`. That is a different historical runtime,
+not an isolated new f2 control; do not claim the whole archive difference is a
+causal effect of this change. All archive checksums remain `-1415522687`, with
+zero late compilation.
+
+The per-method diagnostic replaces checked casts with **519,804** expensive
+proof queries: reader forwarding wrappers conservatively fence the proof. The
+shared epoch moves invalidation to actual structured host-import boundaries,
+including callees without casts; canonical fallback stubs return through the
+wrapped exit consumer. Its diagnostic uses intermediate source
+`2194fef167b6f1b93003a5e8ffdd36482b561a31` before the foreign-prototype probe fix,
+and records **10,248** queries, zero checked `cast__I` calls, full decoder native
+coverage, zero exits/throws and zero late compilation. Decoder module SHA-256:
+`007ca93300211226fb1466f5b0510838d8d9eda0bc36190e11df42eb3c01259a`.
+The cached matched TeaVM WAT uses typed arrays directly; eliminating a JS cast
+boundary does not remove our proof branches or make the representations equal.
+
+The archive result justifies a full-loading screen of the changed shared-global
+variant, against recorded controls only:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision 67774005ef82e1d6a6721dce997d6f9e07ee0e7f --options diagnostic
+```
+
+| Full sample | Music ms | Graphics ms | Total ms |
+| --- | ---: | ---: | ---: |
+| 1 | 2565.505672 | 417.141306 | 2982.646978 |
+| 2 | 2911.740051 | 821.659082 | 3733.399133 |
+| 3 | 2170.679952 | 366.885455 | 2537.565407 |
+
+All three match `18:218292:2368412830:205:7597510:3045679678`, with zero late
+compilation. Median **2982.646978 ms** is **59.16% slower** than recorded f2.
+Fewer archive crossings therefore do not establish a loading improvement.
+Updating a shared `WebAssembly.Global` at every host import adds work outside
+cast-bearing methods as well. This observation motivates a different epoch
+transport; it does not by itself isolate the CPU cost of that transport.
+
+The heap-cell refinement reserves one permanent 8-byte slab, accesses its
+saturating i32 through native Wasm loads/stores and refreshed JS heap views,
+and declines proofs if metadata storage is unavailable. It keeps the same
+proof/fallback semantics. The final focused command passes **638/638 assertions**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeArrayCastProof.test.js test/arrayIdentityCaches.test.js test/nativeObjectBody.test.js test/wasmSsaReferenceFacts.test.js test/nativeReferenceArray.test.js test/wasmCompilerRetention.test.js test/wasmStaticInlineHandlers.test.js test/canonicalDirectFrames.test.js
+```
+
+Coverage includes nested callback mutation seen by the next caller cast,
+getter/class-index/proxy effects and exception identity, foreign/plain/null
+fallbacks, SSA swaps and fuel continuation, canonical replacements, live-import
+GC without retained proof graphs, epoch exhaustion, proof-budget exhaustion,
+and metadata allocation failure. The retained code and its tests are available
+in the experimental commits, not enabled in production.
+
+Screen the largest original Vorbis sample before another full-loading campaign:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs run-jvm fb73048180a0d1fe4dc8090887f913e3852e6445 bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/vorbis.mjs run-jvm fb73048180a0d1fe4dc8090887f913e3852e6445
+```
+
+Vorbis times are **376.022264, 127.261444, 132.915316 ms**; median
+**132.915316 ms**, **38.33% slower** than recorded f2. Every PCM byte matches,
+and all three observations have zero late compilation. Keep the slow first
+sample; do not discard it or substitute a best sample. No further full-loading
+campaign is justified for this variant.
+
+**Withdraw all three variants** at
+`ac590fa57511888b747e6730b5673ed355d070a8`, retaining the f2 runtime and earlier
+heap-fixture isolation. No restored-baseline tests, timing or fingerprints.
+The performance selector, production artifact and deployment do not advance.
+No generated Java, binaries, bundles or WAT are committed. The **1.1x goal
+remains unmet**; browser/phone presented-FPS, aggregate heap and stability
+acceptance are still unproven.
+
+The rejected heap-cell candidate's separate Vorbis diagnostic identifies the
+next concrete issue. `MusicDecoder.decodePacket(I)[F` makes only **681**
+`owned_array_cast__F` queries and no checked cast imports, but **1,396,736**
+`math_sin__D_D` imports. Epoch wrappers therefore burden an extremely frequent
+existing native import; excessive cast-proof refills are not supported by this
+census. The PCM still matches and there is no late compilation. Diagnostic
+module SHA-256:
+`b270411e65e333d57e5c071a84704327fc9c56e8c4cb2741f406914928368a3a`.
+Its execution time is excluded from timing cohorts.
+
+Refinement `392c8e4adf0b05298b133748991b7869310f7839` resumes the heap-cell proof
+experiment and preserves a Math binding only when the engine's own function
+representation identifies that named native binding. JavaScript replacements,
+bound functions and proxies do not earn the proof; their host effects still
+invalidate the next cast. This avoids annotating all nonthrowing imports as
+pure. Float/long adapter closures retain conservative invalidation.
+The same focused test command passes **644/644 assertions**, including a named
+JavaScript replacement of `Math.sin` which changes an array's type during the
+second iteration: the next cast throws the original guest ClassCastException,
+with exactly two callback executions. Bound and proxy replacements are rejected
+as callback-free candidates. This is a new source trial, not an unchanged
+baseline replay.
+
+The refined original-sample Vorbis cohort is **106.804793, 97.038855,
+111.028057 ms**, median **106.804793 ms** (**11.15% above** recorded f2), with
+exact PCM and zero late compilation. It removes most of the prior regression,
+but has not established an improvement. The saved f2 Vorbis import census
+already contains only **682** checked float-array casts and the same
+**1,396,736** sine calls. Reusing that recorded census requires no baseline
+execution. This exposes poor amortization: the shared protocol imposes work on
+many unrelated callbacks to save very few casts in this particular workload.
+A changed-source full-loading cohort checks whether archive savings outweigh
+that cost; no unchanged control executes:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/vorbis.mjs run-jvm 392c8e4adf0b05298b133748991b7869310f7839
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision 392c8e4adf0b05298b133748991b7869310f7839 --options diagnostic
+```
+
+| Refined full sample | Music ms | Graphics ms | Total ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1564.006866 | 374.196427 | 1938.203293 |
+| 2 | 1674.211346 | 340.464435 | 2014.675781 |
+| 3 | 1521.758881 | 396.446032 | 1918.204913 |
+
+All full checksums match the recorded result and there is zero late compilation.
+Median **1938.203293 ms** is **3.43% slower** than recorded f2, or **5.39x**
+the recorded TeaVM loading time. It does not establish an improvement. The
+sine exemption fixes a cost introduced by the experiment; it does not make
+this a successful runtime optimization.
+
+Withdraw the refined source as well, at
+`4c4d2d8306f2c033f535df21c2faffeae2cc8198`. The f2 performance comparator and
+previous heap-fixture isolation remain; no restoration tests, timings or
+fingerprints execute. The canonical trial includes every cohort, failed variant,
+source revision, validation command, saved baseline census and decision.
+Production artifacts and deployment stay unchanged; the 1.1x goal is unmet.
+
+Next investigate a bounded compile-time callback-effect proof for numeric static
+wrappers over native object bodies. A per-method proof should not require
+instrumenting unrelated methods. Captured canonical-binding capabilities must
+invalidate on replacement/withdrawal, and all captured dependencies must remain
+valid before a caller may skip its local fence. Unknown or changed targets keep
+the callback fence before invocation. Do not treat `nonThrowing` as purity, pin
+obsolete bodies indefinitely, or drop original exception/frame/fuel fallback
+behavior. Test actual host callbacks through wrappers, replacement/withdrawal,
+foreign storage, callbacks that throw, and graph/body collection first. Inspect
+the prior pure-leaf/capability experiments before implementing; do not restore
+unchanged variants. Use only changed-source archive/Vorbis screens and saved
+controls; advance to full loading only on evidence of an overall benefit.
