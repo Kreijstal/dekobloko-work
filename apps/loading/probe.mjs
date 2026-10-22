@@ -23,6 +23,7 @@ const harnessFiles=Object.fromEntries([
  ['probe.mjs',import.meta.url],['archive-jvm.mjs',new URL('./archive-jvm.mjs',import.meta.url)],['browser.mjs',new URL('./browser.mjs',import.meta.url)],
  ['browser-inflater.mjs',new URL('../launcher/browser-loader/browser-inflater.mjs',import.meta.url)],
  ['wasm-optimizer.mjs',new URL('./wasm-optimizer.mjs',import.meta.url)],
+ ['wasm-loop-outline.mjs',new URL('./wasm-loop-outline.mjs',import.meta.url)],
  ['workload.mjs',new URL('./workload.mjs',import.meta.url)],
  ['measurement-fixture.mjs',new URL('./measurement-fixture.mjs',import.meta.url)],
 ].map(([name,url])=>[name,hash(fs.readFileSync(new URL(url)))]));
@@ -50,6 +51,7 @@ const save=result=>{
 for(const [name,expected] of Object.entries(receipt.classes))assert.equal(hash(fs.readFileSync(path.join(player,'classes',name))),expected,name);
 if(mode==='teavm'){
  assert.ok(!process.env.JVM_WASM_OPT_DIAGNOSTIC,'Pinned TeaVM bytes are not post-optimized');
+ assert.ok(!process.env.JVM_WASM_OUTLINE_DIAGNOSTIC,'Pinned TeaVM bytes are not outlined');
  assert.equal(kernel,'loading','TeaVM mode uses the unchanged full-loading artifact');
  assert.ok(!process.argv[4]||process.argv[4]==='-','TeaVM mode takes no JVM source revision');
  const wasm=fs.readFileSync(path.join(player,'teavm/loading.wasm'));
@@ -72,7 +74,8 @@ const {JVM}=revision?await loadArchivedJvm(root,revision):require(path.join(root
 const input=kernel==='loading'?null:assetBytes(asset);
 let reference=kernel==='bzip'?execFileSync('python3',['-c',`import bz2,sys
 b=sys.stdin.buffer.read();sys.stdout.buffer.write(bz2.decompress(b'BZh1'+b[9:9+int.from_bytes(b[1:5],'big')]))`],{input:Buffer.from(input),maxBuffer:16*1024*1024}):null;
-const temporary=kernel==='loading'?null:fs.mkdtempSync(path.join(os.tmpdir(),'loading-kernel-'));
+const temporary=kernel==='bzip'?fs.mkdtempSync(path.join(os.tmpdir(),'loading-kernel-')):null;
+const probeDirectory=kernel==='vorbis'?path.join(player,'vorbis'):temporary;
 let optimizer;
 try {
  if(temporary){
@@ -85,7 +88,19 @@ try {
 }`);
  execFileSync('javac',['--release','8','-classpath',path.join(player,'classes'),'-d',temporary,path.join(temporary,'LoadingKernelProbe.java')]);
  }
- if(kernel==='vorbis')reference=execFileSync('java',['-Xmx1g','-Djava.awt.headless=true','-cp',temporary+path.delimiter+path.join(player,'classes'),'LoadingKernelProbe',path.join(player,'assets')],{maxBuffer:64*1024*1024});
+ if(kernel==='vorbis'){
+  const fixture=receipt.vorbisBenchmark;assert.ok(fixture,'Build the cached Vorbis fixture first');
+  assert.equal(hash(vorbisProbeSource()),fixture.sourceSha256,'Cached probe source differs');
+  assert.equal(hash(fs.readFileSync(path.join(probeDirectory,'LoadingKernelProbe.class'))),fixture.probeClassSha256,'Cached probe class differs');
+  reference=fs.readFileSync(path.join(probeDirectory,'reference.pcm'));
+  assert.equal(hash(reference),fixture.referencePcmSha256,'Cached HotSpot PCM differs');
+ }
+ if(process.env.JVM_WASM_OUTLINE_DIAGNOSTIC==='1'){
+  assert.equal(kernel,'vorbis','Loop outlining currently uses the reduced original-music diagnostic');
+  assert.ok(!inspectMethod&&!process.env.JVM_WASM_OPT_DIAGNOSTIC,'Use outlining without another optimizer/inspection');
+  const {installWasmLoopOutliner}=await import('./wasm-loop-outline.mjs');
+  optimizer=installWasmLoopOutliner({functionPrefix:'$jvm$wasm$MusicDecoder$decodePacket',outputPath:path.join(player,'vorbis/current.wat')});
+ }
  if(process.env.JVM_WASM_OPT_DIAGNOSTIC==='1'){
   const {installWasmOptimizer}=await import('./wasm-optimizer.mjs');
   optimizer=installWasmOptimizer();
@@ -93,7 +108,7 @@ try {
  const options=structuredClone(mode==='slab'&&kernel!=='bzip'?receipt.diagnosticOptions||receipt.jvmOptions:
    kernel==='loading'?receipt.jvmOptions:receipt.executionBaseline.jvmOptions);
  const mainClass=kernel==='loading'?'GeobloxLoading':'LoadingKernelProbe';
- options.classpath=[...(temporary?[temporary]:[]),path.join(player,'classes')];
+ options.classpath=[...(probeDirectory?[probeDirectory]:[]),path.join(player,'classes')];
  options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
  options.jit.compileWorker=false;
  if(mode!=='js'){options.prepareWasmPreparedUpgradesOnly=false;options.jit.preparedCompleteWasm=true;options.jit.preparedLoopLeafWasm=true;}
@@ -118,13 +133,19 @@ try {
   return startCompile(method,entryPath);
  };
  let guestStart,guestCpu;const mark=j.jit.markMainStarted.bind(j.jit);j.jit.markMainStarted=()=>{
-  optimizer?.finishPreparation();guestCpu=process.cpuUsage();guestStart=performance.now();mark();};
+  const optimization=optimizer?.finishPreparation();
+  if(optimization?.transformation==='closed-loop-outline')assert.ok(optimization.outlinedLoops.length,'No loop outlined; do not time unchanged code');
+  guestCpu=process.cpuUsage();guestStart=performance.now();mark();};
  const w=j.jit.wasmJit;
  const transitions=[];const execute=w.execute.bind(w);
  w.execute=(frame,thread,state,...args)=>{const before=frame.pc,r=execute(frame,thread,state,...args);if(state.key?.includes('Bzip2Decoder')&&state.exits&&transitions.length<100)transitions.push({key:state.key,before,after:frame.pc,result:summarizeExecutionOutcome(r),fuels:state.fuelExits});return r;};
  let error;const start=performance.now();
  try{await j.run(mainClass);}catch(caught){error={type:caught.type||caught.name,message:caught.message,location:caught.jvmGuestLocation};}
  const finished=performance.now(),cpu=guestCpu&&process.cpuUsage(guestCpu),elapsed=finished-start,executionMs=finished-guestStart;
+ if(optimizer?.writePreview){
+  const state=w.compiled.find(s=>s.key==='MusicDecoder.decodePacket(I)[F');
+  assert.ok(state?.meta?.bytes,'Active decoder module is unavailable');optimizer.writePreview(hash(state.meta.bytes));
+ }
  const fields=j.classes[mainClass].staticFields,out=fields.get('output:[B');
  const check=kernel==='loading'?['pcmSamples:I','pcmBytes:J','pcmCrc:J','archiveFiles:I','decodedBytes:J','graphicsCrc:J'].map(name=>String(fields.get(name))).join(':'):undefined;
  const actual=out&&Buffer.from(out),equal=kernel==='loading'?check===receipt.referenceCheck:actual?.equals(reference)||false;
@@ -140,6 +161,7 @@ try {
  }
  const owners=kernel==='bzip'?['Bzip2Decoder','Bzip2DecoderState']:['MusicDecoder','VorbisCodebook','VorbisResidue','MusicDecodeStage',...(kernel==='loading'?['Bzip2Decoder','Bzip2DecoderState']:[])];
  const layout=meta=>meta&&{structured:!!meta.structured,canonical:!!meta.canonicalRun,normalFlow:meta.normalFlowFullyCompiled,
+  ...(optimizer&&meta.bytes?{moduleInputSha256:hash(meta.bytes)}:{}),
   omittedNativeBoundsCheckCount:meta.omittedNativeBoundsCheckCount||0,
   crossBlockArrayFillCount:meta.crossBlockArrayFillCount||0,
   arrayMetadataFlowStatus:meta.arrayMetadataFlowStatus||'unavailable',
@@ -192,8 +214,8 @@ try {
    ].flatMap(([tier,meta])=>[...(meta?.importStats||[])].filter(([,count])=>count>0)
     .map(([name,count])=>({method:state.key,tier,name,count}))))
    .sort((a,b)=>b.count-a.count).slice(0,120)}:{}),
-  fixtureSha256:temporary?hash(fs.readFileSync(path.join(temporary,'LoadingKernelProbe.class'))):receipt.workloadSha256,
-  fixtureKind:temporary?'kernel-class':'loading-workload-source',
+  fixtureSha256:probeDirectory?hash(fs.readFileSync(path.join(probeDirectory,'LoadingKernelProbe.class'))):receipt.workloadSha256,
+  fixtureKind:probeDirectory?'kernel-class':'loading-workload-source',
   options,mode,asset,kernel,reference:kernel==='loading'?'Recorded HotSpot checksum':kernel==='vorbis'?'HotSpot':'Python bz2',elapsed,executionMs,executionCpuMs:cpu&&(cpu.user+cpu.system)/1000,
   ...(kernel==='loading'?{check,musicMs:Number(fields.get('musicNanos:J'))/1e6,graphicsMs:Number(fields.get('graphicsNanos:J'))/1e6,
     loadingMs:(Number(fields.get('musicNanos:J'))+Number(fields.get('graphicsNanos:J')))/1e6}:{}),

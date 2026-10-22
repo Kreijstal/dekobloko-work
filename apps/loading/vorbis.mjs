@@ -176,10 +176,33 @@ function inspect(revision,method='MusicDecoder.readBit()I'){
  console.log('Inspected '+method+' at '+result.inspection.output+'; counts excluded from timing pairs');
 }
 
+function outline(revision){
+ assert.match(revision,/^[0-9a-f]{40}$/);assert.notEqual(process.env.JVM_WASM_IMPORT_STATS,'1');
+ const runId=crypto.randomUUID(),input=JSON.stringify(projectMeasurementFixture(read()));
+ for(let sample=0;sample<3;sample++){
+  const stdout=execFileSync(process.execPath,[...nodeArgs,path.join(here,'probe.mjs'),'slab','3-0.bin',revision,'vorbis',player,fixtureStdinFlag],{
+   input,encoding:'utf8',maxBuffer:16*1024*1024,env:{...process.env,JVM_WASM_OUTLINE_DIAGNOSTIC:'1'}});
+  const result=parseMeasurementResult(stdout,'PROBE_RESULT '),current=read();
+  assert.ok(result.instrumented&&result.equal&&result.wasmOptimizer?.outlinedLoops.length,'Invalid outlining diagnostic');
+  assert.equal(result.error,undefined);assert.deepEqual(result.lateCompiles,[]);assert.equal(result.compilation.postMainSyncCompileCount,0);
+  assert.equal(result.fixtureSha256,current.vorbisBenchmark.probeClassSha256);
+  const method=result.methods.find(m=>m.key==='MusicDecoder.decodePacket(I)[F').wasm;
+  assert.ok(method.directEntries+method.runs>0&&method.exits===0,'Changed decoder must actually run natively');
+  const inputSha=method.layout.moduleInputSha256,changed=result.wasmOptimizer.modules.find(m=>m.inputSha256===inputSha);
+  assert.ok(changed&&changed.outputSha256!==inputSha,'Active decoder must use changed bytes');
+  assert.equal(result.wasmOptimizer.preview.inputSha256,inputSha);
+  const trial=(current.optimizationTrials.wasmLoopOutlining||={observations:[]});
+  trial.observations.push({...result,runId,sample,measuredAt:new Date().toISOString(),excludedFromAcceptance:true});
+  fs.writeFileSync(receiptPath,JSON.stringify(current,null,2)+'\n');
+  console.log('outline sample '+(sample+1)+': '+result.decodeMs.toFixed(3)+' ms; PCM exact; active module '+changed.outputSha256);
+ }
+}
+
 const [command,...args]=process.argv.slice(2);
 if(command==='build')build();
 else if(command==='one')await one(...args);
 else if(command==='run')run(selectBenchmarkRevision(args[0]));
 else if(command==='run-jvm')run(selectBenchmarkRevision(args[0]),['jvm']);
 else if(command==='inspect')inspect(selectBenchmarkRevision(args[0]),args[1]);
-else throw Error('Usage: vorbis.mjs build | run-jvm EXACT_REVISION | run [baseline|EXACT_REVISION] | one jvm|teavm EXACT_REVISION | inspect baseline|EXACT_REVISION [METHOD]');
+else if(command==='outline')outline(selectBenchmarkRevision(args[0]));
+else throw Error('Usage: vorbis.mjs build | outline EXACT_REVISION | run-jvm EXACT_REVISION | run [baseline|EXACT_REVISION] | one jvm|teavm EXACT_REVISION | inspect baseline|EXACT_REVISION [METHOD]');
