@@ -12255,3 +12255,37 @@ The single existing benchmark report retains typed-target samples, source
 identities, native observations and region inputs. The selected full comparator
 remains 2119.374386 ms versus historical TeaVM 359.739597 ms (**5.8914x**).
 The 1.10x goal and browser/phone acceptance gates remain unmet.
+
+### Typed native-object entry: component screen, then withdrawal
+
+Candidate `49678b7a47bd9e59b7018f161f63dfa533fc2738` removes generic cache flags,
+opaque-store reconstruction and fallback base queries from the entry of a
+proved callback-free native-object body. Private typed parameters retain their
+existing ownership contract; ordinary entries perform one non-observing storage
+lookup. Missing/foreign/custom storage spills before effects. Null and negative
+bases use one refusal path. Other field accesses keep their existing behavior.
+
+```bash
+# java-tools: 326/326 pass, including GC, suspension, replacement, custom getters,
+# foreign storage, wide/floating values, native calls and exceptions:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectBody.test.js test/nativeObjectForwarding.test.js test/nativeObjectFieldCodegen.test.js test/wasmCompilerRetention.test.js
+# dekobloko-work: zero guest ticks; reuse saved TeaVM native code:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 49678b7a47bd9e59b7018f161f63dfa533fc2738 original-reader
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs run-jvm 49678b7a47bd9e59b7018f161f63dfa533fc2738 buffered-ready-helper bzip-ready-owner
+```
+
+The original reader is 2624 native bytes (earlier saved body 2748; TeaVM 552).
+That size reduction establishes no execution gain by itself. Changed-source
+reader samples are **4.174885, 5.155152, 4.530898 ms**; median **4.530898**, versus
+historical **4.367042**. Archive samples are **42.505581, 45.755839, 41.557936 ms**;
+median **42.505581**, versus historical **45.214595**. Ranges overlap. All checks
+match with zero late compilation. No unchanged JVM baseline or TeaVM execution
+runs, and no Vorbis/full-loading campaign is justified by this screen.
+
+Withdraw at `59b685da9680fa99ffd8dea81760c47a4f4b515f`. Restore the three changed
+source/test files without restoration tests, fingerprints or timing. Preserve
+the candidate and tests in experimental history; the one canonical report keeps
+the measurements under `typedNativeObjectEntry`. The earlier small streaming
+region experiment (`ce2c670`) already covered emitBlockRuns and found no clear
+general gain; do not repeat that threshold change. These rejected entry changes
+leave the corrected full comparator and deployment unchanged.
