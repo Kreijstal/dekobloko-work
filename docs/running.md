@@ -12935,3 +12935,143 @@ experimental infrastructure, then make a demonstrably used closed region before
 requesting another candidate timing cohort. No generated output is committed;
 all diagnostics stay in the one existing `benchmark.json` and canonical native
 code preview. Browser FPS, aggregate memory and phone acceptance remain open.
+
+
+### Closed regions in mixed decoders and SSA certificate transport
+
+The previous closed-call capability had no ordinary-entry root in the loading
+graph. This pass implements a bounded region proof in generic JVM code; no game
+identity, priority map or runtime opt-in is added. Mixed methods can enter and
+leave a union of eligible basic blocks. Private receiver, array and cast facts
+start untrusted, are invalidated on outside-to-inside edges, and are killed or
+transported when SSA values change. Partial methods never publish a whole-body
+closed certificate or trusted export.
+
+The first version, `6e29fe2fc0e3406026b523e44325f8d0a707c3d9`, reaches the actual
+archive decoder: the full preparation census has 708 entry/callee rows and
+admits 26 closed calls across 104 blocks of `Bzip2Decoder.decodeBlocks`. This
+census executes no Java ticks or asset requests. A changed execution diagnostic
+matches checksum `-1415522687`, compiles no guest code, and actually enters the
+closed reader 490948 times (plus 320218 closed `readBit` entries and 40 closed
+`readByte` entries).
+
+That first placement is a **performance failure**. Three candidate-only fresh
+archive processes take 267.053, 237.653 and 261.492 ms; median **261.492 ms**,
+versus saved current-comparator samples 40.807995, 41.699230 and 40.140670 ms
+(median **40.807995 ms**). The excluded diagnostic records **634811 strict
+object validations**: conservative boundaries fragmented the hot loop. None of
+these measurements reruns the baseline or TeaVM, and this source is not selected
+as the measured baseline or published.
+
+At `111b80058414dce19e18f238643d2ee67da1aec1`, primitive array accesses may acquire
+an owned header from their **actual SSA value**, including outside captures and
+loop-carried arrays. A side-effect-free allocation-registry query refuses
+foreign/plain arrays at their exact access, preserving completed child calls
+and operand prefixes. The changed diagnostic admits 108 blocks and adds only
+three owned-header queries, but leaves object validations at 634811. That
+observation rejects array provenance alone as the explanation; no timing cohort
+is spent on that insufficient refinement.
+
+Source inspection identifies repeated array casts and native static array
+reads inside the decode loop. At `1e0e703c61c8e0810f10a0b4c737c1ce2805d34d`, a
+primitive-array cast earns a combined class/header certificate from owned
+metadata and a plain own type descriptor, without invoking a getter. Null
+casts succeed; a later null array access still fails at its original instruction.
+A failed cast proof exits at the cast and uses the existing Java check. Boolean
+arrays remain excluded from this raw-array proof. Canonical static reference
+cells use their existing native value/header and a readiness/cell-validity
+guard at the actual `getstatic`. Cold initialization and customized getters
+retain exact preceding effects. Their block-level guard must not initialize a
+dependency before a completed prefix.
+
+The proof also admits these casts under default compiler policy. Discovery can
+emit the existing checked cast for a proved candidate. If its callee becomes
+ready only during discovery, one bounded retry restores the cast snapshots and
+reconsiders only the corresponding cast demotion. Snapshot plans are released
+with the other compiler analyses. No environment switch is needed.
+
+This version admits 118 blocks, nine casts and six static reads. It reduces
+object validations to **8795**, but still executes **512016 cast/header queries**.
+That new diagnostic determines the next change: proofs were discarded at SSA
+joins even when the reference value was simply being carried onward.
+
+At `b4c540061ed46e302a9b87f97f6fdc593690000c`, a bounded upstream closure (maximum
+256 value/type pairs) provides certificate locals for needed SSA joins. Edge
+emission snapshots source certificates before any phi target is killed, then
+installs them in parallel with the corresponding reference assignments. This
+handles swaps without lending one array's proof to another. Unsupported edges
+still revoke every certificate. A successful cast also seeds its result's
+owned-array header, so its following access needs no second query.
+
+The original archive diagnostic now has **8795 object validations, 10248
+cast/header queries, and three separate owned-array-header queries**. It uses
+30 cast certificate records for nine cast sites. Checksum and zero guest
+compilation remain correct. The final focused ten-file command passes
+**1128/1128 assertions**, including phi swaps (two alternating arrays authenticate
+once each), callback revocation, captured old arrays, exact foreign-array exits,
+custom type/static getters, cold initialization observing child writes,
+replacement/withdrawal, exceptions, nested fuel, retention and worker transport.
+Native region stores explicitly invalidate generic field-value caches that may
+be read after the region. The first new fixtures incorrectly expected a replaced
+field container to remain canonical, inspected an absent `deopted` result field,
+and assumed a host-written static value survived class initialization; those
+fixture failures were corrected and are not counted as passes. Cast discovery
+initially exposed the default admission gap, which required the compiler retry
+change described above.
+
+The final candidate-only archive cohort takes **38.955, 33.149 and 40.559 ms**
+(rounded command output; full precision remains in the canonical report). These ranges overlap the saved comparator; do not promote a
+whole-loading baseline or claim a repeatable gain from this small control alone.
+Full loading must decide whether the native region helps the actual workload.
+
+```bash
+# java-tools; final region/phi compiler source b4c5400.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/closedNativeCalls.test.js test/entryModeCode.test.js test/nativeObjectBody.test.js test/canonicalDirectFrames.test.js test/nativeObjectForwarding.test.js test/structuredLoopResume.test.js test/wasmJsExceptionTags.test.js test/wasmCompilerRetention.test.js test/classMirrorTransport.test.js test/nativeStaticReferenceCodegen.test.js
+# Deko; first actual full-graph admission, no guest execution.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/probe.mjs slab all 6e29fe2fc0e3406026b523e44325f8d0a707c3d9 loading /home/kreijstal/.cache/dekobloko/geoblox-loading prepare
+# Excluded diagnostics; same command at each changed revision above.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose b4c540061ed46e302a9b87f97f6fdc593690000c bzip-ready-owner
+# Fresh candidate processes only; saved comparators are reused.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm b4c540061ed46e302a9b87f97f6fdc593690000c bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --options diagnostic --revision b4c540061ed46e302a9b87f97f6fdc593690000c --pairs 3 --backends jvm
+```
+
+Timing children use Node 22.23.2, CPU 2, a 1 GiB old-space limit and eager
+optimizing Wasm (`--no-liftoff --no-wasm-lazy-compilation`), without warmup or
+concurrent tests/profiles. All new diagnostics and observations stay in the
+existing `benchmark.json`; no generated Java or binary is committed.
+
+The final full-loading cohort at b4c5400 is:
+
+| Sample | Music ms | Graphics ms | Loading ms |
+|---|---:|---:|---:|
+| 1 | 1550.389774 | 335.123345 | 1885.513119 |
+| 2 | 1779.274637 | 394.099361 | 2173.373998 |
+| 3 | 1962.875584 | 383.945467 | 2346.821051 |
+
+Median **2173.373998 ms**, **12.67% above** the saved
+1929.057624 ms comparator. All three output checks match
+`18:218292:2368412830:205:7597510:3045679678`, and all three have zero late
+compiles and no instrumentation. This does not establish an overall improvement.
+The measured baseline remains `97aa42e`; no production artifact is updated.
+The candidate remains **6.0415x** historical TeaVM, so the
+1.10x objective is unmet. These nonconcurrent historical cohorts do not isolate
+causality; do not infer a guaranteed 12% compiler regression from their medians.
+
+Retain the proved region/phi machinery on the experimental ref, with its
+negative observations under `optimizationTrials.closedNativeRegions` in the
+same canonical report. Original source inspection identifies a separate next
+case: the music decoder's readBit/readBits loops use a static byte array and
+static integer cursors. The current native-static-array proof excludes scalar
+static writes. A generic, checked whole-body static-state proof can remove
+repeated cell decisions there; test that small original reader path before
+another full-loading cohort. Browser presented-FPS, aggregate-memory and phone
+gates are still unverified.
+
+Full-loading execution metadata confirms the same actual root: 118 blocks, nine
+casts, 26 closed calls and 33 method entries in the first sample. It records one
+exit at instruction item 51, then native continuation at item 61. Inspection of
+the fixed cached class with `javap -p -c` identifies item 51 as the initial
+transform-table `getstatic`, following the completed `blockSize100k` store. This
+is the exact static-read refusal boundary covered by the cold-field tests,
+not evidence for another profiling or unchanged-baseline campaign.
