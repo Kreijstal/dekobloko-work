@@ -134,7 +134,8 @@ try {
  if(kernel==='loading'){options.wasmFields=mode==='slab';options.denseInstanceFields=mode!=='slab';}
  if(mode==='slab'){options.wasmFields=true;options.denseInstanceFields=false;}
  globalThis.window=globalThis;globalThis.document={};
- const j=new JVM(options);delete globalThis.document;let assetCalls=0;
+ const j=new JVM(options);delete globalThis.document;let assetCalls=0,guestTicks=0;
+ if(prepareOnly)j.executeTick=()=>{guestTicks++;throw Error('Preparation-only inspection attempted a Java tick');};
  const preparationStop=new Error('Preparation-only census stops before Java main');
  if(temporary)j.jre.LoadingKernelProbe={applicationFallback:true,staticMethods:{'input()[B':vm=>freshLoadingBytes(vm,input)}};
  if(kernel!=='bzip'){
@@ -167,12 +168,35 @@ try {
   else error={type:caught.type||caught.name,message:caught.message,location:caught.jvmGuestLocation};
  }
  if(prepareOnly){
-  assert.equal(caughtPreparation,preparationStop);assert.equal(assetCalls,0);
+  assert.equal(caughtPreparation,preparationStop);assert.equal(assetCalls,0);assert.equal(guestTicks,0);
   const active=new Set(w.compiled.flatMap(s=>[s.meta,s.callee?.meta]));
   const proofConditions=compilerProofs.filter(p=>active.has(p.meta)).map(({meta,key,castSites,calls})=>({key,castSites,
    calls:calls.map(({callee,conditions})=>({callee,conditions:conditions.map(({global,version})=>({expected:version,current:global.value,valid:global.value===version}))}))}));
-  const diagnostic={revision,mainExecuted:false,assetCalls,proofConditions,excludedFromTiming:true,measuredAt:new Date().toISOString()};
-  const current=JSON.parse(fs.readFileSync(receiptPath)),trial=(current.optimizationTrials.localCallbackProof||={});
+  // Read export names directly; constructing another Module would recompile
+  // the same code without adding evidence about its entry-policy choice.
+  const functionExports=bytes=>{
+   if(!bytes)return null;
+   let at=8;
+   const u32=()=>{let n=0,shift=0;for(let i=0;i<5;i++){
+    assert.ok(at<bytes.length,'Truncated Wasm integer');const b=bytes[at++];n|=(b&127)<<shift;
+    if(!(b&128))return n>>>0;shift+=7;
+   }throw Error('Invalid Wasm integer');};
+   while(at<bytes.length){const section=bytes[at++],length=u32(),end=at+length;
+    assert.ok(end<=bytes.length,'Truncated Wasm section');
+    if(section!==7){at=end;continue;}
+    const names=[];for(let count=u32();count>0;count--){
+     const length=u32();assert.ok(at+length<end,'Truncated Wasm export');
+     const name=Buffer.from(bytes.subarray(at,at+length)).toString('utf8');at+=length;
+     const kind=bytes[at++];u32();if(kind===0)names.push(name);
+    }return names;
+   }return [];
+  };
+  const entryShapes=w.compiled.flatMap(s=>[['entry',s.meta],['callee',s.callee?.meta]].filter(([,meta])=>meta).map(([tier,meta])=>({
+   key:s.key,tier,bytes:meta.bytes?.length??null,exports:functionExports(meta.bytes),
+   inlineRun:!!meta.canonicalInlineCompactRun,inlineHeap:!!meta.canonicalInlineCompactHeapRun,
+   parameterArrayABI:meta.parameterArrayABI||[],parameterObjectABI:meta.parameterObjectABI||[]})));
+  const diagnostic={revision,mainExecuted:false,guestTicks,assetCalls,proofConditions,entryShapes,excludedFromTiming:true,measuredAt:new Date().toISOString()};
+  const current=JSON.parse(fs.readFileSync(receiptPath)),trial=(current.optimizationTrials.nativeEntryShapes||={});
   (trial.preparationDiagnostics||=[]).push(diagnostic);fs.writeFileSync(receiptPath,JSON.stringify(current,null,2)+'\n');
   console.log('PREPARATION_RESULT '+JSON.stringify(diagnostic));
  }else{

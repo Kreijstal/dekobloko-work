@@ -12010,3 +12010,179 @@ write every heap update through, and retain exact fallback/suspension behavior;
 it must first beat an original component before another full-loading campaign.
 The overall 1.10x objective and browser/phone memory/FPS/stability gates remain
 unmet and unverified, respectively.
+
+### Whole-invocation field promotion: rejected screen (2026-10-23)
+
+`d1e7c11b019afcbbe8786a9d9b38b2951f0958f9` extends the existing owned-object,
+callback-free proof across the invocation. After authenticating the receiver,
+it captures primitive fields in dedicated typed locals, uses them across
+branches/backedges and writes every update through immediately. Array extent
+ownership prevents array writes from aliasing the primitive slab. Host getters,
+volatile fields and reference writes cannot earn the proof. An invalid array
+still hands off before that block's effects; captured locals never become hidden
+continuation state. This differs from the earlier block-local forwarding trial.
+
+Existing focused tests pass **272/272**, and a new branching/loop fixture passes
+**18/18**: exact int/long/double state, owned array stores, zero-trip/null input,
+late bounds failure, fuel suspension followed by host mutation, and a forged
+unregistered array alias into the receiver's primitive field. Both commands
+run against the changed compiler:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectBody.test.js test/nativeObjectFieldCodegen.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectScalarPromotion.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs run-jvm d1e7c11b019afcbbe8786a9d9b38b2951f0958f9 buffered-ready-helper
+```
+
+Reader samples **4.649992, 5.356463, 4.418413 ms**, median **4.649992**, do not
+improve the saved historical 4.367042 ms result. All checksum/state checks match.
+Withdraw at `dd177049f883085bfc4bf0a685021306043bfe19`; no original-archive or
+full-loading campaign is justified for this failed component screen.
+Source/tests remain in the archived parent; no restoration validation runs.
+
+The compile-only reader tool now also supports `original-reader`, selecting
+`Bzip2Decoder.readBits(ILBzip2DecoderState;)I` rather than its source reduction.
+This candidate promotes four fields; the original reader's native body is
+2748 instruction bytes. Saved TeaVM WAT identifies the matching original
+reader as `$7`, including its mutable typed-function-reference initialization
+call before the refill loop. Its newly inspected native body is 552 bytes.
+The `$30` reduction omits that initialization call, so do not silently equate
+those two native entries. No TeaVM export executes in either code inspection.
+
+### Raw nonreturning array errors: component gains do not establish aggregate gain
+
+Inspecting the generated native path exposed a missing effect fact. A raw
+`err_aioob` import always throws, yet some emitted callers permit its hypothetical
+return to rejoin the array access. Prototype
+`0660be8aadc4a6f6f458a536692d226d43317a57` emits `unreachable` after that call
+when native JS tags propagate the throwable. Recorded-import compatibility
+wrappers can return after saving their exception and therefore retain their
+continuations. Every original array index check remains.
+
+The focused command passes **295/295**, including explicit Java load/store
+handlers, negative/end indices, null's distinct exception, exact failed-store
+effects, both tag/recorded-import configurations, and releasing the site analysis.
+The compile-only original-reader census finds 97 affected sites in
+`Bzip2Decoder.decodeBlocks`, 16 in its Huffman builder, one in the reader, two in
+its alphabet builder and eight in its run emitter. These are static SSA-site
+counts, not CPU attribution or dynamic error frequency. The changed reader is
+2600 native instruction bytes and reserves 96 stack bytes; the saved reader
+inspection reserves 112. Smaller frames alone do not prove a speedup.
+
+```bash
+# java-tools: 295/295.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmArrayErrorNoReturn.test.js test/nativeObjectBody.test.js test/wasmJsExceptionTags.test.js test/wasmCompilerRetention.test.js
+# Deko: changed source only, three sequential fresh processes each.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs run-jvm 0660be8aadc4a6f6f458a536692d226d43317a57 bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/vorbis.mjs run-jvm 0660be8aadc4a6f6f458a536692d226d43317a57
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision 0660be8aadc4a6f6f458a536692d226d43317a57 --options diagnostic
+```
+
+| Component | Samples ms | Median ms | Saved historical comparator ms |
+| --- | --- | ---: | ---: |
+| Original archive | 39.252994, 41.582519, 41.782517 | 41.582519 | 45.214595 (`ce2c670e`) |
+| Original Vorbis | 105.247975, 87.747359, 95.051902 | 95.051902 | 96.087914 (f2) |
+
+The archive median is about 8% lower; the Vorbis median differs by about 1%,
+which does not establish a meaningful gain. Every Vorbis PCM byte and archive
+checksum match; zero late Java compilation. Do not discard the slow Vorbis run.
+
+| Full-loading sample | Music ms | Graphics ms | Total ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1965.981254 | 469.380863 | 2435.362117 |
+| 2 | 1791.647481 | 396.963538 | 2188.611019 |
+| 3 | 1776.848855 | 381.936725 | 2158.785580 |
+
+All full checksums match with zero late compilation. Median **2188.611019 ms**
+is 16.79% above saved f2 and 6.0839x historical TeaVM. The required correctness
+fix already retained in this source was not previously measured alone; the
+corrected comparison below narrows the interpretation of this difference.
+
+A proposed explanation was crossing the existing 16 KiB compact-entry budget.
+Test that using **compile-only export inspection**, not more baseline timings:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/probe.mjs slab all 0660be8aadc4a6f6f458a536692d226d43317a57 loading /home/kreijstal/.cache/dekobloko/geoblox-loading prepare
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/probe.mjs slab all f2c8ad04a4b035ee863cd3abc29ae44c5b88f083 loading /home/kreijstal/.cache/dekobloko/geoblox-loading prepare
+```
+
+Both preparations stop at the main boundary. An overridden `executeTick` rejects
+any Java tick, and an asset bridge rejects any request. Each records **zero Java
+ticks and zero asset calls**. The inspector reads Wasm export names directly from
+the existing bytes; it does not compile those modules a second time. Across all
+**708 matching method/tier records**, there are **zero compact inline-export
+choice changes**. The threshold explanation is therefore unsupported. This is
+new entry-policy evidence, not a replay of f2, TeaVM or HotSpot execution or a
+baseline fingerprint check. The single canonical report retains both censuses
+under `optimizationTrials.nativeEntryShapes`.
+
+### Corrected source comparator and typed-target proof
+
+One isolation gap needed correction: recent experiments contain a required
+reference-array field-cache fix, while the saved f2 comparator predates it.
+A checked field-cache hit has no private transport payload; replacing metadata
+already discovered by the array with null would pair a valid base with a null
+typed store. The retained fix preserves that metadata. Existing regression tests
+cover it. The runtime diff from f2 is **one guard in StructuredWasmCompiler.js**
+(seven inserted lines, two removed); the other changes in this source are tests.
+No full-loading cohort had measured that fix alone.
+
+Measure that **changed correctness-fix source once**, rather than replaying the
+already measured f2 source or rerunning unchanged correctness tests:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision 42066793907a9308c2420fbeea2afd013cd380df --options diagnostic
+```
+
+| Corrected-reference sample | Music ms | Graphics ms | Total ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1515.128779 | 412.757082 | 1927.885861 |
+| 2 | 1689.993719 | 699.856556 | 2389.850275 |
+| 3 | 1754.973893 | 364.400493 | 2119.374386 |
+
+Every checksum matches with zero late compilation. Median **2119.374386 ms**
+becomes the **corrected experimental source comparator**, selected by
+`apps/loading/benchmark-baseline.mjs`. This is a correctness supersession,
+**not a claimed speedup**, and does not change deployed artifacts. Keep saved f2
+results intact. The broad cohort variation and historical rather than freshly
+paired controls prevent assigning the entire difference to the cache fix.
+The error-import candidate's 2188.611019 ms median is about **3.27% above** this
+corrected comparator and still establishes no aggregate gain. Withdraw it at
+`42066793907a9308c2420fbeea2afd013cd380df`; keep the required correctness fix.
+
+The original TeaVM reader also supplies a concrete call-type idea: its typed
+function reference contrasts with the JVM's untyped canonical table plus
+per-invocation signature validation. A small generic proof in
+`java-tools/test/typedCanonicalTarget.test.js` passes **16/16 assertions**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/typedCanonicalTarget.test.js
+```
+
+A mutable, non-null typed function global starts on the established fallback.
+An already installed caller sees replacement and withdrawal. Incorrect result
+signatures and null are rejected when assigning the target. The caller imports
+no untyped table. Externref identity, i64 values beyond 2^53, negative zero,
+multiple results and the VM's native GC-storage signature remain exact. The
+proof works on this Node host without feature flags. **It is not integrated into
+the runtime and has no measured performance claim.** Actual native code still
+needs inspection before claiming that per-call checks disappear.
+
+The next bounded implementation is to export that typed target from each
+**existing canonical fallback module**, avoiding a second module per call site.
+Keep old table entries for unconverted callers and unsupported engines, detect
+support automatically, preserve readiness/exit ownership and update both targets
+on publication/withdrawal. Test stale-target collection and incompatible
+publication. Encode heap type indices with signed LEB, including indices above
+63; function indices remain unsigned. Inspect changed native call sites before
+running component and aggregate campaigns. This introduces no game names or
+public flags into java-tools.
+
+All source/tests remain in experimental Git history. The one existing
+`benchmark.json` retains commands, source identities and observations under
+`nativeObjectScalarPromotion`, `nonReturningArrayErrors`, `nativeEntryShapes`,
+`cacheCorrectnessComparator` and `typedCanonicalTargetProof`. No generated Java,
+binaries, bundles, WAT or extra JSON reports enter Git. The corrected reference
+is **5.8914x** historical TeaVM (359.739597 ms), far from 1.10x. Browser/phone
+presented-FPS, aggregate heap, startup and stability gates remain unverified;
+java-tools master and deployment are unchanged.
