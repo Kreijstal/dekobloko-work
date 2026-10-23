@@ -15092,3 +15092,110 @@ bundle. The next controlled question is to isolate pairing on the recorded 029�
 source, excluding previously rejected nested-inlining/region machinery. This is
 a new changed candidate, not a baseline restoration or control replay. Preserve
 the current source and measurements in their experiment refs/journal first.
+
+### Isolate pairing, then eliminate redundant cache publication
+
+`447619a5868b11fe2e2e592d8c7fbc107d008c1b` is a new changed candidate based on
+029… with only the certificate, entry modes, canonical pairing and tests. It
+excludes later nested/region/inlining-policy/preparation-settling experiments.
+Its source is archived under `experiment/teavm-paired-storage-isolated`; actual
+JVM master and the primary experiment worktree remain untouched. Patch conflicts
+are confined to the cleanup-list context and the old state-entry loop without
+regions. Resolve them by applying the same new map cleanup and checked/paired
+authentication to the existing loop; no control is built or executed. Generate
+only the ignored JRE index needed to test this new source; no generated output
+enters the commit.
+
+The isolated protocol passes **474/474** assertions. Its diagnostic retains one
+million vector entries, one pairing lookup, zero JS entry validation, exact
+checksum and zero native exits/late Java compiles. Changed samples are
+**89.113609, 90.106112, 85.750748 ms**, median **89.113609 ms**: overlapping the
+recorded 89.520345 screen and slower than the earlier 72.269691 paired candidate.
+Its shared-core code metrics (65/81 locals, 3984/4892 native bytes, 184/152 stack
+bytes) are similar to the already recorded paired candidate. These shared-core
+metrics do not establish which instructions execute in its paired export, or
+explain the timing difference. Do not infer a CPU cause or replay a control.
+
+The new source inspection identifies unnecessary repeated publication in
+`pairedNativeStorage.fill`: after pairing, each call rewrites the same typed
+store, raw store, base and flags. `f9133a568262b4ba9d82c2e07539675b109a47a0`
+reuses a matching already-filled cache. A pair belongs to one SSA value; expiry
+cannot reissue its monotonic certificate. Fresh/cleared caches still acquire the
+actual receiver relationship and populate only valid storage; invalid cases use
+the existing checked fill. Slot selection and callee entry retain their native
+revocation checks. The new between-iteration mutation test completes the first
+native call, replaces its wrapper fields, then checks the next call's precise
+handoff, both results and exactly-once cursor effects. One original pairing
+lookup remains; an expired pair is never reissued. No shared trust flag or new
+configuration option is added.
+
+```bash
+# In /tmp/geoblox-native-parity-7zCq8O/paired-isolated, changed sources only.
+node scripts/generate-jre-index.js
+# Isolated protocol: 474/474 assertions.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/pairedNativeStorage.test.js test/entryModeCode.test.js test/nativeObjectStorage.test.js test/nativeObjectForwarding.test.js test/wasmParameterArrayAbi.test.js test/wasmCompilerRetention.test.js
+# Cache reuse plus between-iteration mutation, forwarding and array ABI: 205/205.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/pairedNativeStorage.test.js test/nativeObjectForwarding.test.js test/wasmParameterArrayAbi.test.js
+# Deko; changed candidate diagnostics, code question and timing only.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-paired-inspect 447619a5868b11fe2e2e592d8c7fbc107d008c1b
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-paired-candidate 447619a5868b11fe2e2e592d8c7fbc107d008c1b
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-paired-code 447619a5868b11fe2e2e592d8c7fbc107d008c1b
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-paired-inspect f9133a568262b4ba9d82c2e07539675b109a47a0
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-paired-candidate f9133a568262b4ba9d82c2e07539675b109a47a0
+```
+
+Cache-reuse samples are **71.250717, 70.975363, 70.930814 ms**, median
+**70.975363 ms**, approximately 20% lower than the recorded immediate predecessor
+89.113609 ms. The new stable component comparator is this changed source and
+median. Its difference from the earlier 72.269691 paired median is small and the
+ranges overlap; do not assert a separate ancestry gain. The changed diagnostic
+again has one million actual vector calls, one pairing lookup, exact checksum,
+zero native exits/late compilation and no JS vector ownership validation.
+
+This justifies inspecting the changed original before its cohort. No original,
+TeaVM, HotSpot or small-case control is rerun, no CPU profile is launched and the
+original/full comparator remains 029… pending original evidence.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect f9133a568262b4ba9d82c2e07539675b109a47a0 'VorbisCodebook.readVector()[F'
+```
+
+The cache-reuse original diagnostic passes applicability: **134216 vector native
+entries**, nine static-state sites, two residue paired-call sites, **12421 caller
+pairing queries**, zero vector JS entry-ownership queries, zero exits and zero
+late Java compilation. Every recorded PCM byte matches. The row-container
+lookup and 16080 foreign-row fallbacks remain distinct supported operations.
+
+```bash
+# Deko; new original only, unchanged controls are not executed.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm f9133a568262b4ba9d82c2e07539675b109a47a0
+```
+
+The changed cohort is **98.256, 115.755, 103.660 ms** (full precision retained in
+the single ledger), median **103.660 ms**, versus recorded **93.269749 ms**.
+Retain the slow 115.755 observation. This is approximately **11% slower**, so the
+original gate fails again. The 70.975363 small-case comparator remains useful
+for that reduction, but does not advance the original/full comparator. No full
+loading cohort, production artifact, deployment, FPS/heap claim or TeaVM parity
+claim follows. The saved full comparator is still **1807.0171855 ms** versus
+saved TeaVM **359.739597 ms**; the **1.1x objective is unfulfilled**.
+
+Next inspect the *actual paired export* and original call protocol, rather than
+attributing execution costs from shared-core static metrics. One specific
+compiler-proof question is whether the caller certificate test repeats the
+callee's final revocation decision. Any removal must retain argument-to-receiver
+provenance and handle legacy/null metadata and replacement that no longer has a
+stateful validated entry. The current test withdraws the proof on an otherwise
+validated body; it does not establish safety for every unproved replacement.
+Do not implement a broader trust shortcut based on that test. No fresh control,
+baseline-restoration timing or repeated CPU attribution is needed.
+
+All implementation source is durable in JVM refs:
+`experiment/teavm-native-parity` at `fc7ab7ed…` and
+`experiment/teavm-paired-storage-isolated` at `f9133a56…`. The actual master remains
+`cbcf8adde30e16d2efd8521798dd7646307fd133`; unrelated decompiler changes are
+preserved. Temporary candidate source and test logs can be deleted without
+losing implementation or evidence: reconstruct the isolated candidate with
+`git archive experiment/teavm-paired-storage-isolated`, generate its ignored JRE
+index with the command above, and run the recorded focused tests. The one cache
+ledger and this journal retain the measurements and failures.
