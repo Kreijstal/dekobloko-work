@@ -11802,3 +11802,117 @@ The next new evidence should be a bounded native-code comparison of those call
 shapes, using compile-only inspection or a new tiny linked-call model. Do not
 repeat the failed boolean implementation or assume a whole-module linker will
 help before that comparison demonstrates a relevant difference.
+
+### Native call evidence and two withdrawn reader changes (2026-10-23)
+
+Reuse all saved timings and correctness oracles. Do not execute, fingerprint or
+retest unchanged JVM/TeaVM/HotSpot controls, including restored source. New
+compile-only inspection must answer a new code question; previously recorded
+TeaVM machine-code observations are reusable evidence too.
+
+`apps/loading/call-code.mjs EXACT_REVISION boolean|reader` prepares archived JVM
+source and stops at `markMainStarted`, before guest initialization/main. A
+replacement `executeTick` throws if any guest tick is attempted. It disassembles
+the actual published compact export and compiles its Wasm to optimized native
+code in a child Node process; that child constructs `WebAssembly.Module`, never
+`Instance`. No TeaVM export executes. The tool records static WAT operations,
+actual function indices, native instruction bytes, call instructions and V8
+inlining traces in the existing `benchmark.json`. For an already inspected
+family/engine/flags it reuses recorded TeaVM rows. Only one current native text
+per backend and one current JVM WAT live in the ignored cache; none enter Git.
+
+The first native inspections use archived JVM
+`e3bc5a10260e49a4b126b0c3172b649816f4f0a7` and saved TeaVM Wasm. They establish
+something that the prior WAT-only inspection could not:
+
+| Published function | Native instruction bytes | Observed call behavior |
+| --- | ---: | --- |
+| JVM boolean caller | 1208 | Retains indirect canonical table call |
+| JVM boolean helper | 2624 | Retains indirect recursive call |
+| TeaVM boolean caller | 344 | V8 inlines helper and its next recursive call |
+| TeaVM boolean helper | 348 | V8 unfolds two recursive levels; remaining call stays |
+| JVM buffered-reader caller | 4208 | Retains two indirect calls |
+| JVM bit reader | 2744 | Guarded native body |
+| TeaVM buffered-reader caller | 312 | Reader call remains direct |
+| TeaVM bit reader | 488 | V8 refuses the 171-byte wire body for inlining budget |
+
+Thus the boolean control is **not** an equal retained-call comparison, even
+though the recursive call is present in TeaVM WAT. The reader comparison also
+shows that inlining alone is not the explanation: TeaVM does not inline that
+reader. These static counts are not execution-time CPU attribution. Node's
+reported default `--no-experimental-wasm-inlining` is insufficient evidence of
+what actually happens; optimized output and its inlining trace are the evidence.
+The first boolean observation predates the tool's restriction to disassembly
+instruction lines, so its initial call list also contains relocation entries;
+do not interpret those duplicate lines as dynamic call counts.
+
+Two generic changes were then isolated on the existing guarded native-object
+body. Neither changes default artifacts or the accepted performance baseline.
+
+1. `8e151ff8a81f4a5ea0adb6c13cb7bded997e0401` forwards scalar values within a
+   basic block across private array writes and other primitive field writes.
+   Dedicated typed Wasm locals capture values at the original load/store;
+   stores remain write-through. The proof has no callbacks, volatile accesses
+   or reference writes, and authenticated array extents cannot alias the
+   receiver's primitive slab. No early loads, new guards or flags are added.
+   All **295** focused assertions pass, including wide/double values, aliased
+   unregistered views, late bounds failure and interpreter continuation after
+   suspension. An initial fixture attempt has three failures: a wrong expected
+   long constant and omitted assignment of the returned raw continuation PC.
+   Correcting the harness precedes the passing run; these were not runtime fixes.
+   Native reader code falls only from 2744 to **2728 bytes**.
+2. `3c20938223c52296d9f6450a8da9a17a0ae5ec23` omits materializing a primitive
+   array field as an externref when all its uses are authenticated array
+   operations in that same block. It retains references used by branches,
+   other blocks and frame/operand snapshots. Ownership refusal still precedes
+   every effect in that block. All **277** focused assertions pass, including
+   explicit null-reference comparisons and existing ownership/fuel/exception
+   cases. The reader selects one eliminated reference load; native code falls
+   from 2744 to **2080 bytes**, a 24.20% reduction. The caller stays 4208 bytes.
+   The actual TeaVM native rows are reused, not compiled again for this trial.
+
+```bash
+# java-tools: scalar trial, 295/295.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectScalarFlow.test.js test/nativeObjectBody.test.js test/wasmCompilerRetention.test.js test/nativeObjectFieldCodegen.test.js
+# java-tools: array-reference trial, 277/277.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectBody.test.js test/wasmCompilerRetention.test.js test/nativeObjectFieldCodegen.test.js
+# Deko: compile-only, changed array-reference source; existing TeaVM rows reused.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 3c20938223c52296d9f6450a8da9a17a0ae5ec23 reader
+# Deko: each command runs only its changed JVM source, three fresh processes.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs run-jvm 8e151ff8a81f4a5ea0adb6c13cb7bded997e0401 buffered-ready-helper
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs run-jvm 3c20938223c52296d9f6450a8da9a17a0ae5ec23 buffered-ready-helper
+# Tool syntax validation; passes.
+node --check apps/loading/call-code.mjs
+```
+
+| Changed source | Reader samples ms | Median ms |
+| --- | --- | ---: |
+| Scalar forwarding | 4.286705, 4.835585, 5.021284 | 4.835585 |
+| Array-reference omission | 5.370380, 4.426524, 4.467098 | 4.467098 |
+
+Each sample replays the saved original 490,954-request reader workload, checksum
+1418269787 and exact final state `[1,1304428078,87150,87141]`. These results do
+not establish improvement over the **saved historical** native-body reader
+median 4.367042 ms (`e87d2e59e4256de7fb4e777a46cbe7e0a9616821`); this is not a
+new paired baseline or a fresh f2 component measurement. A smaller native body
+alone therefore does not justify a full-loading campaign.
+
+Withdraw scalar forwarding at `81f8889e49688ab2c2827f290e97556fad92a668` and
+array-reference omission at `900d07ed67e23473afca110bf7d03746aa0d890c`. The source
+and tests remain in their experimental parent commits. No restored-source test,
+timing or fingerprint runs. Results and commands remain in the single canonical
+report under `optimizationTrials.nativeCallCode`, `nativeObjectScalarForwarding`
+and `nativeArrayReferenceMaterialization`; no JSON report is added to Git.
+
+The next useful question is which **hot-path** entry, suspension and return
+bookkeeping can be proved unnecessary, rather than assuming fewer static loads
+or cold checks must be faster. Compare the already captured native instruction
+paths before implementing another change. Preserve Java exceptions, host
+mutation/fallback and suspension; TeaVM's absent VM fuel protocol is not proof
+that arbitrary JVM methods cannot suspend. Repeating an unchanged call-control
+or CPU profile would not answer that question.
+
+The f2 full-loading comparator remains 1873.955270 ms versus saved TeaVM
+359.739597 ms (**5.2092x**, not the requested 1.10x). Neither full loading nor
+browser/phone presentation, heap or stability gates are remeasured by this
+component work. Java-tools master, deployment and selected artifacts are unchanged.
