@@ -15,12 +15,12 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
 const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit','packet-metadata'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
 options.classpath=[path.join(family==='mdct-frame-remat'?path.join(player,'mdct'):fullGraph||directMusic||originalFlow||family==='frame-remat'?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
 let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls,stableHeaders;const proofCensus=[],translationFailures=[],headerCensus=[];
@@ -278,6 +278,20 @@ if(directMusic){
  assert.ok(boundary,'Preparation did not reach the main boundary');assert.equal(failure,stop);
 }
 assert.equal(ticks,0);assert.equal(assetCalls,0);
+if(family==='constructor-coverage'){
+ const keys=['VorbisCodebook.<init>()V','MusicDecoder.decodeSetup([B)V','VorbisResidue.<init>()V','MusicDecodeStage.<init>()V','VorbisMapping.<init>()V'];
+ const rows=keys.map(key=>{
+  const state=j.jit.wasmJit.compiled.find(s=>s.key===key),meta=state?.meta;
+  return {key,status:state?.status,full:!!meta?.fullyCompiled,normalFull:!!meta?.normalFlowFullyCompiled,
+   demotes:[...(meta?.demoteReasons||[])],
+   multiArrayImports:Object.keys(meta?.importObject?.env||{}).filter(name=>name.startsWith('multianewarr_'))};
+ });
+ assert.ok(rows[0].normalFull,'Codebook constructor is still outside complete native flow');
+ const result={sourceRevision:revision,family,compileOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,rows,
+  note:'New missing-opcode admission question only; no constructor/main execution, timing, CPU attribution, TeaVM or unchanged-control validation.',measuredAt:new Date().toISOString()};
+ const current=JSON.parse(fs.readFileSync(reportPath));(current.optimizationTrials.nativeCallCode||={observations:[]}).observations.push(result);
+ fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(result,null,2));process.exit(0);
+}
 if(family==='packet-metadata'){
  const active=new Set(j.jit.wasmJit.compiled.flatMap(state=>[state.meta,state.callee?.meta,state.osr?.meta]));
  const rows=headerCensus.filter(row=>active.has(row.meta)).map(({meta,...row})=>row);

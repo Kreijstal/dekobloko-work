@@ -15400,3 +15400,251 @@ must first identify a concrete applicable code-shape difference against the
 stored TeaVM output, then earn another original/full cohort through a changed
 small case. None of these failed guard/load-count reductions justifies a broader
 admission rule or a claim that removing more checks will close the gap.
+
+
+### Storage forwarding: useful small case, failed original gate
+
+The preceding turn is progress: it archived two failed/no-op proofs and hardened
+oracle reuse. This pass continues the same full 1.1x goal. No known JVM, TeaVM or
+HotSpot baseline is executed, timed, restored-and-tested or fingerprinted again.
+No CPU-attribution campaign runs. Every new timing below is sequential on CPU2,
+Node 22.23.2, with the existing 1-GiB/eager-Wasm child flags. All evidence stays
+in the existing cache ledger; this existing journal is the only prose report.
+
+A recorded-exit question maps `decodePcmBudgeted` item 131 to its cleanup after
+the packet loop. That exit cannot explain its hot loop. Inspect the existing
+field reader next: ordinary cached reads forward the paired reference-array
+store already kept by the canonical field setter; `nativeStaticArrayBody.read`
+drops it. The isolated change forwards that existing metadata after the proved
+field read. Missing/foreign stores retain their lookup, and revoked arrays still
+fail their active-capability check before any element read. No new trust bit,
+GC ABI, game identity or runtime flag is added.
+
+Source/tests are archived at `58887ade869bc56f6ab64193611e687a9d965032`
+(`experiment/teavm-state-array-storage`), based on 029…, and expanded at
+`bb98e547ed5287eeca350f8febec0b08b02078b1`. Isolated validation passes **634/634**.
+Expanded validation is **761/762**: an existing cyclic-array test collects both
+weak owners but its capability-finalizer deadline expires. The isolated changed
+runtime rerun of `nativeReferenceArray.test.js` passes **94/94**. Preserve that
+initial failure; do not describe the first suite as entirely green. The new
+fixture initially expected scalar 1 after a getter deliberately changes it to 6;
+correct its expectation and separately assert that 1 was committed before the
+getter. This is a fixture correction, not a runtime fix.
+
+The separate-vector changed samples are **70.705109, 82.907485, 72.718911 ms**,
+median **72.718911**, below all three saved 89.520345-median control samples.
+The original diagnostic has 134216 real vector entries, exact PCM, zero exits /
+late compile, and reduces row-store queries to **16080**. Original samples are
+**104.368896, 97.455348, 123.077079 ms**, median
+**104.368896**, versus saved **93.269749**. That does not earn a
+full cohort. Withdraw this emission without restoration tests/timings, preserving
+its source and tests in the two refs.
+
+```bash
+# In the isolated 588… archive after generating its ignored JRE index.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStateReferenceArrayStorage.test.js test/nativeMixedStateBody.test.js test/nativeReferenceArray.test.js test/structuredLoopResume.test.js test/wasmCompilerRetention.test.js
+# Deko; changed candidate only, diagnostic completed before each timing cohort.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-inspect 58887ade869bc56f6ab64193611e687a9d965032
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-candidate 58887ade869bc56f6ab64193611e687a9d965032
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 58887ade869bc56f6ab64193611e687a9d965032 'VorbisCodebook.readVector()[F'
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 58887ade869bc56f6ab64193611e687a9d965032
+```
+
+### Large reference-array extents and demand-driven mirrors
+
+Source inspection identifies the remaining large-array fallback: the factory
+allocates a capability extent and GC reference vector, but `trackObject` refuses
+sizes above 4096 bytes. Its attempted `free` refuses them too. The returned plain
+Java array therefore leaves an untracked native allocation. This policy differs
+from Java logical bounds; increasing an execution heap limit is not the fix.
+
+`e5ac863013e03a9efe2bd8f95c165927820761ee` permits large **GC-tracked** object
+extents to return to exact-size bins. Untracked manual large frees remain refused.
+Wrong-size/stale finalizers cannot release replacements; reused bytes are zeroed
+without touching neighbors. Size checks prevent signed alignment wraparound.
+When reclamation is unavailable, the reference-array factory declines before
+allocating. This source excludes the rejected field-forwarding change.
+Expanded source is `37bf92b63643ca1e44dff7ccd03c8a93cdc10464`; refs are
+`experiment/teavm-large-reference-arrays[-expanded]`. Expanded checks pass
+**420/420**, isolated **434/434**, final targeted edge checks **38/38**.
+
+The new 1024-row reduction uses the same changed runtime and same compiled Java
+methods for an owned matrix and its supported plain-array fallback. This is a
+new data-shape question, not another old-source control. Both have one million
+real vector entries, checksum **-1834486005**, zero exits and zero late compile.
+Both retain one million row-store queries; native has **zero** checked row reads,
+plain has **one million**. Three alternating samples give:
+
+| New large case | Samples ms | Median ms |
+|---|---|---:|
+| Native mirror | 91.918307, 86.346483, 85.630732 | 86.346483 |
+| Supported plain fallback | 133.313773, 124.470379, 142.574663 | 133.313773 |
+
+The original diagnostic now has **zero checked row reads** in all 134216 vector
+entries, exact PCM and no vector exits/late compile. Original samples improve to
+**89.290224, 88.796425, 96.334317 ms**, median **89.290224**. This earns the full
+candidate-only gate, not a parity claim.
+
+| Eager-mirror full sample | Music ms | Graphics ms | Total ms |
+|---|---:|---:|---:|
+| 1 | 1636.826778 | 344.122738 | 1980.949516 |
+| 2 | 1639.215248 | 350.905811 | 1990.121059 |
+| 3 | 1567.604233 | 362.142200 | 1929.746433 |
+
+All checksums equal **18:218292:2368412830:205:7597510:3045679678**, with zero
+guest compilation. The **1980.949516 ms** full median exceeds saved 1807.0171855;
+ranges overlap, and this is not a fresh causal comparison. There is no established
+full gain and no comparator/default/deployment advancement. Preserve the lifetime
+proof but do not promote eager construction of every large mirror.
+
+```bash
+# In isolated e5a… archive after generating the ignored JRE index: 434/434.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReferenceArrayLarge.test.js test/wasmHeapFreeList.test.js test/nativeReferenceArray.test.js test/wasmHeapArrays.test.js test/wasmHeapGrowth.test.js test/wasmCompilerRetention.test.js
+# Deko; all previous commands have completed before the next begins.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs large-separate-inspect e5ac863013e03a9efe2bd8f95c165927820761ee
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs large-plain-inspect e5ac863013e03a9efe2bd8f95c165927820761ee
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs large-run e5ac863013e03a9efe2bd8f95c165927820761ee
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect e5ac863013e03a9efe2bd8f95c165927820761ee 'VorbisCodebook.readVector()[F'
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm e5ac863013e03a9efe2bd8f95c165927820761ee
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision e5ac863013e03a9efe2bd8f95c165927820761ee --options diagnostic
+```
+
+A separate demand-driven proof is archived at
+`9189b2e2cef6f22b7b125f93b7508a91ff219815`, expanded at
+`f1f1b66d0d9fa9d37f279c275d23d5226901f92e`, in
+`experiment/teavm-lazy-reference-arrays[-expanded]`. Large arrays keep their
+tracked proxy but allocate the native mirror only at a native-storage consumer.
+Field publication peeks without building it. Pre-build writes are captured at
+first materialization. Customization revokes before scanning any element, and a
+failed build is never retried on each subsequent query. Lost reclamation refuses
+before allocation. Pending and materialized self-cycles are collectible.
+
+Expanded integration passes **977/977**, final edge cases **60/60**, isolated
+integration **810/810**. The new cold API case allocates/fills 128 arrays of 1024
+references and reads native storage from sixteen. Both arms use this changed
+runtime; eager mode requests storage before filling, demand mode at first use.
+All Java arrays remain alive through timing. There are zero guest instructions
+or guest-method compilations; this measures runtime construction APIs, not a
+Java-loop or full-game benchmark.
+
+| New cold case | Samples ms | Median ms | Capability bytes |
+|---|---|---:|---:|
+| Request every mirror early | 47.543390, 41.347491, 42.538769 | 42.538769 | 1049600 |
+| Request on native use | 39.908543, 37.966005, 34.963650 | 37.966005 | 131200 |
+
+```bash
+# Isolated 918… archive, 810/810 after generating its JRE index.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReferenceArrayLarge.test.js test/nativeReferenceArray.test.js test/nativeObjectStorage.test.js test/nativeMixedStateBody.test.js test/structuredLoopResume.test.js test/wasmHeapFreeList.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs cold-eager-inspect 9189b2e2cef6f22b7b125f93b7508a91ff219815
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs cold-lazy-inspect 9189b2e2cef6f22b7b125f93b7508a91ff219815
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs cold-run 9189b2e2cef6f22b7b125f93b7508a91ff219815
+```
+
+This proves avoided construction and safe lifetime handling, **not** improved
+original/full loading. Park its emission separately before the next opcode
+experiment, without a restoration check. Do not merge it into the selected
+comparator or infer that all large arrays should become eager native mirrors.
+
+### Missing `multianewarray`: default generic support, full gain still unproved
+
+Read the saved constructor diagnostics rather than rerunning them. The codebook
+constructor has zero Wasm entries and one demoted block, `op multianewarray`.
+SSA and the interpreter already understand it. This does not prove which older
+non-Wasm JavaScript tier owned all constructor work; zero Wasm entries must not
+be equated with an entirely interpreted activation without further evidence.
+
+`9bce12bf8924156b6e822ae193976878adc94915` adds the missing instruction to both
+Wasm backends, using their shared runtime-import builder and existing
+`allocMultiArray`. Descriptor rank/argument count validation happens at compile
+time. Import names preserve distinct descriptors. Dynamic negative dimensions
+retain the shared all-dimensions-before-allocation check. Primitive/reference
+leaves and partially allocated dimensions keep their exact runtime array types.
+Creating component arrays never initializes their element class. There is no
+new runtime flag or application information in java-tools.
+
+The isolated candidate is based on 029… and contains only three compiler/import
+files and the new test. It excludes **both** allocator experiments and the failed
+field-forwarding change. Expanded source is
+`12b6b0e4497b3d718c448176dcd6c2aaa43b1af2`; refs are
+`experiment/teavm-multi-array[-expanded]`. Expanded and isolated suites each pass
+**496/496 assertions**: all eight primitive kinds, reference leaves, two/three
+allocated dimensions, null unallocated dimensions, independent row identities,
+zero dimensions, negative inner dimensions even with zero outer size, exact
+argument side effects/catch prefixes, complete constructor loops, canonical
+constructor resumption/throws and compiler graph cleanup. The first fixture run
+omitted static defaults while manually marking its class ready; explicitly seed
+its test counters to zero before checking initializer effects. No runtime change
+was needed for that fixture issue.
+
+```bash
+# Isolated 9bc… archive after generating its ignored JRE index: 496/496.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmMultiArrayAllocation.test.js test/preparedWasmConstructors.test.js test/wasmJsExceptionTags.test.js test/wasmHeapArrays.test.js test/wasmCompilerRetention.test.js
+# Deko, new preparation-only admission question: zero guest ticks/assets/main.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 9bce12bf8924156b6e822ae193976878adc94915 constructor-coverage
+```
+
+Preparation now reports **complete native flow** for the codebook constructor,
+`decodeSetup`, residue/floor/mapping constructors. The new `constructor.mjs` case
+executes one 32-by-32 constructor per fresh VM, through Wasm or the supported
+bytecode tier, both on the changed source. It creates no warmup/replay and runs
+no old-source/TeaVM/HotSpot control. Every element is checked against its analytic
+expected value; checksum is **-189630976**. Wasm has one native entry, zero exits;
+bytecode has zero native entries and 16717 VM ticks; neither compiles late.
+
+| New constructor case | Samples ms | Median ms |
+|---|---|---:|
+| Prepared Wasm | 1.295429, 1.280014, 1.329170 | 1.295429 |
+| Supported bytecode tier | 62.757469, 61.997220, 63.248657 | 62.757469 |
+
+This establishes a fast supported native constructor for this small new case;
+it is **not** a causal estimate of the game's previous fallback tier or full
+loading. Do not rerun original Vorbis **decode** to test constructor setup: its
+timer starts after that setup, and unchanged timed code is not a useful control.
+The positive small case and actual preparation coverage earn the full gate.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/constructor.mjs inspect 9bce12bf8924156b6e822ae193976878adc94915
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/constructor.mjs run 9bce12bf8924156b6e822ae193976878adc94915
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision 9bce12bf8924156b6e822ae193976878adc94915 --options diagnostic
+```
+
+| Opcode-only full sample | Music ms | Graphics ms | Total ms |
+|---|---:|---:|---:|
+| 1 | 1620.770739 | 363.106194 | 1983.876933 |
+| 2 | 1453.614976 | 340.628841 | 1794.243817 |
+| 3 | 1996.070147 | 359.152078 | 2355.222225 |
+
+Retain **all** observations. Every full checksum matches the saved reference and
+there is no late Java compilation. The **1983.876933 ms** median does not improve
+the recorded 1807.0171855 ms comparator; ranges overlap. Keep instruction support
+available in its reviewed experiment, but do not advance the full comparator,
+promote a default artifact or deploy it on this evidence.
+
+The normal full observations already contain useful entry counters, so there is
+no extra execution diagnostic. The codebook constructor now has **23 Wasm runs
+and one native exit**, last status **152**. `decodeSetup` also enters native flow.
+Map status 152 to `istore 13`, immediately after `computeLookupValueCount`, not to
+its later `multianewarray` or matrix element load. The helper has one native exit,
+status **13**: its loop header before the call to
+`IterableNodeHashTable.powerInt`. That owner has a real initializer allocating a
+protocol-stage object and an 8192-element int array. A pure arithmetic helper
+body therefore does not authorize skipping its owner's initialization.
+
+The next proof question is native re-entry **after** this cold call completes.
+The current structured resume planner selects one loop reached only through
+sequence/block wrappers; later quantization loops are inside conditional arms.
+Inspect actual checkpoint admission/ancestry before generalizing it. Preserve
+all completed prefix writes, captured references and class-initialization
+frames. Test a small sequential/conditional-loop case with a cold nested call
+before another game/full cohort. Do not blindly combine the allocator variants:
+the recorded constructor exit is a call continuation, and larger-array metadata
+alone does not remove that handoff. No renewed CPU attribution is required.
+
+`node --check` passed for the changed Deko inspector, nested/cold harness and new
+constructor harness; their new paths were exercised above. `git diff --check`
+passes. No generated Java/class/JAR/Wasm/WAT/bundle, screenshot or extra JSON
+report enters Git. All source/tests are durable in the named experiment refs;
+only scripts and this journal enter Deko. Actual JVM master remains `cbcf8adde…`.
+The full selected comparator stays **029… / 1807.0171855 ms**, about **5.023x**
+saved TeaVM **359.739597 ms**. The **1.1x goal remains unmet**; browser, phone,
+presented-FPS, total-heap and stability gates remain open.

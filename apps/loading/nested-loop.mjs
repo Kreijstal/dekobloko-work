@@ -19,10 +19,11 @@ const root=path.resolve(here,'../../../java-tools');
 const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'nested-loop'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
-const [command,revision,engine,detail,caseArg]=process.argv.slice(2),engines=['inlined','separate'],count=1000000;
-const caseName=command.startsWith('stable-')||caseArg==='stable'?'stable':command.startsWith('scope-')||caseArg==='scope'?'scope':'whole';
-const targetName={whole:'scan',scope:'scanScoped',stable:'scanStable'}[caseName];
-const requestedEngine=['direct','merged','trusted','paired','separate'].find(value=>command.includes('-'+value+'-'));
+const [command,revision,engine,detail,caseArg]=process.argv.slice(2),engines=['inlined','separate'];
+const caseName=command.startsWith('cold-')||caseArg==='cold'?'cold':command.startsWith('large-')||caseArg==='large'?'large':command.startsWith('stable-')||caseArg==='stable'?'stable':command.startsWith('scope-')||caseArg==='scope'?'scope':'whole';
+const count=caseName==='cold'?128:1000000;
+const targetName={whole:'scan',scope:'scanScoped',stable:'scanStable',large:'scanStable',cold:'scanStable'}[caseName];
+const requestedEngine=['direct','merged','trusted','paired','separate','plain','eager','lazy'].find(value=>command.includes('-'+value+'-'));
 assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact changed-source JVM commit');
 const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
 const source=`
@@ -90,9 +91,11 @@ function nestedLivenessBound(c,numeric,analyze){
 }
 
 if(command==='one'||command==='code-one'||command==='liveness-one'){
- assert.ok(engines.includes(engine)||['direct','merged','trusted','paired'].includes(engine));assert.ok(flags.every(flag=>process.execArgv.includes(flag)));
- const instrumented=detail==='stats';let Frame,model,allocMultiArray,takeWasmReturnValue,numeric,frameLive,emission,installed=false;const bounds=[],versions=new WeakMap(),directImports=new WeakMap();
- const {JVM}=await loadArchivedJvm(root,revision,{preloadModules:command==='liveness-one'?['src/jit/stackifyNumericValues.js','src/analysis/frameLocalLiveness.js']:[],observeModule:({filename,exports})=>{
+ assert.ok(engines.includes(engine)||['direct','merged','trusted','paired','plain','eager','lazy'].includes(engine));assert.ok(flags.every(flag=>process.execArgv.includes(flag)));
+ if(engine==='plain')assert.equal(caseName,'large','Plain matrix is only the new large-container control');
+ const instrumented=detail==='stats';let Frame,model,allocMultiArray,allocReferenceArray,referenceStorage,takeWasmReturnValue,numeric,frameLive,emission,installed=false;const bounds=[],versions=new WeakMap(),directImports=new WeakMap();
+ const {JVM}=await loadArchivedJvm(root,revision,{preloadModules:command==='liveness-one'?['src/jit/stackifyNumericValues.js','src/analysis/frameLocalLiveness.js']:caseName==='cold'?['src/core/nativeObjectStorage.js']:[],observeModule:({filename,exports})=>{
+  if(filename.endsWith('/src/core/nativeObjectStorage.js'))referenceStorage=exports;
   if(filename.endsWith('/src/jit/stackifyNumericValues.js'))numeric=exports;
   if(filename.endsWith('/src/analysis/frameLocalLiveness.js'))frameLive=exports.frameLocalLiveness;
   if(command==='liveness-one'&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
@@ -146,9 +149,9 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   }
   if(filename.endsWith('/src/core/frame.js'))Frame=exports;
   if(filename.endsWith('/src/core/objectModel.js'))model=exports;
-  if(filename.endsWith('/src/instructions/object.js'))allocMultiArray=exports.allocMultiArray;
+  if(filename.endsWith('/src/instructions/object.js')){allocMultiArray=exports.allocMultiArray;allocReferenceArray=exports.allocReferenceArray;}
   if(filename.endsWith('/src/jit/wasmShared.js')){takeWasmReturnValue=exports.takeWasmReturnValue;emission=exports;}
-  if((engine==='separate'||['direct','merged','trusted','paired'].includes(engine))&&filename.endsWith('/src/jit/wasmInline.js')){
+  if((engine==='separate'||['direct','merged','trusted','paired','plain'].includes(engine))&&filename.endsWith('/src/jit/wasmInline.js')){
    const inline=exports.inlineCalls;
    exports.inlineCalls=function(jvm,code,options){
     if(options.callerClassName==='NestedLoopProbe'&&options.callerMethod?.name===targetName)return null;
@@ -156,13 +159,41 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
    };installed=true;
   }
  }});
- if(engine==='separate'||['direct','merged','trusted','paired'].includes(engine))assert.ok(installed,'Separate-call experiment missed the outer transform');
+ if(engine==='separate'||['direct','merged','trusted','paired','plain'].includes(engine))assert.ok(installed,'Separate-call experiment missed the outer transform');
  const j=new JVM({classpath:[directory],wasmHeap:true,wasmFields:true,wasmHeapMb:32,
   jit:{enabled:false,compileWorker:false,retainCompilerDiagnostics:false,wasmStructured:true,
    wasm:{deepInline:false,canonicalDirectCalls:true,canonicalEhLinks:true,nativeJsExceptionTags:true}}});
- if(command==='code-one'||command==='liveness-one'){j.executeTick=()=>{throw Error('Code inspection attempted a guest tick');};j.executeInstruction=()=>{throw Error('Code inspection attempted a guest instruction');};}
+ if(command==='code-one'||command==='liveness-one'||caseName==='cold'){j.executeTick=()=>{throw Error('Inspection attempted a guest tick');};j.executeInstruction=()=>{throw Error('Inspection attempted a guest instruction');};}
  await j.preloadClasspathClasses();for(const name of ['NestedLoopBits','NestedLoopBook','NestedLoopProbe'])j._markClassInitialized(name);
  const w=j.jit.wasmJit;w.enabled=true;w.importStatsEnabled=instrumented;
+ if(caseName==='cold'){
+  assert.ok(['eager','lazy'].includes(engine));
+  assert.equal(typeof referenceStorage.peekNativeReferenceArrayStorageOf,'function','Cold case requires the changed lazy-mirror source');
+  const marker=model.makeObjectRef(j,'NestedLoopBook',model.newFields(j,'NestedLoopBook'));
+  const memory=j.wasmHeap.memory,ops=referenceStorage.getNativeObjectStorageOps(),arrays=[],length=1024,touched=16;
+  const before=j.wasmHeap.top,start=process.hrtime.bigint();
+  for(let i=0;i<count;i++){
+   const a=allocReferenceArray(j,'NestedLoopBook',length);arrays.push(a);
+   if(engine==='eager')referenceStorage.nativeObjectStorageOf(a,memory);
+   for(let k=0;k<length;k++)a[k]=marker;
+  }
+  let checksum=0;
+  for(let i=0;i<touched;i++){
+   const store=referenceStorage.nativeObjectStorageOf(arrays[i*8],memory);
+   if(store&&ops.reference(store,length-1)===marker)checksum++;
+  }
+  const elapsedMs=Number(process.hrtime.bigint()-start)/1e6;
+  const built=arrays.filter(a=>referenceStorage.peekNativeReferenceArrayStorageOf(a,memory)).length;
+  assert.equal(checksum,touched);assert.equal(built,engine==='eager'?count:touched);
+  const allocated=j.wasmHeap.top-before;assert.equal(allocated,built*(8+length*8));
+  assert.equal(w.compiled.length,0,'Cold allocator case compiled guest code');
+  console.log('NESTED_LOOP_RESULT '+JSON.stringify({sourceRevision:revision,caseName,engine,instrumented,count,length,touched,checksum,elapsedMs,
+   builtMirrors:built,allocatedCapabilityBytes:allocated,compiledGuestMethods:0,guestInstructions:0,
+   sourceSha256:hash(source),harnessSha256:hash(fs.readFileSync(script)),node:process.version,execArgv:process.execArgv,
+   control:'New allocation/fill/first-use case within the same changed runtime. Eager mode requests each mirror before filling; demand mode touches only sixteen arrays. No known JVM/TeaVM/HotSpot baseline executes.',
+   scope:'Runtime allocation APIs, one cold pass with every Java array retained alive; not original loading, Java instruction timing, CPU attribution or TeaVM parity'}));
+  process.exit(0);
+ }
  const build=(owner,name,descriptor)=>{const method=j.findMethod(j.classes[owner],name,descriptor),state=w.methodState({method});
   w.compile({method,className:owner},state,{asCallee:true});assert.equal(state.status,'ready',state.lastCompileError||owner+'.'+name);return state;};
  build('NestedLoopBook','scalar','()I');const vector=build('NestedLoopBook','vector','()[I');
@@ -246,7 +277,12 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   else{node(depth-1);const right=node(depth-1);tree[at]=right;}return at;};node(8);
  const input=j.wasmHeap.alloc('[B',count);input.type='[B';for(let i=0;i<count;i++)input[i]=(i*73+17)&255;
  const treeArray=j.wasmHeap.alloc('[I',tree.length);treeArray.type='[I';treeArray.set(tree);
- const rows=allocMultiArray(j,'[[I',[256,8]);for(let i=0;i<256;i++)for(let k=0;k<8;k++)rows[i][k]=(i*17+k*7)&255;
+ const matrixLength=caseName==='large'?1024:256;
+ const rows=engine==='plain'?Object.assign(new Array(matrixLength),{type:'[[I',elementType:'[I'}):allocMultiArray(j,'[[I',[matrixLength,8]);
+ for(let i=0;i<matrixLength;i++){
+  if(engine==='plain'){rows[i]=j.wasmHeap.alloc('[I',8);rows[i].type='[I';}
+  for(let k=0;k<8;k++)rows[i][k]=(i*17+k*7)&255;
+ }
  const book=model.makeObjectRef(j,'NestedLoopBook',model.newFields(j,'NestedLoopBook'));
  model.writeField(book.fields,'NestedLoopBook.tree',treeArray);model.writeField(book.fields,'NestedLoopBook.rows',rows);
  const state=j.classes.NestedLoopBits.staticFields;state.set('bytes:[B',input);state.set('bit:I',0);state.set('cursor:I',0);
@@ -277,8 +313,10 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   }
  }
  if(instrumented)assert.equal(vectorEntries,engine==='inlined'?0:count,'Control lost the intended method boundary');
- if(instrumented&&caseName==='stable')assert.equal(target.meta.importStats.get('native_state_object_storage')||0,engine==='inlined'?1:0,'Stable ownership was not shared across scope entries');
+ if(instrumented&&['stable','large'].includes(caseName))assert.equal(target.meta.importStats.get('native_state_object_storage')||0,engine==='inlined'?1:0,'Stable ownership was not shared across scope entries');
+ if(instrumented&&caseName==='large')assert.equal(vector.meta.importStats.get('aget_r')||0,engine==='plain'?count:0,'Large matrix lost its selected native/fallback path');
  console.log('NESTED_LOOP_RESULT '+JSON.stringify({sourceRevision:revision,caseName,engine,instrumented,count,checksum,elapsedMs,harnessSha256:hash(fs.readFileSync(script)),
+  matrixLength,matrixKind:engine==='plain'?'supported-plain-fallback':'owned-reference-array',
   sourceSha256:hash(source),classSha256:hash(fs.readFileSync(path.join(directory,'NestedLoopProbe.class'))),
   inlineActivationDepth:target.meta.inlineActivationDepth||0,vectorEntries,
   nativeStaticStateBodySites:target.meta.nativeStaticStateBodySites||0,
@@ -293,6 +331,8 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   separateVectorReferenceReadElisions:vector.meta.nativeArrayReferenceReadElisionCount||0,
   ownershipQueries:instrumented?target.meta.importStats.get('native_body_object_storage')||0:null,
   separateVectorOwnershipQueries:instrumented?vector.meta.importStats.get('native_state_object_storage')||0:null,
+  separateVectorRowStorageQueries:instrumented?vector.meta.importStats.get('object_storage')||0:null,
+  separateVectorCheckedRowReads:instrumented?vector.meta.importStats.get('aget_r')||0:null,
   pairedStorageCallSites:target.meta.pairedStorageCallSiteCount||0,
   pairedStorageQueries:instrumented?target.meta.importStats.get('paired_object_storage')||0:null,
   pairedStorageEntry:engine==='paired'?'Generic compiler-paired entry, synchronous monotonic storage revocation, ordinary signature/dispatch/entry fallbacks; no ownership-validator override':null,
@@ -301,12 +341,12 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   nativeExits:target.meta.directFrameContext.exitCount,lateJavaCompiles:0,
   node:process.version,execArgv:process.execArgv,
   directImportExperiment:['direct','merged'].includes(engine)?'Per-call version/dispatch checked Wasm import; publication/withdrawal/release revoke snapshots; table fallback and original ABI remain active; fixture-only integration':null,
-  control:engine==='separate'?'Withhold only the root inline transform; same changed runtime and new Java workload':null,
+  control:caseName==='large'?'New large-container reduction: same changed runtime and Java methods, owned matrix versus supported plain matrix fallback; no known baseline executes':engine==='separate'?'Withhold only the root inline transform; same changed runtime and new Java workload':null,
   scope:'Bounded '+caseName+' code-generation reduction with identical high invocation fuel; not production scheduling, original loading, TeaVM parity or an existing baseline validation'}));
  process.exit(0);
 }
 
-assert.ok(['diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate','inspect','scope-inspect','stable-inspect','code','scope-code','stable-code','liveness','scope-liveness','stable-liveness','stable-direct-code','stable-direct-inspect','stable-direct-candidate','stable-merged-code','stable-merged-inspect','stable-merged-candidate','stable-trusted-code','stable-trusted-inspect','stable-trusted-candidate','stable-paired-code','stable-paired-inspect','stable-paired-candidate','stable-separate-code','stable-separate-inspect','stable-separate-candidate'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
+assert.ok(['diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate','inspect','scope-inspect','stable-inspect','code','scope-code','stable-code','liveness','scope-liveness','stable-liveness','stable-direct-code','stable-direct-inspect','stable-direct-candidate','stable-merged-code','stable-merged-inspect','stable-merged-candidate','stable-trusted-code','stable-trusted-inspect','stable-trusted-candidate','stable-paired-code','stable-paired-inspect','stable-paired-candidate','stable-separate-code','stable-separate-inspect','stable-separate-candidate','large-separate-inspect','large-separate-candidate','large-plain-inspect','large-plain-candidate','large-run','cold-eager-inspect','cold-lazy-inspect','cold-run'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
 fs.mkdirSync(directory,{recursive:true});const java=path.join(directory,'NestedLoopProbe.java');
 if(!fs.existsSync(java)||fs.readFileSync(java,'utf8')!==source||!fs.existsSync(path.join(directory,'NestedLoopProbe.class'))){
  fs.writeFileSync(java,source);execFileSync('javac',['--release','8','-proc:none','-d',directory,java]);
@@ -336,7 +376,7 @@ if(command.endsWith('liveness')){
  const row=one(variant,true);result.diagnostics.push(row);save();console.log(JSON.stringify(row));
 }
 else{
- const measuredEngines=requestedEngine?[requestedEngine]:command.endsWith('candidate')?['inlined']:engines;
+ const measuredEngines=requestedEngine?[requestedEngine]:caseName==='cold'?['eager','lazy']:caseName==='large'?['separate','plain']:command.endsWith('candidate')?['inlined']:engines;
  result.timingMode=measuredEngines.length===1?'Changed candidate only; reuse saved controls':'Paired new-workload control';
  for(let pair=0;pair<3;pair++)for(const variant of pair===1?measuredEngines.toReversed():measuredEngines){
   if(result.runs.some(row=>row.engine===variant&&row.pair===pair)){console.log('reuse saved pair '+pair+' '+variant);continue;}
