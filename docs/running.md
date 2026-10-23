@@ -12697,3 +12697,105 @@ single-receiver, callback-free leaf proof. Wider callee/allocator/class-init
 contracts, foreign boolean arrays and body replacement must be handled before
 claiming a closed native execution domain. Do not repeat opaque-copy, callback
 epoch, whole-field-promotion or unchanged-baseline campaigns.
+
+### First-use receiver proofs and native loop reconstruction
+
+Experimental source `49edf676d05df77a444e835d1d17223c3d18b187` expands the
+callback-free native object-loop body to multiple receivers and receiver phis.
+The certified-helper refinement is `b02295818157295821c029130e22a84ef906627a`;
+final test-only child is `d7158fbd78cc32c46c449635c0f0d58bb58d1f9f`.
+The established single-parameter form keeps its existing entry policy. Newly
+admitted shapes authenticate receivers at the actual field read/write, using
+the exact instruction continuation from the preceding pass. Zero-trip loops
+and untaken null receivers need no lookup or dereference. There is one native
+body, no user flag, and no application-specific core identity.
+
+The proof remains bounded to 256 body nodes, 32 field sites, four distinct
+receiver/array-field pairs, eight receiver SSA values and 64 nodes in receiver
+provenance. Receiver sources must resolve to parameters, nulls or reference
+phis; unsupported sources, volatile fields, reference writes, meaningful
+handlers and calls still refuse admission. Existing SSA cache kills invalidate
+receiver ownership when a phi is redefined. Array headers are captured per
+loaded array SSA value, rather than per current receiver/field. Re-reading a
+source resets its captured/ownership flags.
+
+New first-use guards **do not trust private transport metadata** from a general
+caller: it may have run a callback since capturing that metadata. They query
+the current wrapper and require a canonical field container. A red semantic
+test demonstrates why identity alone is insufficient: adding an own field
+getter preserves container identity but changes Java field access. The new
+`validatedNativeObjectStorageOf` rejects changed prototypes, extra own entries,
+shadowing accessors and inconsistent primitive/native bases, without invoking
+getters. A frozen layout token is shared by the class; each field-storage
+record adds one token pointer. Malformed stores return no certificate.
+
+A non-null validated result explicitly guarantees the canonical GC store and
+its nonnegative base, matching named field access. Final lowering uses that
+contract instead of emitting a second negative-base branch and duplicate cold
+spill at each new field guard. This new certificate is stronger than the old
+private metadata transport. Future callee proofs must not infer it merely from
+an older native-body site count or an incoming store argument.
+
+The new lazy receiver form can share its native loop body with a proved resume
+entry. Fresh Wasm locals force ownership reconstruction after suspension.
+Source audit identified another required case: a field read before the loop
+can be skipped on resume, and that field may subsequently refer to a different
+array. The first resumed array access therefore queries owned metadata for the
+**restored original array value**, using the existing allocation registry with
+no length getter. It never substitutes the receiver's current field header.
+The test changes that field from `[3]` to `[100]` after yielding; the resumed
+four-iteration calculation correctly retains its captured array and returns
+40. Receiver-container replacement after a yield refuses at the exact field
+and continues through Java without replaying earlier writes.
+
+The final eight-file command passes **1031/1031 assertions**, no skips:
+
+```bash
+# java-tools; final source b022958.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectStorage.test.js test/nativeObjectBody.test.js test/ssa.test.js test/canonicalDirectFrames.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/wasmJsExceptionTags.test.js test/wasmCompilerRetention.test.js
+# Additional field storage, reclamation, worker transport and native ABI checks:
+# 294/294 assertions pass before the final validator/base-branch refinement.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/slabFields.test.js test/objectSlabReclamation.test.js test/classMirrorTransport.test.js test/nativeObjectForwarding.test.js test/wasmParameterArrayAbi.test.js
+# Final test-only alias extension: 217/217 focused assertions pass.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectBody.test.js
+```
+
+Coverage includes multiple/aliased receivers, receiver changes in loops,
+captured old/new arrays, wide pending stores, original outer exception handlers,
+foreign metadata, custom getters, stale private inputs from a callback-bearing
+caller, actual scheduler-driven native yields and fallback progress, clear
+argument globals, exact partial writes and receiver collection while modules
+remain live. Two initial fixture failures were corrected: a duplicate local
+name and enabling the Wasm scheduler for a fixture whose general JIT was
+intentionally disabled. The shadow-getter failure required the runtime proof
+correction described above. None of these failed runs is counted as a pass.
+
+The changed full preparation census completes at `49edf67` with zero guest
+ticks/assets. It records both entry/callee metadata and finds **zero newly lazy
+receiver bodies and zero unused operand-snapshot plans** in the loading graph.
+The later refinement changes the certified helper/base guard and tests, not
+admission. Consequently **no loading timing, unchanged native-code comparison,
+TeaVM process or restored-baseline validation is run** for this capability.
+The rolling measured comparator remains `97aa42e`: **1929.057624 ms**, **5.3624x**
+historical TeaVM. This new capability is retained only on the experimental ref;
+master, production and the 1.10x acceptance state are unchanged.
+
+```bash
+# Deko; compile only, exact changed source.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/probe.mjs slab all 49edf676d05df77a444e835d1d17223c3d18b187 loading /home/kreijstal/.cache/dekobloko/geoblox-loading prepare
+node --check apps/loading/probe.mjs
+node --check apps/loading/microbench.mjs
+node --check apps/loading/call-code.mjs
+git diff --check
+```
+
+The source IDs, tests, census location and decision are summarized under
+`optimizationTrials.nativeReceiverInstructionGuards` in the **same** existing
+report; no new JSON, generated Java or binaries are committed. The next missing
+contract is callee admission: these bodies still reject all calls. A closed
+caller must provide validated ownership to an eligible callee and propagate its
+refusal before any untrusted fallback executes. Replacing a compiled body with
+one lacking that contract must withdraw the compatible native target. Existing
+canonical eligibility alone does not establish this stronger guarantee. Prove
+that boundary on a generic mixed caller, then inspect actual decoder coverage;
+do not spend more timing cohorts on this currently unused receiver extension.

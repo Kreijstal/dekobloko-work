@@ -216,6 +216,11 @@ try {
   };
   const entryShapes=w.compiled.flatMap(s=>[['entry',s.meta],['callee',s.callee?.meta]].filter(([,meta])=>meta).map(([tier,meta])=>({
    key:s.key,tier,bytes:meta.bytes?.length??null,exports:functionExports(meta.bytes),
+   nativeObjectBodyFieldSites:meta.nativeObjectBodyFieldSites??null,
+   nativeObjectBodyReceiverCount:meta.nativeObjectBodyReceiverCount??null,
+   nativeObjectBodyLazyReceivers:meta.nativeObjectBodyLazyReceivers??null,
+   nativeOperandSnapshotCount:meta.nativeOperandSnapshotCount??null,
+   instructionExitSiteCount:meta.instructionExitSiteCount??null,
    inlineRun:!!meta.canonicalInlineCompactRun,inlineHeap:!!meta.canonicalInlineCompactHeapRun,
    parameterArrayABI:meta.parameterArrayABI||[],parameterObjectABI:meta.parameterObjectABI||[]})));
   const nativeRegionInputs=regionInputs.filter(row=>active.has(row.meta)).map(({meta,...row})=>row);
@@ -276,6 +281,8 @@ try {
   nativeArrayMetadataPhiCopiesOmittedCount:meta.nativeArrayMetadataPhiCopiesOmittedCount||0,
   nativeObjectBodyFieldSites:meta.nativeObjectBodyFieldSites||0,
   nativeObjectBodyArraySites:meta.nativeObjectBodyArraySites||0,
+  nativeObjectBodyReceiverCount:meta.nativeObjectBodyReceiverCount??null,
+  nativeObjectBodyLazyReceivers:meta.nativeObjectBodyLazyReceivers??null,
   instructionExitSiteCount:meta.instructionExitSiteCount??null,
   nativeOperandSnapshotCount:meta.nativeOperandSnapshotCount??null,
   nativeLoopBoundsSiteCount:meta.nativeLoopBoundsSiteCount||0,
@@ -309,6 +316,8 @@ try {
     nativeThrowCount:state.meta?.directFrameContext?.throwCount??null,
     nativeObjectBodyFieldSites:state.meta?.nativeObjectBodyFieldSites||0,
     nativeObjectBodyArraySites:state.meta?.nativeObjectBodyArraySites||0,
+    nativeObjectBodyReceiverCount:state.meta?.nativeObjectBodyReceiverCount??null,
+    nativeObjectBodyLazyReceivers:state.meta?.nativeObjectBodyLazyReceivers??null,
     instructionExitSiteCount:state.meta?.instructionExitSiteCount??null,
     nativeOperandSnapshotCount:state.meta?.nativeOperandSnapshotCount??null,
     nativeLoopBoundsSiteCount:state.meta?.nativeLoopBoundsSiteCount||0,

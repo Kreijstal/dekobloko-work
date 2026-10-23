@@ -968,6 +968,8 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     inlineAtomicStaticSiteCount:s.meta?.inlineAtomicStaticSiteCount||0,
     nativeObjectBodyFieldSites:s.meta?.nativeObjectBodyFieldSites||0,
     nativeObjectBodyArraySites:s.meta?.nativeObjectBodyArraySites||0,
+    nativeObjectBodyReceiverCount:s.meta?.nativeObjectBodyReceiverCount??null,
+    nativeObjectBodyLazyReceivers:s.meta?.nativeObjectBodyLazyReceivers??null,
     instructionExitSiteCount:s.meta?.instructionExitSiteCount??null,
     nativeOperandSnapshotCount:s.meta?.nativeOperandSnapshotCount??null,
     canonicalTargetImportCount:s.meta?.canonicalTargetImportCount||0,
