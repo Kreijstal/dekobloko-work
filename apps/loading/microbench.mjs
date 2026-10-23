@@ -887,21 +887,31 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
   if(name.startsWith('tail-'))result.tail={calls:module.exports.tailState(0),initializations:module.exports.tailState(1),
    initializationPhase:module.exports.tailState(2),loopFinished:module.exports.tailState(3),prepareCalls:module.exports.tailState(4)};
  }else{
-  const storageControl=engine==='jvm-fixture-storage';
+  const memoStorage=engine==='jvm-fixture-memo-storage';
+  const storageControl=engine==='jvm-fixture-storage'||memoStorage;
   assert.ok(engine==='jvm'||storageControl,'Unknown JVM control');
-  if(storageControl)assert.equal(name,'huffman-helper','Storage ablation is restricted to the private tree fixture');
+  if(storageControl)assert.equal(name,memoStorage?'huffman-inline':'huffman-helper','Storage ablation is restricted to its private tree fixture');
   let replacementInstalled=false;
   const {JVM}=await loadArchivedJvm(root,revision,storageControl?{observeModule:({filename,exports})=>{
    if(!filename.endsWith('/src/core/nativeObjectStorage.js'))return;
    // Valid-input diagnostic only: retain private store/field-container identity
    // checks but omit the stronger shape/base authentication. Never a VM policy.
-   exports.validatedNativeObjectStorageOf=exports.nativeObjectStorageOf;
+   if(memoStorage){
+    // The controlled fixture never replaces/shadows its tree fields. This
+    // deliberately unsafe memo isolates repeated ownership lookup, not a VM
+    // optimization: arbitrary callbacks would require proper revocation.
+    const validate=exports.validatedNativeObjectStorageOf,stores=new WeakMap();
+    exports.validatedNativeObjectStorageOf=(object,memory)=>{
+     const cached=stores.get(object);if(cached)return cached;
+     const store=validate(object,memory);if(store)stores.set(object,store);return store;
+    };
+   }else exports.validatedNativeObjectStorageOf=exports.nativeObjectStorageOf;
    replacementInstalled=true;
   }}:{});
   if(storageControl){
    assert.ok(replacementInstalled,'Storage ablation did not bind before compiler imports');
-   result.semanticControl={kind:'private-fixture-storage',preservesArbitraryJavaSemantics:false,
-    change:'Replace whole-shape validator with existing private storage lookup',replacementInstalled};
+   result.semanticControl={kind:memoStorage?'memoized-fixture-storage':'private-fixture-storage',preservesArbitraryJavaSemantics:false,
+    change:memoStorage?'Reuse the first successful ownership lookup per fixture object':'Replace whole-shape validator with existing private storage lookup',replacementInstalled};
   }
   const options=structuredClone(read().diagnosticOptions);
   options.classpath=[path.join(directory,'classes')];
@@ -990,6 +1000,8 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     nativeStaticInputGuardCount:s.meta?.nativeStaticInputGuardCount??null,
     nativeObjectRegionBlockCount:s.meta?.nativeObjectRegionBlockCount??null,
     nativeStaticStateBodySites:s.meta?.nativeStaticStateBodySites??null,
+    nativeStaticStateInstanceFieldSites:s.meta?.nativeStaticStateInstanceFieldSites??null,
+    nativeStaticStateTailLoadCount:s.meta?.nativeStaticStateTailLoadCount??null,
     nativeObjectRegionCastCount:s.meta?.nativeObjectRegionCastCount??null,
     nativeObjectRegionCastCacheCount:s.meta?.nativeObjectRegionCastCacheCount??null,
     nativeObjectRegionStaticReadCount:s.meta?.nativeObjectRegionStaticReadCount??null,
@@ -1036,10 +1048,15 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
   assert.deepEqual(late,[],'Java compilation occurred during execution');
   assert.equal(result.compilation.postMainSyncCompileCount,0);
   if(storageControl){
-   const tree=result.executionMethods.find(m=>m.key==='MicroHuffmanBook.readScalar()I');
+   const tree=result.executionMethods.find(m=>m.key===(memoStorage?'MicroHuffmanBook.readScalarInline()I':'MicroHuffmanBook.readScalar()I'));
    assert.equal(tree?.directEntries,count,'Ablation lost the per-symbol native boundary');
-   assert.equal(tree.nativeClosedCallSiteCount,1,'Ablation lost the closed static-reader edge');
-   assert.equal(tree.nativeObjectBodyFieldSites,3,'Ablation lost the receiver-field proof');
+   if(memoStorage){
+    assert.ok(tree.nativeStaticStateBodySites>0,'Memo control lost its mixed state proof');
+    assert.equal(tree.nativeStaticStateInstanceFieldSites,3,'Memo control lost its instance fields');
+   }else{
+    assert.equal(tree.nativeClosedCallSiteCount,1,'Ablation lost the closed static-reader edge');
+    assert.equal(tree.nativeObjectBodyFieldSites,3,'Ablation lost the receiver-field proof');
+   }
    assert.equal(tree.nativeExitCount,0,'Ablation left native execution');
   }
   if(['byte-field-call','boolean-field-call'].includes(name)){
@@ -1117,7 +1134,7 @@ function ensureReference() {
 }
 
 function diagnose(revision,name,engine='jvm') {
- assert.ok(['jvm','jvm-fixture-storage'].includes(engine),'Unknown diagnostic JVM control');
+ assert.ok(['jvm','jvm-fixture-storage','jvm-fixture-memo-storage'].includes(engine),'Unknown diagnostic JVM control');
  revision=selectBenchmarkRevision(revision);
  assert.match(revision||'',/^[0-9a-f]{40}$/);
  ensureReference();
@@ -1135,6 +1152,7 @@ else if(command==='one')await one(...args);
 else if(command==='run')run(args[0],args.slice(1));
 else if(command==='run-jvm')run(args[0],args.slice(1),['jvm']);
 else if(command==='storage-control')run(args[0],['huffman-helper'],['jvm-fixture-storage']);
+else if(command==='memo-storage-control')run(args[0],['huffman-inline'],['jvm-fixture-memo-storage']);
 else if(command==='float-arrays'){
  const engines=(args[1]||'').split(',');
  for(const engine of engines)assert.ok(floatArrayKinds.includes(engine),'Select a float-array control');
@@ -1151,4 +1169,4 @@ else if(command==='calls'){
  run(args[0],['buffered-ready-helper'],engines.length?engines:[...bufferedCallKinds,'teavm']);
 }
 else if(command==='inspect')await one('jvm',args[1],selectBenchmarkRevision(args[0]),'code',args[2]);
-else throw Error('Usage: microbench.mjs build | run [baseline|EXACT_REVISION] [CASE ...] | run-jvm EXACT_REVISION [CASE ...] | float-arrays EXACT_REVISION ENGINE[,ENGINE...] CASE ... | calls baseline|EXACT_REVISION [CALL_KIND ...] | linear baseline|EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | storage-control EXACT_REVISION | diagnose baseline|EXACT_REVISION CASE [jvm|jvm-fixture-storage] | inspect baseline|EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');
+else throw Error('Usage: microbench.mjs build | run [baseline|EXACT_REVISION] [CASE ...] | run-jvm EXACT_REVISION [CASE ...] | float-arrays EXACT_REVISION ENGINE[,ENGINE...] CASE ... | calls baseline|EXACT_REVISION [CALL_KIND ...] | linear baseline|EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | storage-control EXACT_REVISION | memo-storage-control EXACT_REVISION | diagnose baseline|EXACT_REVISION CASE [jvm|jvm-fixture-storage] | inspect baseline|EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');

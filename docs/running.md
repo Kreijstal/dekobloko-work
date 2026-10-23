@@ -13529,3 +13529,137 @@ readonly instance arrays/static reader state is outside the current whole-body
 static-state proof, despite 134216 original-sample native entries. Any extension
 must preserve final reference-load callbacks, exact partial stores and recovered
 inline/fuel continuations rather than optimize only unused standalone metadata.
+
+### Mixed readonly instance arrays, static state and terminal reference loads
+
+The next proof is generic rather than a game-identity rule. Runtime source
+`1ce255a534a5a7aca36bca282ed2305f8f315bb8` extends the bounded whole-body static
+integer-state analysis to readonly native reference fields of formal receivers.
+Owned primitive array headers are authenticated with the tracked field shape.
+Their SSA metadata follows the actual captured array, while integer cell values
+can remain in invocation locals between immediate canonical stores. Meaningful
+handlers, volatile fields, instance writes, unsupported effects and unproved
+array origins still reject this proof. Existing loop/inline recovery remains
+responsible for fuel and exact Java continuations; no new runtime flag exists.
+
+A final `aaload` is admitted only as the last instruction directly returned by
+that block. It may call a foreign getter after the reader has committed all its
+writes, but cannot return to the certified body. Such methods **never publish a
+closed native contract or trusted closed export**. A reference read followed by
+more Java effects remains outside this proof.
+
+Tests expose two important distinctions. A captured-array loop may no longer
+need its original receiver local after a fuel exit. Requiring that dead receiver
+again causes an unnecessary fallback. The compiler now computes reachability
+from the supported resume header: receivers/field headers needed only by the
+skipped prefix are not demanded on resumed entry, and the restored original
+array is authenticated directly. This does not substitute the receiver's new
+field value for the captured array. A second test exposes a pre-existing generic
+foreign-array fallback bug: a getter writes a static cell to 6, but a later Java
+increment uses the cached 1 and stores 2. The foreign reference-array branch now
+invalidates field/object caches before invoking the getter; the test obtains 7.
+The owned GC-array branch retains its fast path.
+
+The new fixture also validates cold initialization after the original prefix,
+actual scalar/atomic-leaf inlining, vector identity, terminal getter side effects
+and throwable identity, original outer bounds handlers, private field shadows,
+volatile rejection, resumed ownership, prefix non-replay and zero late Java
+compilation. The raw reference-return export propagates a host throwable directly;
+the fixture checks its exact identity rather than imposing a scalar-export status
+convention. Its initial handler wrapper returned a reference, which the existing
+partial-module policy does not support; an integer sentinel wrapper tests the
+same original exception behavior without requiring a new compiler policy.
+
+The focused twelve-file validation passes **1319/1319 assertions**, including
+**49** in the new mixed-state fixture. Existing state/array/object/GC/field codegen,
+forwarding, native/inline resumption, retention and worker transport checks pass.
+No assertion is weakened to accept stale writes or replay.
+
+```bash
+# java-tools; runtime, recovery, opaque fallback and metadata validation.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeMixedStateBody.test.js test/nativeStaticStateBody.test.js test/nativeStaticArrayBody.test.js test/nativeObjectBody.test.js test/nativeReferenceArray.test.js test/nativeObjectFieldCodegen.test.js test/nativeObjectForwarding.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/nativeStaticReferenceCodegen.test.js test/wasmCompilerRetention.test.js test/classMirrorTransport.test.js
+```
+
+Two excluded small-fixture diagnostics verify actual coverage. The per-symbol
+reader has **1000000 native entries**, nine proved static sites, three instance
+field sites and zero exits. The full-scan method has **one native entry** with
+the same static/instance proof. Both match checksum `-1268584370` with zero late
+compilation. Three fresh uninstrumented observations for each case are:
+
+| Changed case | Samples ms | Median ms |
+| --- | --- | ---: |
+| One call per symbol, inlined bit reader | 124.194208, 106.071930, 108.877969 | 108.877969 |
+| One call containing the full scan | 60.905517, 61.458293, 58.124204 | 60.905517 |
+
+These cases retain the same one-million-symbol valid stream. Their difference
+includes repeated entry/certificate work and method boundaries, not just one
+instruction category. Earlier JVM/TeaVM rows for these case names have older
+fixture/source identities. They remain historical context, **not a matched
+current comparator**; no known baseline or TeaVM process is rerun for them.
+
+```bash
+# Deko; excluded coverage diagnostics, followed by changed-source timings only.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose 1ce255a534a5a7aca36bca282ed2305f8f315bb8 huffman-inline
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose 1ce255a534a5a7aca36bca282ed2305f8f315bb8 huffman-many-fields
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 1ce255a534a5a7aca36bca282ed2305f8f315bb8 huffman-inline huffman-many-fields
+```
+
+The changed original-sample diagnostic verifies the intended production-shaped
+path: all **134216 `VorbisCodebook.readVector()[F` entries** use nine static sites,
+four readonly instance field sites and the one terminal reference load. There
+are zero native exits and no late compilation; every saved HotSpot PCM byte
+matches. The saved TeaVM WAT preview is reused. The standalone scalar reader
+has 17041 entries and remains separate from this new inlined-vector proof.
+
+The three uninstrumented original decodes take **116.518881, 111.364664,
+108.575148 ms**, median **111.364664 ms**. All 348249 PCM bytes match and no Java
+method compiles during execution. This establishes **no original-sample gain**
+against saved 99.443952 or 104.021143 ms cohorts; no full-loading cohort or
+comparator advance is justified. The proof stays experimental and unpromoted.
+
+```bash
+# Deko; actual original-method coverage, excluded from timing.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 1ce255a534a5a7aca36bca282ed2305f8f315bb8 'VorbisCodebook.readVector()[F'
+# Three fresh changed-source decodes only, using the recorded PCM oracle.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 1ce255a534a5a7aca36bca282ed2305f8f315bb8
+```
+
+A final controlled reduction estimates repeated ownership lookup cost. Engine
+`jvm-fixture-memo-storage` caches the first successful private storage validation
+per object in a WeakMap. It retains the same changed JVM and generated Java
+fixture, but omits subsequent binding/shape authentication. This is permitted
+only for `huffman-inline`'s private immutable tree fixture. Assertions require
+all one-million native method boundaries, three proved instance fields, the
+mixed state body and zero native exits/late compilation. The result labels it
+**not semantics-preserving for arbitrary Java/host mutation**. It is never a VM
+option, supported execution fallback or production optimization.
+
+The control takes **77.699, 90.211, 79.305 ms** (rounded console output; exact
+values are in the canonical observations), median **79.305234 ms**, versus the
+normal changed case's **108.877969 ms**. This is evidence of a substantial fixed
+ownership-lookup cost in that reduced case. It does not attribute the original
+sample's whole time or prove TeaVM parity; the comparable old TeaVM fixture is
+not current, and the control deliberately lacks revocation.
+
+```bash
+node --check apps/loading/microbench.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs memo-storage-control 1ce255a534a5a7aca36bca282ed2305f8f315bb8
+```
+
+All changed/control observations, diagnostic counts, identities, validation and
+limits are consolidated in the existing single `benchmark.json`, under
+`optimizationTrials.mixedReadonlyState`. Full comparator `97aa42e` remains
+1929.057624 ms, approximately **5.36x** recorded TeaVM, and the **1.1x objective
+is unfulfilled**. No publication, artifact change, browser/phone, FPS or total-
+heap claim follows. No generated output enters Git.
+
+The ownership control motivates a possible next native-certificate prototype,
+not permission to reuse an ordinary transported store as a current ownership
+proof. A correct fast certificate must revoke before both field-container shape
+changes and wrapper `.fields` replacement/customization, handle independent
+wrappers sharing one container, preserve native-store/primitive-extent lifetime,
+and retain the exact fallback when absent or revoked. Current GC input metadata
+alone does not establish those properties. Any prototype must first prove those
+cases and a small-case gain, then the original/full workload. Also keep the
+limited scale of this particular lookup cost distinct from the remainder of the
+original decoder; it cannot by itself establish the full-loading target.

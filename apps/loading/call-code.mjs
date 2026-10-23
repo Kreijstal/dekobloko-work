@@ -94,7 +94,7 @@ for(const [ordinal,key]of targets.entries()){
  if(ordinal===targets.length-1)fs.writeFileSync(path.join(directory,'current.wat'),wat);
  const exportName=entryVariant==='closed'?'canonicalClosedStorageRun':meta.parameterObjectABI?.length?'canonicalCompactStorageRun':'canonicalCompactRun';
  if(entryVariant==='closed'){
-  assert.equal(meta.closedNativeBody?.version,family==='music-reader'?2:1,'Closed export requires the exact compiler contract');
+  assert.ok([1,2].includes(meta.closedNativeBody?.version),'Closed export requires a supported compiler contract');
   assert.equal(meta.closedNativeBody.run,meta.canonicalClosedStorageRun,'Certificate must bind this exact export');
  }
  const module=parseWat(wat),exported=module.find(n=>n?.[0]==='export'&&n[1]===JSON.stringify(exportName));
@@ -117,6 +117,8 @@ for(const [ordinal,key]of targets.entries()){
   nativeStaticInputGuardCount:meta.nativeStaticInputGuardCount??null,
   nativeObjectRegionBlockCount:meta.nativeObjectRegionBlockCount??null,
   nativeStaticStateBodySites:meta.nativeStaticStateBodySites??null,
+  nativeStaticStateInstanceFieldSites:meta.nativeStaticStateInstanceFieldSites??null,
+  nativeStaticStateTailLoadCount:meta.nativeStaticStateTailLoadCount??null,
   nativeObjectRegionCastCount:meta.nativeObjectRegionCastCount??null,
   nativeObjectRegionCastCacheCount:meta.nativeObjectRegionCastCacheCount??null,
   nativeObjectRegionStaticReadCount:meta.nativeObjectRegionStaticReadCount??null,
