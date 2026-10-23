@@ -15,20 +15,23 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','inlined-lifetimes'].includes(family));
 const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const flowOnly=['packet-flow','ssa-liveness'].includes(family),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
-options.classpath=[path.join(fullGraph||directMusic||flowOnly?player:directory,'classes')];options.jit.compileWorker=false;
+const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes',directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+options.classpath=[path.join(fullGraph||directMusic||originalFlow?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
-let buildSsa,buildCfg,frameLiveness,numericLocals;const proofCensus=[],translationFailures=[];
-const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{preloadModules:family==='ssa-liveness'?['src/analysis/frameLocalLiveness.js','src/jit/stackifyNumericValues.js']:[],observeModule:({filename,exports})=>{
+let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls;const proofCensus=[],translationFailures=[];
+const preloadModules=family==='ssa-liveness'?['src/analysis/frameLocalLiveness.js','src/jit/stackifyNumericValues.js']:
+ family==='inlined-lifetimes'?['src/jit/wasmInline.js','src/jit/stackifyNumericValues.js']:[];
+const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{preloadModules,observeModule:({filename,exports})=>{
  if(filename.endsWith('/src/analysis/opgraph/ssa.js'))buildSsa=exports.buildSsa;
  if(filename.endsWith('/src/decompiler/structurer.js'))buildCfg=exports.buildCfgFromCode;
  if(filename.endsWith('/src/analysis/frameLocalLiveness.js'))frameLiveness=exports.frameLocalLiveness;
  if(filename.endsWith('/src/jit/stackifyNumericValues.js'))numericLocals=exports;
+ if(filename.endsWith('/src/jit/wasmInline.js'))inlineCalls=exports.inlineCalls;
  if(family==='archive-exit'&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
   const translate=exports.prototype.translate,exit=exports.prototype.emitInstructionExit;
   exports.prototype.translate=function(...args){try{return translate.apply(this,args);}catch(error){
@@ -76,6 +79,45 @@ if(flowOnly){
  j.executeTick=()=>{throw Error('Flow inspection attempted guest execution');};
  j.executeInstruction=()=>{throw Error('Flow inspection attempted a Java instruction');};
  await j.preloadClasspathClasses();
+ if(family==='inlined-lifetimes'){
+  // Symbolic readiness only: do not execute any initializer to inspect a
+  // prepared inline shape. The existing timer fixtures own real preparation.
+  for(const owner of Object.keys(j.classes))j._markClassInitialized(owner);
+  const method=j.findMethod(j.classes.LoadingMicroKernel,'huffmanInline','(ILMicroHuffmanBook;)I');
+  const code=method.attributes.find(a=>a.type==='code').code,w=j.jit.wasmJit;
+  const expanded=inlineCalls(j,{code},{maxCalleeItems:w.maxInlineCalleeItems,budget:w.inlineBudget,
+   hierarchy:w.hierarchy,callerClassName:'LoadingMicroKernel',callerMethod:method,callerIsStatic:true,
+   deepInline:w.deepInline,resumableLoops:true,inlineColdIntegerLeaves:w.inlineColdIntegerLeavesEnabled});
+  assert.equal(expanded?.inlined,1,'Bound this reduction to the one recovered root call');
+  const analyze=items=>{
+   const fn=buildSsa({codeItems:items,exceptionTable:code.exceptionTable,method,className:'LoadingMicroKernel'});
+   assert.ok(!fn.rejected,fn.rejected);
+   const stackified=numericLocals.prepare(fn),localOf=new Map(fn.params.map((v,i)=>[v,i]));let next=fn.params.length;
+   const allocate=v=>{if(!localOf.has(v))localOf.set(v,next++);return localOf.get(v);};
+   const reused=numericLocals.assignLocals(fn,stackified,localOf,allocate),phis=fn.blocks.flatMap(b=>b.phis);
+   return {items:items.length,values:fn.values.length,localSlots:fn.localsSize,
+    calleeNumericPhis:phis.filter(v=>v.origin?.slot>=code.localsSize&&'IJFD'.includes(v.kind)).length,
+    numericLocals:[...localOf.keys()].filter(v=>!fn.params.includes(v)&&'IJFD'.includes(v.kind)).length,
+    referenceLocals:[...localOf.keys()].filter(v=>!fn.params.includes(v)&&v.kind==='A').length,
+    stackified:stackified.size,allocatedLocals:next-fn.params.length,reusedNumericLocals:reused};
+  };
+  const current=analyze(expanded.items),proposed=[];let continuations=0;
+  for(const [index,item]of expanded.items.entries()){
+   proposed.push(item);
+   if(item.labelDef?.endsWith('RET:')&&expanded.origIdx[index]>=0){
+    continuations++;
+    for(let slot=Number(code.localsSize);slot<current.localSlots;slot++)proposed.push(
+     {instruction:'aconst_null'},{instruction:{op:'astore',arg:String(slot)}});
+   }
+  }
+  assert.equal(continuations,1,'Only the completed root activation is retired');
+  const result={sourceRevision:revision,family,analysisOnly:true,compiledGuestMethods:0,guestTicks:0,mainExecuted:false,
+   symbolicReadiness:true,callerLocalSlots:code.localsSize,current,proposed:analyze(proposed),
+   note:'SSA/allocation bound for ending completed inline-local lifetimes; no runtime timing, baseline validation or semantics claim.',measuredAt:new Date().toISOString()};
+  assert.equal(w.compiled.length,0);
+  const currentReceipt=JSON.parse(fs.readFileSync(reportPath));(currentReceipt.optimizationTrials.nativeCallCode||={observations:[]}).observations.push(result);
+  fs.writeFileSync(reportPath,JSON.stringify(currentReceipt,null,2)+'\n');console.log(JSON.stringify(result,null,2));process.exit(0);
+ }
  if(family==='ssa-liveness'){
   const rows=[];
   const targets=[['MusicDecoder','decodePacket','(I)[F'],['VorbisCodebook','readVector','()[F'],

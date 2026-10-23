@@ -3,6 +3,6 @@
 // Advance after correctness and full-loading observations under the same
 // constraints. Required correctness fixes may supersede historical comparators;
 // retain their results without treating that replacement as a speedup.
-export const benchmarkBaselineRevision='97aa42eb432bf494686c12c85d445cc4751241aa';
+export const benchmarkBaselineRevision='029834e16366e3dfaed1f46d5589ec34dddc04dc';
 export const selectBenchmarkRevision=revision=>
  revision===undefined||revision==='baseline'?benchmarkBaselineRevision:revision;

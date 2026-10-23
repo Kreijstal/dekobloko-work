@@ -14111,3 +14111,207 @@ node --check apps/loading/microbench.mjs
 node --check apps/loading/probe.mjs
 git diff --check
 ```
+
+
+### Guarded recoverable loops: preserve full flow and static-state knowledge
+
+The preceding turn is progress: it rejects a measured original-workload failure,
+withdraws that source and preserves its evidence. Continue the full 1.1x goal;
+no known JVM/TeaVM/HotSpot comparator is rerun. Source inspection and the saved
+original diagnostic show 134216 `native_state_object_storage` calls in
+`readVector`. A typed object input is only a structural store type, not current
+wrapper-binding/field-shape ownership. Reusing it as an ownership certificate
+would bypass mutation semantics, so no such shortcut is implemented.
+
+The inliner has a separate concrete boundary: it refuses recovered loops on
+guarded receivers because the old guard-miss deopt stub makes normal caller
+flow partial. Candidate `0fde2ebdeb4d8cacb598c8c496a0bd7b9c2bca6a` retains the
+captured receiver/arguments on a monomorphic recovered-loop miss, invokes the
+original method, and joins the existing continuation. Its fallback invoke maps
+to the original call's resume/exception PC. Polymorphic recovered bodies keep
+the conservative admission. This changes a transformation, not an inline budget
+or game-specific policy. The nine-file focused check passes **943/943**; the new
+cases cover guarded normal execution, integer/reference/wide arguments, a
+category-2 operand prefix, fuel reconstruction, null fallback and original
+handlers. No completed prefix/child store is replayed.
+
+A diagnostic of the changed small fixture confirms one recovered inline site
+in `huffmanInline`, and eliminates its million `readScalarInline` entries.
+However, the whole-body static-state proof disappears (nine sites in the old
+callee, zero in the new caller). Candidate-only samples are about **129.824,
+134.987, 183.721 ms**, median about **134.987 ms**, versus saved **89.716144 ms**.
+The new call removal is a regression; no original/full loading cohort is spent
+on this version. Exact values remain in the canonical microbenchmark rows.
+
+The refinement restores the existing effect proof across this specific generated
+control flow. Synthetic receiver guards over formal parameters compare private
+authenticated native class IDs with a bounded positive loaded-class set. This
+does not change guest `instanceof` semantics. Unknown/later class IDs use the
+generated original-invoke exit: it hands off at that invoke with the actual
+operand prefix and captured arguments, and never invokes a callback then
+rejoins cached specialized state. Ordinary callbacks, meaningful handlers,
+volatile fields, instance writes and unproved array origins remain excluded.
+Possible invoke exits prohibit publishing a closed native body contract.
+
+Final-method dispatch plus a real guard and original-invoke miss path has no
+unchecked class-world assumption. The inliner now avoids incorrectly counting
+that fixed recovered site as an unsafe speculation, preserving canonical native
+link eligibility. Open-world/nonfinal speculation retains its checks and link
+restrictions. A new test loads a subclass **after** compilation, verifies that
+the final-method caller remains link eligible, obtains the exact original invoke
+PC, then completes inherited Java dispatch with no prefix replay, exact bit
+state and no late Java compilation. The first test incorrectly equated the old
+guard counter with epoch-speculation records; it was corrected to inspect the
+records, then separately asserts the corrected fixed-dispatch guard count.
+
+Refined source `962c544c301bd48e517d1dfb5cb048882e271084` passes **1257/1257**
+assertions across twelve focused files. Changed-fixture coverage/timings follow.
+An initial edit-script assertion stopped before writing source, but the shell
+continued into the pre-existing 128-assertion check. That accidental unchanged
+validation is explicitly recorded as a setup error, not new runtime evidence.
+Subsequent edits use a separate successful patch operation before validation;
+there is no baseline timing, restoration check or identity replay.
+
+```bash
+# java-tools; first guarded-control-flow proof, 943 pass.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/inlineActivationResume.test.js test/canonicalDirectFrames.test.js test/wasmCalleeRanking.test.js test/wasmCompilerRetention.test.js test/structuredLoopResume.test.js test/wasmDeepInline.test.js test/wasmInstanceInline.test.js test/wasmStaticInlineHandlers.test.js test/inlineFinalReceiverCalls.test.js
+# java-tools; refined effect/continuation/late-class proof, 1257 pass.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeMixedStateBody.test.js test/nativeStaticStateBody.test.js test/nativeStaticArrayBody.test.js test/inlineActivationResume.test.js test/canonicalDirectFrames.test.js test/wasmCalleeRanking.test.js test/wasmCompilerRetention.test.js test/structuredLoopResume.test.js test/wasmDeepInline.test.js test/wasmInstanceInline.test.js test/wasmStaticInlineHandlers.test.js test/inlineFinalReceiverCalls.test.js
+# Deko; changed-only small diagnostic then uninstrumented screen.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose 0fde2ebdeb4d8cacb598c8c496a0bd7b9c2bca6a huffman-inline
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 0fde2ebdeb4d8cacb598c8c496a0bd7b9c2bca6a huffman-inline
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose 962c544c301bd48e517d1dfb5cb048882e271084 huffman-inline
+```
+
+
+Refined changed-fixture coverage restores **nine static-state sites** and three
+instance-field sites in the flattened `huffmanInline` caller, with zero
+`readScalarInline` native entries. It performs two owner validations across the
+run. There are two genuine fuel exits and one original-header native resume;
+these are retained rather than hidden or disabled by a larger fuel budget.
+The excluded diagnostic reports roughly 27 ms in each native chunk, not an
+immediate refusal at entry. Uninstrumented samples are about **91.123, 89.235,
+117.112 ms**, median about **91.123 ms**. This still overlaps saved **89.716144
+ms**; no original/full-loading cohort or comparator promotion is justified yet.
+
+A new compile-only `inlined-lifetimes` bound asks a different question from the
+prior original-SSA liveness pass. It builds the actual single-site recovered
+Huffman splice with symbolic readiness (no initializer or guest instruction),
+then ends every returned callee-local lifetime using the existing null-slot
+cleanup representation. The original four caller slots are preserved. Six
+numeric callee-slot phis become one; numeric allocated values fall 34 to 29,
+reference values increase 6 to 11, stackified values remain nine and total
+allocated locals remain 33. Thus this is a possible loop-copy/code-quality
+improvement, **not a demonstrated allocation/memory or speed gain**.
+
+Source `029834e16366e3dfaed1f46d5589ec34dddc04dc` applies that lifetime end to
+recovered activations only. The return operand stays on the stack, original
+caller locals are untouched, and budget accounting includes every cleanup item.
+Ordinary splices keep their established receiver-only cleanup. This uses the
+existing instruction/SSA machinery, no new opcode, bytecode lifetime switch or
+application rule. The same twelve-file focused check passes **1257/1257**.
+The changed candidate's small timing screen is recorded below.
+
+```bash
+# Deko; refined guarded-state candidate only.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 962c544c301bd48e517d1dfb5cb048882e271084 huffman-inline
+# SSA/allocation bound only, zero guest compilation/execution.
+node --check apps/loading/call-code.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 962c544c301bd48e517d1dfb5cb048882e271084 inlined-lifetimes
+# Candidate with returned-local lifetimes ended, three fresh processes.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 029834e16366e3dfaed1f46d5589ec34dddc04dc huffman-inline
+```
+
+
+The returned-local cleanup candidate's small samples are about **54.935,
+55.497, 61.462 ms**, median about **55.497 ms**, all checksums exact with zero
+late Java compilation. Unlike the preceding two versions, its entire range is
+below the saved 80.194931/92.106681/89.716144 ms cohort. Advance the **Huffman
+component comparator** to this candidate and keep the selected **full-loading
+comparator** separate. This does not establish TeaVM parity: the current small
+fixture has no newly measured TeaVM control, and no known control is rerun.
+
+That clear small-case gain warrants one original decoder diagnostic. The
+original code path is exercised: floor decoding has two recovered activations,
+residue decoding has one, and both retain **682 direct native entries / zero
+exits**. `readVector` keeps its existing recovered traversal, nine static-state
+sites, **134216 direct entries / zero exits**. Every saved PCM byte matches,
+late compilation is zero, and the formerly separate scalar traversal is no
+longer an executed native method. These are coverage observations, not timing
+attribution. Three uninstrumented changed-source original decodes follow.
+
+```bash
+# Deko; changed original path, counters kept out of the timing cohort.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 029834e16366e3dfaed1f46d5589ec34dddc04dc 'MusicDecodeStage.decodeFloorPacket()Z'
+# Three fresh changed-source decodes; saved PCM/TeaVM controls are reused.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 029834e16366e3dfaed1f46d5589ec34dddc04dc
+```
+
+
+The original decoder samples finish at **93.269749, 92.009447, 103.293647 ms**,
+median **93.269749 ms**. Every saved PCM byte matches; late compilation remains
+zero. The ranges overlap older original cohorts, so this is not a claim of a
+causal percentage win. Together with the clear small reduction, it warrants the
+actual full-loading gate, with all saved controls reused.
+
+Full-loading cohort one takes **1825.246401, 1788.787970, 2029.977873 ms**, median
+**1825.246401 ms**. A candidate-only repeat resolves neither every timing cause
+nor the parity goal: its samples are **1759.414772, 3719.670882, 1779.553229 ms**,
+median **1779.553229 ms**. The combined six-sample median is **1807.0171855 ms**,
+versus the saved **1929.057624 ms** comparator, and **5.023125618x** the recorded
+**359.739597 ms** TeaVM median. Every full checksum is
+`18:218292:2368412830:205:7597510:3045679678`, with no instrumented sample or
+late Java compilation. No baseline/TeaVM/HotSpot process is rerun.
+
+The **3719.670882 ms** observation is retained. In the repeat's fast versus slow
+observations, all **104 reported execution-method rows are identical**, including
+native coverage metadata and execution/fuel/exit counts. Owned Wasm heap counters
+also match; these counters do not measure total JavaScript heap. The slow sample
+uses **3777.743 CPU ms** versus the fast sample's **1789.145 CPU ms**. Preparation
+counts are 2105 versus 2106 synchronous compilations. Two selected helper
+publication lists differ in their noncompact slot counts: `readBits` has 140
+rather than 144 total slots, and `computeLookupValueCount` has three rather than
+four. Both remain eligible, compact counts match (133 and two), and all those
+slots are published to real targets, with **zero stubs**. These observations do
+not establish the outlier's cause. Do not discard it, call it a fallback loss,
+or attribute it to an unmeasured engine/host/GC effect.
+
+Advance the rolling **experimental source comparator** to
+`029834e16366e3dfaed1f46d5589ec34dddc04dc`, using all six full observations and
+both repeated cohort medians. Retain the old source/results through the single
+canonical ledger. This is a working reference for the next experiment, **not**
+a claim that overlapping ranges prove a causal 6.3% improvement, a production
+promotion or an acceptance pass. `benchmark-baseline.mjs` and canonical
+`optimizationBaseline` select that source; `currentHuffmanInlineComponentComparator`
+uses **55.497371 ms**, and `currentVorbisComponentComparator` uses **93.269749 ms**.
+The new baseline is **not** timed, fingerprinted or tested against itself after
+selection. Source syntax/whitespace checks cover the changed Deko scripts only.
+
+The same single JSON contains `optimizationTrials.guardedInlineLoops`: all three
+changed small cohorts, original coverage/samples, both complete full cohorts,
+combined median/tail, the outlier comparison, source history, validation and the
+explicit setup-error record. No additional report, generated Java/class/JAR,
+Wasm/WAT/bundle or screenshot enters Git. Generic runtime changes contain no game
+names or profiles; Deko owns this benchmark and comparator choice. JVM master,
+default bundles and deployment remain unchanged. **The 1.1x goal is unfulfilled.**
+Browser/phone, rolling presented FPS, startup and total-heap gates remain open.
+
+The next concrete boundary is still visible: original `readVector` has **134216
+native calls**, while the inliner only reconstructs a single recovered activation
+and admits newly resumable loops at `depth === 0`. A wrapper that calls that
+traversal cannot simply receive a larger inline budget. Further flattening needs
+nested original-frame/operand-prefix reconstruction, followed by retaining the
+callee's static/object/array proofs inside the larger caller. The present work
+shows why dropping those proofs can erase the gain from removed calls. Require
+small semantic/code-generation evidence and actual original-workload use before
+another full run; do not restart CPU attribution or remeasure known controls.
+
+```bash
+# Deko; the same candidate only, two complete fresh-process cohorts.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision 029834e16366e3dfaed1f46d5589ec34dddc04dc --options diagnostic
+# Run twice to assess overlap/variation; retain every observation, including the outlier.
+# Final Deko syntax/whitespace checks, all exit 0; no baseline execution.
+node --check apps/loading/call-code.mjs
+node --check apps/loading/benchmark-baseline.mjs
+git diff --check
+```
