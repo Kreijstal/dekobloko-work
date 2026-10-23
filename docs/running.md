@@ -14948,3 +14948,147 @@ transport alone is insufficient. Inspect that mechanism's code and small-case
 performance before original decoding, then full loading. JVM master, production
 artifacts and original/full comparators remain unchanged; **the 1.1x objective and
 all browser/phone/heap/FPS acceptance remain unfulfilled**.
+
+### Compiler-paired native storage with synchronous revocation
+
+The controlled trusted-entry bound justified a real generic ownership mechanism,
+not transporting its fixture assumption into the runtime. Source
+`5c2f85dc306a0787e5868ccd64fe39e69c72508b` adds a monotonic i32 certificate to
+private GC field storage: 0 is unissued, 1 is valid, -1 is permanently revoked.
+Tracked wrapper-binding and field-shape edits revoke before performing the edit;
+aliases share the certificate. Java field writes retain it. Checked descriptor
+validation may recover a valid alias, but cannot reissue the native certificate.
+Manual registrations and raw stores do not earn pairing. Class identity remains
+a separate immutable field. Ordinary and paired entry modes are distinct from
+the existing callback-free closed-body contract.
+
+Source `6b2d4f799cb2051a5dbbfbb7cfcdbe237e19dd3b` connects that mechanism to actual
+compiled calls. Only a bounded whole stateful body whose required receivers are
+native object parameters publishes the paired-entry contract. A caller proves
+the relationship to its actual Java SSA receiver using a WeakMap-only tracked
+lookup, independently of its incoming transport payload. Its separate captured
+store survives opaque calls while its native certificate remains valid; redefining
+that SSA receiver clears it. The actual GC argument placed on the operand stack
+is checked before choosing the paired slot. The callee checks revocation again,
+so even a callback after slot selection cannot use an expired proof. Null,
+foreign and modified receivers retain checked entry and precise continuation.
+
+Pairing has its own slot and method/signature/proof identity. Replacement without
+the proof publishes the compatible ordinary entry; withdrawal keeps the existing
+bridge, and caller retirement releases the extra slot. Publication never treats
+this entry-only contract as a callback-free method. The duplicate-code budget is
+shared with existing entries, whose emission choices remain first. Installed
+metadata contains plain contracts, not SSA graphs.
+
+Focused validation exposed a new fallback map retaining SSA call keys; adding
+both new discovery maps to compiler cleanup fixes the weak-reference test. A
+first late-mutation test incorrectly expected a normal raw return: replacement
+correctly refuses native ownership and hands off. The corrected test follows the
+actual Java continuation and checks the new binding and exactly-once scalar
+writes. The entry-mode foundation also corrected an invocation-counter assertion
+from 0 to the actual fourth canonical invocation; neither correction changes
+runtime semantics.
+
+```bash
+# JVM; certificate/entry foundation: 1186/1186 assertions.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/entryModeCode.test.js test/nativeObjectStorage.test.js test/canonicalDirectFrames.test.js test/nativeObjectBody.test.js test/nativeMixedStateBody.test.js test/nativeObjectForwarding.test.js test/nativeReferenceArray.test.js test/classMirrorTransport.test.js test/preparedWasmConstructors.test.js test/wasmParameterArrayAbi.test.js test/wasmCompilerRetention.test.js
+# New protocol plus array forwarding/retention, after cleanup fix: 137/137.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/pairedNativeStorage.test.js test/wasmParameterArrayAbi.test.js
+# Expanded pairing, entry modes and compiler retention: 199/199.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/pairedNativeStorage.test.js test/entryModeCode.test.js test/wasmCompilerRetention.test.js
+```
+
+The Deko `paired` experiment withholds only the outer Java inline transform to
+isolate the real protocol. It does not override ownership validation. The changed
+candidate diagnostic performs one million vector entries, exactly one caller
+pairing lookup, zero vector JS ownership queries, zero native exits/late Java
+compiles and exact checksum -1834486005, cursor 1000000, bit 0. Fresh uninstrumented
+samples are **70.178465, 74.151271, 72.269691 ms**, median **72.269691 ms**. Reuse
+the recorded separate-call median **89.520345 ms** and range
+85.077283–98.219603 ms; no unchanged control is replayed. This is approximately
+19% lower in the bounded case, not a causal interleaved estimate or full loading
+parity. All execution flags remain eager Wasm / 1 GiB, CPU2 / Node 22.23.2.
+Code inspection covers the shared core (including its ordinary and paired entry
+alternatives), not a claim that every static native call site executes.
+
+```bash
+# Deko; changed source only; diagnostic excluded from timing.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-paired-inspect 6b2d4f799cb2051a5dbbfbb7cfcdbe237e19dd3b
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-paired-code 6b2d4f799cb2051a5dbbfbb7cfcdbe237e19dd3b
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-paired-candidate 6b2d4f799cb2051a5dbbfbb7cfcdbe237e19dd3b
+```
+
+Source `6d9da940b7191ba9363544d254e03a2d331eaf4d` adds a structural default policy:
+keep a ready, proved acyclic wrapper boundary when expanding its descendant loop
+would add another recovered frame/snapshot scope. Preserve direct scalar-loop
+inlining, including the previous Huffman gain. A missing contract retains nested
+reconstruction. This uses generic method/flow/proof identity, no game profile or
+new opt-in flag. The legacy mixed-state suite explicitly withholds the ready
+wrapper's entry proof to keep exercising nested reconstruction, foreign getter
+handoffs and fuel exits; the new suite separately verifies default boundary
+selection, original results, forged payloads, late revocation before/after slot
+selection, static/object/array ABI, replacement, retirement and graph collection.
+
+```bash
+# JVM; final policy/call/fallback/retention validation: 554/554 assertions.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/pairedNativeStorage.test.js test/nativeMixedStateBody.test.js test/nestedInlineActivations.test.js test/wasmParameterArrayAbi.test.js test/wasmCompilerRetention.test.js
+# Deko; both syntax checks exit 0.
+node --check apps/loading/nested-loop.mjs
+node --check apps/loading/probe.mjs
+```
+
+No JVM master/default bundle, deployment or full comparator has been promoted.
+The original decoder and full-loading gates follow the bounded gain. The existing
+single benchmark ledger remains the only JSON output and only one writer runs.
+
+The first original diagnostic for `6d9da940…` is byte-exact but fails the
+applicability gate: the residue module still runs recovered vector regions and
+the separate vector has no actual entries. Do not time it as evidence of the new
+call boundary. The recorded method layouts already show that the final vector
+artifact has the correct proof; the early complete caller was never revisited
+after that artifact became ready.
+
+Source `fc7ab7ed1757f533abb0b05946a351ab7b7b48e9` records only method keys for an
+accepted acyclic wrapper expansion enclosing a recovered loop. Existing bounded
+preparation settling can revisit that complete caller once its recorded target
+publishes a matching proof. This does not classify complete code as a partial
+runtime dependency and adds no gameplay-triggered optimization rebuild. Settled
+code drops the hint. Tests verify delayed proof readiness, one rebuild, cleared
+hints, retained direct scalar inlining, existing OSR dependency settling and
+frozen-compilation behavior. The test JVM explicitly enables Wasm before asking
+the preparation settler to run; its manual compile helper alone did not do that.
+
+```bash
+# JVM; focused preparation, frozen-dependency and call tests: 150/150.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/pairedNativeStorage.test.js test/preparedOsrDependencies.test.js test/wasmFrozenDependencyRefresh.test.js test/preparationWasmHelpers.test.js test/preparedPartialWasm.test.js
+# Deko; changed-original applicability diagnostics, excluded from timing.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 6d9da940b7191ba9363544d254e03a2d331eaf4d 'VorbisCodebook.readVector()[F'
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect fc7ab7ed1757f533abb0b05946a351ab7b7b48e9 'VorbisCodebook.readVector()[F'
+```
+
+The settled original diagnostic passes the applicability gate: **134216 actual
+`VorbisCodebook.readVector()[F` entries**, nine static-state sites, zero vector
+`native_state_object_storage` queries, zero exits and no late Java compilation.
+The residue caller retains direct scalar-loop recovery at depth one and has two
+paired call sites. It performs **12421 pairing lookups**: a redefined receiver
+SSA value correctly earns a new proof, rather than reusing a prior loop value's
+relationship. All **348249 PCM bytes** match the recorded reference. The
+remaining **134216 vector `object_storage` queries** authenticate the returned
+row container, not the book receiver; they cannot be removed as a redundant
+receiver check. This successful applicability diagnostic justifies the changed
+original cohort, with the saved 029… comparator; it is excluded from timings.
+
+```bash
+# Deko; changed original only, three fresh VMs, no control/HotSpot/TeaVM replay.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm fc7ab7ed1757f533abb0b05946a351ab7b7b48e9
+```
+
+The changed original cohort is **101.894, 96.188, 106.620 ms** (full precision in
+the single ledger), median **101.894 ms**, versus recorded **93.269749 ms**.
+Every PCM byte matches; no late Java compilation. This is approximately **9%
+slower**, so the original performance gate fails despite the bounded 19% gain.
+Do not advance the original/full comparator, launch a full cohort or promote a
+bundle. The next controlled question is to isolate pairing on the recorded 029…
+source, excluding previously rejected nested-inlining/region machinery. This is
+a new changed candidate, not a baseline restoration or control replay. Preserve
+the current source and measurements in their experiment refs/journal first.
