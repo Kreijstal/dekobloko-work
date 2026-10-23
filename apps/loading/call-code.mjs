@@ -17,7 +17,7 @@ const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilat
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
 const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive'].includes(family));
 const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
-if(entryVariant==='closed')assert.equal(family,'original-reader','Inspect only the newly added closed reader export');
+if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
 const directMusic=family==='music-reader',fullGraph=['packet','archive'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
@@ -94,7 +94,7 @@ for(const [ordinal,key]of targets.entries()){
  if(ordinal===targets.length-1)fs.writeFileSync(path.join(directory,'current.wat'),wat);
  const exportName=entryVariant==='closed'?'canonicalClosedStorageRun':meta.parameterObjectABI?.length?'canonicalCompactStorageRun':'canonicalCompactRun';
  if(entryVariant==='closed'){
-  assert.equal(meta.closedNativeBody?.version,1,'Closed export requires the compiler contract');
+  assert.equal(meta.closedNativeBody?.version,family==='music-reader'?2:1,'Closed export requires the exact compiler contract');
   assert.equal(meta.closedNativeBody.run,meta.canonicalClosedStorageRun,'Certificate must bind this exact export');
  }
  const module=parseWat(wat),exported=module.find(n=>n?.[0]==='export'&&n[1]===JSON.stringify(exportName));
@@ -114,6 +114,7 @@ for(const [ordinal,key]of targets.entries()){
   instructionExitSiteCount:meta.instructionExitSiteCount??null,
   nativeOperandSnapshotCount:meta.nativeOperandSnapshotCount??null,
   nativeClosedCallSiteCount:meta.nativeClosedCallSiteCount??null,
+  nativeStaticInputGuardCount:meta.nativeStaticInputGuardCount??null,
   nativeObjectRegionBlockCount:meta.nativeObjectRegionBlockCount??null,
   nativeStaticStateBodySites:meta.nativeStaticStateBodySites??null,
   nativeObjectRegionCastCount:meta.nativeObjectRegionCastCount??null,

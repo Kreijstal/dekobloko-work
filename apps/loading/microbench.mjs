@@ -987,6 +987,7 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     instructionExitSiteCount:s.meta?.instructionExitSiteCount??null,
     nativeOperandSnapshotCount:s.meta?.nativeOperandSnapshotCount??null,
     nativeClosedCallSiteCount:s.meta?.nativeClosedCallSiteCount??null,
+    nativeStaticInputGuardCount:s.meta?.nativeStaticInputGuardCount??null,
     nativeObjectRegionBlockCount:s.meta?.nativeObjectRegionBlockCount??null,
     nativeStaticStateBodySites:s.meta?.nativeStaticStateBodySites??null,
     nativeObjectRegionCastCount:s.meta?.nativeObjectRegionCastCount??null,

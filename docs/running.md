@@ -13459,3 +13459,73 @@ revocation whenever execution leaves the closed region or resumes. Existing
 callee guards must remain for general entries. Test that hypothesis in the
 small case before spending another original/full-loading cohort; do not repeat
 broad cold-static inlining, global callback epochs or baseline attribution.
+
+### Borrowed static inputs: correct and smaller, no reduced-kernel gain
+
+The preceding turn is progress: it isolates a cost, implements revocable native
+field certificates, and validates both the small case and original decode.
+Full loading remains above the 1.1x objective. This pass tests its documented
+next hypothesis without rerunning baseline, TeaVM, HotSpot, restored-source
+identities or correctness checks against themselves.
+
+`e8089689fb0dcbbf3ff11e9596cde2b042614dbe` adds a version-2 restricted static
+callee contract enumerating owner names, cell addresses, permission/numeric
+masks and array headers. A callback-free caller checks those exact capabilities
+lazily at its first original invoke, then shares them until that native scope
+ends. The callee's ordinary entry retains full guards. Its restricted entry
+still reloads current values/headers and performs every original scalar write;
+it omits only repeated capability tests. Partial-region outside edges invalidate
+the caller's certificate, and fresh native resumption starts uncertified.
+A live replacement must match both contract version and every dependency, in
+addition to existing identity/signature/export binding. Otherwise the restricted
+slot refuses without callbacks and donates the exact original continuation.
+
+The first focused run catches an emitter-array aliasing mistake: clearing a
+buffer after wrapping it in an entry-mode marker also cleared its ordinary
+branch, causing three partial-write/null assertions to fail. Keeping a separate
+suffix buffer restores the original guards. No failing assertion is weakened.
+The six-file suite then passes **727/727 assertions**, including eight real
+borrowed child calls for one input check, foreign storage after fuel suspension,
+outside callbacks/reentry, cold dependency initialization after the parent
+prefix, mismatched replacement owners/addresses/masks/array kinds, original
+outer handlers, retention and worker transport.
+
+An excluded diagnostic on the unchanged Java tree fixture confirms **1000000
+caller input checks for 8000000 actual borrowed static-reader entries**, checksum
+`-1268584370`, no native exits and no late Java compilation. A compile-only
+inspection of the newly changed original-reader export executes no Java tick,
+main or asset request, and reuses the saved TeaVM native rows. Original JVM
+reader native sizes shrink from the saved **692/1320** bytes to **572/1136**;
+TeaVM's previously recorded sizes remain **228/612**. New exports have six static
+WAT i32 loads and three stores. Smaller native code is not a speedup proof.
+
+`18097dd7c31293cf3400aa2134b19808dcccfd7b` additionally checks each distinct
+class owner once per caller guard rather than once per dependency row. The
+focused state/cold/resume/replacement file passes **166/166 assertions**.
+Three fresh uninstrumented reduced-kernel runs take **168.036453, 219.036039,
+193.640714 ms**, median **193.640714 ms**, versus saved tracked-shape median
+**170.173740 ms**. The intervals overlap, but no repeatable gain is established.
+All checksums match and Java compilation is absent during execution.
+
+```bash
+# java-tools; protocol, exception, cleanup and transport tests.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticStateBody.test.js test/closedNativeCalls.test.js test/nativeStaticArrayBody.test.js test/canonicalDirectFrames.test.js test/wasmCompilerRetention.test.js test/classMirrorTransport.test.js
+# Narrow validation after owner-readiness guard deduplication.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticStateBody.test.js
+# Deko; changed code only, saved TeaVM native rows reused.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs e8089689fb0dcbbf3ff11e9596cde2b042614dbe music-reader closed
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose e8089689fb0dcbbf3ff11e9596cde2b042614dbe huffman-helper
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 18097dd7c31293cf3400aa2134b19808dcccfd7b huffman-helper
+```
+
+`32a3a5cea3f82fe17cf069602e8c92c58b4bfd69` withdraws the borrowing experiment
+while preserving its complete history and the earlier tracked field shape proof.
+No restoration test/timing/identity check follows. The same single canonical
+`benchmark.json` records observations and this decision under
+`optimizationTrials.borrowedStaticInputs`. No original-sample/full-loading
+cohort, selected comparator advance, publication or deployment is justified.
+The next source target is the actual inlined `readVector` traversal: its mixed
+readonly instance arrays/static reader state is outside the current whole-body
+static-state proof, despite 134216 original-sample native entries. Any extension
+must preserve final reference-load callbacks, exact partial stores and recovered
+inline/fuel continuations rather than optimize only unused standalone metadata.
