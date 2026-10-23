@@ -6,7 +6,7 @@ import {Module,createRequire} from 'node:module';
 import {execFileSync} from 'node:child_process';
 import {pathToFileURL} from 'node:url';
 const require=createRequire(import.meta.url);
-export async function loadArchivedJvm(root,revision,{observeModule}={}) {
+export async function loadArchivedJvm(root,revision,{observeModule,preloadModules=[]}={}) {
  assert.match(revision,/^[0-9a-f]{40}$/,'An exact source commit is required');
 
  const parent=path.dirname(root),cloner=[parent,path.join(parent,'blank-github-cloner')].find(directory=>fs.existsSync(path.join(directory,'public/jvm-source-bundler.js')));
@@ -52,5 +52,10 @@ export async function loadArchivedJvm(root,revision,{observeModule}={}) {
   if(filename.endsWith('.json'))module.exports=JSON.parse(source);else module._compile(source,filename);
   module.loaded=true;observeModule?.({filename,exports:module.exports});return module.exports;
  };
- return load(path.join(root,'src/core/jvm.js'));
+ const result=load(path.join(root,'src/core/jvm.js'));
+ for(const name of preloadModules){
+  assert.ok(name.startsWith('src/')&&!name.split('/').includes('..'),'Preload only an archived source module');
+  load(path.join(root,name));
+ }
+ return result;
 }

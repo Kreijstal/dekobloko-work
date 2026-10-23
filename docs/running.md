@@ -13979,3 +13979,135 @@ numeric protection/locals on the real SSA. Inlined activation frames and handler
 edges must remain protected; a smaller protected set alone is not a safety proof
 or a claim of speed. This is a code-generation question, not another CPU
 attribution campaign or permission to remeasure an unchanged baseline.
+
+
+### Prepared native regions, liveness bound and loop-local state publication
+
+Continue using saved controls; do not rerun a known baseline, TeaVM or HotSpot.
+The compile-only `ssa-liveness` analysis filters saved-local maps with existing
+frame liveness and invokes the real numeric stackification/local allocator.
+Operand stacks remain protected. It excludes handlers/inlining and executes no
+Java instructions. Protected numeric values fall from 295 to 156 in packet
+SSA (322 to 184 with potential-native operand snapshots), and 318 to 187 in
+Bzip SSA (328 to 197). Allocated locals and stackification do **not** change:
+packet 440/453 locals, Bzip 547/550. The smaller protected set therefore does
+not justify an allocator patch or a timing campaign.
+
+A separate archived-source proof census resolves a mistaken inference from
+older retained metadata: current Bzip `decodeBlocks` does receive its native
+regions after callees become ready. Initial preparation refuses them; later
+preparation succeeds. Structured compilation does not discard that result or
+report an instruction-exit failure. An initial diagnostic routing mistake
+selected the older packet-flow analysis; its mislabeled payload was removed
+and the setup error recorded. The corrected analyses are compile/preparation
+observations, not acceptance timings.
+
+On existing source `f14edc7e4d91f2a283cd6c876913c1877deae650`, a new Bzip
+coverage observation shows 118 regions, 71 field sites, 78 array sites, 26
+closed calls, one direct entry and no exits. Candidate-only Bzip samples are
+29.483082, 29.423576, 32.417889 ms, median **29.483082 ms**, compared with the
+saved 40.807995 ms component comparator. Advance this component comparator.
+The justified candidate-only full run gives 1822.944832, 2057.084132,
+1907.108330 ms, median **1907.108330 ms**. All full checks match
+`18:218292:2368412830:205:7597510:3045679678`, with zero late compilation.
+The samples overlap the selected full comparator (1929.057624 ms); this
+establishes **no repeatable full-loading gain**. The full comparator stays
+`97aa42eb432bf494686c12c85d445cc4751241aa`. No unchanged comparator is rerun.
+
+The next generic runtime experiment defers canonical integer static-cell
+publication in already certified stateful loops. Its existing whole-body proof
+excludes ordinary callbacks, allocation, reference writes, volatile cells and
+shared memory. Scalar values remain current in Wasm locals. Publication occurs
+before return, explicit throw, integer/long division faults, bounds faults,
+fuel/guard handoff and the supported terminal reference getter. Clearing the
+publication state before that getter protects mutations made by the callback.
+Loopless helpers retain immediate stores. Untaken write-only assignments must
+not publish an uninitialized local. Fresh native resumption reloads the actual
+externally visible cells and does not replay the prefix.
+
+First archived candidate `ff2e34b34218a17078a29e8b8071933fa6786113` uses dirty
+flags for every written cell. It passes **1323/1323 assertions** across eleven
+focused files. An excluded diagnostic confirms two cell publications for one
+million decoded symbols, exact checksum and zero late Java compilation.
+The candidate-only Huffman screen has medians about 86.8 ms (inline) and
+64.8 ms (many-fields), versus saved 89.716144 and 60.905517 ms. These overlap
+or regress: no performance promotion and no original/full benchmark warranted.
+A refinement eliminates per-write flags for read/write cells whose exact entry
+values are already loaded: publishing an unchanged nonvolatile private value
+on an untaken path is unobservable. Write-only cells retain dirty flags; one
+invocation publication flag prevents replay after terminal callbacks. The same
+eleven-file validation passes **1323/1323 assertions**. Its source is
+`4c5712e8fddfa49b76ba9ff2c610b7f1a17366d5`; timing observations follow below.
+
+```bash
+# Deko; diagnostic preparation only. The command requires eager/heap flags.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs f14edc7e4d91f2a283cd6c876913c1877deae650 ssa-liveness
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs f14edc7e4d91f2a283cd6c876913c1877deae650 archive-proof
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs f14edc7e4d91f2a283cd6c876913c1877deae650 archive-exit
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose f14edc7e4d91f2a283cd6c876913c1877deae650 bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm f14edc7e4d91f2a283cd6c876913c1877deae650 bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision f14edc7e4d91f2a283cd6c876913c1877deae650 --options diagnostic
+# java-tools; both publication candidates pass this same focused check.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticStorePublication.test.js test/nativeStaticStateBody.test.js test/nativeMixedStateBody.test.js test/closedNativeCalls.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/nativeObjectBody.test.js test/nativeArrayReturnOwnership.test.js test/nativeReferenceArray.test.js test/wasmCompilerRetention.test.js test/classMirrorTransport.test.js
+# Deko; changed-source observations, sequentially, no unchanged control.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose ff2e34b34218a17078a29e8b8071933fa6786113 huffman-many-fields
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm ff2e34b34218a17078a29e8b8071933fa6786113 huffman-inline huffman-many-fields
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 4c5712e8fddfa49b76ba9ff2c610b7f1a17366d5 huffman-inline huffman-many-fields
+```
+
+
+The grouped-publication screen gives inline samples **84.183208, 83.363523,
+83.548135 ms**, median **83.548135 ms**, and many-fields samples **64.727954,
+53.307912, 53.096997 ms**, median **53.307912 ms**. Each matches checksum
+`-1268584370` with zero late compilation. These small-case improvements justify
+original-workload validation; they are not a new full-loading comparator.
+
+The changed original diagnostic matches every saved PCM byte. `readVector`
+selects two deferred fields, nine static-state sites, four instance fields and
+one terminal reference load across **134216 direct entries / zero native
+exits**. It makes 268432 publication-counter calls (two per entry). `readBits`
+also selects two deferred fields, with 2124 direct entries and zero exits.
+Diagnostic timing is excluded. This answers whether the changed path is used;
+it does not revalidate an unchanged baseline.
+
+```bash
+# Deko; actual changed-path coverage, separate from timings.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 4c5712e8fddfa49b76ba9ff2c610b7f1a17366d5 'VorbisCodebook.readVector()[F'
+# Candidate only, fresh processes, exact saved PCM and saved TeaVM comparison.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 4c5712e8fddfa49b76ba9ff2c610b7f1a17366d5
+```
+
+
+Original uninstrumented decoder samples are **104.180426, 96.315336,
+102.720462 ms**, median **102.720462 ms**. All three match every saved PCM
+byte and have zero late Java compilation. They overlap the saved original
+cohorts (including median 98.724520 ms and final ownership cohort median
+100.201932 ms). The small-case gain does **not** establish an original-workload
+improvement. Consequently the store-publication experiment is **withdrawn**,
+including its new test and compiler metadata/hooks. The rejected sources and
+fixture remain reachable at the two archived revisions above. Withdrawal is
+`890bb11ca21371ad3028d84a84e0cfdf39f58c10`; no restoration test, byte-identity
+replay or timing is run. No additional full-loading run is justified. The Deko
+nullable diagnostic projections remain useful for inspecting those archived
+candidates; they introduce no JVM configuration flag or game-specific policy.
+
+The one canonical JSON now records `optimizationTrials.staticStatePublication`
+with both small screens, exact original samples, exercised coverage, focused
+validation, withdrawn status, source revisions and explicit no-baseline-rerun
+provenance. JVM master/defaults, the selected full comparator, bundles and
+deployment remain unchanged. The **1.1x goal is unfulfilled**; current full
+candidate/comparator medians are still about **5.3x recorded TeaVM**. No FPS,
+phone, heap or acceptance claim follows this pass. Future work should address
+an emitted-code difference in a bounded case and require original-workload
+benefit before advancing the full comparator. Do not repeat CPU attribution or
+an unchanged control merely to confirm it has not changed.
+
+Deko syntax validation (all four exit 0), and `git diff --check` (exit 0):
+
+```bash
+node --check apps/loading/archive-jvm.mjs
+node --check apps/loading/call-code.mjs
+node --check apps/loading/microbench.mjs
+node --check apps/loading/probe.mjs
+git diff --check
+```

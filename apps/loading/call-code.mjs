@@ -15,23 +15,117 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit'].includes(family));
 const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const flowOnly=family==='packet-flow',directMusic=family==='music-reader',fullGraph=['packet','archive'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+const flowOnly=['packet-flow','ssa-liveness'].includes(family),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
 options.classpath=[path.join(fullGraph||directMusic||flowOnly?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
-let buildSsa;
-const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{observeModule:({filename,exports})=>{
+let buildSsa,buildCfg,frameLiveness,numericLocals;const proofCensus=[],translationFailures=[];
+const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{preloadModules:family==='ssa-liveness'?['src/analysis/frameLocalLiveness.js','src/jit/stackifyNumericValues.js']:[],observeModule:({filename,exports})=>{
  if(filename.endsWith('/src/analysis/opgraph/ssa.js'))buildSsa=exports.buildSsa;
+ if(filename.endsWith('/src/decompiler/structurer.js'))buildCfg=exports.buildCfgFromCode;
+ if(filename.endsWith('/src/analysis/frameLocalLiveness.js'))frameLiveness=exports.frameLocalLiveness;
+ if(filename.endsWith('/src/jit/stackifyNumericValues.js'))numericLocals=exports;
+ if(family==='archive-exit'&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
+  const translate=exports.prototype.translate,exit=exports.prototype.emitInstructionExit;
+  exports.prototype.translate=function(...args){try{return translate.apply(this,args);}catch(error){
+   if(this.className==='Bzip2Decoder'&&this.method.name==='decodeBlocks')translationFailures.push({phase:'translate',message:String(error.message),stack:String(error.stack).split('\n').slice(1,6)});
+   throw error;
+  }};
+  exports.prototype.emitInstructionExit=function(node,out){try{return exit.call(this,node,out);}catch(error){
+   if(this.className==='Bzip2Decoder'&&this.method.name==='decodeBlocks')translationFailures.push({phase:'instruction-exit',op:node.op,id:node.id,item:node.itemIdx,
+    slotState:!!node.slotState,operandSnapshot:Array.isArray(node.stackUnder),arguments:node.args.map(v=>({op:v.op,kind:v.kind})),
+    prefix:node.stackUnder?.map(v=>({op:v.op,kind:v.kind})),message:String(error.message)});
+   throw error;
+  }};
+ }
+ if(family==='archive-proof'&&filename.endsWith('/src/jit/nativeObjectBody.js')){
+  const prepare=exports.prepare;
+  exports.prepare=function(c,structured,...args){
+   const result=prepare(c,structured,...args);
+   if(c.className==='Bzip2Decoder'&&c.method.name==='decodeBlocks'&&!args[0]){
+    const ops={};for(const b of c.fn.blocks)for(const n of b.body)ops[n.op]=(ops[n.op]||0)+1;
+    const receiverKinds={};for(const field of c.nativeObjectFieldOperations.values()){
+     const kind=c.fn.params.includes(field.receiver)?'param':field.receiver.op;receiverKinds[kind]=(receiverKinds[kind]||0)+1;
+    }
+    const callees=[];
+    for(const b of c.fn.blocks)for(const n of b.body)if(n.op==='invokestatic'){
+     const [,owner,[name,descriptor]]=n.imm,key=owner+'.'+name+descriptor;
+     const method=c.jvm.classes[owner]?.ast?.classes?.[0]?.items.find(i=>i.type==='method'&&i.method.name===name&&i.method.descriptor===descriptor)?.method;
+     const state=method&&c.wasmJit.state.get(method),meta=state?.meta,call=c.nativeObjectCalls.get(n.id);
+     if(!callees.some(q=>q.key===key))callees.push({key,status:state?.status,eligible:c.wasmJit.canonicalDirectLinks.constructor.eligible(state),
+      closedVersion:meta?.closedNativeBody?.version??null,objectABI:meta?.parameterObjectABI,arrayABI:meta?.parameterArrayABI,
+      actualCall:!!call,compact:call?.compact,guard:call?.guardIdx??null,callArrays:call?.arrays?.length,objects:call?.objects?.length});
+    }
+    proofCensus.push({asCallee:!!c.preferCompleteCallee,selected:!!result,
+     gates:{noHeap:!c.heap,noObjectOps:!c.objNativeOps,noDirectFrames:!c.directFrames,noJsTag:!c.jsTagEh,
+      staticBody:!!c.nativeStaticArrayBody,inline:!!c.origIdx,liveRanges:c.liveRanges.length,demoted:c.demoted.size,
+      deoptBlocks:c.deoptBlocks.size,irreducible:c.irreducibleSplitBlocks||0,guardedNested:c.guardedNestedArrayLoopPlans?.size||0,blocks:c.fn.blocks.length},
+     counts:{nodes:c.fn.values.length,fields:c.nativeObjectFieldOperations.size,staticReads:c.nativeStaticArrayReads.size,
+      calls:c.nativeObjectCalls.size,casts:ops.checkcast||0,gets:ops.getfield||0,puts:ops.putfield||0},receiverKinds,callees});
+   }
+   return result;
+  };
+ }
 }});
 globalThis.window=globalThis;globalThis.document={};const j=new JVM(options);delete globalThis.document;
 if(flowOnly){
  j.executeTick=()=>{throw Error('Flow inspection attempted guest execution');};
  j.executeInstruction=()=>{throw Error('Flow inspection attempted a Java instruction');};
  await j.preloadClasspathClasses();
+ if(family==='ssa-liveness'){
+  const rows=[];
+  const targets=[['MusicDecoder','decodePacket','(I)[F'],['VorbisCodebook','readVector','()[F'],
+   ['VorbisCodebook','readScalar','()I'],['MusicDecodeStage','applyFloorLine','(IIII[FI)V'],
+   ['Bzip2Decoder','decodeBlocks','(LBzip2DecoderState;)V']];
+  const protectedValues=fn=>{
+   const set=new Set(),map=m=>{for(const v of m?.values()||[])set.add(v);},list=vs=>{for(const v of vs||[])set.add(v);};
+   for(const b of fn.blocks){map(b.slotDefsIn);map(b.slotDefsOut);list(b.entryStack);list(b.exitStack);
+    for(const n of [...b.body,b.term]){map(n?.slotState);list(n?.stackUnder);}}
+   return set;
+  };
+  const allocation=fn=>{
+   const protectedSet=protectedValues(fn),stackified=numericLocals.prepare(fn),localOf=new Map(fn.params.map((v,i)=>[v,i]));let next=fn.params.length;
+   const allocate=v=>{if(!localOf.has(v))localOf.set(v,next++);return localOf.get(v);};
+   const reused=numericLocals.assignLocals(fn,stackified,localOf,allocate);
+   return {protectedNumeric:[...protectedSet].filter(v=>'IJFD'.includes(v.kind)).length,
+    stackified:stackified.size,allocatedLocals:next-fn.params.length,reusedNumericLocals:reused};
+  };
+  for(const [owner,name,descriptor]of targets){
+   const method=j.findMethod(j.classes[owner],name,descriptor),code=method.attributes.find(a=>a.type==='code').code;
+   const key=owner+'.'+name+descriptor;
+   if(code.exceptionTable?.length){rows.push({key,skipped:'Standalone bound excludes handlers'});continue;}
+   const cfg=buildCfg(code.codeItems),live=frameLiveness(code);
+   if(!cfg||!live){rows.push({key,skipped:'No supported bounded CFG/liveness'});continue;}
+   for(const snapshotPolicy of ['calls','potential-native']){
+    const fn=buildSsa({...code,method,className:owner},{cfg,captureOperandStack:snapshotPolicy==='calls'?undefined:
+     op=>/^[ilfdbcs]a(?:load|store)$/.test(op)||['arraylength','getfield','putfield','getstatic','checkcast'].includes(op)});
+    assert.ok(!fn.rejected,fn.rejected);const strict=allocation(fn),saved=[];
+    const filter=(object,key,needed)=>{
+     const map=object[key];if(!map)return;saved.push([object,key,map]);object[key]=new Map([...map].filter(([slot])=>needed(slot)));
+    };
+    try{
+     for(const b of fn.blocks){
+      const at=cfg.blocks[b.id].insns[0];filter(b,'slotDefsIn',slot=>live.has(at,slot));
+      filter(b,'slotDefsOut',slot=>cfg.succ[b.id].some(id=>live.has(cfg.blocks[id].insns[0],slot)));
+      for(const n of [...b.body,b.term])if(n)filter(n,'slotState',slot=>live.has(n.itemIdx,slot)||
+       Number.isInteger(n.itemIdx)&&n.itemIdx+1<code.codeItems.length&&live.has(n.itemIdx+1,slot));
+     }
+     const filtered=allocation(fn);rows.push({key,snapshotPolicy,blocks:fn.blocks.length,nodes:fn.values.length,strict,filtered,
+      localReduction:strict.allocatedLocals-filtered.allocatedLocals});
+    }finally{for(const [object,key,map]of saved)object[key]=map;}
+   }
+  }
+  assert.equal(j.jit.wasmJit.compiled.length,0);
+  const result={sourceRevision:revision,family,analysisOnly:true,compiledGuestMethods:0,guestTicks:0,mainExecuted:false,
+   note:'Original SSA allocation bound only; local maps filtered with original liveness, operand snapshots retained. No inlining, handlers, code emission, CPU attribution, timing or safety proof.',
+   rows,measuredAt:new Date().toISOString()};
+  const current=JSON.parse(fs.readFileSync(reportPath));(current.optimizationTrials.nativeCallCode||={observations:[]}).observations.push(result);
+  fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');fs.writeSync(1,JSON.stringify(result,null,2)+'\n');process.exit(0);
+ }
  const method=j.findMethod(j.classes.MusicDecoder,'decodePacket','(I)[F');
  const code=method.attributes.find(a=>a.type==='code').code;
  const fn=buildSsa({...code,method,className:'MusicDecoder'});assert.ok(!fn.rejected,fn.rejected);
@@ -87,6 +181,15 @@ if(directMusic){
  assert.ok(boundary,'Preparation did not reach the main boundary');assert.equal(failure,stop);
 }
 assert.equal(ticks,0);assert.equal(assetCalls,0);
+if(['archive-proof','archive-exit'].includes(family)){
+ const state=j.jit.wasmJit.compiled.find(s=>s.key==='Bzip2Decoder.decodeBlocks(LBzip2DecoderState;)V');assert.equal(state?.status,'ready');
+ const result={sourceRevision:revision,family,analysisOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,
+  note:'Final preparation proof-admission census; no workload, CPU profile, timing or oracle replay',
+  selectedRegionBlocks:state.meta.nativeObjectRegionBlockCount||0,structuredFailure:state.structuredFailReason,
+  candidates:state.wasmCandidateCoverage,rows:family==='archive-proof'?proofCensus:translationFailures,measuredAt:new Date().toISOString()};
+ const current=JSON.parse(fs.readFileSync(reportPath));(current.optimizationTrials.nativeCallCode||={observations:[]}).observations.push(result);
+ fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');fs.writeSync(1,JSON.stringify(result,null,2)+'\n');process.exit(0);
+}
 
 const walk=(node,visit)=>{if(!Array.isArray(node))return;visit(node);for(const child of node)walk(child,visit);};
 function codeShape(wat,name){
