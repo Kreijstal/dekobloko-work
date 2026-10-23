@@ -12289,3 +12289,98 @@ the measurements under `typedNativeObjectEntry`. The earlier small streaming
 region experiment (`ce2c670`) already covered emitBlockRuns and found no clear
 general gain; do not repeat that threshold change. These rejected entry changes
 leave the corrected full comparator and deployment unchanged.
+
+### Native packet comparison and affine loop bounds
+
+The next inspection compares the large packet-decoder **core**, as well as its
+published compact entry. Comparing only the wrapper would conceal the large
+body. `call-code.mjs ... packet` stops before Java main, with `executeTick` and
+asset callbacks set to reject execution. It parses only the selected WAT
+function so a large TeaVM application does not exhaust the bounded parser.
+TeaVM `$523` is identified by its receiver/index-to-float-array signature, four
+sine sites, 67 array gets, 40 stores and final state updates. No TeaVM export
+executes. Later inspections reuse its recorded native rows.
+
+| Source / body | Native bytes | Explicit WAT unsigned array comparisons |
+| --- | ---: | ---: |
+| Corrected reference `4206679`, JVM core | 51028 | 108 |
+| TeaVM packet `$523` | 15428 | GC array instructions |
+| Fixed-coefficient guards `a629be4` | 50328 | 62 |
+| Invariant-stride guards `0379c7e` | 49840 | 52 |
+| Rectangle/CSE guards `94696a3` | 50468 | 52 |
+
+Our published wrapper is 476 bytes; its core is the relevant large function.
+The reference reserves 520 stack bytes; TeaVM reserves 312. These are static
+compiler observations, not CPU shares. The actual JVM sine import is already
+the direct `Math.sin` binding. TeaVM still has native bounds branches: for
+example, packet offsets `+0xb83` / `+0xb85` compare index and length and branch
+before a memory-operand float multiply. An absent explicit WAT `i32.ge_u` does
+**not** prove TeaVM eliminated every check. GC array instructions carry engine
+checks. Saved native text also shows fused TeaVM memory-operand multiplies and
+separate JVM loads/multiplies; no speed attribution follows from that alone.
+
+Implement a generic bounded affine proof inside the existing authenticated
+native regions. Zero-seeded, unit-step, strict-upper-bound loops supply integer
+index domains. Check each arithmetic intermediate and each array index at the
+endpoints. Constant factors may appear on either side. Loop-invariant signed
+strides and total i32 expressions in a loop header retain their exact Java
+wrapping semantics. Every intermediate must fit i32. The accumulated guard
+cannot recover from a false predicate; arithmetic on an already-refused path
+is nontrapping. A test uses overflowing products whose final wrapped index is
+zero to ensure that a prior failed predicate cannot be hidden by wide wrapping.
+
+Initial source `ce720b8` exercises no original packet sites, so it is **not
+timed**. Constant-left multiplication is the missing pattern, rather than a
+blanket method exclusion. The fixed form covers 46 sites in five loops. Its
+original-music samples are **90.400150, 92.946461, 108.650402 ms**; median
+**92.946461 ms**, versus saved **96.087914**. The overlap is retained.
+
+Source `0379c7e1b995ce4dee015867ac70e0ac45ebdaaf` includes invariant strides and
+header expressions, covering 56 sites across six loops. Its samples are
+**94.540485, 99.087711, 100.518716 ms**, median **99.087711**: no improvement.
+The central butterfly repeats that guard for every group. Read the existing
+source rather than repeat CPU attribution: the group count grows while each
+inner loop gets shorter.
+
+Rectangle source `94696a380b9d0aa00ab8ec68bd7d7cb5fedd9c0a` checks all four corners
+of an independent two-loop domain once at its outer entry. It shares equivalent
+arithmetic trees and guard temporaries. Triangular domains and bilinear products
+retain independent inner-loop proofs. Three nested loops never expand beyond
+two dimensions. There is one body, no new option or environment flag, and no
+application identity in java-tools. Limits are 50000 analysis operations, depth
+8, 64 unique expressions / 512 source aliases, 32 arithmetic operations per
+plan and 16 plans. A pair-of-endpoints code-size estimate caps each plan;
+four-corner emission remains bounded by the two-dimension limit.
+
+Final test source `e608216d985e8f287b177f1c031cd0d9a38a05e3` changes only tests after
+the rectangle native inspection. The suite passes **893/893 assertions**:
+
+```bash
+# java-tools:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeLoopBounds.test.js test/nativeStaticArrayBody.test.js test/nativeObjectBody.test.js test/structuredLoopResume.test.js test/wasmCompilerRetention.test.js
+# dekobloko-work; compile-only inspection (zero Java ticks / asset requests):
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 94696a380b9d0aa00ab8ec68bd7d7cb5fedd9c0a packet
+# Changed source only; saved PCM oracle reused:
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/vorbis.mjs run-jvm e608216d985e8f287b177f1c031cd0d9a38a05e3
+```
+
+Tests cover all four corners, mixed-sign coefficients, zero-trip dimensions,
+Java and wide wrapping, source arithmetic sharing, changing references,
+foreign/plain arrays, exact partial writes, nearest exception handlers,
+24 deterministic scalar-oracle cases, exact nested fuel suspension and storage
+replacement after suspension. The proof graph collects while native modules
+remain live. An initial test prefix was unexpectedly inlined; the fixture now
+isolates region analysis from that separate transform. Its first continuation
+helper also dropped the caller frame; preserving the whole thread stack fixes
+the test rather than weakening exception assertions.
+
+Rectangle original-music samples are **90.698551, 93.400262, 93.548661 ms**;
+median **93.400262**, about 2.8% below the historical 96.087914 comparator. Every
+348249-byte PCM output matches, and all variants have zero late compilation.
+This is a small component difference, not a full-loading or release result.
+No unchanged JVM/TeaVM timing, baseline identity check, or restoration check
+runs. The one canonical report stores these sources, raw observations, native
+comparisons and proof limits under `nativeAffineLoopBounds`.
+
+Full loading is pending for the rectangle source. The selected comparator and
+production artifacts remain unchanged; the 1.10x target is still unmet.

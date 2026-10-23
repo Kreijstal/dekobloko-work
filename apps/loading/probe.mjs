@@ -80,6 +80,9 @@ const observeModule=prepareOnly?({filename,exports:Compiler})=>{
   const key=this.className+'.'+this.method.name+this.method.descriptor;
   if(['MusicDecoder.decodePacket(I)[F','Bzip2Decoder.decodeBlocks(LBzip2DecoderState;)V'].includes(key)){
    const ops=new Map(),unmappedStatics=new Map();
+   const describe=(n,depth=2)=>({id:n.id,op:n.op,kind:n.kind,block:n.block,
+    ...(['iinc','bipush','sipush','ldc','ldc_w'].includes(n.op)?{imm:n.imm}:{}),
+    ...(depth&&n.op!=='phi'?{args:(n.args||[]).slice(0,3).map(a=>describe(a,depth-1))}:{})});
    for(const block of this.fn.blocks)if(this.fn.reachable.has(block.id))for(const node of block.body){
     ops.set(node.op,(ops.get(node.op)||0)+1);
     if(node.op==='getstatic'&&!this.nativeStaticArrayReads.has(node.id)){
@@ -90,6 +93,11 @@ const observeModule=prepareOnly?({filename,exports:Compiler})=>{
     liveRanges:this.liveRanges.length,demoted:this.demoted.size,deoptBlocks:this.deoptBlocks.size,
     irreducibleSplitBlocks:this.irreducibleSplitBlocks||0,blocks:this.fn.blocks.length,
     mappedStaticArrayReads:this.nativeStaticArrayReads.size,nativeRegions:meta.nativeStaticArrayRegions||[],
+    nativeLoopBoundsSiteCount:meta.nativeLoopBoundsSiteCount||0,
+    nativeLoopBoundsGuards:[...(this.nativeLoopBounds?.entries.values()||[])].map(p=>({header:p.header,sites:p.accesses.length,operations:p.ordered.length,dimensions:p.dimensions?.length||1,corners:p.corners||2})),
+    loopComparisons:this.fn.blocks.filter(b=>b.term.kind==='cond'&&b.term.args.some(a=>a.op==='phi'&&a.block===b.id)).map(b=>({
+     block:b.id,preds:b.predIds,body:b.body.map(n=>n.op),term:b.term.insnOp,args:b.term.args.map(n=>describe(n)),
+     phis:b.term.args.filter(n=>n.op==='phi'&&n.block===b.id).map(n=>({id:n.id,args:n.args.map(a=>describe(a,1))}))})),
     operations:[...ops],unmappedStaticReads:[...unmappedStatics]});
   }
   if(this.nativeArrayCastProof){
@@ -268,6 +276,8 @@ try {
   nativeArrayMetadataPhiCopiesOmittedCount:meta.nativeArrayMetadataPhiCopiesOmittedCount||0,
   nativeObjectBodyFieldSites:meta.nativeObjectBodyFieldSites||0,
   nativeObjectBodyArraySites:meta.nativeObjectBodyArraySites||0,
+  nativeLoopBoundsSiteCount:meta.nativeLoopBoundsSiteCount||0,
+  nativeLoopBoundsGuardCount:meta.nativeLoopBoundsGuardCount||0,
   canonicalTargetImportCount:meta.canonicalTargetImportCount||0,
   nativeCastRegion:meta.nativeCastRegion||null,
   nativeBooleanArraySites:meta.nativeBooleanArraySites||0,
@@ -297,6 +307,8 @@ try {
     nativeThrowCount:state.meta?.directFrameContext?.throwCount??null,
     nativeObjectBodyFieldSites:state.meta?.nativeObjectBodyFieldSites||0,
     nativeObjectBodyArraySites:state.meta?.nativeObjectBodyArraySites||0,
+    nativeLoopBoundsSiteCount:state.meta?.nativeLoopBoundsSiteCount||0,
+    nativeLoopBoundsGuardCount:state.meta?.nativeLoopBoundsGuardCount||0,
     canonicalTargetImportCount:state.meta?.canonicalTargetImportCount||0,
     nativeCastRegion:state.meta?.nativeCastRegion||null,
     nativeBooleanArraySites:state.meta?.nativeBooleanArraySites||0,

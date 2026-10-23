@@ -15,25 +15,38 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','packet'].includes(family));
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-options.classpath=[path.join(directory,'classes')];options.jit.compileWorker=false;
-options.jit.preparationPolicy={entryMethods:['LoadingMicroKernel.main([Ljava/lang/String;)V']};
+const fullGraph=family==='packet',mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+options.classpath=[path.join(fullGraph?player:directory,'classes')];options.jit.compileWorker=false;
+options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
 const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision);
 globalThis.window=globalThis;globalThis.document={};const j=new JVM(options);delete globalThis.document;
 const stop=new Error('Call-code inspection stops before guest code');let boundary=false,ticks=0;
+let assetCalls=0;
+if(fullGraph){
+ j.jre.GeobloxLoading={applicationFallback:true,staticMethods:{'browserAsset(Ljava/lang/String;)[B':()=>{
+  assetCalls++;throw Error('Compile-only call inspection attempted an asset request');}}};
+ const {installBrowserInflater}=await import('../launcher/browser-loader/browser-inflater.mjs');
+ installBrowserInflater(j,{inflate:()=>{throw Error('Compile-only inflate');},inflateRaw:()=>{throw Error('Compile-only inflateRaw');}});
+}
 j.jit.markMainStarted=()=>{boundary=true;throw stop;};
 j.executeTick=()=>{ticks++;throw Error('Compile-only inspection attempted a guest tick');};
-let failure;try{await j.run('LoadingMicroKernel');}catch(error){failure=error;}
-assert.ok(boundary,'Preparation did not reach the main boundary');assert.equal(failure,stop);assert.equal(ticks,0);
+let failure;try{await j.run(mainClass);}catch(error){failure=error;}
+assert.ok(boundary,'Preparation did not reach the main boundary');assert.equal(failure,stop);assert.equal(ticks,0);assert.equal(assetCalls,0);
 
 const walk=(node,visit)=>{if(!Array.isArray(node))return;visit(node);for(const child of node)walk(child,visit);};
 function codeShape(wat,name){
- const module=parseWat(wat),imports=module.filter(n=>n?.[0]==='import'&&n[3]?.[0]==='func');
- const functions=module.filter(n=>n?.[0]==='func'),at=functions.findIndex(n=>n[1]===name);
- assert.ok(at>=0,'Missing defined function '+name);const operations={};
- walk(functions[at],n=>{if(typeof n[0]==='string')operations[n[0]]=(operations[n[0]]||0)+1;});
+ // wasm-dis emits each top-level function on its own indented line. Parse
+ // only the selected function, so a full application cannot exhaust the
+ // bounded expression parser merely because it contains many other methods.
+ const starts=[...wat.matchAll(/^ \(func (\$[^\s(]+)/gm)],at=starts.findIndex(m=>m[1]===name);
+ assert.ok(at>=0,'Missing defined function '+name);const start=starts[at].index,end=wat.indexOf('\n )',start);
+ assert.ok(end>start,'Missing top-level function end');
+ const module=parseWat('(module\n'+wat.slice(start,end+3)+'\n)'),operations={};
+ walk(module[1],n=>{if(typeof n[0]==='string')operations[n[0]]=(operations[n[0]]||0)+1;});
+ const imports=wat.match(/^ \(import [^\n]*\(func /gm)||[];
  return {name,index:imports.length+at,operations};
 }
 function nativeCode(bytes,index){
@@ -54,8 +67,11 @@ function nativeSummary(code){
 const rows=[],jvmOutput=path.join(directory,'current-jvm-native.txt');fs.writeFileSync(jvmOutput,'');
 const targets=family==='boolean'?['LoadingMicroKernel.booleanFieldCall(I)I','LoadingMicroKernel.booleanFieldStep(II)I']:
  family==='reader'?['LoadingMicroKernel.bufferedHelper(ILBzip2DecoderState;[I)I','MicroBufferedReader.readBits(ILBzip2DecoderState;)I']:
+ family==='packet'?['MusicDecoder.decodePacket(I)[F']:
  ['Bzip2Decoder.readBits(ILBzip2DecoderState;)I'];
-const teaNames=family==='boolean'?['$162','$55']:family==='reader'?['$51','$30']:['$7'];
+// Packet identity is supported by its receiver+index -> float[] signature,
+// four sine call sites and the original transform's 67 gets / 40 stores.
+const teaNames=family==='boolean'?['$162','$55']:family==='reader'?['$51','$30']:family==='packet'?['$523']:['$7'];
 for(const [ordinal,key]of targets.entries()){
  const state=j.jit.wasmJit.compiled.find(s=>s.key===key);assert.equal(state?.status,'ready',key);
  const meta=state.meta;assert.ok(meta.bytes);assert.ok(meta.normalFlowFullyCompiled);
@@ -68,6 +84,11 @@ for(const [ordinal,key]of targets.entries()){
  fs.appendFileSync(jvmOutput,'\n'+key+'\n'+code);
  const bindings=j.jit.wasmJit.canonicalDirectLinks.bindings.get(key)||[];
  rows.push({backend:'jvm',key,export:exportName,...shape,...nativeSummary(code),
+  nativeLoopBoundsSiteCount:meta.nativeLoopBoundsSiteCount||0,
+  nativeLoopBoundsGuardCount:meta.nativeLoopBoundsGuardCount||0,
+  nativeLoopBoundsMaxDimensions:meta.nativeLoopBoundsMaxDimensions||0,
+  nativeLoopBoundsOperationCount:meta.nativeLoopBoundsOperationCount||0,
+  directMathSinImport:meta.importObject?.env?.math_sin__D_D===Math.sin,
   nativeObjectBodyFieldSites:meta.nativeObjectBodyFieldSites||0,
   canonicalLazyActivation:!!meta.canonicalLazyActivation,
   canonicalTargetImportCount:meta.canonicalTargetImportCount||0,
@@ -76,6 +97,12 @@ for(const [ordinal,key]of targets.entries()){
   nativeObjectElidedArrayReferenceSites:meta.nativeObjectElidedArrayReferenceSites||0,
   publishedSlots:bindings.filter(b=>b.compact).map(b=>({slot:b.slot,stub:j.jit.wasmJit.canonicalDirectLinks.table.get(b.slot)===b.stub,
    typed:!!b.target,typedStub:b.target?b.target.value===b.stub:null}))});
+ if(fullGraph){
+  const core=module.find(n=>n?.[0]==='func'&&n[1]?.startsWith('$jvm$wasm$'));
+  assert.ok(core,'Missing core Java body');const coreShape=codeShape(wat,core[1]),coreCode=nativeCode(meta.bytes,coreShape.index);
+  fs.appendFileSync(jvmOutput,'\n'+key+' core\n'+coreCode);
+  rows.push({backend:'jvm',key,export:'core',...coreShape,...nativeSummary(coreCode)});
+ }
 }
 // Already-inspected controls are evidence to reuse, not code to compile again.
 const savedTea=[...(receipt.optimizationTrials.nativeCallCode?.observations||[])].reverse()
@@ -84,16 +111,21 @@ const savedTea=[...(receipt.optimizationTrials.nativeCallCode?.observations||[])
 let teaOutput=null;
 if(savedTea?.length===teaNames.length)rows.push(...savedTea);
 else{
- const teaWat=fs.readFileSync(path.join(directory,'current-teavm.wat'),'utf8');
- const teaBytes=fs.readFileSync(path.join(directory,'teavm/micro.wasm'));
+ const teaDirectory=fullGraph?path.join(player,'vorbis'):directory;
+ const teaWat=fs.readFileSync(path.join(teaDirectory,'current-teavm.wat'),'utf8');
+ const teaBytes=fs.readFileSync(path.join(teaDirectory,'teavm',fullGraph?'vorbis.wasm':'micro.wasm'));
  teaOutput=path.join(directory,'current-teavm-native.txt');fs.writeFileSync(teaOutput,'');
  for(const name of teaNames){
   const shape=codeShape(teaWat,name),code=nativeCode(teaBytes,shape.index);
+  if(family==='packet'){
+   assert.equal(shape.operations['array.get'],67,'Packet identity: array gets');
+   assert.equal(shape.operations['array.set'],40,'Packet identity: array stores');
+  }
   fs.appendFileSync(teaOutput,'\n'+name+'\n'+code);rows.push({backend:'teavm',...shape,...nativeSummary(code)});
  }
 }
 const current=JSON.parse(fs.readFileSync(reportPath)),trial=current.optimizationTrials.nativeCallCode||={observations:[]};
-const result={sourceRevision:revision,family,compileOnly:true,guestTicks:ticks,mainExecuted:false,teaVmInstantiated:false,
+const result={sourceRevision:revision,family,compileOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,teaVmInstantiated:false,
  nonReturningArrayErrorsByMethod:j.jit.wasmJit.compiled.filter(s=>s.key.startsWith('Bzip2Decoder.')&&s.meta?.nonReturningArrayErrorSiteCount)
   .map(s=>({key:s.key,sites:s.meta.nonReturningArrayErrorSiteCount})),
  baselineTimingsOrFingerprints:false,teaNativeCodeReused:savedTea?.length===teaNames.length,
