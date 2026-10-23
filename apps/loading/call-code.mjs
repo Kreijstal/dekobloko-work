@@ -16,6 +16,8 @@ const directory=path.join(player,'microbench'),reportPath=path.join(player,'benc
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
 const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','packet','archive'].includes(family));
+const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
+if(entryVariant==='closed')assert.equal(family,'original-reader','Inspect only the newly added closed reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
 const fullGraph=['packet','archive'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
@@ -78,7 +80,11 @@ for(const [ordinal,key]of targets.entries()){
  const meta=state.meta;assert.ok(meta.bytes);assert.ok(meta.normalFlowFullyCompiled);
  const wat=execFileSync('wasm-dis',['--all-features','-'],{input:meta.bytes,encoding:'utf8',maxBuffer:4*1024*1024});
  if(ordinal===targets.length-1)fs.writeFileSync(path.join(directory,'current.wat'),wat);
- const exportName=meta.parameterObjectABI?.length?'canonicalCompactStorageRun':'canonicalCompactRun';
+ const exportName=entryVariant==='closed'?'canonicalClosedStorageRun':meta.parameterObjectABI?.length?'canonicalCompactStorageRun':'canonicalCompactRun';
+ if(entryVariant==='closed'){
+  assert.equal(meta.closedNativeBody?.version,1,'Closed export requires the compiler contract');
+  assert.equal(meta.closedNativeBody.run,meta.canonicalClosedStorageRun,'Certificate must bind this exact export');
+ }
  const module=parseWat(wat),exported=module.find(n=>n?.[0]==='export'&&n[1]===JSON.stringify(exportName));
  assert.ok(exported,key+' has no published compact entry');
  const shape=codeShape(wat,exported[2][1]),code=nativeCode(meta.bytes,shape.index);
@@ -95,6 +101,12 @@ for(const [ordinal,key]of targets.entries()){
   nativeObjectBodyLazyReceivers:meta.nativeObjectBodyLazyReceivers??null,
   instructionExitSiteCount:meta.instructionExitSiteCount??null,
   nativeOperandSnapshotCount:meta.nativeOperandSnapshotCount??null,
+  nativeClosedCallSiteCount:meta.nativeClosedCallSiteCount??null,
+  nativeClosedForwarder:meta.nativeClosedForwarder??null,
+  nativeClosedCallRoot:meta.nativeClosedCallRoot??null,
+  nativeOperandSnapshotRetried:meta.nativeOperandSnapshotRetried??null,
+  closedContractVersion:meta.closedNativeBody?.version??null,
+  closedExportBound:!!meta.canonicalClosedStorageRun&&meta.closedNativeBody?.run===meta.canonicalClosedStorageRun,
   opaqueObjectStorageCacheCount:meta.opaqueObjectStorageCacheCount??null,
   canonicalLazyActivation:!!meta.canonicalLazyActivation,
   canonicalTargetImportCount:meta.canonicalTargetImportCount||0,
@@ -114,6 +126,7 @@ for(const [ordinal,key]of targets.entries()){
 const savedTea=[...(receipt.optimizationTrials.nativeCallCode?.observations||[])].reverse()
  .find(o=>o.family===family&&o.engine===process.version&&JSON.stringify(o.flags)===JSON.stringify(flags))
  ?.rows.filter(row=>row.backend==='teavm');
+if(entryVariant==='closed')assert.equal(savedTea?.length,teaNames.length,'Reuse saved TeaVM native code; do not compile the known control again');
 let teaOutput=null;
 if(savedTea?.length===teaNames.length)rows.push(...savedTea);
 else{
@@ -135,7 +148,7 @@ else{
  }
 }
 const current=JSON.parse(fs.readFileSync(reportPath)),trial=current.optimizationTrials.nativeCallCode||={observations:[]};
-const result={sourceRevision:revision,family,compileOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,teaVmInstantiated:false,
+const result={sourceRevision:revision,family,entryVariant,compileOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,teaVmInstantiated:false,
  nonReturningArrayErrorsByMethod:j.jit.wasmJit.compiled.filter(s=>s.key.startsWith('Bzip2Decoder.')&&s.meta?.nonReturningArrayErrorSiteCount)
   .map(s=>({key:s.key,sites:s.meta.nonReturningArrayErrorSiteCount})),
  baselineTimingsOrFingerprints:false,teaNativeCodeReused:savedTea?.length===teaNames.length,

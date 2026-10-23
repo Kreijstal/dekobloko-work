@@ -12799,3 +12799,139 @@ one lacking that contract must withdraw the compatible native target. Existing
 canonical eligibility alone does not establish this stronger guarantee. Prove
 that boundary on a generic mixed caller, then inspect actual decoder coverage;
 do not spend more timing cohorts on this currently unused receiver extension.
+
+
+### Closed native calls with publication-bound ownership contracts
+
+The next compiler change is archived at `592d30caac97d1a1594d6b938c2b0034f5354320`
+on the experimental JVM ref. It does not replace the measured comparator or a
+production artifact. There is no new runtime option or application-specific
+rule. Ordinary canonical eligibility is deliberately insufficient for this
+new calling convention.
+
+A dedicated `canonicalClosedStorageRun` export accepts private stores whose
+ownership the caller has validated. Its certificate is bound to the method
+identity, object-parameter positions, and **that exact instantiated export**.
+Restricted canonical table slots publish only matching certificates. Withdrawal
+or an incompatible replacement installs a pure Wasm refusal (`-7`), with no
+JavaScript bridge or guest effects. The caller then reconstructs the original
+invoke, including pending operands and preceding field writes. Publication
+updates the table; this does not introduce a generation comparison at every
+call.
+
+The native proof now composes eligible static calls, including acyclic
+forwarders. It still rejects arbitrary callbacks, reference writes, volatile
+fields and unsupported exception regions. A mixed caller validates object
+ownership once at first use, then its compatible callees reuse the private
+store. A forwarding body's **ordinary** entry keeps its existing path: merely
+adding a certificate must not add a shape lookup to every old reader call.
+The closed entry uses a reserved internal fresh-entry mode, sharing the existing
+16 KiB aggregate body-duplication budget. Larger entries use the existing wrapper
+mechanism. No additional user flag is required.
+
+The first integration run exposed an initialization bug in the proposed
+composition: the old block-level cold-call guard ran before completed prefix
+writes. Restricted calls now rely on the callee wrapper's own readiness check
+and refuse at the actual invoke. Another fixture showed that a dependency can
+become eligible during discovery, after speculative field snapshots were
+pruned. A bounded one-time fresh translation restores the required snapshots,
+releasing the discarded graph and table slots first. Neither failed run is
+counted as successful validation.
+
+The final focused command passes **983/983 assertions**, including an actual
+nested fuel exit with a captured array operand, outer exception handling,
+initializers observing completed writes, incompatible and withdrawn targets,
+republication without recompiling callers, clear argument globals, collection
+of replaced metadata/frame owners while callers remain live, and the ordinary
+dependency-discovery order:
+
+```bash
+# java-tools
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/closedNativeCalls.test.js test/nativeObjectBody.test.js test/canonicalDirectFrames.test.js test/nativeObjectForwarding.test.js test/structuredLoopResume.test.js test/wasmJsExceptionTags.test.js test/wasmCompilerRetention.test.js test/classMirrorTransport.test.js
+```
+
+Consumer diagnostics project scalar contract/entry metadata, never executable
+certificate functions. They distinguish closed-call roots reached from ordinary
+entries from forwarding bodies that require an already-closed caller. Compile
+only before timing: a static forwarder count alone is not proof of changed
+execution in the loading workload. Existing baseline timings and native-code
+controls are reused, without baseline-against-itself checks.
+
+
+The full changed preparation census completes with **708 entry/callee rows,
+three bound closed exports, two closed forwarders, and zero closed-call roots**.
+The forwarders are `Bzip2Decoder.readByte` and `readBit`; neither ordinary entry
+switches to the stronger call path. There are zero snapshot retries in this
+workload. The census executes zero ticks and requests zero assets. Therefore no
+component or full-loading timing is justified for this currently unreachable
+optimization. The measured comparator remains `97aa42e`, **1929.057624 ms /
+5.3624x** historical TeaVM. The 1.10x target is still unmet.
+
+The same census identifies why whole-method composition cannot reach the main
+archive decoder: `decodeBlocks` has 136 blocks, 103 field reads, 14 field writes,
+31 static invokes, eight static reads, two allocations, a static write, nested
+reference-array reads and casts. It exceeds the bounded whole-body proof and
+contains operations intentionally outside its ownership contract. Simply
+increasing a threshold would not make those callbacks and reference mutations
+safe. The next useful work is a closed **region** inside a mixed method, with
+facts invalidated at unsupported effects and exact exits at its boundary;
+forwarder certificates alone do not change the measured workload.
+
+A final audit also fixes retry failure cleanup at
+`a87b22323cc2d58b5cf703a253ad0d0bdac5d512`: preserve the requested callee policy
+on the fresh compiler and release its reserved slots if it throws. An injected
+failure verifies both properties. **173/173 assertions** pass in the focused
+retry/retention command. This refinement changes failed-retry handling, not
+the zero-retry admission observed above; the unchanged census is not rerun.
+
+```bash
+# Deko: changed admission, preparation only.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/probe.mjs slab all 592d30caac97d1a1594d6b938c2b0034f5354320 loading /home/kreijstal/.cache/dekobloko/geoblox-loading prepare
+# java-tools: final retry refinement, new assertions and retention paths.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/closedNativeCalls.test.js test/wasmCompilerRetention.test.js
+```
+
+
+Compile-only inspection of the **new** closed reader export at `a87b223` uses
+the saved TeaVM native row; no TeaVM compilation/execution, guest main, assets,
+timing or old-entry fingerprint is collected. It reports 1948 native bytes
+versus the recorded TeaVM 552. Its WAT still contains ordinary-entry recovery
+under a constant mode branch. This motivates a narrow emission refinement,
+not a claim that all those cold operations execute on the fast path.
+
+At `3e9cfa89683b2059160db67c505afa89c27d559c`, entry-mode alternatives are resolved
+when emitting fixed inline canonical exports. The shared core still emits both
+alternatives for supported wrapper/resume entries. The closed reader WAT drops
+from 18 to nine `if`s, 15 to 11 static `call`s, two to zero `ref.cast`s, and five
+to zero `ref.is_null`s. Its native size remains **1948 bytes**, so this supplies
+**no speedup evidence**; the engine apparently already removed much of the
+constant-branch scaffolding. Static call counts include cold recovery and must
+not be reported as fast-path crossings. The explicit bounds check remains;
+TeaVM's GC array operation still has native bounds checks as previously shown.
+
+The final nine-file command passes **1007/1007 assertions**. The new protocol
+test exercises both small inline exports and a body beyond the duplicate-code
+budget, ordinary and closed entries, shared-core execution and cold refusal.
+Two first-attempt failures were corrected: using the wrong local variable names
+in recursive marker expansion, and a test padding opcode absent from the opcode
+map. Those runs are excluded from passing totals.
+
+```bash
+# java-tools; final source 3e9cfa8.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/entryModeCode.test.js test/closedNativeCalls.test.js test/nativeObjectBody.test.js test/canonicalDirectFrames.test.js test/nativeObjectForwarding.test.js test/structuredLoopResume.test.js test/wasmJsExceptionTags.test.js test/wasmCompilerRetention.test.js test/classMirrorTransport.test.js
+# Deko; inspect each newly emitted export, reuse the saved TeaVM native row.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs a87b22323cc2d58b5cf703a253ad0d0bdac5d512 original-reader closed
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 3e9cfa89683b2059160db67c505afa89c27d559c original-reader closed
+node --check apps/loading/probe.mjs
+node --check apps/loading/microbench.mjs
+node --check apps/loading/call-code.mjs
+git diff --check
+```
+
+Neither this specialization nor the error-only retry fix creates a closed-call
+root in the mixed decoder. Do not rerun the same preparation or normal loading
+merely to confirm the saved zero-root census. Retain these contracts as generic
+experimental infrastructure, then make a demonstrably used closed region before
+requesting another candidate timing cohort. No generated output is committed;
+all diagnostics stay in the one existing `benchmark.json` and canonical native
+code preview. Browser FPS, aggregate memory and phone acceptance remain open.
