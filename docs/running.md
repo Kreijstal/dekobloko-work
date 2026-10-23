@@ -11785,3 +11785,20 @@ one, which may let TeaVM eliminate call boundaries that our control explicitly
 retains. Inspect the saved TeaVM WAT for that possibility before treating its
 1.11 ms result as a call-ABI comparison. This is a hypothesis, not an observed
 TeaVM transformation or a proved cause of the full-loading discrepancy.
+
+A final **read-only inspection of the saved TeaVM WAT** resolves that hypothesis
+without executing either backend. Its field-call loop is function `$162`: it
+updates the `sum*33` checksum and calls `$55(i&1023, 1)`. Helper `$55` branches on
+`depth <= 0`, toggles the boolean array with `i32.eqz`, and otherwise explicitly
+calls `$55(i, depth-1)`. Both call boundaries remain in the saved WAT. Thus
+literal-depth recursion elimination by TeaVM's Java-to-Wasm compiler is **not**
+the explanation for this control. No baseline hash, rebuild or execution runs.
+
+The caller/callee still differ in a concrete way: this TeaVM control uses direct
+local calls and typed GC array instructions, while the JVM diagnostic records
+2,000,000 native entries through its canonical link protocol. WAT alone does
+not prove how V8 further inlines either shape, or attribute their runtime costs.
+The next new evidence should be a bounded native-code comparison of those call
+shapes, using compile-only inspection or a new tiny linked-call model. Do not
+repeat the failed boolean implementation or assume a whole-module linker will
+help before that comparison demonstrates a relevant difference.
