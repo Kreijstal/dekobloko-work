@@ -104,6 +104,7 @@ for module in ['java.desktop','java.datatransfer','java.base']:
    referencePcmSha256:hash(reference),referencePcmBytes:reference.length,
    wasmSha256:hash(fs.readFileSync(path.join(directory,'teavm/vorbis.wasm'))),runtimeSha256:hash(fs.readFileSync(path.join(directory,'teavm/vorbis.wasm-runtime.js'))),
    wrapperSha256:hash(wrapper),transformerSha256:hash(transformer)};
+  if(previous?.wasmSha256!==identity.wasmSha256)fs.rmSync(path.join(directory,'current-teavm.wat'),{force:true});
   const fixtures=previous?.fixtures||[];
   if(previous&&previous.wasmSha256!==identity.wasmSha256)fixtures.push({...previous,runs:undefined,fixtures:undefined});
   save({...identity,version,source,purpose:'Largest original sample, one decode, no warmup; archive selection/setup excluded from decode timer',

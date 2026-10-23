@@ -15,13 +15,13 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','packet','archive'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive'].includes(family));
 const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
 if(entryVariant==='closed')assert.equal(family,'original-reader','Inspect only the newly added closed reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const fullGraph=['packet','archive'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
-options.classpath=[path.join(fullGraph?player:directory,'classes')];options.jit.compileWorker=false;
+const directMusic=family==='music-reader',fullGraph=['packet','archive'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+options.classpath=[path.join(fullGraph||directMusic?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
 const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision);
 globalThis.window=globalThis;globalThis.document={};const j=new JVM(options);delete globalThis.document;
@@ -35,8 +35,19 @@ if(fullGraph){
 }
 j.jit.markMainStarted=()=>{boundary=true;throw stop;};
 j.executeTick=()=>{ticks++;throw Error('Compile-only inspection attempted a guest tick');};
-let failure;try{await j.run(mainClass);}catch(error){failure=error;}
-assert.ok(boundary,'Preparation did not reach the main boundary');assert.equal(failure,stop);assert.equal(ticks,0);assert.equal(assetCalls,0);
+if(directMusic){
+ j.executeInstruction=()=>{ticks++;throw Error('Direct reader compilation attempted Java execution');};
+ await j.preloadClasspathClasses();
+ for(const [name,descriptor]of [['readBit','()I'],['readBits','(I)I']]){
+  const method=j.findMethod(j.classes.MusicDecoder,name,descriptor),state=j.jit.wasmJit.methodState({method});
+  j.jit.wasmJit.compile({method,className:'MusicDecoder'},state,{asCallee:true});
+  assert.equal(state.status,'ready',state.lastCompileError||name+' did not compile');
+ }
+}else{
+ let failure;try{await j.run(mainClass);}catch(error){failure=error;}
+ assert.ok(boundary,'Preparation did not reach the main boundary');assert.equal(failure,stop);
+}
+assert.equal(ticks,0);assert.equal(assetCalls,0);
 
 const walk=(node,visit)=>{if(!Array.isArray(node))return;visit(node);for(const child of node)walk(child,visit);};
 function codeShape(wat,name){
@@ -69,12 +80,13 @@ function nativeSummary(code){
 const rows=[],jvmOutput=path.join(directory,'current-jvm-native.txt');fs.writeFileSync(jvmOutput,'');
 const targets=family==='boolean'?['LoadingMicroKernel.booleanFieldCall(I)I','LoadingMicroKernel.booleanFieldStep(II)I']:
  family==='reader'?['LoadingMicroKernel.bufferedHelper(ILBzip2DecoderState;[I)I','MicroBufferedReader.readBits(ILBzip2DecoderState;)I']:
+ family==='music-reader'?['MusicDecoder.readBit()I','MusicDecoder.readBits(I)I']:
  family==='packet'?['MusicDecoder.decodePacket(I)[F']:
  family==='archive'?['Bzip2Decoder.decodeBlocks(LBzip2DecoderState;)V']:
  ['Bzip2Decoder.readBits(ILBzip2DecoderState;)I'];
 // Packet identity is supported by its receiver+index -> float[] signature,
 // four sine call sites and the original transform's 67 gets / 40 stores.
-const teaNames=family==='boolean'?['$162','$55']:family==='reader'?['$51','$30']:family==='packet'?['$523']:family==='archive'?['$193']:['$7'];
+const teaNames=family==='boolean'?['$162','$55']:family==='reader'?['$51','$30']:family==='music-reader'?['$58','$29']:family==='packet'?['$523']:family==='archive'?['$193']:['$7'];
 for(const [ordinal,key]of targets.entries()){
  const state=j.jit.wasmJit.compiled.find(s=>s.key===key);assert.equal(state?.status,'ready',key);
  const meta=state.meta;assert.ok(meta.bytes);assert.ok(meta.normalFlowFullyCompiled);
@@ -103,6 +115,7 @@ for(const [ordinal,key]of targets.entries()){
   nativeOperandSnapshotCount:meta.nativeOperandSnapshotCount??null,
   nativeClosedCallSiteCount:meta.nativeClosedCallSiteCount??null,
   nativeObjectRegionBlockCount:meta.nativeObjectRegionBlockCount??null,
+  nativeStaticStateBodySites:meta.nativeStaticStateBodySites??null,
   nativeObjectRegionCastCount:meta.nativeObjectRegionCastCount??null,
   nativeObjectRegionCastCacheCount:meta.nativeObjectRegionCastCacheCount??null,
   nativeObjectRegionStaticReadCount:meta.nativeObjectRegionStaticReadCount??null,
@@ -134,15 +147,20 @@ if(entryVariant==='closed')assert.equal(savedTea?.length,teaNames.length,'Reuse 
 let teaOutput=null;
 if(savedTea?.length===teaNames.length)rows.push(...savedTea);
 else{
- const teaDirectory=family==='packet'?path.join(player,'vorbis'):directory;
+ const teaDirectory=family==='packet'||directMusic?path.join(player,'vorbis'):directory;
  const teaWat=fs.readFileSync(path.join(teaDirectory,'current-teavm.wat'),'utf8');
- const teaBytes=fs.readFileSync(path.join(teaDirectory,'teavm',family==='packet'?'vorbis.wasm':'micro.wasm'));
+ const teaBytes=fs.readFileSync(path.join(teaDirectory,'teavm',family==='packet'||directMusic?'vorbis.wasm':'micro.wasm'));
  teaOutput=path.join(directory,'current-teavm-native.txt');fs.writeFileSync(teaOutput,'');
  for(const name of teaNames){
   const shape=codeShape(teaWat,name),code=nativeCode(teaBytes,shape.index);
   if(family==='packet'){
    assert.equal(shape.operations['array.get'],67,'Packet identity: array gets');
    assert.equal(shape.operations['array.set'],40,'Packet identity: array stores');
+  }
+  if(directMusic){
+   assert.equal(shape.operations['array.get_s'],name==='$58'?1:2,'Original music reader byte accesses');
+   assert.equal(shape.operations['global.set'],3,'Original music reader cursor writes');
+   assert.equal(shape.operations.loop||0,name==='$58'?0:1,'Original music reader loop shape');
   }
   if(family==='archive'){
    assert.equal(shape.operations['struct.set'],14,'Archive identity: field writes');
@@ -152,7 +170,7 @@ else{
  }
 }
 const current=JSON.parse(fs.readFileSync(reportPath)),trial=current.optimizationTrials.nativeCallCode||={observations:[]};
-const result={sourceRevision:revision,family,entryVariant,compileOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,teaVmInstantiated:false,
+const result={sourceRevision:revision,family,entryVariant,preparationMethod:directMusic?'direct reader compilation':'entry graph',compileOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,teaVmInstantiated:false,
  nonReturningArrayErrorsByMethod:j.jit.wasmJit.compiled.filter(s=>s.key.startsWith('Bzip2Decoder.')&&s.meta?.nonReturningArrayErrorSiteCount)
   .map(s=>({key:s.key,sites:s.meta.nonReturningArrayErrorSiteCount})),
  baselineTimingsOrFingerprints:false,teaNativeCodeReused:savedTea?.length===teaNames.length,

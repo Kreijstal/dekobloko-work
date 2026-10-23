@@ -13075,3 +13075,247 @@ the fixed cached class with `javap -p -c` identifies item 51 as the initial
 transform-table `getstatic`, following the completed `blockSize100k` store. This
 is the exact static-read refusal boundary covered by the cold-field tests,
 not evidence for another profiling or unchanged-baseline campaign.
+
+
+### One guarded body for static integer state and owned arrays
+
+The prior region/phi turn made concrete progress: it created a used decoder
+root and exposed an unsuccessful full-loading result. The next change follows
+its source inspection rather than repeating baseline timing or CPU profiling.
+The existing native-array whole-body proof rejected scalar static stores, so
+it could not cover the original music reader's byte/bit cursor updates.
+
+Experimental source `53e84b195a40cc45a5cb69d23a6b04c425113546` adds a generic
+bounded whole-body proof for static methods with primitive parameters, readonly
+native static array references, at least two integer stores and actual array
+accesses. It rejects opaque calls, reference writes, volatile cells, meaningful
+handlers, unsupported/inlined shapes and exhausted budgets (256 nodes, eight
+array fields, eight integer cells and bounded array-reference provenance).
+There is no application identity or opt-in flag.
+
+The entry checks owner readiness, each cell's required read/write permissions,
+and owned array headers without running a getter. Every integer write updates
+canonical memory at its original Java instruction and resets the existing JS
+representation tag. A failed guard executes no prefix and uses the supported
+Java continuation. Cold dependencies therefore initialize at their original
+instruction, after any prefix that Java would have performed.
+
+Stateful bodies retain the existing native loop-resume proof. Resumed guards
+refuse at the saved header, never the method prefix. A reference captured before
+the loop obtains its owned header from the **restored original array value**;
+it does not substitute a subsequently replaced global field. Entry revocation
+by a foreign array or customized cell falls back with exact captured state.
+The old readonly transform proof and its established resume policy are unchanged.
+
+Inspection of the already-cached TeaVM WAT identifies the original music
+readers by their signatures, shared byte/bit/data globals, one/two signed byte
+reads and three cursor writes (`$58` and `$29`). TeaVM retains cursor values in
+locals between immediate global stores. At
+`51e7d3026b8b41c4c0e9ca20b0a0357486f6ccaa`, the new proof uses one invocation-local
+integer value per read cell. Every store still writes immediately, while
+subsequent native reads use that value until invocation/resume exit. No
+untrusted continuing callback or owned-array alias can invalidate it inside
+the admitted body. The scalar discovery graph is released with compiler analyses.
+
+The focused five-file command passes **632/632 assertions**. Coverage includes
+acyclic and loop readers, exact bit order and partial writes on bounds failure,
+outer handlers, unused null/foreign arrays, cold initialization observing the
+prefix, customized getters/setters, read-only cells, volatile and budget
+rejection, native resumption after global replacement, and resumed fallback
+without prefix replay after permission/array revocation. The command is:
+
+```bash
+# java-tools; source 51e7d30.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticStateBody.test.js test/nativeStaticArrayBody.test.js test/nativeStaticReferenceCodegen.test.js test/structuredLoopResume.test.js test/wasmCompilerRetention.test.js
+```
+
+A new `music-reader` call-code family compiles only the two original methods;
+Java execution hooks reject accidental guest execution. It neither starts main
+nor requests assets. It inspects these previously unexamined TeaVM functions
+using the pinned existing artifact, without a TeaVM timing or main invocation.
+The existing family controls continue to reuse already-recorded native rows.
+
+| Original method | JVM scalar sites | JVM native bytes | TeaVM native bytes |
+|---|---:|---:|---:|
+| Music readBit | 9 | 712 | 228 |
+| Music readBits | 11 | 1348 | 612 |
+
+The code is still larger than TeaVM's. Static WAT call counts include cold
+recovery; they are not executed-crossing counts. The source-level TeaVM byte
+operations still have native bounds checks. Do not interpret a missing explicit
+WAT comparison as an omitted Java safety requirement.
+
+A changed original-sample diagnostic confirms the new body is actually used:
+`readBit` has **71306 direct entries**, and `readBits` has **2124 direct entries
+plus 3313 ordinary entries**, with zero native exits. All recorded PCM bytes
+match the saved HotSpot output, and there is no guest compilation. Diagnostic
+timing is excluded. Method inspection now reuses the existing pinned TeaVM WAT
+instead of regenerating/fingerprinting it on each run; the fixture builder
+invalidates that preview if its artifact changes.
+
+```bash
+# Deko; code-only inspection and changed execution diagnostic.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 51e7d3026b8b41c4c0e9ca20b0a0357486f6ccaa music-reader
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 51e7d3026b8b41c4c0e9ca20b0a0357486f6ccaa 'MusicDecoder.readBit()I'
+# Three fresh changed-source decodes only; no TeaVM/baseline rerun.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 51e7d3026b8b41c4c0e9ca20b0a0357486f6ccaa
+```
+
+All sources are retained on the experimental ref. The measured comparator
+remains `97aa42e` pending convincing changed-source results. No production
+artifact or generated Java/binary is committed. Observations remain in the
+same canonical `benchmark.json`, using fixture projections over stdin.
+
+
+The first original-sample cohort at `51e7d30` takes **109.623809, 102.338802,
+100.258181 ms**; median **102.338802 ms**. Every PCM byte matches, no guest Java
+compiles, and instrumentation is off. This is not an established improvement
+over the saved original-sample results, and it does not justify a full-loading
+cohort or advancing the measured baseline.
+
+The first code inspection exposes repeated JS-representation maintenance:
+each native integer store also writes tag zero. At
+`e4e032b6a8dbdb3114d05e95d30554a5b558f50c`, numeric representation is guarded at
+entry and the body preserves it, removing those repeated tag stores. This
+reduces the original readers' static WAT store sites from six to three. It adds
+two entry tag loads; native sizes are 712/1304 bytes for readBit/readBits.
+The focused suite passes **643/643 assertions**, including host boolean and
+negative-zero cases whose untaken Java writes must preserve their original
+representations. No timing is collected for this intermediate form.
+
+At `f31f0f1314fde272bf00774c423af420c81c5fdd`, the cell publishes a canonical-int
+capability (bit 4) alongside existing read/write permissions. Descriptor/host
+updates revoke or republish it synchronously. Legacy native writers may leave
+this stronger bit conservatively absent after converting a host representation;
+they cannot leave it stale true. The stateful body folds this bit into its
+existing permission check, eliminating the extra tag loads and retaining only
+three value stores. No new runtime option, global callback epoch, per-call
+version comparison or metadata allocation is added.
+
+The final standalone-reader code sizes are **692/1320 bytes**, versus the saved
+TeaVM **228/612 bytes**. These changed code inspections reuse the recorded TeaVM
+native rows. The six-file static-cell/stateful/array/resume/retention suite
+passes **775/775 assertions**; separate canonical ABI, exception-tag and worker
+transport checks pass **224/224**. Native-cell tests cover publication, revocation,
+legacy conversions, custom descriptors, reentrancy, growth and collection.
+
+A changed one-million-read static-loop diagnostic matches checksum
+`-768271193`, uses nine proved static sites, enters once and exits zero times.
+Its prepared helper rows also expose a different admission gap: the whole-state
+proof rejected all inlined bodies. At
+`88391bf756cc0a83a40a72c7ef509b50199b3337`, flattened leaf code can earn the same
+whole-body effect proof. A loop must retain an original header or an existing
+recovered activation; the proof invents no fuel/resume policy for spliced loops.
+Unsupported effects/guards/handlers still reject the body.
+
+The ten-file suite passes **1073/1073 assertions**. New cases verify actual
+inlining, immediate scalar writes, original outer exceptions after an inlined
+read, and native continuation at the caller's saved header without replay.
+The changed `bits-call` diagnostic now confirms one million reads in one
+stateful native entry, with zero exits and zero late compilation. The helper is
+actually flattened; unused standalone-helper metadata is not counted as a
+per-call execution win.
+
+```bash
+# java-tools; final inlined-state proof.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticCell.test.js test/nativeStaticStateBody.test.js test/nativeStaticArrayBody.test.js test/nativeStaticReferenceCodegen.test.js test/structuredLoopResume.test.js test/wasmCompilerRetention.test.js test/inlineActivationResume.test.js test/inlineAtomicLeaf.test.js test/wasmStaticInlineHandlers.test.js test/wasmColdIntegerInline.test.js
+# Additional static-cell ABI/transport validation before the admission refinement.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/canonicalDirectFrames.test.js test/wasmJsExceptionTags.test.js test/classMirrorTransport.test.js
+# Deko: inspect changed native code; later observations reuse the first TeaVM rows.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs f31f0f1314fde272bf00774c423af420c81c5fdd music-reader
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose 88391bf756cc0a83a40a72c7ef509b50199b3337 bits-call
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 88391bf756cc0a83a40a72c7ef509b50199b3337 bits-static bits-call
+```
+
+The old controls have the same one-million iteration count, seed/checksum and
+engine, but come from older fixture wrappers and nonconcurrent sessions. They
+are useful historical context, not a fresh causal pair or proof of full-loading
+parity. No old JVM/TeaVM loop is run just to check the baseline again.
+
+At `88391bf`, three fresh changed-source controls take **1.729439, 1.618458,
+2.299335 ms** for `bits-static` (median **1.729439 ms**) and **2.078021, 2.837408,
+2.071060 ms** for `bits-call` (median **2.078021 ms**). Each completes one million
+reads with checksum `-768271193`, instrumentation off and no guest compilation.
+The original music decode takes **103.694317, 99.443952, 90.760497 ms** (median
+**99.443952 ms**). All 348249 PCM bytes match the saved oracle. This overlaps the
+first static-state cohort and earlier original-sample results; it establishes
+no overall gain. No unchanged baseline or TeaVM execution is repeated, and no
+full-loading cohort is justified by these results.
+
+The saved original method metadata explains one remaining coverage boundary:
+`VorbisCodebook.readScalar()I` has zero inlined calls and two canonical links to
+`MusicDecoder.readBit()I`. It has 17041 direct entries but no native object-body
+sites. The new static-state reader proof has not previously published the
+stronger callback-free contract used by object loops. The next change tests
+that specific composition; this is source/generated-code coverage inspection,
+not another CPU attribution campaign.
+
+At `daaec7e36b9e1daadb357ae8ba6be8a337fa41d3`, a fully checked static-state body
+can publish the existing version-1 closed contract with **zero object inputs**.
+Its dedicated native entry keeps every static-cell, initialization and array
+check. A caller gains no assumption that the callee's globals are immutable;
+only the caller's private object/header facts survive a successful call.
+The restricted slot refuses a withdrawn/incompatible callee in pure Wasm before
+any callback. Actual guard failure exits at the original invoke with exact
+parent/child state. A scalar-only caller without any object ownership benefit
+does not acquire an empty partial object-region plan.
+
+The seven-file suite passes **1180/1180 assertions**. New traversal coverage
+includes both bit paths, immediate cursor writes, an unused null reader array,
+child bounds failure reaching an outer handler, custom static accessors after
+the parent prefix, an incompatible compiled replacement, and restoring the
+proved callee without recompiling the parent. The static reader remains
+responsible for its own proof at each entry. There is no game-specific rule or
+new runtime option.
+
+```bash
+# java-tools; static-state/object native composition and exact continuations.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticStateBody.test.js test/nativeObjectBody.test.js test/closedNativeCalls.test.js test/canonicalDirectFrames.test.js test/wasmCompilerRetention.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js
+# Deko; changed original-sample diagnostic, excluded from timing.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect daaec7e36b9e1daadb357ae8ba6be8a337fa41d3 'VorbisCodebook.readScalar()I'
+```
+
+The changed original diagnostic confirms actual coverage: `readScalar` has
+**17041 direct entries**, three native field sites, three native array sites,
+one closed static-call site and zero native exits. The decoder's 71306 bit-reader
+entries still use the checked static-state body. Strict object validation occurs
+**17041 times**, once per traversal; it does not repeat for every bit. There are
+140417 native array-access entries. `decodeFloorPacket` additionally gains 13
+partial native blocks; the three newly covered constructors have zero timed
+entries. These are recorded code-coverage/import counts, not a CPU profile or a
+claim that a particular check accounts for the whole cost.
+
+The three fresh uninstrumented decodes at `daaec7e` take **301.862225,
+372.235679, 334.191361 ms**, median **334.191361 ms**. Every PCM byte matches and
+no Java method compiles during execution. This is a repeated regression against
+the saved original-sample observations, despite the additional native coverage.
+More proof coverage alone is insufficient; this composition must not become
+the selected implementation. No full-loading cohort is run for this failure.
+
+```bash
+# Deko; only the changed JVM executes, three fresh processes, saved PCM oracle.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm daaec7e36b9e1daadb357ae8ba6be8a337fa41d3
+# Source syntax checks after the Deko inspector/projection changes; all pass.
+node --check apps/loading/call-code.mjs
+node --check apps/loading/microbench.mjs
+node --check apps/loading/probe.mjs
+node --check apps/loading/vorbis.mjs
+```
+
+`80e7902feeff4912964e704bf21b702e6f7db7a7` withdraws the closed-static-call
+composition and retains the preceding static-state proof. The complete failed
+source and its 1180 passing assertions remain on its parent `daaec7e` for review.
+The restored source is not timed, fingerprinted, or tested against itself;
+its previously recorded validation is reused. The measured full comparator stays
+`97aa42e`, **1929.057624 ms**, or **5.362372227×** saved TeaVM, with its original
+qualification about overlapping cohorts. Neither deployment nor production
+artifacts are changed. The 1.1× objective and original browser/phone release
+gates remain unfulfilled.
+
+All observations and this decision are recorded under
+`optimizationTrials.nativeStaticIntegerState` in the existing canonical
+`~/.cache/dekobloko/geoblox-loading/benchmark.json`; no additional JSON reports
+are created. Retained immutable observations supply exact source/fixture and
+harness provenance. Further work must explain the generated code and per-call
+bookkeeping in a small traversal case before another whole-game attempt;
+repeating CPU attribution or rerunning the known comparator is not the next step.

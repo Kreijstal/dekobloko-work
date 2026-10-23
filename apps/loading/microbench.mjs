@@ -974,6 +974,7 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     nativeOperandSnapshotCount:s.meta?.nativeOperandSnapshotCount??null,
     nativeClosedCallSiteCount:s.meta?.nativeClosedCallSiteCount??null,
     nativeObjectRegionBlockCount:s.meta?.nativeObjectRegionBlockCount??null,
+    nativeStaticStateBodySites:s.meta?.nativeStaticStateBodySites??null,
     nativeObjectRegionCastCount:s.meta?.nativeObjectRegionCastCount??null,
     nativeObjectRegionCastCacheCount:s.meta?.nativeObjectRegionCastCacheCount??null,
     nativeObjectRegionStaticReadCount:s.meta?.nativeObjectRegionStaticReadCount??null,

@@ -222,6 +222,7 @@ try {
    nativeOperandSnapshotCount:meta.nativeOperandSnapshotCount??null,
    nativeClosedCallSiteCount:meta.nativeClosedCallSiteCount??null,
    nativeObjectRegionBlockCount:meta.nativeObjectRegionBlockCount??null,
+   nativeStaticStateBodySites:meta.nativeStaticStateBodySites??null,
    nativeObjectRegionCastCount:meta.nativeObjectRegionCastCount??null,
    nativeObjectRegionCastCacheCount:meta.nativeObjectRegionCastCacheCount??null,
    nativeObjectRegionStaticReadCount:meta.nativeObjectRegionStaticReadCount??null,
@@ -260,11 +261,14 @@ try {
    finally{fs.closeSync(fd);}
   };
   disassemble(state.meta.bytes,output);
-  const teaBytes=fs.readFileSync(path.join(player,'vorbis/teavm/vorbis.wasm'));
-  assert.equal(hash(teaBytes),receipt.vorbisBenchmark.wasmSha256);
-  const teaOutput=path.join(player,'vorbis/current-teavm.wat');
-  disassemble(teaBytes,teaOutput);
-  inspection={method:state.key,sha256:hash(state.meta.bytes),output,teavm:{sha256:hash(teaBytes),output:teaOutput}};
+  const teaOutput=path.join(player,'vorbis/current-teavm.wat'),teaReused=fs.existsSync(teaOutput);
+  // This preview belongs to the pinned fixture. Its builder invalidates it
+  // when that artifact changes; method inspection only regenerates new code.
+  if(!teaReused){
+   const teaBytes=fs.readFileSync(path.join(player,'vorbis/teavm/vorbis.wasm'));
+   assert.equal(hash(teaBytes),receipt.vorbisBenchmark.wasmSha256);disassemble(teaBytes,teaOutput);
+  }
+  inspection={method:state.key,sha256:hash(state.meta.bytes),output,teavm:{sha256:receipt.vorbisBenchmark.wasmSha256,output:teaOutput,reused:teaReused}};
  }
  const owners=kernel==='bzip'?['Bzip2Decoder','Bzip2DecoderState']:['MusicDecoder','VorbisCodebook','VorbisResidue','MusicDecodeStage',...(kernel==='loading'?['Bzip2Decoder','Bzip2DecoderState']:[])];
  const layout=meta=>meta&&{structured:!!meta.structured,canonical:!!meta.canonicalRun,normalFlow:meta.normalFlowFullyCompiled,
@@ -297,6 +301,7 @@ try {
   nativeOperandSnapshotCount:meta.nativeOperandSnapshotCount??null,
   nativeClosedCallSiteCount:meta.nativeClosedCallSiteCount??null,
   nativeObjectRegionBlockCount:meta.nativeObjectRegionBlockCount??null,
+  nativeStaticStateBodySites:meta.nativeStaticStateBodySites??null,
   nativeObjectRegionCastCount:meta.nativeObjectRegionCastCount??null,
   nativeObjectRegionCastCacheCount:meta.nativeObjectRegionCastCacheCount??null,
   nativeObjectRegionStaticReadCount:meta.nativeObjectRegionStaticReadCount??null,
@@ -342,6 +347,7 @@ try {
     nativeOperandSnapshotCount:state.meta?.nativeOperandSnapshotCount??null,
     nativeClosedCallSiteCount:state.meta?.nativeClosedCallSiteCount??null,
     nativeObjectRegionBlockCount:state.meta?.nativeObjectRegionBlockCount??null,
+    nativeStaticStateBodySites:state.meta?.nativeStaticStateBodySites??null,
     nativeObjectRegionCastCount:state.meta?.nativeObjectRegionCastCount??null,
     nativeObjectRegionCastCacheCount:state.meta?.nativeObjectRegionCastCacheCount??null,
     nativeObjectRegionStaticReadCount:state.meta?.nativeObjectRegionStaticReadCount??null,
