@@ -12,7 +12,7 @@ import {fileURLToPath} from 'node:url';
 import {loadArchivedJvm} from './archive-jvm.mjs';
 import {canonicalExecutionCounts} from './browser.mjs';
 import {parseMeasurementResult} from './measurement-fixture.mjs';
-import {parseWat} from './wasm-loop-outline.mjs';
+import {parseWat,printWat} from './wasm-loop-outline.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url)),script=fileURLToPath(import.meta.url);
 const root=path.resolve(here,'../../../java-tools');
@@ -22,6 +22,7 @@ const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilat
 const [command,revision,engine,detail,caseArg]=process.argv.slice(2),engines=['inlined','separate'],count=1000000;
 const caseName=command.startsWith('stable-')||caseArg==='stable'?'stable':command.startsWith('scope-')||caseArg==='scope'?'scope':'whole';
 const targetName={whole:'scan',scope:'scanScoped',stable:'scanStable'}[caseName];
+const requestedEngine=['direct','merged','trusted'].find(value=>command.includes('-'+value+'-'));
 assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact changed-source JVM commit');
 const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
 const source=`
@@ -46,15 +47,108 @@ public class NestedLoopProbe {
   int[] row=book.vector();for(int k=0;k<8;k++)sum=sum*33+row[k];}return sum;}
 }`;
 
-if(command==='one'||command==='code-one'){
- assert.ok(engines.includes(engine));assert.ok(flags.every(flag=>process.execArgv.includes(flag)));
- const instrumented=detail==='stats';let Frame,model,allocMultiArray,takeWasmReturnValue,installed=false;
- const {JVM}=await loadArchivedJvm(root,revision,{observeModule:({filename,exports})=>{
+// This bound changes only temporary compiler graph views after normal code
+// emission, restores every map, and never runs the filtered graph as code.
+function nestedLivenessBound(c,numeric,analyze){
+ const fn=c.fn,saved=[],graphs=new Map(),stats={maps:0,slotsBefore:0,slotsAfter:0,unknownContexts:0};
+ const methodLive=method=>{if(!graphs.has(method)){const code=method.attributes?.find(a=>a.type==='code')?.code;graphs.set(method,analyze(code));}return graphs.get(method);};
+ const needed=(item,slot)=>{
+  const activation=c.inlineActivations?.get(item);
+  if(activation){
+   const chain=[];for(let level=activation;level;level=level.parent)chain.unshift(level);
+   if(slot<c.callerLocals){const live=methodLive(c.method);return !live||live.has(chain[0].call,slot);}
+   const at=chain.findIndex(level=>slot>=level.base&&slot<level.base+level.localsSize);
+   if(at<0)return false;
+   const level=chain[at],live=methodLive(level.method),pc=at+1<chain.length?chain[at+1].call:level.item;
+   return !live||live.has(pc,slot-level.base)||live.has(pc+1,slot-level.base);
+  }
+  const original=c.origIdx?c.origIdx[item]:item;
+  if(!Number.isInteger(original)||original<0){stats.unknownContexts++;return true;}
+  if(slot>=c.callerLocals)return true; // unknown splice/retry private operands
+  const live=methodLive(c.method);return !live||live.has(original,slot)||live.has(original+1,slot);
+ };
+ const allocation=()=>{
+  const stackified=numeric.prepare(fn),locals=new Map(fn.params.map((v,i)=>[v,i])),byKind={I:0,J:0,F:0,D:0,A:0};let next=fn.params.length;
+  const allocate=value=>{if(!locals.has(value)){locals.set(value,next++);byKind[value.kind]++;}return locals.get(value);};
+  const reused=numeric.assignLocals(fn,stackified,locals,allocate);
+  return {locals:next-fn.params.length,numeric:byKind.I+byKind.J+byKind.F+byKind.D,references:byKind.A,stackified:stackified.size,reused};
+ };
+ const filter=(object,key,test)=>{const map=object[key];if(!map)return;const next=new Map([...map].filter(([slot])=>test(slot)));
+  stats.maps++;stats.slotsBefore+=map.size;stats.slotsAfter+=next.size;saved.push([object,key,map]);object[key]=next;};
+ const strict=allocation();let filtered;
+ try{
+  for(const block of fn.blocks){
+   const head=c.cfg.blocks[block.id].insns[0];filter(block,'slotDefsIn',slot=>needed(head,slot));
+   const successors=c.cfg.succ[block.id];filter(block,'slotDefsOut',slot=>successors.some(id=>needed(c.cfg.blocks[id].insns[0],slot)));
+   for(const node of [...block.body,block.term])if(node)filter(node,'slotState',slot=>needed(node.itemIdx,slot));
+  }
+  filtered=allocation();
+ }finally{for(const [object,key,map]of saved)object[key]=map;}
+ return {key:c.className+'.'+c.method.name+c.method.descriptor,strict,filtered,reduction:strict.locals-filtered.locals,...stats,
+  originalLivenessMethods:graphs.size,supportedLiveness:[...graphs.values()].filter(Boolean).length,
+  note:'Nested/root original liveness bound only; operand prefixes retained, exception-aware liveness; unknown private splice/retry states kept. No safety proof or execution of trimmed snapshots.'};
+}
+
+if(command==='one'||command==='code-one'||command==='liveness-one'){
+ assert.ok(engines.includes(engine)||['direct','merged','trusted'].includes(engine));assert.ok(flags.every(flag=>process.execArgv.includes(flag)));
+ const instrumented=detail==='stats';let Frame,model,allocMultiArray,takeWasmReturnValue,numeric,frameLive,emission,installed=false;const bounds=[],versions=new WeakMap(),directImports=new WeakMap();
+ const {JVM}=await loadArchivedJvm(root,revision,{preloadModules:command==='liveness-one'?['src/jit/stackifyNumericValues.js','src/analysis/frameLocalLiveness.js']:[],observeModule:({filename,exports})=>{
+  if(filename.endsWith('/src/jit/stackifyNumericValues.js'))numeric=exports;
+  if(filename.endsWith('/src/analysis/frameLocalLiveness.js'))frameLive=exports.frameLocalLiveness;
+  if(command==='liveness-one'&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
+   const translate=exports.prototype.translateBody;
+   exports.prototype.translateBody=function(...args){const value=translate.apply(this,args);
+    if(value?.bytes&&this.className==='NestedLoopProbe'&&this.method.name===targetName)bounds.push(nestedLivenessBound(this,numeric,frameLive));return value;};
+  }
+  if(['direct','merged'].includes(engine)&&filename.endsWith('/src/jit/CanonicalDirectFrames.js')){
+   const proto=exports.CanonicalDirectLinks.prototype;
+   for(const name of ['publish','withdraw','release']){const original=proto[name];proto[name]=function(...args){const value=original.apply(this,args);
+    const live=[];for(const record of versions.get(this)||[]){const cell=record.version.deref(),target=record.target.deref();
+     if(!cell||!target)continue;if(this.table.get(record.slot)!==target)cell.value=-1;live.push(record);}
+    versions.set(this,live);return value;};}
+  }
+  if(['direct','merged'].includes(engine)&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
+   const original=exports.prototype.emitCanonicalInvoke;
+   assert.equal(typeof original,'function','Source lacks the generic canonical emission boundary');
+   exports.prototype.emitCanonicalInvoke=function(node,call,out){
+    if(this.className!=='NestedLoopProbe'||this.method.name!==targetName||node.imm?.[1]!=='NestedLoopBook'||node.imm?.[2]?.[0]!=='vector')return original.call(this,node,call,out);
+    const {T,OP,uleb,sleb}=emission,links=this.wasmJit.canonicalDirectLinks,binding=links.bySlot.get(call.slot);
+    let imports=directImports.get(this);if(!imports){imports=new Map();directImports.set(this,imports);}let record=imports.get(call.slot);
+    if(!record){
+     const target=links.table.get(call.slot);assert.ok(target&&target!==binding.stub,'Snapshot target is not published');
+     const signature=this.sigTypes[call.type-(this.objNativeOps?2:0)],index=this.addImport('snapshot_target_'+call.slot,signature.params,signature.results,target,true);
+     const cell=new WebAssembly.Global({value:'i32',mutable:true},0),global=this.globalImportDecls.length,name='snapshot_version_'+call.slot;
+     this.globalImportDecls.push({name,type:T.i32,mutable:true});this.importedGlobals[name]=cell;
+     record={index,global,selected:this.nextLocal++};this.declared.push(T.i32);imports.set(call.slot,record);
+     const live=versions.get(links)||[];live.push({slot:call.slot,version:new WeakRef(cell),target:new WeakRef(target)});versions.set(links,live);
+    }
+    // Arguments remain on stack. Preserve the original selected dispatch slot;
+    // either version or dispatch mismatch takes exactly its existing table arm.
+    out.push(OP.local_tee,...uleb(record.selected),OP.i32_const,...sleb(call.slot),OP.i32_eq,
+     OP.global_get,...uleb(record.global),OP.i32_const,0,OP.i32_eq,OP.i32_and,
+     OP.if,...sleb(call.type),OP.call,...uleb(record.index),OP.else,
+     OP.local_get,...uleb(record.selected),OP.call_indirect,...uleb(call.type),0,OP.end);
+   };
+  }
+  if(engine==='trusted'&&filename.endsWith('/src/jit/nativeStaticArrayBody.js')){
+   const entry=exports.entry;let identity;
+   exports.entry=function(c,out){
+    if(c.className!=='NestedLoopBook'||c.method.name!=='vector')return entry(c,out);
+    const receiver=c.fn.params[0],cache=c.objCacheFor(receiver),{T,OP,uleb,assembleModule}=emission;
+    assert.ok(c.parameterObjectABI.includes(0)&&cache.typedIncoming,'Trusted-shape bound requires typed paired transport');
+    identity||=new WebAssembly.Instance(new WebAssembly.Module(assembleModule({importDecls:[],mainParams:[T.ref],mainResults:[T.ref],declared:[],body:[OP.local_get,0,OP.end]}))).exports.run;
+    const use=c.useOf,add=c.addImport;
+    c.useOf=function(value){return value===receiver?[OP.local_get,...uleb(cache.typedStore),0xfb,0x1b]:use.call(this,value);};
+    c.addImport=function(name,params,results,fn,pure){return name==='native_state_object_storage'?
+     add.call(this,'trusted_storage_identity',params,results,identity,true):add.call(this,name,params,results,fn,pure);};
+    try{return entry(c,out);}finally{c.useOf=use;c.addImport=add;}
+   };
+  }
   if(filename.endsWith('/src/core/frame.js'))Frame=exports;
   if(filename.endsWith('/src/core/objectModel.js'))model=exports;
   if(filename.endsWith('/src/instructions/object.js'))allocMultiArray=exports.allocMultiArray;
-  if(filename.endsWith('/src/jit/wasmShared.js'))takeWasmReturnValue=exports.takeWasmReturnValue;
-  if(engine==='separate'&&filename.endsWith('/src/jit/wasmInline.js')){
+  if(filename.endsWith('/src/jit/wasmShared.js')){takeWasmReturnValue=exports.takeWasmReturnValue;emission=exports;}
+  if((engine==='separate'||['direct','merged','trusted'].includes(engine))&&filename.endsWith('/src/jit/wasmInline.js')){
    const inline=exports.inlineCalls;
    exports.inlineCalls=function(jvm,code,options){
     if(options.callerClassName==='NestedLoopProbe'&&options.callerMethod?.name===targetName)return null;
@@ -62,11 +156,11 @@ if(command==='one'||command==='code-one'){
    };installed=true;
   }
  }});
- if(engine==='separate')assert.ok(installed,'Control missed the outer transform');
+ if(engine==='separate'||['direct','merged','trusted'].includes(engine))assert.ok(installed,'Control missed the outer transform');
  const j=new JVM({classpath:[directory],wasmHeap:true,wasmFields:true,wasmHeapMb:32,
   jit:{enabled:false,compileWorker:false,retainCompilerDiagnostics:false,wasmStructured:true,
    wasm:{deepInline:false,canonicalDirectCalls:true,canonicalEhLinks:true,nativeJsExceptionTags:true}}});
- if(command==='code-one'){j.executeTick=()=>{throw Error('Code inspection attempted a guest tick');};j.executeInstruction=()=>{throw Error('Code inspection attempted a guest instruction');};}
+ if(command==='code-one'||command==='liveness-one'){j.executeTick=()=>{throw Error('Code inspection attempted a guest tick');};j.executeInstruction=()=>{throw Error('Code inspection attempted a guest instruction');};}
  await j.preloadClasspathClasses();for(const name of ['NestedLoopBits','NestedLoopBook','NestedLoopProbe'])j._markClassInitialized(name);
  const w=j.jit.wasmJit;w.enabled=true;w.importStatsEnabled=instrumented;
  const build=(owner,name,descriptor)=>{const method=j.findMethod(j.classes[owner],name,descriptor),state=w.methodState({method});
@@ -76,30 +170,75 @@ if(command==='one'||command==='code-one'){
  const target=build('NestedLoopProbe',targetName,caseName!=='whole'?'([LNestedLoopBook;I)I':'(LNestedLoopBook;I)I');
  assert.equal(target.meta.inlineActivationDepth||0,engine==='inlined'?2:0,'Unexpected compiled call shape');
  assert.ok(target.meta.normalFlowFullyCompiled,'Reduction lost full normal flow');
+ if(engine==='merged'){
+  // Controlled two-method linking experiment. Keep every original instruction,
+  // owner, metadata import, version guard and table fallback. Only the direct
+  // import's module boundary changes. Scratch binaries are removed before run.
+  const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'nested-module-merge-'));
+  try{
+   const rootTree=parseWat(execFileSync('wasm-dis',['--all-features','-'],{input:target.meta.bytes,encoding:'utf8',maxBuffer:4*1024*1024}));
+   const childTree=parseWat(execFileSync('wasm-dis',['--all-features','-'],{input:vector.meta.bytes,encoding:'utf8',maxBuffer:4*1024*1024}));
+   const rootEnv=target.meta.importObject.env,childEnv=vector.meta.importObject.env;
+   for(const node of childTree){
+    if(node?.[0]==='import'&&node[3]?.[0]!=='memory')node[1]=JSON.stringify('vectorEnv');
+    if(node?.[0]==='export')node[1]=JSON.stringify('vector__'+JSON.parse(node[1]));
+   }
+   let linked=0;
+   for(const node of rootTree){
+    if(node?.[0]!=='import'||node[3]?.[0]==='memory')continue;
+    const name=JSON.parse(node[2]);
+    if(name.startsWith('snapshot_target_')){
+     const slot=Number(name.slice('snapshot_target_'.length)),fn=(versions.get(w.canonicalDirectLinks)||[]).find(record=>record.slot===slot)?.target.deref();
+     const entry=Object.entries(vector.meta).find(([key,value])=>key.startsWith('canonical')&&value===fn);
+     assert.ok(entry,'Cannot identify the exact vector export');node[1]=JSON.stringify('vector');node[2]=JSON.stringify('vector__'+entry[0]);linked++;
+    }else node[1]=JSON.stringify('rootEnv');
+   }
+   assert.equal(linked,1,'Unexpected merge boundary count');
+   const rootWat=path.join(temporary,'root.wat'),childWat=path.join(temporary,'vector.wat'),rootWasm=path.join(temporary,'root.wasm'),childWasm=path.join(temporary,'vector.wasm'),merged=path.join(temporary,'merged.wasm');
+   fs.writeFileSync(rootWat,printWat(rootTree));fs.writeFileSync(childWat,printWat(childTree));
+   execFileSync('wasm-as',[rootWat,'--all-features','--disable-compact-imports','-g','-o',rootWasm]);execFileSync('wasm-as',[childWat,'--all-features','--disable-compact-imports','-g','-o',childWasm]);
+   execFileSync('wasm-merge',[rootWasm,'root',childWasm,'vector','--all-features','--disable-compact-imports','-g','-o',merged]);
+   const bytes=fs.readFileSync(merged),module=new WebAssembly.Module(bytes);
+   const instance=new WebAssembly.Instance(module,{env:{mem:j.wasmHeap.memory},rootEnv,vectorEnv:childEnv});
+   assert.ok(instance.exports.run,'Missing merged root export');
+   target.meta.bytes=bytes;target.run=instance.exports.run;target.meta.retv=instance.exports.retv||null;
+   target.meta.canonicalEntries=instance.exports.canonicalEntries||null;
+   vector.meta.canonicalEntries=instance.exports.vector__canonicalEntries||null;
+   if(instance.exports.canonicalOwner)instance.exports.canonicalOwner.value=target.meta.directFrameContext;
+   if(instance.exports.vector__canonicalOwner)instance.exports.vector__canonicalOwner.value=vector.meta.directFrameContext;
+  }finally{fs.rmSync(temporary,{recursive:true,force:true});}
+ }
+ if(command==='liveness-one'){
+  assert.ok(bounds.length,'No nested graph captured');
+  console.log('NESTED_LIVENESS_RESULT '+JSON.stringify({sourceRevision:revision,caseName,engine,bounds,harnessSha256:hash(fs.readFileSync(script)),guestInstructions:0,
+   scope:'New nested-frame snapshot allocation question only; no workload, oracle, timer, native-code/control identity replay or execution of filtered code'}));process.exit(0);
+ }
  if(command==='code-one'){
   const rows=[];
   for(const [name,state]of [['root',target],['vector',vector]]){
-   const wat=execFileSync('wasm-dis',['--all-features','-'],{input:state.meta.bytes,encoding:'utf8',maxBuffer:4*1024*1024});
-   const module=parseWat(wat),core=module.find(node=>node?.[0]==='func'&&node[1]?.startsWith('$jvm$wasm$'));
+   const codeBytes=engine==='merged'?target.meta.bytes:state.meta.bytes;
+   const wat=execFileSync('wasm-dis',['--all-features','-'],{input:codeBytes,encoding:'utf8',maxBuffer:4*1024*1024});
+   const module=parseWat(wat),core=module.find(node=>node?.[0]==='func'&&node[1]?.startsWith('$jvm$wasm$')&&node[1].includes(name==='root'?'NestedLoopProbe':'NestedLoopBook'));
    assert.ok(core,'Missing generated core function');
    const starts=[...wat.matchAll(/^ \(func (\$[^\s(]+)/gm)],ordinal=starts.findIndex(match=>match[1]===core[1]);assert.ok(ordinal>=0);
    const index=(wat.match(/^ \(import [^\n]*\(func /gm)||[]).length+ordinal;
    const native=execFileSync(process.execPath,[...flags,'--trace-wasm-inlining','--print-wasm-code-function-index='+index,'-e',
-    "new WebAssembly.Module(require('node:fs').readFileSync(0))"],{input:state.meta.bytes,encoding:'utf8',maxBuffer:8*1024*1024});
+    "new WebAssembly.Module(require('node:fs').readFileSync(0))"],{input:codeBytes,encoding:'utf8',maxBuffer:8*1024*1024});
    assert.match(native,/compiler: TurboFan/,'Expected eager optimizing native compilation');
    const body=native.slice(native.indexOf('Instructions (size'),native.indexOf('\nSource positions:'));
    const ops={};const walk=node=>{if(!Array.isArray(node))return;if(typeof node[0]==='string')ops[node[0]]=(ops[node[0]]||0)+1;for(const child of node)walk(child);};walk(core);
-   rows.push({name,key:state.key,wasmBytes:state.meta.bytes.length,wasmLocals:core.filter(node=>node?.[0]==='local').length,
+   rows.push({name,key:state.key,wasmBytes:codeBytes.length,wasmLocals:core.filter(node=>node?.[0]==='local').length,
     instructionBytes:Number(native.match(/Instructions \(size = (\d+)\)/)?.[1]),
     stackReservations:[...body.matchAll(/^0x[^\n]*\bsubq? rsp,[^\n]*/gm)].map(match=>match[0]),
     stackAddressSites:(body.match(/\[(?:r|e)[bs]p[^\]]*\]/g)||[]).length,
     nativeCallSites:(body.match(/^0x[^\n]*\bcall\b/gm)||[]).length,
+    inlining:native.split('\n').filter(line=>line.includes('function '+index+':')&&/candidate|inlining/.test(line)).slice(0,16),
     branches:ops.if||0,loops:ops.loop||0,loads:ops['i32.load']||0,stores:ops['i32.store']||0,
     inlineActivationDepth:state.meta.inlineActivationDepth||0,nativeStateSites:state.meta.nativeStaticStateBodySites||0});
    if(name==='root')fs.writeFileSync(path.join(directory,'current.wat'),wat);
    fs.appendFileSync(path.join(directory,'current-native.txt'),'\n'+engine+' '+state.key+'\n'+native);
   }
-  console.log('NESTED_CODE_RESULT '+JSON.stringify({sourceRevision:revision,caseName,engine,rows,guestInstructions:0,
+  console.log('NESTED_CODE_RESULT '+JSON.stringify({sourceRevision:revision,caseName,engine,rows,harnessSha256:hash(fs.readFileSync(script)),guestInstructions:0,
    scope:'Code-generation question only: no Java workload, oracle, timer, CPU attribution or baseline identity replay; native static site counts include cold paths.'}));process.exit(0);
  }
  const tree=[];let leaf=0;
@@ -131,7 +270,7 @@ if(command==='one'||command==='code-one'){
  const vectorEntries=instrumented?canonicalExecutionCounts(vector.meta).directEntries:null;
  if(instrumented)assert.equal(vectorEntries,engine==='inlined'?0:count,'Control lost the intended method boundary');
  if(instrumented&&caseName==='stable')assert.equal(target.meta.importStats.get('native_state_object_storage')||0,engine==='inlined'?1:0,'Stable ownership was not shared across scope entries');
- console.log('NESTED_LOOP_RESULT '+JSON.stringify({sourceRevision:revision,caseName,engine,instrumented,count,checksum,elapsedMs,
+ console.log('NESTED_LOOP_RESULT '+JSON.stringify({sourceRevision:revision,caseName,engine,instrumented,count,checksum,elapsedMs,harnessSha256:hash(fs.readFileSync(script)),
   sourceSha256:hash(source),classSha256:hash(fs.readFileSync(path.join(directory,'NestedLoopProbe.class'))),
   inlineActivationDepth:target.meta.inlineActivationDepth||0,vectorEntries,
   nativeStaticStateBodySites:target.meta.nativeStaticStateBodySites||0,
@@ -145,14 +284,17 @@ if(command==='one'||command==='code-one'){
   separateVectorStateSites:vector.meta.nativeStaticStateBodySites||0,
   ownershipQueries:instrumented?target.meta.importStats.get('native_body_object_storage')||0:null,
   separateVectorOwnershipQueries:instrumented?vector.meta.importStats.get('native_state_object_storage')||0:null,
+  trustedEntryCalls:instrumented?vector.meta.importStats.get('trusted_storage_identity')||0:null,
+  trustedShapeBound:engine==='trusted'?'Controlled owned fixture only: typed transport replaces entry ownership lookup with a Wasm identity; no general pairing/customization proof or runtime integration':null,
   nativeExits:target.meta.directFrameContext.exitCount,lateJavaCompiles:0,
   node:process.version,execArgv:process.execArgv,
+  directImportExperiment:['direct','merged'].includes(engine)?'Per-call version/dispatch checked Wasm import; publication/withdrawal/release revoke snapshots; table fallback and original ABI remain active; fixture-only integration':null,
   control:engine==='separate'?'Withhold only the root inline transform; same changed runtime and new Java workload':null,
   scope:'Bounded '+caseName+' code-generation reduction with identical high invocation fuel; not production scheduling, original loading, TeaVM parity or an existing baseline validation'}));
  process.exit(0);
 }
 
-assert.ok(['diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate','inspect','scope-inspect','stable-inspect','code','scope-code','stable-code'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
+assert.ok(['diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate','inspect','scope-inspect','stable-inspect','code','scope-code','stable-code','liveness','scope-liveness','stable-liveness','stable-direct-code','stable-direct-inspect','stable-direct-candidate','stable-merged-code','stable-merged-inspect','stable-merged-candidate','stable-trusted-code','stable-trusted-inspect','stable-trusted-candidate'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
 fs.mkdirSync(directory,{recursive:true});const java=path.join(directory,'NestedLoopProbe.java');
 if(!fs.existsSync(java)||fs.readFileSync(java,'utf8')!==source||!fs.existsSync(path.join(directory,'NestedLoopProbe.class'))){
  fs.writeFileSync(java,source);execFileSync('javac',['--release','8','-proc:none','-d',directory,java]);
@@ -164,19 +306,25 @@ if(!result){result={sourceRevision:revision,caseName,sourceSha256:hash(source),h
 const save=()=>fs.writeFileSync(reportPath,JSON.stringify(report,null,2)+'\n');
 const one=(variant,stats)=>parseMeasurementResult(execFileSync(process.execPath,[...flags,script,'one',revision,variant,stats?'stats':'timing',caseName],
  {encoding:'utf8',maxBuffer:1024*1024}),'NESTED_LOOP_RESULT ');
-if(command.endsWith('code')){
- fs.writeFileSync(path.join(directory,'current-native.txt'),'');
- result.codeOutputs=[];
- for(const variant of engines){
-  const row=parseMeasurementResult(execFileSync(process.execPath,[...flags,script,'code-one',revision,variant,'code',caseName],
-   {encoding:'utf8',maxBuffer:1024*1024}),'NESTED_CODE_RESULT ');result.codeOutputs.push(row);save();console.log(JSON.stringify(row));
+if(command.endsWith('liveness')){
+ if(result.livenessBound)console.log('Reuse saved nested liveness bound');
+ else{
+  const row=parseMeasurementResult(execFileSync(process.execPath,[...flags,script,'liveness-one',revision,'inlined','code',caseName],
+   {encoding:'utf8',maxBuffer:1024*1024}),'NESTED_LIVENESS_RESULT ');result.livenessBound=row;save();console.log(JSON.stringify(row));
  }
-}else if(command.endsWith('diagnose')||command.endsWith('inspect'))for(const variant of command.endsWith('inspect')?['inlined']:engines){
+}else if(command.endsWith('code')){
+ fs.writeFileSync(path.join(directory,'current-native.txt'),'');
+ result.codeOutputs||=[];
+ for(const variant of requestedEngine?[requestedEngine]:engines){
+  const row=parseMeasurementResult(execFileSync(process.execPath,[...flags,script,'code-one',revision,variant,'code',caseName],
+   {encoding:'utf8',maxBuffer:1024*1024}),'NESTED_CODE_RESULT ');result.codeOutputs=result.codeOutputs.filter(previous=>previous.engine!==variant);result.codeOutputs.push(row);save();console.log(JSON.stringify(row));
+ }
+}else if(command.endsWith('diagnose')||command.endsWith('inspect'))for(const variant of requestedEngine?[requestedEngine]:command.endsWith('inspect')?['inlined']:engines){
  if(result.diagnostics.some(row=>row.engine===variant)){console.log('reuse saved '+variant+' diagnostic');continue;}
  const row=one(variant,true);result.diagnostics.push(row);save();console.log(JSON.stringify(row));
 }
 else{
- const measuredEngines=command.endsWith('candidate')?['inlined']:engines;
+ const measuredEngines=requestedEngine?[requestedEngine]:command.endsWith('candidate')?['inlined']:engines;
  result.timingMode=measuredEngines.length===1?'Changed candidate only; reuse saved controls':'Paired new-workload control';
  for(let pair=0;pair<3;pair++)for(const variant of pair===1?measuredEngines.toReversed():measuredEngines){
   if(result.runs.some(row=>row.engine===variant&&row.pair===pair)){console.log('reuse saved pair '+pair+' '+variant);continue;}

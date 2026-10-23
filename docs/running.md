@@ -14789,3 +14789,162 @@ allocation gain; do not replay that experiment or claim it answered this new
 nested-frame question. Inspect an allocation bound first, and stop if it removes
 no meaningful roots/locals. Do not repeat failed global epochs, broad nonreturning
 array-error campaigns or CPU attribution.
+
+### Nested snapshot bound: no allocator change is justified
+
+The preceding goal turn is progress: it withdrew two ineffective experiments,
+retained a metadata-callback correctness fix, and established a new native-code
+question. Reuse all saved controls and keep the full 1.1x objective unchanged.
+
+The new `stable-liveness` command observes the normally emitted small graph at
+`3b1b278e533ec26153a87b4b882d0b5872142076`. It temporarily filters frame maps
+using exception-aware original liveness for the root and each active recovered
+child. It preserves operand prefixes and unknown private splice/retry states,
+restores every original map, and never runs the filtered graph. Attempts at guest
+ticks/instructions throw. This is the new nested-frame question, not a replay of
+the previous original-only allocation bound.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-liveness 3b1b278e533ec26153a87b4b882d0b5872142076
+```
+
+All three original-method liveness analyses succeed. Across 56 maps, **592 slot
+bindings become 367**; 17 unknown-context queries are kept conservatively. Both
+strict and filtered allocations still have **51 locals: 27 numeric / 24 reference,
+10 stackified values and seven reused locals**. Reduction is **zero**. Do not
+change the allocator or claim that removing bindings alone makes execution faster.
+The result concerns this tested slice, not an impossibility proof for all snapshot
+or register-allocation work.
+
+### Versioned direct-import ABI proof, then a failed component screen
+
+A distinct question preserves method boundaries instead of expanding Java SSA.
+A known Wasm function import gets a per-call version and selected-slot check;
+either mismatch takes the exact existing mutable-table target. This differs from
+the previously withdrawn mutable `call_ref` target experiment: the positive arm
+is a statically imported Wasm function, while replacement/withdrawal remain live.
+
+Generic `test/versionedImportTargets.test.js` proves the typed block join for
+multi-value signatures, replacement, withdrawal, different dispatch slots,
+incompatible target signatures, a replacement callback between two calls in one
+native invocation, reference identity, i64 values beyond 2^53, negative zero,
+native GC-storage parameters, original thrown values, and signed block type
+indices above 63. **29/29 pass**. The compiler factors its unchanged table-call
+emission into a generic `emitCanonicalInvoke` method so Deko can test an alternate
+emitter without byte-pattern rewriting or application identities in java-tools.
+Combined ABI/frame/return checks pass **199/199**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/versionedImportTargets.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/versionedImportTargets.test.js test/canonicalDirectFrames.test.js test/nativeArrayReturnOwnership.test.js
+```
+
+Source **`24a0485a8b5bcf7feaf4b9ff06867a5b212b2c12`** contains that proof and
+emission boundary. Normal runtime policy still emits the existing table call.
+Deko alone installs the controlled fixture emitter. It captures a published target,
+invalidates its version permanently on actual publication/withdrawal/release,
+keeps the existing guarded dispatch choice and table fallback, and uses weak
+bookkeeping. It introduces no user runtime flag or game-specific JVM policy.
+This is fixture-only integration, not a default runtime optimization.
+
+The direct-import root has **66 Wasm locals / 3492 native bytes / 176 stack bytes**,
+versus the saved separate root's **61 / 3364 / 176**. The vector core remains
+**81 / 4476 / 152**. Native-call site counts are 44 and 55, including cold paths.
+The diagnostic executes one million vector entries with the expected checksum,
+zero native exits/late compile and cleared array-result payloads. Instrumenting
+an imported Wasm target wraps it in a JS counter; diagnostic elapsed time therefore
+cannot represent the uninstrumented path.
+
+Changed direct-import observations are **110.705086, 87.173199, 117.222917 ms**,
+median **110.705086 ms**. Retain both slow observations. They do not improve the
+saved stable separate-call control **89.520345 ms**. Do not integrate the emitter
+or launch an original/full cohort on this result.
+
+### Same-module linking: valid bounded program, overlapping performance
+
+Deko next links the caller and vector modules while preserving their existing
+canonical frame protocols and the version/dispatch/table fallback. It namespaces
+imports, preserves their actual host values, resolves only the exact selected
+vector export, shares the existing imported memory, and restores each merged
+module's owner/counter globals. Temporary WAT/binaries are removed before any
+execution timer. No generated binary enters Git.
+
+Initial construction exposes two tooling details and one diagnostic issue:
+`--all-features` enables compact-import encoding that Node 22 rejects with
+`unknown import kind 0x7e`; the assembler/merger must explicitly disable that
+encoding. Debug names must be retained for code inspection. Instrumented imports
+wrap the original target, so resolve the exact export using the captured weak
+native-target identity rather than the counter wrapper. These setup errors do not
+enter timing evidence. Merged owner/counter globals must describe the new module,
+not the retired instance's counters. Strict vector-entry assertions stay enabled.
+Code observations are stored by engine, preserving previous direct results rather
+than overwriting them with each new variant.
+
+The constructed module validates and instantiates. Its root measures **3352 native
+bytes / 176 stack bytes**, while its WAT is a two-method linked artifact. The
+controlled diagnostic performs **one million actual vector entries**, with exact
+checksum **-1834486005**, zero exits/late Java compilation and cleared result
+payloads. Fresh uninstrumented samples are **91.453165, 88.663259, 86.061055 ms**,
+median **88.663259 ms**. These overlap the saved control; they establish no useful
+aggregate gain. No original/full cohort or runtime integration follows.
+
+```bash
+# Deko; all use only the changed source above, CPU2 / Node 22.23.2 / eager / 1 GiB.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-direct-code 24a0485a8b5bcf7feaf4b9ff06867a5b212b2c12
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-direct-inspect 24a0485a8b5bcf7feaf4b9ff06867a5b212b2c12
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-direct-candidate 24a0485a8b5bcf7feaf4b9ff06867a5b212b2c12
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-merged-code 24a0485a8b5bcf7feaf4b9ff06867a5b212b2c12
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-merged-inspect 24a0485a8b5bcf7feaf4b9ff06867a5b212b2c12
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-merged-candidate 24a0485a8b5bcf7feaf4b9ff06867a5b212b2c12
+```
+
+### A more promising bound: trusted entry with small method bodies
+
+The previous Java-inlining experiment removes repeated ownership queries but also
+grows the caller and its snapshot obligations. Bound a different combination:
+keep the original small method bodies/table calls and replace only the vector
+entry's JS ownership lookup with a Wasm identity over the already supplied typed
+storage. **This deliberately assumes the fixture's owned, paired, uncustomized
+metadata. It is not a general ownership proof, production optimization or reason
+to skip arbitrary receiver validation.** Unknown/forged pairing and wrapper/field
+customization still need a real general mechanism before any game integration.
+
+The controlled fixture constructs its own native book/rows and has no mutation
+callback. It asserts typed incoming storage, retains the exact loop, scalar stores,
+array accesses, class readiness, fuel and return transport. The root remains
+**61 locals / 3364 native bytes**, and the vector **81 / 4460**. The diagnostic
+records one million vector calls, zero JS ownership queries, one million Wasm
+identity entries, exact checksum, zero exits/late compile and cleared transport.
+Instrumented identity-call wrappers are excluded from timings.
+
+Fresh changed-bound samples are **76.009629, 74.713190, 76.605183 ms**, median
+**76.009629 ms**. All three lie below the saved control range
+**85.077283–98.219603 ms** (median **89.520345**). The approximately 15% difference
+is a component screen using recorded controls, not a fresh interleaved causal
+estimate or a full-loading/TeaVM parity result. It justifies investigating a
+general paired-storage ownership proof while preserving small method bodies.
+Do not deploy this fixture assumption or advance the full comparator.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-trusted-code 24a0485a8b5bcf7feaf4b9ff06867a5b212b2c12
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-trusted-inspect 24a0485a8b5bcf7feaf4b9ff06867a5b212b2c12
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-trusted-candidate 24a0485a8b5bcf7feaf4b9ff06867a5b212b2c12
+```
+
+Every new variant uses the same fixed Java source/class hashes already recorded
+for the stable fixture. The single ledger retains each engine's diagnostics,
+code and times; no extra JSON or source-export directories are added. The final
+harness records its own SHA256 per new worker result. Earlier rows retain their
+original first-observation provenance; no current harness hash is retroactively
+asserted for earlier intermediate scripts.
+
+Next work must prove typed storage belongs to the actual Java reference and
+remains valid after field-shape or wrapper-binding changes, including aliases and
+callbacks during argument/metadata evaluation. Preserve untrusted entry behavior,
+foreign/custom getter fallback, precise frames/exceptions, compatible publication
+and replacement, GC/lifetime cleanup and source-agnostic policy. Existing private
+GC storage plus synchronous proxy revocation can support a proof, but typed
+transport alone is insufficient. Inspect that mechanism's code and small-case
+performance before original decoding, then full loading. JVM master, production
+artifacts and original/full comparators remain unchanged; **the 1.1x objective and
+all browser/phone/heap/FPS acceptance remain unfulfilled**.
