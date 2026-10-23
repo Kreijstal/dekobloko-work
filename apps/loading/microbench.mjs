@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Causal diagnostics, not loading/FPS acceptance. No workload warmup or replay.
 import fs from 'node:fs';
+import {canonicalExecutionCounts} from './browser.mjs';
 import os from 'node:os';
 import path from 'node:path';
 import assert from 'node:assert/strict';
@@ -959,7 +960,7 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
   Object.assign(result,{elapsedMs:Number(fields.get('elapsedNanos:J'))/1e6,checksum:fields.get('checksum:I'),
    compilation:j.jit.syncCompileCensus(),lateCompiles:late,options,
    executionMethods:j.jit.wasmJit.compiled.filter(s=>ownsMethod(s.key)).map(s=>({
-    key:s.key,runs:s.runs,directEntries:s.meta?.canonicalEntries?.value||0,exits:s.exits,
+    key:s.key,runs:s.runs,...canonicalExecutionCounts(s.meta),exits:s.exits,
     nativeExitCount:s.meta?.directFrameContext?.exitCount??null,
     directNativeExitCount:s.meta?.directFrameContext?.directExitCount??null,
     nativeThrowCount:s.meta?.directFrameContext?.throwCount??null,

@@ -19,6 +19,15 @@ export function freshLoadingBytes(jvm,bytes) {
   return ArrayBuffer.isView(array)?array:array.array;
 }
 
+// Deferred identities count materialized activations, not normal invocations.
+// Missing invocation counts must not masquerade as zero measured executions.
+export function canonicalExecutionCounts(meta) {
+  return {directEntries:meta?.canonicalLazyActivation?null:meta?.canonicalEntries?.value||0,
+    canonicalIdCount:meta?.canonicalEntries?.value??null,
+    canonicalLazyActivation:!!meta?.canonicalLazyActivation,
+    nativeObjectBodyEntries:meta?.importStats?.get('native_object_body_entered')??null};
+}
+
 // Browser fixture only: all class files and compressed assets arrive before
 // either runtime starts. Each invocation executes the workload exactly once.
 export async function runLoading(backend, fixture) {
@@ -72,8 +81,8 @@ export async function runLoading(backend, fixture) {
     structured:!!state.meta?.structured,full:!!state.meta?.fullyCompiled,guarded:!!state.meta?.guardOnlyNormalFlowGaps,
     canonical:!!state.meta?.canonicalRun,prepared:h.preparedCodegenMethods.has(state.method),
     upgrade:h.hasPreparedFullWasmUpgrade(state.method),nativeReferences:state.meta?.nativeObjectReferenceSites||0,
-    nativeCasts:state.meta?.nativeCastSites||0,directEntries:state.meta?.canonicalEntries?.value||0}))
-    .filter(state=>state.runs||state.guarded||state.directEntries);
+    nativeCasts:state.meta?.nativeCastSites||0,...canonicalExecutionCounts(state.meta)}))
+    .filter(state=>state.runs||state.guarded||state.directEntries||state.nativeObjectBodyEntries);
   const check=['pcmSamples:I','pcmBytes:J','pcmCrc:J','archiveFiles:I','decodedBytes:J','graphicsCrc:J'].map(read).join(':');
   return {backend,hostAndModuleMs:ready-started,entryAndPreparationMs:performance.now()-ready,
     musicMs:read('musicNanos:J')/1e6,graphicsMs:read('graphicsNanos:J')/1e6,check,preparation,

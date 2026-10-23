@@ -67,6 +67,7 @@ for(const [ordinal,key]of targets.entries()){
  const bindings=j.jit.wasmJit.canonicalDirectLinks.bindings.get(key)||[];
  rows.push({backend:'jvm',key,export:exportName,...shape,...nativeSummary(code),
   nativeObjectBodyFieldSites:meta.nativeObjectBodyFieldSites||0,
+  canonicalLazyActivation:!!meta.canonicalLazyActivation,
   nativeObjectElidedArrayReferenceSites:meta.nativeObjectElidedArrayReferenceSites||0,
   publishedSlots:bindings.filter(b=>b.compact).map(b=>({slot:b.slot,stub:j.jit.wasmJit.canonicalDirectLinks.table.get(b.slot)===b.stub}))});
 }

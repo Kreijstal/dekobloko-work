@@ -4,7 +4,7 @@ import fs from 'node:fs';import os from 'node:os';import path from 'node:path';
 import assert from 'node:assert/strict';import crypto from 'node:crypto';import {pathToFileURL} from 'node:url';import {createRequire} from 'node:module';
 import {execFileSync} from 'node:child_process';
 import {getHeapStatistics} from 'node:v8';
-import {freshLoadingBytes} from './browser.mjs';
+import {freshLoadingBytes,canonicalExecutionCounts} from './browser.mjs';
 import {loadArchivedJvm} from './archive-jvm.mjs';
 import {vorbisProbeSource} from './workload.mjs';
 import {readMeasurementFixture,recordProbeObservation,summarizeExecutionOutcome} from './measurement-fixture.mjs';
@@ -241,7 +241,7 @@ try {
   nativeStaticLeafBytes:meta.nativeStaticLeafVersionBytes||0,
   params:meta.paramSlots?.map(p=>({slot:p.slot,type:p.t})),entryGuards:meta.entryInitializationGuards,
   links:meta.linkBindings?.map(b=>({key:b.key,pending:b.pending,canonical:!!b.canonicalDirect}))};
- for(const owner of owners)for(const item of j.classes[owner]?.ast.classes[0].items||[]){if(item.type!=='method')continue;const m=item.method,s=w.state.get(m),g=j.jit.codegenCache.get(m);methods.push({key:owner+'.'+m.name+m.descriptor,wasm:s&&{status:s.status,runs:s.runs,directEntries:s.meta?.canonicalEntries?.value||0,exits:s.exits,fuelExits:s.fuelExits,full:s.meta?.fullyCompiled,calleeFull:s.callee?.meta?.fullyCompiled,layout:layout(s.meta),calleeLayout:layout(s.callee?.meta),
+ for(const owner of owners)for(const item of j.classes[owner]?.ast.classes[0].items||[]){if(item.type!=='method')continue;const m=item.method,s=w.state.get(m),g=j.jit.codegenCache.get(m);methods.push({key:owner+'.'+m.name+m.descriptor,wasm:s&&{status:s.status,runs:s.runs,...canonicalExecutionCounts(s.meta),exits:s.exits,fuelExits:s.fuelExits,full:s.meta?.fullyCompiled,calleeFull:s.callee?.meta?.fullyCompiled,layout:layout(s.meta),calleeLayout:layout(s.callee?.meta),
   nativeExitCount:s.meta?.directFrameContext?.exitCount??null,directNativeExitCount:s.meta?.directFrameContext?.directExitCount??null,nativeThrowCount:s.meta?.directFrameContext?.throwCount??null,
   lastNativeExitStatus:s.meta?.directFrameContext?.lastExitStatus??null,calleeNativeExitCount:s.callee?.meta?.directFrameContext?.exitCount??null,
   publication:w.canonicalDirectLinks&&{eligible:!!w.canonicalDirectLinks.constructor.eligible(s),slots:(w.canonicalDirectLinks.bindings.get(s.key)||[]).map(b=>({compact:b.compact,stub:w.canonicalDirectLinks.table.get(b.slot)===b.stub}))},
@@ -279,8 +279,8 @@ try {
     representationLoopCount:state.meta?.representationLoopCount||0,
     representationLoopBytes:state.meta?.representationLoopBytes||0,
     structured:!!state.meta?.structured,full:!!state.meta?.fullyCompiled,
-    canonical:!!state.meta?.canonicalRun,directEntries:state.meta?.canonicalEntries?.value||0}))
-   .filter(state=>state.runs||state.directEntries||state.nativeExitCount||state.nativeThrowCount||state.calleeNativeExitCount),
+    canonical:!!state.meta?.canonicalRun,...canonicalExecutionCounts(state.meta)}))
+   .filter(state=>state.runs||state.directEntries||state.nativeObjectBodyEntries||state.nativeExitCount||state.nativeThrowCount||state.calleeNativeExitCount),
   heapUsage:j.wasmHeap?.usage(),
   ...(w.importStatsEnabled?{importCensus:w.compiled.flatMap(state=>[
     ['entry',state.meta],['callee',state.callee?.meta],['osr',state.osr?.meta]

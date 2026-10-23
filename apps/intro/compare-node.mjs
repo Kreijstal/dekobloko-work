@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // One uncapped, offscreen pass per fresh process; no warmup or replay.
 import fs from 'node:fs';
+import {canonicalExecutionCounts} from '../loading/browser.mjs';
 import os from 'node:os';
 import path from 'node:path';
 import assert from 'node:assert/strict';
@@ -132,7 +133,7 @@ async function runNode() {
         key:state.key,status:state.status,runs:state.runs,exits:state.exits,
         fuelExits:state.fuelExits,fullyCompiled:state.meta?.fullyCompiled,
         normalFlowFullyCompiled:state.meta?.normalFlowFullyCompiled,
-        directEntries:state.meta?.canonicalEntries?.value||0,
+        ...canonicalExecutionCounts(state.meta),
         deferredFrames:state.meta?.directFrameContext?.createdFrames||0,
         bulkClearCalls:state.meta?.box?.intZeroClearCalls||0,
         heapVersionBytes:state.meta?.parameterHeapSpecializationBytes||0,

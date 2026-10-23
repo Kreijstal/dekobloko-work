@@ -4,7 +4,7 @@ import fs from 'node:fs';import os from 'node:os';import path from 'node:path';
 import assert from 'node:assert/strict';import crypto from 'node:crypto';
 import {execFileSync} from 'node:child_process';import {fileURLToPath,pathToFileURL} from 'node:url';
 import {loadArchivedJvm} from './archive-jvm.mjs';
-import {freshLoadingBytes} from './browser.mjs';
+import {freshLoadingBytes,canonicalExecutionCounts} from './browser.mjs';
 import {selectBenchmarkRevision} from './benchmark-baseline.mjs';
 import {projectMeasurementFixture,readMeasurementFixture,fixtureStdinFlag,parseMeasurementResult} from './measurement-fixture.mjs';
 const here=path.dirname(fileURLToPath(import.meta.url)),script=fileURLToPath(import.meta.url);
@@ -257,7 +257,7 @@ async function one(engine,revision,inspection=false){
    if(view)put(view.getInt32(k*4,little));
    else{scratch.setFloat32(0,row[k]);put(scratch.getInt32(0));}
   }}assert.equal(at,output.length);
-  methods=j.jit.wasmJit.compiled.filter(s=>s.key.startsWith('MdctTransformKernel.')).map(s=>({key:s.key,runs:s.runs,directEntries:s.meta?.canonicalEntries?.value||0,exits:s.exits,fuelExits:s.fuelExits,
+  methods=j.jit.wasmJit.compiled.filter(s=>s.key.startsWith('MdctTransformKernel.')).map(s=>({key:s.key,runs:s.runs,...canonicalExecutionCounts(s.meta),exits:s.exits,fuelExits:s.fuelExits,
    nativeExitCount:s.meta?.directFrameContext?.exitCount??null,directNativeExitCount:s.meta?.directFrameContext?.directExitCount??null,nativeThrowCount:s.meta?.directFrameContext?.throwCount??null,
    lastNativeExitStatus:s.meta?.directFrameContext?.lastExitStatus??null,calleeNativeExitCount:s.callee?.meta?.directFrameContext?.exitCount??null,
    full:!!s.meta?.fullyCompiled,structured:!!s.meta?.structured,demotes:[...(s.meta?.demoteReasons||[])],

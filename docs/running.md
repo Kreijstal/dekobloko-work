@@ -11916,3 +11916,97 @@ The f2 full-loading comparator remains 1873.955270 ms versus saved TeaVM
 359.739597 ms (**5.2092x**, not the requested 1.10x). Neither full loading nor
 browser/phone presentation, heap or stability gates are remeasured by this
 component work. Java-tools master, deployment and selected artifacts are unchanged.
+
+### Deferred native-object identities: original-workload screen (2026-10-23)
+
+Native inspection of the captured reader identifies unconditional per-call
+invocation-ID allocation before guest work. A normal direct return creates no
+JavaScript frame, yet updates the counter, checks wrap and carries the ID for
+possible spills. TeaVM's reader has no corresponding VM protocol. Test whether
+moving this work to its actual use matters, rather than inferring cost from the
+static instruction-byte difference.
+
+Prototype `8e028ca571e887bdbd16ac3eda3ebd0704dc641a` applies only to the existing
+compiler-proven callback-free native-object body. Its compact native export
+starts with a nonzero marker; each terminal spill allocates a unique real ID
+before writing frame locals or operand stacks. Such a body cannot reenter guest
+code or resume internally after a spill. Ordinary JS entry still uses identity
+zero; legacy canonical wrappers and all other bodies retain eager IDs. Throw-only
+exits keep their existing exact throwable/owner protocol without inventing a
+frame. No new option, guard, epoch or game-specific name is introduced.
+
+The focused command passes **363/363** assertions, including two outstanding
+suspended frames with independent IDs, receivers, arguments and exact PCs;
+counter wrap skipping zero; entry refusal; native Java bounds exceptions;
+legacy/raw entry behavior; and compiler graph cleanup. A normal compact return
+updates no ID counter and retains no deferred frame.
+
+```bash
+# java-tools: 363/363.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectBody.test.js test/canonicalDirectFrames.test.js test/wasmCompilerRetention.test.js
+# Deko: changed source, compile-only. Saved TeaVM native rows are reused.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 8e028ca571e887bdbd16ac3eda3ebd0704dc641a reader
+# Changed JVM only, three fresh sequential processes per component.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs run-jvm 8e028ca571e887bdbd16ac3eda3ebd0704dc641a buffered-ready-helper
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs run-jvm 8e028ca571e887bdbd16ac3eda3ebd0704dc641a bzip-ready-owner
+```
+
+The reader's optimized native body grows from saved 2744 to **2836 bytes**:
+allocation moves into several cold exits instead of occurring once at entry.
+The hot entry no longer updates the ID counter. Its caller remains 4208 bytes.
+This is another reason static code size alone is not a runtime-cost measure.
+
+| Changed-source component | Samples ms | Median ms | Saved historical median ms |
+| --- | --- | ---: | ---: |
+| Original-request reader replay | 4.370747, 4.024895, 3.988450 | 4.024895 | 4.367042 (`e87d2e59`) |
+| Original Bzip archive decoder | 46.310186, 56.836520, 42.602584 | 46.310186 | 45.214595 (`ce2c670e`) |
+
+The reader median is **7.83% lower**, while the original archive median is
+**2.42% higher**. These saved comparators have their own historical cohorts;
+neither is a new f2 measurement. All reader checksum/state checks and archive
+checksum `-1415522687` match, and every run has zero late Java compilations.
+The original `Bzip2Decoder.readBits` module has the positive native-body and
+lazy-ID metadata in all three archive observations; uninstrumented observations
+have no actual invocation count for the affected reader.
+
+Deko's shared `canonicalExecutionCounts` diagnostic now represents that
+information honestly: `directEntries` is **null** when IDs no longer count normal
+invocations, `canonicalIdCount` preserves the ID counter, and
+`nativeObjectBodyEntries` is available only from excluded import instrumentation.
+Loading, intro, microbenchmark and decoder diagnostics use the same helper.
+This reporting support remains useful for reproducing the archived experiment;
+it does not enable the withdrawn runtime change. Three synthetic assertions
+cover missing metadata, ordinary eager counts and lazy IDs with a separately
+instrumented entry count. Syntax checks pass for each affected command:
+
+```bash
+node --check apps/loading/browser.mjs
+node --check apps/loading/microbench.mjs
+node --check apps/loading/probe.mjs
+node --check apps/loading/mdct.mjs
+node --check apps/loading/diagnose-node.mjs
+node --check apps/loading/call-code.mjs
+node --check apps/intro/compare-node.mjs
+```
+
+Withdraw at `cf05d718c69a452f69caafef00d6515d0a54f136`: there is no demonstrated
+original-archive gain to justify a full-loading campaign. Source/tests remain in
+the experimental parent. No restored-source validation, unchanged baseline or
+oracle execution, timing or fingerprint runs. Evidence lives only in the
+existing `benchmark.json`, under `optimizationTrials.nativeObjectLazyActivation`.
+No generated Java, binaries, bundles, native text or WAT enter Git. The f2
+performance baseline, java-tools master and deployment remain unchanged.
+
+This rules out eager identity allocation as a sufficient original-workload fix.
+Before broadening callback-free proofs to imported Math calls, retain the earlier
+finding that host Math can be replaced: a method name is not a purity proof.
+The earlier native-Math epoch refinement already failed its original Vorbis and
+full-loading screens; do not repeat it. Another concrete compiler gap is memory
+alias knowledge across blocks/backedges: owned Java arrays cannot alias an
+object's primitive slab, while the emitted single-memory loads/stores conceal
+that fact from the engine. The withdrawn scalar trial only forwarded within a
+basic block. A future field-promotion proof must cover the whole invocation,
+write every heap update through, and retain exact fallback/suspension behavior;
+it must first beat an original component before another full-loading campaign.
+The overall 1.10x objective and browser/phone memory/FPS/stability gates remain
+unmet and unverified, respectively.
