@@ -13663,3 +13663,62 @@ alone does not establish those properties. Any prototype must first prove those
 cases and a small-case gain, then the original/full workload. Also keep the
 limited scale of this particular lookup cost distinct from the remainder of the
 original decoder; it cannot by itself establish the full-loading target.
+
+### Revoked private wrapper bindings, and excluded array regions
+
+Experimental JVM source `ef7a951eafd6b3670951e17be63cbcd3ef9c6ba4` keeps
+tracked Java wrappers behind a shared proxy. Its private binding flag is revoked
+before `.fields` definition/deletion/replacement. Ordinary valid lookups avoid
+allocating a property descriptor; legacy wrappers retain descriptor validation.
+The factory copies the input literal so an escaped raw target cannot bypass
+revocation. Binding certificates remain per wrapper, while shape certification
+is shared by wrappers of the same field container. Revalidating one container
+cannot revive another wrapper's invalid binding. GC storage layout and lifetime
+are unchanged. This is a JavaScript private certificate, not a new Wasm GC ABI.
+
+Focused validation passes **872/872 assertions**. New cases cover getters without
+early invocation, replacement/deletion/restoration, shared containers with
+independent binding revocation, shadow fields, sealed bindings, escaped factory
+inputs and foreign memory. Existing GC lifetime, native recovery, transport,
+constructor, monitor and exception checks also pass.
+
+```bash
+# java-tools
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectStorage.test.js test/slabFields.test.js test/nativeMixedStateBody.test.js test/nativeObjectBody.test.js test/nativeObjectFieldCodegen.test.js test/nativeObjectForwarding.test.js test/nativeReferenceArray.test.js test/objectSlabReclamation.test.js test/jitMonitorContention.test.js test/synchronizedMethodMonitor.test.js test/wasmExplicitMonitors.test.js test/preparedWasmConstructors.test.js test/classMirrorTransport.test.js
+# Deko, sequential changed-source measurements; no baseline rerun
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm ef7a951eafd6b3670951e17be63cbcd3ef9c6ba4 huffman-inline
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm ef7a951eafd6b3670951e17be63cbcd3ef9c6ba4
+```
+
+The unchanged small Java fixture takes **80.194931, 92.106681, 89.716144 ms**,
+median **89.716144 ms**, versus saved mixed-state 108.877969 ms. Its checksum
+remains `-1268584370`; this recovers most of the unsafe memo control's lookup
+benefit while retaining revocation. The original Vorbis sample takes
+**104.367220, 99.567803, 118.648798 ms**, median **104.367220 ms**. All 348249
+PCM bytes match the saved oracle and there are zero late compilations. This
+still overlaps earlier original cohorts: **no original/full-loading gain is
+established**, and the full comparator remains unchanged. No known baseline,
+TeaVM or HotSpot process is rerun and no full-loading cohort is justified yet.
+The canonical record is `optimizationTrials.trackedWrapperBindings`.
+
+The new `packet-flow` inspection builds SSA only: no Java instruction, guest
+compilation, main, initializer, asset load or timing. It finds 118 blocks and
+716 nodes: 24 blocks contain primitive-array operations; four Math sites include
+two in such blocks. Twenty static-array read sites refer to ten unique fields;
+eight integer read sites refer to two fields, with none in the same block as
+array accesses. These are syntactic coverage bounds, not execution attribution
+or a proof of admission. Existing regional array lowering admits only some
+blocks; the object-region proof separately requires closed helper calls and
+receivers and cannot complement an existing array region. A possible next proof
+is callback-free array regions independent of object/call presence, preserving
+ownership and exact-instruction refusal and revoking facts across outside edges.
+
+```bash
+node --check apps/loading/call-code.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs ef7a951eafd6b3670951e17be63cbcd3ef9c6ba4 packet-flow
+```
+
+The inspection succeeds with **zero guest ticks and compiled methods**. Its
+compact result joins the existing `nativeCallCode.observations` in the same
+canonical JSON. No extra JSON or generated artifact is created. The **1.1x full
+loading objective remains unfulfilled**; nothing is promoted or deployed.

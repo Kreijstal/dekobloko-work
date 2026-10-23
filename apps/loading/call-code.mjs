@@ -15,16 +15,55 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow'].includes(family));
 const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const directMusic=family==='music-reader',fullGraph=['packet','archive'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
-options.classpath=[path.join(fullGraph||directMusic?player:directory,'classes')];options.jit.compileWorker=false;
+const flowOnly=family==='packet-flow',directMusic=family==='music-reader',fullGraph=['packet','archive'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+options.classpath=[path.join(fullGraph||directMusic||flowOnly?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
-const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision);
+let buildSsa;
+const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{observeModule:({filename,exports})=>{
+ if(filename.endsWith('/src/analysis/opgraph/ssa.js'))buildSsa=exports.buildSsa;
+}});
 globalThis.window=globalThis;globalThis.document={};const j=new JVM(options);delete globalThis.document;
+if(flowOnly){
+ j.executeTick=()=>{throw Error('Flow inspection attempted guest execution');};
+ j.executeInstruction=()=>{throw Error('Flow inspection attempted a Java instruction');};
+ await j.preloadClasspathClasses();
+ const method=j.findMethod(j.classes.MusicDecoder,'decodePacket','(I)[F');
+ const code=method.attributes.find(a=>a.type==='code').code;
+ const fn=buildSsa({...code,method,className:'MusicDecoder'});assert.ok(!fn.rejected,fn.rejected);
+ const categories={},arrayFields=new Set(),intFields=new Set();
+ let nodes=0,arrayBlocks=0,arrayAndIntBlocks=0,arrayAndMathBlocks=0,staticArraySites=0,staticIntSites=0,mathSites=0;
+ for(const block of fn.blocks){
+  if(!fn.reachable.has(block.id))continue;
+  let arrays=false,integers=false,math=false;
+  for(const node of block.body){
+   nodes++;categories[node.op]=(categories[node.op]||0)+1;
+   if(/^[ilfdbcs]a(?:load|store)$/.test(node.op)||node.op==='arraylength')arrays=true;
+   if(node.op==='getstatic'){
+    const [,owner,[name,descriptor]]=node.imm,key=owner+'.'+name+descriptor;
+    if(/^\[[BCSIJFD]$/.test(descriptor)){arrayFields.add(key);staticArraySites++;}
+    if(descriptor==='I'){intFields.add(key);staticIntSites++;integers=true;}
+   }
+   if(node.op==='invokestatic'&&node.imm[1]==='java/lang/Math'){math=true;mathSites++;}
+  }
+  if(arrays){arrayBlocks++;if(integers)arrayAndIntBlocks++;if(math)arrayAndMathBlocks++;}
+ }
+ assert.equal(j.jit.wasmJit.compiled.length,0,'Flow inspection compiled a guest method');
+ const result={sourceRevision:revision,family,analysisOnly:true,compiledGuestMethods:0,guestTicks:0,mainExecuted:false,
+  note:'Syntactic SSA coverage bounds; not a compiler admission, CPU attribution, timing or safety proof',
+  flow:{method:'MusicDecoder.decodePacket(I)[F',blocks:fn.blocks.length,nodes,arrayBlocks,arrayAndIntBlocks,arrayAndMathBlocks,
+   staticArraySites,uniqueStaticArrayFields:arrayFields.size,staticIntSites,uniqueStaticIntFields:intFields.size,mathSites,
+   otherInvocations:Object.fromEntries(Object.entries(categories).filter(([op])=>op.startsWith('invoke')))},
+  rows:[],measuredAt:new Date().toISOString()};
+ const current=JSON.parse(fs.readFileSync(reportPath));
+ (current.optimizationTrials.nativeCallCode||={observations:[]}).observations.push(result);
+ fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');
+ fs.writeSync(1,JSON.stringify(result,null,2)+'\n');process.exit(0);
+}
 const stop=new Error('Call-code inspection stops before guest code');let boundary=false,ticks=0;
 let assetCalls=0;
 if(fullGraph){
