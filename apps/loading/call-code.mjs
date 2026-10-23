@@ -15,17 +15,17 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','inlined-lifetimes'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
 const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes',directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
-options.classpath=[path.join(fullGraph||directMusic||originalFlow?player:directory,'classes')];options.jit.compileWorker=false;
+const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+options.classpath=[path.join(family==='mdct-frame-remat'?path.join(player,'mdct'):fullGraph||directMusic||originalFlow||family==='frame-remat'?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
 let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls;const proofCensus=[],translationFailures=[];
 const preloadModules=family==='ssa-liveness'?['src/analysis/frameLocalLiveness.js','src/jit/stackifyNumericValues.js']:
- family==='inlined-lifetimes'?['src/jit/wasmInline.js','src/jit/stackifyNumericValues.js']:[];
+ family==='inlined-lifetimes'||family.endsWith('frame-remat')?['src/jit/wasmInline.js','src/jit/stackifyNumericValues.js']:[];
 const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{preloadModules,observeModule:({filename,exports})=>{
  if(filename.endsWith('/src/analysis/opgraph/ssa.js'))buildSsa=exports.buildSsa;
  if(filename.endsWith('/src/decompiler/structurer.js'))buildCfg=exports.buildCfgFromCode;
@@ -117,6 +117,43 @@ if(flowOnly){
   assert.equal(w.compiled.length,0);
   const currentReceipt=JSON.parse(fs.readFileSync(reportPath));(currentReceipt.optimizationTrials.nativeCallCode||={observations:[]}).observations.push(result);
   fs.writeFileSync(reportPath,JSON.stringify(currentReceipt,null,2)+'\n');console.log(JSON.stringify(result,null,2));process.exit(0);
+ }
+ if(family.endsWith('frame-remat')){
+  const rows=[];
+  const allocation=(fn,stackified)=>{
+   const locals=new Map(fn.params.map((v,i)=>[v,i]));let next=fn.params.length;
+   const allocate=value=>{if(!locals.has(value))locals.set(value,next++);return locals.get(value);};
+   const reused=numericLocals.assignLocals(fn,stackified,locals,allocate);
+   return {locals:next-fn.params.length,reused};
+  };
+  const targets=family==='mdct-frame-remat'?[['MdctTransformKernel','transform',null]]:
+   [['MusicDecoder','decodePacket','(I)[F'],['VorbisCodebook','readVector','()[F'],
+   ['VorbisCodebook','readScalar','()I'],['VorbisResidue','decodeResidue','([FIZ)V'],['Bzip2Decoder','decodeBlocks','(LBzip2DecoderState;)V']];
+  for(const [owner,name,descriptor]of targets){
+   const method=descriptor?j.findMethod(j.classes[owner],name,descriptor):j.classes[owner].ast.classes[0].items.find(i=>i.type==='method'&&i.method.name===name).method,code=method.attributes.find(a=>a.type==='code').code;
+   const fn=buildSsa({...code,method,className:owner},{captureOperandStack:op=>/^[ilfdbcs]a(?:load|store)$/.test(op)||['aaload','arraylength','getfield','putfield','getstatic','checkcast'].includes(op)});
+   assert.ok(!fn.rejected,fn.rejected);
+   const initial=(numericLocals.prepareArithmetic||numericLocals.prepare)(fn),candidates=numericLocals.frameRematerializations(fn,initial),combined=new Set([...initial,...candidates]);
+   const dependencies=new Set(),visit=value=>{if(combined.has(value))for(const arg of value.args)visit(arg);else dependencies.add(value);};
+   for(const value of candidates)visit(value);
+   const strict=allocation(fn,initial),saved=[];
+   const filter=(object,key)=>{const values=object[key];if(!values)return;saved.push([object,key,values]);
+    object[key]=values instanceof Map?new Map([...values].filter(([,v])=>!candidates.has(v))):values.filter(v=>!candidates.has(v));};
+   let proposed;
+   try{
+    for(const b of fn.blocks){for(const key of ['slotDefsIn','slotDefsOut','entryStack','exitStack'])filter(b,key);
+     for(const n of [...b.body,...(b.term?[b.term]:[])])for(const key of ['slotState','stackUnder'])filter(n,key);}
+    const block=fn.blocks[0];saved.push([block,'entryStack',block.entryStack]);block.entryStack=[...(block.entryStack||[]),...dependencies];
+    proposed=allocation(fn,combined);
+   }finally{for(const [object,key,value]of saved.reverse())object[key]=value;}
+   const operations={};for(const v of candidates)operations[v.op]=(operations[v.op]||0)+1;
+   rows.push({key:owner+'.'+name+method.descriptor,values:fn.values.length,candidates:candidates.size,operations,protectedOperands:dependencies.size,strict,proposed,reduction:strict.locals-proposed.locals});
+  }
+  assert.equal(j.jit.wasmJit.compiled.length,0);
+  const result={sourceRevision:revision,family,analysisOnly:true,compiledGuestMethods:0,guestTicks:0,mainExecuted:false,
+   note:'New cold-frame arithmetic reconstruction bound. Captured leaves protected; no filtered graph executes, code emission, CPU profile, baseline fingerprint or control replay.',rows,measuredAt:new Date().toISOString()};
+  const current=JSON.parse(fs.readFileSync(reportPath));(current.optimizationTrials.nativeCallCode||={observations:[]}).observations.push(result);
+  fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(result,null,2));process.exit(0);
  }
  if(family==='ssa-liveness'){
   const rows=[];
@@ -330,32 +367,8 @@ for(const [ordinal,key]of targets.entries()){
 const savedTea=[...(receipt.optimizationTrials.nativeCallCode?.observations||[])].reverse()
  .find(o=>o.family===family&&o.engine===process.version&&JSON.stringify(o.flags)===JSON.stringify(flags))
  ?.rows.filter(row=>row.backend==='teavm');
-if(entryVariant==='closed')assert.equal(savedTea?.length,teaNames.length,'Reuse saved TeaVM native code; do not compile the known control again');
-let teaOutput=null;
-if(savedTea?.length===teaNames.length)rows.push(...savedTea);
-else{
- const teaDirectory=family==='packet'||directMusic?path.join(player,'vorbis'):directory;
- const teaWat=fs.readFileSync(path.join(teaDirectory,'current-teavm.wat'),'utf8');
- const teaBytes=fs.readFileSync(path.join(teaDirectory,'teavm',family==='packet'||directMusic?'vorbis.wasm':'micro.wasm'));
- teaOutput=path.join(directory,'current-teavm-native.txt');fs.writeFileSync(teaOutput,'');
- for(const name of teaNames){
-  const shape=codeShape(teaWat,name),code=nativeCode(teaBytes,shape.index);
-  if(family==='packet'){
-   assert.equal(shape.operations['array.get'],67,'Packet identity: array gets');
-   assert.equal(shape.operations['array.set'],40,'Packet identity: array stores');
-  }
-  if(directMusic){
-   assert.equal(shape.operations['array.get_s'],name==='$58'?1:2,'Original music reader byte accesses');
-   assert.equal(shape.operations['global.set'],3,'Original music reader cursor writes');
-   assert.equal(shape.operations.loop||0,name==='$58'?0:1,'Original music reader loop shape');
-  }
-  if(family==='archive'){
-   assert.equal(shape.operations['struct.set'],14,'Archive identity: field writes');
-   assert.equal(shape.operations['array.get_s'],25,'Archive identity: byte reads');
-  }
-  fs.appendFileSync(teaOutput,'\n'+name+'\n'+code);rows.push({backend:'teavm',...shape,...nativeSummary(code)});
- }
-}
+assert.equal(savedTea?.length,teaNames.length,'Reuse recorded TeaVM native code; this inspector never recompiles a known control');
+const teaOutput=null;rows.push(...savedTea);
 const current=JSON.parse(fs.readFileSync(reportPath)),trial=current.optimizationTrials.nativeCallCode||={observations:[]};
 const result={sourceRevision:revision,family,entryVariant,preparationMethod:directMusic?'direct reader compilation':'entry graph',compileOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,teaVmInstantiated:false,
  nonReturningArrayErrorsByMethod:j.jit.wasmJit.compiled.filter(s=>s.key.startsWith('Bzip2Decoder.')&&s.meta?.nonReturningArrayErrorSiteCount)

@@ -15199,3 +15199,94 @@ losing implementation or evidence: reconstruct the isolated candidate with
 `git archive experiment/teavm-paired-storage-isolated`, generate its ignored JRE
 index with the command above, and run the recorded focused tests. The one cache
 ledger and this journal retain the measurements and failures.
+
+### Cold-frame arithmetic reconstruction: safe proof, no transform gain
+
+The preceding goal turn made progress by producing tested pairing changes and
+rejecting their original-workload regressions. The next pass reads the existing
+WAT, without executing or recompiling a control. TeaVM folds traversal into its
+floor/residue functions: saved `$589` has 13 locals and four loops; `$590` has
+18 locals and twelve loops. Both call the saved bit-reader `$58`. The JVM paired
+vector export `$6` has 89 locals and one loop. These are different method
+boundaries, not a causal cost estimate. No baseline fingerprint is gathered.
+
+A new generic proof asks whether pure, total arithmetic can be reconstructed at
+cold frame spills from its already captured SSA operands. Unlike the prior
+original-liveness filtering bound, it changes how a value is represented, not
+which original Java locals are kept. The first analysis source is
+`8eb203acd3066c4ec7adbe4b640285a69b80377e`, based on the recorded 029… source.
+It compiles and executes **zero guest methods**. It admits only values defined
+before all uses/snapshots in the same straight-line block; entry/header values,
+phi sources, cross-block values, effects and heap reads remain local-backed.
+Its allocation bound protects every captured operand. It finds 17 fewer locals
+for packet, three for residue, seven for archive and zero for standalone
+scalar/vector methods. It is not execution/performance evidence.
+
+`572cfef2037e1a60cba9eea76f2d1a78fcae30d3` implements this proof in normal
+stackification, without a flag. Frame roots protect the captured leaves rather
+than replaying getters, calls or array loads. It bounds recursive expression
+emission and drops new recipes that would push an existing hot expression over
+its sixteen-level budget. **698/698 assertions** pass on the expanded working
+compiler, including numeric stackification, exact loop resumption, nested frames
+and graph cleanup. The isolated candidate archive passes **101/101** focused
+assertions. New cold-call cases preserve int, exact long and double results,
+resume real donated callee frames, and read each foreign getter twice in total
+rather than replaying the original read during reconstruction.
+
+```bash
+# JVM working tree: initial proof, then integration/resumption/retention.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/frameRematerialization.test.js
+# Initial proof: 10/10. Final expanded suite: 698/698.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/frameRematerialization.test.js test/wasmNumericStackification.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/wasmCompilerRetention.test.js
+# In the isolated 572… archive, after generating its ignored JRE index: 101/101.
+node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/frameRematerialization.test.js test/wasmNumericStackification.test.js
+# Deko: new static bound; no native module or Java execution.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 8eb203acd3066c4ec7adbe4b640285a69b80377e frame-remat
+```
+
+The new packet code inspection preserves complete coverage. Its shared core has
+1107 declared locals, **55108 native bytes / 536 stack bytes**, versus stored
+TeaVM **15428 native bytes / 312 stack bytes**. The last other-source packet row
+was 50468 bytes / 568 stack bytes at `94696a38…`; that is **not** a matched 029…
+control and cannot establish this pass's code-size effect. The compact wrapper
+is 476 bytes / 24 stack bytes and delegates to the core. All static native call
+counts include cold paths. This remains a sizable representation/protocol gap,
+not proof that declaring a local causes a runtime spill. The inspector now
+requires saved TeaVM native-code rows and has no fallback that silently
+recompiles a known control.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 572cfef2037e1a60cba9eea76f2d1a78fcae30d3 packet
+# Existing captured transform fixture; changed source only, no fixture rebuild.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs run-jvm 572cfef2037e1a60cba9eea76f2d1a78fcae30d3
+```
+
+The changed transform samples are **24.735617, 22.555036, 44.384059 ms**, median
+**24.735617 ms**. Every float word matches the saved reference, setup runs once,
+there is no transform warmup/replay or late compilation. Retain the 44.384059
+observation. The recorded available control at `6aa66451…` is
+22.634309, 22.068854, 26.807323 ms, median **22.634309 ms**; it is not replayed.
+This screen establishes **no useful gain**, so it earns no original/full cohort.
+
+`12a1213868072989553750b6b40dc1e1a4de04c0` also refuses recipes with multiple hot
+consumers, retaining one shared hot calculation. Its focused validation passes
+**102/102**. Before timing, inspect the actual transform SSA: both the earlier
+rule and the single-use rule admit the same **14 recipes**, reducing the static
+allocation bound from 239 to 227 locals. This restriction does not change those
+target recipes; **skip a redundant timing run**. Both SSA questions compile and
+execute zero guest methods, and gather no baseline native-code fingerprint.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 12a1213868072989553750b6b40dc1e1a4de04c0 mdct-frame-remat
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 572cfef2037e1a60cba9eea76f2d1a78fcae30d3 mdct-frame-remat
+```
+
+The implementation/tests remain archived in `experiment/teavm-frame-rematerialization`.
+The failed emission change is withdrawn from the current working compiler, with
+**no restoration validation or timing**. Actual master, selected artifacts,
+original/full comparators and deployment remain unchanged. There is still no
+1.1x full-loading, browser, phone, FPS or total-heap result. The next structural
+question is sharing array metadata for proven stable singleton sources within
+an existing guarded region. Mutable entry phis and old captured references must
+remain independent; measure admission/opportunity before changing emission.
