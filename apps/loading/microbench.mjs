@@ -887,8 +887,22 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
   if(name.startsWith('tail-'))result.tail={calls:module.exports.tailState(0),initializations:module.exports.tailState(1),
    initializationPhase:module.exports.tailState(2),loopFinished:module.exports.tailState(3),prepareCalls:module.exports.tailState(4)};
  }else{
-  assert.equal(engine,'jvm');
-  const {JVM}=await loadArchivedJvm(root,revision);
+  const storageControl=engine==='jvm-fixture-storage';
+  assert.ok(engine==='jvm'||storageControl,'Unknown JVM control');
+  if(storageControl)assert.equal(name,'huffman-helper','Storage ablation is restricted to the private tree fixture');
+  let replacementInstalled=false;
+  const {JVM}=await loadArchivedJvm(root,revision,storageControl?{observeModule:({filename,exports})=>{
+   if(!filename.endsWith('/src/core/nativeObjectStorage.js'))return;
+   // Valid-input diagnostic only: retain private store/field-container identity
+   // checks but omit the stronger shape/base authentication. Never a VM policy.
+   exports.validatedNativeObjectStorageOf=exports.nativeObjectStorageOf;
+   replacementInstalled=true;
+  }}:{});
+  if(storageControl){
+   assert.ok(replacementInstalled,'Storage ablation did not bind before compiler imports');
+   result.semanticControl={kind:'private-fixture-storage',preservesArbitraryJavaSemantics:false,
+    change:'Replace whole-shape validator with existing private storage lookup',replacementInstalled};
+  }
   const options=structuredClone(read().diagnosticOptions);
   options.classpath=[path.join(directory,'classes')];
   options.jit.preparationPolicy={entryMethods:['LoadingMicroKernel.main([Ljava/lang/String;)V']};
@@ -1020,6 +1034,13 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     .map(([name,count])=>({method:s.key,tier,name,count})))).sort((a,b)=>b.count-a.count).slice(0,40)}:{})});
   assert.deepEqual(late,[],'Java compilation occurred during execution');
   assert.equal(result.compilation.postMainSyncCompileCount,0);
+  if(storageControl){
+   const tree=result.executionMethods.find(m=>m.key==='MicroHuffmanBook.readScalar()I');
+   assert.equal(tree?.directEntries,count,'Ablation lost the per-symbol native boundary');
+   assert.equal(tree.nativeClosedCallSiteCount,1,'Ablation lost the closed static-reader edge');
+   assert.equal(tree.nativeObjectBodyFieldSites,3,'Ablation lost the receiver-field proof');
+   assert.equal(tree.nativeExitCount,0,'Ablation left native execution');
+  }
   if(['byte-field-call','boolean-field-call'].includes(name)){
    const prefix='LoadingMicroKernel.'+(name==='byte-field-call'?'byte':'boolean')+'FieldStep(';
    const step=result.executionMethods.find(method=>method.key.startsWith(prefix));
@@ -1094,11 +1115,12 @@ function ensureReference() {
  return count;
 }
 
-function diagnose(revision,name) {
+function diagnose(revision,name,engine='jvm') {
+ assert.ok(['jvm','jvm-fixture-storage'].includes(engine),'Unknown diagnostic JVM control');
  revision=selectBenchmarkRevision(revision);
  assert.match(revision||'',/^[0-9a-f]{40}$/);
  ensureReference();
- const output=execFileSync(process.execPath,[...nodeArgs,script,'one','jvm',name,revision,fixtureStdinFlag],{
+ const output=execFileSync(process.execPath,[...nodeArgs,script,'one',engine,name,revision,fixtureStdinFlag],{
   input:JSON.stringify(projectMeasurementFixture(read())),encoding:'utf8',maxBuffer:16*1024*1024,env:{...process.env,JVM_WASM_IMPORT_STATS:'1'}});
  const result=parseMeasurementResult(output,'MICRO_RESULT ');
  result.measuredAt=new Date().toISOString();
@@ -1111,6 +1133,7 @@ if(command==='build')build();
 else if(command==='one')await one(...args);
 else if(command==='run')run(args[0],args.slice(1));
 else if(command==='run-jvm')run(args[0],args.slice(1),['jvm']);
+else if(command==='storage-control')run(args[0],['huffman-helper'],['jvm-fixture-storage']);
 else if(command==='float-arrays'){
  const engines=(args[1]||'').split(',');
  for(const engine of engines)assert.ok(floatArrayKinds.includes(engine),'Select a float-array control');
@@ -1127,4 +1150,4 @@ else if(command==='calls'){
  run(args[0],['buffered-ready-helper'],engines.length?engines:[...bufferedCallKinds,'teavm']);
 }
 else if(command==='inspect')await one('jvm',args[1],selectBenchmarkRevision(args[0]),'code',args[2]);
-else throw Error('Usage: microbench.mjs build | run [baseline|EXACT_REVISION] [CASE ...] | run-jvm EXACT_REVISION [CASE ...] | float-arrays EXACT_REVISION ENGINE[,ENGINE...] CASE ... | calls baseline|EXACT_REVISION [CALL_KIND ...] | linear baseline|EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | diagnose baseline|EXACT_REVISION CASE | inspect baseline|EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');
+else throw Error('Usage: microbench.mjs build | run [baseline|EXACT_REVISION] [CASE ...] | run-jvm EXACT_REVISION [CASE ...] | float-arrays EXACT_REVISION ENGINE[,ENGINE...] CASE ... | calls baseline|EXACT_REVISION [CALL_KIND ...] | linear baseline|EXACT_REVISION '+[...linearKinds].join('|')+' CASE ... | storage-control EXACT_REVISION | diagnose baseline|EXACT_REVISION CASE [jvm|jvm-fixture-storage] | inspect baseline|EXACT_REVISION CASE [METHOD_PREFIX] | one ENGINE CASE EXACT_REVISION');

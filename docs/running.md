@@ -13319,3 +13319,143 @@ are created. Retained immutable observations supply exact source/fixture and
 harness provenance. Further work must explain the generated code and per-call
 bookkeeping in a small traversal case before another whole-game attempt;
 repeating CPU attribution or rerunning the known comparator is not the next step.
+
+### Tracked native field shape after a reduced traversal failure
+
+The preceding turn is progress: it implements and validates a concrete generic
+proof, records a repeated regression, and withdraws that composition. This pass
+keeps the 1.1x objective and the saved comparator intact. No baseline, TeaVM,
+HotSpot or restored-source timing/correctness/identity replay is performed.
+The earlier broad cold-static inlining experiments (`cdc85b1`, `e68ecec`) already
+failed to establish a gain, so that proposal is not repeated.
+
+Stored original execution metadata shows why the standalone scalar reader is
+not the whole problem: `readVector` has **134216 direct entries**, one recovered
+loop activation and one atomic static leaf; standalone `readScalar` has only
+**17041 entries**. The local TeaVM WAT contains no separately defined scalar
+traversal with the corresponding reference-to-int signature and bit-reader
+state: scalar traversal is composed into larger methods. This is a source-shape
+finding, not an instruction-count attribution or proof that more inlining alone
+would improve the full workload.
+
+Before changing the runtime again, the rejected source `daaec7e` is tested in
+`huffman-helper`, the existing smaller receiver-tree/bit-reader fixture. The
+excluded diagnostic verifies **1000000 scalar native entries, 8000000 bit-reader
+entries**, three native object field sites, one actual closed call site and
+zero native exits. All reads consume the original valid stream once. The three
+fresh timings are **418.953774, 471.144840, 373.454741 ms**, median
+**418.953774 ms**. Checksum is `-1268584370`, with no guest compilation.
+
+A deliberately non-production control replaces only the strong whole-shape
+validator with the existing private-store/field-container lookup. The archived
+JVM source and generated Java code remain the same. The archive loader's
+module-observer hook substitutes that one export before compiler imports bind;
+no per-query wrapper or counter is inserted into timed execution. The harness
+restricts it to this private valid-input tree fixture, labels it
+`jvm-fixture-storage`, asserts the actual native proof/entry count, and records
+that it **does not preserve arbitrary Java/host-mutation semantics**. It can
+never be selected as a VM runtime option or a default engine.
+
+That control takes **161.757, 189.517, 171.110 ms** (rounded console values;
+full precision remains in the canonical observations). Median is approximately
+**171 ms**. This isolates a substantial cost of the stronger authentication in
+this small case. It does not prove that the same helper explains the entire
+original decoder regression, and historical fixture controls are not rerun.
+
+```bash
+# Deko; each timing command launches only its named changed/control engine.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose daaec7e36b9e1daadb357ae8ba6be8a337fa41d3 huffman-helper
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm daaec7e36b9e1daadb357ae8ba6be8a337fa41d3 huffman-helper
+node --check apps/loading/microbench.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs storage-control daaec7e36b9e1daadb357ae8ba6be8a337fa41d3
+```
+
+At `fdabfb06c1c183121b21b5aa1ccb5186a7ac6a6b`, canonical native field containers
+are created around a non-escaping private target. Three shared proxy traps
+revoke their private certificate **before** define-property, deletion or
+prototype changes. Ordinary inherited Java field setters update the original
+heap/GC storage and retain the certificate; ordinary base/extra-property
+assignment reaches the define-property trap automatically. There is no get/set
+trap on those Java field accessors, no global callback epoch, and no option or
+application identity.
+
+The native-entry helper retains the existing wrapper-field identity/memory
+check. A valid tracked shape then returns its private GC store without an
+own-key scan, prototype/descriptor walk or GC-base query. After revocation it
+uses the established full validator, without running host getters, and only
+recertifies a tracked container whose canonical shape was restored. Untracked
+manually registered containers still require full validation. The raw target
+never leaves the factory; existing aliases see the proxy and cannot mutate its
+structure behind the certificate. GC records, native references and Java wrapper
+identities remain shared rather than copied.
+
+Nine focused files pass **816/816 assertions**, including structural mutation
+through assignment/symbols/descriptors, shadow getters, base/prototype changes,
+restoration, failed structural edits on nonextensible containers, ordinary
+setters, native/JS cycles, precise closed-call continuations, worker transport,
+constructor behavior and existing slab-field operations. New assertions verify
+that unchanged shapes do not perform exhaustive own-key scans.
+
+```bash
+# java-tools; changed representation and the composed native execution paths.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectStorage.test.js test/slabFields.test.js test/nativeStaticStateBody.test.js test/closedNativeCalls.test.js test/nativeObjectBody.test.js test/nativeObjectFieldCodegen.test.js test/nativeObjectForwarding.test.js test/classMirrorTransport.test.js test/preparedWasmConstructors.test.js
+# Deko; excluded coverage diagnostic, then three fresh changed-source timings.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose fdabfb06c1c183121b21b5aa1ccb5186a7ac6a6b huffman-helper
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm fdabfb06c1c183121b21b5aa1ccb5186a7ac6a6b huffman-helper
+```
+
+The checked implementation takes **159.898, 170.174, 172.506 ms** (rounded;
+full precision recorded), median approximately **170 ms**. It matches the cheap
+valid-input control's performance while retaining revocation/fallback semantics.
+This is a narrow gain against the rejected composition, not a claim of whole-
+game improvement or TeaVM parity. The actual original-sample cohort is the next
+gate, before any full-loading or deployment promotion.
+
+The original-sample cohort at `fdabfb06` finishes at **104.021143, 119.300448,
+101.521596 ms**, median **104.021143 ms**. All 348249 PCM bytes match and all
+runs have zero guest compilation. It recovers from the rejected composition's
+334.191361 ms median, but does **not** establish an improvement over the saved
+99.443952 ms cohort preceding that composition. No full-loading campaign,
+comparator advance, production publication or browser/phone claim follows.
+The selected full comparator is still `97aa42e`, 1929.057624 ms, about 5.36x
+saved TeaVM rather than the required 1.1x.
+
+```bash
+# Deko; only the changed source executes, reusing the recorded PCM reference.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm fdabfb06c1c183121b21b5aa1ccb5186a7ac6a6b
+```
+
+A follow-up fallback-only test checks the changed allocation path with native
+GC storage unavailable. It passes **55/55 assertions** in `slabFields.test.js`,
+including the new primitive, wide, reference initialization and writable-field
+cases. Source `137a4b7ad037327a2e753de82adb26674bf2b2ec` retains that test on top of
+the measured runtime without changing runtime code. No timing/identity replay
+is performed for this test-only follow-up.
+
+```bash
+# java-tools; validate the new older-engine representation fallback.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/slabFields.test.js
+```
+
+The small-case exact medians are **418.953774 ms** for rejected `daaec7e`,
+**171.109946 ms** for its fixture-only storage control, and **170.173740 ms** for
+the checked tracked-shape implementation: approximately **59.4% less** than the
+rejected small-case candidate. It is an enabling proof with a measured narrow
+gain, not demonstrated whole-loading progress. The original-sample limitation
+and fixture/control provenance are preserved in the single existing
+`benchmark.json`, under `optimizationTrials.trackedNativeFieldShape`. No generated
+Java, Wasm, binary, report copies or screenshots enter Git.
+
+The next small reduction should inspect the **eight million** checked static
+reader entries inside this same tree case. The new object certificate moves
+shape checks off that repeated path, but each reader still checks its own static
+cells, initialization and array ownership on every invocation. A caller with a
+proved callback-free region could potentially acquire those exact capabilities
+once at its first original invoke, then use a dedicated callee entry that keeps
+immediate scalar stores while reusing that proof. This is not authorized merely
+by ordinary canonical eligibility: it needs an explicit dependency contract,
+exact replacement matching, original-invoke cold/refusal continuations, and
+revocation whenever execution leaves the closed region or resumes. Existing
+callee guards must remain for general entries. Test that hypothesis in the
+small case before spending another original/full-loading cohort; do not repeat
+broad cold-static inlining, global callback epochs or baseline attribution.
