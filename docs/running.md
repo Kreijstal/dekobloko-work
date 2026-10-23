@@ -12545,3 +12545,155 @@ inline activation. The existing call-exit machinery demonstrates the required
 shape but does not make it automatically safe for other operations. Do not
 substitute entry-only purity assumptions, replay an already completed store,
 repeat the failed callback-epoch trials or launch another CPU-attribution pass.
+
+### Precise instruction refusal for native object loops
+
+Candidate `9b2be24d3aa697b5dd3fcd8b7ebadb64b13f42e3` implements the operand-prefix
+prerequisite identified above. Shared SSA accepts an internal predicate selecting
+additional throwing instructions whose operand prefix must survive a retry.
+Existing calls and monitors retain their snapshots automatically. Ordinary SSA
+consumers do not acquire extra snapshots. Trivial-phi pruning rewrites the new
+snapshots, and existing local allocation/stackification protects their values.
+This is an internal analysis interface, not an environment or user flag.
+
+The structured compiler's new `emitInstructionExit` uses the existing exact
+retry/frame-ownership protocol: spill locals reaching this instruction, restore
+its operand prefix and operands, and return its original item index. It marks
+the operation deoptable so callers cannot assume a never-exiting raw link.
+Missing/unkinded snapshots and unrecoverable inline positions refuse compilation.
+The established inline-activation machinery is reused by the emitter, but the
+native-body admission in this pass still excludes inlined bodies; it does not
+claim new inline selection or callback-safe metadata lifetimes.
+
+The existing callback-free native object-loop proof now checks array ownership
+at the actual load/store/length instruction. It previously checked before all
+effects in the containing basic block and could only resume that block. The
+single native body, entry receiver guard, bounds checks, class-readiness behavior
+and supported Java fallback remain. No callee-purity proof is broadened. Cheap
+syntactic filtering requests the extra array snapshots only for plausible
+callback-free object loops; the full existing semantic proof still admits or
+rejects the body. The graph, discovery set and snapshots release with the
+compiler. Metadata exposes only `instructionExitSiteCount`.
+
+The first run passes semantic continuations but has three failed assertions
+because the fixture assumes zero-operand instructions have `.op`; they are
+strings. Using the existing `getOp` accessor fixes those assertions, without
+changing the compiler. Subsequent focused SSA/object coverage passes
+**207/207**. The wider seven-file command passes **920/920**, no skips; adding
+one graph-cleanup assertion then passes the final object suite **136/136**:
+
+```bash
+# java-tools; changed source, not a restored baseline.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/ssa.test.js test/nativeObjectBody.test.js test/canonicalDirectFrames.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/wasmJsExceptionTags.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectBody.test.js
+```
+
+New tests distinguish an old stack value from an already-incremented local,
+preserve category-2 field/store operands, resolve snapshot phis, and assert the
+actual resumed `baload`/`bastore` instruction. A refused array load preserves a
+wide arithmetic prefix and a pending destination reference/index. A refused
+store preserves its already-loaded value even after the source is changed
+during handoff. All prior field writes/index increments occur once. Existing
+null/bounds handlers, custom getters, foreign storage, changed fields after fuel
+suspension, native callers and collection checks continue to pass.
+
+Compile-only inspection of the changed original `Bzip2Decoder.readBits` records
+16 native field sites and **one precise exit site**. Its native compact body is
+**3076 bytes**, compared with the earlier saved 2748-byte reader and saved
+TeaVM's 552 bytes. More precise recovery adds cold state; it is not a code-size
+win. This inspection executes zero guest ticks and reuses the TeaVM native row.
+
+```bash
+# Deko; changed JVM only, CPU2, 1 GiB, eager optimizing Wasm, sequential runs.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 9b2be24d3aa697b5dd3fcd8b7ebadb64b13f42e3 original-reader
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs run-jvm 9b2be24d3aa697b5dd3fcd8b7ebadb64b13f42e3 bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/vorbis.mjs run-jvm 9b2be24d3aa697b5dd3fcd8b7ebadb64b13f42e3
+node --check apps/loading/call-code.mjs
+git diff --check
+```
+
+| Initial changed screen | Samples ms | Median ms | Saved historical median ms |
+| --- | --- | ---: | ---: |
+| Original archive | 40.507719, 46.876116, 39.994840 | 40.507719 | 45.214595 |
+| Original music | 92.147930, 108.406843, 103.851089 | 103.851089 | 96.087914 |
+
+Checksums/PCM match and all late-compilation lists are empty. The archive
+actually executes **490954** native original reader entries in every sample;
+the reduction's reader is prepared but never entered. Music's universal method
+records contain **zero eligible native object bodies**. Its elapsed variation
+therefore cannot establish a cost or benefit from executing the new refusal
+path. The preliminary syntactic filter can nevertheless retain snapshots when
+the semantic native-body proof later rejects a method, changing numeric local
+lifetimes unnecessarily. No full-loading claim follows from this cohort.
+
+Refinement `97aa42eb432bf494686c12c85d445cc4751241aa` runs the **same semantic
+object-body proof** before numeric local allocation, using side-effect-free
+field-layout discovery without imports/local allocation. Rejected candidates
+discard their speculative array snapshots before stackification or slot reuse.
+Final emission still rechecks the existing demotion/region prerequisites and
+actual discovered field operations. Discovery and the proof retain the existing
+256-node bound. The volatile-loop fixture now asserts zero retained snapshots;
+the accepted reader retains one. The same seven-file command passes
+**923/923 assertions**, no skips, after this refinement.
+
+Generic metadata now also reports `nativeOperandSnapshotCount`. Deko includes
+both scalar counts in future native/ordinary observations; missing older fields
+remain `null`. The compile-only Vorbis census reports prepared methods with
+positive snapshot/exit counts and rejects guest ticks. This determines whether
+a changed execution path exists before another component timing run, without
+checking an unchanged module against itself. No baseline or restored-source
+tests, timing, fingerprints or TeaVM execution run in this pass.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/vorbis.mjs regions 97aa42eb432bf494686c12c85d445cc4751241aa
+```
+
+The preparation census completes with zero guest ticks/assets. Its only positive
+snapshot/exit method is `Bzip2Decoder.readBits`, not a music-decoder body. This
+census retains its existing diagnostic prepared-complete/loop-leaf upgrades;
+it describes preparation eligibility, not execution coverage or a normal-profile
+performance result. No second music timing cohort is run for the refinement.
+Changed archive samples are **40.807995, 41.699230, 40.140670 ms**, median
+**40.807995 ms**; checksum matches, no late compilation. Exact observations and
+the following full cohort remain in the single canonical report.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs run-jvm 97aa42eb432bf494686c12c85d445cc4751241aa bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision 97aa42eb432bf494686c12c85d445cc4751241aa --options diagnostic
+```
+
+| Full-loading sample | Music ms | Graphics ms | Combined ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1858.845839 | 377.780430 | 2236.626269 |
+| 2 | 1484.314801 | 401.321470 | 1885.636271 |
+| 3 | 1453.215457 | 475.842167 | 1929.057624 |
+
+All checksums match **18:218292:2368412830:205:7597510:3045679678**, and all
+three runs compile zero Java after main. Each actually executes **3605524**
+native original reader entries, one retained snapshot/precise-exit site, and
+zero native exits/throws. It is the only method with positive snapshot/exit
+coverage in this full cohort. The native path is not unused or falling back.
+The candidate-only comparison command completes successfully; it deliberately
+does not assert parity against an unexecuted TeaVM control.
+
+Full median **1929.057624 ms** is 8.98% below the previous recorded
+**2119.374386 ms**, but ranges overlap substantially. This is **not proof of a
+causal 9% speedup**. It remains **5.3624x** historical TeaVM **359.739597 ms**,
+far from 1.10x. Retain the tested generic continuation capability and advance
+the **experimental rolling comparator** to `97aa42e`, with this full cohort as
+its own source-specific observations. Preserve `4206679` and its observations
+as the previous comparator. This is not a production publication or browser,
+phone, heap, FPS, menu-startup or stability acceptance claim. Master and deployed
+artifacts remain unchanged; no known baseline/restoration execution follows.
+
+The next structural work must use this exact continuation mechanism to refuse
+before untrusted field/array/cast fallbacks and propagate callee refusal. A
+method being mostly native or a callee looking pure is insufficient. Receiver
+and array ownership facts must be killed when their SSA values are redefined;
+captured array headers must follow the array value that was actually loaded,
+not a later receiver or field. Supporting first-use field guards and restoring
+those facts on a native loop resume is a concrete next step beyond this
+single-receiver, callback-free leaf proof. Wider callee/allocator/class-init
+contracts, foreign boolean arrays and body replacement must be handled before
+claiming a closed native execution domain. Do not repeat opaque-copy, callback
+epoch, whole-field-promotion or unchanged-baseline campaigns.

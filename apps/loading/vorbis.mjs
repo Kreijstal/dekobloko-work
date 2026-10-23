@@ -251,16 +251,22 @@ async function regions(revision){
  options.jit.preparationPolicy={entryMethods:['LoadingKernelProbe.main([Ljava/lang/String;)V']};options.jit.compileWorker=false;
  options.prepareWasmPreparedUpgradesOnly=false;options.jit.preparedCompleteWasm=true;options.jit.preparedLoopLeafWasm=true;
  globalThis.window=globalThis;globalThis.document={};const j=new JVM(options);delete globalThis.document;
- let assetCalls=0,stopped=false;const stop=new Error('Compile-only region census stopped before Java main');
+ let assetCalls=0,guestTicks=0,stopped=false;const stop=new Error('Compile-only region census stopped before Java main');
+ j.executeTick=()=>{guestTicks++;throw Error('Compile-only region census attempted a guest tick');};
  j.jre.GeobloxLoading={applicationFallback:true,staticMethods:{'browserAsset(Ljava/lang/String;)[B':()=>{assetCalls++;throw Error('Region census must not decode');}}};
  j.jit.markMainStarted=()=>{stopped=true;throw stop;};
  let failure;try{await j.run('LoadingKernelProbe');}catch(error){failure=error;}
  assert.ok(stopped,'Preparation did not reach the controlled stop');assert.equal(failure,stop);
- assert.equal(assetCalls,0);assert.ok(censuses.length,'No target compiler graph captured');
+ assert.equal(assetCalls,0);assert.equal(guestTicks,0);assert.ok(censuses.length,'No target compiler graph captured');
+ const instructionSnapshotsSupported=j.jit.wasmJit.compiled.some(s=>s.meta?.nativeOperandSnapshotCount!==undefined);
+ const preparedObjectExits=j.jit.wasmJit.compiled.filter(s=>s.meta?.nativeOperandSnapshotCount||s.meta?.instructionExitSiteCount)
+  .map(s=>({key:s.key,operandSnapshots:s.meta.nativeOperandSnapshotCount??null,instructionExits:s.meta.instructionExitSiteCount??null}));
  const receipt=read(),trial=(receipt.optimizationTrials.nativeStaticArrayBody||={});
- (trial.regionCensuses||=[]).push({revision,censuses,mainExecuted:false,assetCalls,excludedFromTiming:true,measuredAt:new Date().toISOString()});
+ (trial.regionCensuses||=[]).push({revision,censuses,mainExecuted:false,assetCalls,guestTicks,
+  instructionSnapshotsSupported,preparedObjectExits,excludedFromTiming:true,measuredAt:new Date().toISOString()});
  fs.writeFileSync(receiptPath,JSON.stringify(receipt,null,2)+'\n');
- console.log(JSON.stringify({revision,mainExecuted:false,censuses:censuses.map(c=>({regions:c.regions,repeatedCastProofSites:c.repeatedCastProofSites,wholeMethodSites:c.wholeMethodSites,originalIndices:c.originalIndices,liveExceptionRanges:c.liveExceptionRanges}))},null,2));
+ console.log(JSON.stringify({revision,mainExecuted:false,guestTicks,instructionSnapshotsSupported,preparedObjectExits,
+  censuses:censuses.map(c=>({regions:c.regions,repeatedCastProofSites:c.repeatedCastProofSites,wholeMethodSites:c.wholeMethodSites,originalIndices:c.originalIndices,liveExceptionRanges:c.liveExceptionRanges}))},null,2));
 }
 
 const [command,...args]=process.argv.slice(2);

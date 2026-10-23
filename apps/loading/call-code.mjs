@@ -91,6 +91,8 @@ for(const [ordinal,key]of targets.entries()){
   nativeLoopBoundsOperationCount:meta.nativeLoopBoundsOperationCount||0,
   directMathSinImport:meta.importObject?.env?.math_sin__D_D===Math.sin,
   nativeObjectBodyFieldSites:meta.nativeObjectBodyFieldSites||0,
+  instructionExitSiteCount:meta.instructionExitSiteCount??null,
+  nativeOperandSnapshotCount:meta.nativeOperandSnapshotCount??null,
   opaqueObjectStorageCacheCount:meta.opaqueObjectStorageCacheCount??null,
   canonicalLazyActivation:!!meta.canonicalLazyActivation,
   canonicalTargetImportCount:meta.canonicalTargetImportCount||0,
