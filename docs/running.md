@@ -12433,3 +12433,115 @@ callee refusals; merely tagging a callee pure or preserving an old cached base
 is insufficient. Read the saved local-callback and whole-Wasm failures before
 attempting that extension. No new CPU attribution or baseline campaign is
 needed to start this proof audit.
+
+### Typed execution storage without retained opaque copies
+
+The next experiment separates native execution metadata from legacy transport.
+Candidate `2abf8fd39ee262d4fb154e55f37179477f889021` keeps the existing typed GC
+store in native receiver caches, instead of retaining a second externref copy
+for every receiver. Old input-global entries retain their compatibility cache;
+legacy publication converts the typed store only at the actual call boundary.
+Native arguments already use the private typed ABI. Field/array validity checks,
+fallbacks, exception snapshots and the corrected reference-array field-cache
+seeding rule remain in place. This does **not** assume that object metadata is
+valid across arbitrary callbacks.
+
+The first version also changes the host storage lookup to return the nullable
+typed store directly. Refinement `c5b20d7b5e9ea465594bcdfa96ac4d50efce8c7a`
+keeps the established externref lookup result instead: a single temporary local
+captures it into typed execution state and is immediately cleared. This isolates
+boundary placement while retaining the same typed-only native caches. Neither
+version adds application identities or a user option.
+
+The final refinement passes **643/643 assertions** with no skips:
+
+```bash
+# java-tools; changed compiler, ABI, fallback, replacement and retention coverage.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectFieldCodegen.test.js test/nativeObjectForwarding.test.js test/nativeObjectBody.test.js test/nativeReferenceArray.test.js test/canonicalInstanceFrames.test.js test/wasmParameterArrayAbi.test.js test/preparedWasmConstructors.test.js test/wasmCompilerRetention.test.js
+```
+
+New forwarding fixtures exercise both real native-to-legacy publication and an
+old input-global entry. The former uses an instance primitive-array parameter to
+select the legacy calling convention while retaining a typed receiver in its
+caller. Missing/foreign metadata still takes the supported lookup/fallback path;
+publications are consumed and cleared. Existing body replacement, field/storage
+replacement, recursion, fuel and GC cases remain covered. The initial changed
+version passes 312 focused assertions and 636 in the broader suite; extending the
+forwarding fixture adds seven assertions, with its final focused run **67/67**.
+
+`call-code.mjs` now supports the full archive decoder as well as the packet
+decoder. It inspects both the compact export and actual core, stopping before
+main with zero guest ticks and asset requests. The corresponding saved TeaVM
+core is `$193`: a nullable state-reference argument, no result, 28 original
+bit-reader call sites, 25 signed byte-array reads and 14 field writes. Those
+structural observations identify the comparison; no TeaVM export executes.
+Later archive inspections reuse the saved TeaVM native row.
+
+| Changed source | Compact native bytes | Core native bytes | Native opaque receiver caches |
+| --- | ---: | ---: | ---: |
+| `2abf8fd` typed host result | 352 | 167356 | 0 |
+| `c5b20d7` cleared externref scratch | 352 | 222260 | 0 |
+| Saved TeaVM archive core | — | 32472 | — |
+
+The scratch refinement grows this native body; static size alone is not CPU
+attribution. There is no saved earlier JVM archive-core size, so these numbers
+must not be presented as a reduction from the selected comparator. The packet
+core comparison above remains a different function.
+
+```bash
+# Deko; exact changed revision supplied for each run; sequential CPU2 processes.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs REVISION archive
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/microbench.mjs run-jvm REVISION bzip-ready-owner
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/vorbis.mjs run-jvm REVISION
+```
+
+All three commands run once per changed revision in the table. Existing
+comparators and HotSpot/PCM oracles are reused; no unchanged JVM or TeaVM timing,
+baseline identity check or restoration validation runs. No profiling, builds or
+tests overlap timing. Complete changed observations remain in the same canonical
+report under the existing micro/Vorbis/native-code collections.
+
+| Changed source | Original archive samples ms | Median ms | Original music samples ms | Median ms |
+| --- | --- | ---: | --- | ---: |
+| `2abf8fd` | 39.652772, 45.424236, 43.509869 | 43.509869 | 100.659548, 106.711725, 96.298616 | 100.659548 |
+| `c5b20d7` | 42.061476, 46.824912, 45.653126 | 45.653126 | 92.404212, 97.187418, 94.518180 | 94.518180 |
+| Saved historical comparator | — | 45.214595 | — | 96.087914 |
+
+Archive comparisons reuse `ce2c670e`; music reuses f2. These are historical
+component screens, not fresh measurements of the corrected full comparator.
+All archive checksums are **−1415522687**; every music PCM byte matches the
+saved HotSpot result, with zero late Java compilation in all twelve samples.
+The first version's archive median is 3.8% lower but music is 4.8% higher. The
+refinement's music median is 1.6% lower but archive is 1.0% higher. Overlapping
+ranges and inconsistent component directions establish no general gain. They
+do not isolate a host-return ABI cost. **No full-loading campaign is run.**
+
+Withdraw both versions at `2753d02e8650f5cc41d4113de3ab7cd9a8448285`, preserving
+their source and tests in experimental history. Restore only the compiler and
+forwarding test from the selected source; do not rerun tests, timings or
+fingerprints on that restoration. `node --check apps/loading/call-code.mjs` and
+`git diff --check` pass for the changed Deko inspector/documentation. The single
+report summarizes this decision under `optimizationTrials.typedExecutionStorage`.
+JVM master, selected full comparator and deployment remain unchanged. The last
+accepted full median remains **2119.374386 ms**, **5.8914x** historical TeaVM;
+the 1.10x objective has not been reached.
+
+This closes the opaque-copy hypothesis. The previous native packet comparison
+already disproved the assumption that absent explicit WAT bounds comparisons
+mean TeaVM performs no checks. The remaining archive comparison exposes a much
+larger generated body, but neither code size nor static guard counts alone
+identify elapsed cost. A useful next structural question is whether a native
+execution domain can stop before any untrusted fallback, preserving exact Java
+continuations, rather than emitting checked host fallback paths throughout its
+normal body. It must propagate callee refusal and preserve metadata validity,
+class readiness and replacement. It is not implemented or measured here.
+
+A read-only source audit identifies a concrete prerequisite: SSA already saves
+locals at throwing operations, but retains the operand prefix (`stackUnder`)
+only for calls and monitor operations. A general field/array guard exit after
+earlier stores cannot safely resume at the block start. It needs that prefix
+at the original instruction, plus its operands, and the correct enclosing
+inline activation. The existing call-exit machinery demonstrates the required
+shape but does not make it automatically safe for other operations. Do not
+substitute entry-only purity assumptions, replay an already completed store,
+repeat the failed callback-epoch trials or launch another CPU-attribution pass.

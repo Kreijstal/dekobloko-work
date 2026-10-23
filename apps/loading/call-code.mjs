@@ -15,10 +15,10 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','packet'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','packet','archive'].includes(family));
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const fullGraph=family==='packet',mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+const fullGraph=['packet','archive'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
 options.classpath=[path.join(fullGraph?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
 const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision);
@@ -68,10 +68,11 @@ const rows=[],jvmOutput=path.join(directory,'current-jvm-native.txt');fs.writeFi
 const targets=family==='boolean'?['LoadingMicroKernel.booleanFieldCall(I)I','LoadingMicroKernel.booleanFieldStep(II)I']:
  family==='reader'?['LoadingMicroKernel.bufferedHelper(ILBzip2DecoderState;[I)I','MicroBufferedReader.readBits(ILBzip2DecoderState;)I']:
  family==='packet'?['MusicDecoder.decodePacket(I)[F']:
+ family==='archive'?['Bzip2Decoder.decodeBlocks(LBzip2DecoderState;)V']:
  ['Bzip2Decoder.readBits(ILBzip2DecoderState;)I'];
 // Packet identity is supported by its receiver+index -> float[] signature,
 // four sine call sites and the original transform's 67 gets / 40 stores.
-const teaNames=family==='boolean'?['$162','$55']:family==='reader'?['$51','$30']:family==='packet'?['$523']:['$7'];
+const teaNames=family==='boolean'?['$162','$55']:family==='reader'?['$51','$30']:family==='packet'?['$523']:family==='archive'?['$193']:['$7'];
 for(const [ordinal,key]of targets.entries()){
  const state=j.jit.wasmJit.compiled.find(s=>s.key===key);assert.equal(state?.status,'ready',key);
  const meta=state.meta;assert.ok(meta.bytes);assert.ok(meta.normalFlowFullyCompiled);
@@ -90,6 +91,7 @@ for(const [ordinal,key]of targets.entries()){
   nativeLoopBoundsOperationCount:meta.nativeLoopBoundsOperationCount||0,
   directMathSinImport:meta.importObject?.env?.math_sin__D_D===Math.sin,
   nativeObjectBodyFieldSites:meta.nativeObjectBodyFieldSites||0,
+  opaqueObjectStorageCacheCount:meta.opaqueObjectStorageCacheCount??null,
   canonicalLazyActivation:!!meta.canonicalLazyActivation,
   canonicalTargetImportCount:meta.canonicalTargetImportCount||0,
   nativeObjectPromotedFieldCount:meta.nativeObjectPromotedFieldCount||0,
@@ -111,15 +113,19 @@ const savedTea=[...(receipt.optimizationTrials.nativeCallCode?.observations||[])
 let teaOutput=null;
 if(savedTea?.length===teaNames.length)rows.push(...savedTea);
 else{
- const teaDirectory=fullGraph?path.join(player,'vorbis'):directory;
+ const teaDirectory=family==='packet'?path.join(player,'vorbis'):directory;
  const teaWat=fs.readFileSync(path.join(teaDirectory,'current-teavm.wat'),'utf8');
- const teaBytes=fs.readFileSync(path.join(teaDirectory,'teavm',fullGraph?'vorbis.wasm':'micro.wasm'));
+ const teaBytes=fs.readFileSync(path.join(teaDirectory,'teavm',family==='packet'?'vorbis.wasm':'micro.wasm'));
  teaOutput=path.join(directory,'current-teavm-native.txt');fs.writeFileSync(teaOutput,'');
  for(const name of teaNames){
   const shape=codeShape(teaWat,name),code=nativeCode(teaBytes,shape.index);
   if(family==='packet'){
    assert.equal(shape.operations['array.get'],67,'Packet identity: array gets');
    assert.equal(shape.operations['array.set'],40,'Packet identity: array stores');
+  }
+  if(family==='archive'){
+   assert.equal(shape.operations['struct.set'],14,'Archive identity: field writes');
+   assert.equal(shape.operations['array.get_s'],25,'Archive identity: byte reads');
   }
   fs.appendFileSync(teaOutput,'\n'+name+'\n'+code);rows.push({backend:'teavm',...shape,...nativeSummary(code)});
  }
