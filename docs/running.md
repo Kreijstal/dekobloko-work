@@ -12382,5 +12382,54 @@ No unchanged JVM/TeaVM timing, baseline identity check, or restoration check
 runs. The one canonical report stores these sources, raw observations, native
 comparisons and proof limits under `nativeAffineLoopBounds`.
 
-Full loading is pending for the rectangle source. The selected comparator and
-production artifacts remain unchanged; the 1.10x target is still unmet.
+The changed-source full-loading campaign is complete:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision e608216d985e8f287b177f1c031cd0d9a38a05e3 --options diagnostic
+```
+
+| Sample | Music ms | Graphics ms | Combined ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1439.396532 | 368.709236 | 1808.105768 |
+| 2 | 1874.441110 | 367.204337 | 2241.645447 |
+| 3 | 1743.877460 | 392.772136 | 2136.649596 |
+
+Median **2136.649596 ms** is **0.815% above** the saved corrected
+2119.374386 ms comparator, and **5.9394x** historical TeaVM 359.739597 ms.
+The cohort spread is retained. No causal attribution of this small median
+difference is justified. Every full checksum matches with zero late Java
+compilation. The packet method really executes **5119 native entries**, with
+56 proved sites, six guards and zero native exits/throws in each sample. It is
+the only method with positive range-proof coverage in this full workload.
+Unused code or fallback execution therefore does not explain the absence of a
+full-loading gain. Original music alone was an insufficient acceptance gate.
+
+Withdraw at `5639d83ec40a0b7a57e31b5d635ead9731f4832e`. Restore the correctness-fixed compiler
+and remove the new module/test from the active tree after preserving their
+commits. **No restored-baseline tests, timing or fingerprints run.** The source,
+893-assertion suite, native observations, exact PCM comparisons and complete full
+samples remain reproducible in experimental Git history and the one canonical
+report. The selected comparator, java-tools master and production artifacts
+remain unchanged. The 1.10x target and browser/phone gates remain unmet.
+
+
+The next question concerns the large mixed decoder, which the closed native
+array-region proof does not cover. A read-only `javap -p -c -classpath
+~/.cache/dekobloko/geoblox-loading/classes Bzip2Decoder` inspection finds its
+first observable operation at bytecode PC **72**: writing
+`Bzip2DecoderState.blockSize100k`. Only local constants/assignments precede it;
+the first static access is PC 75 and the first helper call PC 103. The existing
+compiler discovers 103 field reads and 14 writes here but no native array
+regions. This is a concrete place to investigate authenticating object metadata
+at its original first-use boundary, rather than tuning more range thresholds.
+
+That is an unimplemented hypothesis, not a permission to assume metadata survives
+arbitrary callbacks. A general proof must handle storage replacement, foreign or
+custom arrays/fields, class initialization, native-body replacement, suspension
+and original instruction snapshots. Field values must remain write-through and
+callee write summaries must keep invalidating value caches. A wider native
+execution domain must exit before an untrusted fallback and propagate native
+callee refusals; merely tagging a callee pure or preserving an old cached base
+is insufficient. Read the saved local-callback and whole-Wasm failures before
+attempting that extension. No new CPU attribution or baseline campaign is
+needed to start this proof audit.
