@@ -13830,3 +13830,152 @@ length transport alone also supports untracked host aliases and is not such a
 certificate. Any attempt needs focused mutation/replacement/resumption tests and
 a measured case before another broad admission change. This remains a proposed
 proof, not an implemented optimization or an explanation of the whole TeaVM gap.
+
+### Private returned-array ownership: useful small-case proof, no loading gain yet
+
+The previous array-region failure motivates a precise handoff question: numeric
+base/length transport already supports unregistered host aliases, so it cannot
+by itself certify ownership. Experimental source
+`3aaf977c84575b60c497aad9a5285e8e00cdc529` adds a separate private `owned` global
+to per-method array-return transport. Private field/element headers can establish
+it; plain parameter/generic metadata cannot. A caller captures/drains all three
+words immediately around its canonical call, and unknown/withdrawn JavaScript
+bridges clear them after any nested native invocation. Only positive private
+metadata seeds the regional source cache. It is marked authenticated before
+first use, so entry into the region does not discard a just-produced proof.
+SSA redefinition, invocation and resumption keep their existing revocation rules.
+The certificate supplies location/length, not a cast or bulk-copy kind verdict.
+
+Focused validation initially catches a two-word manual fixture missing the new
+global; the modern fixture is extended to test ownership cleanup as well. The
+new loop initially fails to select its intended region. Its closed helper shares
+a block with an opaque row call, so the existing proof excludes the entire
+block. Moving the helper into the fixed-width scan exercises the established
+admission; no production policy is relaxed to make that test pass. A successful
+handoff then exposes an actual bug: the outside-edge rule discards an ownership
+seed before first access. Setting the source's positive-check flag from the
+producer's certificate fixes it. None of these failures is accepted by weakening
+the assertions.
+
+The fourteen-file validation passes **1494/1494 assertions** for this first
+prototype. Cases cover exact returned identity, alternating rows, recursion,
+relays, missing/foreign/unregistered ownership, opaque producers, withdrawal,
+republication, payload release, retention, class transport, exceptions and
+resumption. An opaque getter returning an owned array is not certified merely
+because of its declared return type; the caller retains its own check.
+
+A new reduction, `apps/loading/returned-array.mjs`, scans one million returned
+rows of eight integers. Both engines use the **same changed JVM**, same Java
+classes and data. The `unshared` control withholds only the explicit returned
+ownership certificate at compilation; it retains all correctness checks. It is
+not a runtime option. The normal path still uses the existing closed-helper
+region policy, so this reduction tests the handoff rather than broad admission.
+Both produce the same overflowed integer checksum without late compilation.
+Excluded diagnostics verify **zero versus 1000000** host ownership queries.
+
+| Same changed-runtime reduction | Three samples, ms | Median, ms |
+| --- | --- | ---: |
+| Private certificate shared | 32.472913, 36.705126, 39.220248 | 36.705126 |
+| Certificate withheld | 145.567942, 154.707530, 194.246145 | 154.707530 |
+
+The roughly **4.2x** difference supports this mechanism in the reduced case.
+It is **not a TeaVM comparison or an original-game speedup**. Each timed child
+uses CPU 2, Node 22.23.2, the 1024 MiB Node heap/eager optimizing Wasm flags, a
+16 MiB fixture guest heap, a fresh VM and no warmup. Compilation, data setup and
+report checkpoints are outside its timer. No test/build/profile runs concurrently
+with these samples; parent checkpoints occur between child processes.
+
+The initial control harness asserts installation before the compiler's module
+has loaded lazily. It stops before control guest execution or any timing. The
+completed shared diagnostic's zero-query result is recovered from its log with
+explicitly incomplete metadata, **not executed again**. Moving the control
+assertion after preparation fixes setup. Diagnostics and samples checkpoint into
+the existing canonical JSON, and an incomplete run reuses completed observations.
+The six timings alternate engine order. Source, harness, loader and newly created
+class hashes are recorded once for this fixture; no old baseline fingerprint or
+identity is replayed.
+
+```bash
+# Deko; new changed-runtime reduction only, two excluded diagnostics + six timings.
+node --check apps/loading/returned-array.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/returned-array.mjs run 3aaf977c84575b60c497aad9a5285e8e00cdc529
+```
+
+The actual source shows a returned row immediately feeding the residue component
+loop. Source `f2de7913b4a400eec033e37fb1575082b1bfb40f` therefore attempts a bounded
+admission rule for array-consuming loops with canonical returned-array metadata.
+Preflight captures potential snapshots; final admission requires the actual
+canonical return transport. A descriptor is never a runtime ownership proof.
+This leaves the static-region boundary and parameter-only loop cases intact.
+**1499/1499 assertions pass**, including a returned-row loop without an unrelated
+closed helper. The changed original diagnostic proves **27 residue blocks**, two
+ownership handoff sites, **17444 header queries** (versus the earlier expanded
+retained-header prototype's 135580), **152093 object-storage validations**, zero
+residue native exits, exact PCM and no late compilation.
+
+The real decoder still takes **109.800382, 131.136406, 111.970478 ms**, median
+**111.970478 ms**. This establishes no original-workload gain. The admission rule
+is **withdrawn**, including its unsupported current fixture assertions; rejected
+source/tests remain reproducible through the archived commit. Existing admission
+is restored without a restoration timing or baseline replay.
+
+The transport also initially tracks ownership for cached arrays that will never
+publish or consume it. `c999f6d47ffc660e1d9d632374224edafc696094` uses compile-time
+return identities and actual regional consumers to create ownership locals only
+when needed. A test with two field/element reads but one returned array retains
+one ownership local and the exact returned identity. It preserves the other read
+and its possible exception; this is metadata liveness, not dead-effect removal.
+The final fourteen-file check passes **1498/1498 assertions**, including **41** in
+the new ownership fixture. Actual `readVector` has one ownership local; residue
+and packet decoding have zero locals/sites for this new fact under the existing
+admission rules. The large original residue loop consequently does not consume
+the certificate in this final experimental version.
+
+This narrower changed runtime takes **100.201932, 100.813701, 100.002607 ms**,
+median **100.201932 ms**. All six original samples across these two changed
+cohorts match every saved 348249-byte PCM byte and have zero late Java compilation.
+The result overlaps saved 98.724520/99.443952/104.021143 ms cohorts: **no established
+original/full-loading gain**. The new small-case proof is useful infrastructure,
+not evidence that the full target is met.
+
+```bash
+# java-tools; c999f6d ownership/liveness/recovery/transport validation, 1498 pass.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeArrayReturnOwnership.test.js test/nativeReferenceArray.test.js test/nativeArrayHeaderLifetime.test.js test/wasmParameterArrayAbi.test.js test/nativeObjectBody.test.js test/nativeObjectForwarding.test.js test/nativeMixedStateBody.test.js test/nativeStaticArrayBody.test.js test/arrayIdentityCaches.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/wasmCompilerRetention.test.js test/classMirrorTransport.test.js test/canonicalDirectFrames.test.js
+# Deko; changed original coverage, excluded from timing.
+node --check apps/loading/probe.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect f2de7913b4a400eec033e37fb1575082b1bfb40f 'VorbisResidue.decodeResidue([FIZ)V'
+# Two changed-source original cohorts, sequentially; no known control rerun.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm f2de7913b4a400eec033e37fb1575082b1bfb40f
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm c999f6d47ffc660e1d9d632374224edafc696094
+```
+
+Final archived source **`f14edc7e4d91f2a283cd6c876913c1877deae650`** additionally
+preserves the legacy two-word fallback-metadata API. The third global is optional
+for those stubs; modern payloads still clear all three words. Four new legacy
+assertions retain the original status, reference and cleared base/length.
+The narrow two-file validation passes **223/223 assertions**. This compatibility
+change introduces no further performance run; timings above belong to `c999f6d`.
+
+```bash
+# java-tools; final compatibility delta, 223 assertions pass.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReferenceArray.test.js test/canonicalDirectFrames.test.js
+```
+
+The single canonical JSON contains `optimizationTrials.returnedArrayOwnership`:
+small controls, partial-diagnostic provenance, rejected/current original cohorts,
+validation, current source, limits and statuses. No additional JSON, generated
+source/binary, bundle or screenshot enters Git. No baseline, TeaVM, HotSpot or
+full-loading process is rerun. Comparator `97aa42e` stays **1929.057624 ms / 5.36x**
+recorded TeaVM. There is no promotion/deployment or FPS/phone/heap claim; **1.1x
+remains unfulfilled**.
+
+Code inspection also confirms numeric-tag store elimination is already present
+inside certified static-state bodies, so it produces no duplicate implementation
+or timing campaign. Another compile-time question remains in
+`stackifyNumericValues.frameRoots`: it protects every saved-local map value,
+while the existing frame-liveness pass only filters actual spill emission.
+Before changing that allocator, quantify whether liveness removes meaningful
+numeric protection/locals on the real SSA. Inlined activation frames and handler
+edges must remain protected; a smaller protected set alone is not a safety proof
+or a claim of speed. This is a code-generation question, not another CPU
+attribution campaign or permission to remeasure an unchanged baseline.
