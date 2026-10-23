@@ -13722,3 +13722,111 @@ The inspection succeeds with **zero guest ticks and compiled methods**. Its
 compact result joins the existing `nativeCallCode.observations` in the same
 canonical JSON. No extra JSON or generated artifact is created. The **1.1x full
 loading objective remains unfulfilled**; nothing is promoted or deployed.
+
+### Array-region expansion rejected; keep only a narrow header lifetime proof
+
+No unchanged baseline, TeaVM, HotSpot, restoration timing or identity replay is
+run for this work. Every new timing below executes changed JVM source against
+the saved original-sample oracle. Tests and diagnostics finish before each
+uninstrumented timing cohort. Runs use CPU 2, Node 22.23.2, a 1024 MiB heap and
+eager optimizing Wasm flags; each sample uses a fresh VM without warmup.
+
+`8ab06cb45432bd0f7df8b99937ea803c0211012d` attempts a generic independent
+array-region proof. It allows callback-free element loops without unrelated
+object receivers/closed helpers, accepts the same pure Math intrinsics as the
+existing static-array proof, budgets unique physical static dependencies, and
+complements existing static-array regions without overlapping their blocks.
+It keeps bounds checks and exact-instruction refusal for unsupported ownership.
+No application names, profiles or opt-in flags enter java-tools.
+
+Initial tests expose two overly broad admissions: a straight field reader loses
+its useful checked path, and a lone array-length check next to an opaque loop
+adds an unnecessary exit. Restricting admission to methods with actual element
+loops fixes both. The new fixture's first Math attempt also refuses at a cold
+owner's block guard; loading/marking the fixture's Math dependency ready allows
+its intended native path, without changing the runtime's initialization policy.
+Its continuation helper is corrected to preserve the existing thread/call stack.
+The assertions retain exact array-instruction refusal and handler results.
+
+Combined validation has **1106/1107 assertions pass**: the sole remaining failure
+is asynchronous reference-array capability reclamation. The unchanged isolated
+reference-array suite then passes **89/89**; no reclamation assertion is weakened.
+The changed original diagnostic proves 34 complementary packet blocks, seven
+array sites, five field sites and two closed calls. It matches all PCM bytes,
+with zero packet native exits and zero late compilation. The original two
+static-array regions still execute 682 times each.
+
+Despite this coverage, it is substantially slower. Residue decoding performs
+**813046** private array-header queries: leaving the certified union revokes
+captured array metadata even when the SSA array identity is unchanged.
+
+`1b064701bf2eb31ca7ba7cccaf29cfed1e18764e` separates mutable object/cast facts
+from a completed positive allocator-owned array-header check. The allocation's
+location/length belongs to that captured array value. Outside edges still revoke
+object ownership and cast verdicts, but retain positive array headers. An
+unvalidated capture is discarded; SSA redefinition still clears its certificate.
+New invocations/resumptions start with fresh local flags; nothing is retained
+across a scheduler suspension. These synchronous kernels cannot run an array
+finalizer and recycle its extent while continuing that invocation.
+
+The callback fixture verifies one query for a stable array and one for each
+newly returned array, with mutations observed at their original point. Eight-file
+validation passes **1022/1022 assertions**. The changed original diagnostic
+reduces residue header queries to **135580**, preserving exact PCM and zero late
+compilation. This partially recovers the regression, but the broader admission
+still fails the performance comparison.
+
+| Changed original decoder | Three samples, ms | Median, ms |
+| --- | --- | ---: |
+| Expanded array regions, `8ab06cb` | 217.635140, 222.501909, 223.665896 | 222.501909 |
+| Expansion plus retained headers, `1b06470` | 145.780966, 140.988520, 138.613498 | 140.988520 |
+| Existing admission plus retained headers, `04c8ea5` | 95.877168, 108.560174, 98.724520 | 98.724520 |
+
+Final experimental source **`04c8ea51d65e30541cc52cfd8aded52825219630`** withdraws
+all broader admission/snapshot/Math/static-budget changes. Relative to `ef7a951`,
+its only runtime change is the positive header lifetime proof in
+`nativeObjectBody.edge`; the second changed file is the focused test. It is a
+new changed-source measurement, not a restoration benchmark. The abandoned
+region-union fixture remains available in the archived rejected commits; it is
+removed from the current source rather than leaving unsupported assertions.
+
+The replacement `nativeArrayHeaderLifetime` fixture uses the established closed
+helper/object-region admission. It preserves an old captured array when a
+callback replaces its owner's field and mutates the original contents. Only
+three newly returned arrays require queries. A separate callback customizes an
+object field; the next closed-helper invocation refuses at its original call,
+without invoking the getter early. Existing ownership, GC reclamation, foreign
+fallback, handlers, suspension, inline recovery and retention checks also pass:
+**1091/1091 assertions**, including **15** in the new fixture.
+
+```bash
+# java-tools; final narrow source validation, 1091 assertions pass.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeArrayHeaderLifetime.test.js test/nativeObjectBody.test.js test/nativeObjectForwarding.test.js test/nativeMixedStateBody.test.js test/nativeStaticArrayBody.test.js test/nativeReferenceArray.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/wasmCompilerRetention.test.js
+# Deko; excluded changed-code diagnostics, each completed before timing.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 8ab06cb45432bd0f7df8b99937ea803c0211012d 'MusicDecoder.decodePacket(I)[F'
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 1b064701bf2eb31ca7ba7cccaf29cfed1e18764e 'MusicDecoder.decodePacket(I)[F'
+# Deko; three sequential cohorts, changed source only, saved oracle reused.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 8ab06cb45432bd0f7df8b99937ea803c0211012d
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 1b064701bf2eb31ca7ba7cccaf29cfed1e18764e
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 04c8ea51d65e30541cc52cfd8aded52825219630
+```
+
+All nine original samples match the saved 348249-byte PCM oracle and have zero
+late Java compilations. The final 98.724520 ms median overlaps the saved
+99.443952 and 104.021143 ms cohorts: **no established original/full-loading gain**.
+There is no full-loading rerun, comparator advance, production/default artifact
+promotion or deployment. The selected full comparator remains `97aa42e`,
+1929.057624 ms / **5.36x** recorded TeaVM; the **1.1x objective is unfulfilled**.
+All measurements and rejected/current status live in the same canonical JSON
+under `optimizationTrials.callbackFreeArrayRegions`. No extra report, generated
+Java, binary, bundle or screenshot enters Git.
+
+The failed expansion shows why removing guards from individual blocks alone is
+insufficient: metadata handoff and proof invalidation across existing calls must
+be accounted for too. A possible next focused question is whether current
+callee return metadata can carry an explicit private ownership certificate,
+bound to the actual returned value and current compiled export. Ordinary base/
+length transport alone also supports untracked host aliases and is not such a
+certificate. Any attempt needs focused mutation/replacement/resumption tests and
+a measured case before another broad admission change. This remains a proposed
+proof, not an implemented optimization or an explanation of the whole TeaVM gap.
