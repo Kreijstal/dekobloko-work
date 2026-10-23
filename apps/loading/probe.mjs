@@ -71,12 +71,27 @@ if(mode==='teavm'){
   check,equal:check===receipt.referenceCheck});
 }else{
 const revision=process.argv[4] && process.argv[4]!=='-' && execFileSync('git',['rev-parse','--verify',process.argv[4]+'^{commit}'],{cwd:root,encoding:'utf8'}).trim();
-const compilerProofs=[];
+const compilerProofs=[],regionInputs=[];
 const observeModule=prepareOnly?({filename,exports:Compiler})=>{
  if(!filename.endsWith('/jit/StructuredWasmCompiler.js'))return;
  const translate=Compiler.prototype.translateBody;
  Compiler.prototype.translateBody=function(...args){
   const meta=translate.apply(this,args);
+  const key=this.className+'.'+this.method.name+this.method.descriptor;
+  if(['MusicDecoder.decodePacket(I)[F','Bzip2Decoder.decodeBlocks(LBzip2DecoderState;)V'].includes(key)){
+   const ops=new Map(),unmappedStatics=new Map();
+   for(const block of this.fn.blocks)if(this.fn.reachable.has(block.id))for(const node of block.body){
+    ops.set(node.op,(ops.get(node.op)||0)+1);
+    if(node.op==='getstatic'&&!this.nativeStaticArrayReads.has(node.id)){
+     const name=JSON.stringify(node.imm);unmappedStatics.set(name,(unmappedStatics.get(name)||0)+1);
+    }
+   }
+   regionInputs.push({meta,key,inlineOrigins:!!this.origIdx,inlinedCalls:meta.inlinedCalls,
+    liveRanges:this.liveRanges.length,demoted:this.demoted.size,deoptBlocks:this.deoptBlocks.size,
+    irreducibleSplitBlocks:this.irreducibleSplitBlocks||0,blocks:this.fn.blocks.length,
+    mappedStaticArrayReads:this.nativeStaticArrayReads.size,nativeRegions:meta.nativeStaticArrayRegions||[],
+    operations:[...ops],unmappedStaticReads:[...unmappedStatics]});
+  }
   if(this.nativeArrayCastProof){
    const nodes=new Map(this.fn.blocks.flatMap(b=>b.body).map(n=>[n.id,n]));
    compilerProofs.push({meta,key:this.className+'.'+this.method.name+this.method.descriptor,
@@ -195,7 +210,8 @@ try {
    key:s.key,tier,bytes:meta.bytes?.length??null,exports:functionExports(meta.bytes),
    inlineRun:!!meta.canonicalInlineCompactRun,inlineHeap:!!meta.canonicalInlineCompactHeapRun,
    parameterArrayABI:meta.parameterArrayABI||[],parameterObjectABI:meta.parameterObjectABI||[]})));
-  const diagnostic={revision,mainExecuted:false,guestTicks,assetCalls,proofConditions,entryShapes,excludedFromTiming:true,measuredAt:new Date().toISOString()};
+  const nativeRegionInputs=regionInputs.filter(row=>active.has(row.meta)).map(({meta,...row})=>row);
+  const diagnostic={revision,mainExecuted:false,guestTicks,assetCalls,proofConditions,entryShapes,nativeRegionInputs,excludedFromTiming:true,measuredAt:new Date().toISOString()};
   const current=JSON.parse(fs.readFileSync(receiptPath)),trial=(current.optimizationTrials.nativeEntryShapes||={});
   (trial.preparationDiagnostics||=[]).push(diagnostic);fs.writeFileSync(receiptPath,JSON.stringify(current,null,2)+'\n');
   console.log('PREPARATION_RESULT '+JSON.stringify(diagnostic));
@@ -252,6 +268,7 @@ try {
   nativeArrayMetadataPhiCopiesOmittedCount:meta.nativeArrayMetadataPhiCopiesOmittedCount||0,
   nativeObjectBodyFieldSites:meta.nativeObjectBodyFieldSites||0,
   nativeObjectBodyArraySites:meta.nativeObjectBodyArraySites||0,
+  canonicalTargetImportCount:meta.canonicalTargetImportCount||0,
   nativeCastRegion:meta.nativeCastRegion||null,
   nativeBooleanArraySites:meta.nativeBooleanArraySites||0,
   nativeReadinessGuardsReusedCount:meta.nativeReadinessGuardsReusedCount||0,
@@ -280,6 +297,7 @@ try {
     nativeThrowCount:state.meta?.directFrameContext?.throwCount??null,
     nativeObjectBodyFieldSites:state.meta?.nativeObjectBodyFieldSites||0,
     nativeObjectBodyArraySites:state.meta?.nativeObjectBodyArraySites||0,
+    canonicalTargetImportCount:state.meta?.canonicalTargetImportCount||0,
     nativeCastRegion:state.meta?.nativeCastRegion||null,
     nativeBooleanArraySites:state.meta?.nativeBooleanArraySites||0,
     inlineActivationSiteCount:state.meta?.inlineActivationSiteCount||0,

@@ -12186,3 +12186,72 @@ binaries, bundles, WAT or extra JSON reports enter Git. The corrected reference
 is **5.8914x** historical TeaVM (359.739597 ms), far from 1.10x. Browser/phone
 presented-FPS, aggregate heap, startup and stability gates remain unverified;
 java-tools master and deployment are unchanged.
+
+### Typed canonical target integration: withdrawn
+
+Implement the preceding proof in experimental JVM source
+`38213e6859de70d8539fbe2ae8bb4aeead7a2301`. Existing fallback modules export a
+non-null typed mutable target. Publication updates it and the compatibility
+table; withdrawal restores the fallback. Actual incompatible function types
+are rejected, regardless of claimed metadata. Automatic feature detection
+validates both declaration and consumer import/call. Signed heap-type encoding
+covers indices 70 and 100. No public flags or application names are introduced.
+
+Focused compiler/link/lifetime tests pass **365/365**, broader canonical ABI,
+constructor, exception, mixed-table and fuel tests **806/806**; final portable
+target tests pass **29/29**, with zero skips on this host:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/typedCanonicalTarget.test.js test/canonicalDirectFrames.test.js test/nativeObjectBody.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/canonicalDirectFrames.test.js test/canonicalInstanceFrames.test.js test/compactCanonicalFrames.test.js test/wasmParameterArrayAbi.test.js test/nativeObjectForwarding.test.js test/dispatcherCanonicalCalls.test.js test/preparedWasmConstructors.test.js test/emptyCanonicalCopy.test.js test/hostOwnedCanonicalFuel.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/typedCanonicalTarget.test.js
+```
+
+Two initial failures were assertions requiring the old table import. Updated
+assertions verify typed globals and released compiler maps. Compile-only native
+inspection (`call-code.mjs REV reader`) performs zero Java ticks. The actual
+buffered helper changes from 4208 to 4196 native bytes: two `call_indirect` sites
+become two `call_ref` sites, using one imported typed target. The reader itself
+stays 2744 bytes. Saved TeaVM native rows are reused. Static counts do not
+establish runtime cost or CPU attribution.
+
+Changed-source timings use CPU 2, Node 22.23.2, and
+`--max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation`:
+
+| Component | Samples, ms | Median, ms |
+| --- | --- | ---: |
+| Buffered reader helper | 4.309563, 4.286041, 4.613767 | 4.309563 |
+| Original Bzip archive | 42.211565, 41.514403, 43.017755 | 42.211565 |
+| Original Vorbis PCM | 96.888298, 106.501088, 109.730560 | 106.501088 |
+
+Commands are `microbench.mjs run-jvm REV buffered-ready-helper`,
+`microbench.mjs run-jvm REV bzip-ready-owner` and `vorbis.mjs run-jvm REV`, with
+REV set to the candidate above. Every checksum matches, all 348249 original PCM
+bytes match, and there is zero late compilation. Historical component medians
+are 4.367042, 45.214595 and 96.087914 ms respectively; these are saved results,
+not fresh runs of the corrected comparator. No consistent gain warrants a
+full-loading campaign. Withdraw at `75aee2df0764dfc684dd6a741cbd4b7cda8c4ccc`;
+runtime source again contains the correctness-fixed comparator. Do not test or
+time that restoration. Master and production artifacts remain unchanged.
+
+Preparation-only inspection now records region eligibility inputs before
+compiler cleanup, stopping before Java main with zero ticks and asset calls.
+Both large decoders have no inline-origin, live-range, demotion, deoptimization
+or irreducible-split blocker. Music already has two native regions, covering
+69 and 23 static array sites across 43 and 28 blocks. Bzip has none; its body
+mixes 103 instance-field reads, 14 writes, nested arrays and calls. Removing a
+blanket global proof gate would therefore address neither observation.
+
+The existing profile still identifies these decoders as the large guest bodies;
+no new CPU profile is needed. Existing full-run counters show **3605524 native
+Bzip readBits entries** and no native-object-body entries for the other methods.
+The next small experiment can simplify that entry using its private typed
+storage proof, preserving the ordinary receiver lookup and fallback. Its
+coverage is Bzip; do not benchmark unchanged Vorbis for that change or claim it
+will close the full gap. A later region extension must handle instance fields,
+reference matrices and callback boundaries with a specific safety proof.
+
+The single existing benchmark report retains typed-target samples, source
+identities, native observations and region inputs. The selected full comparator
+remains 2119.374386 ms versus historical TeaVM 359.739597 ms (**5.8914x**).
+The 1.10x goal and browser/phone acceptance gates remain unmet.

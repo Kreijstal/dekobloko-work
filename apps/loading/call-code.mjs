@@ -70,10 +70,12 @@ for(const [ordinal,key]of targets.entries()){
  rows.push({backend:'jvm',key,export:exportName,...shape,...nativeSummary(code),
   nativeObjectBodyFieldSites:meta.nativeObjectBodyFieldSites||0,
   canonicalLazyActivation:!!meta.canonicalLazyActivation,
+  canonicalTargetImportCount:meta.canonicalTargetImportCount||0,
   nativeObjectPromotedFieldCount:meta.nativeObjectPromotedFieldCount||0,
   nonReturningArrayErrorSiteCount:meta.nonReturningArrayErrorSiteCount||0,
   nativeObjectElidedArrayReferenceSites:meta.nativeObjectElidedArrayReferenceSites||0,
-  publishedSlots:bindings.filter(b=>b.compact).map(b=>({slot:b.slot,stub:j.jit.wasmJit.canonicalDirectLinks.table.get(b.slot)===b.stub}))});
+  publishedSlots:bindings.filter(b=>b.compact).map(b=>({slot:b.slot,stub:j.jit.wasmJit.canonicalDirectLinks.table.get(b.slot)===b.stub,
+   typed:!!b.target,typedStub:b.target?b.target.value===b.stub:null}))});
 }
 // Already-inspected controls are evidence to reuse, not code to compile again.
 const savedTea=[...(receipt.optimizationTrials.nativeCallCode?.observations||[])].reverse()
