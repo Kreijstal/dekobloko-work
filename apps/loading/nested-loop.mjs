@@ -22,7 +22,7 @@ const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilat
 const [command,revision,engine,detail,caseArg]=process.argv.slice(2),engines=['inlined','separate'],count=1000000;
 const caseName=command.startsWith('stable-')||caseArg==='stable'?'stable':command.startsWith('scope-')||caseArg==='scope'?'scope':'whole';
 const targetName={whole:'scan',scope:'scanScoped',stable:'scanStable'}[caseName];
-const requestedEngine=['direct','merged','trusted','paired'].find(value=>command.includes('-'+value+'-'));
+const requestedEngine=['direct','merged','trusted','paired','separate'].find(value=>command.includes('-'+value+'-'));
 assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact changed-source JVM commit');
 const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
 const source=`
@@ -290,6 +290,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   baseQueries:instrumented?target.meta.importStats.get('abase')||0:null,
   lengthQueries:instrumented?target.meta.importStats.get('alen0')||0:null,
   separateVectorStateSites:vector.meta.nativeStaticStateBodySites||0,
+  separateVectorReferenceReadElisions:vector.meta.nativeArrayReferenceReadElisionCount||0,
   ownershipQueries:instrumented?target.meta.importStats.get('native_body_object_storage')||0:null,
   separateVectorOwnershipQueries:instrumented?vector.meta.importStats.get('native_state_object_storage')||0:null,
   pairedStorageCallSites:target.meta.pairedStorageCallSiteCount||0,
@@ -305,7 +306,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
  process.exit(0);
 }
 
-assert.ok(['diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate','inspect','scope-inspect','stable-inspect','code','scope-code','stable-code','liveness','scope-liveness','stable-liveness','stable-direct-code','stable-direct-inspect','stable-direct-candidate','stable-merged-code','stable-merged-inspect','stable-merged-candidate','stable-trusted-code','stable-trusted-inspect','stable-trusted-candidate','stable-paired-code','stable-paired-inspect','stable-paired-candidate'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
+assert.ok(['diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate','inspect','scope-inspect','stable-inspect','code','scope-code','stable-code','liveness','scope-liveness','stable-liveness','stable-direct-code','stable-direct-inspect','stable-direct-candidate','stable-merged-code','stable-merged-inspect','stable-merged-candidate','stable-trusted-code','stable-trusted-inspect','stable-trusted-candidate','stable-paired-code','stable-paired-inspect','stable-paired-candidate','stable-separate-code','stable-separate-inspect','stable-separate-candidate'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
 fs.mkdirSync(directory,{recursive:true});const java=path.join(directory,'NestedLoopProbe.java');
 if(!fs.existsSync(java)||fs.readFileSync(java,'utf8')!==source||!fs.existsSync(path.join(directory,'NestedLoopProbe.class'))){
  fs.writeFileSync(java,source);execFileSync('javac',['--release','8','-proc:none','-d',directory,java]);

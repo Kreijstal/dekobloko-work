@@ -15,23 +15,41 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
 const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit','packet-metadata'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
 options.classpath=[path.join(family==='mdct-frame-remat'?path.join(player,'mdct'):fullGraph||directMusic||originalFlow||family==='frame-remat'?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
-let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls;const proofCensus=[],translationFailures=[];
+let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls,stableHeaders;const proofCensus=[],translationFailures=[],headerCensus=[];
 const preloadModules=family==='ssa-liveness'?['src/analysis/frameLocalLiveness.js','src/jit/stackifyNumericValues.js']:
- family==='inlined-lifetimes'||family.endsWith('frame-remat')?['src/jit/wasmInline.js','src/jit/stackifyNumericValues.js']:[];
+ family==='inlined-lifetimes'||family.endsWith('frame-remat')?['src/jit/wasmInline.js','src/jit/stackifyNumericValues.js']:family==='packet-metadata'?['src/jit/stableArrayHeaders.js']:[];
 const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{preloadModules,observeModule:({filename,exports})=>{
  if(filename.endsWith('/src/analysis/opgraph/ssa.js'))buildSsa=exports.buildSsa;
  if(filename.endsWith('/src/decompiler/structurer.js'))buildCfg=exports.buildCfgFromCode;
  if(filename.endsWith('/src/analysis/frameLocalLiveness.js'))frameLiveness=exports.frameLocalLiveness;
  if(filename.endsWith('/src/jit/stackifyNumericValues.js'))numericLocals=exports;
  if(filename.endsWith('/src/jit/wasmInline.js'))inlineCalls=exports.inlineCalls;
+ if(filename.endsWith('/src/jit/stableArrayHeaders.js'))stableHeaders=exports;
+ if(family==='packet-metadata'&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
+  const translate=exports.prototype.translateBody;
+  exports.prototype.translateBody=function(...args){
+   const meta=translate.apply(this,args);
+   if(meta?.bytes&&this.className==='MusicDecoder'&&this.method.name==='decodePacket'){
+    const regions=(this.nativeStaticArrayBody?.regions||[]).filter(plan=>!plan.stateful).map(plan=>{
+     const aliases=stableHeaders(plan);
+     return {entry:plan.entry,blocks:plan.blocks.size,sites:plan.sites,references:plan.references.size,
+      fields:plan.fields.size,externalReferences:plan.external.size,phis:[...plan.references.values()].filter(v=>v.op==='phi').length,
+      stableAliases:[...aliases],potentialSavedHeaderLocals:2*aliases.size};
+    });
+    headerCensus.push({meta,key:this.className+'.'+this.method.name+this.method.descriptor,regions});
+   }
+   return meta;
+  };
+ }
+
  if(family==='archive-exit'&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
   const translate=exports.prototype.translate,exit=exports.prototype.emitInstructionExit;
   exports.prototype.translate=function(...args){try{return translate.apply(this,args);}catch(error){
@@ -260,6 +278,15 @@ if(directMusic){
  assert.ok(boundary,'Preparation did not reach the main boundary');assert.equal(failure,stop);
 }
 assert.equal(ticks,0);assert.equal(assetCalls,0);
+if(family==='packet-metadata'){
+ const active=new Set(j.jit.wasmJit.compiled.flatMap(state=>[state.meta,state.callee?.meta,state.osr?.meta]));
+ const rows=headerCensus.filter(row=>active.has(row.meta)).map(({meta,...row})=>row);
+ assert.ok(rows.length,'No active packet region census');
+ const result={sourceRevision:revision,family,compileOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,
+  baselineTimingsOrFingerprints:false,rows,note:'New singleton-source header-sharing admission only. No metadata changes or workload execution.',measuredAt:new Date().toISOString()};
+ const current=JSON.parse(fs.readFileSync(reportPath));(current.optimizationTrials.nativeCallCode||={observations:[]}).observations.push(result);
+ fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(result,null,2));process.exit(0);
+}
 if(['archive-proof','archive-exit'].includes(family)){
  const state=j.jit.wasmJit.compiled.find(s=>s.key==='Bzip2Decoder.decodeBlocks(LBzip2DecoderState;)V');assert.equal(state?.status,'ready');
  const result={sourceRevision:revision,family,analysisOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,
@@ -338,6 +365,7 @@ for(const [ordinal,key]of targets.entries()){
   nativeStaticInputGuardCount:meta.nativeStaticInputGuardCount??null,
   nativeObjectRegionBlockCount:meta.nativeObjectRegionBlockCount??null,
   nativeStaticStateBodySites:meta.nativeStaticStateBodySites??null,
+  nativeArrayReferenceReadElisionCount:meta.nativeArrayReferenceReadElisionCount||0,
   nativeStaticStateInstanceFieldSites:meta.nativeStaticStateInstanceFieldSites??null,
   nativeStaticStateTailLoadCount:meta.nativeStaticStateTailLoadCount??null,
   nativeObjectRegionCastCount:meta.nativeObjectRegionCastCount??null,

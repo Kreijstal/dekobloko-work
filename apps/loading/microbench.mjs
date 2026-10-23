@@ -1001,6 +1001,7 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     nativeStaticInputGuardCount:s.meta?.nativeStaticInputGuardCount??null,
     nativeObjectRegionBlockCount:s.meta?.nativeObjectRegionBlockCount??null,
     nativeStaticStateBodySites:s.meta?.nativeStaticStateBodySites??null,
+    nativeArrayReferenceReadElisionCount:s.meta?.nativeArrayReferenceReadElisionCount||0,
     nativeStaticDeferredFieldCount:s.meta?.nativeStaticDeferredFieldCount??null,
     nativeStaticStateInstanceFieldSites:s.meta?.nativeStaticStateInstanceFieldSites??null,
     nativeStaticStateTailLoadCount:s.meta?.nativeStaticStateTailLoadCount??null,
@@ -1121,18 +1122,11 @@ function run(revision,names,engines=['jvm','teavm']) {
 function ensureReference() {
  const fixture=read().microbenchmarks,count=Number(process.env.MICRO_ITERATIONS||fixture.iterations);
  assert.ok(Number.isSafeInteger(count)&&count>0&&count<=100_000_000,'Invalid iteration count');
- let changed=false;
- if(count!==fixture.iterations&&!fixture.references?.[count]){
-  (fixture.references||={})[count]=cases.map((_,i)=>Number(execFileSync('java',['-Xmx1g','-cp',directory+path.delimiter+path.join(directory,'classes'),
-   'MicroReference',String(i),String(count),fixture.seed,...(i>=48?bufferedReplayArgs(fixture.bufferedWorkload):[])],{encoding:'utf8'}).trim()));
-  changed=true;
- }
+ assert.ok(count===fixture.iterations||fixture.references?.[count],
+  'Measurement requires an existing reference for this iteration count; no oracle executes here');
  const bufferedCount=Math.min(count,fixture.bufferedWorkload.requests);
- if(!fixture.bufferedReferences?.[bufferedCount]){
-  (fixture.bufferedReferences||={})[bufferedCount]=JSON.parse(execFileSync('java',['-Xmx1g','-cp',directory+path.delimiter+path.join(directory,'classes'),
-   'MicroReference','buffered-oracle',String(bufferedCount),fixture.seed,...bufferedReplayArgs(fixture.bufferedWorkload)],{encoding:'utf8'}));changed=true;
- }
- if(changed)save(fixture);
+ assert.ok(fixture.bufferedReferences?.[bufferedCount],
+  'Measurement requires the existing buffered reference; no oracle executes here');
  return count;
 }
 

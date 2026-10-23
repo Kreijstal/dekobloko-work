@@ -15290,3 +15290,113 @@ original/full comparators and deployment remain unchanged. There is still no
 question is sharing array metadata for proven stable singleton sources within
 an existing guarded region. Mutable entry phis and old captured references must
 remain independent; measure admission/opportunity before changing emission.
+
+
+### Stable headers and unused array references: no established gain
+
+Reuse all recorded controls. No baseline/oracle execution, baseline identity
+check, restoration timing, or renewed CPU attribution runs in this pass.
+Preparation/code inspection asks new questions only; diagnostics remain excluded
+from acceptance timings. Existing exact PCM, scalar and vector checksums remain
+the correctness oracles. One writer updates the existing cache `benchmark.json`.
+
+The stable-source analysis is archived at
+`f125829f9efde316c2ec88f9dd89a9941188f97d` /
+`experiment/teavm-region-metadata`. It uses a bounded source lattice only within
+already certified callback-free array regions. External SSA values and stable
+static cells may anchor a source. Mixed entry phis, changing sources, missing
+predecessors and unresolved cycles cannot. Ten unit assertions pass. The new
+original packet admission census compiles preparation but executes zero guest
+ticks, main calls or asset callbacks. The two active regions contain 69/23
+array sites and 9/5 references; five/one references are phis. **Neither region
+has a stable alias**, so there is no emission change or timing campaign. The
+analysis helper/test are withdrawn from the working tree and remain archived.
+
+```bash
+# Deko: new admission question, never a baseline replay.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs f125829f9efde316c2ec88f9dd89a9941188f97d packet-metadata
+```
+
+A different static observation is concrete: the stored vector export reads its
+private Huffman-tree Java reference three times into locals that are never read,
+including cold paths. The private GC-array load can still trap, preventing the
+engine from deleting it. After the existing whole-body validation proves the
+receiver, layout and primitive-array headers, these reads are total and pure.
+A generic final-emission liveness pass can remove just the unused reference
+loads. Array base/length capture, scalar writes, bounds failures, actual returned
+reference identity, cold readers and saved loop-resume reference bindings stay.
+This differs from the earlier rejected field-reference capture/hoisting attempt.
+
+Markers identify real emitted local reads, rather than scanning numeric opcode
+bytes: immediates can contain `local.get` bytes. Dependency closure keeps reads
+inside retained writes and discards entire unused chains. Entry-mode alternatives
+are resolved consistently; explicit/raw consumers pin a reference. The module
+assembler skips marker analysis when no records exist and allocates no temporary
+empty array for each byte. Temporary maps release with compiler graph cleanup.
+No GC ABI, application identity, runtime flag or default artifact changes.
+
+The expanded integration suites pass **868/868** and **775/775** assertions.
+The independent candidate based on the recorded `029834e…` source passes
+**539/539**, then **35/35** final focused assertions after the assembler allocation
+cleanup. New cases preserve escaping identity, old captured references across
+fuel suspension and owner-field replacement, exactly one custom getter call on
+refusal, original bounds handlers, and completed scalar updates.
+
+```bash
+# In the isolated candidate archive; ignored JRE index generation only.
+node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/elidableLocalValues.test.js test/elidableArrayReferences.test.js test/nativeMixedStateBody.test.js test/structuredLoopResume.test.js test/wasmCompilerRetention.test.js
+# Final marker + actual-VM validation: 35/35.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/elidableLocalValues.test.js test/elidableArrayReferences.test.js
+# Deko: changed candidate only, sequential diagnostics then timing.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose 7bec1e35a09eb1e956a7929485c3ed55cc6ef005 huffman-inline
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 7bec1e35a09eb1e956a7929485c3ed55cc6ef005 huffman-inline
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-inspect 7bec1e35a09eb1e956a7929485c3ed55cc6ef005
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-candidate 7bec1e35a09eb1e956a7929485c3ed55cc6ef005
+```
+
+| Changed reduction | Samples (ms) | Median (ms) | Recorded comparator median (ms) |
+|---|---|---:|---:|
+| Scalar Huffman | 67.775962, 62.160657, 68.518730 | 67.775962 | 55.497371 |
+| Separate vector | 93.388683, 88.658801, 88.468566 | 88.658801 | 89.520345 |
+
+The scalar diagnostic confirms three elisions and checksum **-1268584370**,
+but it has **two fuel exits**; do not describe it as exit-free. Vector confirms
+three elisions across one million entries, checksum **-1834486005**, zero exits
+and zero late compilation. Its saved comparator samples are 85.077283,
+89.520345, 98.219603 ms. Scalar regresses and vector ranges overlap: **no useful
+execution gain is established**. The distinct post-traversal reference-read
+shape motivated the vector screen; it is not proof of a register-lifetime cause.
+There is no original/full cohort, comparator advancement or deployment.
+
+Archive the isolated final source as
+`experiment/teavm-dead-array-references` at
+`7bec1e35a09eb1e956a7929485c3ed55cc6ef005`, and the expanded source/tests as
+`experiment/teavm-dead-array-references-expanded` at
+`71903ca56d2c4e3e06e704aebff9a44f19db7570`. Withdraw this failed emission from
+the working compiler using the preceding expanded source. **Do not test or time
+the restoration.** The actual master remains `cbcf8adde…`; unrelated decompiler
+WIP is preserved. Source/tests and evidence are durable without scratch copies.
+
+The measurement path in `microbench.mjs` now requires saved iteration-count and
+buffered references instead of silently executing HotSpot when a reference is
+missing. Building a new fixture remains an explicit separate operation. The
+nested harness supports candidate-only separate-vector commands. All four
+changed loading scripts passed `node --check`; the commands above also exercised
+the changed diagnostic/timing paths.
+
+An existing-data tier audit does not establish a new cause: the original Vorbis
+`decodeNanos` starts **after** `MusicDecoder.loadById`, so setup/constructor tier
+rejections cannot explain that decode interval. No new timer or CPU profile is
+run. A possible floating-comparison branch simplification is screened by
+`javap -classpath ~/.cache/dekobloko/geoblox-loading/classes -c -p MusicDecoder`:
+there are no `fcmp`, `dcmp` or `lcmp` instructions in this selected decoder class.
+Do not implement or benchmark it as an explanation of this component's gap.
+
+Full-loading evidence remains **1807.0171855 ms / 359.739597 ms = 5.023125618x**
+recorded TeaVM. Keep the 3719.670882 ms outlier. The **1.1x goal is not achieved**;
+browser, phone, FPS, total-heap and stability gates are still open. Future work
+must first identify a concrete applicable code-shape difference against the
+stored TeaVM output, then earn another original/full cohort through a changed
+small case. None of these failed guard/load-count reductions justifies a broader
+admission rule or a claim that removing more checks will close the gap.
