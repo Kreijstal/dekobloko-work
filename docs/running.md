@@ -14660,3 +14660,132 @@ remain in the existing journal/single ledger. No generated Java, class, JAR,
 Wasm, WAT, bundle or screenshot is included in the authored commit. The current
 small scope comparator is component-only; the unchanged original/full comparators
 remain the release references. Do not promote this experimental runtime.
+
+### Scope permission reuse: verified semantics, no useful timing gain
+
+Continue the unchanged full 1.1x goal; the preceding turn is progress because it
+changed generic execution state, completed focused checks and established a real
+original-workload regression. This pass reuses every recorded control. No old
+JVM/TeaVM/HotSpot workload, identity/fingerprint check or restoration timing runs.
+Only changed candidates and a new compile-only small-code question execute.
+
+`79c41505385e6ad47aa070c5d9651e9e0f743c9b` attempts a local validity flag for a
+scope's static permissions/readiness. Native integer stores preserve permission
+bits, so a positive mask proof may survive the next scope entry until an opaque
+operation invalidates it. Actual array addresses/lengths and scalar values still
+reload each entry. This introduces no global epoch, code clone, larger budget,
+game identity or new runtime option. The older failed global/per-method cast
+and leaf-epoch campaigns in this journal are not repeated.
+
+The effect boundary includes imported array metadata queries, monitors and
+synthetic guard imports, in addition to existing calls, custom fields, cast
+fallbacks and foreign array accesses. A metadata query can execute an untracked
+view's length/type getter; it is not automatically pure merely because its
+usual answer is numeric. Positive private metadata transfers keep their existing
+query-free path. New cases change a scalar cell to host accessors during a
+terminal foreign row getter or metadata getter. The next permission guard must
+refuse before running those getters, preserve four original scalar reads per
+remaining traversal, and retain completed prefixes/stores. A fresh invocation
+must obtain a fresh proof; outside calls must revoke each subsequent proof.
+Nine-file validation passes **781/781**:
+
+```bash
+# JVM
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeMixedStateBody.test.js test/nestedInlineActivations.test.js test/nativeStaticStateBody.test.js test/nativeStaticArrayBody.test.js test/arrayIdentityCaches.test.js test/nativeArrayReturnOwnership.test.js test/wasmArrayCopyFieldCache.test.js test/wasmInlineInitialization.test.js test/wasmStaticInlineHandlers.test.js
+# Deko; inspect only the changed candidate, then time only it.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-inspect 79c41505385e6ad47aa070c5d9651e9e0f743c9b
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-candidate 79c41505385e6ad47aa070c5d9651e9e0f743c9b
+```
+
+The stable diagnostic proves one permission check and one object authentication
+across one million vectors, with zero vector entries, metadata/header queries,
+exits or late compilation. Diagnostic elapsed time is excluded. Uninstrumented
+samples are **89.945425, 91.735543, 92.949244 ms**, median **91.735543 ms**. The
+saved changed stable candidate is **92.318204 ms**, and its saved separate-call
+control is **89.520345 ms**. These ranges overlap; no useful gain is established.
+Do not advance a comparator, promote this source, or spend another original/full
+cohort on it. The source and failed evidence stay archived.
+
+### New code-only question: size and frame cost of the nested small case
+
+The new `stable-code` command compiles the changed small fixture without executing
+any guest instruction, Java main, class initializer, oracle or timer. Attempts at
+a Java tick/instruction throw. It inspects the root and vector cores under the
+same eager Node compiler flags, comparing the changed runtime's outer-inline
+transform with that transform withheld. This is a new code-generation question,
+not another control timing or a check that a known baseline is unchanged.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-code 79c41505385e6ad47aa070c5d9651e9e0f743c9b
+```
+
+| Generated core | Wasm locals | Native bytes | Stack reservation | Static stack-address sites |
+|---|---:|---:|---:|---:|
+| Inlined root | 173 | 8640 | 280 bytes | 631 |
+| Separate-call root | 61 | 3364 | 176 bytes | 237 |
+| Vector core (both shapes) | 81 | 4476 | 152 bytes | 249 |
+
+The inlined root has 54 static `if` sites/three loops/101 native call sites;
+the separate root has 26/two/43, and the vector 20/one/55. These counts include
+cold exception, refusal and resumption paths. They do not prove dynamic spill
+frequency, CPU attribution, or that all extra branches execute. They establish
+that removing the method boundary also grows the root and its frame obligations;
+query-count reductions alone are insufficient. Keep one current WAT/native-code
+preview in the existing nested-loop cache, not per-iteration preview directories
+or extra JSON reports. The one canonical ledger keeps compact code observations.
+
+### Readonly array-reference capture: also withdrawn
+
+`b5abfb2c79b5aa1f8e614a6f4f972fd0a2ee5e8b` withdraws the failed permission-cache
+optimization and tests a different compile-time fact: the existing effect proof
+already certifies readonly primitive-array fields. Capture their private reference
+with the already captured base/length at entry, then reuse it at each original
+field read. Whole-body/resumed entries retain the existing fresh-only handling;
+custom fields still refuse before their getter. Six-file validation passes
+**793/793**, including field replacement after suspension and retention:
+
+```bash
+# JVM
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeMixedStateBody.test.js test/nestedInlineActivations.test.js test/nativeStaticStateBody.test.js test/nativeStaticArrayBody.test.js test/inlineActivationResume.test.js test/wasmCompilerRetention.test.js
+# Deko; no separate control rerun.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-inspect b5abfb2c79b5aa1f8e614a6f4f972fd0a2ee5e8b
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-candidate b5abfb2c79b5aa1f8e614a6f4f972fd0a2ee5e8b
+```
+
+Changed stable samples **94.585497, 93.161804, 93.574248 ms**, median
+**93.574248 ms**, again fail to improve the recorded comparator. Every checksum
+remains **-1834486005**, with no exits or late compile. Withdraw the reference
+capture too. No original/full-loading or browser campaign follows either failure.
+
+### Retain metadata callback correctness; keep the original/full references
+
+Final generic source **`3b1b278e533ec26153a87b4b882d0b5872142076`** retains only
+the nested metadata/opaque-helper invalidation fixes beyond `ee271c0`. It contains
+neither permission-cache flags nor readonly-reference hoisting. Assertions for
+those withdrawn features are removed with the implementation; callback result,
+access-count, effect-order, cold/fuel and handler assertions remain strict.
+A separate metadata-getter case mutates an object's field shape, rather than its
+scalar cell, and verifies the shared object certificate is revoked before the
+next scope. This tests the retained fix independently of permission caching.
+Seven-file final validation passes **722/722**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeMixedStateBody.test.js test/nestedInlineActivations.test.js test/arrayIdentityCaches.test.js test/nativeArrayReturnOwnership.test.js test/nativeObjectStorage.test.js test/nativeStaticStateBody.test.js test/wasmCompilerRetention.test.js
+```
+
+This is changed correctness code with a new regression case, not a restoration
+benchmark. `experiment/teavm-native-parity` retains all candidate history. JVM
+master remains `cbcf8adde30e16d2efd8521798dd7646307fd133`; bundles/deployment and
+all original/full comparators remain unchanged. In particular, the original
+reference remains **93.269749 ms**, and the full reference **1807.0171855 ms**
+versus saved TeaVM **359.739597 ms** (**5.023125618x**). The 1.1x objective and
+browser/phone/heap/FPS gates remain unfulfilled.
+
+Next, bound the cost of the **new nested-frame snapshots** before changing the
+allocator: use original-method liveness for the root and each active recovered
+child, preserve stack prefixes and exception-edge locals, and conservatively keep
+unknown states. The earlier original-only liveness experiment found no numeric
+allocation gain; do not replay that experiment or claim it answered this new
+nested-frame question. Inspect an allocation bound first, and stop if it removes
+no meaningful roots/locals. Do not repeat failed global epochs, broad nonreturning
+array-error campaigns or CPU attribution.

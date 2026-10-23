@@ -12,6 +12,7 @@ import {fileURLToPath} from 'node:url';
 import {loadArchivedJvm} from './archive-jvm.mjs';
 import {canonicalExecutionCounts} from './browser.mjs';
 import {parseMeasurementResult} from './measurement-fixture.mjs';
+import {parseWat} from './wasm-loop-outline.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url)),script=fileURLToPath(import.meta.url);
 const root=path.resolve(here,'../../../java-tools');
@@ -45,7 +46,7 @@ public class NestedLoopProbe {
   int[] row=book.vector();for(int k=0;k<8;k++)sum=sum*33+row[k];}return sum;}
 }`;
 
-if(command==='one'){
+if(command==='one'||command==='code-one'){
  assert.ok(engines.includes(engine));assert.ok(flags.every(flag=>process.execArgv.includes(flag)));
  const instrumented=detail==='stats';let Frame,model,allocMultiArray,takeWasmReturnValue,installed=false;
  const {JVM}=await loadArchivedJvm(root,revision,{observeModule:({filename,exports})=>{
@@ -65,6 +66,7 @@ if(command==='one'){
  const j=new JVM({classpath:[directory],wasmHeap:true,wasmFields:true,wasmHeapMb:32,
   jit:{enabled:false,compileWorker:false,retainCompilerDiagnostics:false,wasmStructured:true,
    wasm:{deepInline:false,canonicalDirectCalls:true,canonicalEhLinks:true,nativeJsExceptionTags:true}}});
+ if(command==='code-one'){j.executeTick=()=>{throw Error('Code inspection attempted a guest tick');};j.executeInstruction=()=>{throw Error('Code inspection attempted a guest instruction');};}
  await j.preloadClasspathClasses();for(const name of ['NestedLoopBits','NestedLoopBook','NestedLoopProbe'])j._markClassInitialized(name);
  const w=j.jit.wasmJit;w.enabled=true;w.importStatsEnabled=instrumented;
  const build=(owner,name,descriptor)=>{const method=j.findMethod(j.classes[owner],name,descriptor),state=w.methodState({method});
@@ -74,6 +76,32 @@ if(command==='one'){
  const target=build('NestedLoopProbe',targetName,caseName!=='whole'?'([LNestedLoopBook;I)I':'(LNestedLoopBook;I)I');
  assert.equal(target.meta.inlineActivationDepth||0,engine==='inlined'?2:0,'Unexpected compiled call shape');
  assert.ok(target.meta.normalFlowFullyCompiled,'Reduction lost full normal flow');
+ if(command==='code-one'){
+  const rows=[];
+  for(const [name,state]of [['root',target],['vector',vector]]){
+   const wat=execFileSync('wasm-dis',['--all-features','-'],{input:state.meta.bytes,encoding:'utf8',maxBuffer:4*1024*1024});
+   const module=parseWat(wat),core=module.find(node=>node?.[0]==='func'&&node[1]?.startsWith('$jvm$wasm$'));
+   assert.ok(core,'Missing generated core function');
+   const starts=[...wat.matchAll(/^ \(func (\$[^\s(]+)/gm)],ordinal=starts.findIndex(match=>match[1]===core[1]);assert.ok(ordinal>=0);
+   const index=(wat.match(/^ \(import [^\n]*\(func /gm)||[]).length+ordinal;
+   const native=execFileSync(process.execPath,[...flags,'--trace-wasm-inlining','--print-wasm-code-function-index='+index,'-e',
+    "new WebAssembly.Module(require('node:fs').readFileSync(0))"],{input:state.meta.bytes,encoding:'utf8',maxBuffer:8*1024*1024});
+   assert.match(native,/compiler: TurboFan/,'Expected eager optimizing native compilation');
+   const body=native.slice(native.indexOf('Instructions (size'),native.indexOf('\nSource positions:'));
+   const ops={};const walk=node=>{if(!Array.isArray(node))return;if(typeof node[0]==='string')ops[node[0]]=(ops[node[0]]||0)+1;for(const child of node)walk(child);};walk(core);
+   rows.push({name,key:state.key,wasmBytes:state.meta.bytes.length,wasmLocals:core.filter(node=>node?.[0]==='local').length,
+    instructionBytes:Number(native.match(/Instructions \(size = (\d+)\)/)?.[1]),
+    stackReservations:[...body.matchAll(/^0x[^\n]*\bsubq? rsp,[^\n]*/gm)].map(match=>match[0]),
+    stackAddressSites:(body.match(/\[(?:r|e)[bs]p[^\]]*\]/g)||[]).length,
+    nativeCallSites:(body.match(/^0x[^\n]*\bcall\b/gm)||[]).length,
+    branches:ops.if||0,loops:ops.loop||0,loads:ops['i32.load']||0,stores:ops['i32.store']||0,
+    inlineActivationDepth:state.meta.inlineActivationDepth||0,nativeStateSites:state.meta.nativeStaticStateBodySites||0});
+   if(name==='root')fs.writeFileSync(path.join(directory,'current.wat'),wat);
+   fs.appendFileSync(path.join(directory,'current-native.txt'),'\n'+engine+' '+state.key+'\n'+native);
+  }
+  console.log('NESTED_CODE_RESULT '+JSON.stringify({sourceRevision:revision,caseName,engine,rows,guestInstructions:0,
+   scope:'Code-generation question only: no Java workload, oracle, timer, CPU attribution or baseline identity replay; native static site counts include cold paths.'}));process.exit(0);
+ }
  const tree=[];let leaf=0;
  const node=depth=>{const at=tree.length;tree.push(0);if(!depth)tree[at]=~leaf++;
   else{node(depth-1);const right=node(depth-1);tree[at]=right;}return at;};node(8);
@@ -111,6 +139,7 @@ if(command==='one'){
   nativeStaticCheckedReferenceLoads:target.meta.nativeStaticCheckedReferenceLoads||0,
   stateOwnershipQueries:instrumented?target.meta.importStats.get('native_state_object_storage')||0:null,
   stateArrayHeaderQueries:instrumented?target.meta.importStats.get('native_state_array_header')||0:null,
+  permissionChecks:instrumented?[...target.meta.importStats].filter(([name])=>name.startsWith('native_state_permissions_')).reduce((sum,[,value])=>sum+value,0):null,
   baseQueries:instrumented?target.meta.importStats.get('abase')||0:null,
   lengthQueries:instrumented?target.meta.importStats.get('alen0')||0:null,
   separateVectorStateSites:vector.meta.nativeStaticStateBodySites||0,
@@ -123,7 +152,7 @@ if(command==='one'){
  process.exit(0);
 }
 
-assert.ok(['diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
+assert.ok(['diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate','inspect','scope-inspect','stable-inspect','code','scope-code','stable-code'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
 fs.mkdirSync(directory,{recursive:true});const java=path.join(directory,'NestedLoopProbe.java');
 if(!fs.existsSync(java)||fs.readFileSync(java,'utf8')!==source||!fs.existsSync(path.join(directory,'NestedLoopProbe.class'))){
  fs.writeFileSync(java,source);execFileSync('javac',['--release','8','-proc:none','-d',directory,java]);
@@ -135,7 +164,14 @@ if(!result){result={sourceRevision:revision,caseName,sourceSha256:hash(source),h
 const save=()=>fs.writeFileSync(reportPath,JSON.stringify(report,null,2)+'\n');
 const one=(variant,stats)=>parseMeasurementResult(execFileSync(process.execPath,[...flags,script,'one',revision,variant,stats?'stats':'timing',caseName],
  {encoding:'utf8',maxBuffer:1024*1024}),'NESTED_LOOP_RESULT ');
-if(command.endsWith('diagnose'))for(const variant of engines){
+if(command.endsWith('code')){
+ fs.writeFileSync(path.join(directory,'current-native.txt'),'');
+ result.codeOutputs=[];
+ for(const variant of engines){
+  const row=parseMeasurementResult(execFileSync(process.execPath,[...flags,script,'code-one',revision,variant,'code',caseName],
+   {encoding:'utf8',maxBuffer:1024*1024}),'NESTED_CODE_RESULT ');result.codeOutputs.push(row);save();console.log(JSON.stringify(row));
+ }
+}else if(command.endsWith('diagnose')||command.endsWith('inspect'))for(const variant of command.endsWith('inspect')?['inlined']:engines){
  if(result.diagnostics.some(row=>row.engine===variant)){console.log('reuse saved '+variant+' diagnostic');continue;}
  const row=one(variant,true);result.diagnostics.push(row);save();console.log(JSON.stringify(row));
 }
