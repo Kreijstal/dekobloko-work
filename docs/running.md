@@ -14315,3 +14315,348 @@ node --check apps/loading/call-code.mjs
 node --check apps/loading/benchmark-baseline.mjs
 git diff --check
 ```
+
+### Nested recovered calls: retain the callee's proofs (experimental)
+
+Continue the existing 1.1x goal without replaying any recorded JVM, TeaVM or
+HotSpot control. The rolling full comparator remains `029834e16366e3dfaed1f46d5589ec34dddc04dc`
+(**1807.0171855 ms**, six observations, **5.023125618x** recorded TeaVM). This
+experiment changes generic compiler code; JVM master, bundles and deployment stay
+unchanged. No game identities enter JVM code.
+
+`cb9fed824e3270ebe741f2395926339707dea256` first permits a recoverable loop
+inside a bounded instance wrapper. Every original scope keeps its method, local
+range, call PC and relative operand prefix. A rare instruction/fuel/callee exit
+reconstructs the root and both original frames, innermost pending frame first.
+Separately spliced atomic leaves do not acquire fictional parent instruction PCs.
+Captured arguments and reference identity survive replacement of the receiver's
+fields; completed stores and wrapper prefixes are never replayed. Completed
+private callee slots are retired. Imports retain compact resume metadata, not SSA.
+Default inline depth/budgets are unchanged.
+
+Removing the callee boundary also removes its implicit object/callback proof.
+Nested field reads now authenticate private storage lazily. Foreign primitive or
+reference-array getters, custom instance/static getters or setters and opaque
+calls invalidate those facts before executing callbacks. Customized fields retain
+original access counts. Tests caught a getter bypass and two stale-field loop
+cases during development; these are fixed rather than treating such accessors as
+native or weakening the assertions. An initial GC test itself retained its two
+objects; release those test-local references before collecting. The 13-file
+focused run at `cb9fed8` passed **1274 assertions**.
+
+The new `nested-loop.mjs` fixture is a bounded bit/tree traversal returning rows,
+reduced one million times in one invocation. Source SHA256 is
+`3e1db946c5803a6ba19be838f45e109d4d18e1dc74cf79afb2051f70e5a4d39b`;
+probe class SHA256 is
+`91179f39157b2ee2fcd65d2dc3f44a7ee0066748344c5b7be286807cb458a0f8`.
+Both arms use the same changed runtime, same new Java workload and same large
+invocation fuel. The control withholds only the root's outer inline transform;
+the vector method's existing inner inline remains enabled. This isolates a new
+code-generation question, not production scheduling or an old baseline replay.
+The expected checksum **-1834486005** is independently calculated in JavaScript
+before timing; no Java/TeaVM/HotSpot oracle is generated or run.
+
+The `cb9fed8` diagnostic removes all one million vector entries but loses the
+whole-body state proof (zero static-state sites rather than the vector's nine).
+Do not time/promote this version or infer a speedup from its diagnostic elapsed
+value. Those instrumented observations remain in the single ledger.
+
+`db423d0a79cf2ccecc63bb5226729d53f18c6ccd` then extends the existing bounded
+stateful proof to a nonterminal reference-array load. Only the authenticated owned
+branch can continue. Foreign/revoked arrays hand off at the original instruction,
+before their getters; returned foreign primitive arrays and boolean normalization
+also hand off before consumption. Generated invoke-miss results do not count as
+continuing array origins: emitted native code exits at those invokes. Ownership
+certificates cross phi assignments in parallel, captured before cache kills and
+installed afterwards. An intermediate test caught eight repeated header queries
+because the phi kill erased a newly copied certificate; the ordering is fixed.
+Existing non-nested code-generation policies remain unchanged.
+
+Focused semantic checks cover two nested frames, wide/root/reference stack
+prefixes, zero iterations, unused null arguments, original handlers, null and
+bounds failures, a real yielding callee above both virtual frames, field
+replacement after suspension, callback mutations, foreign/revoked arrays,
+boolean-array normalization, metadata cleanup, retention and zero late compile.
+An attempted command initially named nonexistent `nativeBooleanArrays.test.js`
+and failed before executing tests; use the real heap-array suite plus the explicit
+new boolean test instead. Final exact command (JVM directory), **1727/1727 pass**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeMixedStateBody.test.js test/nestedInlineActivations.test.js test/inlineActivationResume.test.js test/nativeStaticStateBody.test.js test/nativeStaticArrayBody.test.js test/canonicalDirectFrames.test.js test/structuredLoopResume.test.js test/wasmDeepInline.test.js test/wasmInstanceInline.test.js test/wasmStaticInlineHandlers.test.js test/wasmCompilerRetention.test.js test/classMirrorTransport.test.js test/nativeObjectFieldCodegen.test.js test/nativeObjectStorage.test.js test/nativeArrayReturnOwnership.test.js test/wasmHeapArrays.test.js test/nativeReferenceArray.test.js
+```
+
+The changed-source diagnostic at `db423d0` reports depth two, **nine state sites**,
+one checked reference load, **one object ownership query**, **zero primitive-array
+header queries**, zero vector entries, zero native exits and no late compilation.
+The same-source separate arm makes one million vector entries/ownership queries.
+Diagnostic times are excluded. Three fresh uninstrumented pairs, sequential on
+CPU2 with Node v22.23.2 and `--max-old-space-size=1024 --no-liftoff
+--no-wasm-lazy-compilation`, give:
+
+| Pair | Nested inline (ms) | Separate vector (ms) |
+|---|---:|---:|
+| 1 | 51.002955 | 89.614396 |
+| 2 | 47.683764 | 83.432770 |
+| 3 | 47.793492 | 95.357881 |
+
+Medians **47.793492** and **89.614396 ms** establish this small mechanism only.
+The order reverses in pair two. Every observation has the expected checksum,
+no native exits, cleared return metadata and zero late compilation. Preparation,
+archive loading, JavaScript oracle and diagnostics are excluded. Commands (Deko):
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs diagnose db423d0a79cf2ccecc63bb5226729d53f18c6ccd
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs run db423d0a79cf2ccecc63bb5226729d53f18c6ccd
+```
+
+Keep these receipts under `optimizationTrials.nestedInlineLoops` in the single
+canonical JSON. No extra report, generated source/class/JAR, Wasm/WAT, bundle or
+screenshot is committed. Before a full candidate loading run, inspect the changed
+original decoder to establish actual depth/coverage and retained proofs. A small
+fixture win is insufficient to advance the full comparator or claim parity.
+
+### Recovered wrapper regions and positive return joins
+
+The changed original diagnostic for `db423d0` matches all **348249 PCM bytes**,
+with zero late compilation or native residue exits. It now has **zero vector
+entries** (previously 134216), and residue depth two/three inlined sites. However,
+residue has **zero static-state sites**: dropping the old callee's proof is a real
+remaining cost. Do not time this original version merely because calls disappear.
+
+`58ebc0a38bbebf459268b5e4b49faad8e470c60b` retains that proof within a bounded
+original wrapper scope. The inliner marks a real PC-0 entry and its continuation;
+the CFG splits at that entry. The planner proves a single entry, disjoint scopes,
+bounded nodes/dependencies, no opaque operation that can continue inside, and
+receivers available at entry. Every outside edge reauthenticates current storage
+and reloads scalar/array state. Surrounding calls, allocations and other effects
+remain outside the proof. Scalar writes still occur at their original Java
+instructions. Region failure materializes the original wrapper at PC 0; nested
+fuel failure still reconstructs both real scopes. No proof escapes to arbitrary
+outside array accesses. Regional methods do not acquire a whole-method closed
+contract or a resume entry that could bypass the region guard.
+
+New checks exercise a receiver obtained from an array and an outside Java call
+that replaces rows and changes the bit cursor on each iteration. Results and
+callback effects match exact Java execution, including zero iterations, fuel
+exhaustion, custom getters and original access counts. A first test helper was
+itself statically inlined, so it tested a different path and conservatively lost
+structured coverage at its unrecoverable putfield. Give that helper a real Java
+call so the regression actually exercises the outside-call boundary; runtime
+assertions stay strict. A cold-dependency test then catches the dry run's old
+root-level readiness guard. Move it to the scope only when **all** owner uses are
+protected by such entries. The initializer must observe the completed caller
+prefix, and authentication itself must execute no initializer/getter.
+
+Validation, all in JVM directory:
+
+```bash
+# 1749/1749 pass before the added cold case.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeMixedStateBody.test.js test/nestedInlineActivations.test.js test/inlineActivationResume.test.js test/nativeStaticStateBody.test.js test/nativeStaticArrayBody.test.js test/canonicalDirectFrames.test.js test/structuredLoopResume.test.js test/wasmDeepInline.test.js test/wasmInstanceInline.test.js test/wasmStaticInlineHandlers.test.js test/wasmCompilerRetention.test.js test/classMirrorTransport.test.js test/nativeObjectFieldCodegen.test.js test/nativeObjectStorage.test.js test/nativeArrayReturnOwnership.test.js test/wasmHeapArrays.test.js test/nativeReferenceArray.test.js
+# 146/146 pass after fixing the cold scope guard.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeMixedStateBody.test.js
+# 633/633 pass for the changed initialization/resume boundary.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmInlineInitialization.test.js test/wasmColdIntegerInline.test.js test/wasmStaticInlineHandlers.test.js test/inlineActivationResume.test.js test/nativeStaticStateBody.test.js test/nativeStaticArrayBody.test.js test/nestedInlineActivations.test.js
+```
+
+The small harness adds a separate **scope** case: obtain the book from an owned
+reference array and perform a real outside Java call each iteration. Updated
+fixture source SHA256 is
+`c229ad03e9a57320b6568551cffbd357ee995f91e8d76395e933372ca73e71b4`, probe class
+SHA256 `b863e23e43361a47200e17fd660695e4aea0de6f7bd33bc2a354902767557de4`.
+The whole-body fixture's previous observations remain associated with their old
+source identity; they are not silently relabeled as the new scope case. The
+independent checksum remains **-1834486005**. Setup and diagnostics stay outside
+timing, with the same CPU2/eager Node/1 GiB constraints.
+
+| Changed runtime / scope case | Inline observations (ms) | Median (ms) |
+|---|---|---:|
+| Scoped state proof, `58ebc0a` | 149.043165, 170.019608, 148.772988 | 149.043165 |
+| Plus positive return-join transfer, `7a9d0f1` | 110.958090, 98.844937, 98.530974 | 98.844937 |
+
+The initial separate-call controls, captured with `58ebc0a` on this **new** scope
+workload, are **133.925636, 130.762676, 126.397992 ms**, median **130.762676 ms**.
+The scoped proof alone therefore **regresses** and is not promoted. Retain that
+failed evidence. After the return-join fix, reuse these recorded controls rather
+than timing their unchanged generated path again. The changed candidate-only
+cohort is not a fresh interleaved comparison.
+
+`7a9d0f109000c96cc58ceb8aea06810365f442ea` fixes the lost private row header at
+the wrapper's reference-return phi. Existing identity groups only activate when
+a reader has a separate cast alias; the recovered join is itself the reader.
+For that nested shape, admit a bounded phi slice leading to an existing private
+row header. The existing positive-only simultaneous transfer handles the rest.
+Unknown, foreign or untracked positive pointers supply **no ownership proof**.
+A new untracked-view test retains one observable length query per original row
+capture. Native rows cross the join with **zero base/length queries**. Bounds,
+casts and the reference identity remain observable exactly where required.
+The focused four-file command passes **363/363 assertions**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeMixedStateBody.test.js test/arrayIdentityCaches.test.js test/nativeArrayReturnOwnership.test.js test/nestedInlineActivations.test.js
+# Deko commands: new scope fixture, then changed candidate only.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs scope-diagnose 58ebc0a38bbebf459268b5e4b49faad8e470c60b
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs scope-run 58ebc0a38bbebf459268b5e4b49faad8e470c60b
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs scope-diagnose 7a9d0f109000c96cc58ceb8aea06810365f442ea
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs scope-candidate 7a9d0f109000c96cc58ceb8aea06810365f442ea
+```
+
+The `7a9d0f1` diagnostic proves nine state sites, one scope, depth two, zero vector
+entries, zero base/length/header queries, zero native exits and no late compilation.
+This scope case intentionally has an outside call on every iteration, so its one
+million object-authentication queries remain required by the current proof. Do
+not mistake instrumented elapsed values for timing. Its separate diagnostic is
+also recorded, but no separate uninstrumented control is repeated after selection.
+Original decoding/full loading still require changed-candidate evidence before
+advancing any full comparator. All evidence remains in the existing journal and
+single canonical JSON; experimental generic source is archived separately from
+unchanged JVM master. The **1.1x goal remains open**.
+
+### Terminal reference reads end a region, rather than forcing a handoff
+
+The changed original inspection at `7a9d0f1` matches all PCM bytes and proves two
+residue scopes, **18 state sites** and two checked reference loads. It also
+reports **666 native handoffs**, exactly **666 `inline_spill_call_275_retry`**
+imports. A code-only expansion (no compilation or guest execution) maps item 275
+to `readVector`'s original `aaload`, PC 4. The wrapper's next operation is its
+original return. The native path therefore only traverses 69106 wrapper scopes
+before those exits leave remaining work interpreted. `fuelExits` also counts
+nonnegative instruction exits here; that label alone is not evidence that the
+scheduler budget caused these particular handoffs. The actual spill import/PC
+identifies the rejected reference-read branch.
+
+Do not time/promote this original candidate or hide the handoffs behind a correct
+checksum. The earlier wholly owned small fixture does not cover this actual
+foreign-array branch. This is also distinct from the older rejected broad array
+region expansion: retain the existing bounded proof, with exact wrapper entries
+and final-operation boundaries, rather than broadly authorizing arbitrary array
+loops or increasing region/inline budgets.
+
+`b78f2e1966372968e1b1730ca642c95b4e46041b` admits the existing checked reference
+getter as the **last operation of a wrapper region**. The operation must be the
+last SSA body node and its goto must reach that exact scope's continuation.
+Nothing within the certified scope executes after the callback. Ordinary foreign
+access still clears field/object facts and clears the untrusted row header before
+its getter; the caller continues under its ordinary checked protocol. Each next
+scope entry reloads current scalar and array state. A genuinely nonterminal read
+inside a certified body retains exact-instruction refusal. No assumption says
+that a foreign getter is pure or that it can rejoin cached scalar state.
+
+New focused cases verify a foreign terminal getter continuing twice in the native
+caller, one getter execution per original access, no allocated pending frames,
+callback scalar changes followed by the outside Java call, and an exact throwable
+identity with all pre-throw stores retained and the outside call skipped.
+Seven-file validation passes **775/775**; after tightening the exit to the exact
+scope continuation and adding the throw check, the mixed suite passes **157/157**:
+
+```bash
+# JVM
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeMixedStateBody.test.js test/arrayIdentityCaches.test.js test/nativeArrayReturnOwnership.test.js test/nestedInlineActivations.test.js test/nativeStaticStateBody.test.js test/nativeStaticArrayBody.test.js test/inlineActivationResume.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeMixedStateBody.test.js
+# Deko: changed original candidate only, using the saved PCM oracle.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect b78f2e1966372968e1b1730ca642c95b4e46041b 'VorbisResidue.decodeResidue([FIZ)V'
+```
+
+The changed `b78f2e1` original diagnostic now confirms **682 native residue
+entries, zero native exits, zero standalone vector/scalar entries**, two scopes,
+**18 state sites** and two terminal reference reads. All **348249 PCM bytes**
+match, and post-main Java compilation remains zero. The 134216 state/object
+entry queries are retained evidence of work still present, not a claim that
+calls alone explained the entire runtime gap. The discarded `7a9d0f1` original
+handoffs and all small-case regressions remain recorded.
+
+Only after that coverage check, start a changed-candidate-only three-observation
+original cohort. Reuse every recorded JVM/TeaVM/HotSpot control; no build,
+profiling, tests, baseline timing or baseline identity replay runs alongside it:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm b78f2e1966372968e1b1730ca642c95b4e46041b
+```
+
+The completed `b78f2e1` original cohort is **97.858258, 113.132657,
+111.491132 ms**, median **111.491132 ms**. Every PCM byte matches and every
+observation has zero late compilation. This fails the saved **93.269749 ms**
+original comparator. Keep that comparator and the six-sample full comparator
+unchanged; do not run full loading, rebuild the old reference, promote or deploy
+this candidate. The single ledger stores this explicitly as
+`nestedInlineLoops.rejectedOriginal`. Correctness and small-case wins do not
+establish original-workload performance.
+
+### Sharing object authentication is insufficient by itself
+
+`0d47d8438fbe102fa161758bf260c77b38d0dc2d` shares an authenticated object's
+existing invocation-local ownership flag across bounded scope entries. A new
+scope loads current scalar values/array headers each time, but does not repeat
+object authentication while that exact SSA receiver and effect proof remain
+valid. Reference redefinition and outside opaque operations revoke the flag.
+The scope also publishes its successful proof to subsequent native field uses,
+rather than forcing an immediately redundant authentication. No flags, game
+profiles, larger budgets or unchecked incoming transport values are introduced.
+
+A stable-receiver fixture captures the book before its outer vector loop, which
+matches the dependency shape missing from the outside-call fixture. Source
+SHA256 `df329f32ff54394146ac0b1ae02009605ba7c9e642c68a574e1a5ea05799e2f7`, probe
+class SHA256 `9791921f514eb2be46a9bc044872cba6d6fadb85950cc8149b0e6b176aa4e0cb`.
+Its first diagnostic confirms **one** object authentication across one million
+vectors, nine state sites, no vector entries/base/length/header queries, no exits
+and no late compile. The new same-source separate-call control authenticates
+one million times. Both retain checksum **-1834486005**. These are new-case
+observations; no earlier control is rerun to verify itself.
+
+| Stable case pair | Inline (ms) | Separate call (ms) |
+|---|---:|---:|
+| 1 | 93.330683 | 85.077283 |
+| 2 | 92.318204 | 89.520345 |
+| 3 | 87.914230 | 98.219603 |
+
+Medians **92.318204 / 89.520345 ms** and overlapping ranges do **not** establish
+a performance gain. Do not advance a comparator or spend another original/full
+cohort on this ownership-only change. The repeated static/array entry checks and
+fresh scalar loads remain; fewer JS queries alone cannot be equated with speed.
+The first five-file ownership/field validation passes **422/422**:
+
+```bash
+# JVM
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeMixedStateBody.test.js test/nestedInlineActivations.test.js test/nativeObjectFieldCodegen.test.js test/nativeObjectStorage.test.js test/wasmArrayCopyFieldCache.test.js
+# Deko: fresh new stable case, same eager/CPU2/1GiB constraints.
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-diagnose 0d47d8438fbe102fa161758bf260c77b38d0dc2d
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-run 0d47d8438fbe102fa161758bf260c77b38d0dc2d
+```
+
+Before retaining the experiment, further callback cases expose two actual
+correctness gaps: an imported reference-array setter and a cast's host type getter
+can mutate the captured book's field shape. Without invalidation, the next region
+incorrectly bypasses all eight subsequently required tree getters. The new test
+fails **4/182 assertions** before the fix, including the missing handoff and
+missing getters in both cases. Revoke nested ownership/field facts before these
+opaque import paths. Keep the native cast's authenticated private-storage branch
+unchanged, and invalidate only its fallback. Unknown imported instanceof checks
+in a nested method must execute their original getter rather than reuse a verdict.
+The same test keeps strict exact results, prefix counts and subsequent getter
+counts after the fix; no unsupported custom accessor is silently treated as pure.
+
+The next worthwhile code-generation question is amortizing the static permission
+proof across a larger effect-safe loop while preserving fresh mutable scalar
+values and exact invalidation at every opaque callback or dependency replacement.
+Do not just increase region budgets, drop foreign-array support, repeat CPU
+attribution, rerun unchanged controls or extrapolate a toy's speed to full loading.
+Current work is generic experimental source; **1.1x, full loading, heap, FPS,
+browser and phone acceptance remain unfulfilled**.
+
+Final generic experimental source is **`ee271c0132012a1ff617a97caea0386ab5143c12`**,
+archived under `experiment/teavm-native-parity`; actual JVM master remains
+`cbcf8adde30e16d2efd8521798dd7646307fd133`. The final callback/ownership validation
+passes **727/727** assertions:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeMixedStateBody.test.js test/nestedInlineActivations.test.js test/arrayIdentityCaches.test.js test/nativeArrayReturnOwnership.test.js test/nativeObjectFieldCodegen.test.js test/nativeObjectStorage.test.js test/wasmArrayCopyFieldCache.test.js test/wasmStaticInlineHandlers.test.js test/wasmInstanceInline.test.js
+```
+
+Deko's exact final source checks all exit zero: `node --check
+apps/loading/nested-loop.mjs`, `node --check apps/loading/probe.mjs`, `node --check
+apps/loading/microbench.mjs` and `git diff --check`. No performance run follows
+these correctness-only callback invalidation changes, and no baseline is tested
+against itself. All samples, failed admissions, source history and validation
+remain in the existing journal/single ledger. No generated Java, class, JAR,
+Wasm, WAT, bundle or screenshot is included in the authored commit. The current
+small scope comparator is component-only; the unchanged original/full comparators
+remain the release references. Do not promote this experimental runtime.
