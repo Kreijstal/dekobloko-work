@@ -17118,3 +17118,39 @@ Only post-timer worker count/byte reporting was added to microbench/probe.
 The next earned gate is the changed Huffman screen versus saved matched
 55.497371 ms, with no rerun of 029 or any oracle. No original/full timing,
 promotion or deployment has yet been earned by this experiment.
+
+
+Final changed-candidate screen (harness db2f3b7, run ID
+ d3a2a34d-6ba0-4d16-9ec6-ed57a7c57598):
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 61cef101d60060a17550273c5d86221cc3e828b0 huffman-inline
+```
+
+Results are **56.215813, 55.399898, 61.482963 ms**, median **56.215813 ms**,
+versus the saved matched 029 source median **55.497371 ms** (about 1.013x).
+All checksums are **-1268584370**, with zero late Java compilation. The installed
+huffmanInline method has one 432-byte worker. Its two fuel exits match the
+already-recorded control's two exits; no baseline execution was needed to read
+that existing metadata. Method-installation counts are not helper-entry or CPU
+share measurements. No claim of zero exits or exact helper invocation counts
+is made. Three fresh processes ran sequentially, CPU 2 / Node 22.23.2 / 1-GiB
+old-space / eager optimizing Wasm, with no concurrent builds/tests/profiling.
+
+**Rejected at the small screen.** Reduced helper code size and successful Java
+cold-path semantics did not establish an elapsed improvement. No original
+Vorbis/full-loading cohort is earned, and no default, deployment, master or
+normal JVM index changes. All observations and the compact decision remain in
+optimizationTrials.nativeNumericKernels in the same benchmark.json. Preserve
+the source experiment refs/tests, remove this experiment's one extraction and
+scratch logs/index, and do no restoration timing/test/fingerprint check.
+
+A narrower possible follow-up, not an implemented or measured optimization:
+first bound which values the actual worker needs on a normal return versus
+only a cold fault/fuel exit. The current 9-result union pays for cold snapshot
+values even on normal completion. Inspect that exact helper's return/register
+code before deciding whether splitting the cold payload is worthwhile. This is
+not a renewed CPU attribution request or a claim that the old global-ABI
+controls (which showed no substantial penalty) were positive. Do not promote a
+new ABI, rerun old controls or jump to full loading on that hypothesis alone.
+The full 1.1x objective remains active and unachieved.
