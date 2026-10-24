@@ -20397,3 +20397,149 @@ Full reference is still **1807.0171855 ms**, saved TeaVM **359.739597 ms** and
 target **395.7135567 ms**. No original/full improvement is established by this
 pass. The **1.1x goal remains active and unmet**; browser/phone, presented FPS,
 peak total heap and stability acceptance remain unverified.
+
+### 2026-10-24 — Bound refill opportunity before lowering; mutable tree-prefix proof
+
+The previous turn is progress: it implemented two exact intrinsic-cache variants
+and rejected promotion using original/component evidence. Reuse all saved
+measurements and CPU attribution; no unchanged baseline/oracle, restoration
+identity/correctness check or new CPU profile runs in this pass.
+
+The proposed wide byte-refill reduction is ruled out before implementation.
+The saved 490954-request metadata is enough to calculate required refills with
+integer arithmetic, without reading compressed data or executing either engine:
+
+| Bytes refilled by a request | Requests |
+| --- | ---: |
+| 0 | 403816 |
+| 1 | 87135 |
+| 2 | 3 |
+
+Only **three** requests benefit from combining multiple byte loads. Total byte
+reads are **87141**, final buffered count **1**, and multi-byte requests account
+for just six byte-loop body visits. This is an opportunity count, not a CPU-time
+bound or proof that every reader optimization is useless. Do not implement a
+wide-load fast path or manufacture a wider request stream to make it look good.
+The actual reader's new compile-only SSA inspection has one refill cycle, sixteen
+native field sites and the existing owned-object body; this does not change its
+normal code or measure it against itself.
+
+`bufferedRefillCounts` is added to the existing `buffered-replay.mjs`, with tests
+in the existing fixture file; no report/helper directory is added. It does not
+revalidate stored artifact hashes. The focused command passes **2/2** tests:
+
+```
+node --test --test-name-pattern='buffered refill counts' tests/loading-fixture.test.mjs
+```
+
+Coverage checks all 32 initial bit counts and 31 widths against independent
+explicit fills, chunk continuation, bit conservation and malformed requests.
+Reproduce the new metadata-only observation without running an engine:
+
+```
+node --input-type=module - <<'JS'
+import fs from 'node:fs';
+import {bufferedRefillCounts} from './apps/loading/buffered-replay.mjs';
+const r=JSON.parse(fs.readFileSync('/home/kreijstal/.cache/dekobloko/geoblox-loading/benchmark.json'));
+console.log(bufferedRefillCounts(Buffer.from(r.microbenchmarks.bufferedWorkload.encoded,'base64')));
+JS
+```
+
+A distinct algorithmic proof now targets repeated integer-tree traversals.
+Generic source **586ab6c1c0bc22b0e1a5fd4088e5da43b642bbde** at
+`experiment/teavm-int-tree-prefix-cache`, parent selected 029834e1, adds a native
+prefix-query prototype and tests. A nonnegative word continues the traversal:
+input zero selects index+1, input one selects that word as the next index;
+a negative word terminates. Eight input bits select a bounded path certificate.
+The certificate stores the exact indices and values read by that path. The native
+query compares them with the **current heap**, so mutation is supported without
+assuming the entire array is immutable or tracking every array store/host write.
+An unobserved leaf can change without affecting the accepted path. A changed
+observed dependency refuses, allowing the ordinary algorithm to execute.
+
+The pure Wasm query returns only terminal index/consumed bits. It writes no Java
+state. Unsupported/deep/cyclic paths, insufficient input/fuel, wrong metadata and
+exhausted preparation budget refuse. A current negative root consumes no input.
+Each cache has a fixed **2 MiB / 64-table** budget, no Java references, and a
+private memory distinct from the Java heap. It rejects shared heaps. Table
+construction is bounded to 256 prefixes times at most nine node reads, not an
+unbounded traversal or scan of the entire tree. The auxiliary memory assembler
+support comes from the already-tested generic multi-memory form; it carries no
+application symbols or new user flag.
+
+```
+node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/intTreePrefixCache.test.js
+```
+
+Result **125/125**. Tests compare every eight-bit prefix and starting bit cursor
+for balanced depths 1–8 with an independent step-by-step reader; cover changed
+observed/unobserved values, negative roots, cycles, bad/deep edges, precise fuel
+thresholds, malformed spans, all 64 slots/budget exhaustion, heap growth, and
+untrusted buffer getters. This validates a generic native kernel, **not yet an
+integrated compiler transformation or a speedup**.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 586ab6c1c0bc22b0e1a5fd4088e5da43b642bbde int-tree-prefix-shape
+```
+
+New shape-only preparation exits 0 with zero guest ticks, assets or main. The
+actual vector retains its stateful proof and no alternate resume entry. Its nine
+blocks contain the integer-tree loop, a byte-input read, the two scalar cursors,
+three original cursor publications, a merged traversal index and one otherwise
+unused loop-carried bit value. The terminal vector-row load remains outside the
+loop. Deko owns this selector/SSA projection. The next implementation must match
+that shape generically, preserve original field/array ownership and initialization
+proofs, keep enough original fuel and exact cold/fault behavior, and update the
+loop's complete demanded state before its final header. No per-symbol table
+rebuild, unbounded allocation, unchecked immutable-data assumption or fallback
+performance claim is authorized by this kernel proof.
+
+The single existing JSON holds `bufferedRefillBound`, `intTreePrefixCache` and
+the new SSA observation. No JVM default artifact changed at this prototype
+stage; the later user-requested master commit is recorded below. No current
+benchmark source is timed just because an unused prototype
+exists. Full **1807.0171855 ms**, TeaVM **359.739597 ms**, target
+**395.7135567 ms** remain fixed; the full 1.1x goal and wider release gates remain
+unmet. Integration, changed-path timing and original/full gates still remain.
+
+Generic recognizer source **a69bbcddfb920c7fdcfb8a52262c36829bf19f75** adds
+`intTreePrefixPlan` and its tests. It infers the tree, input, cursor roles and
+complete loop recurrence from SSA and the existing stateful-body certificate.
+Both branch orientations and renamed fields/classes are supported. Extra array
+faults, calls, cursor stores, side entries, wrong cursor types/transforms and
+other loop-carried state refuse. Additional copies of the last-bit recurrence
+are explicitly retained. The saved actual vector projection matches header 1,
+index phi 4, back-edge value 7, last-bit value 22/phi 5, and blocks 1–6. This uses
+the existing projection rather than recompiling an unchanged method.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/intTreePrefixPlan.test.js
+```
+
+Result **22/22**. The initial combined command was **145/146**: one supposed
+negative fixture actually described a valid extra last-bit recurrence. Preserve
+that case as a positive assertion and change the negative to an unsupported
+recurrence; no semantic refusal rule is weakened. The native kernel remains
+**125/125**. The recognizer/kernel are still not wired into normal lowering.
+
+At the user's explicit request, commit this progress on **master**, rather than
+leaving it only on experimental refs. JVM master commit
+**a4fa88e9884d6b74a508da5f45884d217a6c99eb** contains only the two generic modules,
+their two test files and the small required assembler change. Apply those
+assembler additions to the pre-existing working file while preserving its
+other edits; an alternate index excludes all unrelated WIP from the commit.
+The real index has no unrelated staged changes. The experiment refs remain
+available for provenance. No generated Java/binary/Wasm output is committed.
+
+Validate the exact committed-master assembler with the new modules before
+publishing that commit, in the same single expendable extraction:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/intTreePrefixPlan.test.js test/intTreePrefixCache.test.js
+```
+
+Result **147/147**. This tests the new master changes, not an unchanged baseline.
+It does not prove JVM integration, performance parity or deployment; those
+remain open. Deko's reproducible metadata analysis, shape query and this journal
+are committed on its master too.

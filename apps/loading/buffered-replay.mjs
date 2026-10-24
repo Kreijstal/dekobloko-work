@@ -81,6 +81,24 @@ export function bufferedReplayArgs(workload){
  // created, and the timed Java method consumes each request exactly once.
  return validateBufferedWorkload(workload).bytes.toString('hex').match(/.{1,60000}/g)||[];
 }
+// Analyze the saved request metadata only. This does not read game bytes,
+// execute a decoder/oracle, time an engine or revalidate artifact identities.
+export function bufferedRefillCounts(packed,initialBufferedBits=0){
+ assert.ok(Number.isInteger(initialBufferedBits)&&initialBufferedBits>=0&&initialBufferedBits<=31);
+ const histogram={};let buffered=initialBufferedBits,requests=0,bytesRead=0,multiByteCalls=0,multiByteIterations=0;
+ for(const code of packed){
+  assert.ok(Number.isInteger(code)&&code>=0&&code<=255,'Invalid packed request');
+  const width=code&31,kind=code&224;
+  assert.ok(width>0&&[0,64,128].includes(kind),'Invalid packed request');
+  if(kind===64)assert.equal(width,1);if(kind===128)assert.equal(width,8);
+  const count=width<=buffered?0:Math.ceil((width-buffered)/8);
+  histogram[count]=(histogram[count]||0)+1;requests++;bytesRead+=count;
+  if(count>1){multiByteCalls++;multiByteIterations+=count;}
+  buffered+=count*8-width;
+ }
+ return {requests,histogram,bytesRead,multiByteCalls,multiByteIterations,
+  initialBufferedBits,finalBufferedBits:buffered};
+}
 export function captureBufferedWorkload({player,asset,inputSha256,classes,previous}){
  const asm=path.join(os.homedir(),'.m2/repository/org/ow2/asm/asm/9.6/asm-9.6.jar');
  const sourceSha256=hash(captureSource),asmSha256=hash(fs.readFileSync(asm));

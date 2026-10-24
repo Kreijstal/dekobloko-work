@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {projectMeasurementFixture,parseMeasurementResult,recordProbeObservation,summarizeExecutionOutcome} from '../apps/loading/measurement-fixture.mjs';
-import {validateBufferedWorkload,bufferedReplayArgs} from '../apps/loading/buffered-replay.mjs';
+import {validateBufferedWorkload,bufferedReplayArgs,bufferedRefillCounts} from '../apps/loading/buffered-replay.mjs';
 import {bufferedCallKinds,bufferedCallSources,measureBufferedCallControl} from '../apps/loading/buffered-call-controls.mjs';
 
 test('worker projection preserves inputs without traversing accumulated profiles',()=>{
@@ -112,6 +112,28 @@ function verifyCallControls(t,kinds){
   }
  }
 }
+
+test('buffered refill counts match explicit fills for every initial count and width',()=>{
+ for(let initial=0;initial<=31;initial++)for(let width=1;width<=31;width++){
+  let count=0,buffered=initial;while(buffered<width){buffered+=8;count++;}buffered-=width;
+  const result=bufferedRefillCounts([width],initial);
+  assert.deepEqual(result,{requests:1,histogram:{[count]:1},bytesRead:count,
+   multiByteCalls:count>1?1:0,multiByteIterations:count>1?count:0,
+   initialBufferedBits:initial,finalBufferedBits:buffered});
+ }
+ const stream=[65,2,3,136,15,31,1,1,1];
+ const combined=bufferedRefillCounts(stream),split=bufferedRefillCounts(stream.slice(0,4)),tail=bufferedRefillCounts(stream.slice(4),split.finalBufferedBits);
+ assert.equal(combined.bytesRead,split.bytesRead+tail.bytesRead);
+ assert.equal(combined.finalBufferedBits,tail.finalBufferedBits,'chunk boundaries preserve buffered state');
+ assert.equal(combined.multiByteCalls,split.multiByteCalls+tail.multiByteCalls);
+ const bits=stream.reduce((n,code)=>n+(code&31),0);
+ assert.equal(combined.bytesRead*8-bits,combined.finalBufferedBits,'bit conservation is independent of refill formula');
+ assert.deepEqual(bufferedRefillCounts([]),{requests:0,histogram:{},bytesRead:0,multiByteCalls:0,multiByteIterations:0,initialBufferedBits:0,finalBufferedBits:0});
+});
+test('buffered refill counts reject invalid metadata without invoking any engine',()=>{
+ for(const code of [-1,0,33,66,129,193,256,1.5])assert.throws(()=>bufferedRefillCounts([code]));
+ for(const initial of [-1,32,NaN,0.5])assert.throws(()=>bufferedRefillCounts([1],initial));
+});
 
 test('native call controls preserve bit-stream values and partial state across every call form',t=>
  verifyCallControls(t,bufferedCallKinds.filter(kind=>kind!=='buffered-call-gc-parameter')));
