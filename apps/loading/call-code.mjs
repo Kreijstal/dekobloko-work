@@ -39,7 +39,7 @@ const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revis
     const before=[this.nextLocal,this.declared.length,this.importDecls.length],bound=numericKernel(this);
     assert.deepEqual([this.nextLocal,this.declared.length,this.importDecls.length],before,'Numeric kernel bound changed code generation');
     const kernels=[];
-    if(numericKernelCode)for(const plan of bound.plans)if(!plan.refused){
+    if(numericKernelCode)for(const plan of bound.plans)if(!plan.refused&&(!this.numericKernelWorkers||this.numericKernelWorkers.has(plan.header))){
      const kernel=buildNumericKernel(this,plan.header),module=new WebAssembly.Module(kernel.bytes);
      const imports=WebAssembly.Module.imports(module);
      const coldGlobals=kernel.coldGlobals||[];
