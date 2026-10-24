@@ -351,7 +351,16 @@ try {
   nativeStaticLeafBytes:meta.nativeStaticLeafVersionBytes||0,
   params:meta.paramSlots?.map(p=>({slot:p.slot,type:p.t})),entryGuards:meta.entryInitializationGuards,
   links:meta.linkBindings?.map(b=>({key:b.key,pending:b.pending,canonical:!!b.canonicalDirect}))};
+ const receiverEntries=state=>{
+  const seen=new Set(),rows=[];
+  for(const [tier,meta]of [['entry',state?.meta],['callee',state?.callee?.meta],['osr',state?.osr?.meta]]){
+   const counters=meta?.nativeReceiverTokenCounters;if(!counters||seen.has(counters.accepted))continue;seen.add(counters.accepted);
+   rows.push({tier,accepted:counters.accepted.value,checked:counters.checked.value,nativeEntries:canonicalExecutionCounts(meta).directEntries});
+  }
+  return rows;
+ };
  for(const owner of owners)for(const item of j.classes[owner]?.ast.classes[0].items||[]){if(item.type!=='method')continue;const m=item.method,s=w.state.get(m),g=j.jit.codegenCache.get(m);methods.push({key:owner+'.'+m.name+m.descriptor,wasm:s&&{status:s.status,lastCompileError:s.lastCompileError||null,structuredFailure:s.structuredFailReason||null,runs:s.runs,...canonicalExecutionCounts(s.meta),exits:s.exits,fuelExits:s.fuelExits,full:s.meta?.fullyCompiled,calleeFull:s.callee?.meta?.fullyCompiled,layout:layout(s.meta),calleeLayout:layout(s.callee?.meta),
+  ...(w.importStatsEnabled?{receiverTokenEntries:receiverEntries(s)}:{}),
   nativeExitCount:s.meta?.directFrameContext?.exitCount??null,directNativeExitCount:s.meta?.directFrameContext?.directExitCount??null,nativeThrowCount:s.meta?.directFrameContext?.throwCount??null,
   lastNativeExitStatus:s.meta?.directFrameContext?.lastExitStatus??null,calleeNativeExitCount:s.callee?.meta?.directFrameContext?.exitCount??null,
   publication:w.canonicalDirectLinks&&{eligible:!!w.canonicalDirectLinks.constructor.eligible(s),slots:(w.canonicalDirectLinks.bindings.get(s.key)||[]).map(b=>({compact:b.compact,stub:w.canonicalDirectLinks.table.get(b.slot)===b.stub}))},

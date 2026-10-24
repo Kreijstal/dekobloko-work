@@ -15,7 +15,7 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['receiver-token-code','receiver-token-coverage','native-region-kernel-slice-code','native-region-kernel-bounds-code','native-region-kernel-code','native-region-kernel-bound','receiver-origin-bound','boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-element-micro','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','native-kernel-boundary','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['receiver-caller-code','receiver-token-code','receiver-token-coverage','native-region-kernel-slice-code','native-region-kernel-bounds-code','native-region-kernel-code','native-region-kernel-bound','receiver-origin-bound','boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-element-micro','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','native-kernel-boundary','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
 const numericKernelFamily=['native-region-kernel-slice-code','native-region-kernel-bounds-code','native-region-kernel-code','native-region-kernel-bound','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','native-kernel-boundary'].includes(family),numericKernelCode=numericKernelFamily&&family.endsWith('-code');
 const numericKernelMicro=['native-numeric-kernel-micro-code','native-kernel-boundary'].includes(family);
 const elementBound=['native-element-availability','native-element-micro'].includes(family);
@@ -23,10 +23,10 @@ const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].i
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['receiver-token-code','receiver-token-coverage','native-region-kernel-slice-code','native-region-kernel-bounds-code','native-region-kernel-code','native-region-kernel-bound','receiver-origin-bound','packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-numeric-kernel','native-numeric-kernel-code'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['receiver-caller-code','receiver-token-code','receiver-token-coverage','native-region-kernel-slice-code','native-region-kernel-bounds-code','native-region-kernel-code','native-region-kernel-bound','receiver-origin-bound','packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-numeric-kernel','native-numeric-kernel-code'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
 options.classpath=[path.join(family==='mdct-frame-remat'?path.join(player,'mdct'):fullGraph||directMusic||originalFlow||family==='frame-remat'?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
-const receiverTokenFamily=family.startsWith('receiver-token-');
+const receiverTokenFamily=family.startsWith('receiver-token-')||family==='receiver-caller-code';
 let receiverTokenOperations;const receiverFieldPlans=new Map();let identityAssembly;const receiverOriginRows=new Map();
 let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls,stableHeaders,elementAvailability,numericKernel,buildNumericKernel;const referenceStoreRows=new Map();const numericKernelRows=new Map();const elementBoundRows=new Map();const proofCensus=[],translationFailures=[],headerCensus=[],checkpointCensus=[],checkpointPlans=new WeakMap(),staticLoopCensus=[],staticRegionBounds=new WeakMap(),fieldArrayPlans=new WeakMap(),fieldArrayCensus=[];
 const preloadModules=family==='receiver-origin-bound'?['src/jit/wasmShared.js']:numericKernelFamily?['src/jit/nativeNumericKernelPlan.js',...(numericKernelCode?['src/jit/nativeNumericKernel.js']:[])]:elementBound?['src/jit/nativeElementAvailability.js']:family==='ssa-liveness'?['src/analysis/frameLocalLiveness.js','src/jit/stackifyNumericValues.js']:
@@ -518,6 +518,20 @@ if(receiverTokenFamily){
    assert.equal(meta.importObject.env[name],receiverTokenOperations[operation],'GC intrinsic acquired a JavaScript forwarding wrapper');return name;
   });
   let code;
+  if(family==='receiver-caller-code'&&state.key==='VorbisResidue.decodeResidue([FIZ)V'){
+   const wat=execFileSync('wasm-dis',['--all-features','-'],{input:meta.bytes,encoding:'utf8',maxBuffer:8*1024*1024});
+   const core=[...wat.matchAll(/^ \(func (\$[^\s(]+)/gm)].find(m=>m[1].startsWith('$jvm$wasm$')&&m[1].includes('VorbisResidue'));
+   assert.ok(core,'Missing actual residue core');
+   const shape=codeShape(wat,core[1],true),native=nativeCode(meta.bytes,shape.index);
+   const imports=new Map([...wat.matchAll(/^ \(import "[^"]+" "([^"]+)" \(func (\$[^\s(]+)/gm)].map(m=>[m[2],m[1]]));
+   fs.writeFileSync(path.join(directory,'current.wat'),wat);fs.writeFileSync(path.join(directory,'current-jvm-native.txt'),native);
+   const teaWat=fs.readFileSync(path.join(player,'vorbis/current-teavm.wat'),'utf8'),tea=codeShape(teaWat,'$590',true);
+   code={...shape,...nativeSummary(native),parameterArrayABI:meta.parameterArrayABI,parameterObjectABI:meta.parameterObjectABI,
+    calls:shape.callSites.map(site=>({...site,import:imports.get(site.target)||null})),
+    teaVm:{...tea,source:'Existing saved Vorbis WAT; no regeneration, code-identity check, native compilation or execution'},
+    note:'Actual residue caller code and static call placement, including cold paths; not dynamic execution counts or CPU attribution.'};
+   assert.ok(code.calls.some(site=>site.import==='native_receiver_token'),'Selected caller lacks the proved receiver factory');
+  }
   if(family==='receiver-token-code'&&state.key==='VorbisCodebook.readVector()[F'){
    const wat=execFileSync('wasm-dis',['--all-features','-'],{input:meta.bytes,encoding:'utf8',maxBuffer:4*1024*1024});
    const core=[...wat.matchAll(/^ \(func (\$[^\s(]+)/gm)].find(m=>m[1].startsWith('$jvm$wasm$')&&m[1].includes('VorbisCodebook'));
@@ -533,7 +547,7 @@ if(receiverTokenFamily){
  const bindings=[...w.canonicalDirectLinks.bySlot.values()].filter(b=>b.receiverTokenIndex!==undefined).map(b=>({key:b.key,index:b.receiverTokenIndex,published:w.canonicalDirectLinks.table.get(b.slot)!==b.stub}));
  const intendedEntryInstalled=rows.some(row=>row.key==='VorbisCodebook.readVector()[F'&&row.entry),intendedCallInstalled=rows.some(row=>row.key==='VorbisResidue.decodeResidue([FIZ)V'&&row.callSites>0);
  const result={sourceRevision:revision,family,compileOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,intendedEntryInstalled,intendedCallInstalled,rows,bindings,
-  note:family==='receiver-token-code'?'New actual vector core/native-code and field-metadata lifetime question. No guest execution, known-control identity check, baseline/oracle replay, timing or CPU profiling.':'Actual tagged receiver entries, private live-table contracts and pure Wasm GC intrinsic imports. No guest invocation, old baseline/oracle replay, CPU profiling or timing.',measuredAt:new Date().toISOString()};
+  note:family==='receiver-caller-code'?'New actual residue caller code and static call-placement comparison with existing TeaVM WAT. No guest or TeaVM execution, timing, CPU attribution or known-control replay.':family==='receiver-token-code'?'New actual vector core/native-code and field-metadata lifetime question. No guest execution, known-control identity check, baseline/oracle replay, timing or CPU profiling.':'Actual tagged receiver entries, private live-table contracts and pure Wasm GC intrinsic imports. No guest invocation, old baseline/oracle replay, CPU profiling or timing.',measuredAt:new Date().toISOString()};
  const current=JSON.parse(fs.readFileSync(reportPath));(current.optimizationTrials.nativeReceiverTokens||={codeObservations:[]}).codeObservations.push(result);fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(result,null,2));
  assert.ok(intendedEntryInstalled&&intendedCallInstalled,'Original token route did not install');process.exit(0);
 }
@@ -685,7 +699,7 @@ if(['archive-proof','archive-exit'].includes(family)){
 }
 
 function walk(node,visit){if(!Array.isArray(node))return;visit(node);for(const child of node)walk(child,visit);}
-function codeShape(wat,name){
+function codeShape(wat,name,withCalls=false){
  // wasm-dis emits each top-level function on its own indented line. Parse
  // only the selected function, so a full application cannot exhaust the
  // bounded expression parser merely because it contains many other methods.
@@ -695,7 +709,11 @@ function codeShape(wat,name){
  const module=parseWat('(module\n'+wat.slice(start,end+3)+'\n)'),operations={};
  walk(module[1],n=>{if(typeof n[0]==='string')operations[n[0]]=(operations[n[0]]||0)+1;});
  const imports=wat.match(/^ \(import [^\n]*\(func /gm)||[];
- return {name,index:imports.length+at,operations};
+ const callSites=[];
+ if(withCalls){const visit=(node,depth)=>{if(!Array.isArray(node))return;const next=depth+(node[0]==='loop'?1:0);
+  if(node[0]==='call'||node[0]==='call_indirect')callSites.push({kind:node[0],target:typeof node[1]==='string'?node[1]:null,loopDepth:next});
+  for(const child of node)visit(child,next);};visit(module[1],0);}
+ return {name,index:imports.length+at,operations,...(withCalls?{callSites}:{})};
 }
 function nativeCode(bytes,index){
  // Constructing Module compiles code, never runs the module or its start.

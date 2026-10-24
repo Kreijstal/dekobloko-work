@@ -19527,3 +19527,139 @@ actual JVM master/index remain untouched. No generated output enters Git.
 Cleanup removes only this pass's extraction, two alternate indexes and its logs.
 The full target remains **395.7135567 ms**, versus saved **1807.0171855 ms** and
 TeaVM **359.739597 ms**; broader browser/phone acceptance is unverified.
+
+
+### Actual private-entry coverage after fused capture
+
+Previous turn is progress: an independent predicate was screened out and a fused
+entry was implemented/validated, but its original timer failed. Before another
+ABI change this pass addresses the missing real-workload branch evidence, not
+CPU attribution or a refreshed baseline. No normal execution timer is replayed.
+
+Generic source **1725f52cef33523f3ccee144aa167468e85005e9**, parent 25ecd69e, is
+durable at `experiment/teavm-receiver-entry-coverage`. Under the **existing**
+compiler import-statistics mode only, each actual receiver-entry module owns two
+i32 Wasm counter globals: accepted private ownership and checked entry. Counter
+increments execute directly in Wasm after the fused permission verdict. No JS
+wrapper replaces the GC intrinsic. The diagnostic globals contain no Java
+reference or compiler graph. Metadata exposes the two globals; ordinary
+uninstrumented compilation emits no counter globals or increments. Do not time
+that unchanged normal code again to validate this metadata addition.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReceiverEntry.test.js test/wasmCompilerRetention.test.js
+node --check apps/loading/probe.mjs
+node --check apps/loading/vorbis.mjs
+```
+
+Focused assertions pass **181/181**. New assertions distinguish fifty actual
+private calls from ordinary and revoked entries, and verify absent counter
+metadata/imports when diagnostics are off. Existing forced-GC/cleanup, fuel,
+wrong-pair, foreign VM, exact owner restoration, getters, monitor, exception,
+reentrant return, withdrawal and late-override checks remain passing.
+
+Deko reports accepted/checked counts after execution, deduplicating actual
+counter globals across entry/callee/OSR aliases. `receiver-coverage` makes exactly
+one changed, instrumented PCM run, preserves byte identity and zero late
+compilation, saves raw evidence in the existing Vorbis diagnostics plus one
+compact entry-coverage observation in the **single** benchmark JSON, and compares
+the private/checked total with existing actual native invocation counters. It
+asserts actual private acceptance after saving evidence, so a zero-acceptance
+failure is reviewable. No WAT/TeaVM artifact is regenerated or known control
+executed; elapsed data is excluded from performance acceptance.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs receiver-coverage 1725f52cef33523f3ccee144aa167468e85005e9
+```
+
+Actual-edge coverage **passes**: **134216 accepted / 0 checked / 134216 native
+entries**, on the entry tier; every one of **348249 PCM bytes** matches and there
+is zero late Java compilation. Observation ID
+`7fd9e90a-4569-4906-b262-94dff6bf5b21`. This proves the real workload uses the
+private route; it rules out an unused-path explanation of the failed timer.
+It is not a performance gain. No uninstrumented decoder, known control, oracle,
+source identity check, restored build or CPU profile is replayed.
+
+Reusing this already-created diagnostic's exact protocol counters also shows
+**12421** receiver-token acquisitions, **134216** row-storage queries and
+**16080** checked reference-array reads. These are route facts, not time shares.
+The old small case has one receiver acquisition and zero checked row reads for
+one million vector entries, so its call mix differs from the game. Do not infer
+a full-game speedup from that one invariant-receiver fixture.
+
+### Real residue caller code versus existing TeaVM WAT
+
+A new compile-only `receiver-caller-code` query inspects the actual residue caller
+and its static call placement. It reads the **existing** Vorbis TeaVM `$590` WAT;
+it neither regenerates/compiles that artifact nor runs any TeaVM export. Generic
+JVM instrumentation is unchanged, and the inspection compiles normal code with
+counter diagnostics off. Only Deko owns this selector/comparison.
+
+```
+node --check apps/loading/call-code.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 1725f52cef33523f3ccee144aa167468e85005e9 receiver-caller-code
+```
+
+The query passes with zero guest ticks/assets/main execution. The actual
+`VorbisResidue.decodeResidue([FIZ)V` caller has **36616 native instruction bytes**
+and reserves **0x2c0 (704) stack bytes**. Its core declares **469 WAT locals** and
+contains **258 ifs / 202 direct calls / 3 indirect calls / 10 loops**. The saved
+TeaVM function has **18 locals / 8 ifs / 4 direct calls / 1 call_ref / 12 loops**.
+Counts include cold/fallback/frame paths; declared locals are not simultaneous
+native live registers, and static sites are not dynamic execution counts. The
+JVM caller carries **array ABI [1] and object ABI [0]**, so missing mixed-argument
+transport is not an explanation. WAT call placement (the caller row's `calls`
+objects, distinct from the other row families' native-assembly call strings)
+shows token factory/store helpers inside depth-five loops, and generic
+field/header/checked-array fallback code around an inlined scalar-reader loop.
+Native array/field metadata and canonical frame paths account for much of the
+static expansion; no elapsed share is claimed from these counts.
+
+The existing post-execution rows show standalone `readScalar()` ready but with
+**zero static-state sites, zero inlined calls and zero direct entries**; its calls
+to `readBit()` remain canonical links. Meanwhile the residue and vector bodies
+inline the scalar reader and use the interior atomic static-leaf path. This
+matches a concrete general inliner asymmetry in `wasmInline.js`:
+
+* Root `planStaticInline` refuses a cold owner by default, and even its opt-in
+  integer-leaf path excludes heap/array accesses and writes.
+* `planInteriorStatic(..., atomic=true)` admits an acyclic static heap leaf inside
+  a recovered instance activation and carries its owner's readiness dependency.
+* Consequently the standalone scalar reader never receives the same complete
+  native array/state-body proof as the already-spliced vector. In the large
+  residue caller, the flattened loop instead retains generic field/array/cache
+  fallback and frame obligations. This is an actionable static witness, not a
+  claim that the compiler spent a particular percentage there.
+
+**Next proof of concept:** generalize precise root-static inline activations using
+the existing `inlineActivationResume` machinery. It already reconstructs a real
+child Frame from method/class/base/locals/item plus the caller's operand prefix;
+it does not require an instance receiver. Preserve class readiness at the
+original invocation, exact child PC/locals and all effects before faults. Do
+**not** merely relax the cold pure-integer whitelist or replay an entire leaf
+after a partial write. A small static heap leaf that increments state *before*
+a later bounds fault must resume/throw exactly once; cover cold clinit order,
+category-2 caller prefixes, null/foreign paths, fuel handoffs and graph cleanup.
+Use the stronger proof automatically on supported native-EH engines, retaining
+existing fallback when reconstruction cannot be proved; no new public flag or
+game-specific rule belongs in java-tools.
+
+Then ask the **new** preparation-only question whether standalone scalar readers
+can earn the existing native stateful body. If so, assess a composition-aware
+inline decision: keep the small instance wrapper's profitable composition, but
+prefer an already-certified native callee when the caller allocates or retains
+other effects that prevent that same whole-body specialization. Such a rule must
+be generic and validated, not a hardcoded method exclusion or a blind global
+inlining limit. Compare actual changed caller code, then a genuinely new small
+allocating-caller case; spend the original/full gate only on a real gain. Do not
+repeat this completed entry-coverage run or the old token/predicate controls.
+
+This pass improves verified coverage and identifies the real caller/inliner
+mismatch; it makes **no measured performance-gain claim**. Runtime defaults,
+selected comparator, actual JVM master/index and deployment are untouched. All
+source/tests remain durable in isolated refs; Deko owns scripts and this one
+journal. Cleanup removes only this turn's extraction, alternate index and logs.
+The saved full-loading target remains **395.7135567 ms** against selected
+**1807.0171855 ms** and TeaVM **359.739597 ms**; browser/phone acceptance remains
+unverified.

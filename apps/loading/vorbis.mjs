@@ -178,6 +178,27 @@ function inspect(revision,method='MusicDecoder.readBit()I'){
  console.log('Inspected '+method+' at '+result.inspection.output+'; counts excluded from timing pairs');
 }
 
+function receiverCoverage(revision){
+ assert.match(revision,/^[0-9a-f]{40}$/);
+ const stdout=execFileSync(process.execPath,[...nodeArgs,path.join(here,'probe.mjs'),'slab','3-0.bin',revision,'vorbis',player,fixtureStdinFlag],{
+  input:JSON.stringify(projectMeasurementFixture(read())),encoding:'utf8',maxBuffer:16*1024*1024,env:{...process.env,JVM_WASM_IMPORT_STATS:'1'}});
+ const result=parseMeasurementResult(stdout,'PROBE_RESULT '),current=read();
+ assert.ok(result.instrumented&&result.equal,'Coverage must remain an exact instrumented decode');
+ assert.equal(result.fixtureSha256,current.vorbisBenchmark.probeClassSha256);assert.equal(result.error,undefined);
+ assert.equal(result.compilation.postMainSyncCompileCount,0);assert.deepEqual(result.lateCompiles,[]);
+ const method=result.methods.find(row=>row.key==='VorbisCodebook.readVector()[F'),entries=method?.wasm?.receiverTokenEntries||[];
+ const accepted=entries.reduce((n,row)=>n+row.accepted,0),checked=entries.reduce((n,row)=>n+row.checked,0),nativeEntries=entries.reduce((n,row)=>n+row.nativeEntries,0);
+ const observation={sourceRevision:revision,kind:'receiver-entry-coverage',id:crypto.randomUUID(),instrumented:true,excludedFromTiming:true,
+  pcmBytes:current.vorbisBenchmark.referencePcmBytes,equal:true,entries,accepted,checked,nativeEntries,privateAccepted:accepted>0,
+  note:'Actual tagged-entry versus checked-entry coverage only. No performance observation, new CPU attribution, old baseline/oracle replay or WAT identity check.',measuredAt:new Date().toISOString()};
+ (current.vorbisBenchmark.diagnostics||=[]).push({...result,coverageId:observation.id,diagnosticKind:observation.kind,excludedFromTiming:true});
+ const trial=(current.optimizationTrials.nativeReceiverTokens||={codeObservations:[]});(trial.entryCoverageObservations||=[]).push(observation);
+ fs.writeFileSync(receiptPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(observation,null,2));
+ assert.ok(entries.length,'Actual decoder has no entry coverage counters');
+ assert.equal(accepted+checked,nativeEntries,'Diagnostic entry counts disagree with actual native calls');
+ assert.ok(accepted>0,'Installed private entry is never accepted: inspect factory, guard or publication integration');
+}
+
 function outline(revision){
  assert.match(revision,/^[0-9a-f]{40}$/);assert.notEqual(process.env.JVM_WASM_IMPORT_STATS,'1');
  const runId=crypto.randomUUID(),input=JSON.stringify(projectMeasurementFixture(read()));
@@ -276,6 +297,7 @@ else if(command==='one')await one(...args);
 else if(command==='run')run(selectBenchmarkRevision(args[0]));
 else if(command==='run-jvm')run(selectBenchmarkRevision(args[0]),['jvm']);
 else if(command==='inspect')inspect(selectBenchmarkRevision(args[0]),args[1]);
+else if(command==='receiver-coverage')receiverCoverage(selectBenchmarkRevision(args[0]));
 else if(command==='outline')outline(selectBenchmarkRevision(args[0]));
 else if(command==='regions')await regions(selectBenchmarkRevision(args[0]));
-else throw Error('Usage: vorbis.mjs build | regions EXACT_REVISION | outline EXACT_REVISION | run-jvm EXACT_REVISION | run [baseline|EXACT_REVISION] | one jvm|teavm EXACT_REVISION | inspect baseline|EXACT_REVISION [METHOD]');
+else throw Error('Usage: vorbis.mjs build | receiver-coverage EXACT_REVISION | regions EXACT_REVISION | outline EXACT_REVISION | run-jvm EXACT_REVISION | run [baseline|EXACT_REVISION] | one jvm|teavm EXACT_REVISION | inspect baseline|EXACT_REVISION [METHOD]');
