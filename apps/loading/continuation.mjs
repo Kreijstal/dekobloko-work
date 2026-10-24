@@ -16,13 +16,22 @@ const root=path.resolve(here,'../../../java-tools');
 const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'continuation'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
-const [command,revision,engine]=process.argv.slice(2),n=8192;
+const [requestedCommand,revision,engine,caseArg]=process.argv.slice(2),n=8192;
+const caseName=requestedCommand.startsWith('parameter-')||caseArg==='parameter'?'parameter':'mixed';
+const command=requestedCommand.replace(/^parameter-/,'');
 const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
 assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact changed-source revision');
 const source=`public class ContinuationProbe {
  static int prefixes,early,steps,tails,decisions,initializerPrefix,initializerEarly;
  static int[] output;
  static boolean choose(int mode){decisions++;return mode==0;}
+ static int prefixLen(int[] input){return input.length;}
+ static int prefixKernel(int mode,int n,int[] input){prefixes++;output=input;int sum=prefixLen(input);input=null;
+  for(int i=0;i<3;i++){early++;sum=sum*3+i;}
+  if(choose(mode)){sum+=ContinuationLookup.read();for(int i=0;i<n;i++){steps++;sum=sum*33+(i&7);}}
+  else{sum+=ContinuationLookup.read();for(int i=0;i<n;i++){steps++;sum=sum*17-(i&7);}}
+  tails++;return sum;
+ }
  static int kernel(int mode,int n,int[] input){prefixes++;int[] kept=input;input=null;output=kept;int sum=17;
   for(int i=0;i<3;i++){early++;sum=sum*3+i;}
   if(choose(mode)){sum+=ContinuationLookup.read();for(int i=0;i<n;i++){steps++;kept[0]++;sum=sum*33+(i&7);}}
@@ -49,8 +58,9 @@ if(command==='one'){
    wasm:{structured:true,deepInline:false,canonicalDirectCalls:true,canonicalEhLinks:true,nativeJsExceptionTags:true}}});
  await j.preloadClasspathClasses();const w=j.jit.wasmJit;w.enabled=true;
  await j.precompileInitializedClasses({initializedOnly:false,effectful:true,wasm:true,wasmPreparedUpgradesOnly:false});
- const method=j.findMethod(j.classes.ContinuationProbe,'kernel','(II[I)I'),state=w.state.get(method);
+ const method=j.findMethod(j.classes.ContinuationProbe,caseName==='parameter'?'prefixKernel':'kernel','(II[I)I'),state=w.state.get(method);
  assert.equal(state?.status,'ready');assert.ok(state.meta.structuredResumeEntries.length>=3);
+ if(caseName==='parameter')assert.ok(state.meta.parameterArrayCacheCount>0,'Case needs an actual prefix parameter cache');
  assert.notEqual(j.classInitializationState.get('ContinuationSeed'),'INITIALIZED');
  j._markClassInitialized('ContinuationProbe');const fields=j.classes.ContinuationProbe.staticFields;
  for(const name of ['prefixes','early','steps','tails','decisions','initializerPrefix','initializerEarly'])fields.set(name+':I',0);
@@ -71,14 +81,14 @@ if(command==='one'){
  const start=process.hrtime.bigint();let ticks=0;
  while(thread.callStack.size()>1){await j.executeTick();assert.ok(++ticks<1000000,'Continuation made no progress');}
  const elapsedMs=Number(process.hrtime.bigint()-start)/1e6;
- let expected=17;for(let i=0;i<3;i++)expected=(Math.imul(expected,3)+i)|0;
+ let expected=caseName==='parameter'?1:17;for(let i=0;i<3;i++)expected=(Math.imul(expected,3)+i)|0;
  expected+=11;for(let i=0;i<n;i++)expected=(Math.imul(expected,33)+(i&7))|0;
  assert.equal(carrier.stack.pop(),expected);
  for(const [name,value]of Object.entries({prefixes:1,early:3,steps:n,tails:1,decisions:1,initializerPrefix:1,initializerEarly:3}))assert.equal(fields.get(name+':I'),value,name);
- assert.equal(fields.get('output:[I'),array);assert.equal(array[0],7+n);
+ assert.equal(fields.get('output:[I'),array);assert.equal(array[0],caseName==='parameter'?7:7+n);
  assert.equal(j.jit.syncCompileCensus().postMainSyncCompileCount,0);
  assert.ok(engine==='resume'?state.runs>1:state.runs===1,'Control did not select the intended continuation');
- console.log('CONTINUATION_RESULT '+JSON.stringify({sourceRevision:revision,engine,n,checksum:expected,elapsedMs,ticks,
+ console.log('CONTINUATION_RESULT '+JSON.stringify({sourceRevision:revision,caseName,engine,n,checksum:expected,elapsedMs,ticks,
   nativeEntries:state.runs,nativeExits:state.meta.directFrameContext?.exitCount||0,lateJavaCompiles:0,
   sourceSha256:hash(source),classSha256:hash(fs.readFileSync(path.join(directory,'ContinuationProbe.class'))),
   harnessSha256:hash(fs.readFileSync(script)),node:process.version,execArgv:process.execArgv,
@@ -93,10 +103,10 @@ if(!fs.existsSync(java)||fs.readFileSync(java,'utf8')!==source||!fs.existsSync(p
 }
 const report=JSON.parse(fs.readFileSync(reportPath));
 const trial=report.optimizationTrials.conditionalLoopContinuation||={observations:[]};
-let observation=trial.observations.find(x=>x.sourceRevision===revision&&x.sourceSha256===hash(source)&&x.harnessSha256===hash(fs.readFileSync(script)));
-if(!observation){observation={sourceRevision:revision,sourceSha256:hash(source),harnessSha256:hash(fs.readFileSync(script)),diagnostics:[],runs:[]};trial.observations.push(observation);}
+let observation=trial.observations.find(x=>x.sourceRevision===revision&&x.caseName===caseName&&x.sourceSha256===hash(source)&&x.harnessSha256===hash(fs.readFileSync(script)));
+if(!observation){observation={sourceRevision:revision,caseName,sourceSha256:hash(source),harnessSha256:hash(fs.readFileSync(script)),diagnostics:[],runs:[]};trial.observations.push(observation);}
 const save=()=>fs.writeFileSync(reportPath,JSON.stringify(report,null,2)+'\n');
-const one=mode=>parseMeasurementResult(execFileSync(process.execPath,[...flags,script,'one',revision,mode],{encoding:'utf8',maxBuffer:1024*1024}),'CONTINUATION_RESULT ');
+const one=mode=>parseMeasurementResult(execFileSync(process.execPath,[...flags,script,'one',revision,mode,caseName],{encoding:'utf8',maxBuffer:1024*1024}),'CONTINUATION_RESULT ');
 if(command==='inspect'){
  for(const mode of ['resume','fallback'])if(!observation.diagnostics.some(r=>r.engine===mode)){
   const row={...one(mode),excludedFromTiming:true};observation.diagnostics.push(row);save();console.log(JSON.stringify(row));

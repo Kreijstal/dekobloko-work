@@ -362,6 +362,7 @@ try {
     nativeExitCount:state.meta?.directFrameContext?.exitCount??null,
     directNativeExitCount:state.meta?.directFrameContext?.directExitCount??null,
     nativeThrowCount:state.meta?.directFrameContext?.throwCount??null,
+    structuredResumeEntries:state.meta?.structuredResumeEntries||[],
     nativeObjectBodyFieldSites:state.meta?.nativeObjectBodyFieldSites||0,
     nativeObjectBodyArraySites:state.meta?.nativeObjectBodyArraySites||0,
     nativeObjectBodyReceiverCount:state.meta?.nativeObjectBodyReceiverCount??null,

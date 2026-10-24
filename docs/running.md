@@ -15790,3 +15790,118 @@ only if the entire resumed region, including spill roots and phi inputs, does
 not require its parameter value. Then test dead/overwritten argument slots,
 continued native execution, and a live-parameter negative control before timing
 any new setup/full candidate. No existing timed baseline needs executing.
+
+### Reconstruct live array metadata without querying dead prefix arguments
+
+Implement that positive admission bound generically. After checking all resumed
+SSA operands, region phi sources, live frame slots, protected captures and stack
+roots, a parameter cache can be marked prefix-only **only if its value was never
+required** by that proof. Omit that cache's fill for this checkpoint. Live array
+parameters still require their actual restored Java-local binding and normal
+cache fill. Ordinary entry keeps its original fills. Stateful static-array
+entries retain their separate existing single-header contract.
+
+The proof and emitter are archived as isolated
+`ee0b638f5d3493cc4d0ce720dc89a88b76ad40f3`, expanded
+`955aba7ac61bace3c93e42d1b41f1d1e14052556`, on the conditional-resume experiment.
+Only the generic helper/compiler and regression test change; no game identity,
+flag, eager class initialization or assumed native reference is introduced.
+
+New regression cases compile a real array-parameter call in the prefix, overwrite
+the parameter, force repeated native fuel handoffs and replace its dead Java
+slot with a host object whose array getter throws. Resumption never queries that
+object and never replays the prefix. A live-array consumer retains its cache and
+computes the exact result. Test both heap modes, preserving native primary
+entries, exact effects, compile-free execution and supported fallback behavior.
+The initial expected cache count was corrected for heap-disabled compilation:
+that mode has no native array-argument cache to omit; it still tests resumption.
+
+Expanded validation passes **805/805**, and the isolated archive with cold,
+exception/monitor and ownership cases passes **1221/1221**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/conditionalLoopResume.test.js test/structuredLoopResume.test.js test/structuredColdResume.test.js test/wasmParameterArrayAbi.test.js test/wasmCompilerRetention.test.js
+```
+
+The new `continuation.mjs parameter-*` case has a primitive-array parameter
+cache used only by its prefix, then early and conditional loops around the
+cold nested initialization. It validates the **-1817153493** analytic checksum,
+exact counter/initializer effects and captured static array identity. Both
+controls run this new case on the same changed source; fallback withholds only
+subsequent native entries for the activation. No prior case or oracle is replayed.
+Native mode has two entries/one cold exit; fallback one entry/one exit. Every
+sample has zero late Java compilation.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/continuation.mjs parameter-inspect ee0b638f5d3493cc4d0ce720dc89a88b76ad40f3
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/continuation.mjs parameter-run ee0b638f5d3493cc4d0ce720dc89a88b76ad40f3
+```
+
+| New prefix-array sample | Native continuation ms | Supported fallback ms |
+|---|---:|---:|
+| 1 | 7.956217 | 18.802926 |
+| 2 | 6.194202 | 24.325256 |
+| 3 | 6.920685 | 20.827812 |
+
+Medians **6.920685 vs 20.827812 ms** justify the next candidate-only full gate;
+they do not prove full-loading parity. Node v22.23.2, CPU 2, eager Wasm flags and
+the 1 GB old-space limit are unchanged. The existing report's
+`conditionalLoopContinuation.observations` distinguishes the `parameter` case;
+no extra JSON report or generated code enters Git. The full recorder now copies
+already installed scalar checkpoint metadata **after** the guest timer, allowing
+the next full observations to show actual setup admission without another
+execution/profile run. `node --check` passes for both changed harness scripts.
+
+The full cohort on `ee0b638f…` is in progress. No comparator/default/deployment
+has been promoted, and JVM master remains unchanged.
+
+The candidate-only full cohort completed on this exact source:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision ee0b638f5d3493cc4d0ce720dc89a88b76ad40f3 --options diagnostic
+```
+
+| Prefix-parameter continuation full sample | Music ms | Graphics ms | Total ms |
+|---|---:|---:|---:|
+| 1 | 1751.443399 | 390.362289 | 2141.805688 |
+| 2 | 1508.196994 | 321.563993 | 1829.760987 |
+| 3 | 1568.373057 | 311.055825 | 1879.428882 |
+
+Retain all three results: **1879.428882 ms median** does not establish a gain
+over saved **1807.0171855 ms**. Every full checksum matches the saved reference
+and late Java compilation is zero. All samples show the seven actual setup
+entries at items 36/260/278/296/317/338/362, **four setup Wasm runs** (previously
+three), and **24 constructor runs** (opcode-only had 23). Setup retains three
+exits and last native exit status 206; constructor retains one native exit,
+status 152. The additional handoffs are real, not unexecuted compiler features,
+but they do not close the full-loading gap. This is not proof that more handoffs
+or all fallback execution are irrelevant; it rejects these changes as an
+established full-loading optimization.
+
+Store the complete cohort in the existing trial's `prefixParameterFullLoading`,
+retaining its separate first conditional cohort and all small observations.
+Do not advance the comparator or deploy either candidate. Withdraw only the five
+owned compiler/runtime/helper files to the preceding expanded opcode source
+`12b6b0e4497b3d718c448176dcd6c2aaa43b1af2` and remove the new experimental
+conditional test from the active worktree. The archived refs above retain every
+source/test, so nothing depends on temporary source archives or logs. **Run no
+restored-baseline tests, timings or fingerprint checks.** Preserve unrelated
+decompiler WIP and the ordinary JVM index/HEAD.
+
+The selected full reference remains **029834e… / 1807.0171855 ms** against saved
+TeaVM **359.739597 ms** (~**5.023x**), with a target of at most **395.713557 ms**.
+The original packet reference and all other controls remain saved, not replayed.
+Node tests and these headless loading results do not establish browser/phone,
+presented-FPS, total-heap or stability acceptance; those gates remain open.
+
+Next, do not repeat CPU attribution, same-module linking, scalar-field promotion
+or these setup-entry campaigns. The parked demand-driven large-reference-array
+experiment (`9189b2e2…` isolated / `f1f1b66d…` expanded) has a positive new cold
+API case but no original/full gate. Native constructors now use a different
+allocation/consumer path because `multianewarray` is supported. First inspect
+that actual emitted/factory path: does the first native matrix write force eager
+materialization anyway, and is there a genuine cold container left to save?
+Only a positive, safe bound earns composition and focused checks; do not blindly
+combine the failed eager allocator or run unchanged timed code. This is a
+specific new representation question, not a claim of a gain or a new baseline
+campaign. The 1.1x objective remains active and unmet.
