@@ -19114,3 +19114,182 @@ by this turn. The selected full median stays **1807.0171855 ms**, saved TeaVM
 **359.739597 ms**, full 1.1x target **395.7135567 ms**. Cleanup removes only this
 pass's extraction, alternate index and code-gate log; no restoration build/test,
 old-code identity check, oracle replay or screenshots are necessary.
+
+
+### Native receiver capabilities instead of repeated host-pair authentication
+
+Previous goal turn is progress: helper-local slicing was implemented, validated,
+and rejected at original execution. This pass starts from selected
+**029834e16366e3dfaed1f46d5589ec34dddc04dc**, without those rejected worker changes.
+Initial snapshot **f227cbfe20631cd3ab6e818097048b93eae994b0** and checked child
+**7054ad53f2633961f3714111e864db508417365d** are isolated at
+`experiment/teavm-native-receiver-token` / `...-checked`; actual JVM master/index
+and unrelated work remain untouched. No known runtime/oracle control executes.
+
+A generic private GC token contains its actual Java owner, native store, shared
+field-shape permission and per-wrapper binding permission. Both permission epochs
+are monotonic and bind a per-VM GC origin. Ordinary Java setters preserve them;
+structural field/binding changes revoke before mutation. Shared fields need one
+shape epoch, not an ever-growing listener list. Reacquisition compares private
+JS epoch identities, avoiding a JS-to-Wasm validity call on its cached path.
+Tokens own Java references; raw storage stays owner-free. Forced-GC tests prove
+that distinction and collection of unused receiver tokens.
+
+The compiled entry recognizes the private token type, derives its actual Java
+owner before any guest effect/frame snapshot, and checks GC permissions/origin.
+It derives storage from that same token, ignoring unrelated legacy metadata.
+Plain Java references retain their existing checked entry. No mutable token
+scratch/global channel exists, so traps/reentrancy cannot lend an old token to a
+later invocation. A live-table private edge publishes only an exact token-entry
+contract; withdrawal or a matching ordinary ABI without that proof returns the
+existing retry-invoke status before guest effects. Receiver-class guards remain.
+Caller token acquisition supplies its storage metadata as well, avoiding a
+second host query. Receiver redefinition/opaque invalidation clears its cache.
+This is automatic generic capability-based admission, without an application
+rule or new public option flag. Unsupported engines keep existing execution.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReceiverToken.test.js test/nativeReceiverEntry.test.js test/nativeObjectStorage.test.js test/nativeObjectForwarding.test.js test/canonicalInstanceFrames.test.js test/wasmExplicitMonitors.test.js test/wasmCompilerRetention.test.js
+```
+
+Final focused checks pass **421/421**. New tests cover actual fifty-call native
+execution, one authentication/no callee host ownership lookup, no duplicate
+caller query, alternating receivers, unrelated supplied stores, array returns,
+reentrant final getters and exact return headers, exceptions, fuel handoffs with
+Java owners instead of tokens, uncontended/contended monitors, cross-VM rejection,
+getter-free revocation, link withdrawal/incompatible replacement, late overrides,
+SSA cleanup and owner/storage lifetimes. Smaller new tests pass 26 token-runtime
+and 69 entry assertions. An earlier three-file compatibility batch also passed
+363 assertions; its scope did not include the later harness issue below.
+
+The expanded canonical-instance fixture initially failed a late override because
+it manually executed a retained speculative/inlined module after class growth,
+bypassing the production class-world gate. Static WAT and metadata showed one
+inlined call/one speculation; direct late-method execution returned the correct
+113 and the ordinary receiver guard correctly rejected the late class. No old
+baseline was replayed. The test helper now invokes the existing production
+revalidation before manual execution, retaining the actual native fuel tests
+and interpreting the invalidated caller. Its 50 assertions, including the
+118 late-override/super-call result, pass. No runtime gate was weakened or new
+runtime dispatch check added for that harness correction. Temporary functional
+traces are not CPU profiling and will be removed.
+
+Deko's new `stable-token-*` modes compare two routes on this same changed VM and
+fixed Java stream graph. Default uses the real private entry; tokenControl
+withholds only the root prepareCall route, retaining the new target entry's
+ordinary checked path. These are new ABI-mode comparisons, not replay of the
+saved separate-call JVM/TeaVM/HotSpot control. Other runtime policies are equal.
+The timing command requires successful route/counter diagnostics first.
+
+```
+node --check apps/loading/nested-loop.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-token-diagnose 7054ad53f2633961f3714111e864db508417365d
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-token-run 7054ad53f2633961f3714111e864db508417365d
+```
+
+Diagnostics prove one million actual vector entries in both modes, checksum
+-1834486005/exact cursors, zero exits/late compilation and consumed result
+metadata. Default acquires one receiver token and performs **zero** callee
+ownership queries; control performs **one million**. Both still perform one
+million row-storage queries: this is a separate concrete metadata-forwarding
+question, not a CPU share or an assumed performance cause. Instrumented elapsed
+is excluded. Fresh uninstrumented ABI-mode pairs completed sequentially:
+
+| Pair | Private token entry (ms) | Same-runtime ordinary entry (ms) |
+|---|---:|---:|
+| 1 | 80.344995 | 85.181295 |
+| 2 (reverse order) | 81.366761 | 84.726429 |
+| 3 | 79.418648 | 86.565771 |
+| Median | **80.344995** | **85.181295** |
+
+All pairs improve and their ranges do not overlap; the median improvement is
+about 5.7%. These new ABI modes share the changed source and fixed Java graph;
+no saved control was replayed. No tests/builds or profiling overlap timings.
+
+```
+node --check apps/loading/call-code.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 7054ad53f2633961f3714111e864db508417365d receiver-token-coverage
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 7054ad53f2633961f3714111e864db508417365d
+```
+
+The compile-only gate passed without guest execution: the actual
+`VorbisCodebook.readVector()[F` token entry is installed, both private call
+bindings from `VorbisResidue.decodeResidue([FIZ)V` are published, and intrinsic
+imports are actual Wasm exports rather than JavaScript forwarding wrappers.
+The changed-only original decoder run completed: **96.280720 / 98.998099 /
+95.387608 ms**, median **96.280720 ms**, versus the fixed saved **93.269749 ms**.
+Run ID `946da7e2-b0c7-4cd5-b9f5-0d49f2595bcb`; every one of the 348249 PCM bytes
+matches and late Java compilation stays zero. The component gain does **not**
+survive original execution. This source is not selected, no full-loading gate is
+run, and no parity/deployment claim is earned.
+
+The next small code change forwards the *existing* companion reference-array
+storage through `nativeStaticArrayBody.read`, which bypasses ordinary field-read
+emission. The ordinary path already forwards this exact metadata. This adds no
+storage representation, owner copy, side table, app rule, public flag or proof
+relaxation. Each read captures the current field/storage pair from authenticated
+owner storage; aaload retains its array validity and bounds checks. Owned arrays
+whose element getter is customized must still revoke and use the exact getter.
+Only changed candidates will run; saved controls remain fixed.
+
+The small forwarding change is durable at JVM experiment source
+**8df6d502769853e09483c455df73ab89ffad539e**, branch
+`experiment/teavm-native-receiver-token-forwarding`, parent 7054ad5. Only the
+stateful field emitter and its focused entry test change (19 inserted lines).
+Master/default remain selected as before.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReceiverEntry.test.js test/nativeStaticArrayBody.test.js test/nativeObjectForwarding.test.js
+node --check apps/loading/nested-loop.mjs
+node --check apps/loading/call-code.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-token-inspect 8df6d502769853e09483c455df73ab89ffad539e
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-token-candidate 8df6d502769853e09483c455df73ab89ffad539e
+```
+
+Focused tests pass **243/243**, including matching field/storage replacement and
+customized owned-array element getters after metadata forwarding. Both script
+syntax checks pass. The changed-only diagnostic proves one million real vector
+calls with **zero row-storage queries**, zero ownership queries, one receiver
+token acquisition, exact checksum/cursors, zero exits and zero late compiles.
+Array-result metadata is consumed. Its elapsed value is instrumented/excluded.
+`stable-token-inspect` checks only the changed candidate; it does not execute
+any old control. Three fresh uninstrumented candidate timings are **77.412173 /
+72.129722 / 71.563519 ms**, median **72.129722 ms**. This improves over the saved
+token-only 80.344995-ms small-case median, with no repeated control. It earns the
+changed-only original decoder gate below. This is still a small call-case
+result, not a whole-loading gain. No tests/builds/profiling overlap timings.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 8df6d502769853e09483c455df73ab89ffad539e
+```
+
+Original changed-candidate gate **fails**: **108.135549 / 98.264629 /
+114.594572 ms**, median **108.135549 ms**, versus the fixed saved **93.269749 ms**.
+Run ID `0afb0a02-156e-4437-9f8c-3b0dcd567740`. All 348249 PCM bytes match and
+late Java compilation remains zero. Retain every sample. Do not select either
+receiver-token source, advance the original comparator, run full loading, change
+defaults or deploy on this evidence. The single JSON links both source
+dispositions to their raw rows; no new report files are needed.
+
+This pass proves two generic mechanisms and a useful local speedup, but **no
+original or full-loading gain**. The target stays 395.7135567 ms full execution,
+against saved selected 1807.0171855 ms and TeaVM 359.739597 ms. Browser/phone FPS,
+heap, startup and stability acceptance remain open. No known baseline, reference
+oracle, restoration test or CPU profile was replayed.
+
+The next question should be actual emitted-code/lifetime differences, not more
+unmeasured ownership protocols: forwarding companion metadata moves raw and typed
+GC references earlier in `readVector`, before its inlined Huffman loop. This
+extends potential live ranges relative to a late `object_storage` query. That
+is a source-level fact and a register-pressure hypothesis, **not** an observed
+native spill count or a proven cause of the original regression. Inspect only
+changed code and already-saved listings before proposing another emitter change.
+Never reload a current owner field to recreate a captured array after fuel
+suspension: the saved Java array may differ after field replacement. Preserve
+that exact captured-array/metadata pairing and the foreign getter path.
+
+Generic implementation/tests are durable on the isolated JVM refs above; Deko
+owns workload diagnostics and this journal. Cleanup removes only this pass's
+extraction, alternate index, generated debug WAT/Wasm and receiver-token logs.
+No restoration build, repeated known tests or old-source identity check follows.

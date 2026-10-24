@@ -23,6 +23,7 @@ const [command,revision,engine,detail,caseArg]=process.argv.slice(2),engines=['i
 const caseName=command.startsWith('slice-')||caseArg==='slice'?'slice':command.startsWith('phis-')||caseArg==='phis'?'phis':command.startsWith('bounds-')||caseArg==='bounds'?'bounds':command.startsWith('region-')||caseArg==='region'?'region':command.startsWith('array-')||caseArg==='array'?'array':command.startsWith('cold-')||caseArg==='cold'?'cold':command.startsWith('large-')||caseArg==='large'?'large':command.startsWith('stable-')||caseArg==='stable'?'stable':command.startsWith('scope-')||caseArg==='scope'?'scope':'whole';
 const count=caseName==='cold'?128:1000000;
 const targetName={slice:'scanRegionSlice',phis:'scanRegionPhis',bounds:'scanRegionBounds',region:'scanRegion',array:'scanArrayPairs',whole:'scan',scope:'scanScoped',stable:'scanStable',large:'scanStable',cold:'scanStable'}[caseName];
+const receiverTokenExperiment=command.startsWith('stable-token-');
 const requestedEngine=['direct','merged','trusted','paired','separate','plain','eager','lazy'].find(value=>command.includes('-'+value+'-'));
 assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact changed-source JVM commit');
 const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
@@ -106,7 +107,7 @@ function nestedLivenessBound(c,numeric,analyze){
 }
 
 if(command==='one'||command==='code-one'||command==='liveness-one'){
- assert.ok(engines.includes(engine)||['slice','sliceControl','phis','phisControl','bounds','boundsControl','region','regionControl','direct','merged','trusted','paired','query','plain','eager','lazy'].includes(engine));assert.ok(flags.every(flag=>process.execArgv.includes(flag)));
+ assert.ok(engines.includes(engine)||['token','tokenControl','slice','sliceControl','phis','phisControl','bounds','boundsControl','region','regionControl','direct','merged','trusted','paired','query','plain','eager','lazy'].includes(engine));assert.ok(flags.every(flag=>process.execArgv.includes(flag)));
  if(engine==='plain')assert.equal(caseName,'large','Plain matrix is only the new large-container control');
  let regionAnalyzer,regionAnalysis;const instrumented=detail==='stats';let Frame,model,allocMultiArray,allocReferenceArray,referenceStorage,takeWasmReturnValue,numeric,frameLive,emission,installed=false;const bounds=[],versions=new WeakMap(),directImports=new WeakMap();
  const {JVM}=await loadArchivedJvm(root,revision,{preloadModules:command==='liveness-one'?['src/jit/stackifyNumericValues.js','src/analysis/frameLocalLiveness.js']:caseName==='cold'?['src/core/nativeObjectStorage.js']:[],observeModule:({filename,exports})=>{
@@ -169,6 +170,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
     return meta;
    };
   }
+  if(engine==='tokenControl'&&filename.endsWith('/src/jit/nativeReceiverEntry.js')){const prepare=exports.prepareCall;exports.prepareCall=(c,node,...args)=>c.className==='NestedLoopProbe'&&c.method.name===targetName?null:prepare(c,node,...args);}
   if(caseName==='slice'&&engine==='sliceControl'&&filename.endsWith('/src/jit/nativeKernelSlice.js')){const analyze=exports.analyze;exports.analyze=(c,p,...args)=>c.className==='NestedLoopProbe'&&c.method.name===targetName?{reason:'new-case conservative numeric input tuple',work:0,active:[],inputs:p.numericInputs.map(v=>v.id),omitted:[]}:analyze(c,p,...args);}
   if(caseName==='phis'&&engine==='phisControl'&&filename.endsWith('/src/jit/nativeKernelBoundary.js')){
    const prepare=exports.prepare;exports.prepare=function(c,plans,...args){const index=prepare(c,plans,...args);
@@ -185,7 +187,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   if(filename.endsWith('/src/core/objectModel.js'))model=exports;
   if(filename.endsWith('/src/instructions/object.js')){allocMultiArray=exports.allocMultiArray;allocReferenceArray=exports.allocReferenceArray;}
   if(filename.endsWith('/src/jit/wasmShared.js')){takeWasmReturnValue=exports.takeWasmReturnValue;emission=exports;}
-  if((engine==='separate'||['slice','sliceControl','phis','phisControl','bounds','boundsControl','region','regionControl','direct','merged','trusted','paired','query','plain'].includes(engine))&&filename.endsWith('/src/jit/wasmInline.js')){
+  if((engine==='separate'||['token','tokenControl','slice','sliceControl','phis','phisControl','bounds','boundsControl','region','regionControl','direct','merged','trusted','paired','query','plain'].includes(engine))&&filename.endsWith('/src/jit/wasmInline.js')){
    const inline=exports.inlineCalls;
    exports.inlineCalls=function(jvm,code,options){
     if(options.callerClassName==='NestedLoopProbe'&&options.callerMethod?.name===targetName)return null;
@@ -193,7 +195,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
    };installed=true;
   }
  }});
- if(engine==='separate'||['slice','sliceControl','phis','phisControl','bounds','boundsControl','region','regionControl','direct','merged','trusted','paired','query','plain'].includes(engine))assert.ok(installed,'Separate-call experiment missed the outer transform');
+ if(engine==='separate'||['token','tokenControl','slice','sliceControl','phis','phisControl','bounds','boundsControl','region','regionControl','direct','merged','trusted','paired','query','plain'].includes(engine))assert.ok(installed,'Separate-call experiment missed the outer transform');
  const j=new JVM({classpath:[directory],wasmHeap:true,wasmFields:true,wasmHeapMb:32,
   jit:{enabled:false,compileWorker:false,retainCompilerDiagnostics:false,wasmStructured:true,
    wasm:{deepInline:false,canonicalDirectCalls:true,canonicalEhLinks:true,nativeJsExceptionTags:true}}});
@@ -351,6 +353,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   for(let k=0;k<8;k++)expected=(Math.imul(expected,33)+((index*17+k*7)&255))|0;
  }
  const argument=caseName!=='whole'?allocMultiArray(j,'[LNestedLoopBook;',[caseName==='array'?2:1]):book;if(caseName!=='whole')argument[0]=book;if(caseName==='array')argument[1]=book;
+ if(engine==='token'||engine==='tokenControl'){assert.ok(vector.meta.nativeReceiverTokenEntry?.run,'New ABI case lacks the actual callee token contract');assert.equal(target.meta.nativeReceiverTokenCallSites||0,engine==='token'?1:0,'New ABI route was not installed/withheld');}
  const frame=new Frame(target.method);frame.className='NestedLoopProbe';frame.locals[0]=argument;frame.locals[1]=count;target.meta.box.frame=frame;
  w.freezeCompilation();j.jit._syncCompileEnvironment={trace:false,assert:true};j.jit.markMainStarted();
  // Isolate generated execution inside one bounded native invocation. Both
@@ -373,6 +376,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   }
  }
  if(instrumented)assert.equal(vectorEntries,engine==='inlined'?0:count,'Control lost the intended method boundary');
+ if(instrumented&&(engine==='token'||engine==='tokenControl')){assert.equal(target.meta.importStats.get('native_receiver_token')||0,engine==='token'?1:0,'Invariant receiver must acquire its token once');assert.equal(vector.meta.importStats.get('native_state_object_storage')||0,engine==='token'?0:count,'Token entry must remove per-call host ownership authentication');}
  if(instrumented&&['stable','large'].includes(caseName))assert.equal(target.meta.importStats.get('native_state_object_storage')||0,engine==='inlined'?1:0,'Stable ownership was not shared across scope entries');
  if(instrumented&&caseName==='large')assert.equal(vector.meta.importStats.get('aget_r')||0,engine==='plain'?count:0,'Large matrix lost its selected native/fallback path');
  console.log('NESTED_LOOP_RESULT '+JSON.stringify({sourceRevision:revision,caseName,engine,instrumented,count,checksum,elapsedMs,harnessSha256:hash(fs.readFileSync(script)),
@@ -402,6 +406,8 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   separateVectorCheckedRowReads:instrumented?vector.meta.importStats.get('aget_r')||0:null,
   nativeArrayReceiverPairSites:target.meta.nativeArrayReceiverPairSites||0,
   pairedStorageCallSites:target.meta.pairedStorageCallSiteCount||0,
+  nativeReceiverTokenCallSites:target.meta.nativeReceiverTokenCallSites||0,calleeReceiverTokenEntry:!!vector.meta.nativeReceiverTokenEntry?.run,
+  nativeReceiverTokenQueries:instrumented?target.meta.importStats.get('native_receiver_token')||0:null,
   pairedStorageQueries:instrumented?target.meta.importStats.get('paired_object_storage')||0:null,
   pairedStorageEntry:engine==='paired'?'Generic compiler-paired entry, synchronous monotonic storage revocation, ordinary signature/dispatch/entry fallbacks; no ownership-validator override':null,
   trustedEntryCalls:instrumented?vector.meta.importStats.get('trusted_storage_identity')||0:null,
@@ -409,12 +415,12 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   nativeExits:target.meta.directFrameContext.exitCount,lateJavaCompiles:0,
   node:process.version,execArgv:process.execArgv,
   directImportExperiment:['direct','merged'].includes(engine)?'Per-call version/dispatch checked Wasm import; publication/withdrawal/release revoke snapshots; table fallback and original ABI remain active; fixture-only integration':null,
-  control:caseName==='large'?'New large-container reduction: same changed runtime and Java methods, owned matrix versus supported plain matrix fallback; no known baseline executes':engine==='separate'?'Withhold only the root inline transform; same changed runtime and new Java workload':null,
+  control:(engine==='token'||engine==='tokenControl')?'New private receiver ABI comparison: same changed runtime and fixed Java graph; control withholds only the root token call route. No known JVM/TeaVM/HotSpot baseline executes.':caseName==='large'?'New large-container reduction: same changed runtime and Java methods, owned matrix versus supported plain matrix fallback; no known baseline executes':engine==='separate'?'Withhold only the root inline transform; same changed runtime and new Java workload':null,
   scope:'Bounded '+caseName+' code-generation reduction with identical high invocation fuel; not production scheduling, original loading, TeaVM parity or an existing baseline validation'}));
  process.exit(0);
 }
 
-assert.ok(['slice-diagnose','slice-run','phis-inspect','phis-candidate','phis-diagnose','phis-run','bounds-inspect','bounds-candidate','bounds-diagnose','bounds-run','region-diagnose','region-run','array-diagnose','array-run','diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate','inspect','scope-inspect','stable-inspect','code','scope-code','stable-code','liveness','scope-liveness','stable-liveness','stable-direct-code','stable-direct-inspect','stable-direct-candidate','stable-merged-code','stable-merged-inspect','stable-merged-candidate','stable-trusted-code','stable-trusted-inspect','stable-trusted-candidate','stable-paired-code','stable-paired-inspect','stable-paired-candidate','stable-separate-code','stable-separate-vector-code','stable-separate-inspect','stable-separate-candidate','large-separate-inspect','large-separate-candidate','large-plain-inspect','large-plain-candidate','large-run','cold-eager-inspect','cold-lazy-inspect','cold-run'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
+assert.ok(['stable-token-diagnose','stable-token-inspect','stable-token-run','stable-token-candidate','slice-diagnose','slice-run','phis-inspect','phis-candidate','phis-diagnose','phis-run','bounds-inspect','bounds-candidate','bounds-diagnose','bounds-run','region-diagnose','region-run','array-diagnose','array-run','diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate','inspect','scope-inspect','stable-inspect','code','scope-code','stable-code','liveness','scope-liveness','stable-liveness','stable-direct-code','stable-direct-inspect','stable-direct-candidate','stable-merged-code','stable-merged-inspect','stable-merged-candidate','stable-trusted-code','stable-trusted-inspect','stable-trusted-candidate','stable-paired-code','stable-paired-inspect','stable-paired-candidate','stable-separate-code','stable-separate-vector-code','stable-separate-inspect','stable-separate-candidate','large-separate-inspect','large-separate-candidate','large-plain-inspect','large-plain-candidate','large-run','cold-eager-inspect','cold-lazy-inspect','cold-run'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
 fs.mkdirSync(directory,{recursive:true});const java=path.join(directory,'NestedLoopProbe.java');
 if(!fs.existsSync(java)||fs.readFileSync(java,'utf8')!==source||!fs.existsSync(path.join(directory,'NestedLoopProbe.class'))){
  fs.writeFileSync(java,source);execFileSync('javac',['--release','8','-proc:none','-d',directory,java]);
@@ -439,11 +445,12 @@ if(command.endsWith('liveness')){
   const row=parseMeasurementResult(execFileSync(process.execPath,[...flags,script,'code-one',revision,variant,command.endsWith('-vector-code')?'vector-code':'code',caseName],
    {encoding:'utf8',maxBuffer:1024*1024}),'NESTED_CODE_RESULT ');result.codeOutputs=result.codeOutputs.filter(previous=>previous.engine!==variant);result.codeOutputs.push(row);save();console.log(JSON.stringify(row));
  }
-}else if(command.endsWith('diagnose')||command.endsWith('inspect'))for(const variant of requestedEngine?[requestedEngine]:caseName==='slice'?['slice','sliceControl']:command==='phis-inspect'?['phis']:caseName==='phis'?['phis','phisControl']:command==='bounds-inspect'?['bounds']:caseName==='bounds'?['bounds','boundsControl']:caseName==='region'?['region','regionControl']:caseName==='array'?['paired','query']:command.endsWith('inspect')?['inlined']:engines){
+}else if(command.endsWith('diagnose')||command.endsWith('inspect'))for(const variant of receiverTokenExperiment?(command.endsWith('inspect')?['token']:['token','tokenControl']):requestedEngine?[requestedEngine]:caseName==='slice'?['slice','sliceControl']:command==='phis-inspect'?['phis']:caseName==='phis'?['phis','phisControl']:command==='bounds-inspect'?['bounds']:caseName==='bounds'?['bounds','boundsControl']:caseName==='region'?['region','regionControl']:caseName==='array'?['paired','query']:command.endsWith('inspect')?['inlined']:engines){
  if(result.diagnostics.some(row=>row.engine===variant)){console.log('reuse saved '+variant+' diagnostic');continue;}
  const row=one(variant,true);result.diagnostics.push(row);save();console.log(JSON.stringify(row));
 }
 else{
+ if(receiverTokenExperiment){const proved=result.diagnostics.find(row=>row.engine==='token');assert.ok(proved?.calleeReceiverTokenEntry&&proved.nativeReceiverTokenCallSites===1&&proved.nativeReceiverTokenQueries===1&&proved.separateVectorOwnershipQueries===0,'Inspect the new token route before timing');if(!command.endsWith('candidate')){const control=result.diagnostics.find(row=>row.engine==='tokenControl');assert.ok(control&&control.nativeReceiverTokenCallSites===0&&control.separateVectorOwnershipQueries===count,'New ABI control must exercise the different entry route');}}
  if(caseName==='slice'){const proved=result.diagnostics.find(row=>row.engine==='slice'),control=result.diagnostics.find(row=>row.engine==='sliceControl');assert.ok(proved&&control,'Run slice-diagnose before timing the new wide-input case');assert.ok(proved.nativeRegionKernelInputOmissions>=8&&proved.nativeRegionKernelCount===1&&control.nativeRegionKernelCount===0,'New case must exercise changed input admission');}
  if(caseName==='phis'){
   const proved=result.diagnostics.find(row=>row.engine==='phis'),control=result.diagnostics.find(row=>row.engine==='phisControl');
@@ -452,7 +459,7 @@ else{
   if(command==='phis-candidate')assert.ok(proved.nativeRegionKernelInputOmissions>=3,'Candidate must actually exercise the changed numeric input slice');
   else{assert.ok(control,'Run phis-diagnose for a genuinely new paired case');assert.equal(control.nativeRegionKernelCount,0,'Conservative new-case control must exercise a different boundary');}
  }
- const measuredEngines=requestedEngine?[requestedEngine]:caseName==='slice'?['slice','sliceControl']:command==='phis-candidate'?['phis']:caseName==='phis'?['phis','phisControl']:command==='bounds-candidate'?['bounds']:caseName==='bounds'?['bounds','boundsControl']:caseName==='region'?['region','regionControl']:caseName==='array'?['paired','query']:caseName==='cold'?['eager','lazy']:caseName==='large'?['separate','plain']:command.endsWith('candidate')?['inlined']:engines;
+ const measuredEngines=receiverTokenExperiment?(command.endsWith('candidate')?['token']:['token','tokenControl']):requestedEngine?[requestedEngine]:caseName==='slice'?['slice','sliceControl']:command==='phis-candidate'?['phis']:caseName==='phis'?['phis','phisControl']:command==='bounds-candidate'?['bounds']:caseName==='bounds'?['bounds','boundsControl']:caseName==='region'?['region','regionControl']:caseName==='array'?['paired','query']:caseName==='cold'?['eager','lazy']:caseName==='large'?['separate','plain']:command.endsWith('candidate')?['inlined']:engines;
  result.timingMode=measuredEngines.length===1?'Changed candidate only; reuse saved controls':'Paired new-workload control';
  for(let pair=0;pair<3;pair++)for(const variant of pair===1?measuredEngines.toReversed():measuredEngines){
   if(result.runs.some(row=>row.engine===variant&&row.pair===pair)){console.log('reuse saved pair '+pair+' '+variant);continue;}
