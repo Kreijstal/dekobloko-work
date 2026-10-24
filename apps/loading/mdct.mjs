@@ -261,6 +261,8 @@ async function one(engine,revision,inspection=false){
    nativeExitCount:s.meta?.directFrameContext?.exitCount??null,directNativeExitCount:s.meta?.directFrameContext?.directExitCount??null,nativeThrowCount:s.meta?.directFrameContext?.throwCount??null,
    lastNativeExitStatus:s.meta?.directFrameContext?.lastExitStatus??null,calleeNativeExitCount:s.callee?.meta?.directFrameContext?.exitCount??null,
    full:!!s.meta?.fullyCompiled,structured:!!s.meta?.structured,demotes:[...(s.meta?.demoteReasons||[])],
+   nativeUnaryIntrinsicCacheBindings:s.meta?.nativeUnaryIntrinsicCacheBindings||0,
+   nativeUnaryIntrinsicInlineSites:s.meta?.nativeUnaryIntrinsicInlineSites||0,
    ...(inspection?{omittedArrayFillCount:s.meta?.omittedArrayFillCount,slabFieldSites:s.meta?.slabFieldSites,loopInvariantNumericValueCount:s.meta?.loopInvariantNumericValueCount,nativeStaticArrayBodySites:s.meta?.nativeStaticArrayBodySites,
     nativeStaticIntrinsicReadinessGuardCount:s.meta?.nativeStaticIntrinsicReadinessGuardCount,
     nativeReadinessGuardsReusedCount:s.meta?.nativeReadinessGuardsReusedCount,

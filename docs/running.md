@@ -20243,3 +20243,157 @@ unrelated WIP, `.work`, selected artifacts and deployment remain untouched.
 The saved full baseline is still **1807.0171855 ms** versus TeaVM
 **359.739597 ms** and target **395.7135567 ms**. The **1.1x objective is unmet**;
 browser/phone, presented FPS, total memory and stability gates remain open.
+
+### 2026-10-24 — Exact native intrinsic caches: component gain, original gate failed
+
+Classify the preceding turn as progress: it archived the reference proof and
+closed a duplicated negative direction, without advancing any selected result.
+This pass reuses saved full/original/TeaVM/HotSpot timings, code comparisons and
+CPU attribution. There is no unchanged baseline/oracle execution, restoration
+test or old-code identity check, and no new CPU profile. One process at a time
+writes the existing `benchmark.json`; this remains the only prose journal.
+
+The saved full-work census records **10515712 logical sine calls**. Earlier
+JVM/TeaVM code inspection already proves both bind native `Math.sin` directly;
+do not repeat the failed forwarding-bridge or readiness-epoch experiments.
+This prototype asks a different question: can repeated exact inputs to a proved
+pure native intrinsic avoid the call? This is our optimization, not a claim that
+TeaVM itself memoizes these calls. No actual cache hit count or CPU-time share
+is measured or inferred from that older logical-work census.
+
+Generic source **570248264db2d81a8d5934b179de3641dfa60d49**, parent selected
+029834e1, is isolated at `experiment/teavm-native-unary-cache`. Eight deterministic,
+expensive unary double intrinsics can share a fixed private Wasm table per VM.
+An exact native `Function.prototype.toString` is required, using the trusted
+realm's JS intrinsic; changing `.name` or providing an own `.toString` cannot
+admit a custom function. Bound functions and proxies have anonymous native
+source and are refused. Custom functions, unsupported signatures, unsupported
+engines and exhausted allocation budgets keep their original captured import.
+This assumes trusted realm intrinsics, as the existing runtime does.
+
+Each table has **4096 slots / 128 KiB**, maximum **eight tables / 1 MiB per VM**.
+The key is the complete IEEE-754 input, including signed zero and NaN payload;
+the hash selects a replacement slot but cannot approximate/match a different
+key. Hits read the stored result, misses call the original captured intrinsic.
+There is no quantization, argument rewriting, artificial warmup or Java reference
+in the cache. Weak ownership does not keep a VM alive. Private memory cannot
+grow, and cache allocations do not move existing game allocations to a worker.
+No application name or opt-in flag appears in java-tools.
+
+Focused validation in the sole expendable source extraction:
+
+```
+node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeUnaryIntrinsicCache.test.js test/wasmMathBindings.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmCompilerRetention.test.js test/classMirrorTransport.test.js test/workerSourceOnlyBodies.test.js
+```
+
+First focused result **96/96**. Compatibility initially passes **153/154**:
+the extraction omitted committed `sources/HotnessProbe.java`, required by the
+real-worker mirror test. Fetch that one source from the selected commit into
+the same extraction, without running an unchanged workload. The affected-file
+command `.../tape/bin/tape test/classMirrorTransport.test.js` then passes **47/47**.
+Do not describe the initial batch as all green. Tests cover all eight native
+functions, 12000 finite values each, special values, true collisions, exact hits,
+fixed allocation limits, foreign-realm budget exhaustion, callback ordering and
+throwable identity, captured-function stability, and VM collection while its
+intrinsic export remains live. No assertion is weakened for performance.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 570248264db2d81a8d5934b179de3641dfa60d49 native-unary-cache
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs run-jvm 570248264db2d81a8d5934b179de3641dfa60d49
+```
+
+The preparation-only gate exits 0, with zero guest ticks/assets/main execution.
+Six prepared methods bind the cache, including the actual packet decoder and
+setup; shared sine/cosine storage totals **262144 bytes**, not six copies.
+The changed-only MDCT cohort is **19.652520 / 22.951606 / 20.379564 ms**,
+median **20.379564 ms**, against saved **22.634309 ms**. Every captured float word
+matches (**698368 words / 682 packets**), setup still occurs once, and late Java
+compilation is zero. Run **77790cff-fea5-4743-ab99-811d5bb8375f**. About a 10%
+component median reduction earns an original gate; it is not full-loading or
+TeaVM parity. Original setup is unchanged and is not an added warmup.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 570248264db2d81a8d5934b179de3641dfa60d49
+```
+
+Original run **590dbedf-a691-4238-8a42-7a2537265181** gives
+**99.572525 / 96.406354 / 97.051123 ms**, median **97.051123 ms**, failing saved
+**93.269749 ms**. All **348249 PCM bytes** match, with zero late compilation.
+Reject this version for promotion; no full-loading run follows. Preserve its
+exact handwritten measurement scripts at Deko
+**83219758dc70f0739038e362fbdca2b4a4e574d3** /
+`experiment/native-unary-cache-helper-harness`. Its probe source hash matches
+all three new candidate receipts. This archives candidate provenance, not a
+baseline identity replay. Other handwritten sources remain in normal history.
+
+The helper route adds a Wasm call on every cache hit. A distinct refinement,
+**22eff23142e2ab9a52f3da71542a9b7e0e1851a6**, emits the lookup directly in the
+caller. Only a miss invokes the originally captured native function. Each
+supported structured method imports the same private fixed cache memory as an
+additional memory; Java heap indices stay unchanged. The assembler validates
+explicit limits, and an automatic feature probe keeps the helper route when
+multi-memory is unavailable or that compiler has no heap. There is no user flag.
+Temporary memory-import plans and distinct SSA-site sets release/reset with the
+compiler; runtime metadata contains only scalar counts.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeUnaryIntrinsicCache.test.js test/wasmMathBindings.test.js test/wasmCompilerRetention.test.js test/classMirrorTransport.test.js
+```
+
+Final exact command passes **259/259**. Additional coverage includes actual
+inline emission with distinct heap/cache imports, a loop's exact arithmetic,
+original fuel continuation/array identity, later Java bounds/null exceptions,
+custom callback refusal and compiler cleanup. During test development, the
+fixture initially omitted `wasmHeap:true`, so correctly selected the helper
+fallback instead of the expected inline path. After matching the actual target
+configuration, the counter reported repeated emitter visits; count distinct
+SSA IDs instead. These were fixture/metadata failures, not weakened semantic
+expectations. The final new fixture alone passes **98/98**.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 22eff23142e2ab9a52f3da71542a9b7e0e1851a6 native-unary-cache
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/mdct.mjs run-jvm 22eff23142e2ab9a52f3da71542a9b7e0e1851a6
+```
+
+New preparation gate exits 0 with no Java/asset execution. The actual packet
+contains **four emitted inline sites**, imports the heap plus one cache memory,
+and has **29121 Wasm bytes** versus the helper candidate's **28555**. Actual
+shared storage remains **256 KiB**; code-site counts are not dynamic hit counts.
+Changed MDCT run **929e6fe9-9731-4a57-b21f-a65b6f574915** gives
+**27.122954 / 20.126767 / 17.917643 ms**, median **20.126767 ms**. Keep the slow
+sample. Every float word matches and late compilation is zero. This overlaps
+the helper cohort's **20.379564 ms** median/range: no established additional
+component gain, so no second original or full campaign is justified. Do not
+promote either cache version, expand its capacity or tune its hash merely to
+find a better median. The selected full comparator remains unchanged.
+
+All timings are sequential, fresh processes on CPU2/Node22.23.2 with
+`--max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation`; tests and
+preparation gates finish before dependent timing. Deko records metadata after
+the guest timer. Its changed call-code, MDCT and probe scripts pass
+`node --check`, and `git diff --check` passes. The single receipt holds both
+raw cohorts and explicit dispositions in `optimizationTrials.nativeUnaryIntrinsicCache`.
+No generated Java, binary, Wasm, bundle, screenshot or extra report enters Git.
+Generic sources/tests remain in the isolated ref. Only this pass's source
+extraction, alternate indices and logs are expendable; actual JVM master/index,
+unrelated WIP, `.work`, selected artifacts and deployment are untouched.
+
+A distinct next source-level question is bounded byte-accumulator loop reduction,
+not another ownership/check/cache variant. The readable archive reader refills
+`buffer = buffer << 8 | input[position] & 255`, increments an available-bit count
+and two counters, then extracts requested bits. A general recognizer could prove
+an owned, nonvolatile, callback-free form, bounded refill count, complete input
+range and enough original fuel before batching loads/state publication. It must
+retain the ordinary method for insufficient fuel/input, foreign/custom fields,
+unproved aliases and unsupported shapes; exact intermediate stores and Java
+exceptions on the slow path remain mandatory. First inspect actual SSA shape
+and previous reader evidence; do not time the old replay or original controls
+again. This is a proposed compiler proof, not implemented admission or a claim
+that the reader explains the full loading gap.
+
+Full reference is still **1807.0171855 ms**, saved TeaVM **359.739597 ms** and
+target **395.7135567 ms**. No original/full improvement is established by this
+pass. The **1.1x goal remains active and unmet**; browser/phone, presented FPS,
+peak total heap and stability acceptance remain unverified.
