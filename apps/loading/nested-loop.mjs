@@ -429,6 +429,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   baseQueries:instrumented?target.meta.importStats.get('abase')||0:null,
   lengthQueries:instrumented?target.meta.importStats.get('alen0')||0:null,
   separateVectorStateSites:vector.meta.nativeStaticStateBodySites||0,
+  separateVectorReferenceRecipes:vector.meta.nativeInstanceReferenceRecipeCount||0,
   separateVectorNumericKernelCount:vector.meta.nativeNumericKernelCount||0,
   separateVectorNumericKernelBoundaryOmissions:vector.meta.nativeNumericKernelBoundaryOmissions||0,
   separateVectorNumericKernelOutcomeCount:vector.meta.nativeNumericKernelOutcomeCount||0,

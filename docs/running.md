@@ -20153,3 +20153,93 @@ Final experiment ref **c57bca247061b45c5120dc9374540e219ec34662** only corrects
 the scalar protocol comment after tested/timed **d3964bf4**; `node --check
 src/core/nativeStaticCell.js` passes. No semantic change or reason to repeat
 its tests/code/timing gates. Generic source stays isolated and unselected.
+
+### 2026-10-24 — Instance reference recipes: safe reconstruction, no established gain
+
+The preceding pass made source/proof progress but established no loading gain.
+Keep every saved baseline: no unchanged JVM, TeaVM or HotSpot process, restored
+code test, baseline fingerprint check or renewed CPU profile runs here.
+
+An initially considered lazy receiver-token owner is abandoned before code or
+timing: eager token capture replaces the dead token with its owner. Delaying that
+replacement merely trades one live identity for another; it does not establish
+a reduction. Do not implement another private call ABI on that observation.
+
+Source **50853e76be6f2f62fb29134abcc67b8113a19ce4**, parent selected 029834e1,
+is archived at `experiment/teavm-instance-reference-recipes`. It uses the existing
+whole-body effect/layout proof to omit primitive-array instance field reference
+definitions used exclusively as certified native array receivers. Numeric array
+base/length capture and invalidation remain. If a cold continuation needs the
+actual reference, `useOf` reconstructs it from the held authenticated private
+receiver store. Normal reference returns/identity consumers, volatile fields,
+regions and alternate native resume entries retain the old path. A terminal
+foreign getter cannot rejoin these certified operations. No flags, application
+names, worker copies, ABI change or retained runtime SSA graph are introduced.
+
+Validation in the sole expendable source extraction:
+
+```
+node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeMixedStateBody.test.js test/nativeStaticStateBody.test.js test/inlineActivationResume.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/instanceReferenceRecipes.test.js
+```
+
+Results: **472/472** existing and **38/38** new assertions pass. New cases cover
+exact returned identity; an old captured array spilled before suspension,
+replaced on its owner, then consumed by the real interpreter continuation;
+non-replayed effects; later native invocation using the new field; getters
+executed exactly once after refusal; volatile/resumable/escaping exclusions;
+zero late compilation; and compiler graph collection. Comment-only final source
+**6a9124e4603820cf8d0bef695346904706444d36** clarifies the terminal callback
+boundary. `node --check src/jit/nativeStaticArrayBody.js` passes; no reason to
+replay tests or timing for that comment.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 50853e76be6f2f62fb29134abcc67b8113a19ce4 instance-reference-code
+```
+
+The new compile-only gate passes with zero guest ticks, asset calls or main
+execution. Actual `VorbisCodebook.readVector()[F` has **three** recipes for the
+Huffman-tree field, **nine** stateful sites and no alternate native resume entry.
+There are no remaining GC reference materializations of that field in the
+inspected entry. Its module has **5276 Wasm bytes**, **3780 native instruction
+bytes** and a **128-byte stack**. These are static shape observations, not CPU
+shares or a performance claim. Deko alone owns this game selector/observation.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-inspect 50853e76be6f2f62fb29134abcc67b8113a19ce4
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-candidate 50853e76be6f2f62fb29134abcc67b8113a19ce4
+```
+
+Excluded diagnostic: one million actual vector entries, three recipes, nine
+stateful sites, checksum **-1834486005**, zero exits/late compilation. Three fresh
+uninstrumented changed-candidate samples: **88.327273 / 85.862871 / 89.215141 ms**,
+median **88.327273 ms**. Reuse saved **89.520345 ms** and its
+**85.077283–98.219603 ms** range. This roughly 1.3% difference lies within the
+earlier spread: **no established component gain**, no original/full cohort,
+comparator advancement, promotion or deployment. Timing remains sequential on
+CPU2, Node22.23.2, 1 GiB old-space/eager optimizing Wasm, without concurrent
+tests, compilation gates or profiling. Keep every raw sample in the single JSON.
+
+Reading the older journal reveals an overlap missed before this screen:
+**7bec1e35a09eb1e956a7929485c3ed55cc6ef005** already removed these same three
+unused field-reference loads using final-emission local liveness, and its
+separate-vector median was **88.658801 ms**, also inconclusive. Reference recipes
+are a different implementation and preserve cold uses explicitly, but the hot
+opportunity in this decoder is the same. That existing negative result should
+have ruled out another timing screen. Record the overlap rather than treating
+this as a new promising optimization. Do not repeat readonly capture, dead
+field-reference elimination or instance-reference reconstruction for this site.
+
+`call-code.mjs`, `nested-loop.mjs` and `probe.mjs` retain scalar recipe metadata
+and the reproducible code gate. All three pass `node --check`; `git diff --check`
+passes. The existing single `benchmark.json` holds raw observations and explicit
+rejection at `optimizationTrials.instanceReferenceRecipes`; this is the only
+prose journal. No generated Java/binary/Wasm/WAT/bundle/native report enters Git.
+Only this pass's extraction, alternate index and temporary logs are expendable;
+generic source/tests are durable in the isolated ref. Actual JVM master/index,
+unrelated WIP, `.work`, selected artifacts and deployment remain untouched.
+
+The saved full baseline is still **1807.0171855 ms** versus TeaVM
+**359.739597 ms** and target **395.7135567 ms**. The **1.1x objective is unmet**;
+browser/phone, presented FPS, total memory and stability gates remain open.
