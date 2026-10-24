@@ -18507,3 +18507,99 @@ comparator, default artifact and deployment remain unchanged. This turn improves
 the analysis and establishes applicability; it has **no measured execution gain**.
 Saved full loading remains **1807.0171855 ms / 359.739597 ms = 5.023125618x**;
 the **395.7135567 ms** goal and wider browser/phone acceptance remain unmet.
+
+### Projected numeric workers for certified array regions
+
+The preceding goal turn is progress: it establishes ten genuinely small numeric
+boundaries in the real packet decoder, without claiming speed. This pass adds a
+real emitter and wrapper on top of that positive bound, not the failed whole-body
+Huffman worker policy. No old timing, oracle, CPU attribution or restoration check
+is repeated. JVM master/index and unrelated decompiler work are not edit targets.
+
+Source **1f9c1ec8f31bf7f9e1bbe8c07b7bddd14b4ec4d6**, ref
+experiment/teavm-region-workers, parent e78c162e, lowers substantial pure loops
+inside existing single-entry regions. The region's actual ownership/readiness
+entry remains in the wrapper. Admission uses at least eight memory sites,
+at most twelve numeric inputs/four normal results, no normal reference outputs,
+reconstructible cold references, and a 64-KiB helper-byte cap per method. There
+are no game names, header IDs, public VM flags or changed scheduling policy.
+
+Private weak certificates bind the analyzed plan to its actual graph/region.
+A separate exact structured-tree projection proves removal of the original
+loop and its one successful edge. The strict old whole-body builder still
+refuses mixed methods. The regional builder consumes both proofs, supplies only
+numeric inputs, and retains reason/fuel separately from real normal outputs.
+Cold-only numbers publish to private numeric globals; Java references remain in
+the wrapper and are reconstructed under the existing Java exception/fuel path.
+The actual Wasm export stays an actual Wasm import even under diagnostics.
+Compiler maps/certificates must not retain the SSA graph through live helpers.
+
+The first old test batch has 317/318 passing: its sole failure requires readiness
+checks inside a loop which is now completely projected. The corrected assertion
+requires either the original entry-readiness reuse or a real projected worker;
+its cold-owner, untaken-dependency and exactly-once prefix tests still run.
+Initial new drive/captured fixtures were too small for the existing region
+minimum; enlarge their actual Java bodies rather than lower production gates.
+The two-array fixture already exercised the worker and exact partial stores.
+
+```
+node --check src/jit/nativeNumericKernel.js
+node --check src/jit/nativeRegionKernel.js
+node --check src/jit/StructuredWasmCompiler.js
+node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeRegionKernel.test.js test/nativeNumericKernelPlan.test.js test/nativeKernelBoundary.test.js test/numericLoopProjection.test.js test/nativeStaticArrayBody.test.js test/nativeStaticStateBody.test.js test/nativeMixedStateBody.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/wasmCompilerRetention.test.js
+```
+
+Final **1170/1170** pass. New cases actually install workers and preserve zero-trip
+behavior, exact float rounding/signed zero/NaN/infinity, array identity, aliasing,
+late bounds messages, partial writes, no suffix after faults, non-observing
+ownership refusal/custom getters, fuel suspension, captured arrays after field
+replacement, no repeated effects and no post-main Java compilation. Retention
+keeps live imports while collecting compiler/SSA data. Import inspection uses
+the already constructed helper Module: no host-function import and exclusively
+numeric parameters/results/globals. Copied plan/projection certificates refuse.
+
+Extend existing Deko inspectors/summaries with actual regional-worker metadata.
+Changed script syntax checks pass for call-code, probe, microbench and nested-loop.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 1f9c1ec8f31bf7f9e1bbe8c07b7bddd14b4ec4d6 native-region-kernel-code
+```
+
+Exit 0, zero Java ticks/assets/main/helper execution. The actual packet decoder
+installs **two** helpers, total **2899 Wasm bytes**. Headers 79/85 have 7/8 inputs,
+three results, 12/17 cold globals, 1203/1696 Wasm bytes, and 1724/2084 optimizing
+native instruction bytes. Their native stack reservations are 0xa0/0xb8.
+WAT contains no calls/GC object operations; the native stack-guard cold call is
+an engine detail. Static size/register data is not a CPU attribution or gain.
+
+The new region case in nested-loop.mjs compares one changed runtime with/without
+only this transform, retaining the same owned-region guard. It performs four
+lanes of strict float arithmetic over one million iterations and validates every
+output word analytically after timing. Its first attempted body had only eight
+memory sites, below the region minimum. Added prelude copies originally shared
+an opaque-call block and remained excluded. A branch now puts those copies in a
+separate eligible block, giving the region sixteen sites while keeping eight in
+the actual loop. Failed fixture attempts produce no accepted elapsed result.
+Both successful diagnostic modes have identical checksum -1065842157, one region
+guard, zero exits/late compilation, and respectively one/zero installed workers.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs region-diagnose 1f9c1ec8f31bf7f9e1bbe8c07b7bddd14b4ec4d6
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs region-run 1f9c1ec8f31bf7f9e1bbe8c07b7bddd14b4ec4d6
+```
+
+| New region sample | Numeric worker ms | Guarded body ms |
+|---|---:|---:|
+| 1 | 25.245415 | 28.201751 |
+| 2 | 26.222511 | 26.190603 |
+| 3 | 24.474104 | 23.140998 |
+
+Medians **25.245415 vs 26.190603 ms** have overlapping ranges and changing paired
+direction. This is **not an established useful speedup**. All fresh processes use
+CPU2/Node22.23.2, 1-GiB old-space, eager optimizing Wasm and no concurrent tests,
+builds or profiling. No known JVM/TeaVM/HotSpot control runs. Do not promote or
+run full loading on this evidence. The saved MDCT diagnostic already shows a
+whole-body native plan with 91 sites; the new regional-only path does not apply
+there, so **do not execute its unchanged benchmark merely to confirm that**.
+Raw observations remain in the single existing ledger, not extra JSON files.

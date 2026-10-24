@@ -15,15 +15,15 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['native-region-kernel-bound','receiver-origin-bound','boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-element-micro','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','native-kernel-boundary','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
-const numericKernelFamily=['native-region-kernel-bound','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','native-kernel-boundary'].includes(family),numericKernelCode=numericKernelFamily&&family.endsWith('-code');
+const family=process.argv[3]||'boolean';assert.ok(['native-region-kernel-code','native-region-kernel-bound','receiver-origin-bound','boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-element-micro','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','native-kernel-boundary','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
+const numericKernelFamily=['native-region-kernel-code','native-region-kernel-bound','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','native-kernel-boundary'].includes(family),numericKernelCode=numericKernelFamily&&family.endsWith('-code');
 const numericKernelMicro=['native-numeric-kernel-micro-code','native-kernel-boundary'].includes(family);
 const elementBound=['native-element-availability','native-element-micro'].includes(family);
 const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['native-region-kernel-bound','receiver-origin-bound','packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-numeric-kernel','native-numeric-kernel-code'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['native-region-kernel-code','native-region-kernel-bound','receiver-origin-bound','packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-numeric-kernel','native-numeric-kernel-code'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
 options.classpath=[path.join(family==='mdct-frame-remat'?path.join(player,'mdct'):fullGraph||directMusic||originalFlow||family==='frame-remat'?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
 let identityAssembly;const receiverOriginRows=new Map();
@@ -66,7 +66,7 @@ const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revis
    return meta;
   };
  }
- if(numericKernelFamily&&filename.endsWith('/src/jit/nativeNumericKernelPlan.js'))numericKernel=family==='native-region-kernel-bound'?exports.analyzeRegions:exports.analyze;
+ if(numericKernelFamily&&filename.endsWith('/src/jit/nativeNumericKernelPlan.js'))numericKernel=family.startsWith('native-region-kernel-')?exports.analyzeRegions:exports.analyze;
  if(numericKernelFamily&&filename.endsWith('/src/jit/nativeNumericKernel.js'))buildNumericKernel=exports.build;
  if(numericKernelFamily&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
   const translate=exports.prototype.translateBody;
@@ -76,8 +76,9 @@ const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revis
     const before=[this.nextLocal,this.declared.length,this.importDecls.length],bound=numericKernel(this);
     assert.deepEqual([this.nextLocal,this.declared.length,this.importDecls.length],before,'Numeric kernel bound changed code generation');
     const kernels=[];
-    if(numericKernelCode)for(const plan of bound.plans)if(!plan.refused&&(!this.numericKernelWorkers||this.numericKernelWorkers.has(plan.header))){
-     const kernel=this.numericKernelWorkers?.get(plan.header)||buildNumericKernel(this,plan.header),module=new WebAssembly.Module(kernel.bytes);
+    if(numericKernelCode)for(const plan of bound.plans||bound.regions.flatMap(region=>region.plans))if(!plan.refused&&
+      (family==='native-region-kernel-code'?this.regionKernelWorkers?.has(plan.header):!this.numericKernelWorkers||this.numericKernelWorkers.has(plan.header))){
+     const kernel=(family==='native-region-kernel-code'?this.regionKernelWorkers:this.numericKernelWorkers)?.get(plan.header)||buildNumericKernel(this,plan.header),module=kernel.module||new WebAssembly.Module(kernel.bytes);
      const imports=WebAssembly.Module.imports(module);
      const coldGlobals=kernel.coldGlobals||[];
      assert.deepEqual(imports,[{module:'env',name:'mem',kind:'memory'},...coldGlobals.map(g=>({module:'env',name:g.name,kind:'global'}))],'Kernel has a host-call or unbound import');
@@ -94,7 +95,7 @@ const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revis
       faultReasons:kernel.faultReasons,imports,operations,machineCode});
     }
     assert.deepEqual([this.nextLocal,this.declared.length,this.importDecls.length],before,'Kernel prototype changed the installed method');
-    numericKernelRows.set(meta,{key:this.className+'.'+this.method.name+this.method.descriptor,...bound,installedWorkers:meta.nativeNumericKernelCount||0,installedWorkerBytes:meta.nativeNumericKernelBytes||0,...(numericKernelCode?{kernels}:{})});
+    numericKernelRows.set(meta,{key:this.className+'.'+this.method.name+this.method.descriptor,...bound,installedWorkers:meta.nativeRegionKernelCount||meta.nativeNumericKernelCount||0,installedWorkerBytes:meta.nativeRegionKernelBytes||meta.nativeNumericKernelBytes||0,...(numericKernelCode?{kernels}:{})});
    }
    return meta;
   };
@@ -509,8 +510,8 @@ if(family==='receiver-origin-bound'){
 if(numericKernelFamily){
  const active=new Set(j.jit.wasmJit.compiled.flatMap(s=>[s.meta,s.callee?.meta,s.osr?.meta]));
  const rows=[...numericKernelRows].filter(([meta])=>active.has(meta)).map(([,row])=>row);
- assert.ok(rows.some(row=>family==='native-region-kernel-bound'?row.key==='MusicDecoder.decodePacket(I)[F':numericKernelMicro?row.key.startsWith('LoadingMicroKernel.huffmanInline('):row.key==='VorbisCodebook.readVector()[F'),'Missing intended method');
- if(numericKernelCode)assert.ok(rows.some(row=>(numericKernelMicro?row.key.startsWith('LoadingMicroKernel.huffmanInline('):row.key==='VorbisCodebook.readVector()[F')&&row.kernels?.length),'Intended traversal kernel was not generated');
+ assert.ok(rows.some(row=>family.startsWith('native-region-kernel-')?row.key==='MusicDecoder.decodePacket(I)[F':numericKernelMicro?row.key.startsWith('LoadingMicroKernel.huffmanInline('):row.key==='VorbisCodebook.readVector()[F'),'Missing intended method');
+ if(numericKernelCode)assert.ok(rows.some(row=>(family==='native-region-kernel-code'?row.key==='MusicDecoder.decodePacket(I)[F':numericKernelMicro?row.key.startsWith('LoadingMicroKernel.huffmanInline('):row.key==='VorbisCodebook.readVector()[F')&&row.kernels?.length),'Intended traversal kernel was not generated');
  const result={sourceRevision:revision,family,analysisOnly:!numericKernelCode,installed:rows.some(row=>row.installedWorkers),guestTicks:ticks,assetCalls,mainExecuted:false,rows,
   note:numericKernelCode?'New numeric-only helper generated/validated and its optimizing code inspected. No helper or guest executes; no baseline replay, timing or CPU attribution.':'Planning bound only; normal prepared code generation is unchanged. No Java/helper execution, control replay, timing, fingerprint or CPU attribution.',measuredAt:new Date().toISOString()};
  const current=JSON.parse(fs.readFileSync(reportPath)),trial=(current.optimizationTrials.nativeNumericKernels||={});
