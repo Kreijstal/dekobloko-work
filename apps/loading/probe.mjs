@@ -411,6 +411,8 @@ try {
     parameterHeapBoundsElisionCount:state.meta?.parameterHeapBoundsElisionCount||0,
     parameterHeapRangeGuardCount:state.meta?.parameterHeapRangeGuardCount||0,
     parameterObjectSpecializationBytes:state.meta?.parameterObjectSpecializationBytes||0,
+    nativeElementReuseSiteCount:state.meta?.nativeElementReuseSiteCount||0,
+    nativeElementCaptureCount:state.meta?.nativeElementCaptureCount||0,
     nativeArrayReadReuseSites:state.meta?.nativeArrayReadReuseSites||0,
     reusedPrimitiveFieldReadCount:state.meta?.reusedPrimitiveFieldReadCount||0,
     primitiveFieldCaptureCount:state.meta?.primitiveFieldCaptureCount||0,

@@ -16822,3 +16822,195 @@ Before choosing another code change, compare the retained actual vector/packet
 WAT and TeaVM call/return paths against those recorded failures; a new proposal
 needs a distinct static/code witness and a relevant small semantic case. Do not
 start another CPU-attribution campaign or refresh any of the saved controls.
+
+
+#### Native element availability across disjoint scalar stores (2026-10-24)
+
+The preceding goal turn is progress: its nested-literal proof and failed full
+cohort are durable at Deko `4143f43`. This pass returns to retained WAT and the
+already recorded failures; no CPU attribution, baseline/oracle execution,
+restoration check or control fingerprint is collected. The actual JVM working
+tree/master/index are not used as an installation target. The only source
+extraction for this experiment is expendable and all new code is archived in
+experimental Git refs.
+
+Read the saved vector WAT and TeaVM's existing Vorbis functions `$589`/`$590`.
+TeaVM composes the tree traversal into floor/residue methods, uses typed GC
+field/array operations and still rereads tree elements on child/leaf edges.
+Its `array.get` instructions retain physical bounds traps. Neither absent
+explicit comparisons nor fewer WAT lines proves a compile-time bound check.
+The older call-boundary controls also found no substantial status-return cost;
+this pass does not rewrite the global return protocol on that unsupported
+assumption. Prior paired storage, metadata forwarding, mirrors, liveness and
+frame-rematerialization results were read instead of rerun.
+
+A narrower new witness exists in our actual vector: the successful header
+`iaload` is reread at a leaf and on the right-child edge. The old `d6e7d8f2`
+available-read prototype treated every field/static store as a barrier and had
+zero eligible original methods. The existing positive **stateful native body**
+now certifies readonly field-array identities, owned primitive allocations and
+nonvolatile native static integer cells. Those scalar stores cannot modify the
+owned tree allocation, and their positive path cannot invoke a host getter.
+This provides a distinct alias/effect proof; restoring the old prototype
+unchanged would not provide it.
+
+New generic `nativeElementAvailability.js` performs a bounded forward
+must-availability analysis of that already-certified positive body. Array
+identity is its captured readonly field/static definition, not a guessed JS
+value or a name from a game. Index SSA identity and element opcode must match.
+Only the same successful producer on every incoming edge survives a join.
+Every backwards-layout target, entry and legal resume header starts fresh, so
+an earlier iteration cannot seed a changed phi. Any array store, unknown field,
+opaque call/load or unsupported effect kills captures. Live handler/ordinary
+checked bodies are refused. Work/capture exhaustion supplies no partial
+permission. Static volatile accesses never obtain the native cell proof in
+`wasmRuntimeImports`; readonly instance admission also excludes volatile fields.
+
+The first unit invocation exposed an unavailable `CONVERT` export; the new
+analyzer now uses the existing exported arithmetic table and an explicit total
+numeric whitelist. The corrected analysis passes **16/16 assertions**, covering
+native disjoint stores/readonly fields, aliases, untrusted getters/calls,
+index/kind mismatch, joins, loops, handler refusal and budgets. Analysis source
+**`0618ca6a207a7f03ed9b6f7d36ba59cdcb7282c3`**, based only on saved source 029,
+is retained at **`experiment/teavm-native-element-availability-bound`**. It adds
+no runtime emission. Its new preparation-only question is:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 0618ca6a207a7f03ed9b6f7d36ba59cdcb7282c3 native-element-availability
+```
+
+Zero guest ticks/asset requests occur. The bound does not mutate allocator,
+imports or local declarations and does not execute a replacement graph.
+`VorbisCodebook.readVector()[F` has **two pairs from one producer**: expanded
+item 10 in block 1 can serve items 43/block 4 and 53/block 7, with index SSA 4.
+The array-reader SSA identities differ (14 versus 37/41), but the existing
+positive body proves their readonly field definition identical. The bound
+uses 43 work units, two fresh roots and one opaque barrier. This answers a new
+static question; it is not a baseline identity test or performance claim.
+
+Emission source **`10c777daf54fcf5910be7c3fd0f63ec2dba31385`**, parent 0618,
+ref **`experiment/teavm-native-element-reuse`**, allocates a dedicated numeric
+capture for each used successful producer. It never relies on the producer's
+possibly reused SSA slot. Later proved loads use that capture on this native
+positive path; existing foreign/negative-entry fallback remains. Captures/maps
+are compiler-only and released with other analyses. Installed metadata adds
+only `nativeElementReuseSiteCount` and `nativeElementCaptureCount`. There is no
+new VM option, application identity or changed call/exception ABI.
+
+The initial integration invocation passed 114/116 assertions. Both failures
+were the customized reference-field getter in **non-heap** mode, where the new
+reuse-site count is zero and the unchanged ordinary field-value cache executes
+only one getter. No baseline process was run to verify that source-level
+independence and that existing cache was not changed here. The final getter
+refusal case is explicitly scoped to the **new native heap proof**; it verifies
+two getter occurrences and separate captured arrays there. This is a test-scope
+limit, not a claim to have fixed ordinary non-heap field caching. Preserve the
+initial failure rather than calling that first run green.
+
+The final candidate command passes **904/904**:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeElementAvailability.test.js test/nativeElementReuse.test.js test/nativeMixedStateBody.test.js test/nativeStaticArrayBody.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/wasmCompilerRetention.test.js
+```
+
+New execution tests cover exact int/long/float/double values (including values
+beyond 2^53, float rounding, negative zero and NaN), aliasing stores, volatile
+code exclusion, null/late bounds handlers with completed effects, foreign array
+getters, native shape refusal and replacement arrays after an actual forced
+fuel yield. Prefixes are not replayed and no Java compilation occurs after
+main. Existing native state, reconstruction and retention checks also pass.
+These are changed-candidate tests, not restored-runtime validation.
+
+First screen, using only this changed source and the existing small fixture:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 10c777daf54fcf5910be7c3fd0f63ec2dba31385 huffman-inline
+```
+
+The samples are **56.988482, 67.492244, 59.018571 ms**, median
+**59.018571 ms**, checksum **-1268584370**, zero late compilation. Source SHA
+is `94b1eaa68dde161247798b40ca9dbc9db6328903e98f2ea0658cbbd17223c519`, fixture
+inventory `2d67a050e6669d1cefe1a343f8f427a86ce390f439f392a28f4f426e8c93087c`, run
+ID `874388d6-02a6-4d91-9742-b7b32a2cdb30`. The existing source-029 screen median
+**55.497371 ms** is reused, never replayed. No useful gain is demonstrated.
+The exact first timing scripts/loader are already in Deko `4143f43`; the later
+new scalar reporting fields occur after timing.
+
+A new compile-only question confirms that this was an **actually admitted**
+small case, rather than assuming removal from the source diff:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 10c777daf54fcf5910be7c3fd0f63ec2dba31385 native-element-micro
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-code 10c777daf54fcf5910be7c3fd0f63ec2dba31385
+```
+
+The inline traversal emits two reuse sites/one capture. So does the separate
+vector helper, which is the method-boundary shape of the real decoder.
+The latter has 82 Wasm locals, 4024 native instruction bytes and a 0x90-byte
+stack reservation in this preview. Its total cold+hot native call/static-site
+counts are not CPU attribution, and it is not the same function boundary as
+TeaVM's larger floor/residue methods. The code-only path executes zero guest
+instructions. Static simplification alone does not establish elapsed benefit.
+
+Screen that distinct separate-vector shape once, against its saved historical
+control rather than rerunning the old source:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-candidate 10c777daf54fcf5910be7c3fd0f63ec2dba31385
+```
+
+Results: **85.562269, 93.871709, 91.644725 ms**, median **91.644725 ms**,
+checksum **-1834486005**, zero late Java compilation. Historical separate-call
+screen is **89.520345 ms**, with overlapping 85.077283--98.219603 range and a
+different older source composition. Do not call this a causal regression or
+replace the later paired component comparator. It supplies no positive gate.
+Both changed cohorts were sequential on CPU 2 / Node 22.23.2, 1-GiB old-space,
+eager optimizing Wasm, with no concurrent tests/builds/profiling. All raw and
+compact observations stay in the same canonical ledger.
+
+**No original Vorbis or full-loading run is earned.** Preserve both source refs
+and their tests, remove the one temporary source extraction/diagnostics, and
+leave the active JVM/default/artifact untouched. No restoration test, control
+fingerprint or old baseline/oracle timing is performed. The saved full median
+remains **1807.0171855 ms**, about **5.023x** saved TeaVM **359.739597 ms**;
+**395.7135567 ms** remains the 1.1x limit. Goal still active, no deployment.
+
+Changed harness syntax checks also pass without executing any JVM/control:
+
+```
+node --check apps/loading/call-code.mjs
+node --check apps/loading/microbench.mjs
+node --check apps/loading/probe.mjs
+node --check apps/loading/nested-loop.mjs
+```
+
+#### Next distinct boundary to prove: numeric-only kernels and cold exit tuples
+
+Actual removed loads have now failed two small shapes; do not infer that
+removing more isolated checks explains the fivefold full gap. The retained
+vector body carries typed/externref caches, original-frame recovery and Java
+error imports alongside its loop. TeaVM's composed loops have a much smaller
+live context. Their different method boundaries prevent a causal instruction
+count comparison, but supply a concrete representation question.
+
+Before implementing another optimizer, bound a callback-free numeric kernel
+inside an already-certified native body. Private array base/length and scalar
+inputs could enter a helper as numbers; raw loads/stores/total arithmetic keep
+their existing Java bounds checks. A bounds failure or fuel exit would return a
+typed reason/payload tuple to the existing wrapper, which alone materializes
+original frames or raises the original Java error after all prior stores. No
+host error/yield imports or live Java object caches would be inside that helper.
+This differs from the earlier rejected outliner, which retained its original
+imports/checks and live-state context, and from rewriting the whole VM return
+protocol based on a short call-boundary control.
+
+First count numeric inputs, outputs, loop-carried values and required cold
+snapshot/reference dependencies on the actual IR. Refuse any plan that cannot
+reconstruct the exact original PC/operand prefix without replaying a getter or
+effect. Keep array owners alive through the kernel. Native stores must remain
+visible at their original positions, and null/foreign data must retain original
+fallback before effects. Unknown calls, volatile/monitor operations and unsafe
+reentry are exclusions. A small semantic prototype and changed native-code
+comparison must establish that the helper really has no opaque calls/GC live
+context before another original/full cohort is considered. No CPU attribution
+or baseline refresh is needed for that new static question.

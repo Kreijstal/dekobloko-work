@@ -265,7 +265,8 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
     nativeCallSites:(body.match(/^0x[^\n]*\bcall\b/gm)||[]).length,
     inlining:native.split('\n').filter(line=>line.includes('function '+index+':')&&/candidate|inlining/.test(line)).slice(0,16),
     branches:ops.if||0,loops:ops.loop||0,loads:ops['i32.load']||0,stores:ops['i32.store']||0,
-    inlineActivationDepth:state.meta.inlineActivationDepth||0,nativeStateSites:state.meta.nativeStaticStateBodySites||0});
+    inlineActivationDepth:state.meta.inlineActivationDepth||0,nativeStateSites:state.meta.nativeStaticStateBodySites||0,
+    nativeElementReuseSiteCount:state.meta.nativeElementReuseSiteCount||0,nativeElementCaptureCount:state.meta.nativeElementCaptureCount||0});
    if(name==='root')fs.writeFileSync(path.join(directory,'current.wat'),wat);
    fs.appendFileSync(path.join(directory,'current-native.txt'),'\n'+engine+' '+state.key+'\n'+native);
   }
