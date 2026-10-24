@@ -17869,3 +17869,55 @@ versus TeaVM **359.739597 ms** remains the selected evidence; **1.1x / 395.71355
 is unachieved**. No browser/phone/FPS/heap/stability release gate is satisfied by
 this ABI-only result. Clean the owned scratch source/index/logs after archival;
 perform no restoration tests/build or baseline fingerprint check.
+
+### Compile-time private static addresses inside numeric workers
+
+The preceding goal turn is progress: it proves packed results and records that
+its smaller stack did not earn an original/full run. Keep known JVM/TeaVM/
+HotSpot controls saved, with no restoration validation or new CPU attribution.
+Use the prior numeric cold-return source 79a8796a as parent here, excluding the
+failed loop projection and result-packing changes to isolate this new question.
+
+The retained TeaVM composed methods use direct global accesses alongside typed
+GC field/array operations. That does not mean all Java checks disappeared. Our
+certified numeric worker, however, transports initial scalar values and static
+array headers as ordinary numeric call parameters even when the compiler already
+knows their private memory-cell addresses. Its wrapper already authenticates
+those nonvolatile cells and the complete positive body forbids callbacks or
+static-array-field writes before this call. Reload those values once inside the
+worker from the known private addresses instead of passing copies as arguments.
+Java scalar stores still occur at their exact original instructions, and the
+wrapper's existing permissions/readiness/refusal and scalar-reload logic stays.
+
+The planner binds a static address only for the exact header object authenticated
+by the native static-field preflight. Instance headers, parameter headers and
+SSA-captured pre-loop array headers remain explicit inputs. In particular a
+captured reference after a yield cannot be replaced with the current field just
+because its descriptor or previous pointer matches. Record both logical input
+count and actual physical parameter count. No game identity, new user flag,
+new raw-pointer trust or public getter query is added.
+
+Focused commands in the sole `/tmp/geoblox-native-parity-7zCq8O/jvm-source`:
+
+```
+node --check src/jit/nativeNumericKernel.js
+node --check src/jit/nativeNumericKernelPlan.js
+node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeNumericKernelPlan.test.js test/nativeNumericKernelWrapper.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticStateBody.test.js test/nativeMixedStateBody.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/wasmCompilerRetention.test.js
+```
+
+**100/100** and **797/797** pass. The worker fixture physically reduces 8 inputs
+to 4 while preserving its 8 logical inputs, current signed scalar cells, original
+fault sites, partial effects and exact fuel. A changed-current-static-header case
+must still use the captured array's explicit pointer; a real compiled Java
+mixed-current/captured-array method yields, replaces the global, then resumes
+natively with sum **33**, exactly two cursor/bit stores and the old captured
+identity. Existing custom getter/read-only/volatile/cold-class/foreign-array
+refusals, exception continuations, inline resumes and cleanup remain covered.
+No baseline correctness/timing/fingerprint check is performed.
+
+Archive only the four handwritten source/test files through the separate index;
+actual JVM master/index, decompiler WIP and selected default remain untouched.
+Next inspect actual changed helper parameter counts/native code before timing.
+This is not yet a performance improvement or an original/full loading result.
