@@ -400,6 +400,7 @@ try {
     inlineActivationSiteCount:state.meta?.inlineActivationSiteCount||0,
     inlineActivationDepth:state.meta?.inlineActivationDepth||0,
     inlineAtomicStaticSiteCount:state.meta?.inlineAtomicStaticSiteCount||0,
+    constantArgumentInlineSites:state.meta?.constantArgumentInlineSites||0,
     nativeInlineArrayRegions:state.meta?.nativeInlineArrayRegions||[],
     lastNativeExitStatus:state.meta?.directFrameContext?.lastExitStatus??null,
     calleeNativeExitCount:state.callee?.meta?.directFrameContext?.exitCount??null,

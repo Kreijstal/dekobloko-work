@@ -16461,3 +16461,204 @@ the next SSA build. Keep existing depth/work/code budgets and no game identities
 or new flags. A small semantic/static-code bound comes before any original/full
 timing. This is a question to prove, not an implemented optimization or a claim
 that it will close the remaining ~5x gap. The 1.1x goal remains active and unmet.
+
+
+#### Constant-sensitive acyclic inline admission (2026-10-24)
+
+The bounded SSA question above is now implemented in isolated experiments,
+not in the selected runtime. No known JVM, TeaVM or HotSpot control was rerun,
+and no new CPU attribution was collected. The same six saved full observations
+remain the control, including 3719.670882 ms; their median is 1807.0171855 ms.
+Saved TeaVM is 359.739597 ms and the 1.1x limit is 395.7135567 ms.
+
+`src/jit/inlineIntegerArguments.js` evaluates bounded, total i32 expressions
+against actual SSA argument identities. It uses logical argument indices,
+including the receiver, rather than Java slots after category-2 arguments.
+Integer multiply uses `Math.imul`, unsigned-shift results remain signed i32,
+cyclic/different phis remain unknown, and an overwritten parameter does not
+inherit its original fact. No fields, opaque calls, division or host state
+produce constants. Only an otherwise refused, newly proved **acyclic leaf**
+can use this admission alternative; live callee exception tables are refused,
+existing 96-item/depth/code budgets still apply, and proof work is bounded.
+
+The chosen code view does not mutate the original method. A proved branch
+still evaluates and pops its original operands; a taken arm has an explicit
+goto and dead items become nops with their labels retained. The next normal
+SSA build sees a genuine selected edge, rather than a claimed reachability set
+with the discarded call still present. Execution metadata exposes only the
+scalar `constantArgumentInlineSites`, never the temporary graphs/evaluators.
+No game identity or new runtime flag was added to java-tools.
+
+The first integration exposed an important existing preference: required
+callees discard an inlined body whose dispatch-miss deopt stub would make a
+previously complete helper partial. The new constant-sensitive root leaves
+therefore use the existing captured-arguments/original-invoke/join pattern on
+the miss arm. Null checks, loaded overrides, class-world revalidation and
+existing readiness policies remain. This is not unchecked receiver dispatch
+or caller-prefix replay.
+
+Making the new path execute exposed a stale primitive-field cache across a
+foreign byte-array getter: the correct result was 111, but the first emitted
+version returned 13. The new scopes now invalidate cached field/storage facts
+before opaque imports. Fresh field occurrences are preserved, incoming private
+object metadata is not blindly reused by these new scopes, and their object
+storage/base lookup validates the actual field-container shape. A test with a
+custom field accessor also exposed why merely disabling value caching is
+insufficient: unchecked native base lookup could bypass both original gets and
+the setter. The candidate validates that path and tests all occurrences.
+An expanded-worktree run additionally found one customized nested-reference
+getter failure in the older paired-storage work. That older campaign was not
+copied into the isolated candidate and is not silently claimed fixed here.
+
+Initial isolated source `e124d23e7ceddc566f912c155dd15f5a9b9d8652` is based
+only on saved source `029834e16366e3dfaed1f46d5589ec34dddc04dc` (five changed
+source/test files). Expanded companion is
+`e4292ba80211a659516659d4d6d56edeba3a650d`. Both are retained by
+`experiment/teavm-constant-inline[-expanded]`; actual JVM master HEAD and its
+normal index were not moved. The initial isolated focused command was:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/inlineIntegerArguments.test.js test/constantArgumentInline.test.js test/inlineActivationResume.test.js test/wasmColdIntegerInline.test.js test/wasmStaticInlineHandlers.test.js test/nativeObjectBody.test.js test/nativeObjectFieldCodegen.test.js
+```
+
+Result: **659/659**. The helper alone initially passed 43 assertions; the first
+expanded safety command passed 427/428, with the older nested custom-getter
+failure described above. These are candidate tests, not restored-control tests.
+
+A new `apps/loading/constant-inline.mjs` reduction performs one invocation with
+1,048,576 guarded instance byte reads, no warmup, input/setup outside the timer.
+Every byte remains unchanged; checksum is **-2131230720**, final position is
+1048576, the bad guard arm has no calls, and there are zero post-main compiles.
+Both initial variants use the same changed source, with one withholding only
+`specialize`; this is a new-case emission ablation, not another known baseline.
+The first attempt omitted NODE_PATH and did not load the JVM. The next exposed
+an uninitialized static counter in the manually prepared harness; explicitly
+setting its Java default before the timer fixed that oracle. Neither failure
+produced an accepted observation. The exact accepted initial measured harness
+is archived in Deko source `ac32e3acf66a792067fac22ee72fb1081166197a`, ref
+`experiment/constant-inline-measured-harness`.
+
+```
+node apps/loading/constant-inline.mjs build
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/constant-inline.mjs run e124d23e7ceddc566f912c155dd15f5a9b9d8652
+```
+
+The six fresh-process observations were:
+specialized **140.478816, 137.963571, 136.863870 ms**;
+withheld **9.433423, 9.578698, 9.251148 ms**.
+The first semantic success was therefore a large performance failure; no game
+execution was authorized by that failed small-case gate. A compile-only WAT
+inspection of that changed source showed the concrete regression: an uncached
+reference read went through `gf_GuardedByteInput_bytes` each iteration, then
+queried array base/length again. Disabling field value caching had accidentally
+bypassed the emitter's existing native-reference-read path as well.
+
+Refinement `c769dab65cee90b241a65138e56d71fdf3e1aefb`, companion
+`59a5e23d4bada8baaca3a2b0ce3dc4a348d53504`, keeps each reference read fresh
+while selecting the validated native arm. It captures the array header with
+that exact loaded reference, seeds the corresponding array cache after its
+ordinary lifetime kill, and retains unknown-header/checked access for foreign
+getters. Distinct getter occurrences must still return their own captured
+arrays. These are retained by `experiment/teavm-constant-inline-reference[-expanded]`.
+The refined native observations were **4.803986, 4.244134, 4.641463 ms**; the
+saved 9.433423 ms withheld median was reused, never replayed.
+
+Portable refinement `f3e5ffbc6fcb7135a31cd8f5b6a6a6f11b201021`, companion
+`baae66bb9016d4e08aac5d983c84aff0ff6bede0`, additionally preserves checked
+array imports without a heap and original reference-array element occurrences.
+Both heap configurations pass, with the original 64-bit operand prefixes,
+overwritten/unknown/unequal-phi guards, loaded overrides, null and late bounds
+faults, partial position writes, prefix effects, custom primitive/reference
+getters and opaque container replacement covered. Refs:
+`experiment/teavm-constant-inline-portable[-expanded]`.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/inlineIntegerArguments.test.js test/constantArgumentInline.test.js test/nativeObjectBody.test.js test/nativeObjectFieldCodegen.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/constant-inline.mjs run-specialized f3e5ffbc6fcb7135a31cd8f5b6a6a6f11b201021
+```
+
+Result: **591/591**, including compiler retention. The changed portable source
+alone measured **4.274134, 4.450941, 4.512254 ms**, median **4.450941 ms**,
+versus the saved 9.433423 ms new-case control. All timed children used Node
+22.23.2, CPU 2, `--max-old-space-size=1024 --no-liftoff
+--no-wasm-lazy-compilation`, eager preparation, zero late Java compilation.
+This is a reduction result, not a game-loading or TeaVM parity claim.
+
+The following new compile-only bound checks actual installed loader coverage;
+it intercepts the pre-main boundary, refuses guest ticks and asset requests,
+and records only metadata in the single canonical benchmark ledger:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs f3e5ffbc6fcb7135a31cd8f5b6a6a6f11b201021 constant-inline-coverage
+```
+
+The compile-only bound found **18 sites in the primary prepared states** it
+inspected, with zero guest ticks/asset requests. This is not an exhaustive
+all-tier census. The full candidate-only gate then ran:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/probe.mjs slab all f3e5ffbc6fcb7135a31cd8f5b6a6a6f11b201021 loading
+```
+
+Three fresh processes were run sequentially on CPU 2, without overlapping
+builds/tests/profiling, and each full raw observation was retained in
+`optimizationTrials.constantArgumentInlining.fullObservations` in the existing
+canonical ledger. Candidate run ID:
+`b6db2082-2e59-4a89-b692-ebdbc81681cf`.
+
+| Sample | Music ms | Graphics ms | Total ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1464.050053 | 325.616304 | 1789.666357 |
+| 2 | 1540.308350 | 332.568669 | 1872.877019 |
+| 3 | 1486.503997 | 342.049325 | 1828.553322 |
+
+All checksums are **18:218292:2368412830:205:7597510:3045679678**, all outputs
+match, and every sample has zero late Java compilation. Median is
+**1828.553322 ms**, **1.011918058x** the saved control and **5.082991523x**
+saved TeaVM. This does not establish a full-loading improvement. Do not replace
+the saved control, promote this feature, or claim parity from its faster new
+reduction. The narrow gain is real for that reduction; its wider payoff was
+not demonstrated. These samples do not establish a causal 1.19% regression
+either, given their overlap with saved-control variation.
+
+Existing post-timer scalar metadata identifies five executed primary states
+with the new feature in every full sample: `ByteArrayBuffer.readUnsignedSmart`
+(1 top-level run), `MidiPcmStream.resetChannelControllers` (2),
+`MusicDecoder.readPacketContainer` (53), `MusicScore.<init>` (4), and
+`SoundFilter.decode` (18). These are invocation/coverage facts, not CPU shares
+or counts of loop iterations, and say nothing exhaustive about other tiers.
+The original Vorbis-only timer excludes container setup; it was not rerun to
+look for a benefit in the wrong timed region.
+
+Withdrew only this experiment's two modified compiler files to expanded source
+`9bd5849d…` and removed its three new source/test files from the active worktree.
+Their exact contents remain in the six experimental refs above. Preserve the
+independent large-body assembler fix, unrelated decompiler work, actual JVM
+master HEAD/index and selected artifact. **No restored-control tests, timings
+or fingerprint checks were run.** Generated fixture classes, the single
+expendable candidate source extraction and temporary diagnostics are not Git
+outputs. The Deko harness and this journal are the durable integration work.
+The 1.1x goal remains active and unmet; no default or deployment changed.
+
+#### Next bounded question: literal facts inside an existing inline composition
+
+The current experiment consults constant arguments only at a root site.
+`buildCalleeBody` still plans an interior instance call without passing its
+callee-local SSA literal facts to `planInstanceSite`. Thus an acyclic wrapper
+containing `child.read(34)` can still be rejected because the child's original
+bad arm calls another helper, even though the literal is already available
+inside the wrapper. This is a concrete source-level admission gap, not a new
+CPU attribution theory. It does not establish that fixing it would help the
+full game.
+
+First prove that precise nested shape with a small semantic/compile-only case:
+actual constant facts must select the child arm and reach the installed outer
+body while retaining current depth/code/work bounds. Do not drop arbitrary
+checks, add a new resumable loop policy, or allow a late guard miss to replay a
+wrapper's earlier writes. Test overwritten/unknown inner arguments, effectful
+prefixes, null/override/foreign callbacks and exact exception continuations.
+An interior fallback and its metadata must preserve its real activation;
+refuse it if the existing atomic-leaf composition cannot prove that. Inspect
+coverage in **all active tiers** for a changed candidate before considering
+another original/full gate. Reuse the saved controls; never replay source 029,
+TeaVM, HotSpot, or a withdrawn candidate to check that it is unchanged.
