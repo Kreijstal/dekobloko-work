@@ -19830,3 +19830,105 @@ extraction, alternate index and temporary logs are expendable. JVM master/index,
 selected full baseline **1807.0171855 ms**, saved TeaVM **359.739597 ms**, full
 **395.7135567 ms** target and deployment are unchanged. Goal remains active and
 unmet; browser/phone, rolling presented FPS, memory and stability are unverified.
+
+
+### 2026-10-24 — Reference-element cache opportunity: existing-kill hypothesis ruled out
+
+The previous goal turn made progress: it preserved the root-static proof,
+rejected the original decoder regression and verified restoration of the native
+caller continuation, without advancing a performance baseline. This pass reads
+those current receipts and existing JVM/TeaVM WAT. No known JVM, TeaVM, HotSpot,
+restored-source or identity baseline is executed. No CPU profiling is repeated.
+
+The saved TeaVM residue uses typed GC fields/arrays and inlines traversal; the
+saved JVM residue has representation/call/metadata paths. Those facts were
+already recorded. The earlier independent array-region, return-ownership,
+reference capture, field-promotion, delayed-ID, paired-container and token
+experiments were read rather than repeated. Their smaller code/import counts
+and synthetic gains did not establish original/full-loading speedup. Do not
+restore them blindly or equate missing explicit TeaVM branches with removed
+physical array/null traps.
+
+A new narrower question was whether the caller repeatedly loses an existing
+reference-element cache at its vector calls. Inspection shows the current
+`elementCacheIndex` policy requires deep inlining, a reference-array **parameter**
+and a literal index. The actual classbook lookup is a static array indexed by an
+instance field, so that policy does not apply. An absent cache cannot explain
+slowdown through its invalidation. A potential *new* cache is a different proof,
+not a justification for removing call-wide kills.
+
+Generic analysis source **615ce860cbec32b38974e825c99df605deafaf84**, parent
+selected **029834e16366e3dfaed1f46d5589ec34dddc04dc**, introduces
+`referenceElementReuseBound.js` and its focused tests on isolated ref
+`experiment/teavm-reference-element-bound`. This is **opportunity analysis only**;
+it is not wired into runtime emission or an opt-in VM flag. Bounded SCC discovery
+finds only reachable cyclic reference loads with plausible repeated field,
+parameter or literal indices. It retains exact node/array/index identities and
+records calls as potentially opaque. It never treats absence of an aastore in
+bytecode as proof that a host getter or called method cannot mutate an array.
+Exhaustion returns no partial list. No imports, code, SSA or Java state change.
+
+The initial test passed 23/25: its budget-8 expectation was wrong because the
+small graph completes in exactly eight units. Budget 7 correctly exercises
+exhaustion; no analyzer condition was relaxed. Subsequent child
+**141930f69f03b926f497ea0aa1d467362bdd19b5** caps graph size at 512 even when a
+caller raises its own allowance, bounding recursive SCC depth. Final test child
+**c64f4cf2ecee403183c0bea4cb53137e86fb06f8** explicitly covers that hard limit
+and late exhaustion after an earlier component has already yielded a site.
+The actual inspected graph is below that hard limit, so those later defensive
+analysis/test changes do not justify repeating its code-only observation.
+
+Exact focused validation in the sole expendable extraction:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/referenceElementReuseBound.test.js
+node --check src/jit/referenceElementReuseBound.js
+```
+
+Final result: **29/29 assertions pass**. Coverage includes reachable/unreachable
+cycles, self loops, acyclic refusal, varying induction/opaque indices, source
+identity, untrusted call boundaries, both budgets, no mutation and no partial
+result after late exhaustion. This validates an analyzer, not a runtime cache.
+
+Deko adds one `reference-element-bound` mode to the existing compile-only tool:
+
+```
+node --check apps/loading/call-code.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 615ce860cbec32b38974e825c99df605deafaf84 reference-element-bound
+```
+
+Exit **0**. Main, guest ticks and asset calls are all **zero**. No native module
+is re-inspected, no existing WAT overwritten and no execution timing collected.
+The real residue has **zero existing element caches** and **one** plausible new
+cyclic site: item **61**, SSA **479**, block **10**, static `MusicDecoder.codebooks`
+indexed by `VorbisResidue.classbookIndex`. Analysis uses **210** work units;
+its SCC contains **38** blocks and **3** call sites. Those are structural
+counts, not executed frequencies, hit-rate predictions or CPU attribution.
+Other inspected decoder methods expose no additional candidate in this scope.
+
+A versioned native reference-array cache could in principle recognize a repeated
+array/index across calls, but it would need an actual native identity and a
+mutation generation updated on tracked writes, plus customization, overflow,
+replacement, suspension and lifetime handling. Merely keeping the selected
+Java reference is insufficient: reusing its dependent object/field caches after
+a callback can conceal field-shape changes. The saved token/paired-container
+failures and callback tests already demonstrate that hazard. This one-site
+opportunity is not evidence that such a new protocol would materially reduce
+original/full execution. **No runtime cache, generation header, relaxed kill,
+new ABI or timing cohort is implemented on this bound.**
+
+The new observation and disposition live in the existing single benchmark.json
+under `optimizationTrials.referenceElementReuseBound`. Source/tests are durable
+in isolated JVM refs; Deko owns the integration selector and this journal.
+`git diff --check` and the Deko syntax check pass. Temporary extraction/index/log
+are removed after the source is saved. Actual JVM master/index and unrelated WIP
+are untouched. No generated Java, binaries, WAT, bundles, screenshots, second
+JSON or source-preview directory enters Git.
+
+This rules out a specific cache-kill explanation; it establishes **no speedup**.
+Do not rerun this completed opportunity gate or previously rejected controls.
+The full goal remains active: selected full **1807.0171855 ms**, saved TeaVM
+**359.739597 ms**, target **395.7135567 ms**. Browser/phone, presented FPS, total
+heap and stability remain unverified. The next implementation must address a
+proved, actually substantial representation/composition gap; this bound does
+not warrant another broad array-region or call-protocol rewrite.
