@@ -17352,3 +17352,92 @@ The full 1.1x objective and browser/phone/memory/FPS/stability gates remain open
 The numeric-worker experiments above likewise remain isolated, with their only
 scratch extraction, index and logs removed after preserving source/test refs.
 No restoration test or timing follows. Unrelated decompiler WIP is preserved.
+
+
+#### Native reference-array stores from verified allocation facts
+
+The preceding turn is progress: two numeric-worker variants and a previously
+unfinished lazy-mirror candidate were measured and rejected without advancing
+029's comparator. Their smaller loops/return signatures did not establish a
+full speed gain. Do not replay old controls, attribution or restoration tests.
+
+A new code observation is concrete: the structured compiler emits all aastore
+operations through a JavaScript store import. Its existing native reference
+mirror cannot accept direct generated writes because ordinary JavaScript reads
+would still see its stale backing array. This experiment first makes the native
+store authoritative while its capability is active. Indexed JavaScript reads,
+iteration and getOwnPropertyDescriptor read current native values. Before any
+custom element/length/type definition, deletion or inherited write revokes the
+capability, current values are materialized into the private raw target, then
+native references are cleared and the original host operation proceeds. The raw
+fresh target never escapes the factory. Frozen/nonextensible behavior and cycles
+remain covered. No new representation flag or application data is introduced.
+
+The structured emitter then handles stores only when SSA identifies a new
+primitive/reference array, fresh object or null and proves compatibility with a
+known destination component (or Object). It still checks the actual private
+array's immutable class id, active capability and original Java bounds. Unknown
+parameters/covariance, ordinary arrays, foreign memory and customized arrays use
+the original checked store. That fallback invalidates opaque field/array facts
+before a setter can run. Stores update both the native GC element and its
+private primitive-row base/length header; JavaScript sees the exact same object.
+
+Primitive newarray producers that feed these stores publish allocator-owned
+metadata into **one eight-byte synchronous result area per VM**. The allocation
+import cannot run guest callbacks; the compiler consumes that area immediately
+before another allocation can overwrite it. It adds no per-row JavaScript
+multi-result transport array or public-property query. Exhausted allocation
+publishes the existing -1/0 fallback header; negative allocation throws before
+any later array check. Other newarray sites retain their existing import. This
+is generic compile-time use of producer/type facts, not a game special case.
+
+Source **a33e0d80102dc00ad0f00835f1e546aa2a470c56** is isolated at
+experiment/teavm-native-reference-stores, parent **9bce12bf8924156b6e822ae193976878adc94915**
+(the already-tested generic multianewarray opcode source). It contains only
+handwritten compiler/runtime changes and focused tests. Actual JVM master/index,
+unrelated decompiler WIP, normal selected artifact and deployment are untouched.
+The opcode parent had failed full performance; including it here is not a claim
+that its old performance or a combined candidate is already acceptable.
+
+Narrow commands in the sole native-reference-store-source extraction:
+
+```
+node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReferenceArrayBacking.test.js test/nativeReferenceArray.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReferenceArrayBacking.test.js test/nativeReferenceArray.test.js test/wasmMultiArrayAllocation.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReferenceStores.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReferenceStores.test.js test/wasmCompilerRetention.test.js
+```
+
+Results respectively **133/133**, **319/319**, initial real-store integration
+**67/67**, final integration/cleanup **238/238**. The final suite asserts actual
+native emission, zero checked stores/base/length queries on owned rows, distinct
+headers across intervening allocations, all eight primitive row kinds, exact
+fresh-object/null identities, ordinary/foreign/covariant fallback, custom setter
+once with visible static-field mutation, allocator fallback, original exception
+order/handler continuation and no late compilation. Positive compiler plan maps
+are released. These are changed-source tests, not baseline correctness replay.
+
+Extend the existing constructor script with one new source case: one constructor
+creates 64 groups of 256 distinct rows, each 8 ints, with no warmup/replay. Both
+arms use the **same candidate, class bytes, new backing semantics, allocator and
+allocation-header publication**. The supported checked arm withholds only the
+new native store emitter through the diagnostic archive observer. It does not
+run old JVM/TeaVM/HotSpot. It validates every row identity, dimension and zero
+value outside timing. Keep one current generated constructor preview/class in
+the existing cache, rather than making multiple source versions/directories.
+
+```
+node --check apps/loading/constructor.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/constructor.mjs stores-inspect a33e0d80102dc00ad0f00835f1e546aa2a470c56
+```
+
+The new case passes: checksum **400687104**, one native constructor invocation,
+zero exits/ticks/late compiles in both arms. Native has **2** emitted store sites
+and **0** checked store calls; withheld has **0** sites and **16448** checked
+stores. Instrumented elapsed values are diagnostics only. The checked observer
+assertion initially ran before its lazily-required module loaded; moving that
+assertion after compilation fixes the harness ordering. Reuse the already-saved
+native diagnostic rather than executing it again. Next, uninstrumented paired
+new-case timings must establish benefit before original/full testing. No current
+performance claim or comparator advancement.
