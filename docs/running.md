@@ -17957,3 +17957,47 @@ across every normal call. Preserve the entry flags/base/readiness checks and
 normal reference live-outs; an array returned/captured outside the worker cannot
 borrow that cold-only treatment. This composition has not yet been validated or
 timed; no release/default/comparator change follows from the input-only result.
+
+#### Complete worker wrapper with cold-only metadata reloads
+
+Compose the previously proved single-exit loop projection with direct private
+static inputs. The composition removes the duplicate original loop; this makes
+it possible to avoid keeping selected metadata live solely for that removed
+loop's cold reconstruction. Keep every entry permission, class-readiness and
+positive-base check. For a static array field, omit the entry length load only
+when every reader is in a projected worker using that exact static header and
+no worker's normal reference live-out needs that field. Cold fuel/fault recipes
+load its current private length immediately before reconstructing that original
+reference. The complete worker interval has no callback/array-field write, so
+that private header is still the faulting operation's authenticated header.
+
+Scalar cache seeds can likewise be omitted only when every scalar read is
+covered by a projected worker that commits/reloads that exact cell before its
+normal continuation. Uncovered reads, readonly scalars, pre-loop captures and
+normal reference returns keep their ordinary initialization. Small compile-only
+sets/maps make the coverage checks bounded without rescanning the entire SSA
+array for each reader. All such data remains in numericKernelWorkers, which the
+existing cleanup releases; metadata exposes scalar counts only. No new user flag,
+application identity, raw-pointer permission or runtime trust bit is introduced.
+
+Focused commands in the one current JVM source extraction:
+
+```
+node --check src/jit/nativeNumericKernelWrapper.js
+node --check src/jit/nativeStaticArrayBody.js
+node --check src/jit/StructuredWasmCompiler.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/numericLoopProjection.test.js test/nativeNumericKernelPlan.test.js test/nativeNumericKernelWrapper.test.js test/nativeStaticStateBody.test.js test/nativeMixedStateBody.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/wasmCompilerRetention.test.js
+```
+
+**935/935**. Tests assert real length/seed omissions, eager metadata for an actual
+normal reference return and pre-loop capture, exact reference identities,
+state-changing header ordering, native/current-versus-captured resume, precisely
+once scalar effects, Java handlers and bounds error message
+`Index 1 out of bounds for length 1`, plus original custom/volatile/cold/foreign
+fallback and compiler cleanup. These execute the changed composition, with no
+restored-baseline tests. Add only post-timer numeric omission counts to the
+existing micro/full/nested summaries; syntax checks of microbench.mjs,
+probe.mjs and nested-loop.mjs all pass. Do not rerun the unchanged standalone
+helper code question: this stage changes the wrapper/entry/cold reconstruction.
+Next inspect the changed wrapper and its actual dynamic path before timing.
+No performance or full-loading/default/comparator claim yet.
