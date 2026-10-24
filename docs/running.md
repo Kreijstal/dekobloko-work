@@ -15648,3 +15648,145 @@ only scripts and this journal enter Deko. Actual JVM master remains `cbcf8adde�
 The full selected comparator stays **029… / 1807.0171855 ms**, about **5.023x**
 saved TeaVM **359.739597 ms**. The **1.1x goal remains unmet**; browser, phone,
 presented-FPS, total-heap and stability gates remain open.
+
+### Conditional continuation after cold calls: proof and isolated small case
+
+Reuse every recorded baseline and oracle. This pass asks a new static question,
+then runs changed candidates only; no baseline replay, restoration test,
+fingerprint comparison, CPU attribution, warmup or preparation profiling occurs.
+The original Vorbis decode timer starts after setup, so it is deliberately not
+used to evaluate this setup-only change.
+
+The preparation-only checkpoint census on opcode source `9bce12bf…` found a
+checkpoint for `computeLookupValueCount` at item 13, but none for the codebook
+constructor. Its later loop at **item 159 / block 27** is after the recorded cold
+call continuation (item 152) and inside a conditional arm. All the ordinary
+liveness/exception/ownership gates pass. Syntactic loop nesting also hides later
+sequential loops in earlier loops' exit arms. A genuine inner-loop backedge must
+still be rejected; tree ancestry alone cannot distinguish these shapes.
+
+Add a bounded generic admission proof, archived as isolated
+`e7326bef7ab802556eda93f1a906cfc421afa6e3` and expanded
+`8857aa4564b52eec415f99b85d8a610b45dd9263`. Walk at most 16384 tree nodes with
+depth 128 and eight candidate entries, reject duplicate loop-header identities
+and switch ancestry, and use actual CFG reachability to prove the resumed region
+cannot return to any skipped prefix or ancestor header. Keep the existing proof
+of Java-local bindings, literals, phi inputs, operand roots and later spills.
+Admission changes no physical locals or imports. This analysis-only source is
+**not timed**. Its new preparation-only census admits constructor entries at
+items **84, 43, 159, 235 and 182**, with distinct restore/branch facts; `decodeSetup`
+still has no admitted checkpoint. Both census results live in the existing
+`optimizationTrials.nativeCallCode.observations`, not new JSON files.
+
+The runtime implementation is archived as isolated
+`9e57a6640d98b6818086398ca6abce853540a024`, expanded
+`07d4e93c2d06db5779c8914593f1c2e13879af01`. Every admitted checkpoint restores
+its own local bindings into the shared original body. Select already evaluated
+conditional arms without reading/replaying predicates or predecessor phi
+copies. Skip fuel polls in syntactic ancestor loops proved completed. Preserve
+class-initialization frames, prefix writes and captured reference aliases.
+Bound non-fuel attempts **per checkpoint**, allowing a later checkpoint after
+an earlier fuel handoff; genuine fuel markers still allow repeated same-loop
+resumption. Stateful static-array entries keep their established single-header
+ownership contract. No application-specific names or opt-in flag enter JVM code.
+
+Focused tests cover both arms, overwritten reference parameters, exact phi
+values, earlier loops followed by cold nested initialization, repeated fuel
+exits, one-time native refusal and progress through the supported fallback,
+recycled frames, exceptions, synchronized ancestry, invalidated readiness,
+generated continuation ownership and compiler graph release. Both the expanded
+working candidate and a separate archive of the isolated candidate pass
+**1084/1084 assertions**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/conditionalLoopResume.test.js test/structuredLoopResume.test.js test/structuredColdResume.test.js test/wasmCompilerRetention.test.js
+```
+
+The isolated archive first needed its ignored JRE index generated with its own
+`node scripts/generate-jre-index.js`; no other checkout's generated index is
+borrowed. An initial fixture error marked its owner initialized without filling
+all zero-valued static fields; explicitly populate those test inputs. The
+refusal case also showed why a WeakMap entry need not disappear when bytecode,
+rather than Wasm, returns the frame: it does not retain the frame. Test reset on
+actual PC-zero reuse instead. Neither issue justifies a runtime cleanup change.
+
+A **new** `continuation.mjs` case executes one fresh 8192-step activation after
+an early loop, a side-effectful conditional predicate and a nested cold
+initializer. Both modes use the same changed source. The fallback control keeps
+the same initial native entry and cold call, withholding only subsequent native
+entries for that activation. It runs supported generated/bytecode fallback;
+it is not a replay of a known comparator. Both modes validate the analytic
+result **779121115**, exact prefix/loop/initializer effects, array identity and
+zero late Java compilation. Diagnostics are excluded from timings.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/continuation.mjs inspect 9e57a6640d98b6818086398ca6abce853540a024
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/continuation.mjs run 9e57a6640d98b6818086398ca6abce853540a024
+```
+
+| New cold-call sample | Native continuation ms | Supported fallback ms |
+|---|---:|---:|
+| 1 | 8.547813 | 21.952327 |
+| 2 | 8.267709 | 21.714464 |
+| 3 | 7.242157 | 20.317230 |
+
+Medians: **8.267709 vs 21.714464 ms**, about **2.63x** for this new case only.
+Continuation has three native entries/two exits; fallback has one entry/one
+exit. No known JVM/TeaVM/HotSpot control executes. Children use Node v22.23.2,
+CPU 2, `--max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation`;
+only the parent writes the existing `benchmark.json`.
+
+Before the full gate, preserve the cheap empty-checkpoint rejection before
+unrelated runtime eligibility queries. This follow-up changes no checkpoint
+emission or proof: isolated `4d59b52b7f051515c19134b6054d0b464265df7b`, expanded
+`ab090e6a0134503cee3665f65e0db145b53cc124`. Narrow follow-up validation passes
+**660/660 assertions** using the same Tape command with
+`test/conditionalLoopResume.test.js test/structuredColdResume.test.js`.
+A candidate-only full-loading cohort is in progress on this exact source;
+its outcome is not yet evidence of a full-loading gain or parity. The selected
+comparator, JVM master and default deployment remain unchanged.
+
+The full candidate-only cohort completed:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision 4d59b52b7f051515c19134b6054d0b464265df7b --options diagnostic
+```
+
+| Conditional continuation full sample | Music ms | Graphics ms | Total ms |
+|---|---:|---:|---:|
+| 1 | 2145.882858 | 313.229842 | 2459.112700 |
+| 2 | 1596.046363 | 352.022667 | 1948.069030 |
+| 3 | 1407.624689 | 304.248835 | 1711.873524 |
+
+All three checksums equal the saved reference
+`18:218292:2368412830:205:7597510:3045679678`; late Java compilation is zero.
+Keep all observations: **1948.069030 ms median** does not establish a gain over
+saved **1807.0171855 ms**. The lower third sample is not grounds for promotion.
+The ordinary execution counters confirm **24 constructor Wasm entries**, one
+more than the opcode-only observations, and the same single native cold-call
+exit. Thus re-entry is exercised, but this change alone has not improved the
+full workload. Preserve it experimentally; no comparator/default/deployment
+advancement. The full cohort is copied into the existing
+`optimizationTrials.conditionalLoopContinuation.fullLoading` before another
+writer starts.
+
+Next is a concrete admission question, not renewed CPU profiling. The setup
+method receives a byte-array argument used by its initial bitstream setup,
+then has several later loops. The current proof demands every parameter cache's
+value even if its only consumer is in the skipped prefix. Inspect normal
+preparation with a **shadow admission-only cache list** omitting parameter
+caches. Actual code generation, entry caches, normal proof and installed
+metadata are untouched. A positive bound would still require a separate proof
+and tests that a resumed region never reads the skipped parameter metadata;
+it does not authorize dropping a needed cache or querying invented arguments.
+
+That parameter-cache admission bound is positive. Normal `decodeSetup` has one
+parameter cache (SSA param id 0), no ordinary entries, and **seven** entries when
+only that extra cache requirement is omitted in the shadow proof: items
+**36, 260, 278, 296, 317, 338, 362**. The helper and constructor have no parameter
+caches and their admission is unchanged. Guest ticks/assets remain zero. This
+is enough evidence to implement a narrow generic proof: skip an entry cache
+only if the entire resumed region, including spill roots and phi inputs, does
+not require its parameter value. Then test dead/overwritten argument slots,
+continued native execution, and a live-parameter negative control before timing
+any new setup/full candidate. No existing timed baseline needs executing.

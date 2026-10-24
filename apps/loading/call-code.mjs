@@ -15,18 +15,59 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
 const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
 options.classpath=[path.join(family==='mdct-frame-remat'?path.join(player,'mdct'):fullGraph||directMusic||originalFlow||family==='frame-remat'?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
-let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls,stableHeaders;const proofCensus=[],translationFailures=[],headerCensus=[];
+let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls,stableHeaders;const proofCensus=[],translationFailures=[],headerCensus=[],checkpointCensus=[],checkpointPlans=new WeakMap();
 const preloadModules=family==='ssa-liveness'?['src/analysis/frameLocalLiveness.js','src/jit/stackifyNumericValues.js']:
  family==='inlined-lifetimes'||family.endsWith('frame-remat')?['src/jit/wasmInline.js','src/jit/stackifyNumericValues.js']:family==='packet-metadata'?['src/jit/stableArrayHeaders.js']:[];
 const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{preloadModules,observeModule:({filename,exports})=>{
+ if(family==='checkpoint-coverage'&&filename.endsWith('/src/jit/structuredLoopResume.js')){
+  const prepare=exports.prepare;
+  exports.prepare=function(c,structured){
+   const plan=prepare(c,structured),key=c.className+'.'+c.method.name+c.method.descriptor;
+   if(!['VorbisCodebook.<init>()V','VorbisCodebook.computeLookupValueCount(II)I','MusicDecoder.decodeSetup([B)V'].includes(key))return plan;
+   const loops=[];
+   const walk=(node,path=[])=>{
+    if(!node)return;
+    if(node.t==='loop'){
+     const block=Number(node.label.slice(1)),at=c.cfg.blocks[block]?.insns[0];
+     loops.push({block,item:c.origIdx?c.origIdx[at]:at,path});walk(node.body,[...path,'loop']);
+    }else if(node.t==='seq')for(const child of node.body)walk(child,path);
+    else if(node.t==='block')walk(node.body,path);
+    else if(node.t==='if'){walk(node.then,[...path,'then']);walk(node.els,[...path,'else']);}
+    else if(node.t==='switch'){for(const arm of node.cases)walk(arm.body,[...path,'case']);walk(node.dflt,[...path,'default']);}
+   };walk(structured.tree);
+   const alternatives=exports.alternatives?.(c,structured).map(p=>({block:p.header,item:p.item,slots:p.restore.map(v=>({slot:v.slot,kind:v.value.kind})),
+    branches:[...p.branches||[]].map(([node,taken])=>({block:node.block,taken})),
+    enclosingLoops:[...p.enclosingLoops||[]].map(node=>Number(node.label.slice(1)))}));
+   // Admission bound only: the normal emitter and its cache entry remain
+   // untouched. A prefix-only byte[] parameter may otherwise force restoring
+   // a dead argument merely to fill an entry cache the resumed region never uses.
+   const parameterCaches=[...c.arrayCaches.values()].filter(cache=>cache.parameter);
+   const ignoringParameterCaches=exports.alternatives?.({...c,arrayCaches:new Map([...c.arrayCaches].filter(([,cache])=>!cache.parameter))},structured)
+    .map(p=>({block:p.header,item:p.item}));
+   checkpointPlans.set(c,{key,loops,alternatives,
+    parameterCaches:parameterCaches.map(cache=>({id:cache.value.id,op:cache.value.op,kind:cache.value.kind})),
+    ignoringParameterCaches,parameterCacheBoundOnly:true,chosen:plan?{block:plan.header,item:plan.item,slots:plan.restore.map(v=>v.slot)}:null,
+    gates:{frameLiveness:!!c.frameLocalLiveness,demotes:c.demoted.size,deoptBlocks:c.deoptBlocks.size,
+     handlers:c.fn.handlerEntries.length,entryPhis:c.fn.blocks[c.cfg.entry].phis.length,
+     arrayResult:!!c.ownArrayResult,guardedNested:c.guardedNestedArrayLoopPlans.size}});
+   return plan;
+  };
+ }
+ if(family==='checkpoint-coverage'&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
+  const translate=exports.prototype.translateBody;
+  exports.prototype.translateBody=function(...args){const meta=translate.apply(this,args),row=checkpointPlans.get(this);
+   if(meta?.bytes&&row)checkpointCensus.push({...row,meta,frameEntryOnly:!!meta.frameEntryOnly,resume:meta.structuredResumeEntry,resumes:meta.structuredResumeEntries||[]});
+   return meta;
+  };
+ }
  if(filename.endsWith('/src/analysis/opgraph/ssa.js'))buildSsa=exports.buildSsa;
  if(filename.endsWith('/src/decompiler/structurer.js'))buildCfg=exports.buildCfgFromCode;
  if(filename.endsWith('/src/analysis/frameLocalLiveness.js'))frameLiveness=exports.frameLocalLiveness;
@@ -278,6 +319,15 @@ if(directMusic){
  assert.ok(boundary,'Preparation did not reach the main boundary');assert.equal(failure,stop);
 }
 assert.equal(ticks,0);assert.equal(assetCalls,0);
+if(family==='checkpoint-coverage'){
+ const active=new Set(j.jit.wasmJit.compiled.flatMap(state=>[state.meta,state.callee?.meta,state.osr?.meta]));
+ const rows=checkpointCensus.filter(row=>active.has(row.meta)).map(({meta,...row})=>row);
+ assert.ok(rows.some(row=>row.key==='VorbisCodebook.<init>()V'),'Constructor checkpoint census is missing');
+ const result={sourceRevision:revision,family,compileOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,rows,
+  note:'New checkpoint-shape/restore admission question, with normal preparation and no constructor execution, timer, CPU profile or baseline replay.',measuredAt:new Date().toISOString()};
+ const current=JSON.parse(fs.readFileSync(reportPath));(current.optimizationTrials.nativeCallCode||={observations:[]}).observations.push(result);
+ fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(result,null,2));process.exit(0);
+}
 if(family==='constructor-coverage'){
  const keys=['VorbisCodebook.<init>()V','MusicDecoder.decodeSetup([B)V','VorbisResidue.<init>()V','MusicDecodeStage.<init>()V','VorbisMapping.<init>()V'];
  const rows=keys.map(key=>{
