@@ -17302,3 +17302,53 @@ Demand construction avoided unused capability allocations in the new API case;
 that does not itself prove real loading benefit. Inspect and reuse the saved
 safety/construction evidence, then complete its missing changed-candidate
 original/full validation rather than re-testing its known source against itself.
+
+
+#### Close the demand-driven mirror original/full validation gap
+
+The untouched archived candidate 9189b2e2cef6f22b7b125f93b7508a91ff219815
+(previously experiment/teavm-lazy-reference-arrays) had only safety/cold API
+validation. Reuse its 810 isolated assertions, 977 expanded assertions and
+60 final edge assertions. **No known test, old control or oracle is rerun.**
+The new question is end-to-end performance on its previously unmeasured original
+and full workloads. The compiler itself is unchanged by that allocator source.
+No source extraction, generated artifact or runtime default change is needed.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 9189b2e2cef6f22b7b125f93b7508a91ff219815
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision 9189b2e2cef6f22b7b125f93b7508a91ff219815 --options diagnostic
+```
+
+Original decode samples: **92.261344, 105.949386, 115.543915 ms**,
+median **105.949386**, versus saved **93.269749 ms**.
+All 348249 PCM bytes match; no late Java compilation. Run ID
+56a2084d-d9b3-4c56-985b-98eddac5de96, harness 4d4508f.
+
+The full gate is deliberate despite the decode regression: the intended benefit
+is avoiding unused construction that occurs **outside** that decoder timer. The
+saved construction case supplied the positive component evidence, but only a
+new full run can determine its net effect. Do not treat decode timing alone as
+proof about setup cost, or quietly redefine the full goal as a component result.
+
+| Full candidate sample | Music ms | Graphics ms | Total ms |
+|---|---:|---:|---:|
+| 1 | 1487.602067 | 375.767923 | 1863.369990 |
+| 2 | 1505.247198 | 327.194748 | 1832.441946 |
+| 3 | 1647.142702 | 452.411113 | 2099.553815 |
+
+Every checksum is **18:218292:2368412830:205:7597510:3045679678**, with no late
+Java compilation. Full median **1863.369990 ms** does not improve the
+saved **1807.0171855 ms**. Keep all three samples, including the slow third;
+no fresh control, warmup or repeated control-fingerprint check was performed.
+All launches were sequential, CPU 2 / Node 22.23.2 / 1-GiB old-space / eager
+optimizing Wasm, with no concurrent tests, builds or profiling. Timed execution
+excludes preparation as in the saved controls. This completes the missing
+validation, **not** the performance goal. The private mirror safety proof does
+not imply a loading speedup. No comparator, artifact, master/index or deployment
+advancement. The source remains in its existing experiment ref; raw observations
+and compact conclusions are in lazyReferenceArrayCapabilities in the same ledger.
+The full 1.1x objective and browser/phone/memory/FPS/stability gates remain open.
+
+The numeric-worker experiments above likewise remain isolated, with their only
+scratch extraction, index and logs removed after preserving source/test refs.
+No restoration test or timing follows. Unrelated decompiler WIP is preserved.
