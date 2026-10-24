@@ -17505,3 +17505,16 @@ and `node --check apps/loading/call-code.mjs` pass. These are reporting edits,
 not new runtime counters/profiling. Next run only the changed construction case
 and changed full-loading candidate against saved controls. No restoration check,
 known baseline fingerprint/test, defaults, promotion or deployment.
+
+Changed-runtime uninstrumented construction command:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/constructor.mjs stores-run cce5698fab518adf812993d248d82654382eaab8
+```
+
+Native **21.433540, 25.206011, 21.548321 ms**; checked **32.945441,
+33.235710, 37.154123 ms**. Medians **21.548321 vs 33.235710 ms** (~35% less
+construction time), exact checksum/one entry/zero exits and late compilation in
+all six fresh processes. No instrumentation or test/build work ran concurrently.
+This compares two changed-source modes of the new case, not the known baseline
+against itself. Do not extrapolate it to full loading or TeaVM parity.
