@@ -17608,3 +17608,40 @@ outside the timer. No known old JVM/TeaVM/HotSpot execution or restoration check
 `node --check apps/loading/constructor.mjs` passes. Prior owned store extraction/
 logs were removed after source and complete receipts became durable; there is
 still only one JVM source extraction and one benchmark JSON.
+
+The allocation-header source/tests are durable at **55112cf66962cc647387ff82a8a060729b269088**,
+ref `experiment/teavm-native-allocation-headers`, parent 029. Only five handwritten
+files are committed through an alternate index; actual JVM master/index are
+untouched. No generated JRE registry/class/Java export/bundle enters Git.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/constructor.mjs headers-inspect 55112cf66962cc647387ff82a8a060729b269088
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/constructor.mjs headers-run 55112cf66962cc647387ff82a8a060729b269088
+```
+
+New case source SHA256 **03001d3edbcaa8827ead1ff195ef5086e33755dc7cacdb43c31553d35fb387ff**,
+class SHA256 **48957b09d5e75e20ce689c5b955d277a651a1899f0bf249787f10f3797a223ce**,
+harness SHA256 **8b88e5d5e6ddc3d3402ebc1b4618fe665d9345313efc0a9341cf595a3be807b0**.
+The diagnostic has one emitted allocation-header site and **zero** base/length
+queries versus zero emitted sites and **16384 base + 16384 length** queries.
+Both modes have 16448 checked reference stores, exact checksum **400687104**,
+16384 distinct initialized rows, one native entry, zero exits/ticks/late compiles.
+Instrumentation is excluded from timing. No known baseline or oracle is executed.
+
+Uninstrumented new-case samples, retaining every observation:
+
+| Mode | Three fresh processes, ms | Median ms |
+|---|---|---:|
+| Private allocation header | 36.620179, 39.966700, 40.771401 | 39.966700 |
+| Supported query path | 39.092464, 31.554169, 39.538287 | 39.092464 |
+
+Despite removing those host queries, this screen shows **no time gain**. Do not
+infer CPU causality, try more unchanged samples, launch original/full timing,
+advance 029's comparator or deploy. Both modes use the changed source and a new
+workload, not a known baseline being rechecked against itself. Exact observations
+remain in the existing multiArrayAllocation collection with a compact
+nativeAllocationHeaders disposition in the same sole JSON. The selected full
+result remains the already saved **1807.0171855 ms / 5.023125618x TeaVM**, and the
+395.7135567 ms (1.1x) goal is still unmet. Browser/phone/FPS/heap/stability release
+gates remain unproven. Remove this owned scratch extraction/logs after recording
+these receipts; do not perform a restoration build, test or fingerprint check.
