@@ -15,8 +15,9 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-element-micro','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
-const numericKernelFamily=['native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code'].includes(family),numericKernelCode=numericKernelFamily&&family.endsWith('-code');
+const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-element-micro','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','native-kernel-boundary','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
+const numericKernelFamily=['native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','native-kernel-boundary'].includes(family),numericKernelCode=numericKernelFamily&&family.endsWith('-code');
+const numericKernelMicro=['native-numeric-kernel-micro-code','native-kernel-boundary'].includes(family);
 const elementBound=['native-element-availability','native-element-micro'].includes(family);
 const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
@@ -50,7 +51,7 @@ const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revis
   const translate=exports.prototype.translateBody;
   exports.prototype.translateBody=function(...args){
    const meta=translate.apply(this,args);
-   if(meta?.bytes&&!numericKernelRows.has(meta)&&(['VorbisCodebook','VorbisResidue','MusicDecoder','MusicDecodeStage'].includes(this.className)||family==='native-numeric-kernel-micro-code'&&(this.className.startsWith('MicroHuffman')||this.className==='LoadingMicroKernel'&&this.method.name.startsWith('huffman')))){
+   if(meta?.bytes&&!numericKernelRows.has(meta)&&(['VorbisCodebook','VorbisResidue','MusicDecoder','MusicDecodeStage'].includes(this.className)||numericKernelMicro&&(this.className.startsWith('MicroHuffman')||this.className==='LoadingMicroKernel'&&this.method.name.startsWith('huffman')))){
     const before=[this.nextLocal,this.declared.length,this.importDecls.length],bound=numericKernel(this);
     assert.deepEqual([this.nextLocal,this.declared.length,this.importDecls.length],before,'Numeric kernel bound changed code generation');
     const kernels=[];
@@ -465,10 +466,10 @@ assert.equal(ticks,0);assert.equal(assetCalls,0);
 if(numericKernelFamily){
  const active=new Set(j.jit.wasmJit.compiled.flatMap(s=>[s.meta,s.callee?.meta,s.osr?.meta]));
  const rows=[...numericKernelRows].filter(([meta])=>active.has(meta)).map(([,row])=>row);
- assert.ok(rows.some(row=>family==='native-numeric-kernel-micro-code'?row.key.startsWith('LoadingMicroKernel.huffmanInline('):row.key==='VorbisCodebook.readVector()[F'),'Missing intended traversal method');
- if(numericKernelCode)assert.ok(rows.some(row=>(family==='native-numeric-kernel-micro-code'?row.key.startsWith('LoadingMicroKernel.huffmanInline('):row.key==='VorbisCodebook.readVector()[F')&&row.kernels?.length),'Intended traversal kernel was not generated');
+ assert.ok(rows.some(row=>numericKernelMicro?row.key.startsWith('LoadingMicroKernel.huffmanInline('):row.key==='VorbisCodebook.readVector()[F'),'Missing intended traversal method');
+ if(numericKernelCode)assert.ok(rows.some(row=>(numericKernelMicro?row.key.startsWith('LoadingMicroKernel.huffmanInline('):row.key==='VorbisCodebook.readVector()[F')&&row.kernels?.length),'Intended traversal kernel was not generated');
  const result={sourceRevision:revision,family,analysisOnly:!numericKernelCode,installed:rows.some(row=>row.installedWorkers),guestTicks:ticks,assetCalls,mainExecuted:false,rows,
-  note:numericKernelCode?'New numeric-only helper generated/validated and its optimizing code inspected. No helper or guest executes; no baseline replay, timing or CPU attribution.':'Input/output and cold-dependency bound only. No helper emits/executes, no control replay, timing, fingerprint or CPU attribution.',measuredAt:new Date().toISOString()};
+  note:numericKernelCode?'New numeric-only helper generated/validated and its optimizing code inspected. No helper or guest executes; no baseline replay, timing or CPU attribution.':'Planning bound only; normal prepared code generation is unchanged. No Java/helper execution, control replay, timing, fingerprint or CPU attribution.',measuredAt:new Date().toISOString()};
  const current=JSON.parse(fs.readFileSync(reportPath)),trial=(current.optimizationTrials.nativeNumericKernels||={});
  (trial[numericKernelCode?'codeObservations':'boundObservations']||=[]).push(result);fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');
  console.log(JSON.stringify(result,null,2));process.exit(0);

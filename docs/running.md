@@ -18077,3 +18077,54 @@ saved TeaVM **359.739597 ms**. The **1.1x goal is unachieved**, along with brows
 phone, presented-FPS, heap and stability release gates. Clean only this pass's
 owned temporary source/index/logs after archival, without a restoration test,
 build or baseline fingerprint check.
+
+### Projected-worker success boundary: original-frame liveness bound
+
+The preceding goal turn is progress: direct static inputs/cold metadata are
+implemented, the region-only diagnostic regression is repaired, and corrected
+original 96.745836 ms fails saved 93.269749 ms. Keep source/control evidence
+without rerunning JVM/TeaVM/HotSpot baselines, restoration validation or CPU
+attribution. The full 1.1x objective is unchanged and remains unmet.
+
+A distinct planner issue is now visible: after exact whole-loop projection,
+normalNumericOutputs still unconditionally contains loop-header phis for the
+removed header replay, plus outside Java snapshot locals without original-frame
+liveness filtering. New generic nativeKernelBoundary.js bounds only the successful
+continuation. It does not mutate SSA, global allocation/liveness, Java frame maps,
+operand stacks, or cold fuel/fault snapshots. Direct outside SSA operands and
+phis remain required. Original instruction liveness filters local snapshot
+slots at known root/inline Java PCs; unknown PCs, unknown private slots, unavailable
+liveness, ambiguous scopes and exhausted work keep conservative state. Known
+expired inline frame locals can be distinguished from active child/parent frames.
+Method-code bounds prevent the liveness API's deliberate out-of-range=true rule
+from mistakenly making a final return's nonexistent next instruction live.
+
+A separate range witness is reported only when the sole remaining normal i32
+value is exactly an index whose Java bounds check completed at the exiting
+header. That index is nonnegative; no tree shape, loaded value or game identity
+is assumed. This could eventually combine a cold negative reason with that
+normal value in one result, but **no return ABI has changed yet**. The current
+planner merely publishes projectedNormalBoundary alongside its old full result
+set. A future emitter still needs the separate actual projection proof.
+
+```
+node --check src/jit/nativeKernelBoundary.js
+node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeKernelBoundary.test.js test/nativeNumericKernelPlan.test.js
+node --check apps/loading/call-code.mjs
+```
+
+**90/90** assertions pass: actual operands, dead/live original locals, operand
+prefixes, known/expired inline scope, synthetic/out-of-range contexts, empty/top
+slots, full-width handling, exit-local range checks and bounded refusal. Root and
+nested liveness data is temporary/local to the analysis; the plan stores only
+plain output descriptors and scalar proof statistics. No new runtime flags or
+application data enter java-tools. Source/tests **5526c4478f9f0322381f513817e4e25684aa89cf**
+are archived as experiment/teavm-kernel-boundary-liveness, parent c4e477a. Actual
+JVM master/index and unrelated decompiler WIP remain untouched.
+
+Add native-kernel-boundary to the existing Deko compile-only inspector, using the
+small graph and zero Java/helper execution. It asks the new boundary question
+without redisassembling the unchanged worker or checking a known code identity.
+Only one JSON ledger and one current JVM extraction are used. Next inspect the
+actual bounds before adding an emitter or timing another candidate.
