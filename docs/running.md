@@ -18001,3 +18001,36 @@ probe.mjs and nested-loop.mjs all pass. Do not rerun the unchanged standalone
 helper code question: this stage changes the wrapper/entry/cold reconstruction.
 Next inspect the changed wrapper and its actual dynamic path before timing.
 No performance or full-loading/default/comparator claim yet.
+
+
+Combined initial source **52ae95eddc039e1fd1e64cdd4c90a39829cc8bfb** is durable in the deferred-worker-metadata
+ref history (parent 0c612ba5). Huffman samples **54.235684, 54.009761, 64.325615 ms**,
+median **54.235684 ms**; separate-vector **83.881075, 84.610134, 85.077897 ms**,
+median **84.610134 ms**. This is a small screen with overlapping
+ranges. The original diagnostic confirms 134216 vector entries, six removed
+blocks, one deferred length/two scalar seeds, zero vector exits/late compilation
+and exact 348249-byte PCM.
+
+The original cohort reveals a severe implementation regression: **1855.008151, 1874.332445, 1935.640476 ms**.
+Preserve all three raw rows in vorbisBenchmark.runs. Existing post-timer method
+states show MusicDecoder.decodePacket status failed, while residue/vector still
+run native. Reproducing with test/nativeStaticArrayBody.test.js reports
+`Cannot read properties of undefined (reading 'values')`: new omission metadata
+assumed a whole-body fields map on a region-only native array plan. This is an
+introduced compiler-reporting bug. Correct fields?.values() for the regional
+shape, add explicit zero-omission checks on actual regional compilation, and
+expose lastCompileError/structuredFailure in existing post-timer records.
+
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticArrayBody.test.js`
+reproduces the failure before repair; after repair/two new assertions it passes
+**118/118**. Corrected source **c4e477a970dce0d600cce28fd3ed4c273e56ac5a** is the
+ref head, parent 52ae95e; source and the regression test are archived. The 935
+whole-body/continuation assertions were on its parent; this narrow regional
+command verifies the reporting repair's missing scope. `node --check
+apps/loading/probe.mjs` passes. An initial attempt to append this receipt had a
+Python quoting syntax error; the corrected receipt reads exact saved data.
+
+Do not repeat unchanged small timing or helper disassembly for this metadata-only
+repair. Inspect the changed packet native path, then collect a corrected original
+cohort. No baseline/TeaVM/HotSpot, restoration correctness or CPU attribution is
+run. Comparator remains 029/1807.0171855 ms until end-to-end improvement is proved.
