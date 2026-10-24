@@ -19932,3 +19932,224 @@ The full goal remains active: selected full **1807.0171855 ms**, saved TeaVM
 heap and stability remain unverified. The next implementation must address a
 proved, actually substantial representation/composition gap; this bound does
 not warrant another broad array-region or call-protocol rewrite.
+
+
+### 2026-10-24 — Disjoint scalar storage controls and typed static-value blocks
+
+The previous turn made progress by ruling out an existing reference-element
+cache-kill explanation with a preparation-only bound. This turn reuses that
+result. Fuel batching was considered first, then rejected as a new direction:
+the already recorded guarded primitive/nested loops prepay exact counted fuel,
+including real decoder coverage. Their saved results do not justify another
+unchanged implementation or measurement. The prior buffered-reader GC scalar
+control (section above) is also reused, not rerun.
+
+A distinct small question concerns alias knowledge: native scalar cells and Java
+array data share one linear memory, while typed GC fields are a different kind
+of storage. Test that property before changing the VM. Deko source
+`apps/loading/memory-alias.mjs` generates two new native-only kernels:
+array reads interleaved with scalar writes, and array writes interleaved with
+scalar reads. Each variant has identical arithmetic, explicit index failure,
+header fuel polling, input, state and checksum. These valid-input models omit
+Java object/foreign storage handling and canonical frame reconstruction; none
+is a JVM/TeaVM performance or correctness substitute.
+
+Every sample is one invocation of 8,388,608 iterations, in a fresh Node22.23.2
+process pinned to CPU2 with `--max-old-space-size=1024 --no-liftoff
+--no-wasm-lazy-compilation`. Module compilation, input setup and an independent
+JavaScript integer oracle precede the timer. All output words, state, checksum
+and remaining fuel are checked after it. No guest warmup, original input capture,
+JVM baseline, TeaVM/HotSpot rebuild/execution, CPU profile or known-code identity
+check is run. Three samples per new form, reversing form order in the middle
+set, remain in the existing single benchmark.json.
+
+| New state representation | Array read / state write median ms | Array write / state read median ms |
+| --- | ---: | ---: |
+| Shared imported linear memory | 16.843114 | 10.811982 |
+| Two separately supplied imported memories | 22.710983 | 14.372696 |
+| Imported array memory plus module-owned state memory | 22.461355 | 14.062056 |
+| Typed GC struct | 13.404209 | 12.063791 |
+| Typed GC numeric array | 12.978671 | 21.226425 |
+| Three imported mutable globals | 17.927894 | 11.883524 |
+| Three module-owned mutable globals | 11.882821 | 13.712787 |
+
+All slow samples are retained, including GC-array 21.226425/30.447941 ms in the
+second kernel. The simple multi-memory split fails both cases. Imported globals
+also give no useful gain. The typed struct improves the first orientation by
+about 20%, while regressing the second; this is evidence to test a narrow scalar
+representation, not permission for a whole-object backend rewrite or an
+explanation of the complete 5x loading gap. Module-owned globals cannot simply
+replace independently imported cells across existing method modules.
+
+Source/control commits: `f6d204a` adds the three memory forms; `d39dbbe` adds only
+the two new GC forms; `9645875` adds only the new global forms. Prior forms are
+not retimed when adding a form. Final CLI requires an explicit engine list,
+and resumes already recorded observations rather than replaying them.
+
+```
+node --test tests/loading-memory-alias.test.mjs
+# First three forms only, at f6d204a:
+taskset -c 2 node apps/loading/memory-alias.mjs run
+# New forms only at their respective commits:
+node --test --test-name-pattern='typed GC state' tests/loading-memory-alias.test.mjs
+taskset -c 2 node apps/loading/memory-alias.mjs run gc-struct,gc-array
+node --test --test-name-pattern='global state' tests/loading-memory-alias.test.mjs
+taskset -c 2 node apps/loading/memory-alias.mjs run global-imported,global-owned
+```
+
+Focused tests pass **2/2**, then **1/1** and **1/1** newly selected tests. They
+cover exact output/fuel, zero trips, a later bounds fault, partial fuel effects,
+integer wrap and aliased imported memories/globals. Separate import names are
+not a nonalias guarantee: the tests deliberately supply the same memory/global
+under two/three names and verify intervening writes are visible. The first
+assembler invocation lacked `--enable-multivalue` and failed before execution;
+add that required feature rather than weakening validation. Generated WAT/Wasm
+remain in memory, not in Git or extra preview/report directories.
+
+The generic JVM prototype starts from selected 029834e1, without stacking the
+failed token, region or root-static candidates. Source
+**11a3b7215b43667bcff0a12a1e61e3141e13f252**, refined at
+**7a989915547dc4f05672120984c07dbe137217f0**, is isolated at
+`experiment/teavm-static-value-blocks`. Private fixed-size GC structs group 16
+canonical integer cell values. They hold no Java references and cannot alias
+linear array bytes. Permission, membership, representation tags, class readiness
+and checked accessors keep their existing memory protocol. Each generated
+method captures an immutable private block reference once; native state bodies
+read/write its typed fields. No user option, environment switch, application
+name or changed call ABI is introduced.
+
+A previously published raw-memory binding remains raw. An older raw writer
+asking for a block-backed binding must refuse and use its checked path, avoiding
+two competing canonical values. Host booleans/null/undefined/non-i32 numbers and
+negative zero remain exact. Descriptor changes revoke native access before a
+getter/setter runs. Compiler-only block/cell maps are released, and the final
+refinement resets translation-local bindings together. Unsupported GC hosts
+retain the existing linear protocol. No deployed/default artifact is changed.
+
+Validation in the sole expendable JVM extraction:
+
+```
+node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticCell.test.js test/nativeStaticStateBody.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticValueBlock.test.js test/nativeStaticCell.test.js test/nativeStaticStateBody.test.js test/wasmCompilerRetention.test.js test/classMirrorTransport.test.js test/workerBooleanSnapshot.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticValueBlock.test.js
+```
+
+Results: **249/249**, then **474/474**, and **45/45** after the translation-local
+reset. Cases include legacy-first/block-first bindings, cross-chunk values,
+canonical Map/descriptor reads, revocation, foreign heaps, exact host values,
+Java bounds/initialization/fuel continuations, compiler cleanup and worker
+snapshot behavior. These tests do not establish browser/phone acceptance.
+
+New preparation-only gate:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 11a3b7215b43667bcff0a12a1e61e3141e13f252 static-value-block-code
+```
+
+Exit 0; no guest ticks, asset callbacks or main execution. The actual vector
+retains its 9 stateful sites and imports one static block, slots 7/8 for the two
+cursor cells. Its 5,491-byte module has 9 typed static stores and 6 reads across
+its body copies. `probe.mjs` and `microbench.mjs` report block counts after timing.
+
+Changed-only Huffman screen:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 7a989915547dc4f05672120984c07dbe137217f0 huffman-inline
+```
+
+Run **3cd17446-38bd-410a-8024-77490b889259**: **59.811 / 54.572 /
+63.920 ms** (precise values are in the sole receipt), median
+**59.811316 ms**, versus saved **55.497371 ms**. All checksums are -1268584370,
+late-compilation lists are empty, and the executed helper has one block/9 native
+stateful sites. This candidate fails its component screen: no original/full
+cohort, comparator advancement, promotion or deployment is justified.
+
+A new compile-only native question then tests whether the engine already removes
+the intermediate overwritten cursor publication:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 7a989915547dc4f05672120984c07dbe137217f0 static-value-block-native
+```
+
+No Java/asset execution or timing. Actual typed entry function 49 has 4,064
+native bytes and a 160-byte stack. Crucially, it retains these native stores:
+`+0x7d7: movl [r11+0x2f],ecx`, `+0x7de: movl [r11+0x2b],r14`,
+`+0x7e5: movl [r11+0x2f],ecx`, with a bit mask between the first and last
+same-field stores, but no call or possible fault. This is an exact emitted-work
+witness, not a CPU attribution. It justifies a narrowly scoped proof rather
+than assuming the engine already supplies dead-store elimination.
+
+Refinement **d3964bf49c17ea3d968069adca16be54905a6e60** removes a physical scalar
+publication overwritten later in the **same basic block**, only in an already
+certified native state body. It preserves every operand evaluation and current
+local value. Total numeric operations and other proved scalar accesses may lie
+between stores; any memory access, possible integer/long division fault, call,
+unknown effect or CFG edge stops the proof. Write-only operands are still
+evaluated/dropped. There is no whole-invocation dirty flag, deferred exception
+publication or change to scalar visibility at a fault/suspension/callback.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeStaticValueBlock.test.js test/nativeStaticStateBody.test.js test/wasmCompilerRetention.test.js
+```
+
+Initial result **279/279**; expanded final result **301/301**. New cases cover the
+exact local update and final value, refusal across block edges, integer/long
+zero division, later array faults, throwing operands of an elided publication,
+and write-only operands. Completed writes remain observable exactly once at
+all tested fault boundaries. A changed-code gate checks the actual vector's
+store count before any new timing; results follow below. No known baseline or
+previous failed candidate is timed again.
+
+
+The changed-code elision gate completes successfully:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs d3964bf49c17ea3d968069adca16be54905a6e60 static-value-block-elision
+```
+
+Zero Java ticks/asset calls/main execution. The actual vector has **one** proved
+elision, **six** typed stores across its three body copies, and **two** in its
+actual typed native entry. Native instructions show only
+`+0x7dd: movl [rdi+0x2b],r14` and `+0x7e4: movl [rdi+0x2f],ecx` in the bit update.
+The removed publication is verified, not merely planned. Native size nevertheless
+grows **4064 -> 4088 bytes**, with the same **160-byte stack**; static byte counts
+cannot substitute for timing.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm d3964bf49c17ea3d968069adca16be54905a6e60 huffman-inline
+```
+
+The refined cohort is **54.094 / 68.907 / 56.829 ms**, median about **56.829 ms**;
+run **5de21162-03b4-4fb7-944e-5edcc2e65a04** retains raw precision in the sole receipt. All checksums match
+-1268584370, late-compilation lists are empty, and each executed helper records
+one actual store elision, one block and nine stateful sites. The 68.907 ms sample
+is retained. This still fails the saved **55.497371 ms** component comparator.
+No original/full loading campaign, comparator change, promotion or deployment
+follows either static-block cohort. Do not rerun the parent or known controls.
+
+The one JSON retains all **42** new alias-control samples, both static-block
+component cohorts, code observations, source IDs and explicit rejected
+performance dispositions. JVM source/tests remain on isolated experiment refs;
+Deko scripts and this one journal are committed. Syntax checks for memory-alias,
+call-code, microbench and probe plus `git diff --check` pass. No generated Java,
+Wasm, binary, bundle, native-code report, screenshot or additional JSON is
+committed. Only this turn's temporary extraction, alternate index and logs are
+removed after verifying the source changes are durable in Git. The single
+current WAT/native preview stays in the existing external cache location.
+
+This pass supplies a tested representation experiment and a verified generic
+store-elimination proof, but **no measured original/full-loading gain**. It does
+not justify a broad GC object rewrite, multi-memory migration or another
+invocation-wide deferred-publication variant. Any continuation must use these
+negative timings rather than counting a removed instruction as success. Actual
+JVM master/index, unrelated WIP, selected artifacts and deployment are unchanged.
+Full target remains **395.7135567 ms**, selected **1807.0171855 ms**, saved TeaVM
+**359.739597 ms**. The 1.1x goal remains active and unmet; browser/phone, rolling
+presented FPS, total heap and stability acceptance remain unverified.
+
+
+Final experiment ref **c57bca247061b45c5120dc9374540e219ec34662** only corrects
+the scalar protocol comment after tested/timed **d3964bf4**; `node --check
+src/core/nativeStaticCell.js` passes. No semantic change or reason to repeat
+its tests/code/timing gates. Generic source stays isolated and unselected.

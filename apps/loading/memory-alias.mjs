@@ -129,7 +129,8 @@ if(process.argv[1]&&path.resolve(process.argv[1])===script){
  else{
   assert.equal(process.argv[2],'run','Usage: memory-alias.mjs run | one ENGINE KERNEL COUNT');
   const file=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading/benchmark.json'),receipt=JSON.parse(fs.readFileSync(file));
-  const selectedEngines=process.argv[3]?process.argv[3].split(','):memoryAliasEngines;assert.ok(selectedEngines.length&&selectedEngines.every(engine=>memoryAliasEngines.includes(engine)));
+  assert.ok(process.argv[3],'Select only new engines; reuse saved controls instead of rerunning them');
+  const selectedEngines=process.argv[3].split(',');assert.ok(selectedEngines.length&&selectedEngines.every(engine=>memoryAliasEngines.includes(engine)));
   const sourceSha256=hash(fs.readFileSync(script)),n=8*1024*1024;
   const trial=receipt.optimizationTrials.memoryAliasControls||={observations:[]};
   let group=trial.observations.findLast(row=>row.sourceSha256===sourceSha256&&row.n===n&&JSON.stringify(row.selectedEngines)===JSON.stringify(selectedEngines));

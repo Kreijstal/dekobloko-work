@@ -1000,6 +1000,8 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     nativeClosedCallSiteCount:s.meta?.nativeClosedCallSiteCount??null,
     nativeStaticInputGuardCount:s.meta?.nativeStaticInputGuardCount??null,
     nativeObjectRegionBlockCount:s.meta?.nativeObjectRegionBlockCount??null,
+    nativeStaticValueBlockCount:s.meta?.nativeStaticValueBlockCount||0,
+    nativeStaticOverwrittenStoreCount:s.meta?.nativeStaticOverwrittenStoreCount||0,
     nativeStaticStateBodySites:s.meta?.nativeStaticStateBodySites??null,
     nativeArrayReferenceReadElisionCount:s.meta?.nativeArrayReferenceReadElisionCount||0,
     nativeStaticDeferredFieldCount:s.meta?.nativeStaticDeferredFieldCount??null,
