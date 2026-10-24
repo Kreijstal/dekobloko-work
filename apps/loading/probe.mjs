@@ -415,6 +415,8 @@ try {
     parameterHeapRangeGuardCount:state.meta?.parameterHeapRangeGuardCount||0,
     parameterObjectSpecializationBytes:state.meta?.parameterObjectSpecializationBytes||0,
     nativeNumericKernelCount:state.meta?.nativeNumericKernelCount||0,
+    nativeNumericKernelBoundaryOmissions:state.meta?.nativeNumericKernelBoundaryOmissions||0,
+    nativeNumericKernelOutcomeCount:state.meta?.nativeNumericKernelOutcomeCount||0,
     nativeNumericKernelDeferredLengths:state.meta?.nativeNumericKernelDeferredLengths||0,
     nativeNumericKernelDeferredScalars:state.meta?.nativeNumericKernelDeferredScalars||0,
     nativeNumericKernelRemovedBlocks:state.meta?.nativeNumericKernelRemovedBlocks||0,

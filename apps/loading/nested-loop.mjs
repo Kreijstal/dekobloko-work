@@ -266,7 +266,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
     inlining:native.split('\n').filter(line=>line.includes('function '+index+':')&&/candidate|inlining/.test(line)).slice(0,16),
     branches:ops.if||0,loops:ops.loop||0,loads:ops['i32.load']||0,stores:ops['i32.store']||0,
     inlineActivationDepth:state.meta.inlineActivationDepth||0,nativeStateSites:state.meta.nativeStaticStateBodySites||0,
-    nativeNumericKernelCount:state.meta.nativeNumericKernelCount||0,nativeNumericKernelDeferredLengths:state.meta.nativeNumericKernelDeferredLengths||0,nativeNumericKernelDeferredScalars:state.meta.nativeNumericKernelDeferredScalars||0,nativeNumericKernelRemovedBlocks:state.meta.nativeNumericKernelRemovedBlocks||0,nativeNumericKernelBytes:state.meta.nativeNumericKernelBytes||0,
+    nativeNumericKernelCount:state.meta.nativeNumericKernelCount||0,nativeNumericKernelBoundaryOmissions:state.meta.nativeNumericKernelBoundaryOmissions||0,nativeNumericKernelOutcomeCount:state.meta.nativeNumericKernelOutcomeCount||0,nativeNumericKernelDeferredLengths:state.meta.nativeNumericKernelDeferredLengths||0,nativeNumericKernelDeferredScalars:state.meta.nativeNumericKernelDeferredScalars||0,nativeNumericKernelRemovedBlocks:state.meta.nativeNumericKernelRemovedBlocks||0,nativeNumericKernelBytes:state.meta.nativeNumericKernelBytes||0,
     nativeElementReuseSiteCount:state.meta.nativeElementReuseSiteCount||0,nativeElementCaptureCount:state.meta.nativeElementCaptureCount||0});
    if(name==='root'||detail==='vector-code')fs.writeFileSync(path.join(directory,'current.wat'),wat);
    fs.appendFileSync(path.join(directory,'current-native.txt'),'\n'+engine+' '+state.key+'\n'+native);
@@ -331,6 +331,8 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   lengthQueries:instrumented?target.meta.importStats.get('alen0')||0:null,
   separateVectorStateSites:vector.meta.nativeStaticStateBodySites||0,
   separateVectorNumericKernelCount:vector.meta.nativeNumericKernelCount||0,
+  separateVectorNumericKernelBoundaryOmissions:vector.meta.nativeNumericKernelBoundaryOmissions||0,
+  separateVectorNumericKernelOutcomeCount:vector.meta.nativeNumericKernelOutcomeCount||0,
   separateVectorNumericKernelDeferredLengths:vector.meta.nativeNumericKernelDeferredLengths||0,
   separateVectorNumericKernelDeferredScalars:vector.meta.nativeNumericKernelDeferredScalars||0,
   separateVectorNumericKernelRemovedBlocks:vector.meta.nativeNumericKernelRemovedBlocks||0,

@@ -56,7 +56,7 @@ const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revis
     assert.deepEqual([this.nextLocal,this.declared.length,this.importDecls.length],before,'Numeric kernel bound changed code generation');
     const kernels=[];
     if(numericKernelCode)for(const plan of bound.plans)if(!plan.refused&&(!this.numericKernelWorkers||this.numericKernelWorkers.has(plan.header))){
-     const kernel=buildNumericKernel(this,plan.header),module=new WebAssembly.Module(kernel.bytes);
+     const kernel=this.numericKernelWorkers?.get(plan.header)||buildNumericKernel(this,plan.header),module=new WebAssembly.Module(kernel.bytes);
      const imports=WebAssembly.Module.imports(module);
      const coldGlobals=kernel.coldGlobals||[];
      assert.deepEqual(imports,[{module:'env',name:'mem',kind:'memory'},...coldGlobals.map(g=>({module:'env',name:g.name,kind:'global'}))],'Kernel has a host-call or unbound import');
@@ -68,6 +68,7 @@ const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revis
      assert.ok(!Object.keys(operations).some(op=>op.startsWith('call')||/^(ref|struct|array)\./.test(op)),'Kernel carries opaque calls or GC context');
      const machineCode=nativeSummary(nativeCode(kernel.bytes,0));
      kernels.push({header:plan.header,moduleBytes:kernel.bytes.length,params:kernel.params,results:kernel.results,
+      outcomeIndex:kernel.outcomeIndex||null,normalBoundaryOmissions:kernel.plan.projectedNormalBoundary?.omitted.length||0,
       numericLocalCount:kernel.numericLocalCount,logicalResults:kernel.logicalResults||kernel.results,coldGlobals,normalExits:kernel.normalExits,fuelReason:kernel.fuelReason,
       faultReasons:kernel.faultReasons,imports,operations,machineCode});
     }

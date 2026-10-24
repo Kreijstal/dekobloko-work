@@ -1031,6 +1031,8 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     parameterObjectSpecializationBytes:s.meta?.parameterObjectSpecializationBytes||0,
     slabGuardCount:s.meta?.slabGuardCount||0,slabGuardBytes:s.meta?.slabGuardBytes||0,
     nativeNumericKernelCount:s.meta?.nativeNumericKernelCount||0,
+    nativeNumericKernelBoundaryOmissions:s.meta?.nativeNumericKernelBoundaryOmissions||0,
+    nativeNumericKernelOutcomeCount:s.meta?.nativeNumericKernelOutcomeCount||0,
     nativeNumericKernelDeferredLengths:s.meta?.nativeNumericKernelDeferredLengths||0,
     nativeNumericKernelDeferredScalars:s.meta?.nativeNumericKernelDeferredScalars||0,
     nativeNumericKernelRemovedBlocks:s.meta?.nativeNumericKernelRemovedBlocks||0,

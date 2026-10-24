@@ -18128,3 +18128,76 @@ small graph and zero Java/helper execution. It asks the new boundary question
 without redisassembling the unchanged worker or checking a known code identity.
 Only one JSON ledger and one current JVM extraction are used. Next inspect the
 actual bounds before adding an emitter or timing another candidate.
+
+### Projected worker: checked-index outcome candidate
+
+The compile-only boundary gate for 5526c4478f9f0322381f513817e4e25684aa89cf
+found one needed normal index instead of two header values in the small
+traversal, with no unknown contexts. Its completed exiting-header bounds check
+proves the normal result nonnegative. The nested traversal's installed inner
+worker has the same range witness; the outer/nested planning row is distinct.
+No known baseline, identity check, Java workload or CPU profile was replayed.
+
+Candidate **49e99eb07226ec7ae0edf4a8942d7fec5f4680c5**, archived as
+experiment/teavm-kernel-index-outcome (parent 5526c447), consumes that boundary
+only with a genuine graph-specific projection certificate from a private WeakMap.
+A cloned proof or another CFG cannot enable it. Normal nonnegative indices and
+negative cold reasons share one i32 result; fuel remains independent. Every cold
+numeric value, including the actual signed fault index, remains in private cold
+globals. Java snapshots and SSA are unmodified. Arbitrary signed sums and calls
+without the projection retain their independent reason channel.
+
+Focused validation, with no timing concurrently:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeKernelBoundary.test.js test/numericLoopProjection.test.js test/nativeNumericKernelPlan.test.js test/nativeNumericKernelWrapper.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeKernelBoundary.test.js test/numericLoopProjection.test.js test/nativeNumericKernelPlan.test.js test/nativeNumericKernelWrapper.test.js test/nativeStaticArrayBody.test.js test/nativeStaticStateBody.test.js test/nativeMixedStateBody.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/wasmCompilerRetention.test.js
+node --check apps/loading/call-code.mjs
+node --check apps/loading/microbench.mjs
+node --check apps/loading/probe.mjs
+node --check apps/loading/nested-loop.mjs
+```
+
+The four-file emitter batch passes **191/191**; the relevant regional, resume and
+retention coverage passes **1,107/1,107**. Positive compiled Java tests actually
+install the new outcome, distinguish zero from a cold reason, preserve negative
+and minimum-i32 fault indices/messages, retain effects before a later fault, and
+resume fuel without repeating stores. Syntax checks exit 0. The inspector now
+reads the actual installed worker instead of rebuilding a legacy-ABI helper;
+post-timer summaries expose outcome and boundary-omission counts. These checks
+establish correctness/applicability, not speed. Saved JVM/TeaVM/HotSpot controls
+remain the comparison; only changed candidate measurements are authorized next.
+
+Changed-source gates and timing commands, sequential and CPU2-pinned:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 49e99eb07226ec7ae0edf4a8942d7fec5f4680c5 native-numeric-kernel-micro-code
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-vector-code 49e99eb07226ec7ae0edf4a8942d7fec5f4680c5
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-inspect 49e99eb07226ec7ae0edf4a8942d7fec5f4680c5
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 49e99eb07226ec7ae0edf4a8942d7fec5f4680c5 huffman-inline
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-candidate 49e99eb07226ec7ae0edf4a8942d7fec5f4680c5
+```
+
+All exit 0. The installed small traversal returns exactly outcome+fuel; the
+separate vector installs one outcome, omits one old normal value, removes five
+wrapper blocks and retains deferred lengths/scalars. Its wrapper is 6226 Wasm /
+2832 native bytes with zero original loops, 0x58 stack reservation; the worker
+is 553 Wasm bytes. These static reductions do not establish a speed gain.
+Diagnostic: checksum -1834486005, one million vector entries, zero exits and
+late Java compilation. Instrumented elapsed is excluded.
+
+| Candidate | Three fresh processes, ms | Median ms |
+|---|---|---:|
+| Huffman inline | 60.070366, 58.995538, 61.321529 | 60.070366 |
+| Separate vector | 100.200813, 102.751751, 111.723036 | 102.751751 |
+
+Every checksum matches; all separate timings have zero exits/late compilation.
+Huffman does not beat saved 55.497371 ms. Separate also fails the historical
+89.520345 ms screen, whose older composition is not an exact causal control.
+Do not run the original packet decoder or full loading on this failed candidate;
+do not promote, advance the comparator, repeat known controls or deploy.
+The sole JSON preserves raw measurements in their original collections and a
+compact projectedIndexOutcome disposition linking their IDs/revision. No new
+JSON file, profiler, generated committed artifact or baseline identity check.
+Selected full loading remains saved 1807.0171855 ms / 5.023125618x TeaVM;
+395.7135567 ms (1.1x) remains unmet.
