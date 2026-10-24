@@ -13,6 +13,363 @@ socket layer; install it in anything that claims to run offline.
 
 ---
 
+## Investigation retrospective — 2026-10-24
+
+This is the consolidated account of the GeoBlox memory, stalls, standalone intro,
+and TeaVM/JVM.js loading investigation. It groups the approaches and decisions;
+the original commands, source revisions, failed runs and corrections remain in
+the chronological sections below. Earlier constrained-browser evidence is also
+preserved in the cloner's existing
+[September retrospective](../../GEOBLOX-OPTIMIZATION-RETROSPECTIVE.md) and
+[memory journal](../../JVM-MEMORY-VALIDATION.md). Those are historical records,
+not current acceptance reports. This section is the current overview; add future
+results here and below rather than starting another report.
+
+### Current result and what it measures
+
+**The full-loading 1.10× TeaVM goal is not met.** There are useful compiler and
+correctness improvements, many rejected experiments, and one new algorithmic
+proof that has not yet been integrated. Neither committing code nor finishing a
+microbenchmark establishes release acceptance.
+
+| Workload or requirement | Saved result | Interpretation |
+| --- | --- | --- |
+| Standalone intro, one 251-frame execution, local Node comparison | JVM.js 639 ms; TeaVM 607.960 ms, about 1.051× | This particular animation execution met the 10% comparison. It excludes game loading, preparation and browser presentation. |
+| Original loading workload, initial Firefox comparison | JVM.js 18.769 s; TeaVM 1.768 s, 10.62× | Historical baseline included late JVM compilation. |
+| Same loading workload, later Firefox AOT comparison | JVM.js 8.716 s; TeaVM 1.534 s, 5.68× | Zero guest-time compiler entries; preparation itself took about 101 s. Compilation no longer explains the remaining execution gap. |
+| Current selected loading source, Node | JVM.js median 1807.0171855 ms; saved TeaVM 359.739597 ms, 5.0231× | Execution only. Different host/cohort from the Firefox rows; do not compare them as a controlled browser speedup. |
+| Required Node execution time for 1.10× | At most 395.7135567 ms | About 1411 ms must still be removed, a 78.1% reduction from the selected median. |
+| Original browser/game targets | Not accepted | Aggregate peak JS heap ≤512 MiB; warm usable menu ≤60 s; ≥24 presented FPS in every eligible rolling second; median gameplay ≥30 FPS; five launches and ten minutes of gameplay. |
+
+The loading fixture executes original music/effect preparation and archive
+decoding with fixed classes and assets. It excludes network/source compilation,
+loading-screen rendering, device playback and menu transitions. Its checksum is
+`18:218292:2368412830:205:7597510:3045679678`. The initial-effect PCM checksum does
+not cover every instrument in the music cache. It is a controlled execution
+comparison, not normal GitHub navigation-to-menu or gameplay acceptance.
+
+All six selected Node full observations remain in the result, in milliseconds:
+`1825.246401, 1788.787970, 2029.977873, 1759.414772, 3719.670882, 1779.553229`.
+The 3719.670882 ms tail is not discarded. Selected source is
+`029834e16366e3dfaed1f46d5589ec34dddc04dc`. Historical phase medians are
+1494.7033375 ms music and 315.6540395 ms graphics; phase medians need not sum to
+the median of per-run totals.
+
+The original-sample Vorbis comparator is 93.269749 ms, with exact 348249-byte
+PCM; the current small inlined Huffman comparator is 55.497371 ms; the separate
+stable vector fixture is 89.520345 ms. The complete original MDCT/window
+component is 22.634309 ms against saved TeaVM 17.021312 ms. These are distinct
+fixtures and baselines. A win on one does not update the others.
+
+### Memory and animation stalls: the earlier work
+
+The original preparation approached OOM before finishing roughly 4967 methods.
+Diagnostic snapshots before preparation and near 2000, 3300 and 4200 methods
+showed large retained strings, compiler analyses and arrays. One checkpoint
+sequence went from 37.9 MiB before preparation to 910.4 MiB at 4200 methods;
+local source cleanup brought the corresponding final sample to about 400 MiB.
+These are sampled JS heap values, with separate Wasm backing storage; they do
+not prove the aggregate instantaneous page-and-worker peak target.
+
+| Approach | What happened / why it did not finish the goal |
+| --- | --- |
+| Release SSA/region/emission analyses and redundant installed source; separate execution metadata from diagnostics | Substantially reduced compiler retention. Exception, interpreter and continuation metadata must survive. Later audits found additional retained sources/closures. |
+| Account retained generated source/transport against 64 MiB; bound one worker request in flight and a 64-entry queue | Prevented specific unbounded retention/queue patterns. The accounting is not a bound on executable code, transient copies or total JS heap. Moving the same data into a worker did not count as success. |
+| Drop installed transfer payloads and stale worker results; preserve active/replacement bodies | Correctness and ownership fixes. Serialization and active frames still require their own metadata. |
+| Share class/string transport and compact metadata grants | Reduced copying. Intermediate candidates still exceeded memory limits or failed startup. |
+| Disable or sharply limit preparation | Lower sampled memory, but black screens, guest failures, slow fallbacks and FPS failures. Avoiding OOM alone did not satisfy the task. |
+| Identity-keyed preparation priorities, dependency closure and prepared-body replay | Removed known compile chains; one decoder dependency-order change repeatedly saved about 21 s of warm startup. Usable menu remained above target. Replay still needs binding/validation and is not a fully serialized executable. |
+| Complete preparation/linking before gameplay transitions | Removed much synchronous compilation and scheduler handoff churn. Early transition diagnosis had incorrectly treated a menu repaint as the first gameplay frame; corrected pixel/timeline classification showed the actual delay. |
+| Compile-turn budgets and scheduler yielding | Bound when more work starts. They cannot preempt one long nested chain or force the guest to draw while its own loading stage is running. |
+| Incremental music decoding and sample-budget exits | Improved some loading gaps, but worsened menu time or broke later gameplay; rejected. A representative gap fell from about 11.4 s to 5.0 s while menu worsened from about 93.7 s to 100.8 s. |
+| Geometric cached-filesystem buffer growth | Removed a measured copying bottleneck: sampled `extendBuffer` self time fell from about 8992 ms to about 16 ms in the follow-up. Decoder work then dominated. |
+| Shared frame materialization and reusable nested argument buffers | Reduced estimated allocation churn, but clean medians near 24 submissions/s with minima 16–17 still failed the floor. Allocation churn is not retained heap; submissions are not proven presentations. |
+| Select every ready Wasm body; broad direct-call/constructor expansion | Some severe regressions, including median zero submissions and multi-second gaps. Ready/compiled does not imply productive selection or low overhead. Narrower tested contracts were necessary. |
+
+Correctness work found along the way included inherited field/class transport,
+async native result and parent-frame ownership, stale reference/static scratch
+retention, music iterator state, monitor contention and synchronized-static
+inlining. Fixing one guest failure often exposed the next performance problem.
+These were not all instances of slow compilation.
+
+We tried wider JS/Wasm argument adapters, explicit spills, constant-switch and
+resume dispatch changes, shared field helpers, eager array caches and several
+framed/frameless variants. Smaller generated bodies or fewer allocations did
+not reliably improve transitions. The September records preserve the individual
+variants and their failed constrained runs. No later Node result retroactively
+passes those browser, total-heap or presented-frame gates.
+
+### The standalone intro, renderer and compile-time knowledge
+
+The readable game sources enabled a standalone intro with no applet/bootstrap,
+loading UI or server. It ends after one pass through ticks 0–250; it does not
+loop or warm up. Earlier colour conversion, canvas readback and the visible
+frame-marker strip were correctness/instrumentation issues. The final duration
+comparison removes the strip and reuses saved image/frame references rather
+than continually rerunning HotSpot or keeping screenshots.
+
+The first laptop AOT result was still about 33.404 s versus HotSpot's paced
+5.020 s despite zero synchronous compilation during Java execution. AOT moved
+work before entry and increased startup; it did not automatically make the
+runtime fast. TeaVM provided an independent Wasm GC implementation of the same
+renderer, not evidence that the interpreter alone accounted for every cost.
+
+Retained work included live class-readiness words, native raster/RGB conversion,
+compact native entries, original-PC spill liveness, canonical integer static
+cells, guarded nested/counted loops and shared SSA reference facts. We also
+tried ownership-ID deferral, native primitive-object fields, parameter-array
+versions, bounds reuse, inline static-word variants, SIMD layouts, rematerialized
+constants, empty-invocation proofs and several return/continuation layouts.
+Many passed focused tests and regressed execution; their individual results
+remain below. One early SIMD variant matched all intro frames but failed newly
+added loop-history tests, so it was not safe to retain.
+
+Shared SSA facts now carry nullable/non-null knowledge, reference bounds and
+proven allocation types through aliases, phis and branches with bounded analysis
+work. They are generic capabilities, not whole-program alias analysis. Their
+intro timing gains were not reliable. In one diagnostic, all 1274 emitted Wasm
+modules were identical to the preceding runtime: a new proof can be useful in
+tests without changing this particular workload.
+
+The final important intro change was Deko preparation of four missing rendering
+dependencies. It removed four synchronous compiler operations from the animation
+window. Two matched campaigns gave a pooled 639 ms versus TeaVM 607.960 ms,
+about 5.1% above TeaVM. This used the same VM binary on both preparation-policy
+sides and kept every observation. It explains why the intro could meet the
+execution comparison while full game loading still failed badly.
+
+Profiles stay keyed by source/patch identity in Deko. Generic runtime changes
+need no game-specific flag. Source-built launcher integration and consolidated
+runtime profiles reduce stale generated-bundle problems, but a Git commit does
+not by itself prove a cached browser or deployed site is running that version.
+No deployment was performed by the latest proof/source commits.
+
+### Full loading: AOT, native coverage and emitted-code comparison
+
+AOT was made stricter than a timer around `main`: the harness rejects attempted
+compiler entry, even if a fallback catches the assertion. Missing recursively
+compiled children and JRE-field variants were corrected. Class initialization
+publishes prebuilt guarded bodies without prematurely running guest initializers.
+This removed observed late compilation but left a multi-fold execution gap.
+
+We then expanded native calls, object/array storage and resumption in bounded
+steps: canonical instance entries, constructor preparation, typed storage,
+native array returns, reference statics, loop-free callers, primitive-array
+identity, direct/native leaf links and dispatcher casts. Some improved Bzip or
+an archive while failing full loading. Broad cold inlining, extra rematerialized
+literals, dead phi-copy pruning, numeric local/stack rearrangement and eager host
+Wasm optimization did not close the gap. Eager optimizing-tier execution still
+showed about 6.13× in its diagnostic; host tier warmup alone was insufficient.
+Binaryen/post-optimization experiments were not a general runtime solution.
+
+At the user's request we compared actual WAT for the matching buffered reader.
+The historical JVM body had repeated representation/base choices, field reads,
+null branches, fuel and recovery paths; TeaVM used typed GC `struct.get/set` and
+array instructions. Example static counts were 15 explicit native-base tests,
+14 `ref.is_null` sites and 47 `if` sites versus no explicit base/null tests and
+one `if` in that TeaVM reader. These include cold paths and are not dynamic CPU
+costs. Subsequent compiler work changed these bodies; those counts are not a
+measurement of current selected code.
+
+Crucially, implicit GC array/null traps are not proofs that TeaVM eliminated
+Java checks at compile time. This TeaVM fixture uses its default `strict=false`:
+it does not insert the same catchable Java NPE/AIOOBE paths. Our runtime also
+supports foreign/checked storage, suspension and exact recovery. We can remove
+redundant decisions with ownership/range/effect proofs; we cannot simply drop
+required Java faults, monitor behaviour or continuation state to imitate shorter
+WAT. This semantic difference does not prove the remaining 5× gap is fundamental.
+
+### Smaller cases, proofs and the trials that did not transfer
+
+After the broad passes, the investigation moved to matched smaller cases and
+original component fixtures. The existing evidence already attributes CPU work;
+we are not starting another profiling campaign. Method/guard/call counters show
+coverage and effects of a change, not the proportion of elapsed time it explains.
+
+| Family | What was tried and what the evidence supports |
+| --- | --- |
+| Scalar/array storage controls | Isolated float reads, butterfly loops, casts, boolean arrays, GC versus linear storage, physical lengths and non-returning errors. A single load could be near TeaVM while the combined decoder was much slower. GC storage did not give a consistent general advantage. |
+| Resumption | Structured outer-loop recovery, cold checkpoints, returned primitive arrays and bounded native workers. Some reduced cases improved sharply; original or full loading often regressed. One returned-array prototype improved its reduced case 22.4% yet made full loading 9.27% slower. |
+| Bit-reader algorithm and replay | Compared actual original request streams with helper/local/manual controls. Retained native storage parameters after reader/archive/full screens. Later typed-entry and scalar-field promotion variants had mixed or worse original results. |
+| Bounds and native parameter proofs | Proved redundant checks using dominating accesses and entry ranges. One proof removed 25 original bounds sites without an established decoder gain. Automatic native array parameter versions advanced the working comparator to 2015.857769 ms, only a small overlapping-cohort improvement. |
+| Array metadata flow | Must-available headers and block metadata proofs were sound but sometimes changed only construction, not timed decoding. Those were rejected without timing an unchanged path. |
+| Outlined transforms | Three preparation-only outline variants preserved PCM but did not improve original music. The original MDCT/window fixture was corrected to distinguish cold from initialization-matched setup; observations were not relabelled afterward. |
+| Native static/object regions | Captured owned arrays and stateful object bodies remove repeated representation selection. Some small components improved; broad coverage did not consistently improve the original decoder or full workload. Fewer hot-path imports is not a sufficient acceptance gate. |
+| Inline loops and helpers | Atomic static leaves and guarded recoverable inlining became useful retained foundations. Loop wrappers, forwarder collapse, deeper/nested inlining, conditional continuation and several cast proofs failed full gates or earlier screens. Selected guarded inlining is source `029834e1`, with the six full samples above. |
+| Field writes and publication | Tracked field shape, readonly/mixed-state bodies, wrapper bindings, callback-free regions and returned-array ownership support stronger contracts. Wider field-array writing improved an original component to 89.359848 ms but full median 1835.875870 ms failed the 1807.0171855 ms comparator. |
+| Reference/array allocation | Dead reference elimination, lazy row/large-array capabilities, reference stores, multi-array allocation, native allocation headers and paired receiver captures. Local wins often vanished with allocation, original calls and full state included. |
+| Receiver tokens and forwarding | A token variant reached 80.344995 ms on the stable vector case but 96.280720 ms on original music; companion forwarding reached 72.129722 ms locally but 108.135549 ms originally. Neither beat the original comparator. |
+| Root static activation | An unrestricted version fell back catastrophically on the first packet (about 1006 ms original median). A narrowed read-only form restored direct packet execution but at 100.410102 ms still lost. |
+| Memory alias/state layout | Seven orientations compared shared/split memories, owned fields, GC structures/arrays and imported/owned globals. No general layout win: GC arrays helped one orientation and hurt another. Do not infer that replacing the whole heap with GC arrays solves loading. |
+| Typed static value blocks | GC integer blocks and overwritten-store elimination reduced emitted stores but failed the 55.497371 ms Huffman comparator; refined median 56.829140 ms. Kept exact fault barriers; no original/full campaign. |
+| Instance reference recipes | Reconstruct Java array references only for cold recovery; actual vector lost three reference loads. Stable median 88.327273 ms versus 89.520345 ms overlapped historical spread. An earlier dead-reference experiment had already tested essentially the same opportunity; that duplication should have been caught sooner. |
+| Exact native unary-intrinsic caches | Bounded full-bit-key sin/cos/etc. memoization, followed by a multi-memory inline lookup. MDCT medians 20.379564 and 20.126767 ms versus 22.634309 ms; original music 97.051123 ms failed 93.269749 ms. Both parked, no full campaign or cache-size tuning to chase a median. |
+
+Additional small native numeric kernels, same-module/direct-import links,
+borrowed static inputs, affine bounds, static publication and typed execution
+storage were screened and archived when their changed paths failed to improve.
+The index below lists every receipt family, including diagnostic/control records;
+the original chronology contains the exact hypotheses and dispositions.
+
+### Measurement corrections and lessons
+
+An earlier Firefox tool divided independently calculated backend medians and
+reported a false 1.079589× pass. The actual three paired ratios were 3.997×,
+0.972× and 3.862×. The corrected comparison requires both the median paired
+ratio and the ratio of backend medians to pass; the saved observations were
+reevaluated, not discarded. Current candidate-only comparisons reuse historical
+controls and do not invent fresh paired observations.
+
+The working baseline advances only after the appropriate original/full gates,
+with all raw observations attached to its source identity. Component improvements,
+static code-size reductions and source publication do not advance it. Historical
+small percentage changes with overlapping ranges are not presented as isolated
+causal wins. Outliers, invalid intermediate cases and failed tests remain in the
+history. Earlier campaigns did rerun controls; the later explicit instruction is
+to reuse known controls without rerunning timings, baseline hashes or restoration
+checks simply to establish that unchanged code is unchanged.
+
+Current timing policy is sequential fresh processes on CPU2, Node 22.23.2,
+`--max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation`, with builds,
+tests, inspection and profiling excluded from timing cohorts. Eager Wasm flags
+remove that tiering variable, not ordinary host execution effects. Exact output
+and zero late guest compilation are independent mandatory gates. No repeated
+animation, hidden warmup, synthetic easier stream or discarded slow trial is
+used to claim success.
+
+The original browser task requires actual compositor-presented frames and worst
+frame gaps. Java render ticks, AWT submissions, `requestAnimationFrame` callbacks
+and average throughput are not interchangeable with that measurement. Node
+iteration accelerates compiler testing; it cannot certify Firefox, throttled
+browser, phone, total memory or sustained gameplay behaviour.
+
+### Latest proof and the next concrete work
+
+Before implementing a wider buffered refill, integer analysis of the saved
+490954 requests found 403816 needed no refill, 87135 needed one byte, and only
+three needed two bytes. Batching multiple byte loads therefore has essentially
+no opportunity on this stream. The metadata-only count and its 2/2 focused tests
+are retained; it did not run Java, decompress assets or time a known baseline.
+This rules out that particular batching plan, not every reader optimization.
+
+The distinct current prototype recognizes mutable integer-tree prefix traversal.
+A bounded eight-bit table stores a path's indices and values; a pure Wasm query
+checks those dependencies against the current heap before accepting a terminal
+index. It does not assume immutable trees or unchecked input. Mutation of a used
+edge refuses; changes outside the observed path can remain valid. The query
+writes no Java state. Its cache is bounded to 2 MiB and 64 tables and refuses
+shared heaps, exhausted budgets, bad/deep/cyclic paths or insufficient fuel/input.
+
+The generic SSA recognizer infers tree/input/cursor roles and complete loop
+recurrences without application names. It rejects extra faults, stores, calls,
+side entries and unsupported state. It matches the saved actual vector shape.
+Kernel tests pass 125/125 and recognizer tests 22/22; the combined master check
+passes 147/147. One initial negative fixture was actually a valid last-bit copy:
+it became a positive case, with a separate genuinely unsupported recurrence test.
+**The query and recognizer are not wired into compiler lowering, and no speedup
+has been measured for them.**
+
+Next steps, in dependency order:
+
+1. Integrate this generic recognition with existing owned/native state proofs.
+   Share the bounded cache per heap rather than per compiled method; authenticate
+   integer-array ownership and invalidate field-side metadata on replacement.
+2. On successful queries preserve exact cursor/index/last-bit phi state and fuel,
+   then run the ordinary terminal header/row access. On refusal execute the
+   original loop with unchanged Java faults, intermediate stores and recovery.
+3. Test replacement/mutation, negative roots, deep trees, malformed input,
+   insufficient-fuel suspension, resumed array identity, foreign/custom fields,
+   terminal faults and compiler graph cleanup. Validate the emitted changed path
+   before timing it.
+4. Measure only the changed candidate: small matched kernel, original Vorbis,
+   then full loading if earlier gates show useful gains. Stop promotion at any
+   failed gate. Reuse saved TeaVM/HotSpot/JVM comparators.
+5. If full execution reaches 1.10×, return to actual browser/menu/game acceptance:
+   aggregate memory, warm startup, rolling presented FPS, stability/catalog and
+   the specified constrained environment, then device confirmation as applicable.
+
+There is no reliable completion ETA. The remaining gap is large; the prefix
+proof is one bounded hypothesis, not a demonstrated route to recovering 78% of
+execution time. TeaVM demonstrates a faster implementation of these workloads;
+our different runtime contracts and representation are engineering constraints,
+not a proof that the goal is impossible. Conversely, the successful intro is
+not proof that full loading will reach the same ratio.
+
+### Durable sources, repository boundaries and current master
+
+| Repository | Owns |
+| --- | --- |
+| `java-tools` | Generic SSA/decompiler/compiler, memory, storage, scheduling and recovery. No game symbols, profiles or application-specific AGENTS rules. |
+| `dekobloko-work` | Reproducible game adapters, naming/relocation inputs, preparation identities, standalone/benchmark harnesses and this journal. |
+| `funorb-decompiled` | Published generated Java exports under `games/`; deterministic naming/export provenance. Generated Java belongs there, not in the cloner. |
+| `blank-github-cloner` | Source/artifact loading, host integration and generic diagnostics. |
+
+Readable/decompiled code enabled tracing actual renderer, decoder and gameplay
+control flow. Deterministic naming and generic structural reconstruction are a
+separate correctness/readability effort, documented in
+[decompilation.md](decompilation.md). Better names alone do not optimize bytecode;
+compiler control-flow work must be general, default behaviour with safe refusal
+rather than game-name workarounds. The full export/server-documentation history
+is not a new VM performance measurement.
+
+At the user's request the prefix kernel/recognizer was committed on JVM master
+as `a4fa88e9884d6b74a508da5f45884d217a6c99eb`; corresponding Deko evidence is
+`08facc55156375126a2ce041db3151f6822ea1cb`. The subsequent JVM master commit
+`27a42bc82a98abaca487328366b68380bb216e80` brings the already measured selected
+runtime dependencies onto master as one scoped source snapshot, plus those new
+proof helpers. It includes 66 generic source/test JS paths, preserving unrelated
+working-tree edits. It is not a merge of every rejected experiment.
+
+This publication did not rebuild or retime unchanged controls, change the
+selected benchmark identity, update a deployed bundle, or establish a new
+performance result. Experimental source/tests remain in Git history. Generated
+Java/classes/JARs/Wasm/WAT/bundles, screenshots and cache receipts do not enter
+these runtime/harness commits. Only the single current scratch extraction is
+expendable; durable source work must not rely on `/tmp` or `.work` surviving.
+
+The one current machine-readable evidence file is
+`~/.cache/dekobloko/geoblox-loading/benchmark.json`, updated in place by one
+writer. It contains source/asset identities, raw trials, corrections and
+explicit decisions. It is local cache evidence, not a committed or deployed
+artifact. The prose and durable source refs here preserve conclusions without
+copying large encoded request streams or profiles into Git.
+
+### Exhaustive loading receipt index
+
+There are **170 named trial/diagnostic/comparator records** under
+`optimizationTrials` as of this overview. These are record families, not 170
+independent speedups or a count of individual runs: one family may contain
+several variants/cohorts, and some are observations or bounds without code
+changes. Intro and early constrained-memory experiments precede this inventory
+and are covered above and in the original journals. Keys below are exact lookup
+names in the single receipt; their sequence follows the recorded inventory.
+The grouped narrative above and chronological evidence below supply the results.
+
+| Records | Family | Exact receipt keys |
+| --- | --- | --- |
+| 1–16 | Initial native arrays, complete bodies, constructors and returns | `rejectedWholeWasm`, `baseline`, `settledNativeArraysNode`, `completeWasmNode`, `slabNode`, `deepInlineNode`, `dispatcherArraysFirefox`, `canonicalInstancePrimitiveNode`, `canonicalInstanceNativeNode`, `canonicalInstanceFirefox`, `slabConstructorsNode`, `constructorsNode`, `boundedDeepInlineNode`, `preparedConstructorsNode`, `canonicalConstructorsNode`, `nativeReturnsFirefox` |
+| 17–30 | Native references, object storage, guarded entries and first array-return screens | `nativeStaticReferences`, `nativeObjectForwardingNode`, `nativeOwnedArrayMetadataNode`, `nativeObjectGuardedAllocationFirefox`, `inlineObjectGcNode`, `completeLoopFreeCallersNode`, `nativeGcStaticArraysAndCastsFirefox`, `selectedParserConstructorNode`, `genericGuardedEntryNode`, `typedStorageFirefox`, `referenceArrayArchiveAB`, `nativeElementHeadersBzip`, `nativeArrayReturnVorbis`, `nativeArrayReturnVorbisCorrected` |
+| 31–39 | Corrected returns, cold inlining, dispatcher and static-leaf full screens | `referenceArrayArchiveCorrected`, `guardedColdStaticInliningVorbis`, `dispatcherCanonicalBzip`, `coldLoopRestrictedFullNode`, `dispatcherCanonicalFullNode`, `selectedRuntimeNodeSmoke`, `nativeStaticLeafFullNode`, `nativeStaticLeafEpochFullNode`, `literalRematerializationFullNode` |
+| 40–48 | Literal/cast metadata, logical work and phi-copy experiments | `castIdentityMetadata`, `castIdentityFullNode`, `castIdentityRepeatedFullNode`, `castIdentityOwnedFullNode`, `deferredDispatcherCastsBzip`, `deferredDispatcherCastsFullNode`, `teavmLogicalWorkCensus`, `deadPhiCopiesVorbis`, `deadPhiCopiesFullNode` |
+| 49–59 | Host tier, primitive loops, Math bridge, post-optimization and unchecked bounds | `eagerNativeTierFullNode`, `guardedPrimitiveLoopsVorbis`, `guardedPrimitiveLoopsFullNode`, `guardedPrimitiveLoopsCensus`, `mathImportWasmBridge`, `binaryenPostOptimization`, `numericStackificationFullNode`, `numericLocalReuseFullNode`, `dominatedArrayFillFullNode`, `guardedStaticInliningFullNode`, `uncheckedMemoryUpperBound` |
+| 60–73 | Reduced arrays, resumption, cold checkpoints, original Vorbis and array identity | `structuredLoopResume`, `dominatedSlabFills`, `smallArrayIsolation`, `unusedObjectInputResume`, `nativeObjectInputResume`, `reducedArrayOperations`, `fusedArrayGuard`, `smallCodecControls`, `coldCheckpointResume`, `boundedColdCheckpointResume`, `primitiveArrayResultResume`, `castBoundaryIsolation`, `matchedVorbisReduction`, `primitiveArrayClassIdentity` |
+| 74–82 | Tree/field controls, boolean representation, native tags and fixture transport | `huffmanTraversal`, `conditionalFieldHeaderSeeding`, `huffmanFieldStateIsolation`, `reducedArrayReadControls`, `nativeBooleanArrayPath`, `representationOnlyLoops`, `nativeBoundsTags`, `measurementFixtureTransport`, `basicBlockReceiverGuards` |
+| 83–91 | Original bit-reader replay, typed entry, bounds and metadata proofs | `bufferedReaderReduction`, `bufferedReaderReplay`, `primitiveFieldValueProof`, `typedNativeEntryProof`, `blockLocalNativeBoundsProof`, `nativeFloatArrayStorage`, `automaticNativeArrayVersions`, `sharedArrayBlockMetadataProof`, `arrayMetadataFlow` |
+| 92–101 | Outlining, numeric invariants, native bodies/regions and capture contracts | `wasmLoopOutlining`, `totalNumericLoopInvariants`, `nativeStaticArrayBody`, `nativeStaticArrayRegions`, `nativeObjectBody`, `stableNativeArrayCaptures`, `knownHeapImportLimits`, `coldStaticArrayReferenceRematerialization`, `sharedIntrinsicReadiness`, `mixedStateArrayBody` |
+| 102–111 | Field effects, resumable inlining, wrappers/casts and boolean storage | `fixedInstanceFieldWrites`, `resumableInlineActivations`, `inlineAtomicStaticLeaves`, `inlineNativeArrayRegion`, `staticLoopWrappers`, `staticForwarderCollapse`, `nativeArrayCastProof`, `localCallbackProof`, `loopEntryCastProof`, `revocableBooleanStorage` |
+| 112–124 | Call WAT, object promotion, canonical targets, affine bounds and typed storage | `nativeCallCode`, `nativeObjectScalarForwarding`, `nativeArrayReferenceMaterialization`, `nativeObjectLazyActivation`, `nativeEntryShapes`, `nativeObjectScalarPromotion`, `nonReturningArrayErrors`, `typedCanonicalTargetProof`, `cacheCorrectnessComparator`, `typedCanonicalTargets`, `typedNativeObjectEntry`, `nativeAffineLoopBounds`, `typedExecutionStorage` |
+| 125–135 | Precise exits, closed regions, tracked fields/wrappers and returned ownership | `preciseNativeInstructionExits`, `nativeReceiverInstructionGuards`, `closedNativeCalls`, `closedNativeRegions`, `nativeStaticIntegerState`, `trackedNativeFieldShape`, `borrowedStaticInputs`, `mixedReadonlyState`, `trackedWrapperBindings`, `callbackFreeArrayRegions`, `returnedArrayOwnership` |
+| 136–141 | Prepared regions, static publication and selected guarded-inline comparators | `preparedNativeRegionLoading`, `currentBzipComponentComparator`, `staticStatePublication`, `guardedInlineLoops`, `currentHuffmanInlineComponentComparator`, `currentVorbisComponentComparator` |
+| 142–152 | Nested inlining, references/capabilities, allocation and loop continuation | `nestedInlineLoops`, `frameArithmeticRematerialization`, `stableArrayHeaderAliases`, `deadPrimitiveArrayReferences`, `stateReferenceArrayStorage`, `largeReferenceArrayCapabilities`, `lazyReferenceArrayCapabilities`, `multiArrayAllocation`, `conditionalLoopContinuation`, `recoveredStaticLoops`, `fieldArrayWritingRegions` |
+| 153–164 | Constant/kernel/store/header/token proofs and reuse bounds | `constantArgumentInlining`, `nativeElementAvailability`, `nativeNumericKernels`, `nativeReferenceStores`, `nativeAllocationHeaders`, `nativeArrayReceiverPairs`, `nativeRegionKernelBound`, `nativeRegionWorkers`, `nativeReceiverTokens`, `typedStoragePredicates`, `rootStaticActivations`, `referenceElementReuseBound` |
+| 165–170 | Memory alias controls, value blocks, recipes, intrinsic cache and latest bounds/proof | `memoryAliasControls`, `staticValueBlocks`, `instanceReferenceRecipes`, `nativeUnaryIntrinsicCache`, `intTreePrefixCache`, `bufferedRefillBound` |
+
+The remainder of this document preserves the original usage instructions and
+chronological evidence. Historical “next” proposals and “master unchanged”
+statements describe their own dates; the current state above supersedes them.
+
+---
+
 ## 1. Prepare inputs
 
 ### Gamepack
