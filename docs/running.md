@@ -18691,3 +18691,49 @@ excluded. The uninstrumented original cohort is pending; reuse saved 93.269749 m
 not a refreshed baseline. No full-loading run, promotion or deployment is earned
 yet. Full target stays **395.7135567 ms**, with the saved **1807.0171855 ms** JVM
 comparator unchanged and all broader browser/phone acceptance still open.
+
+The original uninstrumented cohort completed, run ID b834d358-0397-403c-b66b-b273f8bd7aea:
+
+| Sample | Original decode ms |
+|---|---:|
+| 1 | 96.554614 |
+| 2 | 97.827539 |
+| 3 | 96.542787 |
+
+Median **96.554614 ms** fails saved **93.269749 ms**.
+All three match every PCM byte and compile no Java after preparation. The
+historical control is not replayed; do not attribute the whole difference
+causally to one change. **No full loading, promotion, comparator advancement or
+deployment follows.** The improved bounds-case comparator remains 117e8e3d /
+11.790559 ms for that case only. Both source refs, the wide test child, exact
+commands and raw receipts remain durable. The single JSON has compact
+nativeRegionWorkers dispositions linking existing case/run rows, not duplicated
+reports. These numeric workers are Wasm helpers within the same VM/heap, not
+worker threads or shifted allocations to another process.
+
+A concrete next gap is visible in nativeNumericKernel.payload(reason,cold):
+every cold return publishes the union of **all** cold snapshots. In particular,
+fuel at the header publishes body temporaries that Java's header snapshot does
+not need, even before their first definition. This creates artificial loop-carried
+liveness which the native optimizer must honor because the imported globals are
+mutable. Derive a separate numeric packet per actual exit: header slotDefsIn /
+entryStack for fuel, and node slotState / stackUnder / args for each fault.
+Retain required full-width values and exact operands, omit values already carried
+by normal results, and have the wrapper restore exactly the matching packet.
+Keep array writes and existing reason/fuel behavior. This is a distinct static
+snapshot/liveness proof, not another return-arity permutation or CPU profile.
+A narrower packet must first pass the wide/fault/partial-store/fuel/retention
+checks, then show actual changed code and timing before any promotion.
+
+Use test child 16b3f73f as the next source base if retaining its extra assertions.
+Reuse the saved 117e bounds-case result (11.790559 ms), original 93.269749 ms,
+and full 1807.0171855 ms controls. Do not run the known withheld/old worker
+again merely to confirm itself. A newly changed payload can be measured with a
+candidate-only command and the same fixed new-case Java graph. No partial result
+changes the full **395.7135567 ms** target or wider release requirements.
+
+The actual JVM master/index and unrelated decompiler work remain untouched;
+all new implementation/test files are isolated in Git refs. Remove only this
+pass's owned extraction, alternate index and logs. No restoration build/test,
+old-code fingerprint check or baseline timing is necessary. The 1.1x objective
+remains active and unmet.
