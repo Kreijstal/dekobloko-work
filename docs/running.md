@@ -17921,3 +17921,39 @@ Archive only the four handwritten source/test files through the separate index;
 actual JVM master/index, decompiler WIP and selected default remain untouched.
 Next inspect actual changed helper parameter counts/native code before timing.
 This is not yet a performance improvement or an original/full loading result.
+
+
+Static-input-only source **0c612ba5f9459c8c475c9f733c61bdf9b2e199c6** is archived at
+experiment/teavm-static-kernel-inputs. The compile-only micro gate has zero Java
+ticks/assets/main execution. It confirms a 9-to-5 argument reduction on the
+scalar traversal, with 4 normal results retained. That worker has 21 numeric
+locals, 522 module bytes, 540 native bytes / 0x70 stack; the inline root takes
+4 arguments with 3 results, 516 native bytes / 0x68 stack. Larger helpers still
+count. The separate vector diagnostic has one million entries, exact checksum
+-1834486005, zero exits/late compilation. Its wrapper still contains the original
+loop (7027 module bytes, 4980 native bytes, stack 0xa8 + 0x10).
+
+Commands (all candidate-only, CPU2 / Node22.23.2 / eager / 1 GiB):
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 0c612ba5f9459c8c475c9f733c61bdf9b2e199c6 native-numeric-kernel-micro-code
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-vector-code 0c612ba5f9459c8c475c9f733c61bdf9b2e199c6
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-inspect 0c612ba5f9459c8c475c9f733c61bdf9b2e199c6
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 0c612ba5f9459c8c475c9f733c61bdf9b2e199c6 huffman-inline
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-candidate 0c612ba5f9459c8c475c9f733c61bdf9b2e199c6
+```
+
+Huffman samples **62.447019, 66.398553, 56.694686 ms**, median **62.447019 ms**; separate-vector samples
+**89.095610, 87.004834, 88.390200 ms**, median **88.390200 ms**. Retain all observations. This variant does not beat
+the saved Huffman 55.497371-ms comparator and earns no original/full cohort.
+No baseline, TeaVM, HotSpot, restored-source correctness or CPU profile executes.
+
+The code witness now supports a coherent next composition: moving header/scalar
+inputs into the worker leaves preflight locals live in the wrapper for the
+retained old loop and cold frame reconstruction. The prior proved whole-loop
+projection can remove the old loop, and private lengths needed only for cold
+reconstruction can be loaded at that cold continuation rather than kept live
+across every normal call. Preserve the entry flags/base/readiness checks and
+normal reference live-outs; an array returned/captured outside the worker cannot
+borrow that cold-only treatment. This composition has not yet been validated or
+timed; no release/default/comparator change follows from the input-only result.
