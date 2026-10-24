@@ -20,9 +20,9 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'nested-loop'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const [command,revision,engine,detail,caseArg]=process.argv.slice(2),engines=['inlined','separate'];
-const caseName=command.startsWith('cold-')||caseArg==='cold'?'cold':command.startsWith('large-')||caseArg==='large'?'large':command.startsWith('stable-')||caseArg==='stable'?'stable':command.startsWith('scope-')||caseArg==='scope'?'scope':'whole';
+const caseName=command.startsWith('array-')||caseArg==='array'?'array':command.startsWith('cold-')||caseArg==='cold'?'cold':command.startsWith('large-')||caseArg==='large'?'large':command.startsWith('stable-')||caseArg==='stable'?'stable':command.startsWith('scope-')||caseArg==='scope'?'scope':'whole';
 const count=caseName==='cold'?128:1000000;
-const targetName={whole:'scan',scope:'scanScoped',stable:'scanStable',large:'scanStable',cold:'scanStable'}[caseName];
+const targetName={array:'scanArrayPairs',whole:'scan',scope:'scanScoped',stable:'scanStable',large:'scanStable',cold:'scanStable'}[caseName];
 const requestedEngine=['direct','merged','trusted','paired','separate','plain','eager','lazy'].find(value=>command.includes('-'+value+'-'));
 assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact changed-source JVM commit');
 const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
@@ -40,6 +40,7 @@ public class NestedLoopProbe {
  static int fence;
  static int identity(int i){return i;}
  static void outside(int i){fence=identity(i);}
+ static int scanArrayPairs(NestedLoopBook[] books,int n){int sum=3;for(int i=0;i<n;i++){int[] row=books[i&1].vector();for(int k=0;k<8;k++)sum=sum*33+row[k];}return sum;}
  static int scanStable(NestedLoopBook[] books,int n){NestedLoopBook book=books[0];int sum=3;for(int i=0;i<n;i++){
   int[] row=book.vector();for(int k=0;k<8;k++)sum=sum*33+row[k];}return sum;}
  static int scanScoped(NestedLoopBook[] books,int n){int sum=3;for(int i=0;i<n;i++){
@@ -91,7 +92,7 @@ function nestedLivenessBound(c,numeric,analyze){
 }
 
 if(command==='one'||command==='code-one'||command==='liveness-one'){
- assert.ok(engines.includes(engine)||['direct','merged','trusted','paired','plain','eager','lazy'].includes(engine));assert.ok(flags.every(flag=>process.execArgv.includes(flag)));
+ assert.ok(engines.includes(engine)||['direct','merged','trusted','paired','query','plain','eager','lazy'].includes(engine));assert.ok(flags.every(flag=>process.execArgv.includes(flag)));
  if(engine==='plain')assert.equal(caseName,'large','Plain matrix is only the new large-container control');
  const instrumented=detail==='stats';let Frame,model,allocMultiArray,allocReferenceArray,referenceStorage,takeWasmReturnValue,numeric,frameLive,emission,installed=false;const bounds=[],versions=new WeakMap(),directImports=new WeakMap();
  const {JVM}=await loadArchivedJvm(root,revision,{preloadModules:command==='liveness-one'?['src/jit/stackifyNumericValues.js','src/analysis/frameLocalLiveness.js']:caseName==='cold'?['src/core/nativeObjectStorage.js']:[],observeModule:({filename,exports})=>{
@@ -147,11 +148,12 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
     try{return entry(c,out);}finally{c.useOf=use;c.addImport=add;}
    };
   }
+  if(caseName==='array'&&engine==='query'&&filename.endsWith('/src/jit/pairedNativeStorage.js'))exports.prepareArrayReceivers=()=>new Map();
   if(filename.endsWith('/src/core/frame.js'))Frame=exports;
   if(filename.endsWith('/src/core/objectModel.js'))model=exports;
   if(filename.endsWith('/src/instructions/object.js')){allocMultiArray=exports.allocMultiArray;allocReferenceArray=exports.allocReferenceArray;}
   if(filename.endsWith('/src/jit/wasmShared.js')){takeWasmReturnValue=exports.takeWasmReturnValue;emission=exports;}
-  if((engine==='separate'||['direct','merged','trusted','paired','plain'].includes(engine))&&filename.endsWith('/src/jit/wasmInline.js')){
+  if((engine==='separate'||['direct','merged','trusted','paired','query','plain'].includes(engine))&&filename.endsWith('/src/jit/wasmInline.js')){
    const inline=exports.inlineCalls;
    exports.inlineCalls=function(jvm,code,options){
     if(options.callerClassName==='NestedLoopProbe'&&options.callerMethod?.name===targetName)return null;
@@ -159,7 +161,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
    };installed=true;
   }
  }});
- if(engine==='separate'||['direct','merged','trusted','paired','plain'].includes(engine))assert.ok(installed,'Separate-call experiment missed the outer transform');
+ if(engine==='separate'||['direct','merged','trusted','paired','query','plain'].includes(engine))assert.ok(installed,'Separate-call experiment missed the outer transform');
  const j=new JVM({classpath:[directory],wasmHeap:true,wasmFields:true,wasmHeapMb:32,
   jit:{enabled:false,compileWorker:false,retainCompilerDiagnostics:false,wasmStructured:true,
    wasm:{deepInline:false,canonicalDirectCalls:true,canonicalEhLinks:true,nativeJsExceptionTags:true}}});
@@ -292,7 +294,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   const byte=(i*73+17)&255;let index=0;for(let bit=0;bit<8;bit++)index=index<<1|byte>>bit&1;
   for(let k=0;k<8;k++)expected=(Math.imul(expected,33)+((index*17+k*7)&255))|0;
  }
- const argument=caseName!=='whole'?allocMultiArray(j,'[LNestedLoopBook;',[1]):book;if(caseName!=='whole')argument[0]=book;
+ const argument=caseName!=='whole'?allocMultiArray(j,'[LNestedLoopBook;',[caseName==='array'?2:1]):book;if(caseName!=='whole')argument[0]=book;if(caseName==='array')argument[1]=book;
  const frame=new Frame(target.method);frame.className='NestedLoopProbe';frame.locals[0]=argument;frame.locals[1]=count;target.meta.box.frame=frame;
  w.freezeCompilation();j.jit._syncCompileEnvironment={trace:false,assert:true};j.jit.markMainStarted();
  // Isolate generated execution inside one bounded native invocation. Both
@@ -306,11 +308,11 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
  assert.equal(j.jit.syncCompileCensus().postMainSyncCompileCount,0);
  assert.ok([...w.nativeArrayResults.values()].every(r=>r.base.value===-2&&r.length.value===0&&r.owned.value===0),'Return metadata remains installed');
  const vectorEntries=instrumented?canonicalExecutionCounts(vector.meta).directEntries:null;
- if(engine==='paired'){
+ if(engine==='paired'||engine==='query'){
   assert.equal(target.meta.pairedStorageCallSiteCount,1,'Real protocol lacks a paired call');
   assert.ok(vector.meta.pairedNativeStorage?.run,'Real protocol lacks a callee proof');
   if(instrumented){
-   assert.equal(target.meta.importStats.get('paired_object_storage'),1,'Stable receiver did not pair once');
+   assert.equal(target.meta.importStats.get('paired_object_storage')||0,caseName==='array'?(engine==='paired'?0:count):1,'Receiver pairing does not match the selected proof');
    assert.equal(vector.meta.importStats.get('native_state_object_storage')||0,0,'Callee still calls host validation');
   }
  }
@@ -342,6 +344,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   separateVectorOwnershipQueries:instrumented?vector.meta.importStats.get('native_state_object_storage')||0:null,
   separateVectorRowStorageQueries:instrumented?vector.meta.importStats.get('object_storage')||0:null,
   separateVectorCheckedRowReads:instrumented?vector.meta.importStats.get('aget_r')||0:null,
+  nativeArrayReceiverPairSites:target.meta.nativeArrayReceiverPairSites||0,
   pairedStorageCallSites:target.meta.pairedStorageCallSiteCount||0,
   pairedStorageQueries:instrumented?target.meta.importStats.get('paired_object_storage')||0:null,
   pairedStorageEntry:engine==='paired'?'Generic compiler-paired entry, synchronous monotonic storage revocation, ordinary signature/dispatch/entry fallbacks; no ownership-validator override':null,
@@ -355,7 +358,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
  process.exit(0);
 }
 
-assert.ok(['diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate','inspect','scope-inspect','stable-inspect','code','scope-code','stable-code','liveness','scope-liveness','stable-liveness','stable-direct-code','stable-direct-inspect','stable-direct-candidate','stable-merged-code','stable-merged-inspect','stable-merged-candidate','stable-trusted-code','stable-trusted-inspect','stable-trusted-candidate','stable-paired-code','stable-paired-inspect','stable-paired-candidate','stable-separate-code','stable-separate-vector-code','stable-separate-inspect','stable-separate-candidate','large-separate-inspect','large-separate-candidate','large-plain-inspect','large-plain-candidate','large-run','cold-eager-inspect','cold-lazy-inspect','cold-run'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
+assert.ok(['array-diagnose','array-run','diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate','inspect','scope-inspect','stable-inspect','code','scope-code','stable-code','liveness','scope-liveness','stable-liveness','stable-direct-code','stable-direct-inspect','stable-direct-candidate','stable-merged-code','stable-merged-inspect','stable-merged-candidate','stable-trusted-code','stable-trusted-inspect','stable-trusted-candidate','stable-paired-code','stable-paired-inspect','stable-paired-candidate','stable-separate-code','stable-separate-vector-code','stable-separate-inspect','stable-separate-candidate','large-separate-inspect','large-separate-candidate','large-plain-inspect','large-plain-candidate','large-run','cold-eager-inspect','cold-lazy-inspect','cold-run'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
 fs.mkdirSync(directory,{recursive:true});const java=path.join(directory,'NestedLoopProbe.java');
 if(!fs.existsSync(java)||fs.readFileSync(java,'utf8')!==source||!fs.existsSync(path.join(directory,'NestedLoopProbe.class'))){
  fs.writeFileSync(java,source);execFileSync('javac',['--release','8','-proc:none','-d',directory,java]);
@@ -380,12 +383,12 @@ if(command.endsWith('liveness')){
   const row=parseMeasurementResult(execFileSync(process.execPath,[...flags,script,'code-one',revision,variant,command.endsWith('-vector-code')?'vector-code':'code',caseName],
    {encoding:'utf8',maxBuffer:1024*1024}),'NESTED_CODE_RESULT ');result.codeOutputs=result.codeOutputs.filter(previous=>previous.engine!==variant);result.codeOutputs.push(row);save();console.log(JSON.stringify(row));
  }
-}else if(command.endsWith('diagnose')||command.endsWith('inspect'))for(const variant of requestedEngine?[requestedEngine]:command.endsWith('inspect')?['inlined']:engines){
+}else if(command.endsWith('diagnose')||command.endsWith('inspect'))for(const variant of requestedEngine?[requestedEngine]:caseName==='array'?['paired','query']:command.endsWith('inspect')?['inlined']:engines){
  if(result.diagnostics.some(row=>row.engine===variant)){console.log('reuse saved '+variant+' diagnostic');continue;}
  const row=one(variant,true);result.diagnostics.push(row);save();console.log(JSON.stringify(row));
 }
 else{
- const measuredEngines=requestedEngine?[requestedEngine]:caseName==='cold'?['eager','lazy']:caseName==='large'?['separate','plain']:command.endsWith('candidate')?['inlined']:engines;
+ const measuredEngines=requestedEngine?[requestedEngine]:caseName==='array'?['paired','query']:caseName==='cold'?['eager','lazy']:caseName==='large'?['separate','plain']:command.endsWith('candidate')?['inlined']:engines;
  result.timingMode=measuredEngines.length===1?'Changed candidate only; reuse saved controls':'Paired new-workload control';
  for(let pair=0;pair<3;pair++)for(const variant of pair===1?measuredEngines.toReversed():measuredEngines){
   if(result.runs.some(row=>row.engine===variant&&row.pair===pair)){console.log('reuse saved pair '+pair+' '+variant);continue;}

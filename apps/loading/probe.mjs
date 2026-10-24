@@ -391,6 +391,7 @@ try {
     nativeClosedCallRoot:state.meta?.nativeClosedCallRoot??null,
     nativeOperandSnapshotRetried:state.meta?.nativeOperandSnapshotRetried??null,
     closedContractVersion:state.meta?.closedNativeBody?.version??null,
+    nativeArrayReceiverPairSites:state.meta?.nativeArrayReceiverPairSites||0,
     pairedStorageCallSiteCount:state.meta?.pairedStorageCallSiteCount||0,
     pairedStorageContractVersion:state.meta?.pairedNativeStorage?.version??null,
     pairedStorageExportBound:!!state.meta?.canonicalPairedStorageRun&&state.meta?.pairedNativeStorage?.run===state.meta?.canonicalPairedStorageRun,

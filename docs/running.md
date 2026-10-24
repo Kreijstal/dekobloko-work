@@ -18201,3 +18201,98 @@ compact projectedIndexOutcome disposition linking their IDs/revision. No new
 JSON file, profiler, generated committed artifact or baseline identity check.
 Selected full loading remains saved 1807.0171855 ms / 5.023125618x TeaVM;
 395.7135567 ms (1.1x) remains unmet.
+
+### Receiver ownership from a native reference-container element
+
+The preceding checked-index outcome turn is progress: its changed candidate
+failed measured small gates and was rejected. Reuse saved controls. This pass
+reads the prior TeaVM WAT and paired-storage/typed-entry failures; no CPU
+attribution, baseline replay, restored-source test or identity check is run.
+
+A tempting owner-pointer shortcut has a concrete representation obstacle:
+`any.convert_extern` of our public JavaScript wrapper is anyref, not eqref.
+The validator rejects `ref.eq` on it. A small `ref.test eq` probe returns zero
+for an ordinary host wrapper. Thus copying an owner externref into native storage
+cannot provide a host-free identity comparison. It would also pin the public
+wrapper while storage alone is live, contrary to the existing lifetime contract.
+Do not implement that shortcut or call it a compile-time ownership proof.
+
+Add receiver-origin-bound to the existing call-code inspector. It reports only
+new argument provenance and this host-reference type witness, without executing
+Java, assets/main, old timing or a control code identity:
+
+```
+node --check apps/loading/call-code.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs f9133a568262b4ba9d82c2e07539675b109a47a0 receiver-origin-bound
+```
+
+Exit 0, zero ticks/assets/main. Both actual paired call sites in the residue
+method (items 239/202) take the exact same direct aaload SSA receiver 539 from
+getstatic codebooks, with native reference-array reads emitted. This is an
+applicability bound, not permission to trust an arbitrary array or transported
+store. The new possible proof is stronger: load the original Java value and its
+tracked store from corresponding slots in the same owned container operation.
+
+Implement that proof in generic JVM source
+**7bd70ab7496fb5e794a94ef8c93f20dc90b40fab**, ref
+experiment/teavm-array-receiver-pairs, parent f9133a568262b4ba9d82c2e07539675b109a47a0.
+Small object-reference containers (at most 1024 elements) have a bounded native
+metadata suffix. Primitive row arrays keep their prior GC footprint. The second
+capability header word holds the Java length, independent of physical GC slots.
+Tracked element writes publish the matching store; unsupported/foreign receivers
+publish null. Container customization clears both value and store mirrors.
+Monotonic object certificates still expire on field/binding customization.
+
+Only direct SSA array receivers at already admitted paired calls consume the
+suffix. Constant cached/rematerialized producers and exhausted capture budgets
+retain checked pairing. Capture the value/store at the same checked index, seed
+the receiver after its old caches are killed, and clear temporary raw transport.
+There is no new entry convention, target slot policy, game identity or VM flag.
+Caller/callee revocation, replacement, ordinary forged-input validation, precise
+faults and continuation protocols remain required. Compiler maps are released.
+
+An initial changed test trapped because the proposed comparison referenced an
+unexported opcode constant (undefined encoded as unreachable). Replace it with
+the exported i32.ne: physical suffix length differs from Java length. A later
+foreign-array fixture used an unsupported boxed shape; use the supported plain
+foreign array instead. Neither failed invocation is counted as passing evidence.
+
+Focused commands in the sole expendable source extraction:
+
+```
+node --check src/core/nativeReferenceArray.js
+node --check src/jit/pairedNativeStorage.js
+node --check src/jit/StructuredWasmCompiler.js
+node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/pairedNativeStorage.test.js test/nativeReferenceArray.test.js test/nativeObjectStorage.test.js test/nativeObjectForwarding.test.js test/wasmParameterArrayAbi.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/pairedNativeStorage.test.js
+```
+
+The six-file suite passes **570/570**. The final strengthened retention fixture
+passes **90/90**, exercising an actual array-origin capture rather than an empty
+map. New assertions cover dynamic indices, logical lower/upper bounds excluding
+the suffix, large-container refusal, foreign/custom arrays, exactly-once getters,
+mutation before and after target selection, element replacement, fuel suspension
+and native resumption, expired certificates and compiler/SSA collection.
+No Java compilation occurs after freezing. Generated registry/classes are scratch.
+
+Extend the existing nested-loop harness with a new array case: two source slots
+alias the same native book; the loop chooses its actual slot with i&1. Both modes
+use this changed source and the same new Java graph. Paired mode consumes the new
+capture; query mode withholds only prepareArrayReceivers in the observer and uses
+the supported pairing path. No old workload/control is rerun. Syntax checks pass:
+
+```
+node --check apps/loading/nested-loop.mjs
+node --check apps/loading/probe.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs array-diagnose 7bd70ab7496fb5e794a94ef8c93f20dc90b40fab
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs array-run 7bd70ab7496fb5e794a94ef8c93f20dc90b40fab
+```
+
+Diagnostic: 1,000,000 vector calls, one new capture and **zero** pairing lookups;
+query mode has zero captures and **1,000,000** lookups. Both retain exact checksum
+-1834486005, zero exits/late compilation and zero callee JS ownership checks.
+Instrumented elapsed is excluded. Uninstrumented timing uses three fresh
+processes per mode, alternating order, CPU2/Node22.23.2, 1-GiB old-space and eager
+Wasm. No tests/build/profiling overlap timings. Raw rows stay in the sole JSON's
+nestedInlineLoops array-case observation; no second report is created.
