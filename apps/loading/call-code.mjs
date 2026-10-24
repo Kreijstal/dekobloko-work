@@ -42,8 +42,9 @@ const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revis
     if(numericKernelCode)for(const plan of bound.plans)if(!plan.refused){
      const kernel=buildNumericKernel(this,plan.header),module=new WebAssembly.Module(kernel.bytes);
      const imports=WebAssembly.Module.imports(module);
-     assert.deepEqual(imports,[{module:'env',name:'mem',kind:'memory'}],'Kernel has a non-memory import');
-     assert.ok([...kernel.params,...kernel.results].every(b=>[0x7f,0x7e,0x7d,0x7c].includes(b.type)),'Non-numeric kernel boundary');
+     const coldGlobals=kernel.coldGlobals||[];
+     assert.deepEqual(imports,[{module:'env',name:'mem',kind:'memory'},...coldGlobals.map(g=>({module:'env',name:g.name,kind:'global'}))],'Kernel has a host-call or unbound import');
+     assert.ok([...kernel.params,...kernel.results,...coldGlobals].every(b=>[0x7f,0x7e,0x7d,0x7c].includes(b.type)),'Non-numeric kernel boundary');
      const wat=execFileSync('wasm-dis',['--all-features','-'],{input:kernel.bytes,encoding:'utf8',maxBuffer:4*1024*1024});
      const operations={};
      const visit=node=>{if(!Array.isArray(node))return;if(typeof node[0]==='string')operations[node[0]]=(operations[node[0]]||0)+1;for(const child of node)visit(child);};
@@ -51,7 +52,7 @@ const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revis
      assert.ok(!Object.keys(operations).some(op=>op.startsWith('call')||/^(ref|struct|array)\./.test(op)),'Kernel carries opaque calls or GC context');
      const machineCode=nativeSummary(nativeCode(kernel.bytes,0));
      kernels.push({header:plan.header,moduleBytes:kernel.bytes.length,params:kernel.params,results:kernel.results,
-      numericLocalCount:kernel.numericLocalCount,normalExits:kernel.normalExits,fuelReason:kernel.fuelReason,
+      numericLocalCount:kernel.numericLocalCount,coldGlobals,normalExits:kernel.normalExits,fuelReason:kernel.fuelReason,
       faultReasons:kernel.faultReasons,imports,operations,machineCode});
     }
     assert.deepEqual([this.nextLocal,this.declared.length,this.importDecls.length],before,'Kernel prototype changed the installed method');

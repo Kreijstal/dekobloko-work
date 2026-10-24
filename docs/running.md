@@ -17154,3 +17154,72 @@ not a renewed CPU attribution request or a claim that the old global-ABI
 controls (which showed no substantial penalty) were positive. Do not promote a
 new ABI, rerun old controls or jump to full loading on that hypothesis alone.
 The full 1.1x objective remains active and unachieved.
+
+
+#### Separate numeric worker cold payloads before another timing screen
+
+The preceding turn is progress: a real numeric worker and its Java cold wrapper
+were proved, measured, and rejected at the small screen. No baseline/oracle
+rerun is needed. This follow-up first bounds the return shape, rather than
+assuming a small function is fast.
+
+Source 2f566fb2f0b2889e007bdd7c45644572002e3ef4
+(experiment/teavm-numeric-cold-bound, parent 61cef10) adds a pure normal/cold
+live-out census. Header phis must survive normal readonly-header replay. Later
+SSA consumers and frame/operand metadata outside the loop are also normal
+live-outs; metadata-only consumers are not ordinary SSA uses. The actual vector
+has **2 normal SSA outputs and 3 cold-only outputs**, with no missing normal
+metadata outputs. readBits has 5 normal and 4 cold-only outputs. The initial
+focused bound suite passes **59/59**. Full preparation for this new analysis
+executes zero Java instructions/assets/main and performs no timing, control
+identity check or CPU attribution.
+
+Source 79a8796a9852c914e3a89fb7fcf8c59614e9aaf8
+(experiment/teavm-numeric-cold-return, parent 2f566fb) changes the experimental
+worker ABI only. Normal returns carry reason, fuel and normal live-outs. Private
+numeric mutable globals carry cold-only SSA values, published only immediately
+before a fault/fuel return and copied only on that cold branch. The worker
+cannot call Java/JS, yield internally or reenter another helper, so no callback
+can overwrite this per-worker packet before its outer wrapper copies it. No
+Java references enter it. Integer scalar stores already update their real
+private cells at original positions; the wrapper reloads those cells rather
+than returning redundant scalar copies. The conservative planner now also
+includes metadata-only normal values in the output union, fixing a generic
+omission from the earlier unpromoted prototype.
+
+Cold values stay pinned to distinct locals before resume binding. Existing Java
+fault and fuel reconstruction, captured-reference identity, scalar/array store
+order, foreign/null/cold fallback, numeric types and retained-owner contracts
+remain required. No public option, environment gate or application name is added
+in java-tools. Sources live only on isolated experiment refs; active master,
+normal index, default artifact and deployment remain untouched.
+
+Narrow checks in the one numeric-cold-source extraction:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeNumericKernelPlan.test.js
+node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeNumericKernelPlan.test.js test/nativeNumericKernelWrapper.test.js test/nativeMixedStateBody.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/wasmCompilerRetention.test.js
+```
+
+The changed planner bound passes **59/59** on 2f566fb; the final emission/wrapper
+suite passes **759/759** on 79a8796. New assertions check omitted normal cold
+publication, the smaller normal result tuple, actual fault publication and
+metadata-only later frame values. Generated registry/classes remain scratch.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 2f566fb2f0b2889e007bdd7c45644572002e3ef4 native-numeric-kernel
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 79a8796a9852c914e3a89fb7fcf8c59614e9aaf8 native-numeric-kernel-code
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 79a8796a9852c914e3a89fb7fcf8c59614e9aaf8 native-numeric-kernel-micro-code
+```
+
+All changed-source code gates pass with zero Java execution. The actual vector
+worker has 9 numeric inputs, **4 results instead of 9**, 3 numeric cold globals,
+and 486 module bytes. Optimizing native code is **476 instruction bytes** versus
+the already-recorded 484 of the prior worker. Its stack reservation **increases
+from 0x60 to 0x68**: the cold globals add context despite reducing the return
+arity. readBits similarly has 7 results/4 cold globals and 528 native bytes
+(previously 512). These are code facts, not proof of elapsed gain. All original
+unsigned bounds checks and the engine loop stack-guard call remain. No original
+or full-loading run has yet been earned. The next test is only the changed
+Huffman screen against saved controls.
