@@ -19399,3 +19399,131 @@ source is durable in the isolated JVM ref, and Deko owns the code inspector and
 journal. Cleanup removes only this turn's extraction/index/code and timing logs.
 Saved full loading is still **1807.0171855 ms / 359.739597 ms = 5.023125618x**;
 **395.7135567 ms** and the wider browser/phone acceptance are still unmet.
+
+
+### Independent typed-predicate isolation and fused native receiver capture
+
+The previous goal turn is progress: it produced an actual-code witness, a safe
+predicate change and a failed original gate. This pass first isolates that
+predicate on selected **029834e16366e3dfaed1f46d5589ec34dddc04dc** alone. The source
+is changed before any execution; no unmodified-runtime, oracle, restoration or
+identity check is run. The first shell launch used a not-yet-created extraction
+as its working directory and was rejected before executing any command; source
+creation then ran from the existing directory. That setup failure is not a test
+or timing observation.
+
+Independent source **d7df4ff23010c48a10628ad929782f59f0becdf4** is durable at
+`experiment/teavm-independent-storage-predicate`, parent 029834e. It changes only
+the generic typed null predicate/comment, without receiver-token or early
+companion-forwarding sources.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeObjectFieldCodegen.test.js test/nativeStaticArrayBody.test.js test/nativeObjectForwarding.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-inspect d7df4ff23010c48a10628ad929782f59f0becdf4
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-candidate d7df4ff23010c48a10628ad929782f59f0becdf4
+```
+
+**220/220** focused assertions pass. The candidate-only diagnostic proves one
+million actual vector entries, exact checksum/cursors, zero exits/late compiles
+and cleared result metadata. As expected, the ordinary protocol performs one
+million owner and one million row-storage queries. Fresh candidate samples are
+**87.364701 / 92.245110 / 89.649048 ms**, median **89.649048 ms**, versus saved
+historical separate-call **89.520345 ms**. Historical source composition differs,
+so this is not a fresh causal estimate. It supplies **no useful component gain**;
+do not run original/full gates or select the independent predicate.
+
+The separate actual-code witness remains useful: four GC token intrinsic imports
+are not inlined by the optimizing engine. A new generic implementation fuses
+owner restoration, actual matching storage and shape/binding/origin verdict into
+**one Wasm call with three results**. The private capture returns the exact owner
+and storage even when revoked, together with verdict zero; native access consumes
+storage only after the positive verdict. An ordinary Java reference returns
+itself/null/zero and retains the original checked entry. A valid captured token
+alone seeds the callee's token cache. No mutable scratch/global channel, owner
+copy in raw storage, proof relaxation, new public flag, guest scheduling change
+or application rule is added. Actual owner restoration still precedes guest
+effects and every frame snapshot.
+
+This experiment starts at **7054ad53f2633961f3714111e864db508417365d**, **without**
+the failed early companion forwarding or typed-predicate changes. Fused source
+**25ecd69e596ff314524fc78d996c47783a6cc82d** is durable at
+`experiment/teavm-fused-receiver-capture`; four generic implementation/test files
+change. JVM master/index and unrelated WIP remain untouched. Deko's inspector
+recognizes and verifies the new pure-Wasm capture import.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReceiverToken.test.js test/nativeReceiverEntry.test.js test/nativeObjectStorage.test.js test/nativeObjectForwarding.test.js test/canonicalInstanceFrames.test.js test/wasmExplicitMonitors.test.js test/wasmCompilerRetention.test.js
+node --check apps/loading/call-code.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-token-inspect 25ecd69e596ff314524fc78d996c47783a6cc82d
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-token-candidate 25ecd69e596ff314524fc78d996c47783a6cc82d
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 25ecd69e596ff314524fc78d996c47783a6cc82d receiver-token-code
+```
+
+Focused checks pass **431/431**. New assertions validate fused tuples for shared
+storage/distinct owners, mismatched origins, ordinary/null/raw-store references,
+revocation and getter non-observation. The actual compiled callee imports the
+real Wasm `capture` export and **none** of the old four separate entry helpers.
+The existing real-call tests preserve wrong-pair rejection, Java owners in fuel
+frames, exceptions/monitors, reentrant array returns, withdrawal/replacement,
+late overrides, compiler cleanup and owner/storage collection.
+
+The changed-only diagnostic retains one million vector calls with one token
+acquisition, zero owner queries, one million row-storage queries, exact output,
+zero exits/late compiles and consumed return metadata. Fresh uninstrumented
+samples are **69.300878 / 70.344555 / 76.194291 ms**, median **70.344555 ms**,
+all below saved unfused 7054ad5's **79.418648–81.366761 ms** (median 80.344995).
+Retain the slow third sample. No tests/builds/profiling overlap timings, and no
+known control/oracle is replayed. The actual original code gate passes with
+zero guest ticks/assets/main execution: both private vector bindings are live,
+and the actual vector entry imports **only `native_receiver_capture`** rather
+than the four entry helpers. The real vector core has **4760 native instruction
+bytes**, stack reservations **0x90 plus a separate 0x8**, **255 static stack-address
+sites** and **59 static native calls**. These include cold paths. Earlier 8df/3e
+code also contained companion-forwarding changes, so do not attribute a numeric
+code-size delta solely to fusion by comparing those different compositions.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 25ecd69e596ff314524fc78d996c47783a6cc82d
+```
+
+Original execution **fails**: **96.958678 / 97.501132 / 98.468825 ms**, median
+**97.501132 ms**, run ID `c31cebfa-060f-4417-bf3a-984dccc9f125`. All 348249 PCM
+bytes match and there is zero late Java compilation. Neither selected 93.269749
+nor the saved unfused token 96.280720 median is improved. No full-loading gate,
+comparator advancement, promotion, default change, deployment or parity claim
+is earned. The single JSON retains the raw rows and compact source disposition.
+
+Reusing those **existing post-timer results**, without another execution, shows
+682 packet/residue entries and 134216 vector entries, with zero packet/vector/
+residue exits. The PCM driver has one run/one exit at its already-known cleanup
+status 131. This does not explain elapsed time or count tagged-entry acceptance.
+The code gate proves installation; the old aggregate entry counter increments
+for ordinary and private entries alike. It therefore does **not** prove how often
+the real caller's token factory/dispatch/origin/permission path selects the fast
+entry. The small fixture's one-million-call acceptance proof must not substitute
+for this real-workload coverage.
+
+**Next concrete verification:** add generic diagnostic-only accepted/checked
+entry counters behind the existing compiler import-statistics mode, expose their
+post-execution values in Deko, and make one changed instrumented PCM coverage run.
+Keep the GC intrinsic itself an actual Wasm import; do not add a JavaScript timing
+wrapper or run CPU attribution. Assert that actual private entries are accepted,
+not merely installed; unexpected zero acceptance directs work to factory/guard/
+publication integration instead of another numeric-loop or ABI invention.
+Ordinary, revoked and foreign entries must still use checked semantics. Release
+compiler planning graphs as before. Normal uninstrumented emitted code must
+remain unchanged by the diagnostic path; **do not re-time the unchanged normal
+code or replay 25ecd/029 controls just to validate counter plumbing**. Retain all
+existing semantic/lifetime assertions, then run only the changed counter test and
+needed actual-edge coverage. If acceptance is already complete, return to real
+caller/callee code differences rather than claim this instrumentation improved
+performance. This is execution-path coverage, not a new CPU-share survey.
+
+Both current candidates are rejected for selection. Generic sources/tests stay
+on the isolated refs above, Deko owns workload diagnostics and this journal, and
+actual JVM master/index remain untouched. No generated output enters Git.
+Cleanup removes only this pass's extraction, two alternate indexes and its logs.
+The full target remains **395.7135567 ms**, versus saved **1807.0171855 ms** and
+TeaVM **359.739597 ms**; broader browser/phone acceptance is unverified.

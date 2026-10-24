@@ -513,7 +513,7 @@ if(receiverTokenFamily){
   if(!meta||seen.has(meta))continue;seen.add(meta);
   if(!meta.nativeReceiverTokenEntry&&!meta.nativeReceiverTokenCallSites)continue;
   if(meta.nativeReceiverTokenEntry)assert.equal(meta.nativeReceiverTokenEntry.run,meta.canonicalCompactStorageRun,'Private entry is not the actual guarded export');
-  const intrinsicNames={native_receiver_owner:'owner',native_receiver_store:'store',native_receiver_valid:'valid',native_receiver_is_token:'isToken'};
+  const intrinsicNames={native_receiver_capture:'capture',native_receiver_owner:'owner',native_receiver_store:'store',native_receiver_valid:'valid',native_receiver_is_token:'isToken'};
   const intrinsics=Object.entries(intrinsicNames).filter(([name])=>meta.importObject?.env[name]).map(([name,operation])=>{
    assert.equal(meta.importObject.env[name],receiverTokenOperations[operation],'GC intrinsic acquired a JavaScript forwarding wrapper');return name;
   });
