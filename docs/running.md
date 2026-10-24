@@ -17709,3 +17709,59 @@ Next inspect the changed wrapper WAT/native code and its controlled diagnostic,
 then time only changed small cases. The numeric worker itself is unchanged;
 do not disassemble/recheck it against its own saved code. No current timing gain,
 original/full gate, comparator/default update or deployment is claimed.
+
+Source/tests for complete loop projection are durable at
+**c0b326fda5f67d138f41649822abc53c09d09125**, ref
+`experiment/teavm-numeric-loop-projection`, parent
+`79a8796a9852c914e3a89fb7fcf8c59614e9aaf8`. Six handwritten files only, using an
+alternate index; actual JVM master/index and unrelated decompiler WIP untouched.
+
+Changed-source gates, all CPU2 / eager Wasm / Node22.23.2 / 1-GiB child flags:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-code c0b326fda5f67d138f41649822abc53c09d09125
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-inspect c0b326fda5f67d138f41649822abc53c09d09125
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs diagnose c0b326fda5f67d138f41649822abc53c09d09125 huffman-inline
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-candidate c0b326fda5f67d138f41649822abc53c09d09125
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm c0b326fda5f67d138f41649822abc53c09d09125 huffman-inline
+```
+
+The new vector wrapper has **zero Wasm loops**, one worker and **five original
+blocks removed**. Its module is 6017 bytes / 86 declared Wasm locals; TurboFan
+core measures **2832 native bytes**, stack reservations 0x60 + 0x10, 131 stack
+address sites. These are this wrapper's absolute code facts, not a causal size
+comparison to older different compositions or TeaVM's larger method boundary.
+The unchanged standalone worker was not redisassembled against its saved self.
+The separate diagnostic performs one million actual vector entries, checksum
+**-1834486005**, zero native exits and zero late compilation. Huffman diagnostic
+checksum is **-1268584370**; its actual root has a worker/five removed blocks,
+two recorded entries/exits (including its supported cold handoff). Instrumented
+elapsed values are excluded from timing and no CPU share is inferred.
+
+| Changed case | Three fresh process samples, ms | Median ms |
+|---|---|---:|
+| Separate vector | 88.431967, 83.328733, 83.396375 | 83.396375 |
+| Huffman inline | 115.128381, 61.287909, 62.432262 | 62.432262 |
+
+Retain the first slow Huffman observation. The separate result overlaps the
+older historical screen (89.520345 median, different source composition) and
+is only modestly below the prior worker's 84.453984. Huffman fails the saved
+029 **55.497371 ms** comparator. Removing duplicate hot code therefore does
+**not** earn an original decoder/full-loading timing cohort. Do not repeat
+unchanged samples looking for a faster median or promote this source. Complete
+raw runs/code remain in existing nestedInlineLoops/microbenchmarks collections;
+a compact projectionTrial under nativeNumericKernels records the disposition in
+the same sole JSON. No known JVM/TeaVM/HotSpot baseline, restoration correctness
+run, CPU profile or baseline identity check was executed.
+
+The direct-residual proof remains a general compiler building block in its
+experimental ref. Any further worker change needs its own static/ABI witness;
+smaller wrappers alone have now failed a real small-case gate. One unproved next
+question is lossless packing of adjacent i32 return fields into i64 lanes: the
+current worker still returns reason, fuel and normal SSA values individually,
+while a pure Wasm caller could unpack full 32-bit values without JS BigInt or
+transport allocations. That would be a different ABI experiment, not permission
+to remove cold state or repeat the current candidate. It has not been implemented
+or timed here. The 1.1x goal and original browser/phone/FPS/memory/stability gates
+remain unmet. Remove owned scratch source/index/logs after these receipts are
+durable, with no restoration build/test/fingerprint check.
