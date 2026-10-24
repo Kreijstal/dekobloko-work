@@ -1030,6 +1030,7 @@ async function one(engine,name,revision,inspection,inspectionPrefix) {
     parameterHeapRangeGuardCount:s.meta?.parameterHeapRangeGuardCount||0,
     parameterObjectSpecializationBytes:s.meta?.parameterObjectSpecializationBytes||0,
     slabGuardCount:s.meta?.slabGuardCount||0,slabGuardBytes:s.meta?.slabGuardBytes||0,
+    nativeRegionKernelBoundsElisions:s.meta?.nativeRegionKernelBoundsElisions||0,
     nativeRegionKernelCount:s.meta?.nativeRegionKernelCount||0,
     nativeRegionKernelBytes:s.meta?.nativeRegionKernelBytes||0,
     nativeRegionKernelRemovedBlocks:s.meta?.nativeRegionKernelRemovedBlocks||0,

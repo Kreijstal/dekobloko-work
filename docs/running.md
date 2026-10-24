@@ -18603,3 +18603,91 @@ run full loading on this evidence. The saved MDCT diagnostic already shows a
 whole-body native plan with 91 sites; the new regional-only path does not apply
 there, so **do not execute its unchanged benchmark merely to confirm that**.
 Raw observations remain in the single existing ledger, not extra JSON files.
+
+### Compile-time repeated bounds checks inside numeric workers
+
+The worker-only micro result does not establish a useful speedup. A distinct
+code-shape difference is visible in the actual final-rotation loop: input
+indices are recomputed and reread across output stores, while the numeric
+lowerer repeats a full Java bounds branch for every access. Array data stores
+cannot alter the worker's immutable numeric length/header parameters. This is
+not permission to reuse loaded values across aliases, nor to omit the first
+Java check. Prior TeaVM array.get observations still include implicit bounds
+traps; absent explicit comparisons never proved that TeaVM has no checks.
+
+Source **117e8e3de0b9278372c4212992f8a1ed16efdf36**, ref
+experiment/teavm-region-worker-bounds, parent 1f9c1ec8, adds bounded integer value
+numbering for exact total integer expressions. Constants, operation/operand
+identity and iinc immediates participate; opaque values remain distinct. A
+successful check serves only later accesses to the same numeric header/index
+inside that basic block. Every block/backedge starts fresh. Unknown effects,
+headers or work exhaustion discard all elisions. Aliasing stores retain their
+original loads/stores and order. Redundant fault branches are removed from the
+wrapper only when the helper cannot return their old reasons. Reasons for all
+remaining original sites stay distinct; cold payloads/Java error locations remain.
+No new VM flag, game identity, heap limit or scheduling policy is introduced.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeKernelBounds.test.js test/nativeRegionKernel.test.js test/nativeStaticArrayBody.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeKernelBounds.test.js test/nativeRegionKernel.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeRegionKernel.test.js
+```
+
+The first four-file batch passes **288/288**. Expanded long/double fixtures then
+pass **87/87** with the bounds unit tests. The final wide cold-exit refinement
+passes **78/78** in nativeRegionKernel.test.js alone. It proves full 64-bit long
+overflow/unsigned shifts beyond Number precision, double signed underflow,
+first failing Java indices and complete earlier writes in wide cold payloads.
+Test-only child **16b3f73f764584b24048945cd4b3c8542f312ffb** preserves that final
+coverage; timings continue to identify 117e8e3d because no runtime file changes.
+
+Deko's new `bounds` case mirrors repeated-input indices across output stores.
+Both modes use the same changed source and numeric helper; the control withholds
+only nativeKernelBounds.analyze in the fixture observer. The diagnostic has one
+helper/one region guard, four versus zero elisions, identical checksum -456520192,
+zero exits and zero late Java compilation. Every float output is checked after
+timing. The earlier unique-index case has no applicable repeated checks and is
+**not retimed unchanged**. Syntax checks pass for the changed loading scripts.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs bounds-diagnose 117e8e3de0b9278372c4212992f8a1ed16efdf36
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs bounds-run 117e8e3de0b9278372c4212992f8a1ed16efdf36
+```
+
+| New repeated-index sample | Proved guards ms | Checks retained ms |
+|---|---:|---:|
+| 1 | 11.330361 | 16.049383 |
+| 2 | 12.575760 | 13.219265 |
+| 3 | 11.790559 | 13.161791 |
+
+Medians **11.790559 vs 13.219265 ms**, with the proved version lower in all three
+pairs. This advances only this new component comparator. It is not a 1.1x TeaVM
+result, nor proof of full-loading benefit. All six are fresh uninstrumented
+processes, CPU2/Node22.23.2, 1-GiB old-space/eager optimizing Wasm, without
+concurrent tests/builds/profiling. Raw rows remain in the sole JSON's nested
+bounds-case observation. No unchanged JVM, TeaVM or HotSpot control executes.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 117e8e3de0b9278372c4212992f8a1ed16efdf36 native-region-kernel-bounds-code
+```
+
+Changed code gate exits 0 with zero Java/helper/ticks/assets/main execution.
+It inspects **only changed helper 85**, reusing the saved helper-79 observation.
+Four actual guards/fault branches disappear (sites 5326/5331/5338/5341, served by
+5301/5316/5311/5304). Helper 85 shrinks from saved **1696 to 1364 Wasm bytes**,
+**2084 to 1952 native instruction bytes**; stack reservation increases from
+0xb8 to 0xc0. Two helpers remain installed, total 2567 Wasm bytes. These static
+facts are not CPU attribution; smaller WAT alone does not establish elapsed gain.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 117e8e3de0b9278372c4212992f8a1ed16efdf36 'MusicDecoder.decodePacket(I)[F'
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 117e8e3de0b9278372c4212992f8a1ed16efdf36
+```
+
+The original changed diagnostic exits 0, matches all 348249 PCM bytes and reports
+682 packet / 134216 vector native entries, two workers/four omitted guards,
+zero native exits in those methods and no late compilation. Its elapsed is
+excluded. The uninstrumented original cohort is pending; reuse saved 93.269749 ms,
+not a refreshed baseline. No full-loading run, promotion or deployment is earned
+yet. Full target stays **395.7135567 ms**, with the saved **1807.0171855 ms** JVM
+comparator unchanged and all broader browser/phone acceptance still open.

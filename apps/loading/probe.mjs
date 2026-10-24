@@ -415,6 +415,7 @@ try {
     parameterHeapBoundsElisionCount:state.meta?.parameterHeapBoundsElisionCount||0,
     parameterHeapRangeGuardCount:state.meta?.parameterHeapRangeGuardCount||0,
     parameterObjectSpecializationBytes:state.meta?.parameterObjectSpecializationBytes||0,
+    nativeRegionKernelBoundsElisions:state.meta?.nativeRegionKernelBoundsElisions||0,
     nativeRegionKernelCount:state.meta?.nativeRegionKernelCount||0,
     nativeRegionKernelBytes:state.meta?.nativeRegionKernelBytes||0,
     nativeRegionKernelRemovedBlocks:state.meta?.nativeRegionKernelRemovedBlocks||0,
