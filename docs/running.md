@@ -19293,3 +19293,109 @@ Generic implementation/tests are durable on the isolated JVM refs above; Deko
 owns workload diagnostics and this journal. Cleanup removes only this pass's
 extraction, alternate index, generated debug WAT/Wasm and receiver-token logs.
 No restoration build, repeated known tests or old-source identity check follows.
+
+
+### Typed storage predicates and actual native lifetime evidence
+
+The previous goal turn is progress: receiver capabilities and companion-storage
+forwarding were implemented, tested and rejected by the real decoder gate. This
+pass adds a **new** compile-only question about the actual forwarded vector's
+native code/lifetimes; it does not rerun a known benchmark, CPU profile, oracle,
+restoration check or source-identity comparison. JVM master/index and unrelated
+work remain untouched; one expendable source extraction is used.
+
+`receiver-token-code` captures scalar-only metadata about the field transport,
+then inspects the actual installed vector core's optimizing code. The first
+attempt exited with an inspector initialization-order error (`walk` was a later
+const); making that existing helper a function declaration fixes it. The failed
+inspection executed no Java and supplied no measurement row. Its terminal
+status was confirmed before restarting the inspector.
+
+```
+node --check apps/loading/call-code.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 8df6d502769853e09483c455df73ab89ffad539e receiver-token-code
+```
+
+The code-only question passes, with zero guest ticks/assets/main execution.
+The real `VorbisCodebook.valueVectors` read is item **1**, block **0**, with raw
+transport local **39**, typed storage local **41** and filled local **40**,
+before the Huffman loop. Its actual core has **5428 native instruction bytes**,
+**160 stack-reservation bytes**, **303 static stack-address sites** and **66
+static native call sites**, including cold paths. Native stack-address sites are
+not a dynamic spill count or a CPU share. Pure GC token intrinsics remain
+cross-module calls: the optimizing trace reports imported targets as not
+relocatable constants, not inlining candidates. These are code facts, not a
+claim that they explain the entire loading gap.
+
+A narrower emitter witness is explicit in WAT: `objectStoreFill` first establishes
+matching raw/typed references, but `objectCacheFill` subsequently tests the raw
+externref and uses the typed reference for `struct.get`. Check the **typed
+reference itself**, so that exact nonnull fact is available to the engine at its
+GC load; raw transport need not remain live solely for this guard. This changes
+one predicate, not ownership admission, array validity/bounds checks, capture
+semantics, storage representation, call ABI or the checked fallback. No game
+name or public flag is added.
+
+Source **3e7132b521d257f471bf5404cd87958c972061d9**, parent 8df6d50, is durable at
+`experiment/teavm-typed-storage-predicate`. Narrow verification:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReceiverEntry.test.js test/nativeObjectFieldCodegen.test.js test/nativeStaticArrayBody.test.js test/nativeObjectForwarding.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 3e7132b521d257f471bf5404cd87958c972061d9 receiver-token-code
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-token-inspect 3e7132b521d257f471bf5404cd87958c972061d9
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-token-candidate 3e7132b521d257f471bf5404cd87958c972061d9
+```
+
+All **294/294** focused assertions pass, including owned/null/foreign/replaced
+fields, aliased capture, casts, fuel, exceptions, reference identity, late
+classes/overrides, getters, monitors, revocation, link replacement and retention.
+The new core has **5480 native bytes**, the same **160 stack bytes**, **299 static
+stack-address sites** and **64 native call sites**. Code grows 52 bytes while
+four static stack references and two call sites disappear. Do not claim the
+frame shrank or attribute the removed calls without a specific code witness.
+
+The changed-only diagnostic retains one million actual vector calls, zero owner
+and row-storage queries, one token acquisition, exact checksum/cursors, zero
+exits/late compilation and cleared result metadata. Uninstrumented small-case
+samples are **68.805573 / 67.650266 / 69.654375 ms**, median **68.805573 ms**, all
+below saved 8df6d50's **71.563519–77.412173 ms** range (median 72.129722 ms).
+This is a saved-control screen, not a fresh causal comparison. No tests/builds
+or profiles overlap timings. It earns the changed-only original decoder gate:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 3e7132b521d257f471bf5404cd87958c972061d9
+```
+
+Original changed-candidate execution completes with **95.484395 / 96.520283 /
+109.071069 ms**, median **96.520283 ms**, run ID
+`a886e87a-2d37-4c31-8228-28e5d52ddfe7`. All 348249 PCM bytes match, with zero late
+Java compilation. This remains above fixed selected **93.269749 ms**: no full
+run, comparator advancement, selection, default change, promotion or deployment.
+Do not discard the slow third sample. The sole JSON links source/code/component
+and original rows through a compact disposition.
+
+A follow-up source/configuration read found TeaVM's strict-gated null/bounds
+insertion and Maven `strict=false` default. **This was already documented above
+under the GC-state check correction**, so it is not a new discovery or reason
+to repeat any baseline, oracle, strict-mode build or check-identity experiment.
+Reuse that existing evidence; the saved 1.1x target remains fixed and this VM's
+Java exceptions must remain supported.
+
+The next useful isolation is the generic typed predicate **on selected
+029834e16366e3dfaed1f46d5589ec34dddc04dc alone**, without the rejected receiver
+capability and early companion-forwarding experiments. This one predicate has
+no dependency on either protocol. The positive small case and native-code facts
+are evidence for that separation, not permission to promote the current stack.
+Use existing matching semantic cases and candidate-only component/original
+timers. Do not execute the unchanged 029834 source, refresh its old controls,
+replay unchanged MDCT, restore-test an extraction or repeat the just-inspected
+3e7132 code. An intrinsic-fusion experiment is a later alternative supported
+by the non-inlining trace, not the first next action; do not stack more ABI
+work on the failed composition before testing this independent change.
+
+Actual JVM master/index and unrelated WIP remain untouched. Generic predicate
+source is durable in the isolated JVM ref, and Deko owns the code inspector and
+journal. Cleanup removes only this turn's extraction/index/code and timing logs.
+Saved full loading is still **1807.0171855 ms / 359.739597 ms = 5.023125618x**;
+**395.7135567 ms** and the wider browser/phone acceptance are still unmet.

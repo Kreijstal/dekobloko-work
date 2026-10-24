@@ -15,7 +15,7 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['receiver-token-coverage','native-region-kernel-slice-code','native-region-kernel-bounds-code','native-region-kernel-code','native-region-kernel-bound','receiver-origin-bound','boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-element-micro','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','native-kernel-boundary','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['receiver-token-code','receiver-token-coverage','native-region-kernel-slice-code','native-region-kernel-bounds-code','native-region-kernel-code','native-region-kernel-bound','receiver-origin-bound','boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-element-micro','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','native-kernel-boundary','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
 const numericKernelFamily=['native-region-kernel-slice-code','native-region-kernel-bounds-code','native-region-kernel-code','native-region-kernel-bound','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','native-kernel-boundary'].includes(family),numericKernelCode=numericKernelFamily&&family.endsWith('-code');
 const numericKernelMicro=['native-numeric-kernel-micro-code','native-kernel-boundary'].includes(family);
 const elementBound=['native-element-availability','native-element-micro'].includes(family);
@@ -23,15 +23,33 @@ const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].i
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['receiver-token-coverage','native-region-kernel-slice-code','native-region-kernel-bounds-code','native-region-kernel-code','native-region-kernel-bound','receiver-origin-bound','packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-numeric-kernel','native-numeric-kernel-code'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['receiver-token-code','receiver-token-coverage','native-region-kernel-slice-code','native-region-kernel-bounds-code','native-region-kernel-code','native-region-kernel-bound','receiver-origin-bound','packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-numeric-kernel','native-numeric-kernel-code'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
 options.classpath=[path.join(family==='mdct-frame-remat'?path.join(player,'mdct'):fullGraph||directMusic||originalFlow||family==='frame-remat'?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
-let receiverTokenOperations;let identityAssembly;const receiverOriginRows=new Map();
+const receiverTokenFamily=family.startsWith('receiver-token-');
+let receiverTokenOperations;const receiverFieldPlans=new Map();let identityAssembly;const receiverOriginRows=new Map();
 let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls,stableHeaders,elementAvailability,numericKernel,buildNumericKernel;const referenceStoreRows=new Map();const numericKernelRows=new Map();const elementBoundRows=new Map();const proofCensus=[],translationFailures=[],headerCensus=[],checkpointCensus=[],checkpointPlans=new WeakMap(),staticLoopCensus=[],staticRegionBounds=new WeakMap(),fieldArrayPlans=new WeakMap(),fieldArrayCensus=[];
 const preloadModules=family==='receiver-origin-bound'?['src/jit/wasmShared.js']:numericKernelFamily?['src/jit/nativeNumericKernelPlan.js',...(numericKernelCode?['src/jit/nativeNumericKernel.js']:[])]:elementBound?['src/jit/nativeElementAvailability.js']:family==='ssa-liveness'?['src/analysis/frameLocalLiveness.js','src/jit/stackifyNumericValues.js']:
  family==='inlined-lifetimes'||family.endsWith('frame-remat')?['src/jit/wasmInline.js','src/jit/stackifyNumericValues.js']:family==='packet-metadata'?['src/jit/stableArrayHeaders.js']:[];
 const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{preloadModules,observeModule:({filename,exports})=>{
- if(family==='receiver-token-coverage'&&filename.endsWith('/src/core/nativeReceiverToken.js'))receiverTokenOperations=exports.getNativeReceiverTokenOps();
+ if(receiverTokenFamily&&filename.endsWith('/src/core/nativeReceiverToken.js'))receiverTokenOperations=exports.getNativeReceiverTokenOps();
+ if(family==='receiver-token-code'&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
+  const translate=exports.prototype.translateBody;
+  exports.prototype.translateBody=function(...args){
+   const meta=translate.apply(this,args);
+   if(meta?.bytes&&this.className==='VorbisCodebook'&&this.method.name==='readVector'){
+    const fields=[];
+    for(const [id,read]of this.nativeStaticArrayBody?.instanceReads||[]){
+     if(read.slot.referenceArrayIndex===undefined)continue;
+     const node=this.fn.values.find(v=>v.id===id),cache=this.objCaches.get(id);
+     fields.push({field:read.slot.key,item:node.itemIdx,block:read.block,raw:cache.store,typed:cache.typedStore,storeFilled:cache.storeFilled});
+    }
+    receiverFieldPlans.set(meta,{fields,tailLoads:this.nativeStaticArrayBody?.tailLoads||0,
+     loopResumeHeader:this.loopResume?.header??null,declaredLocals:this.declared.length});
+   }
+   return meta;
+  };
+ }
  if(family==='receiver-origin-bound'&&filename.endsWith('/src/jit/wasmShared.js'))identityAssembly=exports;
  if(family==='receiver-origin-bound'&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
   const translate=exports.prototype.translateBody;
@@ -489,7 +507,7 @@ if(family==='static-loop-gates'){
  assert.ok(boundary,'Preparation did not reach the main boundary');assert.equal(failure,stop);
 }
 assert.equal(ticks,0);assert.equal(assetCalls,0);
-if(family==='receiver-token-coverage'){
+if(receiverTokenFamily){
  const w=j.jit.wasmJit,seen=new Set(),rows=[];
  for(const state of w.compiled)for(const meta of [state.meta,state.callee?.meta,state.osr?.meta]){
   if(!meta||seen.has(meta))continue;seen.add(meta);
@@ -499,12 +517,23 @@ if(family==='receiver-token-coverage'){
   const intrinsics=Object.entries(intrinsicNames).filter(([name])=>meta.importObject?.env[name]).map(([name,operation])=>{
    assert.equal(meta.importObject.env[name],receiverTokenOperations[operation],'GC intrinsic acquired a JavaScript forwarding wrapper');return name;
   });
-  rows.push({key:state.key,entry:!!meta.nativeReceiverTokenEntry?.run,callSites:meta.nativeReceiverTokenCallSites||0,wasmBytes:meta.bytes.length,intrinsics});
+  let code;
+  if(family==='receiver-token-code'&&state.key==='VorbisCodebook.readVector()[F'){
+   const wat=execFileSync('wasm-dis',['--all-features','-'],{input:meta.bytes,encoding:'utf8',maxBuffer:4*1024*1024});
+   const core=[...wat.matchAll(/^ \(func (\$[^\s(]+)/gm)].find(m=>m[1].startsWith('$jvm$wasm$')&&m[1].includes('VorbisCodebook'));
+   assert.ok(core,'Missing actual vector core');
+   const shape=codeShape(wat,core[1]),native=nativeCode(meta.bytes,shape.index);
+   fs.writeFileSync(path.join(directory,'current.wat'),wat);fs.writeFileSync(path.join(directory,'current-jvm-native.txt'),native);
+   code={...shape,...nativeSummary(native),...receiverFieldPlans.get(meta),
+    stackAddressSites:(native.slice(native.indexOf('Instructions (size'),native.indexOf('\nSource positions:')).match(/\[(?:r|e)[bs]p[^\]]*\]/g)||[]).length};
+   assert.equal(code.fields.length,1,'Missing exact companion-store field lifetime');
+  }
+  rows.push({key:state.key,entry:!!meta.nativeReceiverTokenEntry?.run,callSites:meta.nativeReceiverTokenCallSites||0,wasmBytes:meta.bytes.length,intrinsics,...(code?{code}:{})});
  }
  const bindings=[...w.canonicalDirectLinks.bySlot.values()].filter(b=>b.receiverTokenIndex!==undefined).map(b=>({key:b.key,index:b.receiverTokenIndex,published:w.canonicalDirectLinks.table.get(b.slot)!==b.stub}));
  const intendedEntryInstalled=rows.some(row=>row.key==='VorbisCodebook.readVector()[F'&&row.entry),intendedCallInstalled=rows.some(row=>row.key==='VorbisResidue.decodeResidue([FIZ)V'&&row.callSites>0);
  const result={sourceRevision:revision,family,compileOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,intendedEntryInstalled,intendedCallInstalled,rows,bindings,
-  note:'Actual tagged receiver entries, private live-table contracts and pure Wasm GC intrinsic imports. No guest invocation, old baseline/oracle replay, CPU profiling or timing.',measuredAt:new Date().toISOString()};
+  note:family==='receiver-token-code'?'New actual vector core/native-code and field-metadata lifetime question. No guest execution, known-control identity check, baseline/oracle replay, timing or CPU profiling.':'Actual tagged receiver entries, private live-table contracts and pure Wasm GC intrinsic imports. No guest invocation, old baseline/oracle replay, CPU profiling or timing.',measuredAt:new Date().toISOString()};
  const current=JSON.parse(fs.readFileSync(reportPath));(current.optimizationTrials.nativeReceiverTokens||={codeObservations:[]}).codeObservations.push(result);fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(result,null,2));
  assert.ok(intendedEntryInstalled&&intendedCallInstalled,'Original token route did not install');process.exit(0);
 }
@@ -655,7 +684,7 @@ if(['archive-proof','archive-exit'].includes(family)){
  fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');fs.writeSync(1,JSON.stringify(result,null,2)+'\n');process.exit(0);
 }
 
-const walk=(node,visit)=>{if(!Array.isArray(node))return;visit(node);for(const child of node)walk(child,visit);};
+function walk(node,visit){if(!Array.isArray(node))return;visit(node);for(const child of node)walk(child,visit);}
 function codeShape(wat,name){
  // wasm-dis emits each top-level function on its own indented line. Parse
  // only the selected function, so a full application cannot exhaust the
