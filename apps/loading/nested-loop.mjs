@@ -266,6 +266,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
     inlining:native.split('\n').filter(line=>line.includes('function '+index+':')&&/candidate|inlining/.test(line)).slice(0,16),
     branches:ops.if||0,loops:ops.loop||0,loads:ops['i32.load']||0,stores:ops['i32.store']||0,
     inlineActivationDepth:state.meta.inlineActivationDepth||0,nativeStateSites:state.meta.nativeStaticStateBodySites||0,
+    nativeNumericKernelCount:state.meta.nativeNumericKernelCount||0,nativeNumericKernelBytes:state.meta.nativeNumericKernelBytes||0,
     nativeElementReuseSiteCount:state.meta.nativeElementReuseSiteCount||0,nativeElementCaptureCount:state.meta.nativeElementCaptureCount||0});
    if(name==='root')fs.writeFileSync(path.join(directory,'current.wat'),wat);
    fs.appendFileSync(path.join(directory,'current-native.txt'),'\n'+engine+' '+state.key+'\n'+native);
@@ -329,6 +330,8 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   baseQueries:instrumented?target.meta.importStats.get('abase')||0:null,
   lengthQueries:instrumented?target.meta.importStats.get('alen0')||0:null,
   separateVectorStateSites:vector.meta.nativeStaticStateBodySites||0,
+  separateVectorNumericKernelCount:vector.meta.nativeNumericKernelCount||0,
+  separateVectorNumericKernelBytes:vector.meta.nativeNumericKernelBytes||0,
   separateVectorReferenceReadElisions:vector.meta.nativeArrayReferenceReadElisionCount||0,
   ownershipQueries:instrumented?target.meta.importStats.get('native_body_object_storage')||0:null,
   separateVectorOwnershipQueries:instrumented?vector.meta.importStats.get('native_state_object_storage')||0:null,
