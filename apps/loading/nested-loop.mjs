@@ -246,7 +246,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
  }
  if(command==='code-one'){
   const rows=[];
-  for(const [name,state]of [['root',target],['vector',vector]]){
+  for(const [name,state]of detail==='vector-code'?[['vector',vector]]:[['root',target],['vector',vector]]){
    const codeBytes=engine==='merged'?target.meta.bytes:state.meta.bytes;
    const wat=execFileSync('wasm-dis',['--all-features','-'],{input:codeBytes,encoding:'utf8',maxBuffer:4*1024*1024});
    const module=parseWat(wat),core=module.find(node=>node?.[0]==='func'&&node[1]?.startsWith('$jvm$wasm$')&&node[1].includes(name==='root'?'NestedLoopProbe':'NestedLoopBook'));
@@ -268,7 +268,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
     inlineActivationDepth:state.meta.inlineActivationDepth||0,nativeStateSites:state.meta.nativeStaticStateBodySites||0,
     nativeNumericKernelCount:state.meta.nativeNumericKernelCount||0,nativeNumericKernelRemovedBlocks:state.meta.nativeNumericKernelRemovedBlocks||0,nativeNumericKernelBytes:state.meta.nativeNumericKernelBytes||0,
     nativeElementReuseSiteCount:state.meta.nativeElementReuseSiteCount||0,nativeElementCaptureCount:state.meta.nativeElementCaptureCount||0});
-   if(name==='root')fs.writeFileSync(path.join(directory,'current.wat'),wat);
+   if(name==='root'||detail==='vector-code')fs.writeFileSync(path.join(directory,'current.wat'),wat);
    fs.appendFileSync(path.join(directory,'current-native.txt'),'\n'+engine+' '+state.key+'\n'+native);
   }
   console.log('NESTED_CODE_RESULT '+JSON.stringify({sourceRevision:revision,caseName,engine,rows,harnessSha256:hash(fs.readFileSync(script)),guestInstructions:0,
@@ -351,7 +351,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
  process.exit(0);
 }
 
-assert.ok(['diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate','inspect','scope-inspect','stable-inspect','code','scope-code','stable-code','liveness','scope-liveness','stable-liveness','stable-direct-code','stable-direct-inspect','stable-direct-candidate','stable-merged-code','stable-merged-inspect','stable-merged-candidate','stable-trusted-code','stable-trusted-inspect','stable-trusted-candidate','stable-paired-code','stable-paired-inspect','stable-paired-candidate','stable-separate-code','stable-separate-inspect','stable-separate-candidate','large-separate-inspect','large-separate-candidate','large-plain-inspect','large-plain-candidate','large-run','cold-eager-inspect','cold-lazy-inspect','cold-run'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
+assert.ok(['diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate','inspect','scope-inspect','stable-inspect','code','scope-code','stable-code','liveness','scope-liveness','stable-liveness','stable-direct-code','stable-direct-inspect','stable-direct-candidate','stable-merged-code','stable-merged-inspect','stable-merged-candidate','stable-trusted-code','stable-trusted-inspect','stable-trusted-candidate','stable-paired-code','stable-paired-inspect','stable-paired-candidate','stable-separate-code','stable-separate-vector-code','stable-separate-inspect','stable-separate-candidate','large-separate-inspect','large-separate-candidate','large-plain-inspect','large-plain-candidate','large-run','cold-eager-inspect','cold-lazy-inspect','cold-run'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
 fs.mkdirSync(directory,{recursive:true});const java=path.join(directory,'NestedLoopProbe.java');
 if(!fs.existsSync(java)||fs.readFileSync(java,'utf8')!==source||!fs.existsSync(path.join(directory,'NestedLoopProbe.class'))){
  fs.writeFileSync(java,source);execFileSync('javac',['--release','8','-proc:none','-d',directory,java]);
@@ -373,7 +373,7 @@ if(command.endsWith('liveness')){
  fs.writeFileSync(path.join(directory,'current-native.txt'),'');
  result.codeOutputs||=[];
  for(const variant of requestedEngine?[requestedEngine]:engines){
-  const row=parseMeasurementResult(execFileSync(process.execPath,[...flags,script,'code-one',revision,variant,'code',caseName],
+  const row=parseMeasurementResult(execFileSync(process.execPath,[...flags,script,'code-one',revision,variant,command.endsWith('-vector-code')?'vector-code':'code',caseName],
    {encoding:'utf8',maxBuffer:1024*1024}),'NESTED_CODE_RESULT ');result.codeOutputs=result.codeOutputs.filter(previous=>previous.engine!==variant);result.codeOutputs.push(row);save();console.log(JSON.stringify(row));
  }
 }else if(command.endsWith('diagnose')||command.endsWith('inspect'))for(const variant of requestedEngine?[requestedEngine]:command.endsWith('inspect')?['inlined']:engines){

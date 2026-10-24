@@ -67,7 +67,7 @@ const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revis
      assert.ok(!Object.keys(operations).some(op=>op.startsWith('call')||/^(ref|struct|array)\./.test(op)),'Kernel carries opaque calls or GC context');
      const machineCode=nativeSummary(nativeCode(kernel.bytes,0));
      kernels.push({header:plan.header,moduleBytes:kernel.bytes.length,params:kernel.params,results:kernel.results,
-      numericLocalCount:kernel.numericLocalCount,coldGlobals,normalExits:kernel.normalExits,fuelReason:kernel.fuelReason,
+      numericLocalCount:kernel.numericLocalCount,logicalResults:kernel.logicalResults||kernel.results,coldGlobals,normalExits:kernel.normalExits,fuelReason:kernel.fuelReason,
       faultReasons:kernel.faultReasons,imports,operations,machineCode});
     }
     assert.deepEqual([this.nextLocal,this.declared.length,this.importDecls.length],before,'Kernel prototype changed the installed method');

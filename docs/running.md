@@ -17765,3 +17765,52 @@ to remove cold state or repeat the current candidate. It has not been implemente
 or timed here. The 1.1x goal and original browser/phone/FPS/memory/stability gates
 remain unmet. Remove owned scratch source/index/logs after these receipts are
 durable, with no restoration build/test/fingerprint check.
+
+### Lossless private numeric return packing
+
+The previous goal turn is progress: its complete-loop projection and failed
+small-case performance screen are durable. Known controls are reused without
+baseline-against-itself tests/timings, restoration checks or CPU attribution.
+Proceed with the distinct ABI question recorded there, not another replay of
+that candidate or a claim that a smaller wrapper already established a gain.
+
+The numeric worker returns reason, fuel and live SSA values individually. It is
+a private Wasm-export-to-Wasm-import edge; no JS caller consumes those values in
+execution. New generic numericKernelResults.js packs each adjacent pair of i32
+results into one i64 lane using unsigned extension, shift/or, then the wrapper
+recovers both full signed i32 values with wrap and unsigned shift. All float and
+long results keep their exact type/order. Cold payloads, frame state, Java bounds,
+store ordering, fuel and all logical normal values remain present. No range guess,
+JS BigInt conversion, transport array, game identity or user flag is introduced.
+The actual import remains the original Wasm export even in diagnostic mode.
+
+Focused commands in the sole `/tmp/geoblox-native-parity-7zCq8O/jvm-source`:
+
+```
+node --check src/jit/numericKernelResults.js
+node --check src/jit/nativeNumericKernel.js
+node --check src/jit/nativeNumericKernelWrapper.js
+node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeNumericKernelPlan.test.js test/nativeNumericKernelWrapper.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/numericKernelResults.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/wasmCompilerRetention.test.js
+```
+
+All pass: **100/100**, **66/66**, **598/598**. The new transport test makes a real
+Wasm-to-Wasm call and checks signed extremes plus 32 deterministic full-width
+four-field patterns, mixed double/float NaN/negative zero, a long above 2^53,
+field order, logical binding immutability and empty layouts. Real compiler tests
+also preserve normal reference returns, state-changing header/body stores,
+partial bounds effects, fault payloads, fuel-before-store ordering and original
+continuation. Existing resume/cleanup tests run on the changed ABI only; no
+restored old runtime is tested.
+
+Consumer-only changes expose logical and physical kernel result descriptors in
+the existing code diagnostic, and add stable-separate-vector-code so a changed
+vector wrapper can be inspected without regenerating known root-code metrics.
+Reuse one current.wat/native preview. Both node --check apps/loading/call-code.mjs
+and node --check apps/loading/nested-loop.mjs pass. Source is archived through an
+alternate index, never the actual JVM master/index; generated outputs remain
+expendable/uncommitted. Next inspect the changed helper/wrapper native code,
+then changed-case diagnostics/timings if the physical ABI is actually installed.
+No performance, original/full gate or release/default advancement claimed yet.
