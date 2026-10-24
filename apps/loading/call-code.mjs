@@ -15,7 +15,7 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['receiver-caller-code','receiver-token-code','receiver-token-coverage','native-region-kernel-slice-code','native-region-kernel-bounds-code','native-region-kernel-code','native-region-kernel-bound','receiver-origin-bound','boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-element-micro','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','native-kernel-boundary','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['root-static-guards','root-static-code','receiver-caller-code','receiver-token-code','receiver-token-coverage','native-region-kernel-slice-code','native-region-kernel-bounds-code','native-region-kernel-code','native-region-kernel-bound','receiver-origin-bound','boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-element-micro','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','native-kernel-boundary','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
 const numericKernelFamily=['native-region-kernel-slice-code','native-region-kernel-bounds-code','native-region-kernel-code','native-region-kernel-bound','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','native-kernel-boundary'].includes(family),numericKernelCode=numericKernelFamily&&family.endsWith('-code');
 const numericKernelMicro=['native-numeric-kernel-micro-code','native-kernel-boundary'].includes(family);
 const elementBound=['native-element-availability','native-element-micro'].includes(family);
@@ -23,15 +23,32 @@ const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].i
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['receiver-caller-code','receiver-token-code','receiver-token-coverage','native-region-kernel-slice-code','native-region-kernel-bounds-code','native-region-kernel-code','native-region-kernel-bound','receiver-origin-bound','packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-numeric-kernel','native-numeric-kernel-code'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['root-static-guards','root-static-code','receiver-caller-code','receiver-token-code','receiver-token-coverage','native-region-kernel-slice-code','native-region-kernel-bounds-code','native-region-kernel-code','native-region-kernel-bound','receiver-origin-bound','packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-numeric-kernel','native-numeric-kernel-code'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
 options.classpath=[path.join(family==='mdct-frame-remat'?path.join(player,'mdct'):fullGraph||directMusic||originalFlow||family==='frame-remat'?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
 const receiverTokenFamily=family.startsWith('receiver-token-')||family==='receiver-caller-code';
-let receiverTokenOperations;const receiverFieldPlans=new Map();let identityAssembly;const receiverOriginRows=new Map();
+let receiverTokenOperations;const rootStaticRows=new Map();const receiverFieldPlans=new Map();let identityAssembly;const receiverOriginRows=new Map();
 let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls,stableHeaders,elementAvailability,numericKernel,buildNumericKernel;const referenceStoreRows=new Map();const numericKernelRows=new Map();const elementBoundRows=new Map();const proofCensus=[],translationFailures=[],headerCensus=[],checkpointCensus=[],checkpointPlans=new WeakMap(),staticLoopCensus=[],staticRegionBounds=new WeakMap(),fieldArrayPlans=new WeakMap(),fieldArrayCensus=[];
 const preloadModules=family==='receiver-origin-bound'?['src/jit/wasmShared.js']:numericKernelFamily?['src/jit/nativeNumericKernelPlan.js',...(numericKernelCode?['src/jit/nativeNumericKernel.js']:[])]:elementBound?['src/jit/nativeElementAvailability.js']:family==='ssa-liveness'?['src/analysis/frameLocalLiveness.js','src/jit/stackifyNumericValues.js']:
  family==='inlined-lifetimes'||family.endsWith('frame-remat')?['src/jit/wasmInline.js','src/jit/stackifyNumericValues.js']:family==='packet-metadata'?['src/jit/stableArrayHeaders.js']:[];
 const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{preloadModules,observeModule:({filename,exports})=>{
+ if(family.startsWith('root-static-')&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
+  const translate=exports.prototype.translateBody;
+  exports.prototype.translateBody=function(...args){const meta=translate.apply(this,args);
+   if(meta?.bytes&&['VorbisCodebook','VorbisResidue','MusicDecoder'].includes(this.className)){
+    const key=this.className+'.'+this.method.name+this.method.descriptor;
+    if(['VorbisCodebook.readScalar()I','VorbisCodebook.readVector()[F','VorbisResidue.decodeResidue([FIZ)V','MusicDecoder.decodePacket(I)[F'].includes(key)){
+     const original=this.method.attributes.find(a=>a.type==='code').code.codeItems;
+     rootStaticRows.set(meta,{key,inlined:meta.inlinedCalls,activations:meta.inlineActivationSiteCount,
+      statefulSites:meta.nativeStaticStateBodySites,fieldSites:meta.nativeStaticStateInstanceFieldSites,wasmBytes:meta.bytes.length,
+      parameterArrayABI:meta.parameterArrayABI,parameterObjectABI:meta.parameterObjectABI,
+      staticFrames:[...new Set([...(this.inlineActivations?.values()||[])].filter(a=>a.method.flags?.includes('static')).map(a=>a.className+'.'+a.method.name+a.method.descriptor))],
+      roots:original.filter(item=>item.instruction?.op==='invokestatic').map(item=>({target:item.instruction.arg.slice(1),
+       ownerState:this.jvm.classInitializationState.get(item.instruction.arg[1])||'UNINITIALIZED'}))});
+    }
+   }return meta;
+  };
+ }
  if(receiverTokenFamily&&filename.endsWith('/src/core/nativeReceiverToken.js'))receiverTokenOperations=exports.getNativeReceiverTokenOps();
  if(family==='receiver-token-code'&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
   const translate=exports.prototype.translateBody;
@@ -507,6 +524,27 @@ if(family==='static-loop-gates'){
  assert.ok(boundary,'Preparation did not reach the main boundary');assert.equal(failure,stop);
 }
 assert.equal(ticks,0);assert.equal(assetCalls,0);
+if(family.startsWith('root-static-')){
+ const w=j.jit.wasmJit,rows=[],seen=new Set();
+ for(const state of w.compiled)for(const meta of [state.meta,state.callee?.meta,state.osr?.meta]){
+  if(!meta||seen.has(meta)||!rootStaticRows.has(meta))continue;seen.add(meta);const row={...rootStaticRows.get(meta)};
+  if(family==='root-static-code'&&row.key==='VorbisResidue.decodeResidue([FIZ)V'&&row.inlined===0){
+   const wat=execFileSync('wasm-dis',['--all-features','-'],{input:meta.bytes,encoding:'utf8',maxBuffer:4*1024*1024});
+   const core=[...wat.matchAll(/^ \(func (\$[^\s(]+)/gm)].find(m=>m[1].startsWith('$jvm$wasm$')&&m[1].includes('VorbisResidue'));
+   assert.ok(core,'Missing actual retained-callee caller core');const shape=codeShape(wat,core[1]),native=nativeCode(meta.bytes,shape.index);
+   row.code={...shape,...nativeSummary(native)};fs.writeFileSync(path.join(directory,'current.wat'),wat);fs.writeFileSync(path.join(directory,'current-jvm-native.txt'),native);
+  }
+  rows.push(row);
+ }
+ const observation={sourceRevision:revision,family,rows,guestTicks:ticks,assetCalls,mainExecuted:false,
+  note:'New root static activation and native-stateful admission question only. No guest/TeaVM execution, timing, CPU attribution or known-control replay.',measuredAt:new Date().toISOString()};
+ const current=JSON.parse(fs.readFileSync(reportPath));((current.optimizationTrials.rootStaticActivations||={}).codeObservations||=[]).push(observation);
+ fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(observation,null,2));
+ assert.ok(rows.some(row=>row.key==='VorbisCodebook.readScalar()I'&&row.statefulSites>0&&row.activations>0),'Actual scalar did not earn the stronger native proof');
+ if(family==='root-static-code')assert.ok(rows.some(row=>row.key==='VorbisResidue.decodeResidue([FIZ)V'&&row.inlined===0&&row.code),'Actual allocating caller did not retain the certified scalar callee');
+ if(family==='root-static-guards'){const packet=rows.find(row=>row.key==='MusicDecoder.decodePacket(I)[F');assert.ok(packet,'Actual packet is missing');assert.ok(packet.staticFrames.length>0&&packet.staticFrames.every(name=>name==='MusicDecoder.readBit()I'),'Packet admitted an unrelated cold root static leaf');}
+ process.exit(0);
+}
 if(receiverTokenFamily){
  const w=j.jit.wasmJit,seen=new Set(),rows=[];
  for(const state of w.compiled)for(const meta of [state.meta,state.callee?.meta,state.osr?.meta]){

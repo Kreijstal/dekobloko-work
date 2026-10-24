@@ -19663,3 +19663,170 @@ journal. Cleanup removes only this turn's extraction, alternate index and logs.
 The saved full-loading target remains **395.7135567 ms** against selected
 **1807.0171855 ms** and TeaVM **359.739597 ms**; browser/phone acceptance remains
 unverified.
+
+
+### 2026-10-24 — Recoverable root static array readers: proof gained, original gate failed
+
+The fixed baseline was not rerun. This pass follows the previously recorded
+standalone-scalar/caller-composition question, without CPU profiling. The generic
+JVM changes are source-only commits on isolated experiment refs; actual JVM
+master/index and deployment remain untouched. The selected comparator remains
+029834e16366e3dfaed1f46d5589ec34dddc04dc.
+
+* `1b09c27869f75ce9d5a249dd04de3af4ffa11792`
+  (`experiment/teavm-root-static-activation`, parent selected comparator) admits
+  cold, acyclic static heap leaves only with reconstructible original child
+  activations. Preserve the caller operand prefix from original SSA, exact child
+  PC/local mapping, initialization order and existing pure-integer policy.
+  Release private inline local slots after return; retain meaningful handlers,
+  synchronization and exhausted-budget calls. Readiness guards inside a real
+  recovered child can now hand off to that child instead of replaying effects.
+* `472df7bdab7d21477d3d4cde8c08ea4938f42c85`
+  (`experiment/teavm-root-static-composition`) retains a monomorphic, already
+  certified native stateful callee in a root caller that allocates. Small
+  nonallocating wrappers retain whole-body composition. The decision uses
+  compiler proof and original allocation bytecode, no application names.
+  Also correct the existing canonical-instance test harness to revalidate its
+  manually constructed nested callee before execution, as already done in the
+  earlier token experiment; no runtime gate was relaxed.
+
+Focused commands from the sole expendable extraction, with
+`NODE_PATH=/home/kreijstal/git/java-tools/node_modules`:
+
+```
+node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/rootStaticActivation.test.js
+```
+
+The test grew from 60 to 88 passing assertions. It covers effects before a later
+fault, cold and later child initialization, long operand prefixes, null/native/
+foreign arrays, getter execution exactly once, fuel continuation, monitor/handler
+refusal, zero-trip behavior, native callee composition and SSA collection.
+The first eight-file compatibility batch passed 649/649. The subsequent ten-file
+batch passed 806/807; its sole failure was the old manual harness just described.
+Focused `.../tape/bin/tape test/canonicalInstanceFrames.test.js` then passed 50/50.
+
+New compile-only gates (`apps/loading/call-code.mjs REV root-static-code`, CPU2,
+Node22.23.2, eager Wasm and 1GiB heap) execute no Java/class initializer/assets:
+standalone `VorbisCodebook.readScalar()I` now has one recovered static activation,
+9 native stateful sites, 3 field sites and 4,380 Wasm bytes, although its bit-reader
+owner is cold during preparation. Its first emitted native inspection had 3,136
+bytes and a 128-byte stack. The small vector wrapper remains composed. With the
+allocation policy, residue retains its scalar callee (`inlined=0`), 24,082 Wasm
+bytes, 25,732 native bytes, a 488-byte stack and 371 WAT locals. The earlier
+1725f52 caller had 36,616 native bytes and a 704-byte stack, but those revisions
+also differ in other code generation: this is not an isolated policy delta or
+CPU-share claim. Only the changed native body was inspected at each step.
+
+Deko's new `nested-loop.mjs compose-diagnose|compose-run` case has an allocating
+caller with a scalar call per iteration, using the same executable callee and
+input in two new modes. The flattening control withholds only the callee's
+stateful proof during inline planning, restoring it before emission/execution.
+Three fresh samples per mode, alternating order, gave:
+
+* composed: 74.481652 / 75.381862 / 73.084531 ms; median 74.481652 ms;
+* flattened: 100.372390 / 96.957073 / 101.326154 ms; median 100.372390 ms.
+
+Both produce checksum -1834486005 and cursor [1000000,0], with no native exits or
+late compilation. Separate diagnostic counters prove one million actual scalar
+entries in composed mode and zero in flattened mode. Instrumented timings are
+excluded. This new case is useful evidence for composition, not a substitute for
+the original call mix (5,456 scalar and 134,216 vector entries).
+
+The original candidate gate was run once as a three-sample cohort:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 472df7bdab7d21477d3d4cde8c08ea4938f42c85
+```
+
+Child processes use `--max-old-space-size=1024 --no-liftoff
+--no-wasm-lazy-compilation`. Run `85c23ac0-6c2a-4866-9fce-9414413be9cb`:
+**897.200079 / 1006.443808 / 1138.049543 ms**, median **1006.443808 ms**.
+All PCM bytes match and late compilation is zero. This is a severe regression
+against the saved 93.269749 ms original-case median. Retain all samples, reject
+this candidate, do not run full loading or promote it.
+
+Existing post-timer execution records show scalar and vector stay native with
+zero exits; the PCM driver exits at status 51 rather than the saved cleanup 131.
+The packet has one direct entry/exit, then 681 ordinary native entries, with a
+pending `MusicDecoder.readBits(I)I` link. This points to a lost caller/driver
+continuation at the first packet, not evidence that scalar execution is slow.
+These semantic counters do not attribute CPU time.
+
+The admission had also broadened unrelated cold static leaves. Two narrower
+source stages preserve existing call boundaries before more timing:
+
+* `9bb5edfaebea5dbe37862f90f93ff50b15f7952c`
+  (`experiment/teavm-root-static-memory-only`) requires a real memory operation,
+  excluding branch-only arithmetic. Focused root-static + cold-integer tests
+  pass 143/143. Not timed.
+* `1bab37a6c80d2619865a065153f8ebb79c01c1e8`
+  (`experiment/teavm-root-static-array-readers`) further requires an array read
+  or array length. Write-only static state setup remains an original call
+  boundary. Later-initialization tests use volatile fields plus actual array
+  reads to keep their precise-child handoff meaningful under this scope.
+  Exact focused command:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/rootStaticActivation.test.js test/wasmColdIntegerInline.test.js
+```
+
+Result: **144/144 pass**. No claim yet that either narrowing fixes the original
+regression. A new compile-only `root-static-guards` gate checks actual packet
+static frames, without re-inspecting unchanged native bodies. `probe.mjs` now
+reports initialization token owner/state only after the timer. These answer
+readiness/continuation questions without adding CPU profiling or a baseline
+replay. The first gate invocation lacked NODE_PATH and failed before loading;
+rerun with the documented dependency path. All observations use the existing
+single benchmark.json and this one journal, no new result files in Git.
+
+
+The narrowed compile-only command completes successfully (zero Java instructions,
+zero asset callbacks):
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 1bab37a6c80d2619865a065153f8ebb79c01c1e8 root-static-guards
+```
+
+Actual packet static activations now contain only `MusicDecoder.readBit()I`;
+write-only setup and branch-only arithmetic calls are retained. The standalone
+scalar still earns its 9 stateful sites. No unchanged native body is inspected.
+
+The changed-only original cohort then completes:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 1bab37a6c80d2619865a065153f8ebb79c01c1e8
+```
+
+Run **aa540fe7-61cd-4dc1-8a8e-41d514461148**: **94.907020 / 107.308276 /
+100.410102 ms**, median **100.410102 ms**. All samples match every PCM byte,
+have no late compilation, and retain **682 direct packet entries with no packet
+exit**. The PCM driver exits only at cleanup status **131**. The narrowed scope
+removes the catastrophic first-packet continuation failure; the combined scope
+change alone does not isolate whether the removed arithmetic or setup inline
+caused it. The performance screen still fails the fixed **93.269749 ms** control.
+Reject promotion and do not spend a full-loading run. Keep the slow sample.
+
+The sole JSON retains raw cohorts and links both rejected dispositions under
+`optimizationTrials.rootStaticActivations`. No saved comparator is remeasured,
+replaced or retroactively assigned a current harness hash. The existing TeaVM
+WAT and original PCM oracle are reused. The small allocating-case gain has not
+translated to an original-loading gain, so these JVM changes remain isolated
+source proofs rather than selected runtime defaults.
+
+Before another admission/ABI change, reuse the recorded failed independent
+array-region expansion (8ab06cb / 1b06470) and token/forwarding experiments:
+removing local checks can lose larger caller proofs or add metadata traffic.
+The actual residue caller still has generic mixed field/array paths; an attempt
+must demonstrate a distinct missing fact on those emitted paths and a matched
+small case, rather than repeating the already measured ownership or call-edge
+controls. No new CPU attribution or baseline replay is warranted.
+
+Validation for the Deko script edits: `node --check apps/loading/call-code.mjs`,
+`node --check apps/loading/nested-loop.mjs`, `node --check apps/loading/probe.mjs`
+and `git diff --check` pass. Integration checks are the new compile-only guard
+question and changed-source original cohort above. All source and test changes
+are durable in experiment refs, Deko scripts and this journal; only this turn's
+extraction, alternate index and temporary logs are expendable. JVM master/index,
+selected full baseline **1807.0171855 ms**, saved TeaVM **359.739597 ms**, full
+**395.7135567 ms** target and deployment are unchanged. Goal remains active and
+unmet; browser/phone, rolling presented FPS, memory and stability are unverified.

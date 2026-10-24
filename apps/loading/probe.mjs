@@ -283,6 +283,7 @@ try {
   inspection={method:state.key,sha256:hash(state.meta.bytes),output,teavm:{sha256:receipt.vorbisBenchmark.wasmSha256,output:teaOutput,reused:teaReused}};
  }
  const owners=kernel==='bzip'?['Bzip2Decoder','Bzip2DecoderState']:['MusicDecoder','VorbisCodebook','VorbisResidue','MusicDecodeStage',...(kernel==='loading'?['Bzip2Decoder','Bzip2DecoderState']:[])];
+ const initializationOwners=new Map([...j.classInitializationTokens].map(([owner,token])=>[token,owner]));
  const layout=meta=>meta&&{structured:!!meta.structured,canonical:!!meta.canonicalRun,normalFlow:meta.normalFlowFullyCompiled,
   ...(optimizer&&meta.bytes?{moduleInputSha256:hash(meta.bytes)}:{}),
   omittedNativeBoundsCheckCount:meta.omittedNativeBoundsCheckCount||0,
@@ -350,6 +351,7 @@ try {
   inlineAtomicStaticSiteCount:meta.inlineAtomicStaticSiteCount||0,
   nativeStaticLeafBytes:meta.nativeStaticLeafVersionBytes||0,
   params:meta.paramSlots?.map(p=>({slot:p.slot,type:p.t})),entryGuards:meta.entryInitializationGuards,
+  initializationGuardStates:meta.initializationGuardTokens?.map(token=>({owner:initializationOwners.get(token)||null,initialized:!!token.initialized})),
   links:meta.linkBindings?.map(b=>({key:b.key,pending:b.pending,canonical:!!b.canonicalDirect}))};
  const receiverEntries=state=>{
   const seen=new Set(),rows=[];

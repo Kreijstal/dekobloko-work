@@ -20,10 +20,10 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'nested-loop'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const [command,revision,engine,detail,caseArg]=process.argv.slice(2),engines=['inlined','separate'];
-const caseName=command.startsWith('slice-')||caseArg==='slice'?'slice':command.startsWith('phis-')||caseArg==='phis'?'phis':command.startsWith('bounds-')||caseArg==='bounds'?'bounds':command.startsWith('region-')||caseArg==='region'?'region':command.startsWith('array-')||caseArg==='array'?'array':command.startsWith('cold-')||caseArg==='cold'?'cold':command.startsWith('large-')||caseArg==='large'?'large':command.startsWith('stable-')||caseArg==='stable'?'stable':command.startsWith('scope-')||caseArg==='scope'?'scope':'whole';
+const caseName=command.startsWith('compose-')||caseArg==='compose'?'compose':command.startsWith('slice-')||caseArg==='slice'?'slice':command.startsWith('phis-')||caseArg==='phis'?'phis':command.startsWith('bounds-')||caseArg==='bounds'?'bounds':command.startsWith('region-')||caseArg==='region'?'region':command.startsWith('array-')||caseArg==='array'?'array':command.startsWith('cold-')||caseArg==='cold'?'cold':command.startsWith('large-')||caseArg==='large'?'large':command.startsWith('stable-')||caseArg==='stable'?'stable':command.startsWith('scope-')||caseArg==='scope'?'scope':'whole';
 const count=caseName==='cold'?128:1000000;
-const targetName={slice:'scanRegionSlice',phis:'scanRegionPhis',bounds:'scanRegionBounds',region:'scanRegion',array:'scanArrayPairs',whole:'scan',scope:'scanScoped',stable:'scanStable',large:'scanStable',cold:'scanStable'}[caseName];
-const receiverTokenExperiment=command.startsWith('stable-token-');
+const targetName={compose:'scanAllocated',slice:'scanRegionSlice',phis:'scanRegionPhis',bounds:'scanRegionBounds',region:'scanRegion',array:'scanArrayPairs',whole:'scan',scope:'scanScoped',stable:'scanStable',large:'scanStable',cold:'scanStable'}[caseName];
+const receiverTokenExperiment=command.startsWith('stable-token-'),compositionExperiment=command.startsWith('compose-');
 const requestedEngine=['direct','merged','trusted','paired','separate','plain','eager','lazy'].find(value=>command.includes('-'+value+'-'));
 assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact changed-source JVM commit');
 const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
@@ -36,7 +36,7 @@ const ghostCount=caseName==='slice'?8:3;
 const ghostDecl=Array.from({length:ghostCount},(_,i)=>'ghost'+i+'=0').join(',');
 const ghostRead=Array.from({length:ghostCount},(_,i)=>'ghost'+i+'=regionSource[k'+(i%4?'+'+(i%4*256):'')+'];').join('');
 const ghostFill=Array.from({length:ghostCount},(_,i)=>'ghost'+i+'='+(i+1)+';').join('');
-const source=`
+let source=`
 final class NestedLoopBits {static byte[] bytes;static int bit,cursor;}
 final class NestedLoopBook {
  int[] tree;int[][] rows;
@@ -63,6 +63,23 @@ ${['phis','slice'].includes(caseName)?` static float[] ${targetName}(int n){regi
  static int scan(NestedLoopBook book,int n){int sum=3;for(int i=0;i<n;i++){
   int[] row=book.vector();for(int k=0;k<8;k++)sum=sum*33+row[k];}return sum;}
 }`;
+
+if(caseName==='compose'){
+ const bits='final class NestedLoopBits {static byte[] bytes;static int bit,cursor;}';
+ assert.ok(source.includes(bits));source=source.replace(bits,`final class NestedLoopBits {
+ static byte[] bytes;static int bit,cursor;static int marker=init();static int init(){return 1;}
+ static int nextBit(){int b=bytes[cursor]>>bit&1;bit++;cursor+=bit>>3;bit&=7;return b;}
+}`);
+ const read=`int b=NestedLoopBits.bytes[NestedLoopBits.cursor]>>NestedLoopBits.bit&1;
+  NestedLoopBits.bit++;NestedLoopBits.cursor+=NestedLoopBits.bit>>3;NestedLoopBits.bit&=7;`;
+ assert.ok(source.includes(read));source=source.replace(read,'int b=NestedLoopBits.nextBit();');
+ const start=' static int scanStable(';
+ assert.ok(source.includes(start));source=source.replace(start,` static int scanAllocated(NestedLoopBook[] books,int n){
+  int[] scratch=new int[1];NestedLoopBook book=books[0];int sum=3;
+  for(int i=0;i<n;i++){int[] row=book.rows[book.scalar()];for(int k=0;k<8;k++)sum=sum*33+row[k];}return sum;
+ }
+`+start);
+}
 
 // This bound changes only temporary compiler graph views after normal code
 // emission, restores every map, and never runs the filtered graph as code.
@@ -107,9 +124,9 @@ function nestedLivenessBound(c,numeric,analyze){
 }
 
 if(command==='one'||command==='code-one'||command==='liveness-one'){
- assert.ok(engines.includes(engine)||['token','tokenControl','slice','sliceControl','phis','phisControl','bounds','boundsControl','region','regionControl','direct','merged','trusted','paired','query','plain','eager','lazy'].includes(engine));assert.ok(flags.every(flag=>process.execArgv.includes(flag)));
+ assert.ok(engines.includes(engine)||['composed','flattened','token','tokenControl','slice','sliceControl','phis','phisControl','bounds','boundsControl','region','regionControl','direct','merged','trusted','paired','query','plain','eager','lazy'].includes(engine));assert.ok(flags.every(flag=>process.execArgv.includes(flag)));
  if(engine==='plain')assert.equal(caseName,'large','Plain matrix is only the new large-container control');
- let regionAnalyzer,regionAnalysis;const instrumented=detail==='stats';let Frame,model,allocMultiArray,allocReferenceArray,referenceStorage,takeWasmReturnValue,numeric,frameLive,emission,installed=false;const bounds=[],versions=new WeakMap(),directImports=new WeakMap();
+ let regionAnalyzer,regionAnalysis;const instrumented=detail==='stats';let Frame,model,allocMultiArray,allocReferenceArray,referenceStorage,takeWasmReturnValue,numeric,frameLive,emission,installed=false,compositionWithheld=false;const bounds=[],versions=new WeakMap(),directImports=new WeakMap();
  const {JVM}=await loadArchivedJvm(root,revision,{preloadModules:command==='liveness-one'?['src/jit/stackifyNumericValues.js','src/analysis/frameLocalLiveness.js']:caseName==='cold'?['src/core/nativeObjectStorage.js']:[],observeModule:({filename,exports})=>{
   if(filename.endsWith('/src/core/nativeObjectStorage.js'))referenceStorage=exports;
   if(filename.endsWith('/src/jit/stackifyNumericValues.js'))numeric=exports;
@@ -170,6 +187,16 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
     return meta;
    };
   }
+  if(caseName==='compose'&&engine==='flattened'&&filename.endsWith('/src/jit/wasmInline.js')){
+   const inline=exports.inlineCalls;exports.inlineCalls=function(jvm,code,options){
+    if(options.callerClassName!=='NestedLoopProbe'||options.callerMethod?.name!==targetName)return inline(jvm,code,options);
+    const method=jvm.classes.NestedLoopBook.ast.classes[0].items.find(item=>item.type==='method'&&item.method.name==='scalar').method;
+    const state=jvm.jit.wasmJit.state.get(method),metas=[...new Set([state?.meta,state?.callee?.meta].filter(Boolean))];
+    const saved=metas.map(meta=>[meta,meta.nativeStaticStateBodySites]);assert.ok(saved.some(([,sites])=>sites>0),'Control lacks the actual certified scalar body');
+    for(const [meta]of saved)meta.nativeStaticStateBodySites=0;compositionWithheld=true;
+    try{return inline(jvm,code,options);}finally{for(const [meta,sites]of saved)meta.nativeStaticStateBodySites=sites;}
+   };
+  }
   if(engine==='tokenControl'&&filename.endsWith('/src/jit/nativeReceiverEntry.js')){const prepare=exports.prepareCall;exports.prepareCall=(c,node,...args)=>c.className==='NestedLoopProbe'&&c.method.name===targetName?null:prepare(c,node,...args);}
   if(caseName==='slice'&&engine==='sliceControl'&&filename.endsWith('/src/jit/nativeKernelSlice.js')){const analyze=exports.analyze;exports.analyze=(c,p,...args)=>c.className==='NestedLoopProbe'&&c.method.name===targetName?{reason:'new-case conservative numeric input tuple',work:0,active:[],inputs:p.numericInputs.map(v=>v.id),omitted:[]}:analyze(c,p,...args);}
   if(caseName==='phis'&&engine==='phisControl'&&filename.endsWith('/src/jit/nativeKernelBoundary.js')){
@@ -200,7 +227,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   jit:{enabled:false,compileWorker:false,retainCompilerDiagnostics:false,wasmStructured:true,
    wasm:{deepInline:false,canonicalDirectCalls:true,canonicalEhLinks:true,nativeJsExceptionTags:true}}});
  if(command==='code-one'||command==='liveness-one'||caseName==='cold'){j.executeTick=()=>{throw Error('Inspection attempted a guest tick');};j.executeInstruction=()=>{throw Error('Inspection attempted a guest instruction');};}
- await j.preloadClasspathClasses();for(const name of ['NestedLoopBits','NestedLoopBook','NestedLoopProbe'])j._markClassInitialized(name);
+ await j.preloadClasspathClasses();for(const name of ['NestedLoopBits','NestedLoopBook','NestedLoopProbe'])if(caseName!=='compose'||name!=='NestedLoopBits')j._markClassInitialized(name);
  const w=j.jit.wasmJit;w.enabled=true;w.importStatsEnabled=instrumented;
  if(caseName==='cold'){
   assert.ok(['eager','lazy'].includes(engine));
@@ -256,10 +283,14 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
    control:caseName==='slice'?'New wide-input loop: same changed backend; control withholds only helper-local slicing, keeping conservative input admission. No known baseline executes.':caseName==='phis'?'New dead-phi boundary case on the same changed runtime; control conservatively retains all parallel-copy obligations, withholding only the demand proof. No previously measured baseline executes.':caseName==='bounds'?'Same changed source/new repeated-index graph; both use the numeric worker, control withholds only its compile-time bounds proof.':'Same changed source and new substantial floating array-region graph; control withholds only its numeric worker, preserving owned-region guards and native fallback body.',
    scope:'One AOT invocation, no warmup or known baseline/oracle execution; not original loading or TeaVM parity'}));process.exit(0);
  }
- build('NestedLoopBook','scalar','()I');const vector=build('NestedLoopBook','vector','()[I');
+ const scalar=build('NestedLoopBook','scalar','()I');const vector=build('NestedLoopBook','vector','()[I');
  if(caseName==='scope'){build('NestedLoopProbe','identity','(I)I');build('NestedLoopProbe','outside','(I)V');}
  const target=build('NestedLoopProbe',targetName,caseName!=='whole'?'([LNestedLoopBook;I)I':'(LNestedLoopBook;I)I');
- assert.equal(target.meta.inlineActivationDepth||0,engine==='inlined'?2:0,'Unexpected compiled call shape');
+ if(caseName==='compose'){
+  assert.ok(scalar.meta.nativeStaticStateBodySites>0&&scalar.meta.inlineActivationSiteCount===1,'Root static leaf must earn the actual native scalar body');
+  assert.equal(target.meta.inlinedCalls||0,engine==='composed'?0:1,'Composition policy was not selected/withheld');
+  assert.equal(compositionWithheld,engine==='flattened','Only the explicit new-case control withholds native composition');
+ }else assert.equal(target.meta.inlineActivationDepth||0,engine==='inlined'?2:0,'Unexpected compiled call shape');
  assert.ok(target.meta.normalFlowFullyCompiled,'Reduction lost full normal flow');
  if(engine==='merged'){
   // Controlled two-method linking experiment. Keep every original instruction,
@@ -334,6 +365,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   console.log('NESTED_CODE_RESULT '+JSON.stringify({sourceRevision:revision,caseName,engine,rows,harnessSha256:hash(fs.readFileSync(script)),guestInstructions:0,
    scope:'Code-generation question only: no Java workload, oracle, timer, CPU attribution or baseline identity replay; native static site counts include cold paths.'}));process.exit(0);
  }
+ if(caseName==='compose'){j._markClassInitialized('NestedLoopBits');j.classes.NestedLoopBits.staticFields.set('marker:I',1);}
  const tree=[];let leaf=0;
  const node=depth=>{const at=tree.length;tree.push(0);if(!depth)tree[at]=~leaf++;
   else{node(depth-1);const right=node(depth-1);tree[at]=right;}return at;};node(8);
@@ -375,7 +407,11 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
    assert.equal(vector.meta.importStats.get('native_state_object_storage')||0,0,'Callee still calls host validation');
   }
  }
- if(instrumented)assert.equal(vectorEntries,engine==='inlined'?0:count,'Control lost the intended method boundary');
+ const scalarEntries=instrumented?canonicalExecutionCounts(scalar.meta).directEntries:null;
+ if(instrumented&&caseName==='compose'){
+  assert.equal(vectorEntries,0,'New scalar composition case unexpectedly invokes the vector wrapper');
+  assert.equal(scalarEntries,engine==='composed'?count:0,'New composition route must execute the actual scalar entry or flattened body');
+ }else if(instrumented)assert.equal(vectorEntries,engine==='inlined'?0:count,'Control lost the intended method boundary');
  if(instrumented&&(engine==='token'||engine==='tokenControl')){assert.equal(target.meta.importStats.get('native_receiver_token')||0,engine==='token'?1:0,'Invariant receiver must acquire its token once');assert.equal(vector.meta.importStats.get('native_state_object_storage')||0,engine==='token'?0:count,'Token entry must remove per-call host ownership authentication');}
  if(instrumented&&['stable','large'].includes(caseName))assert.equal(target.meta.importStats.get('native_state_object_storage')||0,engine==='inlined'?1:0,'Stable ownership was not shared across scope entries');
  if(instrumented&&caseName==='large')assert.equal(vector.meta.importStats.get('aget_r')||0,engine==='plain'?count:0,'Large matrix lost its selected native/fallback path');
@@ -383,6 +419,7 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   matrixLength,matrixKind:engine==='plain'?'supported-plain-fallback':'owned-reference-array',
   sourceSha256:hash(source),classSha256:hash(fs.readFileSync(path.join(directory,'NestedLoopProbe.class'))),
   inlineActivationDepth:target.meta.inlineActivationDepth||0,vectorEntries,
+  ...(caseName==='compose'?{scalarEntries,scalarStatefulSites:scalar.meta.nativeStaticStateBodySites,scalarActivations:scalar.meta.inlineActivationSiteCount,callerInlined:target.meta.inlinedCalls||0,compositionWithheld}:{}),
   nativeStaticStateBodySites:target.meta.nativeStaticStateBodySites||0,
   nativeStaticArrayRegions:target.meta.nativeStaticArrayRegions||[],
   nativeStaticCheckedReferenceLoads:target.meta.nativeStaticCheckedReferenceLoads||0,
@@ -415,12 +452,12 @@ if(command==='one'||command==='code-one'||command==='liveness-one'){
   nativeExits:target.meta.directFrameContext.exitCount,lateJavaCompiles:0,
   node:process.version,execArgv:process.execArgv,
   directImportExperiment:['direct','merged'].includes(engine)?'Per-call version/dispatch checked Wasm import; publication/withdrawal/release revoke snapshots; table fallback and original ABI remain active; fixture-only integration':null,
-  control:(engine==='token'||engine==='tokenControl')?'New private receiver ABI comparison: same changed runtime and fixed Java graph; control withholds only the root token call route. No known JVM/TeaVM/HotSpot baseline executes.':caseName==='large'?'New large-container reduction: same changed runtime and Java methods, owned matrix versus supported plain matrix fallback; no known baseline executes':engine==='separate'?'Withhold only the root inline transform; same changed runtime and new Java workload':null,
+  control:caseName==='compose'?'New allocating-caller case on the same changed runtime; control temporarily withholds only the certified native-body cost fact during inline selection, then restores all metadata before emission/execution. No known control or oracle runs.':(engine==='token'||engine==='tokenControl')?'New private receiver ABI comparison: same changed runtime and fixed Java graph; control withholds only the root token call route. No known JVM/TeaVM/HotSpot baseline executes.':caseName==='large'?'New large-container reduction: same changed runtime and Java methods, owned matrix versus supported plain matrix fallback; no known baseline executes':engine==='separate'?'Withhold only the root inline transform; same changed runtime and new Java workload':null,
   scope:'Bounded '+caseName+' code-generation reduction with identical high invocation fuel; not production scheduling, original loading, TeaVM parity or an existing baseline validation'}));
  process.exit(0);
 }
 
-assert.ok(['stable-token-diagnose','stable-token-inspect','stable-token-run','stable-token-candidate','slice-diagnose','slice-run','phis-inspect','phis-candidate','phis-diagnose','phis-run','bounds-inspect','bounds-candidate','bounds-diagnose','bounds-run','region-diagnose','region-run','array-diagnose','array-run','diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate','inspect','scope-inspect','stable-inspect','code','scope-code','stable-code','liveness','scope-liveness','stable-liveness','stable-direct-code','stable-direct-inspect','stable-direct-candidate','stable-merged-code','stable-merged-inspect','stable-merged-candidate','stable-trusted-code','stable-trusted-inspect','stable-trusted-candidate','stable-paired-code','stable-paired-inspect','stable-paired-candidate','stable-separate-code','stable-separate-vector-code','stable-separate-inspect','stable-separate-candidate','large-separate-inspect','large-separate-candidate','large-plain-inspect','large-plain-candidate','large-run','cold-eager-inspect','cold-lazy-inspect','cold-run'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
+assert.ok(['compose-diagnose','compose-run','stable-token-diagnose','stable-token-inspect','stable-token-run','stable-token-candidate','slice-diagnose','slice-run','phis-inspect','phis-candidate','phis-diagnose','phis-run','bounds-inspect','bounds-candidate','bounds-diagnose','bounds-run','region-diagnose','region-run','array-diagnose','array-run','diagnose','run','candidate','scope-diagnose','scope-run','scope-candidate','stable-diagnose','stable-run','stable-candidate','inspect','scope-inspect','stable-inspect','code','scope-code','stable-code','liveness','scope-liveness','stable-liveness','stable-direct-code','stable-direct-inspect','stable-direct-candidate','stable-merged-code','stable-merged-inspect','stable-merged-candidate','stable-trusted-code','stable-trusted-inspect','stable-trusted-candidate','stable-paired-code','stable-paired-inspect','stable-paired-candidate','stable-separate-code','stable-separate-vector-code','stable-separate-inspect','stable-separate-candidate','large-separate-inspect','large-separate-candidate','large-plain-inspect','large-plain-candidate','large-run','cold-eager-inspect','cold-lazy-inspect','cold-run'].includes(command),'Usage: nested-loop.mjs diagnose|run|candidate|scope-diagnose|scope-run|scope-candidate EXACT_CHANGED_REVISION');
 fs.mkdirSync(directory,{recursive:true});const java=path.join(directory,'NestedLoopProbe.java');
 if(!fs.existsSync(java)||fs.readFileSync(java,'utf8')!==source||!fs.existsSync(path.join(directory,'NestedLoopProbe.class'))){
  fs.writeFileSync(java,source);execFileSync('javac',['--release','8','-proc:none','-d',directory,java]);
@@ -445,11 +482,13 @@ if(command.endsWith('liveness')){
   const row=parseMeasurementResult(execFileSync(process.execPath,[...flags,script,'code-one',revision,variant,command.endsWith('-vector-code')?'vector-code':'code',caseName],
    {encoding:'utf8',maxBuffer:1024*1024}),'NESTED_CODE_RESULT ');result.codeOutputs=result.codeOutputs.filter(previous=>previous.engine!==variant);result.codeOutputs.push(row);save();console.log(JSON.stringify(row));
  }
-}else if(command.endsWith('diagnose')||command.endsWith('inspect'))for(const variant of receiverTokenExperiment?(command.endsWith('inspect')?['token']:['token','tokenControl']):requestedEngine?[requestedEngine]:caseName==='slice'?['slice','sliceControl']:command==='phis-inspect'?['phis']:caseName==='phis'?['phis','phisControl']:command==='bounds-inspect'?['bounds']:caseName==='bounds'?['bounds','boundsControl']:caseName==='region'?['region','regionControl']:caseName==='array'?['paired','query']:command.endsWith('inspect')?['inlined']:engines){
+}else if(command.endsWith('diagnose')||command.endsWith('inspect'))for(const variant of compositionExperiment?['composed','flattened']:receiverTokenExperiment?(command.endsWith('inspect')?['token']:['token','tokenControl']):requestedEngine?[requestedEngine]:caseName==='slice'?['slice','sliceControl']:command==='phis-inspect'?['phis']:caseName==='phis'?['phis','phisControl']:command==='bounds-inspect'?['bounds']:caseName==='bounds'?['bounds','boundsControl']:caseName==='region'?['region','regionControl']:caseName==='array'?['paired','query']:command.endsWith('inspect')?['inlined']:engines){
  if(result.diagnostics.some(row=>row.engine===variant)){console.log('reuse saved '+variant+' diagnostic');continue;}
  const row=one(variant,true);result.diagnostics.push(row);save();console.log(JSON.stringify(row));
 }
 else{
+ if(compositionExperiment){const native=result.diagnostics.find(row=>row.engine==='composed'),flat=result.diagnostics.find(row=>row.engine==='flattened');
+  assert.ok(native&&flat&&native.scalarEntries===count&&flat.scalarEntries===0&&native.callerInlined===0&&flat.callerInlined===1,'Inspect both actual new composition routes before timing');}
  if(receiverTokenExperiment){const proved=result.diagnostics.find(row=>row.engine==='token');assert.ok(proved?.calleeReceiverTokenEntry&&proved.nativeReceiverTokenCallSites===1&&proved.nativeReceiverTokenQueries===1&&proved.separateVectorOwnershipQueries===0,'Inspect the new token route before timing');if(!command.endsWith('candidate')){const control=result.diagnostics.find(row=>row.engine==='tokenControl');assert.ok(control&&control.nativeReceiverTokenCallSites===0&&control.separateVectorOwnershipQueries===count,'New ABI control must exercise the different entry route');}}
  if(caseName==='slice'){const proved=result.diagnostics.find(row=>row.engine==='slice'),control=result.diagnostics.find(row=>row.engine==='sliceControl');assert.ok(proved&&control,'Run slice-diagnose before timing the new wide-input case');assert.ok(proved.nativeRegionKernelInputOmissions>=8&&proved.nativeRegionKernelCount===1&&control.nativeRegionKernelCount===0,'New case must exercise changed input admission');}
  if(caseName==='phis'){
@@ -459,7 +498,7 @@ else{
   if(command==='phis-candidate')assert.ok(proved.nativeRegionKernelInputOmissions>=3,'Candidate must actually exercise the changed numeric input slice');
   else{assert.ok(control,'Run phis-diagnose for a genuinely new paired case');assert.equal(control.nativeRegionKernelCount,0,'Conservative new-case control must exercise a different boundary');}
  }
- const measuredEngines=receiverTokenExperiment?(command.endsWith('candidate')?['token']:['token','tokenControl']):requestedEngine?[requestedEngine]:caseName==='slice'?['slice','sliceControl']:command==='phis-candidate'?['phis']:caseName==='phis'?['phis','phisControl']:command==='bounds-candidate'?['bounds']:caseName==='bounds'?['bounds','boundsControl']:caseName==='region'?['region','regionControl']:caseName==='array'?['paired','query']:caseName==='cold'?['eager','lazy']:caseName==='large'?['separate','plain']:command.endsWith('candidate')?['inlined']:engines;
+ const measuredEngines=compositionExperiment?['composed','flattened']:receiverTokenExperiment?(command.endsWith('candidate')?['token']:['token','tokenControl']):requestedEngine?[requestedEngine]:caseName==='slice'?['slice','sliceControl']:command==='phis-candidate'?['phis']:caseName==='phis'?['phis','phisControl']:command==='bounds-candidate'?['bounds']:caseName==='bounds'?['bounds','boundsControl']:caseName==='region'?['region','regionControl']:caseName==='array'?['paired','query']:caseName==='cold'?['eager','lazy']:caseName==='large'?['separate','plain']:command.endsWith('candidate')?['inlined']:engines;
  result.timingMode=measuredEngines.length===1?'Changed candidate only; reuse saved controls':'Paired new-workload control';
  for(let pair=0;pair<3;pair++)for(const variant of pair===1?measuredEngines.toReversed():measuredEngines){
   if(result.runs.some(row=>row.engine===variant&&row.pair===pair)){console.log('reuse saved pair '+pair+' '+variant);continue;}
