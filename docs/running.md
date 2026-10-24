@@ -18959,3 +18959,158 @@ ownership/customization checks.
 No restoration build/test or old-code fingerprint check is required. Remove only
 this pass's expendable extraction/index/logs after preserving source refs and
 receipts. The full 1.1x objective remains active and unmet.
+
+
+### Exact frame demand and helper-local numeric slicing
+
+Previous goal turn is progress: generic cold packets/phi demand were implemented,
+validated and rejected at the original gate. Source
+**7c9939e0da42a7c50754a3bae77e5b893fb7511d** now follows b9e9d181, isolated at
+`experiment/teavm-numeric-helper-slice`; actual JVM master/index and unrelated
+working changes remain untouched. No known baseline/oracle runs.
+
+Cold state now consults the existing compiler shouldSpillFrameLocal predicate
+only with the same graph and a valid original PC. Inline parent/child handoffs,
+foreign/unknown contexts and all stack prefixes/operation operands remain
+conservative. Captures use the existing predicate as well. A bounded helper-local
+slice then roots every memory operation (even an unused load can throw), scalar
+write, branch, normal result and required cold value; it closes numeric/phi
+backedge dependencies and omits only unobserved total computations/input ports.
+It never rewrites the wrapper's SSA or Java frame maps. Unknown effects/values,
+unbound dependencies and exhausted work return the complete old input tuple.
+Admission checks the emitted physical parameter count against the existing 12,
+without raising that limit. Slice diagnostics contain plain IDs, not graph roots.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeKernelColdState.test.js test/nativeKernelSlice.test.js test/nativeRegionKernel.test.js test/wasmCompilerRetention.test.js
+```
+
+Final focused validation passes **232/232**. The new actual Java fixture omits
+three float-phi inputs, yields after real stores, resumes in the interpreter
+with all writes and surrounding effects exact, and never replays its prefix.
+Wide integer/double faults, aliasing, partial writes, unknown storage, captures,
+inline/unknown frame facts and graph cleanup remain covered. The ignored JRE
+index is generated only in the expendable extraction.
+
+Deko adds phis-inspect / phis-candidate to run only this changed default, requiring
+its diagnostic to show actual input omissions before timing. The known
+conservative mode is not rerun. The fixed Java/class fixture remains the prior
+phis workload. Code inspection also records the helper-local slice descriptors.
+Both changed scripts pass node --check.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs phis-inspect 7c9939e0da42a7c50754a3bae77e5b893fb7511d
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs phis-candidate 7c9939e0da42a7c50754a3bae77e5b893fb7511d
+```
+
+Diagnostic confirms four omitted value inputs, one worker, six bounds elisions,
+1966 bytes (saved 2106), all float outputs/checksum -456520192, one ownership
+region and no exits/late compilation. Three fresh changed-only samples are
+**7.302149, 7.280050, 7.273322 ms**, median **7.280050 ms**, versus saved
+**7.268948 ms**: **no improvement in the already-admitted loop**. No unchanged
+control, TeaVM or HotSpot executes; no tests/builds/profiling overlap timings.
+Do not advance that comparator or earn an original timing from these samples.
+A compile-only original code gate is warranted to validate the newly emitted
+physical-input slices and determine which wider loops now fit the same limit.
+The original wider loops, rather than another timing of this unchanged admission
+shape, are the next applicability question.
+
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 7c9939e0da42a7c50754a3bae77e5b893fb7511d native-region-kernel-code
+```
+
+Compile-only original gate exits 0, no guest ticks/assets/main/helper execution.
+Seven packet workers (saved three) total **8410 Wasm bytes**. Newly admitted
+66/71/82/59 have physical parameter counts **11/7/9/8**, omitting **7/7/8/6**
+unused numeric inputs. Existing 56 shrinks **12 -> 8** inputs and its fuel packet
+from an index/four floats to the index alone. All seven fuel packets now need
+only their loop index. Changed helper Wasm/native bytes are 66:1331/844,
+71:1482/924, 82:1460/828, 56:1023/668, 59:1287/740, with native stack reservations
+0x48/0x40/0x40/0x40/0x40. The broad collector also redundantly inspected unchanged
+79/85; no guest or helper executed. A new diagnostic family
+`native-region-kernel-slice-code` now skips zero-omission helpers for future
+changed slice inspections. **Do not rerun this gate just to test that filter.**
+
+The already-admitted phis case cannot test newly enabled wide-loop admission.
+A new `slice` case uses the same numeric array calculation with eight dead float
+phi inputs flowing into later overwrites, matching the wide-input issue found
+in the original. It has 16 conservative input ports. On this same changed VM,
+`sliceControl` withholds only nativeKernelSlice.analyze for that fixture target;
+its 16-input loop stays outside the existing 12-port limit. Default omits nine
+ports and installs the numeric worker. No previously measured baseline executes.
+The source extension is conditional on this new case, preserving other cases.
+
+```
+node --check apps/loading/nested-loop.mjs
+node --check apps/loading/call-code.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs slice-diagnose 7c9939e0da42a7c50754a3bae77e5b893fb7511d
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs slice-run 7c9939e0da42a7c50754a3bae77e5b893fb7511d
+```
+
+Diagnostics prove changed admission (one/zero workers), nine/zero omitted ports,
+exact checksum -456520192/all 1024 float outputs, one ordinary ownership region
+in both modes, and zero exits/late compilation. Timing command refuses to start
+without those successful shape diagnostics. Fresh uninstrumented results:
+
+| Newly admitted wide loop | Sliced ms | Conservative ports ms |
+|---|---:|---:|
+| 1 | 7.191702 | 9.950358 |
+| 2 | 7.221282 | 9.996445 |
+| 3 | 7.192846 | 9.977180 |
+
+Medians **7.192846 vs 9.977180 ms**, lower in all pairs. No tests/builds/profiling
+overlap timing; CPU2/Node22.23.2/1-GiB/eager optimizing Wasm remain fixed. This
+earns the changed original PCM/timing gate, not parity or a full-loading run.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 7c9939e0da42a7c50754a3bae77e5b893fb7511d
+```
+
+The original cohort is pending and checks every PCM byte with compilation frozen;
+no redundant instrumented original execution, old-runtime/TeaVM/HotSpot control,
+unchanged MDCT, CPU profile or restoration test runs. Saved original control
+remains 93.269749 ms and full target 395.7135567 ms. These new small-case gains
+alone do not advance either original/full comparator.
+
+
+Original run **adbdcc1e-007e-4b42-b497-c4e144378d75** completes with **93.357842, 99.164244, 101.280707 ms**, median **99.164244 ms**. All PCM bytes match and all late-compilation lists are empty. This **fails** saved **93.269749 ms**. Keep all samples; no original/full-comparator advancement, full-loading run, promotion or deployment follows. The new wide-case component improvement remains a narrow result. Raw receipts and a compact linking disposition stay in the sole JSON. The 1.1x objective remains active and unmet.
+
+
+The next direction should address a different cost, not another permutation of
+numeric helper ports. Current source still emits an unconditional
+`native_state_object_storage` host call in nativeStaticArrayBody.entry for each
+instance receiver, even when a typed store arrived from a compiled caller.
+A typed store alone cannot authenticate its arbitrary host Java-object partner;
+previous paired-storage/eqref-owner shortcuts failed or violated storage-only
+lifetime constraints. The saved TeaVM code instead passes canonical GC Java
+references, so receiver identity and fields do not need that repeated host
+lookup. This is a concrete representation/call-boundary difference; no renewed
+CPU profile or unsupported causal percentage is claimed.
+
+A possible implementation is a **private canonical Java-reference token**,
+separate from raw native storage, containing the actual Java owner and its store.
+Authenticate/create it once at an existing owned-reference acquisition. A private
+callee entry must derive BOTH owner and store from that token, rather than trust
+an unrelated owner/store pair, and check native revocation permissions. Standard
+entries, foreign/customized objects, dispatch/version withdrawal and all cold
+frame/exception semantics must retain their current behavior. The token may
+strongly retain its Java owner because it represents a Java reference; keeping
+only raw storage alive must still never retain that owner. Do not attach an
+owner to the existing raw storage to fake this distinction.
+
+Start any such follow-on from selected **029834e16366e3dfaed1f46d5589ec34dddc04dc**,
+not by stacking all these rejected worker experiments. Integrate an actual
+private compiled call path and verify wrong-pair refusal, mutation/revocation,
+reference identity, fallback frames, exception/monitor ordering, reentrancy,
+link withdrawal and owner/storage lifetimes before timing a new small call case.
+A component improvement must then survive original and full gates. The failed
+7c9939e0 proof remains durable for future use but is not the selected runtime.
+No public option flag or application-specific JVM rule is justified.
+
+No full loading, deployment, browser/phone acceptance or parity claim is earned
+by this turn. The selected full median stays **1807.0171855 ms**, saved TeaVM
+**359.739597 ms**, full 1.1x target **395.7135567 ms**. Cleanup removes only this
+pass's extraction, alternate index and code-gate log; no restoration build/test,
+old-code identity check, oracle replay or screenshots are necessary.
