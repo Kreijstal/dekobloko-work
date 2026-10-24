@@ -17518,3 +17518,37 @@ construction time), exact checksum/one entry/zero exits and late compilation in
 all six fresh processes. No instrumentation or test/build work ran concurrently.
 This compares two changed-source modes of the new case, not the known baseline
 against itself. Do not extrapolate it to full loading or TeaVM parity.
+
+Actual installed census for the isolated write-view source completes with
+**37 methods / 44 stores**, zero Java ticks/assets/main execution. The previously
+counted 45 sites were from the unrelated multianewarray parent, not this source.
+The census and full command are:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs cce5698fab518adf812993d248d82654382eaab8 native-reference-store-coverage
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision cce5698fab518adf812993d248d82654382eaab8 --options diagnostic
+```
+
+| Write-view full sample | Music ms | Graphics ms | Loading ms |
+|---|---:|---:|---:|
+| 1 | 1512.436063 | 340.094315 | 1852.530378 |
+| 2 | 1503.643420 | 337.687751 | 1841.331171 |
+| 3 | 1748.058003 | 435.871097 | 2183.929100 |
+
+Median **1852.530378 ms** does not beat saved **1807.0171855 ms**. Keep the
+third slower sample. All three have exact check
+`18:218292:2368412830:205:7597510:3045679678`, zero late compilation and no
+instrumentation. Do not promote or advance the comparator. Preserve complete
+cohort provenance/raw rows under optimizationTrials.nativeReferenceStores in the
+single ledger before any future comparison overwrites its current view.
+
+Existing post-timer counters also bound applicability: only six executed method
+summaries contain the new store sites (sound-effect constructor, node-hash-table
+constructor, fade/reset MIDI state, MusicDecodeStage constructor and packet
+container reader). Setup/graphics admission does not establish execution of
+those native sites: MusicDecoder.decodeSetup and VorbisCodebook constructor
+still have zero Wasm entries in this isolated source. Do not call the preparation
+site count a CPU share or use it as evidence of a broad execution improvement.
+The original PCM-only timer excludes this setup work, so no redundant original
+PCM or known baseline measurement is performed. Source/tests remain durable in
+the experiment refs; actual master/index/default artifact/deployment unchanged.
