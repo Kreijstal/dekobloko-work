@@ -20,8 +20,8 @@ and TeaVM/JVM.js loading investigation. It groups the approaches and decisions;
 the original commands, source revisions, failed runs and corrections remain in
 the chronological sections below. Earlier constrained-browser evidence is also
 preserved in the cloner's existing
-[September retrospective](../../GEOBLOX-OPTIMIZATION-RETROSPECTIVE.md) and
-[memory journal](../../JVM-MEMORY-VALIDATION.md). Those are historical records,
+[September retrospective](../../blank-github-cloner/GEOBLOX-OPTIMIZATION-RETROSPECTIVE.md) and
+[memory journal](../../blank-github-cloner/JVM-MEMORY-VALIDATION.md). Those are historical records,
 not current acceptance reports. This section is the current overview; add future
 results here and below rather than starting another report.
 
@@ -296,6 +296,14 @@ not a proof that the goal is impossible. Conversely, the successful intro is
 not proof that full loading will reach the same ratio.
 
 ### Durable sources, repository boundaries and current master
+
+There is one physical checkout per repository: `/home/kreijstal/git/java-tools`,
+`/home/kreijstal/git/dekobloko-work`, and `/home/kreijstal/git/funorb-decompiled`.
+The former nested paths under `blank-github-cloner/` are compatibility symlinks
+to those same directories, not independent checkouts. Older project worktrees
+and the superseded naming-tool checkout have been removed. Their commits and
+source work are preserved under `refs/consolidation/` in the owning canonical
+repository; the latest JVM's uncommitted source changes remain in its worktree.
 
 | Repository | Owns |
 | --- | --- |
