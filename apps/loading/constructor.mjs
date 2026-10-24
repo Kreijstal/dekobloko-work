@@ -16,11 +16,17 @@ const root=path.resolve(here,'../../../java-tools'),player=path.join(os.homedir(
 const directory=path.join(player,'constructors'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const [command,revision,engine,diagnostic]=process.argv.slice(2);
-const storeCase=command?.startsWith('stores-')||engine?.startsWith('stores-'),size=storeCase?64:32,width=storeCase?8:size;
-const modes=storeCase?['stores-native','stores-checked']:['wasm','bytecode'];
+const headerCase=command?.startsWith('headers-')||engine?.startsWith('headers-');
+const storeCase=command?.startsWith('stores-')||engine?.startsWith('stores-'),arrayCase=headerCase||storeCase,size=arrayCase?64:32,width=arrayCase?8:size;
+const modes=headerCase?['headers-native','headers-queried']:storeCase?['stores-native','stores-checked']:['wasm','bytecode'];
 assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact changed-source revision');
 const hash=x=>crypto.createHash('sha256').update(x).digest('hex');
-const source=storeCase?`public final class MatrixConstructionProbe {
+const source=headerCase?`public final class MatrixConstructionProbe {
+ int[][][] values;
+ MatrixConstructionProbe(int groups,int width){values=new int[groups][][];
+  for(int g=0;g<groups;g++){int[][] rows=new int[256][];values[g]=rows;
+   for(int i=0;i<256;i++){int[] row=new int[width];for(int k=0;k<width;k++)row[k]=k;rows[i]=row;}}}
+}`:storeCase?`public final class MatrixConstructionProbe {
  int[][][] values;
  MatrixConstructionProbe(int groups,int width){values=new int[groups][][];
   for(int g=0;g<groups;g++){int[][] rows=new int[256][];values[g]=rows;
@@ -36,6 +42,7 @@ if(command==='one'){
  let Frame,Stack,model,replacementInstalled=false;
  const native=engine!=='bytecode',instrumented=diagnostic==='stats';
  const {JVM}=await loadArchivedJvm(root,revision,{observeModule:({filename,exports})=>{
+  if(engine==='headers-queried'&&filename.endsWith('/src/jit/nativeArrayAllocations.js')){exports.prepare=()=>({producers:new Set(),headerAddress:-1});replacementInstalled=true;}
   if(engine==='stores-checked'&&filename.endsWith('/src/jit/nativeReferenceStores.js')){exports.emit=()=>false;replacementInstalled=true;}
   if(filename.endsWith('/src/core/frame.js'))Frame=exports;
   if(filename.endsWith('/src/core/callStack.js'))Stack=exports;
@@ -48,6 +55,8 @@ if(command==='one'){
  const w=j.jit.wasmJit;w.importStatsEnabled=instrumented;
  const method=j.findMethod(j.classes.MatrixConstructionProbe,'<init>','(II)V'),state=w.methodState({method});
  w.compile({method,className:'MatrixConstructionProbe'},state,{asCallee:true});
+ if(engine==='headers-queried')assert.ok(replacementInstalled,'The query control did not withhold allocation metadata');
+ if(headerCase)assert.equal((state.meta.nativeArrayAllocationMetadataSites||0)>0,engine==='headers-native','Wrong allocation-header admission');
  if(engine==='stores-checked')assert.ok(replacementInstalled,'The checked control did not withhold the new store emitter');
  assert.equal(state.status,'ready',state.lastCompileError);assert.ok(state.meta.fullyCompiled&&state.meta.normalFlowFullyCompiled,'Constructor still has an unsupported allocation');
  if(storeCase)assert.equal((state.meta.nativeReferenceStoreSites||0)>0,engine==='stores-native','Wrong native-store admission');
@@ -63,13 +72,13 @@ if(command==='one'){
  if(native)assert.ok(outcome?.handled&&!outcome.deopted,'Constructor left native execution');
  const values=model.readField(receiver.fields,'MatrixConstructionProbe.values');
  assert.equal(values.length,size);let checksum=0;
- if(storeCase){
+ if(arrayCase){
   const rows=new Set();
   for(let g=0;g<size;g++){
    const group=values[g];assert.equal(group.length,256);
    for(let i=0;i<256;i++){
     const row=group[i];rows.add(row);assert.equal(row.length,width);
-    for(const value of row)assert.equal(value,0);
+    for(let k=0;k<row.length;k++)assert.equal(row[k],headerCase?k:0);
     checksum=(Math.imul(checksum,33)+row.length)|0;
    }
   }
@@ -80,10 +89,13 @@ if(command==='one'){
  }
  assert.equal(j.jit.syncCompileCensus().postMainSyncCompileCount,0);
  assert.equal(state.runs,native?1:0,'Control selected the wrong execution tier');
- console.log('CONSTRUCTOR_RESULT '+JSON.stringify({sourceRevision:revision,engine,caseName:storeCase?'reference-stores':'matrix',size,width,checksum,elapsedMs,ticks,instrumented,
+ console.log('CONSTRUCTOR_RESULT '+JSON.stringify({sourceRevision:revision,engine,caseName:headerCase?'allocation-headers':storeCase?'reference-stores':'matrix',size,width,checksum,elapsedMs,ticks,instrumented,
   nativeReferenceStoreSites:state.meta.nativeReferenceStoreSites||0,
   checkedReferenceStoreCalls:instrumented?state.meta.importStats?.get('aset_aastore')||state.meta.importStats?.get('aset_r')||0:null,
-  referenceStoreEmitterWithheld:replacementInstalled,
+  referenceStoreEmitterWithheld:storeCase&&replacementInstalled,
+  ...(headerCase?{nativeArrayAllocationMetadataSites:state.meta.nativeArrayAllocationMetadataSites||0,
+   allocationMetadataWithheld:replacementInstalled,baseQueries:instrumented?state.meta.importStats?.get('abase')||0:null,
+   lengthQueries:instrumented?state.meta.importStats?.get('alen0')||0:null}:{}),
   nativeEntries:state.runs,nativeExits:state.meta.directFrameContext?.exitCount||0,lateJavaCompiles:0,
   sourceSha256:hash(source),classSha256:hash(fs.readFileSync(path.join(directory,'MatrixConstructionProbe.class'))),
   harnessSha256:hash(fs.readFileSync(script)),node:process.version,execArgv:process.execArgv,
@@ -91,7 +103,7 @@ if(command==='one'){
  process.exit(0);
 }
 
-assert.ok(['inspect','run','stores-inspect','stores-run'].includes(command),'Use constructor.mjs inspect|run EXACT_CHANGED_REVISION');
+assert.ok(['inspect','run','stores-inspect','stores-run','headers-inspect','headers-run'].includes(command),'Use constructor.mjs inspect|run EXACT_CHANGED_REVISION');
 fs.mkdirSync(directory,{recursive:true});const java=path.join(directory,'MatrixConstructionProbe.java');
 if(!fs.existsSync(java)||fs.readFileSync(java,'utf8')!==source||!fs.existsSync(path.join(directory,'MatrixConstructionProbe.class'))){
  fs.writeFileSync(java,source);execFileSync('javac',['--release','8','-proc:none','-d',directory,java]);
@@ -101,8 +113,8 @@ const trial=report.optimizationTrials.multiArrayAllocation||={observations:[]};
 let observation=trial.observations.find(x=>x.sourceRevision===revision&&x.sourceSha256===hash(source));
 if(!observation){observation={sourceRevision:revision,sourceSha256:hash(source),diagnostics:[],runs:[]};trial.observations.push(observation);}
 const save=()=>fs.writeFileSync(reportPath,JSON.stringify(report,null,2)+'\n');
-const one=mode=>parseMeasurementResult(execFileSync(process.execPath,[...flags,script,'one',revision,mode,...(command==='stores-inspect'?['stats']:[])],{encoding:'utf8',maxBuffer:1024*1024}),'CONSTRUCTOR_RESULT ');
-if(command==='inspect'||command==='stores-inspect'){
+const one=mode=>parseMeasurementResult(execFileSync(process.execPath,[...flags,script,'one',revision,mode,...(command.endsWith('-inspect')?['stats']:[])],{encoding:'utf8',maxBuffer:1024*1024}),'CONSTRUCTOR_RESULT ');
+if(command==='inspect'||command.endsWith('-inspect')){
  for(const mode of modes)if(!observation.diagnostics.some(r=>r.engine===mode)){
   const row={...one(mode),excludedFromTiming:true};observation.diagnostics.push(row);save();console.log(JSON.stringify(row));
  }

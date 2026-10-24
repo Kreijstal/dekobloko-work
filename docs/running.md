@@ -17552,3 +17552,59 @@ site count a CPU share or use it as evidence of a broad execution improvement.
 The original PCM-only timer excludes this setup work, so no redundant original
 PCM or known baseline measurement is performed. Source/tests remain durable in
 the experiment refs; actual master/index/default artifact/deployment unchanged.
+
+### Fresh primitive allocation headers without native reference writes
+
+Read the selection policy and previous conditional-resume experiments instead
+of repeating them. Current full counters confirm their known limitation: partial
+setup constructors do not qualify for complete-Wasm entry. Do not relaunch the
+previously rejected opcode/resume campaign merely to rediscover that handoff.
+
+A distinct emitted-code gap is simpler: a fresh primitive newarray still calls
+host base/length metadata queries at its first numeric access. The native-store
+experiment publishes an allocation header only for values feeding its store
+proof. Separate that useful allocator transport from all reference-store/backing
+changes. The new candidate starts from 029, without new Proxy reads, native
+reference writes, unrelated opcodes or widened method selection.
+
+Generic bounded `nativeArrayAllocations.js` selects only direct newarray roots
+used by primitive array access/length or a reference return. Boolean arrays and
+unproved producers retain the old path. One private 8-byte area per VM receives
+the allocation-owned header from the existing allocator import, then generated
+code consumes it immediately. There is no JS multi-result transport allocation,
+public getter, eager initializer or intervening guest callback. Existing native
+base/fallback, Java bounds, representation and return-ownership checks remain.
+No game identity or opt-in flag is introduced. Emission plans/sites are cleaned
+with the other SSA maps; a scalar counts actual sites after discovery.
+
+Focused commands in the sole `/tmp/geoblox-native-parity-7zCq8O/jvm-source`:
+
+```
+node scripts/generate-jre-index.js
+node --check src/jit/nativeArrayAllocations.js
+node --check src/jit/StructuredWasmCompiler.js
+node --check src/jit/wasmRuntimeImports.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeArrayAllocations.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeArrayReturnOwnership.test.js test/wasmParameterArrayAbi.test.js
+```
+
+Final **182/182** and **134/134**. The first fixture launch failed assertions
+because its static reference-return call does not use existing canonical array
+return transport, its raw handler invocation did not follow the -3 Java
+continuation, and its fake allocator returned null rather than a supported
+non-heap array. Correct the fixture to exercise instance return transport,
+follow the actual handler continuation, and return a real unregistered typed
+array. No runtime behavior was weakened to pass these assertions. Tests cover
+actual site counts, zero redundant queries, intervening allocation headers,
+all primitive conversions, wide/negative-zero values, return ownership/clearing,
+negative sizes, exact bounds/handlers, non-heap fallback, work/scratch exhaustion
+and compiler cleanup. Static reference-return transport remains unchanged.
+
+Extend existing constructor.mjs with `headers-inspect` / `headers-run`: a new
+constructor creates and initializes 16384 distinct 8-int rows. Both modes use
+the changed candidate; the diagnostic observer withholds only the allocation
+metadata plan in the query mode. Validate all dimensions, identities and values
+outside the timer. No known old JVM/TeaVM/HotSpot execution or restoration check.
+`node --check apps/loading/constructor.mjs` passes. Prior owned store extraction/
+logs were removed after source and complete receipts became durable; there is
+still only one JVM source extraction and one benchmark JSON.
