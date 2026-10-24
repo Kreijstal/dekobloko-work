@@ -16662,3 +16662,163 @@ refuse it if the existing atomic-leaf composition cannot prove that. Inspect
 coverage in **all active tiers** for a changed candidate before considering
 another original/full gate. Reuse the saved controls; never replay source 029,
 TeaVM, HotSpot, or a withdrawn candidate to check that it is unchanged.
+
+
+#### Nested literal call facts in an existing composition (2026-10-24)
+
+The previous goal turn made progress: its source proof, small-case gain and
+failed full gate are durable, and the failure narrowed the next question.
+Re-read the actual JVM worktree and Deko HEAD `94d0c03`; do not resurrect the
+withdrawn feature in the expanded active worktree or run a restoration test.
+This experiment uses one expendable source extraction from archived candidate
+`f3e5ffbc6fcb7135a31cd8f5b6a6a6f11b201021`. Actual JVM master/index and unrelated
+decompiler/older experimental work remain untouched.
+
+The source-level gap was confirmed and implemented: `buildCalleeBody` now
+supplies its original callee-local SSA argument facts to the existing interior
+`planInstanceSite` call. An inner literal such as `read(7)` may therefore prove
+its otherwise-refused bad arm dead. This does **not** infer unknown wrapper
+parameters from a caller's literals or enable a new recursive/loop policy.
+The existing depth, 96-item admission, total code budget and bounded proof work
+still apply. Child branch counts propagate to the accepted outer body so its
+existing constant-sensitive opaque cache policy is actually selected.
+
+Interior guard/fallback behavior is unchanged: a non-elided inner dispatch
+still cannot be flattened after an earlier heap write that its guard miss
+would replay. The test's polymorphic wrapper and late nullable child both
+retain their original invocation rather than relaxing that rule. Fixed `this`
+child dispatch can compose after writes because the outer receiver guard has
+already established its class/null assumptions. No game identity, new runtime
+flag, new resumable activation policy or broadly disabled defensive check was
+added to java-tools.
+
+Source **`fa725ddff5163a513746835df09ce7e2316ac2bf`**, parent `f3e5ffbc…`,
+ref **`experiment/teavm-nested-constant-inline`**, contains the small compiler
+change and new generic `test/nestedConstantArgumentInline.test.js`. The test
+proves that the **outer installed body** actually carries the new inline,
+rather than passing only because an independently compiled child handles the
+call. It covers both heap representations, two sequential reads with wrapper
+and caller prefixes/suffixes, nested 64-bit operand prefixes, overwritten and
+unknown arguments, an opaque argument producer, loaded overrides, null/late
+bounds faults with exact completed stores, late child guard refusal, foreign
+array getters that replace the field container, and distinct reference getters
+that return different captured arrays. Compilation is frozen before execution.
+Initial result: **150/150**.
+
+The related candidate-only command was:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/inlineIntegerArguments.test.js test/constantArgumentInline.test.js test/nestedConstantArgumentInline.test.js test/inlineActivationResume.test.js test/wasmColdIntegerInline.test.js test/wasmStaticInlineHandlers.test.js test/nativeObjectBody.test.js test/nativeObjectFieldCodegen.test.js test/wasmCompilerRetention.test.js
+```
+
+Result: **1006/1006**. No known source 029, TeaVM, HotSpot, old failed candidate,
+or restored worktree was executed for comparison or fingerprint validation.
+
+`apps/loading/constant-inline.mjs` now also builds a new nested reduction:
+a wrapper increments its own round counter, then combines two guarded reads;
+the measured caller loop invokes that wrapper. It performs 1,048,576 byte
+reads over 524288 wrapper invocations in one execution without warmup. Each
+child's literal is inside the wrapper, not at the caller's original root site.
+The returned checksum is **-453509120**, final position 1048576, round count
+524288, and bad-arm call count zero. The oracle checks all input bytes after
+the timer and requires zero late Java compilation.
+
+The withheld variant must leave the earlier root specialization active;
+withholding *all* constant specialization would falsely credit this six-line
+extension with the previous root-only feature's gain. The archived loader now
+accepts an optional diagnostic source transformer. For this new withheld case
+only, the harness requires exactly one occurrence of
+`()=>callIntegerConstants(ctx,codeAttr,method,className,idx)` and replaces just
+that inner argument-fact supplier with `null`. It records the exact needle,
+replacement, before/after module hashes and archived-loader hash. No checkout
+JVM module is loaded, and an ordinary archive load performs no transformation.
+This is an explicit emission ablation in Deko, not a public VM flag or a game
+workaround in the compiler.
+
+```
+node --check apps/loading/constant-inline.mjs
+node apps/loading/constant-inline.mjs build-nested
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/constant-inline.mjs run-nested fa725ddff5163a513746835df09ce7e2316ac2bf
+```
+
+Fresh-process results, alternating variants:
+
+| Variant | Samples ms | Median ms |
+| --- | --- | ---: |
+| Nested facts | 3.661632, 4.021588, 4.880748 | 4.021588 |
+| Only nested facts withheld | 15.612729, 17.010921, 15.692196 | 15.692196 |
+
+All checks pass. Each timed child used Node 22.23.2, CPU 2,
+`--max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation`; no
+concurrent tests/builds/profiling ran. The new reduced-case control was measured
+once as this three-sample set and must be reused for any subsequent refinement.
+The previous reader fixture/control was not rerun. Observations remain in the
+single canonical ledger under `constantArgumentInlining.nested`.
+
+The actual loader coverage tool now inspects installed entry/callee/OSR
+metadata, deduplicated by identity within each method state. Its previous
+primary-state-only record is preserved and must not be compared as though it
+covered all tiers. For the changed candidate:
+
+```
+node --check apps/loading/call-code.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs fa725ddff5163a513746835df09ce7e2316ac2bf nested-constant-inline-coverage
+```
+
+The preparation boundary is intercepted before main; guest ticks and asset
+requests throw. It found **22 sites across 11 methods**, all in entry metadata
+in this particular census, zero guest ticks and zero asset requests. Additional
+admissions include `ByteArrayBuffer.writeIntBE`; the instrument decoder reports
+six sites. These are installed-code facts, not CPU shares or proof of a loading
+speedup. Do not repeat preparation on the old candidate to obtain a matched
+census; these exact changed-candidate observations answer the current question.
+
+The positive new-case result and actual installed coverage earned this
+candidate-only full gate (three sequential fresh Node processes, CPU 2):
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/probe.mjs slab all fa725ddff5163a513746835df09ce7e2316ac2bf loading
+```
+
+Candidate run ID: **`3e018f37-89be-4cd0-8f06-ee79d19018e9`**. Each full raw
+observation is retained in `constantArgumentInlining.nested.fullObservations`;
+there is no second report/JSON or baseline replay.
+
+| Sample | Music ms | Graphics ms | Total ms |
+| --- | ---: | ---: | ---: |
+| 1 | 1565.889386 | 315.875988 | 1881.765374 |
+| 2 | 1491.253456 | 317.485663 | 1808.739119 |
+| 3 | 1746.294666 | 338.795063 | 2085.089729 |
+
+Every checksum is **18:218292:2368412830:205:7597510:3045679678**, all outputs
+match, and every sample has zero late Java compilation. Median
+**1881.765374 ms** is **1.041365511x** the saved **1807.0171855 ms** control,
+and **5.230909774x** saved TeaVM **359.739597 ms**. The target remains
+**395.7135567 ms**. Do not claim a causal 4.1% regression from unmatched ranges,
+but there is no demonstrated full-loading gain and no promotion is justified.
+The root-only experiment's original full samples were reused as context, never
+rerun to validate this extension.
+
+All implementation/test work remains in `experiment/teavm-nested-constant-inline`
+and its ancestors. This turn never installed the feature in the expanded
+active JVM worktree; only its single source extraction was edited. Actual JVM
+HEAD/index, unrelated work, selected default/artifact and deployment remain
+untouched. No withdrawal/restoration tests or fingerprint checks are needed.
+Temporary source/diagnostics can be deleted after source/harness provenance is
+recorded; the Deko source scripts and this journal are the durable changes.
+The 1.1x goal remains active and unmet.
+
+Do not treat another small guard-admission gain as likely to close the gap.
+Reading the **existing** final full-run metadata (no new execution/profile)
+confirms 5119 direct packet entries and 883256 vector entries, both with complete
+compiled primary bodies and zero native exits in that snapshot. Those are
+coverage/invocation facts, not CPU shares. The codebook constructor's missing
+`multianewarray` is also still visible in this isolated source, but its separate
+opcode-only implementation already failed the full gate at a 1983.876933 ms
+median. Do not rediscover or rerun that rejected campaign. Likewise the journal
+already records failed same-module linking, paired vector storage, row-metadata
+forwarding, large mirrors, bounds expansion and frame-rematerialization cohorts.
+Before choosing another code change, compare the retained actual vector/packet
+WAT and TeaVM call/return paths against those recorded failures; a new proposal
+needs a distinct static/code witness and a relevant small semantic case. Do not
+start another CPU-attribution campaign or refresh any of the saved controls.
