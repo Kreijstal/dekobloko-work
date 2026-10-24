@@ -15,18 +15,39 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
 const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
 options.classpath=[path.join(family==='mdct-frame-remat'?path.join(player,'mdct'):fullGraph||directMusic||originalFlow||family==='frame-remat'?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
-let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls,stableHeaders;const proofCensus=[],translationFailures=[],headerCensus=[],checkpointCensus=[],checkpointPlans=new WeakMap(),staticLoopCensus=[],staticRegionBounds=new WeakMap();
+let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls,stableHeaders;const proofCensus=[],translationFailures=[],headerCensus=[],checkpointCensus=[],checkpointPlans=new WeakMap(),staticLoopCensus=[],staticRegionBounds=new WeakMap(),fieldArrayPlans=new WeakMap(),fieldArrayCensus=[];
 const preloadModules=family==='ssa-liveness'?['src/analysis/frameLocalLiveness.js','src/jit/stackifyNumericValues.js']:
  family==='inlined-lifetimes'||family.endsWith('frame-remat')?['src/jit/wasmInline.js','src/jit/stackifyNumericValues.js']:family==='packet-metadata'?['src/jit/stableArrayHeaders.js']:[];
 const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{preloadModules,observeModule:({filename,exports})=>{
+ if(family==='field-array-coverage'&&filename.endsWith('/src/jit/nativeObjectBody.js')){
+  const prepare=exports.prepare;
+  exports.prepare=function(c,structured,preflight,...rest){
+   const plan=prepare(c,structured,preflight,...rest);
+   if(!preflight&&(plan?.partial&&!plan.calls.size||c.className==='MusicDecoder'&&c.method.name==='decodePcmBudgeted'))
+    fieldArrayPlans.set(c,{key:c.className+'.'+c.method.name+c.method.descriptor,
+     noCallRegion:!!plan?.partial&&!plan.calls.size,blocks:plan?.blocks?.size||0,fields:plan?.fields?.size||0,
+     arrays:plan?.arrayCaches?.size||0,closedCalls:plan?.calls?.size||0,
+     gates:{inline:!!c.origIdx,staticBody:!!c.nativeStaticArrayBody,liveRanges:c.liveRanges.length,
+      guardedLoops:c.guardedNestedArrayLoopPlans.size,demotes:c.demoted.size}});
+   return plan;
+  };
+ }
+ if(family==='field-array-coverage'&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
+  const translate=exports.prototype.translateBody;
+  exports.prototype.translateBody=function(...args){
+   const meta=translate.apply(this,args),row=fieldArrayPlans.get(this);
+   if(meta?.bytes&&row)fieldArrayCensus.push({...row,meta,full:!!meta.fullyCompiled,moduleBytes:meta.bytes.length});
+   return meta;
+  };
+ }
  if(['static-loop-region-bound','static-loop-gates'].includes(family)&&filename.endsWith('/src/jit/nativeObjectBody.js')){
   const prepare=exports.prepare;
   exports.prepare=function(c,structured,preflight,...rest){
@@ -374,6 +395,15 @@ if(family==='static-loop-gates'){
  assert.ok(boundary,'Preparation did not reach the main boundary');assert.equal(failure,stop);
 }
 assert.equal(ticks,0);assert.equal(assetCalls,0);
+if(family==='field-array-coverage'){
+ const active=new Set(j.jit.wasmJit.compiled.flatMap(state=>[state.meta,state.callee?.meta,state.osr?.meta]));
+ const rows=fieldArrayCensus.filter(row=>active.has(row.meta)).map(({meta,...row})=>row);
+ assert.ok(rows.some(row=>row.key.startsWith('MusicDecoder.decodePcmBudgeted(')),'Missing actual PCM conversion admission');
+ const result={sourceRevision:revision,family,compileOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,rows,
+  note:'New closed field/array-writing loop admission only; normal emission, no Java/TeaVM execution, CPU attribution or baseline replay.',measuredAt:new Date().toISOString()};
+ const current=JSON.parse(fs.readFileSync(reportPath));(current.optimizationTrials.nativeCallCode||={observations:[]}).observations.push(result);
+ fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(result,null,2));process.exit(0);
+}
 if(['static-loop-coverage','static-loop-region-bound','static-loop-gates'].includes(family)){
  const active=new Set(j.jit.wasmJit.compiled.flatMap(state=>[state.meta,state.callee?.meta,state.osr?.meta]));
  const rows=staticLoopCensus.filter(row=>active.has(row.meta)).map(({meta,...row})=>row);

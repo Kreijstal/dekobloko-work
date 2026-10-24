@@ -364,6 +364,7 @@ try {
     nativeThrowCount:state.meta?.directFrameContext?.throwCount??null,
     structuredResumeEntries:state.meta?.structuredResumeEntries||[],
     nativeObjectBodyFieldSites:state.meta?.nativeObjectBodyFieldSites||0,
+    nativeObjectReceiverGuardElisionCount:state.meta?.nativeObjectReceiverGuardElisionCount||0,
     nativeObjectBodyArraySites:state.meta?.nativeObjectBodyArraySites||0,
     nativeObjectBodyReceiverCount:state.meta?.nativeObjectBodyReceiverCount??null,
     nativeObjectBodyLazyReceivers:state.meta?.nativeObjectBodyLazyReceivers??null,

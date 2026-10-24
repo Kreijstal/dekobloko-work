@@ -16186,3 +16186,278 @@ attribution. The next code-only question should address why actual music
 decoder operations lose their existing native representation proofs, using
 saved source/Wasm evidence and a small semantic reproducer before proposing
 another timed candidate; static-wrapper coverage alone did not close the gap.
+
+### Closed array-writing loops without helper calls (2026-10-24)
+
+The previous turn is progress: it rejects two safe inlining component gates,
+preserves an independent assembly crash fix and withdraws the failed features.
+Continue the full 1.1x goal with the saved controls unchanged. Do not rerun
+baseline/TeaVM/HotSpot measurements, restoration checks or CPU attribution.
+
+The saved TeaVM packet WAT uses typed GC array values directly. Its implicit
+engine bounds checks still count; absence of a source `i32.ge_u` is not proof
+that TeaVM removed those checks. Earlier array-region expansion, affine bounds,
+header-lifetime, storage forwarding and nested-call experiments are already
+recorded rejections or overlapping results; do not repeat them blindly.
+
+Read the actual PCM consumer as well as its packet producer. Its float-to-byte
+conversion loop reads an instance byte-array field and a captured float-array
+result, narrows/clamps exactly and writes output. `nativeObjectBody.prepareRegions`
+currently requires a closed static helper call even when an entire array-writing
+loop contains only already supported numeric/field/array operations. The lack
+of a helper is an admission restriction, not a missing ownership/effect proof.
+
+Add one generic alternative: an existing closed region may qualify without a
+helper when a structured loop is wholly within its certified blocks, contains
+an authenticated instance-field operation and writes a primitive array. Keep
+the original instruction snapshots, first-use ownership guards, bounds checks,
+outside-edge invalidation and fallback paths. Publish no whole-body contract.
+No static-array dependencies/casts qualify through this alternative. Existing
+method/block/field/receiver budgets remain; the loop-tree scan has depth 64 and
+50000 work limits. No game identity or flag is added to java-tools.
+
+An initial broader form also admitted readonly array loops. Two existing
+`nativeObjectFieldCodegen` assertions then caught a formerly in-place checked
+foreign-array path becoming a new handoff. Preserve that established path:
+require an actual array **store** in the certified loop. Do not weaken those
+assertions. Initial new-fixture failures also came from expecting direct native
+completion after deliberate field-container replacement, and feeding a native
+exception status to an ordinary instruction continuation. Use the supported
+handoff for revoked storage and `WasmJit.execute` for native exceptions; retain
+the exact final-result, partial-write and one-time-callback expectations.
+
+The new semantic fixture exercises float rounding/clipping (including NaN and
+infinities), byte narrowing, callback replacement between chunks, native/foreign
+output arrays, exact cursor increments before a late bounds/null store fault,
+original handlers, zero rounds, real fuel suspension and zero late Java
+compilation. Negative cases keep loopless, readonly, volatile and callback-in-loop
+code on its existing path.
+
+Isolated source **`eaa52039f793b9092732e2c7d680438f1863f55b`** is based on the
+independent assembly/opcode source `c61eef7f…`; expanded source is
+**`4f888de517fbef7100a520f4e515d61cba35e855`**, based on `9bd5849d…`. Both contain
+only `src/jit/nativeObjectBody.js` and the new
+`test/nativeFieldArrayRegion.test.js` beyond their parents. Preserve them as
+`experiment/teavm-field-array-loop[-expanded]`, without moving actual JVM master
+or its ordinary index or touching unrelated decompiler WIP.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeFieldArrayRegion.test.js test/nativeObjectBody.test.js test/nativeArrayHeaderLifetime.test.js test/nativeArrayReturnOwnership.test.js test/nativeObjectFieldCodegen.test.js test/structuredLoopResume.test.js test/wasmCompilerRetention.test.js
+node --check src/jit/nativeObjectBody.js
+```
+
+Result: **789/789 pass**, on both the expanded worktree and the isolated source.
+The isolated archive generates its own ignored JRE index before running tests.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs eaa52039f793b9092732e2c7d680438f1863f55b field-array-coverage
+```
+
+Compile-only preparation reaches the exact pre-main sentinel with zero guest
+ticks and asset requests. The actual `decodePcmBudgeted` candidate is fully
+compiled with **18 regional blocks, nine field sites, seven array sites and
+zero closed helper sites**. Seventeen other prepared methods select the new
+no-helper alternative: sixteen PCM mixers and a hash reset. This is admission
+coverage, not evidence that all of them execute during loading or a speed claim.
+Their compact rows join `nativeCallCode.observations` in the one existing ledger.
+
+Add a new PCM-shaped reduced benchmark in `apps/loading/field-array.mjs`, rather
+than replay an unchanged microcase. Both variants execute the same archived
+changed JVM and exact new classfiles. The withheld variant disables only the
+new no-helper region result; candidate preflight snapshots remain in both.
+This is an **emission ablation**, not a newly measured old comparator or proof
+of the whole optimization's benefit. Allocate the genuine owned input/output
+outside the timer; execute one 1048576-sample conversion without warmup; compare
+all output via an independent scalar checksum after timing. Each observation
+uses a fresh VM, CPU2, Node 22.23.2, the existing 1 GiB/eager-Wasm flags and fixed
+high invocation fuel. This is not a production scheduler/FPS measurement.
+Parent transport supplies only the fixture and options over stdin; no full ledger
+is parsed inside a timed worker. Capture factories from the archived modules,
+so private ownership WeakMaps cannot accidentally come from the checkout.
+
+```bash
+node --check apps/loading/field-array.mjs
+node --check apps/loading/call-code.mjs
+git diff --check
+node apps/loading/field-array.mjs build
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/field-array.mjs run eaa52039f793b9092732e2c7d680438f1863f55b
+```
+
+Checks pass; building the new fixture executes no Java or TeaVM workload.
+Generated Java/classfiles stay in the existing ignored cache; only their
+generator and the shared ledger's hashes are retained. The micro gate is in
+progress; no original/full timing or promotion is justified until it passes.
+
+The first reduced cohort completes with checksum **-751304704** throughout and
+zero late compilation:
+
+| New PCM-shaped emission case | Three samples ms | Median ms |
+|---|---|---:|
+| No-helper region `eaa52039…` | 7.652875 / 5.580448 / 5.545577 | 5.580448 |
+| Withhold only that emission, same source | 6.552912 / 5.459264 / 5.324720 | 5.459264 |
+
+This admission alone establishes no gain and earns no original/full run.
+Inspect its emitter: `nativeObjectBody.field` still tests the same receiver
+certificate before successive fields in one certified basic block. Its existing
+proof excludes successful untrusted callbacks or field-container replacement
+within that block. Therefore the successful **first** native field operation
+proves authentication for subsequent fields of that exact SSA receiver in the
+same block. Distinct receiver identities and different blocks retain their first
+guard. This applies to the existing certified-only native-body emitter, not a
+new repetition of the old generic slab/native-versus-checked arm experiment.
+
+Refinement **`50f1f5cf39b061023aeadc6e9b54f6a2c08e97ac`** (expanded
+**`9f38f43e22d652eb57408cd32f54edd6524c5ff0`**) precomputes only that bounded set
+of redundant field guard sites and reports its scalar count. No new guard,
+runtime trust bit, cross-block assumption, frame policy or flag is added. The
+original first-use ownership check, all array ownership/bounds checks and all
+snapshots remain. Preserve sources as
+`experiment/teavm-field-array-guards[-expanded]`.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeFieldArrayRegion.test.js test/nativeObjectBody.test.js test/nativeArrayHeaderLifetime.test.js test/nativeArrayReturnOwnership.test.js test/nativeObjectFieldCodegen.test.js test/closedNativeCalls.test.js test/structuredLoopResume.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/field-array.mjs run-native 50f1f5cf39b061023aeadc6e9b54f6a2c08e97ac
+```
+
+Both expanded and isolated validation pass **955/955 assertions**. Candidate-only
+new reduced samples are **4.788766 / 4.195416 / 4.733356 ms**, median
+**4.733356 ms**, all below the saved withheld-control range. They retain eight
+regional blocks, six field sites, two array sites and **three redundant receiver
+test sites omitted**. All checksums match and late Java compilation is zero.
+Do not rerun the now-known withheld control. The ~13% median difference is a
+component screen, not a fresh causal estimate or full-loading/TeaVM parity.
+
+This positive small gate warrants the actual original decode, reusing all saved
+PCM/TeaVM/HotSpot controls:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 50f1f5cf39b061023aeadc6e9b54f6a2c08e97ac
+```
+
+That changed-candidate cohort is in progress. No original/full improvement,
+selected comparator advance, release artifact or deployment is claimed.
+
+The changed original cohort completes at **89.359848 / 96.509248 / 88.212208
+ms** (run `b5164ae2-f92f-4a01-ba51-279b6ddb94a4`),
+median about **89.360 ms**, compared with saved **93.269749 ms**. Every one of
+the 348249 saved PCM bytes matches, and late Java compilation is zero. The
+ranges overlap, so this is not an isolated causal percentage claim. The clear
+new reduced-path result plus successful original validation warrant a full
+gate; they do not establish the 1.1x objective.
+
+First isolate the optimization on the selected full source. The earlier
+`50f1f5c…` composition also contains the experimental multianewarray and independent
+assembler fix. Neither is necessary for this field/array proof. Focused source
+**`1bf1d7da669943c7e47abc64167c0fc995943dae`** has parent **`029834e…`** and only
+three changed files: the region/receiver-proof module, one scalar metadata field
+in `StructuredWasmCompiler`, and the new semantic fixture. It excludes unrelated
+opcode/assembly and nested-recovery/pairing experiments. Preserve it as
+`experiment/teavm-field-array-focused`, without changing actual JVM HEAD/index.
+
+The same eight-file validation command above passes **955/955** on this exact
+focused archive, after generating its own ignored JRE index. Commit-to-commit
+review confirms the three-file scope; no restored or unchanged source is run.
+Do not replay the original or small controls merely because ancestry is isolated:
+the full workload gate is the next useful changed-candidate execution.
+
+For future reduced observations, strengthen the post-timer scalar oracle to
+derive bytes from the original fixed pattern rather than the live input, compare
+each byte, and assert readonly input. Existing nine observations retain their
+actual earlier harness hashes/checksum protocol; do not retroactively claim
+these stronger assertions ran or replay them for identity checking. This
+post-timer strengthening changes no measured Java operation or fixture class.
+`node --check apps/loading/field-array.mjs` passes.
+
+Preserve the exact two measured handwritten harness versions in Deko Git
+history as well. Initial cohort script: `30a419c7189390a7d78922d7ef09ab6c37320925`,
+SHA256 `d1181bf0e03b8ee3a22dcee9ab3388dbf9df78d2f974c1e95ca008d75a05b0b8`.
+Shared-guard cohort script: `1792b7112d05ff420bdb801819dff060958a0716`, SHA256
+`ba96b5773f186f0441a9d50a478526cda49af51849877ad39e817b1933b42769`.
+Both use the same `apps/loading/field-array.mjs` path; the latter is retained by
+`experiment/field-array-measured-harness`. Reconstruct these source snapshots
+from the handwritten edits and check against their already recorded harness
+hashes for archival provenance; no baseline, Java/oracle workload or timing is
+executed. The working generator keeps the stronger future oracle without
+pretending it was the measured source. No duplicate report/source directories
+are needed.
+
+The ordinary full probe now copies the compiler's scalar receiver-test omission
+count into its existing method summary **after the guest timer**. It does not
+enable CPU/import profiling or add execution callbacks. `node --check
+apps/loading/probe.mjs` and `git diff --check` pass.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/compare.mjs --browser node --pairs 3 --backends jvm --revision 1bf1d7da669943c7e47abc64167c0fc995943dae --options diagnostic
+```
+
+This candidate-only full cohort is in progress, with the saved comparator and
+TeaVM result unchanged. No tests, builds or profiles overlap it. The actual
+full-loading result, browser/phone/FPS/memory/stability gates and promotion all
+remain unproven.
+
+The full cohort completes; retain all three samples:
+
+| Focused full sample | Music ms | Graphics ms | Total ms |
+|---|---:|---:|---:|
+| 1 | 1432.253819 | 626.091506 | 2058.345325 |
+| 2 | 1453.255675 | 293.728493 | 1746.984168 |
+| 3 | 1535.551339 | 300.324531 | 1835.875870 |
+
+The median **1835.875870 ms** does not beat saved **1807.0171855 ms**, and is
+**5.10335x** saved TeaVM **359.739597 ms**. The broad ranges and slow graphics
+sample are retained; neither the smaller component nor original median proves
+a full-loading gain. All full checks match
+`18:218292:2368412830:205:7597510:3045679678`; late Java compilation is zero.
+All three actual PCM consumer summaries show 53 Wasm runs, 18 regional blocks,
+nine field sites, seven array sites and **two** omitted receiver-test sites.
+This is actual changed-path coverage, not CPU attribution. The new fixture's
+three omission sites are a different method and must not be substituted here.
+
+The existing `fieldArrayWritingRegions` trial retains its nine reduced raw
+observations, exact original cohort, compact exact full-cohort history,
+post-timer counter evidence, source refs and validation. The normal current
+full-comparison record remains available too. No extra JSON report is created.
+Do not advance any selected comparator, repeat this full cohort merely to hunt
+for a faster median, or deploy this candidate.
+
+Park the admission and guard-sharing changes in the refs above. Withdraw only
+`src/jit/nativeObjectBody.js` and `src/jit/StructuredWasmCompiler.js` to the prior
+expanded assembly source `9bd5849d…`, and remove the new feature fixture from the
+active worktree. Preserve the independent assembly fix and unrelated decompiler
+work, actual JVM master HEAD/index and existing selected artifact. Run **no
+restored-baseline tests, timings or fingerprint checks**. Generated sources and
+temporary logs are expendable once their exact refs/results are recorded.
+
+#### Bounded next question: constant-sensitive inline eligibility
+
+Read TeaVM's actual source before crediting it with interprocedural constants:
+`ConstantConditionElimination` initializes its facts from integer-constant
+instructions in the current `Program`; `WasmGCMethodGenerator` initially creates
+static/instance function parameters from the full method descriptor. This does
+**not** establish that every linked guard argument is removed globally. Existing
+Inlining maps callee argument variables to the caller's actual arguments, which
+can expose constants to subsequent local elimination. Do not assert more than
+these source observations without checking an actual compiled method.
+
+A concrete new eligibility case is visible in the fixed source and existing
+post-timer counters: `ByteArrayBuffer.readUnsignedByte(B)I` has **150952** actual
+direct entries in a full sample. It calls the modular-exponentiation helper
+only when its guard argument differs from 34. The original `readIntBE(B)I`
+contains a separate guarded arm but has only 198 such entries in that sample.
+These counts are relevance evidence, not CPU shares. Our small-callee admission
+walks both forward branches before it considers actual call arguments, so a
+bad-arm interior call can prevent inlining even where the caller passes the
+literal good guard. The earlier rejected constant-argument trace campaign was
+a different single-iteration intro kernel; do not revive that trace machinery.
+
+The next proof should first bound whether known integer call arguments can prune
+an otherwise rejected **acyclic** callee's flow before inline eligibility. Use
+actual SSA identities, not argument-slot guesses; overwrites must stop a fact
+from following the wrong value. Preserve argument evaluation order, receiver
+guards/null behavior, class readiness, array faults, partial writes, live handlers
+and original fallback/replacement behavior. Rewrite a proven conditional's stack
+consumption as well as its target so the discarded arm is truly unreachable to
+the next SSA build. Keep existing depth/work/code budgets and no game identities
+or new flags. A small semantic/static-code bound comes before any original/full
+timing. This is a question to prove, not an implemented optimization or a claim
+that it will close the remaining ~5x gap. The 1.1x goal remains active and unmet.
