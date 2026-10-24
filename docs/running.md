@@ -17223,3 +17223,82 @@ arity. readBits similarly has 7 results/4 cold globals and 528 native bytes
 unsigned bounds checks and the engine loop stack-guard call remain. No original
 or full-loading run has yet been earned. The next test is only the changed
 Huffman screen against saved controls.
+
+
+Cold-return candidate results, all reused controls and no oracle/baseline replay:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 79a8796a9852c914e3a89fb7fcf8c59614e9aaf8 huffman-inline
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-code 79a8796a9852c914e3a89fb7fcf8c59614e9aaf8
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-candidate 79a8796a9852c914e3a89fb7fcf8c59614e9aaf8
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 79a8796a9852c914e3a89fb7fcf8c59614e9aaf8
+```
+
+- Huffman: **53.742609, 56.442960, 54.117729 ms**, median **54.117729**,
+  saved matched control **55.497371**. This marginal difference has overlapping
+  ranges. Exact checksum -1268584370, zero late compilation. Harness b3d6d5e.
+- Separate vector: **86.623447, 84.009066, 84.453984 ms**, median **84.453984**,
+  saved historical comparator **89.520345** with a different source composition.
+  This is screening evidence, not a fresh causal comparison. Exact checksum
+  -1834486005, zero late compilation, one installed 483-byte vector worker.
+  The code-only outer vector is 7055 Wasm bytes / 5044 native instruction bytes;
+  the tiny helper does not make the whole outer method tiny. The first code-only
+  harness predates three added post-timer metadata fields (8172a67); measured
+  execution uses 8172a67. No extra baseline execution validates these fields.
+- Original Vorbis: **97.578144, 105.390576, 95.801648 ms**, median **97.578144**,
+  saved matched control **93.269749**. Every one of 348249 PCM bytes matches.
+  There are 134216 native vector entries, 682 native packet entries, no native
+  exits in those methods, and zero late guest compilation. These are ordinary
+  post-timer counters, not renewed CPU attribution or exact helper-entry counts.
+  Run ID 423425e5-6f6c-4ba2-937b-af6560eead11, harness 8172a67.
+
+The two small shapes earned the original test, but it **failed**. No full test,
+comparator advancement, promotion or deployment follows from 79a8796.
+
+#### Four-result boundary-budget ablation: does not rescue the original sample
+
+The changed native-code facts separate a four-result vector from a seven-result
+bit reader that grows in native bytes/stack. An isolated generic limit tests
+that specific distinction: allow reason/fuel plus at most two normal SSA values.
+Larger boundaries retain the existing native compiled body. This is an empirical
+experiment, not an asserted generally optimal threshold or new public flag.
+Source **8e1d095b66bd14082a02e15c2f116bf925890894**, parent 79a8796, is archived
+at experiment/teavm-numeric-boundary-budget. No application name enters the rule.
+
+The first narrowed suite is 96/100 because four assertions still require workers
+on the now-excluded wide-loop shapes; numeric results/fault behavior still pass.
+Update those assertions to check the intended compiled fallback and add a
+narrow captured-tree loop that is actually eligible. Its worker fuel exit/resume
+must retain the old allocation after the owner's field is replaced, preserve its
+prefix once, and never repeat prior bit stores. Final focused suite **108/108**:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeNumericKernelWrapper.test.js test/nativeMixedStateBody.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 8e1d095b66bd14082a02e15c2f116bf925890894 native-numeric-kernel-code
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 8e1d095b66bd14082a02e15c2f116bf925890894
+```
+
+The code gate confirms vector worker **1** / bit-reader worker **0**, with zero
+Java execution. Inspect installed helpers only when the compiler has an installed
+worker map; do not regenerate an excluded, already-inspected helper just to check
+its unchanged code. The four-result Huffman shape remains eligible; **skip its
+unchanged timing**. Original results are **98.888675, 97.292260, 102.386234 ms**,
+median **98.888675**, still above 93.269749. PCM matches every byte and there is
+zero late compilation. Harness 4d4508f; run ID 850d748d-4884-440d-92ee-b49dec9d0a32; raw rows stay in the
+canonical ledger. No full test or promotion is earned. Master/index/defaults and
+unrelated decompiler work are untouched; remove only this experiment's scratch
+extraction/logs/index after preserving the refs and this evidence.
+
+All cohorts above run sequentially on CPU 2, Node 22.23.2, 1-GiB old-space and
+eager optimizing Wasm, with no concurrent tests/builds/profiling. The full target
+remains **395.7135567 ms**, versus saved JVM median **1807.0171855 ms**.
+
+Next concrete unfinished validation found in prior evidence: source
+9189b2e2cef6f22b7b125f93b7508a91ff219815 (demand-driven large reference-array
+mirrors) passed 810 isolated assertions plus the new cold construction case,
+but was parked before any original/full gate. Its eager parent reduced the
+original sample to 89.290224 ms yet failed full loading at 1980.949516 ms.
+Demand construction avoided unused capability allocations in the new API case;
+that does not itself prove real loading benefit. Inspect and reuse the saved
+safety/construction evidence, then complete its missing changed-candidate
+original/full validation rather than re-testing its known source against itself.
