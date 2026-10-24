@@ -18737,3 +18737,225 @@ all new implementation/test files are isolated in Git refs. Remove only this
 pass's owned extraction, alternate index and logs. No restoration build/test,
 old-code fingerprint check or baseline timing is necessary. The 1.1x objective
 remains active and unmet.
+
+
+### Exit-specific numeric snapshots: changed candidate, saved controls only
+
+Source **5ec3b6afbe218d2afc71234259928242eb837a0f** is isolated at
+`experiment/teavm-region-worker-cold-state`, parent 16b3f73f. The JVM master/index
+and unrelated working files remain untouched. No unchanged JVM/TeaVM/HotSpot
+control, restoration test or identity check runs.
+
+The generic numeric worker now derives separate cold numeric packets from the
+actual original continuation. Fuel uses header slotDefsIn/entryStack; a fault
+uses its slotState, retained stackUnder and operation arguments. Normal results
+already travel on every return; outside definitions remain in the wrapper.
+Full-width J/D values are preserved. Every inside numeric value must belong to
+the certified union; unknown identities, missing required snapshots or bounded
+analysis exhaustion restore the complete old packet. Layouts retain only IDs.
+The wrapper restores precisely the selected packet, preserving reference recipes,
+original failing operation/PC, fuel/reason ABI and original memory evaluation order.
+
+An initial strict-prefix test failed because ordinary exception-only SSA sites
+intentionally omit stackUnder (the exception discards that prefix). Retry-capable
+sites retain it. The proof now follows that existing contract while refusing a
+malformed retained prefix; this does not change SSA capture or fallback behavior.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeKernelColdState.test.js test/nativeRegionKernel.test.js test/wasmCompilerRetention.test.js
+node --check apps/loading/nested-loop.mjs
+node --check apps/loading/call-code.mjs
+```
+
+The JRE index is generated only in the expendable extraction. Focused changed-code
+validation passes **198/198**. Coverage includes exact individual snapshots,
+conservative refusal, long/double faults, partial writes, aliasing, fuel after
+owner replacement, zero-trip behavior and graph retention. An actual Wasm call
+with exhausted fuel leaves every unneeded private global at its sentinel value.
+Both changed Deko scripts pass syntax checks.
+
+Deko adds `bounds-inspect` / `bounds-candidate` to run only the changed default
+mode, never the known withheld control. The code gate includes plain per-exit
+packet metadata. The original Java fixture and invocation remain fixed.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs bounds-inspect 5ec3b6afbe218d2afc71234259928242eb837a0f
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs bounds-candidate 5ec3b6afbe218d2afc71234259928242eb837a0f
+```
+
+Changed diagnostic: exact -456520192 checksum/all float outputs, one worker,
+four bounds elisions, one ordinary region guard, zero exits/late compilation.
+Diagnostic elapsed is excluded. Three fresh uninstrumented samples are
+**7.477525, 7.170427, 7.279837 ms**, median **7.279837 ms**, versus saved
+**11.790559 ms** for the earlier bounds worker. CPU2/Node22.23.2, 1-GiB old-space
+and eager optimizing Wasm are unchanged; no tests/builds/profiling overlap timings.
+This improves only that component comparator and earns the changed original code
+and correctness gate. It does not establish full loading or TeaVM parity.
+
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 5ec3b6afbe218d2afc71234259928242eb837a0f native-region-kernel-code
+```
+
+Compile-only gate exits 0: no guest ticks, assets, Java main or helper execution.
+Both changed helpers have a certified empty fuel packet. Helper 79's fault
+packets carry two values each; helper 85's active packets carry one to three.
+The retained global union remains available conservatively; only exact exit
+writes/reads narrow. Against saved code observations, helper 79 shrinks
+**1203 -> 835 Wasm bytes**, **1724 -> 728 native instruction bytes**, stack
+**0xa0 -> 0x38**. Helper 85 shrinks **1364 -> 932 Wasm bytes**,
+**1952 -> 632 native instruction bytes**, stack **0xc0 -> 0x38**. Both modules
+still contain only numeric boundaries/memory/globals with no Java/JS function
+calls; the optimizing engine's own cold stack-guard call remains. No CPU profile
+or causal elapsed claim is inferred from these static observations. Original
+changed correctness/timing, not unchanged MDCT or known controls, is next.
+
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 5ec3b6afbe218d2afc71234259928242eb837a0f 'MusicDecoder.decodePacket(I)[F'
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 5ec3b6afbe218d2afc71234259928242eb837a0f
+```
+
+The changed original diagnostic matches every PCM byte; the saved TeaVM WAT is
+reused rather than regenerated or executed. Uninstrumented original decode run
+**a22e9f8c-e09f-4571-8ad8-751c1f857b91** produces **92.704453, 109.694776,
+86.906070 ms**, median **92.704453 ms**. Keep the slow sample. The median is
+only 0.6% below saved **93.269749 ms**, with overlapping/broad ranges: **no
+established original improvement**. Do not advance the original comparator or
+run full loading on this evidence. The bounds-only component comparator advances
+to 5ec3b6af / 7.279837 ms. Full comparator/TeaVM target remain unchanged.
+
+A follow-on static proof checks another concrete boundary overestimate: the
+consumer index previously treated every outside phi argument as observed, even
+when that phi feeds only more unobserved parallel copies or a phi-only cycle.
+Seed demand from all ordinary emitted operands and live original continuations,
+propagate through numeric phi chains with a bounded worklist, and retain arguments
+only for demanded phis. Include roots inside the candidate loop: an outer-loop
+phi can be consumed there on a later iteration. Unknown Java contexts remain
+conservative; all ordinary body operands remain roots even for unused pure nodes.
+Do not rewrite SSA, snapshots or delete arbitrary code.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeKernelBoundary.test.js test/nativeNumericKernelPlan.test.js test/nativeRegionKernel.test.js
+```
+
+Focused changed-proof validation passes **294/294**. New cases include dead
+phi-only cycles, actual outside roots, inside roots observing a later outer
+iteration, retained prefixes, dead/unknown Java slots, and all 64 directed
+three-phi graphs checked against an independent graph reachability oracle.
+Inspect the changed original boundary first; do not time an unchanged helper
+just because its analysis implementation changed.
+
+
+Phi-demand source **b9e9d181cad894e137181ec28ecfb7803d5c8c07**, parent 5ec3b6af,
+is isolated at `experiment/teavm-region-worker-phi-demand`.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs b9e9d181cad894e137181ec28ecfb7803d5c8c07 native-region-kernel-bound
+```
+
+Changed compile-only boundary gate exits 0 with **74975** bounded work, no unknown
+context/failure. All 15 pure packet loops now have **two total normal results
+(reason/fuel)** instead of unobserved index/float phi outputs. No Java numeric
+live-out remains on those successful edges; cold state remains independently
+preserved. Three workers now install (formerly two), totaling **2946 Wasm bytes**;
+loop 56 has become eligible with 12 numeric parameters and eight memory sites.
+The other four wider loops still exceed the 12-input admission bound (14–18).
+This is an actual changed wrapper/worker set, so a changed-only small-case screen
+is warranted. No historical control or unchanged MDCT will be rerun.
+
+
+The first b9e9d181 screen accidentally started `bounds-candidate` before checking
+its diagnostic: that earlier fixture's worker had no changed boundary. Its three
+samples (9.379003, 7.177713, 7.243036 ms) remain raw receipts but are **excluded as
+an unnecessary unchanged-case run**, not a fresh comparator or proof of a gain.
+Do not repeat this. Inspect applicable emitted shape before timing.
+
+Deko now has a new `phis` case only for the new boundary question. Three float
+values assigned in the main array loop flow into a later loop's unobserved phi
+chains and are overwritten there. The new workload has never been timed against
+a known JVM/TeaVM/HotSpot control. `phisControl` uses the same changed backend,
+adds back all conservative phi-copy obligations to the certified consumer index,
+and thereby withholds only this new demand proof; it never changes SSA.
+The existing bounds/region Java source is left unchanged when this case is absent.
+
+Initial fixture checks are deliberately not timed: an empty suffix loop collapsed
+trivial phis and did not exercise the proof; a swap suffix made Java locals live
+and correctly retained five results. Overwriting those locals in the suffix
+creates actual unobserved nontrivial phi chains without fabricating live-state
+omissions. The final diagnostic verifies five versus two normal results, zero
+versus one worker, the original ownership guard in both modes, checksum
+-456520192/all float outputs, and no native exits or late Java compilation.
+An extra preparation-only observer reports bounded input/result/fault counts.
+
+```
+node --check apps/loading/nested-loop.mjs
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs phis-diagnose b9e9d181cad894e137181ec28ecfb7803d5c8c07
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs phis-run b9e9d181cad894e137181ec28ecfb7803d5c8c07
+```
+
+| New phi-boundary case | Demand proof ms | Conservative copy obligations ms |
+|---|---:|---:|
+| 1 | 7.310487 | 8.897761 |
+| 2 | 7.268339 | 8.954206 |
+| 3 | 7.268948 | 10.002579 |
+
+Medians **7.268948 vs 8.954206 ms**, lower with proof in all three fresh pairs.
+No tests/builds/profiling overlap timings; CPU2/Node22.23.2/1-GiB/eager Wasm are
+unchanged. This earns only the changed original code and PCM/timing gate; it does
+not replace the full-loading comparator or establish TeaVM parity. The code gate
+will inspect the three actually changed helpers; original timing itself checks
+all PCM bytes, so no redundant second instrumented original execution is needed.
+
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs b9e9d181cad894e137181ec28ecfb7803d5c8c07 native-region-kernel-code
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm b9e9d181cad894e137181ec28ecfb7803d5c8c07
+```
+
+Changed code gate exits 0 without guest/helper/main execution or assets. Actual
+helpers 79/85/56 have 7/8/12 numeric parameters and two results each. Their Wasm
+sizes are **867/960/1119 bytes**, native instruction sizes **712/624/888 bytes**,
+and stack reservations **0x40/0x40/0x60**. Helpers 79/85 move their header index
+into the fuel-only packet rather than every normal return. Newly admitted 56
+has a five-value fuel packet (index plus four float phis); this is a concrete
+remaining snapshot question, not evidence that those floats may already be
+removed. All three snapshot proofs certify their packets. Original elapsed
+cohort is pending; its run checks all PCM and late compilation without profiling.
+
+
+Original b9e9d181 run **63d94263-ae4a-4d06-9657-a58463d4cc80** completes with **95.007943, 99.233747, 94.107485 ms**, median **95.007943 ms**. All PCM bytes match and every late-compilation list is empty. This **fails** saved **93.269749 ms**; retain all samples. No full-loading run, original-comparator advancement, promotion or deployment follows. Both generic proofs and their focused tests remain isolated, reviewable source refs. The sole JSON links the existing raw component/code/original rows and marks the unnecessary unchanged bounds-case timing excluded. Its initial rejected phi fixtures are marked diagnostic-only; no extra report files are created. The selected full comparator remains 029834e1 / **1807.0171855 ms**, the saved TeaVM control **359.739597 ms**, and the 1.1x target **395.7135567 ms**.
+
+
+`phis-run` now requires saved, successful diagnostics showing one proved worker
+versus zero with conservative copy obligations before any timing starts. Final
+`node --check apps/loading/nested-loop.mjs`, `node --check apps/loading/call-code.mjs`
+and scoped `git diff --check` all pass. Do not execute the saved case again just
+to exercise this read-only prerequisite. The runtime proof/test commits remain
+5ec3b6af and b9e9d181; this last change is only Deko timing admission.
+
+Next evidence-led work, still unimplemented: match the newly visible helper-56
+fuel packet against the compiler's **actual** original-Java spill demand. It
+contains an index and four float phis, although the successful continuation
+observes none of them. A cold packet may omit a slot only if the existing
+resume/exception/retry protocol also omits it; preserve boolean captures,
+inline-parent/callee states, stack prefixes, full-width values and unknown
+contexts. Derive a bounded helper-local numeric dependency slice from actual
+memory checks/effects, control, normal results and those exact cold snapshots.
+That could remove phi inputs used only by unobserved parallel copies and admit
+some of the four remaining 14–18-input loops. Do not increase admission limits,
+zero unknown operands, repeat global SSA DCE, or declare this sound from tuple
+counts alone. No hypothesis here establishes CPU attribution or an elapsed gain.
+Use the new applicable shape/correctness tests before timing; reuse all saved
+controls. If helper-boundary work continues failing original execution, a larger
+private Wasm-GC Java-reference ABI is a distinct possible direction: carry a
+canonical reference token across Java calls and reconstruct host wrappers only
+at interoperability/cold edges, preserving storage-only lifetime contracts by
+keeping identity tokens separate from raw native stores. That is a major design
+and proof obligation, not a completed optimization or permission to bypass
+ownership/customization checks.
+
+No restoration build/test or old-code fingerprint check is required. Remove only
+this pass's expendable extraction/index/logs after preserving source refs and
+receipts. The full 1.1x objective remains active and unmet.

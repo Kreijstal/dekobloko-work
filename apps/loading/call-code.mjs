@@ -92,7 +92,7 @@ const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revis
      const machineCode=nativeSummary(nativeCode(kernel.bytes,0));
      kernels.push({header:plan.header,moduleBytes:kernel.bytes.length,params:kernel.params,results:kernel.results,
       outcomeIndex:kernel.outcomeIndex||null,normalBoundaryOmissions:kernel.plan.projectedNormalBoundary?.omitted.length||0,
-      boundsElisions:kernel.boundsElisions||[],numericLocalCount:kernel.numericLocalCount,logicalResults:kernel.logicalResults||kernel.results,coldGlobals,normalExits:kernel.normalExits,fuelReason:kernel.fuelReason,
+      boundsElisions:kernel.boundsElisions||[],numericLocalCount:kernel.numericLocalCount,logicalResults:kernel.logicalResults||kernel.results,coldGlobals,coldPackets:kernel.coldPackets||null,coldStateRefusal:kernel.coldStateRefusal||null,normalExits:kernel.normalExits,fuelReason:kernel.fuelReason,
       faultReasons:kernel.faultReasons,imports,operations,machineCode});
     }
     assert.deepEqual([this.nextLocal,this.declared.length,this.importDecls.length],before,'Kernel prototype changed the installed method');
