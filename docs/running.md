@@ -17814,3 +17814,58 @@ alternate index, never the actual JVM master/index; generated outputs remain
 expendable/uncommitted. Next inspect the changed helper/wrapper native code,
 then changed-case diagnostics/timings if the physical ABI is actually installed.
 No performance, original/full gate or release/default advancement claimed yet.
+
+The packed-result source/tests are durable at
+**1c63717742e680bc1f84b87529b4aaedf102ca15**, ref
+`experiment/teavm-packed-numeric-results`, parent
+`c0b326fda5f67d138f41649822abc53c09d09125`. Only five handwritten source/test
+files, committed with the separate index. Actual JVM master/index/defaults and
+unrelated decompiler WIP are untouched.
+
+New code/diagnostic/timing commands, sequential on CPU2:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 1c63717742e680bc1f84b87529b4aaedf102ca15 native-numeric-kernel-micro-code
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-vector-code 1c63717742e680bc1f84b87529b4aaedf102ca15
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-inspect 1c63717742e680bc1f84b87529b4aaedf102ca15
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 1c63717742e680bc1f84b87529b4aaedf102ca15 huffman-inline
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/nested-loop.mjs stable-separate-candidate 1c63717742e680bc1f84b87529b4aaedf102ca15
+```
+
+The first code-inspection invocation accidentally omitted its explicit
+heap/eager flags; the harness refused before preparation/execution. The corrected
+command above completes with zero guest ticks/assets/main execution. It confirms
+four logical i32 fields become **two i64 results** on MicroHuffmanBook's worker,
+with 17 numeric locals, 544 module bytes, **488 native bytes / 0x68 stack**, one
+engine stack-guard jump-table call. The inline root's three logical i32 fields
+become one i64 plus one i32; **460 native bytes / 0x68 stack**. No JS/function/GC
+imports are present in either numeric worker. Larger packed Wasm does not imply
+slower or faster execution; the added shift/or operations still count.
+
+The changed standalone vector wrapper has one worker, five removed blocks,
+zero Wasm loops, 6087 module bytes / 85 Wasm locals and **2828 native bytes**.
+Its stack reservation is now **0x60 only**, versus the saved parent's
+0x60 + 0x10. It has 129 stack address sites. Reuse that parent's saved metrics;
+do not rebuild it to confirm its identity. The unchanged root code was excluded
+by the focused command. The new diagnostic still has one million actual vector
+entries, checksum **-1834486005**, zero exits and late compiles. Instrumented
+elapsed values are excluded.
+
+| Packed candidate | Three fresh-process samples, ms | Median ms |
+|---|---|---:|
+| Huffman inline | 51.619577, 59.670269, 61.889773 | 59.670269 |
+| Separate vector | 82.804726, 86.733079, 84.783518 | 84.783518 |
+
+The reduced wrapper stack **does not establish a useful time gain**. Huffman
+fails saved 029 **55.497371 ms**; retain both its faster first observation and
+slower remaining observations. Separate-vector results overlap prior screens
+and fail to improve the immediate parent's **83.396375 ms** median. No original
+PCM/full-loading cohort is earned. Do not rerun unchanged samples, refresh known
+controls or promote the candidate. Exact raw rows/code are preserved in their
+existing collections and packedReturnTrial in the sole benchmark JSON. Source,
+logical state and precise exception/fuel behavior stay available in the ref for
+future work, without claiming current TeaVM parity. Saved full **1807.0171855 ms**
+versus TeaVM **359.739597 ms** remains the selected evidence; **1.1x / 395.7135567 ms
+is unachieved**. No browser/phone/FPS/heap/stability release gate is satisfied by
+this ABI-only result. Clean the owned scratch source/index/logs after archival;
+perform no restoration tests/build or baseline fingerprint check.
