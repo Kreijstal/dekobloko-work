@@ -17014,3 +17014,107 @@ reentry are exclusions. A small semantic prototype and changed native-code
 comparison must establish that the helper really has no opaque calls/GC live
 context before another original/full cohort is considered. No CPU attribution
 or baseline refresh is needed for that new static question.
+
+
+#### Numeric-only native kernels: a real worker and exact Java cold paths
+
+No saved JVM, TeaVM or HotSpot control was executed or re-fingerprinted. The
+full-loading control remains 1807.0171855 ms versus saved TeaVM 359.739597 ms;
+the 1.1x limit remains 395.7135567 ms. No new CPU attribution was requested.
+
+An isolated extraction of source 029834e16366e3dfaed1f46d5589ec34dddc04dc
+now contains a generic natural-loop planner, a numeric-only Wasm worker emitter,
+and an original-Java wrapper. Sources are durable experiment commits, not
+changes to JVM master/index or generated artifacts:
+
+- 6e8757d848d5328f062d7548e814bba87dc0d018,
+  experiment/teavm-numeric-kernel-bound: initial analysis bound only.
+- 5eb91cb1af364b708f575813450e67308de6da72,
+  experiment/teavm-numeric-kernel-prototype: corrected reference capture and
+  runnable numeric-only standalone worker.
+- b87a06fdcf76d4e257a7cf3a1b163df6ac779fbe,
+  experiment/teavm-numeric-kernel-wrapper: original Java ownership, fault and
+  fuel handling surrounding a real Wasm-to-Wasm worker import.
+- 61cef101d60060a17550273c5d86221cc3e828b0,
+  experiment/teavm-numeric-kernel-values: null materialization source,
+  long-shift admission, and explicit numeric precision/store tests.
+
+The planner bounds all live numeric inputs, normal outputs, array-fault indices,
+original local snapshots and fuel state. It rejects nested/multiple-entry loops,
+unknown calls, monitors, integer division/remainder, ambiguous references and
+oversized tuples. **Correction to the initial bound:** pre-loop array values
+retain their exact captured identity and restored private header. Re-reading a
+receiver's current field after a yield would be wrong. The receiver and original
+array owner remain in the outer body; no Java reference enters the worker.
+
+The wrapper initially accepts one normal exit from a readonly, idempotent
+header. After normal completion it re-evaluates that header to take its original
+outside edge, skipping only the fuel check already consumed by the worker.
+Later original backedges still have fuel checks. Faults never replay a header
+or prior effects: restore numeric cold values and authenticated reference
+recipes, then emit only the original failing array operation under its existing
+exception protocol. Fuel exits use the original spill/resume path with no second
+decrement. Original scalar/array stores occur at their original positions.
+Union-of-snapshot tuple destinations get unique locals before resume bindings;
+otherwise existing local coalescing could corrupt cold snapshots. Numeric
+workers stay actual Wasm imports even when import counters are enabled, avoiding
+a diagnostic JavaScript wrapper. Installed metadata retains only worker count
+and byte count; the compiler's worker/IR maps join existing cleanup.
+
+Validation exposed and corrected two different issues; retain these failures:
+The initial wrapper required operand-prefix snapshots that an earlier pass had
+removed, so existing semantic tests passed via fallback. New installed-worker
+assertions failed and exposed this. Re-emitting only the failing operation uses
+its established Java exception protocol and needs no invented instruction retry
+snapshot. Separately, a new precision fixture initially left both scalar cells
+uninitialized, correctly receiving entry refusal. Initial long-shift planning
+also refused shifts despite emitter support; the numeric whitelist was fixed.
+The corrected fixture initializes its scalar cells and asserts real workers.
+
+Narrow validation, in the sole temporary source extraction:
+
+```
+node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeNumericKernelPlan.test.js test/nativeMixedStateBody.test.js test/nativeStaticArrayBody.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeNumericKernelPlan.test.js test/nativeNumericKernelWrapper.test.js
+```
+
+The first generator was necessary because the fresh extraction has no generated
+JRE registry (the first runtime test launch reported missing ../jre). No broad
+build was needed. The semantic suite passed **850/850** on b87a06f, explicitly
+including installed vector and captured-array workers, Java exception identity,
+terminal callback mutations, foreign/null/cold fallback, partial effects, exact
+fuel resumption with a replaced current field, and compiler cleanup. The final
+changed planner/precision subset passed **74/74** on 61cef10: longs beyond
+2^53, signed/unsigned shifts, Java overflow, float rounding/negative zero,
+NaN/infinity-to-int conversion, array stores and stores retained before a later
+fault. Generated registry/classes remain expendable and uncommitted.
+
+Compile-only gates use the changed source and execute zero Java ticks, asset
+calls or main methods. No timing, oracle run or identity check is involved:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 6e8757d848d5328f062d7548e814bba87dc0d018 native-numeric-kernel
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 5eb91cb1af364b708f575813450e67308de6da72 native-numeric-kernel-code
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs b87a06fdcf76d4e257a7cf3a1b163df6ac779fbe native-numeric-kernel-code
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs b87a06fdcf76d4e257a7cf3a1b163df6ac779fbe native-numeric-kernel-micro-code
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 61cef101d60060a17550273c5d86221cc3e828b0 native-numeric-kernel-micro-code
+```
+
+All gates passed. The actual VorbisCodebook.readVector worker has **9 numeric
+inputs, 9 numeric results, 17 numeric locals, 448 module bytes** and no function
+imports, GC/reference operations or opaque calls in WAT. TurboFan emits **484
+instruction bytes**, a **0x60** stack reservation and one engine jump-table call
+(the loop stack guard). This does not mean the machine code has no calls, or
+that Java bounds checks were compile-time-eliminated: all three unsigned array
+bounds checks remain. The worker is installed on the actual vector and readBits
+methods in b87a06f. Actual outer wrapper costs still count in the forthcoming
+changed candidate. TeaVM uses larger composed method boundaries, so these code
+sizes are not a causal elapsed-time comparison.
+
+Final 61cef10 micro code gate confirms a worker is installed on
+LoadingMicroKernel.huffmanInline (432 worker bytes); final timings are pending.
+Only post-timer worker count/byte reporting was added to microbench/probe.
+The next earned gate is the changed Huffman screen versus saved matched
+55.497371 ms, with no rerun of 029 or any oracle. No original/full timing,
+promotion or deployment has yet been earned by this experiment.

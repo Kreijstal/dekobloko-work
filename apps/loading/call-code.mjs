@@ -15,19 +15,51 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-element-micro','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-element-micro','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
+const numericKernelFamily=['native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code'].includes(family),numericKernelCode=numericKernelFamily&&family.endsWith('-code');
 const elementBound=['native-element-availability','native-element-micro'].includes(family);
 const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-numeric-kernel','native-numeric-kernel-code'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
 options.classpath=[path.join(family==='mdct-frame-remat'?path.join(player,'mdct'):fullGraph||directMusic||originalFlow||family==='frame-remat'?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
-let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls,stableHeaders,elementAvailability;const elementBoundRows=new Map();const proofCensus=[],translationFailures=[],headerCensus=[],checkpointCensus=[],checkpointPlans=new WeakMap(),staticLoopCensus=[],staticRegionBounds=new WeakMap(),fieldArrayPlans=new WeakMap(),fieldArrayCensus=[];
-const preloadModules=elementBound?['src/jit/nativeElementAvailability.js']:family==='ssa-liveness'?['src/analysis/frameLocalLiveness.js','src/jit/stackifyNumericValues.js']:
+let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls,stableHeaders,elementAvailability,numericKernel,buildNumericKernel;const numericKernelRows=new Map();const elementBoundRows=new Map();const proofCensus=[],translationFailures=[],headerCensus=[],checkpointCensus=[],checkpointPlans=new WeakMap(),staticLoopCensus=[],staticRegionBounds=new WeakMap(),fieldArrayPlans=new WeakMap(),fieldArrayCensus=[];
+const preloadModules=numericKernelFamily?['src/jit/nativeNumericKernelPlan.js',...(numericKernelCode?['src/jit/nativeNumericKernel.js']:[])]:elementBound?['src/jit/nativeElementAvailability.js']:family==='ssa-liveness'?['src/analysis/frameLocalLiveness.js','src/jit/stackifyNumericValues.js']:
  family==='inlined-lifetimes'||family.endsWith('frame-remat')?['src/jit/wasmInline.js','src/jit/stackifyNumericValues.js']:family==='packet-metadata'?['src/jit/stableArrayHeaders.js']:[];
 const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{preloadModules,observeModule:({filename,exports})=>{
+ if(numericKernelFamily&&filename.endsWith('/src/jit/nativeNumericKernelPlan.js'))numericKernel=exports.analyze;
+ if(numericKernelFamily&&filename.endsWith('/src/jit/nativeNumericKernel.js'))buildNumericKernel=exports.build;
+ if(numericKernelFamily&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
+  const translate=exports.prototype.translateBody;
+  exports.prototype.translateBody=function(...args){
+   const meta=translate.apply(this,args);
+   if(meta?.bytes&&!numericKernelRows.has(meta)&&(['VorbisCodebook','VorbisResidue','MusicDecoder','MusicDecodeStage'].includes(this.className)||family==='native-numeric-kernel-micro-code'&&(this.className.startsWith('MicroHuffman')||this.className==='LoadingMicroKernel'&&this.method.name.startsWith('huffman')))){
+    const before=[this.nextLocal,this.declared.length,this.importDecls.length],bound=numericKernel(this);
+    assert.deepEqual([this.nextLocal,this.declared.length,this.importDecls.length],before,'Numeric kernel bound changed code generation');
+    const kernels=[];
+    if(numericKernelCode)for(const plan of bound.plans)if(!plan.refused){
+     const kernel=buildNumericKernel(this,plan.header),module=new WebAssembly.Module(kernel.bytes);
+     const imports=WebAssembly.Module.imports(module);
+     assert.deepEqual(imports,[{module:'env',name:'mem',kind:'memory'}],'Kernel has a non-memory import');
+     assert.ok([...kernel.params,...kernel.results].every(b=>[0x7f,0x7e,0x7d,0x7c].includes(b.type)),'Non-numeric kernel boundary');
+     const wat=execFileSync('wasm-dis',['--all-features','-'],{input:kernel.bytes,encoding:'utf8',maxBuffer:4*1024*1024});
+     const operations={};
+     const visit=node=>{if(!Array.isArray(node))return;if(typeof node[0]==='string')operations[node[0]]=(operations[node[0]]||0)+1;for(const child of node)visit(child);};
+     visit(parseWat(wat));
+     assert.ok(!Object.keys(operations).some(op=>op.startsWith('call')||/^(ref|struct|array)\./.test(op)),'Kernel carries opaque calls or GC context');
+     const machineCode=nativeSummary(nativeCode(kernel.bytes,0));
+     kernels.push({header:plan.header,moduleBytes:kernel.bytes.length,params:kernel.params,results:kernel.results,
+      numericLocalCount:kernel.numericLocalCount,normalExits:kernel.normalExits,fuelReason:kernel.fuelReason,
+      faultReasons:kernel.faultReasons,imports,operations,machineCode});
+    }
+    assert.deepEqual([this.nextLocal,this.declared.length,this.importDecls.length],before,'Kernel prototype changed the installed method');
+    numericKernelRows.set(meta,{key:this.className+'.'+this.method.name+this.method.descriptor,...bound,installedWorkers:meta.nativeNumericKernelCount||0,installedWorkerBytes:meta.nativeNumericKernelBytes||0,...(numericKernelCode?{kernels}:{})});
+   }
+   return meta;
+  };
+ }
  if(elementBound&&filename.endsWith('/src/jit/nativeElementAvailability.js'))elementAvailability=exports.analyze;
  if(elementBound&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
   const translate=exports.prototype.translateBody;
@@ -414,6 +446,17 @@ if(family==='static-loop-gates'){
  assert.ok(boundary,'Preparation did not reach the main boundary');assert.equal(failure,stop);
 }
 assert.equal(ticks,0);assert.equal(assetCalls,0);
+if(numericKernelFamily){
+ const active=new Set(j.jit.wasmJit.compiled.flatMap(s=>[s.meta,s.callee?.meta,s.osr?.meta]));
+ const rows=[...numericKernelRows].filter(([meta])=>active.has(meta)).map(([,row])=>row);
+ assert.ok(rows.some(row=>family==='native-numeric-kernel-micro-code'?row.key.startsWith('LoadingMicroKernel.huffmanInline('):row.key==='VorbisCodebook.readVector()[F'),'Missing intended traversal method');
+ if(numericKernelCode)assert.ok(rows.some(row=>(family==='native-numeric-kernel-micro-code'?row.key.startsWith('LoadingMicroKernel.huffmanInline('):row.key==='VorbisCodebook.readVector()[F')&&row.kernels?.length),'Intended traversal kernel was not generated');
+ const result={sourceRevision:revision,family,analysisOnly:!numericKernelCode,installed:rows.some(row=>row.installedWorkers),guestTicks:ticks,assetCalls,mainExecuted:false,rows,
+  note:numericKernelCode?'New numeric-only helper generated/validated and its optimizing code inspected. No helper or guest executes; no baseline replay, timing or CPU attribution.':'Input/output and cold-dependency bound only. No helper emits/executes, no control replay, timing, fingerprint or CPU attribution.',measuredAt:new Date().toISOString()};
+ const current=JSON.parse(fs.readFileSync(reportPath)),trial=(current.optimizationTrials.nativeNumericKernels||={});
+ (trial[numericKernelCode?'codeObservations':'boundObservations']||=[]).push(result);fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');
+ console.log(JSON.stringify(result,null,2));process.exit(0);
+}
 if(elementBound){
  const active=new Set(j.jit.wasmJit.compiled.flatMap(s=>[s.meta,s.callee?.meta,s.osr?.meta]));
  const rows=[...elementBoundRows].filter(([meta])=>active.has(meta)).map(([,row])=>row);
