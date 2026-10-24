@@ -18296,3 +18296,62 @@ Instrumented elapsed is excluded. Uninstrumented timing uses three fresh
 processes per mode, alternating order, CPU2/Node22.23.2, 1-GiB old-space and eager
 Wasm. No tests/build/profiling overlap timings. Raw rows stay in the sole JSON's
 nestedInlineLoops array-case observation; no second report is created.
+
+| New array case | Three fresh processes, ms | Median ms |
+|---|---|---:|
+| Transported pair | 88.518052, 85.719900, 85.706854 | 85.719900 |
+| Supported pairing query | 100.696141, 105.570990, 115.170203 | 105.570990 |
+
+Every checksum matches; all six have zero exits and late Java compilation.
+The approximately 19% lower new-case time earns an original test, not promotion
+or parity. Preserve all six values; no slow observation is discarded.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect 7bd70ab7496fb5e794a94ef8c93f20dc90b40fab 'VorbisResidue.decodeResidue([FIZ)V'
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm 7bd70ab7496fb5e794a94ef8c93f20dc90b40fab
+```
+
+The changed original diagnostic exits 0: all 348249 PCM bytes match, 134216
+native vector entries / 682 packet and residue entries, one element capture
+covering both residue call sites, zero native exits in those methods and zero
+late compilation. There are no recorded paired_object_storage or
+native_state_object_storage calls, eliminating the prior 12421 pairing lookups.
+The separate row-container metadata lookup (134216 object_storage calls) and
+16080 foreign-row fallbacks remain. These are operation counts, not CPU-share
+attribution; diagnostic elapsed is excluded. The uninstrumented original cohort
+is now running against the saved 93.269749 ms control; no control replay.
+
+The changed uninstrumented original cohort completed (run ID 6152c44c-7f2f-4d3b-a0ad-48084fb20f2e):
+
+| Original decode sample | ms |
+|---|---:|
+| 1 | 111.104404 |
+| 2 | 251.703514 |
+| 3 | 221.334370 |
+
+Median **221.334370 ms** fails saved **93.269749 ms**.
+All three match all 348249 PCM bytes and have zero late Java compilation.
+Keep both slow observations. Historical comparison does not establish the cause
+of the spread; do not infer CPU attribution from the removed lookup count or
+claim that transport itself explains every timing change. **No full-loading
+cohort, comparator advancement, artifact promotion or deployment is earned.**
+
+The one existing ledger retains the raw six small-case rows, complete original
+cohort and diagnostic, plus a compact nativeArrayReceiverPairs disposition linking
+the source/case/run IDs. Source/tests are durable on the experimental ref;
+Deko generator/diagnostic source is committed at 126a5d0. Actual JVM master/index
+and unrelated decompiler WIP were not installation targets. Remove only the owned
+extraction/index/logs/previews; do not run restoration checks or known controls.
+
+The next distinct static question is whether a large already-certified array
+region has a genuinely small numeric-only worker boundary. Current numeric
+planning requires a whole stateful body and refuses all mixed region bodies.
+Earlier WAT outlining failed with 28--31 inputs and 12--14 outputs, so merely
+retrying outlining or moving the same payload would not be useful. Any new bound
+must use the existing region ownership proof, preserve precise cold snapshots,
+separate actual normal live-outs from diagnostics and show that no Java/GC
+reference enters the worker. Inspect applicability/arity before implementing
+or timing it; do not repeat tiny-worker ABI permutations or CPU profiling.
+This is an unimplemented question, not evidence of a gain or permission to
+relax safety. Saved full loading remains **1807.0171855 ms / 5.023125618x TeaVM**;
+**395.7135567 ms** and the wider browser/phone acceptance remain unmet.
