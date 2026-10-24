@@ -15905,3 +15905,284 @@ Only a positive, safe bound earns composition and focused checks; do not blindly
 combine the failed eager allocator or run unchanged timed code. This is a
 specific new representation question, not a claim of a gain or a new baseline
 campaign. The 1.1x objective remains active and unmet.
+
+### Recovered static-loop calls and native storage (2026-10-24)
+
+Keep the recorded controls. No baseline/oracle execution, baseline restoration
+check, fingerprint rerun or CPU attribution was performed for this investigation.
+The parked lazy-reference-array composition does not earn another timing run:
+static inspection shows that the first native `aaload` in the constructor's
+matrix fill reaches `objectCacheFill` / `objectStoreFill` /
+`nativeObjectStorageOf` / `materializeReferenceArray`. The multianewarray factory
+itself avoids this work, but its actual consumer forces the mirror before the
+vector fill. No remaining cold-container saving was demonstrated; no lazy-array
+composition or benchmark was run.
+
+A different compile-time gap is concrete: recovered instance loops already
+have original-frame reconstruction, while static inline admission rejected
+loops. TeaVM's existing `DefaultInliningStrategy` source budgets complexity and
+depth; it does not impose this static-loop prohibition. Add generic recovered
+static-loop admission to `wasmInline`, using static arguments from local slot
+zero, private argument/return slots, original-PC/operand-prefix reconstruction,
+existing instruction-work limits and class-readiness rules. Cold foreign owners
+with meaningful initializers retain their calls. Loading profiles and game
+symbols remain outside java-tools; no user/environment flag is added.
+
+The first prototype is archived at JVM
+`92cfedc7d186b28b34b8c7096284fe95ec1eeca5` (isolated, parent opcode source
+`9bce12bf…`) and `264630989bb4228fa7ad01efc7cfa5e4ee08aaec` (expanded).
+Its initial focused groups passed 549 expanded / 466 isolated assertions.
+Compile-only normal preparation admitted seven static sites in the original
+archive decoder, two in the floor-curve method, one codebook sizing loop, five
+setup bit-reader sites and one packet bit-reader site. This is admission
+evidence, not evidence of execution or a loading improvement.
+
+Candidate-only component observations on that prototype were:
+
+| Case | Three JVM ms | Median ms |
+|---|---|---:|
+| real-request buffered reader | 3.857746 / 3.947111 / 4.084145 | 3.947111 |
+| original Bzip archive | 41.116842 / 46.497302 / 47.298967 | 46.497302 |
+
+The reader checksum is 1418269787. The archive checksum is -1415522687.
+The saved reader control is 4.530898 ms on `49678b7a…`; the saved archive screen
+is 29.483082 ms on older `f14edc7e…`. These are not a same-source attribution.
+The archive regression alone rejects a full gate. More seriously, a subsequent
+exact-prototype `test/nativeObjectBody.test.js` run exposed **119 expected,
+15 actual** after a supported callback replaces a captured object's fields.
+Its 214 assertions include two failures: this real stale-storage failure and a
+fault-census assertion tied to the old non-inlined owner. Therefore **exclude
+these prototype timings as release evidence**, even though their fixture
+checksums match. Preserve the raw measurements and failed result.
+
+The underlying safety predicates applied opaque-call invalidation and first-use
+guards only to *nested* inline scopes. A newly recovered single static scope
+also requires both. Introduce `hasRecoverableInlineScopes` for safety decisions
+while preserving the narrower existing optimization classification. Do not
+weaken the callback replacement expectation. Update only the structural fault
+census to include the actual executing caller after inlining.
+
+Native field/array proof preservation also needs work: the old blanket
+`origIdx` refusal discarded all native regions after this inlining. Accept only
+operations whose original item or recovered activation is known, retain their
+required snapshots and existing effects/exception/ownership checks. Count the
+128-field budget by distinct receiver/field slots rather than repeated access
+sites. Keep the separate instruction-work, block, receiver, reference, call and
+cast limits. The real archive has 219 field access sites but only 28 distinct
+field slots; counting sites incorrectly rejected this bounded proof.
+
+For isolation, compose the already retained nested-recovery correctness source
+`3b1b278e533ec26153a87b4b882d0b5872142076` with the generic multianewarray
+opcode support, producing prerequisite source
+`667332a6db2d5bd815620be1687b710f1530d559`. Do not include the later rejected
+pairing/scalar/ABI experiments. Do not benchmark these prerequisites against
+themselves. Revised recovered-loop source is `dfabe463…`, then test-only
+`c196436e9354417e7e3fc3652c3477e942ad21ff`; expanded equivalents are
+`6116cda7…` and `6391e435a96318bc45cfe814a87c943362b1ca8a`.
+
+The new native-storage fixture checks published closed-call contracts, native
+field/array admission, exact arithmetic and writes, static slot zero, original
+frame identities, caller operand prefixes, array refusal, foreign plain Java
+arrays, custom field getters, explicit callee-fuel donation and zero late Java
+compilation. A dense repeated-field method exceeds 128 access sites while
+retaining only two actual field slots. A final fixture variant uses a Java
+`byte` return, matching the real archive wrapper.
+
+Validation commands (JVM source directory; isolated validation uses the one
+temporary archive, not the unrelated expanded worktree):
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/inlineStaticNativeStorage.test.js test/inlineStaticLoopResume.test.js test/inlineActivationResume.test.js test/nativeObjectBody.test.js test/nativeMixedStateBody.test.js test/nestedInlineActivations.test.js test/inlineAtomicLeaf.test.js test/wasmCompilerRetention.test.js
+```
+
+Result: **1041/1041 pass** on revised isolated source. The later byte-return
+fixture-only run passes **51/51**. Initial fixture mistakes (an unsupported
+boxed array shape and lowering caller rather than explicit callee fuel) were
+corrected; neither required relaxing runtime expectations.
+
+The compile-only inspector now records final method states directly as well as
+successful module metadata. Missing successful census rows do **not** prove
+dispatcher fallback. On `c196436e…`, normal preparation left byte/bit wrappers
+cold and the original decoder **failed with `Maximum call stack size exceeded`**.
+The earlier inference of dispatcher fallback from absent rows was incorrect.
+Focused wrapper compilation was successful; the final state settled the
+preparation discrepancy. The existing `JVM_WASM_TRACE_COMPILE_ERRORS=1` switch,
+on a new candidate-only compile-only run, located the failure in
+`wasmShared.inlineCompactBody`: function-call spread of a generated byte array
+exceeded the host argument limit before the compact code-size check.
+
+Replace these large body/handler/alternative call spreads with byte appends.
+Keep compact duplicate-code limits and fallback wrappers unchanged. New
+`wasmLargeBodyAssembly` tests exercise 200000-byte bodies and handlers, ordinary
+and closed entry selection, exception effects and exact tagged payload identity.
+The isolated source now is
+**`9cfe7847c1c03649398d190d8aaa0cc9d162808f`**, expanded
+**`52b680973aacc050de73ee1adabea8bdecfa569b`**, retained by the
+`experiment/teavm-static-loop-preserved[-expanded]` refs. Ordinary JVM HEAD/index
+remain untouched, as do unrelated decompiler changes.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmLargeBodyAssembly.test.js test/wasmJsExceptionTags.test.js test/entryModeCode.test.js test/inlineStaticNativeStorage.test.js
+```
+
+Result: **137/137 pass** on the isolated changed source. The expanded assembler
+group alone passes 113/113. `node --check src/jit/wasmShared.js` passes.
+
+```bash
+JVM_WASM_TRACE_COMPILE_ERRORS=1 NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 9cfe7847c1c03649398d190d8aaa0cc9d162808f static-loop-gates
+```
+
+Result: compile-only preparation, zero guest ticks/assets/main execution;
+byte/bit wrappers ready, fully structured, closed, 16 native field sites and one
+array site each. Original decoder ready and fully structured with seven
+recovered static sites, **173 native field sites and 85 array sites**. This
+focused preparation world is explicitly labelled; it is not full-loading timing.
+The selected comparator/default/deployment remain unchanged. Revised candidate
+component timing is the next gate, followed by full loading only if justified.
+
+The revised component gate completed, with the saved controls left untouched:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 9cfe7847c1c03649398d190d8aaa0cc9d162808f buffered-ready-helper bzip-ready-owner
+```
+
+| Revised candidate case | Three JVM ms | Median ms |
+|---|---|---:|
+| real-request buffered reader | 7.636902 / 8.151219 / 7.664551 | 7.664551 |
+| original Bzip archive | 37.405526 / 38.993957 / 37.006091 | 37.405526 |
+
+Both checksums and the reader's final state match the existing references;
+late Java compilation is zero. This is a **failed component performance gate**,
+not a full-loading improvement. Do not run the full gate or advance the selected
+comparator. All six observations have run ID
+`9c8e09a9-bfd2-4178-a9bd-a91946585493` in the existing ledger.
+
+Already recorded runtime counters (no profiling rerun) show that the reader root
+has one recovered static activation but no native object region. Its separate
+bit-reader helper retains native fields/arrays. The archive root has 173 native
+field sites, 85 array sites, 162 regional blocks and 22 closed-call sites, but
+still makes **320218 direct entries to the bit wrapper**. Recovering the loop
+alone does not recover an acyclic static wrapper around that loop: the first
+prototype's admission requires a backedge in the immediate callee.
+
+The next bounded extension reconstructs such a static wrapper and its actual
+loop descendant using separate original activations, argument slots and operand
+prefixes, within the same depth/work/code-size limits. It admits an acyclic
+wrapper only when a recovered loop descendant actually exists; ordinary leaves
+keep their existing splice. Preserve the original instance-loop interior call
+policy, including the separately fuelled canonical call tested there. An early
+variant extended that instance policy as well and invalidated seven structural
+assertions about that real call (the helper was inlined and its separate fuel
+was no longer consulted). Restrict this extension to static parents; do not
+relax those assertions or the retained instance behavior.
+
+The initial static-wrapper archive is `22216958eb9afaf5bc96c3a513d138fc29d056bf`
+(expanded `a10937d7efb1ddd3bed71254931ad42fa1ffe5d9`); it is not timed or
+promoted. A new semantic case checks four original frames on fuel exit,
+middle-wrapper local slot zero, both operand prefixes, stores and wrapper
+prefix/tail effects exactly once. The independent closed-call fixture sets an
+internal test-only inline budget of one while compiling its caller, preserving
+coverage of a genuine canonical call boundary even when default static-wrapper
+recovery becomes possible. Runtime defaults gain no new flags.
+
+The corrected static-only wrapper source is
+`df45ee857fb44f19df9e696e4b649e6a5933b378` (expanded
+`d5e6edaa20c2e22280b028d1be97f763c3646b77`). Its isolated and expanded boundary
+groups both pass **408/408**:
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/inlineActivationResume.test.js test/inlineStaticLoopResume.test.js test/inlineStaticNativeStorage.test.js
+```
+
+Its compile-only `static-loop-gates` observation shows why it does **not** earn
+timing: the unchanged 512-item budget admits five early `readByte` header sites
+(items 65/72/75/78/81), then the alphabet loop at 218. The repeated bit-wrapper
+calls still remain. Native regions survive, but this is the wrong selection
+for eliminating repeated boundaries. No component/full benchmark was run on
+this source or its initial broader variant.
+
+Reserve the same budget for recovered static calls inside caller loops first,
+prioritizing deeper bytecode loop intervals with stable item-order ties.
+Planning allocates distinct private locals; actual instruction emission retains
+the original guest order. Accepted reservations spend the budget once and do
+not rewind the local allocator when their original call sites are emitted.
+Ordinary acyclic splices and the original instance policy retain their existing
+paths. Reject missing original operand snapshots as before. Preplanning is
+limited to the same <=2048-item recoverable callers and existing callee/depth
+budgets; no game identity or new flag is involved.
+
+The focused test computes a one-site allowance, puts three earlier calls ahead
+of a repeated call, and checks that only the latter wins. It checks deterministic
+expansion and executes the mixed original/expanded body, preserving six calls,
+order-dependent results, all stores, caller prefix/tail and disjoint locals.
+The priority source is **`08e41784726abfc20cf165954b33b6e89a87bf68`**, expanded
+**`518a123a6331571cfb7802933325814c6bdb65c1`**, retained as
+`experiment/teavm-static-loop-priority[-expanded]`.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/inlineStaticLoopResume.test.js test/inlineStaticNativeStorage.test.js test/inlineActivationResume.test.js test/inlineAtomicLeaf.test.js test/nativeObjectBody.test.js test/nativeMixedStateBody.test.js test/nestedInlineActivations.test.js test/wasmCompilerRetention.test.js
+```
+
+Result: **1101/1101 pass**, separately on the expanded worktree and isolated
+candidate source. `node --check src/jit/wasmInline.js` passes. This warrants
+checking actual selected decoder sites before another component timing; it is
+not a performance claim or a new baseline.
+
+Compile-only preparation confirms that the priority source selects bit-wrapper
+sites 198/240/337/352/1122 and the alphabet loop at 218. The decoder remains
+fully structured with depth-two activations, 157 native field sites, 84 array
+sites and 166 regional blocks. This changed selected-site set warrants one new
+original-archive timing. Skip the unchanged buffered-reader case.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 08e41784726abfc20cf165954b33b6e89a87bf68 static-loop-gates
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/microbench.mjs run-jvm 08e41784726abfc20cf165954b33b6e89a87bf68 bzip-ready-owner
+```
+
+The component samples are **41.767980 / 49.028650 / 38.864431 ms**, median
+**41.767980 ms** (run `fca995a1-1d73-4f6b-ab45-908bfe7dae70`). Checksums match
+-1415522687; late Java compilation is zero. This **also fails** the saved
+29.483082-ms archive screen. No full-loading gate, baseline replay, promotion or
+deployment follows. Existing post-timer counters show 213371 bit-wrapper
+entries instead of 320218, but also 170696 direct bit-reader entries at the
+different sites that no longer fit this budget. Removing some repeated
+boundaries trades away other splices; loop depth is not a demonstrated winning
+cost model. Do not claim that fewer calls alone established a runtime gain.
+
+Park all recovered-static-loop, storage-preservation and loop-priority feature
+changes in their exact experiment refs. Withdraw only their five pre-existing
+owned files to the preceding expanded source and remove their two new tests
+from the active worktree. Run **no restored-baseline tests, timings or fingerprint
+checks**. Preserve unrelated decompiler work, the normal JVM index and actual
+master HEAD `cbcf8adde30e16d2efd8521798dd7646307fd133`.
+
+Retain the independently useful assembler fix separately: it avoids a host
+argument-count crash without changing runtime checks, generated opcodes,
+compact-code budgets or entry protocols. Its isolated source is
+**`c61eef7fa4803ea3db7a293dac5af8f23a32954b`** (parent opcode-only `9bce12bf…`),
+expanded **`9bd5849d5af9b1a5af1e3a5dc2540b6458dc725e`** (parent `12b6b0e4…`).
+Refs are `experiment/wasm-large-body-assembly[-expanded]`; each contains only
+`src/jit/wasmShared.js` and the new `test/wasmLargeBodyAssembly.test.js` beyond
+its parent. Only this independent fix remains from this investigation in the
+active compiler worktree. No performance claim is attached to it.
+
+```bash
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/wasmLargeBodyAssembly.test.js test/wasmJsExceptionTags.test.js test/entryModeCode.test.js
+```
+
+Result: **86/86 pass** on the independent changed isolated source. This is a
+new crash-regression/candidate validation, not the known baseline checking
+itself. All code-only observations and raw timings remain in the single existing
+`benchmark.json`, with `optimizationTrials.recoveredStaticLoops` recording the
+failed gates and unsafe-prototype exclusion. Do not create report copies or
+commit generated source/binaries; temporary archives are expendable.
+
+The full-loading reference is still **1807.0171855 ms** against saved TeaVM
+**359.739597 ms**, about **5.023x**; the target remains **395.713557 ms**.
+This investigation does not establish any full-loading improvement or any of
+the browser/phone FPS, memory or stability gates. The 1.1x goal remains active
+and unmet. Do not rerun these rejected inlining variants or reopen CPU
+attribution. The next code-only question should address why actual music
+decoder operations lose their existing native representation proofs, using
+saved source/Wasm evidence and a small semantic reproducer before proposing
+another timed candidate; static-wrapper coverage alone did not close the gap.

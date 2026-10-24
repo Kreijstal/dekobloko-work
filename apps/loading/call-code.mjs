@@ -15,18 +15,67 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
 const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
 options.classpath=[path.join(family==='mdct-frame-remat'?path.join(player,'mdct'):fullGraph||directMusic||originalFlow||family==='frame-remat'?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
-let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls,stableHeaders;const proofCensus=[],translationFailures=[],headerCensus=[],checkpointCensus=[],checkpointPlans=new WeakMap();
+let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls,stableHeaders;const proofCensus=[],translationFailures=[],headerCensus=[],checkpointCensus=[],checkpointPlans=new WeakMap(),staticLoopCensus=[],staticRegionBounds=new WeakMap();
 const preloadModules=family==='ssa-liveness'?['src/analysis/frameLocalLiveness.js','src/jit/stackifyNumericValues.js']:
  family==='inlined-lifetimes'||family.endsWith('frame-remat')?['src/jit/wasmInline.js','src/jit/stackifyNumericValues.js']:family==='packet-metadata'?['src/jit/stableArrayHeaders.js']:[];
 const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{preloadModules,observeModule:({filename,exports})=>{
+ if(['static-loop-region-bound','static-loop-gates'].includes(family)&&filename.endsWith('/src/jit/nativeObjectBody.js')){
+  const prepare=exports.prepare;
+  exports.prepare=function(c,structured,preflight,...rest){
+   const actual=prepare(c,structured,preflight,...rest);
+   if(!preflight&&c.origIdx&&c.className==='Bzip2Decoder'&&c.method.name==='decodeBlocks'){
+    const before=[c.nextLocal,c.importDecls.length,c.canonicalSlots.length];
+    // An optimistic admission bound, never installed or emitted. Removing
+    // the origin gate cannot itself prove safe reconstruction of a guard exit.
+    const shadow=Object.assign(Object.create(Object.getPrototypeOf(c)),c,{origIdx:null});
+    const bound=prepare(shadow,structured,true,true);
+    assert.deepEqual([c.nextLocal,c.importDecls.length,c.canonicalSlots.length],before,'Preflight bound changed code-generation state');
+    const callees=new Map();
+    for(const block of c.fn.blocks)for(const node of block.body)if(node.op==='invokestatic'){
+     const [,owner,[name,descriptor]]=node.imm,key=owner+'.'+name+descriptor;
+     const method=c.jvm.findMethod(c.jvm.classes[owner],name,descriptor),state=method&&c.wasmJit.state.get(method),meta=state?.meta;
+     if(!callees.has(key))callees.set(key,{key,status:state?.status,closed:!!meta?.closedNativeBody,
+      arrayAbi:meta?.parameterArrayABI?.length,full:!!meta?.fullyCompiled});
+    }
+    const gates={heap:!!c.heap,nativeOps:!!c.objNativeOps,directFrames:!!c.directFrames,jsTag:!!c.jsTagEh,
+     staticBody:!!c.nativeStaticArrayBody,liveRanges:c.liveRanges.length,demotes:c.demoted.size,deoptBlocks:c.deoptBlocks.size,
+     split:c.irreducibleSplitBlocks||0,guardedLoops:c.guardedNestedArrayLoopPlans.size,blocks:c.fn.blocks.length,
+     fieldSites:c.nativeObjectFieldOperations.size,uniqueFieldSlots:new Set([...c.nativeObjectFieldOperations.values()].map(v=>v.slot.key)).size};
+    staticRegionBounds.set(c,{gates,callees:[...callees.values()],actual:!!actual,ignoringOriginAndMissingSnapshots:!!bound,
+     partial:!!bound?.partial,lazy:!!bound?.lazy,fields:bound?.fields?.size,arrays:bound?.arrays?.size,
+     boundOnly:true});
+   }
+   return actual;
+  };
+ }
+ if(['static-loop-coverage','static-loop-region-bound','static-loop-gates'].includes(family)&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
+  const translate=exports.prototype.translateBody;
+  exports.prototype.translateBody=function(...args){
+   const meta=translate.apply(this,args);
+   if(!meta?.bytes||!['Bzip2Decoder','MusicDecoder','VorbisCodebook','VorbisResidue','MusicDecodeStage'].includes(this.className))return meta;
+   const sites=new Map();
+   for(let activation of this.inlineActivations?.values()||[]){
+    while(activation.parent)activation=activation.parent;
+    if(!activation.method.flags?.includes('static'))continue;
+    const key=activation.className+'.'+activation.method.name+activation.method.descriptor;
+    sites.set(key+'@'+activation.call,{callee:key,call:activation.call,calleeLocals:activation.localsSize});
+   }
+   staticLoopCensus.push({meta,key:this.className+'.'+this.method.name+this.method.descriptor,
+    sites:[...sites.values()],full:!!meta.fullyCompiled,normalFull:!!meta.normalFlowFullyCompiled,
+    activationSites:meta.inlineActivationSiteCount||0,moduleBytes:meta.bytes.length,
+    nativeObjectFields:meta.nativeObjectBodyFieldSites||0,nativeObjectArrays:meta.nativeObjectBodyArraySites||0,
+    nativeRegionBlocks:meta.nativeObjectRegionBlockCount||0,regionBound:staticRegionBounds.get(this)});
+   return meta;
+  };
+ }
  if(family==='checkpoint-coverage'&&filename.endsWith('/src/jit/structuredLoopResume.js')){
   const prepare=exports.prepare;
   exports.prepare=function(c,structured){
@@ -306,7 +355,13 @@ if(fullGraph){
 }
 j.jit.markMainStarted=()=>{boundary=true;throw stop;};
 j.executeTick=()=>{ticks++;throw Error('Compile-only inspection attempted a guest tick');};
-if(directMusic){
+if(family==='static-loop-gates'){
+ await j.preloadClasspathClasses();const w=j.jit.wasmJit;
+ for(const name of ['readBits','readByte','readBit','buildByteAlphabet','buildHuffmanTables','emitBlockRuns','decodeBlocks']){
+  const method=j.classes.Bzip2Decoder.ast.classes[0].items.find(item=>item.type==='method'&&item.method.name===name).method;
+  w.compile({method,className:'Bzip2Decoder'},w.methodState({method}),{asCallee:true});
+ }
+}else if(directMusic){
  j.executeInstruction=()=>{ticks++;throw Error('Direct reader compilation attempted Java execution');};
  await j.preloadClasspathClasses();
  for(const [name,descriptor]of [['readBit','()I'],['readBits','(I)I']]){
@@ -319,6 +374,28 @@ if(directMusic){
  assert.ok(boundary,'Preparation did not reach the main boundary');assert.equal(failure,stop);
 }
 assert.equal(ticks,0);assert.equal(assetCalls,0);
+if(['static-loop-coverage','static-loop-region-bound','static-loop-gates'].includes(family)){
+ const active=new Set(j.jit.wasmJit.compiled.flatMap(state=>[state.meta,state.callee?.meta,state.osr?.meta]));
+ const rows=staticLoopCensus.filter(row=>active.has(row.meta)).map(({meta,...row})=>row);
+ for(const state of j.jit.wasmJit.compiled)if(state.key.startsWith('Bzip2Decoder.')&&!state.meta?.structured&&!rows.some(row=>row.key===state.key))
+  rows.push({key:state.key,status:state.status,structured:false,structuredFailure:state.structuredFailReason,
+   lastCompileError:state.lastCompileError,candidates:state.wasmCandidateCoverage});
+ const methodStates=[];
+ for(const name of ['readByte','readBit','decodeBlocks']){
+  const method=j.classes.Bzip2Decoder.ast.classes[0].items.find(item=>item.type==='method'&&item.method.name===name).method;
+  const state=j.jit.wasmJit.state.get(method);
+  methodStates.push({name,status:state?.status,listed:!!state&&j.jit.wasmJit.compiled.includes(state),
+   structured:!!state?.meta?.structured,structuredFailure:state?.structuredFailReason,
+   failReason:state?.failReason,lastCompileError:state?.lastCompileError,candidates:state?.wasmCandidateCoverage,
+   nativeFields:state?.meta?.nativeObjectBodyFieldSites,nativeArrays:state?.meta?.nativeObjectBodyArraySites,
+   closed:!!state?.meta?.closedNativeBody,sites:state?.meta?.inlineActivationSiteCount});
+ }
+ assert.ok(rows.length,'No codec methods prepared for the new static-loop question');
+ const result={sourceRevision:revision,family,compileOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,rows,methodStates,
+  note:'New recovered-static-loop admission or optimistic region bound, as labelled; normal emission unchanged by the inspector. No Java/TeaVM execution, CPU attribution, timing or baseline fingerprint check.',measuredAt:new Date().toISOString()};
+ const current=JSON.parse(fs.readFileSync(reportPath));(current.optimizationTrials.nativeCallCode||={observations:[]}).observations.push(result);
+ fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(result,null,2));process.exit(0);
+}
 if(family==='checkpoint-coverage'){
  const active=new Set(j.jit.wasmJit.compiled.flatMap(state=>[state.meta,state.callee?.meta,state.osr?.meta]));
  const rows=checkpointCensus.filter(row=>active.has(row.meta)).map(({meta,...row})=>row);
