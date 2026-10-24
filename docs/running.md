@@ -18034,3 +18034,46 @@ Do not repeat unchanged small timing or helper disassembly for this metadata-onl
 repair. Inspect the changed packet native path, then collect a corrected original
 cohort. No baseline/TeaVM/HotSpot, restoration correctness or CPU attribution is
 run. Comparator remains 029/1807.0171855 ms until end-to-end improvement is proved.
+
+
+Corrected original commands (changed candidate only; same pinned PCM/flags):
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs inspect c4e477a970dce0d600cce28fd3ed4c273e56ac5a 'MusicDecoder.decodePacket(I)[F'
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/vorbis.mjs run-jvm c4e477a970dce0d600cce28fd3ed4c273e56ac5a
+```
+
+The targeted packet inspection now succeeds with **682 actual native packet
+entries**, **134216 native vector entries**, zero packet/vector exits and no
+late compilation. The vector has one numeric worker, one deferred length, two
+omitted scalar seeds and six removed original blocks. Every PCM byte matches.
+The regional bug is fixed; this is the changed-path check that the first narrow
+suite missed, not a restored-baseline comparison.
+
+Corrected original samples: **107.141761, 93.019094, 96.745836 ms**, median **96.745836 ms**,
+versus saved **93.269749 ms**. All three are uninstru-mented, exact 348249-byte
+PCM and zero guest compilation. This still **fails** the original performance
+gate, so no full-loading cohort, default artifact or comparator change follows.
+The old 1.8-second original samples remain in the same ledger and are explicitly
+labelled with their compiler failure; the corrected samples remain separately
+keyed by source. Reuse the unchanged small-wrapper results from parent 52ae95e;
+no small workload/helper code/baseline is replayed for the reporting-only repair.
+All source/tests remain in experiment/teavm-deferred-worker-metadata at c4e477a.
+Actual JVM master/index and unrelated decompiler work were never altered.
+
+The next distinct boundary to inspect is the successful worker's logical
+live-out set. The planner still unconditionally returns header phis and unions
+outside snapshot locals even after projection removed the header replay. A
+kernel-only boundary liveness proof using original method/inline-frame liveness
+could distinguish actually used normal values from cold-only reconstruction.
+If its sole actual normal value is the same index which passed a completed
+header bounds check, its nonnegative range could also encode cold negative
+reasons without a separate status result. This is an unimplemented proof
+question; do not drop snapshots or repeat old global dead-phi/budget changes
+without that exact normal-continuation proof. It is not a performance claim.
+
+The selected full comparator remains **029 / 1807.0171855 ms**, about **5.023x**
+saved TeaVM **359.739597 ms**. The **1.1x goal is unachieved**, along with browser,
+phone, presented-FPS, heap and stability release gates. Clean only this pass's
+owned temporary source/index/logs after archival, without a restoration test,
+build or baseline fingerprint check.
