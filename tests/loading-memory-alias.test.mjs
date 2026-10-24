@@ -37,3 +37,17 @@ test('typed GC state has the same mutable-field, array, fuel and fault behavior'
   assert.throws(()=>buildMemoryAlias(engine,kernel,{alias:true}));
  }
 });
+
+
+test('global state preserves operations and imported global names may alias',()=>{
+ for(const engine of ['global-imported','global-owned'])for(const kernel of memoryAliasKernels){
+  for(const n of [0,1,1024,2049])check(engine,kernel,n);
+  check(engine,kernel,4,{fuel:3});check(engine,kernel,4,{length:3});check(engine,kernel,0,{length:0});
+ }
+ const c=buildMemoryAlias('global-imported','array-read-state-write',{globalAlias:true});const setup=initializeMemoryAlias(c);
+ assert.equal(c.state[0],c.state[1]);assert.equal(c.state[1],c.state[2]);
+ let value=11;const a=new Int32Array(c.data.buffer,setup.arrayBase,1024);
+ for(let i=0;i<128;i++){value=(value+1)&31;value=(Math.imul(value,33)+a[i])|0;value^=a[i];}
+ assert.deepEqual(c.exports.run(128,setup.stateBase,setup.arrayBase,1024,1000),[0,871]);
+ assert.deepEqual(memoryAliasState(c),[value,value,value]);
+});

@@ -7,17 +7,17 @@ import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 
-export const memoryAliasEngines=['shared','imported','owned','gc-struct','gc-array'];
+export const memoryAliasEngines=['shared','imported','owned','gc-struct','gc-array','global-imported','global-owned'];
 export const memoryAliasKernels=['array-read-state-write','array-write-state-read'];
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 
 export function memoryAliasSource(engine,kernel){
  assert.ok(memoryAliasEngines.includes(engine));assert.ok(memoryAliasKernels.includes(kernel));
- const gc=engine.startsWith('gc-'),gcArray=engine==='gc-array';
+ const gc=engine.startsWith('gc-'),gcArray=engine==='gc-array',global=engine.startsWith('global-');
  const state=engine==='shared'?'$data':'$state';
- const load=(offset=0)=>gc?(gcArray?`(array.get $State (local.get $s) (i32.const ${offset/4}))`:`(struct.get $State ${offset/4} (local.get $s))`):`(i32.load ${state} offset=${offset} (local.get $s))`;
- const store=(offset,value)=>gc?(gcArray?`(array.set $State (local.get $s) (i32.const ${offset/4}) ${value})`:`(struct.set $State ${offset/4} (local.get $s) ${value})`):`(i32.store ${state} offset=${offset} (local.get $s) ${value})`;
+ const load=(offset=0)=>global?`(global.get $cell${offset/4})`:gc?(gcArray?`(array.get $State (local.get $s) (i32.const ${offset/4}))`:`(struct.get $State ${offset/4} (local.get $s))`):`(i32.load ${state} offset=${offset} (local.get $s))`;
+ const store=(offset,value)=>global?`(global.set $cell${offset/4} ${value})`:gc?(gcArray?`(array.set $State (local.get $s) (i32.const ${offset/4}) ${value})`:`(struct.set $State ${offset/4} (local.get $s) ${value})`):`(i32.store ${state} offset=${offset} (local.get $s) ${value})`;
  const array=`(i32.add (local.get $a) (i32.shl (local.get $p) (i32.const 2)))`;
  const read=`(i32.load $data ${array})`;
  const body=kernel==='array-read-state-write'?`
@@ -36,13 +36,16 @@ export function memoryAliasSource(engine,kernel){
   ${gc?gcArray?'(type $State (array (mut i32)))':'(type $State (struct (field (mut i32)) (field (mut i32)) (field (mut i32))))':''}
   (import "env" "data" (memory $data 1))
   ${engine==='imported'?'(import "env" "state" (memory $state 1))':''}
+  ${engine==='global-imported'?[0,1,2].map(i=>`(import "env" "cell${i}" (global $cell${i} (mut i32)))`).join('\n'):''}
   (import "env" "bounds" (func $bounds (param i32 i32)))
   (import "env" "fuel" (func $fuel))
   ${engine==='owned'?'(memory $state 1)':''}
+  ${engine==='global-owned'?[0,1,2].map(i=>`(global $cell${i} (mut i32) (i32.const 0))`).join('\n'):''}
+  ${global?[0,1,2].map(i=>`(export "cell${i}" (global $cell${i}))`).join('\n'):''}
   ${gc?`(func (export "newState") (param i32 i32 i32)(result externref)
    (extern.convert_any (${gcArray?'array.new_fixed $State 3':'struct.new $State'} (local.get 0) (local.get 1) (local.get 2))))
   (func (export "stateValues") (param $raw externref)(result i32 i32 i32)(local $s (ref null $State))
-   (local.set $s (ref.cast (ref null $State) (any.convert_extern (local.get $raw)))) ${load()} ${load(4)} ${load(8)})`:`(export "state" (memory ${state}))`}
+   (local.set $s (ref.cast (ref null $State) (any.convert_extern (local.get $raw)))) ${load()} ${load(4)} ${load(8)})`:(global?'':`(export "state" (memory ${state}))`)}
   (func (export "run") (param $n i32)${gc?'(param $raw externref)':'(param $s i32)'}(param $a i32)(param $length i32)(param $remaining i32)(result i32 i32)
    (local $i i32)(local $p i32)(local $x i32)(local $y i32)(local $sum i32)
    ${gc?'(local $s (ref null $State)) (local.set $s (ref.cast (ref null $State) (any.convert_extern (local.get $raw))))':''}
@@ -58,21 +61,25 @@ export function memoryAliasSource(engine,kernel){
    (local.get $sum)(local.get $remaining)))`;
 }
 
-export function buildMemoryAlias(engine,kernel,{alias=false}={}){
- assert.ok(!alias||!['owned','gc-struct','gc-array'].includes(engine),'Owned state cannot alias an import');
+export function buildMemoryAlias(engine,kernel,{alias=false,globalAlias=false}={}){
+ assert.ok(!alias||['shared','imported'].includes(engine),'Owned state cannot alias an import');
+ assert.ok(!globalAlias||engine==='global-imported','Only imported globals can share a cell');
  const source=memoryAliasSource(engine,kernel);
  const bytes=execFileSync('wasm-as',['--enable-multimemory','--enable-multivalue','--enable-gc','--enable-reference-types','--disable-compact-imports','-','-o','-'],{input:source,maxBuffer:1024*1024});
  const data=new WebAssembly.Memory({initial:1}),state=engine==='imported'?(alias?data:new WebAssembly.Memory({initial:1})):undefined;
- const exports=new WebAssembly.Instance(new WebAssembly.Module(bytes),{env:{data,state,
+ const sharedCell=globalAlias?new WebAssembly.Global({value:'i32',mutable:true},0):null;
+ const cells=engine==='global-imported'?Object.fromEntries([0,1,2].map(i=>['cell'+i,sharedCell||new WebAssembly.Global({value:'i32',mutable:true},0)])):{};
+ const exports=new WebAssembly.Instance(new WebAssembly.Module(bytes),{env:{data,state,...cells,
   bounds:(index,length)=>{throw {type:'java/lang/ArrayIndexOutOfBoundsException',index,length};},
   fuel:()=>{throw {type:'fuel'};}}}).exports;
- return {engine,exports,data,state:exports.state,sourceSha256:hash(source),wasmSha256:hash(bytes)};
+ return {engine,exports,data,state:engine.startsWith('global-')?[exports.cell0,exports.cell1,exports.cell2]:exports.state,sourceSha256:hash(source),wasmSha256:hash(bytes)};
 }
 
 export function initializeMemoryAlias(control,{arrayBase=4096,stateBase=64}={}){
- const data=new Int32Array(control.data.buffer),state=control.engine?.startsWith('gc-')?null:new Int32Array(control.state.buffer);
+ const data=new Int32Array(control.data.buffer),state=/^(gc|global)-/.test(control.engine)?null:new Int32Array(control.state.buffer);
  for(let i=0;i<1024;i++)data[(arrayBase>>2)+i]=(Math.imul(i,110351)+12345)^(i>>>3);
  if(state){state[stateBase>>2]=3;state[(stateBase>>2)+1]=7;state[(stateBase>>2)+2]=11;}
+ else if(control.engine?.startsWith('global-'))[3,7,11].forEach((value,i)=>control.state[i].value=value);
  else control.state=control.exports.newState(3,7,11);
  return {arrayBase,stateBase};
 }
@@ -98,7 +105,7 @@ export function memoryAliasOracle(kernel,n,{alias=false,arrayBase=4096,stateBase
  return {sum,fuel,error,data:Array.from(a.slice(at,at+1024)),state:Array.from(s.slice(st,st+3)),...setup};
 }
 
-export const memoryAliasState=(control,stateBase=64)=>control.engine?.startsWith('gc-')?control.exports.stateValues(control.state):Array.from(new Int32Array(control.state.buffer,stateBase,3));
+export const memoryAliasState=(control,stateBase=64)=>control.engine?.startsWith('global-')?control.state.map(cell=>cell.value):control.engine?.startsWith('gc-')?control.exports.stateValues(control.state):Array.from(new Int32Array(control.state.buffer,stateBase,3));
 export const memoryAliasArgument=(control,stateBase=64)=>control.engine?.startsWith('gc-')?control.state:stateBase;
 
 function one(engine,kernel,n){
