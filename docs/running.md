@@ -18355,3 +18355,155 @@ or timing it; do not repeat tiny-worker ABI permutations or CPU profiling.
 This is an unimplemented question, not evidence of a gain or permission to
 relax safety. Saved full loading remains **1807.0171855 ms / 5.023125618x TeaVM**;
 **395.7135567 ms** and the wider browser/phone acceptance remain unmet.
+
+### Numeric worker boundaries inside existing array regions
+
+The previous turn is progress: receiver-pair transport is implemented, proved,
+measured and rejected at the original gate. No full run is earned. This pass
+reuses the saved TeaVM comparison and every timing/oracle; there is no renewed
+CPU profiling, baseline execution, code-identity check or restoration test.
+The objective remains at most 395.7135567 ms full loading, not a smaller case.
+
+The existing numeric planner is restricted to a whole stateful method and
+therefore never asks about the packet decoder's already-certified array regions.
+Add an **analysis-only** regional adapter, based on selected source 029 and
+without any worker runtime/emitter. It uses only actual region fields/caches and
+restricts discovered natural loops to the certified block scope. Whole-body
+admission remains closed to mixed methods. Arbitrary calls (including Math),
+nested loops, changing references, unknown headers and handlers retain refusal.
+A self-phi may keep its one immutable source; differing backedge sources may not.
+Original SSA, physical locals, Java frame maps and ordinary codegen are untouched.
+
+The bound reports numeric input/header counts, normal results separately from
+cold snapshot values, and wrapper reference reconstruction obligations. Normal
+arity still assumes a future exact successful-edge projection: the analysis does
+not grant permission to remove a loop or install executable code. Later
+snapshot-only Java references are included in the reconstruction union. Cold
+values remain accounted for even when the old all-results tuple would exceed
+32; the analysis has a separate 128-value cold bound, not a widened runtime ABI.
+
+Initial source 489cbb0ed1799c7cf17e19be44e9204608606108 passes 72 assertions;
+its preparation-only inspection reaches the 50000-work-unit budget (50003
+reported) without yielding a useful packet bound. Source
+5cf6cf342fdee8d892358298b2e6e36348f33b7e adds snapshot-reference coverage and
+skips original-frame liveness for already refused loops; 75 assertions pass.
+Its new compile-only pass also reports budget exhaustion at 50003. Neither
+observation is an admission result or evidence of execution performance.
+
+Do not raise that limit blindly. Source 11345f92e6d318c539093842d7880f48dacd28cb
+computes dominance once using iterative predecessor intersection, rather than
+walking the whole method again for every candidate edge. It preserves the
+standard entry-path definition and keeps graph/work limits. 48 varied small
+CFGs agree with an independent entry-path-exclusion oracle for every discovered
+backedge/header; combined focused validation is 171/171. This source is not
+separately prepared or timed.
+
+Source **2d8ad244e5e69f5b921bb931307afdf894fe96aa**, current
+experiment/teavm-region-kernel-bound, additionally builds original-frame consumer
+facts once across the candidate loops. Each query still distinguishes consumers
+inside/outside its own exact block scope. Private weak certificates bind the
+index to the actual compiler graph and covered value IDs; copied or foreign
+indexes and exhausted queries retain the full result set. Queries are used in
+one unchanged analysis phase, not across SSA rewrites. Operand prefixes and
+unknown contexts remain conservative. The index stays temporary; reported plans
+contain plain IDs/descriptors and scalar counts. No public VM option or game data
+is introduced. Failure stages/partial diagnostics are retained explicitly and
+never authorize emission.
+
+Commands in the only expendable JVM extraction:
+
+```
+node --check src/jit/nativeNumericKernelPlan.js
+node --check src/jit/nativeKernelBoundary.js
+node scripts/generate-jre-index.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeNumericKernelPlan.test.js test/nativeKernelBoundary.test.js
+node --check apps/loading/call-code.mjs
+```
+
+Final **182/182** assertions pass, including the independent dominance oracle,
+opaque/Math refusal, header/source reconstruction, genuine changing phis,
+Java-local/operand-stack liveness, outside metadata references, budgets,
+shared-versus-independent output agreement and mismatched index refusal.
+The ignored JRE registry remains generated scratch, not committed output.
+Only four generic handwritten source/test files are archived through an alternate
+index; actual JVM master/index and unrelated decompiler WIP are untouched.
+
+Add native-region-kernel-bound to the existing call-code inspector. It executes
+zero Java ticks/assets/main, performs no disassembly/fingerprint comparison,
+and stores only this new analysis question in the existing sole benchmark JSON:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 489cbb0ed1799c7cf17e19be44e9204608606108 native-region-kernel-bound
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 5cf6cf342fdee8d892358298b2e6e36348f33b7e native-region-kernel-bound
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs 2d8ad244e5e69f5b921bb931307afdf894fe96aa native-region-kernel-bound
+```
+
+The first two exit 0 with explicit quota refusal. The third changed-analysis
+pass is pending; do not describe its bounds, eligibility or performance before
+it finishes. No old JVM/TeaVM/HotSpot control is run or rebuilt.
+
+The 2d8ad244 pass exits 0 with zero Java execution, but still reports quota
+refusal. Its staged output is useful: loop discovery completes for entries
+62/33 in **3207/1637** work units; the refusal is specifically **shared normal
+consumers**, at method total 50003. It exposes 15 pure loops with 5--18 numeric
+inputs. Thus the remaining cap is on one method-wide snapshot census, not
+unproved control flow or a reason to discard the candidates.
+
+After that stage evidence, source **e78c162ee2b56f908ad7f5389490e1c9c451e60a**
+sets this **diagnostic-only regional adapter's** total cap to 200000, leaving
+whole-body planning's default, runtime policy, heap, scheduling, compiler-worker
+settings and game preparation unchanged. Refused-loop cold counts are now also
+reported before the shared pass. Narrow validation after this edit passes
+**154/154** using the same Tape command with only nativeNumericKernelPlan.test.js.
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeNumericKernelPlan.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node --max-old-space-size=1024 --no-liftoff --no-wasm-lazy-compilation apps/loading/call-code.mjs e78c162ee2b56f908ad7f5389490e1c9c451e60a native-region-kernel-bound
+```
+
+This pass exits 0 and completes at **59610** method work units. All 15 pure
+loops have **zero unknown frame contexts**, no proposed Java/GC input, and exact
+single normal exits at their headers. Ten have a substantially smaller boundary:
+
+| Header | Numeric inputs including headers/fuel | Normal results including reason/fuel | Cold numeric values | Array-operation sites |
+|---|---:|---:|---:|---:|
+| 35 | 5 | 3 | 2 | 1 |
+| 38 | 5 | 3 | 2 | 2 |
+| 41 | 5 | 3 | 3 | 2 |
+| 76 | 5 | 3 | 3 | 2 |
+| 79 | 7 | 3 | 13 | 8 |
+| 85 | 8 | 3 | 18 | 10 |
+| 88 | 6 | 3 | 3 | 2 |
+| 91 | 5 | 3 | 3 | 2 |
+| 94 | 5 | 3 | 4 | 2 |
+| 97 | 7 | 3 | 4 | 2 |
+
+Nine Java-reference recipes remain wrapper obligations at each loop; no normal
+reference result is needed. In particular headers **79/85** have **8/10 array
+operation sites**, **7/8 numeric inputs** and **three normal results**. These
+are more substantial than the tiny Huffman traversal, while avoiding the earlier
+outlined helper's 28--31 inputs and 12--14 results. The five wider pure loops
+remain separate; two nested loops and the two Math loops are refused. These
+are static code-shape counts, not invocation counts, elapsed benefit or CPU
+attribution.
+
+**The positive bound earns an emitter/projection proof, not a benchmark or
+promotion.** Next implement numeric-only helpers for these already-certified
+regions, prove their actual wrapper placement follows region authentication,
+keep exact retained references/cold fault and fuel reconstruction, and inspect
+actual installed code. Start with the useful small boundary at substantial
+memory loops, using generic shape/budget policy rather than header IDs or game
+names. Tests must cover captured arrays, zero-trip loops, floating rounding,
+negative zero, aliasing/partial stores, late bounds faults, fuel handoff, owner
+changes after suspension and cleanup. No helper or game execution in this pass
+proves those requirements. Earlier failed worker/same-module/outlining sources
+remain evidence; do not resurrect them unchanged or rerun their known controls.
+
+The sole existing JSON retains each distinct bound observation and a compact
+nativeRegionKernelBound disposition linking the final source. The generic
+source/tests are durable on experiment/teavm-region-kernel-bound at e78c162e;
+no generated code/artifact is committed. Actual JVM master/index, selected
+comparator, default artifact and deployment remain unchanged. This turn improves
+the analysis and establishes applicability; it has **no measured execution gain**.
+Saved full loading remains **1807.0171855 ms / 359.739597 ms = 5.023125618x**;
+the **395.7135567 ms** goal and wider browser/phone acceptance remain unmet.
