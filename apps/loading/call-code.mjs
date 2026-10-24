@@ -15,20 +15,35 @@ const player=path.join(os.homedir(),'.cache/dekobloko/geoblox-loading');
 const directory=path.join(player,'microbench'),reportPath=path.join(player,'benchmark.json');
 const flags=['--max-old-space-size=1024','--no-liftoff','--no-wasm-lazy-compilation'];
 const revision=process.argv[2];assert.match(revision||'',/^[0-9a-f]{40}$/,'Use an exact archived JVM revision');
-const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-element-micro','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
+const family=process.argv[3]||'boolean';assert.ok(['boolean','reader','original-reader','music-reader','packet','archive','packet-flow','ssa-liveness','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-element-micro','native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code','inlined-lifetimes','frame-remat','mdct-frame-remat'].includes(family));
 const numericKernelFamily=['native-numeric-kernel','native-numeric-kernel-code','native-numeric-kernel-micro-code'].includes(family),numericKernelCode=numericKernelFamily&&family.endsWith('-code');
 const elementBound=['native-element-availability','native-element-micro'].includes(family);
 const entryVariant=process.argv[4]||'ordinary';assert.ok(['ordinary','closed'].includes(entryVariant));
 if(entryVariant==='closed')assert.ok(['original-reader','music-reader'].includes(family),'Inspect a proved native reader export');
 assert.ok(flags.every(flag=>process.execArgv.includes(flag)),'Run this preparation with the documented eager/heap flags');
 const receipt=JSON.parse(fs.readFileSync(reportPath)),options=structuredClone(receipt.diagnosticOptions);
-const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-numeric-kernel','native-numeric-kernel-code'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
+const originalFlow=['packet-flow','ssa-liveness'].includes(family),flowOnly=originalFlow||family==='inlined-lifetimes'||family.endsWith('frame-remat'),directMusic=family==='music-reader',fullGraph=['packet','archive','archive-proof','archive-exit','packet-metadata','constructor-coverage','native-reference-store-coverage','checkpoint-coverage','static-loop-coverage','static-loop-region-bound','static-loop-gates','field-array-coverage','constant-inline-coverage','nested-constant-inline-coverage','native-element-availability','native-numeric-kernel','native-numeric-kernel-code'].includes(family),mainClass=fullGraph?'GeobloxLoading':'LoadingMicroKernel';
 options.classpath=[path.join(family==='mdct-frame-remat'?path.join(player,'mdct'):fullGraph||directMusic||originalFlow||family==='frame-remat'?player:directory,'classes')];options.jit.compileWorker=false;
 options.jit.preparationPolicy={entryMethods:[mainClass+'.main([Ljava/lang/String;)V']};
-let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls,stableHeaders,elementAvailability,numericKernel,buildNumericKernel;const numericKernelRows=new Map();const elementBoundRows=new Map();const proofCensus=[],translationFailures=[],headerCensus=[],checkpointCensus=[],checkpointPlans=new WeakMap(),staticLoopCensus=[],staticRegionBounds=new WeakMap(),fieldArrayPlans=new WeakMap(),fieldArrayCensus=[];
+let buildSsa,buildCfg,frameLiveness,numericLocals,inlineCalls,stableHeaders,elementAvailability,numericKernel,buildNumericKernel;const referenceStoreRows=new Map();const numericKernelRows=new Map();const elementBoundRows=new Map();const proofCensus=[],translationFailures=[],headerCensus=[],checkpointCensus=[],checkpointPlans=new WeakMap(),staticLoopCensus=[],staticRegionBounds=new WeakMap(),fieldArrayPlans=new WeakMap(),fieldArrayCensus=[];
 const preloadModules=numericKernelFamily?['src/jit/nativeNumericKernelPlan.js',...(numericKernelCode?['src/jit/nativeNumericKernel.js']:[])]:elementBound?['src/jit/nativeElementAvailability.js']:family==='ssa-liveness'?['src/analysis/frameLocalLiveness.js','src/jit/stackifyNumericValues.js']:
  family==='inlined-lifetimes'||family.endsWith('frame-remat')?['src/jit/wasmInline.js','src/jit/stackifyNumericValues.js']:family==='packet-metadata'?['src/jit/stableArrayHeaders.js']:[];
 const {JVM}=await loadArchivedJvm(path.resolve(here,'../../../java-tools'),revision,{preloadModules,observeModule:({filename,exports})=>{
+ if(family==='native-reference-store-coverage'&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
+  const translate=exports.prototype.translateBody;
+  exports.prototype.translateBody=function(...args){
+   const meta=translate.apply(this,args);
+   if(meta?.bytes&&!referenceStoreRows.has(meta)&&this.fn){
+    const stores=this.fn.blocks.filter(b=>this.fn.reachable.has(b.id)).flatMap(b=>b.body.filter(n=>n.op==='aastore'));
+    if(stores.length||this.className==='VorbisCodebook'&&this.method.name==='<init>')referenceStoreRows.set(meta,{key:this.className+'.'+this.method.name+this.method.descriptor,
+     emittedSites:meta.nativeReferenceStoreSites||0,normalFlowFullyCompiled:!!meta.normalFlowFullyCompiled,stores:stores.map(n=>{
+      const root=this.fn.referenceFacts.identity(n.args[2]),value=this.fn.referenceFacts.get(root),array=this.fn.referenceFacts.get(n.args[0]);
+      return {item:n.itemIdx,block:n.block,demoted:this.demoted.has(n.block),admitted:!!this.nativeReferenceStorePlan?.sites.has(n.id),
+       valueOp:root.op,valueType:value.exactType,valueBounds:value.upperBounds,arrayType:array.exactType,arrayBounds:array.upperBounds};})});
+   }
+   return meta;
+  };
+ }
  if(numericKernelFamily&&filename.endsWith('/src/jit/nativeNumericKernelPlan.js'))numericKernel=exports.analyze;
  if(numericKernelFamily&&filename.endsWith('/src/jit/nativeNumericKernel.js'))buildNumericKernel=exports.build;
  if(numericKernelFamily&&filename.endsWith('/src/jit/StructuredWasmCompiler.js')){
@@ -523,6 +538,21 @@ if(family==='checkpoint-coverage'){
  const result={sourceRevision:revision,family,compileOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,rows,
   note:'New checkpoint-shape/restore admission question, with normal preparation and no constructor execution, timer, CPU profile or baseline replay.',measuredAt:new Date().toISOString()};
  const current=JSON.parse(fs.readFileSync(reportPath));(current.optimizationTrials.nativeCallCode||={observations:[]}).observations.push(result);
+ fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(result,null,2));process.exit(0);
+}
+if(family==='native-reference-store-coverage'){
+ const active=new Set(j.jit.wasmJit.compiled.flatMap(state=>[state.meta,state.callee?.meta,state.osr?.meta]));
+ const rows=[...referenceStoreRows].filter(([meta])=>active.has(meta)).map(([,row])=>row);
+ const constructor=j.classes.VorbisCodebook.ast.classes[0].items.find(item=>item.type==='method'&&item.method.name==='<init>').method;
+ const state=j.jit.wasmJit.state.get(constructor);
+ assert.ok(state,'Missing prepared original codebook constructor');
+ if(!rows.some(row=>row.key==='VorbisCodebook.<init>()V'))rows.push({key:'VorbisCodebook.<init>()V',status:state.status,
+  structured:!!state.meta?.structured,emittedSites:state.meta?.nativeReferenceStoreSites||0,
+  normalFlowFullyCompiled:!!state.meta?.normalFlowFullyCompiled,stores:[],structuredFailure:state.structuredFailReason,
+  note:'No surviving structured-store census for this constructor; state recorded explicitly.'});
+ const result={sourceRevision:revision,family,compileOnly:true,guestTicks:ticks,assetCalls,mainExecuted:false,rows,
+  note:'Actual installed reference-store emission and producer-type census only; zero Java execution, timing, CPU attribution or old-control replay.',measuredAt:new Date().toISOString()};
+ const current=JSON.parse(fs.readFileSync(reportPath));(current.optimizationTrials.nativeReferenceStores||={}).coverage=result;
  fs.writeFileSync(reportPath,JSON.stringify(current,null,2)+'\n');console.log(JSON.stringify(result,null,2));process.exit(0);
 }
 if(family==='constructor-coverage'){

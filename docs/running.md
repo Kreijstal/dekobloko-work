@@ -17441,3 +17441,67 @@ assertion after compilation fixes the harness ordering. Reuse the already-saved
 native diagnostic rather than executing it again. Next, uninstrumented paired
 new-case timings must establish benefit before original/full testing. No current
 performance claim or comparator advancement.
+
+### Native reference stores: isolate the change and promote write views lazily
+
+The initial new-case measurements (source `a33e0d80102dc00ad0f00835f1e546aa2a470c56`)
+completed without instrumentation: native **26.592898, 24.301172, 27.037739 ms**,
+checked **42.958571, 37.897404, 38.046973 ms**. Medians **26.592898 vs
+38.046973 ms**. This is a new matched construction workload, not a replay of the
+known old JVM/TeaVM control. Both arms return checksum 400687104 with one native
+entry, zero exits/ticks and zero late compilation. The apparent ~30% construction
+benefit does not establish a full-loading improvement.
+
+Correct the emission diagnostic to clear its site set after block-discovery
+before final emission (`7ed006a009fd0f13f03a1ce5aef7d4c613028cf0`, focused real
+integration **131/131**). Add a compile-only actual-game store census to the
+existing `call-code.mjs`. That source prepares **38 methods with 45 emitted
+stores**; notably MusicDecoder.decodeSetup has 4, ArchiveIndex.decodeIndex 7,
+ResourceArchive.unpackGroup 4, and GeobloxLoading.graphics 3. The original
+VorbisCodebook constructor has zero `aastore` instructions. No Java execution,
+asset calls, timing, CPU attribution or known-control replay is needed for this
+new code-admission question.
+
+Remove the unrelated previously rejected multianewarray opcode changes from the
+candidate, using source029 as parent: `0a2d6498884344c4d029a281e527ade5b2471dd6`
+(`experiment/teavm-native-reference-stores-isolated`). Narrow integration/backing/
+cleanup suite **371/371**. No redundant timing for the unused opcode removal.
+
+The first backing implementation also added a GC lookup to every JS indexed
+read. Replace it with private write promotion: ordinary arrays retain their
+existing JS read path. A compiled writer acquires a private capability, installs
+synchronization hooks once, marks native writes dirty, and the next indexed JS
+read/descriptor synchronizes the backing once. Customization/revocation
+synchronizes first and clears retired references. Only exact registered
+memory/class arrays can be promoted; opaque getters are not queried.
+Source **cce5698fab518adf812993d248d82654382eaab8** is archived as
+`experiment/teavm-native-reference-write-views` (parent 0a2d). The coherent final
+protocol passes **387/387**:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReferenceArrayBacking.test.js test/nativeReferenceStores.test.js test/nativeReferenceArray.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules taskset -c 2 node apps/loading/constructor.mjs stores-inspect cce5698fab518adf812993d248d82654382eaab8
+```
+
+The changed-runtime diagnostic again has 2 emitted sites / zero checked stores
+versus 0 sites / 16448 checked stores, same checksum/one entry/zero exits and late
+compilation. Instrumented elapsed values are excluded. Additional forced-GC
+coverage proves a native-written self-cycle and capability are collected:
+
+```
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/nativeReferenceArrayBacking.test.js
+```
+
+**58/58**, including the three new lifetime assertions. Test-only child
+`dde362756cfa38e7e0460268ff2510df13bff72d`
+(`experiment/teavm-native-reference-write-view-lifetime`) preserves it; timings
+continue to identify cce, since executable code is identical.
+
+Before the changed-runtime cohort, add post-timer nativeReferenceStoreSites
+reporting to the existing probe and let the compile-only census explicitly
+record a constructor state with no surviving structured body (029 does not have
+the unrelated multianewarray support). Both `node --check apps/loading/probe.mjs`
+and `node --check apps/loading/call-code.mjs` pass. These are reporting edits,
+not new runtime counters/profiling. Next run only the changed construction case
+and changed full-loading candidate against saved controls. No restoration check,
+known baseline fingerprint/test, defaults, promotion or deployment.
