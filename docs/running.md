@@ -17645,3 +17645,67 @@ result remains the already saved **1807.0171855 ms / 5.023125618x TeaVM**, and t
 395.7135567 ms (1.1x) goal is still unmet. Browser/phone/FPS/heap/stability release
 gates remain unproven. Remove this owned scratch extraction/logs after recording
 these receipts; do not perform a restoration build, test or fingerprint check.
+
+### Numeric worker: remove its duplicate original loop, not just its execution
+
+The preceding goal turn is progress: its new store/allocation proofs and failed
+screens are durable; neither advances the saved 029 comparator. Reuse known
+JVM/TeaVM/HotSpot controls and prior CPU evidence without rerunning them.
+
+Read the retained numeric worker/wrapper code and the previous cold-return and
+four-result failures. The worker finishes the natural loop, but the wrapper
+still emits the original hot loop and replays its readonly header once to reach
+the normal outside edge. Even though normal execution exits at that header,
+the original loop remains reachable in compiled code. Removing more isolated
+checks or changing return tuples again would not test that structural issue.
+
+New generic `numericLoopProjection.js` proves a residual tree for the original
+natural loop's unique normal edge from its conditional header. It checks actual
+CFG exits, the complete inside block set, preservation of every outside block,
+work limits and every surviving branch's original lexical scope. It neither
+mutates the tree nor assumes the next source block is the exit. Missing scopes,
+retained reentry into the removed loop frame, additional exits or exhausted
+work retain ordinary compilation. The actual original edge still performs
+simultaneous phi copies and existing metadata invalidations.
+
+The worker wrapper can then emit that residual tree directly, dropping the
+entire original numeric loop and its header replay. Keep the worker's existing
+numeric ABI, Java bounds checks, scalar-store ordering and exact fault/fuel
+continuations. The planner now distinguishes references genuinely live after a
+normal exit from cold-only recipes; materialize those normal live references
+before the outside edge. Without that distinction, a removed header could leave
+an actual Java reference uninitialized even while its numeric header is valid.
+A state-changing header is now eligible because it is not replayed.
+
+The first shape test exposed a missing refusal for a supplied inside set that
+included the exit target; add that explicit check and validate actual outgoing
+CFG edges too. A first Java reference-result fixture had a dead/unreconstructible
+header-local phi and correctly failed admission. Do not weaken its reference
+proof. Use valid operand-stack bytecode with no such local to test a reference
+that genuinely survives the header; the exact original array identity returns.
+These initial failures are retained as development findings, not successful runs.
+
+Narrow commands in the sole `/tmp/geoblox-native-parity-7zCq8O/jvm-source`:
+
+```
+node scripts/generate-jre-index.js
+node --check src/jit/numericLoopProjection.js
+node --check src/jit/nativeNumericKernelWrapper.js
+node --check src/jit/StructuredWasmCompiler.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node --expose-gc /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/numericLoopProjection.test.js test/nativeNumericKernelWrapper.test.js test/nativeNumericKernelPlan.test.js test/nativeStaticStateBody.test.js test/nativeMixedStateBody.test.js test/structuredLoopResume.test.js test/inlineActivationResume.test.js test/wasmCompilerRetention.test.js
+NODE_PATH=/home/kreijstal/git/java-tools/node_modules node /home/kreijstal/git/java-tools/node_modules/tape/bin/tape test/numericLoopProjection.test.js
+```
+
+The integrated suite passes **910/910**, including exact header/body stores,
+normal return references, Java bounds/partial effects, native/refused inputs,
+changed-header fuel exhaustion and original bytecode continuation, existing
+recovered inline resumption and compiler cleanup. After the final boundary-proof
+hardening, the narrow shape-only command passes **15/15**. No broad unchanged
+suite or restored baseline is run. Add only scalar removed-block counts to
+existing post-timer diagnostics/code summaries. `node --check` passes for
+apps/loading/microbench.mjs, probe.mjs and nested-loop.mjs.
+
+Next inspect the changed wrapper WAT/native code and its controlled diagnostic,
+then time only changed small cases. The numeric worker itself is unchanged;
+do not disassemble/recheck it against its own saved code. No current timing gain,
+original/full gate, comparator/default update or deployment is claimed.
