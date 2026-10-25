@@ -20947,3 +20947,38 @@ baseline or new CPU attribution is run. Generated fixture classes are removed.
 The reported cast failure has a deterministic reproducer and a functional fix.
 Actual gameplay after loading this source still needs server-telemetry
 confirmation. This is not a performance, memory, stability or parity acceptance.
+
+### Large-array reclamation while investigating Ace of Skies
+
+Ace's last available tab still sends the older telemetry without closed-world
+counters. Its zero older-tier counts do not establish interpreted execution;
+closed-world-owned methods are intentionally excluded from those tiers. Frame
+completion gaps around one second versus roughly 3 ms image uploads locate the
+delay before presentation, without identifying an exact guest operation.
+
+A separate small allocator reproducer established a real degradation mechanism:
+`WasmHeap.reclaimExtent` discarded dead arrays above the 4 KiB small-object
+ceiling. Twelve 128 KiB closed arrays in a 1 MiB heap, dropping every handle and
+allowing actual GC/finalization after each allocation, spent 917,504 native bytes
+and spilled five arrays (655,360 bytes). Removing that ceiling from GC-certified
+array reclamation leaves one 131,072-byte extent reused eleven times, all twelve
+arrays reclaimed and zero spills. The heap limit and execution policy are
+unchanged. Explicit small-object freeing keeps its existing limits.
+
+The regression uses actual Wasm GC handles, including a live materialized host
+view. It checks that a retained view prevents recycling, two live arrays never
+alias and recycled storage is zeroed. It fails against committed pre-fix heap
+source with `dead array storage was not reclaimed` and passes the candidate.
+
+Validation in java-tools:
+
+```
+node --test test/closedWorldArrayRecycling.test.js
+node --expose-gc test/wasmHeapFreeList.test.js
+node --test test/closedWorldArrayPressure.test.js
+```
+
+Results: one new regression passes, 71 allocator assertions pass, and both native
+exhaustion/fallback tests pass. This establishes correct large-buffer recycling,
+not an Ace frame-rate improvement. Full-game attribution and FPS still require
+a refreshed tab's server telemetry; the laptop is not accessed directly.
