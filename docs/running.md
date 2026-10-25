@@ -21020,3 +21020,52 @@ All 22 focused tests pass. The isolated committed-source run passes three tests
 (four object-mode/heap combinations and four array cases). This fixes the
 reproduced cast defect; post-update full-game performance and sustained gameplay
 remain unverified. No new CPU profiling or unchanged performance controls run.
+
+### Resolved spill-field access and production FPS visibility
+
+Ace's only local telemetry is still the older tab, without closed-world
+counters. Production previously discarded performance events entirely. That
+collector gap is corrected: normal launches include aggregate backend and heap
+counters without guest stack/timing profiling, and the production Worker keeps
+a scalar FPS/backend summary per five-second bucket per warm isolate. Its
+session map is capped at 128 entries; profiling maps remain excluded. This is
+best-effort sampling across Workers, not globally coordinated rate limiting.
+
+A generic new `ClosedSpillAccess` component benchmark isolates primitive object
+fields after native storage exhaustion. A fresh loop of 200,000 int/long/double
+updates took 11.493468 ms with native storage (4 MiB heap) versus 899.888436 ms
+with 87 spilled objects (1 MiB heap). Loading/preparation are outside the timer;
+there is no warmup. Independent final checks require value 200007, long total
+20001500000 and double scale 100001.25.
+
+JVM commit `8851a8cc` replaces the general interpreter field adapter on this path
+with an import for the already resolved declaring-class field. Wasm passes the
+existing wrapper directly as externref. This removes redundant field lookup,
+synthetic frames, wrapper conversion calls and exception conversion from the
+spill path. The compiler's receiver/null checks remain, field identity comes
+from the resolved layout, and native field storage is unchanged.
+
+The first candidate was 139.051035 ms. Working-tree candidate repeats run after
+owned tests completed were 79.320559, 88.730540 and 102.689575 ms. An additional
+Git-backed child loader excludes all unrelated source WIP and regenerates the
+JRE index in memory; committed-source timings were 86.985627, 79.688370 and
+107.981861 ms. The benchmark recorder still reports `dirtyRuntime:true` for the
+parent checkout; this replay explicitly replaces child runtime sources with
+the committed Git contents. The current component comparison is these committed
+candidate timings; do not use the old adapter as the baseline for another
+optimization. Runs shared kreijstalnuc/Node v22.23.2; CPU frequency and unrelated
+host activity were not controlled. These are component measurements, not an
+Ace FPS result or a game/default-artifact promotion gate.
+
+```
+node benchmarks/run-closed-spill-access.js 1 3
+node --test test/closedWorldObjectPressure.test.js test/closedWorldCompiler.test.js test/closedWorldTrapReporting.test.js
+node --test tests/runtime-telemetry.test.mjs tests/server-telemetry.test.mjs
+```
+
+The first two commands belong to java-tools; the last belongs to the cloner.
+Fourteen runtime tests and 21 telemetry tests pass. The committed-source object
+regression additionally passes both heap sizes in synchronous and suspendable
+engines. The benchmark runner removes its generated classes. No extra checkout,
+profiling run, binary commit or diagnostic JSON report is created. Full-game
+FPS remains unverified until a refreshed Ace launch supplies current telemetry.
