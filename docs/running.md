@@ -20982,3 +20982,41 @@ Results: one new regression passes, 71 allocator assertions pass, and both nativ
 exhaustion/fallback tests pass. This establishes correct large-buffer recycling,
 not an Ace frame-rate improvement. Full-game attribution and FPS still require
 a refreshed tab's server telemetry; the laptop is not accessed directly.
+
+### Object-factory cast after native heap exhaustion
+
+The next production failure has useful bounded diagnostics: `bad cast` in
+`PcmSampleStream.createForSampleStep`, with 268,435,424 native bytes allocated,
+zero free bytes, a 268,435,456-byte limit and 54 spilled arrays. This is object
+allocation after exhaustion, distinct from the earlier primitive-array cast.
+The factory returns `new PcmSampleStream(...)`. `ClosedRuntime.newFields`
+previously returned null when its primitive-field slab could not be allocated;
+the ordinary JS object fallback then violated the compiler's class-typed Wasm
+return contract.
+
+Generic JVM commit `02e325d7` preserves the class's typed GC handle with a
+negative base and host primitive-field storage. Primitive field accesses retain
+their null behavior and use the host path only for spilled storage. Reference
+fields keep their class-typed GC representation. Cloning handles native and
+spilled primitive storage correctly, including cross-storage copies. The native
+heap cap is unchanged. Trap snapshots and statistics now include cumulative
+spilled-object counts/bytes as well as array spills.
+
+`ClosedObjectPressure` reproduces `RuntimeError: illegal cast` in its own factory
+against committed pre-fix source with a 1 MiB heap. It retains all allocated
+objects to make the exhaustion real. The candidate checks inherited/hidden
+fields, every primitive field kind, defaults, reference identity, dispatch,
+cloning, monitors and null faults. It passes with both 1 MiB and 4 MiB heaps,
+under both synchronous and suspendable Node engines. An in-memory Git source
+loader verifies the isolated committed runtime and regenerates its JRE index
+without another checkout or any generated source export; the new object test
+and both array-pressure tests pass there.
+
+```
+node --test test/closedWorldObjectPressure.test.js test/closedWorldArrayPressure.test.js test/closedWorldArrayRecycling.test.js test/closedWorldTrapReporting.test.js test/closedWorldCompiler.test.js test/closedWorldSuspension.test.js
+```
+
+All 22 focused tests pass. The isolated committed-source run passes three tests
+(four object-mode/heap combinations and four array cases). This fixes the
+reproduced cast defect; post-update full-game performance and sustained gameplay
+remain unverified. No new CPU profiling or unchanged performance controls run.
