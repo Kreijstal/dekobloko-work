@@ -20908,3 +20908,42 @@ Result **147/147**. This tests the new master changes, not an unchanged baseline
 It does not prove JVM integration, performance parity or deployment; those
 remain open. Deko's reproducible metadata analysis, shape query and this journal
 are committed on its master too.
+
+
+### 2026-10-25 — Closed primitive-array heap overflow causes an outline cast trap
+
+The live Firefox failure names `Sprite.addOutline(I)V` and a Wasm `bad cast`.
+Static inspection finds that this method allocates a replacement `int[]`. Once
+linear heap allocation fails, the shared allocator returns a plain TypedArray;
+closed-world code nevertheless casts the result to its typed `$parr` handle.
+The allocator's fallback and the compiler's representation assumption disagree.
+This is distinct from the earlier browser `stderr` reporting error.
+
+A new generic `ClosedArrayPressure` fixture reproduces the failure with a 1 MiB
+native heap, in its own small outline method: allocator exhaustion immediately
+followed by `RuntimeError: illegal cast`. No game launch, profiling or old timing
+baseline is needed. The corrected candidate keeps a closed primitive-array
+handle with base -1 and a canonical host view. Element operations retain their
+null/bounds checks and select host access for spilled storage; ordinary owned
+arrays retain linear-memory access. The native heap limit is not raised.
+
+JVM master fix: `49aa24cd82462cae8273a3334c75f634ba62851b`, pushed to GitHub.
+Only the two generic runtime files, two handwritten Java fixtures and their
+focused test are committed; other runtime/semantics WIP is preserved.
+
+```
+node --test test/closedWorldArrayPressure.test.js
+```
+
+Result: 2/2 tests, executing both spilled and native-storage cases. Coverage
+includes all eight primitive array types, signed values, zero initialization,
+identity, null/bounds faults, cloning and host array copying. An additional
+in-memory replay reads committed source `e83be00f` through Git, overlays only
+`primitiveArray` and the representation fix, generates its JRE index in memory,
+and passes both failing-shape and all-kind fixtures. It creates no extra source
+checkout and excludes unrelated working changes. No unchanged game/TeaVM/HotSpot
+baseline or new CPU attribution is run. Generated fixture classes are removed.
+
+The reported cast failure has a deterministic reproducer and a functional fix.
+Actual gameplay after loading this source still needs server-telemetry
+confirmation. This is not a performance, memory, stability or parity acceptance.
