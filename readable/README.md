@@ -55,7 +55,7 @@ source. Full client rendering and server compatibility remain separate checks.
 The current Ace pass names 54 classes and 1,778 symbols, including flight-loop
 locals, targets, camera movement, lives, weapon heat/cooldown, gun patterns,
 menu input/navigation, hit testing, transitions and HUD score/multiplier state.
-All 545 source files compile before and after naming; 197,046 symbol bindings
+All 545 source files compile before and after naming; 197,044 symbol bindings
 and 118 label bindings agree. Native raw/named traces agree on 16,420 assertions,
 including aircraft construction, bullet spawning, single-period flight
 boundaries, packet bytes, intrusive transfers, pool swaps and menu geometry.
@@ -282,7 +282,7 @@ The loop-header tests include a 1,000-counter fixture and 3,456 native
 comparisons across all primitive types, zero-iteration loops, labeled
 break/continue, throwing headers/body/cleanup and null/non-null monitors. A
 default-decompiler roundtrip preserves an earlier effectful store. The combined
-declaration/value/emitter/exception-table run passes 247 tests with one existing
+declaration/value/emitter/exception-table run passes 276 tests with one existing
 skip (plus five assembler assertions). All 160 reviewed local names still bind
 to unique declarations; all guarded local identities and ordinals remain unchanged.
 
@@ -325,7 +325,7 @@ observed from finally.
 The default decision proofs also run on prepared Java and newly emitted
 method bodies. A primitive captured-int ladder may reuse its selector as
 scratch after classification: a backward proof rejects a possible write that
-can reach a later classifier test. It retains every action once in lexical
+can reach a later classifier test. It retains every action once in its execution
 order and preserves opaque action declarations inside their original scopes.
 Direct declarations are not widened into case siblings. Cases remain bounded
 by the existing classifier/action budgets; unknown Boolean guards are kept as
@@ -345,12 +345,34 @@ their original NaN behavior; boxed value contexts retain their conversions.
 A separate 25-case native source roundtrip covers NaNs, infinities, signed zero,
 nullable Boolean calls and effects. Whole-source checks confirm deterministic,
 idempotent output. After default bytecode emission, the prepared-source stage
-simplifies 159 more bodies across 96 files: one integer dispatch, 405 predicate
-simplifications, 1,117 removed grouping pairs, 701 else-if wrapper blocks and
+simplifies 159 more bodies across 96 files: three integer dispatch recoveries, 405 predicate
+simplifications, 1,115 removed grouping pairs, 700 else-if wrapper blocks and
 six lexical frame cleanups. The current dictionary records decision-stage file
-hashes and proof counts. Together with default emission, this publication
-changes 97 Java files and removes 1,426 lines. Menu action dispatch falls from
-59 to 48 if statements; its maximum nested-if depth falls from 11 to four.
+hashes and proof counts. The current menu action handler has 47 if statements,
+a maximum nested-if depth of three and one switch, compared with 59 if
+statements and a depth of 11 before decision recovery.
+
+Transparent integral switch layers now coalesce in the same default policy.
+A comparison and its sole same-selector switch must read one proven primitive
+local with no intervening work. The equality arm becomes a scoped case before
+all old cases, with an exit only when its body can complete normally. Bare
+breaks that would acquire a different target prevent recovery.
+
+A default containing only another same-selector switch and its own outer
+break can be flattened when case values are disjoint, no prior case falls into
+that default, and no direct inner case declaration would widen its scope.
+Existing fallthrough stays in place; a normal final group gets an explicit
+exit before later outer cases. Labeled completion accounts for finally
+overrides. Unknown loop completion, symbolic case identities, captures and
+ambiguous scopes retain the original shape. This adds no application flags,
+selector tables or game identifiers to java-tools.
+
+The additional native three-way oracle checks 32,256 cases across guarded and
+nested switches, later selector reads and mutation, incoming/outgoing
+fallthrough, local scopes, loop transfers, monitor release and pending returns
+or labeled breaks overridden by finally. The menu action handler now exposes
+all action codes in one switch, including the classic-game action formerly
+behind the outer guard.
 
 The core probe now exercises actual menu action dispatch and both volume
 sliders through reflection. It uses the real linked sample mixer with silent
@@ -378,11 +400,11 @@ SHA-256 is `34c1e50357f69cafd0c4550a63beeb07a8b56c8c891bdb31e4fc49a652509613`,
 reproduced with `git archive --format=tar 00c1c12fb58cdbd6be065e604ee5e9acbcebeff7 | sha256sum`
 inside java-tools. This hash identifies compiler source, not a game JAR.
 The current method-recovery compiler source archive SHA-256 is
-`904a8599bc6aceec30adf238e452b48db13230e4652c81a1ed6f410c680570eb`, reproduced
-by archiving commit `db84e4b7fc6a827bcc33d5088b97eba62309fcca` the same way.
+`d147463398f051849a8d707017f786f963f0b4d3d1904862a02f9d2252504308`, reproduced
+by archiving commit `d8d22dc8e36ea98547680dabd88cfee3eb58f410` the same way.
 The verified prepared raw tree SHA-256 is
-`ff8029336a9003b26b4599bd93761a29087ebd4684be3e53bff62e5afb497c50`; the
-named tree is `3b3798b9c23bc7678f193ce71aaa0a47a49506a3dda3709a92a039c9cf12b884`.
+`60df64cb8777cedd624f2a19538f56e985220335834fde606240a7f310f9d19f`; the
+named tree is `07f6468c1f03bb94a783a3c95271680456bbeabc8f202d3da82dbe0e21bdac17`.
 The one current rule manifest/dictionary records both input identities,
 compiler pins, fixed gamepack identity, method-body hashes and verification.
 Dictionary reversal recovers all 545 prepared raw files; the unmodified base
@@ -406,11 +428,12 @@ node readable/build-aceofskies-rules.mjs --check
 node readable/reproduce-aceofskies.mjs --check
 ```
 
-The declaration/source-unit regression command runs in java-tools (247 passing
-tests, one existing skip and five nested assembler assertions):
+The structural regression run passed 276 tests with one existing skip and
+five nested assembler assertions. A subsequent switch-boundary formatting
+check passed 61 focused tests. The full command runs in java-tools:
 
 ```
-node --test test/terminalSelectorDispatchRecovery.test.js test/sourceDecisionRecovery.test.js test/scalarIfDispatchRecovery.test.js test/opaqueControlDispatchRecovery.test.js test/sourceLocalDeclarationRecovery.test.js test/localInitializationRecovery.test.js test/forLoopDeclarationRecovery.test.js test/primitiveValueBranchRecovery.test.js test/javaAstEmitterLoopExits.test.js test/exceptionTablePreservation.test.js
+node --test test/integralSwitchCoalescing.test.js test/terminalSelectorDispatchRecovery.test.js test/sourceDecisionRecovery.test.js test/scalarIfDispatchRecovery.test.js test/opaqueControlDispatchRecovery.test.js test/sourceLocalDeclarationRecovery.test.js test/localInitializationRecovery.test.js test/forLoopDeclarationRecovery.test.js test/primitiveValueBranchRecovery.test.js test/javaAstEmitterLoopExits.test.js test/exceptionTablePreservation.test.js
 ```
 
 Seven workflow tests pass. The generic compiler's focused exception tests run

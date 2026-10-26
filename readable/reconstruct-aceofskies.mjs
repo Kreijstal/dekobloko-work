@@ -8,8 +8,8 @@ import {inventory} from '../scripts/publish-decompiled-games.mjs';
 import {withPinnedCompiler} from './pinned-compiler.mjs';
 import {sourceInventory, sourceIdentity} from './tools/readable-java.mjs';
 
-export const aceRecoveryCompiler = {commit: 'db84e4b7fc6a827bcc33d5088b97eba62309fcca',
-  sourceArchiveSha256: '904a8599bc6aceec30adf238e452b48db13230e4652c81a1ed6f410c680570eb'};
+export const aceRecoveryCompiler = {commit: 'd8d22dc8e36ea98547680dabd88cfee3eb58f410',
+  sourceArchiveSha256: 'd147463398f051849a8d707017f786f963f0b4d3d1904862a02f9d2252504308'};
 const originalClassesSha256 = '9f0daf3471d01ae2de9a8a71504d0bf94fb751c66e0b5c3553477eb22b9c7f15';
 const url = 'https://static.alterorb.net/launcher/v3/jars/aceofskies.jar';
 
