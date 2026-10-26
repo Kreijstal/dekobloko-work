@@ -108,14 +108,15 @@ export function publish({batch, destination, javaTools, update = false}) {
   if (!fs.existsSync(stub)) throw new Error('Missing batch compilation stubs');
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'funorb-publish-validation-'));
   const records = {};
-  const namedExports = fs.existsSync(path.join(destination, 'decompilation-provenance.json'))
-    ? json(path.join(destination, 'decompilation-provenance.json')).namedExports ?? {} : {};
+  const previousManifest = fs.existsSync(path.join(destination, 'decompilation-provenance.json'))
+    ? json(path.join(destination, 'decompilation-provenance.json')) : null;
+  const namedExports = previousManifest?.namedExports ?? {};
   if (Object.keys(namedExports).some(game => !games.includes(game))) throw new Error('Unknown named game');
   try {
     for (const game of games) {
-      const previousRecord = json(path.join(destination, 'decompilation-provenance.json')).publication.games[game];
-      validateRawClassRepairs(destination, game, previousRecord);
-      for (const receipt of Object.values(previousRecord.sourceRepairs?.classes || {})) {
+      const previousRecord = previousManifest?.publication?.games?.[game];
+      if (previousRecord) validateRawClassRepairs(destination, game, previousRecord);
+      for (const receipt of Object.values(previousRecord?.sourceRepairs?.classes || {})) {
         run('git', ['-C', javaTools, 'merge-base', '--is-ancestor', receipt.generator.commit, compiler.commit]);
       }
       const root = path.join(batch, game);

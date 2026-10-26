@@ -3,8 +3,28 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {inventory, validateReport, pipelineCheckEnvironment, validateNamedExport} from './publish-decompiled-games.mjs';
+import {inventory, validateReport, pipelineCheckEnvironment, validateNamedExport, validateRawClassRepairs} from './publish-decompiled-games.mjs';
 import {createHash} from 'node:crypto';
+
+test('raw class refreshes pin the output, compiler archive and semantic result', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'raw-refresh-test-'));
+  try {
+    const game = path.join(root, 'games/fixture'); fs.mkdirSync(game, {recursive: true});
+    const java = 'class A {}'; fs.writeFileSync(path.join(game, 'A.java'), java);
+    const receipt = {output: {path: 'games/fixture/A.java', sha256: createHash('sha256').update(java).digest('hex')},
+      generator: {commit: 'a'.repeat(40), execution: 'committed-source-archive', sourceArchive: {sha256: 'b'.repeat(64)}},
+      validation: {wholeGameJavac: 'pass', sources: 1, originalBytecodeProbe: {reference: 'mask=256', rebuilt: 'mask=256'}}};
+    const record = {sources: {files: 1}, sourceRepairs: {classes: {'A.java': receipt}}};
+    assert.doesNotThrow(() => validateRawClassRepairs(root, 'fixture', record));
+    for (const mutate of [r => {r.output.path = '../escape';}, r => {r.generator.sourceArchive.sha256 = 'unknown';},
+      r => {r.validation.sources = 2;}, r => {r.validation.originalBytecodeProbe.rebuilt = 'mask=0';}]) {
+      const changed = structuredClone(receipt); mutate(changed);
+      assert.throws(() => validateRawClassRepairs(root, 'fixture', {...record, sourceRepairs: {classes: {'A.java': changed}}}), /differs/);
+    }
+    fs.writeFileSync(path.join(game, 'A.java'), java + ' ');
+    assert.throws(() => validateRawClassRepairs(root, 'fixture', record), /identity differs/);
+  } finally {fs.rmSync(root, {recursive: true, force: true});}
+});
 
 test('named catalog publication verifies its Java, guide and reverse dictionary together', () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'named-catalog-test-'));
