@@ -331,6 +331,47 @@ ${c('eu')}.${m('eu','a','(BIZ)V')}((byte)-105,target,false);
 check("menu/transition-target",${c('ci')}.${f('ci','d','I')},target);check("menu/transition-reset",${c('ec')}.${f('ec','t','I')},0);}
 }
 
+// Exercise actual menu dispatch, including reuse of the action selector as
+// volume-slider scratch storage. Silent sample streams keep the real mixer
+// and playback/link semantics without starting an audio device or applet.
+static void menuActions()throws Exception{
+silentFlightAudio();${c('al')} silent=new ${c('al')}(22050,new byte[8],0,8);
+${c('gg')}.${f('gg','a','Lal;')}=silent;${c('kq')}.${f('kq','b','Lal;')}=silent;
+${c('ao')}.${f('ao','c','Lkp;')}=null;${c('mg')}.${f('mg','d','Lhk;')}=null;${c('wt')}.${f('wt','e','Ljt;')}=null;
+Class<?> screen=${c('nk')}.class,state=${c('gr')}.class;
+${c('uc')} query=(${c('uc')})unsafe.allocateInstance(${c('uc')}.class);
+int[] actions={-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,99};
+for(int action:actions)for(boolean activated:new boolean[]{false,true}){
+if(activated&&!(action==8||action==9||action==10||action==17||action==18||action==20||action==21))continue;
+for(int page=0;page<3;page++)for(boolean pointer:new boolean[]{false,true}){
+int id=action==17||action==18?3:0,index=action==17?2:0;
+${c('ua')}.${f('ua','l','[[I')}[id]=new int[]{action,action,action};${c('nk')} menu=new ${c('nk')}(id);
+${c('gr')} input=(${c('gr')})field(screen,"${f('nk','i','Lgr;')}").get(menu);input.${f('gr','g','I')}=index;
+field(state,"${f('gr','e','I')}").setInt(input,activated?84:0);field(screen,"${f('nk','a','I')}").setInt(menu,-1000);
+${c('vq')}.${f('vq','w','I')}=page;${c('cs')}.${f('cs','a','I')}=action==20?0:1;${c('oc')}.${f('oc','e','I')}=2;
+${c('ql')}.${f('ql','r','Luc;')}=query;${c('ci')}.${f('ci','d','I')}=1111;${c('ec')}.${f('ec','t','I')}=59;
+call(menu,"${m('nk','a','(ZII)V')}",new Class<?>[]{boolean.class,int.class,int.class},pointer,3,index);
+int nextPage=activated&&action==17&&page<2?page+1:activated&&action==18&&page>0?page-1:page;
+int nextSelection=activated&&action==17&&page==1?0:activated&&action==18&&page==1?2:index;
+check("menu/action-page",${c('vq')}.${f('vq','w','I')},nextPage);check("menu/action-selection",input.${f('gr','g','I')},nextSelection);
+check("menu/action-view",${c('oc')}.${f('oc','e','I')},activated&&action>=8&&action<=10?action-8:2);
+check("menu/action-mode",${c('cs')}.${f('cs','a','I')},activated&&action==20?1:activated&&action==21?0:action==20?0:1);
+check("menu/action-query",${c('ql')}.${f('ql','r','Luc;')}==query,!(activated&&(action==20||action==21)));
+check("menu/action-hover",field(screen,"${f('nk','a','I')}").getInt(menu),activated?-1000:action);
+check("menu/action-transition",${c('ci')}.${f('ci','d','I')},1111);check("menu/action-transition-clock",${c('ec')}.${f('ec','t','I')},59);
+}}
+for(int action:new int[]{12,13})for(int decoration:new int[]{0,17})for(int pointerX:new int[]{-100,0,20,179,220,300,1000}){
+${c('ua')}.${f('ua','l','[[I')}[0]=new int[]{action,action,action};${c('dt')}.${f('dt','a','[I')}[0]=20;${c('ak')}.${f('ak','f','[I')}[0]=460;
+${c('nk')} menu=new ${c('nk')}(0);${c('gr')} input=(${c('gr')})field(screen,"${f('nk','i','Lgr;')}").get(menu);
+field(state,"${f('gr','d','I')}").setInt(input,1);field(screen,"${f('nk','h','I')}").setInt(menu,1);
+${c('oq')}.${f('oq','K','I')}=decoration;${c('ic')}.${f('ic','b','I')}=pointerX;${c('gn')}.${f('gn','a','I')}=128;${c('l')}.${f('l','c','I')}=128;
+call(menu,"${m('nk','a','(ZII)V')}",new Class<?>[]{boolean.class,int.class,int.class},true,3,0);
+int origin=((343-decoration)>>1)+decoration+8,wanted=Math.max(0,Math.min(256,(pointerX-origin)*2));
+check("menu/slider-sound",${c('gn')}.${f('gn','a','I')},action==12?wanted:128);check("menu/slider-music",${c('l')}.${f('l','c','I')},action==13?wanted:128);
+check("menu/slider-held",field(state,"${f('gr','d','I')}").getInt(input),1);check("menu/slider-preview-delay",field(screen,"${f('nk','h','I')}").getInt(menu),1);
+}
+}
+
 static ${c('pk')} flightFixture(${c('gb')} definition)throws Exception{
 ${c('pk')} session=(${c('pk')})unsafe.allocateInstance(${c('pk')}.class);${c('md')} player=new ${c('md')}(new ${c('kc')}(10,20),definition);
 field(${c('pk')}.class,"${f('pk','X','Lmd;')}").set(session,player);field(${c('pk')}.class,"${f('pk','A','[Lmd;')}").set(session,new ${c('md')}[]{player,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null});
@@ -517,7 +558,7 @@ check("render/argb-blend",call(session,"${m('pk','b','(IIII)I')}",new Class<?>[]
 }
 
 ${highscoreProbe(c, f, m)}
-public static void main(String[] args)throws Exception{originalBytecodeDirectory=args[0];Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();sharedCollectionsAndSoundCache();fontMetricsAndPixels();spriteDataAndTransforms();rendererTextCalls();pools();menus();highscores();flightControls();flightUpgrades();flightWaves();hudMessageTiming();visualParticles();hudAndSpatialState();System.out.println("checks:"+checks);}
+public static void main(String[] args)throws Exception{originalBytecodeDirectory=args[0];Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();sharedCollectionsAndSoundCache();fontMetricsAndPixels();spriteDataAndTransforms();rendererTextCalls();pools();menus();menuActions();highscores();flightControls();flightUpgrades();flightWaves();hudMessageTiming();visualParticles();hudAndSpatialState();System.out.println("checks:"+checks);}
 }
 `);
     const root = readable ? named : input, argsFile = path.join(directory, 'sources.args');
@@ -542,7 +583,7 @@ public static void main(String[] args)throws Exception{originalBytecodeDirectory
   assert.ok(checks > 1500);
   return {checks, rawNamedIdentical: true, historicalSourceCoreIdentical: true, fullHistoricalSourceCoreIdentical: true, independentExpectations: true,
     headlessClientBoundary: true, vectorAndFlightFixtures: true, packetAndDequeFixtures: true,
-    aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true, highscoreProtocolFixtures: true, flightControlsUpgradesAndWavesFixtures: true, hudMessageTimingFixtures: true, exactSeededWaveTrace: true, visualParticleHudAndSpatialFixtures: true,
+    aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true, menuActionAndSliderFixtures: true, highscoreProtocolFixtures: true, flightControlsUpgradesAndWavesFixtures: true, hudMessageTimingFixtures: true, exactSeededWaveTrace: true, visualParticleHudAndSpatialFixtures: true,
     sharedHashTableDualLinksAndSoundCacheFixtures: true, softwareFontMetricsWrappingAndPixelFixtures: true, spriteDecodingTransformsAndIndexedPixelFixtures: true, originalIndexedAlphaBytecodeOracle: true, originalSpriteDecoderBytecodeOracle: true, rendererTextGlyphCallFixtures: true, traceSha256: digest(outputs[0]),
     ...(extraVerification ? extraVerification(path.join(temporary, 'raw-core/classes')) : {})};
 }
