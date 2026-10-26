@@ -25,6 +25,9 @@ env -u JAVA_TOOL_OPTIONS node readable/reproduce-brickabrac.mjs --check
 env -u JAVA_TOOL_OPTIONS node readable/build-steelsentinels-rules.mjs --check
 env -u JAVA_TOOL_OPTIONS node readable/reproduce-steelsentinels.mjs --update
 env -u JAVA_TOOL_OPTIONS node readable/reproduce-steelsentinels.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/build-aceofskies-rules.mjs --check
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-aceofskies.mjs --update
+env -u JAVA_TOOL_OPTIONS node readable/reproduce-aceofskies.mjs --check
 node readable/restore-game.mjs dekobloko /tmp/restored-dekobloko
 node scripts/check-source-catalog.mjs /absolute/path/to/funorb-decompiled
 node --test scripts/test-publish-decompiled-games.mjs readable/tests/test-game-publication.mjs
@@ -37,6 +40,39 @@ stages Java, guide, dictionary and catalog receipt before replacing the current
 game; failed metadata installation restores the previous game and receipt.
 Checks and reverse reconstruction also use temporary storage, never `.work`.
 The frozen generic naming dependency remains under `tools`, bound by `PIN.json`.
+
+Ace of Skies uses `reviewed-game.mjs`, a reusable workflow supporting packaged
+Java sources as well as default-package game classes. Its publication check
+rejects binaries and symlinks and rolls back Java and receipts together after
+an installation failure. Existing games retain their pinned workflows.
+Ace's shared archives, packets, intrusive collections and PCM/MIDI classes use
+the same role names as other games where the implementations establish those
+roles. Short obfuscated IDs are never transferred between games. Its flight,
+vector, packet, deque and pool fixtures compare raw/named behavior against
+independent expectations; complete binding and compilation checks cover every
+source. Full client rendering and server compatibility remain separate checks.
+
+The current Ace pass names 35 classes and 403 symbols, including flight-loop
+locals, targets, camera movement, lives, weapon heat/cooldown and gun patterns.
+All 545 source files compile before and after naming; 209,300 symbol bindings
+and 166 label bindings agree. Native raw/named traces agree on 2,542 assertions,
+including aircraft construction, bullet spawning, single-period flight
+boundaries, packet bytes, intrusive transfers and pool swaps. One dispatcher
+remains in animated HUD number drawing; unknown class/member roles remain.
+
+Its raw source pin is funorb-decompiled commit
+`b168d7edeb104599156b5f908df62dfdc9f3b250`, tree SHA-256
+`a52334680405315c555ca4db143723b8fbb0cda0101e89d5ab7fa743466537b7`.
+The raw source generator is java-tools commit
+`00c1c12fb58cdbd6be065e604ee5e9acbcebeff7`; its **decompiler source archive**
+SHA-256 is `34c1e50357f69cafd0c4550a63beeb07a8b56c8c891bdb31e4fc49a652509613`,
+reproduced with `git archive --format=tar 00c1c12fb58cdbd6be065e604ee5e9acbcebeff7 | sha256sum`
+inside java-tools. This hash identifies compiler source, not a game JAR.
+The named tree SHA-256 is
+`4da9da9045374c4da7f209226412678320f1564f5fe64afce01c0f77a697fe13`.
+The catalog check validates all 44 game source identities, and dictionary
+reversal recovers all 545 original Ace files. The focused publisher tests run
+with `node --test readable/tests/test-reviewed-game.mjs` (five tests).
 
 ## Control-flow candidate check
 
