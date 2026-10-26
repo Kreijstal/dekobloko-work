@@ -55,7 +55,7 @@ source. Full client rendering and server compatibility remain separate checks.
 The current Ace pass names 54 classes and 1,779 symbols, including flight-loop
 locals, targets, camera movement, lives, weapon heat/cooldown, gun patterns,
 menu input/navigation, hit testing, transitions and HUD score/multiplier state.
-All 545 source files compile before and after naming; 208,915 symbol bindings
+All 545 source files compile before and after naming; 208,897 symbol bindings
 and 124 label bindings agree. Native raw/named traces agree on 14,772 assertions,
 including aircraft construction, bullet spawning, single-period flight
 boundaries, packet bytes, intrusive transfers, pool swaps and menu geometry.
@@ -242,8 +242,9 @@ region certificates, plus the `SpriteData` decoder with a separate plain-CFG
 original-edge proof. It runs twice and checks identical output. Session
 initialization and three small methods using specialized emitters remain at
 the base source. Across the 51 session bodies, the base source has 5,002 lines
-and the current source 4,532. The sprite decoder falls from 139 to 133 body
-lines. This pass removes 54 body lines from the prior publication. All 38
+and the current source 4,532. The sprite decoder falls from 139 to 115 body
+lines. This pass places its 18 loop counters in their owning headers, removing
+18 standalone declaration lines from the prior publication. All 38
 reconstructed decoder locals now have reviewed frame, palette, index,
 coordinate and alpha-mask names, including the separately recovered lifetimes.
 Historical native comparison overlays both the old session and old decoder, and decoder
@@ -260,13 +261,28 @@ control/exception/monitor scopes. This proof runs in the default CFG emitter;
 there are no application flags or names in java-tools. All replacements are
 assembled in one pass rather than repeatedly copying the full source.
 
-Focused recovery tests pass 29 cases, including a 1,000-decision fixture,
-192 native type/bit/exception/monitor combinations and default decompilation
-followed by native compilation. The combined recovery/emitter/exception-table
-run passed 97 tests with one existing skip before the final assembly-only
-change; all 29 focused recovery tests passed again after it. The native bit
-checks include signed zero and noncanonical NaN payloads. Reviewed naming
-locals retain their guarded identities.
+Primitive-value recovery tests cover a 1,000-decision fixture, 192 native
+type/bit/exception/monitor combinations and default decompilation followed by
+native compilation. The bit checks include signed zero and noncanonical NaN
+payloads. Reviewed naming locals retain their guarded identities.
+
+Loop declaration recovery runs after missing declarations and independent
+lifetimes have been materialized. A primitive declaration moves into a single
+for initializer only when every reference belongs to that loop, its earlier
+initializer is absent or an inert literal, the header does not consume its
+previous value, and the binding is unambiguous. Header/body effects, labels and
+protected/monitor scopes stay in place. Effectful initializers, captures,
+shadows, references observed before/after the loop and unsupported syntax
+retain the original declaration. The proof replaces the earlier text-based
+cleanup and runs by default in java-tools, without game-specific data or flags.
+
+Its 31 focused tests include a 1,000-counter fixture and 3,456 native
+comparisons across all primitive types, zero-iteration loops, labeled
+break/continue, throwing headers/body/cleanup and null/non-null monitors. A
+default-decompiler roundtrip preserves an earlier effectful store. The combined
+declaration/value/emitter/exception-table run passes 129 tests with one existing
+skip (plus five assembler assertions). All 160 reviewed local names still bind
+to unique declarations; 29 guarded ordinals were refreshed for the new scopes.
 
 Its native HUD probe passes 3,003 cases and 4,320 independent checks, comparing
 original bytecode, historical dispatcher Java and reconstructed Java drawing
@@ -286,11 +302,11 @@ SHA-256 is `34c1e50357f69cafd0c4550a63beeb07a8b56c8c891bdb31e4fc49a652509613`,
 reproduced with `git archive --format=tar 00c1c12fb58cdbd6be065e604ee5e9acbcebeff7 | sha256sum`
 inside java-tools. This hash identifies compiler source, not a game JAR.
 The current method-recovery compiler source archive SHA-256 is
-`7eb93e35bc0ae5045a6df4c349e51cd662f1c5d7d1694dcdbec93790b76df85c`, reproduced
-by archiving commit `3f788bf3c02b22d04fddec93b3af117231adfc72` the same way.
+`85201f3f48f048eb3321b09144de4980e7a88322e759bb5813b952b805b5d70d`, reproduced
+by archiving commit `a783d0fd8c6162929cfbb8a656ba9f7f919b23f6` the same way.
 The verified prepared raw tree SHA-256 is
-`28310896e0c5937e96b7264173b72cf667b5c79154579e281cd7c131b7e97760`; the
-named tree is `a6af3f31c0e7a026986c9221dd07c45ce7bc847a7411e90a5a50a506435a1ce4`.
+`1fb328aaf09dd7679e5ce5a2e5f64e343904015ec0a7c65b5258f8dd9a535214`; the
+named tree is `67153c2e69f49728791405ad2ab3fe5098bc8cdd705fa0b409d6c62f021fad8f`.
 The one current rule manifest/dictionary records both input identities,
 compiler pins, fixed gamepack identity, method-body hashes and verification.
 Dictionary reversal recovers all 545 prepared raw files; the unmodified base
