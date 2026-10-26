@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "aceofskies",
-  "version": 6,
+  "version": 7,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "b168d7edeb104599156b5f908df62dfdc9f3b250",
@@ -708,6 +708,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cp",
+      "originalName": "cp",
+      "to": "CoverageBitmapFont",
+      "evidence": "Same shared role as GeoBlox CoverageBitmapFont: palette-to-coverage conversion and clipped per-pixel glyph alpha blending.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ct",
       "originalName": "ct",
       "to": "NetworkGameClient",
@@ -717,8 +724,8 @@
     {
       "symbol": "C:da",
       "originalName": "da",
-      "to": "BitmapFont",
-      "evidence": "Markup-aware text layout and drawing through a GraphicsRenderer.",
+      "to": "RendererBitmapFont",
+      "evidence": "Markup-aware text drawing through GraphicsRenderer, with separate BitmapFontMetrics; distinct from the shared software BitmapFont.",
       "confidence": "reviewed"
     },
     {
@@ -782,6 +789,13 @@
       "originalName": "ha",
       "to": "GraphicsRenderer",
       "evidence": "Abstract canvas/render-target/sprite/line/image drawing API; supports software and hardware implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hc",
+      "originalName": "hc",
+      "to": "BitmapFont",
+      "evidence": "Same shared role as GeoBlox BitmapFont: software text layout, tags, wrapping, glyph metrics and abstract coverage/mask drawing on the global raster.",
       "confidence": "reviewed"
     },
     {
@@ -967,6 +981,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:vp",
+      "originalName": "vp",
+      "to": "SoftwareRasterizer",
+      "evidence": "Same shared role as GeoBlox SoftwareRasterizer: global integer framebuffer, stride/height, clip bounds and software drawing primitives.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vs",
+      "originalName": "vs",
+      "to": "BitmapFontMetrics",
+      "evidence": "Separate renderer-font metrics decoder retaining byte advances, optional pair kerning, line advance, ascent/descent and image-aware text measurement/wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vt",
+      "originalName": "vt",
+      "to": "MonochromeBitmapFont",
+      "evidence": "Same shared role as GeoBlox MonochromeBitmapFont: clipped zero/nonzero glyph masks, opacity and scanline-mask support.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:wf",
       "originalName": "wf",
       "to": "IntrusiveNode",
@@ -1079,6 +1114,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bo.field_a:Lhc;",
+      "originalName": "field_a",
+      "to": "menuBitmapFont",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cf.field_h:Ljava/lang/String;",
       "originalName": "field_h",
       "to": "normalizedPlayerName",
@@ -1114,6 +1156,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:cp.field_K:[[B",
+      "originalName": "field_K",
+      "to": "glyphCoverage",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cs.field_a:I",
       "originalName": "field_a",
       "to": "highscoreMode",
@@ -1125,6 +1174,20 @@
       "originalName": "field_I",
       "to": "loadingPercent",
       "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:da.field_c:Lvs;",
+      "originalName": "field_c",
+      "to": "metrics",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:da.field_d:Lha;",
+      "originalName": "field_d",
+      "to": "renderer",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
       "confidence": "reviewed"
     },
     {
@@ -1447,6 +1510,174 @@
       "originalName": "field_j",
       "to": "repeatCountdown",
       "evidence": "Reviewed menu keyboard, pointer ownership, selection and held-button repeat transitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_A:[Ljava/lang/String;",
+      "originalName": "field_A",
+      "to": "wrappedLines",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_B:[I",
+      "originalName": "field_B",
+      "to": "glyphXOffsets",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_C:I",
+      "originalName": "field_C",
+      "to": "capitalXAscent",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_D:I",
+      "originalName": "field_D",
+      "to": "maxDescent",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_E:I",
+      "originalName": "field_E",
+      "to": "defaultAlpha256",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_F:I",
+      "originalName": "field_F",
+      "to": "currentShadowColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_G:I",
+      "originalName": "field_G",
+      "to": "strikethroughColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_H:[I",
+      "originalName": "field_H",
+      "to": "glyphYOffsets",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_I:I",
+      "originalName": "field_I",
+      "to": "maxAscent",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_J:I",
+      "originalName": "field_J",
+      "to": "defaultShadowColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_L:[B",
+      "originalName": "field_L",
+      "to": "pairKerning",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_n:Ljava/lang/StringBuilder;",
+      "originalName": "field_n",
+      "to": "wrappingBuffer",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_o:I",
+      "originalName": "field_o",
+      "to": "justificationRemainderQ8",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_p:[I",
+      "originalName": "field_p",
+      "to": "glyphAdvances",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_q:I",
+      "originalName": "field_q",
+      "to": "underlineColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_r:I",
+      "originalName": "field_r",
+      "to": "spaceExpansionQ8",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_s:[I",
+      "originalName": "field_s",
+      "to": "inlineImageBaselineOffsets",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_t:[I",
+      "originalName": "field_t",
+      "to": "glyphWidths",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_u:[Ldf;",
+      "originalName": "field_u",
+      "to": "inlineImages",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_v:I",
+      "originalName": "field_v",
+      "to": "defaultTextColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_w:I",
+      "originalName": "field_w",
+      "to": "lineAdvance",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_x:I",
+      "originalName": "field_x",
+      "to": "currentAlpha256",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_y:I",
+      "originalName": "field_y",
+      "to": "currentTextColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_z:[I",
+      "originalName": "field_z",
+      "to": "glyphHeights",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
       "confidence": "reviewed"
     },
     {
@@ -2822,10 +3053,115 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vp.field_a:[I",
+      "originalName": "field_a",
+      "to": "scanlineMaskWidths",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vp.field_b:I",
+      "originalName": "field_b",
+      "to": "clipLeft",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vp.field_c:I",
+      "originalName": "field_c",
+      "to": "framebufferHeight",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vp.field_d:I",
+      "originalName": "field_d",
+      "to": "clipBottom",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vp.field_f:I",
+      "originalName": "field_f",
+      "to": "clipTop",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vp.field_h:[I",
+      "originalName": "field_h",
+      "to": "scanlineMaskStarts",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vp.field_i:I",
+      "originalName": "field_i",
+      "to": "stride",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vp.field_j:[I",
+      "originalName": "field_j",
+      "to": "framebuffer",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vp.field_k:I",
+      "originalName": "field_k",
+      "to": "clipRight",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vq.field_w:I",
       "originalName": "field_w",
       "to": "instructionPage",
       "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vs.field_d:[B",
+      "originalName": "field_d",
+      "to": "glyphAdvances",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vs.field_e:I",
+      "originalName": "field_e",
+      "to": "lineAdvance",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vs.field_h:[[B",
+      "originalName": "field_h",
+      "to": "pairKerning",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vs.field_i:I",
+      "originalName": "field_i",
+      "to": "maxDescent",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vs.field_j:I",
+      "originalName": "field_j",
+      "to": "maxAscent",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vt.field_K:[[B",
+      "originalName": "field_K",
+      "to": "glyphMasks",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
       "confidence": "reviewed"
     },
     {
@@ -3858,6 +4194,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cp.a(IIIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyphAlpha",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cp.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyph",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cp.a([I[[B)[[B",
+      "originalName": "a",
+      "to": "convertPaletteToCoverage",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dl.a(Z[I)V",
       "originalName": "a",
       "to": "initializeOpcodeCipher",
@@ -4002,6 +4359,146 @@
       "originalName": "e",
       "to": "isActivated",
       "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a()V",
+      "originalName": "a",
+      "to": "releaseTextScratchStorage",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(C)I",
+      "originalName": "a",
+      "to": "measureCharacterAdvance",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(II)V",
+      "originalName": "a",
+      "to": "resetOpaqueTextStyle",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(III)V",
+      "originalName": "a",
+      "to": "resetTextStyle",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(IIIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyphAlpha",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyph",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(Ljava/lang/String;)I",
+      "originalName": "a",
+      "to": "measureTextWidth",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(Ljava/lang/String;I)I",
+      "originalName": "a",
+      "to": "countWrappedLines",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(Ljava/lang/String;II)I",
+      "originalName": "a",
+      "to": "measureWrappedHeight",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(Ljava/lang/String;IIII)V",
+      "originalName": "a",
+      "to": "drawRightAlignedText",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(Ljava/lang/String;IIIIIIIII)I",
+      "originalName": "a",
+      "to": "drawParagraph",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(Ljava/lang/String;IIIIIIIIII)I",
+      "originalName": "a",
+      "to": "drawParagraphAlpha",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(Ljava/lang/String;[I[Ljava/lang/String;)I",
+      "originalName": "a",
+      "to": "wrapText",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a([B)V",
+      "originalName": "a",
+      "to": "decodeFontMetrics",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a([[B[[B[I[I[III)I",
+      "originalName": "a",
+      "to": "computePairKerning",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.b(Ljava/lang/String;)V",
+      "originalName": "b",
+      "to": "applyStyleTag",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.b(Ljava/lang/String;I)V",
+      "originalName": "b",
+      "to": "prepareJustification",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.b(Ljava/lang/String;II)V",
+      "originalName": "b",
+      "to": "drawStyledText",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.b(Ljava/lang/String;IIII)V",
+      "originalName": "b",
+      "to": "drawText",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.c(Ljava/lang/String;IIII)V",
+      "originalName": "c",
+      "to": "drawCenteredText",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
       "confidence": "reviewed"
     },
     {
@@ -4992,6 +5489,125 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vp.a()V",
+      "originalName": "a",
+      "to": "clearFramebuffer",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.a(III)V",
+      "originalName": "a",
+      "to": "setPixel",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.a(IIII)V",
+      "originalName": "a",
+      "to": "intersectClip",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.a([I)V",
+      "originalName": "a",
+      "to": "restoreClip",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.a([III)V",
+      "originalName": "a",
+      "to": "setRasterTarget",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.b()V",
+      "originalName": "b",
+      "to": "clearScanlineMasks",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.b(IIII)V",
+      "originalName": "b",
+      "to": "drawHorizontalLine",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.b([I)V",
+      "originalName": "b",
+      "to": "saveClip",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.e(IIII)V",
+      "originalName": "e",
+      "to": "setClip",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.e(IIIII)V",
+      "originalName": "e",
+      "to": "drawRectangle",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vs.a(BI)I",
+      "originalName": "a",
+      "to": "measureCharacterAdvance",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vs.a(BLjava/lang/String;)I",
+      "originalName": "a",
+      "to": "measureTextWidth",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vs.a(ICI)I",
+      "originalName": "a",
+      "to": "getPairKerning",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vs.a(I[Lpa;[I[Ljava/lang/String;Ljava/lang/String;)I",
+      "originalName": "a",
+      "to": "wrapText",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vs.a(Ljava/lang/String;B[Lpa;)I",
+      "originalName": "a",
+      "to": "measureTextWidthWithImages",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vt.a(IIIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyphAlpha",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vt.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "drawGlyph",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vu.a(ILjava/lang/CharSequence;)Ljava/lang/String;",
       "originalName": "a",
       "to": "normalizePlayerName",
@@ -5192,6 +5808,188 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Reviewed query factory, client packet serialization/response decoder, acknowledgement routing and highscore result matching; same shared roles as GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.<init>([B[I[I[I[I[I[[B)V#0",
+      "originalName": "param0",
+      "to": "encodedMetrics",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.<init>([B[I[I[I[I[I[[B)V#1",
+      "originalName": "param1",
+      "to": "glyphXOffsets",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.<init>([B[I[I[I[I[I[[B)V#2",
+      "originalName": "param2",
+      "to": "glyphYOffsets",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.<init>([B[I[I[I[I[I[[B)V#3",
+      "originalName": "param3",
+      "to": "glyphWidths",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.<init>([B[I[I[I[I[I[[B)V#4",
+      "originalName": "param4",
+      "to": "glyphHeights",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.<init>([B[I[I[I[I[I[[B)V#5",
+      "originalName": "param5",
+      "to": "palette",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.<init>([B[I[I[I[I[I[[B)V#6",
+      "originalName": "param6",
+      "to": "glyphPaletteIndices",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a(IIIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyphIndex",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a(IIIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a(IIIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a(IIIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a(IIIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a(IIIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "color",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a(IIIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "alpha256",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a(IIIIIIIZ)V#7",
+      "originalName": "param7",
+      "to": "shadowPass",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a(IIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyphIndex",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a(IIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a(IIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a(IIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a(IIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a(IIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "color",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a(IIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "shadowPass",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a([I[[B)[[B#0",
+      "originalName": "param0",
+      "to": "palette",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:cp.a([I[[B)[[B#1",
+      "originalName": "param1",
+      "to": "glyphPaletteIndices",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:da.<init>(Lha;Lvs;)V#0",
+      "originalName": "param0",
+      "to": "renderer",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:da.<init>(Lha;Lvs;)V#1",
+      "originalName": "param1",
+      "to": "metrics",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
       "confidence": "reviewed"
     },
     {
@@ -5570,6 +6368,601 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.<init>([B[I[I[I[I)V#0",
+      "originalName": "param0",
+      "to": "encodedMetrics",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.<init>([B[I[I[I[I)V#1",
+      "originalName": "param1",
+      "to": "glyphXOffsets",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.<init>([B[I[I[I[I)V#2",
+      "originalName": "param2",
+      "to": "glyphYOffsets",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.<init>([B[I[I[I[I)V#3",
+      "originalName": "param3",
+      "to": "glyphWidths",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.<init>([B[I[I[I[I)V#4",
+      "originalName": "param4",
+      "to": "glyphHeights",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(C)I#0",
+      "originalName": "param0",
+      "to": "character",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(II)V#0",
+      "originalName": "param0",
+      "to": "textColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(II)V#1",
+      "originalName": "param1",
+      "to": "shadowColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(III)V#0",
+      "originalName": "param0",
+      "to": "textColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(III)V#1",
+      "originalName": "param1",
+      "to": "shadowColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(III)V#2",
+      "originalName": "param2",
+      "to": "alpha256",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(IIIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyphIndex",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(IIIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(IIIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(IIIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(IIIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(IIIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "color",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(IIIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "alpha256",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(IIIIIIIZ)V#7",
+      "originalName": "param7",
+      "to": "shadowPass",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(IIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyphIndex",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(IIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(IIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(IIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(IIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(IIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "color",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(IIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "shadowPass",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;I)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;I)I#1",
+      "originalName": "param1",
+      "to": "wrapWidth",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;II)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;II)I#1",
+      "originalName": "param1",
+      "to": "wrapWidth",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;II)I#2",
+      "originalName": "param2",
+      "to": "lineSpacing",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIII)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIII)V#1",
+      "originalName": "param1",
+      "to": "rightX",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIII)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIII)V#3",
+      "originalName": "param3",
+      "to": "textColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIII)V#4",
+      "originalName": "param4",
+      "to": "shadowColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIII)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIII)I#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIII)I#2",
+      "originalName": "param2",
+      "to": "top",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIII)I#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIII)I#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIII)I#5",
+      "originalName": "param5",
+      "to": "textColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIII)I#6",
+      "originalName": "param6",
+      "to": "shadowColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIII)I#7",
+      "originalName": "param7",
+      "to": "horizontalAlignment",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIII)I#8",
+      "originalName": "param8",
+      "to": "verticalAlignment",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIII)I#9",
+      "originalName": "param9",
+      "to": "lineSpacing",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIIII)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIIII)I#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIIII)I#10",
+      "originalName": "param10",
+      "to": "lineSpacing",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIIII)I#2",
+      "originalName": "param2",
+      "to": "top",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIIII)I#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIIII)I#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIIII)I#5",
+      "originalName": "param5",
+      "to": "textColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIIII)I#6",
+      "originalName": "param6",
+      "to": "shadowColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIIII)I#7",
+      "originalName": "param7",
+      "to": "alpha256",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIIII)I#8",
+      "originalName": "param8",
+      "to": "horizontalAlignment",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;IIIIIIIIII)I#9",
+      "originalName": "param9",
+      "to": "verticalAlignment",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;[I[Ljava/lang/String;)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;[I[Ljava/lang/String;)I#1",
+      "originalName": "param1",
+      "to": "lineWidthLimits",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a(Ljava/lang/String;[I[Ljava/lang/String;)I#2",
+      "originalName": "param2",
+      "to": "outputLines",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a([B)V#0",
+      "originalName": "param0",
+      "to": "encodedMetrics",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a([[B[[B[I[I[III)I#0",
+      "originalName": "param0",
+      "to": "leadingProfiles",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a([[B[[B[I[I[III)I#1",
+      "originalName": "param1",
+      "to": "trailingProfiles",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a([[B[[B[I[I[III)I#2",
+      "originalName": "param2",
+      "to": "profileOffsets",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a([[B[[B[I[I[III)I#3",
+      "originalName": "param3",
+      "to": "advances",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a([[B[[B[I[I[III)I#4",
+      "originalName": "param4",
+      "to": "profileLengths",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a([[B[[B[I[I[III)I#5",
+      "originalName": "param5",
+      "to": "firstGlyph",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.a([[B[[B[I[I[III)I#6",
+      "originalName": "param6",
+      "to": "secondGlyph",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.b(Ljava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "tag",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.b(Ljava/lang/String;I)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.b(Ljava/lang/String;I)V#1",
+      "originalName": "param1",
+      "to": "targetWidth",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.b(Ljava/lang/String;II)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.b(Ljava/lang/String;II)V#1",
+      "originalName": "param1",
+      "to": "penX",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.b(Ljava/lang/String;II)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.b(Ljava/lang/String;IIII)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.b(Ljava/lang/String;IIII)V#1",
+      "originalName": "param1",
+      "to": "leftX",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.b(Ljava/lang/String;IIII)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.b(Ljava/lang/String;IIII)V#3",
+      "originalName": "param3",
+      "to": "textColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.b(Ljava/lang/String;IIII)V#4",
+      "originalName": "param4",
+      "to": "shadowColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.c(Ljava/lang/String;IIII)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.c(Ljava/lang/String;IIII)V#1",
+      "originalName": "param1",
+      "to": "centerX",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.c(Ljava/lang/String;IIII)V#2",
+      "originalName": "param2",
+      "to": "baselineY",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.c(Ljava/lang/String;IIII)V#3",
+      "originalName": "param3",
+      "to": "textColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:hc.c(Ljava/lang/String;IIII)V#4",
+      "originalName": "param4",
+      "to": "shadowColor",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
       "confidence": "reviewed"
     },
     {
@@ -7974,6 +9367,440 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vp.a(III)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.a(III)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.a(III)V#2",
+      "originalName": "param2",
+      "to": "color",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.a(IIII)V#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.a(IIII)V#1",
+      "originalName": "param1",
+      "to": "top",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.a(IIII)V#2",
+      "originalName": "param2",
+      "to": "right",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.a(IIII)V#3",
+      "originalName": "param3",
+      "to": "bottom",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.a([I)V#0",
+      "originalName": "param0",
+      "to": "clipBounds",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.a([III)V#0",
+      "originalName": "param0",
+      "to": "targetPixels",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.a([III)V#1",
+      "originalName": "param1",
+      "to": "targetWidth",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.a([III)V#2",
+      "originalName": "param2",
+      "to": "targetHeight",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.b(IIII)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.b(IIII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.b(IIII)V#2",
+      "originalName": "param2",
+      "to": "length",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.b(IIII)V#3",
+      "originalName": "param3",
+      "to": "color",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.b([I)V#0",
+      "originalName": "param0",
+      "to": "clipBounds",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.e(IIII)V#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.e(IIII)V#1",
+      "originalName": "param1",
+      "to": "top",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.e(IIII)V#2",
+      "originalName": "param2",
+      "to": "right",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.e(IIII)V#3",
+      "originalName": "param3",
+      "to": "bottom",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.e(IIIII)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.e(IIIII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.e(IIIII)V#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.e(IIIII)V#3",
+      "originalName": "param3",
+      "to": "height",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vp.e(IIIII)V#4",
+      "originalName": "param4",
+      "to": "color",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.<init>([B)V#0",
+      "originalName": "param0",
+      "to": "encodedMetrics",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(BI)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(BI)I#1",
+      "originalName": "param1",
+      "to": "glyphIndex",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(BLjava/lang/String;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(BLjava/lang/String;)I#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(ICI)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(ICI)I#1",
+      "originalName": "param1",
+      "to": "secondGlyph",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(ICI)I#2",
+      "originalName": "param2",
+      "to": "firstGlyph",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(I[Lpa;[I[Ljava/lang/String;Ljava/lang/String;)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(I[Lpa;[I[Ljava/lang/String;Ljava/lang/String;)I#1",
+      "originalName": "param1",
+      "to": "inlineImages",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(I[Lpa;[I[Ljava/lang/String;Ljava/lang/String;)I#2",
+      "originalName": "param2",
+      "to": "lineWidthLimits",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(I[Lpa;[I[Ljava/lang/String;Ljava/lang/String;)I#3",
+      "originalName": "param3",
+      "to": "outputLines",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(I[Lpa;[I[Ljava/lang/String;Ljava/lang/String;)I#4",
+      "originalName": "param4",
+      "to": "text",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(Ljava/lang/String;B[Lpa;)I#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(Ljava/lang/String;B[Lpa;)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vs.a(Ljava/lang/String;B[Lpa;)I#2",
+      "originalName": "param2",
+      "to": "inlineImages",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.<init>([B[I[I[I[I[[B)V#0",
+      "originalName": "param0",
+      "to": "encodedMetrics",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.<init>([B[I[I[I[I[[B)V#1",
+      "originalName": "param1",
+      "to": "glyphXOffsets",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.<init>([B[I[I[I[I[[B)V#2",
+      "originalName": "param2",
+      "to": "glyphYOffsets",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.<init>([B[I[I[I[I[[B)V#3",
+      "originalName": "param3",
+      "to": "glyphWidths",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.<init>([B[I[I[I[I[[B)V#4",
+      "originalName": "param4",
+      "to": "glyphHeights",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.<init>([B[I[I[I[I[[B)V#5",
+      "originalName": "param5",
+      "to": "glyphMasks",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyphIndex",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "color",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "alpha256",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIIIIIIZ)V#7",
+      "originalName": "param7",
+      "to": "shadowPass",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIIIIIZ)V#0",
+      "originalName": "param0",
+      "to": "glyphIndex",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIIIIIZ)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIIIIIZ)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIIIIIZ)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIIIIIZ)V#4",
+      "originalName": "param4",
+      "to": "height",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIIIIIZ)V#5",
+      "originalName": "param5",
+      "to": "color",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vt.a(IIIIIIZ)V#6",
+      "originalName": "param6",
+      "to": "shadowPass",
+      "evidence": "Reviewed glyph constructors, metric decoding, style tags, baseline placement, wrapping and clipped raster writes; software roles match GeoBlox, while renderer-backed fonts retain their separate metrics/renderer. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vu.a(ILjava/lang/CharSequence;)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -8094,10 +9921,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-aceofskies-rules.mjs": "ba06c7335b9eadc088c600e5c10eeddb2ac45f2ae42654b341ae2ef268bc0d93",
+      "build-aceofskies-rules.mjs": "0a0bbd5d04d0c4d9406231e2d59d1b8e04ecfd81904b79e991f0345271980df9",
       "reproduce-aceofskies.mjs": "52beddb283ae2c5e91461d2e696de92b83b07de1f5db1491c26999469bda4599",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
-      "tests/test-aceofskies-core.mjs": "eb7831b9515828aaef867bc6c1f36c7cdcabc2aaecff9c47ff6f757c8af2f451",
+      "tests/test-aceofskies-core.mjs": "e208364481eac928636b767776ff1b1d683b8329b4fda32275069b5ce97c1882",
       "tests/test-aceofskies-highscores.mjs": "b618fac7ada593f873c027db1442b0b09eb1657b771da272568bf3fada4913e0",
       "tests/test-aceofskies-hud.mjs": "3635d93e5db62a95f9ba2848576766ce382f137a0c2a1e5c14c2523581895ba6",
       "reconstruct-aceofskies.mjs": "e19eae36084d29e4e3282d0d58c5399a454fe7dea0479b6883752b1ecf0c15b3",

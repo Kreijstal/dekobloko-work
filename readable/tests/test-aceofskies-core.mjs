@@ -163,6 +163,40 @@ check("cache/synthesized-exhausted-miss",call(cache,"${m('ob','a','(I[III)Lal;')
 check("cache/vorbis-exhausted-miss",call(cache,"${m('ob','a','(II[II)Lal;')}",new Class<?>[]{int.class,int.class,int[].class,int.class},0,1,budget,1452176260)==null,true);check("cache/miss-retains-budget",budget[0],remaining);
 }
 }
+static ${c('hc')} fontFixture(boolean coverage,boolean kern){
+byte[] metrics=new byte[kern?1280:257];for(int i=0;i<256;i++)metrics[i]=(byte)(3+i%5);
+if(kern){Arrays.fill(metrics,256,512,(byte)1);Arrays.fill(metrics,512,768,(byte)6);Arrays.fill(metrics,768,1280,(byte)1);}else metrics[256]=7;
+int[] x=new int[256],y=new int[256],widths=new int[256],heights=new int[256];Arrays.fill(widths,3);Arrays.fill(heights,3);byte[][] masks=new byte[256][];
+for(int i=0;i<256;i++)masks[i]=new byte[]{0,1,2,3,0,3,2,1,3};
+return coverage?new ${c('cp')}(metrics,x,y,widths,heights,new int[]{0,0x404040,0x808080,0xffffff},masks):new ${c('vt')}(metrics,x,y,widths,heights,masks);
+}
+static int fontBlend(int foreground,int background,int alpha){int result=0;for(int shift:new int[]{0,8,16}){int source=(foreground>>>shift)&255,target=(background>>>shift)&255;result|=((source*alpha/256)+(target*(256-alpha)/256))<<shift;}return result;}
+static void fontMetricsAndPixels()throws Exception{
+byte[] encoded=new byte[263];for(int i=0;i<256;i++)encoded[2+i]=(byte)(3+i%5);encoded[258]=7;encoded[261]=6;encoded[262]=2;
+${c('vs')} modern=new ${c('vs')}(encoded);
+for(int i=0;i<256;i++){check("font/renderer-advance",modern.${m('vs','a','(BI)I')}((byte)109,i),3+i%5);check("font/renderer-no-kerning",modern.${m('vs','a','(ICI)I')}(0,(char)i,65),0);}
+check("font/renderer-line-advance",modern.${f('vs','e','I')},7);check("font/renderer-ascent",modern.${f('vs','j','I')},6);check("font/renderer-descent",modern.${f('vs','i','I')},2);
+String[] texts={null,"","A","AB","A B","<col=ff0000>A</col>B","<lt><gt>","<euro>","<unknown>A","<img=0>A","<unclosed"};int[] expectedWidths={0,0,3,7,12,7,8,6,3,3,0};
+for(boolean coverage:new boolean[]{false,true})for(boolean kern:new boolean[]{false,true}){
+${c('hc')} font=fontFixture(coverage,kern);check("font/software-line-advance",font.${f('hc','w','I')},7);check("font/software-ascent",font.${f('hc','I','I')},7);check("font/software-descent",font.${f('hc','D','I')},-4);check("font/software-capital-x",font.${f('hc','C','I')},7);
+char[] characters={0,1,32,65,66,255,8364,1024};int[] codes={63,1,32,65,66,255,128,63};for(int i=0;i<characters.length;i++)check("font/software-advance",font.${m('hc','a','(C)I')}(characters[i]),3+codes[i]%5);
+for(int i=0;i<texts.length;i++){int wanted=expectedWidths[i];if(kern&&(i==3||i==5||i==6))wanted-=2;check("font/software-width",font.${m('hc','a','(Ljava/lang/String;)I')}(texts[i]),wanted);if(!kern)check("font/renderer-width",modern.${m('vs','a','(BLjava/lang/String;)I')}((byte)94,texts[i]),expectedWidths[i]);}
+String[] lines=new String[8];check("font/wrap-count",font.${m('hc','a','(Ljava/lang/String;[I[Ljava/lang/String;)I')}("AA AA AA",new int[]{6},lines),3);check("font/wrap-lines",Arrays.toString(Arrays.copyOf(lines,3)),"[AA, AA, AA]");check("font/explicit-break",font.${m('hc','a','(Ljava/lang/String;[I[Ljava/lang/String;)I')}("A<br>B",null,lines),2);check("font/explicit-break-lines",Arrays.toString(Arrays.copyOf(lines,2)),"[A<br>, B]");
+check("font/wrapped-height",font.${m('hc','a','(Ljava/lang/String;II)I')}("AA AA AA",6,10),23);
+}
+for(boolean coverage:new boolean[]{false,true}){
+${c('hc')} font=fontFixture(coverage,false);int[] sampleCoverage={0,64,128,255,0,255,128,64,255};
+for(boolean shadow:new boolean[]{false,true})for(int alpha:new int[]{-1,0,1,128,255,256})for(int[] position:new int[][]{{-2,-1},{0,0},{2,2},{6,5},{8,7}})for(int[] clip:new int[][]{{0,0,8,7},{1,2,6,6}}){
+int[] pixels=new int[56],expected=new int[56];Arrays.fill(pixels,0x193453);Arrays.fill(expected,0x193453);${c('vp')}.${m('vp','a','([III)V')}(pixels,8,7);${c('vp')}.${m('vp','e','(IIII)V')}(clip[0],clip[1],clip[2],clip[3]);
+if(alpha<0)font.${m('hc','a','(IIIIIIZ)V')}(65,position[0],position[1],3,3,0x70b9d2,shadow);else font.${m('hc','a','(IIIIIIIZ)V')}(65,position[0],position[1],3,3,0x70b9d2,alpha,shadow);
+for(int gy=0;gy<3;gy++)for(int gx=0;gx<3;gx++){int x=position[0]+gx,y=position[1]+gy,index=gy*3+gx;if(x<clip[0]||x>=clip[2]||y<clip[1]||y>=clip[3]||sampleCoverage[index]==0)continue;int opacity=alpha<0?256:alpha;if(coverage&&!shadow)opacity=sampleCoverage[index]*opacity/256;expected[y*8+x]=opacity==256?0x70b9d2:fontBlend(0x70b9d2,0x193453,opacity);}
+check("font/clipped-glyph-pixels",Arrays.toString(pixels),Arrays.toString(expected));
+}
+}
+// Styled text exercises baseline placement, markup and pen advances through
+// the actual software font, rather than only calling the glyph primitives.
+${c('hc')} font=fontFixture(false,false);int[] pixels=new int[100];${c('vp')}.${m('vp','a','([III)V')}(pixels,10,10);font.${m('hc','b','(Ljava/lang/String;IIII)V')}("<col=112233>A</col>B",1,8,0xabcdef,-1);int[] expected=new int[100];for(int gy=0;gy<3;gy++)for(int gx=0;gx<3;gx++)if(new int[]{0,1,2,3,0,3,2,1,3}[gy*3+gx]!=0){expected[(gy+1)*10+gx+1]=0x112233;expected[(gy+1)*10+gx+4]=0xabcdef;}check("font/styled-text-pixels",Arrays.toString(pixels),Arrays.toString(expected));
+}
 static void pools()throws Exception{
 Class<?> session=Class.forName("${c('pk')}"),smoke=Class.forName("${c('qf')}"),particle=Class.forName("${c('ok')}");Object game=unsafe.allocateInstance(session);
 for(int count:new int[]{1,2,7})for(int index=0;index<count;index++){
@@ -431,7 +465,7 @@ check("render/argb-blend",call(session,"${m('pk','b','(IIII)I')}",new Class<?>[]
 }
 
 ${highscoreProbe(c, f, m)}
-public static void main(String[] args)throws Exception{Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();sharedCollectionsAndSoundCache();pools();menus();highscores();flightControls();flightUpgrades();flightWaves();hudMessageTiming();visualParticles();hudAndSpatialState();System.out.println("checks:"+checks);}
+public static void main(String[] args)throws Exception{Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();sharedCollectionsAndSoundCache();fontMetricsAndPixels();pools();menus();highscores();flightControls();flightUpgrades();flightWaves();hudMessageTiming();visualParticles();hudAndSpatialState();System.out.println("checks:"+checks);}
 }
 `);
     const root = readable ? named : input, argsFile = path.join(directory, 'sources.args');
@@ -454,6 +488,6 @@ public static void main(String[] args)throws Exception{Field u=Unsafe.class.getD
   return {checks, rawNamedIdentical: true, historicalSourceCoreIdentical: true, independentExpectations: true,
     headlessClientBoundary: true, vectorAndFlightFixtures: true, packetAndDequeFixtures: true,
     aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true, highscoreProtocolFixtures: true, flightControlsUpgradesAndWavesFixtures: true, hudMessageTimingFixtures: true, exactSeededWaveTrace: true, visualParticleHudAndSpatialFixtures: true,
-    sharedHashTableDualLinksAndSoundCacheFixtures: true, traceSha256: digest(outputs[0]),
+    sharedHashTableDualLinksAndSoundCacheFixtures: true, softwareFontMetricsWrappingAndPixelFixtures: true, traceSha256: digest(outputs[0]),
     ...(extraVerification ? extraVerification(path.join(temporary, 'raw-core/classes')) : {})};
 }
