@@ -24,6 +24,16 @@ Compatibility modules implement application-side workarounds for older cloned
 JVM bundles. General Java API fixes should go upstream to java-tools, never as
 Jagex-specific hooks.
 
+The shared `browser-runtime.json` requests a 256 MiB linear heap and permits
+startup expansion up to 384 MiB when java-tools has a usable Chromium estimate.
+The planning budget is 512 MiB with 96 MiB of headroom for unmeasured/runtime
+growth. Small reported devices and browsers without an estimate keep 256 MiB.
+This policy was enabled at the user's request; approximate counters and focused
+checks do not establish an application-wide memory limit or game FPS. Java-tools
+selects capacity before views exist and falls back to 256 MiB if an expanded
+reservation is refused. The cloner reports the estimate and decision. No game
+profile or feature flag is needed, and live buffers are never grown.
+
 Bump `sourcePatchAbi` when source transforms change emitted classes. Module
 loading follows the updated Git checkout, so host-only changes do not invalidate
 compiled Java classes. Native recovery and asset metadata are maintained by the
