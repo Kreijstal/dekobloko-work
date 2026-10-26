@@ -1,13 +1,37 @@
 {
   "schema": 1,
   "game": "aceofskies",
-  "version": 1,
+  "version": 2,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "b168d7edeb104599156b5f908df62dfdc9f3b250",
     "subdirectory": "games/aceofskies"
   },
-  "inputTreeSha256": "a52334680405315c555ca4db143723b8fbb0cda0101e89d5ab7fa743466537b7",
+  "inputTreeSha256": "3feb47118078691ab11c03f0cd4a8914b574480aee7df4d375bbd4e273ded155",
+  "baseInputTreeSha256": "a52334680405315c555ca4db143723b8fbb0cda0101e89d5ab7fa743466537b7",
+  "inputPreparation": {
+    "method": "pk.a(IIIZIIIZI)V",
+    "compiler": {
+      "commit": "c6f6a1e61b0088e882236d732145a84775fd9cb8",
+      "sourceArchiveSha256": "2e63dcc7a33667d65beb99316a9937c1946b16357d343e69c46bd3968d1d2ddd"
+    },
+    "bytecode": {
+      "sourceUrl": "https://static.alterorb.net/launcher/v3/jars/aceofskies.jar",
+      "gamepackSha256": "a594338309702b2dfc1ccdc18e3d9c433250770ae278d4dd7c1e8efa1fef85ec",
+      "files": 545,
+      "originalClassesSha256": "9f0daf3471d01ae2de9a8a71504d0bf94fb751c66e0b5c3553477eb22b9c7f15"
+    },
+    "oldBodySha256": "e40a521669b90ef6ee2e58bed02d71a476f2d45e73c7c62ffaf0cfac050a1f95",
+    "newBodySha256": "c7a113907afe5f5d9b0c12acfb51f58e49459bdfd0f32bac37f7ddef5d10644f",
+    "oldBodyLines": 398,
+    "newBodyLines": 89,
+    "defaultCompilerRecovery": true,
+    "regionExitsVerified": true,
+    "regionSourceFlowVerified": true,
+    "outerRoutingVerified": true,
+    "deterministic": true,
+    "stateMachine": false
+  },
   "renames": [
     {
       "symbol": "B:AceOfSkies.a(Ljava/lang/CharSequence;I)J#0",
@@ -123,7 +147,7 @@
     },
     {
       "symbol": "B:pk.a(IIIZIIIZI)V#0",
-      "originalName": "stateLoop",
+      "originalName": "L2",
       "to": "scanLoop1",
       "evidence": "Resolved lexical target and declaration ordinal; transfers are unchanged.",
       "confidence": "structural"
@@ -374,6 +398,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:gr",
+      "originalName": "gr",
+      "to": "MenuInputState",
+      "evidence": "Owns selected item, pointer/keyboard selection mode, held/pressed buttons, key code and repeat countdown.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ha",
       "originalName": "ha",
       "to": "GraphicsRenderer",
@@ -556,6 +587,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:aa.field_b:[Lnk;",
+      "originalName": "field_b",
+      "to": "menuScreens",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ak.field_f:[I",
+      "originalName": "field_f",
+      "to": "menuRight",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:al.field_f:Z",
       "originalName": "field_f",
       "to": "pingPongLoop",
@@ -588,6 +633,55 @@
       "originalName": "field_j",
       "to": "loopEnd",
       "evidence": "PCM constructors and sample-stream consumers; same shared sample container role as GeoBlox PcmSample.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_e:[I",
+      "originalName": "field_e",
+      "to": "menuTop",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bk.field_f:I",
+      "originalName": "field_f",
+      "to": "lastKeyCode",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ci.field_d:I",
+      "originalName": "field_d",
+      "to": "nextMenuId",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:co.field_b:I",
+      "originalName": "field_b",
+      "to": "returnMenuId",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dt.field_a:[I",
+      "originalName": "field_a",
+      "to": "menuLeft",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:du.field_p:[Ljava/lang/String;",
+      "originalName": "field_p",
+      "to": "menuActionLabels",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ec.field_t:I",
+      "originalName": "field_t",
+      "to": "menuTransitionTicks",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
       "confidence": "reviewed"
     },
     {
@@ -710,6 +804,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gr.field_a:I",
+      "originalName": "field_a",
+      "to": "pressedButton",
+      "evidence": "Reviewed menu keyboard, pointer ownership, selection and held-button repeat transitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_c:I",
+      "originalName": "field_c",
+      "to": "itemCount",
+      "evidence": "Reviewed menu keyboard, pointer ownership, selection and held-button repeat transitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_d:I",
+      "originalName": "field_d",
+      "to": "heldButton",
+      "evidence": "Reviewed menu keyboard, pointer ownership, selection and held-button repeat transitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_e:I",
+      "originalName": "field_e",
+      "to": "keyCode",
+      "evidence": "Reviewed menu keyboard, pointer ownership, selection and held-button repeat transitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_f:Z",
+      "originalName": "field_f",
+      "to": "pointerSelection",
+      "evidence": "Reviewed menu keyboard, pointer ownership, selection and held-button repeat transitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_g:I",
+      "originalName": "field_g",
+      "to": "selectedIndex",
+      "evidence": "Reviewed menu keyboard, pointer ownership, selection and held-button repeat transitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gr.field_j:I",
+      "originalName": "field_j",
+      "to": "repeatCountdown",
+      "evidence": "Reviewed menu keyboard, pointer ownership, selection and held-button repeat transitions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kc.field_a:D",
       "originalName": "field_a",
       "to": "x",
@@ -721,6 +864,13 @@
       "originalName": "field_b",
       "to": "y",
       "evidence": "Vector2 assignments, arithmetic and call sites; retain original angle scale and dummy-guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kp.field_b:Ljava/lang/String;",
+      "originalName": "field_b",
+      "to": "thousandsSeparator",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
       "confidence": "reviewed"
     },
     {
@@ -836,6 +986,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nk.field_a:I",
+      "originalName": "field_a",
+      "to": "previousActionId",
+      "evidence": "Reviewed menu construction, action/hover dispatch, click consumption and achievement/volume rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_b:I",
+      "originalName": "field_b",
+      "to": "pendingClickY",
+      "evidence": "Reviewed menu construction, action/hover dispatch, click consumption and achievement/volume rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_c:I",
+      "originalName": "field_c",
+      "to": "pendingClickX",
+      "evidence": "Reviewed menu construction, action/hover dispatch, click consumption and achievement/volume rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_d:I",
+      "originalName": "field_d",
+      "to": "screenId",
+      "evidence": "Reviewed menu construction, action/hover dispatch, click consumption and achievement/volume rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_e:I",
+      "originalName": "field_e",
+      "to": "selectedAchievementId",
+      "evidence": "Reviewed menu construction, action/hover dispatch, click consumption and achievement/volume rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_h:I",
+      "originalName": "field_h",
+      "to": "soundPreviewCooldown",
+      "evidence": "Reviewed menu construction, action/hover dispatch, click consumption and achievement/volume rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nk.field_i:Lgr;",
+      "originalName": "field_i",
+      "to": "input",
+      "evidence": "Reviewed menu construction, action/hover dispatch, click consumption and achievement/volume rendering.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:o.field_b:D",
       "originalName": "field_b",
       "to": "speed",
@@ -861,6 +1060,20 @@
       "originalName": "field_f",
       "to": "headingOffset",
       "evidence": "FlightBody constructor, forward/sideways trigonometry, heading wrap and world-boundary data flow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oo.field_Y:[I",
+      "originalName": "field_Y",
+      "to": "menuRowSpacing",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:or.field_a:I",
+      "originalName": "field_a",
+      "to": "score",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
       "confidence": "reviewed"
     },
     {
@@ -894,7 +1107,7 @@
     {
       "symbol": "F:pk.field_Cb:Z",
       "originalName": "field_Cb",
-      "to": "alternateGameMode",
+      "to": "arcadeMode",
       "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
       "confidence": "reviewed"
     },
@@ -934,9 +1147,37 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pk.field_N:I",
+      "originalName": "field_N",
+      "to": "displayedScore",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pk.field_P:I",
+      "originalName": "field_P",
+      "to": "displayedMultiplier",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pk.field_Q:I",
+      "originalName": "field_Q",
+      "to": "multiplierAnimationTicks",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pk.field_S:[Leu;",
       "originalName": "field_S",
       "to": "bullets",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pk.field_V:I",
+      "originalName": "field_V",
+      "to": "scoreMultiplier",
       "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
       "confidence": "reviewed"
     },
@@ -969,9 +1210,23 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pk.field_b:I",
+      "originalName": "field_b",
+      "to": "finalAccuracyPercent",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pk.field_c:I",
       "originalName": "field_c",
       "to": "simulationTick",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pk.field_cb:I",
+      "originalName": "field_cb",
+      "to": "scoreAnimationTicks",
       "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
       "confidence": "reviewed"
     },
@@ -1011,6 +1266,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pk.field_nb:I",
+      "originalName": "field_nb",
+      "to": "targetScore",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pk.field_pb:I",
       "originalName": "field_pb",
       "to": "shotsHit",
@@ -1018,9 +1280,23 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pk.field_q:I",
+      "originalName": "field_q",
+      "to": "finalScore",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pk.field_t:D",
       "originalName": "field_t",
       "to": "backgroundPanX",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pk.field_tb:I",
+      "originalName": "field_tb",
+      "to": "targetMultiplier",
       "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
       "confidence": "reviewed"
     },
@@ -1060,6 +1336,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pn.field_d:I",
+      "originalName": "field_d",
+      "to": "menuInitialRepeatDelay",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:po.field_h:I",
+      "originalName": "field_h",
+      "to": "activeMenuId",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qf.field_h:I",
       "originalName": "field_h",
       "to": "spriteIndex",
@@ -1095,6 +1385,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ua.field_l:[[I",
+      "originalName": "field_l",
+      "to": "menuActions",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uu.field_e:Z",
+      "originalName": "field_e",
+      "to": "pointerMoved",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vj.field_d:I",
+      "originalName": "field_d",
+      "to": "pressedMouseButton",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vq.field_w:I",
+      "originalName": "field_w",
+      "to": "instructionPage",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vu.field_f:I",
+      "originalName": "field_f",
+      "to": "heldMouseButton",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wf.field_a:Lwf;",
       "originalName": "field_a",
       "to": "next",
@@ -1120,6 +1445,13 @@
       "originalName": "field_g",
       "to": "remainingTicks",
       "evidence": "Pickup starts at 400, decays, fades and is removed after the retained tail.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wm.field_h:I",
+      "originalName": "field_h",
+      "to": "menuRepeatDelay",
+      "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
       "confidence": "reviewed"
     },
     {
@@ -1189,6 +1521,83 @@
       "symbol": "L:md.a(IBLmd;)V#21",
       "originalName": "var13Lifetime1",
       "to": "turnDirection",
+      "evidence": "Reviewed lexical declaration and flight update, targeting, steering or camera data flow in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pk.a(IIIZIIIZI)V#10",
+      "originalName": "var17",
+      "to": "targetGlyphIndex",
+      "evidence": "Reviewed lexical declaration and flight update, targeting, steering or camera data flow in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pk.a(IIIZIIIZI)V#11",
+      "originalName": "var18",
+      "to": "obfuscationControl",
+      "evidence": "Reviewed lexical declaration and flight update, targeting, steering or camera data flow in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pk.a(IIIZIIIZI)V#12",
+      "originalName": "decompiledSharedTail0",
+      "to": "drawSettledFold",
+      "evidence": "Reviewed lexical declaration and flight update, targeting, steering or camera data flow in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pk.a(IIIZIIIZI)V#2",
+      "originalName": "var10_int",
+      "to": "foldHeight",
+      "evidence": "Reviewed lexical declaration and flight update, targeting, steering or camera data flow in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pk.a(IIIZIIIZI)V#3",
+      "originalName": "var10",
+      "to": "failure",
+      "evidence": "Reviewed lexical declaration and flight update, targeting, steering or camera data flow in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pk.a(IIIZIIIZI)V#4",
+      "originalName": "var11",
+      "to": "shadeAlpha",
+      "evidence": "Reviewed lexical declaration and flight update, targeting, steering or camera data flow in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pk.a(IIIZIIIZI)V#5",
+      "originalName": "var12",
+      "to": "renderer",
+      "evidence": "Reviewed lexical declaration and flight update, targeting, steering or camera data flow in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pk.a(IIIZIIIZI)V#6",
+      "originalName": "var13",
+      "to": "settledBankPending",
+      "evidence": "Reviewed lexical declaration and flight update, targeting, steering or camera data flow in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pk.a(IIIZIIIZI)V#7",
+      "originalName": "var14",
+      "to": "targetBankPending",
+      "evidence": "Reviewed lexical declaration and flight update, targeting, steering or camera data flow in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pk.a(IIIZIIIZI)V#8",
+      "originalName": "var15",
+      "to": "skipZeroSuppression",
+      "evidence": "Reviewed lexical declaration and flight update, targeting, steering or camera data flow in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:pk.a(IIIZIIIZI)V#9",
+      "originalName": "var16",
+      "to": "settledGlyphIndex",
       "evidence": "Reviewed lexical declaration and flight update, targeting, steering or camera data flow in the pinned Ace source.",
       "confidence": "reviewed"
     },
@@ -1431,6 +1840,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eu.a(BIZ)V",
+      "originalName": "a",
+      "to": "requestMenu",
+      "evidence": "Resets transition ticks, stores nextMenuId and opens its MenuScreen when nonnegative.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eu.a(IIDLmd;)V",
       "originalName": "a",
       "to": "spawn",
@@ -1449,6 +1865,90 @@
       "originalName": "b",
       "to": "getSprites",
       "evidence": "Identity-based selection of the aircraft sprite frames.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.a(B)Z",
+      "originalName": "a",
+      "to": "isPointerHeld",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.a(BI)V",
+      "originalName": "a",
+      "to": "setSelectedIndex",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.a(I)Z",
+      "originalName": "a",
+      "to": "isLeftPressed",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.a(III)V",
+      "originalName": "a",
+      "to": "updatePointer",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.a(Z)V",
+      "originalName": "a",
+      "to": "handleVerticalKey",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.a(ZIII)V",
+      "originalName": "a",
+      "to": "resetSelection",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.b(B)Z",
+      "originalName": "b",
+      "to": "isRightPressed",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.b(I)Z",
+      "originalName": "b",
+      "to": "isEndPressed",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.c(B)V",
+      "originalName": "c",
+      "to": "handleHorizontalKey",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.d(B)V",
+      "originalName": "d",
+      "to": "captureKey",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.d(I)Z",
+      "originalName": "d",
+      "to": "isHomePressed",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.e(B)Z",
+      "originalName": "e",
+      "to": "isActivated",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
       "confidence": "reviewed"
     },
     {
@@ -1599,6 +2099,118 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nk.a(I)V",
+      "originalName": "a",
+      "to": "handleNavigationKey",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.a(IB)Z",
+      "originalName": "a",
+      "to": "isItemEnabled",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.a(II)I",
+      "originalName": "a",
+      "to": "getItemLeft",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.a(III)I",
+      "originalName": "a",
+      "to": "findItemAt",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.a(IIIZLha;)V",
+      "originalName": "a",
+      "to": "drawItem",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.a(ILha;I)V",
+      "originalName": "a",
+      "to": "drawMenu",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.a(IZ)I",
+      "originalName": "a",
+      "to": "getItemTop",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.a(ZI)V",
+      "originalName": "a",
+      "to": "open",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.a(ZII)V",
+      "originalName": "a",
+      "to": "handleAction",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.b(I)V",
+      "originalName": "b",
+      "to": "advanceMenu",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.b(II)V",
+      "originalName": "b",
+      "to": "drawInstructions",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.b(IZ)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "formatGroupedInteger",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.b(ZI)I",
+      "originalName": "b",
+      "to": "getItemHeight",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.b(ZII)V",
+      "originalName": "b",
+      "to": "drawAchievements",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.c(II)I",
+      "originalName": "c",
+      "to": "getItemRight",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.d(II)V",
+      "originalName": "d",
+      "to": "drawHighscores",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:o.a(BD)V",
       "originalName": "a",
       "to": "moveSideways",
@@ -1651,6 +2263,13 @@
       "symbol": "M:pk.a(BLmd;)V",
       "originalName": "a",
       "to": "fireBullets",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pk.a(IIIZIIIZI)V",
+      "originalName": "a",
+      "to": "drawRollingDigits",
       "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
       "confidence": "reviewed"
     },
@@ -1879,6 +2498,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:za.a(I[IIIIIB)V",
+      "originalName": "a",
+      "to": "registerMenuLayout",
+      "evidence": "Stores the action table and exact per-screen layout arrays.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:AceOfSkies.e(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -1890,6 +2516,27 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Dispatches session update and active menu transitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eu.a(BIZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Resets transition ticks, stores nextMenuId and opens its MenuScreen when nonnegative.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eu.a(BIZ)V#1",
+      "originalName": "param1",
+      "to": "screenId",
+      "evidence": "Resets transition ticks, stores nextMenuId and opens its MenuScreen when nonnegative.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:eu.a(BIZ)V#2",
+      "originalName": "param2",
+      "to": "pointerSelection",
+      "evidence": "Resets transition ticks, stores nextMenuId and opens its MenuScreen when nonnegative.",
       "confidence": "reviewed"
     },
     {
@@ -1995,6 +2642,139 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Identity-based selection of the aircraft sprite frames.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "itemCount",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.a(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.a(BI)V#1",
+      "originalName": "param1",
+      "to": "itemIndex",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.a(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.a(III)V#0",
+      "originalName": "param0",
+      "to": "pressedItemIndex",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.a(III)V#1",
+      "originalName": "param1",
+      "to": "hoveredItemIndex",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.a(III)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.a(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.a(ZIII)V#0",
+      "originalName": "param0",
+      "to": "pointerSelection",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.a(ZIII)V#1",
+      "originalName": "param1",
+      "to": "pointerItemIndex",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.a(ZIII)V#2",
+      "originalName": "param2",
+      "to": "heldButton",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.a(ZIII)V#3",
+      "originalName": "param3",
+      "to": "keyboardItemIndex",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.b(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.d(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.d(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:gr.e(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.",
       "confidence": "reviewed"
     },
     {
@@ -2278,6 +3058,272 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nk.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "screenId",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IB)Z#0",
+      "originalName": "param0",
+      "to": "itemIndex",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IB)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(II)I#0",
+      "originalName": "param0",
+      "to": "itemIndex",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(II)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(III)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(III)I#1",
+      "originalName": "param1",
+      "to": "pointerX",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(III)I#2",
+      "originalName": "param2",
+      "to": "pointerY",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IIIZLha;)V#0",
+      "originalName": "param0",
+      "to": "verticalOffset",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IIIZLha;)V#1",
+      "originalName": "param1",
+      "to": "itemIndex",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IIIZLha;)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IIIZLha;)V#3",
+      "originalName": "param3",
+      "to": "selected",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IIIZLha;)V#4",
+      "originalName": "param4",
+      "to": "renderer",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(ILha;I)V#0",
+      "originalName": "param0",
+      "to": "verticalOffset",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(ILha;I)V#1",
+      "originalName": "param1",
+      "to": "renderer",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(ILha;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IZ)I#0",
+      "originalName": "param0",
+      "to": "itemIndex",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(IZ)I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(ZI)V#0",
+      "originalName": "param0",
+      "to": "pointerSelection",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(ZI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(ZII)V#0",
+      "originalName": "param0",
+      "to": "pointerSelection",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(ZII)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(ZII)V#2",
+      "originalName": "param2",
+      "to": "itemIndex",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.b(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.b(II)V#1",
+      "originalName": "param1",
+      "to": "verticalOffset",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.b(IZ)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.b(IZ)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.b(ZI)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.b(ZI)I#1",
+      "originalName": "param1",
+      "to": "itemIndex",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.b(ZII)V#0",
+      "originalName": "param0",
+      "to": "alternateView",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.b(ZII)V#1",
+      "originalName": "param1",
+      "to": "verticalOffset",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.b(ZII)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.c(II)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.c(II)I#1",
+      "originalName": "param1",
+      "to": "itemIndex",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.d(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.d(II)V#1",
+      "originalName": "param1",
+      "to": "verticalOffset",
+      "evidence": "Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:o.<init>(Lkc;)V#0",
       "originalName": "param0",
       "to": "position",
@@ -2411,6 +3457,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pk.a(IIIZIIIZI)V#0",
+      "originalName": "param0",
+      "to": "settledValue",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pk.a(IIIZIIIZI)V#1",
+      "originalName": "param1",
+      "to": "digitCount",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pk.a(IIIZIIIZI)V#2",
+      "originalName": "param2",
+      "to": "top",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pk.a(IIIZIIIZI)V#3",
+      "originalName": "param3",
+      "to": "suppressLeadingZeros",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pk.a(IIIZIIIZI)V#4",
+      "originalName": "param4",
+      "to": "remainingAnimationTicks",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pk.a(IIIZIIIZI)V#5",
+      "originalName": "param5",
+      "to": "targetValue",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pk.a(IIIZIIIZI)V#6",
+      "originalName": "param6",
+      "to": "right",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pk.a(IIIZIIIZI)V#7",
+      "originalName": "param7",
+      "to": "alternateGlyphBank",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pk.a(IIIZIIIZI)V#8",
+      "originalName": "param8",
+      "to": "obfuscationGuard",
+      "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:pk.a(ILkc;BI)V#0",
       "originalName": "param0",
       "to": "size",
@@ -2469,7 +3578,7 @@
     {
       "symbol": "P:pk.a(IZ)V#1",
       "originalName": "param1",
-      "to": "alternateGameMode",
+      "to": "arcadeMode",
       "evidence": "FlightSession initialization, simulation, rendering and pool insertion/removal call sites.",
       "confidence": "reviewed"
     },
@@ -2829,6 +3938,55 @@
       "to": "position",
       "evidence": "Sets the pickup code, copies position and resets lifetime to 400.",
       "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:za.a(I[IIIIIB)V#0",
+      "originalName": "param0",
+      "to": "rowSpacing",
+      "evidence": "Stores the action table and exact per-screen layout arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:za.a(I[IIIIIB)V#1",
+      "originalName": "param1",
+      "to": "actions",
+      "evidence": "Stores the action table and exact per-screen layout arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:za.a(I[IIIIIB)V#2",
+      "originalName": "param2",
+      "to": "top",
+      "evidence": "Stores the action table and exact per-screen layout arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:za.a(I[IIIIIB)V#3",
+      "originalName": "param3",
+      "to": "left",
+      "evidence": "Stores the action table and exact per-screen layout arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:za.a(I[IIIIIB)V#4",
+      "originalName": "param4",
+      "to": "screenId",
+      "evidence": "Stores the action table and exact per-screen layout arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:za.a(I[IIIIIB)V#5",
+      "originalName": "param5",
+      "to": "right",
+      "evidence": "Stores the action table and exact per-screen layout arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:za.a(I[IIIIIB)V#6",
+      "originalName": "param6",
+      "to": "obfuscationGuard",
+      "evidence": "Stores the action table and exact per-screen layout arrays.",
+      "confidence": "reviewed"
     }
   ],
   "classNameLiterals": {
@@ -2837,7 +3995,7 @@
   },
   "labels": {
     "policy": "lexical-targets",
-    "expectedEdits": 166
+    "expectedEdits": 124
   },
   "publication": {
     "stubSourceTreeSha256": "6e22ce52f4c447f1593453075d7c63ed5a79a1e88a79e223e2386a58266d55f5",
@@ -2846,10 +4004,13 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-aceofskies-rules.mjs": "fa6faa4b2502bb9cff31f57244f15412c49a256024a9d88d39a471157591eaf0",
+      "build-aceofskies-rules.mjs": "87c67b23720ab7da1b61f6f80343c7c4e214f2b854940302071d9e43246963d9",
       "reproduce-aceofskies.mjs": "52beddb283ae2c5e91461d2e696de92b83b07de1f5db1491c26999469bda4599",
-      "reviewed-game.mjs": "109eec85e5aa01424d6c83ec1ae7faa03824fa96a5a5b65befd99ccc84d0de60",
-      "tests/test-aceofskies-core.mjs": "f45f5b4c378573c011260a4d42c86ea38cfe83ee4828e1d17108e648280dd4d5",
+      "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
+      "tests/test-aceofskies-core.mjs": "a75998d159c109b5858c43fc34c7b98a9bbd23d393088fe759bbd33a4a5b1578",
+      "tests/test-aceofskies-hud.mjs": "3635d93e5db62a95f9ba2848576766ce382f137a0c2a1e5c14c2523581895ba6",
+      "reconstruct-aceofskies-hud.mjs": "67697fcb6bd0a5dcbe15f271c0c48a94dad2205b980e9cfc1a6ee67343e139fb",
+      "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
     }

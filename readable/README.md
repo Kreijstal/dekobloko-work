@@ -52,27 +52,79 @@ vector, packet, deque and pool fixtures compare raw/named behavior against
 independent expectations; complete binding and compilation checks cover every
 source. Full client rendering and server compatibility remain separate checks.
 
-The current Ace pass names 35 classes and 403 symbols, including flight-loop
-locals, targets, camera movement, lives, weapon heat/cooldown and gun patterns.
-All 545 source files compile before and after naming; 209,300 symbol bindings
-and 166 label bindings agree. Native raw/named traces agree on 2,542 assertions,
+The current Ace pass names 36 classes and 565 symbols, including flight-loop
+locals, targets, camera movement, lives, weapon heat/cooldown, gun patterns,
+menu input/navigation, hit testing, transitions and HUD score/multiplier state.
+All 545 source files compile before and after naming; 209,076 symbol bindings
+and 124 label bindings agree. Native raw/named traces agree on 4,172 assertions,
 including aircraft construction, bullet spawning, single-period flight
-boundaries, packet bytes, intrusive transfers and pool swaps. One dispatcher
-remains in animated HUD number drawing; unknown class/member roles remain.
+boundaries, packet bytes, intrusive transfers, pool swaps and menu geometry.
+Menu tests preserve the initial press frame's immediate countdown decrement,
+held-button ownership, press edges, half-open item bounds, disabled instruction
+buttons, alternate highscore layouts and ungrouped negative numbers.
+
+Ace's only dispatcher was the animated HUD number renderer. Its loop latch was
+outside the protected range and branched into its middle, so the generic
+structurer correctly rejected the extra entry. java-tools commit
+`c6f6a1e61b0088e882236d732145a84775fd9cb8` includes an exact boundary latch
+only when every instruction is proven nonthrowing, every normal predecessor
+belongs to the protected ranges, and the block is not a handler/monitor entry.
+Existing throwing-PC priority, region exit, source-flow and outer-routing
+proofs still check the original table and CFG. Recovery runs by default.
+The selected method shrinks from 398 to 89 lines and no `switch(statePc)`
+dispatcher remains in the published Ace corpus.
+
+Its native HUD probe passes 3,003 cases and 4,320 independent checks, comparing
+original bytecode, historical dispatcher Java and reconstructed Java drawing
+requests. It includes runtime-exception and Error injection. Historical
+preprocessing removed some renderer diagnostic wrappers; all three variants
+therefore use the same original final renderer/sprite wrappers, with only the
+abstract drawing boundary mocked. Complete traces, including HUD exception
+context, agree. These are drawing-call checks, not physical-pixel or full-game
+playability claims. Unknown class/member roles and network/UI internals remain.
 
 Its raw source pin is funorb-decompiled commit
 `b168d7edeb104599156b5f908df62dfdc9f3b250`, tree SHA-256
 `a52334680405315c555ca4db143723b8fbb0cda0101e89d5ab7fa743466537b7`.
-The raw source generator is java-tools commit
+The base raw source generator is java-tools commit
 `00c1c12fb58cdbd6be065e604ee5e9acbcebeff7`; its **decompiler source archive**
 SHA-256 is `34c1e50357f69cafd0c4550a63beeb07a8b56c8c891bdb31e4fc49a652509613`,
 reproduced with `git archive --format=tar 00c1c12fb58cdbd6be065e604ee5e9acbcebeff7 | sha256sum`
 inside java-tools. This hash identifies compiler source, not a game JAR.
-The named tree SHA-256 is
-`4da9da9045374c4da7f209226412678320f1564f5fe64afce01c0f77a697fe13`.
-The catalog check validates all 44 game source identities, and dictionary
-reversal recovers all 545 original Ace files. The focused publisher tests run
-with `node --test readable/tests/test-reviewed-game.mjs` (five tests).
+The HUD recovery compiler source archive SHA-256 is
+`2e63dcc7a33667d65beb99316a9937c1946b16357d343e69c46bd3968d1d2ddd`, reproduced
+by archiving commit `c6f6a1e61b0088e882236d732145a84775fd9cb8` the same way.
+The verified prepared raw tree SHA-256 is
+`3feb47118078691ab11c03f0cd4a8914b574480aee7df4d375bbd4e273ded155`; the
+named tree is `277b01c6f738d3768f881518bb6f726e12ad24d42ea45aa80a21573ed245654a`.
+The one current rule manifest/dictionary records both input identities,
+compiler pins, fixed gamepack identity, method-body hashes and verification.
+Dictionary reversal recovers all 545 prepared raw files; the unmodified base
+remains at its Git pin.
+
+`reconstruct-aceofskies-hud.mjs` selects the method and invokes the pinned
+generic compiler; it contains no replacement game algorithm. The loader
+checks the compiler's Git source archive and reads its modules from Git
+objects, excluding unrelated runtime WIP without another checkout/export.
+The fixed original JAR is cached outside Git at
+`~/.cache/dekobloko/gamepacks/aceofskies.jar`, verified against the original
+545-class catalog digest before use. Other compilation/probe files are
+temporary and removed automatically. No generated Java or binaries enter Deko.
+
+The catalog check validates all 44 game source identities. Focused validation:
+
+```
+node --test readable/tests/test-pinned-compiler.mjs readable/tests/test-reviewed-game.mjs
+node readable/build-aceofskies-rules.mjs --check
+node readable/reproduce-aceofskies.mjs --check
+```
+
+Seven workflow tests pass. The generic compiler's focused exception tests run
+in java-tools (48 passing tests, including five assembler assertions):
+
+```
+node --test test/exceptionPureLoopLatch.test.js test/exceptionStructurer.test.js test/exceptionRegionSplitting.test.js test/exceptionTablePreservation.test.js
+```
 
 ## Control-flow candidate check
 

@@ -27,7 +27,10 @@ function fixture(run) {
 }
 
 test('packaged Java publishes, checks deterministically and detects nested source edits', () => fixture(f => {
+  f.dictionary.provenance.inputPreparation = {compiler: {commit: 'c'.repeat(40)}, defaultCompilerRecovery: true};
   installReviewedGame(f.repository, 'fixture', f.generated, f.dictionary, 'Reading guide', false);
+  const receipt = JSON.parse(fs.readFileSync(f.manifest)).namedExports.fixture;
+  assert.deepEqual(receipt.inputPreparation, f.dictionary.provenance.inputPreparation);
   assert.equal(fs.existsSync(path.join(f.current, 'Original.java')), false);
   assert.equal(fs.readFileSync(path.join(f.current, 'nativeapi/Binding.java'), 'utf8'), 'package nativeapi; public class Binding {}');
   installReviewedGame(f.repository, 'fixture', f.generated, f.dictionary, 'Reading guide', true);

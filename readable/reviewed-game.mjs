@@ -68,6 +68,11 @@ export function buildReviewedManifest(config) {
       source: {repository: 'Kreijstal/funorb-decompiled', commit: config.sourceCommit, subdirectory: 'games/' + config.game},
       inputTreeSha256: record.sources.sha256};
     const input = archivedInput(rules, temporary), stubs = buildCompilationStubs(funorbRepository, temporary);
+    if (config.prepareInput) {
+      rules.baseInputTreeSha256 = rules.inputTreeSha256;
+      rules.inputPreparation = config.prepareInput(input, temporary);
+      rules.inputTreeSha256 = sourceIdentity(sourceInventory(input));
+    }
     const helper = path.join(temporary, 'helper'), compiled = path.join(temporary, 'classes');
     fs.mkdirSync(helper); fs.mkdirSync(compiled);
     captureProcess('javac', ['-encoding', 'UTF-8', '-d', helper, path.join(workflowRoot, 'tools/lib/ReadableJava.java')]);
@@ -116,7 +121,8 @@ export function installReviewedGame(repository, game, generated, dictionary, gui
   const dictionaryFile = path.join(repository, 'decompilation', game + '-naming.json');
   const manifestFile = path.join(repository, 'decompilation-provenance.json');
   const manifest = JSON.parse(fs.readFileSync(manifestFile)), bytes = JSON.stringify(dictionary, null, 2) + '\n';
-  const receipt = namedReceipt(game, dictionary, bytes, guide);
+  const receipt = {...namedReceipt(game, dictionary, bytes, guide),
+    ...(dictionary.provenance.inputPreparation ? {inputPreparation: dictionary.provenance.inputPreparation} : {})};
   checkJavaPublication(directory); checkJavaPublication(path.join(generated, 'src'));
   if (check) {
     if (sourceIdentity(sourceInventory(directory)) !== receipt.sources.sha256 ||
@@ -156,13 +162,23 @@ export async function reproduceReviewedGame(config, args = process.argv.slice(2)
   try {
     const rulesFile = path.join(workflowRoot, config.game + '-rules.json');
     const rules = JSON.parse(fs.readFileSync(rulesFile)); validateReviewedManifest(config, rules);
-    const input = archivedInput(rules, temporary), stubs = buildCompilationStubs(funorbRepository, temporary);
+    const input = archivedInput({...rules, inputTreeSha256: rules.baseInputTreeSha256 || rules.inputTreeSha256}, temporary);
+    if (config.prepareInput) {
+      const prepared = config.prepareInput(input, temporary);
+      if (JSON.stringify(prepared) !== JSON.stringify(rules.inputPreparation) ||
+          sourceIdentity(sourceInventory(input)) !== rules.inputTreeSha256) throw new Error('Pinned source preparation differs');
+    } else if (rules.baseInputTreeSha256 || rules.inputPreparation) throw new Error('Unexpected source preparation');
+    const stubs = buildCompilationStubs(funorbRepository, temporary);
     if (stubs.sourceTreeSha256 !== rules.publication.stubSourceTreeSha256 || digest(fs.readFileSync(stubs.jar)) !== rules.publication.stubJarSha256)
       throw new Error('Compilation stub source/dependency changed');
     const generated = path.join(temporary, 'generated');
     const result = generateReadable({input, output: generated, rulesFile, classpath: stubs.jar});
     const mapping = JSON.parse(fs.readFileSync(path.join(generated, 'mapping.json')));
     const dictionary = {...mapping, provenance: JSON.parse(fs.readFileSync(path.join(generated, 'provenance.json'))), generators: rules.generators};
+    if (rules.inputPreparation) {
+      dictionary.provenance.baseInputTreeSha256 = rules.baseInputTreeSha256;
+      dictionary.provenance.inputPreparation = rules.inputPreparation;
+    }
     dictionary.provenance.verification.gameplayCore = await config.verifyCore(input, path.join(generated, 'src'), mapping, stubs.jar, temporary);
     installReviewedGame(funorbRepository, config.game, generated, dictionary, config.readingGuide(rules, mapping), args[0] === '--check');
     return {...result, gameplayCore: dictionary.provenance.verification.gameplayCore, check: args[0] === '--check', publishedDirectory: 'games/' + config.game};

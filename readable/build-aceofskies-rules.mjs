@@ -4,6 +4,8 @@ import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
 import {workflowRoot} from './game-export.mjs';
 import {verifyAceCore} from './tests/test-aceofskies-core.mjs';
+import {reconstructAceHud} from './reconstruct-aceofskies-hud.mjs';
+import {verifyAceHud} from './tests/test-aceofskies-hud.mjs';
 
 // Every identity below belongs to the pinned Ace export. Similar names in
 // other games are corroborating role evidence, never copied obfuscated IDs.
@@ -20,6 +22,7 @@ const classes = {
   ok: ['ScreenParticle', 'Integer/fixed-point screen effect initialized in two modes; session updates and renders its pooled instances.'],
   vc: ['TimedSpriteEffect', 'Retains screen coordinates, duration and a random sprite index; session owns and expires these effects.'],
   nk: ['MenuScreen', 'One of eight indexed screens, retaining selection, animation/input and menu text/rendering state.'],
+  gr: ['MenuInputState', 'Owns selected item, pointer/keyboard selection mode, held/pressed buttons, key code and repeat countdown.'],
   l: ['RendererManager', 'Owns renderer selection, canvas binding, recreation and current GraphicsRenderer.'],
   ha: ['GraphicsRenderer', 'Abstract canvas/render-target/sprite/line/image drawing API; supports software and hardware implementations.'],
   pa: ['RenderSprite', 'Abstract sprite blits, scaling and transformed rendering operations.'],
@@ -109,16 +112,19 @@ for (const [original, descriptor, to] of [
   ['i', '[Lwm;', 'pickups'], ['n', '[Lqf;', 'smokeParticles'], ['C', '[Lok;', 'screenParticles'],
   ['z', '[Lvc;', 'timedSpriteEffects'], ['E', '[Lo;', 'backgroundBodies'],
   ['w', 'I', 'smokeParticleCount'], ['K', 'I', 'screenParticleCount'],
-  ['c', 'I', 'simulationTick'], ['yb', 'Z', 'attractMode'], ['Cb', 'Z', 'alternateGameMode'],
+  ['c', 'I', 'simulationTick'], ['yb', 'Z', 'attractMode'], ['Cb', 'Z', 'arcadeMode'],
   ['g', 'Z', 'paused'], ['Ab', 'I', 'shotsFired'], ['pb', 'I', 'shotsHit'],
   ['d', 'I', 'speedUpgradeLevel'], ['J', 'I', 'fireRateUpgradeLevel'],
   ['x', 'I', 'turnRateUpgradeLevel'], ['H', 'I', 'healthUpgradeLevel'],
   ['vb', 'Lhk;', 'gameMusic'], ['Z', '[I', 'musicChannelVolumes'],
   ['ab', 'I', 'bulletCount'], ['Bb', 'I', 'pickupCount'], ['F', 'I', 'lives'],
   ['kb', 'D', 'cameraScale'], ['t', 'D', 'backgroundPanX'], ['Y', 'D', 'backgroundPanY'],
+  ['V', 'I', 'scoreMultiplier'], ['P', 'I', 'displayedMultiplier'], ['tb', 'I', 'targetMultiplier'],
+  ['Q', 'I', 'multiplierAnimationTicks'], ['N', 'I', 'displayedScore'], ['nb', 'I', 'targetScore'],
+  ['cb', 'I', 'scoreAnimationTicks'], ['q', 'I', 'finalScore'], ['b', 'I', 'finalAccuracyPercent'],
 ]) field('pk', original, descriptor, to, evidence.session);
 for (const [original, descriptor, to, names] of [
-  ['a', '(IZ)V', 'startGame', ['obfuscationGuard', 'alternateGameMode']],
+  ['a', '(IZ)V', 'startGame', ['obfuscationGuard', 'arcadeMode']],
   ['a', '(ZZ)V', 'advanceSession', ['obfuscationGuard', 'processInput']],
   ['a', '(IZLha;)V', 'renderSession', ['obfuscationGuard', 'unusedFlag', 'renderer']],
   ['a', '(ILmd;Lkc;)V', 'advanceAircraft', ['obfuscationGuard', 'aircraft', 'cameraMovement']],
@@ -133,6 +139,8 @@ for (const [original, descriptor, to, names] of [
   ['a', '(Lkc;Z)V', 'advancePickups', ['cameraMovement', 'obfuscationGuard']],
   ['a', '(Lkc;I)V', 'advanceSmokeParticles', ['cameraMovement', 'obfuscationGuard']],
   ['c', '(I)V', 'advanceScreenParticles', ['obfuscationGuard']],
+  ['a', '(IIIZIIIZI)V', 'drawRollingDigits', ['settledValue', 'digitCount', 'top', 'suppressLeadingZeros',
+    'remainingAnimationTicks', 'targetValue', 'right', 'alternateGlyphBank', 'obfuscationGuard']],
   ['c', '(II)V', 'removeSmokeParticle', ['index', 'obfuscationGuard']],
   ['d', '(BI)V', 'removeScreenParticle', ['obfuscationGuard', 'index']],
 ]) method('pk', original, descriptor, to, names, evidence.session);
@@ -182,10 +190,67 @@ field('AceOfSkies', 'G', 'Z', 'obfuscationControl', 'Shared opaque branch-contro
 field('sg', 'c', 'Lpk;', 'flightSession', 'Client loading allocates this session; update and render dispatch to it.');
 method('AceOfSkies', 'q', '(I)V', 'advanceGame', ['obfuscationGuard'], 'Dispatches session update and active menu transitions.');
 method('AceOfSkies', 'e', '(I)V', 'renderGame', ['obfuscationGuard'], 'Obtains current renderer, draws session and menu layers, and presents the frame.');
+for (const [original, type, to] of [['i','Lgr;','input'], ['d','I','screenId'], ['a','I','previousActionId'],
+  ['c','I','pendingClickX'], ['b','I','pendingClickY'], ['e','I','selectedAchievementId'], ['h','I','soundPreviewCooldown']])
+  field('nk', original, type, to, 'Reviewed menu construction, action/hover dispatch, click consumption and achievement/volume rendering.');
+for (const [original, descriptor, to, names] of [
+  ['<init>', '(I)V', '', ['screenId']],
+  ['a', '(ZI)V', 'open', ['pointerSelection', 'obfuscationGuard']],
+  ['b', '(I)V', 'advanceMenu', ['obfuscationGuard']],
+  ['a', '(ILha;I)V', 'drawMenu', ['verticalOffset', 'renderer', 'obfuscationGuard']],
+  ['a', '(ZII)V', 'handleAction', ['pointerSelection', 'obfuscationGuard', 'itemIndex']],
+  ['a', '(I)V', 'handleNavigationKey', ['obfuscationGuard']],
+  ['a', '(III)I', 'findItemAt', ['obfuscationGuard', 'pointerX', 'pointerY']],
+  ['a', '(IB)Z', 'isItemEnabled', ['itemIndex', 'obfuscationGuard']],
+  ['a', '(IZ)I', 'getItemTop', ['itemIndex', 'obfuscationGuard']],
+  ['a', '(II)I', 'getItemLeft', ['itemIndex', 'obfuscationGuard']],
+  ['c', '(II)I', 'getItemRight', ['obfuscationGuard', 'itemIndex']],
+  ['b', '(ZI)I', 'getItemHeight', ['obfuscationGuard', 'itemIndex']],
+  ['b', '(IZ)Ljava/lang/String;', 'formatGroupedInteger', ['value', 'obfuscationGuard']],
+  ['b', '(II)V', 'drawInstructions', ['obfuscationGuard', 'verticalOffset']],
+  ['d', '(II)V', 'drawHighscores', ['obfuscationGuard', 'verticalOffset']],
+  ['b', '(ZII)V', 'drawAchievements', ['alternateView', 'verticalOffset', 'obfuscationGuard']],
+  ['a', '(IIIZLha;)V', 'drawItem', ['verticalOffset', 'itemIndex', 'obfuscationGuard', 'selected', 'renderer']],
+]) method('nk', original, descriptor, to, names, 'Reviewed menu layout, drawing, input and action dispatch in the pinned Ace source.');
+for (const [original, type, to] of [['g','I','selectedIndex'], ['c','I','itemCount'], ['d','I','heldButton'],
+  ['a','I','pressedButton'], ['e','I','keyCode'], ['j','I','repeatCountdown'], ['f','Z','pointerSelection']])
+  field('gr', original, type, to, 'Reviewed menu keyboard, pointer ownership, selection and held-button repeat transitions.');
+for (const [original, descriptor, to, names] of [
+  ['<init>', '(I)V', '', ['itemCount']],
+  ['a', '(Z)V', 'handleVerticalKey', ['obfuscationGuard']],
+  ['c', '(B)V', 'handleHorizontalKey', ['obfuscationGuard']],
+  ['d', '(B)V', 'captureKey', ['obfuscationGuard']],
+  ['a', '(BI)V', 'setSelectedIndex', ['obfuscationGuard', 'itemIndex']],
+  ['a', '(ZIII)V', 'resetSelection', ['pointerSelection', 'pointerItemIndex', 'heldButton', 'keyboardItemIndex']],
+  ['a', '(III)V', 'updatePointer', ['pressedItemIndex', 'hoveredItemIndex', 'obfuscationGuard']],
+  ['e', '(B)Z', 'isActivated', ['obfuscationGuard']],
+  ['a', '(B)Z', 'isPointerHeld', ['obfuscationGuard']],
+  ['a', '(I)Z', 'isLeftPressed', ['obfuscationGuard']],
+  ['b', '(B)Z', 'isRightPressed', ['obfuscationGuard']],
+  ['d', '(I)Z', 'isHomePressed', ['obfuscationGuard']],
+  ['b', '(I)Z', 'isEndPressed', ['obfuscationGuard']],
+]) method('gr', original, descriptor, to, names, 'Menu input data flow and the explicit AWT-to-client key table: arrows 96..99, Home 102, End 103, activation 83/84.');
+for (const [owner, original, type, to] of [
+  ['aa','b','[Lnk;','menuScreens'], ['ua','l','[[I','menuActions'], ['du','p','[Ljava/lang/String;','menuActionLabels'],
+  ['bk','e','[I','menuTop'], ['oo','Y','[I','menuRowSpacing'], ['dt','a','[I','menuLeft'], ['ak','f','[I','menuRight'],
+  ['bk','f','I','lastKeyCode'], ['vj','d','I','pressedMouseButton'], ['vu','f','I','heldMouseButton'],
+  ['uu','e','Z','pointerMoved'], ['pn','d','I','menuInitialRepeatDelay'], ['wm','h','I','menuRepeatDelay'],
+  ['po','h','I','activeMenuId'], ['ci','d','I','nextMenuId'], ['ec','t','I','menuTransitionTicks'],
+  ['vq','w','I','instructionPage'], ['co','b','I','returnMenuId'], ['or','a','I','score'],
+  ['kp','b','Ljava/lang/String;','thousandsSeparator'],
+]) field(owner, original, type, to, 'Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.');
+method('eu', 'a', '(BIZ)V', 'requestMenu', ['obfuscationGuard', 'screenId', 'pointerSelection'],
+  'Resets transition ticks, stores nextMenuId and opens its MenuScreen when nonnegative.');
+method('za', 'a', '(I[IIIIIB)V', 'registerMenuLayout', ['rowSpacing', 'actions', 'top', 'left', 'screenId', 'right', 'obfuscationGuard'],
+  'Stores the action table and exact per-screen layout arrays.');
 
 // Lexical ordinals bind each reviewed local to the exact pinned declaration.
 // Shared compiler temporaries stay unresolved instead of receiving false roles.
 for (const [owner, signature, locals] of [
+  ['pk', 'a(IIIZIIIZI)V', [[2,'var10_int','foldHeight'], [3,'var10','failure'], [4,'var11','shadeAlpha'],
+    [5,'var12','renderer'], [6,'var13','settledBankPending'], [7,'var14','targetBankPending'],
+    [8,'var15','skipZeroSuppression'], [9,'var16','settledGlyphIndex'], [10,'var17','targetGlyphIndex'],
+    [11,'var18','obfuscationControl'], [12,'decompiledSharedTail0','drawSettledFold']]],
   ['pk', 'a(ZZ)V', [
     [19, 'var3', 'cameraMovement'], [20, 'var3_ref', 'failure'],
     [21, 'var4_ref_md__', 'aircraftToAdvance'], [24, 'var6_ref_md', 'advancingAircraft'],
@@ -213,15 +278,20 @@ for (const [owner, signature, locals] of [
     evidence: 'Reviewed lexical declaration and flight update, targeting, steering or camera data flow in the pinned Ace source.'};
 
 export const aceConfig = {
-  game: 'aceofskies', version: 1, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
+  game: 'aceofskies', version: 2, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
   workflowFiles: ['build-aceofskies-rules.mjs', 'reproduce-aceofskies.mjs', 'reviewed-game.mjs',
-    'tests/test-aceofskies-core.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
-  verifyCore: verifyAceCore,
+    'tests/test-aceofskies-core.mjs', 'tests/test-aceofskies-hud.mjs', 'reconstruct-aceofskies-hud.mjs',
+    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
+  prepareInput: reconstructAceHud,
+  verifyCore: (input, named, mapping, classpath, temporary) => verifyAceCore(input, named, mapping, classpath, temporary,
+    rawClasses => ({hud: verifyAceHud(rawClasses, classpath, temporary)})),
   readingGuide(rules, mapping) {
     return ['# Reading Ace of Skies', '',
       'This directory is the single published Java tree. The scripts and reviewed rules live in dekobloko-work/readable; the current reverse dictionary is ../../decompilation/aceofskies-naming.json.', '',
       `This pass names ${Object.keys(classes).length} reviewed classes in ${mapping.files.length} source files. Unresolved roles keep their original names; renamed names have no opaque suffix.`, '',
-      'Start at `AceOfSkies.advanceGame` → `FlightSession.advanceSession`. `startGame` creates the player and pools; `renderSession` draws through `GraphicsRenderer`. `Aircraft` retains its definition, target, pursuing aircraft, firing request and temporary weapon. `FlightBody` and `Vector2` expose the flight arithmetic. `Bullet`, `Pickup`, `SmokeParticle` and `ScreenParticle` are distinct pools. `MenuScreen` handles the indexed screens.', '',
+      'Start at `AceOfSkies.advanceGame` → `FlightSession.advanceSession`. `startGame` creates the player and pools; its flag selects the literal arcade mode. `renderSession` draws through `GraphicsRenderer`. `Aircraft` retains its definition, target, pursuing aircraft, firing request and temporary weapon. `FlightBody` and `Vector2` expose the flight arithmetic. `Bullet`, `Pickup`, `SmokeParticle` and `ScreenParticle` are distinct pools.', '',
+      '`MenuScreen.open`, `advanceMenu`, `handleNavigationKey`, `handleAction`, `findItemAt` and `drawMenu` expose menu flow. `MenuInputState` distinguishes keyboard selection, pointer selection, press edges, held buttons and countdown state. The registered slots are 0 main menu, 1 pause, 2 highscores, 3 instructions, 4 achievements, 5 achievements this game, 6 logged-out result notice, and 7 settings. Menu action codes remain their original integers; action 0 starts classic play, 19 starts arcade play, 1 resumes, 3 opens instructions, 14 opens achievements, 2 opens highscores, 22 opens settings and 7 ends the game.', '',
+      '`drawRollingDigits` names settled/target values, animation countdown, leading-zero suppression and glyph banks. Displayed score/multiplier and their pending targets remain separate until their countdown reaches zero. The number formatter uses the retained separator and preserves ungrouped negative values.', '',
       'Angles in forward/polar motion use 256 units per full turn. `Vector2.angle255` preserves the separate original atan2 scaling by 255 / pi and its zero-vector value 255. `FlightBody.moveForward` subtracts sine/cosine motion and also decays headingOffset. `wrapWorld` retains its single-period boundary adjustments, including out-of-range results for positions multiple periods away. All guard parameters and unusual edge behavior remain.', '',
       'The shared engine roles match other games by reviewed behavior, not by short obfuscated spelling:', '',
       '| Ace | Existing counterpart | Evidence |', '| --- | --- | --- |',
@@ -229,8 +299,9 @@ export const aceConfig = {
       '| PacketBuffer / CipherPacketBuffer | Steel Sentinels PacketBuffer / CipherPacketBuffer | Byte payload/cursor, big-endian widths, ISAAC and bit cursor. |',
       '| ResourceArchive / ArchiveIndex / ArchiveProvider | Steel Sentinels equivalents | Packed/unpacked groups, versioned indexes, names/digests and provider progress. |',
       '| PcmSample / PcmSampleStream / MidiPcmStream | GeoBlox equivalents | Signed PCM storage, loop bounds, interpolation and MIDI channel/voice state. |', '',
-      'Shared role names do not assert byte-for-byte implementation equality. Different guards, signatures, static helper placement and graphics generations remain. Core fixtures exercise actual raw and named flight/vector, packet and collection implementations, compare their traces and check independent expected results. Complete source compilation and resolved declaration/reference/override comparison cover every file. Reversal recovers all original source bytes.', '',
-      'One dispatcher remains in FlightSession, in the animated HUD number rendering path. Other unresolved control flow also remains; this naming pass does not replace branches with guessed game logic. Whole-game playability, pixel output and server compatibility are not established by the focused fixtures.', '',
+      'Shared role names do not assert byte-for-byte implementation equality. Different guards, signatures, static helper placement and graphics generations remain. Core fixtures exercise actual raw and named flight/vector, packet, collection and menu implementations, compare their traces and check independent expected results. Complete source compilation and resolved declaration/reference/override comparison cover every file. Reversal recovers the reconstructed raw source bytes.', '',
+      'The animated HUD number renderer now uses structured loops. This comes from the pinned generic decompiler: it includes a proven nonthrowing boundary latch inside the protected loop, retains throwing-PC exception routing and checks original control-flow edges. The dictionary records base input, transformed input and both method-body hashes. Reversal recovers the reconstructed raw source; the base input remains available at its pinned Git commit.', '',
+      'The HUD probe compares original bytecode, historical dispatcher Java and reconstructed Java drawing-call traces, including runtime-exception and Error injection. It uses controlled abstract renderer/sprite implementations with the same original final wrappers in every variant, isolating historical diagnostic-wrapper removal. Physical pixels, whole-game playability and server compatibility are not established by these focused fixtures. Highscore/account/network internals and unresolved engine names still need work.', '',
       'Reproduce with `node readable/build-aceofskies-rules.mjs --check`, `node readable/reproduce-aceofskies.mjs --update`, and `node readable/reproduce-aceofskies.mjs --check` from dekobloko-work. Each command uses pinned raw Git input and temporary compilation only. No binary dependency or second readable tree is published.', ''].join('\n');
   },
 };

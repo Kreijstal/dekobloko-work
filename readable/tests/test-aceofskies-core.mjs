@@ -5,7 +5,7 @@ import {captureProcess} from '../tools/lib/capture-process.mjs';
 import {sourceInventory} from '../tools/readable-java.mjs';
 import {digest} from '../game-export.mjs';
 
-export function verifyAceCore(input, named, mapping, classpath, temporary) {
+export function verifyAceCore(input, named, mapping, classpath, temporary, extraVerification) {
   const aliases = new Map(mapping.rules.map(r => [r.symbol, r.to]));
   const symbols = new Set(mapping.symbols.map(s => s.symbol));
   const outputs = [];
@@ -139,7 +139,76 @@ field(session,"${f('pk','C','[Lok;')}").set(game,particles);field(session,"${f('
 call(game,"${m('pk','d','(BI)V')}",new Class<?>[]{byte.class,int.class},(byte)-94,index);
 check("screen/count",field(session,"${f('pk','K','I')}").getInt(game),count-1);check("screen/swap",Array.get(particles,index)==last,true);check("screen/retained",Array.get(particles,count-1)==removed,true);
 }}
-public static void main(String[] args)throws Exception{Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();pools();System.out.println("checks:"+checks);}
+static void menus()throws Exception{
+Class<?> state=${c('gr')}.class,screen=${c('nk')}.class;
+for(int count:new int[]{1,2,7})for(int start=0;start<count;start++)for(int key:new int[]{0,83,84,96,97,98,99,102,103}){
+${c('gr')} input=new ${c('gr')}(count);input.${m('gr','a','(ZIII)V')}(false,-1,0,start);${c('bk')}.${f('bk','f','I')}=key;
+input.${m('gr','a','(Z)V')}(true);int wanted=key==98?(start+count-1)%count:key==99?(start+1)%count:start;
+check("menu/vertical",input.${f('gr','g','I')},wanted);check("menu/activate",input.${m('gr','e','(B)Z')}((byte)125),key==83||key==84);
+check("menu/home",input.${m('gr','d','(I)Z')}(55),key==102);check("menu/end",input.${m('gr','b','(I)Z')}(-99),key==103);
+check("menu/left",input.${m('gr','a','(I)Z')}(-78),key==96);check("menu/right",input.${m('gr','b','(B)Z')}((byte)-102),key==97);
+input.${m('gr','a','(ZIII)V')}(false,-1,0,start);input.${m('gr','c','(B)V')}((byte)-74);
+wanted=key==96?(start+count-1)%count:key==97?(start+1)%count:start;check("menu/horizontal",input.${f('gr','g','I')},wanted);
+for(int held:new int[]{1,2,3}){input.${m('gr','a','(ZIII)V')}(true,start,held,-1);input.${m('gr','a','(Z)V')}(true);
+check("menu/held-keeps-selection",input.${f('gr','g','I')},start);check("menu/held-blocks-key",input.${m('gr','e','(B)Z')}((byte)125),false);}
+}
+${c('pn')}.${f('pn','d','I')}=3;${c('wm')}.${f('wm','h','I')}=4;
+for(boolean pointerMode:new boolean[]{false,true})for(boolean moved:new boolean[]{false,true})for(int hover:new int[]{-1,0,1,2}){
+${c('gr')} input=new ${c('gr')}(3);input.${m('gr','a','(ZIII)V')}(pointerMode,1,0,1);
+${c('vj')}.${f('vj','d','I')}=0;${c('vu')}.${f('vu','f','I')}=0;${c('uu')}.${f('uu','e','Z')}=moved;
+input.${m('gr','a','(III)V')}(0,hover,-24702);
+int wanted=hover>=0&&(pointerMode||moved)?hover:hover<0&&pointerMode?-1:1;
+check("menu/pointer-selection",input.${f('gr','g','I')},wanted);
+}
+for(int button:new int[]{1,2,3}){
+${c('gr')} input=new ${c('gr')}(3);input.${m('gr','a','(ZIII)V')}(false,-1,0,2);
+${c('vj')}.${f('vj','d','I')}=button;${c('vu')}.${f('vu','f','I')}=button;${c('uu')}.${f('uu','e','Z')}=false;
+input.${m('gr','a','(III)V')}(0,1,-24702);check("menu/press-selects",input.${f('gr','g','I')},0);check("menu/press-activates",input.${m('gr','e','(B)Z')}((byte)125),true);
+// The initial delay includes the current press frame, which immediately
+// consumes one countdown tick.
+check("menu/press-delay",field(state,"${f('gr','j','I')}").getInt(input),2);
+${c('vj')}.${f('vj','d','I')}=0;
+for(int tick=0;tick<9;tick++){input.${m('gr','a','(III)V')}(0,1,-24702);check("menu/held-no-press-edge",input.${m('gr','e','(B)Z')}((byte)125),false);check("menu/held-owner",input.${m('gr','a','(B)Z')}((byte)98),true);}
+${c('vu')}.${f('vu','f','I')}=0;input.${m('gr','a','(III)V')}(0,1,-24702);check("menu/released",input.${m('gr','a','(B)Z')}((byte)98),false);
+try{input.${m('gr','a','(III)V')}(3,0,-24702);throw new AssertionError("pointer range");}catch(IllegalArgumentException expected){}
+}
+${c('ua')}.${f('ua','l','[[I')}=new int[8][];${c('dt')}.${f('dt','a','[I')}=new int[8];${c('bk')}.${f('bk','e','[I')}=new int[8];${c('oo')}.${f('oo','Y','[I')}=new int[8];${c('ak')}.${f('ak','f','[I')}=new int[8];
+${c('io')}.${f('io','a','[Ljava/lang/String;')}=new String[]{"one","two","three"};${c('aa')}.${f('aa','b','[Lnk;')}=new ${c('nk')}[8];
+${c('ln')}.${f('ln','d','I')}=2;${c('kh')}.${f('kh','a','Z')}=true;
+for(int id=0;id<8;id++){
+int[] actions=id==2?new int[]{8,9,10,21,5,20}:id==3?new int[]{18,6,17}:new int[]{5,5,5};
+${c('za')}.${m('za','a','(I[IIIIIB)V')}(40,actions,30,20,id,460,(byte)-64);
+${c('nk')} menu=new ${c('nk')}(id);${c('aa')}.${f('aa','b','[Lnk;')}[id]=menu;
+check("menu/constructor-click",field(screen,"${f('nk','c','I')}").getInt(menu),-1);check("menu/constructor-achievement",field(screen,"${f('nk','e','I')}").getInt(menu),-1);
+if(id==2||id==3||id==4||id==5)continue;
+for(int index=0;index<3;index++)for(int dx:new int[]{-1,0,1,439,440})for(int dy:new int[]{-1,0,1,29,30}){
+int x=20+dx,y=30+40*index+dy,wanted=-1;
+for(int row=0;row<3;row++)if(x>=20&&x<460&&y>=30+40*row&&y<60+40*row){wanted=row;break;}
+check("menu/hit-bounds",call(menu,"${m('nk','a','(III)I')}",new Class<?>[]{int.class,int.class,int.class},-76,x,y),wanted);
+}
+}
+${c('nk')} instructions=${c('aa')}.${f('aa','b','[Lnk;')}[3];
+for(int page=0;page<3;page++){${c('vq')}.${f('vq','w','I')}=page;
+check("menu/previous-page",call(instructions,"${m('nk','a','(IB)Z')}",new Class<?>[]{int.class,byte.class},0,(byte)-17),page>0);
+check("menu/next-page",call(instructions,"${m('nk','a','(IB)Z')}",new Class<?>[]{int.class,byte.class},2,(byte)-17),page<2);}
+${c('nk')} highscores=${c('aa')}.${f('aa','b','[Lnk;')}[2];
+for(boolean alternate:new boolean[]{false,true}){${c('ks')}.${f('ks','b','Z')}=alternate;
+for(int index=0;index<6;index++){
+int left=alternate?-80:20+200*(index%3),top=alternate?24+40*index:index<3?24:64;
+check("menu/highscores-left",call(highscores,"${m('nk','a','(II)I')}",new Class<?>[]{int.class,int.class},index,200),left);
+check("menu/highscores-top",call(highscores,"${m('nk','a','(IZ)I')}",new Class<?>[]{int.class,boolean.class},index,true),top);
+check("menu/highscores-right",call(highscores,"${m('nk','c','(II)I')}",new Class<?>[]{int.class,int.class},123,index),alternate?560:left+180);
+}}
+${c('kp')}.${f('kp','b','Ljava/lang/String;')}=",";
+for(int value:new int[]{Integer.MIN_VALUE,-10000,-1,0,1,999,1000,1001,1000000,Integer.MAX_VALUE}){
+String wanted=value<0?Integer.toString(value):String.format(java.util.Locale.ROOT,"%,d",value);
+check("menu/number-format",call(instructions,"${m('nk','b','(IZ)Ljava/lang/String;')}",new Class<?>[]{int.class,boolean.class},value,true),wanted);
+}
+for(int target:new int[]{-1,0,1,3,7}){${c('ec')}.${f('ec','t','I')}=123;
+${c('eu')}.${m('eu','a','(BIZ)V')}((byte)-105,target,false);
+check("menu/transition-target",${c('ci')}.${f('ci','d','I')},target);check("menu/transition-reset",${c('ec')}.${f('ec','t','I')},0);}
+}
+public static void main(String[] args)throws Exception{Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();pools();menus();System.out.println("checks:"+checks);}
 }
 `);
     const root = readable ? named : input, argsFile = path.join(directory, 'sources.args');
@@ -153,5 +222,7 @@ public static void main(String[] args)throws Exception{Field u=Unsafe.class.getD
   assert.ok(checks > 1500);
   return {checks, rawNamedIdentical: true, independentExpectations: true,
     headlessClientBoundary: true, vectorAndFlightFixtures: true, packetAndDequeFixtures: true,
-    aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, traceSha256: digest(outputs[0])};
+    aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true,
+    traceSha256: digest(outputs[0]),
+    ...(extraVerification ? extraVerification(path.join(temporary, 'raw-core/classes')) : {})};
 }
