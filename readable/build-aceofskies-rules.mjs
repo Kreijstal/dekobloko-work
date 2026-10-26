@@ -682,7 +682,7 @@ for (const [owner, signature, locals] of [
     evidence: 'Reviewed lexical declaration and its data flow in the pinned Ace source.'};
 
 export const aceConfig = {
-  game: 'aceofskies', version: 14, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
+  game: 'aceofskies', version: 15, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
   workflowFiles: ['build-aceofskies-rules.mjs', 'reproduce-aceofskies.mjs', 'reviewed-game.mjs',
     'tests/test-aceofskies-core.mjs', 'tests/test-aceofskies-highscores.mjs', 'tests/test-aceofskies-hud.mjs', 'reconstruct-aceofskies.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
