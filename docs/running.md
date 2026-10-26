@@ -36,6 +36,13 @@ All 348 game sources compile against stubs without the original classes on the
 classpath. The pinned refresh command and source-archive proof are documented
 in [decompilation.md](decompilation.md#refreshing-one-raw-class).
 
+An owned local Chromium session loaded the regenerated sources through the
+browser launcher and entered Low-security Facility. The map displayed rough,
+curved terrain boundaries; reflection found 62 populated partial masks in the
+active level (`oe.field_Pb = 0`, terrain style 0). The session reported no runtime
+failure. This is a rendering correctness check, not an FPS acceptance run.
+Temporary screenshots, class builds and source staging were removed afterwards.
+
 ## Tomb Racer rendering follow-up — 2026-10-26
 
 The LAN trace ended at 20:54:32 UTC with 4.6 presented FPS. Its last 256 frames
