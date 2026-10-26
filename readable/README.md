@@ -282,7 +282,7 @@ The loop-header tests include a 1,000-counter fixture and 3,456 native
 comparisons across all primitive types, zero-iteration loops, labeled
 break/continue, throwing headers/body/cleanup and null/non-null monitors. A
 default-decompiler roundtrip preserves an earlier effectful store. The combined
-declaration/value/emitter/exception-table run passes 281 tests with one existing
+declaration/value/emitter/exception-table run passed 307 tests with one existing
 skip (plus five assembler assertions). All 160 reviewed local names still bind
 to unique declarations; all guarded local identities and ordinals remain unchanged.
 
@@ -345,8 +345,8 @@ their original NaN behavior; boxed value contexts retain their conversions.
 A separate 25-case native source roundtrip covers NaNs, infinities, signed zero,
 nullable Boolean calls and effects. Whole-source checks confirm deterministic,
 idempotent output. After default bytecode emission, the prepared-source stage
-simplifies 190 more bodies across 110 files: three integer dispatch recoveries,
-405 predicate simplifications, 1,115 removed grouping pairs, 700 else-if wrapper
+simplifies 261 more bodies across 132 files: three integer dispatch recoveries,
+405 predicate simplifications, 1,439 removed grouping pairs, 700 else-if wrapper
 blocks, six lexical frame cleanups and 57 primitive value choices. One further
 value choice recovers during default bytecode emission. The current dictionary records decision-stage file
 hashes and proof counts. The current menu action handler has 46 if statements,
@@ -389,7 +389,7 @@ default decision policy, including prepared-source replay, without a flag.
 Ordered alternatives stay together: source recovery does not replace only the
 tail pair of a longer ladder, including transparent nested blocks and ladders
 oriented into either arm of a negated condition.
-This publication folds 58 choices across 32 Java files without changing any
+The earlier primitive-choice publication folded 58 choices across 32 Java files without changing any
 else-if lines or adding lines longer than 180 columns. The 51 method-body
 reconstruction handles one choice; the prepared-source replay handles 57.
 
@@ -397,6 +397,38 @@ A three-way native source oracle adds 2,304 cases across all eight primitive
 types, integer overflow, wide longs, raw NaN/signed-zero bits, boxed null
 conditions, injected failures, repeated loops, finally overrides and null or
 held monitors. The existing default-bytecode roundtrip remains covered.
+
+The generic default decision pass also recovers Boolean representations for
+closed networks of local integer flags. It proves every declaration, store,
+copy and eager `&`/`|`/`^` expression stays in the 0/1 domain, and accounts for
+every external read as an equality comparison. A numeric observer, unknown
+store, capture, ambiguous binding or incompatible sibling declarator rejects
+the connected network. Calls, boxed/reference uses, returns and protocol
+values do not acquire a different type. Loops, handlers and finally stores
+participate in the same proof; no value invariant is guessed from one path.
+
+Predicates remain snapshots at their original stores. Opposite literal arms
+become the predicate or its negation; equal arms retain their condition and
+unboxing even when both results are false. Conditions and failures keep their
+order, and eager bitwise expressions remain eager Boolean expressions. Reused
+slots that later become coordinates or counters remain integers. No game
+names, slot-name convention or application flags enter this proof.
+
+The native three-way oracle covers 17,280 cases with copies, eager predicates,
+mutable field snapshots, nullable Boolean unboxing, equal conditional arms,
+overload selection, NaNs/signed zero, loop iterations, injected exceptions,
+finally overrides and monitor release. A default-bytecode roundtrip and a
+500-network fixture cover automatic application and idempotence. The current
+published Ace source was also checked for whole-source idempotence before the
+new compiler was pinned.
+The prepared-source stage promotes 218 locals and recovers 291 comparisons
+and 115 numeric Boolean selections; reconstructed method bodies also run the
+same default proof. Declaration identities and all 160 reviewed local guards
+remain unchanged.
+The resulting publication promotes 263 locals across 73 Java files, including
+41 locals in FlightSession. Comparing parsed declarations with the previous
+publication confirms that their names and lexical order are unchanged; every
+changed local type is exactly int to boolean.
 
 The core probe now exercises actual menu action dispatch and both volume
 sliders through reflection. It uses the real linked sample mixer with silent
@@ -424,11 +456,11 @@ SHA-256 is `34c1e50357f69cafd0c4550a63beeb07a8b56c8c891bdb31e4fc49a652509613`,
 reproduced with `git archive --format=tar 00c1c12fb58cdbd6be065e604ee5e9acbcebeff7 | sha256sum`
 inside java-tools. This hash identifies compiler source, not a game JAR.
 The current method-recovery compiler source archive SHA-256 is
-`50123f206af1ac496c37d3f8f18a699194828cae670b0d46d2dca46df47e1474`, reproduced
-by archiving commit `a037f68e263b10fc37d4977ad745e7ab52867cdd` the same way.
+`2da6de32255d1646dd7f4ece0abe97de26b0258cb10e1a9abfaa63137a83f1eb`, reproduced
+by archiving commit `ebc81d62477eef15e73f239cf30b237e2d3248cf` the same way.
 The verified prepared raw tree SHA-256 is
-`11ef8b783dbb46f9c904376eff0932f10aa51b25bb7f3c97c1fe3c1336064da1`; the
-named tree is `0b452f2888bf77c558d4047178a0edc425eecbdacb4470191274d40ba8dfc149`.
+`e83d0f60847dedf785504d5703894944980b327ed81dff2305238ab5f59caf67`; the
+named tree is `04691707e20cdf233f37ef637578b9543443d0a729171b88105fc8a3fcaaadcf`.
 The one current rule manifest/dictionary records both input identities,
 compiler pins, fixed gamepack identity, method-body hashes and verification.
 Dictionary reversal recovers all 545 prepared raw files; the unmodified base
@@ -452,18 +484,18 @@ node readable/build-aceofskies-rules.mjs --check
 node readable/reproduce-aceofskies.mjs --check
 ```
 
-The structural regression run passed 281 tests with one existing skip and
-five nested assembler assertions. A subsequent scoped-value formatting
-check passed 95 focused tests. The full command runs in java-tools:
+The structural regression run passed 307 tests with one existing skip and
+five nested assembler assertions. A subsequent Boolean-representation
+roundtrip check passed 70 focused tests. The full command runs in java-tools:
 
 ```
-node --test test/integralSwitchCoalescing.test.js test/terminalSelectorDispatchRecovery.test.js test/sourceDecisionRecovery.test.js test/scalarIfDispatchRecovery.test.js test/opaqueControlDispatchRecovery.test.js test/sourceLocalDeclarationRecovery.test.js test/localInitializationRecovery.test.js test/forLoopDeclarationRecovery.test.js test/primitiveValueBranchRecovery.test.js test/javaAstEmitterLoopExits.test.js test/exceptionTablePreservation.test.js
+node --test test/booleanLocalRepresentationRecovery.test.js test/integralSwitchCoalescing.test.js test/terminalSelectorDispatchRecovery.test.js test/sourceDecisionRecovery.test.js test/scalarIfDispatchRecovery.test.js test/opaqueControlDispatchRecovery.test.js test/sourceLocalDeclarationRecovery.test.js test/localInitializationRecovery.test.js test/forLoopDeclarationRecovery.test.js test/primitiveValueBranchRecovery.test.js test/javaAstEmitterLoopExits.test.js test/exceptionTablePreservation.test.js
 ```
 
-The final focused follow-up (95 passing tests) was:
+The final focused follow-up (70 passing tests) was:
 
 ```sh
-node --test test/primitiveValueBranchRecovery.test.js test/sourceDecisionRecovery.test.js test/integralSwitchCoalescing.test.js test/scalarIfDispatchRecovery.test.js test/opaqueControlDispatchRecovery.test.js
+node --test test/booleanLocalRepresentationRecovery.test.js test/sourceDecisionRecovery.test.js test/primitiveValueBranchRecovery.test.js
 ```
 
 Seven workflow tests pass. The generic compiler's focused exception tests run

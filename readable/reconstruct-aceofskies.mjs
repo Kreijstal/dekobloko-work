@@ -8,8 +8,8 @@ import {inventory} from '../scripts/publish-decompiled-games.mjs';
 import {withPinnedCompiler} from './pinned-compiler.mjs';
 import {sourceInventory, sourceIdentity} from './tools/readable-java.mjs';
 
-export const aceRecoveryCompiler = {commit: 'a037f68e263b10fc37d4977ad745e7ab52867cdd',
-  sourceArchiveSha256: '50123f206af1ac496c37d3f8f18a699194828cae670b0d46d2dca46df47e1474'};
+export const aceRecoveryCompiler = {commit: 'ebc81d62477eef15e73f239cf30b237e2d3248cf',
+  sourceArchiveSha256: '2da6de32255d1646dd7f4ece0abe97de26b0258cb10e1a9abfaa63137a83f1eb'};
 const originalClassesSha256 = '9f0daf3471d01ae2de9a8a71504d0bf94fb751c66e0b5c3553477eb22b9c7f15';
 const url = 'https://static.alterorb.net/launcher/v3/jars/aceofskies.jar';
 
@@ -180,7 +180,8 @@ export function reconstructAceMethods(input, temporary) {
     const declarationScopes = sourceProofStage(localizeCompilationUnitDeclarations,
       ['bodiesLocalized', 'declarationsMoved', 'declarationsMerged', 'inertStoresRemoved']);
     const decisionSimplification = sourceProofStage(simplifyCompilationUnitDecisions,
-      ['bodiesSimplified', 'dispatchesRecovered', 'predicatesSimplified', 'predicateGroupsRemoved', 'elseIfBlocksRemoved', 'frameCleanups', 'valueBranchesFolded']);
+      ['bodiesSimplified', 'dispatchesRecovered', 'predicatesSimplified', 'predicateGroupsRemoved', 'elseIfBlocksRemoved', 'frameCleanups', 'valueBranchesFolded',
+        'booleanLocalsPromoted', 'booleanComparisonsRecovered', 'booleanSelectionsRecovered']);
     return {methods: certificates, plainMethods, preservedMethods, declarationScopes, decisionSimplification, compiler: aceRecoveryCompiler, bytecode: {
       sourceUrl: bytecode.sourceUrl, gamepackSha256: bytecode.gamepackSha256,
       files: bytecode.files, originalClassesSha256: bytecode.originalClassesSha256},
