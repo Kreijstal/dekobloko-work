@@ -21069,3 +21069,80 @@ regression additionally passes both heap sizes in synchronous and suspendable
 engines. The benchmark runner removes its generated classes. No extra checkout,
 profiling run, binary commit or diagnostic JSON report is created. Full-game
 FPS remains unverified until a refreshed Ace launch supplies current telemetry.
+
+### Crazy Crystals: reflection-steered gameplay and wide dispatch
+
+On 2026-10-26 an owned local Firefox 148 session on kreijstalnuc ran the
+decompiled GitHub game sources at `b168d7edeb104599156b5f908df62dfdc9f3b250`.
+Java reflection entered level zero using the game's existing `rl.a(BII)V`
+method, arguments `[26, 0, 0]`; the resulting board has 30 rows. The laptop
+was not accessed. These runs use headless canvas presentation counters, the
+Firefox JSPI preference enabled, no CPU slowdown, and the unchanged 256 MiB
+native heap. They do not measure physical display presentations or establish
+the phone, rolling-one-second FPS, total JavaScript heap, or stability gates.
+
+The original runtime `8851a8cc` measured 239 presentations in 8011 ms in the
+menu (29.834 FPS), then 72 in 8006 ms during gameplay (8.993 FPS). During that
+gameplay interval it made 8,994 slow calls, 9,235 parks and 77,162 module
+entries. Neither objects nor arrays spilled; native live storage was
+23,786,617 bytes. Heap exhaustion did not cause this reproduction.
+
+`ClosedWorld.planInvoke` rejected calls with more than 16 distinct resolved
+implementations. That arbitrary cutoff excluded 19 gameplay methods,
+including `CrazyCrystals.g(B)V`, forcing repeated Wasm-to-legacy transitions
+through the tile hierarchy. Removing only that cutoff in a private browser
+bundle gave 456 presentations in 8014 ms (56.900 FPS), zero slow calls and
+694 parks. Admitted methods increased from 3213 to 3232, rejections decreased
+from 20 to one unrelated `ldc-class` case, and module size increased from
+6,936,302 to 7,026,561 bytes. No game logic or heap setting changed.
+
+Generic JVM commit `61b0c168ea4c847daf3a8ff9d698c5fffab09745` removes the
+cutoff; existing resolved dispatch and supported fallback semantics remain.
+The new regression generates 64 subclasses and checks virtual/interface
+dispatch, int/long/double/reference/void results, inheritance, thrown
+exceptions and null receivers, in synchronous and JSPI modes. All ten
+focused tests pass:
+
+```
+node --test test/closedWorldPolymorphism.test.js test/closedWorldCompiler.test.js test/closedWorldSuspension.test.js
+```
+
+The wide-dispatch test also passes with an in-memory Git source loader that
+excludes unrelated runtime WIP and rebuilds the JRE index in memory. The
+baseline bundle SHA-256 was
+`dd8f7368309f0ae98cfd50d1b67ae364a2ae3b07be40ae1379f32cd9c39e1a16`.
+Both the private candidate and the subsequent normal GitHub-loaded committed
+runtime have SHA-256
+`5e63244f2c4c95161a821531e12a38d45ffef92503492330cc914259c1c29d0e`.
+That normal-source launch measured menu 51.212 FPS and gameplay 47.119 FPS
+(377 presentations in 8001 ms). A second normal-source launch measured menu
+53.385 FPS and gameplay 48.321 FPS (387 presentations in 8009 ms), reaching
+the menu in 33,694 ms. Both have zero slow calls, no spills, no runtime errors
+and the same 3232 admitted methods. These are short local diagnostic
+results, not a full-game performance acceptance claim or a change to the
+selected logo benchmark artifact. No unchanged baseline was rerun.
+
+The reproducible reflection driver uses the normal GitHub-loading path,
+prints one result to stdout, and saves no screenshots or measurement reports:
+
+```
+node --check apps/launcher/diagnose-crazycrystals.mjs
+node apps/launcher/diagnose-crazycrystals.mjs http://127.0.0.1:5173/
+```
+
+It owns a local headless Firefox and one useful persistent cache profile at
+`~/.cache/dekobloko/crazycrystals-browser`; JSPI is explicitly enabled there.
+Its exported `diagnoseCrazyCrystals({context, baseURL})` also accepts an owned
+browser context. This was used for the normal-source verification above.
+It starts gameplay through `Class.getDeclaredMethod` and `Method.invoke`,
+then checks the active board and guest failure state. The server must already
+be running. Source edits cannot hot-reload the owned diagnostic page.
+
+The runtime commit is pushed to java-tools master. The existing public Sites
+version 45 (cloner source `ac0462545cfbb3bd7735094f220781532b8b4e83`) was
+redeployed successfully as `appgdep_6adef14e561481918b3e0e4b4e45ace7` at
+`https://geoblox.elektrischrainbow.chatgpt.site`. No cloner source change or
+committed generated bundle is needed: the normal loader resolves the updated
+JVM source commit and keys its shared bundle cache by that identity. Existing
+running tabs retain their loaded runtime until a new launch. Production
+gameplay FPS has not been measured here.
