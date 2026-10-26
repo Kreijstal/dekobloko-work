@@ -113,6 +113,34 @@ catalog without retaining a build batch. Compilation stubs for naming are built
 from source in temporary storage; no stub JAR belongs in the publication.
 Remove the owned temporary batch after export validation.
 
+### Refreshing one raw class
+
+For a focused correctness repair in a game without a named export, reproduce
+the class directly from the fixed original gamepack and an immutable compiler
+source archive:
+
+```sh
+node readable/refresh-raw-class.mjs escapevector vc apps/loading/escapevector-map-mask.mjs --update
+node readable/refresh-raw-class.mjs escapevector vc apps/loading/escapevector-map-mask.mjs --check
+node scripts/check-source-catalog.mjs ../funorb-decompiled
+```
+
+The runner verifies the original class-corpus identity and every existing
+catalog source identity, executes committed compiler sources without consulting
+runtime WIP, and compiles the entire candidate game against stubs alone. An
+optional committed probe compares the original gamepack and recompiled sources
+under HotSpot with verification enabled. Temporary source archives, Java and
+classes are removed; generated Java is installed only in `funorb-decompiled`.
+
+The existing catalog manifest retains the base catalog's generator identity.
+`publication.games.GAME.sourceRepairs.classes` records each refreshed class,
+its base Git commit, original input, current output, whole-game compilation and
+semantic proof. Its compiler-source SHA-256 hashes the complete tracked Git
+archive; the game JAR has a separate input checksum. `--check` uses the pinned
+compiler commit from that receipt. The catalog checker verifies the current
+class digests, and a later full-catalog publication must use a compiler that
+includes these repairs. Named games retain their pinned-input workflow below.
+
 ### Updating the raw input of a named game
 
 First finish the complete catalog rebuild, publish it with the clean batch

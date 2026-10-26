@@ -13,6 +13,29 @@ socket layer; install it in anything that claims to run offline.
 
 ---
 
+## Escape Vector terrain masks — 2026-10-26
+
+Low-security Facility's squared-off terrain exposed a decompiler allocation
+identity bug. Original `vc` bytecode uses `newarray int; dup_x2; aastore; astore`
+to store one 32-row terrain mask in the map and a decoding local. The exported
+Java allocated two `int[32]` arrays and decoded into the discarded one, losing
+the partial tile's shape.
+
+Generic java-tools commit `1162ba86b839d9dcd1028f3ee11b728f329fa2bb` extends the
+existing shared-allocation handling to fixed-size arrays. It covers array,
+instance-field, static-field and local stores and preserves deferred initializer
+elements when a shared allocation is materialized. No game names or opt-in
+flags are involved. `node test/cfrDupSideEffects.test.js` passes 26 assertions;
+`node test/cfrStackOrdering.test.js` passes 38.
+
+`apps/loading/escapevector-map-mask.mjs` supplies a deterministic partial-tile
+stream. HotSpot running the original gamepack reports 16 nonempty rows, 256
+solid pixels and hash `-2084791551`; the previous source export reports zero
+rows/pixels and hash `2111290369`. The regenerated class matches the original.
+All 348 game sources compile against stubs without the original classes on the
+classpath. The pinned refresh command and source-archive proof are documented
+in [decompilation.md](decompilation.md#refreshing-one-raw-class).
+
 ## Tomb Racer rendering follow-up — 2026-10-26
 
 The LAN trace ended at 20:54:32 UTC with 4.6 presented FPS. Its last 256 frames
