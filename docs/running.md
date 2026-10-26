@@ -13,6 +13,50 @@ socket layer; install it in anything that claims to run offline.
 
 ---
 
+## Tomb Racer rendering follow-up — 2026-10-26
+
+The LAN trace ended at 20:54:32 UTC with 4.6 presented FPS. Its last 256 frames
+had a 225.5 ms median completion gap and a 3.5 s maximum gap; uploads took a
+median 3 ms. Closed-world entry fallbacks and overflow spills were zero. A local
+owned Chromium CPU profile, overlapping loading and the animated scene,
+identified `iua.a([I[IIIIFFFFFFFFFFFFFFFF)V` (a textured scanline) as a material
+execution cost. That profile also includes audio decoding and is not an isolated
+gameplay acceptance run.
+
+The generic java-tools compiler now hoists ordinary primitive fields of `this`
+in loops only when the whole method has no field writes, calls, class
+initialization, synchronization or volatile acquire reads. This exploits the
+fact that an array element store cannot alias an object's field storage.
+Methods with writes through another receiver, mutating calls or potentially
+null other receivers retain their reads and exception order. This is automatic
+compiler behavior, with no Tomb Racer names or configuration in java-tools.
+
+`apps/loading/tombracer-raster.mjs` copies the original scanline body unchanged
+from `funorb-decompiled/games/tombracer/iua.java`, includes its body SHA-256 and
+supplies deterministic buffers. To reproduce the focused comparison, stage the
+candidate java-tools changes and run from this repository, with the cloner LAN
+server running:
+
+```sh
+node apps/loading/tombracer-raster.mjs | node ../blank-github-cloner/scripts/benchmark-closed-kernel.mjs TombRasterProbe 15001
+```
+
+Two fresh-process B–C–C–B blocks per browser, with three timed calls per process,
+matched HotSpot's pixel checksum `424579604` throughout. On kreijstalnuc,
+Firefox's median of process medians fell from 1684 to 1427.5 ms (15.2% less time).
+Chromium changed from 175.85 to 170.5 ms, a small/noisy result. These are
+unthrottled kernel timings, not game FPS or a release-gate result.
+
+A second experiment hoisted reference fields and cached their array metadata.
+It preserved the checksum but regressed the second Firefox block, so it was
+discarded. The primitive-field change remains the baseline. Raw campaigns,
+hashes, engine versions and timings share the cloner's single cumulative
+`.work/heap-pressure/kernel-benchmark.json`; rerunning does not overwrite earlier
+campaigns. Generated Java, classes and bundles are not committed.
+
+The 24 FPS gameplay floor remains unverified. The scanline improvement alone
+does not establish that the original 2–6 FPS scene meets it.
+
 ## Investigation retrospective — 2026-10-24
 
 This is the consolidated account of the GeoBlox memory, stalls, standalone intro,
