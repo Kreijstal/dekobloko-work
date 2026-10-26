@@ -71,6 +71,14 @@ These remain native-call kernel timings, not full-game FPS. Thread identity
 across suspension and the existing monitor, join, exception and preemption
 tests passed.
 
+The combined bundle also completed an owned, unthrottled Chromium gameplay
+smoke test on kreijstalnuc: 2214 canvas presentations in 71.94 s (30.77/s),
+with input dispatched and no reported Wasm trap, entry fallback or overflow
+spill. Its most recent 256 completion gaps had median 30.1 ms and maximum
+62.9 ms. This was a fresh JVM with cached classes at a 960×720 browser viewport;
+it did not capture compositor correlation, every rolling one-second window,
+the entire loading sequence or constrained/phone acceptance.
+
 The 24 FPS gameplay floor remains unverified. The scanline improvement alone
 does not establish that the original 2–6 FPS scene meets it.
 
