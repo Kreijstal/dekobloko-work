@@ -52,16 +52,29 @@ vector, packet, deque and pool fixtures compare raw/named behavior against
 independent expectations; complete binding and compilation checks cover every
 source. Full client rendering and server compatibility remain separate checks.
 
-The current Ace pass names 36 classes and 565 symbols, including flight-loop
+The current Ace pass names 39 classes and 705 symbols, including flight-loop
 locals, targets, camera movement, lives, weapon heat/cooldown, gun patterns,
 menu input/navigation, hit testing, transitions and HUD score/multiplier state.
 All 545 source files compile before and after naming; 209,076 symbol bindings
-and 124 label bindings agree. Native raw/named traces agree on 4,172 assertions,
+and 124 label bindings agree. Native raw/named traces agree on 4,535 assertions,
 including aircraft construction, bullet spawning, single-period flight
 boundaries, packet bytes, intrusive transfers, pool swaps and menu geometry.
 Menu tests preserve the initial press frame's immediate countdown decrement,
 held-button ownership, press edges, half-open item bounds, disabled instruction
 buttons, alternate highscore layouts and ungrouped negative numbers.
+
+Ace also names the shared `HighscoreQuery`, `ScoreSubmission` and
+`HighscoreNameEntry` roles. Request/response methods now expose query
+coalescing, three views, submission acknowledgements, result matching and
+retransmission. Native fixtures construct packets with JDK I/O and CRC32 to
+check query framing, submission bytes, ID wrapping, pending-node ownership,
+completion, acknowledgements and all/my/best-player view contents at widths
+1–3. Each supplied response row contributes to at least one view, as required
+by the observed decoder cursor path; this does not establish a live server
+contract for discarded or malformed rows. Result fixtures check classic/arcade
+selection, score/accuracy packing, overflow, blocked/zero results and one-time
+submission. Cipher words come from a parallel instance of the original cipher;
+these tests verify framing, not an independent ISAAC implementation.
 
 Ace's only dispatcher was the animated HUD number renderer. Its loop latch was
 outside the protected range and branched into its middle, so the generic
@@ -81,7 +94,7 @@ preprocessing removed some renderer diagnostic wrappers; all three variants
 therefore use the same original final renderer/sprite wrappers, with only the
 abstract drawing boundary mocked. Complete traces, including HUD exception
 context, agree. These are drawing-call checks, not physical-pixel or full-game
-playability claims. Unknown class/member roles and network/UI internals remain.
+playability claims. Unknown class/member roles and account/network/UI internals remain.
 
 Its raw source pin is funorb-decompiled commit
 `b168d7edeb104599156b5f908df62dfdc9f3b250`, tree SHA-256
@@ -96,7 +109,7 @@ The HUD recovery compiler source archive SHA-256 is
 by archiving commit `c6f6a1e61b0088e882236d732145a84775fd9cb8` the same way.
 The verified prepared raw tree SHA-256 is
 `3feb47118078691ab11c03f0cd4a8914b574480aee7df4d375bbd4e273ded155`; the
-named tree is `277b01c6f738d3768f881518bb6f726e12ad24d42ea45aa80a21573ed245654a`.
+named tree is `444a2a4c4aaa0f0847b1ccdf0ba2fc11ed2f05a69d0987ea77dc6cfd644708ce`.
 The one current rule manifest/dictionary records both input identities,
 compiler pins, fixed gamepack identity, method-body hashes and verification.
 Dictionary reversal recovers all 545 prepared raw files; the unmodified base

@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {highscoreProbe} from './test-aceofskies-highscores.mjs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import {captureProcess} from '../tools/lib/capture-process.mjs';
@@ -208,7 +209,8 @@ for(int target:new int[]{-1,0,1,3,7}){${c('ec')}.${f('ec','t','I')}=123;
 ${c('eu')}.${m('eu','a','(BIZ)V')}((byte)-105,target,false);
 check("menu/transition-target",${c('ci')}.${f('ci','d','I')},target);check("menu/transition-reset",${c('ec')}.${f('ec','t','I')},0);}
 }
-public static void main(String[] args)throws Exception{Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();pools();menus();System.out.println("checks:"+checks);}
+${highscoreProbe(c, f, m)}
+public static void main(String[] args)throws Exception{Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();pools();menus();highscores();System.out.println("checks:"+checks);}
 }
 `);
     const root = readable ? named : input, argsFile = path.join(directory, 'sources.args');
@@ -222,7 +224,7 @@ public static void main(String[] args)throws Exception{Field u=Unsafe.class.getD
   assert.ok(checks > 1500);
   return {checks, rawNamedIdentical: true, independentExpectations: true,
     headlessClientBoundary: true, vectorAndFlightFixtures: true, packetAndDequeFixtures: true,
-    aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true,
+    aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true, highscoreProtocolFixtures: true,
     traceSha256: digest(outputs[0]),
     ...(extraVerification ? extraVerification(path.join(temporary, 'raw-core/classes')) : {})};
 }

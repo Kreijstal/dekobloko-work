@@ -45,6 +45,9 @@ const classes = {
   hk: ['MidiPcmStream', 'Same shared role as GeoBlox MidiPcmStream: channel/controller state, MIDI events, notes and sample mixing.'],
   ap: ['MusicTrack', 'Shared packed MIDI track decoder and instrument-use table; loads a named archive track.'],
   ob: ['SoundCache', 'Shared synthesized/Vorbis sound archive lookup and retained PCM caches.'],
+  uc: ['HighscoreQuery', 'Same shared role as GeoBlox HighscoreQuery: query ID, row/value dimensions, completion and three decoded views; Ace also retains server submission tokens.'],
+  ga: ['ScoreSubmission', 'Same shared role as GeoBlox ScoreSubmission: wrapping 16-bit request ID, two shorts, four context integers and scores; Ace retains the acknowledgement token.'],
+  gl: ['HighscoreNameEntry', 'Same shared role as GeoBlox HighscoreNameEntry: primary/alternate names and a marker used to build the unique-player view.'],
   rh: ['SoundPlayback', 'Linked wrapper retaining a sample stream, scaled volume and linked playback owner.'],
 };
 const members = {};
@@ -244,9 +247,59 @@ method('eu', 'a', '(BIZ)V', 'requestMenu', ['obfuscationGuard', 'screenId', 'poi
 method('za', 'a', '(I[IIIIIB)V', 'registerMenuLayout', ['rowSpacing', 'actions', 'top', 'left', 'screenId', 'right', 'obfuscationGuard'],
   'Stores the action table and exact per-screen layout arrays.');
 
+// Shared highscore transport, verified from encoding/decoding and UI consumers.
+const highscoreEvidence = 'Reviewed query factory, client packet serialization/response decoder, acknowledgement routing and highscore result matching; same shared roles as GeoBlox.';
+for (const [owner, original, type, to] of [
+  ['uc','i','Z','completed'], ['uc','h','[[I','valuesByView'], ['uc','e','[[Ljava/lang/String;','namesByView'],
+  ['uc','n','I','queryId'], ['uc','j','I','entryLimit'], ['uc','m','I','valuesPerEntry'], ['uc','f','[[J','submissionTokensByView'],
+  ['ga','e','I','firstShortValue'], ['ga','k','I','secondShortValue'], ['ga','m','I','submissionId'],
+  ['ga','i','I','firstContextValue'], ['ga','g','I','secondContextValue'], ['ga','n','I','thirdContextValue'],
+  ['ga','f','I','fourthContextValue'], ['ga','h','[I','scores'], ['ga','j','J','submissionToken'],
+  ['gl','e','Ljava/lang/String;','primaryName'], ['gl','f','Ljava/lang/String;','alternateName'], ['gl','g','Z','usedInUniqueView'],
+  ['nh','g','Lkp;','pendingHighscoreQueries'], ['tq','d','Lkp;','pendingScoreSubmissions'], ['am','a','I','nextScoreSubmissionId'],
+  ['ql','r','Luc;','activeHighscoreQuery'], ['to','r','Lga;','lastScoreSubmission'],
+  ['cs','a','I','highscoreMode'], ['oc','e','I','highscoreView'], ['pe','b','[Lgl;','highscoreNameEntries'],
+  ['cf','h','Ljava/lang/String;','normalizedPlayerName'], ['fj','a','Ljava/lang/String;','playerDisplayName'],
+  ['q','p','Ldl;','outgoingPacket'], ['nm','c','Ldl;','incomingPacket'],
+]) field(owner, original, type, to, highscoreEvidence);
+for (const [owner, original, descriptor, to, names] of [
+  ['ga','<init>','(IIIIII[I)V','', ['firstShortValue','secondShortValue','firstContextValue','secondContextValue','thirdContextValue','fourthContextValue','scores']],
+  ['vo','a','(BIIII)Luc;','requestHighscores', ['obfuscationGuard','opcode','entryLimit','valuesPerEntry','queryId']],
+  ['ag','a','(IILuc;)V','writeHighscoreQuery', ['opcode','payloadLength','query']],
+  ['ac','a','(IILga;)V','writeScoreSubmission', ['firstScoreIndex','opcode','submission']],
+  ['ak','a','(Lga;ZI)V','queueScoreSubmission', ['submission','obfuscationGuard','opcode']],
+  ['ce','a','(B)V','decodeHighscoreResponse', ['obfuscationGuard']],
+  ['ca','a','(Luc;BILga;)I','findSubmittedScoreRow', ['query','obfuscationGuard','viewIndex','submission']],
+  ['pl','c','(II)V','resendPendingHighscores', ['opcode','obfuscationGuard']],
+  ['pk','g','(I)V','submitFinalScore', ['obfuscationGuard']],
+  ['fd','a','(Ljava/lang/String;B)Z','isCurrentPlayerName', ['displayName','obfuscationGuard']],
+  ['vu','a','(ILjava/lang/CharSequence;)Ljava/lang/String;','normalizePlayerName', ['obfuscationGuard','displayName']],
+  ['dl','g','(II)V','writeCipheredOpcode', ['obfuscationGuard','opcode']],
+  ['dl','a','(Z[I)V','initializeOpcodeCipher', ['obfuscationGuard','seed']],
+  ['rb','e','(II)I','appendCrc32', ['startPosition','obfuscationGuard']],
+  ['rb','b','(IB)V','patchByteLength', ['payloadLength','obfuscationGuard']],
+  ['rb','h','(I)Ljava/lang/String;','readNullTerminatedText', ['obfuscationGuard']],
+]) method(owner, original, descriptor, to, names, highscoreEvidence);
+
 // Lexical ordinals bind each reviewed local to the exact pinned declaration.
 // Shared compiler temporaries stay unresolved instead of receiving false roles.
 for (const [owner, signature, locals] of [
+  ['ce', 'a(B)V', [[0,'var8_int','nameEntryIndex'], [4,'var19','rowIndex'],
+    [10,'var2','responseKind'], [11,'var3','queryId'], [12,'var4','query'], [13,'var4_long','acknowledgementToken'],
+    [14,'var5','nameEntryCount'], [15,'var6','entryLimit'], [16,'var6_ref_ga','submission'], [17,'var7','valuesPerEntry'],
+    [18,'var8','namesByView'], [19,'var9','alternateNamesByView'], [20,'var10','submissionTokensByView'],
+    [21,'var11','valuesByView'], [22,'var12','allRowCount'], [23,'var13','ownRowCount'], [24,'var14','uniqueRowCount'],
+    [25,'var15','allValueOffset'], [26,'var16','ownValueOffset'], [27,'var17','uniqueValueOffset'], [28,'var18','rowCount'],
+    [29,'var20','nameIndex'], [30,'var21','displayName'], [31,'var22','submissionToken'], [32,'var24','valuesStartPosition'],
+    [33,'var25','allValueIndex'], [34,'var26','obfuscationControl'], [35,'var28','packet'],
+    [36,'var3Lifetime1','submissionId'], [37,'var25Lifetime1','ownValueIndex'], [38,'var25Lifetime2','uniqueValueIndex']]],
+  ['ca', 'a(Luc;BILga;)I', [[0,'var6','rowIndex'], [1,'var7','valueIndex'], [12,'var4_int','valuesPerEntry'],
+    [14,'var5','rowCount'], [15,'var8','obfuscationControl'], [16,'decompiledFrameCompleted0','allValuesMatch']]],
+  ['vo', 'a(BIIII)Luc;', [[1,'var5_ref','existingQuery'], [2,'var6','obfuscationControl'], [3,'var5_refLifetime1','newQuery']]],
+  ['ac', 'a(IILga;)V', [[0,'var7','packet'], [1,'var8','packetAlias'], [2,'var4','payloadStartPosition'],
+    [3,'var5','scoreIndex'], [4,'var6','obfuscationControl']]],
+  ['ag', 'a(IILuc;)V', [[0,'var3','packet']]],
+  ['pl', 'c(II)V', [[0,'var3','obfuscationControl'], [1,'var4','submission'], [2,'var5','query']]],
   ['pk', 'a(IIIZIIIZI)V', [[2,'var10_int','foldHeight'], [3,'var10','failure'], [4,'var11','shadeAlpha'],
     [5,'var12','renderer'], [6,'var13','settledBankPending'], [7,'var14','targetBankPending'],
     [8,'var15','skipZeroSuppression'], [9,'var16','settledGlyphIndex'], [10,'var17','targetGlyphIndex'],
@@ -275,12 +328,12 @@ for (const [owner, signature, locals] of [
     [19, 'var14', 'targetAlignment'], [20, 'var16', 'obfuscationControl'], [21, 'var13Lifetime1', 'turnDirection']]],
 ]) for (const [ordinal, originalName, to] of locals)
   members[`L:${owner}.${signature}#${ordinal}`] = {to, expectedOriginalName: originalName,
-    evidence: 'Reviewed lexical declaration and flight update, targeting, steering or camera data flow in the pinned Ace source.'};
+    evidence: 'Reviewed lexical declaration and its data flow in the pinned Ace source.'};
 
 export const aceConfig = {
   game: 'aceofskies', version: 2, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
   workflowFiles: ['build-aceofskies-rules.mjs', 'reproduce-aceofskies.mjs', 'reviewed-game.mjs',
-    'tests/test-aceofskies-core.mjs', 'tests/test-aceofskies-hud.mjs', 'reconstruct-aceofskies-hud.mjs',
+    'tests/test-aceofskies-core.mjs', 'tests/test-aceofskies-highscores.mjs', 'tests/test-aceofskies-hud.mjs', 'reconstruct-aceofskies-hud.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   prepareInput: reconstructAceHud,
   verifyCore: (input, named, mapping, classpath, temporary) => verifyAceCore(input, named, mapping, classpath, temporary,
@@ -291,6 +344,7 @@ export const aceConfig = {
       `This pass names ${Object.keys(classes).length} reviewed classes in ${mapping.files.length} source files. Unresolved roles keep their original names; renamed names have no opaque suffix.`, '',
       'Start at `AceOfSkies.advanceGame` → `FlightSession.advanceSession`. `startGame` creates the player and pools; its flag selects the literal arcade mode. `renderSession` draws through `GraphicsRenderer`. `Aircraft` retains its definition, target, pursuing aircraft, firing request and temporary weapon. `FlightBody` and `Vector2` expose the flight arithmetic. `Bullet`, `Pickup`, `SmokeParticle` and `ScreenParticle` are distinct pools.', '',
       '`MenuScreen.open`, `advanceMenu`, `handleNavigationKey`, `handleAction`, `findItemAt` and `drawMenu` expose menu flow. `MenuInputState` distinguishes keyboard selection, pointer selection, press edges, held buttons and countdown state. The registered slots are 0 main menu, 1 pause, 2 highscores, 3 instructions, 4 achievements, 5 achievements this game, 6 logged-out result notice, and 7 settings. Menu action codes remain their original integers; action 0 starts classic play, 19 starts arcade play, 1 resumes, 3 opens instructions, 14 opens achievements, 2 opens highscores, 22 opens settings and 7 ends the game.', '',
+      '`HighscoreQuery`, `ScoreSubmission` and `HighscoreNameEntry` share established roles with GeoBlox. `requestHighscores` deduplicates pending queries by queryId. `writeHighscoreQuery` and `writeScoreSubmission` preserve the original packet framing, context values and CRC32. `decodeHighscoreResponse` builds all/my/best-player views, completes and unlinks queries, and matches submission acknowledgements by a wrapping 16-bit ID. `findSubmittedScoreRow` checks the player name, server token and every score value. Ace packs its game score and accuracy as 100 * finalScore + finalAccuracyPercent; the four opaque context integers retain positional names rather than unsupported meanings.', '',
       '`drawRollingDigits` names settled/target values, animation countdown, leading-zero suppression and glyph banks. Displayed score/multiplier and their pending targets remain separate until their countdown reaches zero. The number formatter uses the retained separator and preserves ungrouped negative values.', '',
       'Angles in forward/polar motion use 256 units per full turn. `Vector2.angle255` preserves the separate original atan2 scaling by 255 / pi and its zero-vector value 255. `FlightBody.moveForward` subtracts sine/cosine motion and also decays headingOffset. `wrapWorld` retains its single-period boundary adjustments, including out-of-range results for positions multiple periods away. All guard parameters and unusual edge behavior remain.', '',
       'The shared engine roles match other games by reviewed behavior, not by short obfuscated spelling:', '',
@@ -298,10 +352,11 @@ export const aceConfig = {
       '| IntrusiveNode / IntrusiveDeque | GeoBlox IntrusiveNode / IntrusiveDeque | Independent node ownership, circular sentinel and forward/reverse links. |',
       '| PacketBuffer / CipherPacketBuffer | Steel Sentinels PacketBuffer / CipherPacketBuffer | Byte payload/cursor, big-endian widths, ISAAC and bit cursor. |',
       '| ResourceArchive / ArchiveIndex / ArchiveProvider | Steel Sentinels equivalents | Packed/unpacked groups, versioned indexes, names/digests and provider progress. |',
+      '| HighscoreQuery / ScoreSubmission / HighscoreNameEntry | GeoBlox equivalents | Query dimensions, three views, wrapping submission IDs, context words and unique-player name markers; Ace adds acknowledgement tokens. |',
       '| PcmSample / PcmSampleStream / MidiPcmStream | GeoBlox equivalents | Signed PCM storage, loop bounds, interpolation and MIDI channel/voice state. |', '',
       'Shared role names do not assert byte-for-byte implementation equality. Different guards, signatures, static helper placement and graphics generations remain. Core fixtures exercise actual raw and named flight/vector, packet, collection and menu implementations, compare their traces and check independent expected results. Complete source compilation and resolved declaration/reference/override comparison cover every file. Reversal recovers the reconstructed raw source bytes.', '',
       'The animated HUD number renderer now uses structured loops. This comes from the pinned generic decompiler: it includes a proven nonthrowing boundary latch inside the protected loop, retains throwing-PC exception routing and checks original control-flow edges. The dictionary records base input, transformed input and both method-body hashes. Reversal recovers the reconstructed raw source; the base input remains available at its pinned Git commit.', '',
-      'The HUD probe compares original bytecode, historical dispatcher Java and reconstructed Java drawing-call traces, including runtime-exception and Error injection. It uses controlled abstract renderer/sprite implementations with the same original final wrappers in every variant, isolating historical diagnostic-wrapper removal. Physical pixels, whole-game playability and server compatibility are not established by these focused fixtures. Highscore/account/network internals and unresolved engine names still need work.', '',
+      'The HUD probe compares original bytecode, historical dispatcher Java and reconstructed Java drawing-call traces, including runtime-exception and Error injection. It uses controlled abstract renderer/sprite implementations with the same original final wrappers in every variant, isolating historical diagnostic-wrapper removal. Physical pixels, whole-game playability and server compatibility are not established by these focused fixtures. Account/network internals and unresolved engine names still need work. Local packet fixtures do not establish compatibility with a live server.', '',
       'Reproduce with `node readable/build-aceofskies-rules.mjs --check`, `node readable/reproduce-aceofskies.mjs --update`, and `node readable/reproduce-aceofskies.mjs --check` from dekobloko-work. Each command uses pinned raw Git input and temporary compilation only. No binary dependency or second readable tree is published.', ''].join('\n');
   },
 };
