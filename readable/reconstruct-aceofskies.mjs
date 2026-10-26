@@ -7,8 +7,8 @@ import {digest} from './game-export.mjs';
 import {inventory} from '../scripts/publish-decompiled-games.mjs';
 import {withPinnedCompiler} from './pinned-compiler.mjs';
 
-export const aceRecoveryCompiler = {commit: '2d79b0d0736003c9f5da1faaf8763149bb3700b1',
-  sourceArchiveSha256: '64a0579c6b37637bc7e0b2b7918da6dc480eb945c0e5d60e28635845ba04fba0'};
+export const aceRecoveryCompiler = {commit: '3f788bf3c02b22d04fddec93b3af117231adfc72',
+  sourceArchiveSha256: '7eb93e35bc0ae5045a6df4c349e51cd662f1c5d7d1694dcdbec93790b76df85c'};
 const originalClassesSha256 = '9f0daf3471d01ae2de9a8a71504d0bf94fb751c66e0b5c3553477eb22b9c7f15';
 const url = 'https://static.alterorb.net/launcher/v3/jars/aceofskies.jar';
 
@@ -42,12 +42,21 @@ export function reconstructAceMethods(input, temporary) {
     const {getAST} = require('jvm_parser'), {convertJson} = require(path.join(root, 'src/parsing/convert_tree.js'));
     const regionStructurer = require(path.join(root, 'src/decompiler/exceptionStructurer.js'));
     const {verifyStructuredFlow} = require(path.join(root, 'src/decompiler/structuredFlowVerifier.js'));
-    const structure = regionStructurer.structureMethod, proofs = [];
+    const {buildCfgFromCode} = require(path.join(root, 'src/decompiler/structurer.js'));
+    const structure = regionStructurer.structureMethod, proofs = [], plainProofs = [];
     // Observe the default compiler result, without changing any arguments,
     // policy or returned tree. Recheck its original-edge certificates.
     regionStructurer.structureMethod = (...args) => {
       const result = structure(...args);
-      if (result.ok) proofs.push(result);
+      if (result.ok) {
+        if (args[1]?.length) proofs.push(result);
+        else {
+          const cfg = buildCfgFromCode(args[0], []);
+          const flow = {entry: cfg.entry, blocks: cfg.term.map((term, block) => ({block, term}))};
+          assert.equal(verifyStructuredFlow(result.tree, flow), true, 'Plain reconstruction changed source CFG edges');
+          plainProofs.push({tree: result.tree, flow});
+        }
+      }
       return result;
     };
     const {decompileAstRoot, buildExceptionModel} = require(path.join(root, 'src/decompiler/cfr.js'));
@@ -116,10 +125,39 @@ export function reconstructAceMethods(input, temporary) {
     for (const edit of edits.sort((a,b) => b.start - a.start))
       prepared = prepared.slice(0, edit.start) + edit.body + prepared.slice(edit.end);
     fs.writeFileSync(file, prepared);
-    return {methods: certificates, preservedMethods, compiler: aceRecoveryCompiler, bytecode: {
+
+    // The sprite decoder has no exception table. Reconstruct its body with a
+    // separate original-edge proof, keeping every other class member at base.
+    const sprite = structuredClone(roots.find(root => root.classes[0].className === 'vd'));
+    sprite.classes[0].items = sprite.classes[0].items.filter(item => !item.method ||
+      item.method.name === 'a' && item.method.descriptor === '([B)[Lvd;');
+    const spriteMethods = sprite.classes[0].items.filter(item => item.method);
+    assert.equal(spriteMethods.length, 1);
+    const {method: selectedSpriteMethod} = spriteMethods[0], spriteDescriptor = parseDescriptor(selectedSpriteMethod.descriptor);
+    const spriteMethod = {name: selectedSpriteMethod.name, descriptor: selectedSpriteMethod.descriptor,
+      parameters: spriteDescriptor.params, returnType: spriteDescriptor.returnType};
+    const makeSprite = () => {
+      const before = plainProofs.length, diagnostics = [];
+      const source = decompileAstRoot(structuredClone(sprite), {exceptionModel, diagnostics});
+      assert.deepEqual(diagnostics, []); assert.doesNotMatch(source, /switch\s*\(statePc\)/);
+      assert.equal(plainProofs.length, before + 1);
+      for (const proof of plainProofs.slice(before)) assert.equal(verifyStructuredFlow(proof.tree, proof.flow), true);
+      return source;
+    };
+    const spriteCandidate = makeSprite(); assert.equal(makeSprite(), spriteCandidate);
+    const spriteFile = path.join(input, 'vd.java'), originalSprite = fs.readFileSync(spriteFile, 'utf8');
+    const [spriteStart, spriteEnd] = body(originalSprite, spriteMethod), [newSpriteStart, newSpriteEnd] = body(spriteCandidate, spriteMethod);
+    const oldSpriteBody = originalSprite.slice(spriteStart, spriteEnd), newSpriteBody = spriteCandidate.slice(newSpriteStart, newSpriteEnd);
+    fs.writeFileSync(path.join(temporary, 'original-vd.java'), originalSprite);
+    fs.writeFileSync(spriteFile, originalSprite.slice(0, spriteStart) + newSpriteBody + originalSprite.slice(spriteEnd));
+    const plainMethods = [{method: 'vd.' + spriteMethod.name + spriteMethod.descriptor,
+      oldBodySha256: digest(oldSpriteBody), newBodySha256: digest(newSpriteBody),
+      oldBodyLines: oldSpriteBody.split('\n').length, newBodyLines: newSpriteBody.split('\n').length,
+      originalCfgEdgesVerified: true}];
+    return {methods: certificates, plainMethods, preservedMethods, compiler: aceRecoveryCompiler, bytecode: {
       sourceUrl: bytecode.sourceUrl, gamepackSha256: bytecode.gamepackSha256,
       files: bytecode.files, originalClassesSha256: bytecode.originalClassesSha256},
       defaultCompilerRecovery: true, regionExitsVerified: true, regionSourceFlowVerified: true,
-      outerRoutingVerified: true, deterministic: true, stateMachine: false};
+      outerRoutingVerified: true, plainSourceFlowVerified: true, deterministic: true, stateMachine: false};
   });
 }

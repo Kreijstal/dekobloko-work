@@ -585,6 +585,23 @@ for (const [owner, original, descriptor, to, names] of [
 // Lexical ordinals bind each reviewed local to the exact pinned declaration.
 // Shared compiler temporaries stay unresolved instead of receiving false roles.
 for (const [owner, signature, locals] of [
+  ['vd', 'a([B)[Lvd;', [
+    [0,'dupTemp$1','rowAlphaByte'], [1,'dupTemp$0','columnAlphaByte'],
+    [2,'stackIn_49_0','previousRowAlphaMask'], [3,'stackIn_50_1','rowNonOpaqueBit'],
+    [4,'stackIn_64_0','previousColumnAlphaMask'], [5,'stackIn_65_1','columnNonOpaqueBit'],
+    [6,'var1','reader'], [7,'var2','frameCount'], [8,'var3','frames'], [9,'var4','allocationIndex'],
+    [10,'var5','fullHeight'], [11,'var6','paletteSize'], [12,'var7_int','leftPaddingFrameIndex'],
+    [13,'var7','palette'], [14,'var8','paletteIndex'], [15,'var8_ref_vd','frameForPadding'],
+    [16,'var9','frame'], [17,'var10','pixelCount'], [18,'var11','storageFlags'], [19,'var12','indexOnlyPixel'],
+    [20,'var13','indexOnlyY'], [21,'var14','rowAlphaValue'], [22,'var15','columnAlphaValue'],
+    [23,'var4Lifetime1','fullWidth'], [24,'var7_intLifetime1','topPaddingFrameIndex'],
+    [25,'var7_intLifetime2','widthFrameIndex'], [26,'var7_intLifetime3','heightFrameIndex'],
+    [27,'var7_intLifetime4','paddingFrameIndex'], [28,'var8Lifetime1','paletteFrameIndex'],
+    [29,'var8Lifetime2','frameIndex'], [30,'var12Lifetime1','indexOnlyX'], [31,'var12Lifetime2','nonOpaqueAlphaMask'],
+    [32,'var13Lifetime1','alphaFrameIndexPixel'], [33,'var13Lifetime2','alphaFrameIndexX'],
+    [34,'var14Lifetime1','alphaFrameIndexY'], [35,'var13Lifetime1Lifetime1','rowAlphaPixel'],
+    [36,'var13Lifetime2Lifetime1','columnAlphaX'], [37,'var14Lifetime1Lifetime1','columnAlphaY'],
+  ]],
   ['pk', 'b(B)V', [[6,'var2','failure'], [7,'var3','obfuscationControl']]],
   ['pk', 'f(I)V', [[2,'var2','waveComposition'], [3,'var2_ref','failure'], [4,'var3','remainingPickupBudget']]],
   ['pk', 'a(BI)V', [[7,'var6','aircraftCosts'], [8,'var7','remainingPickupCarriers'], [9,'var8','typeIndex'], [10,'var9','obfuscationControl']]],
@@ -639,7 +656,7 @@ for (const [owner, signature, locals] of [
     evidence: 'Reviewed lexical declaration and its data flow in the pinned Ace source.'};
 
 export const aceConfig = {
-  game: 'aceofskies', version: 8, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
+  game: 'aceofskies', version: 9, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
   workflowFiles: ['build-aceofskies-rules.mjs', 'reproduce-aceofskies.mjs', 'reviewed-game.mjs',
     'tests/test-aceofskies-core.mjs', 'tests/test-aceofskies-highscores.mjs', 'tests/test-aceofskies-hud.mjs', 'reconstruct-aceofskies.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
@@ -673,7 +690,7 @@ export const aceConfig = {
       '`SpriteData.decodeFrames` exposes palette-indexed frame bytes, optional alpha and left/top/right/bottom padding. `loadFrames` and `loadFirstFrame` use archive group/file names. Decoded assets and renderer-owned images have paired names such as aircraftSpriteData/aircraftSprites, gaugeSpriteData/gaugeSprites and scoreDigitSpriteData/scoreDigitSprites. Game, large and title font data/metrics are separate. `GraphicsRenderer.createSprite` converts the decoded data, optionally preferring an indexed representation. The shared software `SpriteState`, `Sprite`, `ArgbSprite`, `IndexedSpriteState` and `IndexedSprite` roles remain distinct from `RenderSprite`.', '',
       '`RendererBitmapFont.drawText`, `drawCenteredText`, `drawRightAlignedText`, image-aware variants and `drawParagraph` expose alignment and baseline intent at HUD/menu call sites. `drawStyledText`, `applyStyleTag`, `prepareJustification`, `drawGlyph` and `drawGlyphWithMask` retain the original masks, image baselines, shadow passes and ARGB style state. The native sprite probes decode synthetic multi-frame resources in row/column order, check optional alpha/palette sharing, and verify trim-aware copies, mirroring, rotation and indexed framebuffer pixels. An isolated original-bytecode oracle checks indexed alpha blending; its arithmetic final shift sign-extends some RGB results into the high byte, and the source retains that behavior.', '',
       'Shared role names do not assert byte-for-byte implementation equality. Different guards, signatures, static helper placement and graphics generations remain. Core fixtures exercise actual raw and named flight/vector, packet, collection and menu implementations, compare their traces and check independent expected results. Complete source compilation and resolved declaration/reference/override comparison cover every file. Reversal recovers the reconstructed raw source bytes.', '',
-      'The replay reconstructs all 51 region-proved ordinary FlightSession methods directly from the fixed original bytecode. It preserves initialization and three methods handled by specialized emitters at the base source. Generic catch-copy cleanup removes the intermediate exception carrier only when every use is a copy inside the owning handler, while preserving the destination local and its written type. The current dictionary records every selected body hash and original-edge certificate checks.', '',
+      'The replay reconstructs all 51 region-proved ordinary FlightSession methods and the SpriteData decoder directly from the fixed original bytecode. It preserves session initialization and three methods handled by specialized emitters at the base source. The decoder has a separate plain-CFG original-edge proof; all 38 reconstructed decoder locals have reviewed names for frames, palette, indices, coordinates and alpha masks. Generic primitive-value branch recovery folds same-type local-only decisions at their original position, including inside loops, handlers and monitors; it does not move continuations or assume a game flag value. Generic catch-copy cleanup preserves destination local types. The current dictionary records every selected body hash and original-edge certificate checks. Native traces also match the historical session and sprite source, and a separate original-bytecode decoder probe compares padding, dimensions, palette sharing, indices and optional alpha.', '',
       'The current generic compiler also removes unread typed reference stack snapshots. This drops null placeholders from final-score construction without discarding live references, moving allocations or suppressing argument effects. The full native core trace matches both the historical source and reconstructed source before naming.', '',
       'The animated HUD number renderer now uses structured loops. This comes from the pinned generic decompiler: it includes a proven nonthrowing boundary latch inside the protected loop, retains throwing-PC exception routing and checks original control-flow edges. The dictionary records base input, transformed input and both method-body hashes. Reversal recovers the reconstructed raw source; the base input remains available at its pinned Git commit.', '',
       'The HUD probe compares original bytecode, historical dispatcher Java and reconstructed Java drawing-call traces, including runtime-exception and Error injection. It uses controlled abstract renderer/sprite implementations with the same original final wrappers in every variant, isolating historical diagnostic-wrapper removal. Physical pixels, whole-game playability and server compatibility are not established by these focused fixtures. Account/network internals and unresolved engine names still need work. Local packet fixtures do not establish compatibility with a live server.', '',

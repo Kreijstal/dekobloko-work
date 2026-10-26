@@ -52,11 +52,11 @@ vector, packet, deque and pool fixtures compare raw/named behavior against
 independent expectations; complete binding and compilation checks cover every
 source. Full client rendering and server compatibility remain separate checks.
 
-The current Ace pass names 54 classes and 1,741 symbols, including flight-loop
+The current Ace pass names 54 classes and 1,779 symbols, including flight-loop
 locals, targets, camera movement, lives, weapon heat/cooldown, gun patterns,
 menu input/navigation, hit testing, transitions and HUD score/multiplier state.
-All 545 source files compile before and after naming; 208,927 symbol bindings
-and 124 label bindings agree. Native raw/named traces agree on 14,652 assertions,
+All 545 source files compile before and after naming; 208,915 symbol bindings
+and 124 label bindings agree. Native raw/named traces agree on 14,772 assertions,
 including aircraft construction, bullet spawning, single-period flight
 boundaries, packet bytes, intrusive transfers, pool swaps and menu geometry.
 Menu tests preserve the initial press frame's immediate countdown decrement,
@@ -215,17 +215,18 @@ case. Every identifier use must be accounted for, and every removed store must
 be a standalone `this` or literal-null assignment. Calls, reads, casts, boxing,
 allocations, escaping references and unknown syntax are retained. Cleanup runs
 before scalar branch recovery, without flags or application identifiers in
-java-tools. Final-score submission shrinks from 52 to 34 body lines by removing
-unread constructor placeholders. Live return carriers remain.
+java-tools. Final-score submission shrinks from 52 to 26 body lines through
+snapshot cleanup and primitive-value branch recovery. Live return carriers remain.
 
 Compiler validation includes 192 native Object/concrete-reference snapshot
 cases across effects, thrown objects, catch/finally and monitor release, plus
 44 original-bytecode/decompiled-Java constructor-argument cases. The emitter
 suite passes 68 tests with one existing skip. The combined catch-copy/emitter/exception-table validation passes 74 tests with one existing skip (plus five assembler assertions). Ace also compares its complete
-14,652-check core trace against the historical pre-reconstruction Java, in
+14,772-check core trace against the historical pre-reconstruction Java, in
 addition to the prepared-raw/named comparison. This is historical-source
-coverage. Separate original-game-bytecode oracles cover the selected HUD and
-indexed-sprite alpha kernel; they do not establish whole-game equivalence.
+coverage. Separate original-game-bytecode oracles cover the selected HUD,
+indexed-sprite alpha kernel and sprite frame decoder; they do not establish
+whole-game equivalence.
 
 Catch-copy recovery now removes an intermediate caught-exception carrier when
 all uses are handler-entry stores and copies into reference local assignments
@@ -237,14 +238,35 @@ The additional native differential covers 128 cases with exception identity,
 Object/Throwable overloads, handler/finally failures and monitor ownership.
 
 The current replay reconstructs all 51 ordinary `FlightSession` methods with
-region certificates from original bytecode, twice, checking identical output
-and original region exit/source-flow contracts. Initialization and three small
-methods using specialized emitters remain at the base source. Across the 51
-selected bodies, the base source has 5,002 lines and the current source 4,580;
-this includes earlier HUD recovery. The current pass removes 97 lines from the
-previous publication. The synthetic fire-key flag no longer exists, so its
-obsolete naming rule was removed; other reviewed locals retain their guarded
-identities at the new declaration ordinals.
+region certificates, plus the `SpriteData` decoder with a separate plain-CFG
+original-edge proof. It runs twice and checks identical output. Session
+initialization and three small methods using specialized emitters remain at
+the base source. Across the 51 session bodies, the base source has 5,002 lines
+and the current source 4,532. The sprite decoder falls from 139 to 133 body
+lines. This pass removes 54 body lines from the prior publication. All 38
+reconstructed decoder locals now have reviewed frame, palette, index,
+coordinate and alpha-mask names, including the separately recovered lifetimes.
+Historical native comparison overlays both the old session and old decoder, and decoder
+fixtures additionally compare all nine frame fields and palette identity with
+the fixed original bytecode for both storage orders and all three alpha modes.
+
+The generic compiler folds value-producing primitive decisions at their
+original position inside loops, handlers, monitors and other blocks. Both arms
+must be one assignment to the same proven local, with identical primitive
+operand/destination types. References, numeric promotion, casts, fields,
+arrays, extra work, shadowing, captures, comments and unknown syntax refuse
+recovery. It evaluates the original predicate once and retains its enclosing
+control/exception/monitor scopes. This proof runs in the default CFG emitter;
+there are no application flags or names in java-tools. All replacements are
+assembled in one pass rather than repeatedly copying the full source.
+
+Focused recovery tests pass 29 cases, including a 1,000-decision fixture,
+192 native type/bit/exception/monitor combinations and default decompilation
+followed by native compilation. The combined recovery/emitter/exception-table
+run passed 97 tests with one existing skip before the final assembly-only
+change; all 29 focused recovery tests passed again after it. The native bit
+checks include signed zero and noncanonical NaN payloads. Reviewed naming
+locals retain their guarded identities.
 
 Its native HUD probe passes 3,003 cases and 4,320 independent checks, comparing
 original bytecode, historical dispatcher Java and reconstructed Java drawing
@@ -264,17 +286,18 @@ SHA-256 is `34c1e50357f69cafd0c4550a63beeb07a8b56c8c891bdb31e4fc49a652509613`,
 reproduced with `git archive --format=tar 00c1c12fb58cdbd6be065e604ee5e9acbcebeff7 | sha256sum`
 inside java-tools. This hash identifies compiler source, not a game JAR.
 The current method-recovery compiler source archive SHA-256 is
-`64a0579c6b37637bc7e0b2b7918da6dc480eb945c0e5d60e28635845ba04fba0`, reproduced
-by archiving commit `2d79b0d0736003c9f5da1faaf8763149bb3700b1` the same way.
+`7eb93e35bc0ae5045a6df4c349e51cd662f1c5d7d1694dcdbec93790b76df85c`, reproduced
+by archiving commit `3f788bf3c02b22d04fddec93b3af117231adfc72` the same way.
 The verified prepared raw tree SHA-256 is
-`a2ef6e1c05499a488d98e50ec6faddff758c28a030ab9660cfcc93d140599e4c`; the
-named tree is `9467af57a530b4682f193e8e011cfee30f4c30471f4065fe39184b6885a39511`.
+`28310896e0c5937e96b7264173b72cf667b5c79154579e281cd7c131b7e97760`; the
+named tree is `a6af3f31c0e7a026986c9221dd07c45ce7bc847a7411e90a5a50a506435a1ce4`.
 The one current rule manifest/dictionary records both input identities,
 compiler pins, fixed gamepack identity, method-body hashes and verification.
 Dictionary reversal recovers all 545 prepared raw files; the unmodified base
 remains at its Git pin.
 
-`reconstruct-aceofskies.mjs` selects all 51 region-proved session methods and invokes the pinned
+`reconstruct-aceofskies.mjs` selects all 51 region-proved session methods and the
+plain-CFG-proved sprite decoder, and invokes the pinned
 generic compiler; it contains no replacement game algorithm. The loader
 checks the compiler's Git source archive and reads its modules from Git
 objects, excluding unrelated runtime WIP without another checkout/export.

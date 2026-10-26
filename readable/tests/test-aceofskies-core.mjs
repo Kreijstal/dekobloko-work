@@ -206,13 +206,16 @@ for(int value:new int[]{1,2,2,1,3,2,2,3})out.writeShort(value);out.writeShort(2)
 }
 static int spriteBlend(int foreground,int background,int alpha){int result=0;for(int shift:new int[]{0,8,16})result|=((((foreground>>>shift)&255)*alpha+((background>>>shift)&255)*(256-alpha))/256)<<shift;return (result<<8)>>8;}
 static void spriteDataAndTransforms()throws Exception{
+Method decode=${c('vd')}.class.getDeclaredMethod("${m('vd','a','([B)[Lvd;')}",byte[].class);decode.setAccessible(true);
 // Original indexed alpha blits use an arithmetic final shift. Preserve its
 // sign extension rather than normalizing framebuffer values to unsigned RGB.
 try(java.net.URLClassLoader original=new java.net.URLClassLoader(new java.net.URL[]{new java.io.File(originalBytecodeDirectory).toURI().toURL()},null)){
 Method blend=Class.forName("wp",true,original).getDeclaredMethod("b",int[].class,byte[].class,int[].class,int.class,int.class,int.class,int.class,int.class,int.class,int.class);blend.setAccessible(true);
 for(int color:new int[]{0,0x010203,0x7fffff,0x800000,0xfedcba,0xffffff})for(int background:new int[]{0,0x193453,0x80ff40,0xffffff})for(int alpha:new int[]{0,1,128,255,256}){int[] pixels={background};blend.invoke(null,pixels,new byte[]{1},new int[]{0,color},0,0,1,1,0,0,alpha);check("sprite/original-alpha-bytecode",pixels[0],spriteBlend(color,background,alpha));}
+Class<?> originalData=Class.forName("vd",true,original);Method originalDecode=originalData.getDeclaredMethod("a",byte[].class);originalDecode.setAccessible(true);
+String[] originalFields={"a","i","g","b","h","c","f","d","e"},sourceFields={"${f('vd','a','I')}","${f('vd','i','I')}","${f('vd','g','I')}","${f('vd','b','I')}","${f('vd','h','I')}","${f('vd','c','I')}","${f('vd','f','[I')}","${f('vd','d','[B')}","${f('vd','e','[B')}"};
+for(int layout=0;layout<2;layout++)for(int alphaKind=0;alphaKind<3;alphaKind++){byte[] encoded=spriteFile(layout,alphaKind);Object[] expected=(Object[])originalDecode.invoke(null,(Object)encoded);${c('vd')}[] actual=(${c('vd')}[])decode.invoke(null,(Object)encoded);check("sprite/original-decoder-count",actual.length,expected.length);for(int frame=0;frame<expected.length;frame++)for(int i=0;i<originalFields.length;i++)check("sprite/original-decoder-field",Objects.deepEquals(field(originalData,originalFields[i]).get(expected[frame]),field(${c('vd')}.class,sourceFields[i]).get(actual[frame])),true);check("sprite/original-palette-sharing",field(originalData,"f").get(expected[0])==field(originalData,"f").get(expected[1]),actual[0].${f('vd','f','[I')}==actual[1].${f('vd','f','[I')});}
 }
-Method decode=${c('vd')}.class.getDeclaredMethod("${m('vd','a','([B)[Lvd;')}",byte[].class);decode.setAccessible(true);
 int[][] sourceIndices={{0,1,2,3,2,1},{3,0,2,1,0,3}},sourceAlpha={{0,64,128,255,1,254},{254,1,255,128,64,0}};
 for(int layout=0;layout<2;layout++)for(int alphaKind=0;alphaKind<3;alphaKind++){
 byte[] encoded=spriteFile(layout,alphaKind),before=encoded.clone();${c('vd')}[] frames=(${c('vd')}[])decode.invoke(null,(Object)encoded);check("sprite/frame-count",frames.length,2);check("sprite/input-retained",Arrays.equals(encoded,before),true);check("sprite/shared-palette",frames[0].${f('vd','f','[I')}==frames[1].${f('vd','f','[I')},true);
@@ -525,9 +528,9 @@ public static void main(String[] args)throws Exception{originalBytecodeDirectory
     if (!readable) {
       const historical = path.join(directory, 'historical'); fs.mkdirSync(historical);
       captureProcess('javac', ['--release', '8', '-proc:none', '-sourcepath', '', '-classpath', [compiled, classpath].join(path.delimiter),
-        '-d', historical, path.join(temporary, 'original-pk.java')]);
+        '-d', historical, path.join(temporary, 'original-pk.java'), path.join(temporary, 'original-vd.java')]);
       const priorTrace = captureProcess('java', ['-Djava.awt.headless=true', '-cp', [shims, historical, compiled, classpath].join(path.delimiter), 'AceCoreProbe', path.join(temporary, 'original-bytecode')]).stdout;
-      assert.deepEqual(trace, priorTrace, 'Reconstructed Ace core differs from the historical pinned Java');
+      assert.deepEqual(trace, priorTrace, 'Reconstructed Ace session/sprite core differs from the historical pinned Java');
     }
     outputs.push(trace);
   }
@@ -537,6 +540,6 @@ public static void main(String[] args)throws Exception{originalBytecodeDirectory
   return {checks, rawNamedIdentical: true, historicalSourceCoreIdentical: true, independentExpectations: true,
     headlessClientBoundary: true, vectorAndFlightFixtures: true, packetAndDequeFixtures: true,
     aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true, highscoreProtocolFixtures: true, flightControlsUpgradesAndWavesFixtures: true, hudMessageTimingFixtures: true, exactSeededWaveTrace: true, visualParticleHudAndSpatialFixtures: true,
-    sharedHashTableDualLinksAndSoundCacheFixtures: true, softwareFontMetricsWrappingAndPixelFixtures: true, spriteDecodingTransformsAndIndexedPixelFixtures: true, originalIndexedAlphaBytecodeOracle: true, rendererTextGlyphCallFixtures: true, traceSha256: digest(outputs[0]),
+    sharedHashTableDualLinksAndSoundCacheFixtures: true, softwareFontMetricsWrappingAndPixelFixtures: true, spriteDecodingTransformsAndIndexedPixelFixtures: true, originalIndexedAlphaBytecodeOracle: true, originalSpriteDecoderBytecodeOracle: true, rendererTextGlyphCallFixtures: true, traceSha256: digest(outputs[0]),
     ...(extraVerification ? extraVerification(path.join(temporary, 'raw-core/classes')) : {})};
 }
