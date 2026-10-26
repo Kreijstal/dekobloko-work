@@ -306,8 +306,97 @@ for(int tick=1;tick<=hold+102;tick++)check("message/expiry",message.${m('tb','a'
 }
 }
 
+
+static ${c('pk')} visualFixture()throws Exception{
+${c('pk')} session=flightFixture(${c('gh')}.${f('gh','j','Lgb;')});field(${c('pk')}.class,"${f('pk','R','I')}").setInt(session,200);field(${c('pk')}.class,"${f('pk','C','[Lok;')}").set(session,new ${c('ok')}[0]);${c('or')}.${f('or','a','I')}=0;${c('wd')}.${f('wd','t','Lkp;')}=new ${c('kp')}();return session;
+}
+static void visualParticles()throws Exception{
+Class<?> sessionType=${c('pk')}.class;${c('gb')} originalDefinition=${c('gh')}.${f('gh','j','Lgb;')};${c('gh')}.${f('gh','j','Lgb;')}=new ${c('gb')}(1,15,0,100,6,8,16,12,0);
+try{
+${c('ok')} particle=new ${c('ok')}();particle.${f('ok','c','I')}=-11;particle.${f('ok','g','I')}=-22;
+Class<?>[] ints=new Class<?>[13];Arrays.fill(ints,int.class);
+call(particle,"${m('ok','a','(IIIIIIIIIIIII)V')}",ints,3,-2,13,256,-5,17,512,0,1024,4,0,-7,255);
+check("particle/initializer-x",particle.${f('ok','k','I')},512);check("particle/initializer-y",particle.${f('ok','n','I')},1024);check("particle/initializer-radius",particle.${f('ok','m','I')},256);check("particle/initializer-mode",particle.${f('ok','e','I')},0);check("particle/initializer-alpha",particle.${f('ok','p','I')},255);check("particle/initializer-keeps-previous",particle.${f('ok','c','I')},-11);
+${c('pk')} session=visualFixture();field(sessionType,"${f('pk','C','[Lok;')}").set(session,new ${c('ok')}[]{particle});field(sessionType,"${f('pk','K','I')}").setInt(session,1);
+for(int tick=1;tick<=6;tick++){call(session,"${m('pk','c','(I)V')}",new Class<?>[]{int.class},-115);int steps=Math.min(tick,5),prior=steps-1;
+check("particle/age",particle.${f('ok','h','I')},steps);check("particle/count",field(sessionType,"${f('pk','K','I')}").getInt(session),tick<=4?1:0);
+check("particle/x",particle.${f('ok','k','I')},512+17*steps-7*steps*(steps-1)/2);check("particle/y",particle.${f('ok','n','I')},1024+13*steps+3*steps*(steps-1)/2);check("particle/radius",particle.${f('ok','m','I')},256-5*steps-2*steps*(steps-1)/2);
+check("particle/previous-x",particle.${f('ok','c','I')},512+17*prior-7*prior*(prior-1)/2);check("particle/previous-y",particle.${f('ok','g','I')},1024+13*prior+3*prior*(prior-1)/2);
+check("particle/x-velocity",particle.${f('ok','b','I')},17-7*steps);check("particle/y-velocity",particle.${f('ok','i','I')},13+3*steps);check("particle/radius-velocity",particle.${f('ok','l','I')},-5-2*steps);
+}
+for(int seed:new int[]{0,1,12345})for(int spread:new int[]{8,16}){
+${c('ci')}.${f('ci','i','Ljava/util/Random;')}=new java.util.Random(seed);particle=new ${c('ok')}();particle.${m('ok','a','(IIIIIII)V')}(3,512,spread,20,1024,256,-1588713311);
+check("burst/x",particle.${f('ok','k','I')},512);check("burst/y",particle.${f('ok','n','I')},1024);check("burst/radius",particle.${f('ok','m','I')},256);check("burst/previous-x",particle.${f('ok','c','I')},512);check("burst/previous-y",particle.${f('ok','g','I')},1024);check("burst/age",particle.${f('ok','h','I')},0);check("burst/duration",particle.${f('ok','d','I')},20);check("burst/alpha",particle.${f('ok','p','I')},255);
+check("burst/y-velocity-range",particle.${f('ok','i','I')}>=-2*spread&&particle.${f('ok','i','I')}<spread/2,true);check("burst/x-velocity-range",particle.${f('ok','b','I')}>=-spread&&particle.${f('ok','b','I')}<spread,true);
+System.out.println("burst/seeded-velocity:"+particle.${f('ok','b','I')}+":"+particle.${f('ok','i','I')}+":"+${c('ci')}.${f('ci','i','Ljava/util/Random;')}.nextLong());
+}
+particle.${m('ok','a','(IZIIIII)V')}(2048,false,3,5,256,128,4096);
+check("growing/initial-age",particle.${f('ok','h','I')},-3);check("growing/mode",particle.${f('ok','e','I')},1);check("growing/retained-previous-x",particle.${f('ok','c','I')},512);check("growing/retained-previous-y",particle.${f('ok','g','I')},1024);
+session=visualFixture();field(sessionType,"${f('pk','C','[Lok;')}").set(session,new ${c('ok')}[]{particle});field(sessionType,"${f('pk','K','I')}").setInt(session,1);
+for(int tick=1;tick<=7;tick++){call(session,"${m('pk','c','(I)V')}",new Class<?>[]{int.class},-115);check("growing/age",particle.${f('ok','h','I')},-3+tick);check("growing/count",field(sessionType,"${f('pk','K','I')}").getInt(session),tick<7?1:0);check("growing/y",particle.${f('ok','n','I')},4096-40*tick);check("growing/radius",particle.${f('ok','m','I')},256+5*tick);}
+${c('ok')}[] particles={new ${c('ok')}(),new ${c('ok')}(),new ${c('ok')}()};for(int i=0;i<3;i++){particles[i].${f('ok','d','I')}=i==1?2:0;particles[i].${f('ok','b','I')}=1;}
+session=visualFixture();field(sessionType,"${f('pk','C','[Lok;')}").set(session,particles);field(sessionType,"${f('pk','K','I')}").setInt(session,3);${c('ok')} first=particles[0],middle=particles[1],last=particles[2];call(session,"${m('pk','c','(I)V')}",new Class<?>[]{int.class},-115);
+check("particle/swap-count",field(sessionType,"${f('pk','K','I')}").getInt(session),1);check("particle/swap-active",particles[0]==middle,true);check("particle/swap-retains-last",particles[1]==last,true);check("particle/swap-retains-first",particles[2]==first,true);for(${c('ok')} p:particles)check("particle/removed-still-integrates",p.${f('ok','k','I')},1);
+session=visualFixture();field(sessionType,"${f('pk','C','[Lok;')}").set(session,new ${c('ok')}[1]);field(sessionType,"${f('pk','K','I')}").setInt(session,1);
+try{call(session,"${m('pk','c','(I)V')}",new Class<?>[]{int.class},-115);throw new AssertionError("null particle");}catch(InvocationTargetException error){check("particle/null-wrap",error.getCause() instanceof ${c('ak')},true);Object cause=field(${c('ak')}.class,"${f('ak','c','Ljava/lang/Throwable;')}").get(error.getCause());check("particle/null-cause",cause instanceof NullPointerException,true);check("particle/null-count-before-failure",field(sessionType,"${f('pk','K','I')}").getInt(session),0);}
+${c('es')}.${f('es','b','[Lpa;')}=new ${c('pa')}[4];${c('co')}.${f('co','i','[Lpa;')}=new ${c('pa')}[4];${c('ci')}.${f('ci','i','Ljava/util/Random;')}=new java.util.Random(345);java.util.Random reference=new java.util.Random(345);
+${c('qf')} smoke=new ${c('qf')}();${c('kc')} position=new ${c('kc')}(-9,12.5);smoke.${m('qf','a','(ILkc;II)V')}(-32,position,0x445566,20);position.${m('kc','a','(DDZ)V')}(99,99,true);
+check("smoke/initial-age",smoke.${f('qf','i','I')},10);check("smoke/lifetime",smoke.${f('qf','g','I')},20);check("smoke/normal-depth",smoke.${f('qf','j','I')},92);check("smoke/colour",smoke.${f('qf','l','I')},0x445566);check("smoke/sprite",smoke.${f('qf','h','I')},(int)(Integer.toUnsignedLong(reference.nextInt())*4>>>32));close("smoke/copied-x",smoke.${f('o','d','Lkc;')}.${f('kc','a','D')},-9);
+smoke.${m('qf','a','(IIIILkc;)V')}(30,122,-48,12,position);check("smoke/depth-age",smoke.${f('qf','i','I')},10);check("smoke/depth",smoke.${f('qf','j','I')},12);check("smoke/blast-code",smoke.${f('qf','l','I')},-48);reference.nextInt();check("smoke/rng",${c('ci')}.${f('ci','i','Ljava/util/Random;')}.nextLong(),reference.nextLong());
+${c('qf')}[] clouds=new ${c('qf')}[3];for(int i=0;i<3;i++){clouds[i]=new ${c('qf')}();clouds[i].${m('qf','a','(ILkc;II)V')}(-32,new ${c('kc')}(10,20),0x777777,15+5*i);}
+session=visualFixture();field(sessionType,"${f('pk','n','[Lqf;')}").set(session,clouds.clone());field(sessionType,"${f('pk','w','I')}").setInt(session,3);
+for(int tick=1;tick<=4;tick++){call(session,"${m('pk','a','(Lkc;I)V')}",new Class<?>[]{${c('kc')}.class,int.class},new ${c('kc')}(1,2),4473924);check("smoke/expiry-count",field(sessionType,"${f('pk','w','I')}").getInt(session),Math.max(0,3-tick));for(int i=0;i<3;i++){int steps=Math.min(tick,i+1);check("smoke/advancing-age",clouds[i].${f('qf','i','I')},10+5*steps);close("smoke/camera-x",clouds[i].${f('o','d','Lkc;')}.${f('kc','a','D')},10-steps);close("smoke/camera-y",clouds[i].${f('o','d','Lkc;')}.${f('kc','b','D')},20-2*steps);}}
+session=visualFixture();${c('vc')}[] marks=new ${c('vc')}[2];field(sessionType,"${f('pk','z','[Lvc;')}").set(session,marks);${c('ci')}.${f('ci','i','Ljava/util/Random;')}=new java.util.Random(123);reference=new java.util.Random(123);
+for(int i=0;i<2;i++){call(session,"${m('pk','a','(IIII)V')}",new Class<?>[]{int.class,int.class,int.class,int.class},20+i,-14630,10+i,48+i);check("scorch/x",marks[i].${f('vc','b','I')},10+i);check("scorch/y",marks[i].${f('vc','d','I')},20+i);check("scorch/diameter",marks[i].${f('vc','e','I')},48+i);check("scorch/sprite",marks[i].${f('vc','c','I')},(int)(Integer.toUnsignedLong(reference.nextInt())*4>>>32));}
+call(session,"${m('pk','a','(IIII)V')}",new Class<?>[]{int.class,int.class,int.class,int.class},999,-14630,999,999);check("scorch/full-count",field(sessionType,"${f('pk','l','I')}").getInt(session),2);check("scorch/full-preserves-rng",${c('ci')}.${f('ci','i','Ljava/util/Random;')}.nextLong(),reference.nextLong());
+${c('vc')} removed=marks[0],tail=marks[1];call(session,"${m('pk','f','(II)V')}",new Class<?>[]{int.class,int.class},0,10355);check("scorch/swapped",marks[0]==tail&&marks[1]==removed,true);
+field(sessionType,"${f('pk','t','D')}").setDouble(session,20);field(sessionType,"${f('pk','Y','D')}").setDouble(session,30);field(sessionType,"${f('pk','fb','I')}").setInt(session,2);field(sessionType,"${f('pk','O','I')}").setInt(session,-1);${c('md')} plane=(${c('md')})field(sessionType,"${f('pk','X','Lmd;')}").get(session);
+call(session,"${m('pk','a','(Lmd;I)V')}",new Class<?>[]{${c('md')}.class,int.class},plane,8073);check("scorch/reuses-mark",marks[1]==removed,true);check("scorch/aircraft-ground-x",marks[1].${f('vc','b','I')},3423);check("scorch/aircraft-ground-y",marks[1].${f('vc','d','I')},-1304);check("scorch/aircraft-diameter",marks[1].${f('vc','e','I')},48);
+}finally{${c('gh')}.${f('gh','j','Lgb;')}=originalDefinition;}
+}
+static void hudAndSpatialState()throws Exception{
+Class<?> type=${c('pk')}.class;${c('gb')} originalDefinition=${c('gh')}.${f('gh','j','Lgb;')};${c('gh')}.${f('gh','j','Lgb;')}=new ${c('gb')}(1,15,0,100,6,8,16,12,0);
+try{
+for(int heat:new int[]{0,99,100,101,200})for(int displayed:new int[]{0,25,200})for(int weapon:new int[]{0,1})for(int alpha:new int[]{0,8,247,255}){
+${c('pk')} session=visualFixture();${c('md')} plane=(${c('md')})field(type,"${f('pk','X','Lmd;')}").get(session);plane.${f('md','j','I')}=heat;plane.${f('md','m','I')}=weapon;field(type,"${f('pk','a','I')}").setInt(session,displayed);field(type,"${f('pk','bb','I')}").setInt(session,alpha);call(session,"${m('pk','c','(I)V')}",new Class<?>[]{int.class},-115);
+check("hud/smoothed-heat",field(type,"${f('pk','a','I')}").getInt(session),(heat+displayed-(heat>=100?100:0))>>1);check("hud/weapon-opacity",field(type,"${f('pk','bb','I')}").getInt(session),weapon>0?Math.min(255,alpha+8):Math.max(0,alpha-8));
+}
+for(int hp:new int[]{0,3,6,8})for(int displayed:new int[]{0,50,100}){
+${c('pk')} session=visualFixture();${c('md')} plane=(${c('md')})field(type,"${f('pk','X','Lmd;')}").get(session);plane.${f('md','k','I')}=hp;field(type,"${f('pk','eb','I')}").setInt(session,displayed);call(session,"${m('pk','c','(I)V')}",new Class<?>[]{int.class},-115);int difference=displayed-hp*100/6,wanted=difference>0?displayed-1-(difference>>4):difference<0?displayed-((difference>>4)-1):displayed;check("hud/smoothed-health",field(type,"${f('pk','eb','I')}").getInt(session),wanted);
+}
+for(int current:new int[]{0,1,100})for(int displayed:new int[]{0,37,200}){
+${c('pk')} session=visualFixture();${c('md')} plane=(${c('md')})field(type,"${f('pk','X','Lmd;')}").get(session);plane.${f('md','x','I')}=current;field(type,"${f('pk','qb','I')}").setInt(session,displayed);call(session,"${m('pk','c','(I)V')}",new Class<?>[]{int.class},-115);check("hud/smoothed-weapon-time",field(type,"${f('pk','qb','I')}").getInt(session),(current+displayed)>>1);
+}
+for(int phase:new int[]{0,1,2,20}){
+${c('pk')} session=visualFixture();${c('or')}.${f('or','a','I')}=50;field(type,"${f('pk','N','I')}").setInt(session,10);field(type,"${f('pk','nb','I')}").setInt(session,30);field(type,"${f('pk','cb','I')}").setInt(session,phase);field(type,"${f('pk','v','I')}").setInt(session,10);field(type,"${f('pk','f','I')}").setInt(session,30);field(type,"${f('pk','p','I')}").setInt(session,50);field(type,"${f('pk','Db','I')}").setInt(session,phase);field(type,"${f('pk','P','I')}").setInt(session,10);field(type,"${f('pk','tb','I')}").setInt(session,30);field(type,"${f('pk','V','I')}").setInt(session,50);field(type,"${f('pk','Q','I')}").setInt(session,phase);
+call(session,"${m('pk','c','(I)V')}",new Class<?>[]{int.class},-115);int wantedPhase=phase==0?20:phase-1,wantedValue=phase==1?30:10,wantedTarget=phase==0?50:30;
+for(String name:new String[]{"${f('pk','cb','I')}","${f('pk','Db','I')}","${f('pk','Q','I')}"})check("hud/animation-phase",field(type,name).getInt(session),wantedPhase);
+for(String name:new String[]{"${f('pk','N','I')}","${f('pk','v','I')}","${f('pk','P','I')}"})check("hud/settled-value",field(type,name).getInt(session),wantedValue);
+for(String name:new String[]{"${f('pk','nb','I')}","${f('pk','f','I')}","${f('pk','tb','I')}"})check("hud/target-snapshot",field(type,name).getInt(session),wantedTarget);
+check("hud/affordability-snapshot",field(type,"${f('pk','y','I')}").getInt(session),50);
+}
+${c('pk')} session=visualFixture();${c('kc')} listener=new ${c('kc')}(0,0);
+for(double scale:new double[]{0,599,600,601,800,999,1000,1600})for(double distance:new double[]{0,5,10,10.9,11,999,1000,1001}){
+field(type,"${f('pk','kb','D')}").setDouble(session,scale);int base=scale<=600?0:scale<1000?(int)(200*(scale-600)/400):200,whole=(int)distance;int wanted=whole>1000?0:whole>10?base*(1000-whole)/990:base;
+check("audio/spatial-volume",call(session,"${m('pk','a','(Lkc;ILkc;)I')}",new Class<?>[]{${c('kc')}.class,int.class,${c('kc')}.class},listener,200,new ${c('kc')}(distance,0)),wanted);
+check("audio/identity-volume",call(session,"${m('pk','a','(Lkc;ILkc;)I')}",new Class<?>[]{${c('kc')}.class,int.class,${c('kc')}.class},null,200,null),base);
+}
+${c('ek')}.${f('ek','u','Lkc;')}=new ${c('kc')}();${c('kp')}.${f('kp','d','Lkc;')}=new ${c('kc')}();${c('md')} source=new ${c('md')}(new ${c('kc')}(),${c('gh')}.${f('gh','j','Lgb;')}),target=new ${c('md')}(new ${c('kc')}(),${c('gh')}.${f('gh','j','Lgb;')});
+for(double distance:new double[]{0,10,100,1000})for(int heading:new int[]{0,64,128,192})for(int otherHeading:new int[]{0,64,128,192})for(double speed:new double[]{0,4,12}){
+source.${f('o','e','D')}=heading;target.${f('o','e','D')}=otherHeading;source.${f('o','b','D')}=speed;target.${f('o','b','D')}=4;target.${f('o','d','Lkc;')}.${m('kc','a','(DDZ)V')}(distance,0,true);double radial=distance*(speed*Math.sin(heading*Math.PI/128)-4*Math.sin(otherHeading*Math.PI/128));int shift=(int)(500*radial/(distance*distance)),wanted=256-Math.max(-100,Math.min(100,shift));
+check("audio/doppler-step",call(session,"${m('pk','a','(Lmd;ILmd;)I')}",new Class<?>[]{${c('md')}.class,int.class,${c('md')}.class},source,5000,target),wanted);
+}
+check("audio/doppler-identity",call(session,"${m('pk','a','(Lmd;ILmd;)I')}",new Class<?>[]{${c('md')}.class,int.class,${c('md')}.class},null,5000,null),256);
+for(double scale:new double[]{0.1,0.5,1,2,4})for(int phase:new int[]{-1,0,1,30,91,92,93}){double wanted=phase==92?scale:1/(3-(3-1/scale)*phase/92);close("render/phase-scale",(Double)call(session,"${m('pk','a','(BID)D')}",new Class<?>[]{byte.class,int.class,double.class},(byte)-125,phase,scale),wanted);}
+for(int front:new int[]{0,-1,0x12345678,0xff00ff00,0x80ff00ff})for(int back:new int[]{0,-1,0x12345678,0xff00ff00,0x80ff00ff})for(int weight:new int[]{-1,0,1,64,128,255,256,300})for(int mask:new int[]{0xff00ff,0xddff00ff,0}){
+int wanted=weight<=0?back:weight>=256?front:0;if(weight>0&&weight<256){int[] widths={24,16,8,0};for(int shift:widths){int channel=(((front>>>shift)&255)*weight+((back>>>shift)&255)*(256-weight))>>>8;int bits=channel<<shift;if(shift==16||shift==0)bits&=mask;wanted|=bits;}}
+check("render/argb-blend",call(session,"${m('pk','b','(IIII)I')}",new Class<?>[]{int.class,int.class,int.class,int.class},weight,front,mask,back),wanted);
+}
+}finally{${c('gh')}.${f('gh','j','Lgb;')}=originalDefinition;}
+}
+
 ${highscoreProbe(c, f, m)}
-public static void main(String[] args)throws Exception{Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();pools();menus();highscores();flightControls();flightUpgrades();flightWaves();hudMessageTiming();System.out.println("checks:"+checks);}
+public static void main(String[] args)throws Exception{Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();pools();menus();highscores();flightControls();flightUpgrades();flightWaves();hudMessageTiming();visualParticles();hudAndSpatialState();System.out.println("checks:"+checks);}
 }
 `);
     const root = readable ? named : input, argsFile = path.join(directory, 'sources.args');
@@ -329,7 +418,7 @@ public static void main(String[] args)throws Exception{Field u=Unsafe.class.getD
   assert.ok(checks > 1500);
   return {checks, rawNamedIdentical: true, historicalSourceCoreIdentical: true, independentExpectations: true,
     headlessClientBoundary: true, vectorAndFlightFixtures: true, packetAndDequeFixtures: true,
-    aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true, highscoreProtocolFixtures: true, flightControlsUpgradesAndWavesFixtures: true, hudMessageTimingFixtures: true, exactSeededWaveTrace: true,
+    aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true, highscoreProtocolFixtures: true, flightControlsUpgradesAndWavesFixtures: true, hudMessageTimingFixtures: true, exactSeededWaveTrace: true, visualParticleHudAndSpatialFixtures: true,
     traceSha256: digest(outputs[0]),
     ...(extraVerification ? extraVerification(path.join(temporary, 'raw-core/classes')) : {})};
 }

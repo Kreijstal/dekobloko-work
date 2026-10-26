@@ -20,9 +20,9 @@ const classes = {
   jd: ['SteeringMode', 'Identity token selected by Aircraft steering between inactive, attack and evade states. Static UI data is unrelated.'],
   eu: ['Bullet', 'FlightBody retaining source aircraft and 64-tick lifetime; spawn offsets position and heading before advancing.'],
   wm: ['Pickup', 'FlightBody initialized with a pickup code and 400-tick life; session collects its upgrade or temporary weapon.'],
-  qf: ['SmokeParticle', 'FlightBody with ten-tick life, random smoke sprite, radius/colour fields; session updates and draws it.'],
+  qf: ['SmokeParticle', 'FlightBody with age initialized to ten and advanced by five, a lifetime limit, depth phase and colour/negative blast-radius code.'],
   ok: ['ScreenParticle', 'Integer/fixed-point screen effect initialized in two modes; session updates and renders its pooled instances.'],
-  vc: ['TimedSpriteEffect', 'Retains screen coordinates, duration and a random sprite index; session owns and expires these effects.'],
+  vc: ['ScorchMark', 'Persistent ground mark using the literal scorch sprite asset; retains ground coordinates, diameter and sprite index and is culled outside the view.'],
   nk: ['MenuScreen', 'One of eight indexed screens, retaining selection, animation/input and menu text/rendering state.'],
   gr: ['MenuInputState', 'Owns selected item, pointer/keyboard selection mode, held/pressed buttons, key code and repeat countdown.'],
   l: ['RendererManager', 'Owns renderer selection, canvas binding, recreation and current GraphicsRenderer.'],
@@ -115,7 +115,7 @@ method('gb', 'b', '(I)[Lpa;', 'getSprites', ['obfuscationGuard'], 'Identity-base
 for (const [original, descriptor, to] of [
   ['A', '[Lmd;', 'aircraft'], ['X', 'Lmd;', 'playerAircraft'], ['S', '[Leu;', 'bullets'],
   ['i', '[Lwm;', 'pickups'], ['n', '[Lqf;', 'smokeParticles'], ['C', '[Lok;', 'screenParticles'],
-  ['z', '[Lvc;', 'timedSpriteEffects'], ['E', '[Lo;', 'backgroundBodies'],
+  ['z', '[Lvc;', 'scorchMarks'], ['E', '[Lo;', 'backgroundBodies'],
   ['w', 'I', 'smokeParticleCount'], ['K', 'I', 'screenParticleCount'],
   ['c', 'I', 'simulationTick'], ['yb', 'Z', 'attractMode'], ['Cb', 'Z', 'arcadeMode'],
   ['g', 'Z', 'paused'], ['Ab', 'I', 'shotsFired'], ['pb', 'I', 'shotsHit'],
@@ -138,7 +138,7 @@ for (const [original, descriptor, to, names] of [
   ['a', '(BLgb;II)I', 'spawnAircraft', ['obfuscationGuard', 'definition', 'count', 'pickupCount']],
   ['a', '(ZZI)V', 'finishGame', ['screenFlag', 'awardFlag', 'accuracyTarget']],
   ['c', '(BI)Z', 'applyUpgrade', ['obfuscationGuard', 'upgradeCode']],
-  ['a', '(ILkc;BI)V', 'emitSmoke', ['size', 'position', 'obfuscationGuard', 'colour']],
+  ['a', '(ILkc;BI)V', 'emitSmoke', ['lifetimeTicks', 'position', 'obfuscationGuard', 'colourOrBlastRadius']],
   ['a', '(BLmd;)V', 'fireBullets', ['obfuscationGuard', 'aircraft']],
   ['a', '(Lkc;B)V', 'advanceBullets', ['cameraMovement', 'obfuscationGuard']],
   ['a', '(Lkc;Z)V', 'advancePickups', ['cameraMovement', 'obfuscationGuard']],
@@ -155,7 +155,7 @@ method('eu', 'a', '(IIDLmd;)V', 'spawn', ['sideOffset', 'headingOffset', 'turnOf
 field('wm', 'k', 'I', 'pickupCode', 'Pickup initialization, weapon/upgrade dispatch in collection path.');
 field('wm', 'g', 'I', 'remainingTicks', 'Pickup starts at 400, decays, fades and is removed after the retained tail.');
 method('wm', 'a', '(IILkc;)V', 'spawn', ['pickupCode', 'obfuscationGuard', 'position'], 'Sets the pickup code, copies position and resets lifetime to 400.');
-field('qf', 'i', 'I', 'remainingTicks', 'Smoke spawn sets ten, session decrements and removes inactive particles.');
+field('qf', 'i', 'I', 'ageTicks', 'Smoke spawn starts age at ten; update adds five and removes at age >= lifetimeTicks, retaining updates of the removed object.');
 field('qf', 'h', 'I', 'spriteIndex', 'Smoke spawn chooses an index in the smoke sprite array.');
 for (const [original, descriptor, to] of [['f', '[B', 'payload'], ['g', 'I', 'position']]) field('rb', original, descriptor, to, evidence.packet);
 for (const [original, descriptor, to, names] of [
@@ -259,7 +259,7 @@ for (const [owner, original, type, to] of [
   ['pk','s','I','classicWaveIndex'], ['pk','xb','I','completedWaveCount'], ['pk','p','I','upgradeCredits'],
   ['pk','lb','I','victoryCountdown'], ['pk','jb','I','respawnInvulnerabilityTicks'], ['pk','ub','I','respawnDelayTicks'],
   ['pk','m','Z','noLivesLost'], ['pk','h','I','musicLayerPresetIndex'], ['pk','ob','Z','alternateMusicActive'],
-  ['pk','l','I','timedSpriteEffectCount'], ['pk','W','Z','manualMusicLayers'], ['pk','j','Z','debugControlsEnabled'],
+  ['pk','l','I','scorchMarkCount'], ['pk','W','Z','manualMusicLayers'], ['pk','j','Z','debugControlsEnabled'],
   ['lp','a','[Z','heldKeys'], ['ci','i','Ljava/util/Random;','gameRandom'],
   ['gh','j','Lgb;','playerDefinition'], ['ub','h','Lgb;','basePlayerDefinition'],
   ['ip','a','[[I','classicWaveCompositions'], ['oe','f','[Ljava/lang/String;','classicWaveMessages'],
@@ -289,7 +289,7 @@ for (const [original, descriptor, to, names] of [
   ['b','(II)V','fadeMusicLayers',['obfuscationGuard','volumeStep']],
   ['a','(ZI)V','removePickup',['obfuscationGuard','index']],
   ['d','(II)V','removeBullet',['obfuscationGuard','index']],
-  ['f','(II)V','removeTimedSpriteEffect',['index','obfuscationGuard']],
+  ['f','(II)V','removeScorchMark',['index','obfuscationGuard']],
 ]) method('pk', original, descriptor, to, names, flightEvidence);
 for (const [original, type, to] of [['i','I','ageTicks'], ['f','I','fadeInTicks'], ['h','I','holdTicks'],
   ['l','I','fadeOutTicks'], ['j','I','colour'], ['k','Ljava/lang/String;','text']])
@@ -300,6 +300,48 @@ method('tb','a','(I)Z','advanceAndIsExpired',['obfuscationGuard'], 'Increments m
 method('tb','d','(I)V','draw',['exitBottomOffset'], 'Three text drawing phases, preserving the original fixed entry/hold positions and caller-provided exit offset.');
 method('tp','b','(Lrf;)V','addSubstream',['stream'],'Adds a PCM substream to the mixer intrusive list under synchronization.');
 method('tp','a','(Lrf;)V','removeSubstream',['stream'],'Unlinks a mixer PCM substream under synchronization.');
+
+// Visual state is named from storage/update/render data flow and asset literals.
+const visualEvidence = 'Reviewed FlightSession HUD/world rendering, particle integration, asset loading and spawn/update consumers; native fixtures preserve arithmetic and pool behavior.';
+for (const [owner, original, type, to] of [
+  ['pk','a','I','displayedWeaponHeat'], ['pk','bb','I','temporaryWeaponOpacity'], ['pk','eb','I','displayedHealthPercent'],
+  ['pk','qb','I','displayedTemporaryWeaponTicks'], ['pk','gb','I','displayedTemporaryWeaponType'],
+  ['pk','v','I','displayedUpgradeCredits'], ['pk','f','I','targetUpgradeCredits'], ['pk','Db','I','creditAnimationTicks'],
+  ['pk','y','I','sampledUpgradeCredits'], ['pk','G','I','multiplierPanelHidePhase'], ['pk','R','I','hudHidePhase'],
+  ['pk','hb','D','cameraLookAheadX'], ['pk','u','D','cameraLookAheadY'], ['pk','fb','I','backgroundTileX'], ['pk','O','I','backgroundTileY'],
+  ['pk','sb','I','backgroundTint'], ['pk','k','I','targetBackgroundTint'], ['pk','o','I','previousBackgroundTint'],
+  ['pk','db','I','backgroundTintBlendTicks'], ['pk','zb','I','lightningCountdown'], ['pk','L','I','lightningRandomBound'],
+  ['pk','Eb','Z','invulnerabilityCheat'], ['pk','r','[I','upgradeFlashTicks'], ['pk','wb','Ll;','rendererManager'],
+  ['qf','g','I','lifetimeTicks'], ['qf','j','I','depthPhase'], ['qf','l','I','colourOrBlastRadius'],
+  ['vc','b','I','worldX'], ['vc','d','I','worldY'], ['vc','e','I','diameter'], ['vc','c','I','spriteIndex'],
+  ['ok','k','I','xQ8'], ['ok','n','I','yQ8'], ['ok','m','I','radiusQ8'],
+  ['ok','c','I','previousXQ8'], ['ok','g','I','previousYQ8'], ['ok','b','I','xVelocityQ8'],
+  ['ok','i','I','yVelocityQ8'], ['ok','l','I','radiusVelocityQ8'], ['ok','a','I','xAccelerationQ8'],
+  ['ok','f','I','yAccelerationQ8'], ['ok','j','I','radiusAccelerationQ8'],
+  ['ok','h','I','ageTicks'], ['ok','d','I','durationTicks'], ['ok','e','I','renderMode'], ['ok','p','I','alphaScale'],
+  ['co','i','[Lpa;','scorchSprites'], ['gn','b','[Lvd;','scorchSpriteData'], ['es','b','[Lpa;','smokeSprites'],
+  ['bl','b','[Lpa;','explosionSprites'], ['is','a','[Lpa;','backgroundSprites'], ['sd','k','[Lpa;','cloudSprites'],
+]) field(owner, original, type, to, visualEvidence);
+for (const [owner, original, descriptor, to, names] of [
+  ['pk','a','(BLkc;)V','advanceBackground',['obfuscationGuard','cameraMovement']],
+  ['pk','a','(Lkc;ILkc;)I','computeSpatialVolume',['listenerPosition','maximumVolumeAndGuard','sourcePosition']],
+  ['pk','a','(Lmd;ILmd;)I','computeDopplerPitchStep',['sourceAircraft','obfuscationGuard','listenerAircraft']],
+  ['pk','a','(Lmd;I)V','emitAircraftScorchMark',['aircraft','obfuscationGuard']],
+  ['pk','a','(IIII)V','emitScorchMark',['worldY','obfuscationGuard','worldX','diameter']],
+  ['pk','a','(Lkc;II)V','emitPickup',['position','obfuscationGuard','pickupCode']],
+  ['pk','a','(Lkc;IIII)V','emitDepthSmoke',['position','colourOrBlastRadius','lifetimeTicks','obfuscationGuard','depthPhase']],
+  ['pk','a','(IIIIIIB)V','emitBurstScreenParticle',['radiusQ8','xQ8','durationTicks','yAccelerationQ8','yQ8','spreadQ8','obfuscationGuard']],
+  ['pk','a','(IIIBIII)V','emitGrowingScreenParticle',['growthStepQ8','xQ8','radiusQ8','obfuscationGuard','durationTicks','yQ8','alphaScale']],
+  ['pk','a','(BID)D','computePhaseScale',['obfuscationGuard','depthPhase','normalScale']],
+  ['pk','b','(IIII)I','blendArgb',['foregroundWeight','foreground','redBlueMask','background']],
+  ['pk','i','(I)V','releaseStaticReferences',['obfuscationGuard']],
+  ['qf','a','(IIIILkc;)V','spawnAtDepth',['lifetimeTicks','obfuscationGuard','colourOrBlastRadius','depthPhase','position']],
+  ['qf','a','(ILkc;II)V','spawn',['obfuscationGuard','position','colourOrBlastRadius','lifetimeTicks']],
+  ['vc','a','(IIIB)V','spawn',['diameter','worldX','worldY','obfuscationGuard']],
+  ['ok','a','(IIIIIIIIIIIII)V','initializeMotion',['yAccelerationQ8','radiusAccelerationQ8','yVelocityQ8','radiusQ8','radiusVelocityQ8','xVelocityQ8','xQ8','renderMode','yQ8','durationTicks','ageTicks','xAccelerationQ8','alphaScale']],
+  ['ok','a','(IIIIIII)V','spawnBurst',['yAccelerationQ8','xQ8','spreadQ8','durationTicks','yQ8','radiusQ8','obfuscationGuard']],
+  ['ok','a','(IZIIIII)V','spawnGrowingSprite',['xQ8','obfuscationGuard','durationTicks','growthStepQ8','radiusQ8','alphaScale','yQ8']],
+]) method(owner, original, descriptor, to, names, visualEvidence);
 
 // Shared highscore transport, verified from encoding/decoding and UI consumers.
 const highscoreEvidence = 'Reviewed query factory, client packet serialization/response decoder, acknowledgement routing and highscore result matching; same shared roles as GeoBlox.';
@@ -392,7 +434,7 @@ for (const [owner, signature, locals] of [
     evidence: 'Reviewed lexical declaration and its data flow in the pinned Ace source.'};
 
 export const aceConfig = {
-  game: 'aceofskies', version: 4, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
+  game: 'aceofskies', version: 5, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
   workflowFiles: ['build-aceofskies-rules.mjs', 'reproduce-aceofskies.mjs', 'reviewed-game.mjs',
     'tests/test-aceofskies-core.mjs', 'tests/test-aceofskies-highscores.mjs', 'tests/test-aceofskies-hud.mjs', 'reconstruct-aceofskies.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
@@ -407,6 +449,8 @@ export const aceConfig = {
       '`MenuScreen.open`, `advanceMenu`, `handleNavigationKey`, `handleAction`, `findItemAt` and `drawMenu` expose menu flow. `MenuInputState` distinguishes keyboard selection, pointer selection, press edges, held buttons and countdown state. The registered slots are 0 main menu, 1 pause, 2 highscores, 3 instructions, 4 achievements, 5 achievements this game, 6 logged-out result notice, and 7 settings. Menu action codes remain their original integers; action 0 starts classic play, 19 starts arcade play, 1 resumes, 3 opens instructions, 14 opens achievements, 2 opens highscores, 22 opens settings and 7 ends the game.', '',
       '`updatePlayerControls` exposes left/right press edges, double-tap braking and the overheat fire latch. The tick counter advances even in attract mode; a second turn press must be strictly fewer than 50 control ticks after the previous press. Releasing fire clears the latch without setting a new fire request. `lifecyclePhase` rises to 92 on living aircraft and falls toward 2 while destroyed aircraft animate; it is distinct from weapon heat.', '',
       '`startClassicWave` uses `classicWaveIndex` and `classicWaveCompositions`; `startArcadeWave` partitions a doubled wave budget using aircraft costs. Their type order differs, and the early classic type-3 definition changes after wave 10. `purchaseUpgrade` spends baseCost + upgradeCode only after acceptance. A fire-rate upgrade can increment its level and still return false when its fire interval is already 1; that edge behavior remains. `HudMessage` owns the queued text fade/hold/expiry phases.', '',
+      '`ScorchMark` replaces the earlier inaccurate TimedSpriteEffect name: the asset is literally scorch, the stored value is its diameter, and no timer advances it. Marks are removed by viewport culling. `SmokeParticle.ageTicks` starts at 10 and increases by five until its lifetime limit; a negative colourOrBlastRadius selects the explosion path. Screen particles expose Q8 position/radius, velocity, acceleration, previous endpoints, render mode, age, duration and opacity scale.', '',
+      'HUD state separates displayed/target credits and countdowns, sampled affordability, smoothed health/heat/weapon ticks, and the last displayed weapon icon during opacity fades. Background tile coordinates, tint interpolation, lightning timing and camera look-ahead are independent from aircraft coordinates. Spatial volume and Doppler pitch helpers retain reference-identity shortcuts and the original distance/zoom clamps.', '',
       '`HighscoreQuery`, `ScoreSubmission` and `HighscoreNameEntry` share established roles with GeoBlox. `requestHighscores` deduplicates pending queries by queryId. `writeHighscoreQuery` and `writeScoreSubmission` preserve the original packet framing, context values and CRC32. `decodeHighscoreResponse` builds all/my/best-player views, completes and unlinks queries, and matches submission acknowledgements by a wrapping 16-bit ID. `findSubmittedScoreRow` checks the player name, server token and every score value. Ace packs its game score and accuracy as 100 * finalScore + finalAccuracyPercent; the four opaque context integers retain positional names rather than unsupported meanings.', '',
       '`drawRollingDigits` names settled/target values, animation countdown, leading-zero suppression and glyph banks. Displayed score/multiplier and their pending targets remain separate until their countdown reaches zero. The number formatter uses the retained separator and preserves ungrouped negative values.', '',
       'Angles in forward/polar motion use 256 units per full turn. `Vector2.angle255` preserves the separate original atan2 scaling by 255 / pi and its zero-vector value 255. `FlightBody.moveForward` subtracts sine/cosine motion and also decays headingOffset. `wrapWorld` retains its single-period boundary adjustments, including out-of-range results for positions multiple periods away. All guard parameters and unusual edge behavior remain.', '',

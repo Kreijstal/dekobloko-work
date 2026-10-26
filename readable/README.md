@@ -52,11 +52,11 @@ vector, packet, deque and pool fixtures compare raw/named behavior against
 independent expectations; complete binding and compilation checks cover every
 source. Full client rendering and server compatibility remain separate checks.
 
-The current Ace pass names 41 classes and 844 symbols, including flight-loop
+The current Ace pass names 41 classes and 998 symbols, including flight-loop
 locals, targets, camera movement, lives, weapon heat/cooldown, gun patterns,
 menu input/navigation, hit testing, transitions and HUD score/multiplier state.
 All 545 source files compile before and after naming; 208,927 symbol bindings
-and 124 label bindings agree. Native raw/named traces agree on 11,725 assertions,
+and 124 label bindings agree. Native raw/named traces agree on 13,215 assertions,
 including aircraft construction, bullet spawning, single-period flight
 boundaries, packet bytes, intrusive transfers, pool swaps and menu geometry.
 Menu tests preserve the initial press frame's immediate countdown decrement,
@@ -83,6 +83,32 @@ random-call order. The returned pickup budget may be negative.
 Fixtures use seeded randomness and silent samples through the actual in-memory
 mixer without creating an audio device or starting the applet. They establish
 these headless behaviors, not a full gameplay session or physical rendering.
+
+All 80 `FlightSession` instance fields now have reviewed names. The remaining
+opaque session field is a shared static resource reference; a shared static UI
+helper and compiler temporaries also remain unresolved. Visual state now names
+HUD target/displayed credits and countdowns, health/heat/weapon smoothing,
+weapon opacity/icon state, camera look-ahead, background tiles/tints, lightning,
+particle motion and the spatial-volume/Doppler helpers.
+
+Two earlier interpretations are corrected: `ScorchMark` replaces
+`TimedSpriteEffect`, because the literal asset is `scorch`, its stored extent
+is a diameter, and the mark is removed by viewport culling rather than a timer.
+`SmokeParticle.ageTicks` replaces the incorrect remaining-time name: it starts
+at ten, increases by five and expires at its lifetime limit. A negative
+colourOrBlastRadius selects the blast path. Screen particles expose Q8 position,
+radius, velocity and acceleration (eight fractional bits), previous endpoints,
+render mode, age, duration and opacity scale; growing sprites begin with a
+negative age and retain previous endpoints on reuse.
+
+The added fixtures independently check integration/expiry and swap order,
+including integration of removed objects and the original null-entry failure
+following removal. They cover smoke ages, seeded sprite choice, pool capacity,
+scorch placement/reuse, HUD smoothing and target snapshots, zoom/distance volume
+clamps, Doppler limits, lifecycle projection and packed ARGB interpolation.
+These are 1,490 additional assertions, with equal historical/raw/named traces.
+They verify stored state and arithmetic; physical particle rendering remains
+outside the native fixture boundary.
 
 Ace also names the shared `HighscoreQuery`, `ScoreSubmission` and
 `HighscoreNameEntry` roles. Request/response methods now expose query
@@ -121,7 +147,7 @@ Compiler validation includes 192 native Object/concrete-reference snapshot
 cases across effects, thrown objects, catch/finally and monitor release, plus
 44 original-bytecode/decompiled-Java constructor-argument cases. The emitter
 suite passes 68 tests with one existing skip. The combined catch-copy/emitter/exception-table validation passes 74 tests with one existing skip (plus five assembler assertions). Ace also compares its complete
-11,725-check core trace against the historical pre-reconstruction Java, in
+13,215-check core trace against the historical pre-reconstruction Java, in
 addition to the prepared-raw/named comparison. This is historical-source
 coverage; only the selected HUD has the separate original-game-bytecode oracle.
 
@@ -166,7 +192,7 @@ The current method-recovery compiler source archive SHA-256 is
 by archiving commit `2d79b0d0736003c9f5da1faaf8763149bb3700b1` the same way.
 The verified prepared raw tree SHA-256 is
 `a2ef6e1c05499a488d98e50ec6faddff758c28a030ab9660cfcc93d140599e4c`; the
-named tree is `3d6192c60656ac91182b8bc6889897226d9535c9a387a518241026c5161cd466`.
+named tree is `600db4a295148838dcd2970cbb229160a6a5cc21283622876c7173591e40acbe`.
 The one current rule manifest/dictionary records both input identities,
 compiler pins, fixed gamepack identity, method-body hashes and verification.
 Dictionary reversal recovers all 545 prepared raw files; the unmodified base
