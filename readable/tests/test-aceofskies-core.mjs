@@ -311,12 +311,20 @@ public static void main(String[] args)throws Exception{Field u=Unsafe.class.getD
     fs.writeFileSync(argsFile, sourceInventory(root).map(file => JSON.stringify(path.join(root, file.path))).join('\n') + '\n');
     captureProcess('javac', ['--release', '8', '-proc:none', '-encoding', 'UTF-8', '-sourcepath', '', '-classpath', classpath, '-d', compiled, '@' + argsFile]);
     captureProcess('javac', ['-encoding', 'UTF-8', '-classpath', compiled, '-d', compiled, harness]);
-    outputs.push(captureProcess('java', ['-Djava.awt.headless=true', '-cp', [shims, compiled, classpath].join(path.delimiter), 'AceCoreProbe']).stdout);
+    const trace = captureProcess('java', ['-Djava.awt.headless=true', '-cp', [shims, compiled, classpath].join(path.delimiter), 'AceCoreProbe']).stdout;
+    if (!readable) {
+      const historical = path.join(directory, 'historical'); fs.mkdirSync(historical);
+      captureProcess('javac', ['--release', '8', '-proc:none', '-sourcepath', '', '-classpath', [compiled, classpath].join(path.delimiter),
+        '-d', historical, path.join(temporary, 'original-pk.java')]);
+      const priorTrace = captureProcess('java', ['-Djava.awt.headless=true', '-cp', [shims, historical, compiled, classpath].join(path.delimiter), 'AceCoreProbe']).stdout;
+      assert.deepEqual(trace, priorTrace, 'Reconstructed Ace core differs from the historical pinned Java');
+    }
+    outputs.push(trace);
   }
   assert.deepEqual(outputs[1], outputs[0], 'Named Ace core differs from pinned raw Java');
   const checks = Number(outputs[0].toString().trimEnd().split('\n').at(-1).split(':')[1]);
   assert.ok(checks > 1500);
-  return {checks, rawNamedIdentical: true, independentExpectations: true,
+  return {checks, rawNamedIdentical: true, historicalSourceCoreIdentical: true, independentExpectations: true,
     headlessClientBoundary: true, vectorAndFlightFixtures: true, packetAndDequeFixtures: true,
     aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true, highscoreProtocolFixtures: true, flightControlsUpgradesAndWavesFixtures: true, hudMessageTimingFixtures: true,
     traceSha256: digest(outputs[0]),

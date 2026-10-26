@@ -55,7 +55,7 @@ source. Full client rendering and server compatibility remain separate checks.
 The current Ace pass names 41 classes and 845 symbols, including flight-loop
 locals, targets, camera movement, lives, weapon heat/cooldown, gun patterns,
 menu input/navigation, hit testing, transitions and HUD score/multiplier state.
-All 545 source files compile before and after naming; 209,076 symbol bindings
+All 545 source files compile before and after naming; 209,054 symbol bindings
 and 124 label bindings agree. Native raw/named traces agree on 11,725 assertions,
 including aircraft construction, bullet spawning, single-period flight
 boundaries, packet bytes, intrusive transfers, pool swaps and menu geometry.
@@ -106,6 +106,23 @@ proofs still check the original table and CFG. Recovery runs by default.
 The selected method shrinks from 398 to 89 lines and no `switch(statePc)`
 dispatcher remains in the published Ace corpus.
 
+The current generic compiler also removes allocator-owned unread reference
+stack snapshots for concrete types and arrays, extending the existing Object
+case. Every identifier use must be accounted for, and every removed store must
+be a standalone `this` or literal-null assignment. Calls, reads, casts, boxing,
+allocations, escaping references and unknown syntax are retained. Cleanup runs
+before scalar branch recovery, without flags or application identifiers in
+java-tools. Final-score submission shrinks from 52 to 36 body lines by removing
+unread constructor placeholders. Live return carriers remain.
+
+Compiler validation includes 192 native Object/concrete-reference snapshot
+cases across effects, thrown objects, catch/finally and monitor release, plus
+44 original-bytecode/decompiled-Java constructor-argument cases. The emitter
+suite passes 68 tests with one existing skip. Ace also compares its complete
+11,725-check core trace against the historical pre-reconstruction Java, in
+addition to the prepared-raw/named comparison. This is historical-source
+coverage; only the selected HUD has the separate original-game-bytecode oracle.
+
 Its native HUD probe passes 3,003 cases and 4,320 independent checks, comparing
 original bytecode, historical dispatcher Java and reconstructed Java drawing
 requests. It includes runtime-exception and Error injection. Historical
@@ -123,18 +140,18 @@ The base raw source generator is java-tools commit
 SHA-256 is `34c1e50357f69cafd0c4550a63beeb07a8b56c8c891bdb31e4fc49a652509613`,
 reproduced with `git archive --format=tar 00c1c12fb58cdbd6be065e604ee5e9acbcebeff7 | sha256sum`
 inside java-tools. This hash identifies compiler source, not a game JAR.
-The HUD recovery compiler source archive SHA-256 is
-`2e63dcc7a33667d65beb99316a9937c1946b16357d343e69c46bd3968d1d2ddd`, reproduced
-by archiving commit `c6f6a1e61b0088e882236d732145a84775fd9cb8` the same way.
+The current method-recovery compiler source archive SHA-256 is
+`855804a0546dffe6e247af8e8b3f7d0efbac0ca1e30793a9b29edd6a4d5f4263`, reproduced
+by archiving commit `d0b505b9fe153c1a1c0adb2c4a7833b1f55f4c54` the same way.
 The verified prepared raw tree SHA-256 is
-`3feb47118078691ab11c03f0cd4a8914b574480aee7df4d375bbd4e273ded155`; the
-named tree is `72c11207a02a03843d0d416a33e5613d2f1ceb92530f6c16696220ae8fd9cc56`.
+`78fd96d3afe487b73c1534fdcaa0daf6acec6c935da57e809bcad19b2e6c3414`; the
+named tree is `b0c4b214a7ecfb8d3194089e44a088a7b6f799720fadd1ff2cefde341e29b43f`.
 The one current rule manifest/dictionary records both input identities,
 compiler pins, fixed gamepack identity, method-body hashes and verification.
 Dictionary reversal recovers all 545 prepared raw files; the unmodified base
 remains at its Git pin.
 
-`reconstruct-aceofskies-hud.mjs` selects the method and invokes the pinned
+`reconstruct-aceofskies.mjs` selects the HUD and score-submission methods and invokes the pinned
 generic compiler; it contains no replacement game algorithm. The loader
 checks the compiler's Git source archive and reads its modules from Git
 objects, excluding unrelated runtime WIP without another checkout/export.

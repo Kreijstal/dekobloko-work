@@ -4,7 +4,7 @@ import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
 import {workflowRoot} from './game-export.mjs';
 import {verifyAceCore} from './tests/test-aceofskies-core.mjs';
-import {reconstructAceHud} from './reconstruct-aceofskies-hud.mjs';
+import {reconstructAceMethods} from './reconstruct-aceofskies.mjs';
 import {verifyAceHud} from './tests/test-aceofskies-hud.mjs';
 
 // Every identity below belongs to the pinned Ace export. Similar names in
@@ -392,11 +392,11 @@ for (const [owner, signature, locals] of [
     evidence: 'Reviewed lexical declaration and its data flow in the pinned Ace source.'};
 
 export const aceConfig = {
-  game: 'aceofskies', version: 2, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
+  game: 'aceofskies', version: 3, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
   workflowFiles: ['build-aceofskies-rules.mjs', 'reproduce-aceofskies.mjs', 'reviewed-game.mjs',
-    'tests/test-aceofskies-core.mjs', 'tests/test-aceofskies-highscores.mjs', 'tests/test-aceofskies-hud.mjs', 'reconstruct-aceofskies-hud.mjs',
+    'tests/test-aceofskies-core.mjs', 'tests/test-aceofskies-highscores.mjs', 'tests/test-aceofskies-hud.mjs', 'reconstruct-aceofskies.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
-  prepareInput: reconstructAceHud,
+  prepareInput: reconstructAceMethods,
   verifyCore: (input, named, mapping, classpath, temporary) => verifyAceCore(input, named, mapping, classpath, temporary,
     rawClasses => ({hud: verifyAceHud(rawClasses, classpath, temporary)})),
   readingGuide(rules, mapping) {
@@ -418,6 +418,7 @@ export const aceConfig = {
       '| HighscoreQuery / ScoreSubmission / HighscoreNameEntry | GeoBlox equivalents | Query dimensions, three views, wrapping submission IDs, context words and unique-player name markers; Ace adds acknowledgement tokens. |',
       '| PcmSample / PcmSampleStream / MidiPcmStream | GeoBlox equivalents | Signed PCM storage, loop bounds, interpolation and MIDI channel/voice state. |', '',
       'Shared role names do not assert byte-for-byte implementation equality. Different guards, signatures, static helper placement and graphics generations remain. Core fixtures exercise actual raw and named flight/vector, packet, collection and menu implementations, compare their traces and check independent expected results. Complete source compilation and resolved declaration/reference/override comparison cover every file. Reversal recovers the reconstructed raw source bytes.', '',
+      'The current generic compiler also removes unread typed reference stack snapshots. This drops null placeholders from final-score construction without discarding live references, moving allocations or suppressing argument effects. The full native core trace matches both the historical source and reconstructed source before naming.', '',
       'The animated HUD number renderer now uses structured loops. This comes from the pinned generic decompiler: it includes a proven nonthrowing boundary latch inside the protected loop, retains throwing-PC exception routing and checks original control-flow edges. The dictionary records base input, transformed input and both method-body hashes. Reversal recovers the reconstructed raw source; the base input remains available at its pinned Git commit.', '',
       'The HUD probe compares original bytecode, historical dispatcher Java and reconstructed Java drawing-call traces, including runtime-exception and Error injection. It uses controlled abstract renderer/sprite implementations with the same original final wrappers in every variant, isolating historical diagnostic-wrapper removal. Physical pixels, whole-game playability and server compatibility are not established by these focused fixtures. Account/network internals and unresolved engine names still need work. Local packet fixtures do not establish compatibility with a live server.', '',
       'Reproduce with `node readable/build-aceofskies-rules.mjs --check`, `node readable/reproduce-aceofskies.mjs --update`, and `node readable/reproduce-aceofskies.mjs --check` from dekobloko-work. Each command uses pinned raw Git input and temporary compilation only. No binary dependency or second readable tree is published.', ''].join('\n');

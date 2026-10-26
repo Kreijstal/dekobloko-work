@@ -3,11 +3,11 @@ import Module from 'node:module';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {withPinnedCompiler} from '../pinned-compiler.mjs';
-import {aceHudCompiler} from '../reconstruct-aceofskies-hud.mjs';
+import {aceRecoveryCompiler} from '../reconstruct-aceofskies.mjs';
 
 test('pinned modules load from verified Git objects and restore hooks/cache after failure', () => {
   const extensions = {...Module._extensions}, cache = new Map(Object.entries(Module._cache));
-  assert.throws(() => withPinnedCompiler(aceHudCompiler.commit, aceHudCompiler.sourceArchiveSha256, (require, root) => {
+  assert.throws(() => withPinnedCompiler(aceRecoveryCompiler.commit, aceRecoveryCompiler.sourceArchiveSha256, (require, root) => {
     const compiler = require(path.join(root, 'src/decompiler/exceptionStructurer.js'));
     assert.equal(typeof compiler.structureMethod, 'function');
     const unpinned = path.join(root, 'src/untracked-diagnostic-module.js');
@@ -21,6 +21,6 @@ test('pinned modules load from verified Git objects and restore hooks/cache afte
 
 test('incorrect compiler source archive hashes fail before any operation runs', () => {
   let ran = false;
-  assert.throws(() => withPinnedCompiler(aceHudCompiler.commit, '0'.repeat(64), () => {ran = true;}), /source archive differs/);
+  assert.throws(() => withPinnedCompiler(aceRecoveryCompiler.commit, '0'.repeat(64), () => {ran = true;}), /source archive differs/);
   assert.equal(ran, false);
 });
