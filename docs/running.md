@@ -54,6 +54,23 @@ hashes, engine versions and timings share the cloner's single cumulative
 `.work/heap-pressure/kernel-benchmark.json`; rerunning does not overwrite earlier
 campaigns. Generated Java, classes and bundles are not committed.
 
+A subsequent steady-gameplay profile counted about 416,000 time-slice checks
+per second. `Thread.currentThread()` was the most frequent native call. Its
+general JNI bridge created an environment object and several helper closures
+on each call. The first specialization trial did not activate because the JNI
+wrapper hid the standard implementation's identity; its timings are retained
+as an inactive trial, not evidence of a gain.
+
+JNI now records built-in provenance, allowing java-tools to select a direct
+`currentThread` bridge only for the known standard implementation. It preserves
+the clock check on every call, parking, thread identity and custom native
+override handling. Two fresh-process B–C–C–B blocks of one million identity
+checks matched HotSpot throughout: Firefox's median of process medians fell
+from 1101 to 396 ms (2.78×); Chromium's from 1197.75 to 223.75 ms (5.35×).
+These remain native-call kernel timings, not full-game FPS. Thread identity
+across suspension and the existing monitor, join, exception and preemption
+tests passed.
+
 The 24 FPS gameplay floor remains unverified. The scanline improvement alone
 does not establish that the original 2–6 FPS scene meets it.
 
