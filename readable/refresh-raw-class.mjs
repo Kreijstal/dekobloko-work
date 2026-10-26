@@ -24,7 +24,7 @@ if (args.some(arg => arg.startsWith('--') && !['--update', '--check'].includes(a
     (update && args.includes('--check')) || positional.length < 2 || positional.length > 3)
   throw Error('Usage: node readable/refresh-raw-class.mjs GAME CLASS [PROBE_MODULE] [--update|--check]');
 assert.equal(git(root, 'status', '--porcelain', '--untracked-files=no'), '', 'Commit the reproduction script first');
-assert.equal(git(funorb, 'status', '--porcelain', '--untracked-files=no'), '', 'Export repository must be committed');
+if (update) assert.equal(git(funorb, 'status', '--porcelain', '--untracked-files=no'), '', 'Export repository must be committed');
 const manifestPath = path.join(funorb, 'decompilation-provenance.json');
 const manifestBytes = fs.readFileSync(manifestPath), manifest = JSON.parse(manifestBytes);
 const record = manifest.publication.games[game];
@@ -61,7 +61,7 @@ assert.ok(inputBytes, 'Original class is absent');
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'funorb-class-refresh-'));
 try {
   const compiler = path.join(temporary, 'compiler'); fs.mkdirSync(compiler);
-  run('tar', ['-xf', '-', '-C', compiler], {input: archive});
+  run('tar', ['-xf', '-', '-C', compiler], {input: archive, stdio: ['pipe', 'pipe', 'pipe']});
   fs.symlinkSync(path.join(tools, 'node_modules'), path.join(compiler, 'node_modules'), 'dir');
   const input = path.join(temporary, 'input', name + '.class');
   fs.mkdirSync(path.dirname(input), {recursive: true}); fs.writeFileSync(input, inputBytes);

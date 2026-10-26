@@ -47,6 +47,21 @@ export function validateNamedExport(repository, game, receipt) {
   return sources;
 }
 
+export function validateRawClassRepairs(repository, game, record) {
+  for (const [file, receipt] of Object.entries(record.sourceRepairs?.classes || {})) {
+    if (!/^[\w$/]+\.java$/.test(file) || file.includes('..') ||
+        receipt.output?.path !== `games/${game}/${file}` ||
+        !/^[a-f0-9]{40}$/.test(receipt.generator?.commit || '') ||
+        !/^[a-f0-9]{64}$/.test(receipt.generator?.sourceArchive?.sha256 || '') ||
+        receipt.generator.execution !== 'committed-source-archive' ||
+        receipt.validation?.wholeGameJavac !== 'pass' || receipt.validation.sources !== record.sources.files ||
+        hash(fs.readFileSync(path.join(repository, 'games', game, file))) !== receipt.output.sha256)
+      throw new Error(`Raw class refresh identity differs: ${game}/${file}`);
+    const probe = receipt.validation.originalBytecodeProbe;
+    if (probe && probe.reference !== probe.rebuilt) throw new Error(`Raw class semantic proof differs: ${game}/${file}`);
+  }
+}
+
 export function validateReport(game, report, diagnostics, inputs, sources) {
   if (report.game !== game || report.status !== 'pass' || report.hardFailures !== 0 ||
       ['pipeline', 'cli', 'verify', 'javac'].some(key => report.failures?.[key] !== 0) ||
@@ -98,6 +113,11 @@ export function publish({batch, destination, javaTools, update = false}) {
   if (Object.keys(namedExports).some(game => !games.includes(game))) throw new Error('Unknown named game');
   try {
     for (const game of games) {
+      const previousRecord = json(path.join(destination, 'decompilation-provenance.json')).publication.games[game];
+      validateRawClassRepairs(destination, game, previousRecord);
+      for (const receipt of Object.values(previousRecord.sourceRepairs?.classes || {})) {
+        run('git', ['-C', javaTools, 'merge-base', '--is-ancestor', receipt.generator.commit, compiler.commit]);
+      }
       const root = path.join(batch, game);
       const owned = path.join(root, 'decompile-owned');
       const inputs = inventory(path.join(root, 'classes'), '.class');
