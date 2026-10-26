@@ -55,7 +55,7 @@ source. Full client rendering and server compatibility remain separate checks.
 The current Ace pass names 54 classes and 1,779 symbols, including flight-loop
 locals, targets, camera movement, lives, weapon heat/cooldown, gun patterns,
 menu input/navigation, hit testing, transitions and HUD score/multiplier state.
-All 545 source files compile before and after naming; 208,360 symbol bindings
+All 545 source files compile before and after naming; 197,056 symbol bindings
 and 124 label bindings agree. Native raw/named traces agree on 14,772 assertions,
 including aircraft construction, bullet spawning, single-period flight
 boundaries, packet bytes, intrusive transfers, pool swaps and menu geometry.
@@ -241,16 +241,16 @@ Object/Throwable overloads, handler/finally failures and monitor ownership.
 The current replay reconstructs all 51 ordinary `FlightSession` methods with
 region certificates, plus the `SpriteData` decoder with a separate plain-CFG
 original-edge proof. It runs twice and checks identical output. Session
-initialization and three small methods using specialized emitters remain at
-the base source. Across the 51 session bodies, the base source has 5,002 lines
+initialization and three small methods using specialized emitters retain their
+base control flow, with the same generic declaration proofs applied afterward. Across the 51 session bodies, the base source has 5,002 lines
 and the current source 4,015. The sprite decoder falls from 139 to 95 body
 lines. Its 18 loop counters declare their types in their owning headers; the
 remaining 20 declarations now initialize at their first stores, inside their
 owning blocks. The decoder has no upfront declaration list. All 38
 reconstructed decoder locals have reviewed frame, palette, index,
 coordinate and alpha-mask names, including the separately recovered lifetimes.
-Historical native comparison overlays both the old session and old decoder, and decoder
-fixtures additionally compare all nine frame fields and palette identity with
+Historical native comparison separately compiles the complete 545-file base
+source tree; decoder fixtures additionally compare all nine frame fields and palette identity with
 the fixed original bytecode for both storage orders and all three alpha modes.
 
 The generic compiler folds value-producing primitive decisions at their
@@ -282,9 +282,9 @@ The loop-header tests include a 1,000-counter fixture and 3,456 native
 comparisons across all primitive types, zero-iteration loops, labeled
 break/continue, throwing headers/body/cleanup and null/non-null monitors. A
 default-decompiler roundtrip preserves an earlier effectful store. The combined
-declaration/value/emitter/exception-table run passes 182 tests with one existing
+declaration/value/emitter/exception-table run passes 202 tests with one existing
 skip (plus five assembler assertions). All 160 reviewed local names still bind
-to unique declarations; 85 guarded ordinals were refreshed for this replay.
+to unique declarations; 52 guarded ordinals were refreshed for this replay.
 
 First-store recovery also joins an inert declaration with its first standalone
 assignment, keeping that assignment at its original position. It retains the
@@ -293,10 +293,34 @@ remaining reference must follow the store inside its existing block. Handler,
 finally, sibling-block and loop-header observations prevent narrowing, as do
 self-reading stores, effectful old initializers, captures, ambiguous bindings
 and unsupported syntax. This generic proof runs by default after lifetime
-recovery, without application names or flags. Its 53 focused tests include
+recovery, without application names or flags. Its 56 focused tests include
 1,000 independent locals and 2,016 native comparisons covering all primitive
 types, reference identity, overload resolution, allocation/exception order,
 loop transfers and monitor ownership, plus a default-decompiler roundtrip.
+
+A compilation-unit wrapper reuses these default method-body proofs on older
+pinned generated Java without repeating bytecode preprocessing. It handles
+ordinary methods, constructors, initializer blocks and direct member types;
+anonymous/local-class and lambda bodies retain their original source offsets
+and are left untouched. Headers, fields, comments and literal bytes outside
+edited bodies remain exact. Leading standalone literal/null stores can be
+removed only before a later dominating store with no intervening read or
+conversion; observed defaults and effectful stores remain. The proof accounts
+for each such store once, before loop-header recovery, without repeated
+whole-source fixed-point rewriting. All 545 files pass determinism and
+idempotence checks. The current replay localizes 1,301 bodies across 354 files:
+798 loop-header moves, 10,459 first-store merges and 47 removed inert stores.
+These count proof operations; a local can pass through initialization and then
+loop-header recovery. The published Java loses 11,304 lines relative to the
+previous named tree. MenuScreen alone loses 260 upfront declaration lines,
+with 16 loop-header moves and 244 first-store merges across 19 bodies. Per-file hashes and counts stay in the one current
+manifest/dictionary. Native core comparison separately compiles all 545
+historical files, covering every fixture against that complete baseline.
+
+The 17 source-unit tests include a 1,000-method fixture and a complete native
+source roundtrip for fields, overloads, constructor delegation, initializers
+and protected scopes. The injected store failure checks the last default value
+observed from finally.
 
 Its native HUD probe passes 3,003 cases and 4,320 independent checks, comparing
 original bytecode, historical dispatcher Java and reconstructed Java drawing
@@ -316,11 +340,11 @@ SHA-256 is `34c1e50357f69cafd0c4550a63beeb07a8b56c8c891bdb31e4fc49a652509613`,
 reproduced with `git archive --format=tar 00c1c12fb58cdbd6be065e604ee5e9acbcebeff7 | sha256sum`
 inside java-tools. This hash identifies compiler source, not a game JAR.
 The current method-recovery compiler source archive SHA-256 is
-`3ab94fe3502dbbb0e9133f07a4bfd9e35e926760551d000be835b24784182735`, reproduced
-by archiving commit `cef7fd73c83f3549797e4a7e5cea86b4aa291976` the same way.
+`aab0ddf355c9552f609f6061924d56818118123a7585f85bcd038c64f94b186c`, reproduced
+by archiving commit `c288eacc93fa01782116ea4bd01c7c78c028f9f7` the same way.
 The verified prepared raw tree SHA-256 is
-`e1ce0bc6a865d2d7eadd118a23dee940bf1c5942e951226e528da71c1156d927`; the
-named tree is `ddfc3bc52509b829a336ea5f550b2a79c3dc6b294ec043a92bfba2effa5948f6`.
+`6bc9127510d173e5216b3589a9642aef3606cb790ba65f2afca0db70dd7e5819`; the
+named tree is `84874f8ef5a1a373929d952b7b1f2f981e5e9bd36afb402221834c9bb684c766`.
 The one current rule manifest/dictionary records both input identities,
 compiler pins, fixed gamepack identity, method-body hashes and verification.
 Dictionary reversal recovers all 545 prepared raw files; the unmodified base
@@ -342,6 +366,13 @@ The catalog check validates all 44 game source identities. Focused validation:
 node --test readable/tests/test-pinned-compiler.mjs readable/tests/test-reviewed-game.mjs
 node readable/build-aceofskies-rules.mjs --check
 node readable/reproduce-aceofskies.mjs --check
+```
+
+The declaration/source-unit regression command runs in java-tools (202 passing
+tests, one existing skip and five nested assembler assertions):
+
+```
+node --test test/sourceLocalDeclarationRecovery.test.js test/localInitializationRecovery.test.js test/forLoopDeclarationRecovery.test.js test/primitiveValueBranchRecovery.test.js test/javaAstEmitterLoopExits.test.js test/exceptionTablePreservation.test.js
 ```
 
 Seven workflow tests pass. The generic compiler's focused exception tests run

@@ -527,17 +527,20 @@ public static void main(String[] args)throws Exception{originalBytecodeDirectory
     const trace = captureProcess('java', ['-Djava.awt.headless=true', '-cp', [shims, compiled, classpath].join(path.delimiter), 'AceCoreProbe', path.join(temporary, 'original-bytecode')]).stdout;
     if (!readable) {
       const historical = path.join(directory, 'historical'); fs.mkdirSync(historical);
-      captureProcess('javac', ['--release', '8', '-proc:none', '-sourcepath', '', '-classpath', [compiled, classpath].join(path.delimiter),
-        '-d', historical, path.join(temporary, 'original-pk.java'), path.join(temporary, 'original-vd.java')]);
+      const historicalInput = path.join(temporary, 'historical-source'), historicalArgs = path.join(directory, 'historical.args');
+      const historicalSources = sourceInventory(historicalInput); assert.equal(historicalSources.length, 545);
+      fs.writeFileSync(historicalArgs, historicalSources.map(file => JSON.stringify(path.join(historicalInput, file.path))).join('\n') + '\n');
+      captureProcess('javac', ['--release', '8', '-proc:none', '-encoding', 'UTF-8', '-sourcepath', '', '-classpath', classpath,
+        '-d', historical, '@' + historicalArgs]);
       const priorTrace = captureProcess('java', ['-Djava.awt.headless=true', '-cp', [shims, historical, compiled, classpath].join(path.delimiter), 'AceCoreProbe', path.join(temporary, 'original-bytecode')]).stdout;
-      assert.deepEqual(trace, priorTrace, 'Reconstructed Ace session/sprite core differs from the historical pinned Java');
+      assert.deepEqual(trace, priorTrace, 'Reconstructed Ace core differs from the complete historical pinned Java');
     }
     outputs.push(trace);
   }
   assert.deepEqual(outputs[1], outputs[0], 'Named Ace core differs from pinned raw Java');
   const checks = Number(outputs[0].toString().trimEnd().split('\n').at(-1).split(':')[1]);
   assert.ok(checks > 1500);
-  return {checks, rawNamedIdentical: true, historicalSourceCoreIdentical: true, independentExpectations: true,
+  return {checks, rawNamedIdentical: true, historicalSourceCoreIdentical: true, fullHistoricalSourceCoreIdentical: true, independentExpectations: true,
     headlessClientBoundary: true, vectorAndFlightFixtures: true, packetAndDequeFixtures: true,
     aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true, highscoreProtocolFixtures: true, flightControlsUpgradesAndWavesFixtures: true, hudMessageTimingFixtures: true, exactSeededWaveTrace: true, visualParticleHudAndSpatialFixtures: true,
     sharedHashTableDualLinksAndSoundCacheFixtures: true, softwareFontMetricsWrappingAndPixelFixtures: true, spriteDecodingTransformsAndIndexedPixelFixtures: true, originalIndexedAlphaBytecodeOracle: true, originalSpriteDecoderBytecodeOracle: true, rendererTextGlyphCallFixtures: true, traceSha256: digest(outputs[0]),

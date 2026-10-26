@@ -75,7 +75,7 @@ System.out.println("cases:"+cases+"/checks:"+checks);
   const shim = path.join(directory, 'AceOfSkies.java');
   fs.writeFileSync(shim, 'public class AceOfSkies {public static boolean G=false;public static boolean field_G=false;}');
   captureProcess('javac', ['--release', '8', '-d', helper, shim]);
-  const original = path.join(temporary, 'original-pk.java');
+  const original = path.join(temporary, 'historical-source/pk.java');
   assert.ok(fs.existsSync(original), 'Historical HUD source was not retained for verification');
   captureProcess('javac', ['--release', '8', '-proc:none', '-sourcepath', '', '-classpath', cp, '-d', old, original]);
   const run = (classes, mode) => captureProcess('java', ['-Xverify:all', '-Djava.awt.headless=true',
