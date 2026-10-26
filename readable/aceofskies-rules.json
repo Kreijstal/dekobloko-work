@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "aceofskies",
-  "version": 5,
+  "version": 6,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "b168d7edeb104599156b5f908df62dfdc9f3b250",
@@ -876,6 +876,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ph",
+      "originalName": "ph",
+      "to": "IntrusiveNodeHashTable",
+      "evidence": "Same shared role as GeoBlox IntrusiveNodeHashTable: power-of-two bucket sentinels, key lookup, node transfer, bucket-order traversal and clearing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pk",
       "originalName": "pk",
       "to": "FlightSession",
@@ -971,6 +978,13 @@
       "originalName": "wm",
       "to": "Pickup",
       "evidence": "FlightBody initialized with a pickup code and 400-tick life; session collects its upgrade or temporary weapon.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wt",
+      "originalName": "wt",
+      "to": "DualLinkNode",
+      "evidence": "Same shared role as GeoBlox DualLinkNode: an IntrusiveNode with an independent secondary key/link pair and secondary-only unlink.",
       "confidence": "reviewed"
     },
     {
@@ -1107,10 +1121,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ct.field_I:F",
+      "originalName": "field_I",
+      "to": "loadingPercent",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:di.field_M:Lkp;",
       "originalName": "field_M",
       "to": "activeSoundPlaybacks",
       "evidence": "Reviewed player control, wave generation, death/respawn, upgrade purchase and rendering consumers in FlightSession; native fixtures retain boundary behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dq.field_b:Ljava/lang/String;",
+      "originalName": "field_b",
+      "to": "loadingMessage",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -1153,6 +1181,13 @@
       "originalName": "field_i",
       "to": "sourceAircraft",
       "evidence": "Bullet spawn retains its firing aircraft for hit routing and attribution.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fg.field_t:Lgk;",
+      "originalName": "field_t",
+      "to": "sharedFontMetricsArchive",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -1415,6 +1450,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hg.field_x:Lgk;",
+      "originalName": "field_x",
+      "to": "sharedSpriteArchive",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ip.field_a:[[I",
       "originalName": "field_a",
       "to": "classicWaveCompositions",
@@ -1422,10 +1464,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:iq.field_e:Lgk;",
+      "originalName": "field_e",
+      "to": "gameFontMetricsArchive",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:is.field_a:[Lpa;",
       "originalName": "field_a",
       "to": "backgroundSprites",
       "evidence": "Reviewed FlightSession HUD/world rendering, particle integration, asset loading and spawn/update consumers; native fixtures preserve arithmetic and pool behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jk.field_b:Lgk;",
+      "originalName": "field_b",
+      "to": "synthesizedSoundArchive",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -1688,10 +1744,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ob.field_a:Lgk;",
+      "originalName": "field_a",
+      "to": "vorbisSoundArchive",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ob.field_b:Lph;",
+      "originalName": "field_b",
+      "to": "pcmSampleCache",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ob.field_g:Lph;",
+      "originalName": "field_g",
+      "to": "vorbisSampleCache",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ob.field_h:Lgk;",
+      "originalName": "field_h",
+      "to": "synthesizedSoundArchive",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oc.field_e:I",
       "originalName": "field_e",
       "to": "highscoreView",
       "evidence": "Reviewed query factory, client packet serialization/response decoder, acknowledgement routing and highscore result matching; same shared roles as GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:od.field_x:Lgk;",
+      "originalName": "field_x",
+      "to": "musicTrackArchive",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -1821,10 +1912,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ot.field_b:Lgk;",
+      "originalName": "field_b",
+      "to": "musicPatchArchive",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pe.field_b:[Lgl;",
       "originalName": "field_b",
       "to": "highscoreNameEntries",
       "evidence": "Reviewed query factory, client packet serialization/response decoder, acknowledgement routing and highscore result matching; same shared roles as GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ph.field_a:Lwf;",
+      "originalName": "field_a",
+      "to": "lookupCursor",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ph.field_b:I",
+      "originalName": "field_b",
+      "to": "bucketCount",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ph.field_c:Lwf;",
+      "originalName": "field_c",
+      "to": "iterationCursor",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ph.field_d:[Lwf;",
+      "originalName": "field_d",
+      "to": "bucketSentinels",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ph.field_e:I",
+      "originalName": "field_e",
+      "to": "nextIterationBucket",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
       "confidence": "reviewed"
     },
     {
@@ -2465,6 +2598,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qn.field_c:Lob;",
+      "originalName": "field_c",
+      "to": "loadingSoundCache",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rb.field_f:[B",
       "originalName": "field_f",
       "to": "payload",
@@ -2542,6 +2682,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:tg.field_a:[Lap;",
+      "originalName": "field_a",
+      "to": "musicTracks",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:to.field_r:Lga;",
       "originalName": "field_r",
       "to": "lastScoreSubmission",
@@ -2560,6 +2707,13 @@
       "originalName": "field_l",
       "to": "menuActions",
       "evidence": "Reviewed menu registration, key/pointer snapshots, transition dispatch, instructions and HUD score consumers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ub.field_f:Lgk;",
+      "originalName": "field_f",
+      "to": "vorbisSoundArchive",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -2710,6 +2864,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wi.field_a:Lgk;",
+      "originalName": "field_a",
+      "to": "gameSpriteArchive",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wm.field_g:I",
       "originalName": "field_g",
       "to": "remainingTicks",
@@ -2728,6 +2889,27 @@
       "originalName": "field_k",
       "to": "pickupCode",
       "evidence": "Pickup initialization, weapon/upgrade dispatch in collection path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wt.field_f:Lwt;",
+      "originalName": "field_f",
+      "to": "previousSecondaryNode",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wt.field_i:J",
+      "originalName": "field_i",
+      "to": "secondaryKey",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wt.field_j:Lwt;",
+      "originalName": "field_j",
+      "to": "nextSecondaryNode",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
       "confidence": "reviewed"
     },
     {
@@ -3585,10 +3767,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:AceOfSkies.a(BZ)Z",
+      "originalName": "a",
+      "to": "advanceResourceLoading",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:AceOfSkies.a(I)V",
+      "originalName": "a",
+      "to": "initializeClient",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:AceOfSkies.c(I)V",
+      "originalName": "c",
+      "to": "updateClient",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:AceOfSkies.d(I)V",
+      "originalName": "d",
+      "to": "releaseClientStatics",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:AceOfSkies.e(I)V",
       "originalName": "e",
       "to": "renderGame",
       "evidence": "Obtains current renderer, draws session and menu layers, and presents the frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:AceOfSkies.f(I)V",
+      "originalName": "f",
+      "to": "shutdownClient",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:AceOfSkies.g(B)V",
+      "originalName": "g",
+      "to": "initializeGameResources",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -3666,6 +3890,20 @@
       "originalName": "a",
       "to": "isCurrentPlayerName",
       "evidence": "Reviewed query factory, client packet serialization/response decoder, acknowledgement routing and highscore result matching; same shared roles as GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.a(IFLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "setLoadingProgress",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.a(I)V",
+      "originalName": "a",
+      "to": "createRendererResources",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -3914,6 +4152,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nk.a(BLgk;Lgk;)V",
+      "originalName": "a",
+      "to": "decodeMenuResources",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nk.a(I)V",
       "originalName": "a",
       "to": "handleNavigationKey",
@@ -4068,6 +4313,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ob.a(II[II)Lal;",
+      "originalName": "a",
+      "to": "getVorbisSampleByGroup",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.a(I[IB)Lal;",
+      "originalName": "a",
+      "to": "getVorbisSample",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.a(I[III)Lal;",
+      "originalName": "a",
+      "to": "getSynthesizedSampleByGroup",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.a([IIB)Lal;",
+      "originalName": "a",
+      "to": "getSynthesizedSample",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ok.a(IIIIIII)V",
       "originalName": "a",
       "to": "spawnBurst",
@@ -4086,6 +4359,48 @@
       "originalName": "a",
       "to": "spawnGrowingSprite",
       "evidence": "Reviewed FlightSession HUD/world rendering, particle integration, asset loading and spawn/update consumers; native fixtures preserve arithmetic and pool behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Lgk;BLgk;Lgk;)V",
+      "originalName": "a",
+      "to": "decodeGameImagesAndFonts",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ph.a(BJ)Lwf;",
+      "originalName": "a",
+      "to": "findByKey",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ph.a(I)Lwf;",
+      "originalName": "a",
+      "to": "nextForIteration",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ph.a(IJLwf;)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ph.a(Z)Lwf;",
+      "originalName": "a",
+      "to": "firstForIteration",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ph.b(I)V",
+      "originalName": "b",
+      "to": "clearFromBucket",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
       "confidence": "reviewed"
     },
     {
@@ -4607,6 +4922,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:te.a(I)V",
+      "originalName": "a",
+      "to": "resetFrameTiming",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tp.a(Lrf;)V",
       "originalName": "a",
       "to": "removeSubstream",
@@ -4621,10 +4943,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vb.a(I)V",
+      "originalName": "a",
+      "to": "initializeClient",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.c(I)V",
+      "originalName": "c",
+      "to": "updateClient",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.d(I)V",
+      "originalName": "d",
+      "to": "releaseClientStatics",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vb.e(I)V",
       "originalName": "e",
       "to": "renderGame",
       "evidence": "Obtains current renderer, draws session and menu layers, and presents the frame. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.f(I)V",
+      "originalName": "f",
+      "to": "shutdownClient",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -4670,6 +5020,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wt.d(I)V",
+      "originalName": "d",
+      "to": "unlinkSecondaryNode",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:za.a(I[IIIIIB)V",
       "originalName": "a",
       "to": "registerMenuLayout",
@@ -4677,10 +5034,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:AceOfSkies.a(BZ)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:AceOfSkies.a(BZ)Z#1",
+      "originalName": "param1",
+      "to": "initializeAfterDownload",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:AceOfSkies.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:AceOfSkies.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:AceOfSkies.d(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:AceOfSkies.e(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Obtains current renderer, draws session and menu layers, and presents the frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:AceOfSkies.f(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:AceOfSkies.g(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -4880,6 +5286,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:fh.a(IFLjava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fh.a(IFLjava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "percent",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:fh.a(IFLjava/lang/String;)V#2",
+      "originalName": "param2",
+      "to": "message",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ga.<init>(IIIIII[I)V#0",
       "originalName": "param0",
       "to": "firstShortValue",
@@ -4926,6 +5353,13 @@
       "originalName": "param6",
       "to": "scores",
       "evidence": "Reviewed query factory, client packet serialization/response decoder, acknowledgement routing and highscore result matching; same shared roles as GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ga.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -5426,6 +5860,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nk.a(BLgk;Lgk;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(BLgk;Lgk;)V#1",
+      "originalName": "param1",
+      "to": "spriteArchive",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(BLgk;Lgk;)V#2",
+      "originalName": "param2",
+      "to": "fontMetricsArchive",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:nk.a(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -5776,6 +6231,118 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ob.<init>(Lgk;Lgk;)V#0",
+      "originalName": "param0",
+      "to": "synthesizedSoundArchive",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.<init>(Lgk;Lgk;)V#1",
+      "originalName": "param1",
+      "to": "vorbisSoundArchive",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.a(II[II)Lal;#0",
+      "originalName": "param0",
+      "to": "groupId",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.a(II[II)Lal;#1",
+      "originalName": "param1",
+      "to": "fileId",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.a(II[II)Lal;#2",
+      "originalName": "param2",
+      "to": "remainingByteBudget",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.a(II[II)Lal;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.a(I[IB)Lal;#0",
+      "originalName": "param0",
+      "to": "sampleId",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.a(I[IB)Lal;#1",
+      "originalName": "param1",
+      "to": "remainingByteBudget",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.a(I[IB)Lal;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.a(I[III)Lal;#0",
+      "originalName": "param0",
+      "to": "fileId",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.a(I[III)Lal;#1",
+      "originalName": "param1",
+      "to": "remainingByteBudget",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.a(I[III)Lal;#2",
+      "originalName": "param2",
+      "to": "groupId",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.a(I[III)Lal;#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.a([IIB)Lal;#0",
+      "originalName": "param0",
+      "to": "remainingByteBudget",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.a([IIB)Lal;#1",
+      "originalName": "param1",
+      "to": "sampleId",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ob.a([IIB)Lal;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ok.a(IIIIIII)V#0",
       "originalName": "param0",
       "to": "yAccelerationQ8",
@@ -5962,6 +6529,97 @@
       "originalName": "param6",
       "to": "yQ8",
       "evidence": "Reviewed FlightSession HUD/world rendering, particle integration, asset loading and spawn/update consumers; native fixtures preserve arithmetic and pool behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pe.a(Lgk;BLgk;Lgk;)V#0",
+      "originalName": "param0",
+      "to": "fontMetricsArchive",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pe.a(Lgk;BLgk;Lgk;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pe.a(Lgk;BLgk;Lgk;)V#2",
+      "originalName": "param2",
+      "to": "sharedSpriteArchive",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pe.a(Lgk;BLgk;Lgk;)V#3",
+      "originalName": "param3",
+      "to": "gameSpriteArchive",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ph.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "bucketCount",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ph.a(BJ)Lwf;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ph.a(BJ)Lwf;#1",
+      "originalName": "param1",
+      "to": "key",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ph.a(I)Lwf;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ph.a(IJLwf;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ph.a(IJLwf;)V#1",
+      "originalName": "param1",
+      "to": "key",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ph.a(IJLwf;)V#2",
+      "originalName": "param2",
+      "to": "node",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ph.a(Z)Lwf;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ph.b(I)V#0",
+      "originalName": "param0",
+      "to": "firstBucket",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
       "confidence": "reviewed"
     },
     {
@@ -7197,6 +7855,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:te.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:tp.a(Lrf;)V#0",
       "originalName": "param0",
       "to": "stream",
@@ -7211,10 +7876,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vb.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vb.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vb.d(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vb.e(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Obtains current renderer, draws session and menu layers, and presents the frame. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vb.f(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -7330,6 +8023,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:wt.d(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:za.a(I[IIIIIB)V#0",
       "originalName": "param0",
       "to": "rowSpacing",
@@ -7394,10 +8094,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-aceofskies-rules.mjs": "50e310f1415190c2a84accf2e08a768d2101c389b71b8b4710b21b3750f72eb5",
+      "build-aceofskies-rules.mjs": "ba06c7335b9eadc088c600e5c10eeddb2ac45f2ae42654b341ae2ef268bc0d93",
       "reproduce-aceofskies.mjs": "52beddb283ae2c5e91461d2e696de92b83b07de1f5db1491c26999469bda4599",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
-      "tests/test-aceofskies-core.mjs": "af49bb26f711dab151fe2f31ec05279c656e70cd22c13c233deaa8c5d65d9746",
+      "tests/test-aceofskies-core.mjs": "eb7831b9515828aaef867bc6c1f36c7cdcabc2aaecff9c47ff6f757c8af2f451",
       "tests/test-aceofskies-highscores.mjs": "b618fac7ada593f873c027db1442b0b09eb1657b771da272568bf3fada4913e0",
       "tests/test-aceofskies-hud.mjs": "3635d93e5db62a95f9ba2848576766ce382f137a0c2a1e5c14c2523581895ba6",
       "reconstruct-aceofskies.mjs": "e19eae36084d29e4e3282d0d58c5399a454fe7dea0479b6883752b1ecf0c15b3",

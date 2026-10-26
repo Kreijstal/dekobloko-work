@@ -52,16 +52,43 @@ vector, packet, deque and pool fixtures compare raw/named behavior against
 independent expectations; complete binding and compilation checks cover every
 source. Full client rendering and server compatibility remain separate checks.
 
-The current Ace pass names 41 classes and 998 symbols, including flight-loop
+The current Ace pass names 43 classes and 1,098 symbols, including flight-loop
 locals, targets, camera movement, lives, weapon heat/cooldown, gun patterns,
 menu input/navigation, hit testing, transitions and HUD score/multiplier state.
 All 545 source files compile before and after naming; 208,927 symbol bindings
-and 124 label bindings agree. Native raw/named traces agree on 13,215 assertions,
+and 124 label bindings agree. Native raw/named traces agree on 13,401 assertions,
 including aircraft construction, bullet spawning, single-period flight
 boundaries, packet bytes, intrusive transfers, pool swaps and menu geometry.
 Menu tests preserve the initial press frame's immediate countdown decrement,
 held-button ownership, press edges, half-open item bounds, disabled instruction
 buttons, alternate highscore layouts and ungrouped negative numbers.
+
+The shared collection roles now include `DualLinkNode` and
+`IntrusiveNodeHashTable`, consistent with GeoBlox's reviewed implementations.
+The bucketed table exposes lookup, insertion/transfer, bucket-order traversal
+and `clearFromBucket`; its integer argument is an actual starting bucket.
+Secondary-node unlinking leaves the independent primary links intact.
+Fixtures cover long-key collisions, duplicate-key order, iteration, transfers,
+clearing and ownership across both link sets. These are matching engine roles;
+game-specific static helpers and different signatures remain in each game.
+
+The applet hooks now expose `initializeClient`, `updateClient`, `shutdownClient`
+and `releaseClientStatics`, including their resolved base-class declarations.
+`initializeGameResources` opens the game archives, and
+`advanceResourceLoading` exposes download readiness, sound-cache creation,
+music decoding/patch preparation, sprite/font decoding and renderer creation.
+Archive fields distinguish shared/game sprites, font metrics, synthesized
+sounds, Vorbis samples, music patches and tracks. The inter-stage
+`resetFrameTiming` calls reset clock/history and pending ticks; they do not
+request garbage collection. `loadingPercent` and `loadingMessage` name the
+reported progress state. These changes rename the original stages without
+changing their ordering or guard behavior.
+
+`SoundCache` names its separate archives and pending/decoded sample caches.
+Native cache fixtures check the separate synthesized/Vorbis key namespaces,
+identity-preserving reuse before the byte-budget check and exhausted-budget
+misses without archive access. They do not exercise actual compressed-sample
+decoding or the whole loading pipeline.
 
 Flight controls, classic/arcade waves, purchase/upgrade flow, respawn state,
 world/HUD/radar rendering entry points and queued `HudMessage` text now have
@@ -147,7 +174,7 @@ Compiler validation includes 192 native Object/concrete-reference snapshot
 cases across effects, thrown objects, catch/finally and monitor release, plus
 44 original-bytecode/decompiled-Java constructor-argument cases. The emitter
 suite passes 68 tests with one existing skip. The combined catch-copy/emitter/exception-table validation passes 74 tests with one existing skip (plus five assembler assertions). Ace also compares its complete
-13,215-check core trace against the historical pre-reconstruction Java, in
+13,401-check core trace against the historical pre-reconstruction Java, in
 addition to the prepared-raw/named comparison. This is historical-source
 coverage; only the selected HUD has the separate original-game-bytecode oracle.
 
@@ -192,7 +219,7 @@ The current method-recovery compiler source archive SHA-256 is
 by archiving commit `2d79b0d0736003c9f5da1faaf8763149bb3700b1` the same way.
 The verified prepared raw tree SHA-256 is
 `a2ef6e1c05499a488d98e50ec6faddff758c28a030ab9660cfcc93d140599e4c`; the
-named tree is `600db4a295148838dcd2970cbb229160a6a5cc21283622876c7173591e40acbe`.
+named tree is `c90831582108866b310f1e436b30bca50004c93dbdf04d94aba94c6217f50e1c`.
 The one current rule manifest/dictionary records both input identities,
 compiler pins, fixed gamepack identity, method-body hashes and verification.
 Dictionary reversal recovers all 545 prepared raw files; the unmodified base

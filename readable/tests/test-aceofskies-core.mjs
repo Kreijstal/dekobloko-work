@@ -128,6 +128,41 @@ close("bullet/y",bullet.${f('o','d','Lkc;')}.${f('kc','b','D')},20+Math.sin(side
 check("bullet/source-position-x",plane.${f('o','d','Lkc;')}.${f('kc','a','D')},10.0);
 }
 }
+static void sharedCollectionsAndSoundCache()throws Exception{
+for(int buckets:new int[]{1,2,4,8,64}){
+${c('ph')} table=new ${c('ph')}(buckets),destination=new ${c('ph')}(buckets);
+long[] keys={0,Long.MIN_VALUE,1,-1,7,7,Long.MAX_VALUE,64};${c('wf')}[] nodes=new ${c('wf')}[keys.length];
+for(int i=0;i<keys.length;i++){nodes[i]=new ${c('wf')}();table.${m('ph','a','(IJLwf;)V')}(105,keys[i],nodes[i]);}
+for(int i=0;i<keys.length;i++){int first=i;for(int j=0;j<i;j++)if(keys[j]==keys[i]){first=j;break;}check("hash/lookup",table.${m('ph','a','(BJ)Lwf;')}((byte)106,keys[i])==nodes[first],true);}
+check("hash/missing",table.${m('ph','a','(BJ)Lwf;')}((byte)106,123456789L)==null,true);
+List<${c('wf')}> order=new ArrayList<>();for(int bucket=0;bucket<buckets;bucket++)for(int i=0;i<keys.length;i++)if((keys[i]&(buckets-1))==bucket)order.add(nodes[i]);
+${c('wf')} entry=table.${m('ph','a','(Z)Lwf;')}(false);for(${c('wf')} expected:order){check("hash/iteration",entry==expected,true);entry=table.${m('ph','a','(I)Lwf;')}(0);}check("hash/iteration-end",entry==null,true);
+nodes[4].${m('wf','c','(I)V')}(-123);check("hash/duplicate-next",table.${m('ph','a','(BJ)Lwf;')}((byte)106,7)==nodes[5],true);
+destination.${m('ph','a','(IJLwf;)V')}(105,42,nodes[5]);check("hash/transferred-from",table.${m('ph','a','(BJ)Lwf;')}((byte)106,7)==null,true);check("hash/transferred-to",destination.${m('ph','a','(BJ)Lwf;')}((byte)106,42)==nodes[5],true);check("hash/new-key",nodes[5].${f('wf','b','J')},42L);
+table.${m('ph','b','(I)V')}(0);check("hash/cleared",table.${m('ph','a','(Z)Lwf;')}(false)==null,true);for(int i=0;i<nodes.length;i++)check("hash/clear-ownership",nodes[i].${m('wf','b','(B)Z')}((byte)100),i==5);
+destination.${m('ph','b','(I)V')}(0);check("hash/destination-cleared",nodes[5].${m('wf','b','(B)Z')}((byte)100),false);
+}
+${c('wt')} sentinel=new ${c('wt')}(),first=new ${c('wt')}(),second=new ${c('wt')}();
+sentinel.${f('wt','j','Lwt;')}=first;first.${f('wt','j','Lwt;')}=second;second.${f('wt','j','Lwt;')}=sentinel;
+sentinel.${f('wt','f','Lwt;')}=second;second.${f('wt','f','Lwt;')}=first;first.${f('wt','f','Lwt;')}=sentinel;
+${c('kp')} primary=new ${c('kp')}();primary.${m('kp','a','(ILwf;)V')}(100,first);primary.${m('kp','a','(ILwf;)V')}(100,second);
+first.${m('wt','d','(I)V')}(-128);check("dual/unlink-forward",sentinel.${f('wt','j','Lwt;')}==second,true);check("dual/unlink-backward",second.${f('wt','f','Lwt;')}==sentinel,true);check("dual/secondary-cleared",first.${f('wt','j','Lwt;')}==null&&first.${f('wt','f','Lwt;')}==null,true);check("dual/primary-retained",first.${m('wf','b','(B)Z')}((byte)100),true);
+first.${m('wt','d','(I)V')}(-128);check("dual/repeated-unlink",sentinel.${f('wt','j','Lwt;')}==second,true);
+primary.${m('kp','c','(I)V')}(268435455);check("dual/primary-cleared",second.${m('wf','b','(B)Z')}((byte)100),false);check("dual/secondary-retained",second.${f('wt','j','Lwt;')}==sentinel&&second.${f('wt','f','Lwt;')}==sentinel,true);
+second.${m('wt','d','(I)V')}(-128);check("dual/empty-secondary-ring",sentinel.${f('wt','j','Lwt;')}==sentinel&&sentinel.${f('wt','f','Lwt;')}==sentinel,true);
+${c('ob')} cache=new ${c('ob')}(null,null);${c('ph')} pcm=(${c('ph')})field(${c('ob')}.class,"${f('ob','b','Lph;')}").get(cache);
+${c('al')} synthesized=new ${c('al')}(22050,new byte[]{1,2},0,2),vorbis=new ${c('al')}(44100,new byte[]{3,4,5},0,3);
+// The two decoders use separate key namespaces for the same group/file pair.
+pcm.${m('ph','a','(IJLwf;)V')}(105,0L,synthesized);pcm.${m('ph','a','(IJLwf;)V')}(105,4294967296L,vorbis);
+for(int remaining:new int[]{-1,0,1,100}){int[] budget={remaining};
+check("cache/synthesized-identity",call(cache,"${m('ob','a','(I[III)Lal;')}",new Class<?>[]{int.class,int[].class,int.class,int.class},0,budget,0,-58)==synthesized,true);
+check("cache/vorbis-identity",call(cache,"${m('ob','a','(II[II)Lal;')}",new Class<?>[]{int.class,int.class,int[].class,int.class},0,0,budget,1452176260)==vorbis,true);check("cache/hit-retains-budget",budget[0],remaining);
+}
+for(int remaining:new int[]{-1,0}){int[] budget={remaining};
+check("cache/synthesized-exhausted-miss",call(cache,"${m('ob','a','(I[III)Lal;')}",new Class<?>[]{int.class,int[].class,int.class,int.class},1,budget,0,-58)==null,true);
+check("cache/vorbis-exhausted-miss",call(cache,"${m('ob','a','(II[II)Lal;')}",new Class<?>[]{int.class,int.class,int[].class,int.class},0,1,budget,1452176260)==null,true);check("cache/miss-retains-budget",budget[0],remaining);
+}
+}
 static void pools()throws Exception{
 Class<?> session=Class.forName("${c('pk')}"),smoke=Class.forName("${c('qf')}"),particle=Class.forName("${c('ok')}");Object game=unsafe.allocateInstance(session);
 for(int count:new int[]{1,2,7})for(int index=0;index<count;index++){
@@ -396,7 +431,7 @@ check("render/argb-blend",call(session,"${m('pk','b','(IIII)I')}",new Class<?>[]
 }
 
 ${highscoreProbe(c, f, m)}
-public static void main(String[] args)throws Exception{Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();pools();menus();highscores();flightControls();flightUpgrades();flightWaves();hudMessageTiming();visualParticles();hudAndSpatialState();System.out.println("checks:"+checks);}
+public static void main(String[] args)throws Exception{Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();sharedCollectionsAndSoundCache();pools();menus();highscores();flightControls();flightUpgrades();flightWaves();hudMessageTiming();visualParticles();hudAndSpatialState();System.out.println("checks:"+checks);}
 }
 `);
     const root = readable ? named : input, argsFile = path.join(directory, 'sources.args');
@@ -419,6 +454,6 @@ public static void main(String[] args)throws Exception{Field u=Unsafe.class.getD
   return {checks, rawNamedIdentical: true, historicalSourceCoreIdentical: true, independentExpectations: true,
     headlessClientBoundary: true, vectorAndFlightFixtures: true, packetAndDequeFixtures: true,
     aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true, highscoreProtocolFixtures: true, flightControlsUpgradesAndWavesFixtures: true, hudMessageTimingFixtures: true, exactSeededWaveTrace: true, visualParticleHudAndSpatialFixtures: true,
-    traceSha256: digest(outputs[0]),
+    sharedHashTableDualLinksAndSoundCacheFixtures: true, traceSha256: digest(outputs[0]),
     ...(extraVerification ? extraVerification(path.join(temporary, 'raw-core/classes')) : {})};
 }

@@ -10,6 +10,8 @@ import {verifyAceHud} from './tests/test-aceofskies-hud.mjs';
 // Every identity below belongs to the pinned Ace export. Similar names in
 // other games are corroborating role evidence, never copied obfuscated IDs.
 const classes = {
+  wt: ['DualLinkNode', 'Same shared role as GeoBlox DualLinkNode: an IntrusiveNode with an independent secondary key/link pair and secondary-only unlink.'],
+  ph: ['IntrusiveNodeHashTable', 'Same shared role as GeoBlox IntrusiveNodeHashTable: power-of-two bucket sentinels, key lookup, node transfer, bucket-order traversal and clearing.'],
   tb: ['HudMessage', 'Intrusive queued text with age, fade-in/hold/fade-out phases, colour and font rendering.'],
   tp: ['PcmStreamMixer', 'Shared PCM substream mixer with intrusive stream/listener queues and scheduled listener boundaries; same role as GeoBlox PcmStreamMixer.'],
   pk: ['FlightSession', 'Owns the player, aircraft array, bullets, pickups and effects; initializes, advances and draws a session.'],
@@ -195,6 +197,57 @@ field('AceOfSkies', 'G', 'Z', 'obfuscationControl', 'Shared opaque branch-contro
 field('sg', 'c', 'Lpk;', 'flightSession', 'Client loading allocates this session; update and render dispatch to it.');
 method('AceOfSkies', 'q', '(I)V', 'advanceGame', ['obfuscationGuard'], 'Dispatches session update and active menu transitions.');
 method('AceOfSkies', 'e', '(I)V', 'renderGame', ['obfuscationGuard'], 'Obtains current renderer, draws session and menu layers, and presents the frame.');
+const loadingEvidence = 'Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.';
+for (const [owner, original, type, to] of [
+  ['hg','x','Lgk;','sharedSpriteArchive'], ['fg','t','Lgk;','sharedFontMetricsArchive'],
+  ['wi','a','Lgk;','gameSpriteArchive'], ['iq','e','Lgk;','gameFontMetricsArchive'],
+  ['jk','b','Lgk;','synthesizedSoundArchive'], ['ub','f','Lgk;','vorbisSoundArchive'],
+  ['ot','b','Lgk;','musicPatchArchive'], ['od','x','Lgk;','musicTrackArchive'],
+  ['qn','c','Lob;','loadingSoundCache'], ['tg','a','[Lap;','musicTracks'],
+  ['ct','I','F','loadingPercent'], ['dq','b','Ljava/lang/String;','loadingMessage'],
+]) field(owner, original, type, to, loadingEvidence);
+for (const [owner, original, descriptor, to, names] of [
+  ['AceOfSkies','a','(BZ)Z','advanceResourceLoading',['obfuscationGuard','initializeAfterDownload']],
+  ['AceOfSkies','g','(B)V','initializeGameResources',['obfuscationGuard']],
+  ['AceOfSkies','a','(I)V','initializeClient',['obfuscationGuard']],
+  ['AceOfSkies','c','(I)V','updateClient',['obfuscationGuard']],
+  ['AceOfSkies','f','(I)V','shutdownClient',['obfuscationGuard']],
+  ['AceOfSkies','d','(I)V','releaseClientStatics',['obfuscationGuard']],
+  ['pe','a','(Lgk;BLgk;Lgk;)V','decodeGameImagesAndFonts',['fontMetricsArchive','obfuscationGuard','sharedSpriteArchive','gameSpriteArchive']],
+  ['nk','a','(BLgk;Lgk;)V','decodeMenuResources',['obfuscationGuard','spriteArchive','fontMetricsArchive']],
+  ['ga','a','(I)V','createRendererResources',['obfuscationGuard']],
+  ['fh','a','(IFLjava/lang/String;)V','setLoadingProgress',['obfuscationGuard','percent','message']],
+  ['te','a','(I)V','resetFrameTiming',['obfuscationGuard']],
+]) method(owner, original, descriptor, to, names, loadingEvidence);
+
+const sharedCollectionEvidence = 'Reviewed sentinel construction, bucket masking, insertion/unlink, lookup and traversal; secondary links are independent of IntrusiveNode links. Matching roles are also present in GeoBlox.';
+for (const [owner, original, type, to] of [
+  ['wt','f','Lwt;','previousSecondaryNode'], ['wt','j','Lwt;','nextSecondaryNode'], ['wt','i','J','secondaryKey'],
+  ['ph','d','[Lwf;','bucketSentinels'], ['ph','b','I','bucketCount'], ['ph','a','Lwf;','lookupCursor'],
+  ['ph','c','Lwf;','iterationCursor'], ['ph','e','I','nextIterationBucket'],
+]) field(owner, original, type, to, sharedCollectionEvidence);
+for (const [owner, original, descriptor, to, names] of [
+  ['wt','d','(I)V','unlinkSecondaryNode',['obfuscationGuard']],
+  ['ph','<init>','(I)V','',['bucketCount']],
+  ['ph','a','(BJ)Lwf;','findByKey',['obfuscationGuard','key']],
+  ['ph','a','(IJLwf;)V','put',['obfuscationGuard','key','node']],
+  ['ph','a','(Z)Lwf;','firstForIteration',['obfuscationGuard']],
+  ['ph','a','(I)Lwf;','nextForIteration',['obfuscationGuard']],
+  ['ph','b','(I)V','clearFromBucket',['firstBucket']],
+]) method(owner, original, descriptor, to, names, sharedCollectionEvidence);
+
+const soundCacheEvidence = 'Reviewed SoundCache constructor, synthesized bj decoder versus incremental t Vorbis decoder, cache keys, PCM reuse and byte-budget consumption. The same shared audio roles occur in GeoBlox.';
+for (const [original, type, to] of [
+  ['h','Lgk;','synthesizedSoundArchive'], ['a','Lgk;','vorbisSoundArchive'],
+  ['g','Lph;','vorbisSampleCache'], ['b','Lph;','pcmSampleCache'],
+]) field('ob', original, type, to, soundCacheEvidence);
+for (const [original, descriptor, to, names] of [
+  ['<init>','(Lgk;Lgk;)V','',['synthesizedSoundArchive','vorbisSoundArchive']],
+  ['a','(I[IB)Lal;','getVorbisSample',['sampleId','remainingByteBudget','obfuscationGuard']],
+  ['a','(II[II)Lal;','getVorbisSampleByGroup',['groupId','fileId','remainingByteBudget','obfuscationGuard']],
+  ['a','([IIB)Lal;','getSynthesizedSample',['remainingByteBudget','sampleId','obfuscationGuard']],
+  ['a','(I[III)Lal;','getSynthesizedSampleByGroup',['fileId','remainingByteBudget','groupId','obfuscationGuard']],
+]) method('ob', original, descriptor, to, names, soundCacheEvidence);
 for (const [original, type, to] of [['i','Lgr;','input'], ['d','I','screenId'], ['a','I','previousActionId'],
   ['c','I','pendingClickX'], ['b','I','pendingClickY'], ['e','I','selectedAchievementId'], ['h','I','soundPreviewCooldown']])
   field('nk', original, type, to, 'Reviewed menu construction, action/hover dispatch, click consumption and achievement/volume rendering.');
@@ -434,7 +487,7 @@ for (const [owner, signature, locals] of [
     evidence: 'Reviewed lexical declaration and its data flow in the pinned Ace source.'};
 
 export const aceConfig = {
-  game: 'aceofskies', version: 5, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
+  game: 'aceofskies', version: 6, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
   workflowFiles: ['build-aceofskies-rules.mjs', 'reproduce-aceofskies.mjs', 'reviewed-game.mjs',
     'tests/test-aceofskies-core.mjs', 'tests/test-aceofskies-highscores.mjs', 'tests/test-aceofskies-hud.mjs', 'reconstruct-aceofskies.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
@@ -446,6 +499,7 @@ export const aceConfig = {
       'This directory is the single published Java tree. The scripts and reviewed rules live in dekobloko-work/readable; the current reverse dictionary is ../../decompilation/aceofskies-naming.json.', '',
       `This pass names ${Object.keys(classes).length} reviewed classes in ${mapping.files.length} source files. Unresolved roles keep their original names; renamed names have no opaque suffix.`, '',
       'Start at `AceOfSkies.advanceGame` → `FlightSession.advanceSession`. `startGame` creates the player and pools; its flag selects the literal arcade mode. `renderSession` draws through `GraphicsRenderer`. `Aircraft` retains its definition, target, pursuing aircraft, firing request and temporary weapon. `FlightBody` and `Vector2` expose the flight arithmetic. `Bullet`, `Pickup`, `SmokeParticle` and `ScreenParticle` are distinct pools.', '',
+      '`GameAppletShell` calls `initializeClient`, `updateClient`, `renderGame`, `shutdownClient` and `releaseClientStatics`. Ace opens its game archives in `initializeGameResources`; `advanceResourceLoading` first waits for archives, builds sound caches, decodes the three music tracks, prepares patches, decodes image/font data, creates renderer resources and finally allocates the session. `initializeAfterDownload` controls whether the archive-ready poll proceeds into initialization. The inter-stage `resetFrameTiming` calls reset the clock/history and pending tick count, rather than requesting garbage collection. `loadingPercent` and `loadingMessage` expose reported progress.', '',
       '`MenuScreen.open`, `advanceMenu`, `handleNavigationKey`, `handleAction`, `findItemAt` and `drawMenu` expose menu flow. `MenuInputState` distinguishes keyboard selection, pointer selection, press edges, held buttons and countdown state. The registered slots are 0 main menu, 1 pause, 2 highscores, 3 instructions, 4 achievements, 5 achievements this game, 6 logged-out result notice, and 7 settings. Menu action codes remain their original integers; action 0 starts classic play, 19 starts arcade play, 1 resumes, 3 opens instructions, 14 opens achievements, 2 opens highscores, 22 opens settings and 7 ends the game.', '',
       '`updatePlayerControls` exposes left/right press edges, double-tap braking and the overheat fire latch. The tick counter advances even in attract mode; a second turn press must be strictly fewer than 50 control ticks after the previous press. Releasing fire clears the latch without setting a new fire request. `lifecyclePhase` rises to 92 on living aircraft and falls toward 2 while destroyed aircraft animate; it is distinct from weapon heat.', '',
       '`startClassicWave` uses `classicWaveIndex` and `classicWaveCompositions`; `startArcadeWave` partitions a doubled wave budget using aircraft costs. Their type order differs, and the early classic type-3 definition changes after wave 10. `purchaseUpgrade` spends baseCost + upgradeCode only after acceptance. A fire-rate upgrade can increment its level and still return false when its fire interval is already 1; that edge behavior remains. `HudMessage` owns the queued text fade/hold/expiry phases.', '',
@@ -457,10 +511,12 @@ export const aceConfig = {
       'The shared engine roles match other games by reviewed behavior, not by short obfuscated spelling:', '',
       '| Ace | Existing counterpart | Evidence |', '| --- | --- | --- |',
       '| IntrusiveNode / IntrusiveDeque | GeoBlox IntrusiveNode / IntrusiveDeque | Independent node ownership, circular sentinel and forward/reverse links. |',
+      '| DualLinkNode / IntrusiveNodeHashTable | GeoBlox equivalents | Secondary links detach independently; hash buckets have circular sentinels, masked keys, duplicate-key lookup and bucket-order traversal. |',
       '| PacketBuffer / CipherPacketBuffer | Steel Sentinels PacketBuffer / CipherPacketBuffer | Byte payload/cursor, big-endian widths, ISAAC and bit cursor. |',
       '| ResourceArchive / ArchiveIndex / ArchiveProvider | Steel Sentinels equivalents | Packed/unpacked groups, versioned indexes, names/digests and provider progress. |',
       '| HighscoreQuery / ScoreSubmission / HighscoreNameEntry | GeoBlox equivalents | Query dimensions, three views, wrapping submission IDs, context words and unique-player name markers; Ace adds acknowledgement tokens. |',
       '| PcmSample / PcmSampleStream / MidiPcmStream | GeoBlox equivalents | Signed PCM storage, loop bounds, interpolation and MIDI channel/voice state. |', '',
+      '`SoundCache` separates synthesized and Vorbis archives, pending Vorbis samples and decoded PCM samples. Cache hits precede the byte-budget check; a completed sample remains reusable when the caller budget is exhausted. The shared collection fixtures check collisions, duplicate keys, bucket-order traversal, transfers and independence of primary versus secondary links.', '',
       'Shared role names do not assert byte-for-byte implementation equality. Different guards, signatures, static helper placement and graphics generations remain. Core fixtures exercise actual raw and named flight/vector, packet, collection and menu implementations, compare their traces and check independent expected results. Complete source compilation and resolved declaration/reference/override comparison cover every file. Reversal recovers the reconstructed raw source bytes.', '',
       'The replay reconstructs all 51 region-proved ordinary FlightSession methods directly from the fixed original bytecode. It preserves initialization and three methods handled by specialized emitters at the base source. Generic catch-copy cleanup removes the intermediate exception carrier only when every use is a copy inside the owning handler, while preserving the destination local and its written type. The current dictionary records every selected body hash and original-edge certificate checks.', '',
       'The current generic compiler also removes unread typed reference stack snapshots. This drops null placeholders from final-score construction without discarding live references, moving allocations or suppressing argument effects. The full native core trace matches both the historical source and reconstructed source before naming.', '',
