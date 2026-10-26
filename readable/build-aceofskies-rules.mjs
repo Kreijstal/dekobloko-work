@@ -10,6 +10,8 @@ import {verifyAceHud} from './tests/test-aceofskies-hud.mjs';
 // Every identity below belongs to the pinned Ace export. Similar names in
 // other games are corroborating role evidence, never copied obfuscated IDs.
 const classes = {
+  tb: ['HudMessage', 'Intrusive queued text with age, fade-in/hold/fade-out phases, colour and font rendering.'],
+  tp: ['PcmStreamMixer', 'Shared PCM substream mixer with intrusive stream/listener queues and scheduled listener boundaries; same role as GeoBlox PcmStreamMixer.'],
   pk: ['FlightSession', 'Owns the player, aircraft array, bullets, pickups and effects; initializes, advances and draws a session.'],
   md: ['Aircraft', 'FlightBody subclass with aircraft definition, hit points, targeting, firing and steering state.'],
   gb: ['AircraftDefinition', 'Constructor retains aircraft speed/turn/health/weapon dimensions; instances select aircraft sprites and engine samples.'],
@@ -247,6 +249,58 @@ method('eu', 'a', '(BIZ)V', 'requestMenu', ['obfuscationGuard', 'screenId', 'poi
 method('za', 'a', '(I[IIIIIB)V', 'registerMenuLayout', ['rowSpacing', 'actions', 'top', 'left', 'screenId', 'right', 'obfuscationGuard'],
   'Stores the action table and exact per-screen layout arrays.');
 
+// Flight controls and wave/purchase state retain the original integer scales.
+const flightEvidence = 'Reviewed player control, wave generation, death/respawn, upgrade purchase and rendering consumers in FlightSession; native fixtures retain boundary behavior.';
+for (const [owner, original, type, to] of [
+  ['md','p','Z','braking'], ['md','t','I','lifecyclePhase'], ['md','w','I','aimStallTicks'],
+  ['pk','M','I','controlTick'], ['pk','T','I','lastLeftPressTick'], ['pk','ib','I','lastRightPressTick'],
+  ['pk','U','Z','leftHeldLastTick'], ['pk','rb','Z','rightHeldLastTick'], ['pk','mb','I','doubleTapTurnDirection'],
+  ['pk','B','Z','overheatFireLatch'], ['pk','D','Lkc;','scratchPosition'],
+  ['pk','s','I','classicWaveIndex'], ['pk','xb','I','completedWaveCount'], ['pk','p','I','upgradeCredits'],
+  ['pk','lb','I','victoryCountdown'], ['pk','jb','I','respawnInvulnerabilityTicks'], ['pk','ub','I','respawnDelayTicks'],
+  ['pk','m','Z','noLivesLost'], ['pk','h','I','musicLayerPresetIndex'], ['pk','ob','Z','alternateMusicActive'],
+  ['pk','l','I','timedSpriteEffectCount'], ['pk','W','Z','manualMusicLayers'], ['pk','j','Z','debugControlsEnabled'],
+  ['lp','a','[Z','heldKeys'], ['ci','i','Ljava/util/Random;','gameRandom'],
+  ['gh','j','Lgb;','playerDefinition'], ['ub','h','Lgb;','basePlayerDefinition'],
+  ['ip','a','[[I','classicWaveCompositions'], ['oe','f','[Ljava/lang/String;','classicWaveMessages'],
+  ['sd','d','[[Z','musicLayerPresets'], ['wd','t','Lkp;','hudMessages'],
+  ['uh','g','[Lal;','upgradeSounds'], ['ae','h','[Ljava/lang/String;','upgradeLabels'],
+  ['qn','b','Ltp;','pcmMixer'], ['di','M','Lkp;','activeSoundPlaybacks'], ['lj','c','[Lal;','aircraftEngineSamples'],
+]) field(owner, original, type, to, flightEvidence);
+for (const [original, descriptor, to, names] of [
+  ['b','(B)V','updatePlayerControls',['obfuscationGuard']],
+  ['a','(B)V','handleKeyEvent',['obfuscationGuard']],
+  ['f','(I)V','startClassicWave',['obfuscationGuard']],
+  ['a','(BI)V','startArcadeWave',['obfuscationGuard','waveNumber']],
+  ['b','(BI)Lgb;','getArcadeAircraftDefinition',['obfuscationGuard','typeIndex']],
+  ['a','(II)V','purchaseUpgrade',['baseCost','upgradeCode']],
+  ['a','(I)V','spawnWingman',['obfuscationGuard']],
+  ['e','(II)V','addScore',['points','obfuscationGuard']],
+  ['a','(ZLmd;)V','advanceDestroyedAircraft',['obfuscationGuard','aircraft']],
+  ['a','(Z)V','stopAircraftEngineSounds',['obfuscationGuard']],
+  ['c','(B)V','startAttractMode',['obfuscationGuard']],
+  ['e','(I)V','resumeGame',['obfuscationGuard']],
+  ['h','(I)V','drawWorld',['obfuscationGuard']],
+  ['a','(Lha;I)V','drawHud',['renderer','obfuscationGuard']],
+  ['a','(Lha;II)V','drawRadar',['renderer','insetOffset','obfuscationGuard']],
+  ['a','(IBLjava/lang/String;)V','queueHudMessage',['colour','obfuscationGuard','text']],
+  ['a','(IBILjava/lang/String;)V','queueTimedHudMessage',['holdTicks','obfuscationGuard','colour','text']],
+  ['b','(I)V','setMusicLayersImmediately',['obfuscationGuard']],
+  ['b','(II)V','fadeMusicLayers',['obfuscationGuard','volumeStep']],
+  ['a','(ZI)V','removePickup',['obfuscationGuard','index']],
+  ['d','(II)V','removeBullet',['obfuscationGuard','index']],
+  ['f','(II)V','removeTimedSpriteEffect',['index','obfuscationGuard']],
+]) method('pk', original, descriptor, to, names, flightEvidence);
+for (const [original, type, to] of [['i','I','ageTicks'], ['f','I','fadeInTicks'], ['h','I','holdTicks'],
+  ['l','I','fadeOutTicks'], ['j','I','colour'], ['k','Ljava/lang/String;','text']])
+  field('tb', original, type, to, 'HudMessage constructor, phase comparisons, alpha/vertical interpolation and queued message callers.');
+method('tb','<init>','(Ljava/lang/String;I)V','',['text','colour'],flightEvidence);
+method('tb','<init>','(Ljava/lang/String;II)V','',['text','colour','holdTicks'],flightEvidence);
+method('tb','a','(I)Z','advanceAndIsExpired',['obfuscationGuard'], 'Increments message age, then compares with fade-in + hold + fade-out using strict greater-than.');
+method('tb','d','(I)V','draw',['exitBottomOffset'], 'Three text drawing phases, preserving the original fixed entry/hold positions and caller-provided exit offset.');
+method('tp','b','(Lrf;)V','addSubstream',['stream'],'Adds a PCM substream to the mixer intrusive list under synchronization.');
+method('tp','a','(Lrf;)V','removeSubstream',['stream'],'Unlinks a mixer PCM substream under synchronization.');
+
 // Shared highscore transport, verified from encoding/decoding and UI consumers.
 const highscoreEvidence = 'Reviewed query factory, client packet serialization/response decoder, acknowledgement routing and highscore result matching; same shared roles as GeoBlox.';
 for (const [owner, original, type, to] of [
@@ -284,6 +338,13 @@ for (const [owner, original, descriptor, to, names] of [
 // Lexical ordinals bind each reviewed local to the exact pinned declaration.
 // Shared compiler temporaries stay unresolved instead of receiving false roles.
 for (const [owner, signature, locals] of [
+  ['pk', 'b(B)V', [[7,'var2','failure'], [8,'var3','obfuscationControl'], [9,'decompiledSharedTail0','fireKeyHeld']]],
+  ['pk', 'f(I)V', [[3,'var2','waveComposition'], [4,'var2_ref','failure'], [5,'var3','remainingPickupBudget']]],
+  ['pk', 'a(BI)V', [[8,'var6','aircraftCosts'], [9,'var7','remainingPickupCarriers'], [10,'var8','typeIndex'], [11,'var9','obfuscationControl']]],
+  ['pk', 'c(BI)Z', [[2,'var3','failure'], [3,'var4','wingmanCount'], [4,'var5','aircraftToCount'],
+    [5,'var6','aircraftIndex'], [6,'var7','candidate'], [7,'var8','obfuscationControl'], [8,'var4Lifetime1','particleIndex']]],
+  ['pk', 'a(II)V', [[0,'var3_int','cost'], [2,'var3','failure']]],
+  ['pk', 'b(BI)Lgb;', [[0,'var3_int','selectedType'], [1,'var3','failure'], [2,'var4','obfuscationControl']]],
   ['ce', 'a(B)V', [[0,'var8_int','nameEntryIndex'], [4,'var19','rowIndex'],
     [10,'var2','responseKind'], [11,'var3','queryId'], [12,'var4','query'], [13,'var4_long','acknowledgementToken'],
     [14,'var5','nameEntryCount'], [15,'var6','entryLimit'], [16,'var6_ref_ga','submission'], [17,'var7','valuesPerEntry'],
@@ -344,6 +405,8 @@ export const aceConfig = {
       `This pass names ${Object.keys(classes).length} reviewed classes in ${mapping.files.length} source files. Unresolved roles keep their original names; renamed names have no opaque suffix.`, '',
       'Start at `AceOfSkies.advanceGame` → `FlightSession.advanceSession`. `startGame` creates the player and pools; its flag selects the literal arcade mode. `renderSession` draws through `GraphicsRenderer`. `Aircraft` retains its definition, target, pursuing aircraft, firing request and temporary weapon. `FlightBody` and `Vector2` expose the flight arithmetic. `Bullet`, `Pickup`, `SmokeParticle` and `ScreenParticle` are distinct pools.', '',
       '`MenuScreen.open`, `advanceMenu`, `handleNavigationKey`, `handleAction`, `findItemAt` and `drawMenu` expose menu flow. `MenuInputState` distinguishes keyboard selection, pointer selection, press edges, held buttons and countdown state. The registered slots are 0 main menu, 1 pause, 2 highscores, 3 instructions, 4 achievements, 5 achievements this game, 6 logged-out result notice, and 7 settings. Menu action codes remain their original integers; action 0 starts classic play, 19 starts arcade play, 1 resumes, 3 opens instructions, 14 opens achievements, 2 opens highscores, 22 opens settings and 7 ends the game.', '',
+      '`updatePlayerControls` exposes left/right press edges, double-tap braking and the overheat fire latch. The tick counter advances even in attract mode; a second turn press must be strictly fewer than 50 control ticks after the previous press. Releasing fire clears the latch without setting a new fire request. `lifecyclePhase` rises to 92 on living aircraft and falls toward 2 while destroyed aircraft animate; it is distinct from weapon heat.', '',
+      '`startClassicWave` uses `classicWaveIndex` and `classicWaveCompositions`; `startArcadeWave` partitions a doubled wave budget using aircraft costs. Their type order differs, and the early classic type-3 definition changes after wave 10. `purchaseUpgrade` spends baseCost + upgradeCode only after acceptance. A fire-rate upgrade can increment its level and still return false when its fire interval is already 1; that edge behavior remains. `HudMessage` owns the queued text fade/hold/expiry phases.', '',
       '`HighscoreQuery`, `ScoreSubmission` and `HighscoreNameEntry` share established roles with GeoBlox. `requestHighscores` deduplicates pending queries by queryId. `writeHighscoreQuery` and `writeScoreSubmission` preserve the original packet framing, context values and CRC32. `decodeHighscoreResponse` builds all/my/best-player views, completes and unlinks queries, and matches submission acknowledgements by a wrapping 16-bit ID. `findSubmittedScoreRow` checks the player name, server token and every score value. Ace packs its game score and accuracy as 100 * finalScore + finalAccuracyPercent; the four opaque context integers retain positional names rather than unsupported meanings.', '',
       '`drawRollingDigits` names settled/target values, animation countdown, leading-zero suppression and glyph banks. Displayed score/multiplier and their pending targets remain separate until their countdown reaches zero. The number formatter uses the retained separator and preserves ungrouped negative values.', '',
       'Angles in forward/polar motion use 256 units per full turn. `Vector2.angle255` preserves the separate original atan2 scaling by 255 / pi and its zero-vector value 255. `FlightBody.moveForward` subtracts sine/cosine motion and also decays headingOffset. `wrapWorld` retains its single-period boundary adjustments, including out-of-range results for positions multiple periods away. All guard parameters and unusual edge behavior remain.', '',

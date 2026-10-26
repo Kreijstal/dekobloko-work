@@ -52,16 +52,35 @@ vector, packet, deque and pool fixtures compare raw/named behavior against
 independent expectations; complete binding and compilation checks cover every
 source. Full client rendering and server compatibility remain separate checks.
 
-The current Ace pass names 39 classes and 705 symbols, including flight-loop
+The current Ace pass names 41 classes and 845 symbols, including flight-loop
 locals, targets, camera movement, lives, weapon heat/cooldown, gun patterns,
 menu input/navigation, hit testing, transitions and HUD score/multiplier state.
 All 545 source files compile before and after naming; 209,076 symbol bindings
-and 124 label bindings agree. Native raw/named traces agree on 4,535 assertions,
+and 124 label bindings agree. Native raw/named traces agree on 11,725 assertions,
 including aircraft construction, bullet spawning, single-period flight
 boundaries, packet bytes, intrusive transfers, pool swaps and menu geometry.
 Menu tests preserve the initial press frame's immediate countdown decrement,
 held-button ownership, press edges, half-open item bounds, disabled instruction
 buttons, alternate highscore layouts and ungrouped negative numbers.
+
+Flight controls, classic/arcade waves, purchase/upgrade flow, respawn state,
+world/HUD/radar rendering entry points and queued `HudMessage` text now have
+reviewed names. `PcmStreamMixer` shares the established engine role name. Native
+fixtures cover 576 turn/control-state combinations and 64 fire-latch cases,
+including the strict double-tap boundary, both turn keys held, bank clamps,
+overheat thresholds and releasing fire. The control clock still advances in
+attract mode. Aircraft `lifecyclePhase` is the 92-to-2 appearance/destruction
+phase, not weapon heat or a monotonically increasing age.
+
+Upgrade fixtures preserve level/cap/healing rules, credit charging and animation
+boundaries. In particular, fire interval 1 can reject an upgrade after its level
+already increments. Wave fixtures use fixed classic compositions (including the
+wave-10/11 definition change), four arcade budgets, type-order checks, spawn
+bounds and pickup carriers. The returned pickup budget may be negative.
+`HudMessage` expiry uses a strict comparison after incrementing its age.
+Fixtures use seeded randomness and silent samples through the actual in-memory
+mixer without creating an audio device or starting the applet. They establish
+these headless behaviors, not a full gameplay session or physical rendering.
 
 Ace also names the shared `HighscoreQuery`, `ScoreSubmission` and
 `HighscoreNameEntry` roles. Request/response methods now expose query
@@ -109,7 +128,7 @@ The HUD recovery compiler source archive SHA-256 is
 by archiving commit `c6f6a1e61b0088e882236d732145a84775fd9cb8` the same way.
 The verified prepared raw tree SHA-256 is
 `3feb47118078691ab11c03f0cd4a8914b574480aee7df4d375bbd4e273ded155`; the
-named tree is `444a2a4c4aaa0f0847b1ccdf0ba2fc11ed2f05a69d0987ea77dc6cfd644708ce`.
+named tree is `72c11207a02a03843d0d416a33e5613d2f1ceb92530f6c16696220ae8fd9cc56`.
 The one current rule manifest/dictionary records both input identities,
 compiler pins, fixed gamepack identity, method-body hashes and verification.
 Dictionary reversal recovers all 545 prepared raw files; the unmodified base

@@ -209,8 +209,102 @@ for(int target:new int[]{-1,0,1,3,7}){${c('ec')}.${f('ec','t','I')}=123;
 ${c('eu')}.${m('eu','a','(BIZ)V')}((byte)-105,target,false);
 check("menu/transition-target",${c('ci')}.${f('ci','d','I')},target);check("menu/transition-reset",${c('ec')}.${f('ec','t','I')},0);}
 }
+
+static ${c('pk')} flightFixture(${c('gb')} definition)throws Exception{
+${c('pk')} session=(${c('pk')})unsafe.allocateInstance(${c('pk')}.class);${c('md')} player=new ${c('md')}(new ${c('kc')}(10,20),definition);
+field(${c('pk')}.class,"${f('pk','X','Lmd;')}").set(session,player);field(${c('pk')}.class,"${f('pk','A','[Lmd;')}").set(session,new ${c('md')}[]{player,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null});
+field(${c('pk')}.class,"${f('pk','Cb','Z')}").setBoolean(session,true);field(${c('pk')}.class,"${f('pk','r','[I')}").set(session,new int[]{-1,-1,-1,-1,-1,-1,-1});
+return session;
+}
+static void flightControls()throws Exception{
+Class<?> type=${c('pk')}.class;${c('lp')}.${f('lp','a','[Z')}=new boolean[128];
+for(boolean left:new boolean[]{false,true})for(boolean right:new boolean[]{false,true})for(boolean wasLeft:new boolean[]{false,true})for(boolean wasRight:new boolean[]{false,true})for(int gap:new int[]{0,48,49,100})for(int direction:new int[]{-1,0,1})for(int bank:new int[]{-16,0,16}){
+${c('pk')} session=flightFixture(new ${c('gb')}(0.75,15,0,100,6,8,16,12,0));${c('md')} plane=(${c('md')})field(type,"${f('pk','X','Lmd;')}").get(session);plane.${f('o','e','D')}=32;plane.${f('md','i','I')}=bank;
+field(type,"${f('pk','M','I')}").setInt(session,100);field(type,"${f('pk','T','I')}").setInt(session,100-gap);field(type,"${f('pk','ib','I')}").setInt(session,100-gap);
+field(type,"${f('pk','U','Z')}").setBoolean(session,wasLeft);field(type,"${f('pk','rb','Z')}").setBoolean(session,wasRight);field(type,"${f('pk','mb','I')}").setInt(session,direction);
+${c('lp')}.${f('lp','a','[Z')}[96]=left;${c('lp')}.${f('lp','a','[Z')}[97]=right;
+call(session,"${m('pk','b','(B)V')}",new Class<?>[]{byte.class},(byte)-13);
+boolean activeLeft=left&&!right,activeRight=right&&!left;int wantedDirection=direction;
+if(activeLeft){if(!wasLeft&&gap+1<50)wantedDirection=-1;}else if(wantedDirection==-1)wantedDirection=0;
+if(activeRight){if(!wasRight&&gap+1<50)wantedDirection=1;}else if(wantedDirection==1)wantedDirection=0;
+int wantedBank=activeLeft?Math.min(16,bank+2):activeRight?Math.max(-16,bank-2):bank;
+check("controls/tick",field(type,"${f('pk','M','I')}").getInt(session),101);close("controls/heading",plane.${f('o','e','D')},32+(activeLeft?0.75:activeRight?-0.75:0));check("controls/bank",plane.${f('md','i','I')},wantedBank);
+check("controls/left-held",field(type,"${f('pk','U','Z')}").getBoolean(session),activeLeft);check("controls/right-held",field(type,"${f('pk','rb','Z')}").getBoolean(session),activeRight);
+check("controls/left-press",field(type,"${f('pk','T','I')}").getInt(session),activeLeft&&!wasLeft?101:100-gap);check("controls/right-press",field(type,"${f('pk','ib','I')}").getInt(session),activeRight&&!wasRight?101:100-gap);
+check("controls/double-tap",field(type,"${f('pk','mb','I')}").getInt(session),wantedDirection);check("controls/braking",plane.${f('md','p','Z')},wantedDirection!=0);
+}
+Arrays.fill(${c('lp')}.${f('lp','a','[Z')},false);
+for(int key:new int[]{0,82,83,84})for(boolean latched:new boolean[]{false,true})for(int heat:new int[]{0,100,101,200})for(boolean priorFire:new boolean[]{false,true}){
+${c('pk')} session=flightFixture(new ${c('gb')}(1,15,0,100,6,8,16,12,0));${c('md')} plane=(${c('md')})field(type,"${f('pk','X','Lmd;')}").get(session);
+${c('lp')}.${f('lp','a','[Z')}[82]=key==82||key==84;${c('lp')}.${f('lp','a','[Z')}[83]=key==83||key==84;
+field(type,"${f('pk','B','Z')}").setBoolean(session,latched);plane.${f('md','j','I')}=heat;plane.${f('md','l','Z')}=priorFire;
+call(session,"${m('pk','b','(B)V')}",new Class<?>[]{byte.class},(byte)-13);boolean wantedLatch=key!=0&&(latched||heat>100);
+check("controls/fire-latch",field(type,"${f('pk','B','Z')}").getBoolean(session),wantedLatch);check("controls/fire-request",plane.${f('md','l','Z')},key==0?priorFire:!wantedLatch);
+}
+${c('pk')} attract=flightFixture(new ${c('gb')}(1,15,0,100,6,8,16,12,0));field(type,"${f('pk','yb','Z')}").setBoolean(attract,true);field(type,"${f('pk','M','I')}").setInt(attract,10);call(attract,"${m('pk','b','(B)V')}",new Class<?>[]{byte.class},(byte)-13);check("controls/attract-tick",field(type,"${f('pk','M','I')}").getInt(attract),11);
+Arrays.fill(${c('lp')}.${f('lp','a','[Z')},false);
+}
+static void silentFlightAudio(){
+${c('tk')}.${f('tk','f','I')}=22050;${c('qn')}.${f('qn','b','Ltp;')}=new ${c('tp')}();${c('di')}.${f('di','M','Lkp;')}=new ${c('kp')}();
+${c('al')} silent=new ${c('al')}(22050,new byte[8],0,8);${c('lj')}.${f('lj','c','[Lal;')}=new ${c('al')}[8];Arrays.fill(${c('lj')}.${f('lj','c','[Lal;')},silent);${c('uh')}.${f('uh','g','[Lal;')}=new ${c('al')}[7];Arrays.fill(${c('uh')}.${f('uh','g','[Lal;')},silent);${c('wd')}.${f('wd','t','Lkp;')}=new ${c('kp')}();
+${c('ci')}.${f('ci','i','Ljava/util/Random;')}=new java.util.Random(12345);
+}
+static void flightUpgrades()throws Exception{
+Class<?> type=${c('pk')}.class;silentFlightAudio();
+for(int code:new int[]{0,1,2,3,4,6})for(int level:new int[]{0,11,12})for(int interval:new int[]{1,15})for(int hp:new int[]{0,4}){
+${c('gb')} definition=new ${c('gb')}(0.75,interval,4,3,6,8,16,12,0);${c('pk')} session=flightFixture(definition);${c('md')} plane=(${c('md')})field(type,"${f('pk','X','Lmd;')}").get(session);plane.${f('md','k','I')}=hp;
+String levelField=code==0?"${f('pk','d','I')}":code==1?"${f('pk','J','I')}":code==2?"${f('pk','x','I')}":"${f('pk','H','I')}";field(type,levelField).setInt(session,level);
+field(type,"${f('pk','F','I')}").setInt(session,level==12?6:5);field(type,"${f('pk','V','I')}").setInt(session,level==12?99:98);
+boolean accepted=code<4?level!=12&&(code!=1||interval>1):level!=12;
+check("upgrade/accepted",call(session,"${m('pk','c','(BI)Z')}",new Class<?>[]{byte.class,int.class},(byte)-14,code),accepted);
+if(code<4)check("upgrade/level",field(type,levelField).getInt(session),level+(level==12?0:1));
+close("upgrade/max-speed",definition.${f('gb','i','D')},8+(code==0&&accepted?0.4:0));close("upgrade/turn-rate",definition.${f('gb','g','D')},0.75+(code==2&&accepted?0.1:0));
+check("upgrade/fire-interval",definition.${f('gb','d','I')},interval-(code==1&&accepted?1:0));check("upgrade/heat-reduction",definition.${f('gb','f','I')},4+(code==1&&accepted?1:0));
+check("upgrade/max-hp",definition.${f('gb','e','I')},6+(code==3&&accepted?1:0));check("upgrade/player-hp",plane.${f('md','k','I')},hp+(code==3&&accepted&&hp>0?1:0));
+check("upgrade/lives",field(type,"${f('pk','F','I')}").getInt(session),level==12?6:5+(code==4&&accepted?1:0));check("upgrade/multiplier",field(type,"${f('pk','V','I')}").getInt(session),level==12?99:98+(code==6&&accepted?1:0));
+}
+for(int code:new int[]{0,1,2,3,4,6})for(int credits:new int[]{0,1,10})for(int animation:new int[]{-1,65,500}){
+${c('pk')} session=flightFixture(new ${c('gb')}(1,15,0,100,6,8,16,12,0));field(type,"${f('pk','p','I')}").setInt(session,credits);int[] animations=(int[])field(type,"${f('pk','r','[I')}").get(session);animations[code]=animation;
+call(session,"${m('pk','a','(II)V')}",new Class<?>[]{int.class,int.class},1,code);check("upgrade/purchase-credit",field(type,"${f('pk','p','I')}").getInt(session),credits>=code+1?credits-code-1:credits);check("upgrade/purchase-animation",animations[code],animation>448?512-animation:animation>64?64:animation);
+}
+}
+static void flightWaves()throws Exception{
+Class<?> type=${c('pk')}.class;silentFlightAudio();
+${c('gb')}[] classicTypes={${c('kk')}.${f('kk','N','Lgb;')},${c('sl')}.${f('sl','p','Lgb;')},${c('gm')}.${f('gm','y','Lgb;')},${c('qq')}.${f('qq','g','Lgb;')},${c('ju')}.${f('ju','k','Lgb;')},${c('ro')}.${f('ro','u','Lgb;')}};
+int[][] compositions={{3,0,0,0,0,0,0},{0,5,2,0,0,0,3},{0,6,0,1,0,0,3},{0,0,0,3,0,0,1},{6,2,0,0,1,0,3},{0,0,0,0,4,1,2}};int[] indices={0,9,10,11,13,20};
+for(int fixture=0;fixture<indices.length;fixture++){
+${c('pk')} session=flightFixture(${c('gh')}.${f('gh','j','Lgb;')});field(type,"${f('pk','Cb','Z')}").setBoolean(session,false);field(type,"${f('pk','s','I')}").setInt(session,indices[fixture]);
+call(session,"${m('pk','f','(I)V')}",new Class<?>[]{int.class},-20416);${c('md')}[] planes=(${c('md')}[])field(type,"${f('pk','A','[Lmd;')}").get(session);int[] counts=new int[6];int carriers=0,total=0;
+for(int index=1;index<planes.length;index++)if(planes[index]!=null){${c('md')} plane=planes[index];total++;boolean found=false;
+for(int kind=0;kind<6;kind++)if(plane.${f('md','r','Lgb;')}==(kind==3&&indices[fixture]<=10?${c('id')}.${f('id','f','Lgb;')}:classicTypes[kind])){counts[kind]++;found=true;}check("wave/known-definition",found,true);
+if(plane.${f('md','v','I')}>=0){carriers++;check("wave/classic-drop-range",plane.${f('md','v','I')}<4,true);}check("wave/x-spawn-range",plane.${f('o','d','Lkc;')}.${f('kc','a','D')}>=1610&&plane.${f('o','d','Lkc;')}.${f('kc','a','D')}<4810,true);check("wave/y-spawn-range",plane.${f('o','d','Lkc;')}.${f('kc','b','D')}>=1220&&plane.${f('o','d','Lkc;')}.${f('kc','b','D')}<3620,true);
+}
+for(int kind=0;kind<6;kind++)check("wave/classic-count",counts[kind],compositions[fixture][kind]);check("wave/classic-carriers",carriers,Math.min(total,compositions[fixture][6]));
+}
+${c('gb')}[] arcadeTypes={classicTypes[0],classicTypes[1],classicTypes[3],classicTypes[2],classicTypes[4],classicTypes[5]};int[][] arcadeCounts={{2,0,0,0,0,0},{4,0,0,0,0,0},{3,1,1,0,0,0},{3,1,0,1,1,0}};int[] waveNumbers={1,2,5,10};
+for(int fixture=0;fixture<waveNumbers.length;fixture++){
+${c('pk')} session=flightFixture(${c('gh')}.${f('gh','j','Lgb;')});call(session,"${m('pk','a','(BI)V')}",new Class<?>[]{byte.class,int.class},(byte)28,waveNumbers[fixture]);int[] counts=new int[6];int carriers=0;
+for(${c('md')} plane:(${c('md')}[])field(type,"${f('pk','A','[Lmd;')}").get(session))if(plane!=null&&plane.${f('md','r','Lgb;')}!=${c('gh')}.${f('gh','j','Lgb;')}){
+for(int kind=0;kind<6;kind++)if(plane.${f('md','r','Lgb;')}==arcadeTypes[kind])counts[kind]++;
+if(plane.${f('md','v','I')}>=0){carriers++;check("wave/arcade-drop-range",plane.${f('md','v','I')}<9,true);}
+}
+for(int kind=0;kind<6;kind++)check("wave/arcade-count",counts[kind],arcadeCounts[fixture][kind]);check("wave/arcade-carriers",carriers,2);
+}
+for(int value:new int[]{-1,0,1,2,3,4,5,6,99}){
+${c('pk')} session=flightFixture(${c('gh')}.${f('gh','j','Lgb;')});check("wave/arcade-definition",call(session,"${m('pk','b','(BI)Lgb;')}",new Class<?>[]{byte.class,int.class},(byte)108,value)==arcadeTypes[value>=0&&value<6?value:0],true);
+}
+${c('pk')} session=flightFixture(${c('gh')}.${f('gh','j','Lgb;')});check("wave/negative-remaining-drop-budget",call(session,"${m('pk','a','(BLgb;II)I')}",new Class<?>[]{byte.class,${c('gb')}.class,int.class,int.class},(byte)-120,classicTypes[0],2,0),-2);
+}
+static void hudMessageTiming()throws Exception{
+for(int hold:new int[]{0,1,150,300}){
+${c('tb')} message=new ${c('tb')}("message",0x123456,hold);
+check("message/fade-in",field(${c('tb')}.class,"${f('tb','f','I')}").getInt(message),20);check("message/fade-out",field(${c('tb')}.class,"${f('tb','l','I')}").getInt(message),80);check("message/hold",field(${c('tb')}.class,"${f('tb','h','I')}").getInt(message),hold);
+for(int tick=1;tick<=hold+102;tick++)check("message/expiry",message.${m('tb','a','(I)Z')}(100),tick>hold+100);
+}
+}
+
 ${highscoreProbe(c, f, m)}
-public static void main(String[] args)throws Exception{Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();pools();menus();highscores();System.out.println("checks:"+checks);}
+public static void main(String[] args)throws Exception{Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();pools();menus();highscores();flightControls();flightUpgrades();flightWaves();hudMessageTiming();System.out.println("checks:"+checks);}
 }
 `);
     const root = readable ? named : input, argsFile = path.join(directory, 'sources.args');
@@ -224,7 +318,7 @@ public static void main(String[] args)throws Exception{Field u=Unsafe.class.getD
   assert.ok(checks > 1500);
   return {checks, rawNamedIdentical: true, independentExpectations: true,
     headlessClientBoundary: true, vectorAndFlightFixtures: true, packetAndDequeFixtures: true,
-    aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true, highscoreProtocolFixtures: true,
+    aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true, highscoreProtocolFixtures: true, flightControlsUpgradesAndWavesFixtures: true, hudMessageTimingFixtures: true,
     traceSha256: digest(outputs[0]),
     ...(extraVerification ? extraVerification(path.join(temporary, 'raw-core/classes')) : {})};
 }
