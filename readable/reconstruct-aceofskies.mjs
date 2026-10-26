@@ -7,8 +7,8 @@ import {digest} from './game-export.mjs';
 import {inventory} from '../scripts/publish-decompiled-games.mjs';
 import {withPinnedCompiler} from './pinned-compiler.mjs';
 
-export const aceRecoveryCompiler = {commit: 'a783d0fd8c6162929cfbb8a656ba9f7f919b23f6',
-  sourceArchiveSha256: '85201f3f48f048eb3321b09144de4980e7a88322e759bb5813b952b805b5d70d'};
+export const aceRecoveryCompiler = {commit: 'cef7fd73c83f3549797e4a7e5cea86b4aa291976',
+  sourceArchiveSha256: '3ab94fe3502dbbb0e9133f07a4bfd9e35e926760551d000be835b24784182735'};
 const originalClassesSha256 = '9f0daf3471d01ae2de9a8a71504d0bf94fb751c66e0b5c3553477eb22b9c7f15';
 const url = 'https://static.alterorb.net/launcher/v3/jars/aceofskies.jar';
 
