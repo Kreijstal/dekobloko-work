@@ -52,10 +52,10 @@ vector, packet, deque and pool fixtures compare raw/named behavior against
 independent expectations; complete binding and compilation checks cover every
 source. Full client rendering and server compatibility remain separate checks.
 
-The current Ace pass names 41 classes and 845 symbols, including flight-loop
+The current Ace pass names 41 classes and 844 symbols, including flight-loop
 locals, targets, camera movement, lives, weapon heat/cooldown, gun patterns,
 menu input/navigation, hit testing, transitions and HUD score/multiplier state.
-All 545 source files compile before and after naming; 209,054 symbol bindings
+All 545 source files compile before and after naming; 208,927 symbol bindings
 and 124 label bindings agree. Native raw/named traces agree on 11,725 assertions,
 including aircraft construction, bullet spawning, single-period flight
 boundaries, packet bytes, intrusive transfers, pool swaps and menu geometry.
@@ -76,7 +76,9 @@ Upgrade fixtures preserve level/cap/healing rules, credit charging and animation
 boundaries. In particular, fire interval 1 can reject an upgrade after its level
 already increments. Wave fixtures use fixed classic compositions (including the
 wave-10/11 definition change), four arcade budgets, type-order checks, spawn
-bounds and pickup carriers. The returned pickup budget may be negative.
+bounds and pickup carriers. Exact seeded spawn coordinates, headings, pickup codes
+and the following RNG value must also match the historical-source trace, preserving
+random-call order. The returned pickup budget may be negative.
 `HudMessage` expiry uses a strict comparison after incrementing its age.
 Fixtures use seeded randomness and silent samples through the actual in-memory
 mixer without creating an audio device or starting the applet. They establish
@@ -103,7 +105,7 @@ only when every instruction is proven nonthrowing, every normal predecessor
 belongs to the protected ranges, and the block is not a handler/monitor entry.
 Existing throwing-PC priority, region exit, source-flow and outer-routing
 proofs still check the original table and CFG. Recovery runs by default.
-The selected method shrinks from 398 to 89 lines and no `switch(statePc)`
+The selected method shrinks from 398 to 87 lines and no `switch(statePc)`
 dispatcher remains in the published Ace corpus.
 
 The current generic compiler also removes allocator-owned unread reference
@@ -112,16 +114,35 @@ case. Every identifier use must be accounted for, and every removed store must
 be a standalone `this` or literal-null assignment. Calls, reads, casts, boxing,
 allocations, escaping references and unknown syntax are retained. Cleanup runs
 before scalar branch recovery, without flags or application identifiers in
-java-tools. Final-score submission shrinks from 52 to 36 body lines by removing
+java-tools. Final-score submission shrinks from 52 to 34 body lines by removing
 unread constructor placeholders. Live return carriers remain.
 
 Compiler validation includes 192 native Object/concrete-reference snapshot
 cases across effects, thrown objects, catch/finally and monitor release, plus
 44 original-bytecode/decompiled-Java constructor-argument cases. The emitter
-suite passes 68 tests with one existing skip. Ace also compares its complete
+suite passes 68 tests with one existing skip. The combined catch-copy/emitter/exception-table validation passes 74 tests with one existing skip (plus five assembler assertions). Ace also compares its complete
 11,725-check core trace against the historical pre-reconstruction Java, in
 addition to the prepared-raw/named comparison. This is historical-source
 coverage; only the selected HUD has the separate original-game-bytecode oracle.
+
+Catch-copy recovery now removes an intermediate caught-exception carrier when
+all uses are handler-entry stores and copies into reference local assignments
+or declarations in the same handler. It preserves destination local types and
+therefore overload selection. Reassigned catch parameters, reads escaping the
+handler, casts/conversions, nested handlers, captures and unknown syntax refuse
+recovery. The default decompiler runs this proof without application flags.
+The additional native differential covers 128 cases with exception identity,
+Object/Throwable overloads, handler/finally failures and monitor ownership.
+
+The current replay reconstructs all 51 ordinary `FlightSession` methods with
+region certificates from original bytecode, twice, checking identical output
+and original region exit/source-flow contracts. Initialization and three small
+methods using specialized emitters remain at the base source. Across the 51
+selected bodies, the base source has 5,002 lines and the current source 4,580;
+this includes earlier HUD recovery. The current pass removes 97 lines from the
+previous publication. The synthetic fire-key flag no longer exists, so its
+obsolete naming rule was removed; other reviewed locals retain their guarded
+identities at the new declaration ordinals.
 
 Its native HUD probe passes 3,003 cases and 4,320 independent checks, comparing
 original bytecode, historical dispatcher Java and reconstructed Java drawing
@@ -141,17 +162,17 @@ SHA-256 is `34c1e50357f69cafd0c4550a63beeb07a8b56c8c891bdb31e4fc49a652509613`,
 reproduced with `git archive --format=tar 00c1c12fb58cdbd6be065e604ee5e9acbcebeff7 | sha256sum`
 inside java-tools. This hash identifies compiler source, not a game JAR.
 The current method-recovery compiler source archive SHA-256 is
-`855804a0546dffe6e247af8e8b3f7d0efbac0ca1e30793a9b29edd6a4d5f4263`, reproduced
-by archiving commit `d0b505b9fe153c1a1c0adb2c4a7833b1f55f4c54` the same way.
+`64a0579c6b37637bc7e0b2b7918da6dc480eb945c0e5d60e28635845ba04fba0`, reproduced
+by archiving commit `2d79b0d0736003c9f5da1faaf8763149bb3700b1` the same way.
 The verified prepared raw tree SHA-256 is
-`78fd96d3afe487b73c1534fdcaa0daf6acec6c935da57e809bcad19b2e6c3414`; the
-named tree is `b0c4b214a7ecfb8d3194089e44a088a7b6f799720fadd1ff2cefde341e29b43f`.
+`a2ef6e1c05499a488d98e50ec6faddff758c28a030ab9660cfcc93d140599e4c`; the
+named tree is `3d6192c60656ac91182b8bc6889897226d9535c9a387a518241026c5161cd466`.
 The one current rule manifest/dictionary records both input identities,
 compiler pins, fixed gamepack identity, method-body hashes and verification.
 Dictionary reversal recovers all 545 prepared raw files; the unmodified base
 remains at its Git pin.
 
-`reconstruct-aceofskies.mjs` selects the HUD and score-submission methods and invokes the pinned
+`reconstruct-aceofskies.mjs` selects all 51 region-proved session methods and invokes the pinned
 generic compiler; it contains no replacement game algorithm. The loader
 checks the compiler's Git source archive and reads its modules from Git
 objects, excluding unrelated runtime WIP without another checkout/export.

@@ -276,6 +276,7 @@ for(int fixture=0;fixture<indices.length;fixture++){
 ${c('pk')} session=flightFixture(${c('gh')}.${f('gh','j','Lgb;')});field(type,"${f('pk','Cb','Z')}").setBoolean(session,false);field(type,"${f('pk','s','I')}").setInt(session,indices[fixture]);
 call(session,"${m('pk','f','(I)V')}",new Class<?>[]{int.class},-20416);${c('md')}[] planes=(${c('md')}[])field(type,"${f('pk','A','[Lmd;')}").get(session);int[] counts=new int[6];int carriers=0,total=0;
 for(int index=1;index<planes.length;index++)if(planes[index]!=null){${c('md')} plane=planes[index];total++;boolean found=false;
+System.out.println("wave/classic-spawn:"+index+":"+plane.${f('o','d','Lkc;')}.${f('kc','a','D')}+":"+plane.${f('o','d','Lkc;')}.${f('kc','b','D')}+":"+plane.${f('o','e','D')}+":"+plane.${f('md','v','I')});
 for(int kind=0;kind<6;kind++)if(plane.${f('md','r','Lgb;')}==(kind==3&&indices[fixture]<=10?${c('id')}.${f('id','f','Lgb;')}:classicTypes[kind])){counts[kind]++;found=true;}check("wave/known-definition",found,true);
 if(plane.${f('md','v','I')}>=0){carriers++;check("wave/classic-drop-range",plane.${f('md','v','I')}<4,true);}check("wave/x-spawn-range",plane.${f('o','d','Lkc;')}.${f('kc','a','D')}>=1610&&plane.${f('o','d','Lkc;')}.${f('kc','a','D')}<4810,true);check("wave/y-spawn-range",plane.${f('o','d','Lkc;')}.${f('kc','b','D')}>=1220&&plane.${f('o','d','Lkc;')}.${f('kc','b','D')}<3620,true);
 }
@@ -285,6 +286,7 @@ ${c('gb')}[] arcadeTypes={classicTypes[0],classicTypes[1],classicTypes[3],classi
 for(int fixture=0;fixture<waveNumbers.length;fixture++){
 ${c('pk')} session=flightFixture(${c('gh')}.${f('gh','j','Lgb;')});call(session,"${m('pk','a','(BI)V')}",new Class<?>[]{byte.class,int.class},(byte)28,waveNumbers[fixture]);int[] counts=new int[6];int carriers=0;
 for(${c('md')} plane:(${c('md')}[])field(type,"${f('pk','A','[Lmd;')}").get(session))if(plane!=null&&plane.${f('md','r','Lgb;')}!=${c('gh')}.${f('gh','j','Lgb;')}){
+System.out.println("wave/arcade-spawn:"+plane.${f('o','d','Lkc;')}.${f('kc','a','D')}+":"+plane.${f('o','d','Lkc;')}.${f('kc','b','D')}+":"+plane.${f('o','e','D')}+":"+plane.${f('md','v','I')});
 for(int kind=0;kind<6;kind++)if(plane.${f('md','r','Lgb;')}==arcadeTypes[kind])counts[kind]++;
 if(plane.${f('md','v','I')}>=0){carriers++;check("wave/arcade-drop-range",plane.${f('md','v','I')}<9,true);}
 }
@@ -294,6 +296,7 @@ for(int value:new int[]{-1,0,1,2,3,4,5,6,99}){
 ${c('pk')} session=flightFixture(${c('gh')}.${f('gh','j','Lgb;')});check("wave/arcade-definition",call(session,"${m('pk','b','(BI)Lgb;')}",new Class<?>[]{byte.class,int.class},(byte)108,value)==arcadeTypes[value>=0&&value<6?value:0],true);
 }
 ${c('pk')} session=flightFixture(${c('gh')}.${f('gh','j','Lgb;')});check("wave/negative-remaining-drop-budget",call(session,"${m('pk','a','(BLgb;II)I')}",new Class<?>[]{byte.class,${c('gb')}.class,int.class,int.class},(byte)-120,classicTypes[0],2,0),-2);
+System.out.println("wave/random-state:"+${c('ci')}.${f('ci','i','Ljava/util/Random;')}.nextLong());
 }
 static void hudMessageTiming()throws Exception{
 for(int hold:new int[]{0,1,150,300}){
@@ -326,7 +329,7 @@ public static void main(String[] args)throws Exception{Field u=Unsafe.class.getD
   assert.ok(checks > 1500);
   return {checks, rawNamedIdentical: true, historicalSourceCoreIdentical: true, independentExpectations: true,
     headlessClientBoundary: true, vectorAndFlightFixtures: true, packetAndDequeFixtures: true,
-    aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true, highscoreProtocolFixtures: true, flightControlsUpgradesAndWavesFixtures: true, hudMessageTimingFixtures: true,
+    aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true, highscoreProtocolFixtures: true, flightControlsUpgradesAndWavesFixtures: true, hudMessageTimingFixtures: true, exactSeededWaveTrace: true,
     traceSha256: digest(outputs[0]),
     ...(extraVerification ? extraVerification(path.join(temporary, 'raw-core/classes')) : {})};
 }

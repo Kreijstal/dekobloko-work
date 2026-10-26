@@ -7,8 +7,8 @@ import {digest} from './game-export.mjs';
 import {inventory} from '../scripts/publish-decompiled-games.mjs';
 import {withPinnedCompiler} from './pinned-compiler.mjs';
 
-export const aceRecoveryCompiler = {commit: 'd0b505b9fe153c1a1c0adb2c4a7833b1f55f4c54',
-  sourceArchiveSha256: '855804a0546dffe6e247af8e8b3f7d0efbac0ca1e30793a9b29edd6a4d5f4263'};
+export const aceRecoveryCompiler = {commit: '2d79b0d0736003c9f5da1faaf8763149bb3700b1',
+  sourceArchiveSha256: '64a0579c6b37637bc7e0b2b7918da6dc480eb945c0e5d60e28635845ba04fba0'};
 const originalClassesSha256 = '9f0daf3471d01ae2de9a8a71504d0bf94fb751c66e0b5c3553477eb22b9c7f15';
 const url = 'https://static.alterorb.net/launcher/v3/jars/aceofskies.jar';
 
@@ -52,19 +52,27 @@ export function reconstructAceMethods(input, temporary) {
     };
     const {decompileAstRoot, buildExceptionModel} = require(path.join(root, 'src/decompiler/cfr.js'));
     const {tokenizeJava} = require(path.join(root, 'src/java-frontend/lexer.js'));
+    const {parseDescriptor} = require(path.join(root, 'src/parsing/typeParser.js'));
     const roots = inventory(bytecode.directory, '.class').entries.map(([file]) => {
       const parsed = getAST(new Uint8Array(fs.readFileSync(path.join(bytecode.directory, file))));
       return convertJson(parsed.ast, parsed.constantPool);
     });
     const exceptionModel = buildExceptionModel(roots.flatMap(root => root.classes || []));
-    const methods = [
-      {name: 'a', descriptor: '(IIIZIIIZI)V', parameters: ['int','int','int','boolean','int','int','int','boolean','int'], dispatcher: true},
-      {name: 'g', descriptor: '(I)V', parameters: ['int'], dispatcher: false},
-    ];
     const selected = structuredClone(roots.find(root => root.classes[0].className === 'pk'));
+    // Three small methods use specialized emitters rather than a region
+    // certificate. Preserve their base source, along with initialization.
+    // Every other ordinary method has the generic original-edge proof below.
+    const preservedMethods = ['a(IIIIIIB)V', 'd(II)V', 'e(I)V'];
     selected.classes[0].items = selected.classes[0].items.filter(item => !item.method ||
-      methods.some(method => item.method.name === method.name && item.method.descriptor === method.descriptor));
-    assert.equal(selected.classes[0].items.filter(item => item.method).length, methods.length);
+      !item.method.name.startsWith('<') && !preservedMethods.includes(item.method.name + item.method.descriptor) && item.method.attributes?.some(attribute =>
+        attribute.type === 'code' && attribute.code.exceptionTable?.length));
+    const methods = selected.classes[0].items.filter(item => item.method).map(({method}) => {
+      const descriptor = parseDescriptor(method.descriptor);
+      return {name: method.name, descriptor: method.descriptor,
+        parameters: descriptor.params.map(type => type.replace(/^java\.lang\./, '')), returnType: descriptor.returnType,
+        dispatcher: method.name === 'a' && method.descriptor === '(IIIZIIIZI)V'};
+    });
+    assert.equal(methods.length, 51, 'Fixed protected method inventory differs');
     const make = () => {
       const before = proofs.length;
       const diagnostics = [], source = decompileAstRoot(structuredClone(selected), {exceptionModel, diagnostics});
@@ -82,8 +90,8 @@ export function reconstructAceMethods(input, temporary) {
     function body(source, method) {
       const lexed = tokenizeJava(source); assert.deepEqual(lexed.diagnostics, []);
       const tokens = lexed.tokens, parameters = method.parameters;
-      const header = ['void', method.name, '('];
-      parameters.forEach((type, i) => {if (i) header.push(','); header.push(type, 'param' + i);}); header.push(')', '{');
+      const header = [...tokenizeJava(method.returnType).tokens.filter(t => t.kind !== 'eof').map(t => t.text), method.name, '('];
+      parameters.forEach((type, i) => {if (i) header.push(','); header.push(...tokenizeJava(type).tokens.filter(t => t.kind !== 'eof').map(t => t.text), 'param' + i);}); header.push(')', '{');
       const found = [];
       for (let i = 0; i < tokens.length; i++) if (header.every((text, j) => tokens[i + j]?.text === text)) found.push(i + header.length - 1);
       assert.equal(found.length, 1, 'Selected method is not unique: ' + method.name + method.descriptor);
@@ -108,7 +116,7 @@ export function reconstructAceMethods(input, temporary) {
     for (const edit of edits.sort((a,b) => b.start - a.start))
       prepared = prepared.slice(0, edit.start) + edit.body + prepared.slice(edit.end);
     fs.writeFileSync(file, prepared);
-    return {methods: certificates, compiler: aceRecoveryCompiler, bytecode: {
+    return {methods: certificates, preservedMethods, compiler: aceRecoveryCompiler, bytecode: {
       sourceUrl: bytecode.sourceUrl, gamepackSha256: bytecode.gamepackSha256,
       files: bytecode.files, originalClassesSha256: bytecode.originalClassesSha256},
       defaultCompilerRecovery: true, regionExitsVerified: true, regionSourceFlowVerified: true,
