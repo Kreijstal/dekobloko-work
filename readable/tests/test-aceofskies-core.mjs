@@ -30,7 +30,7 @@ export function verifyAceCore(input, named, mapping, classpath, temporary, extra
     const harness = path.join(directory, 'AceCoreProbe.java');
     fs.writeFileSync(harness, `import java.lang.reflect.*;import java.util.*;import sun.misc.Unsafe;
 public class AceCoreProbe {
-static int checks;static Unsafe unsafe;
+static int checks;static Unsafe unsafe;static String originalBytecodeDirectory;
 static void check(String name,Object actual,Object expected){if(!Objects.equals(actual,expected))throw new AssertionError(name+": "+actual+" != "+expected);checks++;System.out.println(name+":"+actual);}
 static void close(String name,double actual,double expected){if(Double.isNaN(actual)||Math.abs(actual-expected)>1e-9*Math.max(1,Math.abs(expected)))throw new AssertionError(name+": "+actual+" != "+expected);checks++;System.out.println(name+":"+actual);}
 static Field field(Class<?> owner,String name)throws Exception{Field f=owner.getDeclaredField(name);f.setAccessible(true);return f;}
@@ -196,6 +196,55 @@ check("font/clipped-glyph-pixels",Arrays.toString(pixels),Arrays.toString(expect
 // Styled text exercises baseline placement, markup and pen advances through
 // the actual software font, rather than only calling the glyph primitives.
 ${c('hc')} font=fontFixture(false,false);int[] pixels=new int[100];${c('vp')}.${m('vp','a','([III)V')}(pixels,10,10);font.${m('hc','b','(Ljava/lang/String;IIII)V')}("<col=112233>A</col>B",1,8,0xabcdef,-1);int[] expected=new int[100];for(int gy=0;gy<3;gy++)for(int gx=0;gx<3;gx++)if(new int[]{0,1,2,3,0,3,2,1,3}[gy*3+gx]!=0){expected[(gy+1)*10+gx+1]=0x112233;expected[(gy+1)*10+gx+4]=0xabcdef;}check("font/styled-text-pixels",Arrays.toString(pixels),Arrays.toString(expected));
+}
+static byte[] spriteFile(int layout,int alphaKind)throws Exception{
+java.io.ByteArrayOutputStream bytes=new java.io.ByteArrayOutputStream();java.io.DataOutputStream out=new java.io.DataOutputStream(bytes);
+int[][] indices={{0,1,2,3,2,1},{3,0,2,1,0,3}},alphas={{0,64,128,255,1,254},{254,1,255,128,64,0}};int[] widths={3,2},heights={2,3};
+for(int frame=0;frame<2;frame++){out.writeByte(layout|(alphaKind==0?0:2));for(int plane=0;plane<(alphaKind==0?1:2);plane++)for(int outer=0;outer<(layout==0?heights[frame]:widths[frame]);outer++)for(int inner=0;inner<(layout==0?widths[frame]:heights[frame]);inner++){int index=layout==0?outer*widths[frame]+inner:inner*widths[frame]+outer;out.writeByte(plane==0?indices[frame][index]:alphaKind==1?255:alphas[frame][index]);}}
+for(int colour:new int[]{0,0x123456,0x80ff40}){out.writeByte(colour>>>16);out.writeByte(colour>>>8);out.writeByte(colour);}out.writeShort(8);out.writeShort(7);out.writeByte(3);
+for(int value:new int[]{1,2,2,1,3,2,2,3})out.writeShort(value);out.writeShort(2);return bytes.toByteArray();
+}
+static int spriteBlend(int foreground,int background,int alpha){int result=0;for(int shift:new int[]{0,8,16})result|=((((foreground>>>shift)&255)*alpha+((background>>>shift)&255)*(256-alpha))/256)<<shift;return (result<<8)>>8;}
+static void spriteDataAndTransforms()throws Exception{
+// Original indexed alpha blits use an arithmetic final shift. Preserve its
+// sign extension rather than normalizing framebuffer values to unsigned RGB.
+try(java.net.URLClassLoader original=new java.net.URLClassLoader(new java.net.URL[]{new java.io.File(originalBytecodeDirectory).toURI().toURL()},null)){
+Method blend=Class.forName("wp",true,original).getDeclaredMethod("b",int[].class,byte[].class,int[].class,int.class,int.class,int.class,int.class,int.class,int.class,int.class);blend.setAccessible(true);
+for(int color:new int[]{0,0x010203,0x7fffff,0x800000,0xfedcba,0xffffff})for(int background:new int[]{0,0x193453,0x80ff40,0xffffff})for(int alpha:new int[]{0,1,128,255,256}){int[] pixels={background};blend.invoke(null,pixels,new byte[]{1},new int[]{0,color},0,0,1,1,0,0,alpha);check("sprite/original-alpha-bytecode",pixels[0],spriteBlend(color,background,alpha));}
+}
+Method decode=${c('vd')}.class.getDeclaredMethod("${m('vd','a','([B)[Lvd;')}",byte[].class);decode.setAccessible(true);
+int[][] sourceIndices={{0,1,2,3,2,1},{3,0,2,1,0,3}},sourceAlpha={{0,64,128,255,1,254},{254,1,255,128,64,0}};
+for(int layout=0;layout<2;layout++)for(int alphaKind=0;alphaKind<3;alphaKind++){
+byte[] encoded=spriteFile(layout,alphaKind),before=encoded.clone();${c('vd')}[] frames=(${c('vd')}[])decode.invoke(null,(Object)encoded);check("sprite/frame-count",frames.length,2);check("sprite/input-retained",Arrays.equals(encoded,before),true);check("sprite/shared-palette",frames[0].${f('vd','f','[I')}==frames[1].${f('vd','f','[I')},true);
+for(int frame=0;frame<2;frame++){
+${c('vd')} data=frames[frame];check("sprite/width",data.${f('vd','h','I')},frame==0?3:2);check("sprite/height",data.${f('vd','c','I')},frame==0?2:3);check("sprite/pad-left",data.${f('vd','a','I')},frame==0?1:2);check("sprite/pad-top",data.${f('vd','i','I')},frame==0?2:1);check("sprite/pad-right",data.${f('vd','g','I')},4);check("sprite/pad-bottom",data.${f('vd','b','I')},3);check("sprite/palette-values",Arrays.toString(data.${f('vd','f','[I')}),"[0, 1, 1193046, 8453952]");
+byte[] expectedIndices=new byte[6],expectedAlpha=alphaKind==2?new byte[6]:null;for(int i=0;i<6;i++){expectedIndices[i]=(byte)sourceIndices[frame][i];if(expectedAlpha!=null)expectedAlpha[i]=(byte)sourceAlpha[frame][i];}check("sprite/index-plane",Arrays.toString(data.${f('vd','d','[B')}),Arrays.toString(expectedIndices));check("sprite/alpha-plane",Arrays.toString(data.${f('vd','e','[B')}),Arrays.toString(expectedAlpha));
+}
+}
+check("sprite/empty-container",((${c('vd')}[])decode.invoke(null,(Object)new byte[7])).length,0);
+for(int width:new int[]{2,3}){
+int height=5-width;int[] pixels={1,2,3,4,5,6};${c('ll')} sprite=new ${c('ll')}(8,7,1,2,width,height,pixels),copy=sprite.${m('ll','d','()Lll;')}();check("sprite/copy-pixels",Arrays.toString(copy.${f('ll','x','[I')}),Arrays.toString(pixels));check("sprite/copy-owns-pixels",copy.${f('ll','x','[I')}!=pixels,true);copy.${f('ll','x','[I')}[0]=99;check("sprite/copy-independent",pixels[0],1);
+${c('ll')} mirrored=sprite.${m('ll','a','()Lll;')}();int[] expected=new int[6];for(int y=0;y<height;y++)for(int x=0;x<width;x++)expected[y*width+x]=pixels[y*width+width-1-x];check("sprite/mirror-pixels",Arrays.toString(mirrored.${f('ll','x','[I')}),Arrays.toString(expected));check("sprite/mirror-trim-x",mirrored.${f('nl','u','I')},7-width);check("sprite/mirror-trim-y",mirrored.${f('nl','p','I')},2);
+for(${c('ll')} result:new ${c('ll')}[]{copy,mirrored}){check("sprite/copy-full-width",result.${f('nl','v','I')},8);check("sprite/copy-full-height",result.${f('nl','q','I')},7);check("sprite/copy-width",result.${f('nl','r','I')},width);check("sprite/copy-height",result.${f('nl','n','I')},height);}
+for(int y=0;y<height;y++)for(int x=0;x<width;x++)expected[x*height+height-1-y]=pixels[y*width+x];sprite.${m('ll','c','()V')}();check("sprite/rotated-pixels",Arrays.toString(sprite.${f('ll','x','[I')}),Arrays.toString(expected));check("sprite/rotated-width",sprite.${f('nl','r','I')},height);check("sprite/rotated-height",sprite.${f('nl','n','I')},width);check("sprite/rotated-full-width",sprite.${f('nl','v','I')},7);check("sprite/rotated-full-height",sprite.${f('nl','q','I')},8);check("sprite/rotated-trim-x",sprite.${f('nl','u','I')},5-height);check("sprite/rotated-trim-y",sprite.${f('nl','p','I')},1);
+sprite.${m('ll','b','()V')}();check("sprite/raster-alias",${c('vp')}.${f('vp','j','[I')}==sprite.${f('ll','x','[I')},true);check("sprite/raster-stride",${c('vp')}.${f('vp','i','I')},height);check("sprite/raster-height",${c('vp')}.${f('vp','c','I')},width);
+}
+byte[] indices={0,1,2,3,2,1};int[] palette={0,0x102030,0x456789,0xfedcba};${c('wp')} indexed=new ${c('wp')}(8,7,1,2,3,2,indices,palette);
+for(int alpha:new int[]{-1,0,1,128,255,256})for(int[] position:new int[][]{{-2,-3},{0,0},{2,2},{6,5},{8,7}})for(int[] clip:new int[][]{{0,0,8,7},{1,2,6,6}}){int[] actual=new int[56],expected=new int[56];Arrays.fill(actual,0x193453);Arrays.fill(expected,0x193453);${c('vp')}.${m('vp','a','([III)V')}(actual,8,7);${c('vp')}.${m('vp','e','(IIII)V')}(clip[0],clip[1],clip[2],clip[3]);if(alpha<0)indexed.${m('df','a','(II)V')}(position[0],position[1]);else indexed.${m('df','a','(III)V')}(position[0],position[1],alpha);
+for(int gy=0;gy<2;gy++)for(int gx=0;gx<3;gx++){int x=position[0]+1+gx,y=position[1]+2+gy,index=indices[gy*3+gx]&255;if(x<clip[0]||x>=clip[2]||y<clip[1]||y>=clip[3]||index==0)continue;expected[y*8+x]=alpha<0?palette[index]:spriteBlend(palette[index],0x193453,alpha);}check("sprite/indexed-draw-pixels",Arrays.toString(actual),Arrays.toString(expected));
+}
+}
+static void rendererTextCalls(){
+byte[] encoded=new byte[263];for(int i=0;i<256;i++)encoded[2+i]=(byte)(3+i%5);encoded[258]=7;encoded[261]=6;encoded[262]=2;final List<String> glyphs=new ArrayList<>();
+${c('da')} font=new ${c('da')}(null,new ${c('vs')}(encoded)){
+void ${m('da','fa','(CIIIZ)V')}(char glyph,int x,int y,int color,boolean shadow){glyphs.add((int)glyph+":"+x+":"+y+":"+Integer.toHexString(color)+":"+shadow);}
+void ${m('da','a','(CIIIZLaa;II)V')}(char glyph,int x,int y,int color,boolean shadow,${c('aa')} mask,int maskX,int maskY){throw new AssertionError("unexpected mask");}
+};
+font.${m('da','a','(IIILjava/lang/String;II)V')}(0xffabcdef,-1,10,"<col=112233>A</col>B",18731,8);check("text/renderer-left-calls",glyphs.toString(),"[65:10:1:ff112233:false, 66:13:1:ffabcdef:false]");glyphs.clear();
+font.${m('da','a','(IIIIILjava/lang/String;)V')}(100,0xffabcdef,-1,8,20,"AB");check("text/renderer-center-calls",glyphs.toString(),"[65:17:1:ffabcdef:false, 66:20:1:ffabcdef:false]");glyphs.clear();
+font.${m('da','a','(Ljava/lang/String;IIIIB)V')}("AB",0xffabcdef,-1,30,8,(byte)92);check("text/renderer-right-calls",glyphs.toString(),"[65:23:1:ffabcdef:false, 66:26:1:ffabcdef:false]");glyphs.clear();
+check("text/renderer-paragraph-lines",font.${m('da','a','(IIIZIIIII[Lpa;Laa;I[IIILjava/lang/String;)I')}(0,10,0xffabcdef,true,-1,0,2,10,0,null,null,0,null,60,20,"AB"),1);check("text/renderer-paragraph-calls",glyphs.toString(),"[65:10:1:ffabcdef:false, 66:13:1:ffabcdef:false]");glyphs.clear();
+font.${m('da','a','(IIILjava/lang/String;II)V')}(0xffabcdef,-1,10,null,18731,8);check("text/renderer-null",glyphs.isEmpty(),true);
 }
 static void pools()throws Exception{
 Class<?> session=Class.forName("${c('pk')}"),smoke=Class.forName("${c('qf')}"),particle=Class.forName("${c('ok')}");Object game=unsafe.allocateInstance(session);
@@ -465,19 +514,19 @@ check("render/argb-blend",call(session,"${m('pk','b','(IIII)I')}",new Class<?>[]
 }
 
 ${highscoreProbe(c, f, m)}
-public static void main(String[] args)throws Exception{Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();sharedCollectionsAndSoundCache();fontMetricsAndPixels();pools();menus();highscores();flightControls();flightUpgrades();flightWaves();hudMessageTiming();visualParticles();hudAndSpatialState();System.out.println("checks:"+checks);}
+public static void main(String[] args)throws Exception{originalBytecodeDirectory=args[0];Field u=Unsafe.class.getDeclaredField("theUnsafe");u.setAccessible(true);unsafe=(Unsafe)u.get(null);vectors();flight();packets();deques();aircraft();sharedCollectionsAndSoundCache();fontMetricsAndPixels();spriteDataAndTransforms();rendererTextCalls();pools();menus();highscores();flightControls();flightUpgrades();flightWaves();hudMessageTiming();visualParticles();hudAndSpatialState();System.out.println("checks:"+checks);}
 }
 `);
     const root = readable ? named : input, argsFile = path.join(directory, 'sources.args');
     fs.writeFileSync(argsFile, sourceInventory(root).map(file => JSON.stringify(path.join(root, file.path))).join('\n') + '\n');
     captureProcess('javac', ['--release', '8', '-proc:none', '-encoding', 'UTF-8', '-sourcepath', '', '-classpath', classpath, '-d', compiled, '@' + argsFile]);
     captureProcess('javac', ['-encoding', 'UTF-8', '-classpath', compiled, '-d', compiled, harness]);
-    const trace = captureProcess('java', ['-Djava.awt.headless=true', '-cp', [shims, compiled, classpath].join(path.delimiter), 'AceCoreProbe']).stdout;
+    const trace = captureProcess('java', ['-Djava.awt.headless=true', '-cp', [shims, compiled, classpath].join(path.delimiter), 'AceCoreProbe', path.join(temporary, 'original-bytecode')]).stdout;
     if (!readable) {
       const historical = path.join(directory, 'historical'); fs.mkdirSync(historical);
       captureProcess('javac', ['--release', '8', '-proc:none', '-sourcepath', '', '-classpath', [compiled, classpath].join(path.delimiter),
         '-d', historical, path.join(temporary, 'original-pk.java')]);
-      const priorTrace = captureProcess('java', ['-Djava.awt.headless=true', '-cp', [shims, historical, compiled, classpath].join(path.delimiter), 'AceCoreProbe']).stdout;
+      const priorTrace = captureProcess('java', ['-Djava.awt.headless=true', '-cp', [shims, historical, compiled, classpath].join(path.delimiter), 'AceCoreProbe', path.join(temporary, 'original-bytecode')]).stdout;
       assert.deepEqual(trace, priorTrace, 'Reconstructed Ace core differs from the historical pinned Java');
     }
     outputs.push(trace);
@@ -488,6 +537,6 @@ public static void main(String[] args)throws Exception{Field u=Unsafe.class.getD
   return {checks, rawNamedIdentical: true, historicalSourceCoreIdentical: true, independentExpectations: true,
     headlessClientBoundary: true, vectorAndFlightFixtures: true, packetAndDequeFixtures: true,
     aircraftAndBulletSpawnFixtures: true, poolReplacementFixtures: true, menuInputAndGeometryFixtures: true, highscoreProtocolFixtures: true, flightControlsUpgradesAndWavesFixtures: true, hudMessageTimingFixtures: true, exactSeededWaveTrace: true, visualParticleHudAndSpatialFixtures: true,
-    sharedHashTableDualLinksAndSoundCacheFixtures: true, softwareFontMetricsWrappingAndPixelFixtures: true, traceSha256: digest(outputs[0]),
+    sharedHashTableDualLinksAndSoundCacheFixtures: true, softwareFontMetricsWrappingAndPixelFixtures: true, spriteDecodingTransformsAndIndexedPixelFixtures: true, originalIndexedAlphaBytecodeOracle: true, rendererTextGlyphCallFixtures: true, traceSha256: digest(outputs[0]),
     ...(extraVerification ? extraVerification(path.join(temporary, 'raw-core/classes')) : {})};
 }

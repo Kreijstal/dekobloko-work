@@ -36,6 +36,12 @@ const classes = {
   vt: ['MonochromeBitmapFont', 'Same shared role as GeoBlox MonochromeBitmapFont: clipped zero/nonzero glyph masks, opacity and scanline-mask support.'],
   vs: ['BitmapFontMetrics', 'Separate renderer-font metrics decoder retaining byte advances, optional pair kerning, line advance, ascent/descent and image-aware text measurement/wrapping.'],
   vp: ['SoftwareRasterizer', 'Same shared role as GeoBlox SoftwareRasterizer: global integer framebuffer, stride/height, clip bounds and software drawing primitives.'],
+  vd: ['SpriteData', 'Decodes indexed sprite frames with shared palette, optional alpha plane and four padding extents; consumed when creating renderer-owned sprites and font glyphs.'],
+  df: ['IndexedSpriteState', 'Same shared role as GeoBlox IndexedSpriteState: full/trimmed dimensions, trim offsets and abstract indexed draw/alpha operations.'],
+  wp: ['IndexedSprite', 'Same shared role as GeoBlox IndexedSprite: indexed byte pixels, RGB palette and clipped software draw/alpha operations.'],
+  nl: ['SpriteState', 'Same shared role as GeoBlox SpriteState: primary/secondary linked sprite with full/trimmed dimensions and trim offsets.'],
+  ll: ['Sprite', 'Same shared role as GeoBlox Sprite: software RGB pixels with transparent-zero drawing, copies, mirroring, rotation and raster binding.'],
+  rd: ['ArgbSprite', 'Same shared role as GeoBlox ArgbSprite: Sprite subclass whose software blits use per-pixel high-byte alpha.'],
   vb: ['GameAppletShell', 'Applet/Runnable lifecycle, canvas creation, focus/window listeners and abstract client hooks.'],
   ct: ['NetworkGameClient', 'GameAppletShell with account/connection initialization, login and shared client state.'],
   gj: ['GameCanvas', 'Canvas retaining a Component and forwarding its paint/update callbacks.'],
@@ -318,6 +324,82 @@ for (const [owner, original, descriptor, to, names] of [
   ['vp','b','(IIII)V','drawHorizontalLine',['x','y','length','color']],
   ['vp','e','(IIIII)V','drawRectangle',['x','y','width','height','color']],
 ]) method(owner, original, descriptor, to, names, fontEvidence);
+
+const spriteEvidence = 'Reviewed indexed frame encoding, palette/alpha planes, sprite constructors, software pixel addressing/transforms and literal asset loading followed by renderer resource creation.';
+for (const [owner, original, type, to] of [
+  ['vd','a','I','padLeft'], ['vd','i','I','padTop'], ['vd','g','I','padRight'], ['vd','b','I','padBottom'],
+  ['vd','h','I','width'], ['vd','c','I','height'], ['vd','f','[I','palette'], ['vd','d','[B','indices'], ['vd','e','[B','alpha'],
+  ['df','h','I','fullWidth'], ['df','a','I','fullHeight'], ['df','e','I','trimX'], ['df','c','I','trimY'], ['df','b','I','width'], ['df','d','I','height'],
+  ['wp','i','[I','palette'], ['wp','j','[B','indices'],
+  ['nl','v','I','fullWidth'], ['nl','q','I','fullHeight'], ['nl','u','I','trimX'], ['nl','p','I','trimY'], ['nl','r','I','width'], ['nl','n','I','height'], ['ll','x','[I','pixels'],
+]) field(owner, original, type, to, spriteEvidence);
+for (const [owner, original, descriptor, to, names] of [
+  ['vd','a','([B)[Lvd;','decodeFrames',['encodedFrames']],
+  ['vd','a','(Lgk;Ljava/lang/String;Ljava/lang/String;)[Lvd;','loadFrames',['archive','groupName','fileName']],
+  ['vd','b','(Lgk;Ljava/lang/String;Ljava/lang/String;)Lvd;','loadFirstFrame',['archive','groupName','fileName']],
+  ['df','a','(II)V','draw',['x','y']], ['df','a','(III)V','drawAlpha',['x','y','alpha256']],
+  ['wp','<init>','(IIIIII[B[I)V','',['fullWidth','fullHeight','trimX','trimY','width','height','indices','palette']],
+  ['wp','<init>','(III)V','',['width','height','paletteSize']],
+  ['ll','<init>','(IIIIII[I)V','',['fullWidth','fullHeight','trimX','trimY','width','height','pixels']],
+  ['ll','<init>','(II)V','',['width','height']],
+  ['rd','<init>','(IIIIII[I)V','',['fullWidth','fullHeight','trimX','trimY','width','height','pixels']],
+  ['rd','<init>','(II)V','',['width','height']],
+  ['ll','d','()Lll;','copy',[]], ['ll','a','()Lll;','copyMirroredHorizontally',[]],
+  ['ll','c','()V','rotateClockwise',[]], ['ll','b','()V','makeRasterTarget',[]],
+  ['ha','a','(Lvd;Z)Lpa;','createSprite',['data','preferIndexed']],
+]) method(owner, original, descriptor, to, names, spriteEvidence);
+for (const [owner, original, type, to] of [
+  ['jd','d','[[Lvd;','aircraftSpriteData'], ['hr','d','[[Lpa;','aircraftSprites'],
+  ['oo','ab','[Lvd;','backgroundSpriteData'], ['na','c','[Lvd;','cloudSpriteData'],
+  ['l','a','Lvd;','bulletSpriteData'], ['dc','g','Lpa;','bulletSprite'],
+  ['tq','h','[Lvd;','smokeSpriteData'], ['ud','f','[Lvd;','explosionSpriteData'],
+  ['fs','e','Lvd;','titleImageData'], ['mp','h','Lpa;','titleImage'],
+  ['ps','f','[[Lvd;','gaugeSpriteData'], ['ii','k','[[Lpa;','gaugeSprites'],
+  ['qq','e','[Lvd;','upgradeSpriteData'], ['bs','b','[Lpa;','upgradeSprites'],
+  ['o','a','[Lvd;','radarSpriteData'], ['ec','e','[Lpa;','radarSprites'],
+  ['eb','c','[Lvd;','counterPanelSpriteData'], ['ua','g','[Lpa;','counterPanelSprites'],
+  ['kb','D','[Lvd;','scoreDigitSpriteData'], ['in','c','[Lpa;','scoreDigitSprites'],
+  ['hq','a','[Lvd;','levelRingSpriteData'], ['jm','a','[Lpa;','levelRingSprites'],
+  ['qa','a','[Lvd;','keySpriteData'], ['ac','f','[Lpa;','keySprites'],
+  ['dl','m','[Lvd;','fontSpriteData'], ['hi','v','Lvs;','gameFontMetrics'], ['rb','j','Lda;','gameFont'],
+  ['q','o','[Lvd;','bigFontSpriteData'], ['kn','b','Lvs;','bigFontMetrics'], ['se','c','Lda;','bigGameFont'],
+  ['nc','a','[Lvd;','titleFontSpriteData'], ['dp','h','Lvs;','titleFontMetrics'], ['kn','a','Lda;','titleFont'],
+  ['lt','v','Lvd;','woodenTileSpriteData'], ['qk','i','Lpa;','woodenTileSprite'],
+  ['gu','a','[Lvd;','brassFrameSpriteData'], ['ko','g','[Lpa;','brassFrameSprites'],
+  ['vl','b','[Lvd;','brassButtonSpriteData'], ['mb','u','[Lpa;','brassButtonSprites'],
+  ['qk','a','[Lvd;','brassSliderSpriteData'], ['dl','n','[Lpa;','brassSliderSprites'],
+  ['ol','e','[Lvd;','powerchuteSpriteData'], ['wm','i','[Lpa;','powerchuteSprites'],
+  ['nu','b','[Lvd;','powerIconSpriteData'], ['po','e','[Lpa;','powerIconSprites'],
+  ['tt','c','[Lvd;','powerBulbSpriteData'], ['uc','o','[Lpa;','powerBulbSprites'],
+  ['la','g','[Lvd;','achievementSpriteData'], ['aa','a','[Lpa;','achievementSprites'],
+  ['af','c','[Lvd;','medalSpriteData'], ['rs','u','[Lpa;','medalSprites'],
+  ['vl','c','Lvd;','coinSpriteData'], ['lg','k','Lpa;','coinSprite'],
+  ['es','i','Lvd;','lockedSpriteData'], ['ut','c','Lpa;','lockedSprite'],
+  ['uc','g','Lvd;','unachievedSpriteData'], ['dh','k','Lpa;','unachievedSprite'],
+]) field(owner, original, type, to, spriteEvidence);
+
+const rendererTextEvidence = 'Reviewed renderer font reset/style routines, glyph calls, pen/baseline adjustment and public alignment wrappers; parameter order and all mask/image/guard behavior remain unchanged.';
+for (const [owner, original, to] of [
+  ['rs','t','rendererStrikethroughColor'], ['rb','h','rendererUnderlineColor'],
+  ['tf','a','rendererDefaultTextColor'], ['qg','c','rendererCurrentTextColor'],
+  ['em','d','rendererDefaultShadowColor'], ['es','c','rendererCurrentShadowColor'],
+  ['tm','i','rendererSpaceExpansionQ8'], ['ed','i','rendererJustificationRemainderQ8'],
+]) field(owner, original, 'I', to, rendererTextEvidence);
+for (const [original, descriptor, to, names] of [
+  ['a','(IIILjava/lang/String;II)V','drawText',['textColor','shadowColor','leftX','text','obfuscationGuard','baselineY']],
+  ['a','(Ljava/lang/String;IIIIB)V','drawRightAlignedText',['text','textColor','shadowColor','rightX','baselineY','obfuscationGuard']],
+  ['a','(IIIIILjava/lang/String;)V','drawCenteredText',['obfuscationGuard','textColor','shadowColor','baselineY','centerX','text']],
+  ['a','(II[Lpa;IILjava/lang/String;I[I)V','drawTextWithImages',['textColor','shadowColor','inlineImages','leftX','maskY','text','baselineY','inlineImageBaselineOffsets']],
+  ['a','(II[IBILjava/lang/String;I[Lpa;)V','drawRightAlignedTextWithImages',['shadowColor','textColor','inlineImageBaselineOffsets','obfuscationGuard','baselineY','text','rightX','inlineImages']],
+  ['a','(III)V','resetTextStyle',['shadowColor','underlineColor','textColor']],
+  ['a','(Ljava/lang/String;I)V','applyStyleTag',['tag','obfuscationGuard']],
+  ['a','(IBLjava/lang/String;)V','prepareJustification',['targetWidth','obfuscationGuard','text']],
+  ['a','(I[Lpa;ILjava/lang/String;B[IILaa;I)V','drawStyledText',['maskX','inlineImages','penX','text','obfuscationGuard','inlineImageBaselineOffsets','baselineY','mask','maskY']],
+  ['fa','(CIIIZ)V','drawGlyph',['glyph','x','y','color','shadowPass']],
+  ['a','(CIIIZLaa;II)V','drawGlyphWithMask',['glyph','x','y','color','shadowPass','mask','maskX','maskY']],
+  ['a','(IIIZIIIII[Lpa;Laa;I[IIILjava/lang/String;)I','drawParagraph',['maskY','left','textColor','obfuscationGuard','shadowColor','horizontalAlignment','top','lineSpacing','maskX','inlineImages','mask','verticalAlignment','inlineImageBaselineOffsets','width','height','text']],
+  ['a','(IIILaa;IILjava/lang/String;IIIII[Lpa;I[III)I','drawParagraphInternal',['height','shadowColor','maximumLines','mask','verticalAlignment','textColor','text','width','horizontalAlignment','top','maskY','lineSpacing','inlineImages','obfuscationGuard','inlineImageBaselineOffsets','left','maskX']],
+]) method('da', original, descriptor, to, names, rendererTextEvidence);
 for (const [original, type, to] of [['i','Lgr;','input'], ['d','I','screenId'], ['a','I','previousActionId'],
   ['c','I','pendingClickX'], ['b','I','pendingClickY'], ['e','I','selectedAchievementId'], ['h','I','soundPreviewCooldown']])
   field('nk', original, type, to, 'Reviewed menu construction, action/hover dispatch, click consumption and achievement/volume rendering.');
@@ -557,7 +639,7 @@ for (const [owner, signature, locals] of [
     evidence: 'Reviewed lexical declaration and its data flow in the pinned Ace source.'};
 
 export const aceConfig = {
-  game: 'aceofskies', version: 7, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
+  game: 'aceofskies', version: 8, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
   workflowFiles: ['build-aceofskies-rules.mjs', 'reproduce-aceofskies.mjs', 'reviewed-game.mjs',
     'tests/test-aceofskies-core.mjs', 'tests/test-aceofskies-highscores.mjs', 'tests/test-aceofskies-hud.mjs', 'reconstruct-aceofskies.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
@@ -588,6 +670,8 @@ export const aceConfig = {
       '| PcmSample / PcmSampleStream / MidiPcmStream | GeoBlox equivalents | Signed PCM storage, loop bounds, interpolation and MIDI channel/voice state. |', '',
       '`SoundCache` separates synthesized and Vorbis archives, pending Vorbis samples and decoded PCM samples. Cache hits precede the byte-budget check; a completed sample remains reusable when the caller budget is exhausted. The shared collection fixtures check collisions, duplicate keys, bucket-order traversal, transfers and independence of primary versus secondary links.', '',
       'Ace retains two text pipelines. `BitmapFont`, `CoverageBitmapFont`, `MonochromeBitmapFont` and `SoftwareRasterizer` share the software engine roles found in GeoBlox: glyph metrics, tags, wrapping, coverage/mask drawing and a global clipped integer framebuffer. The previously generic BitmapFont name for the other pipeline is now `RendererBitmapFont`, which retains a `GraphicsRenderer` and separate `BitmapFontMetrics`. Software and renderer font encodings differ and remain distinct. Font probes check measured advances, tags, wrapping and pair kerning, and compare clipped software glyph pixels against an independent integer blend reference, including shadow masks and the original separate rounding of source/background contributions.', '',
+      '`SpriteData.decodeFrames` exposes palette-indexed frame bytes, optional alpha and left/top/right/bottom padding. `loadFrames` and `loadFirstFrame` use archive group/file names. Decoded assets and renderer-owned images have paired names such as aircraftSpriteData/aircraftSprites, gaugeSpriteData/gaugeSprites and scoreDigitSpriteData/scoreDigitSprites. Game, large and title font data/metrics are separate. `GraphicsRenderer.createSprite` converts the decoded data, optionally preferring an indexed representation. The shared software `SpriteState`, `Sprite`, `ArgbSprite`, `IndexedSpriteState` and `IndexedSprite` roles remain distinct from `RenderSprite`.', '',
+      '`RendererBitmapFont.drawText`, `drawCenteredText`, `drawRightAlignedText`, image-aware variants and `drawParagraph` expose alignment and baseline intent at HUD/menu call sites. `drawStyledText`, `applyStyleTag`, `prepareJustification`, `drawGlyph` and `drawGlyphWithMask` retain the original masks, image baselines, shadow passes and ARGB style state. The native sprite probes decode synthetic multi-frame resources in row/column order, check optional alpha/palette sharing, and verify trim-aware copies, mirroring, rotation and indexed framebuffer pixels. An isolated original-bytecode oracle checks indexed alpha blending; its arithmetic final shift sign-extends some RGB results into the high byte, and the source retains that behavior.', '',
       'Shared role names do not assert byte-for-byte implementation equality. Different guards, signatures, static helper placement and graphics generations remain. Core fixtures exercise actual raw and named flight/vector, packet, collection and menu implementations, compare their traces and check independent expected results. Complete source compilation and resolved declaration/reference/override comparison cover every file. Reversal recovers the reconstructed raw source bytes.', '',
       'The replay reconstructs all 51 region-proved ordinary FlightSession methods directly from the fixed original bytecode. It preserves initialization and three methods handled by specialized emitters at the base source. Generic catch-copy cleanup removes the intermediate exception carrier only when every use is a copy inside the owning handler, while preserving the destination local and its written type. The current dictionary records every selected body hash and original-edge certificate checks.', '',
       'The current generic compiler also removes unread typed reference stack snapshots. This drops null placeholders from final-score construction without discarding live references, moving allocations or suppressing argument effects. The full native core trace matches both the historical source and reconstructed source before naming.', '',

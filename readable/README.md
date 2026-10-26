@@ -52,11 +52,11 @@ vector, packet, deque and pool fixtures compare raw/named behavior against
 independent expectations; complete binding and compilation checks cover every
 source. Full client rendering and server compatibility remain separate checks.
 
-The current Ace pass names 48 classes and 1,359 symbols, including flight-loop
+The current Ace pass names 54 classes and 1,741 symbols, including flight-loop
 locals, targets, camera movement, lives, weapon heat/cooldown, gun patterns,
 menu input/navigation, hit testing, transitions and HUD score/multiplier state.
 All 545 source files compile before and after naming; 208,927 symbol bindings
-and 124 label bindings agree. Native raw/named traces agree on 14,291 assertions,
+and 124 label bindings agree. Native raw/named traces agree on 14,652 assertions,
 including aircraft construction, bullet spawning, single-period flight
 boundaries, packet bytes, intrusive transfers, pool swaps and menu geometry.
 Menu tests preserve the initial press frame's immediate countdown decrement,
@@ -108,6 +108,35 @@ passes and opacity. Pixel expectations use independent channel arithmetic and
 preserve the original separate rounding of source/background contributions.
 The font fixtures add 890 independent assertions, including 240 clipped glyph
 rasters. These are checks of integer framebuffer contents, not browser screenshots.
+
+`SpriteData` now exposes indexed frame decoding, palette sharing, optional alpha
+and four padding extents. Its archive helpers distinguish group/file names.
+Decoded asset and renderer resource fields have paired names throughout the
+loader, session and menus: aircraft, background, cloud, bullet, smoke, explosion,
+gauges, radar, score digits/panels, upgrades, key icons, achievements and medals.
+Game, large and title font sprites/metrics remain distinct. The brass frame,
+button and slider resources have separate names. `GraphicsRenderer.createSprite`
+retains the request to prefer an indexed representation where supported.
+
+Software sprites use the reviewed shared names `SpriteState`, `Sprite`,
+`ArgbSprite`, `IndexedSpriteState` and `IndexedSprite`. Dimensions distinguish
+the full image, trimmed rectangle and trim offsets. Native fixtures encode two
+frames using row/column storage and absent, opaque or mixed alpha; they check
+the decoder's all-opaque-alpha removal and zero-palette-colour normalization.
+They also check deep copies, horizontal mirror, clockwise rotation, trim
+geometry, raster binding and clipped indexed draw/alpha pixel values.
+An isolated original-bytecode oracle checks 120 indexed-alpha combinations.
+The original kernel's arithmetic final shift sign-extends some RGB results
+into the high byte. The independent channel reference preserves that signed
+result; the source retains the original operation.
+
+`RendererBitmapFont` exposes text, centered/right-aligned text, image-aware
+variants, paragraph layout, style tags, justification and masked glyph calls.
+Its global ARGB style fields are named separately from software-font style.
+Glyph-call fixtures check left/center/right placement, markup colour/reset,
+baseline and paragraph line count through the actual renderer-font code with
+only its abstract glyph boundary mocked. They do not instantiate a graphics
+device or establish complete renderer behavior.
 
 Flight controls, classic/arcade waves, purchase/upgrade flow, respawn state,
 world/HUD/radar rendering entry points and queued `HudMessage` text now have
@@ -193,9 +222,10 @@ Compiler validation includes 192 native Object/concrete-reference snapshot
 cases across effects, thrown objects, catch/finally and monitor release, plus
 44 original-bytecode/decompiled-Java constructor-argument cases. The emitter
 suite passes 68 tests with one existing skip. The combined catch-copy/emitter/exception-table validation passes 74 tests with one existing skip (plus five assembler assertions). Ace also compares its complete
-14,291-check core trace against the historical pre-reconstruction Java, in
+14,652-check core trace against the historical pre-reconstruction Java, in
 addition to the prepared-raw/named comparison. This is historical-source
-coverage; only the selected HUD has the separate original-game-bytecode oracle.
+coverage. Separate original-game-bytecode oracles cover the selected HUD and
+indexed-sprite alpha kernel; they do not establish whole-game equivalence.
 
 Catch-copy recovery now removes an intermediate caught-exception carrier when
 all uses are handler-entry stores and copies into reference local assignments
@@ -238,7 +268,7 @@ The current method-recovery compiler source archive SHA-256 is
 by archiving commit `2d79b0d0736003c9f5da1faaf8763149bb3700b1` the same way.
 The verified prepared raw tree SHA-256 is
 `a2ef6e1c05499a488d98e50ec6faddff758c28a030ab9660cfcc93d140599e4c`; the
-named tree is `c2f08623a9cb093e6696ced8ff228c35c4a04ab314581e8f16288e688320a0b3`.
+named tree is `9467af57a530b4682f193e8e011cfee30f4c30471f4065fe39184b6885a39511`.
 The one current rule manifest/dictionary records both input identities,
 compiler pins, fixed gamepack identity, method-body hashes and verification.
 Dictionary reversal recovers all 545 prepared raw files; the unmodified base
