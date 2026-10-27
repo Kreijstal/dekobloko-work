@@ -18,10 +18,15 @@ class DekoblokoTCPServer(socketserver.ThreadingTCPServer):
         server_address: tuple[str, int],
         config: ServerConfig,
         cache: CacheStore,
+        *,
+        session_factory=GameSession,
+        js5_factory=Js5Session,
     ) -> None:
         super().__init__(server_address, DekoblokoTCPHandler)
         self.config = config
         self.cache = cache
+        self.session_factory = session_factory
+        self.js5_factory = js5_factory
 
 
 class DekoblokoTCPHandler(socketserver.BaseRequestHandler):
@@ -41,10 +46,10 @@ class DekoblokoTCPHandler(socketserver.BaseRequestHandler):
             next_opcode = read_u8(sock)
             if next_opcode == 15:
                 revision = int.from_bytes(read_exact(sock, 4), "big")
-                Js5Session(sock, self.server.cache, peer).run_after_handshake(revision)
+                self.server.js5_factory(sock, self.server.cache, peer).run_after_handshake(revision)
                 return
 
-            GameSession(sock, self.server.config, peer).run_after_opcode(next_opcode)
+            self.server.session_factory(sock, self.server.config, peer).run_after_opcode(next_opcode)
 
         except (EOFError, ConnectionResetError, BrokenPipeError, TimeoutError, ValueError, OSError) as exc:
             print(f"[tcp] {peer} closed/error: {exc}")

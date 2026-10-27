@@ -1,5 +1,9 @@
 # Dekobloko local server
 
+Escape Vector now has a sibling backend using the same transport and login:
+see [Escape Vector server](escapevector_server/README.md) for setup, supported
+services and native protocol tests.
+
 A local reimplementation of the FunOrb/AlterOrb Dekobloko backend: JS5 cache
 service over HTTP, plus the two TCP game ports (login, lobby, gameplay).
 

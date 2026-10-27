@@ -32,12 +32,14 @@ from .packets import (
 
 
 class GameSession:
-    def __init__(self, sock: socket.socket, config: ServerConfig, peer: str) -> None:
+    packet_codec = PacketCodec
+
+    def __init__(self, sock: socket.socket, config: ServerConfig, peer: str, *, accounts=None) -> None:
         self.sock = sock
         self.config = config
         self.peer = peer
         self.rsa_key = RsaPrivateKey.from_json(config.rsa_key_path)
-        self.accounts = AccountStore(config.accounts_path, config.auto_register)
+        self.accounts = accounts if accounts is not None else AccountStore(config.accounts_path, config.auto_register)
         self.codec: PacketCodec | None = None
         self.display_name = config.display_name
         # Account key this session authenticated as. Set at login; the default
@@ -187,8 +189,12 @@ class GameSession:
         # name -- the player id must be derived from the account key so the
         # reconnect lookup above finds it again.
         self.account_name = login_name
-        self.codec = PacketCodec(parsed.client_seed)
+        self.codec = self.packet_codec(parsed.client_seed)
         self._send_login_success()
+        self._serve_authenticated()
+
+    def _serve_authenticated(self) -> None:
+        """Game-specific post-login lifecycle; transport/authentication is shared."""
         LOBBY.join(self)
         self._start_keepalive()
         try:

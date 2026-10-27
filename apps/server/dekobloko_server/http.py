@@ -11,8 +11,8 @@ from .config import ServerConfig
 
 
 class DekoblokoHTTPServer(ThreadingHTTPServer):
-    def __init__(self, server_address: tuple[str, int], config: ServerConfig) -> None:
-        super().__init__(server_address, DekoblokoHTTPRequestHandler)
+    def __init__(self, server_address: tuple[str, int], config: ServerConfig, *, handler_class=None) -> None:
+        super().__init__(server_address, handler_class or DekoblokoHTTPRequestHandler)
         self.config = config
 
 
