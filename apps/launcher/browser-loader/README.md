@@ -16,6 +16,19 @@ new JVMs created by controller reset. Call `dispose` to remove the reset hook;
 it does not erase browser profiles. The host still invokes the generic
 `debug.run(mainClass, options)` API and handles UI, cloning and compilation.
 
+Escape Vector's account services are embedded here in
+`escape-account-service.mjs`, selected automatically. They persist separate
+campaign progress, achievement bits, saved game bytes and board-specific best
+scores in browser storage. Score tables can include profiles on the same
+browser origin; they are not global online leaderboards. Reconnect IDs remain
+stable across page reloads. No TCP service or persistent backend process is
+needed on Sites. Passwords are not stored or authenticated by local profiles.
+
+Run `node --test scripts/test-escape-account-service.mjs` for service tests and
+92 checks using the original client bytecode's packet writers and decoders.
+The native case needs a local original JAR and JDK; it is explicitly skipped
+when the JAR is absent. The TCP bridge in that test is only a native test adapter.
+
 `applet-config.mjs` is also used directly by `serve-game-library.js`, whose game
 sockets continue to use its server transport. The browser endpoint is an
 alternative transport for static deployment, not an additional JVM feature.

@@ -1,5 +1,10 @@
 # Escape Vector local server
 
+For hosted play on Sites, the backend is embedded in
+[`apps/launcher/browser-loader`](../../launcher/browser-loader/README.md).
+It runs without a persistent process. The server below is the optional native
+TCP transport and the original client protocol reference.
+
 This is the Python Deko Bloko server's sibling: the same RSA/XTEA login,
 ISAAC opcode cipher, HTTP launcher and two TCP cache/account ports, with
 Escape Vector account handlers instead of Deko's lobby and falling-block engine.
@@ -22,8 +27,8 @@ This does not add networked flight or a Deko-style multiplayer lobby.
 Framework rating tables are empty and framework statistics are zero; account
 creation through the separate registration form is not implemented. Use the
 normal login form: an unknown name is registered unless `--no-auto-register`
-is set. The existing browser loader still uses its embedded account shim;
-this standalone TCP server does not automatically replace that shim.
+is set. The browser loader implements the same Escape service layouts in its
+embedded profile handler; it does not connect to this standalone TCP server.
 
 ## Prepare and start
 

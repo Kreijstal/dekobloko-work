@@ -85,6 +85,7 @@ public final class EscapeProtocolProbe {
             int status = in.readUnsignedByte(), size = in.readUnsignedByte();
             byte[] success = new byte[size]; in.readFully(success);
             check(status == 0, "login status " + status + " " + new String(success, "windows-1252"));
+            System.out.println("playerId=" + new DataInputStream(new ByteArrayInputStream(success)).readLong());
             om.c = new c(4096); om.c.a(seed, (byte)107);
             int[] responseSeed = seed.clone();
             for (int i = 0; i < 4; i++) responseSeed[i] += 50;

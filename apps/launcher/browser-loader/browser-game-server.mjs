@@ -1,5 +1,6 @@
 // Browser-local FunOrb JS5 and account server. Wire layouts follow
 // dekobloko-work/docs/protocol.md; no external game socket is opened.
+import {createEscapeAccountService} from './escape-account-service.mjs';
 const GEOBLOX_LOGIN_MODULUS =
   "11973412243201758229960950560686127507773492912549650743509000901608172722598946199955197779881834924802077886527584849063419486935491686535661281977348827";
 const GEOBLOX_LOGIN_PRIVATE_EXPONENT =
@@ -7,6 +8,14 @@ const GEOBLOX_LOGIN_PRIVATE_EXPONENT =
 
 export { GEOBLOX_LOGIN_MODULUS as LOGIN_MODULUS };
 export function createBrowserGameServer({ game, storage = globalThis.localStorage, fetchAsset = globalThis.fetch, diagnostics = {} }) {
+if (game.internalName === 'escapevector') diagnostics.accountProtocol = 'escapevector-local-v1';
+const escape = game.internalName === 'escapevector' ? createEscapeAccountService({
+  storage, send: frameAccountPacket, close(state) {
+    state.closed = true;
+    clearInterval(state.keepalive);
+    wakeSocketReaders(state);
+  },
+}) : null;
 function wakeSocketReaders(state) {
   for (const wake of state.waiters.splice(0)) wake();
 }
@@ -242,6 +251,7 @@ function saveEmbeddedAccountData(state, data) {
 }
 
 function handleEmbeddedAccountPacket(state, opcode, payload) {
+  if (escape) return escape.handle(state, opcode, payload);
   if (opcode === 0) { frameAccountPacket(state, 0, []); return; }
   const data = embeddedAccountData(state);
   data.achievements ??= [];
@@ -316,6 +326,7 @@ function handleEmbeddedAccountPacket(state, opcode, payload) {
 
 function processEmbeddedAccountPackets(state) {
   const fixedLengths = new Map([[0, 0], [1, 0], [7, 2], [9, 0], [10, 0], [17, 0], [58, 0], [59, 1], [61, 0], [62, 0], [63, 0]]);
+  if (escape) fixedLengths.set(2, 3);
   while (state.outgoing.length > 0) {
     const pending = state.pendingAccountPacket;
     const decodedOpcode = pending?.decodedOpcode ??
@@ -486,14 +497,15 @@ function processBrowserJs5Writes(state) {
       );
       const previousName = storage.getItem("funorb.account.name") || storage.getItem("geoblox.account.name");
       const reconnectId = state.login.usernameRaw;
-      const name = opcode === 18 && previousName && reconnectId !== null && reconnectId <= 0xffffn
+      const identity = escape?.login(state.login, previousName, opcode);
+      const name = identity?.name || (opcode === 18 && previousName && reconnectId !== null && reconnectId <= 0xffffn
         ? previousName
-        : state.login.username || previousName || "Browser Player";
+        : state.login.username || previousName || "Browser Player");
       state.accountName = name;
       storage.setItem("funorb.account.name", name);
       const nameBytes = encodeCp1252(name);
       const payload = Uint8Array.from([
-        0, 0, 0, 0, 0, 0, 0, 1,
+        ...Array.from({length: 8}, (_, index) => Number((identity?.playerId ?? 1n) >> BigInt(56 - index * 8) & 255n)),
         0, 0, 1, 109,
         0, 0,
         ...nameBytes, 0,
