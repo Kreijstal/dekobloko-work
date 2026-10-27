@@ -28,6 +28,9 @@ env -u JAVA_TOOL_OPTIONS node readable/reproduce-steelsentinels.mjs --check
 env -u JAVA_TOOL_OPTIONS node readable/build-aceofskies-rules.mjs --check
 env -u JAVA_TOOL_OPTIONS node readable/reproduce-aceofskies.mjs --update
 env -u JAVA_TOOL_OPTIONS node readable/reproduce-aceofskies.mjs --check
+node readable/build-escapevector-rules.mjs --check
+node readable/reproduce-escapevector.mjs --update
+node readable/reproduce-escapevector.mjs --check
 node readable/restore-game.mjs dekobloko /tmp/restored-dekobloko
 node scripts/check-source-catalog.mjs /absolute/path/to/funorb-decompiled
 node --test scripts/test-publish-decompiled-games.mjs readable/tests/test-game-publication.mjs
@@ -40,6 +43,17 @@ stages Java, guide, dictionary and catalog receipt before replacing the current
 game; failed metadata installation restores the previous game and receipt.
 Checks and reverse reconstruction also use temporary storage, never `.work`.
 The frozen generic naming dependency remains under `tools`, bound by `PIN.json`.
+
+Escape Vector uses the same binding-checked workflow. Its pinned raw input
+includes the terrain-loader and object stamp/remove allocation-identity repairs.
+Existing generic compiler declaration/decision proofs run across all 348 source
+files before naming; the current dictionary records their hashes and counts.
+GameplaySession, TerrainMap, LevelObject, DynamicTerrainRenderer, Minimap and
+DialogueScreen identify the gameplay reading path. Native fixtures compare
+historical/prepared/named terrain masks and deque ownership against independent
+values. The original gamepack passes the same 903-check terrain harness.
+Raw repair receipts continue to verify the immutable input after classes acquire
+readable names. No second readable source directory is created.
 
 Ace of Skies uses `reviewed-game.mjs`, a reusable workflow supporting packaged
 Java sources as well as default-package game classes. Its publication check

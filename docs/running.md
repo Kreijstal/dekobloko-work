@@ -13,6 +13,31 @@ socket layer; install it in anything that claims to run offline.
 
 ---
 
+## Escape Vector reproducible readability — 2026-10-27
+
+`readable/build-escapevector-rules.mjs` defines reviewed gameplay and engine
+names; `readable/reproduce-escapevector.mjs` publishes only to
+`funorb-decompiled/games/escapevector`. The pinned raw Git input includes both
+the TerrainMap loader repair and LevelObject collision stamp/remove repairs.
+All three duplicated allocations came from the same fixed-size array aliasing
+bug; the corrected compiler emits one shared allocation at each site.
+
+The original gamepack passes `readable/tests/test-escapevector-core.mjs`'s
+903 independent checks for versions 9/10, empty/full/partial tiles, sprite
+stamping/removal and deque ownership. The named exporter compares the historical,
+generically prepared and named Java with these same expectations. Each variant
+compiles the complete 348-file source corpus against signature stubs alone.
+
+Preparation replays the pinned generic compiler's default declaration and
+decision proofs over every file, checking deterministic and idempotent output.
+There are no `statePc` dispatcher files in the raw Escape Vector corpus.
+Declaration localization and decision recovery target the remaining temporary
+and predicate clutter without assuming that the mutable obfuscation control is
+zero. The current reverse dictionary retains all preparation counts/hashes and
+binding verification; the raw repairs remain verifiable at the input Git pin
+after their classes are renamed. Full client rendering and frame rate remain
+separate checks from these native fixtures.
+
 ## Escape Vector terrain masks — 2026-10-26
 
 Low-security Facility's squared-off terrain exposed a decompiler allocation

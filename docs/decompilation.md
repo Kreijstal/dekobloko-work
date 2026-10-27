@@ -6,6 +6,12 @@ verifier-clean bytecode and compilable Java, and the rules for changing it.
 For a deterministic readable GeoBlox source mirror with exact symbol rules and
 reverse mappings, see [Readable GeoBlox sources](geoblox-readable-source.md).
 
+Escape Vector's reviewed gameplay/terrain export uses
+`node readable/reproduce-escapevector.mjs --update` and `--check`.
+`node readable/build-escapevector-rules.mjs --check` verifies its current naming
+manifest. The sole published tree is `funorb-decompiled/games/escapevector`;
+its generated reading guide explains the entry points and verification limits.
+
 ## Stubs
 
 `stubs/src/` resolves the legacy dependencies the gamepacks reference:
