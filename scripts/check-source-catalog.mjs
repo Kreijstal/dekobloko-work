@@ -13,7 +13,7 @@ for (const [game, record] of Object.entries(records)) {
   const sources = named ? validateNamedExport(repository, game, named) : inventory(path.join(repository, 'games', game), '.java', ['README.md']);
   const expected = named ? record.publishedSources : record.sources;
   if (sources.files !== expected?.files || sources.sha256 !== expected.sha256) throw new Error('Published source differs: ' + game);
-  validateRawClassRepairs(repository, game, record);
+  validateRawClassRepairs(repository, game, record, named);
   files += sources.files;
 }
 console.log(JSON.stringify({games: Object.keys(records).length, files, namedGames: Object.keys(manifest.namedExports || {}), allSourceIdentitiesChecked: true}));

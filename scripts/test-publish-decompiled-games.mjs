@@ -5,6 +5,39 @@ import os from 'node:os';
 import path from 'node:path';
 import {inventory, validateReport, pipelineCheckEnvironment, validateNamedExport, validateRawClassRepairs} from './publish-decompiled-games.mjs';
 import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+
+test('named exports retain raw class repair proofs through their immutable input pin', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'named-repair-test-'));
+  const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+  const git = (...args) => execFileSync('git', ['-C', root, ...args], {encoding:'utf8'}).trim();
+  try {
+    const directory = path.join(root,'games/fixture');fs.mkdirSync(directory,{recursive:true});
+    fs.mkdirSync(path.join(root,'decompilation'));
+    const original='class A {}';fs.writeFileSync(path.join(directory,'A.java'),original);
+    const rawSources=inventory(directory,'.java');
+    git('init','--quiet');git('add','.');git('-c','user.name=Fixture','-c','user.email=fixture@example.invalid','commit','--quiet','-m','Raw input');
+    const source={commit:git('rev-parse','HEAD'),subdirectory:'games/fixture'};
+    fs.unlinkSync(path.join(directory,'A.java'));fs.writeFileSync(path.join(directory,'Named.java'),'class Named {}');
+    fs.writeFileSync(path.join(directory,'README.md'),'Guide');const sources=inventory(directory,'.java',['README.md']);
+    const dictionary={inputTreeSha256:'c'.repeat(64),files:[{}],
+      provenance:{source,baseInputTreeSha256:rawSources.sha256,outputTreeSha256:sources.sha256}};
+    const bytes=JSON.stringify(dictionary);fs.writeFileSync(path.join(root,'decompilation/fixture-naming.json'),bytes);
+    const named={source,inputTreeSha256:dictionary.inputTreeSha256,sources,
+      dictionary:{path:'decompilation/fixture-naming.json',sha256:hash(bytes)},
+      readingGuide:{path:'games/fixture/README.md',sha256:hash('Guide')}};
+    const repair={output:{path:'games/fixture/A.java',sha256:hash(original)},
+      generator:{commit:'a'.repeat(40),execution:'committed-source-archive',sourceArchive:{sha256:'b'.repeat(64)}},
+      validation:{wholeGameJavac:'pass',sources:1}};
+    const record={sources:rawSources,sourceRepairs:{classes:{'A.java':repair}}};
+    assert.doesNotThrow(()=>validateRawClassRepairs(root,'fixture',record,named));
+    assert.throws(()=>validateRawClassRepairs(root,'fixture',{...record,sources:{...rawSources,sha256:'f'.repeat(64)}},named),/input differs/);
+    repair.output.sha256='d'.repeat(64);
+    assert.throws(()=>validateRawClassRepairs(root,'fixture',record,named),/identity differs/);
+    repair.output.sha256=hash(original);fs.writeFileSync(path.join(directory,'Named.java'),'class Named { int changed; }');
+    assert.throws(()=>validateRawClassRepairs(root,'fixture',record,named),/identity differs/);
+  } finally {fs.rmSync(root,{recursive:true,force:true});}
+});
 
 test('raw class refreshes pin the output, compiler archive and semantic result', () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'raw-refresh-test-'));

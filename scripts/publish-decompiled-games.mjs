@@ -47,16 +47,29 @@ export function validateNamedExport(repository, game, receipt) {
   return sources;
 }
 
-export function validateRawClassRepairs(repository, game, record) {
-  for (const [file, receipt] of Object.entries(record.sourceRepairs?.classes || {})) {
+export function validateRawClassRepairs(repository, game, record, named) {
+  const repairs = Object.entries(record.sourceRepairs?.classes || {});
+  if (repairs.length && named) {
+    // A named publication retains the repaired raw input at its pinned commit.
+    // Verify its current dictionary/Java before following that immutable pin.
+    validateNamedExport(repository, game, named);
+    const dictionary = json(path.join(repository, named.dictionary.path));
+    if (!/^[a-f0-9]{40}$/.test(named.source?.commit || '') ||
+        named.source.subdirectory !== `games/${game}` ||
+        (dictionary.provenance.baseInputTreeSha256 || dictionary.inputTreeSha256) !== record.sources.sha256)
+      throw new Error(`Raw class refresh input differs: ${game}`);
+  }
+  for (const [file, receipt] of repairs) {
     if (!/^[\w$/]+\.java$/.test(file) || file.includes('..') ||
         receipt.output?.path !== `games/${game}/${file}` ||
         !/^[a-f0-9]{40}$/.test(receipt.generator?.commit || '') ||
         !/^[a-f0-9]{64}$/.test(receipt.generator?.sourceArchive?.sha256 || '') ||
         receipt.generator.execution !== 'committed-source-archive' ||
-        receipt.validation?.wholeGameJavac !== 'pass' || receipt.validation.sources !== record.sources.files ||
-        hash(fs.readFileSync(path.join(repository, 'games', game, file))) !== receipt.output.sha256)
+        receipt.validation?.wholeGameJavac !== 'pass' || receipt.validation.sources !== record.sources.files)
       throw new Error(`Raw class refresh identity differs: ${game}/${file}`);
+    const raw = named ? run('git', ['-C', repository, 'show', `${named.source.commit}:games/${game}/${file}`])
+      : fs.readFileSync(path.join(repository, 'games', game, file));
+    if (hash(raw) !== receipt.output.sha256) throw new Error(`Raw class refresh identity differs: ${game}/${file}`);
     const probe = receipt.validation.originalBytecodeProbe;
     if (probe && probe.reference !== probe.rebuilt) throw new Error(`Raw class semantic proof differs: ${game}/${file}`);
   }
@@ -115,7 +128,7 @@ export function publish({batch, destination, javaTools, update = false}) {
   try {
     for (const game of games) {
       const previousRecord = previousManifest?.publication?.games?.[game];
-      if (previousRecord) validateRawClassRepairs(destination, game, previousRecord);
+      if (previousRecord) validateRawClassRepairs(destination, game, previousRecord, namedExports[game]);
       for (const receipt of Object.values(previousRecord?.sourceRepairs?.classes || {})) {
         run('git', ['-C', javaTools, 'merge-base', '--is-ancestor', receipt.generator.commit, compiler.commit]);
       }
