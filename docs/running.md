@@ -38,6 +38,58 @@ binding verification; the raw repairs remain verifiable at the input Git pin
 after their classes are renamed. Full client rendering and frame rate remain
 separate checks from these native fixtures.
 
+Browser validation exposed a separate Java frontend defect after declaration
+localization: copied loop/label contexts could allocate overlapping slots, and
+separate lexical declarations could reuse one internal local ID. Generic
+java-tools commit `2f59f120` allocates from a shared method-wide owner and scopes
+basic `for` initializers through their condition, update and body. This preserves
+field lookup after the loop and avoids conflating reference/integer lifetimes.
+No application identities or guards are involved in that fix. All 165 methods
+of the named GameplaySession compile through JVM.js's frontend after it.
+
+`node --test test/javaFrontendLocalScopes.test.js` passes the new native scope
+regression, including original javac and frontend bytecode execution under
+`java -Xverify:all`. `node test/javaFrontendHelloWorldCompile.test.js` passes
+27 assertions and `node test/javaFrontendIr.test.js` passes 863 assertions.
+The native game fixture compiler uses `--release 8` for the legacy AWT peer API;
+using the host JDK API otherwise fails before the semantic fixtures execute.
+
+Closed-world preparation then exposed unseeded reference-phi cycles being
+treated like null during inference. A downstream typed join could therefore
+receive an anyref local, producing invalid Wasm. Generic java-tools commit
+`efeee0c8` settles unresolved cycles conservatively and retains true null-only
+phis as the reference bottom type. It adds no application-specific handling or
+cast on a proven null-only incoming edge. `node --test
+test/closedReferencePhis.test.js` passes three representation/Wasm execution
+checks; `node --test test/closedWorldCompiler.test.js` passes all four
+HotSpot-comparison tests. Replaying corrected inference on all 3,354 prepared
+methods from the failed browser run finds no incompatible reference-phi edges.
+
+The completed export has 23 reviewed class names and 328 naming rules across
+348 Java files. It compares 172,909 bindings, 386 override relationships and
+140 label bindings. Java lines fall from 102,595 to 90,285. Both rule regeneration
+and a second complete export check pass; reverse mapping recovers all 348
+prepared raw files byte-for-byte. The catalog check passes all 44 games and
+18,481 sources, including raw repair proofs through the named input pin.
+
+An owned local Chromium session compiled the actual named Git sources at
+`f2926ce6a3b2450a111969cda23298a73e9e63a2`, using browser bundles built only from
+committed java-tools source at `efeee0c8`. It entered Low-security Facility,
+using reflection to skip the queued mission dialogue, and rendered the rough
+terrain boundaries with 62 populated partial masks. The active GameplaySession
+advanced ship coordinates and canvas submissions without a reported runtime
+failure. This verifies a local rendering/session smoke check, not sustained
+gameplay, server compatibility, presented FPS or the constrained performance
+targets. Screenshots and temporary source/class staging were removed.
+
+The exact tested bundles were then synced to the cloner's ignored LAN assets;
+no generated runtime code was committed. Their SHA-256 values are
+`75be1df39f1e23895ceb38a53b8e3a39d4da12e40c81deaaec3d042c2ea2632a`
+for `jvm-debug.js` and
+`44429a59d2a27fc4ef7de9ee91763353bc6329c41e08b5fc2f811b89ffb4f413`
+for `jvm-compile-worker.js`. These identify browser bundles, separate from the
+compiler-source archive SHA-256 in the export provenance.
+
 ## Escape Vector terrain masks — 2026-10-26
 
 Low-security Facility's squared-off terrain exposed a decompiler allocation
