@@ -74,7 +74,10 @@ class EscapeSession(GameSession):
         if op == 0:
             return
         if op == 2:
-            self._send_packet(1, b"\0" * 16)  # ll.b: four statistic integers
+            # The XTEA key of archive 5 group 0 (ll.b -> hk -> ve.a). It is
+            # unknown, and a zero key makes the client read the encrypted
+            # group as plain data and crash, so the request stays unanswered.
+            return
         elif op == 3:
             self._highscores(body)
         elif op == 4:

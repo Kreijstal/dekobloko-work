@@ -64,7 +64,13 @@ export function createEscapeAccountService({storage, send, close}) {
     if (opcode === 1 || opcode === 17) { close(state); return; }
     const name = state.accountName;
     const data = load(name);
-    if (opcode === 2) { send(state, 1, new Uint8Array(16)); return; }
+    // Opcode 2 asks for the XTEA key of archive 5 group 0, the Simulator's
+    // terrain textures (ll.b -> hk -> ve.a). The key is unknown. A zero key
+    // makes the client read the encrypted group as plain data and die in
+    // s.a with a bare RuntimeException right after login, so leave the
+    // request unanswered: the client keeps polling and only the Simulator
+    // waits for those textures.
+    if (opcode === 2) return;
     if (opcode === 4) {
       if (payload.length === 1 && payload[0] === 2) {
         const masks = new Uint32Array(8);

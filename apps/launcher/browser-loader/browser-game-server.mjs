@@ -504,9 +504,14 @@ function processBrowserJs5Writes(state) {
       state.accountName = name;
       storage.setItem("funorb.account.name", name);
       const nameBytes = encodeCp1252(name);
+      // Membership days (365, the u16 after two flag bytes). An Escape Vector
+      // member must load the members' extra data, archive 5 group 0, which
+      // only the original server's XTEA key decrypts; that key is unknown, so
+      // Escape Vector accounts are free-to-play and never wait for it.
+      const memberDays = escape ? 0 : 365;
       const payload = Uint8Array.from([
         ...Array.from({length: 8}, (_, index) => Number((identity?.playerId ?? 1n) >> BigInt(56 - index * 8) & 255n)),
-        0, 0, 1, 109,
+        0, 0, memberDays >>> 8, memberDays & 255,
         0, 0,
         ...nameBytes, 0,
         0,

@@ -84,7 +84,8 @@ test('Escape records and queries remain framed when every ISAAC byte arrives sep
   const bytes = [(5+client.next())&255,body.length,...body,(5+client.next())&255,2,0,2,(2+client.next())&255,0,0,0];
   for (const byte of bytes) {s.outgoing.push(byte);server.processAccountPackets(s);}
   const wire = drain(s); assert.equal(wire[0], 4); assert.equal(wire[5], 4); assert.equal(wire[9], 5);
-  assert.equal(wire[13], 1); assert.equal(wire.length, 30); assert.equal(s.outgoing.length, 0);
+  // The opcode-2 key request is consumed but unanswered (the key is unknown).
+  assert.equal(wire.length, 13); assert.equal(s.outgoing.length, 0);
 });
 
 const original = process.env.ESCAPE_GAMEPACK || path.join(root, '.work/gamepacks/escapevector.jar');
