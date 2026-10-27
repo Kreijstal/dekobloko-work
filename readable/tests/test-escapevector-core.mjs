@@ -108,7 +108,7 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
     const classes = path.join(temporary, label + '-core');fs.mkdirSync(classes);
     const args = path.join(temporary, label + '.args');
     fs.writeFileSync(args, [...sourceInventory(directory).map(f => JSON.stringify(path.join(directory,f.path))), JSON.stringify(harness)].join('\n'));
-    captureProcess('javac', ['-encoding','UTF-8','-cp',classpath,'-d',classes,'@'+args]);
+    captureProcess('javac', ['--release','8','-encoding','UTF-8','-cp',classpath,'-d',classes,'@'+args]);
     const result = captureProcess('java', [...(label === 'named' ? properties : []), '-Xverify:all', '-cp',classes+path.delimiter+classpath,className]).stdout.toString().trim();
     assert.equal(result, expected, label + ' core differs from independent expected values');outputs.push(result);
   }
