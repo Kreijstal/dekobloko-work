@@ -400,6 +400,168 @@ public class EscapeTerrainProbe {
   set(world,"oe","a",true);set(world,"oe","X",1500);
   check("countdown-overrides-capped-elapsed",call(world,"oe","g:clock",new Class<?>[]{boolean.class},true),"0:00:30");
  }
+ static Object buffer(byte[] bytes)throws Exception{return construct("n",new Class<?>[]{byte[].class},bytes);}
+ static void bufferBytes(String label,Object buffer,int...expected)throws Exception{
+  byte[] bytes=(byte[])get(buffer,"n","g"),wanted=new byte[expected.length];for(int i=0;i<wanted.length;i++)wanted[i]=(byte)expected[i];
+  check(label,Arrays.toString(Arrays.copyOf(bytes,wanted.length)),Arrays.toString(wanted));
+ }
+ static void packetOperations()throws Exception{
+  Object out=buffer(new byte[128]);
+  call(out,"n","f:writeByte",new Class<?>[]{int.class,int.class},0x89,-123);
+  call(out,"n","h:writeShort",new Class<?>[]{int.class,int.class},-123,0xabcd);
+  call(out,"n","b:writeMedium",new Class<?>[]{int.class,int.class},1743120456,0x123456);
+  call(out,"n","a:writeInt",new Class<?>[]{byte.class,int.class},(byte)123,0x789abcde);
+  call(out,"n","a:writeLong",new Class<?>[]{long.class,byte.class},0x0123456789abcdefL,(byte)-23);
+  call(out,"n","a:write56",new Class<?>[]{int.class,long.class},104,0x0123456789abcdL);
+  call(out,"n","a:write40",new Class<?>[]{long.class,int.class},0x0123456789L,-100);
+  check("packet-fixed-width-position",get(out,"n","m"),30);
+  bufferBytes("packet-big-endian-bytes",out,0x89,0xab,0xcd,0x12,0x34,0x56,0x78,0x9a,0xbc,0xde,1,0x23,0x45,0x67,0x89,0xab,0xcd,0xef,1,0x23,0x45,0x67,0x89,0xab,0xcd,1,0x23,0x45,0x67,0x89);
+  set(out,"n","m",0);
+  check("packet-signed-byte",call(out,"n","a:readByte",new Class<?>[]{boolean.class},false),(byte)0x89);
+  check("packet-unsigned-short",call(out,"n","f:readShort",new Class<?>[]{int.class},1952),0xabcd);
+  check("packet-unsigned-medium",call(out,"n","d:readMedium",new Class<?>[]{byte.class},(byte)-128),0x123456);
+  check("packet-signed-int",call(out,"n","g:readInt",new Class<?>[]{int.class},-5053),0x789abcde);
+  check("packet-long",call(out,"n","i:readLong",new Class<?>[]{int.class},-800509813),0x0123456789abcdefL);
+  set(out,"n","m",0);byte[] destination=new byte[8];Arrays.fill(destination,(byte)-1);
+  call(out,"n","a:readBytes",new Class<?>[]{byte[].class,byte.class,int.class,int.class},destination,(byte)-96,2,3);
+  check("packet-read-slice",Arrays.toString(destination),"[-1, -1, -119, -85, -51, -1, -1, -1]");check("packet-read-slice-position",get(out,"n","m"),3);
+  out=buffer(new byte[16]);byte[] source={9,1,2,3,8};
+  call(out,"n","a:writeBytes",new Class<?>[]{int.class,byte.class,int.class,byte[].class},3,(byte)21,1,source);
+  call(out,"n","g:pad",new Class<?>[]{int.class,int.class},-1,6);bufferBytes("packet-slice-and-padding",out,1,2,3,0,0,0);check("packet-padding-position",get(out,"n","m"),6);
+  out=buffer(new byte[8]);set(out,"n","m",1);call(out,"n","a:writeBytes",new Class<?>[]{int.class,byte.class,int.class,byte[].class},3,(byte)21,1,source);
+  call(out,"n","e:byteLength",new Class<?>[]{int.class,int.class},82,3);bufferBytes("packet-byte-backpatch",out,3,1,2,3);
+  out=buffer(new byte[8]);set(out,"n","m",2);call(out,"n","a:writeBytes",new Class<?>[]{int.class,byte.class,int.class,byte[].class},3,(byte)21,1,source);
+  call(out,"n","i:shortLength",new Class<?>[]{int.class,int.class},3,32614);bufferBytes("packet-short-backpatch",out,0,3,1,2,3);
+  out=buffer(new byte[32]);int[] signed={-16384,-65,-64,-1,0,63,64,16383};
+  for(int value:signed)call(out,"n","d:writeSmart",new Class<?>[]{int.class,int.class},12680,value);
+  bufferBytes("packet-signed-smart-boundaries",out,0x80,0,0xbf,0xbf,0,0x3f,0x40,0x7f,0xc0,0x40,0xff,0xff);
+  set(out,"n","m",0);for(int value:signed)check("packet-signed-smart-value",call(out,"n","e:readSmart",new Class<?>[]{byte.class},(byte)100),value);
+  check("packet-signed-smart-consumption",get(out,"n","m"),12);
+  out=buffer(new byte[]{0,127,(byte)0x80,0,1,0,0x7f,(byte)0xff});
+  for(int value:new int[]{127,256,32767})check("packet-short-or-int-width",call(out,"n","j:largeSmart",new Class<?>[]{int.class},Integer.MAX_VALUE),value);
+  check("packet-short-or-int-consumption",get(out,"n","m"),8);
+  out=buffer(new byte[32]);call(out,"n","a:writeString",new Class<?>[]{String.class,int.class},"A\u20ac\u0152\u0178",100);
+  call(out,"n","a:writeCircumfixed",new Class<?>[]{byte.class,String.class},(byte)100,"z");bufferBytes("packet-cp1252-delimiters",out,65,128,140,159,0,0,122,0);
+  set(out,"n","m",0);check("packet-string",call(out,"n","c:readString",new Class<?>[]{boolean.class},false),"A\u20ac\u0152\u0178");
+  check("packet-circumfixed-string",call(out,"n","f:readCircumfixed",new Class<?>[]{byte.class},(byte)100),"z");
+  check("packet-nullable-string",call(out,"n","d:nullableString",new Class<?>[]{int.class},-15208),null);check("packet-string-consumption",get(out,"n","m"),9);
+  out=buffer(new byte[13]);System.arraycopy("123456789".getBytes("US-ASCII"),0,(byte[])get(out,"n","g"),0,9);set(out,"n","m",9);
+  check("packet-standard-crc32",call(out,"n","c:crc",new Class<?>[]{int.class,int.class},0,-50),0xcbf43926);check("packet-crc-position",get(out,"n","m"),13);
+  bufferBytes("packet-crc-big-endian",out,49,50,51,52,53,54,55,56,57,0xcb,0xf4,0x39,0x26);
+  check("packet-crc-accepted",call(out,"n","h:verifyCrc",new Class<?>[]{int.class},0),true);
+  ((byte[])get(out,"n","g"))[4]^=1;check("packet-crc-rejects-corruption",call(out,"n","h:verifyCrc",new Class<?>[]{int.class},0),false);check("packet-crc-retains-position",get(out,"n","m"),13);
+  out=buffer(new byte[8]);set(out,"n","m",8);call(out,"n","a:encrypt",new Class<?>[]{int.class,int[].class},1527987844,new int[4]);
+  bufferBytes("packet-xtea-zero-vector",out,0xde,0xe9,0xd4,0xd8,0xf7,0x13,0x1e,0xd9);check("packet-xtea-encrypt-position",get(out,"n","m"),8);
+  out=buffer(new byte[]{9,8,7,6,5,(byte)0xde,(byte)0xe9,(byte)0xd4,(byte)0xd8,(byte)0xf7,0x13,0x1e,(byte)0xd9,4,3});set(out,"n","m",2);
+  call(out,"n","a:decrypt",new Class<?>[]{int.class,int[].class,int.class,int.class},5,new int[4],13,6528);
+  bufferBytes("packet-xtea-subrange",out,9,8,7,6,5,0,0,0,0,0,0,0,0,4,3);check("packet-xtea-restores-position",get(out,"n","m"),2);
+  out=buffer(new byte[16]);((byte[])get(out,"n","g"))[0]=65;set(out,"n","m",1);
+  call(out,"n","a:rsa",new Class<?>[]{byte.class,java.math.BigInteger.class,java.math.BigInteger.class},(byte)-100,java.math.BigInteger.valueOf(3233),java.math.BigInteger.valueOf(17));
+  bufferBytes("packet-small-rsa-vector",out,0,2,10,230);check("packet-rsa-position",get(out,"n","m"),4);
+  for(String password:new String[]{"A","a","0"}){out=buffer(new byte[16]);call(out,"n","a:password",new Class<?>[]{String.class,byte.class},password,(byte)111);bufferBytes("packet-base38-password",out,0,0,0,0,0,0,password.equals("0")?28:2,0,0,0,0,0,0,0);check("packet-password-position",get(out,"n","m"),14);}
+  check("packet-xor",call(null,"n","a:xor",new Class<?>[]{int.class,int.class},0xf0,0xaa),0x5a);
+  String[] names={null,"","abc","a b","a.","a__b"};boolean[] valid={false,false,true,true,false,false};
+  for(int i=0;i<names.length;i++)check("packet-account-name-policy",call(null,"n","a:validName",new Class<?>[]{boolean.class,CharSequence.class,int.class},false,names[i],113),valid[i]);
+  check("packet-relaxed-separators",call(null,"n","a:validName",new Class<?>[]{boolean.class,CharSequence.class,int.class},true,"a__b",113),true);
+  check("packet-shape-before-character-policy",call(null,"n","b:nameShape",new Class<?>[]{boolean.class,CharSequence.class,int.class},false,"a.",109),true);
+ }
+ static void meshBounds(Object mesh,int...expected)throws Exception{
+  call(mesh,"ia","a:bounds",new Class<?>[]{byte.class},(byte)49);String[] fields={"b","a","i","R","g","O"};
+  for(int i=0;i<fields.length;i++)check("mesh-axis-bound-"+fields[i],get(mesh,"ia",fields[i]),expected[i]);check("mesh-bounds-valid",get(mesh,"ia","B"),true);
+ }
+ static void meshGeometry()throws Exception{
+  Object mesh=construct("ia",new Class<?>[]{});set(mesh,"ia","K",(short)3);set(mesh,"ia","L",new short[]{-4,2,8});set(mesh,"ia","r",new short[]{6,-3,0});set(mesh,"ia","J",new short[]{10,-6,2});
+  meshBounds(mesh,-4,8,-3,6,-6,10);call(mesh,"ia","a:scale",new Class<?>[]{int.class,int.class,int.class,int.class,int.class},3,2,4,1,-100);
+  check("mesh-scale-invalidates-bounds",get(mesh,"ia","B"),false);
+  check("mesh-scaled-x",Arrays.toString((short[])get(mesh,"ia","L")),"[-2, 1, 4]");check("mesh-scaled-y",Arrays.toString((short[])get(mesh,"ia","r")),"[12, -6, 0]");check("mesh-scaled-z",Arrays.toString((short[])get(mesh,"ia","J")),"[15, -9, 3]");
+  meshBounds(mesh,-2,4,-6,12,-9,15);call(mesh,"ia","a:translate",new Class<?>[]{int.class,int.class,int.class,int.class},-1,1,5,2);
+  check("mesh-translation-invalidates-bounds",get(mesh,"ia","B"),false);
+  check("mesh-translated-x",Arrays.toString((short[])get(mesh,"ia","L")),"[-2, 6, 9]");check("mesh-translated-y",Arrays.toString((short[])get(mesh,"ia","r")),"[12, -4, 2]");check("mesh-translated-z",Arrays.toString((short[])get(mesh,"ia","J")),"[15, -10, 2]");meshBounds(mesh,-2,9,-4,12,-10,15);
+ }
+ static void quickChat()throws Exception{
+  Object[] commands=(Object[])call(null,"vh","e:commands",new Class<?>[]{int.class},-91);int[] ids={0,1,2,4,6,7,8,9,10,11,12,13,14,15},counts={1,0,0,1,2,1,1,1,0,2,0,0,1,0};
+  check("quick-chat-command-count",commands.length,14);
+  for(int i=0;i<ids.length;i++){check("quick-chat-command-id",get(commands[i],"om","f"),ids[i]);check("quick-chat-command-parameters",get(commands[i],"om","d"),counts[i]);check("quick-chat-command-lookup",call(null,"kf","a:command",new Class<?>[]{byte.class,int.class},(byte)-57,ids[i])==commands[i],true);}
+  check("quick-chat-unknown-command",call(null,"kf","a:command",new Class<?>[]{byte.class,int.class},(byte)-57,99),null);
+  ByteArrayOutputStream bytes=new ByteArrayOutputStream();DataOutputStream data=new DataOutputStream(bytes);
+  data.writeByte(1);data.write("Ship <cargo< now".getBytes("US-ASCII"));data.writeByte(0);data.writeByte(2);data.writeByte(2);data.writeShort(3);data.writeShort(17);
+  data.writeByte(3);data.writeByte(2);data.writeShort(0);data.writeShort(404);data.writeShort(11);data.writeShort(7);data.writeShort(9);data.writeByte(4);data.writeByte(0);
+  Object phrase=construct("si",new Class<?>[]{}),input=buffer(bytes.toByteArray());call(phrase,"si","a:decode",new Class<?>[]{c("n"),int.class},input,0);
+  check("quick-chat-stream-consumed",get(input,"n","m"),bytes.size());check("quick-chat-fragments",Arrays.toString((String[])get(phrase,"si","s")),"[Ship , cargo,  now]");check("quick-chat-preview",call(phrase,"si","g:preview",new Class<?>[]{int.class},-4),"Ship ...cargo... now");
+  check("quick-chat-responses",Arrays.toString((int[])get(phrase,"si","z")),"[3, 17]");check("quick-chat-command-ids",Arrays.toString((int[])get(phrase,"si","x")),"[0, 11]");
+  int[][] parameters=(int[][])get(phrase,"si","q");check("quick-chat-single-parameter",Arrays.toString(parameters[0]),"[404]");check("quick-chat-two-parameters",Arrays.toString(parameters[1]),"[7, 9]");
+  call(phrase,"si","d:global",new Class<?>[]{byte.class},(byte)-118);check("quick-chat-global-responses",Arrays.toString((int[])get(phrase,"si","z")),"[32771, 32785]");call(phrase,"si","d:global",new Class<?>[]{byte.class},(byte)-118);check("quick-chat-global-idempotence",Arrays.toString((int[])get(phrase,"si","z")),"[32771, 32785]");
+  check("quick-chat-empty-preview",call(construct("si",new Class<?>[]{}),"si","g:preview",new Class<?>[]{int.class},-4),"");
+  Object custom=construct("om",new Class<?>[]{int.class,int.class,int.class,int.class},30,99,88,3);check("quick-chat-custom-id",get(custom,"om","f"),30);check("quick-chat-custom-parameter-count",get(custom,"om","d"),3);
+ }
+ static void reflectionChecks()throws Exception{
+  Object check=make("mn"),deque=construct("cn",new Class<?>[]{});set(null,"je","a",deque);
+  set(check,"mn","g",0x12345678);set(check,"mn","i",4);set(check,"mn","m",new int[]{0,2,4,0});set(check,"mn","o",new int[]{0,0,0,-5});
+  Object fieldTasks=Array.newInstance(c("la"),4),methodTasks=Array.newInstance(c("la"),4),pending=make("la");
+  set(pending,"la","b",Integer.class.getField("MAX_VALUE"));Array.set(fieldTasks,0,pending);
+  Object task=make("la");set(task,"la","f",1);set(task,"la","b",Integer.class.getField("MIN_VALUE"));Array.set(fieldTasks,1,task);
+  task=make("la");set(task,"la","f",1);set(task,"la","b",String.class.getMethod("valueOf",int.class));Array.set(methodTasks,2,task);
+  set(check,"mn","r",fieldTasks);set(check,"mn","p",methodTasks);call(deque,"cn","a:addLast",new Class<?>[]{int.class,c("hg")},-12328,check);
+  Object output=construct("c",new Class<?>[]{byte[].class},new byte[64]);call(null,"mf","a:reflection",new Class<?>[]{int.class,c("c")},-20157,output);
+  check("reflection-pending-writes-nothing",get(output,"n","m"),0);check("reflection-pending-stays-queued",call(deque,"cn","a:first",new Class<?>[]{boolean.class},false)==check,true);
+  set(pending,"la","f",1);call(null,"mf","a:reflection",new Class<?>[]{int.class,c("c")},-20157,output);
+  ByteArrayOutputStream bytes=new ByteArrayOutputStream();DataOutputStream data=new DataOutputStream(bytes);data.writeInt(0x12345678);data.writeByte(0);data.writeInt(Integer.MAX_VALUE);data.writeByte(0);data.writeInt(25);data.writeByte(0);data.writeInt(9);data.writeByte(-5);
+  java.util.zip.CRC32 crc=new java.util.zip.CRC32();crc.update(bytes.toByteArray());data.writeInt((int)crc.getValue());
+  check("reflection-result-and-crc",Arrays.toString(Arrays.copyOf((byte[])get(output,"n","g"),bytes.size())),Arrays.toString(bytes.toByteArray()));check("reflection-result-length",get(output,"n","m"),bytes.size());
+  check("reflection-completed-queue-empty",call(deque,"cn","a:empty",new Class<?>[]{int.class},-98),true);check("reflection-completed-unlinked",get(check,"hg","b")==null&&get(check,"hg","d")==null,true);
+ }
+ static byte[] uncompressed(byte[] content)throws Exception{
+  ByteArrayOutputStream bytes=new ByteArrayOutputStream();DataOutputStream data=new DataOutputStream(bytes);data.writeByte(0);data.writeInt(content.length);data.write(content);return bytes.toByteArray();
+ }
+ static Object archiveIndex(int version)throws Exception{
+  ByteArrayOutputStream bytes=new ByteArrayOutputStream();DataOutputStream data=new DataOutputStream(bytes);data.writeByte(version);if(version>=6)data.writeInt(123);data.writeByte(1);
+  data.writeShort(2);data.writeShort(1);data.writeShort(2);data.writeInt("main".hashCode());data.writeInt("aux".hashCode());data.writeInt(100);data.writeInt(200);data.writeInt(7);data.writeInt(8);
+  data.writeShort(2);data.writeShort(1);data.writeShort(0);data.writeShort(2);data.writeShort(0);data.writeInt("left".hashCode());data.writeInt("right".hashCode());data.writeInt("only".hashCode());
+  byte[] encoded=uncompressed(bytes.toByteArray());java.util.zip.CRC32 crc=new java.util.zip.CRC32();crc.update(encoded);
+  return construct("f",new Class<?>[]{byte[].class,int.class,byte[].class},encoded,(int)crc.getValue(),null);
+ }
+ static void archiveFiles()throws Exception{
+  Object index=null;
+  for(int version:new int[]{5,6,7}){
+   index=archiveIndex(version);check("index-group-count",get(index,"f","c"),2);check("index-group-slot-capacity",get(index,"f","k"),4);check("index-revision",get(index,"f","n"),version>=6?123:0);
+   check("index-delta-group-ids",Arrays.toString((int[])get(index,"f","d")),"[1, 3]");check("index-file-counts",Arrays.toString((int[])get(index,"f","i")),"[0, 2, 0, 1]");check("index-file-slot-capacities",Arrays.toString((int[])get(index,"f","e")),"[0, 3, 0, 1]");
+   check("index-sparse-file-ids",Arrays.toString(((int[][])get(index,"f","a"))[1]),"[0, 2]");check("index-dense-ids-elided",((int[][])get(index,"f","a"))[3],null);
+   check("index-group-crcs",Arrays.toString((int[])get(index,"f","l")),"[0, 100, 0, 200]");check("index-group-versions",Arrays.toString((int[])get(index,"f","q")),"[0, 7, 0, 8]");
+  }
+  ByteArrayOutputStream chunks=new ByteArrayOutputStream();DataOutputStream table=new DataOutputStream(chunks);
+  table.write("ABDEFCGH".getBytes("US-ASCII"));for(int length:new int[]{2,1,1,1})table.writeInt(length);table.writeByte(2);
+  byte[] group=uncompressed(chunks.toByteArray()),single=uncompressed("single".getBytes("US-ASCII"));set(null,"uj","d",false);
+  for(int policy=0;policy<=2;policy++)for(boolean discard:new boolean[]{false,true}){
+   Object archive=construct("mf",new Class<?>[]{c("ob"),boolean.class,int.class},null,discard,policy);Object[] packed=new Object[4];packed[1]=group;packed[3]=single;
+   set(archive,"mf","g",index);set(archive,"mf","j",packed);set(archive,"mf","e",new Object[4][]);
+   check("archive-index-already-installed",call(archive,"mf","b:index",new Class<?>[]{int.class},0),true);
+   check("archive-case-insensitive-group",call(archive,"mf","b:group",new Class<?>[]{int.class,String.class},-1,"MAIN"),1);
+   check("archive-case-insensitive-file",call(archive,"mf","a:file",new Class<?>[]{int.class,String.class,boolean.class},1,"RIGHT",true),2);
+   check("archive-known-group-name",call(archive,"mf","a:hasGroup",new Class<?>[]{String.class,byte.class},"AUX",(byte)-120),true);
+   check("archive-unknown-group-name",call(archive,"mf","a:hasGroup",new Class<?>[]{String.class,byte.class},"absent",(byte)-120),false);
+   check("archive-invalid-group-slot",call(archive,"mf","a:validGroup",new Class<?>[]{int.class,byte.class},-1,(byte)-120),false);
+   check("archive-sparse-hole-is-in-slot-range",call(archive,"mf","a:validFile",new Class<?>[]{int.class,int.class,int.class},1,11315,1),true);
+   check("archive-outside-file-slots",call(archive,"mf","a:validFile",new Class<?>[]{int.class,int.class,int.class},3,11315,1),false);
+   check("archive-all-groups-available",call(archive,"mf","a:all",new Class<?>[]{byte.class},(byte)-119),true);
+   check("archive-overall-progress",call(archive,"mf","a:progress",new Class<?>[]{int.class},-125),100);
+   check("archive-named-group-progress",call(archive,"mf","a:namedProgress",new Class<?>[]{String.class,int.class},"MAIN",0),100);
+   check("archive-named-group-loaded",call(archive,"mf","a:loadGroup",new Class<?>[]{int.class,String.class},0,"main"),true);
+   check("archive-named-file-loaded",call(archive,"mf","a:loadFile",new Class<?>[]{String.class,String.class,byte.class},"right","main",(byte)-100),true);
+   byte[] actual=(byte[])call(archive,"mf","a:named",new Class<?>[]{int.class,String.class,String.class},-4,"LEFT","MAIN");check("archive-two-chunk-first-file",new String(actual,"US-ASCII"),"ABC");
+   check("archive-packed-retention-policy",packed[1]==null,discard);Object[][] files=(Object[][])get(archive,"mf","e");
+   check("archive-unpacked-group-retention",files[1]==null,policy==2);
+   String retained=policy==0?"[[65, 66, 67], null, [68, 69, 70, 71, 72]]":policy==1?"[null, null, [68, 69, 70, 71, 72]]":"null";
+   check("archive-unpacked-file-retention",Arrays.deepToString(files[1]),retained);
+   // Reinstall the fixture's packed bytes to stand in for a completed provider
+   // fetch when a discard policy deliberately removed them. No network involved.
+   packed[1]=group;actual=(byte[])call(archive,"mf","a:keyedNamed",new Class<?>[]{byte.class,String.class,String.class,int[].class},(byte)-120,"MAIN","RIGHT",null);
+   check("archive-two-chunk-sparse-file",new String(actual,"US-ASCII"),"DEFGH");
+   actual=(byte[])call(archive,"mf","a:get",new Class<?>[]{int.class,byte.class,int.class},3,(byte)-97,0);check("archive-single-file-group",new String(actual,"US-ASCII"),"single");
+   packed[1]=group;check("archive-sparse-hole-has-no-file",call(archive,"mf","a:get",new Class<?>[]{int.class,byte.class,int.class},1,(byte)-97,1),null);
+   check("archive-out-of-range-file-null",call(archive,"mf","a:get",new Class<?>[]{int.class,byte.class,int.class},1,(byte)-97,3),null);
+   check("archive-unused-group-null",call(archive,"mf","a:get",new Class<?>[]{int.class,byte.class,int.class},0,(byte)-97,0),null);
+  }
+ }
  public static void main(String[] args)throws Exception{
   Class<?> unsafeClass=Class.forName("sun.misc.Unsafe");Field field=unsafeClass.getDeclaredField("theUnsafe");field.setAccessible(true);unsafe=field.get(null);allocate=unsafeClass.getMethod("allocateInstance",Class.class);
   terrain();stamps();collections();System.out.println("checks="+checks);
@@ -409,12 +571,16 @@ public class EscapeTerrainProbe {
   previous=checks;audioFormats();System.out.println("audio-checks="+(checks-previous));
   previous=checks;pcmKernels();System.out.println("pcm-checks="+(checks-previous));
   previous=checks;bulletPool();sessionTerrain();sessionColorsAndClock();System.out.println("session-checks="+(checks-previous));
+  previous=checks;packetOperations();System.out.println("packet-checks="+(checks-previous));
+  previous=checks;meshGeometry();System.out.println("mesh-checks="+(checks-previous));
+  previous=checks;quickChat();reflectionChecks();System.out.println("metadata-checks="+(checks-previous));
+  previous=checks;archiveFiles();System.out.println("archive-checks="+(checks-previous));
  }
 }
 `;
 
 // Used by refresh-raw-class as an original-bytecode correctness gate.
-export const expected = 'checks=903\nlevel-checks=393\nwidget-checks=26\ntext-checks=45\naudio-checks=578\npcm-checks=128\nsession-checks=181';
+export const expected = 'checks=903\nlevel-checks=393\nwidget-checks=26\ntext-checks=45\naudio-checks=578\npcm-checks=128\nsession-checks=181\npacket-checks=59\nmesh-checks=29\nmetadata-checks=62\narchive-checks=162';
 
 export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
   const aliases = new Map(mapping.rules.map(r => [r.symbol, r.to]));
@@ -454,6 +620,24 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
     ['oe','a','(IIIIII)Z','ray'],['oe','a','(Luk;BII)I','classify'],
     ['oe','d','(II)I','red'],['oe','b','(II)I','green'],['oe','a','(II)I','blue'],['oe','a','(IIZI)I','rgb'],
     ['oe','a','(BIII)I','color'],['oe','g','(Z)Ljava/lang/String;','clock'],
+    ['n','f','(II)V','writeByte'],['n','h','(II)V','writeShort'],['n','b','(II)V','writeMedium'],['n','a','(BI)V','writeInt'],
+    ['n','a','(JB)V','writeLong'],['n','a','(IJ)V','write56'],['n','a','(JI)V','write40'],['n','i','(I)J','readLong'],
+    ['n','a','(Z)B','readByte'],['n','f','(I)I','readShort'],['n','d','(B)I','readMedium'],['n','g','(I)I','readInt'],
+    ['n','a','([BBII)V','readBytes'],['n','a','(IBI[B)V','writeBytes'],['n','g','(II)V','pad'],
+    ['n','e','(II)V','byteLength'],['n','i','(II)V','shortLength'],['n','d','(II)V','writeSmart'],['n','e','(B)I','readSmart'],['n','j','(I)I','largeSmart'],
+    ['n','a','(Ljava/lang/String;I)V','writeString'],['n','a','(BLjava/lang/String;)V','writeCircumfixed'],['n','c','(Z)Ljava/lang/String;','readString'],
+    ['n','f','(B)Ljava/lang/String;','readCircumfixed'],['n','d','(I)Ljava/lang/String;','nullableString'],
+    ['n','c','(II)I','crc'],['n','h','(I)Z','verifyCrc'],['n','a','(I[I)V','encrypt'],['n','a','(I[III)V','decrypt'],
+    ['n','a','(BLjava/math/BigInteger;Ljava/math/BigInteger;)V','rsa'],['n','a','(Ljava/lang/String;B)V','password'],['n','a','(II)I','xor'],
+    ['n','a','(ZLjava/lang/CharSequence;I)Z','validName'],['n','b','(ZLjava/lang/CharSequence;I)Z','nameShape'],
+    ['ia','a','(B)V','bounds'],['ia','a','(IIIII)V','scale'],['ia','a','(IIII)V','translate'],
+    ['vh','e','(I)[Lom;','commands'],['kf','a','(BI)Lom;','command'],['si','a','(Ln;I)V','decode'],['si','g','(I)Ljava/lang/String;','preview'],['si','d','(B)V','global'],
+    ['mf','a','(ILc;)V','reflection'],
+    ['mf','b','(I)Z','index'],['mf','b','(ILjava/lang/String;)I','group'],['mf','a','(ILjava/lang/String;Z)I','file'],
+    ['mf','a','(Ljava/lang/String;B)Z','hasGroup'],['mf','a','(IB)Z','validGroup'],['mf','a','(III)Z','validFile'],
+    ['mf','a','(B)Z','all'],['mf','a','(I)I','progress'],['mf','a','(Ljava/lang/String;I)I','namedProgress'],
+    ['mf','a','(ILjava/lang/String;)Z','loadGroup'],['mf','a','(Ljava/lang/String;Ljava/lang/String;B)Z','loadFile'],
+    ['mf','a','(ILjava/lang/String;Ljava/lang/String;)[B','named'],['mf','a','(BLjava/lang/String;Ljava/lang/String;[I)[B','keyedNamed'],['mf','a','(IBI)[B','get'],
   ]) {
     const to = aliases.get(`M:${owner}.${name}${descriptor}`);
     if (to) properties.push(`-DM.${owner}.${name}${tag ? ":"+tag : ""}=${to}`);
@@ -480,7 +664,12 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
       'oscillator boundaries','all sixteen PCM forward/reverse mono/stereo interpolation/ramp kernels','equal-power pan endpoints',
       'bullet constructor/reset/deactivation','active-prefix bullet recycling and reuse without allocation',
       'current/initial terrain wrapping and independent height bounds','terrain ray and mask collision boundaries',
-      'ship hull half/notch classification','RGB packing and countdown interpolation','50-tick session/countdown clocks and cap'],
+      'ship hull half/notch classification','RGB packing and countdown interpolation','50-tick session/countdown clocks and cap',
+      'packet fixed widths, smart boundaries and backpatched lengths','CP1252 string delimiters and account-name policy',
+      'CRC32 corruption rejection, XTEA zero vector/subrange, RSA vector and base38 passwords',
+      'mesh transforms and lazy bounds invalidation','quick-chat command parameters/preview/global responses',
+      'pending/completed reflection check framing, CRC and queue ownership','version-five/six/seven archive indexes',
+      'sparse named multi-file chunks and all packed/unpacked retention policies'],
     fullGameplayVerified:false};
 }
 

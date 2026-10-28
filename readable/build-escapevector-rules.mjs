@@ -155,6 +155,8 @@ const classes = {
   vh: ['Bullet', 'Pooled player/turret projectile with Q16 position/velocity, remaining lifetime, kind and inactive flag; GameplaySession updates, collides and recycles its active prefix.'],
   uk: ['ShipHullGeometry', 'Retains camera origin, nose, center notch, two wings and raster bounds consumed by the session hull rasterizer; static mesh/network helpers are unrelated.'],
   ia: ['TriangleMesh', 'Retains indexed triangle vertices, per-corner normals and material/priority groups consumed by depth bucketing and lit triangle rendering.'],
+  om: ['QuickChatDynamicCommand', 'ID and parameter count looked up by the quick-chat phrase decoder before reading each dynamic command parameter list; static network/mouse globals are unrelated.'],
+  mn: ['ReflectionCheck', 'Queued reflection operation codes, field/method lookup tasks, serialized invocation arguments, replacement integers and per-operation errors consumed by the reflection-check result writer.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
@@ -1179,6 +1181,109 @@ for (const [name, descriptor, to, parameters] of [
 ]) method('oe',name,descriptor,to,parameters,
   'Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.');
 
+// Archive and packet contracts follow the actual byte order and retention
+// behavior, including sparse file IDs and different named-lookup argument order.
+fields('mf', [['i','Lob;','provider'],['c','Z','discardPackedGroups'],['h','I','fileRetentionPolicy'],
+  ['e','[[Ljava/lang/Object;','unpackedFiles'],['g','Lf;','index'],['j','[Ljava/lang/Object;','packedGroups']],
+  'Index initialization allocates packed/unpacked slots; group unpacking conditionally discards packed data. File policy zero retains files, one discards the returned slot and two builds only the requested file then discards its file group.');
+fields('f', [['d','[I','groupIds'],['h','[[B','groupDigests'],['c','I','groupCount'],['r','[[I','fileNameHashes'],
+  ['i','[I','groupFileCounts'],['l','[I','groupCrc32s'],['k','I','groupCapacity'],['e','[I','groupFileCapacities'],
+  ['g','[I','groupNameHashes'],['p','Ljn;','groupNameLookup'],['n','I','revision'],['b','I','encodedCrc32'],
+  ['s','[Ljn;','fileNameLookups'],['q','[I','groupVersions'],['a','[[I','fileIds'],['f','[B','encodedDigest']],
+  'Version-five through seven index decoder distinguishes declared group/file counts from maximum-ID slot capacities, delta-coded sparse IDs, optional name hashes/digests, group CRCs/versions and the encoded index identity.');
+method('f','a','(B[B)V','decode',['guard','encoded'],
+  'Decompresses the reference table and reads versioned group/file metadata, names and optional digests.');
+method('f','<init>','([BI[B)V',null,['encoded','expectedCrc32','expectedDigest'],
+  'Checks the encoded reference table CRC and optional 64-byte Whirlpool digest before decoding.');
+for (const [name,descriptor,to,parameters] of [
+  ['b','(I)Z','ensureIndex',['guard']],['a','(B)Z','tryLoadAllGroups',['guard']],
+  ['a','(I)I','overallProgress',['guard']],['b','(II)I','groupProgress',['guard','groupId']],
+  ['a','(Ljava/lang/String;I)I','namedGroupProgress',['groupName','guard']],
+  ['a','(IB)Z','isValidGroup',['groupId','guard']],['a','(III)Z','isValidFileSlot',['fileId','guard','groupId']],
+  ['c','(II)V','fetchGroup',['groupId','guard']],['d','(II)Z','tryLoadGroup',['guard','groupId']],
+  ['a','(ZII)Z','tryLoadFile',['guard','groupId','fileId']],
+  ['a','([IIII)Z','unpackGroup',['key','guard','requestedFileId','groupId']],
+  ['a','(B[III)[B','getFileWithKey',['guard','key','fileId','groupId']],
+  ['a','(IBI)[B','getFile',['groupId','guard','fileId']],
+  ['b','(ILjava/lang/String;)I','findGroupId',['guard','groupName']],
+  ['a','(ILjava/lang/String;Z)I','findFileId',['groupId','fileName','guard']],
+  ['a','(Ljava/lang/String;B)Z','hasGroupName',['groupName','guard']],
+  ['a','(ILjava/lang/String;)Z','tryLoadNamedGroup',['guard','groupName']],
+  ['a','(Ljava/lang/String;Ljava/lang/String;B)Z','tryLoadNamedFile',['fileName','groupName','guard']],
+  ['a','(ILjava/lang/String;Ljava/lang/String;)[B','getNamedFile',['guard','fileName','groupName']],
+  ['a','(BLjava/lang/String;Ljava/lang/String;[I)[B','getNamedFileWithKey',['guard','groupName','fileName','key']],
+]) method('mf',name,descriptor,to,parameters,
+  'Reviewed archive provider/index/loading callers, lowercase name hashes and unpacking code. Multi-file chunks use delta lengths and sparse IDs; key-based reads decrypt a copy; all three retention policies and synchronized boundaries remain intact.');
+method('mf','a','(ILc;)V','writeReflectionCheckResults',['guard','output'],
+  'Waits for queued field/method tasks, performs requested reads/writes/invocations, serializes success/error codes, appends CRC and unlinks the completed check.');
+method('mf','a','(IIILed;I)V','drawSpriteWithRowJitter',['y','x','amplitude','sprite','guard'],
+  'Applies an independent Gaussian horizontal displacement per sprite row, retaining transparent pixels and the original 640-pixel clip behavior.');
+method('mf','a','(II)Z','isPowerupType',['objectType','guard'],'Accepts object types nine through thirteen, matching the initial-powerup reader and pickup handlers.');
+method('mf','b','(III)I','objectScore',['gameMode','objectType','guard'],
+  'Looks up object-type score and applies campaign-mode scaling; used when destroying placed objects and tethered objects.');
+method('mf','a','(ZZLjava/lang/CharSequence;)Ljava/lang/String;','accountNameValidationMessage',['restrictCharacters','allowRepeatedSeparators','text'],
+  'Reports shape/separator errors first, then optional account-name character restrictions, returning null when accepted.');
+
+for (const [name,descriptor,to,parameters] of [
+  ['a','(BI)V','writeInt',['guard','value']],['b','(II)V','writeMedium',['guard','value']],
+  ['h','(II)V','writeShort',['guard','value']],['f','(II)V','writeByte',['value','guard']],
+  ['a','(JB)V','writeLong',['value','guard']],['a','(IJ)V','writeLong56',['guard','value']],['a','(JI)V','writeLong40',['value','guard']],
+  ['i','(I)J','readLong',['guard']],['a','(Z)B','readByte',['guard']],['j','(I)I','readUnsignedShortOrInt',['guard']],
+  ['d','(II)V','writeSignedSmart',['guard','value']],['e','(B)I','readSignedSmart',['guard']],
+  ['a','(IBI[B)V','writeBytes',['length','guard','offset','source']],['a','([BBII)V','readBytes',['destination','guard','offset','length']],
+  ['a','(Ljava/lang/String;I)V','writeString',['text','guard']],['c','(Z)Ljava/lang/String;','readString',['guard']],
+  ['a','(BLjava/lang/String;)V','writeCircumfixedString',['guard','text']],['f','(B)Ljava/lang/String;','readCircumfixedString',['guard']],
+  ['d','(I)Ljava/lang/String;','readNullableString',['guard']],['a','(Ljava/lang/String;B)V','writeBase38Password',['password','guard']],
+  ['g','(II)V','padToPosition',['guard','endPosition']],['e','(II)V','backpatchByteLength',['guard','length']],
+  ['i','(II)V','backpatchShortLength',['length','guard']],['c','(II)I','appendCrc32',['start','guard']],['h','(I)Z','verifyCrc32',['start']],
+  ['a','(I[I)V','xteaEncrypt',['guard','key']],['a','(I[III)V','xteaDecrypt',['start','key','end','guard']],
+  ['a','(BLjava/math/BigInteger;Ljava/math/BigInteger;)V','rsaEncrypt',['guard','modulus','exponent']],
+  ['a','(II)I','xor',['left','right']],
+  ['b','(ZLjava/lang/CharSequence;I)Z','hasValidAccountNameShape',['allowRepeatedSeparators','text','guard']],
+  ['a','(ZLjava/lang/CharSequence;I)Z','isValidAccountName',['allowRepeatedSeparators','text','guard']],
+]) method('n',name,descriptor,to,parameters,
+  'Reviewed byte shifts, cursor movement, smart ranges, CP1252 zero delimiters, backpatch offsets, CRC32, XTEA rounds/range handling, BigInteger RSA and login password packing. Names preserve original guard branches and do not imply changed validation/security policy.');
+
+fields('ia', [['L','[S','vertexX'],['r','[S','vertexY'],['J','[S','vertexZ'],['K','S','vertexCount'],
+  ['e','[S','faceVertexA'],['o','[S','faceVertexB'],['f','[S','faceVertexC'],['D','S','faceCount'],
+  ['h','[S','faceNormalA'],['u','[S','faceNormalB'],['j','[S','faceNormalC'],['M','S','normalCount'],
+  ['b','I','minX'],['a','I','maxX'],['i','I','minY'],['R','I','maxY'],['g','I','minZ'],['O','I','maxZ'],['B','Z','boundsValid']],
+  'Vertex transform/bounds methods and depth-bucket/render consumers distinguish xyz coordinate arrays, indexed triangle corners, per-corner normal indices and lazy axis bounds.');
+for (const [name,descriptor,to,parameters] of [
+  ['a','(IIIII)V','scaleVertices',['scaleZ','divisor','scaleY','scaleX','guard']],
+  ['a','(IIII)V','translateVertices',['offsetZ','firstVertex','offsetX','offsetY']],
+  ['a','(B)V','updateBounds',['guard']],['b','(B)V','invalidateBounds',['guard']],
+]) method('ia',name,descriptor,to,parameters,
+  'Reviewed coordinate-wise short transforms and lazily recomputed min/max bounds; both transforms invalidate bounds and preserve short narrowing and guard behavior.');
+
+fields('om', [['f','I','id'],['d','I','parameterCount']],
+  'Dynamic command lookup compares the ID; the phrase decoder allocates this many unsigned-short configuration parameters.');
+method('om','<init>','(IIII)V',null,['id','unusedArgumentOne','unusedArgumentTwo','parameterCount'],
+  'Only ID and parameter count are retained; the two middle arguments are unused in this client and their roles are not inferred.');
+method('vh','e','(I)[Lom;','quickChatDynamicCommands',['guard'],
+  'Returns the fourteen command descriptors searched by ID before phrase decoding; these are not network packet types.');
+method('kf','a','(BI)Lom;','findQuickChatDynamicCommand',['guard','id'],
+  'Searches quickChatDynamicCommands by retained ID, returning null for an unknown command.');
+method('kf','g','(I)V','clearCachedName',['guard'],'Clears the last completed name-availability result cache.');
+method('kf','a','(III)I','scaleCampaignBonus',['guard','gameMode','value'],
+  'Modes two/three multiply by one hundred; zero/one preserve the value, as used by the session score bonus helper.');
+fields('si', [['q','[[I','commandParameters'],['z','[I','responseIds'],['x','[I','commandIds'],['s','[Ljava/lang/String;','textFragments']],
+  'Phrase opcodes decode delimiter-separated text, response IDs and dynamic command IDs with their configuration parameters; preview joins text fragments with ellipses.');
+for (const [name,descriptor,to,parameters] of [
+  ['a','(ILn;I)V','decodeOpcode',['guard','input','opcode']],['a','(Ln;I)V','decode',['input','guard']],
+  ['d','(B)V','markGlobalResponses',['guard']],['g','(I)Ljava/lang/String;','previewText',['guard']],
+  ['a','(FLjava/lang/String;ZB)V','showLoadingProgress',['percent','text','alternateStyle','guard']],
+  ['a','(ILjava/applet/Applet;)V','inspectAppletUsername',['guard','applet']],
+  ['a','(ILdk;)V','applyGrayButtonPalette',['guard','button']],
+]) method('si',name,descriptor,to,parameters,
+  'Reviewed phrase opcodes/preview and unrelated static helpers. Global response marking ORs bit 15; loading progress creates/updates the progress screen; username inspection retains its discarded result; palette helper installs three gray/background and text colors.');
+fields('mn', [['r','[Lla;','fieldTasks'],['g','I','id'],['i','I','operationCount'],['l','[[[B','serializedArguments'],
+  ['o','[I','errors'],['p','[Lla;','methodTasks'],['m','[I','operations'],['j','[I','replacementValues']],
+  'Reflection result writer interprets operations zero through four, lookup task status/results, serialized invocation arguments and per-operation errors.');
+method('mn','a','(ICI)Ljava/lang/String;','repeatChar',['guard','character','count'],'Allocates a char array, fills each element with the supplied character and constructs a string.');
+method('mn','a','(IIIII)V','drawGradientOutline',['guard','x','y','width','height'],
+  'Draws fixed top/bottom border colors and a clipped grayscale gradient down the two vertical edges.');
+
 for (const [signature, rows] of [
   ['oe.a(ZILjava/io/InputStream;)V', [[0,'var4','levelInput'],[1,'var5','formatVersion']]],
   ['oe.a(ZIILjava/io/DataInputStream;)V', [[0,'var5','terrain']]],
@@ -1229,6 +1334,8 @@ export const escapeConfig = {
       '`PcmStream` defines process/mixInto/skip, firstSubstream/nextSubstream, activity and priority for all concrete audio streams. PcmStreamMixer owns its substreams and timed PcmMixerListener queue. PcmSample/PcmSampleStream/PcmResampler expose PCM bytes, loops, interpolation and resampling. AudioOutput and JavaSoundAudioOutput distinguish device lifecycle hooks from stream mixing. ReverbPcmStream uses separate ReverbCombFilter and ReverbAllPassFilter rings.','',
       '`VorbisSample` separates shared setup/bitstream tables from per-sample packets, overlap and resumable PCM output. VorbisCodebook, VorbisFloor, VorbisResidue and VorbisMapping expose the compressed-audio stages. SynthInstrument and AudioFilter synthesize envelope-controlled oscillators; SoundEffect mixes up to ten delayed instruments. SoundCache separates completed PCM from pending Vorbis decoders. PcmSampleStream names every control and all sixteen specialized mixing kernels by direction, channel count, interpolation and gain ramp. AudioOutput names scheduling, device service and shutdown; ReverbPcmStream separates wet/dry/input gains, feedback, damping and stereo width.','',
       '`ResourceArchive` consumes ArchiveProvider; CachedArchiveProvider combines Js5Transport with SectorCacheStore, BufferedRandomAccessFile and DiskCacheWorker. ArchiveIndex holds reference metadata; ArchiveRequest has separate network/disk implementations. SystemTaskService owns operating-system work represented by SystemTask. CipherPacketBuffer/IsaacRandom distinguish opcode encryption from ordinary PacketBuffer byte encodings; WhirlpoolHasher and Bzip2Decoder/Bzip2State identify archive digest and decompression work.','',
+      'Every PacketBuffer, ResourceArchive and TriangleMesh method has a reviewed name. Buffer methods distinguish fixed widths, signed smarts, CP1252 string delimiters, length backpatches, CRC32, XTEA ranges, RSA and base-38 password packing. ArchiveIndex distinguishes group/file counts from sparse slot capacities; ResourceArchive separates loading, validity, named lookup and unpacking. File retention policy zero retains files, one discards the returned slot and two builds only the requested file before discarding its unpacked group. Packed-group retention is independent. TriangleMesh transforms invalidate lazy axis bounds.','',
+      '`QuickChatDynamicCommand` contains a command ID and configuration parameter count, not a network opcode. `QuickChatPhraseDefinition.decode` reads text fragments, response IDs and dynamic command parameters; `previewText` joins fragments with ellipses and `markGlobalResponses` sets response bit 15. `ReflectionCheck` retains queued reflection lookup tasks and operation metadata; `writeReflectionCheckResults` waits for pending tasks, writes result/error codes plus CRC and unlinks a completed check. Unrelated static UI helpers stay on their original owners.','',
       '`DialogueScreen.advanceDialogue` handles reveal timing, input and scene changes; `drawDialogue` draws the current image/text. IntrusiveNode/IntrusiveDeque expose primary ownership and traversal; DualLinkNode has independent secondary links. Sprite/SpriteState separate RGB pixels, trimmed dimensions and offsets. SoftwareRasterizer holds the shared framebuffer and clipping. PacketBuffer and SoundEnvelope expose byte decoding and envelope interpolation.','',
       '`UiComponent` separates hitTest, hover updates, keyboard focus, pointer routing, rendering and layout. UiContainer owns children; SingleChildContainer forwards to one child; DraggableWidget and DropTargetWidget expose drag/drop roles. TextButton adds focus and actions; EditableTextWidget adds caret/selection and edit/submit notifications. TextHotspotWidget parses clickable spans into TextHotspotRegion line fragments. WidgetPainter and WidgetTextLayout retain separate drawing/layout contracts; TextLayoutLine and CachedTextLayout expose character insertion coordinates, wrapping and alignment. ButtonListener, ButtonPointerListener, WidgetHoverListener, WidgetFocusListener and TextInputListener expose callback families. The debounced validators distinguish matching text, email syntax/availability, name availability, password and age checks.','',
       '`releaseStatics` names explicitly reviewed cleanup declarations throughout the client; it releases shared references rather than instance state. Original conditional exits, guard arithmetic, calls and exception handling remain unchanged. These scattered cleanup routines do not establish the roles of their still-opaque containing classes.','',
@@ -1239,7 +1346,7 @@ export const escapeConfig = {
       'node readable/naming-coverage.mjs escapevector',
       'node readable/tests/test-escapevector-core.mjs /path/to/original/escapevector.jar','```','',
       'The exact raw input is pinned to Git. Existing generic java-tools declaration and decision proofs run across every file from a verified compiler-source archive, without game assumptions or compiler flags. Each stage is checked for determinism and idempotence, and its hashes/counts are retained in the current dictionary. Naming binds declarations/references/overrides, compiles the complete raw/named corpus and retains reversible edits. No generated sources or binary dependencies are stored in Deko.','',
-      'Native fixtures compare historical, prepared and named implementations against independent expectations for versioned terrain headers, empty/full/partial masks, sprite collision stamping/removal and deque transfers. Independently authored complete level streams cover versions zero through eleven, exact byte consumption, target/countdown/frame boundaries, seeker positions, powerup filtering, fuel/shield defaults and objective/gravity whitelists. Widget fixtures check hit-test boundaries/origins, hover versus keyboard focus, virtual focus traversal and the Enter action callback. Text geometry fixtures check insertion indices across lines, midpoint ties, vertical hit-test gaps, markup-aware justification and empty/null layouts. Audio fixtures check LSB-first bits/cursors, packed floats, canonical codebooks, floor interpolation, mapping mux, packet length extensions/loop flags, oscillator boundaries, empty effects and filter unity. PCM fixtures exercise all sixteen direction/channel/interpolation/ramp kernel combinations and pan endpoints. Session fixtures verify bullet state, active-prefix recycling/reuse, wrapped current/initial terrain, ray/mask boundaries, hull half/notch geometry, RGB/countdown interpolation and 50-tick clocks. The fixed original gamepack passes all 2,254 assertions too. These focused checks do not prove whole-game behavior, multiplayer compatibility or frame rate. The original mutable obfuscationControl and guard branches remain; unsupported structural recovery and unresolved local names still need review.',''].join('\n');
+      'Native fixtures compare historical, prepared and named implementations against independent expectations for versioned terrain headers, empty/full/partial masks, sprite collision stamping/removal and deque transfers. Independently authored complete level streams cover versions zero through eleven, exact byte consumption, target/countdown/frame boundaries, seeker positions, powerup filtering, fuel/shield defaults and objective/gravity whitelists. Widget fixtures check hit-test boundaries/origins, hover versus keyboard focus, virtual focus traversal and the Enter action callback. Text geometry fixtures check insertion indices across lines, midpoint ties, vertical hit-test gaps, markup-aware justification and empty/null layouts. Audio fixtures check LSB-first bits/cursors, packed floats, canonical codebooks, floor interpolation, mapping mux, packet length extensions/loop flags, oscillator boundaries, empty effects and filter unity. PCM fixtures exercise all sixteen direction/channel/interpolation/ramp kernel combinations and pan endpoints. Session fixtures verify bullet state, active-prefix recycling/reuse, wrapped current/initial terrain, ray/mask boundaries, hull half/notch geometry, RGB/countdown interpolation and 50-tick clocks. Packet/metadata fixtures check wire widths, smart boundaries, backpatches, CP1252 strings, CRC32 corruption, XTEA/RSA/password vectors, account-name policy, mesh bounds, quick-chat parameters and pending/completed reflection framing. Archive fixtures cover versions five through seven, sparse named multi-file chunks and every packed/unpacked retention policy. The fixed original gamepack passes all 2,566 assertions too. These focused checks do not prove whole-game behavior, multiplayer compatibility or frame rate. The original mutable obfuscationControl and guard branches remain; unsupported structural recovery and unresolved local names still need review.',''].join('\n');
   },
 };
 
