@@ -158,6 +158,17 @@ URL parameters and achievement acknowledgements retain their original owners and
 behavior. Naming preserves queue/data ownership, guards, retries, EOF oddities,
 native capability gates and wire bytes; it adds no execution-policy changes.
 
+The framework/effects pass names all methods on NetworkGameClient,
+GameAppletShell, FullscreenFocusCanvas, FullscreenDisplayController and
+GameKeyHandler:
+applet launch/ticks/render/shutdown, canvas replacement, framework loading,
+account actions/response dispatch and reconnect/request resending. Self-destruct
+effects expose panic music, beep gain, wrapped debris and flash timing. SeekerMine,
+LoginMethod and matching/password validators name their static mesh ordering,
+logo rotation, account-form exchange, cookies, display-name payload, dotted
+geometry, panning and validation helpers. Numeric tags, constant-success hooks,
+retry behavior, mutable queue/array ownership and original equations remain.
+
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.
 There are no `statePc` dispatcher files in the raw Escape Vector corpus.

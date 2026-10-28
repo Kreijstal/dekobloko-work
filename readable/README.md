@@ -172,6 +172,17 @@ of their shared pixel array. Scattered cookie/reload and achievement-response
 helpers retain their original owners. No I/O policy, retry, native capability,
 protocol bytes or algorithms are changed.
 
+The framework/effects pass names every method in NetworkGameClient,
+GameAppletShell, FullscreenFocusCanvas, FullscreenDisplayController and
+GameKeyHandler,
+separating applet lifecycle, framework preparation, account dispatch, reconnects,
+fullscreen/event work and cookies. SelfDestructEffects exposes panic music,
+beeps, debris timing and the final white flash. SeekerMine, LoginMethod and the
+matching/password validators also name their remaining static helpers: mesh
+depth/priority ordering, logo rotation, account forms, display-name payload,
+menu geometry and validation. Guards, constant-success hooks, retries, ownership,
+wire layouts and original equations remain unchanged.
+
 Escape Vector's full class/method naming goal is tracked by the resolved
 dictionary, including nested classes and overloads:
 

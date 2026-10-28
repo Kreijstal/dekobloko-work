@@ -3416,6 +3416,167 @@ method('cg','d','(I)V','showLoadingProgressDialog',['guard'],
 method('cg','e','(I)V','configurePunctuationKeyCodes',['guard'],
   'Assigns the explicit AWT punctuation key codes to game codes, retaining the original guard arithmetic.');
 
+// Framework lifecycle, account dispatch, countdown effects and nearby helpers.
+// The fixed client scatters these operations across unrelated class owners.
+fields('g', [
+  ['r','Llk;','taskService'],['q','I','oldestIncomingOpcode'],['w','I','affiliateId'],
+  ['u','I','language'],['x','Z','jagexHost'],['y','I','secondaryPort'],['o','I','primaryPort'],
+  ['t','I','serverNumber'],['v','Z','disconnectRequested'],['m','J','instanceId'],
+  ['s','Ljava/lang/String;','serverHost'],['n','Z','member'],['p','I','gameCrc'],
+], 'Applet parameter parsing identifies host, ports, server, game CRC, instance, membership, language and affiliate state. Packet polling shifts the oldest retained opcode; the framework services task dispatch and its idle/disconnect flag.');
+field('eh','b','Z','errorReported', 'Error-page dispatch latches this flag and reconnect polling stops when it is set.');
+fields('od', [
+  ['o','Lcn;','particles'],['a','I','flashTicks'],['m','I','blastDiameter'],
+  ['e','Lce;','musicOverride'],['g','I','warningMusicThresholdTicks'],['r','I','musicVolumeOverride'],
+  ['l','Led;','blastMask'],['h','I','particleIntervalTicks'],['f','Loe;','session'],
+  ['i','Ljava/util/Random;','random'],['c','I','flashDurationTicks'],['p','I','particleStartThresholdTicks'],
+], 'Countdown effects own a circular debris mask, particle queue, session/random state, panic-music override and threshold/interval/flash counters. The exact original thresholds, random equation and first-finished-particle removal remain.');
+field('wc','d','Lce;','panicMusic', 'Loaded from music/panic and selected by SelfDestructEffects after the countdown crosses its warning threshold.');
+field('vn','c','Lhh;','fiveSecondExplosionSample', 'Loaded from the literal explosion_5_seconds sound and played when the self-destruct white flash first activates.');
+field('pa','a','Lhh;','countdownBeepSample', 'Loaded from beeping and installed as the session looping PCM source whose gain is gated by SelfDestructEffects.');
+field('oe','lc','Lhl;','countdownBeepStream', 'Created from the beeping sample, looped indefinitely, muted at the warning threshold and removed with session audio.');
+field('al','f','[I','faceDepthBucketCounts', 'Bullet.bucketMeshFacesByDepth stores up to sixteen face indices per depth bucket; flattening/scattering consumes these counts.');
+field('bc','f','[I','bucketedFaceIndices', 'Shared mesh face index array starts in sixteen-slot depth buckets, then compacts or scatters by per-face priority for drawing.');
+field('ul','I','[I','facePriorityCursors', 'Mesh bucketing counts per-face priorities, converts counts to starting offsets and advances those offsets during priority scattering.');
+field('ia','n','[B','facePriorities', 'Optional per-face byte selects priority ranges in mesh bucketing and draw-order scattering.');
+field('ia','I','B','facePriorityCount', 'Zero skips priority bookkeeping and values above one enable scattering into separate priority ranges.');
+fields('af', [['c','Z','focusLost'],['d','Ljava/awt/Frame;','frame']],
+  'Fullscreen focus listener latches focus loss and retains the frame passed to the exit task before disposal.');
+fields('gg', [['a','Ljava/awt/GraphicsDevice;','device'],['b','Ljava/awt/DisplayMode;','originalMode']],
+  'Fullscreen controller enumerates/selects device modes, records the original mode on entry and restores it on exit.');
+field('lb','o','Lul;','matchingField', 'Validator compares its current text to this other field and also respects that field validator state/message.');
+fields('nk', [['o','Lul;','emailField'],['q','Lul;','identifierField']],
+  'Registration constructs PasswordValidator with the password, display-name and email widgets; validation checks identifier variants and either email portion.');
+field('p','i','Ljava/lang/String;','pendingDisplayName', 'BitCountSupport.submitDisplayName stores this optional login payload text; login encoding sets flag sixteen and writes it before encrypted credentials.');
+field('hi','q','I','menuEdgeColor', 'AccountPanelInputSupport uses this RGB word for cached menu-edge lines; SeekerMine updates it after resetting the session menu state.');
+field('bc','g','[I','modeSessionOptions', 'Mode lookup returns this option after availability checks; IntValueNode passes it to the GameplaySession option argument, retaining the unavailable fallback of one.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['g','(I)V','enableProgressResponses',['guard']],
+  ['k','(B)I','reconnectAndResendRequests',['guard']],
+  ['a','(ZI)I','pollOverlayActions',['fullscreen','guard']],
+  ['f','(B)V','initializeAccountPacketLengths',['guard']],
+  ['a','(IIIIIBZI)V','initializeFramework',
+    ['fontArchiveId','spriteArchiveId','languageArchiveId','buttonArchiveId','handshakeValue','guard','optionFlag','preloadArchiveId']],
+  ['j','(I)V','serviceAccountFlow',['guard']],
+  ['e','(I)[Led;','buildDecodedSprites',['guard']],
+  ['a','(ZB)V','enableBaseResponses',['reflectionChecks','guard']],
+  ['a','(ILjava/lang/String;III)V','startApplet',
+    ['width','cacheName','height','indexCount','cacheBuild']],
+  ['a','(IZZ)I','serviceAccountActions',['guard','deferLogin','fullscreen']],
+  ['a','(ZBZZZ)V','configureAccountResponses',
+    ['archiveKeys','guard','scores','progress','savedData']],
+  ['c','(Z)V','readBrowserUrlResponse',['guard']],
+  ['a','(Ljava/lang/String;II)V','startApplet',['cacheName','width','indexCount']],
+  ['a','(II)V','initializeSessionCounters',['guard','levelIndex']],
+  ['f','(I)V','dispatchAccountPacket',['guard']],
+  ['a','([BI[III)V','scatterFacesByPriority',
+    ['priorities','faceIndexScratch','priorityCursors','guard','bucketCountScratch']],
+  ['h','(B)V','readSessionCookieResponse',['guard']],
+  ['j','(B)V','enableScoreResponses',['guard']],
+  ['k','(I)V','enableSavedDataResponses',['guard']],
+  ['g','(B)I','pollReconnect',['guard']],
+  ['a','(IZ)V','serviceFramework',['guard','preserveCanvas']],
+  ['i','(I)Z','supportsSessionRecovery',['guard']],
+  ['h','(I)V','clearFaceDepthBuckets',['guard']],
+  ['d','(Z)V','enableArchiveKeyResponses',['enabled']],
+]) method('g', original, descriptor, to, parameters,
+  'Reviewed complete framework initialization, parameter parsing, account action/request dispatch, login/reconnect/idle handling, staged asset preparation and canvas reset. Static helpers construct decoded sprites, initialize counters or prepare mesh depth/priority order. The session-recovery capability hook remains guarded and always true; wire action/status numbers and all error paths remain.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(Z)Z','isHostAllowed',['guard']],
+  ['a','(IIIIIILjava/lang/String;)V','startAppletThread',
+    ['gameCrc','indexCount','threadPriority','width','height','cacheBuild','cacheName']],
+  ['a','(I)V','executeClientTick',['guard']],
+  ['a','(IC)Z','isCp1252Character',['guard','character']],
+  ['a','(ILjava/lang/String;)V','showErrorPage',['guard','errorCode']],
+  ['c','(B)V','executeRenderFrame',['guard']],
+  ['b','(I)V','showEmptyLoginForm',['guard']],
+  ['a','(IIIIIIIIIII)V','drawFadingPanelFrame',
+    ['alpha','left','top','darkColor','frameId','bottom','guard','right','lightColor','accentColor','openingOffset']],
+  ['d','(I)V','replaceCanvas',['guard']],
+  ['a','(IILjava/lang/CharSequence;)I','parseInt',['radix','guard','text']],
+  ['a','(BZ)V','shutdownApplet',['guard','clean']],
+]) method('eh', original, descriptor, to, parameters,
+  'Reviewed complete applet launch, tick/render timing, replacement canvas ownership, latched error navigation and guarded shutdown. Static helpers expose CP1252 acceptance, integer parsing and faded uneven panel frames. The host hook stays unconditionally true in the fixed input; native callbacks, loader delegation, guards and lifecycle behavior remain.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(ZII)V','drawParticles',['guard','cameraY','cameraX']],
+  ['f','(I)V','flattenFaceDepthBuckets',['guard']],
+  ['a','(B)V','buildBlastMask',['guard']],
+  ['b','(I)V','drawMenuEdges',['guard']],
+  ['a','(ZI)I','wrapWorldX',['guard','x']],
+  ['a','(I)V','spawnCountdownBlast',['guard']],
+  ['a','(BZLjava/lang/String;Lsn;Lsn;II)I','pollAccountFormExchange',
+    ['guard','receiveNews','password','email','identifier','affiliateId','age']],
+  ['c','(I)V','updateCountdownEffects',['guard']],
+  ['e','(I)V','updateParticles',['guard']],
+  ['a','(II)I','randomOffset',['span','excludedTail']],
+  ['a','(BII)V','draw',['guard','cameraX','cameraY']],
+  ['b','(Z)Lce;','musicOverride',['guard']],
+  ['a','(Z)V','updateBeepGain',['guard']],
+  ['c','(Z)I','musicVolumeOverride',['guard']],
+  ['a','(Ljava/awt/Component;B)V','detachMouseInput',['component','guard']],
+  ['<init>','(Loe;)V',null,['session']],
+]) method('od', original, descriptor, to, parameters,
+  'Reviewed countdown debris, circular mask, wrapped random positions, panic music, beep gain, flash and exact particle removal behavior. Unrelated helpers flatten mesh buckets, draw menu edges, detach mouse listeners or poll the complete encrypted account-form request/reply exchange. Registration widget validators identify email, password, news, affiliate and age inputs; flag-gated text, retries, response IDs and diagnostics remain.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(I)V','advanceSessionCounters',['guard']],
+  ['a','(BLlk;Ljava/lang/Object;)V','pumpEventQueue',['guard','taskService','source']],
+  ['a','(Llk;Z)V','exitFullscreen',['taskService','guard']],
+  ['a','(IIIIII)V','appendRatingRow',['guard','firstCount','secondCount','thirdCount','labelIndex','value']],
+  ['a','(Llk;Ljava/awt/Frame;Z)V','exitFullscreenAndDispose',['taskService','frame','visibleAfterExit']],
+]) method('af', original, descriptor, to, parameters,
+  'Reviewed event-queue polling and dummy-event posting, retrying fullscreen-exit task/disposal and session-counter advancement. The rating helper retains all three decoded counts, label index, value and its first-count fraction; no positive/negative vote interpretation is inferred.');
+method('gg','a','(ILjava/awt/Frame;)V','setFullscreenWindow',['guard','frame'],
+  'Guarded GraphicsDevice.setFullScreenWindow helper; public enter/exit/listmodes spellings stay compatible with the reflective task dispatcher.');
+method('ag','b','(I)V','checkStartupGuard',['guard'],
+  'Called once after framework input setup; its only operation is the original guard remainder and it has no initialization side effects.');
+method('ag','a','(Ljava/lang/String;BLjava/applet/Applet;)V','setSettingsCookie',['settings','guard','applet'],
+  'Retains settings text, writes the prefixed domain cookie with three-year or expired lifetime and refreshes browser links, preserving swallowed script failures.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(Ljava/lang/String;ILih;)I','paddedButtonTextWidth',['text','guard','font']],
+  ['a','(BZ)V','showAccountLogin',['guard','showCreateAccount']],
+  ['a','(II)V','setMenuEdgeColor',['guard','color']],
+  ['a','(Ljava/lang/String;B)Z','isCurrentPlayerName',['name','guard']],
+  ['a','(ZIIII)V','drawDottedRectangle',['guard','width','x','height','y']],
+]) method('ic', original, descriptor, to, parameters,
+  'Reviewed static helpers measure text plus four spaces, open account login without a guest option, reset menu edges/color, compare a normalized name to the current player and draw alternating white rectangle pixels. No seeker physics or clipping oddities are changed.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(II)I','bitwiseOr',['left','right']],
+  ['b','(BLjava/lang/String;)Z','containsNonAsciiAlphanumeric',['guard','text']],
+  ['c','(Z)V','releaseMouseHandler',['guard']],
+  ['b','(ILjava/lang/String;)V','setPendingDisplayName',['guard','displayName']],
+  ['a','(ILjava/lang/String;III)V','drawOutlinedTitle',['y','text','color','guard','x']],
+  ['<init>','(Lul;Lul;)V',null,['field','matchingField']],
+]) method('lb', original, descriptor, to, parameters,
+  'Reviewed ASCII letter/digit rejection and bitwise OR, synchronized global mouse-handler release, pending display-name storage used by login flag sixteen, and a scratch-raster outlined title. Existing matching-text validation, guard behavior and framebuffer ownership remain.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['h','(I)V','releaseLoadingScreenResources',['guard']],
+  ['b','(BLjava/lang/String;)Z','containsEmailPortion',['guard','password']],
+  ['a','(ILdk;)I','buttonSoundPan',['guard','button']],
+  ['a','(II)I','modeSessionOption',['guard','mode']],
+  ['b','(II)V','setSessionAchievementBit',['bit','guard']],
+  ['<init>','(Lul;Lul;Lul;)V',null,['field','identifierField','emailField']],
+]) method('nk', original, descriptor, to, parameters,
+  'Reviewed password checks against either email portion, button-center pan on the 640-pixel viewport, available-mode session option, achievement bit update and release of the loading font/image. Empty/local-domain handling, unavailable default, guards and validation messages remain.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(II)V','updateLogoMeshRotation',['meshIndex','guard']],
+  ['a','(ILjava/applet/Applet;)V','rememberLoginMethod',['guard','applet']],
+  ['a','(ILjava/lang/String;Z)I','legacyMenuTextWidth',['guard','text','titleFont']],
+  ['a','(Lsa;IZ)Loc;','createObjectDebris',['object','guard','indexedRendering']],
+]) method('ee', original, descriptor, to, parameters,
+  'Reviewed complete time-segmented logo rotation with per-mesh axis signs, one-year last-login-method cookie, title/body font width selection and debris construction from object sprite/type/position. Original piecewise equations, guards and identity behavior remain.');
+method('qd','a','(II)Z','isModeAvailable',['mode','guard'],
+  'Checks mode bounds and the availability table; code two additionally requires membership, preserving all other codes and guard side effects.');
+method('km','a','(Ln;I)V','readPackedRatingValues',['input','guard'],
+  'Reads the exact packed widths into three shared count words and a rating value consumed by DisplayAndRatingSupport via FullscreenFocusCanvas.appendRatingRow; original byte consumption and diagnostic wrapping remain.');
+
 for (const [signature, rows] of [
   ['oe.a(ZILjava/io/InputStream;)V', [[0,'var4','levelInput'],[1,'var5','formatVersion']]],
   ['oe.a(ZIILjava/io/DataInputStream;)V', [[0,'var5','terrain']]],
@@ -3493,6 +3654,8 @@ export const escapeConfig = {
       '`StatefulTextPainter` combines six `WidgetStyleLayer` slots: base, selected, hovered, pressed, disabled and focused. A layer can flush the accumulated drawing before applying its own overrides; unset sentinel values are preserved. `Checkbox` toggles the selected flag; `LinkButtonPainter` and `PasswordFieldPainter` provide underlined links and masked password display. `LabeledField` reserves space for wrapped labels. `LoginForm`, `DisplayNameForm`, `AccountChoicePanel`, `AccountMessagePanel`, `AccountTermsPanel` and `ValidationHelpWidget` identify account UI roles. Shared container focus/add/layout/debug traversal and text insertion, caret, selection and clipboard operations now have reviewed names. Unrelated static helpers and unresolved fields are still tracked separately.','',
       'Every EscapeVector method now has a reviewed name. `advanceAssetLoading` steps through fonts/sprites, sound effects, tracker music, level data and menu/controller setup. `initializeGameArchives`, `loadLevelObjectAssets`, `loadObjectSprites`, `loadObjectGlowSprites` and `loadObjectExplosionSamples` identify separate loading operations. `drawLoginOrDiscardPrompt` draws the unauthenticated progress choice. The original archive release points and loading side effects are retained.','',
       '`BufferedSocket` reads synchronously and queues writes for its worker thread; closed/EOF/deferred-error behavior and the original ring-buffer reserve are unchanged. `SocketJs5Transport` separates urgent/prefetch pending and in-flight queues, connection/control frames, chunk decoding, idle timeout and integrity retries. `TickClock` and `NanoTickClock` distinguish waiting, time sampling and bounded tick catch-up. `ByteStorage`/`DirectByteStorage` distinguish heap arrays from copied direct-buffer contents. `LoginCredentials`, `UsernameCredentials`, `EmailCredentials`, `AlternateUsernameCredentials` and `LoginCredentialType` expose payload encodings and the wire tag; the alternate username type has the same payload and an unresolved higher-level purpose.','',
+      'Every NetworkGameClient, GameAppletShell, FullscreenFocusCanvas, FullscreenDisplayController and GameKeyHandler method has a reviewed name. The applet shell separates thread launch, ticks, render frames, canvas replacement, latched errors and shutdown while retaining native callback spellings. The network client separates framework preparation, account actions, reconnect/request resending, packet lengths and response dispatch. Host/session-recovery hooks keep their original unconditional success; handshake values and numeric action/status codes are retained. Fullscreen exit preserves retry/disposal and event-queue behavior. Settings cookies and last-login-method cookies remain distinct.','',
+      'Every SelfDestructEffects, SeekerMine, MatchingTextValidator, PasswordValidator and LoginMethod method has a reviewed name. Countdown effects distinguish the circular blast mask, wrapped debris, panic music, looping beeps, particle timing and final white flash. Scattered helpers still belong to their original owners: depth-bucket compaction/priority scattering, logo mesh rotation, encrypted account-form exchange, pending display-name text, menu edges, dotted rectangles, validation and button sound panning. Registration validators identify email/password/age/news inputs; opaque LoginText flag semantics remain unresolved. Rating rows retain three count words and a value without invented vote labels. Mode availability and session options retain their original membership/default behavior.','',
       '`SavedDataQuery`, `SecondaryNodeHashTable` and `ContactEntry` identify queued account data, secondary-link lookup and location-aware contact ordering. `LegacyStyleNode` and `LegacyWidgetStyle` retain the original contact inheritance and unused style slots; no hierarchy is rewritten. `MeshRasterState` and `MinimapPoint` expose raster row offsets, trig/reciprocal tables and clipping coordinates. `LoginStage` retains the original identity-based login transitions alongside unrelated helpers. Raster push/pop, CP1252 encoding, browser marker state, keyboard polling, cache-service closure and account-overlay updates now have reviewed names. Unsupported/unknown static helpers remain tracked by the coverage audit.','',
       '`LegacyTextBlock`, `PairedTextColumns`, `SpriteLabelColumns`, `LegacyMenuColumn` and `LegacyButton` expose the older fixed-viewport layout path. They retain original spacing, width-mode, truncation and guard behavior. `NineSliceFrame`, `ThreeSliceButtonPainter`, `GradientOutlineTextPainter`, `SpriteCheckboxPainter`, `MarkerSliderPainter` and `DialWidgetPainter` identify distinct drawing roles. `MarkerSlider` edits values in `GrowableIntList`; `DialWidget` quantizes pointer angles. `LoginMethod` and `EmailValidationError` distinguish cookie identity from validation error tokens.','',
       '`releaseStatics` names explicitly reviewed cleanup declarations throughout the client; it releases shared references rather than instance state. Original conditional exits, guard arithmetic, calls and exception handling remain unchanged. These scattered cleanup routines do not establish the roles of their still-opaque containing classes.','',
