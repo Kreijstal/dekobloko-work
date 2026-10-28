@@ -70,7 +70,7 @@ node readable/tests/test-escapevector-core.mjs /path/to/original/escapevector.ja
 SeekerMine, RockBuster, LaserGateSpan and HudMessage name the moving hazards,
 weapons, gates and queued messages. GameplaySession's level readers, countdown,
 fuel/shield/cargo state, mission targets and infrastructure counters have reviewed
-names. Remaining mixed-role locals and shared engine classes are still unresolved.
+names. Some mixed-role locals and fields still retain their original spellings.
 Raw repair receipts continue to verify the immutable input after classes acquire
 readable names. No second readable source directory is created.
 
@@ -88,7 +88,7 @@ panels have reviewed class names. StatefulTextPainter composes six
 WidgetStyleLayer states; LabeledField, Checkbox, LinkButtonPainter,
 PasswordFieldPainter and StripedProgressBar identify their drawing/input roles.
 Shared child traversal, focus movement and text selection/clipboard operations
-also have reviewed names. Remaining unrelated static helpers stay unresolved.
+also have reviewed names. Unrelated static helpers retain their original owners.
 
 Every EscapeVector method now has a reviewed name, including incremental asset
 loading, archive setup, object sprite/glow/explosion-sample loading and the
@@ -158,9 +158,8 @@ MeshProjectionSupport, HuffmanDecoder, LoginText and Microsoft cursor/display
 support. Its methods expose login/registration phases, legacy themes, sprite
 masks, archive/music factories, result/rating packets and session counter words.
 The login-reply stage follows request writing; native-peer failures, callbacks,
-throwing constructors and original array/counter ownership remain. Unnamed
-helpers in previously named classes still need review; coverage remains the
-authoritative inventory for that work.
+throwing constructors and original array/counter ownership remain. The final
+helper pass below also covers methods on previously named classes.
 
 The cache/service pass names every method on BoundedRandomAccessFile,
 BufferedRandomAccessFile, SectorCacheStore, DiskCacheWorker, DiskCacheRequest,
@@ -191,6 +190,15 @@ gain/pan, slides, vibrato, portamento and envelopes. Sprite helpers distinguish
 padding, quarter-turn rotation, cropping and glow offsets. Bzip2 separates bit
 reading, Huffman tables, MTF/BWT and final run expansion. Original arithmetic,
 headers, guards, output limits, mixer/array ownership and failure paths remain.
+
+The final helper pass covers all 156 previously opaque methods: account and
+registration transitions, localization loaders, campaign/score helpers, menu and
+viewport setup, mesh/logo rendering, CP1252, placeholders, wrapping and loading
+presentation. Localization defaults/chunks/archive lifetime and mesh clipping,
+lighting and blending remain unchanged. `ViewportController.setDesiredSize`
+labels height then width, correcting the previous labels to match its caller
+without reordering arguments. Every owned class and method now has a reviewed
+name; some fields, locals and higher-level meanings remain unresolved.
 
 Escape Vector's full class/method naming goal is tracked by the resolved
 dictionary, including nested classes and overloads:

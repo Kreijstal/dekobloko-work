@@ -145,8 +145,8 @@ loading; MeshProjectionSupport and HuffmanDecoder expose their actual algorithms
 LoginHandshakeSupport distinguishes seed exchange, login reply, account details
 and opcode-cipher setup. Native Microsoft cursor/display helpers retain their
 existing unsupported-peer paths. SessionCounterState preserves the original
-four-word payload order. Method naming in earlier named classes remains in
-progress and is measured by the coverage command below.
+four-word payload order. The final helper pass also names methods in earlier
+named classes; resolved coverage measures the complete declaration inventory.
 
 The cache/service pass names every method in the bounded/buffered file wrappers,
 SectorCacheStore, DiskCacheWorker/Request, CacheFileLocator, CachedArchiveProvider
@@ -178,6 +178,16 @@ and Bzip2 bit/Huffman/MTF/BWT/run stages with their shared state. Original numer
 tags, packed bytes, frame histories, guards, clipping, output limits, reference
 release and failure paths remain unchanged. Static unrelated helpers retain their
 original owners and no execution-policy flags or new source copies are added.
+
+The final helper pass names the remaining 156 methods across account/login,
+localization, campaign/score helpers, legacy menus, viewport/fullscreen setup,
+mesh/logo rendering, CP1252, placeholders, wrapping and AWT loading presentation.
+All owned classes and methods have reviewed names; fields, locals and some
+higher-level meanings are not claimed complete. The two `setDesiredSize`
+parameter labels are corrected to height then width, as passed by its AWT
+Dimension caller. Arguments and behavior are unchanged. Optional localization
+entries, split chunks, defaults, archive lifetimes, mesh masks/clipping and guard
+or exception paths retain their original behavior.
 
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.
@@ -216,8 +226,8 @@ checks; `node --test test/closedWorldCompiler.test.js` passes all four
 HotSpot-comparison tests. Replaying corrected inference on all 3,354 prepared
 methods from the failed browser run finds no incompatible reference-phi edges.
 
-The completed export has 23 reviewed class names and 328 naming rules across
-348 Java files. It compares 172,909 bindings, 386 override relationships and
+The initial terrain-focused export had 23 reviewed class names and 328 naming
+rules across 348 Java files. It compares 172,909 bindings, 386 override relationships and
 140 label bindings. Java lines fall from 102,595 to 90,285. Both rule regeneration
 and a second complete export check pass; reverse mapping recovers all 348
 prepared raw files byte-for-byte. The catalog check passes all 44 games and
