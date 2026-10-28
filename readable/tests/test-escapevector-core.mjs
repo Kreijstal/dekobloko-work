@@ -1,5 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
+import {fileURLToPath} from 'node:url';
 import assert from 'node:assert/strict';
 import {captureProcess} from '../tools/lib/capture-process.mjs';
 import {sourceInventory} from '../tools/readable-java.mjs';
@@ -72,15 +74,91 @@ public class EscapeTerrainProbe {
   check("other",call(other,"cn","c",new Class<?>[]{int.class},-20245)==a,true);
   check("detached",get(a,"hg","d")==null&&get(a,"hg","b")==null,true);
  }
+ static void levels()throws Exception{
+  // Independently authored streams exercise every format boundary and the
+  // complete reader order, without textures, audio devices or member assets.
+  for(int version=0;version<=11;version++){
+   Object world=make("oe");set(world,"oe","kb",new Vector<>());
+   ByteArrayOutputStream bytes=new ByteArrayOutputStream();DataOutputStream out=new DataOutputStream(bytes);
+   out.writeByte(version);
+   if(version>=5)out.writeByte(1);
+   if(version>=6){out.writeByte(2);out.writeInt(3000);}
+   out.writeByte(2);out.writeByte(1);out.writeByte(3);if(version>=10)out.writeByte(6);out.writeByte(4);
+   out.writeByte(2);
+   for(int object=0;object<2;object++){
+    out.writeByte(object==0?1:8);out.writeShort(20+object);out.writeShort(10+object);
+    if(version>=5)out.writeByte(object==1?1:0);
+    if(version>=6)out.writeByte(object==1?1:0);
+    if(version>=9)out.writeInt(object==1?2:0);
+   }
+   if(version>=1){out.writeByte(1);out.writeShort(23);out.writeShort(17);}
+   if(version>=3){out.writeInt(123<<16);out.writeInt(-44<<16);out.writeInt(4321);}
+   if(version>=4)out.writeInt(321);
+   if(version>=7){out.writeByte(3);out.writeByte(9);out.writeByte(255);out.writeByte(13);}
+   if(version>=8)out.writeShort(768);
+   ByteArrayInputStream raw=new ByteArrayInputStream(bytes.toByteArray());
+   call(world,"oe","a:decode",new Class<?>[]{boolean.class,int.class,InputStream.class},false,-1,raw);
+   check("stream-consumed",raw.available(),0);
+   check("objective",get(world,"oe","Q"),version>=5?1:0);
+   check("countdown-trigger",get(world,"oe","l"),version>=6?2:0);
+   check("countdown-ticks",get(world,"oe","X"),version>=6?3000:0);
+   check("countdown-inactive",get(world,"oe","a"),false);
+   check("spawn-x",get(world,"oe","t"),version>=3?123<<16:32<<16);
+   check("spawn-y",get(world,"oe","bb"),version>=3?-44<<16:-8388608);
+   check("initial-fuel",get(world,"oe","U"),version>=3?4321:2500);
+   check("initial-shield",get(world,"oe","gc"),version>=4?321:150);
+   check("gravity",get(world,"oe","qb"),version>=8?768:512);
+   check("terrain-size",get(world,"oe","Mb"),2);check("terrain-theme",get(world,"oe","P"),3);
+   check("secondary-theme",get(world,"oe","Yb"),version>=10?6:3);
+   int[][] masks=(int[][])get(world,"oe","V"),initial=(int[][])get(world,"oe","Vb");
+   check("first-empty-tile",masks[0]==null,true);check("second-full-tile",masks[1]==get(null,"si","v"),true);
+   check("separate-snapshot-array",masks!=initial,true);check("snapshot-full-sentinel",initial[1]==masks[1],true);
+   Vector<?> objects=(Vector<?>)get(world,"oe","kb");check("object-count",objects.size(),2);
+   Object object=objects.elementAt(1);
+   check("object-id",get(object,"sa","j"),1);check("object-type-migration",get(object,"sa","n"),version<2?9:8);
+   check("object-x",get(object,"sa","k"),21);check("object-y",get(object,"sa","g"),11);
+   check("object-target",get(object,"sa","r"),version>=5);check("object-countdown",get(object,"sa","p"),version>=6);
+   check("object-frame",get(object,"sa","l"),version>=9?2:0);
+   Object mine=call(get(world,"oe","N"),"cn","a:first",new Class<?>[]{boolean.class},false);
+   check("mine-exists",mine!=null,version>=1);
+   if(mine!=null){
+    check("mine-x",get(mine,"ic","p"),23<<16);check("mine-y",get(mine,"ic","q"),17<<16);
+    check("mine-home-x",get(mine,"ic","j"),23<<16);check("mine-home-y",get(mine,"ic","l"),17<<16);
+   }
+   Object powerups=get(world,"oe","s");
+   check("valid-powerup-count",call(powerups,"cn","c:size",new Class<?>[]{byte.class},(byte)17),version>=7?2:0);
+  }
+  Object world=make("oe");
+  for(int encoded:new int[]{0,1,255}){
+   DataInputStream in=new DataInputStream(new ByteArrayInputStream(new byte[]{(byte)encoded,99}));
+   call(world,"oe","a:objective",new Class<?>[]{int.class,DataInputStream.class,byte.class},5,in,(byte)126);
+   check("objective-range",get(world,"oe","Q"),encoded==1?1:0);check("objective-width",in.available(),1);
+  }
+  for(int encoded:new int[]{16,512,768,0,65535}){
+   DataInputStream in=new DataInputStream(new ByteArrayInputStream(new byte[]{(byte)(encoded>>>8),(byte)encoded,99}));
+   call(world,"oe","a:gravity",new Class<?>[]{int.class,DataInputStream.class,int.class},512,in,8);
+   check("gravity-whitelist",get(world,"oe","qb"),encoded==16||encoded==768?encoded:512);check("gravity-width",in.available(),1);
+  }
+  for(int encoded:new int[]{0,-1,2468}){
+   ByteArrayOutputStream bytes=new ByteArrayOutputStream();DataOutputStream out=new DataOutputStream(bytes);
+   out.writeInt(0);out.writeInt(0);out.writeInt(encoded);out.writeInt(encoded);out.writeByte(99);
+   DataInputStream in=new DataInputStream(new ByteArrayInputStream(bytes.toByteArray()));
+   call(world,"oe","a:spawn",new Class<?>[]{byte.class,DataInputStream.class,int.class},(byte)121,in,3);
+   call(world,"oe","b:shield",new Class<?>[]{int.class,DataInputStream.class,int.class},-112,in,4);
+   check("fuel-default",get(world,"oe","U"),encoded>0?encoded:2500);
+   check("shield-default",get(world,"oe","gc"),encoded>0?encoded:150);check("configuration-width",in.available(),1);
+  }
+ }
  public static void main(String[] args)throws Exception{
   Class<?> unsafeClass=Class.forName("sun.misc.Unsafe");Field field=unsafeClass.getDeclaredField("theUnsafe");field.setAccessible(true);unsafe=field.get(null);allocate=unsafeClass.getMethod("allocateInstance",Class.class);
   terrain();stamps();collections();System.out.println("checks="+checks);
+  int previous=checks;levels();System.out.println("level-checks="+(checks-previous));
  }
 }
 `;
 
 // Used by refresh-raw-class as an original-bytecode correctness gate.
-export const expected = 'checks=903';
+export const expected = 'checks=903\nlevel-checks=393';
 
 export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
   const aliases = new Map(mapping.rules.map(r => [r.symbol, r.to]));
@@ -98,6 +176,12 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
     ['sa','a','(ZLoe;)V','stamp'],['sa','a','(Loe;B)V','erase'],
     ['cn','a','(I)Z','empty'],['cn','a','(ILhg;)V','addLast'],['cn','a','(Z)Lhg;','first'],
     ['cn','b','(B)Lhg;',null],['cn','c','(I)Lhg;',null],
+    ['cn','c','(B)I','size'],
+    ['oe','a','(ZILjava/io/InputStream;)V','decode'],
+    ['oe','a','(ILjava/io/DataInputStream;B)V','objective'],
+    ['oe','a','(ILjava/io/DataInputStream;I)V','gravity'],
+    ['oe','a','(BLjava/io/DataInputStream;I)V','spawn'],
+    ['oe','b','(ILjava/io/DataInputStream;I)V','shield'],
   ]) {
     const to = aliases.get(`M:${owner}.${name}${descriptor}`);
     if (to) properties.push(`-DM.${owner}.${name}${tag ? ":"+tag : ""}=${to}`);
@@ -114,6 +198,30 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
   }
   assert.equal(new Set(outputs).size,1);
   return {historicalPreparedNamedMatch:true, expected, harnessSha256:digest(source),
-    covers:['terrain header versions 9/10','empty/full/partial masks','sprite terrain stamping/removal','intrusive deque transfer'],
+    covers:['terrain header versions 9/10','empty/full/partial masks','sprite terrain stamping/removal','intrusive deque transfer',
+      'complete level streams versions 0-11','object target/countdown/frame version boundaries','seeker spawn/home positions',
+      'initial powerup filtering','fuel/shield defaults','objective/gravity whitelists','exact stream consumption'],
     fullGameplayVerified:false};
+}
+
+// Optional original-input audit; source export itself uses only committed
+// source/stubs and does not depend on a disposable .work gamepack cache.
+export function verifyOriginalEscapeCore(gamepack) {
+  const bytes = fs.readFileSync(gamepack);
+  const gamepackSha256 = '8daf42d4c7c434f6b52d49e25e2854b9970f41e51b8696856d9c6b5e9dd55e69';
+  assert.equal(digest(bytes), gamepackSha256, 'Original Escape Vector gamepack identity differs');
+  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'escape-original-core-'));
+  try {
+    const harness = path.join(temporary, className + '.java'); fs.writeFileSync(harness, source);
+    captureProcess('javac', ['--release','8','-cp',path.resolve(gamepack),'-d',temporary,harness]);
+    const output = captureProcess('java', ['-Xverify:all','-cp',temporary+path.delimiter+path.resolve(gamepack),className]).stdout.toString().trim();
+    assert.equal(output, expected, 'Original gamepack core differs from independent expected values');
+    return {gamepackSha256, expected, originalGamepackMatch:true};
+  } finally {fs.rmSync(temporary,{recursive:true,force:true});}
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const [gamepack, ...extra] = process.argv.slice(2);
+  if (!gamepack || extra.length) throw new Error('Usage: node readable/tests/test-escapevector-core.mjs ORIGINAL_GAMEPACK.jar');
+  console.log(JSON.stringify(verifyOriginalEscapeCore(gamepack)));
 }

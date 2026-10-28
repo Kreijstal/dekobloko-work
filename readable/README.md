@@ -51,7 +51,18 @@ files before naming; the current dictionary records their hashes and counts.
 GameplaySession, TerrainMap, LevelObject, DynamicTerrainRenderer, Minimap and
 DialogueScreen identify the gameplay reading path. Native fixtures compare
 historical/prepared/named terrain masks and deque ownership against independent
-values. The original gamepack passes the same 903-check terrain harness.
+values. The expanded harness adds complete level streams for versions 0–11,
+object flags/frames, seekers, powerup filtering, numeric defaults and byte
+consumption. The fixed original gamepack passes all 1,296 assertions:
+
+```sh
+node readable/tests/test-escapevector-core.mjs /path/to/original/escapevector.jar
+```
+
+SeekerMine, RockBuster, LaserGateSpan and HudMessage name the moving hazards,
+weapons, gates and queued messages. GameplaySession's level readers, countdown,
+fuel/shield/cargo state, mission targets and infrastructure counters have reviewed
+names. Remaining mixed-role locals and shared engine classes are still unresolved.
 Raw repair receipts continue to verify the immutable input after classes acquire
 readable names. No second readable source directory is created.
 

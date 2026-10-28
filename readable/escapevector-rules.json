@@ -4851,6 +4851,13 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:am",
+      "originalName": "am",
+      "to": "LaserGateSpan",
+      "evidence": "Linked horizontal beam endpoints and a shared pixel y; gate creation, drawing and destruction retain this span.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bf",
       "originalName": "bf",
       "to": "AccountRegistrationPanel",
@@ -4921,6 +4928,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ic",
+      "originalName": "ic",
+      "to": "SeekerMine",
+      "evidence": "Loaded as a Q16 position pair; update steers it toward the ship, limits speed and detonates it on sprite or terrain contact.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ka",
       "originalName": "ka",
       "to": "TerrainMaskSupport",
@@ -4977,6 +4991,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pi",
+      "originalName": "pi",
+      "to": "RockBuster",
+      "evidence": "Spawned by the rock-buster input while decrementing ammunition; accelerates along its launch angle and retains an exhaust cloud and flight sound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rb",
+      "originalName": "rb",
+      "to": "HudMessage",
+      "evidence": "Text and display duration queued by GameplaySession and consumed when the current HUD message expires.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:sa",
       "originalName": "sa",
       "to": "LevelObject",
@@ -4998,6 +5026,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:va",
+      "originalName": "va",
+      "to": "SecondaryIntrusiveDeque",
+      "evidence": "Circular DualLinkNode sentinel with secondary-link insertion, removal, traversal and emptiness checks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vc",
       "originalName": "vc",
       "to": "TerrainMap",
@@ -5016,6 +5051,27 @@
       "originalName": "field_A",
       "to": "obfuscationControl",
       "evidence": "Existing mutable branch-control variable; preserved without assuming that it is always zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_h:I",
+      "originalName": "field_h",
+      "to": "rightX",
+      "evidence": "Constructor stores the two beam endpoints and shared y; drawing wraps both endpoints horizontally.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_i:I",
+      "originalName": "field_i",
+      "to": "leftX",
+      "evidence": "Constructor stores the two beam endpoints and shared y; drawing wraps both endpoints horizontally.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:am.field_j:I",
+      "originalName": "field_j",
+      "to": "y",
+      "evidence": "Constructor stores the two beam endpoints and shared y; drawing wraps both endpoints horizontally.",
       "confidence": "reviewed"
     },
     {
@@ -5149,6 +5205,69 @@
       "originalName": "field_e",
       "to": "key",
       "evidence": "Primary circular intrusive link pair and lookup key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_g:Lhl;",
+      "originalName": "field_g",
+      "to": "flightSound",
+      "evidence": "Seeker loading sets home/current positions together; integration adds velocity to position; distance selects pursuit and audio playback/volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_h:I",
+      "originalName": "field_h",
+      "to": "velocityYQ16",
+      "evidence": "Seeker loading sets home/current positions together; integration adds velocity to position; distance selects pursuit and audio playback/volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_i:I",
+      "originalName": "field_i",
+      "to": "velocityXQ16",
+      "evidence": "Seeker loading sets home/current positions together; integration adds velocity to position; distance selects pursuit and audio playback/volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_j:I",
+      "originalName": "field_j",
+      "to": "homeXQ16",
+      "evidence": "Seeker loading sets home/current positions together; integration adds velocity to position; distance selects pursuit and audio playback/volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_l:I",
+      "originalName": "field_l",
+      "to": "homeYQ16",
+      "evidence": "Seeker loading sets home/current positions together; integration adds velocity to position; distance selects pursuit and audio playback/volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_m:Ltl;",
+      "originalName": "field_m",
+      "to": "proximitySound",
+      "evidence": "Seeker loading sets home/current positions together; integration adds velocity to position; distance selects pursuit and audio playback/volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_o:I",
+      "originalName": "field_o",
+      "to": "soundPlaybackRate",
+      "evidence": "Seeker loading sets home/current positions together; integration adds velocity to position; distance selects pursuit and audio playback/volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_p:I",
+      "originalName": "field_p",
+      "to": "xQ16",
+      "evidence": "Seeker loading sets home/current positions together; integration adds velocity to position; distance selects pursuit and audio playback/volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_q:I",
+      "originalName": "field_q",
+      "to": "yQ16",
+      "evidence": "Seeker loading sets home/current positions together; integration adds velocity to position; distance selects pursuit and audio playback/volume.",
       "confidence": "reviewed"
     },
     {
@@ -5299,10 +5418,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_A:I",
+      "originalName": "field_A",
+      "to": "livesRemaining",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_Ab:Lva;",
+      "originalName": "field_Ab",
+      "to": "pendingTargetEffects",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_B:Lli;",
       "originalName": "field_B",
       "to": "minimap",
       "evidence": "Reviewed GameplaySession load/reset/update/render data flow; positions and velocities use 16 fractional bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_Bb:Z",
+      "originalName": "field_Bb",
+      "to": "shieldActive",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_C:Lcn;",
+      "originalName": "field_C",
+      "to": "laserGateSpans",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
       "confidence": "reviewed"
     },
     {
@@ -5327,6 +5474,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_G:Lcn;",
+      "originalName": "field_G",
+      "to": "bullets",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_Gb:Z",
+      "originalName": "field_Gb",
+      "to": "shipDestroyed",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_H:I",
       "originalName": "field_H",
       "to": "shipXQ16",
@@ -5334,10 +5495,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_I:I",
+      "originalName": "field_I",
+      "to": "shipAngle256",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_J:I",
+      "originalName": "field_J",
+      "to": "levelScore",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_L:I",
+      "originalName": "field_L",
+      "to": "initialInfrastructureCount",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_Mb:I",
       "originalName": "field_Mb",
       "to": "tilesWide",
       "evidence": "Reviewed GameplaySession load/reset/update/render data flow; positions and velocities use 16 fractional bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_N:Lcn;",
+      "originalName": "field_N",
+      "to": "seekerMines",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
       "confidence": "reviewed"
     },
     {
@@ -5362,6 +5551,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_Q:I",
+      "originalName": "field_Q",
+      "to": "objectiveType",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_Rb:I",
+      "originalName": "field_Rb",
+      "to": "firstLevelIndex",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_S:I",
+      "originalName": "field_S",
+      "to": "destroyedInfrastructureCount",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_Sb:I",
+      "originalName": "field_Sb",
+      "to": "exhaustWriteIndex",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_T:I",
+      "originalName": "field_T",
+      "to": "levelStartTicks",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_Tb:I",
+      "originalName": "field_Tb",
+      "to": "shieldEnergy",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_U:I",
+      "originalName": "field_U",
+      "to": "initialFuel",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_Ub:I",
+      "originalName": "field_Ub",
+      "to": "tetheredObjectType",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_V:[[I",
       "originalName": "field_V",
       "to": "terrainMasks",
@@ -5376,10 +5621,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_X:I",
+      "originalName": "field_X",
+      "to": "countdownTicks",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_Xb:Loc;",
+      "originalName": "field_Xb",
+      "to": "exhaustParticles",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_Yb:I",
       "originalName": "field_Yb",
       "to": "secondaryTheme",
       "evidence": "Reviewed GameplaySession load/reset/update/render data flow; positions and velocities use 16 fractional bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_Zb:I",
+      "originalName": "field_Zb",
+      "to": "shieldPulsePhase",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_a:Z",
+      "originalName": "field_a",
+      "to": "countdownActive",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_ab:I",
+      "originalName": "field_ab",
+      "to": "hudMessageTicks",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_ac:I",
+      "originalName": "field_ac",
+      "to": "fuel",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_b:Z",
+      "originalName": "field_b",
+      "to": "laserGateDestroyed",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
       "confidence": "reviewed"
     },
     {
@@ -5394,6 +5688,20 @@
       "originalName": "field_cb",
       "to": "elapsedTicks",
       "evidence": "Reviewed GameplaySession load/reset/update/render data flow; positions and velocities use 16 fractional bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_db:Z",
+      "originalName": "field_db",
+      "to": "shieldUsedThisLevel",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_e:I",
+      "originalName": "field_e",
+      "to": "pickupAnimationTicks",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
       "confidence": "reviewed"
     },
     {
@@ -5418,6 +5726,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_gc:I",
+      "originalName": "field_gc",
+      "to": "initialShieldEnergy",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_h:Ljava/lang/String;",
+      "originalName": "field_h",
+      "to": "hudMessageText",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_hb:Lcn;",
+      "originalName": "field_hb",
+      "to": "rockBusters",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_hc:I",
       "originalName": "field_hc",
       "to": "shipVelocityYQ16",
@@ -5425,10 +5754,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_ib:I",
+      "originalName": "field_ib",
+      "to": "thrustAccelerationQ16",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_k:Lcn;",
+      "originalName": "field_k",
+      "to": "missionTargets",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_kb:Ljava/util/Vector;",
       "originalName": "field_kb",
       "to": "levelObjects",
       "evidence": "Reviewed GameplaySession load/reset/update/render data flow; positions and velocities use 16 fractional bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_l:I",
+      "originalName": "field_l",
+      "to": "countdownTrigger",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_lb:Z",
+      "originalName": "field_lb",
+      "to": "triShotEnabled",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_m:I",
+      "originalName": "field_m",
+      "to": "shotCooldownTicks",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_mb:I",
+      "originalName": "field_mb",
+      "to": "tetheredXQ16",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
       "confidence": "reviewed"
     },
     {
@@ -5446,6 +5817,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_nc:I",
+      "originalName": "field_nc",
+      "to": "initialTilesHigh",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_ob:I",
       "originalName": "field_ob",
       "to": "score",
@@ -5460,6 +5838,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_qb:I",
+      "originalName": "field_qb",
+      "to": "gravityQ16",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_qc:I",
+      "originalName": "field_qc",
+      "to": "activeExhaustParticles",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_rb:Z",
+      "originalName": "field_rb",
+      "to": "shipLanded",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_s:Lcn;",
+      "originalName": "field_s",
+      "to": "initialPowerups",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_t:I",
       "originalName": "field_t",
       "to": "spawnXQ16",
@@ -5467,10 +5873,136 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_tb:I",
+      "originalName": "field_tb",
+      "to": "rockBusterAmmo",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_tc:Lcn;",
+      "originalName": "field_tc",
+      "to": "hudMessageQueue",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_ub:I",
+      "originalName": "field_ub",
+      "to": "laserGateCount",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_vb:Lcn;",
+      "originalName": "field_vb",
+      "to": "pointCloudEffects",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_yb:I",
+      "originalName": "field_yb",
+      "to": "rockBusterCooldownTicks",
+      "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_g:I",
+      "originalName": "field_g",
+      "to": "yQ16",
+      "evidence": "Rock-buster launch assigns ship position/velocity and angle, 100 flight ticks, 256 exhaust slots and a looping sound; update integrates and decrements these independently.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_i:Loc;",
+      "originalName": "field_i",
+      "to": "exhaustParticles",
+      "evidence": "Rock-buster launch assigns ship position/velocity and angle, 100 flight ticks, 256 exhaust slots and a looping sound; update integrates and decrements these independently.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_k:I",
+      "originalName": "field_k",
+      "to": "velocityXQ16",
+      "evidence": "Rock-buster launch assigns ship position/velocity and angle, 100 flight ticks, 256 exhaust slots and a looping sound; update integrates and decrements these independently.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_l:I",
+      "originalName": "field_l",
+      "to": "activeExhaustParticles",
+      "evidence": "Rock-buster launch assigns ship position/velocity and angle, 100 flight ticks, 256 exhaust slots and a looping sound; update integrates and decrements these independently.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_m:I",
+      "originalName": "field_m",
+      "to": "angle256",
+      "evidence": "Rock-buster launch assigns ship position/velocity and angle, 100 flight ticks, 256 exhaust slots and a looping sound; update integrates and decrements these independently.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_n:I",
+      "originalName": "field_n",
+      "to": "xQ16",
+      "evidence": "Rock-buster launch assigns ship position/velocity and angle, 100 flight ticks, 256 exhaust slots and a looping sound; update integrates and decrements these independently.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_o:Lhl;",
+      "originalName": "field_o",
+      "to": "flightSound",
+      "evidence": "Rock-buster launch assigns ship position/velocity and angle, 100 flight ticks, 256 exhaust slots and a looping sound; update integrates and decrements these independently.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_p:I",
+      "originalName": "field_p",
+      "to": "velocityYQ16",
+      "evidence": "Rock-buster launch assigns ship position/velocity and angle, 100 flight ticks, 256 exhaust slots and a looping sound; update integrates and decrements these independently.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_q:I",
+      "originalName": "field_q",
+      "to": "exhaustWriteIndex",
+      "evidence": "Rock-buster launch assigns ship position/velocity and angle, 100 flight ticks, 256 exhaust slots and a looping sound; update integrates and decrements these independently.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_r:I",
+      "originalName": "field_r",
+      "to": "remainingFlightTicks",
+      "evidence": "Rock-buster launch assigns ship position/velocity and angle, 100 flight ticks, 256 exhaust slots and a looping sound; update integrates and decrements these independently.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rb.field_g:Ljava/lang/String;",
+      "originalName": "field_g",
+      "to": "text",
+      "evidence": "HUD queue construction stores text/duration, then the session copies both into current message state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rb.field_i:I",
+      "originalName": "field_i",
+      "to": "durationTicks",
+      "evidence": "HUD queue construction stores text/duration, then the session copies both into current message state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:sa.field_g:I",
       "originalName": "field_g",
       "to": "y",
       "evidence": "LevelObject construction, sprite refresh and collision stamping establish IDs, pixel coordinates and per-frame geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sa.field_h:Z",
+      "originalName": "field_h",
+      "to": "glowActive",
+      "evidence": "Version-five target flag enters missionTargets; version-six countdown flag calls countdown trigger two on destruction. Glow gates sprite overlays; type-two firing sets a 49-tick cooldown.",
       "confidence": "reviewed"
     },
     {
@@ -5513,6 +6045,27 @@
       "originalName": "field_n",
       "to": "objectType",
       "evidence": "LevelObject construction, sprite refresh and collision stamping establish IDs, pixel coordinates and per-frame geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sa.field_o:I",
+      "originalName": "field_o",
+      "to": "shotCooldownTicks",
+      "evidence": "Version-five target flag enters missionTargets; version-six countdown flag calls countdown trigger two on destruction. Glow gates sprite overlays; type-two firing sets a 49-tick cooldown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sa.field_p:Z",
+      "originalName": "field_p",
+      "to": "triggersCountdown",
+      "evidence": "Version-five target flag enters missionTargets; version-six countdown flag calls countdown trigger two on destruction. Glow gates sprite overlays; type-two firing sets a 49-tick cooldown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sa.field_r:Z",
+      "originalName": "field_r",
+      "to": "missionTarget",
+      "evidence": "Version-five target flag enters missionTargets; version-six countdown flag calls countdown trigger two on destruction. Glow gates sprite overlays; type-two firing sets a 49-tick cooldown.",
       "confidence": "reviewed"
     },
     {
@@ -5569,6 +6122,20 @@
       "originalName": "field_l",
       "to": "fullWidthScene",
       "evidence": "Dialogue constructors and draw/update paths establish scene layout, current line and typewriter cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:va.field_a:Lfl;",
+      "originalName": "field_a",
+      "to": "cursor",
+      "evidence": "Secondary circular sentinel and iteration cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:va.field_c:Lfl;",
+      "originalName": "field_c",
+      "to": "sentinel",
+      "evidence": "Secondary circular sentinel and iteration cursor.",
       "confidence": "reviewed"
     },
     {
@@ -5695,6 +6262,720 @@
       "originalName": "field_k",
       "to": "segmentTimes",
       "evidence": "Envelope decoder loads segment times/values and header; advance linearly interpolates Q15 values across scaled time boundaries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.D(I)V#0",
+      "originalName": "var2",
+      "to": "requiredTilesHigh",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.D(I)V#1",
+      "originalName": "var3",
+      "to": "expandedTerrain",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.D(I)V#2",
+      "originalName": "var4",
+      "to": "tileIndex",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.D(I)V#3",
+      "originalName": "var5",
+      "to": "fillIndex",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.D(I)V#4",
+      "originalName": "var4Lifetime1",
+      "to": "initialFillIndex",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(BLjava/io/DataInputStream;I)V#0",
+      "originalName": "var4_int",
+      "to": "guardQuotient",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(ILjava/io/DataInputStream;I)V#1",
+      "originalName": "var4_int",
+      "to": "encodedGravityQ16",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(ILjava/io/DataInputStream;Z)V#1",
+      "originalName": "var7",
+      "to": "obfuscationControl",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(ILjava/io/DataInputStream;Z)V#2",
+      "originalName": "var4_int",
+      "to": "objectCount",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(ILjava/io/DataInputStream;Z)V#3",
+      "originalName": "var5",
+      "to": "objectIndex",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(ILjava/io/DataInputStream;Z)V#4",
+      "originalName": "var6",
+      "to": "object",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;BII)Lsa;#0",
+      "originalName": "var5",
+      "to": "object",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;BII)Lsa;#2",
+      "originalName": "var6",
+      "to": "objectType",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;BII)Lsa;#3",
+      "originalName": "var7",
+      "to": "x",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;BII)Lsa;#4",
+      "originalName": "var8",
+      "to": "guardQuotient",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;BII)Lsa;#5",
+      "originalName": "var9",
+      "to": "y",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;BII)Lsa;#6",
+      "originalName": "stackIn_11_0",
+      "to": "decodedObject",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;IB)V#1",
+      "originalName": "var9",
+      "to": "obfuscationControl",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;IB)V#2",
+      "originalName": "var4_int",
+      "to": "guardRemainder",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;IB)V#3",
+      "originalName": "var5",
+      "to": "powerupCount",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;IB)V#4",
+      "originalName": "var6",
+      "to": "powerupIndex",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;IB)V#5",
+      "originalName": "var7",
+      "to": "objectType",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;IB)V#6",
+      "originalName": "var8",
+      "to": "powerup",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#1",
+      "originalName": "var8",
+      "to": "object",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#2",
+      "originalName": "var9",
+      "to": "targetFlag",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#3",
+      "originalName": "stackIn_3_0",
+      "to": "targetFlagPresent",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#4",
+      "originalName": "var10",
+      "to": "missionTarget",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#5",
+      "originalName": "var11",
+      "to": "triggersCountdown",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#6",
+      "originalName": "var12",
+      "to": "countdownFlag",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#7",
+      "originalName": "stackIn_9_0",
+      "to": "countdownFlagPresent",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#8",
+      "originalName": "var12Lifetime1",
+      "to": "spriteFrame",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#9",
+      "originalName": "stackIn_19_0",
+      "to": "decodedObject",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(ZIILjava/io/DataInputStream;)V#0",
+      "originalName": "var5",
+      "to": "terrain",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(ZILjava/io/InputStream;)V#0",
+      "originalName": "var4",
+      "to": "levelInput",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.a(ZILjava/io/InputStream;)V#1",
+      "originalName": "var5",
+      "to": "formatVersion",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.b(ILjava/io/DataInputStream;B)V#1",
+      "originalName": "var7",
+      "to": "obfuscationControl",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.b(ILjava/io/DataInputStream;B)V#2",
+      "originalName": "var4_int",
+      "to": "mineCount",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.b(ILjava/io/DataInputStream;B)V#3",
+      "originalName": "var5",
+      "to": "mineIndex",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.b(ILjava/io/DataInputStream;B)V#4",
+      "originalName": "var6",
+      "to": "mine",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.b(ILjava/io/DataInputStream;B)V#5",
+      "originalName": "dupTemp$0",
+      "to": "homeXQ16",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.b(ILjava/io/DataInputStream;B)V#6",
+      "originalName": "dupTemp$1",
+      "to": "homeYQ16",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.b(ILjava/io/DataInputStream;I)V#1",
+      "originalName": "var4_int",
+      "to": "guardRemainder",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.h(I)V#131",
+      "originalName": "var40_ref",
+      "to": "bullet",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.h(I)V#139",
+      "originalName": "var11_ref_ic",
+      "to": "hitMine",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.h(I)V#152",
+      "originalName": "var6_ref_pi",
+      "to": "rockBuster",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.h(I)V#172",
+      "originalName": "var21_ref_ic",
+      "to": "collidedMine",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.h(I)V#181",
+      "originalName": "var22_ref",
+      "to": "hitObject",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.h(I)V#187",
+      "originalName": "var29_ref",
+      "to": "hitGate",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.h(I)V#194",
+      "originalName": "var43",
+      "to": "launchedRockBuster",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.h(I)V#195",
+      "originalName": "var44_ref",
+      "to": "turret",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.h(I)V#198",
+      "originalName": "var45",
+      "to": "muzzleOffset",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.h(I)V#34",
+      "originalName": "var30",
+      "to": "obfuscationControl",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.h(I)V#58",
+      "originalName": "var32_ref",
+      "to": "forceFieldObject",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.h(I)V#75",
+      "originalName": "var33_ref",
+      "to": "laserGate",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.h(I)V#82",
+      "originalName": "var3_ref_ic",
+      "to": "seekerMine",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:oe.h(I)V#92",
+      "originalName": "var18_ref_ed",
+      "to": "tetheredSprite",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(IBI)V#1",
+      "originalName": "var13",
+      "to": "obfuscationControl",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(IBI)V#10",
+      "originalName": "var12",
+      "to": "drawWidth",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(IBI)V#2",
+      "originalName": "var5",
+      "to": "glowOffsetX",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(IBI)V#3",
+      "originalName": "var6",
+      "to": "glowOffsetY",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(IBI)V#4",
+      "originalName": "var7",
+      "to": "leftPadding",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(IBI)V#5",
+      "originalName": "var8",
+      "to": "topPadding",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(IBI)V#7",
+      "originalName": "var9Lifetime1",
+      "to": "glowAlpha",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(IBI)V#8",
+      "originalName": "var10",
+      "to": "screenY",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(IBI)V#9",
+      "originalName": "var11",
+      "to": "screenX",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(Loe;B)V#1",
+      "originalName": "var12",
+      "to": "obfuscationControl",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(Loe;B)V#10",
+      "originalName": "var8Lifetime1",
+      "to": "bitColumn",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(Loe;B)V#11",
+      "originalName": "var10",
+      "to": "tileRows",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(Loe;B)V#12",
+      "originalName": "array$0",
+      "to": "newTileRows",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(Loe;B)V#13",
+      "originalName": "var11",
+      "to": "fillRow",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(Loe;B)V#2",
+      "originalName": "var3_int",
+      "to": "sourcePixelIndex",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(Loe;B)V#3",
+      "originalName": "var4",
+      "to": "sourceRow",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(Loe;B)V#5",
+      "originalName": "var5",
+      "to": "rowY",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(Loe;B)V#6",
+      "originalName": "var6",
+      "to": "tileY",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(Loe;B)V#7",
+      "originalName": "var7",
+      "to": "sourceColumn",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(Loe;B)V#8",
+      "originalName": "var8",
+      "to": "pixelX",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(Loe;B)V#9",
+      "originalName": "var9",
+      "to": "tileX",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZII)V#0",
+      "originalName": "var4_int",
+      "to": "pulsePeriod",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZII)V#1",
+      "originalName": "var5",
+      "to": "pulseTick",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZII)V#10",
+      "originalName": "var14",
+      "to": "viewportHeight",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZII)V#11",
+      "originalName": "var15",
+      "to": "screenLeft",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZII)V#12",
+      "originalName": "var16",
+      "to": "screenRight",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZII)V#13",
+      "originalName": "var17",
+      "to": "worldWidth",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZII)V#2",
+      "originalName": "var6",
+      "to": "spriteWidth",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZII)V#3",
+      "originalName": "var7",
+      "to": "spriteHeight",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZII)V#4",
+      "originalName": "var8",
+      "to": "highlightWidth",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZII)V#5",
+      "originalName": "var9",
+      "to": "highlightHeight",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZII)V#6",
+      "originalName": "var10",
+      "to": "alpha",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZII)V#7",
+      "originalName": "var11",
+      "to": "color",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZII)V#8",
+      "originalName": "var12",
+      "to": "screenTop",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZII)V#9",
+      "originalName": "var13",
+      "to": "screenBottom",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZLoe;)V#10",
+      "originalName": "var8",
+      "to": "pixelX",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZLoe;)V#11",
+      "originalName": "var9",
+      "to": "tileX",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZLoe;)V#12",
+      "originalName": "var8Lifetime1",
+      "to": "bitColumn",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZLoe;)V#13",
+      "originalName": "var10",
+      "to": "tileRows",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZLoe;)V#14",
+      "originalName": "array$0",
+      "to": "newTileRows",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZLoe;)V#2",
+      "originalName": "var11",
+      "to": "obfuscationControl",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZLoe;)V#3",
+      "originalName": "var3_int",
+      "to": "sourcePixelIndex",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZLoe;)V#4",
+      "originalName": "var4",
+      "to": "sourceRow",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZLoe;)V#7",
+      "originalName": "var5",
+      "to": "rowY",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZLoe;)V#8",
+      "originalName": "var6",
+      "to": "tileY",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "L:sa.a(ZLoe;)V#9",
+      "originalName": "var7",
+      "to": "sourceColumn",
+      "evidence": "Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -5936,6 +7217,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.B(B)V",
+      "originalName": "B",
+      "to": "updateCountdown",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.B(I)Lrb;",
+      "originalName": "B",
+      "to": "pollHudMessage",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.D(I)V",
+      "originalName": "D",
+      "to": "ensureTerrainRow",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.G(I)V",
       "originalName": "G",
       "to": "renderSession",
@@ -5943,10 +7245,122 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.a(BLjava/io/DataInputStream;I)V",
+      "originalName": "a",
+      "to": "readSpawnAndFuel",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(BLsa;)V",
+      "originalName": "a",
+      "to": "recordInfrastructureDestroyed",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IBLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "queueHudMessage",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IIII)V",
+      "originalName": "a",
+      "to": "addLaserGateSpan",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IILjava/io/DataInputStream;)V",
+      "originalName": "a",
+      "to": "readCountdown",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(ILjava/io/DataInputStream;B)V",
+      "originalName": "a",
+      "to": "readObjectiveType",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(ILjava/io/DataInputStream;I)V",
+      "originalName": "a",
+      "to": "readGravity",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(ILjava/io/DataInputStream;Z)V",
+      "originalName": "a",
+      "to": "readLevelObjects",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(Lam;B)V",
+      "originalName": "a",
+      "to": "removeLaserGateSpan",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(Lic;I)V",
+      "originalName": "a",
+      "to": "destroySeekerMine",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(Ljava/io/DataInputStream;BII)Lsa;",
+      "originalName": "a",
+      "to": "readLevelObject",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(Ljava/io/DataInputStream;IB)V",
+      "originalName": "a",
+      "to": "readInitialPowerups",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;",
+      "originalName": "a",
+      "to": "readLevelObjectFlags",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.a(Ljava/io/InputStream;Z)V",
       "originalName": "a",
       "to": "loadLevelStream",
       "evidence": "Delegates to the versioned level-stream loader and retains exception diagnostics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(Lpi;I)V",
+      "originalName": "a",
+      "to": "detonateRockBuster",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(Lsa;II)V",
+      "originalName": "a",
+      "to": "destroyLevelObject",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(Lsa;Loc;I)V",
+      "originalName": "a",
+      "to": "recordMissionTargetDestroyed",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
       "confidence": "reviewed"
     },
     {
@@ -5964,6 +7378,104 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.a(ZILjava/io/InputStream;)V",
+      "originalName": "a",
+      "to": "decodeLevelStream",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(Z[BZ)V",
+      "originalName": "a",
+      "to": "installLevelBytes",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a([BI)V",
+      "originalName": "a",
+      "to": "decodeLevelBytes",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(B)V",
+      "originalName": "b",
+      "to": "resetShipState",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(ILjava/io/DataInputStream;B)V",
+      "originalName": "b",
+      "to": "readSeekerMines",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(ILjava/io/DataInputStream;I)V",
+      "originalName": "b",
+      "to": "readShieldEnergy",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(Z)Lsa;",
+      "originalName": "b",
+      "to": "findCargoContainer",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.c(I)V",
+      "originalName": "c",
+      "to": "updateHudMessage",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.e(I)Z",
+      "originalName": "e",
+      "to": "areMissionTargetsDestroyed",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.e(II)V",
+      "originalName": "e",
+      "to": "selectLevel",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.e(Z)Z",
+      "originalName": "e",
+      "to": "hasShipReachedExit",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.f(II)V",
+      "originalName": "f",
+      "to": "activateCountdown",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.g(B)Z",
+      "originalName": "g",
+      "to": "isMissionComplete",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.h(B)V",
+      "originalName": "h",
+      "to": "destroyShip",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.h(I)V",
       "originalName": "h",
       "to": "updateSession",
@@ -5975,6 +7487,27 @@
       "originalName": "i",
       "to": "buildTutorialTerrain",
       "evidence": "Builds the literal 32x32 tutorial arena, its container/landing objects and spawn rather than reading a mission stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.i(I)Z",
+      "originalName": "i",
+      "to": "requiresExitBeforeCountdownEnds",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.j(B)V",
+      "originalName": "j",
+      "to": "initializeCurrentLevel",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.k(I)V",
+      "originalName": "k",
+      "to": "loadCurrentLevel",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
       "confidence": "reviewed"
     },
     {
@@ -6006,6 +7539,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.z(B)V",
+      "originalName": "z",
+      "to": "applyInitialPowerups",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(B)I",
+      "originalName": "a",
+      "to": "glowAlpha",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(IBI)V",
+      "originalName": "a",
+      "to": "drawObject",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sa.a(Loe;B)V",
       "originalName": "a",
       "to": "removeFromTerrain",
@@ -6013,10 +7567,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sa.a(ZII)V",
+      "originalName": "a",
+      "to": "drawTargetHighlight",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sa.a(ZLoe;)V",
       "originalName": "a",
       "to": "stampTerrain",
       "evidence": "ORs each nontransparent sprite pixel into the mutable 32-row terrain mask, wrapping horizontal tile indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.b(Z)Lfn;",
+      "originalName": "b",
+      "to": "getDisplayOffset",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.d(I)Led;",
+      "originalName": "d",
+      "to": "getDisplaySprite",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.e(B)Z",
+      "originalName": "e",
+      "to": "countsAsInfrastructure",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
       "confidence": "reviewed"
     },
     {
@@ -6038,6 +7620,41 @@
       "originalName": "j",
       "to": "drawDialogue",
       "evidence": "Draws scene image, panel and current typewriter text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.a(B)Lfl;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "Reviewed secondary-link deque ownership; primary node links are independent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.a(I)Lfl;",
+      "originalName": "a",
+      "to": "first",
+      "evidence": "Reviewed secondary-link deque ownership; primary node links are independent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.a(ILfl;)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "Reviewed secondary-link deque ownership; primary node links are independent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.b(B)Lfl;",
+      "originalName": "b",
+      "to": "removeFirst",
+      "evidence": "Reviewed secondary-link deque ownership; primary node links are independent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.b(I)Z",
+      "originalName": "b",
+      "to": "isEmpty",
+      "evidence": "Reviewed secondary-link deque ownership; primary node links are independent.",
       "confidence": "reviewed"
     },
     {
@@ -6108,6 +7725,27 @@
       "originalName": "param0",
       "to": "guard",
       "evidence": "Selects dialogue/menu/session music and tells the current session when the music context changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(III)V#0",
+      "originalName": "param0",
+      "to": "leftX",
+      "evidence": "Retains the beam endpoint coordinates without reordering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(III)V#1",
+      "originalName": "param1",
+      "to": "rightX",
+      "evidence": "Retains the beam endpoint coordinates without reordering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:am.<init>(III)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "Retains the beam endpoint coordinates without reordering.",
       "confidence": "reviewed"
     },
     {
@@ -6552,10 +8190,360 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.<init>([[B)V#0",
+      "originalName": "param0",
+      "to": "levelData",
+      "evidence": "Retains the supplied level data in the tutorial constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.<init>([[BIII)V#0",
+      "originalName": "param0",
+      "to": "levelData",
+      "evidence": "Retains the supplied campaign, mode, selected level and initial level index; the option is passed to the original setup hook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.<init>([[BIII)V#1",
+      "originalName": "param1",
+      "to": "option",
+      "evidence": "Retains the supplied campaign, mode, selected level and initial level index; the option is passed to the original setup hook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.<init>([[BIII)V#2",
+      "originalName": "param2",
+      "to": "gameMode",
+      "evidence": "Retains the supplied campaign, mode, selected level and initial level index; the option is passed to the original setup hook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.<init>([[BIII)V#3",
+      "originalName": "param3",
+      "to": "levelIndex",
+      "evidence": "Retains the supplied campaign, mode, selected level and initial level index; the option is passed to the original setup hook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.B(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.B(I)Lrb;#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.D(I)V#0",
+      "originalName": "param0",
+      "to": "tileY",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.G(I)V#0",
       "originalName": "param0",
       "to": "guard",
       "evidence": "Draws terrain/background/effects around the fixed-point ship, then HUD and minimap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(BLjava/io/DataInputStream;I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(BLjava/io/DataInputStream;I)V#1",
+      "originalName": "param1",
+      "to": "input",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(BLjava/io/DataInputStream;I)V#2",
+      "originalName": "param2",
+      "to": "formatVersion",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(BLsa;)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(BLsa;)V#1",
+      "originalName": "param1",
+      "to": "object",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IBLjava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "durationTicks",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IBLjava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IBLjava/lang/String;)V#2",
+      "originalName": "param2",
+      "to": "text",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIII)V#0",
+      "originalName": "param0",
+      "to": "rightX",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIII)V#2",
+      "originalName": "param2",
+      "to": "leftX",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIII)V#3",
+      "originalName": "param3",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IILjava/io/DataInputStream;)V#0",
+      "originalName": "param0",
+      "to": "formatVersion",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IILjava/io/DataInputStream;)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IILjava/io/DataInputStream;)V#2",
+      "originalName": "param2",
+      "to": "input",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILjava/io/DataInputStream;B)V#0",
+      "originalName": "param0",
+      "to": "formatVersion",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILjava/io/DataInputStream;B)V#1",
+      "originalName": "param1",
+      "to": "input",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILjava/io/DataInputStream;B)V#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILjava/io/DataInputStream;I)V#0",
+      "originalName": "param0",
+      "to": "defaultGravityQ16",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILjava/io/DataInputStream;I)V#1",
+      "originalName": "param1",
+      "to": "input",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILjava/io/DataInputStream;I)V#2",
+      "originalName": "param2",
+      "to": "formatVersion",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILjava/io/DataInputStream;Z)V#0",
+      "originalName": "param0",
+      "to": "formatVersion",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILjava/io/DataInputStream;Z)V#1",
+      "originalName": "param1",
+      "to": "input",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILjava/io/DataInputStream;Z)V#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lam;B)V#0",
+      "originalName": "param0",
+      "to": "gate",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lam;B)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lic;I)V#0",
+      "originalName": "param0",
+      "to": "mine",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lic;I)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Ljava/io/DataInputStream;BII)Lsa;#0",
+      "originalName": "param0",
+      "to": "input",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Ljava/io/DataInputStream;BII)Lsa;#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Ljava/io/DataInputStream;BII)Lsa;#2",
+      "originalName": "param2",
+      "to": "objectId",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Ljava/io/DataInputStream;BII)Lsa;#3",
+      "originalName": "param3",
+      "to": "formatVersion",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Ljava/io/DataInputStream;IB)V#0",
+      "originalName": "param0",
+      "to": "input",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Ljava/io/DataInputStream;IB)V#1",
+      "originalName": "param1",
+      "to": "formatVersion",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Ljava/io/DataInputStream;IB)V#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#0",
+      "originalName": "param0",
+      "to": "input",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#2",
+      "originalName": "param2",
+      "to": "formatVersion",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#3",
+      "originalName": "param3",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#4",
+      "originalName": "param4",
+      "to": "objectType",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#5",
+      "originalName": "param5",
+      "to": "y",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Ljava/io/DataInputStream;IIZIII)Lsa;#6",
+      "originalName": "param6",
+      "to": "objectId",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
       "confidence": "reviewed"
     },
     {
@@ -6570,6 +8558,62 @@
       "originalName": "param1",
       "to": "option",
       "evidence": "Delegates to the versioned level-stream loader and retains exception diagnostics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lpi;I)V#0",
+      "originalName": "param0",
+      "to": "projectile",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lpi;I)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lsa;II)V#0",
+      "originalName": "param0",
+      "to": "object",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lsa;II)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lsa;II)V#2",
+      "originalName": "param2",
+      "to": "objectIndex",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lsa;Loc;I)V#0",
+      "originalName": "param0",
+      "to": "object",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lsa;Loc;I)V#1",
+      "originalName": "param1",
+      "to": "effect",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lsa;Loc;I)V#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
       "confidence": "reviewed"
     },
     {
@@ -6615,6 +8659,181 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.a(ZILjava/io/InputStream;)V#0",
+      "originalName": "param0",
+      "to": "headerOnly",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ZILjava/io/InputStream;)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ZILjava/io/InputStream;)V#2",
+      "originalName": "param2",
+      "to": "input",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Z[BZ)V#0",
+      "originalName": "param0",
+      "to": "buildTerrainRenderer",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Z[BZ)V#1",
+      "originalName": "param1",
+      "to": "bytes",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Z[BZ)V#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a([BI)V#0",
+      "originalName": "param0",
+      "to": "bytes",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a([BI)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(ILjava/io/DataInputStream;B)V#0",
+      "originalName": "param0",
+      "to": "formatVersion",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(ILjava/io/DataInputStream;B)V#1",
+      "originalName": "param1",
+      "to": "input",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(ILjava/io/DataInputStream;B)V#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(ILjava/io/DataInputStream;I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(ILjava/io/DataInputStream;I)V#1",
+      "originalName": "param1",
+      "to": "input",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(ILjava/io/DataInputStream;I)V#2",
+      "originalName": "param2",
+      "to": "formatVersion",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(Z)Lsa;#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.c(I)V#0",
+      "originalName": "param0",
+      "to": "minimumTicks",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.e(I)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.e(II)V#0",
+      "originalName": "param0",
+      "to": "levelIndex",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.e(II)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.e(Z)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.f(II)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.f(II)V#1",
+      "originalName": "param1",
+      "to": "trigger",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.g(B)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.h(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.h(I)V#0",
       "originalName": "param0",
       "to": "guard",
@@ -6626,6 +8845,27 @@
       "originalName": "param0",
       "to": "guard",
       "evidence": "Builds the literal 32x32 tutorial arena, its container/landing objects and spawn rather than reading a mission stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.i(I)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.j(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.k(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
       "confidence": "reviewed"
     },
     {
@@ -6657,6 +8897,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.z(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.<init>(Ljava/lang/String;I)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "Retains text and display duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.<init>(Ljava/lang/String;I)V#1",
+      "originalName": "param1",
+      "to": "durationTicks",
+      "evidence": "Retains text and display duration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sa.<init>(IIII)V#0",
       "originalName": "param0",
       "to": "objectId",
@@ -6685,6 +8946,125 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sa.<init>(IIIIZZ)V#0",
+      "originalName": "param0",
+      "to": "objectId",
+      "evidence": "Versioned object metadata delegates to the basic constructor, then sets target/countdown flags and the optional frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.<init>(IIIIZZ)V#1",
+      "originalName": "param1",
+      "to": "objectType",
+      "evidence": "Versioned object metadata delegates to the basic constructor, then sets target/countdown flags and the optional frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.<init>(IIIIZZ)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "Versioned object metadata delegates to the basic constructor, then sets target/countdown flags and the optional frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.<init>(IIIIZZ)V#3",
+      "originalName": "param3",
+      "to": "y",
+      "evidence": "Versioned object metadata delegates to the basic constructor, then sets target/countdown flags and the optional frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.<init>(IIIIZZ)V#4",
+      "originalName": "param4",
+      "to": "missionTarget",
+      "evidence": "Versioned object metadata delegates to the basic constructor, then sets target/countdown flags and the optional frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.<init>(IIIIZZ)V#5",
+      "originalName": "param5",
+      "to": "triggersCountdown",
+      "evidence": "Versioned object metadata delegates to the basic constructor, then sets target/countdown flags and the optional frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.<init>(IIIIZZI)V#0",
+      "originalName": "param0",
+      "to": "objectId",
+      "evidence": "Versioned object metadata delegates to the basic constructor, then sets target/countdown flags and the optional frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.<init>(IIIIZZI)V#1",
+      "originalName": "param1",
+      "to": "objectType",
+      "evidence": "Versioned object metadata delegates to the basic constructor, then sets target/countdown flags and the optional frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.<init>(IIIIZZI)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "Versioned object metadata delegates to the basic constructor, then sets target/countdown flags and the optional frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.<init>(IIIIZZI)V#3",
+      "originalName": "param3",
+      "to": "y",
+      "evidence": "Versioned object metadata delegates to the basic constructor, then sets target/countdown flags and the optional frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.<init>(IIIIZZI)V#4",
+      "originalName": "param4",
+      "to": "missionTarget",
+      "evidence": "Versioned object metadata delegates to the basic constructor, then sets target/countdown flags and the optional frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.<init>(IIIIZZI)V#5",
+      "originalName": "param5",
+      "to": "triggersCountdown",
+      "evidence": "Versioned object metadata delegates to the basic constructor, then sets target/countdown flags and the optional frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.<init>(IIIIZZI)V#6",
+      "originalName": "param6",
+      "to": "spriteFrame",
+      "evidence": "Versioned object metadata delegates to the basic constructor, then sets target/countdown flags and the optional frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(B)I#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(IBI)V#0",
+      "originalName": "param0",
+      "to": "cameraY",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(IBI)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(IBI)V#2",
+      "originalName": "param2",
+      "to": "cameraX",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sa.a(Loe;B)V#0",
       "originalName": "param0",
       "to": "session",
@@ -6699,6 +9079,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sa.a(ZII)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(ZII)V#1",
+      "originalName": "param1",
+      "to": "cameraX",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(ZII)V#2",
+      "originalName": "param2",
+      "to": "cameraY",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sa.a(ZLoe;)V#0",
       "originalName": "param0",
       "to": "guard",
@@ -6710,6 +9111,27 @@
       "originalName": "param1",
       "to": "session",
       "evidence": "ORs each nontransparent sprite pixel into the mutable 32-row terrain mask, wrapping horizontal tile indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.b(Z)Lfn;#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.d(I)Led;#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.e(B)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed object drawing, sprite lookup, glow and destruction counters; static unrelated helpers stay separate.",
       "confidence": "reviewed"
     },
     {
@@ -6731,6 +9153,48 @@
       "originalName": "param0",
       "to": "guard",
       "evidence": "Draws scene image, panel and current typewriter text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:va.a(B)Lfl;#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed secondary-link deque ownership; primary node links are independent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:va.a(I)Lfl;#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed secondary-link deque ownership; primary node links are independent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:va.a(ILfl;)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed secondary-link deque ownership; primary node links are independent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:va.a(ILfl;)V#1",
+      "originalName": "param1",
+      "to": "node",
+      "evidence": "Reviewed secondary-link deque ownership; primary node links are independent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:va.b(B)Lfl;#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed secondary-link deque ownership; primary node links are independent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:va.b(I)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed secondary-link deque ownership; primary node links are independent.",
       "confidence": "reviewed"
     },
     {
@@ -6784,10 +9248,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-escapevector-rules.mjs": "0be7b173cbb5824be0550b8c24807ff0b0bf00eab687e343bc3476ae2dda832c",
+      "build-escapevector-rules.mjs": "8d7fe514c7c6cb214b1d311dd4e0cee2e2681fab05730e4c423394f957cdbb32",
       "reproduce-escapevector.mjs": "32a380675cbdcef95ba3f15172a2e157edb46887a7ed60688e9b929d3909aa72",
       "prepare-escapevector.mjs": "f3987547b00ddc07b19e958fa025f6b51880572e8b42ad75f4cfeb22c91dff9c",
-      "tests/test-escapevector-core.mjs": "d2d01237b24a9902e0251f8a29d3b43ad56f6c578cc69ac1536f79a4d28ea78e",
+      "tests/test-escapevector-core.mjs": "064aae0cd0eb2c9a8c64a10a9ec59409c3db267f43c6b4b7aaf9a462f4cf6dd8",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
