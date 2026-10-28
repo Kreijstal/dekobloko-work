@@ -23,7 +23,7 @@ All three duplicated allocations came from the same fixed-size array aliasing
 bug; the corrected compiler emits one shared allocation at each site.
 
 The original gamepack passes `readable/tests/test-escapevector-core.mjs`'s
-2,720 independent assertions for versioned level/audio decoding, terrain masks,
+3,232 independent assertions for versioned level/audio decoding, terrain masks,
 sprite stamping/removal, deque ownership, widgets, text geometry, all sixteen
 PCM mixing kernels and session helpers. The session probes include bullet
 recycling/reuse without allocation, terrain rays/wrapping, hull geometry,
@@ -45,6 +45,13 @@ request payload lengths/subtypes/CRCs. They also check queue ownership and
 wrapping score-submission IDs. Exception rejection checks compare underlying
 causes: native bytecode may retain a diagnostic wrapper that the historical
 Java exposes directly. No proxy connections or public game hosts are needed.
+
+Font/legacy UI probes cover binary/coverage glyph kernels, alpha endpoints and
+signed pixel bits, clipping/scanline masks, markup metrics/wrapping/style resets,
+column/button geometry, every menu width mode, integer-list growth and marker
+boundaries, nine-slice frame rasterization and row/column-major sprite sheets
+with optional alpha. Solid and alpha kernels retain their original high-byte
+representation; no rendered pixels or control flow are changed by naming.
 
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.
@@ -6498,7 +6505,7 @@ TeaVM, with CPU 2, 1 GiB old-space and no overlapping tests/builds:
 | Control `d39e5e3` | 1,923.246 | 790.354 | 2,713.600 | 456.091 |
 
 Every checksum and zero guest-compiler gate passes; every parity gate fails.
-The candidate's combined median is **2,891.502 vs 2,720.680 ms**, 6.3% higher.
+The candidate's combined median is **2,891.502 vs 3,232.680 ms**, 6.3% higher.
 It removes all **3,148,442** separate music single-bit-reader entries, yet both
 observations are slower than both controls. Call count alone is therefore not
 a useful optimization objective. The trial is retained under

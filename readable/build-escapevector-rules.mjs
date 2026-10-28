@@ -181,6 +181,23 @@ const classes = {
   cc: ['ProgressRecord', 'Queued campaign/level progress record carrying four encoded words, serialized with a CRC and removed on a matching campaign/level acknowledgement.'],
   dc: ['ProgressQuery', 'Queued campaign progress query completed with integer progress words by the subtype-zero response.'],
   qd: ['AchievementRecord', 'Queued achievement record carrying category/achievement identifiers and four encoded words; removed by the record acknowledgement.'],
+  ih: ['BinaryBitmapFont', 'BitmapFont drawing each nonzero glyph-mask byte as a solid color, with alpha and scanline-mask variants.'],
+  jl: ['LegacyTextBlock', 'Legacy fixed-640-pixel text layout retaining an uppercase title, wrapped paragraphs, font/colors and measured block geometry.'],
+  gl: ['PairedTextColumns', 'LegacyTextBlock laying out two text columns around a measured split, with independently colored left/right rows.'],
+  wd: ['SpriteLabelColumns', 'LegacyTextBlock pairing right-aligned SpriteStrip rows with left-aligned text labels.'],
+  dk: ['LegacyButton', 'Legacy styled button retaining bounds, action ID, label/font, sprite/state palettes and reveal timing; separate helpers decode progress responses and CP1252.'],
+  me: ['LegacyMenuColumn', 'Header and selectable rows with numbered, fixed-text, free-text or integer width modes, font metrics, position and selected/normal colors.'],
+  fd: ['NineSliceFrame', 'Retains the nine corner/edge/center sprites passed to the nine-slice frame renderer; unrelated static helpers handle account-name separators.'],
+  tk: ['EmailValidationError', 'Identity error tokens returned by email local-part/domain validation, with null representing acceptance; unrelated static asset/account helpers remain.'],
+  ee: ['LoginMethod', 'Retains the login-method name matched against the last-login-method cookie; static animation/rendering helpers are unrelated.'],
+  re: ['GradientOutlineTextPainter', 'TextWidgetPainter drawing an enabled widget gradient outline before delegating text rendering.'],
+  ck: ['ThreeSliceButtonPainter', 'Text painter drawing a three-sprite horizontal button with normal/hover/disabled tints and centered text.'],
+  ve: ['MarkerSliderPainter', 'Draws a slider track and each retained marker at its scaled position, then the optional centered label.'],
+  sc: ['DialWidgetPainter', 'Draws a circular selector, optional marked step, selected radial line and adjacent label.'],
+  ae: ['SpriteCheckboxPainter', 'WidgetPainter drawing a gradient outline, optional checked-state sprite and keyboard focus decoration.'],
+  q: ['MarkerSlider', 'TextButton mapping pointer position to a bounded marker value; left press appends a marker and right press removes the nearest.'],
+  eb: ['DialWidget', 'TextButton mapping an inside-circle pointer angle to a wrapped discrete step; also owns the shared sprite-sheet decoder.'],
+  kn: ['GrowableIntList', 'Integer array with last-index size tracking, append/indexed assignment/removal and additive or multiplicative capacity growth.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
@@ -1429,6 +1446,176 @@ for (const [owner,name,descriptor,to,parameters] of [
 ]) method(owner,name,descriptor,to,parameters,
   'Reviewed request constructor/writer/decoder and helper bodies. Packet layouts, CRC boundaries, acknowledgement ownership, guard side effects and optional URL/cookie operations remain unchanged. Encoded payload words retain their unresolved fields.');
 
+// Fonts and legacy menu geometry retain their original raster/layout behavior.
+fields('wl', [['w','[I','imageBaselines'],['x','I','maxDescent'],['H','Ljava/lang/StringBuilder;','wrapBuffer'],
+  ['v','[B','kerning'],['r','I','maxAscent'],['B','[I','glyphOffsetY'],['y','I','lineHeight'],['G','[I','glyphWidth'],
+  ['t','[I','advances'],['M','[I','glyphHeight'],['D','[I','glyphOffsetX'],['q','[Lfi;','images'],['N','I','capHeight'],
+  ['C','I','currentShadowColor'],['A','I','currentAlpha'],['K','I','underlineColor'],['s','I','defaultColor'],
+  ['I','I','defaultShadowColor'],['F','I','justificationRemainder'],['J','I','defaultAlpha'],['u','I','strikeColor'],
+  ['L','I','justificationSpacingQ8'],['z','[Ljava/lang/String;','wrappedLines'],['E','I','currentColor']],
+  'Metrics decoder/constructor and markup renderer distinguish glyph offsets/extents/advances, baseline/line metrics, pair kerning, embedded images and shared resettable style/justification state.');
+fields('ih', [['O','[[B','glyphMasks']], 'Every nonzero byte draws a solid glyph pixel regardless of its magnitude.');
+fields('ab', [['O','[[B','glyphCoverage']], 'Palette conversion produces per-pixel coverage; ordinary drawing multiplies it by the requested alpha.');
+fields('em', [['c','[I','maskStarts'],['f','[I','maskWidths']], 'Binary glyph masking clips each raster-relative scanline to this start/width pair.');
+for (const [name,descriptor,to,parameters] of [
+  ['a','(C)I','charAdvance',['character']],['b','(Ljava/lang/String;)I','stringWidth',['text']],
+  ['a','(Ljava/lang/String;I)I','wrappedLineCount',['text','width']],['b','(Ljava/lang/String;II)I','paragraphHeight',['text','width','lineSpacing']],
+  ['a','(Ljava/lang/String;[I[Ljava/lang/String;)I','wrapLines',['text','widths','lines']],
+  ['a','(III)V','resetStyle',['color','shadow','alpha']],['b','(II)V','resetOpaqueStyle',['color','shadow']],
+  ['a','(Ljava/lang/String;)V','applyTag',['tag']],['a','(Ljava/lang/String;II)V','renderLine',['text','x','baselineY']],
+  ['a','(Ljava/lang/String;IIII)V','drawLeft',['text','x','baselineY','color','shadow']],
+  ['b','(Ljava/lang/String;IIII)V','drawRight',['text','x','baselineY','color','shadow']],
+  ['c','(Ljava/lang/String;IIII)V','drawCentered',['text','x','baselineY','color','shadow']],
+  ['c','(Ljava/lang/String;IIIII)V','drawLeftAlpha',['text','x','baselineY','color','shadow','alpha']],
+  ['a','(Ljava/lang/String;IIIII)V','drawRightAlpha',['text','x','baselineY','color','shadow','alpha']],
+  ['b','(Ljava/lang/String;IIIII)V','drawCenteredAlpha',['text','x','baselineY','color','shadow','alpha']],
+  ['a','(Ljava/lang/String;IIIIIIIII)I','drawParagraph',['text','x','y','width','height','color','shadow','horizontalAlignment','verticalAlignment','lineSpacing']],
+  ['a','(Ljava/lang/String;IIIIIIIIII)I','drawParagraphAlpha',['text','x','y','width','height','color','shadow','alpha','horizontalAlignment','verticalAlignment','lineSpacing']],
+  ['a','(IIIIIIZ)V','drawGlyph',['glyph','x','y','width','height','color','shadow']],
+  ['a','(IIIIIIIZ)V','drawGlyphAlpha',['glyph','x','y','width','height','color','alpha','shadow']],
+]) method('wl',name,descriptor,to,parameters,
+  'Reviewed metrics, markup entities/style tags, line breaking/kerning, alignment wrappers and abstract glyph calls. Shadow glyph calls carry true; coverage rendering uses its binary mask path for shadows.');
+for (const owner of ['ih','ab']) {
+  method(owner,'a','([I[BIIIIIII)V',owner==='ih'?'blitMask':'blitCoverage',
+    ['pixels','mask','color','sourceIndex','destinationIndex','width','height','destinationSkip','sourceSkip'],
+    'Reviewed row-major raster kernel: zero is transparent; binary masks replace color, while coverage masks blend with the destination.');
+  method(owner,'a','([I[BIIIIIIII)V',owner==='ih'?'blitMaskAlpha':'blitCoverageAlpha',
+    ['pixels','mask','color','sourceIndex','destinationIndex','width','height','destinationSkip','sourceSkip','alpha'],
+    'Reviewed alpha raster kernel; binary masks use one alpha, coverage masks multiply per-pixel coverage by that alpha.');
+}
+method('ih','a','([I[BIIIIIIIII[I[I)V','blitMaskedGlyph',
+  ['pixels','mask','x','y','width','height','color','sourceIndex','destinationIndex','destinationSkip','sourceSkip','starts','widths'],
+  'Clips each glyph row to raster-relative mask start/width intervals and writes the shared raster target, retaining the original skip arithmetic.');
+method('wl','<init>','([B[I[I[I[I)V',null,['metrics','offsetX','offsetY','widths','heights'],'Decodes advances/kerning and computes ascent, descent and capital height from glyph extents.');
+method('ih','<init>','([B[I[I[I[I[[B)V',null,['metrics','offsetX','offsetY','widths','heights','masks'],'Retains binary glyph masks after base metric initialization.');
+method('ab','<init>','([B[I[I[I[I[I[[B)V',null,['metrics','offsetX','offsetY','widths','heights','palette','glyphPixels'],'Converts palette-index glyph pixels into coverage after base metric initialization.');
+
+fields('jl', [['o','I','contentWidth'],['i','I','titleGap'],['h','Lih;','font'],['g','I','titleCenterX'],
+  ['b','[Ljava/lang/String;','paragraphs'],['m','Ljava/lang/String;','title'],['j','I','bodyColor'],['e','I','height'],
+  ['k','I','titleColor'],['d','I','columnSplitX'],['f','I','lineSpacing']],
+  'Legacy text configuration centers a 480-pixel content area in the fixed 640-pixel viewport, measures paragraphs and retains separate title/column anchors.');
+for (const [name,descriptor,to,parameters] of [
+  ['a','(ILih;II)V','configure',['bodyColor','font','titleColor','guard']],
+  ['a','([Ljava/lang/String;I)I','maximumTextWidth',['lines','firstLine']],['a','(B)V','updateLayout',['guard']],
+  ['b','(II)I','drawTitle',['baselineY','guard']],['a','(Z)I','contentWidth',['guard']],
+  ['a','(ZI)V','drawParagraphs',['guard','baselineY']],['a','(BI)V','translateX',['guard','offset']],
+  ['b','(B)I','height',['guard']],['a','([Ljava/lang/String;B)I','paragraphsHeight',['paragraphs','guard']],
+  ['c','(B)I','fontHeight',['guard']],['a','(II)V','draw',['y','guard']],
+  ['b','(I)V','writeBrowserSessionMarker',['guard']],
+]) method('jl',name,descriptor,to,parameters,
+  'Reviewed legacy heading/paragraph measurement and draw consumers, including null-font exits and original title advance behavior. The unrelated static helper delegates the fixed browser-session marker cookie.');
+method('jl','<init>','(Ljava/lang/String;[Ljava/lang/String;)V',null,['title','paragraphs'],'Uppercases a non-null heading and retains paragraph strings.');
+fields('gl', [['v','I','rightColor'],['u','[Ljava/lang/String;','leftRows'],['q','I','leftColor'],['t','[Ljava/lang/String;','rightRows']],
+  'Right-aligned left rows end at the split; left-aligned right rows begin there, with independent colors.');
+for (const [name,descriptor,to,parameters] of [
+  ['d','(B)V','updateColumns',['guard']],['a','(IIIBLih;)V','configureColumns',['rightColor','leftColor','titleColor','guard','font']],
+  ['a','(III[Ljava/lang/String;I)V','drawColumn',['guard','baselineY','alignment','rows','color']],
+  ['a','(BLjava/applet/Applet;)V','updateBrowserLinks',['guard','applet']],['c','(Z)Lk;','defaultTextPainter',['guard']],
+]) method('gl',name,descriptor,to,parameters,'Reviewed two-column width/split calculation, aligned row drawing, cached gray text painter and fixed browser navigation link updates.');
+method('gl','<init>','(Ljava/lang/String;[Ljava/lang/String;[Ljava/lang/String;)V',null,['title','leftRows','rightRows'],'Retains the paired text rows and heading.');
+fields('wd', [['t','[Ljava/lang/String;','labels'],['s','I','labelColor'],['r','[Ltc;','spriteRows']],
+  'Sprite-strip rows end at the split and their corresponding text labels start there.');
+for (const [name,descriptor,to,parameters] of [
+  ['a','(B[Ljava/lang/String;III)V','drawLabels',['guard','labels','baselineY','color','alignment']],
+  ['c','(I)V','updateColumns',['guard']],['a','(I[Ltc;B)V','drawSpriteRows',['baselineY','rows','guard']],
+  ['a','([Ltc;I)I','maximumSpriteWidth',['rows','minimumWidth']],
+]) method('wd',name,descriptor,to,parameters,'Reviewed sprite-label column measurement and drawing; null rows retain the original spacing. Base configure/draw override families are resolved automatically.');
+method('wd','<init>','(Ljava/lang/String;[Ltc;[Ljava/lang/String;)V',null,['title','spriteRows','labels'],'Retains sprite strips, labels and heading.');
+
+fields('dk', [['j','I','textOffsetX'],['l','I','y'],['i','I','height'],['q','I','revealUntilTick'],['f','I','x'],
+  ['k','[I','scaledWidths'],['e','[I','foregroundColors'],['d','I','style'],['o','Ljava/lang/String;','text'],
+  ['m','[I','backgroundColors'],['b','I','prefixNumber'],['r','[I','textColors'],['a','[I','scaledHeights'],
+  ['n','Led;','sprite'],['p','I','width'],['c','I','actionId'],['s','Lih;','font']],
+  'Reviewed constructors, half-open hit test, measured/styled drawing, scaled sprite state, text truncation and palette setters. Encoded unrelated values retain their existing fields.');
+for (const [name,descriptor,to,parameters] of [
+  ['a','(B)I','preferredHeight',['guard']],['a','(BII)Z','hitTest',['guard','x','y']],
+  ['a','(BLjava/lang/CharSequence;)[B','encodeCp1252',['guard','text']],['a','(I)I','spriteHeight',['guard']],
+  ['a','(III)V','setSize',['height','guard','width']],['a','(IZ)V','draw',['guard','highlighted']],
+  ['a','(Z)I','spriteWidth',['guard']],['a','(ZZB)V','drawState',['highlighted','alternateState','guard']],
+  ['a','([I[IB[I)V','setColors',['foregroundColors','backgroundColors','guard','textColors']],
+  ['a','([I[II)V','setBackgroundColors',['backgroundColors','foregroundColors','guard']],
+  ['b','(B)I','revealOffset',['guard']],['b','(BII)V','setPosition',['guard','x','y']],
+  ['b','(I)I','textWidthWithPadding',['guard']],['c','(I)I','labelBaseline',['guard']],['d','(I)I','preferredWidth',['guard']],
+  ['e','(I)V','decodeProgressResponse',['guard']],['f','(I)I','textHeightWithPadding',['guard']],['h','(I)V','truncateLabel',['guard']],
+]) method('dk',name,descriptor,to,parameters,
+  'Reviewed five style branches, metric queries, palette argument order and subtype-zero query/subtype-one progress acknowledgements. All original guard and truncation behavior remains.');
+
+fields('me', [['i','[Ljava/lang/String;','rows'],['q','I','widthMode'],['s','I','rowCount'],['l','Lih;','font'],
+  ['j','I','y'],['r','I','selectedColor'],['m','I','textColor'],['h','Ljava/lang/String;','header'],['k','I','x']],
+  'Constructors select numbered/fixed-text/free-text/integer width modes; drawing retains header, selected/normal row colors and position.');
+for (const [name,descriptor,to,parameters] of [
+  ['a','(BI)I','paddedWidth',['guard','contentWidth']],['a','(B)I','numberedWidth',['guard']],
+  ['f','(I)I','rowHeight',['guard']],['a','(Lih;IBI)V','configure',['font','selectedColor','guard','textColor']],
+  ['a','(IIIIII)I','drawRow',['selectedRow','rowHeight','x','baselineY','rowIndex','guard']],
+  ['i','(I)I','fixedTextWidth',['guard']],['g','(I)I','headerAreaHeight',['topPadding']],
+  ['a','(IZ[Z)V','drawVisibleRowsInternal',['selectedRow','guard','visibleRows']],
+  ['a','(II)V','draw',['guard','selectedRow']],['a','(I[ZB)V','drawVisibleRows',['selectedRow','visibleRows','guard']],
+  ['e','(B)I','width',['guard']],['f','(B)I','height',['guard']],['j','(I)V','drawHeader',['guard']],
+  ['g','(B)I','textWidth',['guard']],['d','(B)I','widestDigit',['guard']],['e','(I)I','twoDigitWidth',['guard']],
+  ['b','(II)V','drawRows',['guard','selectedRow']],['d','(I)I','doubleSpaceWidth',['guard']],
+  ['a','(III)V','setPosition',['x','y','guard']],['h','(I)I','headerWidth',['guard']],
+]) method('me',name,descriptor,to,parameters,
+  'Reviewed row/header layout, font metrics, mode-specific width formulas, selected-row drawing and optional visibility masks. Fixed-text width uses twenty copies of the widest allowed character; no password semantics are inferred.');
+method('me','<init>','(I)V',null,['rowCount'],'Builds one-based numbered row labels.');
+method('me','<init>','(Ljava/lang/String;[Ljava/lang/String;I)V',null,['header','rows','widthMode'],'Retains rows/header and chooses fixed-text or free-text width mode.');
+method('me','<init>','(Ljava/lang/String;[I)V',null,['header','values'],'Builds integer row labels and maps negative values to null rows.');
+
+fields('fd', [['c','[Led;','sprites']], 'Nine-slice renderer reads corners, edges and center from this retained array.');
+method('fd','a','(IIIII)V','draw',['x','y','guard','width','height'],'Delegates bounds and retained sprites to the nine-slice renderer.');
+method('fd','a','(ZC)Z','isNameSeparator',['guard','character'],'Recognizes space, nonbreaking space, underscore and hyphen.');
+method('fd','<init>','([Led;)V',null,['sprites'],'Retains the nine-slice sprite array.');
+method('ld','a','(I[Led;IIII)V','drawNineSlice',['height','sprites','guard','y','x','width'],
+  'Clips corners and tiled edges/center to the target rectangle and restores the previous raster clip.');
+fields('ee', [['b','Ljava/lang/String;','name']], 'Cookie matching compares the retained login-method name exactly.');
+method('ee','a','(Ljava/lang/String;B)Z','matchesName',['name','guard'],'Compares the supplied cookie value against this login method.');
+method('ee','<init>','(Ljava/lang/String;)V',null,['name'],'Retains the login-method name.');
+method('ee','a','(IIZ[Led;I)V','drawThreeSlice',['x','width','guard','sprites','y'],
+  'Draws fixed end caps and tiles the middle sprite between them while saving/restoring the raster clip.');
+method('tk','a','(II)V','resendAchievementRequests',['guard','opcode'],
+  'Replays queued achievement records and pending achievement bitmap queries through their writers.');
+method('re','d','(I)V','clearSharedKeyHandler',['guard'],'Clears the retained shared GameKeyHandler while holding its monitor.');
+method('re','a','(ILtj;)V','enqueueDialogue',['guard','dialogue'],'Appends the supplied dialogue to the shared dialogue queue.');
+method('ck','a','(IB)V','resendScoreRequests',['opcode','guard'],'Replays queued score submissions and pending highscore queries.');
+method('ae','a','([BBII)I','crc32',['bytes','guard','end','start'],'Computes standard reflected CRC32 over the supplied byte range.');
+method('ae','a','(JB)V','sleepMillis',['milliseconds','guard'],'Sleeps for the supplied duration and retains the original interrupted-exception handling.');
+method('ae','a','(Ljava/lang/String;Ljava/lang/String;BLmf;)[Lte;','loadIndexedSprites',['groupName','fileName','guard','archive'],'Resolves the named group/file and delegates indexed sprite-sheet loading.');
+method('ae','a','(II)I','bitwiseAnd',['left','right'],'Returns the integer bitwise AND.');
+method('sc','a','(Lqd;II)V','enqueueAchievementRecord',['record','opcode','guard'],'Queues an achievement record and sends its first request.');
+method('sc','a','(BLjava/awt/Component;)V','detachKeyboardInput',['guard','component'],'Removes key/focus listeners and invalidates pending key state.');
+method('ve','a','(BLjava/lang/String;)V','updateHoverText',['guard','text'],'Tracks hover text, pointer origin and delayed visibility state across frames.');
+method('ve','a','(IIZIZ)Lmf;','createArchive',[],'Delegates creation of a ResourceArchive to the shared archive factory.');
+method('tj','a','(BLjava/applet/Applet;Ljava/lang/String;Ljava/lang/String;J)V','writeCookie',['guard','applet','name','value','lifetimeSeconds'],
+  'Builds the cookiehost-scoped document.cookie assignment with either expiry/max-age or session discard semantics.');
+method('se','a','(BLjava/applet/Applet;)V','writeBrowserSessionMarker',['guard','applet'],'Sets the fixed browser-session marker and retains its shared notification flag.');
+
+fields('q', [['M','I','horizontalInset'],['D','I','maximumValue'],['J','I','trackY'],['K','Lkn;','markers']],
+  'Painter scales each retained marker into the track; pointer input clamps to the maximum and appends/removes values.');
+for (const [name,descriptor,to,parameters] of [
+  ['e','(B)I','markerCount',['guard']],['b','(IB)I','markerValue',['index','guard']],['k','(I)I','maximumValue',['guard']],
+  ['c','(IB)V','writeSavedDataQuery',['opcode','guard']],
+]) method('q',name,descriptor,to,parameters,'Reviewed marker-list access and the unrelated length-one/subtype-zero saved-data query writer.');
+fields('eb', [['N','I','radius'],['I','I','centerY'],['M','I','stepCount'],['F','I','value'],['D','I','centerX'],['G','I','markerValue']],
+  'Circular painter/input share center/radius and quantized wrapped angle steps; marker minus one suppresses the extra dot.');
+method('eb','a','([BZ)V','decodeSpriteSheet',['encoded','guard'],'Reads sheet dimensions, offsets/extents, palette and row/column-major indices with optional per-pixel alpha.');
+fields('kn', [['e','I','growth'],['a','[I','values'],['d','Z','multiplicativeGrowth'],['g','I','lastIndex']],
+  'Size is lastIndex plus one; capacity calculation either adds or multiplies by growth until the requested index fits.');
+for (const [name,descriptor,to,parameters] of [
+  ['a','(IIZ)V','set',['index','value','guard']],['c','(II)V','removeAt',['minimumIndex','index']],
+  ['a','(IB)V','add',['value','guard']],['b','(II)V','growToIndex',['guard','index']],
+  ['a','(II)I','get',['guard','index']],['d','(II)I','capacityForIndex',['guard','index']],['a','(Z)I','size',['guard']],
+]) method('kn',name,descriptor,to,parameters,'Reviewed integer-list indexing, left-shift removal, append and capacity growth; throwing constructor stubs remain unchanged.');
+fields('eb', [['L','Lom;','quickChatCommand']], 'Unrelated static command descriptor retains its original ID/parameter count.');
+fields('qk', [['j','I','spriteCount'],['f','[I','spritePalette']], 'Sprite-sheet footer supplies count; palette entries use RGB with zero reserved for transparency.');
+fields('gn', [['k','[I','spriteOffsetXs']], 'Sheet decoder reads one unsigned-short x offset per sprite.');
+fields('gi', [['e','[I','spriteOffsetYs']], 'Sheet decoder reads one unsigned-short y offset per sprite.');
+fields('qh', [['k','[I','spriteWidths']], 'Sheet decoder reads each trimmed width.');
+fields('bc', [['a','[I','spriteHeights']], 'Sheet decoder reads each trimmed height.');
+fields('qe', [['a','[[B','spriteIndices']], 'Sheet decoder retains palette-index byte arrays in row-major order.');
+fields('hn', [['b','[[B','spriteAlphas']], 'Sheet decoder retains optional per-pixel alpha bytes separately from indices.');
+fields('bj', [['E','[Z','spriteHasAlpha']], 'True only when an alpha plane contains a byte other than fully opaque minus one.');
+fields('on', [['e','I','spriteSheetWidth']], 'Sheet footer supplies the full untrimmed width.');
+fields('hd', [['c','I','spriteSheetHeight']], 'Sheet footer supplies the full untrimmed height.');
+
 for (const [signature, rows] of [
   ['oe.a(ZILjava/io/InputStream;)V', [[0,'var4','levelInput'],[1,'var5','formatVersion']]],
   ['oe.a(ZIILjava/io/DataInputStream;)V', [[0,'var5','terrain']]],
@@ -1486,6 +1673,8 @@ export const escapeConfig = {
       '`MouseInputHandler` updates shared pending movement/click state and clears held buttons on focus loss; `DelegatingCanvas` forwards painting to its component. `SocketConnector`, `ProxySocketConnector` and `ProxyAuthenticationException` distinguish direct/proxied socket creation and HTTP 407 diagnostics. `SpriteStrip` measures/draws non-null sprites with spacing after each sprite.','',
       '`ArchiveKeyRequest`, `ProgressQuery`, `ProgressRecord`, `AchievementQuery`, `AchievementRecord`, `HighscoreQuery`, `ScoreSubmission`, `RatingQuery` and `SavedDataWrite` identify the queued protocol records. Their named writers preserve subtype/length/CRC layouts and acknowledgement ownership. Unknown encoded-word meanings remain unresolved. `DelayedServerPacket` belongs to the simulated-latency receive path.','',
       '`UiComponent` separates hitTest, hover updates, keyboard focus, pointer routing, rendering and layout. UiContainer owns children; SingleChildContainer forwards to one child; DraggableWidget and DropTargetWidget expose drag/drop roles. TextButton adds focus and actions; EditableTextWidget adds caret/selection and edit/submit notifications. TextHotspotWidget parses clickable spans into TextHotspotRegion line fragments. WidgetPainter and WidgetTextLayout retain separate drawing/layout contracts; TextLayoutLine and CachedTextLayout expose character insertion coordinates, wrapping and alignment. ButtonListener, ButtonPointerListener, WidgetHoverListener, WidgetFocusListener and TextInputListener expose callback families. The debounced validators distinguish matching text, email syntax/availability, name availability, password and age checks.','',
+      '`BitmapFont` names glyph advances, string widths, markup/style state, wrapping, paragraph alignment and glyph dispatch. `BinaryBitmapFont` treats any nonzero mask byte as solid; `CoverageBitmapFont` blends byte coverage and uses binary masks for shadows. Native probes retain exact signed pixel integers, including high-byte differences between solid and alpha paths. `DialWidget.decodeSpriteSheet` names the shared footer/palette/index/alpha decoder and its global decode arrays.','',
+      '`LegacyTextBlock`, `PairedTextColumns`, `SpriteLabelColumns`, `LegacyMenuColumn` and `LegacyButton` expose the older fixed-viewport layout path. They retain original spacing, width-mode, truncation and guard behavior. `NineSliceFrame`, `ThreeSliceButtonPainter`, `GradientOutlineTextPainter`, `SpriteCheckboxPainter`, `MarkerSliderPainter` and `DialWidgetPainter` identify distinct drawing roles. `MarkerSlider` edits values in `GrowableIntList`; `DialWidget` quantizes pointer angles. `LoginMethod` and `EmailValidationError` distinguish cookie identity from validation error tokens.','',
       '`releaseStatics` names explicitly reviewed cleanup declarations throughout the client; it releases shared references rather than instance state. Original conditional exits, guard arithmetic, calls and exception handling remain unchanged. These scattered cleanup routines do not establish the roles of their still-opaque containing classes.','',
       '## Reproduce and verify','',
       'From dekobloko-work:','',
@@ -1494,7 +1683,7 @@ export const escapeConfig = {
       'node readable/naming-coverage.mjs escapevector',
       'node readable/tests/test-escapevector-core.mjs /path/to/original/escapevector.jar','```','',
       'The exact raw input is pinned to Git. Existing generic java-tools declaration and decision proofs run across every file from a verified compiler-source archive, without game assumptions or compiler flags. Each stage is checked for determinism and idempotence, and its hashes/counts are retained in the current dictionary. Naming binds declarations/references/overrides, compiles the complete raw/named corpus and retains reversible edits. No generated sources or binary dependencies are stored in Deko.','',
-      'Native fixtures compare historical, prepared and named implementations against independent expectations for versioned terrain headers, empty/full/partial masks, sprite collision stamping/removal and deque transfers. Independently authored complete level streams cover versions zero through eleven, exact byte consumption, target/countdown/frame boundaries, seeker positions, powerup filtering, fuel/shield defaults and objective/gravity whitelists. Widget fixtures check hit-test boundaries/origins, hover versus keyboard focus, virtual focus traversal and the Enter action callback. Text geometry fixtures check insertion indices across lines, midpoint ties, vertical hit-test gaps, markup-aware justification and empty/null layouts. Audio fixtures check LSB-first bits/cursors, packed floats, canonical codebooks, floor interpolation, mapping mux, packet length extensions/loop flags, oscillator boundaries, empty effects and filter unity. PCM fixtures exercise all sixteen direction/channel/interpolation/ramp kernel combinations and pan endpoints. Session fixtures verify bullet state, active-prefix recycling/reuse, wrapped current/initial terrain, ray/mask boundaries, hull half/notch geometry, RGB/countdown interpolation and 50-tick clocks. Packet/metadata fixtures check wire widths, smart boundaries, backpatches, CP1252 strings, CRC32 corruption, XTEA/RSA/password vectors, account-name policy, mesh bounds, quick-chat parameters and pending/completed reflection framing. Archive fixtures cover versions five through seven, sparse named multi-file chunks and every packed/unpacked retention policy. Collection fixtures check collision buckets, iterator removal, independent link ownership/cursors, weighted eviction/replacement and null-value refunds. Input fixtures check mouse/button/focus/popup/detached state and Canvas delegation. Request fixtures specify bytes after the ISAAC opcode, including lengths/subtypes/CRCs, enqueue ownership and wrapping submission IDs. Exception rejection probes compare underlying causes because native diagnostics may wrap the same IllegalStateException. The fixed original gamepack passes all 2,720 assertions too. These focused checks do not prove whole-game behavior, multiplayer compatibility or frame rate. The original mutable obfuscationControl and guard branches remain; unsupported structural recovery and unresolved local names still need review.',''].join('\n');
+      'Native fixtures compare historical, prepared and named implementations against independent expectations for versioned terrain headers, empty/full/partial masks, sprite collision stamping/removal and deque transfers. Independently authored complete level streams cover versions zero through eleven, exact byte consumption, target/countdown/frame boundaries, seeker positions, powerup filtering, fuel/shield defaults and objective/gravity whitelists. Widget fixtures check hit-test boundaries/origins, hover versus keyboard focus, virtual focus traversal and the Enter action callback. Text geometry fixtures check insertion indices across lines, midpoint ties, vertical hit-test gaps, markup-aware justification and empty/null layouts. Audio fixtures check LSB-first bits/cursors, packed floats, canonical codebooks, floor interpolation, mapping mux, packet length extensions/loop flags, oscillator boundaries, empty effects and filter unity. PCM fixtures exercise all sixteen direction/channel/interpolation/ramp kernel combinations and pan endpoints. Session fixtures verify bullet state, active-prefix recycling/reuse, wrapped current/initial terrain, ray/mask boundaries, hull half/notch geometry, RGB/countdown interpolation and 50-tick clocks. Packet/metadata fixtures check wire widths, smart boundaries, backpatches, CP1252 strings, CRC32 corruption, XTEA/RSA/password vectors, account-name policy, mesh bounds, quick-chat parameters and pending/completed reflection framing. Archive fixtures cover versions five through seven, sparse named multi-file chunks and every packed/unpacked retention policy. Collection fixtures check collision buckets, iterator removal, independent link ownership/cursors, weighted eviction/replacement and null-value refunds. Input fixtures check mouse/button/focus/popup/detached state and Canvas delegation. Request fixtures specify bytes after the ISAAC opcode, including lengths/subtypes/CRCs, enqueue ownership and wrapping submission IDs. Exception rejection probes compare underlying causes because native diagnostics may wrap the same IllegalStateException. Font/legacy UI fixtures cover binary and coverage kernels, alpha endpoints/signed pixel bits, clipping and masks, markup metrics and style resets, column/button geometry, all menu width modes, list growth, nine-slice rasterization and row/column-major sprite sheets with optional alpha. The fixed original gamepack passes all 3,232 assertions too. These focused checks do not prove whole-game behavior, multiplayer compatibility or frame rate. The original mutable obfuscationControl and guard branches remain; unsupported structural recovery and unresolved local names still need review.',''].join('\n');
   },
 };
 

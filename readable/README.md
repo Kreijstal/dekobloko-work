@@ -61,7 +61,7 @@ Audio probes cover LSB-first bit cursors, packed floats, codebooks, floor points
 mapping setup, packet lengths, synthesized effects and filters. A native PCM
 fixture exercises all sixteen mono/stereo, forward/reverse, aligned/interpolated
 and fixed/ramped gain kernels, plus pan endpoints.
-The fixed original gamepack passes all 2,720 assertions:
+The fixed original gamepack passes all 3,232 assertions:
 
 ```sh
 node readable/tests/test-escapevector-core.mjs /path/to/original/escapevector.jar
@@ -587,7 +587,7 @@ The pass110 Brick publication provides 3,142 scanned methods. The candidate
 changes 182 methods in 116 files, removes 636 wrapper blocks and rotates 288
 decisions. `PowerUp.applyToBoard` loses 16 wrapper blocks; its maximum brace
 depth falls from 18 to 6. Both complete 420-class source variants compile, and
-the existing native contracts pass 4,082,720 assertions per variant with
+the existing native contracts pass 4,083,232 assertions per variant with
 unchanged core, service-header, list-reset and paddle-movement trace hashes.
 These scoped contracts do not establish full original-client equivalence.
 

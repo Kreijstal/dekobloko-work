@@ -668,6 +668,99 @@ public class EscapeTerrainProbe {
   output=requestBuffer();queue=construct("cn",new Class<?>[]{});set(null,"jl","n",queue);request=call(null,"ci","a:enqueueKey",new Class<?>[]{int.class,int.class,int.class,int.class},5,300,-1,2);
   check("key-request-queue-owns-record",call(queue,"cn","a:first",new Class<?>[]{boolean.class},false)==request,true);check("key-request-archive",get(request,"ll","g"),5);check("key-request-group",get(request,"ll","i"),300);check("key-request-pending-key",get(request,"ll","j"),null);
  }
+ static int[] raster(int width,int height)throws Exception{
+  int[] pixels=new int[width*height];set(null,"em","i",pixels);set(null,"em","l",width);set(null,"em","d",height);set(null,"em","a",0);set(null,"em","k",0);set(null,"em","b",width);set(null,"em","j",height);set(null,"em","c",null);set(null,"em","f",null);return pixels;
+ }
+ static Object fixtureFont()throws Exception{
+  byte[] metrics=new byte[257];Arrays.fill(metrics,(byte)3);metrics[32]=2;metrics[160]=2;metrics[256]=6;
+  int[] x=new int[256],y=new int[256],widths=new int[256],heights=new int[256];Arrays.fill(y,2);Arrays.fill(widths,2);Arrays.fill(heights,5);widths[32]=0;heights[32]=0;
+  byte[][] masks=new byte[256][];for(int i=0;i<256;i++)masks[i]=new byte[10];masks[65]=new byte[]{1,0,0,1,1,1,1,0,0,1};masks[66]=new byte[]{1,1,1,0,1,1,1,0,1,1};
+  return construct("ih",new Class<?>[]{byte[].class,int[].class,int[].class,int[].class,int[].class,byte[][].class},metrics,x,y,widths,heights,masks);
+ }
+ static void fontRaster()throws Exception{
+  byte[] mask={0,1,(byte)128,99,(byte)255,(byte)128,0,99};
+  for(String owner:new String[]{"ih","ab"})for(int alpha:new int[]{-1,0,128,256}){
+   int[] pixels=new int[20];boolean opaque=alpha<0;
+   if(opaque)call(null,owner,"a:blit",new Class<?>[]{int[].class,byte[].class,int.class,int.class,int.class,int.class,int.class,int.class,int.class},pixels,mask,0xffffff,0,1,3,2,2,1);
+   else call(null,owner,"a:blitAlpha",new Class<?>[]{int[].class,byte[].class,int.class,int.class,int.class,int.class,int.class,int.class,int.class,int.class},pixels,mask,0xffffff,0,1,3,2,2,1,alpha);
+   int[] expected=new int[20];
+   // The alpha kernels use arithmetic shifts and preserve signed high bytes.
+   if(owner.equals("ih")){int color=opaque?0xffffff:alpha==256?0xffffffff:alpha==128?0x7f7f7f:0;for(int index:new int[]{2,3,6,7})expected[index]=color;}
+   else if(opaque||alpha==256){expected[3]=0x7f7f7f;expected[6]=0xfffefefe;expected[7]=0x7f7f7f;}
+   else if(alpha==128){expected[3]=0x3f3f3f;expected[6]=0x7e7e7e;expected[7]=0x3f3f3f;}
+   for(int i=0;i<pixels.length;i++)check("glyph-kernel-transparency-alpha-and-skips",pixels[i],expected[i]);
+  }
+  Object font=make("ih");byte[][] masks=new byte[256][];masks[65]=new byte[]{1,0,1,0,1,1};set(font,"ih","O",masks);
+  int[] pixels=raster(6,4);call(font,"wl","a:glyph",new Class<?>[]{int.class,int.class,int.class,int.class,int.class,int.class,boolean.class},65,-1,1,3,2,0xffffff,false);
+  for(int i=0;i<24;i++)check("glyph-left-clip",pixels[i],i==7||i==12||i==13?0xffffff:0);
+  pixels=raster(6,4);set(null,"em","c",new int[]{1,2,0,0});set(null,"em","f",new int[]{2,1,4,4});call(font,"wl","a:glyph",new Class<?>[]{int.class,int.class,int.class,int.class,int.class,int.class,boolean.class},65,0,0,3,2,0xffffff,false);
+  for(int i=0;i<24;i++)check("glyph-scanline-mask",pixels[i],i==2||i==8?0xffffff:0);
+  font=make("ab");masks[65]=new byte[]{0,(byte)128,(byte)255,(byte)255,0,(byte)128};set(font,"ab","O",masks);
+  for(boolean shadow:new boolean[]{false,true}){pixels=raster(6,4);call(font,"wl","a:glyph",new Class<?>[]{int.class,int.class,int.class,int.class,int.class,int.class,boolean.class},65,1,1,3,2,0xffffff,shadow);
+   for(int i=0;i<24;i++){int expected=0;if(i==8||i==15)expected=shadow?0xffffff:0x7f7f7f;if(i==9||i==13)expected=shadow?0xffffff:0xfffefefe;check("coverage-shadow-mask-dispatch",pixels[i],expected);}
+  }
+ }
+ static void fontMetricsAndStyles()throws Exception{
+  Object font=fixtureFont();check("font-ascent",get(font,"wl","r"),4);check("font-descent",get(font,"wl","x"),1);check("font-line-height",get(font,"wl","y"),6);check("font-cap-height",get(font,"wl","N"),4);
+  check("font-character-advance",call(font,"wl","a:advance",new Class<?>[]{char.class},'A'),3);check("font-space-advance",call(font,"wl","a:advance",new Class<?>[]{char.class},' '),2);
+  String[] text={null,"","AB","A B","<col=ff0000>A</col>B","<lt><gt>","A<br>B","<nbsp>","<euro>"};int[] widths={0,0,6,8,6,6,6,2,3};
+  for(int i=0;i<text.length;i++)check("font-markup-measurement",call(font,"wl","b:width",new Class<?>[]{String.class},text[i]),widths[i]);
+  check("font-wrapped-count",call(font,"wl","a:lineCount",new Class<?>[]{String.class,int.class},"A B A",8),2);
+  String[] lines=new String[8];check("font-wrap-count",call(font,"wl","a:wrap",new Class<?>[]{String.class,int[].class,String[].class},"A B A",new int[]{8},lines),2);check("font-wrap-first",lines[0],"A B");check("font-wrap-second",lines[1],"A");
+  check("font-explicit-break-count",call(font,"wl","a:wrap",new Class<?>[]{String.class,int[].class,String[].class},"A<br>B",null,lines),2);check("font-explicit-break-first",lines[0],"A<br>");check("font-explicit-break-second",lines[1],"B");
+  check("font-paragraph-height",call(font,"wl","b:paragraphHeight",new Class<?>[]{String.class,int.class,int.class},"A B A",8,6),11);
+  call(font,"wl","a:style",new Class<?>[]{int.class,int.class,int.class},0xffffff,-1,256);
+  for(String tag:new String[]{"col=123456","trans=128","str","u=abcdef","shad=010203"})call(font,"wl","a:tag",new Class<?>[]{String.class},tag);
+  check("font-tag-color",get(null,"wl","E"),0x123456);check("font-tag-alpha",get(null,"wl","A"),128);check("font-tag-strike",get(null,"wl","u"),0x800000);check("font-tag-underline",get(null,"wl","K"),0xabcdef);check("font-tag-shadow",get(null,"wl","C"),0x010203);check("font-style-keeps-default",get(null,"wl","s"),0xffffff);
+  call(font,"wl","a:tag",new Class<?>[]{String.class},"br");check("font-reset-color",get(null,"wl","E"),0xffffff);check("font-reset-alpha",get(null,"wl","A"),256);check("font-reset-shadow",get(null,"wl","C"),-1);check("font-reset-strike",get(null,"wl","u"),-1);check("font-reset-underline",get(null,"wl","K"),-1);
+ }
+ static void legacyLayouts()throws Exception{
+  Object font=fixtureFont(),block=construct("jl",new Class<?>[]{String.class,String[].class},"header",new String[]{"AB","A B"});
+  call(block,"jl","a:configure",new Class<?>[]{int.class,c("ih"),int.class,int.class},0xffffff,font,0x112233,-100);
+  check("legacy-uppercase-heading",get(block,"jl","m"),"HEADER");check("legacy-content-width",get(block,"jl","o"),480);check("legacy-title-anchor",get(block,"jl","g"),320);check("legacy-split-anchor",get(block,"jl","d"),320);check("legacy-line-spacing",get(block,"jl","f"),5);check("legacy-title-gap",get(block,"jl","i"),2);check("legacy-height",get(block,"jl","e"),17);check("legacy-font-retained",get(block,"jl","h")==font,true);
+  for(int[] sample:new int[][]{{0,6},{1,6},{2,0}})check("legacy-max-line-width",call(block,"jl","a:maxWidth",new Class<?>[]{String[].class,int.class},new String[]{"A","AB",null},sample[0]),sample[1]);
+  check("legacy-width-query",call(block,"jl","a:width",new Class<?>[]{boolean.class},true),480);check("legacy-height-query",call(block,"jl","b:height",new Class<?>[]{byte.class},(byte)-90),17);
+  call(block,"jl","a:translate",new Class<?>[]{byte.class,int.class},(byte)-100,10);check("legacy-translated-heading",get(block,"jl","g"),330);check("legacy-translated-split",get(block,"jl","d"),330);check("legacy-translation-keeps-width",get(block,"jl","o"),480);
+  Object paired=construct("gl",new Class<?>[]{String.class,String[].class,String[].class},"title",new String[]{"A","AB"},new String[]{"A B"});call(paired,"gl","a:columns",new Class<?>[]{int.class,int.class,int.class,byte.class,c("ih")},0x11,0x22,0x33,(byte)-92,font);
+  check("paired-column-width",get(paired,"jl","o"),14);check("paired-column-split",get(paired,"jl","d"),319);check("paired-title-stays-centered",get(paired,"jl","g"),320);check("paired-right-color",get(paired,"gl","v"),0x11);check("paired-left-color",get(paired,"gl","q"),0x22);
+  Object strips=Array.newInstance(c("tc"),3);Object sprites=Array.newInstance(c("ed"),1);Array.set(sprites,0,construct("ed",new Class<?>[]{int.class,int.class},4,1));Array.set(strips,0,construct("tc",new Class<?>[]{sprites.getClass(),int.class},sprites,2));
+  sprites=Array.newInstance(c("ed"),1);Array.set(sprites,0,construct("ed",new Class<?>[]{int.class,int.class},7,1));Array.set(strips,1,construct("tc",new Class<?>[]{sprites.getClass(),int.class},sprites,1));
+  Object labels=construct("wd",new Class<?>[]{String.class,strips.getClass(),String[].class},"title",strips,new String[]{"AB","A"});call(labels,"jl","a:configure",new Class<?>[]{int.class,c("ih"),int.class,int.class},0x99,font,0x11,-100);
+  check("sprite-label-width",get(labels,"jl","o"),14);check("sprite-label-split",get(labels,"jl","d"),321);check("sprite-label-color",get(labels,"wd","s"),0x99);check("sprite-label-title-centered",get(labels,"jl","g"),320);
+  Object[] columns={construct("me",new Class<?>[]{int.class},3),construct("me",new Class<?>[]{String.class,String[].class,int.class},"AB",new String[]{"A","AB"},1),construct("me",new Class<?>[]{String.class,String[].class,int.class},"AB",new String[]{"A","AB"},2),construct("me",new Class<?>[]{String.class,int[].class},"AB",new int[]{3,-1,20})};int[] widths={13,64,10,10},heights={32,25,25,32};
+  for(int i=0;i<columns.length;i++){Object column=columns[i];call(column,"me","a:configure",new Class<?>[]{c("ih"),int.class,byte.class,int.class},font,0x11,(byte)-100,0x22);call(column,"me","a:position",new Class<?>[]{int.class,int.class,int.class},12,15,0);
+   check("menu-column-mode-width",call(column,"me","e:width",new Class<?>[]{byte.class},(byte)-127),widths[i]);check("menu-column-height",call(column,"me","f:height",new Class<?>[]{byte.class},(byte)100),heights[i]);check("menu-column-x",get(column,"me","k"),12);check("menu-column-y",get(column,"me","j"),15);check("menu-column-selected-color",get(column,"me","r"),0x11);check("menu-column-text-color",get(column,"me","m"),0x22);
+  }
+  check("menu-numbered-rows",Arrays.toString((String[])get(columns[0],"me","i")),"[1., 2., 3.]");check("menu-integer-negative-row",Arrays.toString((String[])get(columns[3],"me","i")),"[3, null, 20]");
+  Object sprite=construct("ed",new Class<?>[]{int.class,int.class},5,4),button=construct("dk",new Class<?>[]{int.class,int.class,int.class,String.class,int.class,c("ed"),int.class,c("ih")},2,42,7,"AB",3,sprite,100,font);
+  String[] fields={"p","i","d","c","b","j","o","s"};Object[] values={14,15,2,42,7,3,"AB",font};for(int i=0;i<fields.length;i++)check("legacy-button-constructor",get(button,"dk",fields[i]),values[i]);
+  int[] foreground={1,2,3},background={4,5,6},colors={7,8,9};call(button,"dk","a:colors",new Class<?>[]{int[].class,int[].class,byte.class,int[].class},foreground,background,(byte)-128,colors);check("legacy-button-foreground-palette",get(button,"dk","e")==foreground,true);check("legacy-button-background-palette",get(button,"dk","m")==background,true);check("legacy-button-text-palette",get(button,"dk","r")==colors,true);
+  call(button,"dk","b:position",new Class<?>[]{byte.class,int.class,int.class},(byte)-50,10,20);
+  for(int[] point:new int[][]{{9,20,0},{10,19,0},{10,20,1},{23,20,1},{24,20,0},{10,34,1},{10,35,0},{23,34,1},{24,35,0}})check("legacy-button-half-open-hit",call(button,"dk","a:hit",new Class<?>[]{byte.class,int.class,int.class},(byte)65,point[0],point[1]),point[2]!=0);
+  call(button,"dk","a:size",new Class<?>[]{int.class,int.class,int.class},30,0,40);check("legacy-button-resized-width",get(button,"dk","p"),40);check("legacy-button-resized-height",get(button,"dk","i"),30);check("legacy-button-baseline",call(button,"dk","c:baseline",new Class<?>[]{int.class},-18641),46);
+  set(null,"mj","d",95);check("legacy-button-reveal-offset",call(button,"dk","b:reveal",new Class<?>[]{byte.class},(byte)-102),10);set(null,"mj","d",101);check("legacy-button-reveal-finished",call(button,"dk","b:reveal",new Class<?>[]{byte.class},(byte)-102),0);
+ }
+ static void menuValuesAndSprites()throws Exception{
+  Object list=make("kn");set(list,"kn","a",new int[1]);set(list,"kn","e",2);set(list,"kn","g",-1);set(list,"kn","d",false);
+  for(int value:new int[]{10,20,30,40})call(list,"kn","a:add",new Class<?>[]{int.class,byte.class},value,(byte)-51);
+  check("int-list-size",call(list,"kn","a:size",new Class<?>[]{boolean.class},true),4);check("int-list-additive-capacity",((int[])get(list,"kn","a")).length,5);check("int-list-last-index",get(list,"kn","g"),3);
+  for(int i=0;i<4;i++)check("int-list-values",call(list,"kn","a:get",new Class<?>[]{int.class,int.class},-100,i),10*(i+1));
+  call(list,"kn","c:remove",new Class<?>[]{int.class,int.class},0,1);check("int-list-remove-size",call(list,"kn","a:size",new Class<?>[]{boolean.class},true),3);for(int i=0;i<3;i++)check("int-list-remove-shifts",call(list,"kn","a:get",new Class<?>[]{int.class,int.class},-100,i),new int[]{10,30,40}[i]);
+  call(list,"kn","a:set",new Class<?>[]{int.class,int.class,boolean.class},7,80,false);check("int-list-indexed-assignment-size",call(list,"kn","a:size",new Class<?>[]{boolean.class},true),8);check("int-list-indexed-assignment-value",call(list,"kn","a:get",new Class<?>[]{int.class,int.class},-100,7),80);check("int-list-indexed-assignment-capacity",((int[])get(list,"kn","a")).length,9);
+  list=make("kn");set(list,"kn","a",new int[0]);set(list,"kn","e",2);set(list,"kn","g",-1);set(list,"kn","d",true);for(int value:new int[]{1,2,3})call(list,"kn","a:add",new Class<?>[]{int.class,byte.class},value,(byte)-51);
+  for(int i=0;i<3;i++)check("int-list-multiplicative-values",call(list,"kn","a:get",new Class<?>[]{int.class,int.class},-100,i),i+1);check("int-list-multiplicative-size",call(list,"kn","a:size",new Class<?>[]{boolean.class},true),3);check("int-list-multiplicative-capacity",((int[])get(list,"kn","a")).length,4);call(list,"kn","c:remove",new Class<?>[]{int.class,int.class},0,2);check("int-list-remove-last",call(list,"kn","a:size",new Class<?>[]{boolean.class},true),2);call(list,"kn","a:add",new Class<?>[]{int.class,byte.class},9,(byte)-51);check("int-list-overwrites-removed-slot",call(list,"kn","a:get",new Class<?>[]{int.class,int.class},-100,2),9);
+  Object slider=make("q");set(slider,"q","K",list);set(slider,"q","D",100);check("marker-slider-count",call(slider,"q","e:count",new Class<?>[]{byte.class},(byte)98),3);check("marker-slider-maximum",call(slider,"q","k:maximum",new Class<?>[]{int.class},-1),100);for(int[] pair:new int[][]{{0,1},{2,9},{-1,-1},{3,-1}})check("marker-slider-value-boundary",call(slider,"q","b:value",new Class<?>[]{int.class,byte.class},pair[0],(byte)97),pair[1]);
+  Object sprites=Array.newInstance(c("ed"),9);for(int i=0;i<9;i++){Object sprite=construct("ed",new Class<?>[]{int.class,int.class},1,1);((int[])get(sprite,"ed","B"))[0]=i+1;Array.set(sprites,i,sprite);}
+  Object frame=construct("fd",new Class<?>[]{sprites.getClass()},sprites);set(null,"kf","o",new int[4]);int[] pixels=raster(8,8);call(frame,"fd","a:draw",new Class<?>[]{int.class,int.class,int.class,int.class,int.class},2,2,-96,4,4);
+  for(int y=0;y<8;y++)for(int x=0;x<8;x++){int expected=0;if(x>=2&&x<6&&y>=2&&y<6){int column=x==2?0:x==5?2:1,row=y==2?0:y==5?2:1;expected=row*3+column+1;}check("nine-slice-corners-edges-center",pixels[y*8+x],expected);}
+  for(int test=0;test<5;test++){
+   int flags=test<4?test:2;boolean opaque=test==4;ByteArrayOutputStream bytes=new ByteArrayOutputStream();DataOutputStream data=new DataOutputStream(bytes);data.writeByte(flags);
+   int[] order=(flags&1)==0?new int[]{0,1,2,3}:new int[]{0,2,1,3};int[] indices={1,2,0,1},alphas=opaque?new int[]{255,255,255,255}:new int[]{255,128,0,255};for(int index:order)data.writeByte(indices[index]);if((flags&2)!=0)for(int index:order)data.writeByte(alphas[index]);
+   data.writeByte(0x33);data.writeByte(0x66);data.writeByte(0x99);data.writeByte(0);data.writeByte(0);data.writeByte(0);data.writeShort(4);data.writeShort(5);data.writeByte(2);data.writeShort(1);data.writeShort(2);data.writeShort(2);data.writeShort(2);data.writeShort(1);
+   call(null,"eb","a:sheet",new Class<?>[]{byte[].class,boolean.class},bytes.toByteArray(),true);
+   check("sheet-sprite-count",get(null,"qk","j"),1);check("sheet-full-width",get(null,"on","e"),4);check("sheet-full-height",get(null,"hd","c"),5);check("sheet-offset-x",Arrays.toString((int[])get(null,"gn","k")),"[1]");check("sheet-offset-y",Arrays.toString((int[])get(null,"gi","e")),"[2]");check("sheet-trim-width",Arrays.toString((int[])get(null,"qh","k")),"[2]");check("sheet-trim-height",Arrays.toString((int[])get(null,"bc","a")),"[2]");check("sheet-row-major-indices",Arrays.toString(((byte[][])get(null,"qe","a"))[0]),"[1, 2, 0, 1]");check("sheet-palette-zero-normalization",Arrays.toString((int[])get(null,"qk","f")),Arrays.toString(new int[]{0,0x336699,1}));check("sheet-effective-alpha-flag",((boolean[])get(null,"bj","E"))[0],(flags&2)!=0&&!opaque);check("sheet-alpha-plane",Arrays.toString(((byte[][])get(null,"hn","b"))[0]),(flags&2)==0?"[0, 0, 0, 0]":opaque?"[-1, -1, -1, -1]":"[-1, -128, 0, -1]");
+  }
+ }
  public static void main(String[] args)throws Exception{
   Class<?> unsafeClass=Class.forName("sun.misc.Unsafe");Field field=unsafeClass.getDeclaredField("theUnsafe");field.setAccessible(true);unsafe=field.get(null);allocate=unsafeClass.getMethod("allocateInstance",Class.class);
   terrain();stamps();collections();System.out.println("checks="+checks);
@@ -684,12 +777,14 @@ public class EscapeTerrainProbe {
   previous=checks;collectionOwners();System.out.println("collection-checks="+(checks-previous));
   previous=checks;mouseInput();System.out.println("input-checks="+(checks-previous));
   previous=checks;requestRecords();System.out.println("request-checks="+(checks-previous));
+  previous=checks;fontRaster();fontMetricsAndStyles();System.out.println("font-checks="+(checks-previous));
+  previous=checks;legacyLayouts();menuValuesAndSprites();System.out.println("legacy-ui-checks="+(checks-previous));
  }
 }
 `;
 
 // Used by refresh-raw-class as an original-bytecode correctness gate.
-export const expected = 'checks=903\nlevel-checks=393\nwidget-checks=26\ntext-checks=45\naudio-checks=578\npcm-checks=128\nsession-checks=181\npacket-checks=59\nmesh-checks=29\nmetadata-checks=62\narchive-checks=162\ncollection-checks=97\ninput-checks=31\nrequest-checks=26';
+export const expected = 'checks=903\nlevel-checks=393\nwidget-checks=26\ntext-checks=45\naudio-checks=578\npcm-checks=128\nsession-checks=181\npacket-checks=59\nmesh-checks=29\nmetadata-checks=62\narchive-checks=162\ncollection-checks=97\ninput-checks=31\nrequest-checks=26\nfont-checks=290\nlegacy-ui-checks=222';
 
 export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
   const aliases = new Map(mapping.rules.map(r => [r.symbol, r.to]));
@@ -755,6 +850,14 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
     ['c','a','([IB)V','cipher'],['ma','a','(IILll;)V','keyRequest'],['oa','a','(ILdc;I)V','progressQuery'],['aj','a','(IILij;)V','highscores'],
     ['qh','a','(Lrl;ZI)V','ratings'],['r','a','(ILbd;I)V','saved'],['hg','a','(IILcc;)V','progressRecord'],['sm','a','(Lqd;IZ)V','achievementRecord'],
     ['ig','a','(IILik;)V','score'],['ca','a','(IILbd;)V','enqueueSaved'],['ci','a','(IIII)Lll;','enqueueKey'],
+    ['ih','a','([I[BIIIIIII)V','blit'],['ih','a','([I[BIIIIIIII)V','blitAlpha'],['ab','a','([I[BIIIIIII)V','blit'],['ab','a','([I[BIIIIIIII)V','blitAlpha'],
+    ['wl','a','(IIIIIIZ)V','glyph'],['wl','a','(C)I','advance'],['wl','b','(Ljava/lang/String;)I','width'],['wl','a','(Ljava/lang/String;I)I','lineCount'],
+    ['wl','a','(Ljava/lang/String;[I[Ljava/lang/String;)I','wrap'],['wl','b','(Ljava/lang/String;II)I','paragraphHeight'],['wl','a','(III)V','style'],['wl','a','(Ljava/lang/String;)V','tag'],
+    ['jl','a','(ILih;II)V','configure'],['jl','a','([Ljava/lang/String;I)I','maxWidth'],['jl','a','(Z)I','width'],['jl','b','(B)I','height'],['jl','a','(BI)V','translate'],
+    ['gl','a','(IIIBLih;)V','columns'],['me','a','(Lih;IBI)V','configure'],['me','a','(III)V','position'],['me','e','(B)I','width'],['me','f','(B)I','height'],
+    ['dk','a','([I[IB[I)V','colors'],['dk','b','(BII)V','position'],['dk','a','(BII)Z','hit'],['dk','a','(III)V','size'],['dk','c','(I)I','baseline'],['dk','b','(B)I','reveal'],
+    ['kn','a','(IB)V','add'],['kn','a','(Z)I','size'],['kn','a','(II)I','get'],['kn','c','(II)V','remove'],['kn','a','(IIZ)V','set'],
+    ['q','e','(B)I','count'],['q','k','(I)I','maximum'],['q','b','(IB)I','value'],['fd','a','(IIIII)V','draw'],['eb','a','([BZ)V','sheet'],
   ]) {
     const to = aliases.get(`M:${owner}.${name}${descriptor}`);
     if (to) properties.push(`-DM.${owner}.${name}${tag ? ":"+tag : ""}=${to}`);
@@ -790,7 +893,11 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
       'hash collision traversal, iterator removal and primary ownership transfer','independent secondary deque ownership and bidirectional cursors',
       'weighted LRU recency/replacement/eviction and null-value capacity refunds','integer widths, base37 names and domain labels',
       'mouse movement/button/focus/popup/detached state','Canvas paint/update delegation',
-      'archive/progress/achievement/highscore/rating/score/saved-data request framing and CRCs','request enqueue ownership and score ID wrapping'],
+      'archive/progress/achievement/highscore/rating/score/saved-data request framing and CRCs','request enqueue ownership and score ID wrapping',
+      'binary/coverage glyph kernels, alpha endpoints, row skips, clipping, scanline masks and shadow dispatch',
+      'font metrics, markup widths/wrapping and style resets','legacy headings/paired/sprite-label columns and all menu width modes',
+      'legacy button geometry, palette order and reveal timing','growable integer-list strategies and marker boundaries',
+      'nine-slice frame rasterization','row/column-major sprite sheets, palettes and optional alpha planes'],
     fullGameplayVerified:false};
 }
 
