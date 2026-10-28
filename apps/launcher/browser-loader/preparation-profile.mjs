@@ -12,6 +12,8 @@ const geobloxSources = [
   ['d1e394b07ecc5cabd0f5a4aa0801bfa3345db13811a5104e0fa85f0720740b98', 'standalone-intro-v1'],
   // Readable funorb-decompiled export consumed by the normal GitHub launcher.
   ['b168d7edeb104599156b5f908df62dfdc9f3b250', 'catalog-account-server-v11-voice-cursor'],
+  // The RSA adapter changes login bytecode only; retain the same logo helpers.
+  ['b168d7edeb104599156b5f908df62dfdc9f3b250', 'catalog-account-server-v12-typed-login-rsa'],
 ];
 
 export function geobloxPreparationPolicy(sourceIdentity, patchIdentity) {

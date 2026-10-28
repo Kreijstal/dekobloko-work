@@ -52,6 +52,12 @@ loading follows the updated Git checkout, so host-only changes do not invalidate
 compiled Java classes. Native recovery and asset metadata are maintained by the
 Deko's [cache tools](../../../scripts/README-cache-assets.md).
 
+Login RSA adaptation selects the byte-buffer serialization method by typed
+BigInteger parameters and its encode/decode operations, independent of renamed
+argument spellings. Retained JS5 verification keys are untouched. ABI v12
+invalidates classes compiled before this fix; users only need to reload once
+the updated Deko source is available, while local account records remain intact.
+
 Validation:
 
 ```sh

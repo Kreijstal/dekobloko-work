@@ -1,10 +1,31 @@
-// The corpus has one RSA encryption method per game. Its exponent and modulus
-// are parameters, while JS5 verification uses instance fields. Keep signed
-// cache verification untouched. This is an application adapter, not a JVM hook.
+// Select the byte-buffer RSA operation by its typed parameters and serialization
+// shape. Parameter spellings change as readable exports improve. JS5 signature
+// verification uses retained keys and must keep the original modulus.
 export function patchLoginEncryption(source, modulus) {
   if (!/^\d+$/.test(modulus)) throw new Error("Invalid browser login modulus");
-  return source.replace(/\.modPow\((param\d+), (param\d+)\)/g,
-    (_, exponent) => `.modPow(${exponent}, new java.math.BigInteger("${modulus}"))`);
+  // Preserve offsets while excluding literals/comments from structural matches.
+  const code = source.replace(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\/\/[^\r\n]*|\/\*[\s\S]*?\*\//g,
+    text => text.replace(/[^\r\n]/g, ' '));
+  const methods = /\bvoid\s+[A-Za-z_$][\w$]*\s*\(([^(){};]*)\)\s*(?:throws\s+[\w.$,\s]+)?\{/g;
+  const edits = [];
+  for (let method; (method = methods.exec(code));) {
+    const end = closingBrace(code, methods.lastIndex - 1);
+    if (end < 0) return source;
+    const parameters = new Set([...method[1].matchAll(/(?:^|,)\s*(?:final\s+)?(?:java\.math\.)?BigInteger\s+([A-Za-z_$][\w$]*)\s*(?=,|$)/g)].map(match => match[1]));
+    const bodyStart = methods.lastIndex;
+    methods.lastIndex = end + 1;
+    if (parameters.size < 2) continue;
+    const body = code.slice(bodyStart, end);
+    if (!/\bnew\s+(?:java\.math\.)?BigInteger\s*\(/.test(body) || !/\.\s*toByteArray\s*\(\s*\)/.test(body)) continue;
+    const calls = /\.\s*modPow\s*\(\s*([A-Za-z_$][\w$]*)\s*,\s*([A-Za-z_$][\w$]*)\s*\)/g;
+    for (const call of body.matchAll(calls)) {
+      if (call[1] === call[2] || !parameters.has(call[1]) || !parameters.has(call[2])) continue;
+      const argumentStart = call.index + call[0].lastIndexOf(call[2]);
+      edits.push({start: bodyStart + argumentStart, end: bodyStart + argumentStart + call[2].length});
+    }
+  }
+  for (const {start, end} of edits.reverse()) source = source.slice(0, start) + `new java.math.BigInteger("${modulus}")` + source.slice(end);
+  return source;
 }
 
 // Buffered socket writers normally hand the buffer to a SignLink thread. The

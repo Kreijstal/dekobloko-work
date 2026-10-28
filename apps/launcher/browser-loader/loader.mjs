@@ -8,7 +8,7 @@ import {installInterpreterOverrides} from './browser-interpreter-overrides.mjs';
 import {configureApplet} from './applet-config.mjs';
 
 // Bump when source transforms change emitted class files, not for host fixes.
-export const sourcePatchAbi = 'catalog-account-server-v11-voice-cursor';
+export const sourcePatchAbi = 'catalog-account-server-v12-typed-login-rsa';
 export {selectGameSources, configureApplet};
 export function patchSource(source, sourcePath) {
   source = patchGeobloxSource(source, sourcePath, LOGIN_MODULUS);

@@ -2,6 +2,35 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {configureApplet, createGameLauncher, sourcePatchAbi} from '../apps/launcher/browser-loader/loader.mjs';
 import {introPreparationPolicy} from '../apps/intro/manifest.mjs';
+import {patchLoginEncryption} from '../apps/launcher/browser-loader/game-source-patches.mjs';
+
+for (const [exponent, modulus] of [['param2','param1'],['exponent','modulus'],['e$1','n_2']]) {
+  test(`local RSA selection survives parameter naming: ${exponent}, ${modulus}`, () => {
+    const source = `class Buffer {
+      void encrypt(final java.math.BigInteger ${modulus}, BigInteger ${exponent}) {
+        BigInteger value = new BigInteger(payload);
+        byte[] bytes = value.modPow(${exponent}, ${modulus}).toByteArray();
+      }
+      void verify() { byte[] signature = value.modPow(this.exponent, this.modulus).toByteArray(); }
+    }`;
+    const patched = patchLoginEncryption(source, '123456789');
+    assert.ok(patched.includes(`value.modPow(${exponent}, new java.math.BigInteger("123456789"))`));
+    assert.ok(patched.includes('value.modPow(this.exponent, this.modulus)'));
+    assert.equal(patchLoginEncryption(patched, '123456789'), patched);
+  });
+}
+test('RSA selection ignores comments, literals, retained verification keys and non-buffer methods', () => {
+  const source = `class Verify {
+    // void encrypt(BigInteger param1, BigInteger param2) { new BigInteger(bytes).modPow(param2, param1).toByteArray(); }
+    String text = "value.modPow(param2, param1)";
+    void verify(BigInteger exponent, BigInteger modulus) { value.modPow(exponent, modulus); }
+    void retained(BigInteger exponent, BigInteger modulus) {
+      byte[] data = new BigInteger(bytes).modPow(this.exponent, this.modulus).toByteArray();
+    }
+  }`;
+  assert.equal(patchLoginEncryption(source, '123'), source);
+  assert.throws(() => patchLoginEncryption(source, '123";'), /Invalid browser login modulus/);
+});
 const vm = () => ({handleException() {}, jre: Object.fromEntries([
   'java/net/InetAddress','java/net/Socket','java/net/SocketInputStream','java/net/SocketOutputStream',
   'java/util/zip/Inflater','java/awt/Toolkit','java/lang/Runtime',
@@ -39,7 +68,7 @@ for (const asynchronous of [false, true]) test(`shared preparation reaches the a
   launcher.configure(controller, {sourceIdentity: 'b168d7edeb104599156b5f908df62dfdc9f3b250',
     runtimeManifest: {jvmOptions: {prepareWasmPreparedUpgradesOnly: true}},
     decoder: {inflate() {}, inflateRaw() {}}});
-  assert.equal(sourcePatchAbi, 'catalog-account-server-v11-voice-cursor');
+  assert.equal(sourcePatchAbi, 'catalog-account-server-v12-typed-login-rsa');
   const intro = introPreparationPolicy('d1e394b07ecc5cabd0f5a4aa0801bfa3345db13811a5104e0fa85f0720740b98');
   for (let generation = 0; generation < 2; generation++) {
     const ownPolicy = {maxMethods: 12, priorityMethods: ['Render.draw()V']};
