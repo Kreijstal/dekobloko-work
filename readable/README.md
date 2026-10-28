@@ -61,7 +61,7 @@ Audio probes cover LSB-first bit cursors, packed floats, codebooks, floor points
 mapping setup, packet lengths, synthesized effects and filters. A native PCM
 fixture exercises all sixteen mono/stereo, forward/reverse, aligned/interpolated
 and fixed/ramped gain kernels, plus pan endpoints.
-The fixed original gamepack passes all 2,566 assertions:
+The fixed original gamepack passes all 2,720 assertions:
 
 ```sh
 node readable/tests/test-escapevector-core.mjs /path/to/original/escapevector.jar

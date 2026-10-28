@@ -23,7 +23,7 @@ All three duplicated allocations came from the same fixed-size array aliasing
 bug; the corrected compiler emits one shared allocation at each site.
 
 The original gamepack passes `readable/tests/test-escapevector-core.mjs`'s
-2,566 independent assertions for versioned level/audio decoding, terrain masks,
+2,720 independent assertions for versioned level/audio decoding, terrain masks,
 sprite stamping/removal, deque ownership, widgets, text geometry, all sixteen
 PCM mixing kernels and session helpers. The session probes include bullet
 recycling/reuse without allocation, terrain rays/wrapping, hull geometry,
@@ -37,6 +37,14 @@ name policy, mesh bounds, quick-chat parameter lists and reflection-check framin
 and queue ownership. Archive probes use independently authored version-five,
 six and seven reference tables and multi-chunk groups with sparse file IDs;
 both packed-group retention choices and all three file retention policies run.
+
+Collection/input/request probes cover colliding hash buckets, iterator removal,
+independent primary/secondary ownership and cursors, weighted LRU eviction and
+replacement, mouse/button/focus/popup/detached state, Canvas delegation and
+request payload lengths/subtypes/CRCs. They also check queue ownership and
+wrapping score-submission IDs. Exception rejection checks compare underlying
+causes: native bytecode may retain a diagnostic wrapper that the historical
+Java exposes directly. No proxy connections or public game hosts are needed.
 
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.

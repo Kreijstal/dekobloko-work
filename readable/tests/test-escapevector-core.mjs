@@ -562,6 +562,112 @@ public class EscapeTerrainProbe {
    check("archive-unused-group-null",call(archive,"mf","a:get",new Class<?>[]{int.class,byte.class,int.class},0,(byte)-97,0),null);
   }
  }
+ static Object bucketTable()throws Exception{
+  Object table=make("qm"),buckets=Array.newInstance(c("hg"),4);set(table,"qm","g",4);
+  for(int i=0;i<4;i++){Object sentinel=make("hg");set(sentinel,"hg","b",sentinel);set(sentinel,"hg","d",sentinel);Array.set(buckets,i,sentinel);}set(table,"qm","b",buckets);return table;
+ }
+ static Object secondaryDeque()throws Exception{
+  Object deque=make("vb"),sentinel=make("fl");set(sentinel,"fl","i",sentinel);set(sentinel,"fl","j",sentinel);set(deque,"vb","c",sentinel);return deque;
+ }
+ static void tablePut(Object table,long key,Object node)throws Exception{call(table,"qm","a:put",new Class<?>[]{long.class,byte.class,c("hg")},key,(byte)-106,node);}
+ static Object tableGet(Object table,long key)throws Exception{return call(table,"qm","a:get",new Class<?>[]{int.class,long.class},-2678,key);}
+ static void secondaryAdd(Object deque,Object node)throws Exception{call(deque,"vb","a:add",new Class<?>[]{boolean.class,c("fl")},false,node);}
+ static void weightedPut(Object cache,long key,Object value,int weight)throws Exception{call(cache,"fa","a:weighted",new Class<?>[]{long.class,Object.class,int.class,int.class},key,value,weight,11261);}
+ static Object cached(Object cache,long key)throws Exception{return call(cache,"fa","a:get",new Class<?>[]{long.class,byte.class},key,(byte)-54);}
+ static boolean isIllegalState(Throwable failure)throws Exception{
+  // Native bytecode can retain a diagnostic ClientException wrapper where the
+  // historical export exposes the original exception directly. Check its cause.
+  if(failure instanceof AssertionError)failure=failure.getCause();
+  while(c("rn").isInstance(failure))failure=(Throwable)get(failure,"rn","a");
+  return failure instanceof IllegalStateException;
+ }
+ static void collectionOwners()throws Exception{
+  Object table=bucketTable(),a=make("hg"),b=make("hg"),c=make("hg");tablePut(table,1,a);tablePut(table,5,b);tablePut(table,2,c);
+  check("hash-first-collision",tableGet(table,1)==a,true);check("hash-second-collision",tableGet(table,5)==b,true);check("hash-other-bucket",tableGet(table,2)==c,true);check("hash-missing",tableGet(table,3),null);
+  Iterator<?> iterator=((Iterable<?>)table).iterator();check("hash-iteration-first",iterator.next()==a,true);iterator.remove();check("hash-removal-affects-lookup",tableGet(table,1),null);
+  boolean rejected=false;try{iterator.remove();}catch(RuntimeException failure){rejected=isIllegalState(failure);}check("hash-double-remove-rejected",rejected,true);
+  check("hash-iteration-collision-order",iterator.next()==b,true);check("hash-iteration-next-bucket",iterator.next()==c,true);check("hash-iteration-ended",iterator.hasNext(),false);check("hash-original-null-exhaustion",iterator.next(),null);check("hash-removed-links-cleared",get(a,"hg","b")==null&&get(a,"hg","d")==null,true);
+  Object other=bucketTable();tablePut(other,10,c);check("hash-transfer-detaches-old-owner",tableGet(table,2),null);check("hash-transfer-new-owner",tableGet(other,10)==c,true);check("hash-transfer-replaces-key",get(c,"hg","e"),10L);
+  tablePut(table,5,make("hg"));check("hash-duplicate-key-keeps-insertion-order",tableGet(table,5)==b,true);
+  Object primary=construct("cn",new Class<?>[]{}),secondary=secondaryDeque(),otherSecondary=secondaryDeque();a=make("fl");b=make("fl");
+  for(Object node:new Object[]{a,b}){call(primary,"cn","a:addLast",new Class<?>[]{int.class,c("hg")},-12328,node);secondaryAdd(secondary,node);}
+  iterator=((Iterable<?>)secondary).iterator();check("secondary-iteration-first",iterator.next()==a,true);iterator.remove();check("secondary-removal-preserves-primary",get(a,"hg","d")!=null,true);check("secondary-removal-clears-own-links",get(a,"fl","i")==null&&get(a,"fl","j")==null,true);
+  check("secondary-iteration-next",iterator.next()==b,true);check("secondary-iteration-ended",iterator.hasNext(),false);check("secondary-original-null-exhaustion",iterator.next(),null);rejected=false;try{iterator.remove();}catch(RuntimeException failure){rejected=isIllegalState(failure);}check("secondary-remove-after-null-rejected",rejected,true);
+  secondaryAdd(otherSecondary,b);check("secondary-transfer-old-empty",call(secondary,"vb","a:remove",new Class<?>[]{byte.class},(byte)102),null);check("secondary-transfer-new-first",call(otherSecondary,"vb","a:remove",new Class<?>[]{byte.class},(byte)102)==b,true);check("secondary-transfer-preserves-primary",get(b,"hg","d")!=null,true);check("secondary-empty-removal",call(otherSecondary,"vb","a:remove",new Class<?>[]{byte.class},(byte)102),null);
+  Object cursor=construct("wf",new Class<?>[]{c("cn")},primary);
+  check("cursor-first",call(cursor,"wf","c:first",new Class<?>[]{int.class},15)==a,true);check("cursor-forward",call(cursor,"wf","a:next",new Class<?>[]{int.class},25)==b,true);check("cursor-forward-end",call(cursor,"wf","a:next",new Class<?>[]{int.class},25),null);
+  check("cursor-last",call(cursor,"wf","b:last",new Class<?>[]{int.class},-31616)==b,true);check("cursor-backward",call(cursor,"wf","a:previous",new Class<?>[]{byte.class},(byte)100)==a,true);check("cursor-backward-end",call(cursor,"wf","a:previous",new Class<?>[]{byte.class},(byte)100),null);
+  check("cursor-inclusive-forward-start",call(cursor,"wf","a:fromFirst",new Class<?>[]{int.class,c("hg")},-12818,b)==b,true);check("cursor-inclusive-forward-end",call(cursor,"wf","a:next",new Class<?>[]{int.class},25),null);
+  check("cursor-inclusive-backward-start",call(cursor,"wf","a:fromLast",new Class<?>[]{byte.class,c("hg")},(byte)100,a)==a,true);check("cursor-inclusive-backward-end",call(cursor,"wf","a:previous",new Class<?>[]{byte.class},(byte)100),null);
+  call(primary,"cn","a:first",new Class<?>[]{boolean.class},false);check("cursor-independent-last",call(cursor,"wf","b:last",new Class<?>[]{int.class},-31616)==b,true);check("cursor-preserves-deque-cursor",call(primary,"cn","b",new Class<?>[]{byte.class},(byte)70)==b,true);check("cursor-keeps-independent-direction",call(cursor,"wf","a:previous",new Class<?>[]{byte.class},(byte)100)==a,true);
+  for(int[] pair:new int[][]{{0,0},{1,1},{2,2},{3,2},{255,8},{256,9},{65535,16},{65536,17},{Integer.MAX_VALUE,31},{Integer.MIN_VALUE,32},{-1,2},{-2,2},{-3,3},{-65536,17}})check("original-integer-bit-width",call(null,"wf","a:bits",new Class<?>[]{int.class,int.class},pair[0],24787),pair[1]);
+  Object entry=construct("vk",new Class<?>[]{Object.class,int.class},"value",2);check("cache-strong-value",call(entry,"sh","e:value",new Class<?>[]{byte.class},(byte)97),"value");check("cache-strong-not-soft",call(entry,"sh","d:soft",new Class<?>[]{byte.class},(byte)120),false);check("cache-entry-weight",get(entry,"sh","q"),2);
+  Object cache=make("fa");set(cache,"fa","a",3);set(cache,"fa","g",3);set(cache,"fa","b",bucketTable());set(cache,"fa","d",secondaryDeque());
+  weightedPut(cache,1,"A",2);weightedPut(cache,2,"B",1);check("cache-full-weight",get(cache,"fa","g"),0);check("cache-read-refreshes-recency",cached(cache,1),"A");weightedPut(cache,3,"C",1);
+  check("cache-evicts-least-recent",cached(cache,2),null);check("cache-keeps-heavy-recent",cached(cache,1),"A");check("cache-keeps-new",cached(cache,3),"C");check("cache-refunds-evicted-weight",get(cache,"fa","g"),0);
+  weightedPut(cache,1,"A2",1);check("cache-replaces-value",cached(cache,1),"A2");check("cache-refunds-replaced-weight",get(cache,"fa","g"),1);
+  weightedPut(cache,4,"D",3);check("cache-evicts-first-of-two",cached(cache,3),null);check("cache-evicts-second-of-two",cached(cache,1),null);check("cache-retains-capacity-sized-value",cached(cache,4),"D");check("cache-multiple-eviction-weight",get(cache,"fa","g"),0);
+  rejected=false;try{weightedPut(cache,5,"oversized",4);}catch(AssertionError failure){rejected=isIllegalState(failure);}check("cache-rejects-oversized-entry",rejected,true);check("cache-rejection-preserves-live-value",cached(cache,4),"D");
+  weightedPut(cache,6,null,1);check("cache-null-value-is-removed",cached(cache,6),null);check("cache-null-removal-refunds-weight",get(cache,"fa","g"),3);check("cache-null-insertion-evicted-old-value",cached(cache,4),null);
+  call(cache,"fa","a:put",new Class<?>[]{Object.class,long.class,byte.class},"unit",7L,(byte)100);check("cache-unit-insertion",cached(cache,7),"unit");check("cache-unit-insertion-weight",get(cache,"fa","g"),2);
+  for(int[] test:new int[][]{{12,18,6},{0,9,9},{1,1,1},{65535,255,255}})check("euclidean-gcd",call(null,"im","a:gcd",new Class<?>[]{int.class,int.class,int.class},test[0],test[1],-100),test[2]);
+  for(int[] test:new int[][]{{0,0},{99,1},{100,1},{101,2}})check("positive-ceil-division",call(null,"dc","a:ceil",new Class<?>[]{int.class,int.class,int.class},-100,100,test[0]),test[1]);
+  long[] encoded={0,1,37,38,1371,6582952005840035281L};String[] decoded={null,"A",null,"Aa","A\u00a0B",null};for(int i=0;i<encoded.length;i++)check("base37-display-name",call(null,"jb","a:name",new Class<?>[]{long.class,byte.class},encoded[i],(byte)29),decoded[i]);
+  String[] labels={"a","abc-1","-x","x-","",new String(new char[64]).replace('\0','a')};for(int i=0;i<labels.length;i++)check("domain-label-boundary",call(null,"vk","a:domain",new Class<?>[]{String.class,int.class},labels[i],-100)==null,i<2);
+  check("proxy-authentication-message",((Throwable)construct("im",new Class<?>[]{String.class},"Basic")).getMessage(),"Basic");
+ }
+ static java.awt.event.MouseEvent mouse(java.awt.Component canvas,int id,int x,int y,int button,boolean popup){return new java.awt.event.MouseEvent(canvas,id,1L,0,x,y,1,popup,button);}
+ static void mouseInput()throws Exception{
+  Object handler=construct("eg",new Class<?>[]{});set(null,"om","b",handler);java.awt.Canvas canvas=new java.awt.Canvas();java.awt.event.MouseListener buttons=(java.awt.event.MouseListener)handler;java.awt.event.MouseMotionListener motion=(java.awt.event.MouseMotionListener)handler;
+  set(null,"md","G",9);set(null,"ke","a",false);motion.mouseMoved(mouse(canvas,java.awt.event.MouseEvent.MOUSE_MOVED,10,20,0,false));
+  check("mouse-move-x",get(null,"vb","b"),10);check("mouse-move-y",get(null,"jk","b"),20);check("mouse-move-resets-idle",get(null,"md","G"),0);check("mouse-move-marks-change",get(null,"ke","a"),true);
+  motion.mouseDragged(mouse(canvas,java.awt.event.MouseEvent.MOUSE_DRAGGED,30,40,0,false));check("mouse-drag-x",get(null,"vb","b"),30);check("mouse-drag-y",get(null,"jk","b"),40);
+  buttons.mouseExited(mouse(canvas,java.awt.event.MouseEvent.MOUSE_EXITED,0,0,0,false));check("mouse-exit-x",get(null,"vb","b"),-1);check("mouse-exit-y",get(null,"jk","b"),-1);
+  buttons.mouseEntered(mouse(canvas,java.awt.event.MouseEvent.MOUSE_ENTERED,50,60,0,false));check("mouse-enter-x",get(null,"vb","b"),50);check("mouse-enter-y",get(null,"jk","b"),60);
+  set(null,"md","G",7);set(null,"ke","a",false);buttons.mousePressed(mouse(canvas,java.awt.event.MouseEvent.MOUSE_PRESSED,70,80,1,false));
+  check("mouse-click-x",get(null,"fk","b"),70);check("mouse-click-y",get(null,"dd","c"),80);check("mouse-left-click-code",get(null,"kb","f"),1);check("mouse-left-held-code",get(null,"vj","b"),1);check("mouse-press-marks-change",get(null,"ke","a"),true);check("mouse-press-resets-idle",get(null,"md","G"),0);
+  java.awt.event.MouseEvent event=mouse(canvas,java.awt.event.MouseEvent.MOUSE_RELEASED,70,80,1,true);buttons.mouseReleased(event);check("mouse-release-clears-held",get(null,"vj","b"),0);check("mouse-release-consumes-popup",event.isConsumed(),true);check("mouse-release-retains-pending-click",get(null,"kb","f"),1);
+  event=mouse(canvas,java.awt.event.MouseEvent.MOUSE_PRESSED,91,92,3,true);buttons.mousePressed(event);check("mouse-right-click-code",get(null,"kb","f"),2);check("mouse-right-held-code",get(null,"vj","b"),2);check("mouse-press-consumes-popup",event.isConsumed(),true);
+  ((java.awt.event.FocusListener)handler).focusLost(new java.awt.event.FocusEvent(canvas,java.awt.event.FocusEvent.FOCUS_LOST));check("mouse-focus-loss-clears-held",get(null,"vj","b"),0);
+  set(null,"om","b",null);set(null,"vb","b",123);set(null,"jk","b",456);set(null,"ke","a",false);set(null,"md","G",42);set(null,"vj","b",2);
+  motion.mouseMoved(mouse(canvas,java.awt.event.MouseEvent.MOUSE_MOVED,9,9,0,false));check("mouse-detached-keeps-x",get(null,"vb","b"),123);check("mouse-detached-keeps-y",get(null,"jk","b"),456);check("mouse-detached-keeps-change-flag",get(null,"ke","a"),false);check("mouse-detached-keeps-idle",get(null,"md","G"),42);
+  ((java.awt.event.FocusListener)handler).focusLost(new java.awt.event.FocusEvent(canvas,java.awt.event.FocusEvent.FOCUS_LOST));check("mouse-detached-keeps-held",get(null,"vj","b"),2);event=mouse(canvas,java.awt.event.MouseEvent.MOUSE_CLICKED,0,0,3,true);buttons.mouseClicked(event);check("mouse-click-popup-consumed",event.isConsumed(),true);
+  final int[] draws=new int[2];java.awt.Component delegate=new java.awt.Canvas(){public void paint(java.awt.Graphics g){draws[0]++;}public void update(java.awt.Graphics g){draws[1]++;}};
+  java.awt.Canvas wrapped=(java.awt.Canvas)construct("hd",new Class<?>[]{java.awt.Component.class},delegate);wrapped.paint(null);wrapped.update(null);check("canvas-forwards-paint",draws[0],1);check("canvas-forwards-update",draws[1],1);
+ }
+ static Object requestBuffer()throws Exception{
+  Object output=construct("c",new Class<?>[]{byte[].class},new byte[256]);call(output,"c","a:cipher",new Class<?>[]{int[].class,byte.class},new int[4],(byte)100);set(null,"om","c",output);return output;
+ }
+ static byte[] withCrc(byte[] body)throws Exception{
+  ByteArrayOutputStream bytes=new ByteArrayOutputStream();bytes.write(body);java.util.zip.CRC32 crc=new java.util.zip.CRC32();crc.update(body);new DataOutputStream(bytes).writeInt((int)crc.getValue());return bytes.toByteArray();
+ }
+ static void requestFrame(String label,Object output,byte[] body,boolean lengthPrefix)throws Exception{
+  ByteArrayOutputStream bytes=new ByteArrayOutputStream();if(lengthPrefix)bytes.write(body.length);bytes.write(body);byte[] expected=bytes.toByteArray();
+  // ISAAC opcode generation is a separate contract; these fixtures independently
+  // specify the bytes after that opcode, including lengths, subtype and CRC.
+  check(label+"-length",get(output,"n","m"),expected.length+1);check(label+"-payload",Arrays.toString(Arrays.copyOfRange((byte[])get(output,"n","g"),1,expected.length+1)),Arrays.toString(expected));
+ }
+ static void requestRecords()throws Exception{
+  Object output=requestBuffer(),request=construct("ll",new Class<?>[]{});set(request,"ll","g",5);set(request,"ll","i",300);
+  call(null,"ma","a:keyRequest",new Class<?>[]{int.class,int.class,c("ll")},-100,2,request);requestFrame("archive-key-request",output,new byte[]{5,1,44},false);
+  output=requestBuffer();Object query=construct("dc",new Class<?>[]{});set(query,"dc","j",3);call(null,"oa","a:progressQuery",new Class<?>[]{int.class,c("dc"),int.class},5,query,-755);requestFrame("progress-query",output,new byte[]{2,0,3},false);
+  output=requestBuffer();query=construct("ij",new Class<?>[]{});set(query,"ij","n",513);set(query,"ij","h",1);set(query,"ij","j",10);call(null,"aj","a:highscores",new Class<?>[]{int.class,int.class,c("ij")},124,3,query);requestFrame("highscore-query",output,new byte[]{5,0,2,1,1,10},false);
+  output=requestBuffer();query=make("rl");set(query,"rl","i",2);set(query,"rl","g",3);call(null,"qh","a:ratings",new Class<?>[]{c("rl"),boolean.class,int.class},query,true,7);requestFrame("rating-query",output,new byte[]{2,3},false);
+  output=requestBuffer();Object saved=construct("bd",new Class<?>[]{byte[].class},new byte[]{4,5,6});call(null,"r","a:saved",new Class<?>[]{int.class,c("bd"),int.class},-110,saved,6);
+  byte[] body={1,3,4,5,6};requestFrame("saved-data-write",output,withCrc(body),true);java.util.zip.CRC32 crc=new java.util.zip.CRC32();crc.update(body);check("saved-data-retains-ack-crc",get(saved,"bd","i"),(int)crc.getValue());
+  int[] words={0x01020304,0x11223344,0x55667788,0x99aabbcc};Class<?>[] recordTypes={int.class,int.class,int.class,int.class,int.class,int.class};
+  output=requestBuffer();Object record=construct("cc",recordTypes,2,1,words[0],words[1],words[2],words[3]);call(null,"hg","a:progressRecord",new Class<?>[]{int.class,int.class,c("cc")},-121,5,record);
+  ByteArrayOutputStream bytes=new ByteArrayOutputStream();DataOutputStream data=new DataOutputStream(bytes);data.writeByte(1);data.writeByte(2);data.writeByte(65);for(int word:words)data.writeInt(word);requestFrame("progress-record",output,withCrc(bytes.toByteArray()),true);
+  output=requestBuffer();record=construct("qd",recordTypes,1,2,words[0],words[1],words[2],words[3]);call(null,"sm","a:achievementRecord",new Class<?>[]{c("qd"),int.class,boolean.class},record,4,true);
+  bytes=new ByteArrayOutputStream();data=new DataOutputStream(bytes);data.writeByte(1);data.writeByte(1);data.writeByte(2);for(int word:words)data.writeInt(word);requestFrame("achievement-record",output,withCrc(bytes.toByteArray()),true);
+  output=requestBuffer();set(null,"qh","m",0x12345);record=construct("ik",new Class<?>[]{int.class,int.class,int.class,int.class,int.class,int.class,int[].class},513,65022,words[0],words[1],words[2],words[3],new int[]{1234,5678});
+  call(null,"ig","a:score",new Class<?>[]{int.class,int.class,c("ik")},160,3,record);bytes=new ByteArrayOutputStream();data=new DataOutputStream(bytes);data.writeByte(1);data.writeShort(0x2345);data.writeShort(513);data.writeShort(65022);for(int word:words)data.writeInt(word);data.writeByte(2);data.writeInt(1234);data.writeInt(5678);requestFrame("score-submission",output,withCrc(bytes.toByteArray()),true);
+  check("score-request-id-wrap",get(record,"ik","i"),0x2345);check("score-request-sequence-advances",get(null,"qh","m"),0x12346);check("score-board-complement",get(record,"ik","k"),65022);
+  output=requestBuffer();Object queue=construct("cn",new Class<?>[]{});set(null,"rd","b",queue);call(null,"ca","a:enqueueSaved",new Class<?>[]{int.class,int.class,c("bd")},1,6,saved);
+  check("saved-data-queue-owns-record",call(queue,"cn","a:first",new Class<?>[]{boolean.class},false)==saved,true);check("saved-data-queue-size",call(queue,"cn","c:size",new Class<?>[]{byte.class},(byte)17),1);
+  output=requestBuffer();queue=construct("cn",new Class<?>[]{});set(null,"jl","n",queue);request=call(null,"ci","a:enqueueKey",new Class<?>[]{int.class,int.class,int.class,int.class},5,300,-1,2);
+  check("key-request-queue-owns-record",call(queue,"cn","a:first",new Class<?>[]{boolean.class},false)==request,true);check("key-request-archive",get(request,"ll","g"),5);check("key-request-group",get(request,"ll","i"),300);check("key-request-pending-key",get(request,"ll","j"),null);
+ }
  public static void main(String[] args)throws Exception{
   Class<?> unsafeClass=Class.forName("sun.misc.Unsafe");Field field=unsafeClass.getDeclaredField("theUnsafe");field.setAccessible(true);unsafe=field.get(null);allocate=unsafeClass.getMethod("allocateInstance",Class.class);
   terrain();stamps();collections();System.out.println("checks="+checks);
@@ -575,12 +681,15 @@ public class EscapeTerrainProbe {
   previous=checks;meshGeometry();System.out.println("mesh-checks="+(checks-previous));
   previous=checks;quickChat();reflectionChecks();System.out.println("metadata-checks="+(checks-previous));
   previous=checks;archiveFiles();System.out.println("archive-checks="+(checks-previous));
+  previous=checks;collectionOwners();System.out.println("collection-checks="+(checks-previous));
+  previous=checks;mouseInput();System.out.println("input-checks="+(checks-previous));
+  previous=checks;requestRecords();System.out.println("request-checks="+(checks-previous));
  }
 }
 `;
 
 // Used by refresh-raw-class as an original-bytecode correctness gate.
-export const expected = 'checks=903\nlevel-checks=393\nwidget-checks=26\ntext-checks=45\naudio-checks=578\npcm-checks=128\nsession-checks=181\npacket-checks=59\nmesh-checks=29\nmetadata-checks=62\narchive-checks=162';
+export const expected = 'checks=903\nlevel-checks=393\nwidget-checks=26\ntext-checks=45\naudio-checks=578\npcm-checks=128\nsession-checks=181\npacket-checks=59\nmesh-checks=29\nmetadata-checks=62\narchive-checks=162\ncollection-checks=97\ninput-checks=31\nrequest-checks=26';
 
 export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
   const aliases = new Map(mapping.rules.map(r => [r.symbol, r.to]));
@@ -638,6 +747,14 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
     ['mf','a','(B)Z','all'],['mf','a','(I)I','progress'],['mf','a','(Ljava/lang/String;I)I','namedProgress'],
     ['mf','a','(ILjava/lang/String;)Z','loadGroup'],['mf','a','(Ljava/lang/String;Ljava/lang/String;B)Z','loadFile'],
     ['mf','a','(ILjava/lang/String;Ljava/lang/String;)[B','named'],['mf','a','(BLjava/lang/String;Ljava/lang/String;[I)[B','keyedNamed'],['mf','a','(IBI)[B','get'],
+    ['qm','a','(JBLhg;)V','put'],['qm','a','(IJ)Lhg;','get'],['vb','a','(ZLfl;)V','add'],['vb','a','(B)Lfl;','remove'],
+    ['wf','c','(I)Lhg;','first'],['wf','b','(I)Lhg;','last'],['wf','a','(I)Lhg;','next'],['wf','a','(B)Lhg;','previous'],
+    ['wf','a','(ILhg;)Lhg;','fromFirst'],['wf','a','(BLhg;)Lhg;','fromLast'],['wf','a','(II)I','bits'],
+    ['sh','e','(B)Ljava/lang/Object;','value'],['sh','d','(B)Z','soft'],['fa','a','(JLjava/lang/Object;II)V','weighted'],['fa','a','(JB)Ljava/lang/Object;','get'],['fa','a','(Ljava/lang/Object;JB)V','put'],
+    ['im','a','(III)I','gcd'],['dc','a','(III)I','ceil'],['jb','a','(JB)Ljava/lang/String;','name'],['vk','a','(Ljava/lang/String;I)Ltk;','domain'],
+    ['c','a','([IB)V','cipher'],['ma','a','(IILll;)V','keyRequest'],['oa','a','(ILdc;I)V','progressQuery'],['aj','a','(IILij;)V','highscores'],
+    ['qh','a','(Lrl;ZI)V','ratings'],['r','a','(ILbd;I)V','saved'],['hg','a','(IILcc;)V','progressRecord'],['sm','a','(Lqd;IZ)V','achievementRecord'],
+    ['ig','a','(IILik;)V','score'],['ca','a','(IILbd;)V','enqueueSaved'],['ci','a','(IIII)Lll;','enqueueKey'],
   ]) {
     const to = aliases.get(`M:${owner}.${name}${descriptor}`);
     if (to) properties.push(`-DM.${owner}.${name}${tag ? ":"+tag : ""}=${to}`);
@@ -669,7 +786,11 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
       'CRC32 corruption rejection, XTEA zero vector/subrange, RSA vector and base38 passwords',
       'mesh transforms and lazy bounds invalidation','quick-chat command parameters/preview/global responses',
       'pending/completed reflection check framing, CRC and queue ownership','version-five/six/seven archive indexes',
-      'sparse named multi-file chunks and all packed/unpacked retention policies'],
+      'sparse named multi-file chunks and all packed/unpacked retention policies',
+      'hash collision traversal, iterator removal and primary ownership transfer','independent secondary deque ownership and bidirectional cursors',
+      'weighted LRU recency/replacement/eviction and null-value capacity refunds','integer widths, base37 names and domain labels',
+      'mouse movement/button/focus/popup/detached state','Canvas paint/update delegation',
+      'archive/progress/achievement/highscore/rating/score/saved-data request framing and CRCs','request enqueue ownership and score ID wrapping'],
     fullGameplayVerified:false};
 }
 

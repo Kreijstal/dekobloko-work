@@ -157,6 +157,30 @@ const classes = {
   ia: ['TriangleMesh', 'Retains indexed triangle vertices, per-corner normals and material/priority groups consumed by depth bucketing and lit triangle rendering.'],
   om: ['QuickChatDynamicCommand', 'ID and parameter count looked up by the quick-chat phrase decoder before reading each dynamic command parameter list; static network/mouse globals are unrelated.'],
   mn: ['ReflectionCheck', 'Queued reflection operation codes, field/method lookup tasks, serialized invocation arguments, replacement integers and per-operation errors consumed by the reflection-check result writer.'],
+  qm: ['IterableNodeHashTable', 'Power-of-two long-key bucket sentinels using primary node links and exposing NodeHashTableIterator through Iterable.'],
+  vb: ['IterableDualLinkDeque', 'Circular secondary-link deque exposing Java Iterator traversal separately from primary node ownership.'],
+  rm: ['DualLinkDequeIterator', 'Iterator over IterableDualLinkDeque secondary links with last-returned removal; also owns an unrelated mouse-listener attachment helper.'],
+  hb: ['NodeHashTableIterator', 'Iterator traversing IterableNodeHashTable buckets and primary links, retaining the last returned node for removal.'],
+  wf: ['IntrusiveDequeCursor', 'Independent bidirectional primary-link cursor with first/last, inclusive start-node and next/previous operations.'],
+  sh: ['WeightedCacheEntry', 'Dual-linked cache entry retaining a weight, an abstract value accessor and an abstract soft-reference predicate consumed by the weighted LRU cache.'],
+  vk: ['StrongCacheEntry', 'WeightedCacheEntry retaining a strong Object value and returning false from the soft-reference predicate.'],
+  fa: ['WeightedLruCache', 'Combines a key hash table and secondary-link recency queue with capacity/remaining weight, replacement and least-recent eviction.'],
+  eg: ['MouseInputHandler', 'AWT mouse/motion/focus listener updating shared pending coordinates, held/clicked buttons, idle ticks and input-change state.'],
+  hd: ['DelegatingCanvas', 'Canvas forwarding paint and update to its retained Component; its static password-policy helper is unrelated.'],
+  kb: ['SocketConnector', 'Host/port endpoint with an abstract connection operation and a direct Socket connection helper.'],
+  jb: ['ProxySocketConnector', 'SocketConnector consulting system ProxySelector and attempting DIRECT, SOCKS and HTTP CONNECT transports with proxy authentication diagnostics.'],
+  im: ['ProxyAuthenticationException', 'IOException raised for HTTP 407 with the proxy authentication scheme, then retained while alternative proxies are tried.'],
+  tc: ['SpriteStrip', 'Retains sprites and spacing, sums their full widths and draws each non-null sprite in horizontal sequence.'],
+  bd: ['SavedDataWrite', 'Queued saved-data payload whose serialized request CRC is retained for matching the server acknowledgement.'],
+  ij: ['HighscoreQuery', 'Pending board query retaining completion state and decoded string, integer and long column arrays.'],
+  ik: ['ScoreSubmission', 'Queued score submission with a sequence ID, board/complement, four encoded words, extra values and a server response value.'],
+  jh: ['AchievementQuery', 'Queued achievement bitmap query retaining completion, unavailable-service state and returned integer bitmap words.'],
+  rl: ['RatingQuery', 'Framework rating-table request retaining the request ID and row count used by response decoding.'],
+  ll: ['ArchiveKeyRequest', 'Queued archive/group key request completed by four returned XTEA words; unrelated helpers handle packet length, account name and menu animation.'],
+  dm: ['DelayedServerPacket', 'Incoming opcode/payload queued with an absolute delivery time by the simulated-latency receive path.'],
+  cc: ['ProgressRecord', 'Queued campaign/level progress record carrying four encoded words, serialized with a CRC and removed on a matching campaign/level acknowledgement.'],
+  dc: ['ProgressQuery', 'Queued campaign progress query completed with integer progress words by the subtype-zero response.'],
+  qd: ['AchievementRecord', 'Queued achievement record carrying category/achievement identifiers and four encoded words; removed by the record acknowledgement.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
@@ -1284,6 +1308,127 @@ method('mn','a','(ICI)Ljava/lang/String;','repeatChar',['guard','character','cou
 method('mn','a','(IIIII)V','drawGradientOutline',['guard','x','y','width','height'],
   'Draws fixed top/bottom border colors and a clipped grayscale gradient down the two vertical edges.');
 
+// Collection ownership and request records are derived from their actual link
+// operations and wire consumers. Constructor stubs that throw stay untouched.
+fields('qm', [['e','Lhg;','lookupCursor'],['g','I','bucketCount'],['b','[Lhg;','buckets']],
+  'Bucket lookup and insertion use key & (bucketCount - 1); Java iteration walks the same primary-link sentinels.');
+fields('vb', [['c','Lfl;','sentinel']], 'Circular sentinel belongs to the secondary link chain.');
+fields('rm', [['b','Lfl;','nextNode'],['f','Lvb;','deque'],['d','Lfl;','lastReturned']],
+  'next follows secondary links; remove unlinks the retained last-returned node and rejects a second removal.');
+fields('hb', [['g','Lhg;','nextNode'],['f','I','bucketIndex'],['e','Lqm;','table'],['c','Lhg;','lastReturned']],
+  'Reset starts at bucket zero; iteration advances primary links then successive buckets; remove affects only the last returned node.');
+fields('wf', [['a','Lcn;','deque'],['d','Lhg;','cursor']],
+  'The independent cursor follows next or previous links without mutating the deque-owned traversal cursor.');
+fields('sh', [['q','I','weight']], 'Eviction/replacement adds this entry weight back to available capacity.');
+fields('vk', [['u','Ljava/lang/Object;','value']], 'Value accessor returns the retained strong reference.');
+fields('fa', [['d','Lvb;','recency'],['g','I','remainingWeight'],['a','I','capacity'],['b','Lqm;','entries']],
+  'Insertion subtracts weight, evicts from the recency front until nonnegative, and appends the new entry; reads move retained entries to the tail.');
+for (const [owner,name,descriptor,to,parameters,evidence] of [
+  ['qm','a','(IJ)Lhg;','get',['guard','key'],'Searches the selected bucket by long key.'],
+  ['qm','a','(JBLhg;)V','put',['key','guard','node'],'Transfers primary-link ownership into the selected bucket and assigns the key.'],
+  ['qm','a','([Ldk;B)I','minimumButtonX',['buttons','guard'],'Returns the minimum retained button x coordinate or zero for an empty array.'],
+  ['vb','a','(B)Lfl;','removeFirst',['guard'],'Unlinks and returns the first secondary-linked node, or null at the sentinel.'],
+  ['vb','a','(ZLfl;)V','addLast',['guard','node'],'Transfers secondary-link ownership to the deque tail without changing primary links.'],
+  ['rm','a','(Ljava/awt/Component;B)V','attachMouseInput',['component','guard'],'Attaches the shared mouse handler as mouse, motion and focus listener.'],
+  ['hb','a','(B)V','reset',['guard'],'Restarts bucket iteration and clears last-returned state.'],
+  ['wf','c','(I)Lhg;','first',['guard'],'Returns the first primary node and retains its successor.'],
+  ['wf','b','(I)Lhg;','last',['guard'],'Returns the last primary node and retains its predecessor.'],
+  ['wf','a','(ILhg;)Lhg;','firstFrom',['guard','start'],'Starts forward traversal inclusively at start, or at the deque front for null.'],
+  ['wf','a','(BLhg;)Lhg;','lastFrom',['guard','start'],'Starts backward traversal inclusively at start, or at the deque back for null.'],
+  ['wf','a','(I)Lhg;','next',['guard'],'Returns the retained forward cursor and advances, returning null at the sentinel.'],
+  ['wf','a','(B)Lhg;','previous',['guard'],'Returns the retained backward cursor and retreats, returning null at the sentinel.'],
+  ['wf','a','(II)I','integerBitLength',['value','guard'],'Counts positive value bits; negative values retain the original signed-width calculation with a minimum of two.'],
+  ['sh','d','(B)Z','isSoft',['guard'],'Cache tests this before promoting a surviving soft entry to a strong one.'],
+  ['sh','e','(B)Ljava/lang/Object;','getValue',['guard'],'Cache reads this value and removes an entry whose value is null.'],
+  ['sh','a','(BLjava/applet/Applet;)Lee;','readLastLoginMethod',['guard','applet'],'Matches the last-login-method cookie against known login method tokens, with the retained default.'],
+  ['sh','a','(BLjava/applet/Applet;Ljava/net/URL;)Ljava/net/URL;','withSessionParameters',['guard','applet','url'],'Adds changed settings/session values through the URL helper, preserving the original argument flow.'],
+  ['vk','a','(BILih;I)C','widestAllowedGlyph',['guard','firstCharacter','font','lastCharacter'],'Scans an inclusive character range using the allowed-character predicate and font glyph widths.'],
+  ['vk','a','(Ljava/lang/String;I)Ltk;','validateDomainLabel',['label','guard'],'Checks nonempty length at most 63, allowed domain-label characters and no leading/trailing hyphen.'],
+  ['fa','a','(JI)V','remove',['key','guard'],'Looks up the key and unlinks/refunds the entry when present.'],
+  ['fa','a','(JLjava/lang/Object;II)V','putWeighted',['key','value','weight','guard'],'Replaces an existing key, reserves weight and evicts least-recent entries before inserting a strong entry.'],
+  ['fa','a','(Ljava/lang/Object;JB)V','put',['value','key','guard'],'Inserts with unit weight.'],
+  ['fa','a','(Lsh;B)V','removeEntry',['entry','guard'],'Unlinks both chains and returns the weight to remaining capacity; null is accepted.'],
+  ['fa','a','(JB)Ljava/lang/Object;','get',['key','guard'],'Returns a live value, refreshes recency, removes a lost value or promotes a soft value to a strong entry.'],
+  ['fa','a','(ILmf;ILmf;I)Lih;','loadBitmapFont',['guard','metricsArchive','groupId','glyphArchive','fileId'],'Loads glyph data first and then constructs the font using the separate metrics archive file.'],
+]) method(owner,name,descriptor,to,parameters,evidence);
+for (const [owner,descriptor,parameters] of [
+  ['rm','(Lvb;)V',['deque']],['hb','(Lqm;)V',['table']],['wf','(Lcn;)V',['deque']],
+  ['sh','(I)V',['weight']],['vk','(Ljava/lang/Object;I)V',['value','weight']],
+]) method(owner,'<init>',descriptor,null,parameters,'Retains the supplied owner/value/weight and initializes the reviewed traversal or cache state.');
+
+fields('om', [['b','Leg;','mouseHandler'],['c','Lc;','outgoingPackets'],['g','Lc;','incomingPackets']],
+  'AWT input checks the shared handler; protocol writers use the outgoing buffer and server packet decoders use the incoming buffer.');
+fields('vb', [['b','I','pendingMouseX']], 'AWT enter/move/drag updates this coordinate and exit sets minus one.');
+fields('jk', [['b','I','pendingMouseY']], 'AWT enter/move/drag updates this coordinate and exit sets minus one.');
+fields('ke', [['a','Z','mouseInputChanged']], 'Mouse activity sets the pending-input-change flag.');
+fields('md', [['G','I','mouseIdleTicks']], 'Mouse events reset the shared idle tick counter.');
+fields('vj', [['b','I','heldMouseButton']], 'Press selects left/right button one/two; release and focus loss clear it.');
+fields('kb', [['f','I','pendingClickButton'],['a','Ljava/lang/String;','host'],['b','I','port']],
+  'Socket connection uses instance host/port; unrelated static click state captures the last pressed button.');
+fields('fk', [['b','I','pendingClickX']], 'Mouse press captures its x coordinate.');
+fields('dd', [['c','I','pendingClickY']], 'Mouse press captures its y coordinate.');
+fields('hd', [['b','Ljava/awt/Component;','delegate']], 'Canvas paint/update forward to the retained component.');
+fields('jb', [['n','Ljava/net/ProxySelector;','proxySelector']], 'Constructor captures the default selector used by connection attempts.');
+method('eg','a','(IIZZLhh;)Loc;','createExplosionCloud',['yQ16','xQ16','indexedRendering','guard','sound'],
+  'Constructs the 4096-point explosion at the swapped x/y constructor arguments, plays spatial audio and selects the indexed-rendering flag.');
+method('hd','<init>','(Ljava/awt/Component;)V',null,['delegate'],'Retains the component used by Canvas paint/update.');
+method('hd','a','(Ljava/lang/String;ZLjava/lang/String;)Z','isPasswordAcceptable',['password','guard','accountName'],
+  'PasswordValidator uses this combined length, character, repetition and account-name similarity policy on normalized text.');
+method('kb','a','(I)Ljava/net/Socket;','connect',['firstProxyIndex'],'Abstract socket-connection operation; the proxy implementation starts its candidate scan at this index.');
+method('kb','b','(Z)Ljava/net/Socket;','connectDirect',['guard'],'Opens a Socket using the retained host and port.');
+method('jb','a','(Ljava/net/Proxy;I)Ljava/net/Socket;','connectViaProxy',['proxy','guard'],
+  'Handles DIRECT, SOCKS and HTTP proxy types, optionally obtaining a cached HTTP authentication header.');
+method('jb','a','(ILjava/lang/String;ILjava/lang/String;)Ljava/net/Socket;','openHttpTunnel',['proxyPort','authorizationHeader','guard','proxyHost'],
+  'Writes HTTP CONNECT, accepts success responses and reports HTTP 407 authentication schemes with ProxyAuthenticationException.');
+method('jb','a','(JB)Ljava/lang/String;','decodeBase37Name',['encodedName','guard'],
+  'Decodes the bounded nonzero base-37 value, changes underscores to nonbreaking spaces and capitalizes word initials.');
+method('im','<init>','(Ljava/lang/String;)V',null,['scheme'],'Retains the HTTP proxy authentication scheme as the IOException message.');
+method('im','a','(III)I','greatestCommonDivisor',['left','right','guard'],'Euclidean remainder loop after ordering the supplied integers.');
+method('im','a','(BI)V','resendProgressRequests',['guard','opcode'],
+  'Replays pending progress records and queries through their independent protocol writers.');
+
+fields('tc', [['l','[Led;','sprites'],['q','I','spacing'],['m','I','width']],
+  'Strip measurement/drawing adds each non-null sprite full width and spacing, including spacing after the final sprite.');
+for (const [name,descriptor,to,parameters] of [
+  ['a','(B)V','updateWidth',['guard']],['a','(III)V','draw',['guard','x','y']],['d','(I)I','width',['guard']],
+]) method('tc',name,descriptor,to,parameters,'Reviewed horizontal strip measurement and drawing; null sprites contribute neither width nor spacing.');
+method('tc','<init>','([Led;I)V',null,['sprites','spacing'],'Retains the strip contents/spacing and measures its full width.');
+fields('bd', [['j','[B','payload'],['i','I','crc32']], 'Saved-data writer serializes payload bytes and retains the appended CRC for acknowledgement matching.');
+method('bd','<init>','([B)V',null,['payload'],'Retains the supplied saved-data bytes.');
+fields('ij', [['l','Z','complete'],['n','I','boardId'],['m','[[Ljava/lang/String;','stringColumns'],['o','[[I','intColumns'],['k','[[J','longColumns']],
+  'Highscore query writer sends the board ID; response decoding allocates typed columns and marks the pending query complete.');
+fields('ik', [['j','I','boardId'],['k','I','boardIdComplement'],['i','I','requestId']],
+  'The gameplay submission supplies board/complement, and construction allocates a wrapping 16-bit request ID for acknowledgement lookup.');
+fields('jh', [['h','Z','complete'],['g','Z','unavailable'],['i','[I','achievementWords']],
+  'Subtype-zero response installs bitmap words with unavailable false; subtype two installs defaults with unavailable true; both complete and unlink the query.');
+fields('rl', [['i','I','requestId'],['g','I','rowCount']], 'Rating writer sends both bytes; the decoder matches request ID and sizes table rows by the retained count.');
+fields('ll', [['g','I','archiveId'],['i','I','groupId'],['j','[I','key']], 'Key writer sends archive byte/group short; response installs four integer XTEA words and unlinks the pending request.');
+fields('dm', [['g','J','readyAtMillis'],['i','I','opcode'],['j','[B','payload']], 'Receive path queues payload/opcode at current time plus simulated latency and delivers it once the retained time has passed.');
+method('dm','<init>','(JI[B)V',null,['readyAtMillis','opcode','payload'],'Retains the queued incoming packet delivery time and contents.');
+fields('cc', [['i','I','campaignId'],['m','I','levelIndex']], 'Record writer sends campaign and signed-smart level index; acknowledgement finds the matching queued pair.');
+fields('dc', [['j','I','campaignId'],['h','[I','progressWords'],['g','Z','complete']], 'Query writer sends campaign ID; decoder fills the integer words, marks completion and unlinks the query.');
+for (const [owner,name,descriptor,to,parameters] of [
+  ['ma','a','(IILll;)V','writeArchiveKeyRequest',['guard','opcode','request']],
+  ['hg','a','(IILcc;)V','writeProgressRecord',['guard','opcode','record']],
+  ['oa','a','(ILdc;I)V','writeProgressQuery',['opcode','query','guard']],
+  ['sm','a','(Lqd;IZ)V','writeAchievementRecord',['record','opcode','guard']],
+  ['aj','a','(IILij;)V','writeHighscoreQuery',['guard','opcode','query']],
+  ['ig','a','(IILik;)V','writeScoreSubmission',['guard','opcode','submission']],
+  ['qh','a','(Lrl;ZI)V','writeRatingQuery',['query','guard','opcode']],
+  ['r','a','(ILbd;I)V','writeSavedData',['guard','write','opcode']],
+  ['ca','a','(IILbd;)V','enqueueSavedDataWrite',['guard','opcode','write']],
+  ['ci','a','(IIII)Lll;','requestArchiveKey',['archiveId','groupId','guard','opcode']],
+  ['di','a','(II)V','resendArchiveKeyRequests',['guard','opcode']],
+  ['ll','b','(Z)V','decodeArchiveKeyResponse',['guard']],['ll','a','(Z)V','decodeAccountName',['guard']],
+  ['ll','d','(I)Z','hasCompletePacket',['guard']],
+  ['dm','a','(B)V','detectMaximumHeap',['guard']],['dm','a','(Lmf;IZ)V','loadSkyLayers',['archive','theme','guard']],
+  ['dm','a','(ILjava/applet/Applet;)V','openSupportPage',['guard','applet']],
+  ['cc','a','(ILmf;IB)[Led;','loadSprites',['groupId','archive','fileId','guard']],
+  ['dc','a','(BLjava/lang/String;Ljava/applet/Applet;)Ljava/lang/String;','readCookie',['guard','name','applet']],
+  ['dc','a','(III)I','ceilDivide',['guard','divisor','value']],
+]) method(owner,name,descriptor,to,parameters,
+  'Reviewed request constructor/writer/decoder and helper bodies. Packet layouts, CRC boundaries, acknowledgement ownership, guard side effects and optional URL/cookie operations remain unchanged. Encoded payload words retain their unresolved fields.');
+
 for (const [signature, rows] of [
   ['oe.a(ZILjava/io/InputStream;)V', [[0,'var4','levelInput'],[1,'var5','formatVersion']]],
   ['oe.a(ZIILjava/io/DataInputStream;)V', [[0,'var5','terrain']]],
@@ -1337,6 +1482,9 @@ export const escapeConfig = {
       'Every PacketBuffer, ResourceArchive and TriangleMesh method has a reviewed name. Buffer methods distinguish fixed widths, signed smarts, CP1252 string delimiters, length backpatches, CRC32, XTEA ranges, RSA and base-38 password packing. ArchiveIndex distinguishes group/file counts from sparse slot capacities; ResourceArchive separates loading, validity, named lookup and unpacking. File retention policy zero retains files, one discards the returned slot and two builds only the requested file before discarding its unpacked group. Packed-group retention is independent. TriangleMesh transforms invalidate lazy axis bounds.','',
       '`QuickChatDynamicCommand` contains a command ID and configuration parameter count, not a network opcode. `QuickChatPhraseDefinition.decode` reads text fragments, response IDs and dynamic command parameters; `previewText` joins fragments with ellipses and `markGlobalResponses` sets response bit 15. `ReflectionCheck` retains queued reflection lookup tasks and operation metadata; `writeReflectionCheckResults` waits for pending tasks, writes result/error codes plus CRC and unlinks a completed check. Unrelated static UI helpers stay on their original owners.','',
       '`DialogueScreen.advanceDialogue` handles reveal timing, input and scene changes; `drawDialogue` draws the current image/text. IntrusiveNode/IntrusiveDeque expose primary ownership and traversal; DualLinkNode has independent secondary links. Sprite/SpriteState separate RGB pixels, trimmed dimensions and offsets. SoftwareRasterizer holds the shared framebuffer and clipping. PacketBuffer and SoundEnvelope expose byte decoding and envelope interpolation.','',
+      '`IterableNodeHashTable` and `NodeHashTableIterator` own primary-link buckets; `IterableDualLinkDeque` and `DualLinkDequeIterator` traverse secondary links independently. `IntrusiveDequeCursor` supports independent forward/backward scans. `WeightedLruCache` combines hash lookup, secondary recency links and entry weights; `StrongCacheEntry` is the concrete retained-value implementation. Original null-at-exhaustion behavior and throwing constructor stubs remain.','',
+      '`MouseInputHandler` updates shared pending movement/click state and clears held buttons on focus loss; `DelegatingCanvas` forwards painting to its component. `SocketConnector`, `ProxySocketConnector` and `ProxyAuthenticationException` distinguish direct/proxied socket creation and HTTP 407 diagnostics. `SpriteStrip` measures/draws non-null sprites with spacing after each sprite.','',
+      '`ArchiveKeyRequest`, `ProgressQuery`, `ProgressRecord`, `AchievementQuery`, `AchievementRecord`, `HighscoreQuery`, `ScoreSubmission`, `RatingQuery` and `SavedDataWrite` identify the queued protocol records. Their named writers preserve subtype/length/CRC layouts and acknowledgement ownership. Unknown encoded-word meanings remain unresolved. `DelayedServerPacket` belongs to the simulated-latency receive path.','',
       '`UiComponent` separates hitTest, hover updates, keyboard focus, pointer routing, rendering and layout. UiContainer owns children; SingleChildContainer forwards to one child; DraggableWidget and DropTargetWidget expose drag/drop roles. TextButton adds focus and actions; EditableTextWidget adds caret/selection and edit/submit notifications. TextHotspotWidget parses clickable spans into TextHotspotRegion line fragments. WidgetPainter and WidgetTextLayout retain separate drawing/layout contracts; TextLayoutLine and CachedTextLayout expose character insertion coordinates, wrapping and alignment. ButtonListener, ButtonPointerListener, WidgetHoverListener, WidgetFocusListener and TextInputListener expose callback families. The debounced validators distinguish matching text, email syntax/availability, name availability, password and age checks.','',
       '`releaseStatics` names explicitly reviewed cleanup declarations throughout the client; it releases shared references rather than instance state. Original conditional exits, guard arithmetic, calls and exception handling remain unchanged. These scattered cleanup routines do not establish the roles of their still-opaque containing classes.','',
       '## Reproduce and verify','',
@@ -1346,7 +1494,7 @@ export const escapeConfig = {
       'node readable/naming-coverage.mjs escapevector',
       'node readable/tests/test-escapevector-core.mjs /path/to/original/escapevector.jar','```','',
       'The exact raw input is pinned to Git. Existing generic java-tools declaration and decision proofs run across every file from a verified compiler-source archive, without game assumptions or compiler flags. Each stage is checked for determinism and idempotence, and its hashes/counts are retained in the current dictionary. Naming binds declarations/references/overrides, compiles the complete raw/named corpus and retains reversible edits. No generated sources or binary dependencies are stored in Deko.','',
-      'Native fixtures compare historical, prepared and named implementations against independent expectations for versioned terrain headers, empty/full/partial masks, sprite collision stamping/removal and deque transfers. Independently authored complete level streams cover versions zero through eleven, exact byte consumption, target/countdown/frame boundaries, seeker positions, powerup filtering, fuel/shield defaults and objective/gravity whitelists. Widget fixtures check hit-test boundaries/origins, hover versus keyboard focus, virtual focus traversal and the Enter action callback. Text geometry fixtures check insertion indices across lines, midpoint ties, vertical hit-test gaps, markup-aware justification and empty/null layouts. Audio fixtures check LSB-first bits/cursors, packed floats, canonical codebooks, floor interpolation, mapping mux, packet length extensions/loop flags, oscillator boundaries, empty effects and filter unity. PCM fixtures exercise all sixteen direction/channel/interpolation/ramp kernel combinations and pan endpoints. Session fixtures verify bullet state, active-prefix recycling/reuse, wrapped current/initial terrain, ray/mask boundaries, hull half/notch geometry, RGB/countdown interpolation and 50-tick clocks. Packet/metadata fixtures check wire widths, smart boundaries, backpatches, CP1252 strings, CRC32 corruption, XTEA/RSA/password vectors, account-name policy, mesh bounds, quick-chat parameters and pending/completed reflection framing. Archive fixtures cover versions five through seven, sparse named multi-file chunks and every packed/unpacked retention policy. The fixed original gamepack passes all 2,566 assertions too. These focused checks do not prove whole-game behavior, multiplayer compatibility or frame rate. The original mutable obfuscationControl and guard branches remain; unsupported structural recovery and unresolved local names still need review.',''].join('\n');
+      'Native fixtures compare historical, prepared and named implementations against independent expectations for versioned terrain headers, empty/full/partial masks, sprite collision stamping/removal and deque transfers. Independently authored complete level streams cover versions zero through eleven, exact byte consumption, target/countdown/frame boundaries, seeker positions, powerup filtering, fuel/shield defaults and objective/gravity whitelists. Widget fixtures check hit-test boundaries/origins, hover versus keyboard focus, virtual focus traversal and the Enter action callback. Text geometry fixtures check insertion indices across lines, midpoint ties, vertical hit-test gaps, markup-aware justification and empty/null layouts. Audio fixtures check LSB-first bits/cursors, packed floats, canonical codebooks, floor interpolation, mapping mux, packet length extensions/loop flags, oscillator boundaries, empty effects and filter unity. PCM fixtures exercise all sixteen direction/channel/interpolation/ramp kernel combinations and pan endpoints. Session fixtures verify bullet state, active-prefix recycling/reuse, wrapped current/initial terrain, ray/mask boundaries, hull half/notch geometry, RGB/countdown interpolation and 50-tick clocks. Packet/metadata fixtures check wire widths, smart boundaries, backpatches, CP1252 strings, CRC32 corruption, XTEA/RSA/password vectors, account-name policy, mesh bounds, quick-chat parameters and pending/completed reflection framing. Archive fixtures cover versions five through seven, sparse named multi-file chunks and every packed/unpacked retention policy. Collection fixtures check collision buckets, iterator removal, independent link ownership/cursors, weighted eviction/replacement and null-value refunds. Input fixtures check mouse/button/focus/popup/detached state and Canvas delegation. Request fixtures specify bytes after the ISAAC opcode, including lengths/subtypes/CRCs, enqueue ownership and wrapping submission IDs. Exception rejection probes compare underlying causes because native diagnostics may wrap the same IllegalStateException. The fixed original gamepack passes all 2,720 assertions too. These focused checks do not prove whole-game behavior, multiplayer compatibility or frame rate. The original mutable obfuscationControl and guard branches remain; unsupported structural recovery and unresolved local names still need review.',''].join('\n');
   },
 };
 
