@@ -114,6 +114,20 @@ AchievementThresholdRule expose metadata, allowed modes and value thresholds;
 the tracker separates session/account bits, pending queries and award records.
 Original array aliasing, discarded coin/point inputs and guard paths remain.
 
+DialogueScreen and MenuInputState now name every method, separating text reveal,
+photo/fade/audio phases, pointer/key ownership and initial/repeated activation.
+The actual AWT mapping identifies Home/End as 102/103. AnimatedPathMarker and
+PathPoint expose the numbered path reveal and shared interpolation scratch;
+MeshMaterial retains the decoded RGB used by mesh lighting. AchievementsScreen,
+AccountFormStage and AccountNoticeKind identify screen and identity-token roles.
+Unrelated static helpers and discarded bitstream fields retain their behavior.
+
+AchievementsScreen names every method, including earned snapshots, hidden/member
+filtering, paging, grid layout, selection, details and footer actions.
+AnimatedPanelFrame, SlidingSpriteTransition and TransitionPoint expose frame
+geometry, opening time, alpha and coordinate interpolation. Their unrelated
+contact, reflection and encrypted-account helpers retain their original owners.
+
 Escape Vector's full class/method naming goal is tracked by the resolved
 dictionary, including nested classes and overloads:
 

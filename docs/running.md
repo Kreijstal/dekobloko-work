@@ -98,6 +98,22 @@ the tracker separates session/combined bits, account-query merges and queued
 award records. Discarded metadata constructor inputs and existing guard paths
 are retained. No new fixtures or gameplay-equivalence claims are introduced.
 
+The dialogue/input pass names every DialogueScreen and MenuInputState method:
+text wrapping/reveal, photo transitions, background fades, sound panning,
+selection ownership and pointer repeats. KeyCodeSupport exposes the AWT mapping
+and current typed character. AnimatedPathMarker/PathPoint identify timed path
+reveal and scratch interpolation; MeshMaterial retains the material RGB word
+used by mesh lighting. AchievementsScreen, AccountFormStage and AccountNoticeKind
+identify remaining view/token roles. Original guards, phase numbers, protocol
+bytes and declaration ownership are unchanged.
+
+The achievement-view pass names every AchievementsScreen method, including
+snapshot/filtering, paging, grid layout, details and mapped footer actions.
+AnimatedPanelFrame, SlidingSpriteTransition and TransitionPoint expose opening
+phase, geometry, retained points and interpolated alpha. Native/source checks
+preserve guard branches, shared raster/clock ownership and protocol framing;
+these names do not claim full interactive-screen equivalence.
+
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.
 There are no `statePc` dispatcher files in the raw Escape Vector corpus.
