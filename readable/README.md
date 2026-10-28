@@ -55,7 +55,9 @@ values. The expanded harness adds complete level streams for versions 0–11,
 object flags/frames, seekers, powerup filtering, numeric defaults and byte
 consumption. Widget probes additionally cover hit-test boundaries/origins, hover
 versus keyboard focus, virtual focus traversal and Enter action callbacks.
-The fixed original gamepack passes all 1,322 assertions:
+Text geometry probes cover insertion indices across lines, midpoint ties,
+vertical hit-test gaps, markup-aware justification and empty/null layouts.
+The fixed original gamepack passes all 1,367 assertions:
 
 ```sh
 node readable/tests/test-escapevector-core.mjs /path/to/original/escapevector.jar

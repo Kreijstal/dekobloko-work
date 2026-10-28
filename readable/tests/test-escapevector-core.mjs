@@ -177,17 +177,53 @@ public class EscapeTerrainProbe {
   call(button,"hm","f:blur",new Class<?>[]{int.class},93);
   check("button-focus-cleared",call(button,"hm","h:focus",new Class<?>[]{int.class},0),false);
  }
+ static void textGeometry()throws Exception{
+  // Authored line geometry checks global indices, midpoint ties and vertical
+  // gaps independently of the font parser, rendering and layout generator.
+  Object first=make("vl"),second=make("vl"),layout=make("wh");
+  set(first,"vl","d",0);set(first,"vl","a",10);set(first,"vl","b",new int[]{0,10,20});
+  set(second,"vl","d",12);set(second,"vl","a",24);set(second,"vl","b",new int[]{5,13,22,30});
+  Object lines=Array.newInstance(c("vl"),2);Array.set(lines,0,first);Array.set(lines,1,second);set(layout,"pg","a",lines);
+  check("text-height",call(layout,"pg","c:height",new Class<?>[]{int.class},0),24);
+  check("text-maximum-width",call(layout,"pg","a:width",new Class<?>[]{byte.class},(byte)-112),30);
+  int[] lineFor={0,0,0,1,1,1,2},xFor={0,10,20,13,22,30,0};
+  for(int index=0;index<lineFor.length;index++){
+   check("text-character-line",call(layout,"pg","a:line",new Class<?>[]{int.class,int.class},index,0),lineFor[index]);
+   check("text-character-x",call(layout,"pg","a:x",new Class<?>[]{byte.class,int.class},(byte)122,index),xFor[index]);
+  }
+  int[][] points={{-10,0,0},{4,0,0},{5,0,1},{15,10,2},{0,11,-1},{8,12,2},{9,12,3},{26,24,5},{30,25,-1}};
+  for(int[] point:points)check("text-point-index",call(layout,"pg","a:hit",new Class<?>[]{byte.class,int.class,int.class},(byte)39,point[0],point[1]),point[2]);
+  check("line-width",call(first,"vl","b:width",new Class<?>[]{int.class},119),20);
+  int[][] closest={{-1000,0},{4,0},{5,1},{14,1},{15,2},{1000,2}};
+  for(int[] point:closest)check("line-midpoint",call(first,"vl","a:hit",new Class<?>[]{byte.class,int.class},(byte)52,point[0]),point[1]);
+  for(String text:new String[]{"a b c","a<col=fff> b</col> c","abc"})
+   check("text-justification",call(layout,"pg","a:justify",new Class<?>[]{int.class,int.class,String.class,int.class},-21446,20,text,30),text.equals("abc")?0:1280);
+  set(layout,"pg","a",Array.newInstance(c("vl"),0));
+  check("empty-text-height",call(layout,"pg","c:height",new Class<?>[]{int.class},0),0);
+  check("empty-text-width",call(layout,"pg","a:width",new Class<?>[]{byte.class},(byte)-112),-1);
+  check("empty-text-hit",call(layout,"pg","a:hit",new Class<?>[]{byte.class,int.class,int.class},(byte)39,0,0),-1);
+  check("empty-text-line",call(layout,"pg","a:line",new Class<?>[]{int.class,int.class},0,0),0);
+  check("empty-text-x",call(layout,"pg","a:x",new Class<?>[]{byte.class,int.class},(byte)122,0),0);
+  set(first,"vl","b",null);
+  check("null-line-width",call(first,"vl","b:width",new Class<?>[]{int.class},119),0);
+  check("null-line-hit",call(first,"vl","a:hit",new Class<?>[]{byte.class,int.class},(byte)52,12),0);
+  set(layout,"pg","a",null);
+  check("null-text-height",call(layout,"pg","c:height",new Class<?>[]{int.class},0),0);
+  check("null-text-width",call(layout,"pg","a:width",new Class<?>[]{byte.class},(byte)-112),-1);
+  check("null-text-hit",call(layout,"pg","a:hit",new Class<?>[]{byte.class,int.class,int.class},(byte)39,0,0),-1);
+ }
  public static void main(String[] args)throws Exception{
   Class<?> unsafeClass=Class.forName("sun.misc.Unsafe");Field field=unsafeClass.getDeclaredField("theUnsafe");field.setAccessible(true);unsafe=field.get(null);allocate=unsafeClass.getMethod("allocateInstance",Class.class);
   terrain();stamps();collections();System.out.println("checks="+checks);
   int previous=checks;levels();System.out.println("level-checks="+(checks-previous));
   previous=checks;widgets();System.out.println("widget-checks="+(checks-previous));
+  previous=checks;textGeometry();System.out.println("text-checks="+(checks-previous));
  }
 }
 `;
 
 // Used by refresh-raw-class as an original-bytecode correctness gate.
-export const expected = 'checks=903\nlevel-checks=393\nwidget-checks=26';
+export const expected = 'checks=903\nlevel-checks=393\nwidget-checks=26\ntext-checks=45';
 
 export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
   const aliases = new Map(mapping.rules.map(r => [r.symbol, r.to]));
@@ -213,6 +249,8 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
     ['oe','b','(ILjava/io/DataInputStream;I)V','shield'],
     ['hm','a','(IIIZI)V','bounds'],['hm','a','(IIIBI)Z','hit'],['hm','d','(I)Ljava/lang/String;','tooltip'],
     ['hm','h','(I)Z','focus'],['hm','a','(ILhm;)Z','focusNext'],['hm','a','(Lhm;CII)Z','key'],['hm','f','(I)V','blur'],
+    ['pg','c','(I)I','height'],['pg','a','(B)I','width'],['pg','a','(II)I','line'],['pg','a','(BI)I','x'],
+    ['pg','a','(BII)I','hit'],['pg','a','(IILjava/lang/String;I)I','justify'],['vl','b','(I)I','width'],['vl','a','(BI)I','hit'],
   ]) {
     const to = aliases.get(`M:${owner}.${name}${descriptor}`);
     if (to) properties.push(`-DM.${owner}.${name}${tag ? ":"+tag : ""}=${to}`);
@@ -232,7 +270,8 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
     covers:['terrain header versions 9/10','empty/full/partial masks','sprite terrain stamping/removal','intrusive deque transfer',
       'complete level streams versions 0-11','object target/countdown/frame version boundaries','seeker spawn/home positions',
       'initial powerup filtering','fuel/shield defaults','objective/gravity whitelists','exact stream consumption',
-      'widget hit-test boundaries/origins','hover versus keyboard focus','virtual focus traversal and Enter action callback'],
+      'widget hit-test boundaries/origins','hover versus keyboard focus','virtual focus traversal and Enter action callback',
+      'text insertion indices across lines','midpoint ties and vertical hit-test gaps','markup-aware justification','empty/null text geometry'],
     fullGameplayVerified:false};
 }
 
