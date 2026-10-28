@@ -74,6 +74,13 @@ names. Remaining mixed-role locals and shared engine classes are still unresolve
 Raw repair receipts continue to verify the immutable input after classes acquire
 readable names. No second readable source directory is created.
 
+SoftwareRasterizer, Sprite and ArgbSprite now name every declared method,
+including clip management, primitive drawing, separable blur and the distinct
+RGB/ARGB blit equations. Transform parameters identify Q4 pivots/destinations,
+Q12 scale and the 65536-angle cycle. UiTheme names the retained default widget
+painters and wrapped/single-line tooltip paths. These are binding-checked names;
+they do not change rendering equations or prove full gameplay equivalence.
+
 Escape Vector's full class/method naming goal is tracked by the resolved
 dictionary, including nested classes and overloads:
 

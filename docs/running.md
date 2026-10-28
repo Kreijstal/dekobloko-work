@@ -53,6 +53,15 @@ boundaries, nine-slice frame rasterization and row/column-major sprite sheets
 with optional alpha. Solid and alpha kernels retain their original high-byte
 representation; no rendered pixels or control flow are changed by naming.
 
+The rendering naming pass covers every SoftwareRasterizer, Sprite and
+ArgbSprite method: primitive drawing, clip state, separable blur, transparent
+copies, source brightness, destination alpha, additive blending, silhouette,
+multiplication, grayscale tinting, downsampling and rotated/scaled sampling.
+UiTheme identifies default painters and tooltip layout. Q4 transform pivots
+and destinations, Q12 scale and the 65536-angle cycle are named explicitly.
+The existing native probes remain the behavioral gate; no whole-renderer or
+whole-game equivalence claim follows from these naming-only changes.
+
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.
 There are no `statePc` dispatcher files in the raw Escape Vector corpus.
