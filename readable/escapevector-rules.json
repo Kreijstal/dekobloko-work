@@ -5068,6 +5068,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ci",
+      "originalName": "ci",
+      "to": "AchievementDefinition",
+      "evidence": "Per-achievement ID, icon, members/hidden flags and allowed game-mode bits; archive-key and effect factories remain unrelated static helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ck",
       "originalName": "ck",
       "to": "ThreeSliceButtonPainter",
@@ -5247,6 +5254,13 @@
       "originalName": "em",
       "to": "SoftwareRasterizer",
       "evidence": "Global integer framebuffer, dimensions, clip rectangle and software drawing kernels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:en",
+      "originalName": "en",
+      "to": "AchievementTracker",
+      "evidence": "Owns session and combined achievement bitsets, account-query state and queued award records; retains unrelated static resource/menu helpers.",
       "confidence": "reviewed"
     },
     {
@@ -5821,6 +5835,13 @@
       "originalName": "ma",
       "to": "BoundedRandomAccessFile",
       "evidence": "Wraps RandomAccessFile with a tracked position and maximum length; unrelated static globals include the active session.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mb",
+      "originalName": "mb",
+      "to": "AchievementThresholdRule",
+      "evidence": "Required mode, minimum value and achievement ID; awards the achievement when the retained threshold is reached.",
       "confidence": "reviewed"
     },
     {
@@ -6447,6 +6468,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ug",
+      "originalName": "ug",
+      "to": "AchievementFlagSupport",
+      "evidence": "Looks up the configured hidden-achievement IDs; unrelated static helper creates a 256-entry blended palette.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:uh",
       "originalName": "uh",
       "to": "ArgbSprite",
@@ -6913,6 +6941,41 @@
       "originalName": "field_m",
       "to": "levelIndex",
       "evidence": "Record writer sends campaign and signed-smart level index; acknowledgement finds the matching queued pair.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ci.field_b:I",
+      "originalName": "field_b",
+      "to": "achievementId",
+      "evidence": "Constructor inputs come from achievement ID, members/hidden ID tables and mode masks; the tracker exposes icon and flags and checks the mode bit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ci.field_c:I",
+      "originalName": "field_c",
+      "to": "allowedGameModes",
+      "evidence": "Constructor inputs come from achievement ID, members/hidden ID tables and mode masks; the tracker exposes icon and flags and checks the mode bit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ci.field_e:Led;",
+      "originalName": "field_e",
+      "to": "icon",
+      "evidence": "Constructor inputs come from achievement ID, members/hidden ID tables and mode masks; the tracker exposes icon and flags and checks the mode bit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ci.field_f:Z",
+      "originalName": "field_f",
+      "to": "hidden",
+      "evidence": "Constructor inputs come from achievement ID, members/hidden ID tables and mode masks; the tracker exposes icon and flags and checks the mode bit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ci.field_h:Z",
+      "originalName": "field_h",
+      "to": "membersOnly",
+      "evidence": "Constructor inputs come from achievement ID, members/hidden ID tables and mode masks; the tracker exposes icon and flags and checks the mode bit.",
       "confidence": "reviewed"
     },
     {
@@ -7413,6 +7476,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:en.field_b:[I",
+      "originalName": "field_b",
+      "to": "sessionAchievementWords",
+      "evidence": "Awards set session and combined bitsets. A completed account query ORs combined bits, removes known account bits from session bits and releases the query before sending queued records.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:en.field_c:Z",
+      "originalName": "field_c",
+      "to": "queryFailed",
+      "evidence": "Awards set session and combined bitsets. A completed account query ORs combined bits, removes known account bits from session bits and releases the query before sending queued records.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:en.field_f:Lcn;",
+      "originalName": "field_f",
+      "to": "pendingAwardRecords",
+      "evidence": "Awards set session and combined bitsets. A completed account query ORs combined bits, removes known account bits from session bits and releases the query before sending queued records.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:en.field_h:Z",
+      "originalName": "field_h",
+      "to": "accountAchievementsLoaded",
+      "evidence": "Awards set session and combined bitsets. A completed account query ORs combined bits, removes known account bits from session bits and releases the query before sending queued records.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:en.field_j:[I",
+      "originalName": "field_j",
+      "to": "achievementWords",
+      "evidence": "Awards set session and combined bitsets. A completed account query ORs combined bits, removes known account bits from session bits and releases the query before sending queued records.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:en.field_m:Ljh;",
+      "originalName": "field_m",
+      "to": "pendingQuery",
+      "evidence": "Awards set session and combined bitsets. A completed account query ORs combined bits, removes known account bits from session bits and releases the query before sending queued records.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:f.field_a:[[I",
       "originalName": "field_a",
       "to": "fileIds",
@@ -7840,6 +7945,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gi.field_c:Lte;",
+      "originalName": "field_c",
+      "to": "effectSprite",
+      "evidence": "PointCloudEffect reuses these shared indexed sprites for the alternate palette and extrema outline.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gi.field_e:[I",
       "originalName": "field_e",
       "to": "spriteOffsetYs",
@@ -7865,6 +7977,13 @@
       "originalName": "field_h",
       "to": "messageIdLow24",
       "evidence": "Chat decoder reads type/rank/sender and private-message ID parts; constructor snapshots those values and optionally retains phrase response IDs. Priority checks override/type/rank, local sender identity and friend status.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gi.field_i:Lte;",
+      "originalName": "field_i",
+      "to": "effectOutlineSprite",
+      "evidence": "PointCloudEffect reuses these shared indexed sprites for the alternate palette and extrema outline.",
       "confidence": "reviewed"
     },
     {
@@ -9037,6 +9156,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jb.field_i:[Lmb;",
+      "originalName": "field_i",
+      "to": "achievementThresholdRules",
+      "evidence": "Fixed achievement metadata tables feed definition and threshold-rule construction; Orb Coin and Orb Point values remain discarded by the original definition constructor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jb.field_k:[Ljk;",
       "originalName": "field_k",
       "to": "achievementRules",
@@ -9044,10 +9170,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jb.field_l:[Lci;",
+      "originalName": "field_l",
+      "to": "achievementDefinitions",
+      "evidence": "Fixed achievement metadata tables feed definition and threshold-rule construction; Orb Coin and Orb Point values remain discarded by the original definition constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jb.field_m:[I",
+      "originalName": "field_m",
+      "to": "membersAchievementIds",
+      "evidence": "Fixed achievement metadata tables feed definition and threshold-rule construction; Orb Coin and Orb Point values remain discarded by the original definition constructor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jb.field_n:Ljava/net/ProxySelector;",
       "originalName": "field_n",
       "to": "proxySelector",
       "evidence": "Constructor captures the default selector used by connection attempts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jb.field_q:[I",
+      "originalName": "field_q",
+      "to": "achievementModeMasks",
+      "evidence": "Fixed achievement metadata tables feed definition and threshold-rule construction; Orb Coin and Orb Point values remain discarded by the original definition constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jb.field_s:[I",
+      "originalName": "field_s",
+      "to": "achievementOrbCoins",
+      "evidence": "Fixed achievement metadata tables feed definition and threshold-rule construction; Orb Coin and Orb Point values remain discarded by the original definition constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jb.field_t:[I",
+      "originalName": "field_t",
+      "to": "achievementOrbPoints",
+      "evidence": "Fixed achievement metadata tables feed definition and threshold-rule construction; Orb Coin and Orb Point values remain discarded by the original definition constructor.",
       "confidence": "reviewed"
     },
     {
@@ -9062,6 +9223,13 @@
       "originalName": "field_v",
       "to": "achievementCategories",
       "evidence": "Achievement rule initialization zips these parallel mode/mask/category arrays into retained AchievementGrantRule objects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jb.field_z:[I",
+      "originalName": "field_z",
+      "to": "hiddenAchievementIds",
+      "evidence": "Fixed achievement metadata tables feed definition and threshold-rule construction; Orb Coin and Orb Point values remain discarded by the original definition constructor.",
       "confidence": "reviewed"
     },
     {
@@ -9877,6 +10045,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mb.field_c:I",
+      "originalName": "field_c",
+      "to": "requiredMode",
+      "evidence": "The instance grant method requires the retained mode and value threshold before delegating to the active GameplaySession.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mb.field_d:I",
+      "originalName": "field_d",
+      "to": "minimumValue",
+      "evidence": "The instance grant method requires the retained mode and value threshold before delegating to the active GameplaySession.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mb.field_e:I",
+      "originalName": "field_e",
+      "to": "achievementId",
+      "evidence": "The instance grant method requires the retained mode and value threshold before delegating to the active GameplaySession.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mb.field_f:[Led;",
       "originalName": "field_f",
       "to": "objectSprites",
@@ -10329,6 +10518,83 @@
       "originalName": "field_h",
       "to": "lookupKey",
       "evidence": "Lookup selects a secondary-link bucket by key mask and retains cursor/key for subsequent matches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oc.field_A:[I",
+      "originalName": "field_A",
+      "to": "positionYQ16",
+      "evidence": "Reviewed point integration, drag, collision/terrain edits, glow rasterization and session/exhaust lifecycle. The auxiliary velocity participates in drag but has no retained third position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oc.field_B:Z",
+      "originalName": "field_B",
+      "to": "finished",
+      "evidence": "Reviewed point integration, drag, collision/terrain edits, glow rasterization and session/exhaust lifecycle. The auxiliary velocity participates in drag but has no retained third position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oc.field_C:[I",
+      "originalName": "field_C",
+      "to": "velocityYQ16",
+      "evidence": "Reviewed point integration, drag, collision/terrain edits, glow rasterization and session/exhaust lifecycle. The auxiliary velocity participates in drag but has no retained third position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oc.field_E:[Z",
+      "originalName": "field_E",
+      "to": "activeParticles",
+      "evidence": "Reviewed point integration, drag, collision/terrain edits, glow rasterization and session/exhaust lifecycle. The auxiliary velocity participates in drag but has no retained third position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oc.field_F:I",
+      "originalName": "field_F",
+      "to": "particleCount",
+      "evidence": "Reviewed point integration, drag, collision/terrain edits, glow rasterization and session/exhaust lifecycle. The auxiliary velocity participates in drag but has no retained third position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oc.field_G:I",
+      "originalName": "field_G",
+      "to": "fadeThreshold",
+      "evidence": "Reviewed point integration, drag, collision/terrain edits, glow rasterization and session/exhaust lifecycle. The auxiliary velocity participates in drag but has no retained third position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oc.field_q:Z",
+      "originalName": "field_q",
+      "to": "indexedRendering",
+      "evidence": "Reviewed point integration, drag, collision/terrain edits, glow rasterization and session/exhaust lifecycle. The auxiliary velocity participates in drag but has no retained third position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oc.field_s:Z",
+      "originalName": "field_s",
+      "to": "persistentParticles",
+      "evidence": "Reviewed point integration, drag, collision/terrain edits, glow rasterization and session/exhaust lifecycle. The auxiliary velocity participates in drag but has no retained third position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oc.field_w:[I",
+      "originalName": "field_w",
+      "to": "auxiliaryVelocityQ16",
+      "evidence": "Reviewed point integration, drag, collision/terrain edits, glow rasterization and session/exhaust lifecycle. The auxiliary velocity participates in drag but has no retained third position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oc.field_x:[I",
+      "originalName": "field_x",
+      "to": "positionXQ16",
+      "evidence": "Reviewed point integration, drag, collision/terrain edits, glow rasterization and session/exhaust lifecycle. The auxiliary velocity participates in drag but has no retained third position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oc.field_y:[I",
+      "originalName": "field_y",
+      "to": "velocityXQ16",
+      "evidence": "Reviewed point integration, drag, collision/terrain edits, glow rasterization and session/exhaust lifecycle. The auxiliary velocity participates in drag but has no retained third position.",
       "confidence": "reviewed"
     },
     {
@@ -11603,6 +11869,13 @@
       "originalName": "field_i",
       "to": "requestId",
       "evidence": "Rating writer sends both bytes; the decoder matches request ID and sizes table rows by the retained count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rl.field_k:Lte;",
+      "originalName": "field_k",
+      "to": "pointCloudRasterSprite",
+      "evidence": "PointCloudEffect owns the shared bounds-sized indexed glow raster and its fade threshold.",
       "confidence": "reviewed"
     },
     {
@@ -14973,6 +15246,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bn.a([Led;I)V",
+      "originalName": "a",
+      "to": "installAchievementIcons",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bo.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -15148,6 +15428,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cf.a(B)V",
+      "originalName": "a",
+      "to": "initializeAchievementDefinitions",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cf.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -15166,6 +15453,20 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Reviewed full body clears retained shared static references; guard branches/arithmetic and instance ownership remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(BLhh;ILed;ZI)Loc;",
+      "originalName": "a",
+      "to": "createSpriteDebris",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(IB)Z",
+      "originalName": "a",
+      "to": "isAllowedInMode",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
       "confidence": "reviewed"
     },
     {
@@ -15530,6 +15831,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Reviewed full body clears retained shared static references; guard branches/arithmetic and instance ownership remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(IB)Z",
+      "originalName": "a",
+      "to": "isMembersAchievement",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
       "confidence": "reviewed"
     },
     {
@@ -16548,10 +16856,283 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:en.a(B)V",
+      "originalName": "a",
+      "to": "grantNormalRetrievalAwards",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(BII)V",
+      "originalName": "a",
+      "to": "markAchievement",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(BIII)Z",
+      "originalName": "a",
+      "to": "awardAchievement",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(BJ)V",
+      "originalName": "a",
+      "to": "sleepMillis",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(B[I)V",
+      "originalName": "a",
+      "to": "mergeAccountAchievements",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:en.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Reviewed full body clears retained shared static references; guard branches/arithmetic and instance ownership remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(IB)[I",
+      "originalName": "a",
+      "to": "earnedAchievementIds",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(IBI)Z",
+      "originalName": "a",
+      "to": "isEarned",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(II)I",
+      "originalName": "a",
+      "to": "earnedCount",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(III)Z",
+      "originalName": "a",
+      "to": "isAllowedInMode",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(II[II)Z",
+      "originalName": "a",
+      "to": "testWordBits",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(IZ)I",
+      "originalName": "a",
+      "to": "totalCount",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(IZ[II)V",
+      "originalName": "a",
+      "to": "setWordBit",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(Ljava/lang/String;B)Ljava/lang/Class;",
+      "originalName": "a",
+      "to": "classForReflectionType",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(Lmf;I)V",
+      "originalName": "a",
+      "to": "loadTutorialSprites",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(Z)V",
+      "originalName": "a",
+      "to": "clearSessionAchievements",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a(ZI[I[I)I",
+      "originalName": "a",
+      "to": "unionWordAt",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a([II)V",
+      "originalName": "a",
+      "to": "removeAccountAchievementsFromSession",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.a([III[I)I",
+      "originalName": "a",
+      "to": "differenceWordAt",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.b(B)V",
+      "originalName": "b",
+      "to": "requestAccountAchievements",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.b(BII)I",
+      "originalName": "b",
+      "to": "bitwiseDifference",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.b(BIII)V",
+      "originalName": "b",
+      "to": "grantIfSourceEarned",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.b(B[I)I",
+      "originalName": "b",
+      "to": "countSetBits",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.b(I)Z",
+      "originalName": "b",
+      "to": "hasSessionAchievements",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.b(IB)Z",
+      "originalName": "b",
+      "to": "isHidden",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.b(II)Led;",
+      "originalName": "b",
+      "to": "achievementIcon",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.b(III)I",
+      "originalName": "b",
+      "to": "integerPower",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.b(IZ)Lci;",
+      "originalName": "b",
+      "to": "definition",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.c(B)Z",
+      "originalName": "c",
+      "to": "hasPendingQuery",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.c(BII)I",
+      "originalName": "c",
+      "to": "bitwiseUnion",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.c(I)V",
+      "originalName": "c",
+      "to": "drawLegacyMenu",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.c(IB)[I",
+      "originalName": "c",
+      "to": "wordsForSet",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.c(II)I",
+      "originalName": "c",
+      "to": "visibleCount",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.c(III)V",
+      "originalName": "c",
+      "to": "applyGrantRules",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.d(BII)V",
+      "originalName": "d",
+      "to": "applyThresholdRules",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.d(I)V",
+      "originalName": "d",
+      "to": "serviceAccountAchievements",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.d(II)I",
+      "originalName": "d",
+      "to": "unearnedHiddenCount",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.e(I)V",
+      "originalName": "e",
+      "to": "pollAccountQuery",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.e(II)Z",
+      "originalName": "e",
+      "to": "isSupportedSet",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.f(II)Z",
+      "originalName": "f",
+      "to": "isMembersOnly",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
       "confidence": "reviewed"
     },
     {
@@ -19915,10 +20496,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mb.a(B)V",
+      "originalName": "a",
+      "to": "advanceScreensAndAccountState",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mb.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Reviewed full body clears retained shared static references; guard branches/arithmetic and instance ownership remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a(III)V",
+      "originalName": "a",
+      "to": "grantIfThresholdReached",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a(Led;I)V",
+      "originalName": "a",
+      "to": "setMirroredPanelBackground",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a([Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "setAccountNameSuggestions",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.b(B)Z",
+      "originalName": "b",
+      "to": "isAccountStateReady",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
       "confidence": "reviewed"
     },
     {
@@ -21294,10 +21910,143 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oc.a()V",
+      "originalName": "a",
+      "to": "updateParticles",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.a(BLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attachKeyboardInput",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.a(IBLcc;)V",
+      "originalName": "a",
+      "to": "enqueueProgressRecord",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.a(III)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.a(IIII)V",
+      "originalName": "a",
+      "to": "rasterizePointGlow",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.a(IIIIII)V",
+      "originalName": "a",
+      "to": "prepareRasterSprite",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.a(ILte;Lte;)V",
+      "originalName": "a",
+      "to": "copySpriteGeometry",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.b(II)Z",
+      "originalName": "b",
+      "to": "terrainIsSolidAtQ16",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.b(IIIIII)V",
+      "originalName": "b",
+      "to": "drawWrappedSprites",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.c(II)Z",
+      "originalName": "c",
+      "to": "objectIsSolidAtPixel",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.d(B)Ljava/applet/Applet;",
+      "originalName": "d",
+      "to": "activeApplet",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.d(II)V",
+      "originalName": "d",
+      "to": "allocatePointArrays",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.e(B)Lte;",
+      "originalName": "e",
+      "to": "buildExtremaOutline",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.e(II)V",
+      "originalName": "e",
+      "to": "clearTerrainAtQ16",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.f(B)V",
+      "originalName": "f",
+      "to": "clearActiveParticles",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.f(I)V",
+      "originalName": "f",
+      "to": "thresholdRasterAndCheckFinished",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.g(B)V",
+      "originalName": "g",
+      "to": "buildEffectPalette",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.g(I)V",
+      "originalName": "g",
+      "to": "prepareAlternateSprites",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oc.h(I)V",
       "originalName": "h",
       "to": "releaseStatics",
       "evidence": "Reviewed full body clears retained shared static references; guard branches/arithmetic and instance ownership remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.i(I)V",
+      "originalName": "i",
+      "to": "integratePointWithTerrain",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
       "confidence": "reviewed"
     },
     {
@@ -24560,6 +25309,20 @@
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "Reviewed full body clears retained shared static references; guard branches/arithmetic and instance ownership remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.a(II)Z",
+      "originalName": "a",
+      "to": "isHiddenAchievement",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.a(III)[I",
+      "originalName": "a",
+      "to": "blendPalette256",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
       "confidence": "reviewed"
     },
     {
@@ -28196,6 +28959,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:bn.a([Led;I)V#0",
+      "originalName": "param0",
+      "to": "icons",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:bn.a([Led;I)V#1",
+      "originalName": "param1",
+      "to": "start",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:bo.a(B)V#0",
       "originalName": "param0",
       "to": "guard",
@@ -28546,6 +29323,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:cf.a(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:cf.a(I)V#0",
       "originalName": "param0",
       "to": "guard",
@@ -28564,6 +29348,104 @@
       "originalName": "param0",
       "to": "guard",
       "evidence": "Reviewed full body clears retained shared static references; guard branches/arithmetic and instance ownership remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.<init>(IZZIII)V#0",
+      "originalName": "param0",
+      "to": "achievementId",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.<init>(IZZIII)V#1",
+      "originalName": "param1",
+      "to": "membersOnly",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.<init>(IZZIII)V#2",
+      "originalName": "param2",
+      "to": "hidden",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.<init>(IZZIII)V#3",
+      "originalName": "param3",
+      "to": "allowedGameModes",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.<init>(IZZIII)V#4",
+      "originalName": "param4",
+      "to": "orbCoins",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.<init>(IZZIII)V#5",
+      "originalName": "param5",
+      "to": "orbPoints",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.a(BLhh;ILed;ZI)Loc;#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.a(BLhh;ILed;ZI)Loc;#1",
+      "originalName": "param1",
+      "to": "sound",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.a(BLhh;ILed;ZI)Loc;#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.a(BLhh;ILed;ZI)Loc;#3",
+      "originalName": "param3",
+      "to": "sprite",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.a(BLhh;ILed;ZI)Loc;#4",
+      "originalName": "param4",
+      "to": "indexedRendering",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.a(BLhh;ILed;ZI)Loc;#5",
+      "originalName": "param5",
+      "to": "x",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.a(IB)Z#0",
+      "originalName": "param0",
+      "to": "mode",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ci.a(IB)Z#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
       "confidence": "reviewed"
     },
     {
@@ -29180,6 +30062,20 @@
       "originalName": "param0",
       "to": "guard",
       "evidence": "Reviewed full body clears retained shared static references; guard branches/arithmetic and instance ownership remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IB)Z#0",
+      "originalName": "param0",
+      "to": "achievementId",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(IB)Z#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
       "confidence": "reviewed"
     },
     {
@@ -32459,10 +33355,640 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:en.a(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(BII)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(BII)V#1",
+      "originalName": "param1",
+      "to": "setKind",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(BII)V#2",
+      "originalName": "param2",
+      "to": "achievementId",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(BIII)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(BIII)Z#1",
+      "originalName": "param1",
+      "to": "checksum",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(BIII)Z#2",
+      "originalName": "param2",
+      "to": "achievementId",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(BIII)Z#3",
+      "originalName": "param3",
+      "to": "gameMode",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(BJ)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(BJ)V#1",
+      "originalName": "param1",
+      "to": "millis",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(B[I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(B[I)V#1",
+      "originalName": "param1",
+      "to": "accountWords",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:en.a(I)V#0",
       "originalName": "param0",
       "to": "guard",
       "evidence": "Reviewed full body clears retained shared static references; guard branches/arithmetic and instance ownership remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(IB)[I#0",
+      "originalName": "param0",
+      "to": "setKind",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(IB)[I#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(IBI)Z#0",
+      "originalName": "param0",
+      "to": "achievementId",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(IBI)Z#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(IBI)Z#2",
+      "originalName": "param2",
+      "to": "setKind",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(II)I#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(II)I#1",
+      "originalName": "param1",
+      "to": "setKind",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(III)Z#0",
+      "originalName": "param0",
+      "to": "mode",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(III)Z#1",
+      "originalName": "param1",
+      "to": "achievementId",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(III)Z#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(II[II)Z#0",
+      "originalName": "param0",
+      "to": "bits",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(II[II)Z#1",
+      "originalName": "param1",
+      "to": "wordIndex",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(II[II)Z#2",
+      "originalName": "param2",
+      "to": "words",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(II[II)Z#3",
+      "originalName": "param3",
+      "to": "shift",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(IZ)I#0",
+      "originalName": "param0",
+      "to": "setKind",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(IZ)I#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(IZ[II)V#0",
+      "originalName": "param0",
+      "to": "bit",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(IZ[II)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(IZ[II)V#2",
+      "originalName": "param2",
+      "to": "words",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(IZ[II)V#3",
+      "originalName": "param3",
+      "to": "wordIndex",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(Ljava/lang/String;B)Ljava/lang/Class;#0",
+      "originalName": "param0",
+      "to": "typeName",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(Ljava/lang/String;B)Ljava/lang/Class;#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(Lmf;I)V#0",
+      "originalName": "param0",
+      "to": "archive",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(Lmf;I)V#1",
+      "originalName": "param1",
+      "to": "themeIndex",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(Z)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(ZI[I[I)I#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(ZI[I[I)I#1",
+      "originalName": "param1",
+      "to": "wordIndex",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(ZI[I[I)I#2",
+      "originalName": "param2",
+      "to": "left",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a(ZI[I[I)I#3",
+      "originalName": "param3",
+      "to": "right",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a([II)V#0",
+      "originalName": "param0",
+      "to": "accountWords",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a([II)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a([III[I)I#0",
+      "originalName": "param0",
+      "to": "left",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a([III[I)I#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a([III[I)I#2",
+      "originalName": "param2",
+      "to": "wordIndex",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.a([III[I)I#3",
+      "originalName": "param3",
+      "to": "right",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(BII)I#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(BII)I#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(BII)I#2",
+      "originalName": "param2",
+      "to": "right",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(BIII)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(BIII)V#1",
+      "originalName": "param1",
+      "to": "mode",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(BIII)V#2",
+      "originalName": "param2",
+      "to": "sourceId",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(BIII)V#3",
+      "originalName": "param3",
+      "to": "targetId",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(B[I)I#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(B[I)I#1",
+      "originalName": "param1",
+      "to": "words",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(I)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(IB)Z#0",
+      "originalName": "param0",
+      "to": "achievementId",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(IB)Z#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(II)Led;#0",
+      "originalName": "param0",
+      "to": "achievementId",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(II)Led;#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(III)I#0",
+      "originalName": "param0",
+      "to": "exponent",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(III)I#1",
+      "originalName": "param1",
+      "to": "base",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(III)I#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(IZ)Lci;#0",
+      "originalName": "param0",
+      "to": "achievementId",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.b(IZ)Lci;#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.c(B)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.c(BII)I#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.c(BII)I#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.c(BII)I#2",
+      "originalName": "param2",
+      "to": "right",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.c(I)V#0",
+      "originalName": "param0",
+      "to": "defaultCountdown",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.c(IB)[I#0",
+      "originalName": "param0",
+      "to": "setKind",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.c(IB)[I#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.c(II)I#0",
+      "originalName": "param0",
+      "to": "setKind",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.c(II)I#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.c(III)V#0",
+      "originalName": "param0",
+      "to": "start",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.c(III)V#1",
+      "originalName": "param1",
+      "to": "achievement",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.c(III)V#2",
+      "originalName": "param2",
+      "to": "mode",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.d(BII)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.d(BII)V#1",
+      "originalName": "param1",
+      "to": "mode",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.d(BII)V#2",
+      "originalName": "param2",
+      "to": "value",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.d(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.d(II)I#0",
+      "originalName": "param0",
+      "to": "setKind",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.d(II)I#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.e(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.e(II)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.e(II)Z#1",
+      "originalName": "param1",
+      "to": "setKind",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.f(II)Z#0",
+      "originalName": "param0",
+      "to": "achievementId",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:en.f(II)Z#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
       "confidence": "reviewed"
     },
     {
@@ -39431,10 +40957,94 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:mb.<init>(III)V#0",
+      "originalName": "param0",
+      "to": "minimumValue",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.<init>(III)V#1",
+      "originalName": "param1",
+      "to": "requiredMode",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.<init>(III)V#2",
+      "originalName": "param2",
+      "to": "achievementId",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:mb.a(I)V#0",
       "originalName": "param0",
       "to": "guard",
       "evidence": "Reviewed full body clears retained shared static references; guard branches/arithmetic and instance ownership remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(III)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(III)V#1",
+      "originalName": "param1",
+      "to": "mode",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(III)V#2",
+      "originalName": "param2",
+      "to": "value",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(Led;I)V#0",
+      "originalName": "param0",
+      "to": "sprite",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a(Led;I)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a([Ljava/lang/String;I)V#0",
+      "originalName": "args",
+      "to": "suggestions",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.a([Ljava/lang/String;I)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mb.b(B)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
       "confidence": "reviewed"
     },
     {
@@ -42616,10 +44226,360 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oc.<init>(I)V#0",
+      "originalName": "param0",
+      "to": "count",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.<init>(IILhh;)V#0",
+      "originalName": "param0",
+      "to": "xQ16",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.<init>(IILhh;)V#1",
+      "originalName": "param1",
+      "to": "yQ16",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.<init>(IILhh;)V#2",
+      "originalName": "param2",
+      "to": "sound",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.<init>(Led;IILhh;)V#0",
+      "originalName": "param0",
+      "to": "sprite",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.<init>(Led;IILhh;)V#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.<init>(Led;IILhh;)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.<init>(Led;IILhh;)V#3",
+      "originalName": "param3",
+      "to": "sound",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(BLjava/awt/Component;)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(BLjava/awt/Component;)V#1",
+      "originalName": "param1",
+      "to": "component",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IBLcc;)V#0",
+      "originalName": "param0",
+      "to": "opcode",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IBLcc;)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IBLcc;)V#2",
+      "originalName": "param2",
+      "to": "record",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(III)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(III)V#1",
+      "originalName": "param1",
+      "to": "cameraX",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(III)V#2",
+      "originalName": "param2",
+      "to": "cameraY",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIII)V#0",
+      "originalName": "param0",
+      "to": "top",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIII)V#1",
+      "originalName": "param1",
+      "to": "left",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIII)V#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIII)V#3",
+      "originalName": "param3",
+      "to": "width",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIIIII)V#0",
+      "originalName": "param0",
+      "to": "width",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIIIII)V#1",
+      "originalName": "param1",
+      "to": "top",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIIIII)V#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIIIII)V#3",
+      "originalName": "param3",
+      "to": "right",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIIIII)V#4",
+      "originalName": "param4",
+      "to": "bottom",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(IIIIII)V#5",
+      "originalName": "param5",
+      "to": "left",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(ILte;Lte;)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(ILte;Lte;)V#1",
+      "originalName": "param1",
+      "to": "source",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.a(ILte;Lte;)V#2",
+      "originalName": "param2",
+      "to": "destination",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.b(II)Z#0",
+      "originalName": "param0",
+      "to": "xQ16",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.b(II)Z#1",
+      "originalName": "param1",
+      "to": "yQ16",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.b(IIIIII)V#0",
+      "originalName": "param0",
+      "to": "top",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.b(IIIIII)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.b(IIIIII)V#2",
+      "originalName": "param2",
+      "to": "width",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.b(IIIIII)V#3",
+      "originalName": "param3",
+      "to": "cameraY",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.b(IIIIII)V#4",
+      "originalName": "param4",
+      "to": "left",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.b(IIIIII)V#5",
+      "originalName": "param5",
+      "to": "cameraX",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.c(II)Z#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.c(II)Z#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.d(B)Ljava/applet/Applet;#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.d(II)V#0",
+      "originalName": "param0",
+      "to": "count",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.d(II)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.e(B)Lte;#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.e(II)V#0",
+      "originalName": "param0",
+      "to": "xQ16",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.e(II)V#1",
+      "originalName": "param1",
+      "to": "yQ16",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.f(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.f(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.g(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.g(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oc.h(I)V#0",
       "originalName": "param0",
       "to": "guard",
       "evidence": "Reviewed full body clears retained shared static references; guard branches/arithmetic and instance ownership remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.i(I)V#0",
+      "originalName": "param0",
+      "to": "index",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
       "confidence": "reviewed"
     },
     {
@@ -49658,6 +51618,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:ug.a(II)Z#0",
+      "originalName": "param0",
+      "to": "achievementId",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ug.a(II)Z#1",
+      "originalName": "param1",
+      "to": "start",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ug.a(III)[I#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ug.a(III)[I#1",
+      "originalName": "param1",
+      "to": "startColor",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ug.a(III)[I#2",
+      "originalName": "param2",
+      "to": "endColor",
+      "evidence": "Reviewed method implementation and call sites: point-cloud arrays, fixed-point collisions and raster bounds; achievement definitions, bitsets, query lifecycle and threshold/grant rules. Guards, null paths, aliasing, original discard behavior and unrelated static ownership are retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ug.a(Z)V#0",
       "originalName": "param0",
       "to": "guard",
@@ -53138,7 +55133,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-escapevector-rules.mjs": "b412fa610538853b6f89610720a7358c6a953df93b17c60f42cffe03ebf74c45",
+      "build-escapevector-rules.mjs": "9c4e674a4341773d76cabe2f9f75813e7c3119e83b87c454545d1d040c757f13",
       "reproduce-escapevector.mjs": "32a380675cbdcef95ba3f15172a2e157edb46887a7ed60688e9b929d3909aa72",
       "prepare-escapevector.mjs": "f3987547b00ddc07b19e958fa025f6b51880572e8b42ad75f4cfeb22c91dff9c",
       "tests/test-escapevector-core.mjs": "7893835b7bf92c142d1c7dfa2cc0c400b700f5aad9eb60acff7b915a08b5c2ae",

@@ -107,6 +107,13 @@ identify loading/index/inflater ownership. Sprite construction, array copies,
 chat decoding/history and achievement grant rules also have reviewed names.
 Unrelated static helpers remain on their original owners; no algorithms change.
 
+Every PointCloudEffect and AchievementTracker method has a reviewed name.
+Effects expose Q16 particle integration, terrain/object collision, glow raster
+reuse, fading and persistent exhaust masks. AchievementDefinition and
+AchievementThresholdRule expose metadata, allowed modes and value thresholds;
+the tracker separates session/account bits, pending queries and award records.
+Original array aliasing, discarded coin/point inputs and guard paths remain.
+
 Escape Vector's full class/method naming goal is tracked by the resolved
 dictionary, including nested classes and overloads:
 

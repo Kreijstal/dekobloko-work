@@ -90,6 +90,14 @@ existing overlap-safe copies; AchievementGrantRule retains mode/mask/category
 checks. Unrelated static methods keep their original owners. This is a naming
 pass, with no loading policy, geometry, wire format or arithmetic changes.
 
+The effect/achievement pass names every PointCloudEffect and AchievementTracker
+method. Effects separate Q16 motion, terrain/object occupancy, glow raster
+reuse, optional extrema outlines and persistent active masks. Achievement
+definitions, member/hidden ID tables, mode masks and threshold rules have names;
+the tracker separates session/combined bits, account-query merges and queued
+award records. Discarded metadata constructor inputs and existing guard paths
+are retained. No new fixtures or gameplay-equivalence claims are introduced.
+
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.
 There are no `statePc` dispatcher files in the raw Escape Vector corpus.
