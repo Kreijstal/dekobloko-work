@@ -3241,6 +3241,181 @@ for (const [owner,original,descriptor,to,parameters] of [
 ]) method(owner,original,descriptor,to,parameters,
   'Reviewed complete remaining-class implementations and callers: campaign/theme assets, projection, simulator masks, highscore player records, account/login phases, promotion actions, integer/Huffman codecs, pooled arrays, native display/cursor support, menu layout, rating packets and session counter words. Original guards, native stubs, aliasing, payload layouts, callbacks, state identities and constructor failures remain unchanged.');
 
+// Cache I/O, asynchronous service dispatch and framebuffer presentation. These
+// names follow the complete methods and their callers; no queue, retry, buffer
+// lifetime, native callback or protocol behavior is rewritten.
+fields('rg', [
+  ['f','J','readStart'],['d','J','position'],['i','J','physicalLength'],
+  ['k','J','filePosition'],['a','J','writeStart'],['h','[B','writeBuffer'],
+  ['e','J','length'],['g','[B','readBuffer'],['l','I','writeLength'],
+  ['j','I','readLength'],['b','Lma;','file'],
+], 'Buffered file separates logical position/length, backing-file position/length and pending read/write ranges; writes and flushes merge overlaps into the read buffer.');
+fields('jg', [
+  ['b','I','storeId'],['a','Lrg;','dataFile'],['e','I','maximumLength'],['d','Lrg;','indexFile'],
+], 'Six-byte index entries address 520-byte sectors; headers identify group, chunk, next sector and store, with separate short/long group-ID layouts.');
+fields('kk', [
+  ['c','Lva;','requests'],['b','Ljava/lang/Thread;','thread'],['e','Z','stopping'],['f','I','pendingCount'],
+], 'Worker synchronizes its request queue, tracks queued count, runs disk operations on its thread and joins it at shutdown.');
+fields('cm', [['z','I','operation'],['y','[B','data'],['x','Ljg;','store']],
+  'Disk operations use one for an immediate read, two for queued write and three for queued read, retaining data and its sector store.');
+field('oa','u','Z','pending', 'Set until network/disk completion; provider and progress/getBytes paths test this volatile completion flag.');
+fields('ai', [
+  ['c','I','cacheBuild'],['b','Ljava/lang/String;','homeDirectory'],['a','Ljava/lang/String;','cacheName'],
+  ['d','Ljava/util/Hashtable;','cachedFiles'],['e','Z','initialized'],
+], 'Initialization retains cache name/build and user home; path resolution delegates to the existing launcher cacheRedirect hook. The retained file table is unused by that redirected body.');
+fields('la', [
+  ['d','Ljava/lang/Object;','argument'],['a','I','secondaryIntArgument'],['g','Lla;','next'],
+  ['b','Ljava/lang/Object;','result'],['f','I','status'],['c','I','intArgument'],['e','I','type'],
+], 'System-task queue records carry a dispatch type, object/integer arguments, next link, result and volatile status: zero pending, one success, two failure.');
+fields('lk', [
+  ['a','Z','stopping'],['k','Ljava/awt/EventQueue;','eventQueue'],['b','Lma;','cacheDataFile'],
+  ['i','Lra;','microsoftDisplayController'],['c','Lla;','queueHead'],['n','J','networkBlockedUntilMillis'],
+  ['f','Z','extendedServicesEnabled'],['l','Ljava/lang/String;','osName'],['m','Z','microsoftVm'],
+  ['o','Ljava/lang/String;','homeDirectory'],['j','Lma;','randomFile'],['u','[Lma;','cacheIndexFiles'],
+  ['h','Ljava/lang/Object;','cursorController'],['t','Ljava/lang/Object;','displayController'],
+  ['s','Ljava/lang/String;','javaVendor'],['p','Lla;','queueTail'],['v','Ljava/lang/String;','javaVersion'],
+  ['d','Lfb;','microsoftCursorController'],['q','I','cacheBuild'],['x','Lma;','masterIndexFile'],
+  ['r','Ljava/lang/reflect/Method;','setFocusCycleRootMethod'],['g','Ljava/lang/Thread;','thread'],
+  ['e','Ljava/lang/String;','osNameLowerCase'],['w','Ljava/lang/String;','cacheName'],
+], 'Complete task dispatcher and constructor identify queue ownership, platform gates, native/reflected display/cursor implementations, cache files, Java/OS properties and the worker thread.');
+fields('hk', [
+  ['f','[B','groupStates'],['p','I','indexCrc32'],['g','[B','indexDigest'],['l','I','indexRevision'],
+  ['m','Lf;','index'],['s','I','archiveId'],['t','Lsb;','transport'],['o','Ljg;','indexStore'],
+  ['y','Loa;','indexRequest'],['q','Lib;','requests'],['k','Lkk;','diskWorker'],['x','Ljg;','groupStore'],
+  ['v','Z','verifyingCache'],['e','Lcn;','prefetchQueue'],['u','Lcn;','backgroundQueue'],
+  ['j','Z','prefetching'],['z','I','scanGroupId'],['h','J','nextCleanupMillis'],['i','Z','cleanupEnabled'],
+], 'Provider constructor and complete validation paths distinguish index/group stores, integrity metadata, retained requests, background scans and cleanup. Group states are zero unchecked, one valid and minus one invalid; original retry and request ownership are preserved.');
+fields('vn', [
+  ['d','I','width'],['h','I','height'],['f','Ljava/awt/Image;','image'],['i','[I','pixels'],
+], 'Both raster implementations allocate width times height plus one pixels, bind the same array to SoftwareRasterizer and present their AWT image.');
+field('kd','j','Ljava/awt/Component;','component', 'Buffered-image presentation uses this retained component as image observer.');
+fields('cg', [['k','Ljava/awt/image/ImageConsumer;','consumer'],['j','Ljava/awt/image/ColorModel;','colorModel']],
+  'ImageProducer retains one consumer and RGB color model; pushPixels publishes the full raster and calls imageComplete with the supplied status.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['c','(I)J','length',['guard']],
+  ['a','(IB[BI)I','read',['length','guard','destination','offset']],
+  ['a','(JI)V','seek',['position','guard']],
+  ['a','([BIII)V','write',['source','length','offset','guard']],
+  ['a','(I)V','close',['guard']],
+  ['a','(IILfd;I)V','legacyFrameHook',['guard','unusedFirstMetric','unusedFrame','unusedSecondMetric']],
+  ['a','(IZI)Loc;','createPointCloud',['count','indexedRendering','guard']],
+  ['a','(Z)[Lee;','loginMethods',['guard']],
+  ['<init>','(Ljava/io/File;Ljava/lang/String;J)V',null,['path','mode','maximumLength']],
+]) method('ma', original, descriptor, to, parameters,
+  'Bounded RandomAccessFile wrapper tracks position and maximum length, closes deterministically and retains its original overflow marker/EOF behavior. Static helpers construct an effect, enumerate login identities or perform the guard-only legacy frame hook.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(ZI[BI)V','write',['guard','sourceOffset','source','length']],
+  ['a','(B)V','close',['guard']],
+  ['b','(I)V','flush',['guard']],
+  ['a','(IJ)V','seek',['guard','position']],
+  ['a','(I)J','length',['guard']],
+  ['a','(Z)V','fillReadBuffer',['guard']],
+  ['a','(IIB[B)V','readFully',['destinationOffset','length','guard','destination']],
+  ['a','(B[B)V','readFully',['guard','destination']],
+  ['a','(Lc;I[SI)[S','readPackedShortArray',['input','countBits','retained','complementedNullCount']],
+  ['a','([II)Z','pollIncomingPacket',['packetLengths','guard']],
+  ['a','([Ljava/lang/String;B)Llm;','nameAvailabilitySuggestions',['suggestions','guard']],
+  ['<init>','(Lma;II)V',null,['file','readCapacity','writeCapacity']],
+]) method('rg', original, descriptor, to, parameters,
+  'Reviewed complete buffered reads/writes, flush overlap, seek/EOF and constructor paths. Unrelated static helpers decode bit-packed shorts, poll ISAAC packets with optional delayed delivery, or create a name-suggestion result; all guards and error paths remain.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(B)V','refreshMembershipMenu',['guard']],
+  ['a','(III)I','validLevelIndex',['gameMode','guard','levelIndex']],
+  ['a','(II)[B','read',['groupId','guard']],
+  ['a','(BII[B)Z','write',['guard','groupId','length','data']],
+  ['a','(II[BIZ)Z','writeSectors',['guard','groupId','data','length','reuseExisting']],
+  ['a','(Ljava/lang/Throwable;I)Ljava/lang/String;','formatCompactStackTrace',['failure','guard']],
+  ['<init>','(ILrg;Lrg;I)V',null,['storeId','dataFile','indexFile','maximumLength']],
+]) method('jg', original, descriptor, to, parameters,
+  'Reviewed complete sector/index I/O, short/long group headers, reuse/new-sector fallback and synchronized failure paths. Unrelated helpers refresh a membership-dependent menu, validate a level index or format a diagnostic stack; original formatting and EOF oddities are retained.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(I)V','shutdown',['guard']],
+  ['a','(Ljg;II)Lcm;','readImmediate',['store','guard','groupId']],
+  ['a','([BIILjg;)Lcm;','enqueueOperation',['data','groupId','operation','store']],
+  ['a','(ILcm;)V','enqueue',['guard','request']],
+  ['a','(BLjg;I)Lcm;','enqueueRead',['guard','store','groupId']],
+  ['<init>','(Llk;)V',null,['taskService']],
+]) method('kk', original, descriptor, to, parameters,
+  'Immediate reads first use queued write data for the same store/group; queued operations retain their source arrays, synchronization, status and exception handling. Constructor waits for its system-task thread and shutdown joins it.');
+method('cm','a','(IIB)I','reverseBits',['value','bitCount','guard'],
+  'Accumulates the low bit into a left-shifting result while unsigned-shifting the input for the requested count.');
+method('cm','a','(Ljava/applet/Applet;I)V','clearSessionAndReload',['applet','guard'],
+  'Writes an empty session cookie through SecondaryIntrusiveDeque and invokes the reload.ws navigation helper.');
+method('va','a','(Ljava/lang/String;ILjava/applet/Applet;)V','setSessionCookie',['session','guard','applet'],
+  'Retains the session string, writes the prefixed domain cookie, expires it for an empty string, then refreshes browser links; script failures remain swallowed.');
+method('de','a','(ZLjava/applet/Applet;)V','reloadAppletPage',['guard','applet'],
+  'Builds reload.ws from the applet code base, retains the document query, applies session parameters and navigates _self; original guarded return and diagnostics remain.');
+method('de','a','(Ljava/lang/String;Ljava/lang/String;I)V','showLoginForm',['identifier','message','guard'],
+  'Closes any pending account request, constructs LoginForm with its initial identifier and explanatory message, and transitions the existing login dialog to that content; the form initializes its password separately.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(Ljava/lang/String;B)Ljava/io/File;','resolveFile',['fileName','guard']],
+  ['a','(Ljava/lang/String;IILjava/lang/String;)Ljava/io/File;','resolveFile',['cacheName','cacheBuild','guard','fileName']],
+  ['a','(Ljava/lang/String;II)V','initialize',['newCacheName','newCacheBuild','guard']],
+]) method('ai', original, descriptor, to, parameters,
+  'Stores cache identity/home state and resolves paths through the existing launcher cache redirect; no filesystem discovery, creation or policy is added.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(BLjava/awt/Frame;)Lla;','exitFullscreen',['guard','frame']],
+  ['a','(BLjava/net/URL;)Lla;','openUrlStream',['guard','url']],
+  ['a','(I)Lla;','listDisplayModes',['guard']],
+  ['a','(IBLjava/lang/String;Z)Lla;','openSocket',['port','guard','host','useProxy']],
+  ['a','(IIIII)Lla;','enterFullscreen',['guard','bitDepth','height','refreshRate','width']],
+  ['a','(IILjava/lang/String;)Lla;','openSocket',['port','guard','host']],
+  ['a','(ILjava/lang/Object;III)Lla;','enqueueTask',['intArgument','argument','guard','type','secondaryIntArgument']],
+  ['a','(Ljava/lang/String;ILjava/lang/Class;[Ljava/lang/Class;)Lla;','lookupDeclaredMethod',['name','guard','owner','parameterTypes']],
+  ['a','(Ljava/lang/String;Ljava/lang/Class;I)Lla;','lookupDeclaredField',['name','owner','guard']],
+  ['a','(ZILjava/lang/Runnable;)Lla;','startThread',['guard','priority','runnable']],
+  ['a','(ZILjava/lang/String;Ljava/lang/String;)Lma;','openPreferencesFile',['guard','cacheBuild','suffix','cacheName']],
+  ['b','(I)V','shutdown',['guard']],
+  ['c','(I)Z','supportsFullscreen',['guard']],
+  ['<init>','(ILjava/lang/String;IZ)V',null,['initialCacheBuild','initialCacheName','indexCount','extendedServicesEnabled']],
+]) method('lk', original, descriptor, to, parameters,
+  'Names dispatch types from the complete worker switch: sockets/proxies, URL streams, daemon threads, reflection, display modes/fullscreen and preferences. Packed fullscreen arguments are decoded by both native/reflected backends; synchronization, task statuses, capability gates and shutdown behavior remain.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['c','(I)V','serviceBackgroundRequests',['guard']],
+  ['b','(B)V','startPrefetch',['guard']],
+  ['b','(I)V','loadMemberCampaignAssets',['guard']],
+  ['a','(III)Loa;','pollGroupRequest',['groupId','requestMode','guard']],
+  ['d','(I)V','servicePrefetchQueue',['guard']],
+  ['a','(Lmf;ZII)Led;','loadSpriteFromArchive',['archive','guard','fileId','groupId']],
+  ['a','(BII)I','hitTestLegacyMenuAction',['guard','x','y']],
+  ['<init>','(ILjg;Ljg;Lsb;Lkk;I[BIZ)V',null,
+    ['archiveId','groupStore','indexStore','transport','diskWorker','indexCrc32','indexDigest','indexRevision','cleanupEnabled']],
+]) method('hk', original, descriptor, to, parameters,
+  'Reviewed complete index/group validation, urgent/cache/prefetch modes, retries, scans and cleanup. Static helpers load keyed member campaigns/simulator assets, build a sprite from an archive sheet or hit-test legacy menu action rows; original request ownership and wire integrity checks remain.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(I)V','bindRaster',['guard']],
+  ['a','(IIILjava/awt/Graphics;)V','drawImage',['x','guard','y','graphics']],
+  ['a','(IILjava/awt/Component;I)V','initialize',['guard','width','component','height']],
+  ['a','([BIII)[B','whirlpoolDigest',['data','offset','length','guard']],
+  ['a','(BLjava/lang/String;)Ld;','createEmailAvailabilityRequest',['guard','email']],
+  ['a','(Ljava/lang/String;ILjava/lang/String;Ljava/net/URL;I)Ljava/net/URL;','withUrlParameters',
+    ['session','language','settings','url','guard']],
+  ['a','(BLjava/lang/CharSequence;)J','encodeBase37Name',['guard','text']],
+]) method('vn', original, descriptor, to, parameters,
+  'Raster contract binds its shared pixel array and defines initialization/presentation for both AWT backends. Static helpers compute Whirlpool, construct an email query, update URL path parameters or encode bounded base-37 names; original slicing, precedence and error paths remain.');
+for (const owner of ['cg','kd']) {
+  method(owner,'a','(IIILjava/awt/Graphics;)V','drawImage',['x','guard','y','graphics'],
+    'Concrete raster presentation implements the reviewed RasterBuffer contract; ImageProducer pushes pixels before drawing, BufferedImage retains its component observer.');
+  method(owner,'a','(IILjava/awt/Component;I)V','initialize',['guard','width','component','height'],
+    'Concrete raster initialization allocates the same backing pixel array and installs its backend image before binding; original prepareImage/guard behavior remains.');
+}
+method('cg','b','(I)V','pushPixels',['completionStatus'],
+  'Synchronized full-frame setPixels followed by imageComplete on the current consumer; null consumer returns immediately.');
+method('cg','c','(I)V','readAchievementResponse',['guard'],
+  'Response subtypes zero/two finish and unlink an achievement query, subtype one acknowledges an award record; missing records and unknown subtypes close the transport.');
+method('cg','d','(I)V','showLoadingProgressDialog',['guard'],
+  'Closes current modal panels, lazily creates the loading progress dialog and pushes that same dialog.');
+method('cg','e','(I)V','configurePunctuationKeyCodes',['guard'],
+  'Assigns the explicit AWT punctuation key codes to game codes, retaining the original guard arithmetic.');
+
 for (const [signature, rows] of [
   ['oe.a(ZILjava/io/InputStream;)V', [[0,'var4','levelInput'],[1,'var5','formatVersion']]],
   ['oe.a(ZIILjava/io/DataInputStream;)V', [[0,'var5','terrain']]],
@@ -3293,6 +3468,8 @@ export const escapeConfig = {
       '`PcmStream` defines process/mixInto/skip, firstSubstream/nextSubstream, activity and priority for all concrete audio streams. PcmStreamMixer owns its substreams and timed PcmMixerListener queue. PcmSample/PcmSampleStream/PcmResampler expose PCM bytes, loops, interpolation and resampling. AudioOutput and JavaSoundAudioOutput distinguish device lifecycle hooks from stream mixing. ReverbPcmStream uses separate ReverbCombFilter and ReverbAllPassFilter rings.','',
       '`VorbisSample` separates shared setup/bitstream tables from per-sample packets, overlap and resumable PCM output. VorbisCodebook, VorbisFloor, VorbisResidue and VorbisMapping expose the compressed-audio stages. SynthInstrument and AudioFilter synthesize envelope-controlled oscillators; SoundEffect mixes up to ten delayed instruments. SoundCache separates completed PCM from pending Vorbis decoders. PcmSampleStream names every control and all sixteen specialized mixing kernels by direction, channel count, interpolation and gain ramp. AudioOutput names scheduling, device service and shutdown; ReverbPcmStream separates wet/dry/input gains, feedback, damping and stereo width.','',
       '`ResourceArchive` consumes ArchiveProvider; CachedArchiveProvider combines Js5Transport with SectorCacheStore, BufferedRandomAccessFile and DiskCacheWorker. ArchiveIndex holds reference metadata; ArchiveRequest has separate network/disk implementations. SystemTaskService owns operating-system work represented by SystemTask. CipherPacketBuffer/IsaacRandom distinguish opcode encryption from ordinary PacketBuffer byte encodings; WhirlpoolHasher and Bzip2Decoder/Bzip2State identify archive digest and decompression work.','',
+      'Every BoundedRandomAccessFile, BufferedRandomAccessFile, SectorCacheStore, DiskCacheWorker, DiskCacheRequest, CacheFileLocator, CachedArchiveProvider and SystemTaskService method has a reviewed name. Buffered I/O separates logical position/length, backing-file position/length and read/write ranges. Immediate disk reads can consume a queued write without copying; queued operations retain their data and completion ownership. Sector reads/writes preserve the original short/long group-ID headers, chain reuse, EOF and failure paths. Archive polling separates urgent, cache-verification and prefetch modes, integrity retries, scan queues and timed cleanup. SystemTask retains dispatch arguments, result, volatile status and next link; its worker exposes sockets, threads, reflection, display and preferences operations without changing native or platform gates.','',
+      'Every RasterBuffer, BufferedImageRasterBuffer and ImageProducerRasterBuffer method has a reviewed name. The shared contract initializes, binds and presents one pixel array; the producer backend pushes pixels to its consumer before drawing. Static helpers remain on their original owners: Whirlpool digests, base-37 names, URL path parameters, session-cookie expiry/reload and achievement-response acknowledgements are separate operations. The original URL precedence, key-code assignments, guards and protocol bytes remain.','',
       '`ArchivePreloader` polls ArchiveLoadTask records and retains the original progress ceiling. Js5ArchiveManager validates the master index and creates/services providers. GzipDecoder owns the raw inflater and preserves header/footer handling and reset paths. SpriteDecodeSupport, SpriteFactorySupport and SimulatorAssetSupport distinguish sheet lifetime, sprite construction and simulator assets. ArraySupport names the original fill/clear/overlap-safe copy loops.','',
       '`ChatMessageDecoder` reads plain or quick-chat messages, including sender identity, rank and split message IDs. ChatMessage exposes display priority; ChatHistorySupport appends and trims history. QuickChatPhraseCache separates local and global phrase archives. AchievementGrantRule retains the original mode/mask/category checks. Static helpers outside these roles remain on their original classes, without inferred module relocation.','',
       '`AchievementDefinition` exposes ID, icon, member/hidden flags and allowed modes. AchievementTracker names all its methods and distinguishes session bits, combined account bits, pending query and queued award records. Account-query merges and session subtraction remain separate; the definition constructor still discards its coin/point arguments. AchievementThresholdRule requires a mode and minimum value before granting. Unrelated menu, tutorial-asset and reflection helpers remain on their original owners.','',

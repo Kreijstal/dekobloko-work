@@ -162,6 +162,16 @@ throwing constructors and original array/counter ownership remain. Unnamed
 helpers in previously named classes still need review; coverage remains the
 authoritative inventory for that work.
 
+The cache/service pass names every method on BoundedRandomAccessFile,
+BufferedRandomAccessFile, SectorCacheStore, DiskCacheWorker, DiskCacheRequest,
+CacheFileLocator, CachedArchiveProvider and SystemTaskService. Fields expose
+logical versus backing-file positions/lengths, buffered ranges, queued disk
+operations, integrity metadata, prefetch scans and system-task arguments/status.
+RasterBuffer and both AWT backends expose initialization, binding and presentation
+of their shared pixel array. Scattered cookie/reload and achievement-response
+helpers retain their original owners. No I/O policy, retry, native capability,
+protocol bytes or algorithms are changed.
+
 Escape Vector's full class/method naming goal is tracked by the resolved
 dictionary, including nested classes and overloads:
 

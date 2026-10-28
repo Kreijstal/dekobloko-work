@@ -148,6 +148,16 @@ existing unsupported-peer paths. SessionCounterState preserves the original
 four-word payload order. Method naming in earlier named classes remains in
 progress and is measured by the coverage command below.
 
+The cache/service pass names every method in the bounded/buffered file wrappers,
+SectorCacheStore, DiskCacheWorker/Request, CacheFileLocator, CachedArchiveProvider
+and SystemTaskService. It distinguishes logical and physical file state, buffered
+ranges, immediate reads from pending writes, queued operations, archive integrity
+checks, prefetch scans and system-task dispatch/status. RasterBuffer and both AWT
+backends name initialization, binding and pixel presentation. Cookie expiry/reload,
+URL parameters and achievement acknowledgements retain their original owners and
+behavior. Naming preserves queue/data ownership, guards, retries, EOF oddities,
+native capability gates and wire bytes; it adds no execution-policy changes.
+
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.
 There are no `statePc` dispatcher files in the raw Escape Vector corpus.
