@@ -90,6 +90,15 @@ PasswordFieldPainter and StripedProgressBar identify their drawing/input roles.
 Shared child traversal, focus movement and text selection/clipboard operations
 also have reviewed names. Remaining unrelated static helpers stay unresolved.
 
+Every EscapeVector method now has a reviewed name, including incremental asset
+loading, archive setup, object sprite/glow/explosion-sample loading and the
+login-or-discard prompt. BufferedSocket/SocketJs5Transport, TickClock/
+NanoTickClock, ByteStorage/DirectByteStorage and the credential writer classes
+identify networking, scheduling, storage and login payload roles. The alternate
+username credential type keeps the same payload and a different wire tag; its
+higher-level purpose remains unresolved. Original timeouts, queue bounds,
+error/null behavior, guard paths, data encodings and class hierarchy are retained.
+
 Escape Vector's full class/method naming goal is tracked by the resolved
 dictionary, including nested classes and overloads:
 

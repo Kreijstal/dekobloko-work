@@ -71,6 +71,15 @@ protocol action numbers, unset style sentinels and arithmetic remain intact;
 the binding, compilation, native-fixture and reverse-source checks remain the
 verification gates for this naming-only pass.
 
+The engine pass names every remaining EscapeVector method and identifies the
+buffered socket/JS5 queues, tick clock, direct byte storage, credential payload
+writers, saved-data query and contact lookup/order. Shared raster push/pop,
+mesh/minimap clipping state, keyboard polling and browser-marker handling also
+receive names. The alternate username credential type is documented as a
+payload-compatible wire-tag variant without guessing its server-side meaning.
+No networking policy, loading order, timing arithmetic, error behavior or
+existing legacy style/contact inheritance changes in this pass.
+
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.
 There are no `statePc` dispatcher files in the raw Escape Vector corpus.
