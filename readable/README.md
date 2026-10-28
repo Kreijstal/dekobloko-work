@@ -152,6 +152,16 @@ clock rollback compensation, password substrings, bit counts and pixel-block
 effects. Original whitespace-compaction bounds, cookie precedence, scratch
 ownership and unrelated static helpers remain unchanged.
 
+Every owned class now has a reviewed name. The last class group includes
+HighscorePlayerRecord, MembershipPromotionScreen, SimulatorSpriteAssets,
+MeshProjectionSupport, HuffmanDecoder, LoginText and Microsoft cursor/display
+support. Its methods expose login/registration phases, legacy themes, sprite
+masks, archive/music factories, result/rating packets and session counter words.
+The login-reply stage follows request writing; native-peer failures, callbacks,
+throwing constructors and original array/counter ownership remain. Unnamed
+helpers in previously named classes still need review; coverage remains the
+authoritative inventory for that work.
+
 Escape Vector's full class/method naming goal is tracked by the resolved
 dictionary, including nested classes and overloads:
 

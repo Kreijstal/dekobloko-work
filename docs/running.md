@@ -138,6 +138,16 @@ password-substring, bit-count and pixel-block helpers now have reviewed names.
 The pass retains URL/JAGGRAB fallback, queue ownership, cookie precedence,
 whitespace-compaction bounds and original guard side effects.
 
+The remaining-class pass supplies names for every owned class and every method
+on those remaining owners. HighscorePlayerRecord identifies response players;
+MembershipPromotionScreen and SimulatorSpriteAssets expose promotion and mask
+loading; MeshProjectionSupport and HuffmanDecoder expose their actual algorithms.
+LoginHandshakeSupport distinguishes seed exchange, login reply, account details
+and opcode-cipher setup. Native Microsoft cursor/display helpers retain their
+existing unsupported-peer paths. SessionCounterState preserves the original
+four-word payload order. Method naming in earlier named classes remains in
+progress and is measured by the coverage command below.
+
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.
 There are no `statePc` dispatcher files in the raw Escape Vector corpus.
