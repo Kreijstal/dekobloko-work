@@ -169,6 +169,16 @@ logo rotation, account-form exchange, cookies, display-name payload, dotted
 geometry, panning and validation helpers. Numeric tags, constant-success hooks,
 retry behavior, mutable queue/array ownership and original equations remain.
 
+The registration/music/compression pass names all AccountRegistrationPanel,
+TrackerMusicPlayer/Definition, ObjectSpriteSet, SpriteOffset, Bzip2Decoder/State
+and TextFieldValidator methods. It exposes registration widgets, layout/readiness,
+submission and policy links; tracker orders/rows/ticks, sample/envelope metadata,
+channel effects and mixer operations; quarter-turn main/glow sprite construction;
+and Bzip2 bit/Huffman/MTF/BWT/run stages with their shared state. Original numeric
+tags, packed bytes, frame histories, guards, clipping, output limits, reference
+release and failure paths remain unchanged. Static unrelated helpers retain their
+original owners and no execution-policy flags or new source copies are added.
+
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.
 There are no `statePc` dispatcher files in the raw Escape Vector corpus.

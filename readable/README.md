@@ -183,6 +183,15 @@ depth/priority ordering, logo rotation, account forms, display-name payload,
 menu geometry and validation. Guards, constant-success hooks, retries, ownership,
 wire layouts and original equations remain unchanged.
 
+The registration/music/compression pass names every AccountRegistrationPanel,
+TrackerMusicPlayer/Definition, ObjectSpriteSet, SpriteOffset, Bzip2Decoder/State
+and TextFieldValidator method. Registration fields/layout/readiness and submission
+are explicit. Tracker state exposes orders/rows/ticks, packed events, sample maps,
+gain/pan, slides, vibrato, portamento and envelopes. Sprite helpers distinguish
+padding, quarter-turn rotation, cropping and glow offsets. Bzip2 separates bit
+reading, Huffman tables, MTF/BWT and final run expansion. Original arithmetic,
+headers, guards, output limits, mixer/array ownership and failure paths remain.
+
 Escape Vector's full class/method naming goal is tracked by the resolved
 dictionary, including nested classes and overloads:
 

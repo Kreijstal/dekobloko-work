@@ -3577,6 +3577,154 @@ method('qd','a','(II)Z','isModeAvailable',['mode','guard'],
 method('km','a','(Ln;I)V','readPackedRatingValues',['input','guard'],
   'Reads the exact packed widths into three shared count words and a rating value consumed by DisplayAndRatingSupport via FullscreenFocusCanvas.appendRatingRow; original byte consumption and diagnostic wrapping remain.');
 
+// Registration layout, tracker playback, quarter-turn sprites and Bzip2 stages.
+// These rules expose the existing algorithms and storage; no execution path,
+// compressed stream, envelope, image equation or validator policy is rewritten.
+fields('bf', [
+  ['R','Lgd;','confirmEmailField'],['J','Lbo;','receiveNewsCheckbox'],['H','Lue;','termsWidget'],
+  ['G','Lrh;','suggestions'],['P','Lhc;','backButton'],['I','Lgd;','emailField'],
+  ['K','Lhc;','submitButton'],['N','Lgd;','ageField'],['Q','Lgd;','passwordField'],
+  ['U','Lgd;','confirmPasswordField'],['S','Lgd;','displayNameField'],['M','[Lrk;','objectSpriteSets'],
+], 'Registration constructor installs explicit email/confirmation, password/confirmation, age and name validators, checkbox, suggestion listener and buttons; the unrelated static sprite array is populated and consumed by object rendering.');
+fields('rk', [['a','[Led;','sprites'],['f','[Led;','glowSprites'],['g','[Lfn;','glowOffsets']],
+  'Constructor rotates the main sprite and glow through the four exact quarter turns and records separately transformed glow offsets.');
+fields('o', [
+  ['m','[I','pitchSlideUpSteps'],['Y','[I','fadeOutAccumulator'],['J','[I','volumeEnvelopeActive'],
+  ['db','[I','fineVolumeUpMemory'],['C','I','requestedOrder'],['o','[I','periodFrequencies'],
+  ['D','[I','vibratoWave'],['G','[I','tonePortamentoActive'],['q','I','jumpTarget'],
+  ['lb','[I','panSlideActive'],['L','[I','volumeSlideActive'],['fb','[I','vibratoActive'],
+  ['cb','[I','extraFinePitchDownMemory'],['R','[I','vibratoPhase'],['l','[I','targetPeriods'],
+  ['S','[I','keyHeld'],['ib','I','orderIndex'],['T','[Lhl;','channelStreams'],['r','I','tempoBpm'],
+  ['jb','I','masterVolume'],['K','[I','volumeEnvelopeTicks'],['P','I','tickWithinRow'],
+  ['z','I','queuedOrder'],['j','I','nextRow'],['bb','I','patternCursor'],['n','[I','periods'],
+  ['Z','[I','portamentoSpeeds'],['p','[I','finePitchDownMemory'],['W','I','queuedRow'],
+  ['t','Z','looping'],['u','Lce;','song'],['k','I','ticksPerRow'],
+  ['H','I','patternBoundaryIntervalRows'],['eb','[I','channelPans'],['B','[I','panSlideAmounts'],
+  ['v','[I','sampleIndices'],['N','[I','volumeSlideAmounts'],['w','[I','globalVolumeSlideActive'],
+  ['gb','[I','vibratoRates'],['U','[I','fineVolumeDownMemory'],['x','I','patternIndex'],
+  ['s','[I','panEnvelopeTicks'],['I','I','orderJumpIntervalRows'],['ab','[I','pitchSlideDownSteps'],
+  ['X','[Z','channelMuted'],['y','I','tempoScaleQ8'],['kb','[I','instrumentIndices'],
+  ['Q','[I','extraFinePitchUpMemory'],['F','Lce;','queuedSong'],['E','[I','vibratoDepths'],
+  ['O','[I','delayedEventOffsets'],['M','I','playbackState'],['A','[I','channelVolumes'],
+  ['hb','I','patternBreakPending'],['mb','[I','finePitchUpMemory'],['i','I','globalVolume'],
+  ['V','[I','globalVolumeSlideAmounts'],
+], 'Complete tracker tick body identifies order/row/tick state, packed event cursors, sample/instrument ownership, gain/pan, slides, vibrato, portamento and envelope release/loop state. Frequency and vibrato tables retain their original formulae; interval/jump fields keep integer state and original boundary conditions.');
+fields('ce', [
+  ['g','[[I','volumeEnvelopeValues'],['F','I','instrumentCount'],['J','[I','volumeSustainPoints'],
+  ['x','[I','orderList'],['A','[I','sampleLoopEnds'],['G','[I','volumeLoopEndPoints'],
+  ['c','[I','sampleFileIds'],['z','[I','sampleFineTunes'],['d','[[I','instrumentSampleMaps'],
+  ['E','[I','sampleFlags'],['y','[I','samplePans'],['k','[I','panLoopStartPoints'],
+  ['K','[I','panLoopEndPoints'],['p','I','patternCount'],['h','[I','sampleLoopStarts'],
+  ['H','[I','instrumentFadeouts'],['t','[[I','panEnvelopeValues'],['e','[I','sampleGroupIds'],
+  ['m','[I','panEnvelopeFlags'],['l','[I','patternRowCounts'],['s','[Lhh;','samples'],
+  ['v','[[I','volumeEnvelopeTicks'],['i','I','initialTempoBpm'],['C','[[B','patternData'],
+  ['q','[I','panSustainPoints'],['o','Lec;','soundCache'],['u','[I','volumeEnvelopeFlags'],
+  ['b','[I','sampleRelativeNotes'],['w','I','orderCount'],['D','I','frequencyMode'],
+  ['a','[I','sampleVolumes'],['L','I','initialTicksPerRow'],['r','[I','volumeLoopStartPoints'],
+  ['I','[[I','panEnvelopeTicks'],['n','[I','sampleLengths'],['B','I','channelCount'],
+], 'Definition constructor decodes order/pattern/channel/instrument counts, delta-coded orders and envelopes, sample maps, loop bounds, note/fine tuning, gain/pan and archive lookup IDs. Playback consumers prove sustain/loop/fade roles. Sample flags initially retain an encoding bit cleared only when sample loading completes.');
+field('i','a','Lth;','state', 'Bzip2 decompression synchronizes this shared state, installs input/output ranges and clears their retained references at the original successful-return point.');
+fields('th', [
+  ['F','I','bitCount'],['k','I','transformPosition'],['t','B','outputByte'],['m','I','bitBuffer'],
+  ['c','[I','minimumCodeLengths'],['I','[[I','huffmanPermutations'],['b','I','repeatRemaining'],
+  ['H','[[I','huffmanLimits'],['d','[Z','symbolsInUse'],['e','I','inputPosition'],
+  ['g','I','originalPointer'],['u','I','blockBytesUsed'],['o','[B','mtfSymbols'],
+  ['J','I','outputRemaining'],['z','[B','input'],['w','[B','symbolMap'],['n','I','totalOutputBytes'],
+  ['j','[I','symbolFrequencies'],['a','[[I','huffmanBases'],['h','I','usedSymbolCount'],
+  ['E','[B','selectorMtf'],['C','I','outputPosition'],['x','I','blockLength'],
+  ['q','[[B','codeLengths'],['A','I','totalInputBytes'],['r','[I','mtfBaseIndices'],
+  ['s','[B','selectors'],['l','I','nextByte'],['i','I','blockSize100k'],
+  ['B','[I','cumulativeFrequencies'],['f','[Z','symbolGroupsInUse'],['D','[B','output'],
+], 'Complete Bzip2 read/decode/output bodies identify bit and byte cursors, in-use maps, selector MTF, Huffman bases/limits/permutations, MTF blocks, frequency prefixes, BWT traversal and pending run state. Static unrelated renderer/rating fields remain separate.');
+field('bd','l','[I','bzip2Transform', 'Decoder reuses this shared integer block for decoded symbol bytes and inverse-BWT links; original allocation size, mutation and synchronization remain.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(ILhm;Ljava/lang/String;II)I','addLabeledField',['fieldWidth','component','label','y','guard']],
+  ['a','(ILjava/lang/String;ILhm;Ljava/lang/String;I)I','addFieldWithHelp',
+    ['layoutGuard','label','y','component','helpText','fieldWidth']],
+  ['k','(I)Ljava/lang/String;','linkEndMarkup',['guard']],
+  ['a','(ZLog;)Z','isFieldReady',['guard','field']],
+  ['a','(Lmf;ILjava/lang/String;Ljava/lang/String;)Lte;','loadNamedIndexedSprite',
+    ['archive','guard','fileName','groupName']],
+  ['a','(Ljava/lang/String;BILhm;I)I','addValidatedField',['label','guard','y','component','fieldWidth']],
+  ['i','(B)Ljava/awt/Canvas;','currentCanvas',['guard']],
+  ['b','(Z)Z','areFieldsReady',['guard']],
+  ['j','(I)Ljava/lang/String;','linkStartMarkup',['guard']],
+  ['a','(ILhm;ILjava/lang/String;ILjava/lang/String;I)I','addFieldWithHelp',
+    ['helpHeight','component','fieldWidth','label','fieldHeight','helpText','y']],
+  ['h','(B)Z','submitRegistration',['guard']],
+  ['a','(II)V','addSessionCounterOffset',['offset','guard']],
+]) method('bf', original, descriptor, to, parameters,
+  'Reviewed complete registration layout/readiness/submission, field validators, suggestions and policy-link markup. Labeled/help/indicator rows retain dimensions and returned heights; original three rejected validation states, age parse fallback, guards and response ownership remain. Unrelated helpers load a named indexed sprite, choose the active canvas or offset session counters.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(BILed;Led;Led;)Led;','cropRotatedSprite',['guard','angle','original','padded','rotated']],
+  ['a','(IIII)Lfn;','rotatedDimensions',['angle','height','guard','width']],
+  ['a','(II)Led;','glowSprite',['guard','angle']],
+  ['a','(Led;ILed;Lfn;)Lfn;','oppositeGlowOffset',['glow','guard','sprite','offset']],
+  ['a','(BI)Lfn;','glowOffset',['guard','angle']],
+  ['a','(Led;I)Led;','padToSquare',['sprite','verticalDivisor']],
+  ['a','(ZI)Led;','sprite',['guard','angle']],
+  ['a','(III)V','setLegacyMenuAnchors',['secondaryAnchor','centerX','guard']],
+  ['a','(Led;II)Led;','rotateSprite',['sprite','guard','angle']],
+  ['<init>','(Led;Led;Lfn;)V',null,['sprite','glow','offset']],
+]) method('rk', original, descriptor, to, parameters,
+  'Reviewed complete quarter-turn construction, square padding, centered rotation/cropping, offset reflection and main/glow accessors at angles zero/16384/32768/49152. The vertical divisor, raster restoration, null/unsupported-angle behavior and guard branches remain. Legacy anchors retain a stored secondary value without inferring an unused coordinate role.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(Z)V','setLooping',['looping']],
+  ['a','(III)V','rampChannelGain',['channel','volume','pan']],
+  ['e','(I)V','fadeChannel',['channel']],
+  ['e','()V','resetPlayback',[]],
+  ['f','()V','allocateChannels',[]],
+  ['c','()Z','advanceTick',[]],
+  ['a','(IIIIII)V','startChannelSample',['channel','sampleIndex','sampleOffset','frequencyHz','volume','pan']],
+  ['d','(I)V','setMasterVolume',['volume']],
+  ['a','(II)V','setChannelFrequency',['channel','frequencyHz']],
+  ['<init>','(Lce;)V',null,['song']],
+]) method('o', original, descriptor, to, parameters,
+  'Reviewed all tracker scheduling and the complete packed-row/effect/envelope tick implementation. Tick advance reports an order/song wrap to the mixer deadline callback; looping, gain ramps, frequency-to-step conversion, fades and sample-loop ownership retain their original behavior and constants.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['d','(I)V','playFootstep',['pan']],
+  ['c','(I)Ljava/lang/String;','currentEmailOrLoginName',['guard']],
+  ['a','(I)V','loadSamples',['guard']],
+  ['a','(BII)Ljava/lang/String;','levelDisplayName',['guard','mode','levelIndex']],
+  ['<init>','(Ln;Lec;)V',null,['input','soundCache']],
+]) method('ce', original, descriptor, to, parameters,
+  'Reviewed complete definition decode/sample acquisition plus static helpers: random left/right footstep sample, current registration/query email with login-name fallback and tutorial/level display text. Sample IDs, lazy cache release, flag clearing, guard paths and original default strings remain.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(ILth;)I','readBits',['count','state']],
+  ['a','(Lth;)B','readByte',['state']],
+  ['a','([BI[BII)I','decompress',['output','outputLength','input','unusedCompressedLength','inputOffset']],
+  ['a','([I[I[I[BIII)V','buildHuffmanTables',
+    ['limits','bases','permutation','lengths','minimumLength','maximumLength','symbolCount']],
+  ['c','(Lth;)B','readBit',['state']],
+  ['e','(Lth;)V','buildSymbolMap',['state']],
+  ['d','(Lth;)V','writeDecodedRuns',['state']],
+  ['b','(Lth;)V','decodeBlocks',['state']],
+]) method('i', original, descriptor, to, parameters,
+  'Reviewed full cache-stream Bzip2 implementation: bit reading, canonical Huffman tables, in-use symbol map, selectors/MTF, BWT links and final run expansion. Public caller supplies compressed length but the existing body does not consume that argument; shared-state synchronization, original header handling, 100k block size, output limits and reference-release points remain.');
+method('th','a','(ZZLjava/applet/Applet;Ljava/lang/String;)V','openBrowserUrl',
+  ['guard','unusedFlag','applet','url'],
+  'Tries the existing Windows URL helper before applet _blank navigation, preserving malformed-URL reporting, unused flag and guarded side effect on the unrelated frame counter.');
+
+for (const [original, descriptor, to, parameters] of [
+  ['a','(ZI)Z','handleLoginOrDiscardPrompt',['pointerDriven','guard']],
+  ['b','(I)I','pollLegacyMenuAction',['guard']],
+  ['a','(JJ)J','bitwiseAnd',['left','right']],
+  ['a','(Ln;II)Ljava/lang/String;','readHuffmanString',['input','guard','maximumLength']],
+  ['a','(CB)Z','isAccountNameCharacter',['character','guard']],
+  ['a','(B)V','resetFrameTiming',['guard']],
+  ['<init>','(II)V',null,['x','y']],
+]) method('fn', original, descriptor, to, parameters,
+  'Reviewed login/discard prompt, keyboard/pointer legacy actions and timeout fallback, long bitwise AND, bounded Huffman-to-CP1252 text, allowed account-name characters and clock/history reset. Original Cabbage error fallback, guarded recursion and controller/queue ownership remain.');
+method('ah','a','(Ljava/awt/Canvas;I)V','drawLoadingProgress',['canvas','guard'],
+  'Updates the existing account-loading hook/progress artwork and presents the raster to the supplied canvas; original stage and presentation arguments remain.');
+method('ah','e','(I)V','clearLegacyMenuState',['guard'],
+  'Clears the four retained legacy menu records and active flag, preserving the guarded timestamp side effect.');
+
 for (const [signature, rows] of [
   ['oe.a(ZILjava/io/InputStream;)V', [[0,'var4','levelInput'],[1,'var5','formatVersion']]],
   ['oe.a(ZIILjava/io/DataInputStream;)V', [[0,'var5','terrain']]],
@@ -3628,9 +3776,11 @@ export const escapeConfig = {
       '## Dialogue and shared engine','',
       '`PcmStream` defines process/mixInto/skip, firstSubstream/nextSubstream, activity and priority for all concrete audio streams. PcmStreamMixer owns its substreams and timed PcmMixerListener queue. PcmSample/PcmSampleStream/PcmResampler expose PCM bytes, loops, interpolation and resampling. AudioOutput and JavaSoundAudioOutput distinguish device lifecycle hooks from stream mixing. ReverbPcmStream uses separate ReverbCombFilter and ReverbAllPassFilter rings.','',
       '`VorbisSample` separates shared setup/bitstream tables from per-sample packets, overlap and resumable PCM output. VorbisCodebook, VorbisFloor, VorbisResidue and VorbisMapping expose the compressed-audio stages. SynthInstrument and AudioFilter synthesize envelope-controlled oscillators; SoundEffect mixes up to ten delayed instruments. SoundCache separates completed PCM from pending Vorbis decoders. PcmSampleStream names every control and all sixteen specialized mixing kernels by direction, channel count, interpolation and gain ramp. AudioOutput names scheduling, device service and shutdown; ReverbPcmStream separates wet/dry/input gains, feedback, damping and stereo width.','',
+      'Every TrackerMusicPlayer and TrackerMusicDefinition method has a reviewed name. Definitions expose orders/patterns, channels, sample maps, archive IDs, loop bounds, envelopes, note/fine tuning and initial timing. Playback separates channel allocation/reset, tick advance, sample start/fade, frequency changes and gain ramps; the complete effect body now names slides, vibrato, portamento, envelope ticks and release state. jumpTarget retains its shared order-jump/pattern-break role. Original packed event bytes, tick scheduling, integer equations, cached sample lifetime and mixer callbacks remain unchanged.','',
       '`ResourceArchive` consumes ArchiveProvider; CachedArchiveProvider combines Js5Transport with SectorCacheStore, BufferedRandomAccessFile and DiskCacheWorker. ArchiveIndex holds reference metadata; ArchiveRequest has separate network/disk implementations. SystemTaskService owns operating-system work represented by SystemTask. CipherPacketBuffer/IsaacRandom distinguish opcode encryption from ordinary PacketBuffer byte encodings; WhirlpoolHasher and Bzip2Decoder/Bzip2State identify archive digest and decompression work.','',
       'Every BoundedRandomAccessFile, BufferedRandomAccessFile, SectorCacheStore, DiskCacheWorker, DiskCacheRequest, CacheFileLocator, CachedArchiveProvider and SystemTaskService method has a reviewed name. Buffered I/O separates logical position/length, backing-file position/length and read/write ranges. Immediate disk reads can consume a queued write without copying; queued operations retain their data and completion ownership. Sector reads/writes preserve the original short/long group-ID headers, chain reuse, EOF and failure paths. Archive polling separates urgent, cache-verification and prefetch modes, integrity retries, scan queues and timed cleanup. SystemTask retains dispatch arguments, result, volatile status and next link; its worker exposes sockets, threads, reflection, display and preferences operations without changing native or platform gates.','',
       'Every RasterBuffer, BufferedImageRasterBuffer and ImageProducerRasterBuffer method has a reviewed name. The shared contract initializes, binds and presents one pixel array; the producer backend pushes pixels to its consumer before drawing. Static helpers remain on their original owners: Whirlpool digests, base-37 names, URL path parameters, session-cookie expiry/reload and achievement-response acknowledgements are separate operations. The original URL precedence, key-code assignments, guards and protocol bytes remain.','',
+      'Every Bzip2Decoder and Bzip2State method has a reviewed name. readBits/readByte/readBit feed in-use symbol mapping and canonical Huffman tables; decodeBlocks expands selectors/MTF and builds inverse-BWT links, then writeDecodedRuns traverses those links and expands final runs. The shared state exposes input/output/bit cursors, tables and pending run state. Original cache headers, ignored compressed-length argument, fixed block-size choice, output limits, synchronization and successful-return reference release are retained. Unrelated browser URL navigation stays on Bzip2State.','',
       '`ArchivePreloader` polls ArchiveLoadTask records and retains the original progress ceiling. Js5ArchiveManager validates the master index and creates/services providers. GzipDecoder owns the raw inflater and preserves header/footer handling and reset paths. SpriteDecodeSupport, SpriteFactorySupport and SimulatorAssetSupport distinguish sheet lifetime, sprite construction and simulator assets. ArraySupport names the original fill/clear/overlap-safe copy loops.','',
       '`ChatMessageDecoder` reads plain or quick-chat messages, including sender identity, rank and split message IDs. ChatMessage exposes display priority; ChatHistorySupport appends and trims history. QuickChatPhraseCache separates local and global phrase archives. AchievementGrantRule retains the original mode/mask/category checks. Static helpers outside these roles remain on their original classes, without inferred module relocation.','',
       '`AchievementDefinition` exposes ID, icon, member/hidden flags and allowed modes. AchievementTracker names all its methods and distinguishes session bits, combined account bits, pending query and queued award records. Account-query merges and session subtraction remain separate; the definition constructor still discards its coin/point arguments. AchievementThresholdRule requires a mode and minimum value before granting. Unrelated menu, tutorial-asset and reflection helpers remain on their original owners.','',
@@ -3652,6 +3802,7 @@ export const escapeConfig = {
       'Every SoftwareRasterizer, Sprite and ArgbSprite method has a reviewed name. Raster operations distinguish outlines/fills, alpha, gradients, clipping, darkening, grayscale and separable blur. Sprite paths distinguish transparent-zero copies, brightness, destination alpha, additive blending, silhouette, multiplication and two grayscale tint modes. Scaling distinguishes nearest-neighbor, area downsampling and bilinear rotation; Q4 pivots/destinations, the 65536-angle cycle and Q12 scale are explicit in transform parameters. ArgbSprite retains per-pixel high-byte coverage. UiTheme identifies default widget painters and single-line/wrapped tooltip layout. These names preserve the original equations and guard paths; they do not claim whole-renderer pixel equivalence beyond the existing focused probes.','',
       '`ModalStack` keeps open panels in focus order and draws them back-to-front. `ModalPanel` fades the first open panel in and other panels out, retaining closed panels until their alpha reaches zero. `ResizableModalPanel` adds eased resizing; `ContentTransitionDialog` fades old content out, resizes, installs pending content and fades it in through `AlphaContainer`. `LoginDialog`, `LoadingProgressDialog`, `AccountRequestDialog`, `RegistrationRequestDialog` and `AccountNoticeDialog` identify the concrete flows. `StripedProgressBar` retains Q16 completion and scrolling shaded stripe/cap sprites.','',
       '`StatefulTextPainter` combines six `WidgetStyleLayer` slots: base, selected, hovered, pressed, disabled and focused. A layer can flush the accumulated drawing before applying its own overrides; unset sentinel values are preserved. `Checkbox` toggles the selected flag; `LinkButtonPainter` and `PasswordFieldPainter` provide underlined links and masked password display. `LabeledField` reserves space for wrapped labels. `LoginForm`, `DisplayNameForm`, `AccountChoicePanel`, `AccountMessagePanel`, `AccountTermsPanel` and `ValidationHelpWidget` identify account UI roles. Shared container focus/add/layout/debug traversal and text insertion, caret, selection and clipboard operations now have reviewed names. Unrelated static helpers and unresolved fields are still tracked separately.','',
+      'Every AccountRegistrationPanel, ObjectSpriteSet, SpriteOffset and TextFieldValidator method has a reviewed name. Registration distinguishes display name, email/confirmation, password/confirmation, age, news checkbox, suggestions and policy links; labeled/help/indicator layout and field readiness remain separate from submission. ObjectSpriteSet caches quarter-turn main/glow images and glow offsets, separating padding, rotation and cropping. SpriteOffset retains unrelated login/discard actions, legacy menu polling, bounded Huffman strings and frame-timing reset. TextFieldValidator retains loading-progress presentation and legacy menu cleanup on its original owner. Guard arithmetic, clipping, fallback strings, frame histories and callback spellings remain unchanged.','',
       'Every EscapeVector method now has a reviewed name. `advanceAssetLoading` steps through fonts/sprites, sound effects, tracker music, level data and menu/controller setup. `initializeGameArchives`, `loadLevelObjectAssets`, `loadObjectSprites`, `loadObjectGlowSprites` and `loadObjectExplosionSamples` identify separate loading operations. `drawLoginOrDiscardPrompt` draws the unauthenticated progress choice. The original archive release points and loading side effects are retained.','',
       '`BufferedSocket` reads synchronously and queues writes for its worker thread; closed/EOF/deferred-error behavior and the original ring-buffer reserve are unchanged. `SocketJs5Transport` separates urgent/prefetch pending and in-flight queues, connection/control frames, chunk decoding, idle timeout and integrity retries. `TickClock` and `NanoTickClock` distinguish waiting, time sampling and bounded tick catch-up. `ByteStorage`/`DirectByteStorage` distinguish heap arrays from copied direct-buffer contents. `LoginCredentials`, `UsernameCredentials`, `EmailCredentials`, `AlternateUsernameCredentials` and `LoginCredentialType` expose payload encodings and the wire tag; the alternate username type has the same payload and an unresolved higher-level purpose.','',
       'Every NetworkGameClient, GameAppletShell, FullscreenFocusCanvas, FullscreenDisplayController and GameKeyHandler method has a reviewed name. The applet shell separates thread launch, ticks, render frames, canvas replacement, latched errors and shutdown while retaining native callback spellings. The network client separates framework preparation, account actions, reconnect/request resending, packet lengths and response dispatch. Host/session-recovery hooks keep their original unconditional success; handshake values and numeric action/status codes are retained. Fullscreen exit preserves retry/disposal and event-queue behavior. Settings cookies and last-login-method cookies remain distinct.','',
