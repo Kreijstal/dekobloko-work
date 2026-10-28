@@ -23,8 +23,11 @@ All three duplicated allocations came from the same fixed-size array aliasing
 bug; the corrected compiler emits one shared allocation at each site.
 
 The original gamepack passes `readable/tests/test-escapevector-core.mjs`'s
-903 independent checks for versions 9/10, empty/full/partial tiles, sprite
-stamping/removal and deque ownership. The named exporter compares the historical,
+2,254 independent assertions for versioned level/audio decoding, terrain masks,
+sprite stamping/removal, deque ownership, widgets, text geometry, all sixteen
+PCM mixing kernels and session helpers. The session probes include bullet
+recycling/reuse without allocation, terrain rays/wrapping, hull geometry,
+countdown colors and clocks. The named exporter compares the historical,
 generically prepared and named Java with these same expectations. Each variant
 compiles the complete 348-file source corpus against signature stubs alone.
 

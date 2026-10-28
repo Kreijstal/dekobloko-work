@@ -316,6 +316,90 @@ public class EscapeTerrainProbe {
   }
   set(null,"ie","o",false);
  }
+ static Object spawnBullet(Object world,int x,int y,int vx,int vy,int kind)throws Exception{
+  call(world,"oe","b:spawnBullet",new Class<?>[]{int.class,int.class,int.class,int.class,int.class,int.class},y,x,vy,256,kind,vx);
+  return get(world,"oe","nb");
+ }
+ static void bulletState(Object bullet,int x,int y,int vx,int vy,int kind,int ticks,boolean inactive)throws Exception{
+  String[] fields={"j","l","n","g","k","m","h"};Object[] values={x,y,vx,vy,kind,ticks,inactive};
+  for(int i=0;i<fields.length;i++)check("bullet-"+fields[i],get(bullet,"vh",fields[i]),values[i]);
+ }
+ static void bulletPool()throws Exception{
+  Object bullet=construct("vh",new Class<?>[]{int.class,int.class,int.class,int.class,int.class,int.class},7,11,-3,5,1,90);
+  bulletState(bullet,7,11,-3,5,1,90,false);
+  call(bullet,"vh","a:reset",new Class<?>[]{int.class,boolean.class,int.class,int.class,byte.class,int.class,int.class,int.class},19,true,23,-29,(byte)-124,0,31,37);
+  bulletState(bullet,19,31,23,-29,0,37,true);
+  call(bullet,"vh","d:deactivate",new Class<?>[]{int.class},-37);bulletState(bullet,0,0,0,0,0,0,true);
+  Object world=make("oe"),deque=construct("cn",new Class<?>[]{});
+  set(world,"oe","n",64);set(world,"oe","G",deque);
+  Object a=spawnBullet(world,-65536,10<<16,3,-5,0),b=spawnBullet(world,2<<16,20<<16,7,-11,1),c=spawnBullet(world,3<<16,30<<16,13,-17,0);
+  bulletState(a,63<<16,10<<16,3,-5,0,250,false);
+  check("pool-allocated-three",get(world,"oe","O"),3);check("pool-active-three",get(world,"oe","x"),3);
+  set(b,"vh","h",true);call(world,"oe","F:recycle",new Class<?>[]{int.class},127);
+  check("recycle-keeps-capacity",get(world,"oe","O"),3);check("recycle-active-two",get(world,"oe","x"),2);
+  check("recycle-last-active",get(world,"oe","nb")==c,true);bulletState(b,0,0,0,0,0,0,true);
+  check("pool-prefix-first",call(deque,"cn","a:first",new Class<?>[]{boolean.class},false)==a,true);
+  check("pool-prefix-second",call(deque,"cn","b",new Class<?>[]{byte.class},(byte)70)==c,true);
+  check("pool-inactive-tail",call(deque,"cn","b",new Class<?>[]{byte.class},(byte)70)==b,true);
+  Object reused=spawnBullet(world,65<<16,40<<16,-19,23,1);
+  check("pool-reuses-retired-object",reused==b,true);bulletState(reused,1<<16,40<<16,-19,23,1,250,false);
+  check("reuse-keeps-capacity",get(world,"oe","O"),3);check("reuse-active-three",get(world,"oe","x"),3);
+  for(Object item:new Object[]{a,b,c})set(item,"vh","h",true);
+  call(world,"oe","F:recycle",new Class<?>[]{int.class},127);
+  check("all-retired-no-last",get(world,"oe","nb"),null);check("all-retired-active-zero",get(world,"oe","x"),0);
+  check("all-retired-capacity-retained",get(world,"oe","O"),3);
+  check("empty-prefix-reuses-first",spawnBullet(world,4,5,6,7,0)==a,true);
+  check("empty-prefix-no-allocation",get(world,"oe","O"),3);check("empty-prefix-one-active",get(world,"oe","x"),1);
+ }
+ static void sessionTerrain()throws Exception{
+  Object world=make("oe");int[] full=(int[])get(null,"si","v"),partial=new int[32];partial[5]=1<<7;
+  int[][] current={null,full,partial,new int[32]},initial={full,null};
+  set(world,"oe","Mb",2);set(world,"oe","D",2);set(world,"oe","n",64);set(world,"oe","nc",1);
+  set(world,"oe","V",current);set(world,"oe","Vb",initial);
+  for(int y=-1;y<=3;y++)for(int x=0;x<6;x++){
+   Object actual=call(world,"oe","a:tile",new Class<?>[]{int.class,int.class,int.class},y,-1,x);
+   check("current-tile-wrap-and-y-boundary",actual==(y<0?null:y>=2?full:current[y*2+x%2]),true);
+   actual=call(world,"oe","a:initialTile",new Class<?>[]{int.class,byte.class,int.class},x,(byte)-82,y);
+   check("initial-tile-independent-height",actual==(y<0?null:y>=1?full:initial[x%2]),true);
+  }
+  for(int y:new int[]{0,5,31})for(int x:new int[]{0,7,31}){
+   check("partial-mask-pixel",call(world,"oe","a:solid",new Class<?>[]{int[].class,int.class,byte.class,int.class},partial,x,(byte)-74,y),x==7&&y==5);
+   check("full-sentinel-pixel",call(world,"oe","a:solid",new Class<?>[]{int[].class,int.class,byte.class,int.class},full,x,(byte)-74,y),true);
+  }
+  Class<?>[] ray={int.class,int.class,int.class,int.class,int.class,int.class};
+  check("ray-above-map",call(world,"oe","a:ray",ray,70,0,-1<<16,-2<<16,1<<16,0),true);
+  check("ray-below-map",call(world,"oe","a:ray",ray,1,0,64<<16,0,0,0),false);
+  check("ray-crosses-full-tile",call(world,"oe","a:ray",ray,4,0,0,30<<16,1<<16,0),false);
+  check("ray-wraps-to-empty",call(world,"oe","a:ray",ray,3,0,0,64<<16,1<<16,0),true);
+  check("ray-empty-count",call(world,"oe","a:ray",ray,0,0,64<<16,0,0,0),true);
+  check("ray-hits-authored-pixel",call(world,"oe","a:ray",ray,8,0,37<<16,0,1<<16,0),false);
+  check("ray-misses-authored-pixel",call(world,"oe","a:ray",ray,7,0,37<<16,0,1<<16,0),true);
+  Object geometry=construct("uk",new Class<?>[]{});
+  String[] points={"e","k","d","g","c"};int[][] xy={{0,0},{16,0},{16,12},{8,16},{24,16}};
+  for(int i=0;i<points.length;i++)set(geometry,"uk",points[i],construct("ga",new Class<?>[]{int.class,int.class},xy[i][0]<<(i==0?0:11),xy[i][1]<<(i==0?0:11)));
+  for(int[] sample:new int[][]{{12,10,-1},{20,10,1},{16,14,0},{0,0,0}})
+   check("hull-half-and-notch",call(world,"oe","a:classify",new Class<?>[]{c("uk"),byte.class,int.class,int.class},geometry,(byte)15,sample[1],sample[0]),sample[2]);
+ }
+ static void sessionColorsAndClock()throws Exception{
+  Object world=make("oe");
+  for(int packed:new int[]{0,0xffffff,0x123456,0xffabcdef}){
+   check("red-channel",call(world,"oe","d:red",new Class<?>[]{int.class,int.class},packed,30351),(packed>>>16)&255);
+   check("green-channel",call(world,"oe","b:green",new Class<?>[]{int.class,int.class},packed,16082),(packed>>>8)&255);
+   check("blue-channel",call(world,"oe","a:blue",new Class<?>[]{int.class,int.class},-99,packed),packed&255);
+   check("rgb-pack",call(world,"oe","a:rgb",new Class<?>[]{int.class,int.class,boolean.class,int.class},packed&255,(packed>>>16)&255,true,(packed>>>8)&255),packed&0xffffff);
+  }
+  Class<?>[] pulse={byte.class,int.class,int.class,int.class};int normal=0x102030,expired=0x506070;
+  check("inactive-countdown-color",call(world,"oe","a:color",pulse,(byte)100,100,normal,expired),normal);
+  set(world,"oe","a",true);
+  for(int[] sample:new int[][]{{0,expired},{-1,expired},{100,expired},{75,0x304050},{50,normal},{25,0x304050},{1,0x4f5f6f}}){
+   set(world,"oe","X",sample[0]);check("countdown-triangle-color",call(world,"oe","a:color",pulse,(byte)100,100,normal,expired),sample[1]);
+  }
+  set(world,"oe","a",false);
+  int[] ticks={0,49,50,2999,3000,180000,2159999,2160000};String[] text={"0:00:00","0:00:00","0:00:01","0:00:59","0:01:00","1:00:00","11:59:59","12:00:00+"};
+  for(int i=0;i<ticks.length;i++){set(world,"oe","cb",ticks[i]);check("fifty-tick-session-clock",call(world,"oe","g:clock",new Class<?>[]{boolean.class},true),text[i]);}
+  set(world,"oe","a",true);set(world,"oe","X",1500);
+  check("countdown-overrides-capped-elapsed",call(world,"oe","g:clock",new Class<?>[]{boolean.class},true),"0:00:30");
+ }
  public static void main(String[] args)throws Exception{
   Class<?> unsafeClass=Class.forName("sun.misc.Unsafe");Field field=unsafeClass.getDeclaredField("theUnsafe");field.setAccessible(true);unsafe=field.get(null);allocate=unsafeClass.getMethod("allocateInstance",Class.class);
   terrain();stamps();collections();System.out.println("checks="+checks);
@@ -324,12 +408,13 @@ public class EscapeTerrainProbe {
   previous=checks;textGeometry();System.out.println("text-checks="+(checks-previous));
   previous=checks;audioFormats();System.out.println("audio-checks="+(checks-previous));
   previous=checks;pcmKernels();System.out.println("pcm-checks="+(checks-previous));
+  previous=checks;bulletPool();sessionTerrain();sessionColorsAndClock();System.out.println("session-checks="+(checks-previous));
  }
 }
 `;
 
 // Used by refresh-raw-class as an original-bytecode correctness gate.
-export const expected = 'checks=903\nlevel-checks=393\nwidget-checks=26\ntext-checks=45\naudio-checks=578\npcm-checks=128';
+export const expected = 'checks=903\nlevel-checks=393\nwidget-checks=26\ntext-checks=45\naudio-checks=578\npcm-checks=128\nsession-checks=181';
 
 export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
   const aliases = new Map(mapping.rules.map(r => [r.symbol, r.to]));
@@ -363,6 +448,12 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
     ['kj','a','()Lhh;','pcm'],['cl','a','(Ln;Lwj;)V','decode'],['cl','a','(IF)I','coefficients'],
     ['hl','a','(Lhh;III)Lhl;','create'],['hl','e','()V','reverse'],['hl','a','(III)V','ramp'],
     ['wg','b','([III)V','mix'],['hl','d','(II)I','left'],['hl','a','(II)I','right'],
+    ['oe','b','(IIIIII)V','spawnBullet'],['oe','F','(I)V','recycle'],
+    ['vh','a','(IZIIBIII)V','reset'],['vh','d','(I)V','deactivate'],
+    ['oe','a','(III)[I','tile'],['oe','a','(IBI)[I','initialTile'],['oe','a','([IIBI)Z','solid'],
+    ['oe','a','(IIIIII)Z','ray'],['oe','a','(Luk;BII)I','classify'],
+    ['oe','d','(II)I','red'],['oe','b','(II)I','green'],['oe','a','(II)I','blue'],['oe','a','(IIZI)I','rgb'],
+    ['oe','a','(BIII)I','color'],['oe','g','(Z)Ljava/lang/String;','clock'],
   ]) {
     const to = aliases.get(`M:${owner}.${name}${descriptor}`);
     if (to) properties.push(`-DM.${owner}.${name}${tag ? ":"+tag : ""}=${to}`);
@@ -386,7 +477,10 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
       'text insertion indices across lines','midpoint ties and vertical hit-test gaps','markup-aware justification','empty/null text geometry',
       'LSB-first Vorbis bits and cursor boundaries','packed floats and canonical codebook entries','floor neighbors/interpolation',
       'mapping mux and byte consumption','packet length extension and loop flags','empty synthesized effects and filter unity',
-      'oscillator boundaries','all sixteen PCM forward/reverse mono/stereo interpolation/ramp kernels','equal-power pan endpoints'],
+      'oscillator boundaries','all sixteen PCM forward/reverse mono/stereo interpolation/ramp kernels','equal-power pan endpoints',
+      'bullet constructor/reset/deactivation','active-prefix bullet recycling and reuse without allocation',
+      'current/initial terrain wrapping and independent height bounds','terrain ray and mask collision boundaries',
+      'ship hull half/notch classification','RGB packing and countdown interpolation','50-tick session/countdown clocks and cap'],
     fullGameplayVerified:false};
 }
 

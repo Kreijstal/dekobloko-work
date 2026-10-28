@@ -152,6 +152,9 @@ const classes = {
   we: ['SynthInstrument', 'Envelope-controlled oscillators, modulation, gating, echo and filter synthesis into a shared signed sample buffer.'],
   cl: ['AudioFilter', 'Feedforward and feedback filter sections with interpolated frequency/attenuation pairs and Q16 coefficients.'],
   kj: ['SoundEffect', 'Up to ten delayed synthesized instruments mixed to 22050 Hz signed PCM with loop endpoints.'],
+  vh: ['Bullet', 'Pooled player/turret projectile with Q16 position/velocity, remaining lifetime, kind and inactive flag; GameplaySession updates, collides and recycles its active prefix.'],
+  uk: ['ShipHullGeometry', 'Retains camera origin, nose, center notch, two wings and raster bounds consumed by the session hull rasterizer; static mesh/network helpers are unrelated.'],
+  ia: ['TriangleMesh', 'Retains indexed triangle vertices, per-corner normals and material/priority groups consumed by depth bucketing and lit triangle rendering.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
@@ -1051,6 +1054,131 @@ for (const descriptor of ['(IIIIZZ)V','(IIIIZZI)V'])
 method('oe','<init>','([[BIII)V',null,['levelData','option','gameMode','levelIndex'],'Retains the supplied campaign, mode, selected level and initial level index; the option is passed to the original setup hook.');
 method('oe','<init>','([[B)V',null,['levelData'],'Retains the supplied level data in the tutorial constructor.');
 
+// Complete the session from bodies and callers, rather than assigning roles
+// from obfuscated spelling. Collision predicates with destructive side effects
+// deliberately say hit; bullet recycling is distinct from allocation/spawning.
+fields('oe', [
+  ['O','I','bulletCapacity'],['x','I','activeBulletCount'],['nb','Lhg;','lastActiveBullet'],
+  ['E','I','tetheredYQ16'],['Ob','I','tetheredVelocityXQ16'],['o','I','tetheredVelocityYQ16'],
+  ['rc','Z','scoringEnabled'],['ec','Z','cargoLost'],['Ib','Z','levelEnded'],
+  ['Jb','Z','quitRequested'],['Cb','Z','advanceLevelRequested'],['c','I','transitionTicks'],
+  ['Hb','I','collisionNormalX'],['pb','I','collisionNormalY'],['q','Z','fatalHullContact'],
+  ['kc','Z','rightLandingContact'],['jc','Z','leftLandingContact'],['oc','I','laserCycleTicks'],
+  ['Db','Lod;','selfDestructEffects'],['Y','Lce;','currentMusic'],['sc','I','currentMusicVolume'],
+  ['i','Led;','noticeSprite'],['Qb','I','noticeTicks'],['y','I','tutorialStep'],['dc','I','displayedTutorialStep'],
+  ['zb','Z','showingAchievementNotice'],['Lb','[I','pendingAchievementIds'],['z','I','pendingAchievementCount'],
+  ['g','[I','displayedAchievementIds'],['d','I','displayedAchievementCount'],['sb','I','activeSessionTicks'],
+  ['pc','I','tutorialBackgroundPhase'],['j','I','levelTitleTicks'],
+  ['bc','I','destructionAchievementCount'],['w','I','previousLevelDestructionCount'],
+  ['u','I','collectedPowerupCount'],['ic','I','previousLevelPowerupCount'],
+], 'Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.');
+fields('vh', [['j','I','xQ16'],['l','I','yQ16'],['n','I','velocityXQ16'],['g','I','velocityYQ16'],
+  ['m','I','remainingTicks'],['h','Z','inactive'],['k','I','kind'],['i','I','collisionLaserCount']],
+  'Constructor/reset assign projectile state; the session integrates Q16 position, decrements lifetime and marks collisions inactive. The static count belongs to the shared nearby-laser scratch list.');
+fields('uk', [['e','Lga;','cameraOrigin'],['k','Lga;','nose'],['d','Lga;','centerNotch'],
+  ['g','Lga;','leftWing'],['c','Lga;','rightWing'],['f','Lga;','boundsMin'],['i','Lga;','boundsMax']],
+  'Hull rendering constructs the rotated triangle/notch in Q11 and its raster bounds, then classifies left/right pixels; at angle zero the wings lie eight pixels left/right of center.');
+
+for (const [name, descriptor, to, parameters, evidence] of [
+  ['a','(IZIIBIII)V','reset',['xQ16','inactive','velocityXQ16','velocityYQ16','guard','kind','yQ16','remainingTicks'],'Assigns every retained projectile state field, including the inactive flag.'],
+  ['d','(I)V','deactivate',['guard'],'Resets position, velocity, kind and lifetime to zero and marks the projectile inactive before moving it to the pool tail.'],
+  ['a','(IZI)V','draw',['cameraX','guard','cameraY'],'Draws a wrapped three-by-three glow with colors selected by kind and faded during the last 64 ticks.'],
+  ['a','(Lia;IIZI)V','bucketMeshFacesByDepth',['mesh','nearDepth','farDepth','cullBackfaces','guard'],'Uses triangle vertex indices, projected cross products, depth sums and material groups to populate depth buckets; does not draw the faces.'],
+  ['a','(Ljava/lang/String;Lmf;Ljava/lang/String;I)Ljava/lang/String;','formatArchiveProgress',['fallback','archive','label','guard'],'Returns fallback until the archive index is ready, then formats its progress percentage.'],
+  ['f','(I)I','accountStateIndex',['guard'],'Distinguishes the logged-in predicate, the positive account-state value and the remaining state without assigning unproven meanings to codes one/two.'],
+  ['a','(B)V','removeFirstDialogue',['guard'],'Removes the first queued dialogue if present.'],
+]) method('vh',name,descriptor,to,parameters,evidence);
+method('vh','<init>','(IIIIII)V',null,['xQ16','yQ16','velocityXQ16','velocityYQ16','kind','remainingTicks'],
+  'Delegates to reset with inactive false and preserves the argument order.');
+
+for (const [name, descriptor, to, parameters] of [
+  ['A','(B)V','scanShipHullContacts',[]],['A','(I)V','resolveShieldImpact',[]],
+  ['a','(BII)Z','hitShipAtPoint',['guard','y','x']],['d','(III)Z','pointInsideShield',['x','guard','y']],
+  ['a','(IIIIII)Z','isTerrainRayClear',['count','stepYQ16','yQ16','xQ16','stepXQ16','guard']],
+  ['a','(IIIII)V','collectCollisionLaserSpans',['guard','bottomY','topY','leftX','rightX']],
+  ['a','(Lhg;IIZI)Lhg;','appendCollisionLaserSpan',['last','rightX','leftX','guard','y']],
+  ['a','(IIIIIIIIIIIIII)V','scanShipHullTileRows',[]],['a','(IIIIIIIIIIIIIII)V','scanShipHullTile',[]],
+  ['a','(IIIIIIBII)V','scanShieldContactTile',[]],['a','(IIIIIZII)V','scanShieldTileRows',[]],
+  ['v','(B)V','scanShieldTerrainContacts',[]],
+  ['a','(Led;IIB)V','accumulateShieldSpriteContacts',['sprite','y','x','guard']],
+  ['a','(ZIILed;)Z','spriteOverlapsShipHull',['guard','y','x','sprite']],
+  ['b','(ILed;II)Z','spriteOverlapsTerrainOrLasers',['x','sprite','y','lastColumnAdjustment']],
+  ['a','(Led;IIIIIII)Z','spriteOverlapsTerrainColumns',[]],['a','(ILed;IIIIIIII)Z','spriteOverlapsTerrainTile',[]],
+  ['a','([IIBI)Z','maskPixelIsSolid',['rows','bitX','guard','rowY']],
+  ['a','(III)[I','terrainTile',['tileY','guard','tileX']],['a','(IBI)[I','initialTerrainTile',['tileX','guard','tileY']],
+  ['a','(ILed;II)V','renderShipHull',['cameraY','targetSprite','color','cameraX']],
+  ['a','(I[IBIILuk;)V','rasterizeShipHull',['leftColor','pixels','guard','stride','rightColor','geometry']],
+  ['a','(Luk;BII)I','classifyShipPixel',['geometry','guard','pixelY','pixelX']],
+]) method('oe',name,descriptor,to,parameters,
+  'Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.');
+
+for (const [name, descriptor, to, parameters] of [
+  ['a','(IIB)V','drawTerrainBase',['cameraY','cameraX','guard']],['c','(IIIIIIII)V','drawTerrainBaseColumn',[]],
+  ['b','(IIIIIIII)I','drawTerrainBaseTile',[]],['e','(III)V','drawTerrainEdges',['cameraY','guard','cameraX']],
+  ['a','(IIIIIIII)V','drawTerrainEdgeColumn',[]],['a','(IIIZIIII[I)I','drawTerrainEdgeTile',[]],
+  ['a','(ZZILed;II)V','tileParallaxLayer',['repeatVertically','fillBottom','guard','sprite','y','x']],
+  ['i','(III)V','drawParallaxBackground',['guard','cameraX','cameraY']],
+  ['g','(III)V','drawTutorialCavernBackground',['cameraY','guard','cameraX']],
+  ['b','(IIB)V','drawTutorialForeground',['cameraX','cameraY','guard']],
+  ['c','(III)V','drawThemeBottomBackground',['x','y','guard']],
+  ['h','(III)V','drawLevelObjects',['guard','cameraX','cameraY']],
+  ['f','(III)V','drawSeekerMines',['cameraX','cameraY','guard']],
+  ['b','(III)V','drawBullets',['cameraX','cameraY','firstIndex']],
+  ['b','(IBI)V','drawLaserGates',['cameraX','guard','cameraY']],
+  ['o','(B)V','drawShieldGlow',['guard']],['a','(B)V','drawGameOverOverlay',['guard']],
+  ['h','(II)V','drawLevelTitle',['guard','cameraY']],['y','(I)V','drawNotice',['guard']],['q','(I)V','drawHudPanels',['guard']],
+]) method('oe',name,descriptor,to,parameters,
+  'Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.');
+
+for (const [name, descriptor, to, parameters] of [
+  ['a','(II)I','blueComponent',['guard','packed']],['b','(II)I','greenComponent',['packed','guard']],
+  ['d','(II)I','redComponent',['packed','guard']],['a','(IIZI)I','packRgb',['blue','red','guard','green']],
+  ['a','(BIII)I','countdownColor',['guard','period','normalColor','expiredColor']],
+  ['g','(Z)Ljava/lang/String;','formatSessionTime',['guard']],['c','(Z)I','musicThemeIndex',['guard']],
+  ['w','(B)Lce;','selectMusic',['guard']],['s','(I)I','selectMusicVolume',['guard']],['t','(B)Z','shouldLoopMusic',['guard']],
+  ['e','(ZI)V','updateMusic',['force','guard']],['z','(I)V','updateMusicFade',['guard']],
+  ['a','(ILhl;)V','silenceSampleStream',['guard','stream']],['a','(I)V','detachSessionAudio',['guard']],
+  ['a','(IZ)V','resetSessionEffects',['guard','option']],
+  ['b','(IIII)I','spatialVolume',['radiusQ16','xQ16','guard','yQ16']],['c','(II)I','spatialPan',['xQ16','guard']],
+]) method('oe',name,descriptor,to,parameters,
+  'Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.');
+
+for (const [name, descriptor, to, parameters] of [
+  ['b','(IIIIII)V','spawnBullet',['yQ16','xQ16','velocityYQ16','guard','kind','velocityXQ16']],
+  ['F','(I)V','recycleInactiveBullets',['guard']],['a','(Z)V','updatePickupAnimation',['guard']],
+  ['k','(II)V','applyPowerup',['guard','objectType']],['c','(IB)V','applyShieldPickup',['objectType','guard']],
+  ['b','(IB)V','applyTriShotPickup',['objectType','guard']],['b','(ZI)V','applyEngineBoostPickup',['guard','objectType']],
+  ['g','(II)V','applyRockBusterPickup',['guard','objectType']],['d','(ZI)Ljava/lang/String;','rockBusterPickupMessage',['guard','count']],
+  ['a','(IB)V','showTntPickupMessage',['objectType','guard']],['k','(B)V','destroyTetheredObject',['guard']],
+  ['b','(I)V','markCargoLost',['objectiveType']],['k','(III)Z','hitTetheredObjectAtPoint',['guard','x','y']],
+  ['j','(III)V','destroyLevelObjectAtPoint',['guard','y','x']],['d','(Z)V','updatePointCloudEffects',['guard']],
+  ['f','(I)V','removeFinishedTargetEffect',['guard']],['a','(Lsa;B)Loc;','spawnObjectDebris',['object','guard']],
+  ['a','(IILed;ILhh;)V','spawnSpriteDebris',['x','guard','sprite','y','sound']],
+  ['a','(IILhh;I)V','spawnExplosion',['guard','y','sound','x']],['i','(II)Loc;','createExhaustCloud',['count','guard']],
+]) method('oe',name,descriptor,to,parameters,
+  'Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.');
+
+for (const [name, descriptor, to, parameters] of [
+  ['w','(I)V','updateMissionOutcome',['objectiveType']],['b','(BII)V','submitCampaignScore',['guard','score','levelIndex']],
+  ['b','(BI)V','recordLevelResult',['guard','outcome']],['f','(Z)V','updateCampaignBestScore',['guard']],
+  ['t','(I)V','recordLevelCompletion',['guard']],['o','(I)V','checkCampaignAchievements',['guard']],
+  ['u','(B)V','checkSimulatorCampaignAchievement',['guard']],['v','(I)V','checkRetributionCampaignAchievement',['guard']],
+  ['q','(B)V','recordDestructionForAchievement',['guard']],['x','(I)V','saveLevelProgress',['guard']],
+  ['x','(B)V','finishPendingBonuses',['guard']],['a','(IZII)V','awardAchievement',['gameMode','guard','achievementId','checksum']],
+  ['p','(B)V','updateNotices',['guard']],['g','(I)I','flatLevelIndex',['guard']],['m','(B)I','missionDialogueTier',['guard']],
+  ['n','(B)Z','areTerrainAssetsReady',['guard']],['r','(I)Ljava/lang/String;','terrainLoadingMessage',['guard']],
+  ['r','(B)Z','repeatSkyLayerVertically',['guard']],['h','(Z)V','showObjectiveMessage',['guard']],
+  ['j','(I)V','replayMissionBriefing',['guard']],['e','(B)V','queueRetrievalBriefing',['guard']],
+  ['l','(I)V','queueRetributionBriefing',['guard']],['m','(I)V','queueRetrievalChapterIntro',['guard']],
+  ['C','(I)V','queueRetributionChapterIntro',['guard']],['E','(I)V','queueCampaignConclusion',['guard']],
+  ['p','(I)V','leaveSession',['guard']],['c','(B)V','resetSessionMenuState',['guard']],['c','(ZI)V','openSessionScreen',['option','guard']],
+  ['d','(B)Z','isRockBusterKeyDown',['guard']],['a','(BI)V','initializeSessionOption',['guard','option']],
+  ['d','(I)V','sessionGuardNoOp',['guard']],['u','(I)V','objectiveTypeReadHook',['guard']],
+  ['j','(II)V','initialPowerupReadHook',['objectType','guard']],
+  ['a','(ILjava/lang/String;)V','showHudMessage',['guard','text']],
+]) method('oe',name,descriptor,to,parameters,
+  'Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.');
+
 for (const [signature, rows] of [
   ['oe.a(ZILjava/io/InputStream;)V', [[0,'var4','levelInput'],[1,'var5','formatVersion']]],
   ['oe.a(ZIILjava/io/DataInputStream;)V', [[0,'var5','terrain']]],
@@ -1090,10 +1218,12 @@ export const escapeConfig = {
       'Objective type is present from version five (zero retrieves cargo; one destroys targets). Version six adds countdown trigger/ticks; `activateCountdown` and `updateCountdown` retain the trigger conditions and fatal expiry. Version three adds Q16 spawn coordinates and initial fuel; version four adds shield energy; version seven adds initial powerup IDs; version eight adds whitelisted Q16 gravity. Default fuel is 2500, shield energy 150 and gravity 512. Unrecognized gravity values retain the supplied default.','',
       '`readLevelObject` reads type and unsigned-short pixel coordinates, including the pre-version-two type migration. Version five adds missionTarget, version six adds triggersCountdown and version nine adds an integer spriteFrame. missionTargets and pendingTargetEffects must both empty before a destruction objective is complete; finishing a target also waits for its effect. `recordInfrastructureDestroyed` tracks a separate completion count.','',
       '`resetShipState` restores fuel/shield, position and velocity, clears cargo and combat state, and creates fresh projectile queues. shipAngle256 wraps at 256; thrustAccelerationQ16 uses fixed-point acceleration. tetheredObjectType, tetheredXQ16 and pickupAnimationTicks describe cargo/powerup handling. `destroyShip`, `hasShipReachedExit` and `isMissionComplete` distinguish death, leaving the world and meeting the objective.','',
+      'Every GameplaySession method has a reviewed name. `updateMissionOutcome`, `recordLevelResult`, `recordLevelCompletion` and `submitCampaignScore` separate mission resolution from account reporting. `levelEnded` also covers leaving without cargo; `quitRequested` and `advanceLevelRequested` drive distinct menu transitions. `recordDestructionForAchievement` counts destroyed objects, seekers and gates, rather than elapsed flight time. `updateNotices` batches tutorial and achievement messages, while `drawLevelTitle` uses a separate timer. Guard-only reader hooks retain their original no-op/arithmetic behavior.','',
       '## Terrain and level objects','',
       '`loadTerrain` reads `TerrainMap`, installs dimensions/themes/masks and calls `snapshotTerrain`. Each tile is 32 by 32 pixels. Null is empty; `QuickChatPhraseDefinition.fullTileMask` is the shared all-solid identity sentinel, whose array is empty. Partial masks are independently mutable arrays of 32 integer row masks. Four two-bit tile codes occupy each packed byte. `AccountRegistrationPanel.decodeTerrainQuadrants` and `TerrainMaskSupport.decodeTerrainQuadrant` recursively decode partial tiles; their unrelated account/UI globals are retained. Version ten adds a separate secondary theme byte.','',
       '`LevelObject` identifies a placed object by objectId/objectType and pixel x/y. Its collision sprite, display sprite and animation frame are distinct. `stampTerrain` ORs nontransparent sprite pixels into collision masks; `removeFromTerrain` clears them, copying a full sentinel before mutation. `initializeLevelObjects` stamps these objects, links gates and constructs the minimap. `buildTutorialTerrain` constructs the tutorial arena directly.','',
       '`SeekerMine` owns current/home positions, velocity and two sound handles. `RockBuster` owns Q16 motion, angle, remaining flight ticks, exhaust and flight sound. `LaserGateSpan` stores pixel leftX/rightX/y; rendering wraps the horizontal span. Destroying a LevelObject, SeekerMine, RockBuster or laser span has a distinct session method. HudMessage/hudMessageQueue retain text and display duration; pointCloudEffects is a separate effect queue.','',
+      '`Bullet` retains Q16 position/velocity, kind, remaining ticks and an inactive flag. `spawnBullet` reuses the first pooled object after the active prefix before allocating; `recycleInactiveBullets` deactivates retired objects and moves them to the tail without discarding capacity. `ShipHullGeometry` retains the Q11 nose, notch and wings plus raster bounds. `hitShipAtPoint` can destroy the ship; `spriteOverlapsShipHull` is only an overlap test. `isTerrainRayClear`, `terrainTile`, `initialTerrainTile` and `maskPixelIsSolid` expose collision lookup independently of rendering.','',
       '`DynamicTerrainRenderer` is selected for terrain theme four; other themes use the session terrain path. `invalidateTileNeighborhood` marks a 3x3 region dirty following edits. `PointCloudEffect` owns per-point fixed-point motion, masks and drawing. These names do not claim that every effect or object type has been identified.','',
       '## Dialogue and shared engine','',
       '`PcmStream` defines process/mixInto/skip, firstSubstream/nextSubstream, activity and priority for all concrete audio streams. PcmStreamMixer owns its substreams and timed PcmMixerListener queue. PcmSample/PcmSampleStream/PcmResampler expose PCM bytes, loops, interpolation and resampling. AudioOutput and JavaSoundAudioOutput distinguish device lifecycle hooks from stream mixing. ReverbPcmStream uses separate ReverbCombFilter and ReverbAllPassFilter rings.','',
@@ -1109,7 +1239,7 @@ export const escapeConfig = {
       'node readable/naming-coverage.mjs escapevector',
       'node readable/tests/test-escapevector-core.mjs /path/to/original/escapevector.jar','```','',
       'The exact raw input is pinned to Git. Existing generic java-tools declaration and decision proofs run across every file from a verified compiler-source archive, without game assumptions or compiler flags. Each stage is checked for determinism and idempotence, and its hashes/counts are retained in the current dictionary. Naming binds declarations/references/overrides, compiles the complete raw/named corpus and retains reversible edits. No generated sources or binary dependencies are stored in Deko.','',
-      'Native fixtures compare historical, prepared and named implementations against independent expectations for versioned terrain headers, empty/full/partial masks, sprite collision stamping/removal and deque transfers. Independently authored complete level streams cover versions zero through eleven, exact byte consumption, target/countdown/frame boundaries, seeker positions, powerup filtering, fuel/shield defaults and objective/gravity whitelists. Widget fixtures check hit-test boundaries/origins, hover versus keyboard focus, virtual focus traversal and the Enter action callback. Text geometry fixtures check insertion indices across lines, midpoint ties, vertical hit-test gaps, markup-aware justification and empty/null layouts. Audio fixtures check LSB-first bits/cursors, packed floats, canonical codebooks, floor interpolation, mapping mux, packet length extensions/loop flags, oscillator boundaries, empty effects and filter unity. PCM fixtures exercise all sixteen direction/channel/interpolation/ramp kernel combinations and pan endpoints. The fixed original gamepack passes all 2,073 assertions too. These focused checks do not prove whole-game behavior, multiplayer compatibility or frame rate. The original mutable obfuscationControl and guard branches remain; unsupported structural recovery and unresolved local names still need review.',''].join('\n');
+      'Native fixtures compare historical, prepared and named implementations against independent expectations for versioned terrain headers, empty/full/partial masks, sprite collision stamping/removal and deque transfers. Independently authored complete level streams cover versions zero through eleven, exact byte consumption, target/countdown/frame boundaries, seeker positions, powerup filtering, fuel/shield defaults and objective/gravity whitelists. Widget fixtures check hit-test boundaries/origins, hover versus keyboard focus, virtual focus traversal and the Enter action callback. Text geometry fixtures check insertion indices across lines, midpoint ties, vertical hit-test gaps, markup-aware justification and empty/null layouts. Audio fixtures check LSB-first bits/cursors, packed floats, canonical codebooks, floor interpolation, mapping mux, packet length extensions/loop flags, oscillator boundaries, empty effects and filter unity. PCM fixtures exercise all sixteen direction/channel/interpolation/ramp kernel combinations and pan endpoints. Session fixtures verify bullet state, active-prefix recycling/reuse, wrapped current/initial terrain, ray/mask boundaries, hull half/notch geometry, RGB/countdown interpolation and 50-tick clocks. The fixed original gamepack passes all 2,254 assertions too. These focused checks do not prove whole-game behavior, multiplayer compatibility or frame rate. The original mutable obfuscationControl and guard branches remain; unsupported structural recovery and unresolved local names still need review.',''].join('\n');
   },
 };
 

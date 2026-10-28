@@ -5208,6 +5208,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ia",
+      "originalName": "ia",
+      "to": "TriangleMesh",
+      "evidence": "Retains indexed triangle vertices, per-corner normals and material/priority groups consumed by depth bucketing and lit triangle rendering.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ib",
       "originalName": "ib",
       "to": "IntrusiveNodeHashTable",
@@ -5747,6 +5754,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:uk",
+      "originalName": "uk",
+      "to": "ShipHullGeometry",
+      "evidence": "Retains camera origin, nose, center notch, two wings and raster bounds consumed by the session hull rasterizer; static mesh/network helpers are unrelated.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ul",
       "originalName": "ul",
       "to": "EditableTextWidget",
@@ -5765,6 +5779,13 @@
       "originalName": "vc",
       "to": "TerrainMap",
       "evidence": "Reads versioned dimensions/themes and packed empty, full or quadtree-decoded 32x32 collision tiles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vh",
+      "originalName": "vh",
+      "to": "Bullet",
+      "evidence": "Pooled player/turret projectile with Q16 position/velocity, remaining lifetime, kind and inactive flag; GameplaySession updates, collides and recycles its active prefix.",
       "confidence": "reviewed"
     },
     {
@@ -7329,10 +7350,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_Cb:Z",
+      "originalName": "field_Cb",
+      "to": "advanceLevelRequested",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_D:I",
       "originalName": "field_D",
       "to": "tilesHigh",
       "evidence": "Reviewed GameplaySession load/reset/update/render data flow; positions and velocities use 16 fractional bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_Db:Lod;",
+      "originalName": "field_Db",
+      "to": "selfDestructEffects",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_E:I",
+      "originalName": "field_E",
+      "to": "tetheredYQ16",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
       "confidence": "reviewed"
     },
     {
@@ -7371,10 +7413,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_Hb:I",
+      "originalName": "field_Hb",
+      "to": "collisionNormalX",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_I:I",
       "originalName": "field_I",
       "to": "shipAngle256",
       "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_Ib:Z",
+      "originalName": "field_Ib",
+      "to": "levelEnded",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
       "confidence": "reviewed"
     },
     {
@@ -7385,10 +7441,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_Jb:Z",
+      "originalName": "field_Jb",
+      "to": "quitRequested",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_L:I",
       "originalName": "field_L",
       "to": "initialInfrastructureCount",
       "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_Lb:[I",
+      "originalName": "field_Lb",
+      "to": "pendingAchievementIds",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
       "confidence": "reviewed"
     },
     {
@@ -7413,6 +7483,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_O:I",
+      "originalName": "field_O",
+      "to": "bulletCapacity",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_Ob:I",
+      "originalName": "field_Ob",
+      "to": "tetheredVelocityXQ16",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_P:I",
       "originalName": "field_P",
       "to": "terrainTheme",
@@ -7431,6 +7515,13 @@
       "originalName": "field_Q",
       "to": "objectiveType",
       "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_Qb:I",
+      "originalName": "field_Qb",
+      "to": "noticeTicks",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
       "confidence": "reviewed"
     },
     {
@@ -7511,6 +7602,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_Y:Lce;",
+      "originalName": "field_Y",
+      "to": "currentMusic",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_Yb:I",
       "originalName": "field_Yb",
       "to": "secondaryTheme",
@@ -7560,6 +7658,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_bc:I",
+      "originalName": "field_bc",
+      "to": "destructionAchievementCount",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_c:I",
+      "originalName": "field_c",
+      "to": "transitionTicks",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_cb:I",
       "originalName": "field_cb",
       "to": "elapsedTicks",
@@ -7567,10 +7679,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_d:I",
+      "originalName": "field_d",
+      "to": "displayedAchievementCount",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_db:Z",
       "originalName": "field_db",
       "to": "shieldUsedThisLevel",
       "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_dc:I",
+      "originalName": "field_dc",
+      "to": "displayedTutorialStep",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
       "confidence": "reviewed"
     },
     {
@@ -7588,10 +7714,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_ec:Z",
+      "originalName": "field_ec",
+      "to": "cargoLost",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_fc:I",
       "originalName": "field_fc",
       "to": "gameMode",
       "evidence": "Reviewed GameplaySession load/reset/update/render data flow; positions and velocities use 16 fractional bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_g:[I",
+      "originalName": "field_g",
+      "to": "displayedAchievementIds",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
       "confidence": "reviewed"
     },
     {
@@ -7630,10 +7770,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_i:Led;",
+      "originalName": "field_i",
+      "to": "noticeSprite",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_ib:I",
       "originalName": "field_ib",
       "to": "thrustAccelerationQ16",
       "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_ic:I",
+      "originalName": "field_ic",
+      "to": "previousLevelPowerupCount",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_j:I",
+      "originalName": "field_j",
+      "to": "levelTitleTicks",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_jc:Z",
+      "originalName": "field_jc",
+      "to": "leftLandingContact",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
       "confidence": "reviewed"
     },
     {
@@ -7648,6 +7816,13 @@
       "originalName": "field_kb",
       "to": "levelObjects",
       "evidence": "Reviewed GameplaySession load/reset/update/render data flow; positions and velocities use 16 fractional bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_kc:Z",
+      "originalName": "field_kc",
+      "to": "rightLandingContact",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
       "confidence": "reviewed"
     },
     {
@@ -7693,10 +7868,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_nb:Lhg;",
+      "originalName": "field_nb",
+      "to": "lastActiveBullet",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_nc:I",
       "originalName": "field_nc",
       "to": "initialTilesHigh",
       "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_o:I",
+      "originalName": "field_o",
+      "to": "tetheredVelocityYQ16",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
       "confidence": "reviewed"
     },
     {
@@ -7707,10 +7896,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_oc:I",
+      "originalName": "field_oc",
+      "to": "laserCycleTicks",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_p:I",
       "originalName": "field_p",
       "to": "shipYQ16",
       "evidence": "Reviewed GameplaySession load/reset/update/render data flow; positions and velocities use 16 fractional bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_pb:I",
+      "originalName": "field_pb",
+      "to": "collisionNormalY",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_pc:I",
+      "originalName": "field_pc",
+      "to": "tutorialBackgroundPhase",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_q:Z",
+      "originalName": "field_q",
+      "to": "fatalHullContact",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
       "confidence": "reviewed"
     },
     {
@@ -7735,10 +7952,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_rc:Z",
+      "originalName": "field_rc",
+      "to": "scoringEnabled",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_s:Lcn;",
       "originalName": "field_s",
       "to": "initialPowerups",
       "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_sb:I",
+      "originalName": "field_sb",
+      "to": "activeSessionTicks",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_sc:I",
+      "originalName": "field_sc",
+      "to": "currentMusicVolume",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
       "confidence": "reviewed"
     },
     {
@@ -7763,6 +8001,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_u:I",
+      "originalName": "field_u",
+      "to": "collectedPowerupCount",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_ub:I",
       "originalName": "field_ub",
       "to": "laserGateCount",
@@ -7777,10 +8022,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_w:I",
+      "originalName": "field_w",
+      "to": "previousLevelDestructionCount",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_x:I",
+      "originalName": "field_x",
+      "to": "activeBulletCount",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_y:I",
+      "originalName": "field_y",
+      "to": "tutorialStep",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oe.field_yb:I",
       "originalName": "field_yb",
       "to": "rockBusterCooldownTicks",
       "evidence": "Reviewed level readers, resetShipState and update/render consumers: fuel decrements on thrust, shield pickup adds 150 capped at 500, angle wraps at 256, projectiles and mission targets retain independent queues.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_z:I",
+      "originalName": "field_z",
+      "to": "pendingAchievementCount",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_zb:Z",
+      "originalName": "field_zb",
+      "to": "showingAchievementNotice",
+      "evidence": "Reviewed assignments and consumers in reset, update, collision, rendering, end-of-level reporting and menu actions. Destruction counts increment on object/seeker/gate destruction, not on time passing; levelEnded also covers an unsuccessful exit.",
       "confidence": "reviewed"
     },
     {
@@ -8197,6 +8477,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:uk.field_c:Lga;",
+      "originalName": "field_c",
+      "to": "rightWing",
+      "evidence": "Hull rendering constructs the rotated triangle/notch in Q11 and its raster bounds, then classifies left/right pixels; at angle zero the wings lie eight pixels left/right of center.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uk.field_d:Lga;",
+      "originalName": "field_d",
+      "to": "centerNotch",
+      "evidence": "Hull rendering constructs the rotated triangle/notch in Q11 and its raster bounds, then classifies left/right pixels; at angle zero the wings lie eight pixels left/right of center.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uk.field_e:Lga;",
+      "originalName": "field_e",
+      "to": "cameraOrigin",
+      "evidence": "Hull rendering constructs the rotated triangle/notch in Q11 and its raster bounds, then classifies left/right pixels; at angle zero the wings lie eight pixels left/right of center.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uk.field_f:Lga;",
+      "originalName": "field_f",
+      "to": "boundsMin",
+      "evidence": "Hull rendering constructs the rotated triangle/notch in Q11 and its raster bounds, then classifies left/right pixels; at angle zero the wings lie eight pixels left/right of center.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uk.field_g:Lga;",
+      "originalName": "field_g",
+      "to": "leftWing",
+      "evidence": "Hull rendering constructs the rotated triangle/notch in Q11 and its raster bounds, then classifies left/right pixels; at angle zero the wings lie eight pixels left/right of center.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uk.field_i:Lga;",
+      "originalName": "field_i",
+      "to": "boundsMax",
+      "evidence": "Hull rendering constructs the rotated triangle/notch in Q11 and its raster bounds, then classifies left/right pixels; at angle zero the wings lie eight pixels left/right of center.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uk.field_k:Lga;",
+      "originalName": "field_k",
+      "to": "nose",
+      "evidence": "Hull rendering constructs the rotated triangle/notch in Q11 and its raster bounds, then classifies left/right pixels; at angle zero the wings lie eight pixels left/right of center.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:va.field_a:Lfl;",
       "originalName": "field_a",
       "to": "cursor",
@@ -8257,6 +8586,62 @@
       "originalName": "field_h",
       "to": "pixelWidth",
       "evidence": "Constructor reads byte dimensions, shifts by five for pixels, defaults the secondary theme before version ten and fills the retained tile array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vh.field_g:I",
+      "originalName": "field_g",
+      "to": "velocityYQ16",
+      "evidence": "Constructor/reset assign projectile state; the session integrates Q16 position, decrements lifetime and marks collisions inactive. The static count belongs to the shared nearby-laser scratch list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vh.field_h:Z",
+      "originalName": "field_h",
+      "to": "inactive",
+      "evidence": "Constructor/reset assign projectile state; the session integrates Q16 position, decrements lifetime and marks collisions inactive. The static count belongs to the shared nearby-laser scratch list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vh.field_i:I",
+      "originalName": "field_i",
+      "to": "collisionLaserCount",
+      "evidence": "Constructor/reset assign projectile state; the session integrates Q16 position, decrements lifetime and marks collisions inactive. The static count belongs to the shared nearby-laser scratch list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vh.field_j:I",
+      "originalName": "field_j",
+      "to": "xQ16",
+      "evidence": "Constructor/reset assign projectile state; the session integrates Q16 position, decrements lifetime and marks collisions inactive. The static count belongs to the shared nearby-laser scratch list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vh.field_k:I",
+      "originalName": "field_k",
+      "to": "kind",
+      "evidence": "Constructor/reset assign projectile state; the session integrates Q16 position, decrements lifetime and marks collisions inactive. The static count belongs to the shared nearby-laser scratch list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vh.field_l:I",
+      "originalName": "field_l",
+      "to": "yQ16",
+      "evidence": "Constructor/reset assign projectile state; the session integrates Q16 position, decrements lifetime and marks collisions inactive. The static count belongs to the shared nearby-laser scratch list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vh.field_m:I",
+      "originalName": "field_m",
+      "to": "remainingTicks",
+      "evidence": "Constructor/reset assign projectile state; the session integrates Q16 position, decrements lifetime and marks collisions inactive. The static count belongs to the shared nearby-laser scratch list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vh.field_n:I",
+      "originalName": "field_n",
+      "to": "velocityXQ16",
+      "evidence": "Constructor/reset assign projectile state; the session integrates Q16 position, decrements lifetime and marks collisions inactive. The static count belongs to the shared nearby-laser scratch list.",
       "confidence": "reviewed"
     },
     {
@@ -13237,6 +13622,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.A(B)V",
+      "originalName": "A",
+      "to": "scanShipHullContacts",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.A(I)V",
+      "originalName": "A",
+      "to": "resolveShieldImpact",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.B(B)V",
       "originalName": "B",
       "to": "updateCountdown",
@@ -13251,6 +13650,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.C(I)V",
+      "originalName": "C",
+      "to": "queueRetributionChapterIntro",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.D(I)V",
       "originalName": "D",
       "to": "ensureTerrainRow",
@@ -13258,10 +13664,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.E(I)V",
+      "originalName": "E",
+      "to": "queueCampaignConclusion",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.F(I)V",
+      "originalName": "F",
+      "to": "recycleInactiveBullets",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.G(I)V",
       "originalName": "G",
       "to": "renderSession",
       "evidence": "Draws terrain/background/effects around the fixed-point ship, then HUD and minimap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(B)V",
+      "originalName": "a",
+      "to": "drawGameOverOverlay",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(BI)V",
+      "originalName": "a",
+      "to": "initializeSessionOption",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(BII)Z",
+      "originalName": "a",
+      "to": "hitShipAtPoint",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(BIII)I",
+      "originalName": "a",
+      "to": "countdownColor",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
       "confidence": "reviewed"
     },
     {
@@ -13279,10 +13727,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.a(I)V",
+      "originalName": "a",
+      "to": "detachSessionAudio",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IB)V",
+      "originalName": "a",
+      "to": "showTntPickupMessage",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IBI)[I",
+      "originalName": "a",
+      "to": "initialTerrainTile",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.a(IBLjava/lang/String;)V",
       "originalName": "a",
       "to": "queueHudMessage",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(II)I",
+      "originalName": "a",
+      "to": "blueComponent",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IIB)V",
+      "originalName": "a",
+      "to": "drawTerrainBase",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(III)[I",
+      "originalName": "a",
+      "to": "terrainTile",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
       "confidence": "reviewed"
     },
     {
@@ -13293,10 +13783,108 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.a(IIIII)V",
+      "originalName": "a",
+      "to": "collectCollisionLaserSpans",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IIIIII)Z",
+      "originalName": "a",
+      "to": "isTerrainRayClear",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IIIIIIBII)V",
+      "originalName": "a",
+      "to": "scanShieldContactTile",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IIIIIIII)V",
+      "originalName": "a",
+      "to": "drawTerrainEdgeColumn",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IIIIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "scanShipHullTileRows",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IIIIIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "scanShipHullTile",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IIIIIZII)V",
+      "originalName": "a",
+      "to": "scanShieldTileRows",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IIIZIIII[I)I",
+      "originalName": "a",
+      "to": "drawTerrainEdgeTile",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IILed;ILhh;)V",
+      "originalName": "a",
+      "to": "spawnSpriteDebris",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IILhh;I)V",
+      "originalName": "a",
+      "to": "spawnExplosion",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.a(IILjava/io/DataInputStream;)V",
       "originalName": "a",
       "to": "readCountdown",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IIZI)I",
+      "originalName": "a",
+      "to": "packRgb",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(ILed;II)V",
+      "originalName": "a",
+      "to": "renderShipHull",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(ILed;IIIIIIII)Z",
+      "originalName": "a",
+      "to": "spriteOverlapsTerrainTile",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(ILhl;)V",
+      "originalName": "a",
+      "to": "silenceSampleStream",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
       "confidence": "reviewed"
     },
     {
@@ -13321,10 +13909,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "showHudMessage",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IZ)V",
+      "originalName": "a",
+      "to": "resetSessionEffects",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(IZII)V",
+      "originalName": "a",
+      "to": "awardAchievement",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(I[IBIILuk;)V",
+      "originalName": "a",
+      "to": "rasterizeShipHull",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.a(Lam;B)V",
       "originalName": "a",
       "to": "removeLaserGateSpan",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(Led;IIB)V",
+      "originalName": "a",
+      "to": "accumulateShieldSpriteContacts",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(Led;IIIIIII)Z",
+      "originalName": "a",
+      "to": "spriteOverlapsTerrainColumns",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(Lhg;IIZI)Lhg;",
+      "originalName": "a",
+      "to": "appendCollisionLaserSpan",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
       "confidence": "reviewed"
     },
     {
@@ -13370,6 +14007,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.a(Lsa;B)Loc;",
+      "originalName": "a",
+      "to": "spawnObjectDebris",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.a(Lsa;II)V",
       "originalName": "a",
       "to": "destroyLevelObject",
@@ -13384,10 +14028,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.a(Luk;BII)I",
+      "originalName": "a",
+      "to": "classifyShipPixel",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(Z)V",
+      "originalName": "a",
+      "to": "updatePickupAnimation",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.a(ZI)V",
       "originalName": "a",
       "to": "initializeLevelObjects",
       "evidence": "Stamps objects, links gates, resets ship state, conditionally creates the style-four renderer and constructs the minimap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(ZIILed;)Z",
+      "originalName": "a",
+      "to": "spriteOverlapsShipHull",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
       "confidence": "reviewed"
     },
     {
@@ -13405,6 +14070,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.a(ZZILed;II)V",
+      "originalName": "a",
+      "to": "tileParallaxLayer",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.a(Z[BZ)V",
       "originalName": "a",
       "to": "installLevelBytes",
@@ -13419,10 +14091,101 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.a([IIBI)Z",
+      "originalName": "a",
+      "to": "maskPixelIsSolid",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.b(B)V",
       "originalName": "b",
       "to": "resetShipState",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(BI)V",
+      "originalName": "b",
+      "to": "recordLevelResult",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(BII)V",
+      "originalName": "b",
+      "to": "submitCampaignScore",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(I)V",
+      "originalName": "b",
+      "to": "markCargoLost",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(IB)V",
+      "originalName": "b",
+      "to": "applyTriShotPickup",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(IBI)V",
+      "originalName": "b",
+      "to": "drawLaserGates",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(II)I",
+      "originalName": "b",
+      "to": "greenComponent",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(IIB)V",
+      "originalName": "b",
+      "to": "drawTutorialForeground",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(III)V",
+      "originalName": "b",
+      "to": "drawBullets",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(IIII)I",
+      "originalName": "b",
+      "to": "spatialVolume",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(IIIIII)V",
+      "originalName": "b",
+      "to": "spawnBullet",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(IIIIIIII)I",
+      "originalName": "b",
+      "to": "drawTerrainBaseTile",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(ILed;II)Z",
+      "originalName": "b",
+      "to": "spriteOverlapsTerrainOrLasers",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
       "confidence": "reviewed"
     },
     {
@@ -13447,10 +14210,115 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.b(ZI)V",
+      "originalName": "b",
+      "to": "applyEngineBoostPickup",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.c(B)V",
+      "originalName": "c",
+      "to": "resetSessionMenuState",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.c(I)V",
       "originalName": "c",
       "to": "updateHudMessage",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.c(IB)V",
+      "originalName": "c",
+      "to": "applyShieldPickup",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.c(II)I",
+      "originalName": "c",
+      "to": "spatialPan",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.c(III)V",
+      "originalName": "c",
+      "to": "drawThemeBottomBackground",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.c(IIIIIIII)V",
+      "originalName": "c",
+      "to": "drawTerrainBaseColumn",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.c(Z)I",
+      "originalName": "c",
+      "to": "musicThemeIndex",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.c(ZI)V",
+      "originalName": "c",
+      "to": "openSessionScreen",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.d(B)Z",
+      "originalName": "d",
+      "to": "isRockBusterKeyDown",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.d(I)V",
+      "originalName": "d",
+      "to": "sessionGuardNoOp",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.d(II)I",
+      "originalName": "d",
+      "to": "redComponent",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.d(III)Z",
+      "originalName": "d",
+      "to": "pointInsideShield",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.d(Z)V",
+      "originalName": "d",
+      "to": "updatePointCloudEffects",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.d(ZI)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "rockBusterPickupMessage",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.e(B)V",
+      "originalName": "e",
+      "to": "queueRetrievalBriefing",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
       "confidence": "reviewed"
     },
     {
@@ -13468,10 +14336,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.e(III)V",
+      "originalName": "e",
+      "to": "drawTerrainEdges",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.e(Z)Z",
       "originalName": "e",
       "to": "hasShipReachedExit",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.e(ZI)V",
+      "originalName": "e",
+      "to": "updateMusic",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
       "confidence": "reviewed"
     },
     {
@@ -13482,6 +14364,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.f(I)V",
+      "originalName": "f",
+      "to": "removeFinishedTargetEffect",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.f(II)V",
       "originalName": "f",
       "to": "activateCountdown",
@@ -13489,10 +14378,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.f(III)V",
+      "originalName": "f",
+      "to": "drawSeekerMines",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.f(Z)V",
+      "originalName": "f",
+      "to": "updateCampaignBestScore",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.g(B)Z",
       "originalName": "g",
       "to": "isMissionComplete",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.g(I)I",
+      "originalName": "g",
+      "to": "flatLevelIndex",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.g(II)V",
+      "originalName": "g",
+      "to": "applyRockBusterPickup",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.g(III)V",
+      "originalName": "g",
+      "to": "drawTutorialCavernBackground",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.g(Z)Ljava/lang/String;",
+      "originalName": "g",
+      "to": "formatSessionTime",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
       "confidence": "reviewed"
     },
     {
@@ -13510,6 +14441,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.h(II)V",
+      "originalName": "h",
+      "to": "drawLevelTitle",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.h(III)V",
+      "originalName": "h",
+      "to": "drawLevelObjects",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.h(Z)V",
+      "originalName": "h",
+      "to": "showObjectiveMessage",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.i(B)V",
       "originalName": "i",
       "to": "buildTutorialTerrain",
@@ -13524,10 +14476,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.i(II)Loc;",
+      "originalName": "i",
+      "to": "createExhaustCloud",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.i(III)V",
+      "originalName": "i",
+      "to": "drawParallaxBackground",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.j(B)V",
       "originalName": "j",
       "to": "initializeCurrentLevel",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.j(I)V",
+      "originalName": "j",
+      "to": "replayMissionBriefing",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.j(II)V",
+      "originalName": "j",
+      "to": "initialPowerupReadHook",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.j(III)V",
+      "originalName": "j",
+      "to": "destroyLevelObjectAtPoint",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.k(B)V",
+      "originalName": "k",
+      "to": "destroyTetheredObject",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
       "confidence": "reviewed"
     },
     {
@@ -13538,10 +14532,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.k(II)V",
+      "originalName": "k",
+      "to": "applyPowerup",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.k(III)Z",
+      "originalName": "k",
+      "to": "hitTetheredObjectAtPoint",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.l(B)V",
       "originalName": "l",
       "to": "snapshotTerrain",
       "evidence": "Copies every partial tile row, retaining shared null/full sentinels, and records the initial tile height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.l(I)V",
+      "originalName": "l",
+      "to": "queueRetributionBriefing",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.m(B)I",
+      "originalName": "m",
+      "to": "missionDialogueTier",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.m(I)V",
+      "originalName": "m",
+      "to": "queueRetrievalChapterIntro",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.n(B)Z",
+      "originalName": "n",
+      "to": "areTerrainAssetsReady",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
       "confidence": "reviewed"
     },
     {
@@ -13552,10 +14588,143 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.o(B)V",
+      "originalName": "o",
+      "to": "drawShieldGlow",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.o(I)V",
+      "originalName": "o",
+      "to": "checkCampaignAchievements",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.p(B)V",
+      "originalName": "p",
+      "to": "updateNotices",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.p(I)V",
+      "originalName": "p",
+      "to": "leaveSession",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.q(B)V",
+      "originalName": "q",
+      "to": "recordDestructionForAchievement",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.q(I)V",
+      "originalName": "q",
+      "to": "drawHudPanels",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.r(B)Z",
+      "originalName": "r",
+      "to": "repeatSkyLayerVertically",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.r(I)Ljava/lang/String;",
+      "originalName": "r",
+      "to": "terrainLoadingMessage",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.s(B)V",
       "originalName": "s",
       "to": "stopSessionAudio",
       "evidence": "Stops owned sound streams, removes enemy/projectile streams from the mixer and clears their handles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.s(I)I",
+      "originalName": "s",
+      "to": "selectMusicVolume",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.t(B)Z",
+      "originalName": "t",
+      "to": "shouldLoopMusic",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.t(I)V",
+      "originalName": "t",
+      "to": "recordLevelCompletion",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.u(B)V",
+      "originalName": "u",
+      "to": "checkSimulatorCampaignAchievement",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.u(I)V",
+      "originalName": "u",
+      "to": "objectiveTypeReadHook",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.v(B)V",
+      "originalName": "v",
+      "to": "scanShieldTerrainContacts",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.v(I)V",
+      "originalName": "v",
+      "to": "checkRetributionCampaignAchievement",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.w(B)Lce;",
+      "originalName": "w",
+      "to": "selectMusic",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.w(I)V",
+      "originalName": "w",
+      "to": "updateMissionOutcome",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.x(B)V",
+      "originalName": "x",
+      "to": "finishPendingBonuses",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.x(I)V",
+      "originalName": "x",
+      "to": "saveLevelProgress",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
       "confidence": "reviewed"
     },
     {
@@ -13566,10 +14735,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.y(I)V",
+      "originalName": "y",
+      "to": "drawNotice",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.z(B)V",
       "originalName": "z",
       "to": "applyInitialPowerups",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.z(I)V",
+      "originalName": "z",
+      "to": "updateMusicFade",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
       "confidence": "reviewed"
     },
     {
@@ -15047,6 +16230,55 @@
       "originalName": "i",
       "to": "releaseStatics",
       "evidence": "Reviewed full body clears retained shared static references; guard branches/arithmetic and instance ownership remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.a(B)V",
+      "originalName": "a",
+      "to": "removeFirstDialogue",
+      "evidence": "Removes the first queued dialogue if present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.a(IZI)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "Draws a wrapped three-by-three glow with colors selected by kind and faded during the last 64 ticks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.a(IZIIBIII)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Assigns every retained projectile state field, including the inactive flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.a(Lia;IIZI)V",
+      "originalName": "a",
+      "to": "bucketMeshFacesByDepth",
+      "evidence": "Uses triangle vertex indices, projected cross products, depth sums and material groups to populate depth buckets; does not draw the faces.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.a(Ljava/lang/String;Lmf;Ljava/lang/String;I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatArchiveProgress",
+      "evidence": "Returns fallback until the archive index is ready, then formats its progress percentage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.d(I)V",
+      "originalName": "d",
+      "to": "deactivate",
+      "evidence": "Resets position, velocity, kind and lifetime to zero and marks the projectile inactive before moving it to the pool tail.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.f(I)I",
+      "originalName": "f",
+      "to": "accountStateIndex",
+      "evidence": "Distinguishes the logged-in predicate, the positive account-state value and the remaining state without assigning unproven meanings to codes one/two.",
       "confidence": "reviewed"
     },
     {
@@ -22253,6 +23485,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.C(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.D(I)V#0",
       "originalName": "param0",
       "to": "tileY",
@@ -22260,10 +23499,94 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.E(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.F(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.G(I)V#0",
       "originalName": "param0",
       "to": "guard",
       "evidence": "Draws terrain/background/effects around the fixed-point ship, then HUD and minimap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(BI)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(BI)V#1",
+      "originalName": "param1",
+      "to": "option",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(BII)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(BII)Z#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(BII)Z#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(BIII)I#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(BIII)I#1",
+      "originalName": "param1",
+      "to": "period",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(BIII)I#2",
+      "originalName": "param2",
+      "to": "normalColor",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(BIII)I#3",
+      "originalName": "param3",
+      "to": "expiredColor",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
       "confidence": "reviewed"
     },
     {
@@ -22302,6 +23625,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.a(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IB)V#0",
+      "originalName": "param0",
+      "to": "objectType",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IB)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IBI)[I#0",
+      "originalName": "param0",
+      "to": "tileX",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IBI)[I#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IBI)[I#2",
+      "originalName": "param2",
+      "to": "tileY",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.a(IBLjava/lang/String;)V#0",
       "originalName": "param0",
       "to": "durationTicks",
@@ -22320,6 +23685,62 @@
       "originalName": "param2",
       "to": "text",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(II)I#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(II)I#1",
+      "originalName": "param1",
+      "to": "packed",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIB)V#0",
+      "originalName": "param0",
+      "to": "cameraY",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIB)V#1",
+      "originalName": "param1",
+      "to": "cameraX",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIB)V#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(III)[I#0",
+      "originalName": "param0",
+      "to": "tileY",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(III)[I#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(III)[I#2",
+      "originalName": "param2",
+      "to": "tileX",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
       "confidence": "reviewed"
     },
     {
@@ -22351,6 +23772,146 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.a(IIIII)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIIII)V#1",
+      "originalName": "param1",
+      "to": "bottomY",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIIII)V#2",
+      "originalName": "param2",
+      "to": "topY",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIIII)V#3",
+      "originalName": "param3",
+      "to": "leftX",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIIII)V#4",
+      "originalName": "param4",
+      "to": "rightX",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIIIII)Z#0",
+      "originalName": "param0",
+      "to": "count",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIIIII)Z#1",
+      "originalName": "param1",
+      "to": "stepYQ16",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIIIII)Z#2",
+      "originalName": "param2",
+      "to": "yQ16",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIIIII)Z#3",
+      "originalName": "param3",
+      "to": "xQ16",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIIIII)Z#4",
+      "originalName": "param4",
+      "to": "stepXQ16",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIIIII)Z#5",
+      "originalName": "param5",
+      "to": "guard",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IILed;ILhh;)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IILed;ILhh;)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IILed;ILhh;)V#2",
+      "originalName": "param2",
+      "to": "sprite",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IILed;ILhh;)V#3",
+      "originalName": "param3",
+      "to": "y",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IILed;ILhh;)V#4",
+      "originalName": "param4",
+      "to": "sound",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IILhh;I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IILhh;I)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IILhh;I)V#2",
+      "originalName": "param2",
+      "to": "sound",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IILhh;I)V#3",
+      "originalName": "param3",
+      "to": "x",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.a(IILjava/io/DataInputStream;)V#0",
       "originalName": "param0",
       "to": "formatVersion",
@@ -22369,6 +23930,76 @@
       "originalName": "param2",
       "to": "input",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIZI)I#0",
+      "originalName": "param0",
+      "to": "blue",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIZI)I#1",
+      "originalName": "param1",
+      "to": "red",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIZI)I#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IIZI)I#3",
+      "originalName": "param3",
+      "to": "green",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILed;II)V#0",
+      "originalName": "param0",
+      "to": "cameraY",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILed;II)V#1",
+      "originalName": "param1",
+      "to": "targetSprite",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILed;II)V#2",
+      "originalName": "param2",
+      "to": "color",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILed;II)V#3",
+      "originalName": "param3",
+      "to": "cameraX",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILhl;)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILhl;)V#1",
+      "originalName": "param1",
+      "to": "stream",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
       "confidence": "reviewed"
     },
     {
@@ -22435,6 +24066,104 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.a(ILjava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ILjava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IZ)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IZ)V#1",
+      "originalName": "param1",
+      "to": "option",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IZII)V#0",
+      "originalName": "param0",
+      "to": "gameMode",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IZII)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IZII)V#2",
+      "originalName": "param2",
+      "to": "achievementId",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(IZII)V#3",
+      "originalName": "param3",
+      "to": "checksum",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(I[IBIILuk;)V#0",
+      "originalName": "param0",
+      "to": "leftColor",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(I[IBIILuk;)V#1",
+      "originalName": "param1",
+      "to": "pixels",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(I[IBIILuk;)V#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(I[IBIILuk;)V#3",
+      "originalName": "param3",
+      "to": "stride",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(I[IBIILuk;)V#4",
+      "originalName": "param4",
+      "to": "rightColor",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(I[IBIILuk;)V#5",
+      "originalName": "param5",
+      "to": "geometry",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.a(Lam;B)V#0",
       "originalName": "param0",
       "to": "gate",
@@ -22446,6 +24175,69 @@
       "originalName": "param1",
       "to": "guard",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Led;IIB)V#0",
+      "originalName": "param0",
+      "to": "sprite",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Led;IIB)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Led;IIB)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Led;IIB)V#3",
+      "originalName": "param3",
+      "to": "guard",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lhg;IIZI)Lhg;#0",
+      "originalName": "param0",
+      "to": "last",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lhg;IIZI)Lhg;#1",
+      "originalName": "param1",
+      "to": "rightX",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lhg;IIZI)Lhg;#2",
+      "originalName": "param2",
+      "to": "leftX",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lhg;IIZI)Lhg;#3",
+      "originalName": "param3",
+      "to": "guard",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lhg;IIZI)Lhg;#4",
+      "originalName": "param4",
+      "to": "y",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
       "confidence": "reviewed"
     },
     {
@@ -22589,6 +24381,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.a(Lsa;B)Loc;#0",
+      "originalName": "param0",
+      "to": "object",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Lsa;B)Loc;#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.a(Lsa;II)V#0",
       "originalName": "param0",
       "to": "object",
@@ -22631,6 +24437,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.a(Luk;BII)I#0",
+      "originalName": "param0",
+      "to": "geometry",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Luk;BII)I#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Luk;BII)I#2",
+      "originalName": "param2",
+      "to": "pixelY",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Luk;BII)I#3",
+      "originalName": "param3",
+      "to": "pixelX",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(Z)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.a(ZI)V#0",
       "originalName": "param0",
       "to": "buildTerrainRenderer",
@@ -22642,6 +24483,34 @@
       "originalName": "param1",
       "to": "guard",
       "evidence": "Stamps objects, links gates, resets ship state, conditionally creates the style-four renderer and constructs the minimap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ZIILed;)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ZIILed;)Z#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ZIILed;)Z#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ZIILed;)Z#3",
+      "originalName": "param3",
+      "to": "sprite",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
       "confidence": "reviewed"
     },
     {
@@ -22694,6 +24563,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.a(ZZILed;II)V#0",
+      "originalName": "param0",
+      "to": "repeatVertically",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ZZILed;II)V#1",
+      "originalName": "param1",
+      "to": "fillBottom",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ZZILed;II)V#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ZZILed;II)V#3",
+      "originalName": "param3",
+      "to": "sprite",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ZZILed;II)V#4",
+      "originalName": "param4",
+      "to": "y",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a(ZZILed;II)V#5",
+      "originalName": "param5",
+      "to": "x",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.a(Z[BZ)V#0",
       "originalName": "param0",
       "to": "buildTerrainRenderer",
@@ -22729,10 +24640,269 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.a([IIBI)Z#0",
+      "originalName": "param0",
+      "to": "rows",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a([IIBI)Z#1",
+      "originalName": "param1",
+      "to": "bitX",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a([IIBI)Z#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.a([IIBI)Z#3",
+      "originalName": "param3",
+      "to": "rowY",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.b(B)V#0",
       "originalName": "param0",
       "to": "guard",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(BI)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(BI)V#1",
+      "originalName": "param1",
+      "to": "outcome",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(BII)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(BII)V#1",
+      "originalName": "param1",
+      "to": "score",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(BII)V#2",
+      "originalName": "param2",
+      "to": "levelIndex",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(I)V#0",
+      "originalName": "param0",
+      "to": "objectiveType",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IB)V#0",
+      "originalName": "param0",
+      "to": "objectType",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IB)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IBI)V#0",
+      "originalName": "param0",
+      "to": "cameraX",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IBI)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IBI)V#2",
+      "originalName": "param2",
+      "to": "cameraY",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(II)I#0",
+      "originalName": "param0",
+      "to": "packed",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(II)I#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IIB)V#0",
+      "originalName": "param0",
+      "to": "cameraX",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IIB)V#1",
+      "originalName": "param1",
+      "to": "cameraY",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IIB)V#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(III)V#0",
+      "originalName": "param0",
+      "to": "cameraX",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(III)V#1",
+      "originalName": "param1",
+      "to": "cameraY",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(III)V#2",
+      "originalName": "param2",
+      "to": "firstIndex",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IIII)I#0",
+      "originalName": "param0",
+      "to": "radiusQ16",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IIII)I#1",
+      "originalName": "param1",
+      "to": "xQ16",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IIII)I#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IIII)I#3",
+      "originalName": "param3",
+      "to": "yQ16",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IIIIII)V#0",
+      "originalName": "param0",
+      "to": "yQ16",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IIIIII)V#1",
+      "originalName": "param1",
+      "to": "xQ16",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IIIIII)V#2",
+      "originalName": "param2",
+      "to": "velocityYQ16",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IIIIII)V#3",
+      "originalName": "param3",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IIIIII)V#4",
+      "originalName": "param4",
+      "to": "kind",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(IIIIII)V#5",
+      "originalName": "param5",
+      "to": "velocityXQ16",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(ILed;II)Z#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(ILed;II)Z#1",
+      "originalName": "param1",
+      "to": "sprite",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(ILed;II)Z#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(ILed;II)Z#3",
+      "originalName": "param3",
+      "to": "lastColumnAdjustment",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
       "confidence": "reviewed"
     },
     {
@@ -22785,10 +24955,178 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.b(ZI)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.b(ZI)V#1",
+      "originalName": "param1",
+      "to": "objectType",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.c(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.c(I)V#0",
       "originalName": "param0",
       "to": "minimumTicks",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.c(IB)V#0",
+      "originalName": "param0",
+      "to": "objectType",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.c(IB)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.c(II)I#0",
+      "originalName": "param0",
+      "to": "xQ16",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.c(II)I#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.c(III)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.c(III)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.c(III)V#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.c(Z)I#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.c(ZI)V#0",
+      "originalName": "param0",
+      "to": "option",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.c(ZI)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.d(B)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.d(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.d(II)I#0",
+      "originalName": "param0",
+      "to": "packed",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.d(II)I#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.d(III)Z#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.d(III)Z#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.d(III)Z#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "Reviewed hull/shield triangle-circle geometry, wrapped sprite and terrain masks, nearby laser scratch spans, and their update/render callers. hitShipAtPoint destroys on contact; pure overlap tests do not. Shared full masks remain identity sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.d(Z)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.d(ZI)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.d(ZI)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "count",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.e(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
       "confidence": "reviewed"
     },
     {
@@ -22813,6 +25151,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.e(III)V#0",
+      "originalName": "param0",
+      "to": "cameraY",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.e(III)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.e(III)V#2",
+      "originalName": "param2",
+      "to": "cameraX",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.e(Z)Z#0",
       "originalName": "param0",
       "to": "guard",
@@ -22820,10 +25179,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.e(ZI)V#0",
+      "originalName": "param0",
+      "to": "force",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.e(ZI)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.f(B)V#0",
       "originalName": "param0",
       "to": "guard",
       "evidence": "Reviewed full body clears retained shared static references; guard branches/arithmetic and instance ownership remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.f(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
       "confidence": "reviewed"
     },
     {
@@ -22841,10 +25221,87 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.f(III)V#0",
+      "originalName": "param0",
+      "to": "cameraX",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.f(III)V#1",
+      "originalName": "param1",
+      "to": "cameraY",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.f(III)V#2",
+      "originalName": "param2",
+      "to": "guard",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.f(Z)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.g(B)Z#0",
       "originalName": "param0",
       "to": "guard",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.g(I)I#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.g(II)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.g(II)V#1",
+      "originalName": "param1",
+      "to": "objectType",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.g(III)V#0",
+      "originalName": "param0",
+      "to": "cameraY",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.g(III)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.g(III)V#2",
+      "originalName": "param2",
+      "to": "cameraX",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.g(Z)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
       "confidence": "reviewed"
     },
     {
@@ -22862,6 +25319,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.h(II)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.h(II)V#1",
+      "originalName": "param1",
+      "to": "cameraY",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.h(III)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.h(III)V#1",
+      "originalName": "param1",
+      "to": "cameraX",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.h(III)V#2",
+      "originalName": "param2",
+      "to": "cameraY",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.h(Z)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.i(B)V#0",
       "originalName": "param0",
       "to": "guard",
@@ -22876,10 +25375,94 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.i(II)Loc;#0",
+      "originalName": "param0",
+      "to": "count",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.i(II)Loc;#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.i(III)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.i(III)V#1",
+      "originalName": "param1",
+      "to": "cameraX",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.i(III)V#2",
+      "originalName": "param2",
+      "to": "cameraY",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.j(B)V#0",
       "originalName": "param0",
       "to": "guard",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.j(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.j(II)V#0",
+      "originalName": "param0",
+      "to": "objectType",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.j(II)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.j(III)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.j(III)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.j(III)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.k(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
       "confidence": "reviewed"
     },
     {
@@ -22890,10 +25473,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.k(II)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.k(II)V#1",
+      "originalName": "param1",
+      "to": "objectType",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.k(III)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.k(III)Z#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.k(III)Z#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "Reviewed projectile active-prefix reuse/recycling and pickup, tether, debris and target-effect callers. Type-five text explicitly says TNT; types nine through thirteen route to shield, tri-shot, engine and rock-buster handlers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.l(B)V#0",
       "originalName": "param0",
       "to": "guard",
       "evidence": "Copies every partial tile row, retaining shared null/full sentinels, and records the initial tile height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.l(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.m(B)I#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.m(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.n(B)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
       "confidence": "reviewed"
     },
     {
@@ -22904,10 +25550,136 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.o(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.o(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.p(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.p(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.q(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.q(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.r(B)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.r(I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.s(B)V#0",
       "originalName": "param0",
       "to": "guard",
       "evidence": "Stops owned sound streams, removes enemy/projectile streams from the mixer and clears their handles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.s(I)I#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.t(B)Z#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.t(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.u(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.u(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.v(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.w(B)Lce;#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.w(I)V#0",
+      "originalName": "param0",
+      "to": "objectiveType",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.x(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.x(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed mission/end-state branches, progress writers, destruction and completion achievement call sites, tutorial notice batching, dialogue chapter selection, session-menu callers and reader guard hooks. Guard-only hooks keep their arithmetic/invalid-guard side effects. showHudMessage queues the standard 100-tick duration.",
       "confidence": "reviewed"
     },
     {
@@ -22918,10 +25690,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oe.y(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed renderSession call order and drawing bodies: base texture and mutable terrain edges, parallax/tutorial layers, placed objects, seekers, bullets, laser gates, hull/shield, notices and HUD. Title and tutorial/achievement notice sprites have separate timing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oe.z(B)V#0",
       "originalName": "param0",
       "to": "guard",
       "evidence": "Source-reviewed GameplaySession stream order and its reset/update/render call sites; version gates, guard side effects, queue ordering and numeric object IDs are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oe.z(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Reviewed byte-channel packing/interpolation, 50-tick clock, wrapped distance/pan attenuation and session-owned music/sample lifecycles. Countdown music overrides theme music; detaching from the mixer differs from stopping stream gain.",
       "confidence": "reviewed"
     },
     {
@@ -26019,6 +28805,209 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:vh.<init>(IIIIII)V#0",
+      "originalName": "param0",
+      "to": "xQ16",
+      "evidence": "Delegates to reset with inactive false and preserves the argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.<init>(IIIIII)V#1",
+      "originalName": "param1",
+      "to": "yQ16",
+      "evidence": "Delegates to reset with inactive false and preserves the argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.<init>(IIIIII)V#2",
+      "originalName": "param2",
+      "to": "velocityXQ16",
+      "evidence": "Delegates to reset with inactive false and preserves the argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.<init>(IIIIII)V#3",
+      "originalName": "param3",
+      "to": "velocityYQ16",
+      "evidence": "Delegates to reset with inactive false and preserves the argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.<init>(IIIIII)V#4",
+      "originalName": "param4",
+      "to": "kind",
+      "evidence": "Delegates to reset with inactive false and preserves the argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.<init>(IIIIII)V#5",
+      "originalName": "param5",
+      "to": "remainingTicks",
+      "evidence": "Delegates to reset with inactive false and preserves the argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(B)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Removes the first queued dialogue if present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(IZI)V#0",
+      "originalName": "param0",
+      "to": "cameraX",
+      "evidence": "Draws a wrapped three-by-three glow with colors selected by kind and faded during the last 64 ticks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(IZI)V#1",
+      "originalName": "param1",
+      "to": "guard",
+      "evidence": "Draws a wrapped three-by-three glow with colors selected by kind and faded during the last 64 ticks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(IZI)V#2",
+      "originalName": "param2",
+      "to": "cameraY",
+      "evidence": "Draws a wrapped three-by-three glow with colors selected by kind and faded during the last 64 ticks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(IZIIBIII)V#0",
+      "originalName": "param0",
+      "to": "xQ16",
+      "evidence": "Assigns every retained projectile state field, including the inactive flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(IZIIBIII)V#1",
+      "originalName": "param1",
+      "to": "inactive",
+      "evidence": "Assigns every retained projectile state field, including the inactive flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(IZIIBIII)V#2",
+      "originalName": "param2",
+      "to": "velocityXQ16",
+      "evidence": "Assigns every retained projectile state field, including the inactive flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(IZIIBIII)V#3",
+      "originalName": "param3",
+      "to": "velocityYQ16",
+      "evidence": "Assigns every retained projectile state field, including the inactive flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(IZIIBIII)V#4",
+      "originalName": "param4",
+      "to": "guard",
+      "evidence": "Assigns every retained projectile state field, including the inactive flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(IZIIBIII)V#5",
+      "originalName": "param5",
+      "to": "kind",
+      "evidence": "Assigns every retained projectile state field, including the inactive flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(IZIIBIII)V#6",
+      "originalName": "param6",
+      "to": "yQ16",
+      "evidence": "Assigns every retained projectile state field, including the inactive flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(IZIIBIII)V#7",
+      "originalName": "param7",
+      "to": "remainingTicks",
+      "evidence": "Assigns every retained projectile state field, including the inactive flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(Lia;IIZI)V#0",
+      "originalName": "param0",
+      "to": "mesh",
+      "evidence": "Uses triangle vertex indices, projected cross products, depth sums and material groups to populate depth buckets; does not draw the faces.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(Lia;IIZI)V#1",
+      "originalName": "param1",
+      "to": "nearDepth",
+      "evidence": "Uses triangle vertex indices, projected cross products, depth sums and material groups to populate depth buckets; does not draw the faces.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(Lia;IIZI)V#2",
+      "originalName": "param2",
+      "to": "farDepth",
+      "evidence": "Uses triangle vertex indices, projected cross products, depth sums and material groups to populate depth buckets; does not draw the faces.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(Lia;IIZI)V#3",
+      "originalName": "param3",
+      "to": "cullBackfaces",
+      "evidence": "Uses triangle vertex indices, projected cross products, depth sums and material groups to populate depth buckets; does not draw the faces.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(Lia;IIZI)V#4",
+      "originalName": "param4",
+      "to": "guard",
+      "evidence": "Uses triangle vertex indices, projected cross products, depth sums and material groups to populate depth buckets; does not draw the faces.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(Ljava/lang/String;Lmf;Ljava/lang/String;I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "fallback",
+      "evidence": "Returns fallback until the archive index is ready, then formats its progress percentage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(Ljava/lang/String;Lmf;Ljava/lang/String;I)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "archive",
+      "evidence": "Returns fallback until the archive index is ready, then formats its progress percentage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(Ljava/lang/String;Lmf;Ljava/lang/String;I)Ljava/lang/String;#2",
+      "originalName": "param2",
+      "to": "label",
+      "evidence": "Returns fallback until the archive index is ready, then formats its progress percentage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.a(Ljava/lang/String;Lmf;Ljava/lang/String;I)Ljava/lang/String;#3",
+      "originalName": "param3",
+      "to": "guard",
+      "evidence": "Returns fallback until the archive index is ready, then formats its progress percentage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.d(I)V#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Resets position, velocity, kind and lifetime to zero and marks the projectile inactive before moving it to the pool tail.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.f(I)I#0",
+      "originalName": "param0",
+      "to": "guard",
+      "evidence": "Distinguishes the logged-in predicate, the positive account-state value and the remaining state without assigning unproven meanings to codes one/two.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:vi.a(I)V#0",
       "originalName": "param0",
       "to": "guard",
@@ -26594,10 +29583,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-escapevector-rules.mjs": "657a52374a5caa4874b7431ab483bbeb6ce587516a9c4ee8cce918dc7c97fec8",
+      "build-escapevector-rules.mjs": "5ca34b07c9f75f6bbb5abda0337d63c77fa47dcaaa6c370556a5c4b63e1a70fd",
       "reproduce-escapevector.mjs": "32a380675cbdcef95ba3f15172a2e157edb46887a7ed60688e9b929d3909aa72",
       "prepare-escapevector.mjs": "f3987547b00ddc07b19e958fa025f6b51880572e8b42ad75f4cfeb22c91dff9c",
-      "tests/test-escapevector-core.mjs": "540de3552299ef28c3e8e7dfe4919150444fd76ea03680cea330aca3577e071c",
+      "tests/test-escapevector-core.mjs": "22363df4475995e478d2f65c3c52b81cfb3ef186e435ea6cf92da5738bf876c2",
       "naming-coverage.mjs": "15a5fab4e8fc15559638b61d2f08e07b4822beafde3bf8a122ce76d03f6c04d4",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
