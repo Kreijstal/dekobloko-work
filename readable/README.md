@@ -135,6 +135,14 @@ three help pages and Normal/Hard retrieval ordering. SpriteLoadTask and
 MenuEdgeSegment expose lazy asset loading and animated background records.
 Original query mutations, retained arrays, guards and login bytes remain.
 
+MainMenuScreen and LevelSelectScreen name their complete menu/input paths,
+including audio controls, member promotion, tutorial/introduction actions,
+grouped mission rows and the Simulator minimap preview. GameProgressTracker,
+ModeProgress and SavedCompletionFlags distinguish sequential unlock queries,
+flag completion, pending writes and all-infrastructure completion. The original
+read/write flag-group conventions differ: read group zero is Simulator, while
+write group zero is Retribution. Version-one bytes and bitset aliasing remain.
+
 Escape Vector's full class/method naming goal is tracked by the resolved
 dictionary, including nested classes and overloads:
 

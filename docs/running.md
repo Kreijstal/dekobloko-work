@@ -122,6 +122,14 @@ Normal/Hard retrieval ordering and member modes. SpriteLoadTask and
 MenuEdgeSegment identify deferred assets and background segments. The original
 query board-ID mutations and shared-array ownership are retained.
 
+The menu/progress pass names MainMenuScreen, LevelSelectScreen,
+GameProgressTracker, ModeProgress, SavedCompletionFlags and
+LevelAvailabilitySupport. It exposes sequential versus flag-based unlocks,
+pending saves, the separate infrastructure-completion record and the Simulator
+preview. Read-group zero selects Simulator; write-group zero selects
+Retribution. The original bitset mutation/aliasing, clamps, guards and
+version-one saved-data bytes remain unchanged.
+
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.
 There are no `statePc` dispatcher files in the raw Escape Vector corpus.
