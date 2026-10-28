@@ -114,6 +114,14 @@ phase, geometry, retained points and interpolated alpha. Native/source checks
 preserve guard branches, shared raster/clock ownership and protocol framing;
 these names do not claim full interactive-screen equivalence.
 
+The remaining-view pass names every HighscoresScreen, HighscoreTable,
+InstructionsScreen and GameModeSelectScreen method. Highscores expose query
+status, category/ranking controls, board merges and packed level/score columns.
+Instructions expose controls/pickups/objective pages; the mode selector retains
+Normal/Hard retrieval ordering and member modes. SpriteLoadTask and
+MenuEdgeSegment identify deferred assets and background segments. The original
+query board-ID mutations and shared-array ownership are retained.
+
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.
 There are no `statePc` dispatcher files in the raw Escape Vector corpus.

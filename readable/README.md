@@ -128,6 +128,13 @@ AnimatedPanelFrame, SlidingSpriteTransition and TransitionPoint expose frame
 geometry, opening time, alpha and coordinate interpolation. Their unrelated
 contact, reflection and encrypted-account helpers retain their original owners.
 
+HighscoresScreen, HighscoreTable, InstructionsScreen and GameModeSelectScreen
+name every declared method. Their names distinguish query/category/ranking
+state, merged board origins, optional local-score rows, level/score columns,
+three help pages and Normal/Hard retrieval ordering. SpriteLoadTask and
+MenuEdgeSegment expose lazy asset loading and animated background records.
+Original query mutations, retained arrays, guards and login bytes remain.
+
 Escape Vector's full class/method naming goal is tracked by the resolved
 dictionary, including nested classes and overloads:
 
