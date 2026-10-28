@@ -37,3 +37,18 @@ test('source offsets account for prior variable-length dictionary edits and reje
   assert.equal(methodShapes(mapping,()=>source).length,1);
   assert.throws(()=>methodShapes(mapping,()=>source.replace('int a()','int b()')),/Stale/);
 });
+
+test('review inventory exposes exact bodies and method modifiers without borrowing class modifiers',()=>{
+  const source='public class a {\n public\n static void b() {String text="}";}\n private static void c() {}\n}';
+  const mapping={symbols:[{symbol:'C:a',renamedName:'a'},...['b','c'].map(name=>({
+    symbol:`M:a.${name}()V`,renamedName:name,
+    declaration:{file:'a.java',start:source.indexOf(name+'()')},
+  }))],files:[{original:'a.java',renamed:'a.java',edits:[]}]};
+  assert.deepEqual(methodShapes(mapping,()=>source),[]);
+  const rows=methodShapes(mapping,()=>source,{includeOpaqueOwners:true});
+  assert.equal(rows.length,2);
+  assert.equal(rows[0].publicStaticVoid,true);
+  assert.equal(rows[1].publicStaticVoid,false);
+  assert.equal(source.slice(rows[0].bodyStart,rows[0].bodyEnd),'{String text="}";}');
+  assert.equal(source.slice(rows[1].bodyStart,rows[1].bodyEnd),'{}');
+});

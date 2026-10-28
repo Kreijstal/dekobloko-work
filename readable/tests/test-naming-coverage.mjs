@@ -20,7 +20,7 @@ test('coverage includes overloads and nested classes while preserving constructo
 });
 
 test('numbered or opaque placeholders do not satisfy the naming objective', () => {
-  for (const name of ['a','Z','ab','Class42','Method_aa','Helper123','Unknown_oe']) assert.equal(isOpaqueName(name), true, name);
+  for (const name of ['a','Z','ab','Class42','Method_aa','Helper123','Unknown_oe','$cfr$lcmp','$cfr$intArgs$a$hash']) assert.equal(isOpaqueName(name), true, name);
   for (const name of ['GameScreen','decodeLevelStream','run','read','copy','CfrPartitionedBody','drawPhase2'])
     assert.equal(isOpaqueName(name), false, name);
 });

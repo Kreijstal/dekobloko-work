@@ -35,7 +35,7 @@ function publishedPosition(position, edits) {
   return position + shift;
 }
 
-export function methodShapes(mapping, loadSource) {
+export function methodShapes(mapping, loadSource, {includeOpaqueOwners = false} = {}) {
   const types = new Set(mapping.symbols.filter(row => row.symbol.startsWith('C:') && !isOpaqueName(row.renamedName)).map(row => row.renamedName));
   const fileRows = new Map(mapping.files.map(row => [row.original,row]));
   const cached = new Map(), result = [];
@@ -43,11 +43,17 @@ export function methodShapes(mapping, loadSource) {
     if (!row.symbol.startsWith('M:') || row.symbol.includes('.<init>(')) continue;
     const file = fileRows.get(row.declaration.file);
     if (!file) throw new Error('Missing method source: ' + row.symbol);
-    if (!cached.has(file.original)) cached.set(file.original,tokens(loadSource(file)));
-    const sourceTokens = cached.get(file.original);
+    if (!cached.has(file.original)) {
+      const source = loadSource(file);
+      cached.set(file.original,{source,tokens:tokens(source)});
+    }
+    const {source,tokens:sourceTokens} = cached.get(file.original);
     const position = publishedPosition(row.declaration.start,file.edits || []);
     let index = sourceTokens.findIndex(token => token.start === position);
     if (index < 0 || sourceTokens[index].text !== row.renamedName) throw new Error('Stale method declaration: ' + row.symbol);
+    let headerStart = index;
+    while (headerStart > 0 && !['{','}',';'].includes(sourceTokens[headerStart-1].text)) headerStart--;
+    const header = new Set(sourceTokens.slice(headerStart,index).map(token => token.text));
     index++;
     if (sourceTokens[index]?.text !== '(') throw new Error('Missing method parameters: ' + row.symbol);
     let depth = 0;
@@ -58,6 +64,7 @@ export function methodShapes(mapping, loadSource) {
       if (!depth && (value === '{' || value === ';')) break;
     }
     if (sourceTokens[index]?.text !== '{') continue; // abstract/native contract
+    const bodyStart = sourceTokens[index].start;
     const body = [], identifiers = new Map(); depth = 0;
     for (;index < sourceTokens.length;index++) {
       let value = sourceTokens[index].text;
@@ -76,8 +83,10 @@ export function methodShapes(mapping, loadSource) {
     const renamed = row.renamedSymbol || row.symbol;
     const paren = renamed.indexOf('('), dot = renamed.lastIndexOf('.',paren);
     const owner = renamed.slice(2,dot), descriptor = renamed.slice(paren);
-    if (isOpaqueName(owner.split('$')[0])) continue;
+    if (!includeOpaqueOwners && isOpaqueName(owner.split('$')[0])) continue;
     result.push({symbol:row.symbol,name:row.renamedName,owner,descriptor,file:file.renamed,
+      bodyStart,bodyEnd:sourceTokens[index].end,
+      publicStaticVoid: ['public','static','void'].every(modifier => header.has(modifier)),
       tokens:body.length,shape:crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex')});
   }
   return result;

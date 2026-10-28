@@ -6,7 +6,7 @@ import {funorbRepository} from './game-export.mjs';
 // Audit resolved declarations, including nested classes and overloads. Source
 // text searches alone miss declarations after a containing class is renamed.
 export function isOpaqueName(name) {
-  return /^[A-Za-z]{1,2}$/.test(name) ||
+  return /^[A-Za-z]{1,2}$/.test(name) || /^\$cfr\$/.test(name) ||
     /^(?:Class|Method|Helper|Unknown|Unresolved|Opaque)(?:\d+|_[A-Za-z0-9]+)$/i.test(name);
 }
 

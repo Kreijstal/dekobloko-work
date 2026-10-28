@@ -149,16 +149,45 @@ public class EscapeTerrainProbe {
    check("shield-default",get(world,"oe","gc"),encoded>0?encoded:150);check("configuration-width",in.available(),1);
   }
  }
+ static void widgets()throws Exception{
+  Object component=make("hm");
+  call(component,"hm","a:bounds",new Class<?>[]{int.class,int.class,int.class,boolean.class,int.class},30,20,10,true,40);
+  check("widget-x",get(component,"hm","k"),10);check("widget-y",get(component,"hm","j"),20);
+  check("widget-width",get(component,"hm","g"),30);check("widget-height",get(component,"hm","x"),40);
+  int[][] cases={{9,20,0,0,0},{10,19,0,0,0},{10,20,0,0,1},{39,59,0,0,1},{40,59,0,0,0},{39,60,0,0,0},
+    {15,27,5,7,1},{14,27,5,7,0},{45,27,5,7,0},{15,67,5,7,0}};
+  for(int[] point:cases)check("widget-hit",call(component,"hm","a:hit",new Class<?>[]{int.class,int.class,int.class,byte.class,int.class},
+    point[0],point[1],point[2],(byte)70,point[3]),point[4]!=0);
+  set(component,"hm","i","tooltip");set(component,"hm","u",true);
+  check("hover-tooltip",call(component,"hm","d:tooltip",new Class<?>[]{int.class},1),"tooltip");
+  set(component,"hm","u",false);check("no-hover-tooltip",call(component,"hm","d:tooltip",new Class<?>[]{int.class},1),null);
+  check("base-focus",call(component,"hm","h:focus",new Class<?>[]{int.class},0),false);
+  int[] actions={0};Object[][] last={null};
+  Object listener=Proxy.newProxyInstance(c("qb").getClassLoader(),new Class<?>[]{c("qb")},(proxy,method,args)->{
+    actions[0]++;last[0]=args.clone();return null;
+  });
+  Constructor<?> constructor=c("hc").getDeclaredConstructor(String.class,c("db"),c("wn"));constructor.setAccessible(true);
+  Object button=constructor.newInstance("probe",null,listener);
+  check("button-unfocused",call(button,"hm","h:focus",new Class<?>[]{int.class},0),false);
+  check("button-focus-traversal",call(button,"hm","a:focusNext",new Class<?>[]{int.class,c("hm")},-4659,button),true);
+  check("button-focused",call(button,"hm","h:focus",new Class<?>[]{int.class},0),true);
+  check("button-enter",call(button,"hm","a:key",new Class<?>[]{c("hm"),char.class,int.class,int.class},button,(char)0,84,23),true);
+  check("button-callback-count",actions[0],1);check("button-code",last[0][1],1);
+  check("keyboard-pointer-y",last[0][2],-1);check("keyboard-pointer-x",last[0][4],-1);
+  call(button,"hm","f:blur",new Class<?>[]{int.class},93);
+  check("button-focus-cleared",call(button,"hm","h:focus",new Class<?>[]{int.class},0),false);
+ }
  public static void main(String[] args)throws Exception{
   Class<?> unsafeClass=Class.forName("sun.misc.Unsafe");Field field=unsafeClass.getDeclaredField("theUnsafe");field.setAccessible(true);unsafe=field.get(null);allocate=unsafeClass.getMethod("allocateInstance",Class.class);
   terrain();stamps();collections();System.out.println("checks="+checks);
   int previous=checks;levels();System.out.println("level-checks="+(checks-previous));
+  previous=checks;widgets();System.out.println("widget-checks="+(checks-previous));
  }
 }
 `;
 
 // Used by refresh-raw-class as an original-bytecode correctness gate.
-export const expected = 'checks=903\nlevel-checks=393';
+export const expected = 'checks=903\nlevel-checks=393\nwidget-checks=26';
 
 export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
   const aliases = new Map(mapping.rules.map(r => [r.symbol, r.to]));
@@ -182,6 +211,8 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
     ['oe','a','(ILjava/io/DataInputStream;I)V','gravity'],
     ['oe','a','(BLjava/io/DataInputStream;I)V','spawn'],
     ['oe','b','(ILjava/io/DataInputStream;I)V','shield'],
+    ['hm','a','(IIIZI)V','bounds'],['hm','a','(IIIBI)Z','hit'],['hm','d','(I)Ljava/lang/String;','tooltip'],
+    ['hm','h','(I)Z','focus'],['hm','a','(ILhm;)Z','focusNext'],['hm','a','(Lhm;CII)Z','key'],['hm','f','(I)V','blur'],
   ]) {
     const to = aliases.get(`M:${owner}.${name}${descriptor}`);
     if (to) properties.push(`-DM.${owner}.${name}${tag ? ":"+tag : ""}=${to}`);
@@ -200,7 +231,8 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
   return {historicalPreparedNamedMatch:true, expected, harnessSha256:digest(source),
     covers:['terrain header versions 9/10','empty/full/partial masks','sprite terrain stamping/removal','intrusive deque transfer',
       'complete level streams versions 0-11','object target/countdown/frame version boundaries','seeker spawn/home positions',
-      'initial powerup filtering','fuel/shield defaults','objective/gravity whitelists','exact stream consumption'],
+      'initial powerup filtering','fuel/shield defaults','objective/gravity whitelists','exact stream consumption',
+      'widget hit-test boundaries/origins','hover versus keyboard focus','virtual focus traversal and Enter action callback'],
     fullGameplayVerified:false};
 }
 

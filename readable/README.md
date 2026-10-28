@@ -53,7 +53,9 @@ DialogueScreen identify the gameplay reading path. Native fixtures compare
 historical/prepared/named terrain masks and deque ownership against independent
 values. The expanded harness adds complete level streams for versions 0–11,
 object flags/frames, seekers, powerup filtering, numeric defaults and byte
-consumption. The fixed original gamepack passes all 1,296 assertions:
+consumption. Widget probes additionally cover hit-test boundaries/origins, hover
+versus keyboard focus, virtual focus traversal and Enter action callbacks.
+The fixed original gamepack passes all 1,322 assertions:
 
 ```sh
 node readable/tests/test-escapevector-core.mjs /path/to/original/escapevector.jar
