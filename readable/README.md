@@ -81,6 +81,15 @@ Q12 scale and the 65536-angle cycle. UiTheme names the retained default widget
 painters and wrapped/single-line tooltip paths. These are binding-checked names;
 they do not change rendering equations or prove full gameplay equivalence.
 
+ModalStack, ModalPanel, ResizableModalPanel and ContentTransitionDialog expose
+panel focus order, fades, eased resizing and content replacement through an
+AlphaContainer. Concrete dialogs and login/display-name/account terms/message
+panels have reviewed class names. StatefulTextPainter composes six
+WidgetStyleLayer states; LabeledField, Checkbox, LinkButtonPainter,
+PasswordFieldPainter and StripedProgressBar identify their drawing/input roles.
+Shared child traversal, focus movement and text selection/clipboard operations
+also have reviewed names. Remaining unrelated static helpers stay unresolved.
+
 Escape Vector's full class/method naming goal is tracked by the resolved
 dictionary, including nested classes and overloads:
 

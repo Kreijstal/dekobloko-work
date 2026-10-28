@@ -62,6 +62,15 @@ and destinations, Q12 scale and the 65536-angle cycle are named explicitly.
 The existing native probes remain the behavioral gate; no whole-renderer or
 whole-game equivalence claim follows from these naming-only changes.
 
+The modal/account pass names the panel stack, fade/resize/content transitions,
+alpha wrapper, striped progress bar, six-state text style composition and
+concrete login, registration, display-name, terms and message UI. Shared child
+insertion/focus/layout/debug traversal and text insertion/caret/selection/
+clipboard helpers now show their roles at call sites. Original guard paths,
+protocol action numbers, unset style sentinels and arithmetic remain intact;
+the binding, compilation, native-fixture and reverse-source checks remain the
+verification gates for this naming-only pass.
+
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.
 There are no `statePc` dispatcher files in the raw Escape Vector corpus.
