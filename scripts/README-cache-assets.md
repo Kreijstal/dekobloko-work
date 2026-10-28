@@ -123,3 +123,38 @@ member-session capture). Inspect its accompanying notes and Escape Vector server
 packet 1 for candidate keys, then require full group decompression and client-level
 validation before enabling member modes. A packet archive may omit this game or
 contain only encrypted transport; its title alone does not establish recoverability.
+
+### Wiki evidence for replacement member levels — 2026-10-28
+
+The [FunOrb Wiki article](https://funorb.fandom.com/wiki/Escape_Vector) documents
+16 Retribution levels plus its tutorial and 16 Simulator levels. Retribution's
+listed escape timers are 60 seconds for Canister Elimination Run and Auto Destruct,
+and 40 seconds for Fortified Mine. Simulator uses a green visual theme.
+
+Direct Fandom pages are blocked, so the [public wiki database backup](https://archive.org/details/funorb-wikia-db)
+was inspected instead. Its download `funorb_pages_current.xml` is actually gzip
+data, SHA-256 `72f259d9b8e672d4efb4fc98412da2361104313241d8bf893c478c204126b25b`.
+Useful reconstruction clues in its achievement articles include:
+
+- **Anti-gravity / Free Fall:** narrow entrance tube, two repulsor rooms,
+  collectibles, fuel, a rock buster and a thin wall enclosing the escape route.
+- **Pinball / Bouncing Around:** little fuel; shield bounces are needed to reach
+  the cargo, after which thrust can be used to finish.
+- **Auto Destruct / Total Annihilation:** destroying the first target starts the
+  countdown, so infrastructure completion requires leaving it until last.
+- **Growth Pod Caverns / Total Annihilation:** six laser gates, a southern tunnel
+  and a southeast bridge that a seeker can destroy to conserve rock busters.
+
+These are qualitative constraints, not recovered geometry. The inspected game and
+achievement articles reference four mode-named images (`EV Retrieval-Normal.PNG`,
+`EV Retrieval-Hard.PNG`, `EV Retribution.PNG`, `EV Simulator.PNG`), icons and
+achievement badges. No full member-level map was found. The mode-image bytes
+could not be fetched from the public media host (HTTP 403); their actual contents
+remain unverified. The [2026-10-06 Miraheze backup](https://archive.org/details/miraheze-wiki-funorbwiki-20261006)
+also has an archive labelled “images”, but it contains only two sitemap files.
+
+A faithful reconstruction still needs screenshots or gameplay recordings to
+establish terrain, scale and object placement. The existing client can supply
+physics and game rules; replacement levels and any missing assets must be authored
+in its data format and tested as reconstructions. Do not label approximated layouts
+as recovered originals or enable membership before the required data is playable.
