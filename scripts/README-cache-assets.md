@@ -67,3 +67,59 @@ node --test tests/js5-cache-recovery-integration.test.mjs
 
 Reports are under `$GAME_ASSETS_ROOT/game-assets/`. Invalid-container quarantine
 stays under Deko's `.work/invalid-game-assets/`, even for external destinations.
+
+## Offline XTEA candidate checking
+
+For an encrypted bzip2 or gzip JS5 group, test a finite list of candidate keys:
+
+```sh
+node scripts/find-js5-xtea-key.cjs /path/to/group.bin /path/to/keys.json
+node --test scripts/test-js5-xtea-key.cjs
+```
+
+The key input is a JSON array of four-word arrays or objects with a `key` array,
+as returned by OpenRS2's key API. Signed and unsigned 32-bit words are accepted.
+The command also tests the zero key, writes no files and makes no network requests.
+It filters candidates by the decrypted length and compression header, then requires
+successful decompression, compression checksum validation and the declared length.
+Exit status 0 means a key matched; 1 means none matched; 2 means incorrect usage.
+This is candidate testing, not an exhaustive search of the 128-bit key space.
+Uncompressed JS5 containers and empty bzip2 streams are outside this checker's scope.
+
+The test uses the original local Escape Vector client's Java encryptor as an
+independent oracle for six bzip2/gzip containers, partial blocks and disk-version
+trailers. It also checks that damaged payloads cannot pass on a header match alone.
+Set `ESCAPE_GAMEPACK` to its original JAR path; the default is
+`.work/gamepacks/escapevector.jar`. The native-oracle test explicitly skips if that
+input is missing. It creates temporary fixtures and removes them on completion.
+
+### Escape Vector preservation investigation — 2026-10-28
+
+The current member-content blocker is encrypted archive 5, group 0, version 6:
+242,167 bytes, CRC32 `3909024790` (signed `-385942506`), SHA-256
+`d6a647f96338ec47a3b9c15f822467081bddc2fcd1fc882128b191b92b3b3a15`.
+The local input is `public/game-assets/escapevector/5-0.bin` in the cloner checkout.
+Its reference table declares 37 files. The client receives a four-word XTEA key in
+server packet 1 after client packet 2 and uses it for member content from archive
+5, including level data. The key is not recoverable merely by granting membership.
+
+| Preservation lead | Checked evidence | Result |
+| --- | --- | --- |
+| [Lost City Escape Vector caches](https://archive2.lostcity.rs/caches/list/escapevector) | All eleven metadata entries: 329, 328, 325, 330, 326, 332, 324, 322, 323, 331, 327; plus the [complete historical group listing](https://archive2.lostcity.rs/caches/groups/escapevector), containing 124 group variants | Only cache 323 advertises archive 5. Its [5/0 download](https://archive2.lostcity.rs/caches/323/get/5/0) is byte-identical to our encrypted group. The historical listing contains no other archive-5 variant. No plaintext replacement recovered. |
+| [Faust's archive and packet captures](https://lostcity.rs/t/launchscape-coming/13101?page=2), with [additional captures](https://lostcity.rs/t/launchscape-coming/13101?page=3) | Three public links: [archive](https://buzzheavier.com/ke5azk0vhgqq), [packets](https://buzzheavier.com/ryhmvgorfp60), [extra packets](https://buzzheavier.com/4d0jmmhtqjwy) | All three return Cloudflare challenges; a normal Chromium visit also remained on the challenge page. Contents **not inspected**. Exact-link/title searches found no independent mirror; Wayback CDX returned no successful captures for those URLs. Escape Vector coverage is unconfirmed. |
+| [OpenRS2](https://archive.openrs2.org/api) | Live [catalog](https://archive.openrs2.org/caches.json): 2,669 caches across RuneScape, Old School, DarkScape and Dawn of the Dragons; [published keys](https://archive.openrs2.org/keys/all.json): 25,959 candidates | No FunOrb cache entries in the catalog. All published candidates plus zero (25,960 tests) produced **zero matching decrypted headers** for our group. |
+
+The downloaded OpenRS2 key-list bytes had SHA-256
+`c744f1572bf2e6fb129b5a079e9fb6ef9f167a84f7f229abebb62eb1b1c73381`.
+To repeat the candidate test, download that public key list into a temporary file
+and run the checker against the group above; the archive's live key list may grow.
+The native-oracle test passed without skipping before the negative result was
+recorded. Research downloads were temporary; no archive binaries or extra JSON
+reports are committed.
+
+No member content or key was recovered, and membership remains disabled. The next
+useful input is an accessible copy of Faust's packet archive (or another authentic
+member-session capture). Inspect its accompanying notes and Escape Vector server
+packet 1 for candidate keys, then require full group decompression and client-level
+validation before enabling member modes. A packet archive may omit this game or
+contain only encrypted transport; its title alone does not establish recoverability.
