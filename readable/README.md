@@ -143,6 +143,15 @@ flag completion, pending writes and all-infrastructure completion. The original
 read/write flag-group conventions differ: read group zero is Simulator, while
 write group zero is Retribution. Version-one bytes and bitset aliasing remain.
 
+PauseMenuScreen/PauseMenuState name resume, tutorial exit, briefing, audio,
+fullscreen and the literal Show elapsed time toggle. MenuTitleSupport names
+banner selection and timing. CursorController keeps its reflective public
+method spellings while owned Class.forName strings follow the class rename.
+Shared utilities expose loading status, pending requests, URL/JAGGRAB completion,
+clock rollback compensation, password substrings, bit counts and pixel-block
+effects. Original whitespace-compaction bounds, cookie precedence, scratch
+ownership and unrelated static helpers remain unchanged.
+
 Escape Vector's full class/method naming goal is tracked by the resolved
 dictionary, including nested classes and overloads:
 

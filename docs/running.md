@@ -130,6 +130,14 @@ preview. Read-group zero selects Simulator; write-group zero selects
 Retribution. The original bitset mutation/aliasing, clamps, guards and
 version-one saved-data bytes remain unchanged.
 
+The shared-utility pass names PauseMenuScreen/PauseMenuState and MenuTitleSupport,
+including the Show elapsed time toggle, banner selection and phase sounds.
+CursorController preserves its reflective public method spellings; owned
+Class.forName strings track the class name. Loading/request, monotonic-clock,
+password-substring, bit-count and pixel-block helpers now have reviewed names.
+The pass retains URL/JAGGRAB fallback, queue ownership, cookie precedence,
+whitespace-compaction bounds and original guard side effects.
+
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.
 There are no `statePc` dispatcher files in the raw Escape Vector corpus.

@@ -297,12 +297,38 @@ const classes = {
   gn: ['ModeProgress', 'Retains one mode\'s progress kind, asynchronous query, sequential next-level index or queued flag updates, and membership gating.'],
   vd: ['SavedCompletionFlags', 'Loads and serializes version-one Retribution/Simulator completion bitsets, merges retained progress and enqueues saved-data writes.'],
   nl: ['LevelAvailabilitySupport', 'Recognizes the two accessible level-status values, zero and one; unrelated shared label remains on its original owner.'],
+  pd: ['AppletViewportState', 'Retains the applet canvas width used by viewport/layout/painting; its unrelated double controls simulated network-delay jitter.'],
+  ch: ['PauseMenuState', 'Shared pause-menu input and instructions-visible flag used by the session, instructions and title-banner paths.'],
+  cb: ['LegacyMenuState', 'Shared legacy-menu input, localized update-server status labels and the upper split intro-final-frame sprite.'],
+  mc: ['LoginHandshakeState', 'Retains a login-stage identity token consulted by the key-exchange flow; unrelated content-transition token, achievement icons and instruction label remain here.'],
+  ek: ['InstructionsNavigationSupport', 'Opens InstructionsScreen, resets the menu clock/input and exposes the original loading/tutorial labels.'],
+  lg: ['PasswordSubstringSupport', 'Checks password text for an account-name substring in either forward or reversed order, retaining original redundant boundary tests.'],
+  mg: ['KeyboardIdleSupport', 'Exposes the keyboard idle-tick counter; unrelated highscore category labels, packet state and shared arrays stay on this owner.'],
+  be: ['SavedDataRequestSupport', 'Writes pending saved-data writes and reads without consuming their acknowledgement queues; retains the shared account request dialog.'],
+  td: ['MonotonicClockSupport', 'Compensates backward wall-clock steps with a retained offset; unrelated helper advances session counters.'],
+  ej: ['BitCountSupport', 'Parallel integer bit count with a caller-supplied pair mask; unrelated display-name submission and UI assets remain on this owner.'],
+  vf: ['CursorController', 'Owns the AWT Robot and the component with a hidden cursor; public cursor method spellings remain compatible with reflective lookup.'],
+  pa: ['GuestLoginSupport', 'Starts guest-to-account login with a guard against non-guest use; unrelated initialization builds the intro intensity ramp.'],
+  le: ['FrameworkLoadingStatus', 'Chooses current common-UI/font/archive loading text from the framework stage and archive progress.'],
+  gk: ['QuitPageSupport', 'Opens the session-qualified quit.ws page and preserves exception handling; unrelated random source and render flag remain.'],
+  bn: ['AccountPayloadSupport', 'Delegates encrypted account payload serialization with explicit source/destination and RSA arguments; retains unrelated achievement-icon installation and input state.'],
+  se: ['FrameCadenceSupport', 'Computes integer ticks per second from the shared nanosecond period; unrelated helpers render account panels and write the session marker cookie.'],
+  gm: ['ArchiveSpriteLoader', 'Loads an archive sprite sheet by group/file IDs and converts it to sprites; unrelated alternate-login flag and assets stay here.'],
+  gh: ['PixelBlockEffect', 'Samples one framebuffer pixel per block, blends a tint and fills clipped blocks with independent reverse-X/reverse-Y traversal.'],
+  jj: ['LoginPromptSupport', 'Shows the alternate-flow login form and closes the previous request; unrelated helpers construct achievement rules and a center-only frame.'],
+  cj: ['IntroFinalFrameSupport', 'Loads final_frame.jpg and splits it into the retained upper/lower sprites; unrelated helper clears shared integer scratch.'],
+  rd: ['SpaceCompactionSupport', 'Compacts space characters with the original loop bounds and shifts; unrelated clip-stack helper, saved-data queue and login dialog remain.'],
+  um: ['AccountSessionStatusSupport', 'Checks non-guest network stage and excludes the active login handshake; retains unrelated shared labels and byte storage.'],
+  tf: ['PauseMenuScreen', 'Builds context-dependent Resume/Skip Tutorial/Instructions/Briefing/audio/fullscreen/elapsed-time/End Game rows and handles their input.'],
+  lh: ['MenuTitleSupport', 'Selects and animates the menu title sprite for mode, scores, achievements and instructions, including original title sounds and phases.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
   members[`F:${owner}.field_${original}:${descriptor}`] = {to, evidence};
 function method(owner, original, descriptor, to, parameters, evidence) {
   const signature = `${owner}.${original}${descriptor}`;
+  if (original !== '<init>' && (typeof to !== 'string' || !to))
+    throw new Error('Reviewed method name required: ' + signature);
   if (original !== '<init>') members['M:' + signature] = {to, evidence};
   for (const [ordinal, name] of parameters.entries()) members[`P:${signature}#${ordinal}`] = {to:name,evidence};
 }
@@ -2946,6 +2972,87 @@ for (const [owner,original,descriptor,to,parameters] of [
 ]) method(owner,original,descriptor,to,parameters,
   'Reviewed full main-menu, level-selector and progress implementations plus launch/completion callers. Names retain sequential versus flag progress, separate infrastructure completion, the two read/write group conventions, bitset aliasing and version-one serialization. Audio calculations, guard side effects, exception identity, member gating and unrelated shared helpers remain on their original owners.');
 
+fields('pd', [['b','I','canvasWidth'],['a','D','networkDelayJitterMillis']],
+  'Canvas sizing/painting reads the integer; delayed-packet construction scales a Gaussian by the double. These independent global roles remain on the same owner.');
+fields('ch', [['a','Lwc;','input'],['b','Z','instructionsVisible']],
+  'PauseMenuScreen owns the input; instruction open/close paths update the separate visible flag.');
+fields('cb', [['c','Lwc;','input'],['b','[Ljava/lang/String;','updateServerMessages'],['a','Led;','introFinalFrameUpper']],
+  'The shared menu input is initialized with one item; final_frame.jpg splitting installs the upper three quarters in the sprite.');
+fields('mc', [['b','Lhf;','keyExchangeStage'],['c','Lka;','contentTransitionPhase'],['d','[Led;','achievementIcons'],
+  ['a','Ljava/lang/String;','instructionsLabel']],
+  'Reviewed login-stage comparisons, content-transition assignment, achievement asset initialization and the literal Instructions label.');
+fields('be', [['b','Lpn;','requestDialog'],['a','Ljava/lang/String;','playTutorialLabel']],
+  'Account request creation/closing references the dialog; the string is the literal level-selector tutorial action.');
+fields('mg', [['h','[Ljava/lang/String;','highscoreCategoryNames']],
+  'Literal Retrieval/Retribution/Simulator category labels are consumed by HighscoresScreen.');
+fields('vf', [['b','Ljava/awt/Component;','hiddenCursorComponent'],['a','Ljava/awt/Robot;','robot']],
+  'The retained component owns the transparent cursor; moving the pointer delegates to the retained AWT Robot.');
+fields('rd', [['b','Lcn;','pendingSavedDataWrites'],['c','Lng;','loginDialog']],
+  'Saved-data writers iterate the queue until acknowledgements unlink records; account login paths push and replace the retained dialog.');
+fields('tf', [['a','I','right'],['c','I','musicAction'],['f','I','top'],['j','I','soundAction'],
+  ['l','I','skipTutorialAction'],['e','I','endGameAction'],['b','I','instructionsAction'],['g','I','briefingAction'],
+  ['k','I','elapsedTimeAction'],['d','I','left'],['m','I','fullscreenAction']],
+  'Constructor conditionals and literal row labels identify each action. The toggle is Show elapsed time, and only scored non-tutorial sessions expose it.');
+fields('ad', [['g','Lla;','readerTask'],['b','Ljava/io/DataInputStream;','input'],['e','Lla;','urlTask'],
+  ['i','Ln;','response'],['j','Ljava/net/URL;','url'],['f','Llk;','tasks'],['a','Lla;','socketTask'],['k','I','stage']],
+  'The bounded request tries URL and JAGGRAB transports, runs a reader task and returns its response only in success stage three.');
+for (const [owner,original,descriptor,to,parameters] of [
+  ['ek','a','(ZZ)V','openInstructions',['pointerDriven','guard']],
+  ['lg','a','(ILjava/lang/String;Ljava/lang/String;)Z','containsForwardOrReversed',['guard','text','needle']],
+  ['mg','a','(B)I','keyboardIdleTicks',['guard']],
+  ['be','a','(II)V','writePendingRequests',['opcode','guard']],
+  ['td','a','(II)V','addSessionCounterOffset',['offset','guard']],
+  ['td','b','(I)J','monotonicMillis',['guard']],
+  ['ej','a','(BLjava/lang/String;)V','submitDisplayName',['guard','displayName']],
+  ['ej','a','(II)I','countSetBits',['pairMask','value']],
+  ['vf','showcursor','(Ljava/awt/Component;Z)V','showcursor',['component','visible']],
+  ['vf','setcustomcursor','(Ljava/awt/Component;[IIILjava/awt/Point;)V','setcustomcursor',['component','pixels','width','height','hotspot']],
+  ['vf','movemouse','(II)V','movemouse',['x','y']],
+  ['pa','a','(Z)V','beginAccountLogin',['pointerDriven']],
+  ['pa','a','(I)V','initializeIntroIntensityRamp',['guard']],
+  ['le','b','(I)Ljava/lang/String;','loadingMessage',['guard']],
+  ['gk','a','(ILjava/applet/Applet;)V','openQuitPage',['guard','applet']],
+  ['bn','a','(ILn;Ln;Ljava/math/BigInteger;Ljava/math/BigInteger;)V','writeEncryptedPayload',['offset','destination','source','exponent','modulus']],
+  ['se','a','(I)I','ticksPerSecond',['guard']],
+  ['se','a','(ZI)V','renderAccountPanels',['unusedFlag','guard']],
+  ['gm','a','(IILmf;I)[Led;','loadSprites',['groupId','fileId','archive','guard']],
+  ['gm','b','(I)Z','isAlternateLoginFlow',['guard']],
+  ['gh','a','(IIZZ)V','apply',['blockSize','sourceWeight','reverseX','reverseY']],
+  ['gh','a','(IIIZZ)V','applyTinted',['blockSize','sourceWeight','tint','reverseX','reverseY']],
+  ['jj','a','(I)V','showAlternateLoginForm',['guard']],
+  ['jj','a','(Z)V','initializeAchievementRules',['guard']],
+  ['jj','a','(II)[Led;','createCenterOnlyFrame',['color','guard']],
+  ['cj','a','(ILmf;)V','loadFinalFrame',['offsetY','archive']],
+  ['cj','a','(B)V','clearSharedIntScratch',['guard']],
+  ['rd','a','(IIIII)V','pushIntersectedClip',['right','left','bottom','guard','top']],
+  ['rd','a','(BLjava/lang/String;)Ljava/lang/String;','compactSpaces',['guard','text']],
+  ['um','a','(I)Z','hasAccountSession',['guard']],
+  ['tf','d','(B)V','draw',['guard']],
+  ['tf','a','(IZ)I','rowWidth',['action','guard']],
+  ['tf','a','(B)V','update',['guard']],
+  ['tf','a','(ZI)Z','handleActivation',['pointerDriven','guard']],
+  ['tf','a','(ILjava/applet/Applet;)Ljava/lang/String;','readSettingsCookie',['guard','applet']],
+  ['tf','b','(ZI)V','updatePointerSelection',['pointerDriven','guard']],
+  ['tf','c','(B)I','maximumRowWidth',['guard']],
+  ['tf','b','(B)Ljava/lang/String;','readIncomingString',['guard']],
+  ['tf','a','(IIZI)V','drawRow',['guard','y','selected','action']],
+  ['lh','a','(I)V','updateTitleBanner',['guard']],
+  ['lh','a','(BI)V','incrementSessionCounter',['guard','amount']],
+  ['lh','b','(B)Z','isPointerDriven',['guard']],
+  ['aa','a','(B)Z','isSessionFrameworkReady',['guard']],
+  ['ac','a','(II)V','serviceAccountInput',['guard','unusedValue']],
+  ['ac','b','(I)V','advanceSessionCounters',['guard']],
+  ['ad','a','(II)V','writePendingRatings',['opcode','guard']],
+  ['ad','c','(I)Ln;','completedResponse',['guard']],
+  ['ad','a','(I)Z','pollCompletion',['guard']],
+  ['ad','<init>','(Llk;Ljava/net/URL;I)V',null,['tasks','url','capacity']],
+  ['ge','a','(IIIIIBIII)[Led;','createBeveledFrameSprites',['borderThickness','accentColor','insetWidth','accentThickness','topLeftColor','guard','bottomRightColor','backgroundColor','edgeLength']],
+  ['ge','a','(BLjava/applet/Applet;)V','openMembershipPage',['guard','applet']],
+  ['ge','a','(B)V','decodeSavedDataResponse',['guard']],
+  ['ge','a','(I[IIIBIII[II)V','darkenMaskedPixels',[]],
+]) method(owner,original,descriptor,to,parameters,
+  'Reviewed complete implementations and callers for pause/menu titles, async loading, account forms, saved-data requests, reflective cursor APIs, clock rollback compensation, pixel blocks and packet handling. Existing phase IDs, loop bounds, guards, array ownership, queues, transport fallback, cookie precedence and exception paths remain unchanged.');
+
 for (const [signature, rows] of [
   ['oe.a(ZILjava/io/InputStream;)V', [[0,'var4','levelInput'],[1,'var5','formatVersion']]],
   ['oe.a(ZIILjava/io/DataInputStream;)V', [[0,'var5','terrain']]],
@@ -3009,6 +3116,7 @@ export const escapeConfig = {
       'Every AchievementsScreen method now has a reviewed name. It separates earned snapshots, hidden/member filtering, page partitioning, icon grids, hover/selected slots, action order, page changes and footer actions. AnimatedPanelFrame exposes geometry, colors and opening phase; SlidingSpriteTransition retains its own alpha/time and copied TransitionPoint. The original shared raster, screen clock, member placeholders, account-error notice and interpolation aliasing remain unchanged.','',
       'Every HighscoresScreen, HighscoreTable, InstructionsScreen and GameModeSelectScreen method has a reviewed name. Highscores separate category/ranking controls, query status, two-board merging, row origins, packed score/level columns and optional submitted rows. Instructions separate controls, pickup legends and context-dependent objective/mode pages. The selector distinguishes Normal/Hard retrieval ordering and member modes. SpriteLoadTask retains lazy packed/image loading and optional XTEA keys; MenuEdgeSegment identifies the shared background animation. Unrelated error/login helpers remain on their original owners, and original query mutations and guard paths are retained.','',
       'Every MainMenuScreen, LevelSelectScreen, GameProgressTracker, ModeProgress, SavedCompletionFlags and LevelAvailabilitySupport method has a reviewed name. Menu actions distinguish membership promotion, sound/music controls, fullscreen and account screens. Level selection retains introduction/tutorial actions, grouped mission rows, path markers and the Simulator minimap preview. Progress separates sequential queries, pending updates and all-infrastructure completion. Saved flags use version-one Retribution/Simulator sections; read-group zero means Simulator while write-group zero means Retribution. Bitset merges retain their original mutation/aliasing, final-level clamps and payload bounds. MainMenuScreen.wrapClientException preserves the same cause and accumulated context.','',
+      'PauseMenuScreen and PauseMenuState expose context-dependent resume/tutorial/briefing/end actions, audio controls, fullscreen and the Show elapsed time toggle. MenuTitleSupport retains the original sprite choices, phase thresholds and reveal/retire sounds. CursorController retains its public showcursor/setcustomcursor/movemouse spellings for reflection; owned Class.forName literals follow the class rename. Shared loading/status/request utilities now expose their roles, including URL/JAGGRAB completion, pending saved-data/rating writes, rollback-compensated time, forward/reversed password substrings, integer bit counts and clipped/tinted pixel blocks. Original cookie precedence, whitespace-compaction bounds, scratch-array clearing and unrelated static ownership remain unchanged.','',
       '`IterableNodeHashTable` and `NodeHashTableIterator` own primary-link buckets; `IterableDualLinkDeque` and `DualLinkDequeIterator` traverse secondary links independently. `IntrusiveDequeCursor` supports independent forward/backward scans. `WeightedLruCache` combines hash lookup, secondary recency links and entry weights; `StrongCacheEntry` is the concrete retained-value implementation. Original null-at-exhaustion behavior and throwing constructor stubs remain.','',
       '`MouseInputHandler` updates shared pending movement/click state and clears held buttons on focus loss; `DelegatingCanvas` forwards painting to its component. `SocketConnector`, `ProxySocketConnector` and `ProxyAuthenticationException` distinguish direct/proxied socket creation and HTTP 407 diagnostics. `SpriteStrip` measures/draws non-null sprites with spacing after each sprite.','',
       '`ArchiveKeyRequest`, `ProgressQuery`, `ProgressRecord`, `AchievementQuery`, `AchievementRecord`, `HighscoreQuery`, `ScoreSubmission`, `RatingQuery` and `SavedDataWrite` identify the queued protocol records. Their named writers preserve subtype/length/CRC layouts and acknowledgement ownership. Unknown encoded-word meanings remain unresolved. `DelayedServerPacket` belongs to the simulated-latency receive path.','',
