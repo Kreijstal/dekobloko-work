@@ -66,6 +66,33 @@ names. Remaining mixed-role locals and shared engine classes are still unresolve
 Raw repair receipts continue to verify the immutable input after classes acquire
 readable names. No second readable source directory is created.
 
+Escape Vector's full class/method naming goal is tracked by the resolved
+dictionary, including nested classes and overloads:
+
+```sh
+node readable/naming-coverage.mjs escapevector
+node --test readable/tests/test-naming-coverage.mjs
+```
+
+Coverage exits 1 while any owned class/method still has an opaque name; numbered
+placeholders do not satisfy it. Constructors follow their class, and Java
+callback names remain unchanged. The generated game reading guide reports the
+current totals. A successful export/reproduction check establishes deterministic
+source identity and binding preservation; it does not establish full naming.
+
+`node readable/match-game-methods.mjs escapevector` is a read-only review aid for
+shared engine methods. It compares normalized token shapes only within the same
+semantic owner and descriptor, retains operators/constants and identifier reuse,
+and rejects conflicting reference names or tiny bodies. It checks published
+source hashes, proposes names, and writes nothing. Alpha-equivalent source
+shapes are **not** a proof of equivalent member bindings or game behavior;
+inspect the body, field roles and callers before adding a reviewed rule. Reference
+games can be selected with positional arguments. Focused lexer/matcher checks:
+
+```sh
+node --test readable/tests/test-match-game-methods.mjs
+```
+
 Ace of Skies uses `reviewed-game.mjs`, a reusable workflow supporting packaged
 Java sources as well as default-package game classes. Its publication check
 rejects binaries and symlinks and rolls back Java and receipts together after
