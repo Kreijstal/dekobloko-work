@@ -20,6 +20,9 @@ public class EscapeTerrainProbe {
   field.setAccessible(true);return field;
  }
  static Object make(String owner)throws Exception{return allocate.invoke(unsafe,c(owner));}
+ static Object construct(String owner,Class<?>[] types,Object...args)throws Exception{
+  Constructor<?> constructor=c(owner).getDeclaredConstructor(types);constructor.setAccessible(true);return constructor.newInstance(args);
+ }
  static void set(Object object,String owner,String name,Object value)throws Exception{f(owner,name).set(object,value);}
  static Object get(Object object,String owner,String name)throws Exception{return f(owner,name).get(object);}
  static Object call(Object object,String owner,String name,Class<?>[] types,Object...args)throws Exception{
@@ -212,18 +215,121 @@ public class EscapeTerrainProbe {
   check("null-text-width",call(layout,"pg","a:width",new Class<?>[]{byte.class},(byte)-112),-1);
   check("null-text-hit",call(layout,"pg","a:hit",new Class<?>[]{byte.class,int.class,int.class},(byte)39,0,0),-1);
  }
+ static int littleBits(byte[] bytes,int start,int count){
+  long value=0;for(int bit=0;bit<count;bit++)if((bytes[(start+bit)/8]&(1<<((start+bit)%8)))!=0)value+=1L<<bit;
+  return (int)value;
+ }
+ static byte[] bitPacket(int[][] fields){
+  byte[] bytes=new byte[64];int position=0;
+  for(int[] field:fields)for(int bit=0;bit<field[0];bit++,position++)bytes[position/8]|=(byte)(((field[1]>>>bit)&1)<<(position%8));
+  return Arrays.copyOf(bytes,(position+7)/8);
+ }
+ static void audioFormats()throws Exception{
+  byte[] bytes={(byte)0xca,0x71,(byte)0x9f,0x26,(byte)0xd4,0x52,(byte)0x83,0x6b};
+  for(int offset=0;offset<2;offset++)for(int prefix=0;prefix<8;prefix++)for(int width:new int[]{0,1,7,8,9,16,23,32}){
+   call(null,"in","a:bits",new Class<?>[]{byte[].class,int.class},bytes,offset);
+   call(null,"in","e:read",new Class<?>[]{int.class},prefix);
+   check("vorbis-lsb-order",call(null,"in","e:read",new Class<?>[]{int.class},width),littleBits(bytes,offset*8+prefix,width));
+   check("vorbis-byte-cursor",get(null,"in","o"),offset+(prefix+width)/8);
+   check("vorbis-bit-cursor",get(null,"in","C"),(prefix+width)%8);
+   check("vorbis-next-bit",call(null,"in","c:bit",new Class<?>[]{}),littleBits(bytes,offset*8+prefix+width,1));
+  }
+  int[] packed={0,788<<21|1,788<<21|3,787<<21|3,789<<21|2,Integer.MIN_VALUE|788<<21|3};
+  float[] values={0f,1f,3f,1.5f,4f,-3f};
+  for(int i=0;i<packed.length;i++)check("vorbis-packed-float",Float.floatToIntBits((Float)call(null,"in","d:float",new Class<?>[]{int.class},packed[i])),Float.floatToIntBits(values[i]));
+  Object instrument=make("we");
+  int[][] waves={{0,100,1,100},{16383,100,1,100},{16384,100,1,-100},{32768,100,1,100},
+    {0,100,3,-100},{8192,100,3,-50},{16384,100,3,0},{32767,100,3,99},{123,100,0,0},{123,100,5,0}};
+  for(int[] wave:waves)check("instrument-wave",call(instrument,"we","a:wave",new Class<?>[]{int.class,int.class,int.class},wave[0],wave[1],wave[2]),wave[3]);
+  Object floor=make("u");int[] points={0,16,4,12,8};
+  for(int[] neighbor:new int[][]{{2,0,1},{4,2,3}}){
+   check("floor-low-neighbor",call(null,"u","b:low",new Class<?>[]{int[].class,int.class},points,neighbor[0]),neighbor[1]);
+   check("floor-high-neighbor",call(null,"u","a:high",new Class<?>[]{int[].class,int.class},points,neighbor[0]),neighbor[2]);
+  }
+  for(int[] point:new int[][]{{0,10,8,2,0,10},{0,10,8,2,4,6},{0,10,8,2,8,2},{0,2,8,10,4,6},{0,1,3,8,1,3}})
+   check("floor-interpolation",call(floor,"u","a:point",new Class<?>[]{int.class,int.class,int.class,int.class,int.class},point[0],point[1],point[2],point[3],point[4]),point[5]);
+  Object book=make("fm");set(book,"fm","c",3);set(book,"fm","d",new int[]{1,2,2});set(book,"fm","a",new float[][]{{1,2},{3,4},{5,6}});
+  call(book,"fm","b:tree",new Class<?>[]{});
+  // Canonical prefix codes 0,10,11 are transmitted in that order, LSB first.
+  for(boolean vector:new boolean[]{false,true}){
+   call(null,"in","a:bits",new Class<?>[]{byte[].class,int.class},new byte[]{0x1a},0);
+   for(int entry=0;entry<3;entry++)if(vector)
+    check("codebook-vector",Arrays.equals((float[])call(book,"fm","a:vector",new Class<?>[]{}),new float[]{1+entry*2,2+entry*2}),true);
+   else check("codebook-scalar",call(book,"fm","c:scalar",new Class<?>[]{}),entry);
+  }
+  for(int[] lookup:new int[][]{{16,2,4},{17,2,4},{27,3,3}})
+   check("codebook-lookup-count",call(null,"fm","a:lookup",new Class<?>[]{int.class,int.class},lookup[0],lookup[1]),lookup[2]);
+  for(int submaps:new int[]{1,3}){
+   List<int[]> encoded=new ArrayList<>();encoded.add(new int[]{16,0});encoded.add(new int[]{1,submaps==1?0:1});
+   if(submaps>1)encoded.add(new int[]{4,submaps-1});encoded.add(new int[]{1,submaps==1?0:1});
+   if(submaps>1)encoded.add(new int[]{8,173});encoded.add(new int[]{2,0});
+   if(submaps>1)encoded.add(new int[]{4,2});
+   for(int i=0;i<submaps;i++){encoded.add(new int[]{8,0});encoded.add(new int[]{8,i+1});encoded.add(new int[]{8,i+4});}
+   call(null,"in","a:bits",new Class<?>[]{byte[].class,int.class},bitPacket(encoded.toArray(new int[0][])),0);
+   Object mapping=construct("pm",new Class<?>[]{});
+   check("mapping-submaps",get(mapping,"pm","a"),submaps);check("mapping-mux",get(mapping,"pm","b"),submaps==1?0:2);
+   int[] floors=(int[])get(mapping,"pm","d"),residues=(int[])get(mapping,"pm","c");
+   for(int i=0;i<submaps;i++){check("mapping-floor",floors[i],i+1);check("mapping-residue",residues[i],i+4);}
+   int bitCount=encoded.stream().mapToInt(field->field[0]).sum();
+   check("mapping-byte-count",get(null,"in","o"),bitCount/8);check("mapping-bit-count",get(null,"in","C"),bitCount%8);
+  }
+  ByteArrayOutputStream raw=new ByteArrayOutputStream();DataOutputStream out=new DataOutputStream(raw);
+  out.writeInt(22050);out.writeInt(8);out.writeInt(2);out.writeInt(~7);out.writeInt(2);out.writeByte(3);out.write(new byte[]{1,2,3});
+  byte[] longPacket=new byte[256];for(int i=0;i<longPacket.length;i++)longPacket[i]=(byte)i;
+  out.writeByte(255);out.writeByte(1);out.write(longPacket);
+  Object sample=construct("in",new Class<?>[]{byte[].class},raw.toByteArray());
+  check("sample-rate",get(sample,"in","v"),22050);check("sample-count",get(sample,"in","y"),8);
+  check("sample-loop-start",get(sample,"in","L"),2);check("sample-loop-end",get(sample,"in","F"),7);check("sample-pingpong",get(sample,"in","A"),true);
+  byte[][] packets=(byte[][])get(sample,"in","h");check("sample-packets",packets.length,2);
+  check("sample-short-packet",Arrays.equals(packets[0],new byte[]{1,2,3}),true);check("sample-long-packet",Arrays.equals(packets[1],longPacket),true);
+  Object buffer=construct("n",new Class<?>[]{byte[].class},new byte[14]);
+  Object effect=construct("kj",new Class<?>[]{c("n")},buffer),pcm=call(effect,"kj","a:pcm",new Class<?>[]{});
+  check("empty-effect-rate",get(pcm,"hh","j"),22050);check("empty-effect-samples",((byte[])get(pcm,"hh","h")).length,0);
+  check("empty-effect-loop-start",get(pcm,"hh","k"),0);check("empty-effect-loop-end",get(pcm,"hh","l"),0);
+  Object filter=construct("cl",new Class<?>[]{}),envelope=construct("wj",new Class<?>[]{});
+  buffer=construct("n",new Class<?>[]{byte[].class},new byte[]{0});
+  call(filter,"cl","a:decode",new Class<?>[]{c("n"),c("wj")},buffer,envelope);
+  check("empty-filter-pairs",Arrays.equals((int[])get(filter,"cl","g"),new int[]{0,0}),true);
+  check("empty-filter-consumed",get(buffer,"n","m"),1);
+  check("empty-filter-coefficients",call(filter,"cl","a:coefficients",new Class<?>[]{int.class,float.class},0,0f),0);
+  check("empty-filter-unity",get(null,"cl","c"),65536);
+ }
+ static void pcmKernels()throws Exception{
+  Object sample=make("hh");set(sample,"hh","h",new byte[]{10,20,30,40,50,60});set(sample,"hh","j",22050);set(sample,"hh","k",0);set(sample,"hh","l",6);
+  for(boolean stereo:new boolean[]{false,true})for(boolean reverse:new boolean[]{false,true})
+   for(boolean interpolate:new boolean[]{false,true})for(boolean ramp:new boolean[]{false,true}){
+    set(null,"ie","o",stereo);int step=interpolate?128:256;
+    Object stream=call(null,"hl","a:create",new Class<?>[]{c("hh"),int.class,int.class,int.class},sample,step,64,8192);
+    if(reverse)call(stream,"hl","e:reverse",new Class<?>[]{});
+    if(ramp)call(stream,"hl","a:ramp",new Class<?>[]{int.class,int.class,int.class},4,128,8192);
+    int channels=stereo?2:1;int[] output=new int[3*channels];
+    call(stream,"wg","b:mix",new Class<?>[]{int[].class,int.class,int.class},output,0,3);
+    int[] amplitudes=reverse?(interpolate?new int[]{50,45,40}:new int[]{60,50,40}):(interpolate?new int[]{10,15,20}:new int[]{10,20,30});
+    for(int frame=0;frame<3;frame++)for(int channel=0;channel<channels;channel++)
+     check("pcm-kernel-output",output[frame*channels+channel],amplitudes[frame]*(ramp?256+64*frame:256));
+    check("pcm-position",get(stream,"hl","u"),reverse?1280-3*step:3*step);
+    check("pcm-gain",get(stream,"hl","m"),ramp?112:64);check("pcm-ramp-remaining",get(stream,"hl","v"),ramp?1:0);
+   }
+  for(int[] pan:new int[][]{{-1,4096,-4096},{0,5793,0},{8192,4096,4096},{16384,0,5793}}){
+   check("pcm-left-pan",call(null,"hl","d:left",new Class<?>[]{int.class,int.class},4096,pan[0]),pan[1]);
+   check("pcm-right-pan",call(null,"hl","a:right",new Class<?>[]{int.class,int.class},4096,pan[0]),pan[2]);
+  }
+  set(null,"ie","o",false);
+ }
  public static void main(String[] args)throws Exception{
   Class<?> unsafeClass=Class.forName("sun.misc.Unsafe");Field field=unsafeClass.getDeclaredField("theUnsafe");field.setAccessible(true);unsafe=field.get(null);allocate=unsafeClass.getMethod("allocateInstance",Class.class);
   terrain();stamps();collections();System.out.println("checks="+checks);
   int previous=checks;levels();System.out.println("level-checks="+(checks-previous));
   previous=checks;widgets();System.out.println("widget-checks="+(checks-previous));
   previous=checks;textGeometry();System.out.println("text-checks="+(checks-previous));
+  previous=checks;audioFormats();System.out.println("audio-checks="+(checks-previous));
+  previous=checks;pcmKernels();System.out.println("pcm-checks="+(checks-previous));
  }
 }
 `;
 
 // Used by refresh-raw-class as an original-bytecode correctness gate.
-export const expected = 'checks=903\nlevel-checks=393\nwidget-checks=26\ntext-checks=45';
+export const expected = 'checks=903\nlevel-checks=393\nwidget-checks=26\ntext-checks=45\naudio-checks=578\npcm-checks=128';
 
 export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
   const aliases = new Map(mapping.rules.map(r => [r.symbol, r.to]));
@@ -251,6 +357,12 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
     ['hm','h','(I)Z','focus'],['hm','a','(ILhm;)Z','focusNext'],['hm','a','(Lhm;CII)Z','key'],['hm','f','(I)V','blur'],
     ['pg','c','(I)I','height'],['pg','a','(B)I','width'],['pg','a','(II)I','line'],['pg','a','(BI)I','x'],
     ['pg','a','(BII)I','hit'],['pg','a','(IILjava/lang/String;I)I','justify'],['vl','b','(I)I','width'],['vl','a','(BI)I','hit'],
+    ['in','a','([BI)V','bits'],['in','e','(I)I','read'],['in','c','()I','bit'],['in','d','(I)F','float'],
+    ['we','a','(III)I','wave'],['u','b','([II)I','low'],['u','a','([II)I','high'],['u','a','(IIIII)I','point'],
+    ['fm','b','()V','tree'],['fm','a','()[F','vector'],['fm','c','()I','scalar'],['fm','a','(II)I','lookup'],
+    ['kj','a','()Lhh;','pcm'],['cl','a','(Ln;Lwj;)V','decode'],['cl','a','(IF)I','coefficients'],
+    ['hl','a','(Lhh;III)Lhl;','create'],['hl','e','()V','reverse'],['hl','a','(III)V','ramp'],
+    ['wg','b','([III)V','mix'],['hl','d','(II)I','left'],['hl','a','(II)I','right'],
   ]) {
     const to = aliases.get(`M:${owner}.${name}${descriptor}`);
     if (to) properties.push(`-DM.${owner}.${name}${tag ? ":"+tag : ""}=${to}`);
@@ -271,7 +383,10 @@ export function verifyEscapeCore(input, named, mapping, classpath, temporary) {
       'complete level streams versions 0-11','object target/countdown/frame version boundaries','seeker spawn/home positions',
       'initial powerup filtering','fuel/shield defaults','objective/gravity whitelists','exact stream consumption',
       'widget hit-test boundaries/origins','hover versus keyboard focus','virtual focus traversal and Enter action callback',
-      'text insertion indices across lines','midpoint ties and vertical hit-test gaps','markup-aware justification','empty/null text geometry'],
+      'text insertion indices across lines','midpoint ties and vertical hit-test gaps','markup-aware justification','empty/null text geometry',
+      'LSB-first Vorbis bits and cursor boundaries','packed floats and canonical codebook entries','floor neighbors/interpolation',
+      'mapping mux and byte consumption','packet length extension and loop flags','empty synthesized effects and filter unity',
+      'oscillator boundaries','all sixteen PCM forward/reverse mono/stereo interpolation/ramp kernels','equal-power pan endpoints'],
     fullGameplayVerified:false};
 }
 
