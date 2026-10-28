@@ -99,6 +99,14 @@ username credential type keeps the same payload and a different wire tag; its
 higher-level purpose remains unresolved. Original timeouts, queue bounds,
 error/null behavior, guard paths, data encodings and class hierarchy are retained.
 
+Minimap and DynamicTerrainRenderer name every declared method: scaled/wrapped
+map views, pulse markers and legends; padded masks, boundary detection,
+scrolling sprite caches and compositing. TileSpriteCacheEntry retains reused
+sprites. ArchivePreloader/ArchiveLoadTask, Js5ArchiveManager and GzipDecoder
+identify loading/index/inflater ownership. Sprite construction, array copies,
+chat decoding/history and achievement grant rules also have reviewed names.
+Unrelated static helpers remain on their original owners; no algorithms change.
+
 Escape Vector's full class/method naming goal is tracked by the resolved
 dictionary, including nested classes and overloads:
 

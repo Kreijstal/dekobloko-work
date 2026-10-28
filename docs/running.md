@@ -80,6 +80,16 @@ payload-compatible wire-tag variant without guessing its server-side meaning.
 No networking policy, loading order, timing arithmetic, error behavior or
 existing legacy style/contact inheritance changes in this pass.
 
+The terrain/cache pass names every Minimap and DynamicTerrainRenderer method,
+including wrapped marker views, legends, padded masks, boundary detection,
+sprite reuse and cache scrolling. ArchivePreloader/ArchiveLoadTask,
+Js5ArchiveManager, GzipDecoder and the sprite construction helpers identify
+asset ownership. ChatMessageDecoder/ChatMessage/ChatHistorySupport distinguish
+wire fields, display priority and history retention. ArraySupport exposes the
+existing overlap-safe copies; AchievementGrantRule retains mode/mask/category
+checks. Unrelated static methods keep their original owners. This is a naming
+pass, with no loading policy, geometry, wire format or arithmetic changes.
+
 Preparation replays the pinned generic compiler's default declaration and
 decision proofs over every file, checking deterministic and idempotent output.
 There are no `statePc` dispatcher files in the raw Escape Vector corpus.
