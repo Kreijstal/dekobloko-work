@@ -68,7 +68,7 @@ for (const asynchronous of [false, true]) test(`shared preparation reaches the a
   launcher.configure(controller, {sourceIdentity: 'b168d7edeb104599156b5f908df62dfdc9f3b250',
     runtimeManifest: {jvmOptions: {prepareWasmPreparedUpgradesOnly: true}},
     decoder: {inflate() {}, inflateRaw() {}}});
-  assert.equal(sourcePatchAbi, 'catalog-account-server-v12-typed-login-rsa');
+  assert.equal(sourcePatchAbi, 'catalog-account-server-v13-custom-escape-level-clear-tow-route');
   const intro = introPreparationPolicy('d1e394b07ecc5cabd0f5a4aa0801bfa3345db13811a5104e0fa85f0720740b98');
   for (let generation = 0; generation < 2; generation++) {
     const ownPolicy = {maxMethods: 12, priorityMethods: ['Render.draw()V']};

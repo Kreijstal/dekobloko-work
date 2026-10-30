@@ -6,11 +6,13 @@ import {installBrowserImageDecoder} from './browser-image-decoder.mjs';
 import {installBrowserRuntimeMemory} from './browser-runtime-memory.mjs';
 import {installInterpreterOverrides} from './browser-interpreter-overrides.mjs';
 import {configureApplet} from './applet-config.mjs';
+import {patchEscapeCustomLevel} from './escape-levels.mjs';
 
 // Bump when source transforms change emitted class files, not for host fixes.
-export const sourcePatchAbi = 'catalog-account-server-v12-typed-login-rsa';
+export const sourcePatchAbi = 'catalog-account-server-v13-custom-escape-level-clear-tow-route';
 export {selectGameSources, configureApplet};
 export function patchSource(source, sourcePath) {
+  source = patchEscapeCustomLevel(source, sourcePath);
   source = patchGeobloxSource(source, sourcePath, LOGIN_MODULUS);
   return patchGameCompatibility(patchSocketWriter(patchLoginEncryption(source, LOGIN_MODULUS)), sourcePath);
 }

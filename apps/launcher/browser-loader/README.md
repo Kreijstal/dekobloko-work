@@ -24,6 +24,49 @@ browser origin; they are not global online leaderboards. Reconnect IDs remain
 stable across page reloads. No TCP service or persistent backend process is
 needed on Sites. Passwords are not stored or authenticated by local profiles.
 
+## Original Escape Vector mission
+
+`?game=escapevector&level=switchback-salvage` selects **Switchback Salvage**,
+an original cargo-retrieval cave. Choose Start Game, Retrieval–Normal, then
+level 1. Descend the switchbacks, land on the cargo to attach it, and tow it
+back above the surface. The upper chambers provide braking/turning space.
+This uses existing public theme artwork and the ordinary game physics; it
+does not recover or unlock the encrypted member campaigns.
+
+The readable level definition and deterministic version-11 encoder live in
+`escape-levels.mjs`. The launch parameter selects one custom mission without
+changing normal campaigns. Custom missions do not submit original campaign
+progress, scores or achievements. The source patch ABI must be bumped whenever
+the encoded map or generated Java changes, so cached classes cannot retain an
+earlier map. No binary map or generated Java is committed here.
+
+From the Deko root:
+
+```sh
+node scripts/build-escape-level.mjs switchback-salvage /tmp/switchback-salvage.bin
+node --test scripts/test-escape-level.mjs
+node scripts/test-escape-level-browser.mjs
+```
+
+The output path must not exist. Tests check route clearance and compare every
+terrain pixel and the full stream layout against both the original gamepack and
+the patched readable client. These checks alone do not establish winnability:
+landing, pickup and loaded return also require a successful physics playthrough.
+The browser check requires the cloner's local development server. It drives
+rotation and thrust, reads state through reflection, and requires the game's
+own `isMissionComplete` result with the cargo attached, cheats off, and fuel
+and shield remaining. Crashes, lost cargo and unsuccessful runs fail the check.
+Its temporary browser profile is removed afterwards; it saves no screenshots.
+
+Verified 2026-10-30: the input-only browser pilot completed the current map in
+4,797 game ticks, landed to collect the cargo and exited with it attached.
+`isMissionComplete` returned true; 4,300 of 6,500 fuel and all 300 shield remained,
+with no ship destruction, easy mode or time-hack mode. Map SHA-256:
+`c2d5aa643f16505ec158b977f4dc2472a2dda09c50cf0245a8f546b1a414ae37`.
+Earlier trials exposed a narrow landing and a pickup obstructing the loaded
+return. The current map supplies a landing shelf and keeps that tow route clear.
+This proves a winning route; it does not measure how easy new players find it.
+
 Run `node --test scripts/test-escape-account-service.mjs` for service tests and
 92 checks using the original client bytecode's packet writers and decoders.
 The native case needs a local original JAR and JDK; it is explicitly skipped
