@@ -33,8 +33,67 @@ const classes = {
   mh: ['ImageProducerRasterBuffer', 'RasterBuffer implementing ImageProducer to push pixels to an ImageConsumer.'],
   m: ['JavaSoundAudioOutput', 'Audio output writing mixed samples to a javax.sound SourceDataLine.'],
   kd: ['PcmStream', 'Abstract IntrusiveNode producing int samples through a mix method.'],
+  rj: ['UiWidget', 'IntrusiveNode base widget with text, listener and bounds fields.'],
+  g: ['WidgetContainer', 'UiWidget owning an IntrusiveDeque of children traversed with cursors.'],
+  ci: ['FrameTimer', 'Abstract timer deriving a sleep count from elapsed time.'],
+  rc: ['NanoFrameTimer', 'FrameTimer reading System.nanoTime into a ring of samples.'],
+  qe: ['GameEntity', 'Constructed from a kind number, rolls a random heading and speed, and trades momentum by mass on collision; kind -1 is element 0 of the entity array.'],
+  pi: ['Quaternion', 'Four doubles built from sin and cos of a half angle and expanded into a rotation matrix.'],
+  sd: ['ScorePopup', 'Drifting value marker drawn at screen centre plus offset and discarded when it leaves the screen.'],
+  gb: ['AbstractAudioSample', 'Abstract IntrusiveNode base of PcmSample holding one int.'],
+  ud: ['PcmSample', 'AbstractAudioSample holding a byte array, sample rate and loop bounds.'],
+  gd: ['PcmSampleStream', 'PcmStream mixing a PcmSample with volume, pan and looping.'],
+  bd: ['BitmapFont', 'DualLinkNode owning glyph tables with width, draw and wrap operations on strings.'],
 };
 const members = {};
+const field = (owner, original, descriptor, to, evidence) =>
+  members[`F:${owner}.field_${original}:${descriptor}`] = {to, evidence};
+const method = (owner, original, descriptor, to, evidence) =>
+  members[`M:${owner}.${original}${descriptor}`] = {to, evidence};
+const link = 'IntrusiveDeque inserts and unlinks nodes through these two reciprocal fields.';
+field('gg', 'g', 'Lgg;', 'next', link);
+field('gg', 'c', 'Lgg;', 'previous', link);
+field('gg', 'j', 'J', 'key', 'Hash tables and byte buffers key nodes by this long.');
+field('oj', 'd', 'Lgg;', 'sentinel', 'IntrusiveDeque constructor links this node to itself as the empty list.');
+method('gg', 'c', '(I)V', 'unlink', 'Splices the node out of its neighbours and clears both links.');
+method('gg', 'b', '(I)Z', 'isLinked', 'Returns whether the previous link is non-null.');
+method('oj', 'a', '(ILgg;)V', 'addFirst', 'Inserts the node right after the sentinel.');
+method('oj', 'b', '(ILgg;)V', 'addLast', 'Inserts the node right before the sentinel.');
+method('oj', 'd', '(B)Lgg;', 'removeFirst', 'Unlinks and returns the node after the sentinel.');
+method('oj', 'c', '(B)Lgg;', 'removeLast', 'Unlinks and returns the node before the sentinel.');
+method('oj', 'a', '(I)Z', 'isEmpty', 'True when the sentinel links back to itself.');
+method('oj', 'a', '(B)V', 'clear', 'Unlinks every node until only the sentinel remains.');
+field('ka', 'r', '[B', 'payload', 'PacketBuffer byte array indexed by the cursor in every read and write.');
+field('ka', 'k', 'I', 'position', 'PacketBuffer cursor advanced by reads and writes.');
+method('ka', 'g', '(I)B', 'readByte', 'Returns the byte at the cursor and advances by one.');
+method('ka', 'f', '(I)I', 'readUnsignedByte', 'Masks the byte at the cursor with 255 and advances.');
+method('ka', 'c', '(B)I', 'readUnsignedShort', 'Combines two big-endian bytes at the cursor.');
+method('ka', 'b', '(Z)I', 'readInt', 'Combines four big-endian bytes at the cursor.');
+method('ka', 'd', '(I)J', 'readLong', 'Joins two unsigned ints into a long.');
+method('ka', 'b', '(II)V', 'writeInt', 'Writes the value shifted by 24 first, big-endian.');
+method('ka', 'a', '(ZI)V', 'writeByte', 'Stores the low byte of the value at the cursor.');
+field('wg', 'f', 'Ljava/lang/String;', 'context', 'ClientException stores the context text passed to its constructor.');
+field('wg', 'a', 'Ljava/lang/Throwable;', 'cause', 'ClientException stores the Throwable passed to its constructor.');
+field('nl', 'g', 'I', 'port', 'ProxySocketConnector writes this as the CONNECT port.');
+field('nl', 'c', 'Ljava/lang/String;', 'host', 'ProxySocketConnector writes this as the CONNECT host.');
+field('a', 'h', '[Lqe;', 'entities', 'Element 0 is tested for kind -1 by the HUD panel; the array is cleared at shutdown.');
+field('qe', 'n', 'I', 'mass', 'Collision code weights velocities by this value, set per kind in the constructor.');
+field('qe', 'm', 'I', 'kind', 'The constructor argument, compared against kind numbers throughout GameEntity.');
+
+const quaternion = 'Quaternion stores cos of the half angle in one field and axis times sin in the others.';
+field('pi', 'b', 'D', 'w', quaternion);
+field('pi', 'd', 'D', 'x', quaternion);
+field('pi', 'a', 'D', 'y', quaternion);
+field('pi', 'c', 'D', 'z', quaternion);
+method('pi', 'a', '(DDDBD)V', 'setAxisAngle', 'Halves the angle and stores cos plus the axis scaled by sin.');
+method('pi', 'a', '([DI)V', 'writeRotationMatrix', 'Fills the double array with rotation entries from the squared and cross terms.');
+const popup = 'ScorePopup moves its position by these velocities each update.';
+field('sd', 'h', 'D', 'x', popup);
+field('sd', 'f', 'D', 'y', popup);
+field('sd', 'g', 'D', 'velocityX', popup);
+field('sd', 'a', 'D', 'velocityY', popup);
+field('sd', 'e', 'I', 'value', 'Added to the score tallies when the popup leaves the screen.');
+method('sd', 'a', '(I)Lsd;', 'update', 'Advances the popup and returns null once it leaves the screen.');
 
 export const config = {
   game: 'stellarshard', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,

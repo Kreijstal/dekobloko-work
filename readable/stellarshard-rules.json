@@ -262,6 +262,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bd",
+      "originalName": "bd",
+      "to": "BitmapFont",
+      "evidence": "DualLinkNode owning glyph tables with width, draw and wrap operations on strings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:be",
       "originalName": "be",
       "to": "MouseHandler",
@@ -273,6 +280,13 @@
       "originalName": "bg",
       "to": "DualLinkDeque",
       "evidence": "Iterable sentinel deque over DualLinkNode secondary links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ci",
+      "originalName": "ci",
+      "to": "FrameTimer",
+      "evidence": "Abstract timer deriving a sleep count from elapsed time.",
       "confidence": "reviewed"
     },
     {
@@ -304,10 +318,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:g",
+      "originalName": "g",
+      "to": "WidgetContainer",
+      "evidence": "UiWidget owning an IntrusiveDeque of children traversed with cursors.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ga",
       "originalName": "ga",
       "to": "NodeHashTableIterator",
       "evidence": "Iterator over an IterableNodeHashTable that removes through the node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gb",
+      "originalName": "gb",
+      "to": "AbstractAudioSample",
+      "evidence": "Abstract IntrusiveNode base of PcmSample holding one int.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gd",
+      "originalName": "gd",
+      "to": "PcmSampleStream",
+      "evidence": "PcmStream mixing a PcmSample with volume, pan and looping.",
       "confidence": "reviewed"
     },
     {
@@ -388,10 +423,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pi",
+      "originalName": "pi",
+      "to": "Quaternion",
+      "evidence": "Four doubles built from sin and cos of a half angle and expanded into a rotation matrix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qe",
+      "originalName": "qe",
+      "to": "GameEntity",
+      "evidence": "Constructed from a kind number, rolls a random heading and speed, and trades momentum by mass on collision; kind -1 is element 0 of the entity array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rc",
+      "originalName": "rc",
+      "to": "NanoFrameTimer",
+      "evidence": "FrameTimer reading System.nanoTime into a ring of samples.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rj",
+      "originalName": "rj",
+      "to": "UiWidget",
+      "evidence": "IntrusiveNode base widget with text, listener and bounds fields.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:s",
       "originalName": "s",
       "to": "DualLinkDequeIterator",
       "evidence": "Iterator constructed from a DualLinkDeque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sd",
+      "originalName": "sd",
+      "to": "ScorePopup",
+      "evidence": "Drifting value marker drawn at screen centre plus offset and discarded when it leaves the screen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ud",
+      "originalName": "ud",
+      "to": "PcmSample",
+      "evidence": "AbstractAudioSample holding a byte array, sample rate and loop bounds.",
       "confidence": "reviewed"
     },
     {
@@ -414,6 +491,286 @@
       "to": "ClientException",
       "evidence": "RuntimeException retaining a cause and context text.",
       "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:a.field_h:[Lqe;",
+      "originalName": "field_h",
+      "to": "entities",
+      "evidence": "Element 0 is tested for kind -1 by the HUD panel; the array is cleared at shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gg.field_c:Lgg;",
+      "originalName": "field_c",
+      "to": "previous",
+      "evidence": "IntrusiveDeque inserts and unlinks nodes through these two reciprocal fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gg.field_g:Lgg;",
+      "originalName": "field_g",
+      "to": "next",
+      "evidence": "IntrusiveDeque inserts and unlinks nodes through these two reciprocal fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gg.field_j:J",
+      "originalName": "field_j",
+      "to": "key",
+      "evidence": "Hash tables and byte buffers key nodes by this long.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_k:I",
+      "originalName": "field_k",
+      "to": "position",
+      "evidence": "PacketBuffer cursor advanced by reads and writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ka.field_r:[B",
+      "originalName": "field_r",
+      "to": "payload",
+      "evidence": "PacketBuffer byte array indexed by the cursor in every read and write.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nl.field_c:Ljava/lang/String;",
+      "originalName": "field_c",
+      "to": "host",
+      "evidence": "ProxySocketConnector writes this as the CONNECT host.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nl.field_g:I",
+      "originalName": "field_g",
+      "to": "port",
+      "evidence": "ProxySocketConnector writes this as the CONNECT port.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oj.field_d:Lgg;",
+      "originalName": "field_d",
+      "to": "sentinel",
+      "evidence": "IntrusiveDeque constructor links this node to itself as the empty list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_a:D",
+      "originalName": "field_a",
+      "to": "y",
+      "evidence": "Quaternion stores cos of the half angle in one field and axis times sin in the others.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_b:D",
+      "originalName": "field_b",
+      "to": "w",
+      "evidence": "Quaternion stores cos of the half angle in one field and axis times sin in the others.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_c:D",
+      "originalName": "field_c",
+      "to": "z",
+      "evidence": "Quaternion stores cos of the half angle in one field and axis times sin in the others.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_d:D",
+      "originalName": "field_d",
+      "to": "x",
+      "evidence": "Quaternion stores cos of the half angle in one field and axis times sin in the others.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qe.field_m:I",
+      "originalName": "field_m",
+      "to": "kind",
+      "evidence": "The constructor argument, compared against kind numbers throughout GameEntity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qe.field_n:I",
+      "originalName": "field_n",
+      "to": "mass",
+      "evidence": "Collision code weights velocities by this value, set per kind in the constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sd.field_a:D",
+      "originalName": "field_a",
+      "to": "velocityY",
+      "evidence": "ScorePopup moves its position by these velocities each update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sd.field_e:I",
+      "originalName": "field_e",
+      "to": "value",
+      "evidence": "Added to the score tallies when the popup leaves the screen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sd.field_f:D",
+      "originalName": "field_f",
+      "to": "y",
+      "evidence": "ScorePopup moves its position by these velocities each update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sd.field_g:D",
+      "originalName": "field_g",
+      "to": "velocityX",
+      "evidence": "ScorePopup moves its position by these velocities each update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sd.field_h:D",
+      "originalName": "field_h",
+      "to": "x",
+      "evidence": "ScorePopup moves its position by these velocities each update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wg.field_a:Ljava/lang/Throwable;",
+      "originalName": "field_a",
+      "to": "cause",
+      "evidence": "ClientException stores the Throwable passed to its constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wg.field_f:Ljava/lang/String;",
+      "originalName": "field_f",
+      "to": "context",
+      "evidence": "ClientException stores the context text passed to its constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gg.b(I)Z",
+      "originalName": "b",
+      "to": "isLinked",
+      "evidence": "Returns whether the previous link is non-null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gg.c(I)V",
+      "originalName": "c",
+      "to": "unlink",
+      "evidence": "Splices the node out of its neighbours and clears both links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(ZI)V",
+      "originalName": "a",
+      "to": "writeByte",
+      "evidence": "Stores the low byte of the value at the cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.b(II)V",
+      "originalName": "b",
+      "to": "writeInt",
+      "evidence": "Writes the value shifted by 24 first, big-endian.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.b(Z)I",
+      "originalName": "b",
+      "to": "readInt",
+      "evidence": "Combines four big-endian bytes at the cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.c(B)I",
+      "originalName": "c",
+      "to": "readUnsignedShort",
+      "evidence": "Combines two big-endian bytes at the cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.d(I)J",
+      "originalName": "d",
+      "to": "readLong",
+      "evidence": "Joins two unsigned ints into a long.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.f(I)I",
+      "originalName": "f",
+      "to": "readUnsignedByte",
+      "evidence": "Masks the byte at the cursor with 255 and advances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.g(I)B",
+      "originalName": "g",
+      "to": "readByte",
+      "evidence": "Returns the byte at the cursor and advances by one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oj.a(B)V",
+      "originalName": "a",
+      "to": "clear",
+      "evidence": "Unlinks every node until only the sentinel remains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oj.a(I)Z",
+      "originalName": "a",
+      "to": "isEmpty",
+      "evidence": "True when the sentinel links back to itself.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oj.a(ILgg;)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "Inserts the node right after the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oj.b(ILgg;)V",
+      "originalName": "b",
+      "to": "addLast",
+      "evidence": "Inserts the node right before the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oj.c(B)Lgg;",
+      "originalName": "c",
+      "to": "removeLast",
+      "evidence": "Unlinks and returns the node before the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oj.d(B)Lgg;",
+      "originalName": "d",
+      "to": "removeFirst",
+      "evidence": "Unlinks and returns the node after the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.a(DDDBD)V",
+      "originalName": "a",
+      "to": "setAxisAngle",
+      "evidence": "Halves the angle and stores cos plus the axis scaled by sin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.a([DI)V",
+      "originalName": "a",
+      "to": "writeRotationMatrix",
+      "evidence": "Fills the double array with rotation entries from the squared and cross terms.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sd.a(I)Lsd;",
+      "originalName": "a",
+      "to": "update",
+      "evidence": "Advances the popup and returns null once it leaves the screen.",
+      "confidence": "reviewed"
     }
   ],
   "classNameLiterals": {
@@ -431,7 +788,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-stellarshard-rules.mjs": "f8faf401117178a8e099b898f662cf2a2f5b1822f2bfdef78791ad2aa6c4e6cd",
+      "build-stellarshard-rules.mjs": "883bb0f83224b39351165e517c9254e52d40cab26c163705dc349015ab9c5dc1",
       "reproduce-stellarshard.mjs": "bd81f17e3db3182b75b19f828dfc185d0ec0f4b8ca0f78caa8495e2ff6f4a0a1",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
