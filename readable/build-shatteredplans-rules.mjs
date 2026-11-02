@@ -342,6 +342,31 @@ method("k", "a", "([ILln;I[Lfs;)Leg;", "recordBattle", "Creates a BattleEvent, a
 method("k", "a", "(Lfs;Z)V", "recordElimination", "Appends a PlayerEliminatedEvent.");
 method("k", "a", "(Lfs;Lln;B)V", "recordTerraform", "Appends a ProjectUse of kind 1.");
 method("k", "a", "(ILln;I)V", "recordPlacement", "Appends a PlacementEvent for the star's owner.");
+method("kf", "a", "(I)V", "update", "Abstract per-tick hook that the private runUpdate calls after recording the tick time.");
+method("kf", "d", "(I)V", "draw", "Abstract per-frame hook that the private runDraw calls after recording the paint time.");
+method("kf", "c", "(I)V", "initialise", "Abstract hook that run calls once after creating the canvas and before the main loop.");
+method("kf", "a", "(Z)V", "shutdown", "Abstract hook that the termination routine calls before it removes the canvas.");
+method("kf", "g", "(I)V", "disposeResources", "Abstract hook that the termination routine calls after it removes the canvas and dispatcher.");
+method("kf", "a", "(B)V", "runUpdate", "Records the tick time in a ring of 32, copies the focus flag and calls update.");
+method("kf", "c", "(B)V", "runDraw", "Records the paint time, resizes the canvas every fifty frames and calls draw.");
+method("kf", "f", "(I)V", "createCanvas", "Replaces the canvas with a new DelegatingCanvas in the container and sets size and location.");
+method("kf", "a", "(IZ)V", "terminate", "Runs once under a lock, calls shutdown, removes the canvas, disposes resources and may exit.");
+method("kf", "a", "(BLjava/lang/String;)V", "fail", "Shows a failure page for the given reason key such as wrongjava or crash.");
+method("kf", "a", "(BIIILjava/lang/String;II)V", "startup", "Stores the canvas size, creates the PlatformTaskDispatcher and starts the run thread.");
+method("kf", "e", "(I)V", "closeAudioPlayers", "Closes the two PcmPlayerService outputs when they exist.");
+method("tl", "h", "(I)V", "allowOpcode4", "Sets the allowed flag of server opcode 4.");
+method("tl", "g", "(B)V", "allowOpcode1", "Sets the allowed flag of server opcode 1.");
+method("tl", "h", "(B)V", "allowOpcode2", "Sets the allowed flag of server opcode 2.");
+method("tl", "k", "(B)V", "allowOpcode5", "Sets the allowed flag of server opcode 5.");
+method("tl", "j", "(I)V", "allowOpcode6", "Sets the allowed flag of server opcode 6.");
+method("tl", "d", "(B)V", "allowOpcodes11To13", "Sets the allowed flags of server opcodes 11, 12 and 13.");
+method("tl", "b", "(IZ)V", "allowBaseOpcodes", "Sets the allowed flags of opcodes 0, 3, 7, 8, 16, 17 and 18.");
+method("tl", "a", "(ZZIZZZZ)V", "allowOpcodeGroups", "Calls the opcode-allowing methods selected by its boolean flags.");
+method("tl", "l", "(B)V", "initialiseOpcodeLengths", "Fills the table of fixed and variable packet lengths per opcode.");
+method("tl", "a", "(Ljava/lang/String;IB)V", "configureGame", "Passes 480, 640 and the game name to the parameter reader.");
+method("tl", "a", "(IIILjava/lang/String;I)V", "readAppletParameters", "Reads gameport1, gameport2, servernum, instanceid and related applet parameters.");
+method("tl", "a", "(IIIIZIII)V", "initialiseShell", "Creates the helper frame, input handlers, raster and network settings of the shell.");
+method("tl", "i", "(B)I", "serviceConnection", "Returns -1, 0 or 1 for the connection state and starts a reconnect on other results.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
