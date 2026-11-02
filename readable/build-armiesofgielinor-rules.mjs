@@ -4376,6 +4376,269 @@ for(const [owner,signature,names] of [
  ['ic','d(B)V',[[17,'var2_int','directionKeysEnabled'],[19,'var3','manualCameraMovement'],[20,'var4_int','cameraPlayerIndex'],[21,'var4','overviewTarget'],[22,'var5','overviewVelocitySettled'],[23,'var6','nearestTarget'],[24,'var7','candidateTarget'],[25,'var8','candidateDistance'],[26,'var9','obfuscationControl'],[27,'var5Lifetime1','nearestDistance']]],
 ])for(const [ordinal,originalName,to] of names)local(owner,signature,ordinal,originalName,to,'Camera overview grouping, centroid arithmetic, smoothing phases and manual/automatic target traversal at this exact local declaration.');
 
+// Remaining-class pass: runtime/platform adapters and shared support drawers.
+Object.assign(classes,{
+  gf:['CursorController','Owns the AWT Robot and the component with a hidden cursor; public cursor method spellings remain compatible with reflective lookup.'],
+});
+field('gf','b','Ljava/awt/Robot;','robot','movemouse delegates to the retained AWT Robot.');
+field('gf','a','Ljava/awt/Component;','hiddenCursorComponent','showcursor installs a transparent cursor on this component and restores the default cursor when it is replaced.');
+
+// Platform adapters: cursor, display, wheel, surfaces, sockets and cache location.
+Object.assign(classes,{
+  hj:['MicrosoftCursorController','Legacy Microsoft VM cursor callback, window-procedure replacement and native pointer movement with original unsupported-peer paths retained.'],
+  fv:['MicrosoftDisplayController','Legacy DirectDraw display enumeration, fullscreen mode selection and display restoration with original native-peer behavior.'],
+  wu:['AwtDisplayController','Selects a fullscreen-capable AWT graphics device, lists width/height/depth/refresh quadruples, enters a chosen display mode with nearest-refresh fallback and restores the previous mode; public spellings stay reflectively compatible.'],
+  el:['MouseWheelSource','Abstract attach, detach and take-rotation contract; shared container decompression and an unrelated table builder remain on this owner.'],
+  sv:['AwtMouseWheelSource','AWT mouse-wheel listener accumulating rotation under its monitor, consuming each event and returning-and-clearing the total.'],
+  bi:['RasterImageSurface','Abstract pixel-array surface retaining an AWT image, pixel buffer and dimensions with paint, allocate and raster-target binding; unrelated console-token, alphanumeric and pixel-sampling helpers remain separate.'],
+  dh:['ImageProducerSurface','Surface backed by an ImageProducer/ImageObserver feeding a direct-colour model from the pixel buffer; unrelated unit-sound, email-check and static sprite helpers remain separate.'],
+  jo:['BufferedImageSurface','Surface wrapping the pixel buffer in a DataBufferInt-backed BufferedImage and drawing it with the owning component as observer.'],
+  qr:['MicrosoftDirectSoundProbe','Constructs DirectSound, wave-format and per-buffer descriptor/cursor objects, apparently only to probe legacy Microsoft DirectSound availability.'],
+  ff:['MicrosoftDirectSoundProbeMarker','Empty marker implemented by the DirectSound probe.'],
+  du:['SocketFactory','Abstract host/port socket opener with a direct java.net.Socket implementation; unrelated name-check, quick-chat and label statics remain separate.'],
+  pc:['ProxySocketFactory','Tries system proxies in order, including SOCKS and HTTP CONNECT tunnelling with optional preemptive proxy authorization, falling back to the direct socket.'],
+  ug:['ProxyAuthenticationRequiredException','IOException carrying the proxy-authenticate scheme (or empty text) after an HTTP 407 CONNECT reply; unrelated fullscreen-frame and state-dump helpers remain separate.'],
+  lj:['AppletScriptBridge','Evaluates browser script text and calls named browser functions with or without arguments through the applet JSObject window.'],
+  qi:['CacheFileLocator','Stores the cache identifier and name, derives the user.home prefix and delegates final cache file paths to the launcher hook.'],
+  ac:['ManaStarParticle','Intrusive animated mana pickup that drifts and accelerates upward, flies to the HUD, plays collection sounds and credits player mana (and team mana except kinds 3 and 4) with a one-billion cap.'],
+  dd:['ArchiveMasterIndex','Requests the master index, verifies its optional RSA-wrapped Whirlpool digest, then opens per-archive cached providers from 72-byte records and services them; unrelated compact-number and loading-progress helpers remain separate.'],
+});
+field('hj','e','I','windowHandle','Callback only handles messages for this top-level window and replaces/restores its window procedure.');
+field('hj','d','I','previousWindowProcedure','SetWindowLong returns the replaced procedure that unhandled messages forward to.');
+field('hj','b','Z','cursorVisible','Cursor-set messages choose the arrow cursor or no cursor from this flag.');
+field('hj','c','I','arrowCursor','LoadCursor result used when the cursor is visible.');
+field('hj','a','Z','callbackAllocated','Set after the callback is pinned with Root.alloc.');
+method('hj','a','(III)V','movePointer','Calls User32.SetCursorPos with the supplied X and Y; a low guard additionally hides the cursor flag.',{0:'y',1:'obfuscationGuard',2:'x'});
+method('hj','a','(IZLjava/awt/Component;)V','setCursorVisible','Replaces the window procedure for the component window and posts a cursor-refresh message; native peer lookup is unsupported in this export.',{0:'obfuscationGuard',1:'visible',2:'component'});
+method('fv','a','(I)[I','enumerateDisplayModes','Runs DirectDraw mode enumeration twice, first counting four words per mode and then storing width, height, bit count and refresh rate.',{0:'obfuscationGuard'});
+method('fv','a','(IILjava/awt/Frame;IIZ)V','enterFullscreen','Sets window styles, exclusive cooperative level and the requested DirectDraw display mode, then sizes and focuses the frame.',{0:'height',1:'refreshRate',2:'frame',3:'bitDepth',4:'width',5:'unsupportedPeerGuard'});
+method('fv','a','(ILjava/awt/Frame;)V','exitFullscreen','Restores the previous DirectDraw display mode and normal cooperative level.',{0:'obfuscationGuard',1:'frame'});
+field('fv','c','Lcom/ms/directX/DirectDraw;','directDraw','Initialized in the constructor and used for enumeration, cooperative level and mode changes.');
+field('fv','b','[I','enumeratedModes','Static output array filled by the callback; null during the counting pass.');
+field('fv','a','I','modeWordCount','Static count or write cursor for enumerated mode words.');
+field('wu','b','Ljava/awt/GraphicsDevice;','graphicsDevice','Default or first fullscreen-capable screen device.');
+field('wu','a','Ljava/awt/DisplayMode;','previousDisplayMode','Saved on enter and restored on exit.');
+method('wu','a','(ILjava/awt/Frame;)V','setFullScreenWindow','Assigns or clears the fullscreen window on the retained graphics device.',{0:'obfuscationGuard',1:'frame'});
+for(const owner of ['el','sv']){
+method(owner,'a','(Ljava/awt/Component;Z)V','detach','Removes the wheel listener from the component (contract in MouseWheelSource).',{0:'component',1:'removeGuard'});
+method(owner,'a','(I)I','takeRotation','Returns and clears the accumulated wheel rotation (contract in MouseWheelSource).',{0:'obfuscationGuard'});
+method(owner,'a','(ILjava/awt/Component;)V','attach','Adds the wheel listener to the component when the guard is zero (contract in MouseWheelSource).',{0:'obfuscationGuard',1:'component'});
+}
+field('sv','g','I','accumulatedRotation','mouseWheelMoved adds each event rotation; takeRotation clears it.');
+field('bi','h','Ljava/awt/Image;','image','Backing AWT image drawn by paint.');
+field('bi','b','[I','pixels','Pixel buffer allocated with one extra element and bound as the raster target.');
+field('bi','a','I','width','Surface width in pixels.');
+field('bi','g','I','height','Surface height in pixels.');
+for(const owner of ['bi','dh','jo']){
+method(owner,'a','(ILjava/awt/Graphics;II)V','paint','Draws the backing image at the supplied X/Y when the guard is 255.',{0:'obfuscationGuard',1:'graphics',2:'y',3:'x'});
+method(owner,'a','(IILjava/awt/Component;I)V','allocate','Allocates width*height+1 pixels and creates the image for the component.',{0:'width',1:'obfuscationGuard',2:'component',3:'height'});
+}
+method('bi','a','(I)V','bindRasterTarget','Makes the surface pixels, width and height the SoftwareRaster target for the canonical guard.',{0:'obfuscationGuard'});
+field('jo','i','Ljava/awt/Component;','observerComponent','Component used as ImageObserver when painting.');
+field('dh','m','Ljava/awt/image/ImageConsumer;','consumer','Single current consumer set in addConsumer and cleared in removeConsumer.');
+field('dh','o','Ljava/awt/image/ColorModel;','colorModel','32-bit direct colour model with red, green and blue masks.');
+method('dh','a','(Z)V','pushPixels','Sends the whole pixel buffer to the retained consumer and signals a single completed frame unless suppressed.',{0:'suppressFrameComplete'});
+method('lj','a','(BLjava/applet/Applet;Ljava/lang/String;)V','evaluateScript','Evaluates script text through JSObject.getWindow when the guard permits.',{0:'obfuscationGuard',1:'applet',2:'script'});
+method('lj','a','(Ljava/lang/String;BLjava/applet/Applet;)Ljava/lang/Object;','callScriptFunction','Calls a named browser window function without arguments.',{0:'functionName',1:'obfuscationGuard',2:'applet'});
+method('lj','a','(Ljava/applet/Applet;Ljava/lang/String;[Ljava/lang/Object;I)Ljava/lang/Object;','callScriptFunction','Calls a named browser window function with an argument array.',{0:'applet',1:'functionName',2:'arguments',3:'obfuscationGuard'});
+method('qi','a','(ILjava/lang/String;I)V','configure','Stores cache identifier and name and derives the home directory prefix, using a tilde fallback.',{0:'cacheStoreId',1:'cacheName',2:'obfuscationGuard'});
+method('qi','a','(ZLjava/lang/String;)Ljava/io/File;','getCacheFile','Resolves a cache file name using the stored identifier and name.',{0:'obfuscationGuard',1:'fileName'});
+method('qi','a','(Ljava/lang/String;IILjava/lang/String;)Ljava/io/File;','resolveLauncherFile','Delegates to Hook.cacheRedirect with the cache name and file name.',{0:'fileName',1:'cacheStoreId',2:'obfuscationGuard',3:'cacheName'});
+method('pc','a','(I)Ljava/net/Socket;','openSocket','Enables system proxy discovery, tries selector proxies in order and falls back to the direct socket; rethrows the last proxy failure.',{0:'obfuscationGuard'});
+method('pc','a','(ILjava/net/Proxy;)Ljava/net/Socket;','openThroughProxy','Handles direct, SOCKS and HTTP proxy addresses and extracts preemptive proxy authorization reflectively.',{0:'obfuscationGuard',1:'proxy'});
+method('pc','a','(Ljava/lang/String;Ljava/lang/String;ZI)Ljava/net/Socket;','openConnectTunnel','Sends HTTP CONNECT with optional authorization, accepts HTTP 200 and raises the proxy-authentication exception on 407.',{0:'authorizationHeader',1:'proxyHost',2:'unusedGuard',3:'proxyPort'});
+method('du','a','(B)Ljava/net/Socket;','openDirectSocket','Creates a socket for the retained host and port when the guard is 15.',{0:'obfuscationGuard'});
+method('du','a','(I)Ljava/net/Socket;','openSocket','Abstract socket-opening contract.',{0:'obfuscationGuard'});
+field('du','a','Ljava/lang/String;','host','Destination host for socket opening.');
+field('du','c','I','port','Destination port for socket opening.');
+method('dd','a','(ZLbc;IILbc;)Lbm;','openProvider','Creates and retains the CachedArchiveProvider for an archive index from its 72-byte master-index record.',{0:'flag',1:'dataStore',2:'archiveId',3:'obfuscationGuard',4:'indexStore'});
+method('dd','a','(B)Z','pollMasterIndex','Requests the master index, waits for it, verifies the RSA-wrapped digest and allocates the provider array; true once loaded.',{0:'obfuscationGuard'});
+method('dd','a','(I)V','serviceProviders','Runs each opened provider\'s d(int) step and then its b(int) step.',{0:'obfuscationGuard'});
+method('dd','a','(II)Ljava/lang/String;','formatCompactAmount','Formats values below 10000 plainly, then with K and M suffixes, otherwise A Billion.',{0:'amount',1:'obfuscationGuard'});
+method('dd','a','(Z)I','getLoadingProgressPercent','Maps common UI index and group availability checks to staged loading percentages.',{0:'obfuscationGuard'});
+field('dd','b','Lvo;','diskCacheWorker','Passed to every opened provider.');
+field('dd','c','Ljf;','masterIndexRequest','Pending master-index network request.');
+field('dd','d','Lbp;','protocolClient','Source of the master-index request.');
+field('dd','f','Lvh;','masterIndex','Verified master-index buffer.');
+field('dd','h','Ljava/math/BigInteger;','rsaExponent','Optional exponent for decoding the signed digest.');
+field('dd','j','Ljava/math/BigInteger;','rsaModulus','Optional modulus for decoding the signed digest.');
+field('dd','i','[Lbm;','providers','Opened per-archive providers by index.');
+
+// Widget painters, dials, sliders, themes and state styles.
+Object.assign(classes,{
+  ws:['DialWidget','Circular selector whose pointer press converts the angle from its centre into a wrapped step index; the private constructor leaves it uninstantiated. Unrelated tutorial layout and server-list page helpers remain separate.'],
+  or:['DialWidgetPainter','Draws a DialWidget as a filled circle, optional mark point, centre dot, angular hand and wrapped caption.'],
+  pi:['MarkerSliderWidget','Slider whose press maps the pointer to a value, adds a marker on button one and removes the nearest marker on button two; the private constructor leaves it uninstantiated.'],
+  kp:['MarkerSliderPainter','Draws a MarkerSliderWidget as a baseline with a tick at each marker position and a centred caption; unrelated chat-filter and sprite-sheet loading helpers remain separate.'],
+  fh:['GrowableIntArray','Zero-based int list with append, indexed read, shifted removal and additive or multiplicative growth; unrelated mesh, projection and connection helpers remain separate.'],
+  fl:['WidgetTheme','Holds the default widget painters, colours and metrics, installs them for a font, draws lines, rectangles and wrapped or single-line tooltip boxes, and restores raster state.'],
+  kw:['ValidationStatusIcon','Widget showing a rotating waiting or checking icon, a valid tick or an invalid cross for a ValidationSource and reporting the validation message as its tooltip while hovered.'],
+  ao:['StatefulWidgetPainter','Bitmap text painter with six optional style layers for base, active, hovered, pressed, disabled and focused widgets; unrelated tagged-payload and archive-text helpers remain separate.'],
+  ip:['WidgetStateStyle','Fluent per-state style layer with nine-slice frame sprites, content sprite and offsets, text colour fields and a sentinel meaning unset when layered over another state.'],
+  nr:['NineSliceFrame','Retains nine frame sprites and draws them around a rectangle; unrelated single-byte text encoding and font statics remain separate.'],
+  pn:['GradientFrame','NineSliceFrame variant drawing the sprite frame with palette-gradient fill parameters.'],
+});
+field('ws','L','I','stepCount','Number of dial steps around the circle.');
+field('ws','R','I','currentStep','Selected step, wrapped into zero through stepCount minus one.');
+field('ws','N','I','markedStep','Optional highlighted step, or -1.');
+field('ws','Q','I','radius','Dial radius in pixels.');
+field('ws','S','I','centerOffsetX','Dial centre relative to the widget.');
+field('ws','M','I','centerOffsetY','Dial centre relative to the widget.');
+method('ws','a','(Ljava/applet/Applet;I)V','openServerListPage','Navigates the top frame to the codebase toserverlist.ws page, printing exceptions.',{0:'applet',1:'obfuscationGuard'});
+field('pi','Q','Lfh;','markers','Marker positions edited by pointer presses.');
+field('pi','L','I','maximumValue','Largest value a pointer press can select.');
+field('pi','R','I','horizontalPadding','Pointer positions are measured inside this inset.');
+field('pi','S','I','baselineOffsetY','Vertical offset of the drawn baseline.');
+method('pi','a','(IB)I','getMarker','Returns the marker value at an index, or -1 outside the list.',{0:'index',1:'obfuscationGuard'});
+method('pi','d','(B)I','getMarkerCount','Returns the number of retained markers.',{0:'obfuscationGuard'});
+method('pi','a','(I)I','getMaximumValue','Returns the maximum selectable value for the canonical guard.',{0:'obfuscationGuard'});
+method('fh','e','(II)V','append','Stores a value after the current last element, growing the array when needed.',{0:'obfuscationGuard',1:'value'});
+method('fh','d','(II)I','get','Returns an element or throws when the index is past the last element.',{0:'index',1:'obfuscationGuard'});
+method('fh','a','(I)I','size','Returns last index plus one.',{0:'obfuscationGuard'});
+method('fh','b','(II)V','removeAt','Removes an element by shifting later elements down.',{0:'index',1:'obfuscationGuard'});
+method('fh','a','(III)V','set','Stores a value at an index and extends the last index when necessary, growing storage as needed.',{0:'value',1:'index',2:'obfuscationGuard'});
+method('fh','c','(II)V','grow','Replaces the storage array with a larger copy.',{0:'obfuscationGuard',1:'requiredIndex'});
+method('fh','a','(II)I','computeCapacity','Grows the current length additively or multiplicatively until it exceeds the requested index.',{0:'requiredIndex',1:'obfuscationGuard'});
+field('fh','d','[I','values','Backing int array.');
+field('fh','a','I','lastIndex','Index of the last stored element.');
+field('fh','h','I','growthStep','Additive or multiplicative growth amount.');
+field('fh','g','Z','multiplicativeGrowth','Selects multiplication instead of addition when capacity is exceeded.');
+method('fl','a','(IILjava/lang/String;I)V','drawTooltip','Draws a single-line or wrapped tooltip box depending on the retained wrapping mode.',{2:'text'});
+method('fl','a','(IIILjava/lang/String;)V','drawSingleLineTooltip','Clamps a one-line bordered label to the raster and draws it.',{3:'text'});
+method('fl','a','(ZIILjava/lang/String;)V','drawWrappedTooltip','Wraps text near a quarter of the raster width, clamps the padded box and draws the paragraph.',{3:'text'});
+method('fl','a','(I)V','restoreRasterState','Pops the saved raster state for the canonical guard.',{0:'obfuscationGuard'});
+method('fl','a','(ILka;)V','installDefaultPainters','Creates the default bitmap text, stateful, checkbox, dial, slider and scrollbar-style painters, colours and metrics for a font.',{1:'font'});
+field('fl','m','Lka;','font','Font used for tooltip measuring and drawing.');
+field('fl','g','Z','wrapTooltips','Selects wrapped over single-line tooltips.');
+method('nr','a','(BIIII)V','drawFrame','Draws the nine retained frame sprites around a rectangle (guard, height, x, width, y).',{0:'obfuscationGuard',1:'height',2:'x',3:'width',4:'y'});
+method('pn','a','(BIIII)V','drawFrame','Draws the retained sprites with palette-gradient fill parameters (guard, height, x, width, y).',{0:'obfuscationGuard',1:'height',2:'x',3:'width',4:'y'});
+field('nr','b','[Lwk;','frameSprites','Nine frame sprites drawn by drawNineSlice.');
+field('kw','O','Ln;','validationSource','Source of validation state and tooltip message.');
+field('kw','L','I','spinnerTicks','Incremented on pointer updates to rotate the waiting icon.');
+method('ao','a','(IB)Lip;','createStateStyle','Installs and returns a fresh style layer in the given state slot.',{0:'state',1:'obfuscationGuard'});
+method('ao','a','(ILwk;)V','setContentSprite','Assigns the content sprite to every existing style layer from the first index onward.',{0:'firstState',1:'sprite'});
+method('ao','a','(I[Lwk;)V','setFrameSprites','Assigns the nine frame sprites to every existing style layer.',{0:'obfuscationGuard',1:'frameSprites'});
+method('ao','a','([Lwk;II)V','setStateFrameSprites','Creates the style layer for a state if needed and assigns its frame sprites.',{0:'frameSprites',1:'state',2:'obfuscationGuard'});
+method('ao','a','(ZLao;I)V','copyStatesTo','Copies the base text style and either duplicates or shares the six style layers into another painter.',{0:'duplicateLayers',1:'target',2:'obfuscationGuard'});
+method('ip','a','(Lkb;BIILao;)V','draw','Draws the frame, aligned content sprite and display text for a widget using this layer values.',{0:'widget',1:'obfuscationGuard',2:'originY',3:'originX',4:'painter'});
+method('ip','a','(ZLip;)V','copyTo','Copies every layer property into another style layer.',{0:'clearFrameSprites',1:'target'});
+method('ip','a','(ILip;ILao;ILkb;)V','mergeInto','Draws a chained base layer first when flagged, then copies each explicitly set property into the working style.',{0:'obfuscationGuard',1:'workingStyle',2:'originX',3:'painter',4:'originY',5:'widget'});
+method('ip','a','(Z)V','resetDefaults','Restores opaque alpha, zero offsets, no frame sprites and unset colour fields.',{0:'obfuscationGuard'});
+method('ip','a','(BI)Lip;','setContentY','Sets the content vertical offset and returns this layer.',{0:'obfuscationGuard',1:'offsetY'});
+method('ip','a','(II)Lip;','setContentX','Sets the content horizontal offset and returns this layer.',{0:'offsetX',1:'obfuscationGuard'});
+method('ip','a','([Lwk;I)Lip;','setFrameSprites','Sets the nine frame sprites and returns this layer.',{0:'frameSprites',1:'obfuscationGuard'});
+
+// Login credentials, gzip, loading sequence, transitions and effects.
+Object.assign(classes,{
+  lg:['GzipDecoder','Validates the gzip magic bytes, skips the ten-byte header and eight-byte trailer and inflates the raw deflate stream into a caller buffer, reusing one Inflater; unrelated friend lookup, archive text and decoded-sprite width statics remain separate.'],
+  af:['LoginCredentials','Abstract credential contract that serializes itself to a packet and exposes its login kind; shared chat-prefix, error-report and login-progress statics remain separate.'],
+  eq:['PasswordLoginCredentials','Account name plus password credentials written as two strings; unrelated foliage-shadow and pointer-mask statics remain separate.'],
+  wv:['KeyedLoginCredentials','Long key plus secret string credentials written as a long and a string; also hosts the login-result handler and shared labels.'],
+  h:['LoginKind','Identity token holding an integer code written to the login packet; its toString is unsupported.'],
+  b:['SpriteSheetDecoder','Decodes a trailing-count sprite sheet with per-frame geometry, palette, row or column index bytes and optional alpha lanes; unrelated mission score and unlock ordinal helpers remain separate.'],
+  km:['ProjectileEffect','Countdown-driven battlefield effect retaining kind, position and animation player, advancing five per tick and drawing a model or particle trail; unrelated campaign packet word and list-content statics remain separate.'],
+  jp:['ArchiveLoadSequence','Walks an ordered array of archive load steps, waits for index, group or whole-archive availability and publishes a progress caption and fraction.'],
+  we:['ArchiveLoadStep','Descriptor retaining an archive with optional group id or name and progress/completion captions; unrelated sound, frame-set and character decoding statics remain separate.'],
+  cg:['ScreenWipeTransition','Captures the raster into a snapshot and blends it back through a sine-offset per-pixel threshold map to dissolve the old screen.'],
+});
+method('lg','a','(BLvh;[B)V','decompress','Requires gzip magic bytes, inflates the raw stream after the header into the output buffer and resets the Inflater.',{0:'obfuscationGuard',1:'source',2:'output'});
+field('lg','a','Ljava/util/zip/Inflater;','inflater','Raw Inflater created on first use and reset after each decompression.');
+method('af','a','(Lvh;I)V','writeCredentials','Abstract contract writing the credential fields to a packet.',{0:'packet',1:'obfuscationGuard'});
+method('af','a','(B)Lh;','getLoginKind','Abstract contract returning the login kind token.',{0:'obfuscationGuard'});
+method('eq','a','(Lvh;I)V','writeCredentials','Writes the account name string then the password string.',{0:'packet',1:'obfuscationGuard'});
+method('eq','a','(B)Lh;','getLoginKind','Returns the login kind token shared by password credentials.',{0:'obfuscationGuard'});
+method('wv','a','(Lvh;I)V','writeCredentials','Writes the long key then the secret string.',{0:'packet',1:'obfuscationGuard'});
+method('wv','a','(B)Lh;','getLoginKind','Returns the login kind token shared by keyed credentials.',{0:'obfuscationGuard'});
+method('oq','a','(B)Lh;','getLoginKind','Returns a different login kind token from its keyed-credentials parent.',{0:'obfuscationGuard'});
+field('eq','f','Ljava/lang/String;','accountName','First string written by writeCredentials.');
+field('eq','d','Ljava/lang/String;','password','Second string written by writeCredentials.');
+field('wv','f','J','loginKey','Long written before the secret string.');
+field('wv','i','Ljava/lang/String;','secret','String written after the login key.');
+field('h','c','I','code','Integer code written to the login packet.');
+method('km','b','(I)Z','advance','Advances the animation player and reduces the countdown by five; true when the effect has expired.',{0:'obfuscationGuard'});
+method('km','a','(ZIZI)V','draw','Draws the effect for its kind: model, special pattern or particle trail.',{0:'flag',1:'obfuscationGuard',2:'reverse',3:'paletteIndex'});
+field('km','f','I','remainingTicks','Countdown reduced by five each advance; negative means finished.');
+field('km','e','I','effectKind','Selects model index below seven, the special pattern at seven and particle trails from eight.');
+field('km','i','Lvj;','animationPlayer','Optional model animation advanced each tick.');
+method('jp','a','(I)Z','pollLoading','Checks each remaining step for index and group availability and updates the caption; true once every step is loaded.',{0:'obfuscationGuard'});
+method('jp','a','(ILwe;B)V','updateProgress','Sets the caption to the step label with a percentage and computes the overall fraction.',{0:'percent',1:'step',2:'obfuscationGuard'});
+field('jp','c','[Lwe;','steps','Ordered load steps.');
+field('jp','e','I','currentStep','Index of the step being waited on.');
+field('jp','f','I','stepCount','Total number of steps.');
+field('jp','h','I','fractionScale','Scale applied to the load fraction.');
+field('jp','b','Ljava/lang/String;','caption','Current loading text.');
+field('jp','d','F','fraction','Overall load progress.');
+method('cg','a','(I)V','captureScreen','Plays the transition sound and copies the current raster region into the snapshot.',{0:'startColumn'});
+method('cg','a','(III)I','triangleWave','Folds a position into a triangle wave over a period.',{0:'position',1:'period',2:'obfuscationGuard'});
+method('cg','a','(II)V','draw','Restores snapshot pixels fully above the threshold and blends eight levels of partial coverage at the edge.',{0:'obfuscationGuard',1:'progress'});
+field('cg','e','[I','snapshot','Copied raster pixels.');
+field('cg','d','[B','thresholds','Per-pixel wipe thresholds from the sine-offset triangle waves.');
+field('cg','h','I','width','Snapshot width.');
+field('cg','f','I','height','Snapshot height.');
+
+// PacketBuffer writers, checksum and padding helpers.
+method('vh','a','(BJ)V','writeLong56','Writes the low 56 bits of the value as seven big-endian bytes.',{0:'obfuscationGuard',1:'value'});
+method('vh','a','(ILjava/lang/String;)V','writeBase38Name','Packs up to twenty case-insensitive letters, digits and other-character placeholders as two base-38 values and writes each as 56 bits.',{0:'obfuscationGuard',1:'name'});
+method('vh','a','(Ljava/lang/String;I)V','writeNullCircumfixedString','Rejects embedded NUL characters, then writes a leading zero, the encoded characters and a trailing zero.',{0:'text',1:'obfuscationGuard'});
+method('vh','a','(IB)V','writeMedium','Writes the low three bytes of the value big-endian, stopping early for an unexpected guard.',{0:'value',1:'obfuscationGuard'});
+method('vh','b','(BI)I','appendChecksum','Computes the checksum of the written bytes from a start offset, appends it as an int and returns it.',{0:'obfuscationGuard',1:'startOffset'});
+method('vh','j','(I)Z','verifyChecksum','Moves back four bytes, recomputes the checksum of the preceding bytes and compares it with the stored int.',{0:'obfuscationGuard'});
+method('vh','b','(IB)V','zeroFillTo','Writes zero bytes until the cursor reaches the requested position.',{0:'position',1:'obfuscationGuard'});
+method('vh','c','(BI)V','writeSignedSmart','Writes values from minus 64 through 63 as one biased byte and from minus 16384 through 16383 as two biased bytes, otherwise throws.',{0:'obfuscationGuard',1:'value'});
+method('vh','f','(II)V','writeShortLengthPrefix','Back-patches the preceding two bytes before the cursor with the supplied payload length.',{0:'obfuscationGuard',1:'length'});
+method('vh','c','(B)Ljava/lang/String;','readOptionalString','Returns null and skips one byte for a leading zero, otherwise reads a null-terminated string.',{0:'obfuscationGuard'});
+method('vh','l','(I)V','releasePayload','Returns the retained payload to the byte-array pool when present and clears the reference.',{0:'obfuscationGuard'});
+
+// Obfuscator-generated static cleanup methods: bodies only null static references (plus guard arithmetic or self-calls).
+for(const entry of [
+ "ab.a(B)V","ac.a(B)V","ad.a(B)V","ae.e(I)V","af.b(B)V","ag.e(B)V","ai.b(Z)V","aj.a(I)V",
+ "ak.c(Z)V","al.a(B)V","am.e(I)V","an.g(I)V","ao.b(B)V","aq.a(B)V","as.g(I)V","at.c(I)V",
+ "au.e(B)V","aw.c(B)V","bb.a(B)V","bc.b(I)V","bd.a(I)V","be.a(B)V","bg.a(I)V","bh.c(Z)V",
+ "bi.b(I)V","bj.a(I)V","bl.a(I)V","bn.a(I)V","bo.a(I)V","bp.c(B)V","bq.a(I)V","bs.a(Z)V",
+ "bu.a(I)V","bw.a(I)V","c.a(I)V","ca.a(I)V","cb.a(I)V","cd.a(Z)V","cf.a(B)V","cg.a(B)V",
+ "cj.c(I)V","ck.a(I)V","cl.a(I)V","cm.a(Z)V","cr.n(I)V","cs.b(Z)V","ct.a(I)V","cu.a(B)V",
+ "da.a(Z)V","db.a(I)V","dd.b(I)V","de.a(B)V","df.b(Z)V","dg.a(B)V","dh.c(I)V","di.g(I)V",
+ "dk.a(Z)V","dl.c(B)V","dm.g(I)V","dq.a(I)V","dr.d(B)V","ds.a(I)V","dt.a(I)V","du.b(I)V",
+ "dv.c(B)V","e.b(B)V","ea.a(I)V","eb.a(I)V","ed.b(I)V","ee.f(I)V","ei.a(I)V","ek.a(I)V",
+ "el.b(I)V","en.n(I)V","eo.a(I)V","es.b(I)V","eu.a(B)V","f.c(Z)V","fa.a(B)V","fc.a(I)V",
+ "fd.a(I)V","fg.a(I)V","fj.b(B)V","fk.a(Z)V","fn.m(I)V","fp.k(I)V","fu.a(I)V","fw.i(I)V",
+ "g.c(I)V","ga.b(I)V","gd.c()V","gg.g(I)V","gh.a(I)V","gi.a(I)V","gk.l(I)V","gp.a(B)V",
+ "gs.a(B)V","gt.a(I)V","gu.b(I)V","h.a(I)V","ha.c(I)V","hb.a(I)V","hc.b(I)V","hf.a(B)V",
+ "hh.b(I)V","hi.b(B)V","hk.l(I)V","hm.b(I)V","ho.a(B)V","hp.g(I)V","hq.a(B)V","hr.b(I)V",
+ "hs.i(I)V","hv.b(Z)V","i.m(I)V","ig.e(I)V","ih.f(I)V","ii.a(B)V","ik.b(I)V","il.e(I)V",
+ "im.g(I)V","io.a(B)V","ip.a(I)V","iq.c(I)V","ir.a(I)V","is.a(B)V","iu.b(I)V","iw.a(I)V",
+ "j.b(B)V","ja.e(I)V","jb.f(I)V","jc.a(B)V","jd.q(I)V","je.h(I)V","jf.h(I)V","jg.a(I)V",
+ "jh.h(I)V","ji.a(I)V","jk.a(I)V","jl.a(I)V","jm.a(I)V","jn.a(I)V","jp.a(B)V","jq.g(I)V",
+ "jr.b(I)V","k.a(I)V","ka.a()V","kb.c(B)V","kd.f(B)V","ke.a(I)V","kf.g(I)V","kg.a(B)V",
+ "ki.a(B)V","kl.b(I)V","km.e(I)V","kn.g(I)V","kp.a(I)V","kq.a(I)V","kt.g(I)V","ku.k(I)V",
+ "kv.b(Z)V","l.a(Z)V","lb.a(I)V","ld.e(I)V","le.a(I)V","lf.c(I)V","li.a(B)V","lk.a(B)V",
+ "ll.k(I)V","lm.a(I)V","ln.a(Z)V","lp.a(I)V","lq.a(I)V","ls.a(I)V","lt.b(I)V","lu.a(I)V",
+ "lw.j(B)V","m.a(Z)V","ma.g(B)V","mc.d(I)V","md.d(B)V","mg.b(I)V","mh.a(B)V","mk.f(I)V",
+ "mp.l(I)V","mq.k(I)V","ms.f(I)V","mu.a(I)V","mv.a(B)V","mw.g(I)V","na.f(B)V","nb.d(B)V",
+ "nd.a(B)V","ne.g(I)V","nf.k(I)V","nh.h(I)V","ni.a(I)V","nk.b(B)V","nl.i(I)V","nm.e(I)V",
+ "nn.b(I)V","no.c(Z)V","nr.a(B)V","nt.a(B)V","nu.a(I)V","nv.l(I)V","nw.d(B)V","oa.g(I)V",
+ "ob.e(B)V","oc.k(I)V","od.a(I)V","oe.j(B)V","of.e(B)V","og.a(Z)V","oh.g(I)V","oi.b(Z)V",
+ "oj.a(B)V","ol.b(B)V","om.f(I)V","on.a(I)V","op.a(Z)V","oq.a(I)V","or.a(Z)V","ot.e(B)V",
+ "ov.a(B)V","pd.a(B)V","pe.a(B)V","pg.a(I)V","ph.a(B)V","pi.a(B)V","pk.c(Z)V","pn.b(B)V",
+ "po.a(Z)V","pp.b(Z)V","pq.a(B)V","pr.a(I)V","pt.i(B)V","pu.a(B)V","pv.a(I)V","q.g(I)V",
+ "qa.g(I)V","qb.a(I)V","qc.a(B)V","qd.k(I)V","qf.a(B)V","qj.g(I)V","qk.a(I)V","ql.d(B)V",
+ "qm.j(I)V","qn.d()V","qq.d(B)V","qu.a(I)V","qv.g(I)V","r.d(B)V","ra.a(Z)V","rb.d(I)V",
+ "rd.a(I)V","re.g(I)V","rf.a(B)V","rg.a(I)V","ri.a(B)V","rj.a(B)V","rl.g(I)V","ro.n(I)V",
+ "rq.a(I)V","rs.a(B)V","rv.a(I)V","s.a(I)V","sa.a(B)V","sc.a(I)V","sd.a(B)V","sf.h(B)V",
+ "sg.a(B)V","sh.b(B)V","sj.a(B)V","sl.a(I)V","so.b(I)V","ss.a(B)V","su.a(Z)V","t.a(I)V",
+ "ta.j(I)V","tb.c(I)V","tc.b(B)V","td.a(I)V","tf.a(Z)V","th.a(B)V","ti.a(B)V","tl.a(B)V",
+ "tm.b()V","tn.n(I)V","tp.a(I)V","tq.a(B)V","tt.a(Z)V","tv.a(B)V","ub.a(B)V","uc.a(B)V",
+ "ud.n(I)V","ue.b(B)V","uf.a(I)V","ug.a(I)V","ui.d(I)V","uk.d(I)V","ul.b(I)V","up.d(I)V",
+ "uq.g(I)V","ur.a(Z)V","us.a(I)V","uu.a(B)V","v.d(B)V","va.h(I)V","vb.f(I)V","vd.a(I)V",
+ "ve.a(I)V","vf.c(I)V","vg.a(B)V","vh.f(I)V","vi.a(Z)V","vj.b(I)V","vk.a(I)V","vl.b(Z)V",
+ "vn.a(B)V","vo.a(Z)V","vp.g(I)V","vq.a(B)V","vr.a(B)V","vs.a(I)V","vt.a(Z)V","vu.a(I)V",
+ "wa.c(I)V","wb.a(Z)V","wc.j(I)V","wi.a(I)V","wl.f(B)V","wm.a(I)V","wp.e(B)V","wq.a(B)V",
+ "ws.a(I)V","wv.c(B)V",
+]){
+  const parts=/^([^.]+).([A-Za-z0-9_$]+)((.*)V)$/.exec(entry);
+  method(parts[1],parts[2],parts[3],"releaseStatics","Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",parts[3]==="()V"?{}:{0:"obfuscationGuard"});
+}
+
 const workflowFiles=['build-armiesofgielinor-rules.mjs','reproduce-armiesofgielinor.mjs','reconstruct-armies-methods.mjs',
   'tests/test-armiesofgielinor-core.mjs','tests/archive-index-probe.mjs','game-export.mjs','compilation-stubs.mjs'];
 export function validateArmiesManifest(rules) {
