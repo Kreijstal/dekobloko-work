@@ -22,6 +22,17 @@ const classes = {
   vg: ['UiWidget', 'IntrusiveNode base widget with text, listener and bounds fields.'],
   ii: ['SpriteState', 'DualLinkNode subclass holding the six full/trimmed dimension and offset integers.'],
   bi: ['Sprite', 'SpriteState subclass owning an int pixel array with software blits.'],
+  qb: ['PlatformTaskDispatcher', 'Runnable owning a Thread and queued tasks for sockets, reflection, frames and URLs.'],
+  ke: ['BufferedSocket', 'Runnable owning a Socket with input/output streams and a buffered writer.'],
+  ed: ['MouseInputHandler', 'Implements MouseListener, MouseMotionListener and FocusListener to track the pointer.'],
+  ib: ['MouseWheelInput', 'Abstract wheel-input hook with component registration and a delta query.'],
+  rb: ['MouseWheelHandler', 'MouseWheelInput subclass implementing MouseWheelListener.'],
+  jq: ['GameKeyHandler', 'Implements KeyListener and FocusListener to record key state.'],
+  af: ['DelegatingCanvas', 'Canvas wrapping another Component that it delegates to.'],
+  qd: ['RasterBuffer', 'Abstract int pixel array with width and height handed to the rasterizer.'],
+  ge: ['ImageProducerRasterBuffer', 'RasterBuffer implementing ImageProducer to push pixels to an ImageConsumer.'],
+  f: ['WidgetContainer', 'UiWidget owning an IntrusiveDeque of children traversed with cursors.'],
+  on: ['IntrusiveDequeCursor', 'Cursor constructed from an IntrusiveDeque, used to iterate widget children.'],
   om: ['ArgbSprite', 'Sprite subclass whose kernels extract alpha with pixel >>> 24.'],
 };
 const members = {};
