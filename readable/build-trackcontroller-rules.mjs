@@ -183,6 +183,9 @@ field('gj', 'f', '[Lea;', 'levels', 'ActiveLevel treats the level as the last wh
 field('ri', 'I', 'Lea;', 'level', 'ActiveLevel reads the level index and the bonus values from this LevelData.');
 field('bk', 'E', 'Loh;', 'font', 'Widgets and ActiveLevel measure and draw all text through this BitmapFont.');
 field('rc', 'b', '[I', 'pixels', 'RasterBuffer declares this as its only int[] and ImageProducerRasterBuffer pushes it to the consumer.');
+method('sl', 'a', '(ZIZ)V', 'drawGrid', 'Loops rows and columns in 26-pixel steps and blits the floor, tile and avatar sprites.');
+method('sl', 'a', '([[IB[[I[[B)V', 'setGrids', 'Copies the tile, target and floor arrays into new arrays and centres the target block.');
+method('sl', 'a', '(Lea;I)V', 'loadLevel', 'Passes the LevelData grids to setGrids; ActiveLevel overrides it.');
 
 export const config = {
   game: 'trackcontroller', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
@@ -192,7 +195,7 @@ export const config = {
   readingGuide(rules, mapping) {
     return ['# Reading Track Controller', '',
       `This pass names ${Object.keys(classes).length} reviewed classes in ${mapping.files.length} source files. Unresolved roles keep their original names.`, '',
-      'Start at `TrackController`; the shared engine (nodes, hash tables, packet buffer, sockets, input) uses the same role names as other FunOrb games.', ''].join('\n');
+      'Start at `TrackController` (a `GameShell` and `GameApplet`). The gameplay path is `GameScreen`, `ActiveLevel` (a `LevelGrid` that updates the avatar and `MovingBlock` list each tick), `LevelData` (parsed level string) and `LevelView`.', '', 'The shared engine (nodes, hash tables, packet buffer, sockets, input, archives, audio) uses the same role names as other FunOrb games.', ''].join('\n');
   },
 };
 
