@@ -232,6 +232,7 @@ field('qg', 'u', 'Lmg;', 'displayNameChangedIcon', 'Loaded from the basic displa
 method('jd', 'a', '(Leh;B[ILeh;[Lrm;)V', 'loadLobbyResources', 'Loads the lobby fonts and the close, up, down and button sprites.');
 method('Virogrid', 't', '(I)V', 'openArchives', 'Assigns ten archive handles by index 3 and 5 to 12 plus the argument.');
 method('Virogrid', 'c', '(BZ)Z', 'advanceLoading', 'Checks each archive in order, loads fonts, music, sprites and models as they arrive and returns false while loading continues.');
+method('Virogrid', 'r', '(I)V', 'initScene', 'Creates the camera, the 640 by 400 and 200 by 400 raster buffers and the 256-entry colour ramp.');
 field('ic', 'g', 'Z', 'online', 'Moves, resign and restart send packets instead of acting locally when it is set.');
 field('uf', 'y', 'I', 'timeSetting', 'GameSession indexes the per-move time table with it to reset the turn timer.');
 field('uf', 's', 'I', 'sizeSetting', 'The constructor indexes the 7, 9 and 11 grid size table with it.');
