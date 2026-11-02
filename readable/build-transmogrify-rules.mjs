@@ -23,6 +23,18 @@ const classes = {
   rj: ['MouseWheelInput', 'Abstract wheel-input hook with a delta query.'],
   fg: ['ImageProducerRasterBuffer', 'RasterBuffer implementing ImageProducer to push pixels to an ImageConsumer.'],
   cj: ['RasterBuffer', 'Abstract int pixel buffer handed to the rasterizer.'],
+  ib: ['PlatformTask', 'Request object with a status, result object and next link handed to the dispatcher thread.'],
+  fe: ['PlatformTaskDispatcher', 'Runnable owning a Thread, EventQueue and reflection handles that services queued platform tasks.'],
+  gj: ['BufferedSocket', 'Runnable owning a Socket with input/output streams and a write buffer.'],
+  ec: ['SocketConnector', 'Abstract holder of host and port that creates a Socket.'],
+  nl: ['ProxySocketConnector', 'SocketConnector that writes an HTTP CONNECT request.'],
+  qj: ['IntrusiveDeque', 'Sentinel-based deque of IntrusiveNode with forward and backward traversal.'],
+  j: ['TileRack', 'Fixed-size array of LetterTile with an origin; named submission_rack, carryover_rack or new_rack in debug output.'],
+  sj: ['LetterTile', 'Draws a tile sprite, its letter and a numeric value; tracks its rack, slot and destination.'],
+  qg: ['UiWidget', 'IntrusiveNode base widget with text label, listener and bounds fields.'],
+  ui: ['WidgetListener', 'Single-method callback taking a UiWidget; implemented by button handlers.'],
+  ag: ['PcmStream', 'Abstract audio stream linked to a next stream with sample-mixing hooks.'],
+  bb: ['PcmSampleStream', 'PcmStream with loop, position and rate state that mixes a PCM sample buffer.'],
   kl: ['ContextualRuntimeException', 'RuntimeException retaining a cause and context text.'],
 };
 const members = {};
@@ -31,6 +43,41 @@ const field = (owner, original, descriptor, to, evidence) =>
 field('wf', 'b', 'Lwf;', 'next', 'Hash table lookup walks field_b to advance through a bucket.');
 field('wf', 'f', 'Lwf;', 'previous', 'Unlink at c(5) clears the back reference held in field_f.');
 field('wf', 'c', 'J', 'key', 'IterableNodeHashTable matches nodes by comparing this long.');
+
+field('j', 'e', '[Lsj;', 'tiles', 'Rack debug dump indexes this array by slot for each tile.');
+field('j', 'd', 'I', 'originX', 'Tile destination x is slot * 32 + this value.');
+field('j', 'c', 'I', 'originY', 'Tile destination y is copied from this value.');
+field('sj', 'i', 'C', 'letter', 'Drawn on the tile face and printed in rack debug dumps.');
+field('sj', 'o', 'Lj;', 'rack', 'The rack whose tiles array holds this tile at its slot.');
+field('sj', 't', 'I', 'slot', 'Index of this tile in its rack tiles array.');
+field('sj', 'g', 'I', 'destinationX', 'Printed as the x of "with dest" in rack debug output.');
+field('sj', 'p', 'I', 'destinationY', 'Printed as the y of "with dest" in rack debug output.');
+field('sj', 'k', 'Lj;', 'previousRack', 'Saved when a tile leaves any rack other than the submission rack.');
+field('sj', 's', 'I', 'previousSlot', 'Saved with previousRack when a tile moves racks.');
+field('sj', 'j', 'I', 'x', 'Added to the draw offset when blitting the tile sprite.');
+field('sj', 'q', 'I', 'y', 'Added to the draw offset when blitting the tile sprite.');
+field('sj', 'v', 'I', 'baseValue', 'Displayed tile number is baseValue plus twice field_h.');
+field('sj', 'h', 'I', 'carryoverFlag', 'When nonzero the tile prefers the carryover rack over the new rack when returned.');
+field('od', 'g', 'Lj;', 'submissionRack', 'ac.a maps this rack to the text "submission_rack".');
+field('wk', 'a', 'Lj;', 'carryoverRack', 'ac.a maps this rack to the text "carryover_rack".');
+field('si', 'i', 'Lj;', 'newRack', 'ac.a maps this rack to the text "new_rack".');
+field('bl', 'b', '[Ljava/lang/String;', 'achievementDescriptions', 'Holds the sixteen achievement texts such as "Score 600+ points".');
+field('sg', 'k', 'Ljava/lang/String;', 'varietyBonusLabel', 'Text constant "Variety bonus:".');
+field('ub', 'e', 'Ljava/lang/String;', 'timeBonusLabel', 'Text constant "Time bonus:".');
+field('he', 'h', 'Ljava/lang/String;', 'endGameLabel', 'Text constant "End Game".');
+field('he', 'g', 'Ljava/lang/String;', 'skipRoundPrompt', 'Text asks whether to skip the round and score 0.');
+field('th', 'b', 'Ljava/lang/String;', 'shuffleLabel', 'Text constant "Shuffle".');
+field('mc', 'a', '[Ljava/lang/String;', 'countdownLabels', 'Holds "Ready", "Set", "Go".');
+field('ua', 'a', '[Ljava/lang/String;', 'bonusWords', 'Holds mummy, skeleton, pumpkin, vampire from the final achievement text.');
+const method = (owner, original, descriptor, to, evidence) =>
+  members[`M:${owner}.${original}${descriptor}`] = {to, evidence};
+method('j', 'a', '(I)V', 'shuffle', 'Fisher-Yates swaps of the tiles array, then reassigns slots and destinations.');
+method('j', 'a', '(Z)V', 'clear', 'Releases every tile and nulls the slot.');
+method('sj', 'a', '(IIII)V', 'draw', 'Blits the tile sprite, letter and value text.');
+method('sj', 'a', '(IILj;)V', 'moveToRack', 'Removes the tile from its rack and places it at the new slot, updating destination.');
+method('ac', 'a', '(ILj;)Ljava/lang/String;', 'rackName', 'Returns submission_rack, carryover_rack or new_rack for a rack.');
+method('eh', 'a', '(Lsj;I)V', 'returnTileToRack', 'Puts a removed tile back in its previous slot or the first free carryover or new rack slot, then closes the gap.');
+method('ue', 'b', '(I)V', 'dumpRackState', 'Prints each rack tile and any tile that believes itself elsewhere.');
 
 export const config = {
   game: 'transmogrify', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
