@@ -36,7 +36,23 @@ const classes = {
   aw: ['HardwareGraphicsToolkit', 'Abstract GraphicsToolkit base of the OpenGL and DirectX toolkits.'],
   on: ['OpenGlGraphicsToolkit', 'Toolkit constructed over jaggl.OpenGL by the OpenGL factory and probing GL extensions.'],
   ir: ['DirectXGraphicsToolkit', 'Toolkit located by reflection as ir.createToolkit after loading jagdx.'],
-  rj: ['ResourceArchive', 'Holds a BigInteger key pair, a packet buffer and an entry array constructed from an index and a task.'],
+  rj: ['ArchiveCatalog', 'Holds a BigInteger key pair, a network source and an array of archives, requesting the index-255 master table.'],
+  ki: ['ResourceArchive', 'Synchronized store of groups and files fetched by name or id with load-progress queries.'],
+  rq: ['ShaderEffect', 'Abstract effect holding a HardwareGraphicsToolkit with an abstract three-int render hook.'],
+  ej: ['OpenGlEnvironmentWaterEffect', 'ShaderEffect using jaggl calls and the environment_mapped_water programs.'],
+  tb: ['DirectXEnvironmentWaterEffect', 'ShaderEffect using jagdx calls and the environment_mapped_water programs.'],
+  wj: ['OpenGlTransparentWaterEffect', 'ShaderEffect using jaggl calls and the transparent_water program.'],
+  vh: ['DirectXTransparentWaterEffect', 'ShaderEffect using jagdx calls and the transparent_water program.'],
+  pn: ['OpenGlUnderwaterEffect', 'ShaderEffect using jaggl calls and the uw_ground and uw_model programs.'],
+  ol: ['DirectXUnderwaterEffect', 'ShaderEffect using jagdx calls and the uw_ground and uw_model programs.'],
+  fn: ['GameClientShell', 'Abstract GameApplet subclass owning loading steps and the js5 and game port applet parameters.'],
+  cc: ['JaggrabDownloader', 'Runnable writing a JAGGRAB request line to a socket and reading the reply stream.'],
+  sr: ['LimitedRandomAccessFile', 'Wraps a RandomAccessFile with position tracking and a size cap given at construction.'],
+  qo: ['ClientExceptionSupport', 'Static helper wrapping a Throwable into a ClientException with context text.'],
+  hj: ['PcmStream', 'Abstract audio stream node with sample-mixing and skip hooks.'],
+  mf: ['PcmSampleStream', 'PcmStream resampling a byte sample through interpolation kernels with loop handling.'],
+  al: ['PcmStreamMixer', 'PcmStream owning two deques of sub-streams and counting down their start delays.'],
+  du: ['AudioOutput', 'Owns a PcmStream array and mixing state pumped by an audio thread.'],
   ee: ['UpgradeStatNames', 'Holder of the Speed, Traction, Bounce, Spikes and Armour upgrade names.'],
   hb: ['GameKeyHandler', 'Implements KeyListener and FocusListener to record key state.'],
 };
@@ -78,6 +94,10 @@ field('vk', 'b', '[Ljava/lang/String;', 'levelLoadStepLabels', 'Initialised to P
 field('nm', 'u', '[Ljava/lang/String;', 'waitingForTextTranslations', 'Initialised to the Waiting for text translations.');
 field('qi', 'a', '[Ljava/lang/String;', 'loadingTextTranslations', 'Initialised to the Loading text translations.');
 field('ms', 'f', '[Ljava/lang/String;', 'exclamationPhrases', 'Initialised to Zounds, Well I never and similar phrases.');
+members['M:ms.b(Z)V'] = {to: 'unlink', evidence: 'Splices the node out of its neighbours and clears its links.'};
+members['M:pj.c(I)V'] = {to: 'unlinkSecondary', evidence: 'Splices the node out of its secondary neighbours and clears them.'};
+members['M:ms.a(Ljava/lang/String;Ljava/lang/Throwable;I)V'] = {to: 'reportClientError', evidence: 'Builds a clienterror.ws request URL from the message and throwable.'};
+members['M:qo.a(Ljava/lang/Throwable;Ljava/lang/String;)Lsu;'] = {to: 'wrapWithContext', evidence: 'Appends context text to a ClientException or wraps the throwable in one.'};
 for (const [owner, original, to, evidence] of stringFields)
   field(owner, original, 'Ljava/lang/String;', to, evidence);
 field('fs', 'n', '[B', 'payload', 'PacketBuffer byte array indexed by the cursor.');
