@@ -51,6 +51,16 @@ const classes = {
   tj: ['CacheFileLocator', 'Private-constructor utility resolving cache Files under the user.home property.'],
   me: ['MovingBlock', 'IntrusiveNode for a tile in transit with row, column, per-axis step and a 26-pixel progress counter.'],
   ra: ['LevelView', 'LevelGrid subclass that ActiveLevel builds from its grids and an origin to draw the board; overrides tick.'],
+  ae: ['ArchiveRequestConnection', 'Abstract holder of two PacketBuffers and request queues that hands out AsyncRequests.'],
+  da: ['SocketArchiveRequestConnection', 'ArchiveRequestConnection subclass that owns a BufferedSocket.'],
+  gd: ['CachedArchiveSource', 'ArchiveSource that mixes cache files, a NodeHashTable and an ArchiveRequestConnection.'],
+  vk: ['GameStringTable', 'Private-constructor loader of keyed text such as hint_finish and button_restart_level from an Archive.'],
+  rh: ['ButtonWidget', 'UiWidget that activates its listener on Enter or Space or on a mouse press.'],
+  m: ['ButtonListener', 'Listener interface whose only method receives the pressed ButtonWidget.'],
+  pf: ['Model', 'Mesh with short vertex and face arrays, int colour tables and an int bounding box.'],
+  wb: ['MidiFile', 'Loaded from an Archive by name; its writer emits the MThd header word 1297377380.'],
+  nb: ['MidiPlayer', 'PcmStream with per-channel int[] state, a MidiFile and a default tempo field of 1000000.'],
+  ml: ['VorbisDecoder', 'Static Vorbis codebook and window tables; its a() method returns a decoded PcmSample.'],
   ri: ['ActiveLevel', 'LevelGrid subclass holding the level in play, its phase and score text.'],
 };
 const members = {};
@@ -149,6 +159,9 @@ field('ri', 'S', 'Lja;', 'movingBlocks', 'Each tick iterates this deque casting 
 const decode = 'LevelData constructor parses a level string: optional *WH size, grid characters, an 8x6 target block, then the name up to a space.';
 field('ea', 'x', 'I', 'levelIndex', decode);
 field('ea', 'q', 'Ljava/lang/String;', 'name', decode);
+method('rh', 'b', '(IIII)V', 'activate', 'Casts the listener to ButtonListener and calls it, as the Enter and Space key handler does.');
+field('ii', 'r', '[Lqj;', 'tileSprites', 'LevelGrid.draw indexes this with the tile value 7..37 and blits the sprite into the 26-pixel cell.');
+field('da', 'p', '[[Lqj;', 'avatarSprites', 'LevelGrid.draw indexes it by facing and by an animation frame 0..3 for the avatar tile.');
 
 export const config = {
   game: 'trackcontroller', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
