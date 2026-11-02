@@ -54,6 +54,9 @@ const classes = {
   hc: ['Level', 'Holds a tile grid cut into 100-unit cells, a description string and an id; Torquing reads its description into the tooltip.'],
   uf: ['TooltipPanel', 'Accumulates wrapped text lines with optional sprites that Torquing fills from a Level description.'],
   hn: ['WidgetContainer', 'UiWidget owning an IntrusiveDeque of child widgets that it paints, hit-tests and focuses.'],
+  fb: ['AbstractAudioSample', 'IntrusiveNode base of PcmSample holding a single int.'],
+  gg: ['PcmSample', 'AbstractAudioSample holding a byte[] of samples, a rate and two loop bounds.'],
+  nj: ['PcmSampleStream', 'PcmStream that steps through a PcmSample with interpolation and loop handling.'],
   no: ['BufferedSocket', 'Runnable owning a Socket with input and output streams.'],
 };
 const members = {};
@@ -98,6 +101,10 @@ field('gm', 'o', 'I', 'height', 'The text constructor fills this from the render
 field('gm', 'm', 'Ljava/lang/String;', 'text', 'The text constructor stores its string argument here.');
 field('gm', 'q', 'Lel;', 'renderer', 'Both constructors store the WidgetRenderer argument here.');
 field('gm', 't', 'Lca;', 'listener', 'Both constructors store the listener argument here.');
+field('gg', 'm', 'I', 'sampleRate', 'The first constructor argument is stored here.');
+field('gg', 'n', '[B', 'data', 'The sample byte array constructor argument is stored here.');
+field('gg', 'k', 'I', 'loopStart', 'The third constructor argument is stored here.');
+field('gg', 'o', 'I', 'loopEnd', 'The fourth constructor argument is stored here.');
 field('fj', 'j', '[B', 'payload', 'PacketBuffer byte array indexed by the cursor in every read and write.');
 field('fj', 'n', 'I', 'position', 'PacketBuffer cursor advanced by reads and writes.');
 
