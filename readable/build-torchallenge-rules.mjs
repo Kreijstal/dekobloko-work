@@ -160,6 +160,11 @@ method('sl', 'd', '(B)Lda;', 'pollLast', 'Unlinks and returns the node before th
 method('sl', 'a', '(I)V', 'clear', 'Unlinks every node after the sentinel and clears the cursor.');
 method('sl', 'd', '(I)Z', 'isEmpty', 'Compares the sentinel with its next link.');
 method('jk', 'a', '(Lqd;)V', 'addSubstream', 'Appends the stream to its child deque.');
+method('ug', 'd', '(B)V', 'tickGame', 'The private per-tick method records the tick time then calls this.');
+method('ug', 'f', '(I)V', 'drawFrame', 'The private per-frame method records the frame time then calls this.');
+method('ug', 'd', '(I)V', 'initializeGame', 'Called once from run after the canvas is created and before the tick loop.');
+method('ug', 'c', '(I)V', 'runTick', 'Samples the tick clock into a 32-entry ring and calls tickGame.');
+method('ug', 'g', '(I)V', 'runFrame', 'Samples the frame clock into a 32-entry ring and draws the frame.');
 field('cg', 'c', '[Ljava/lang/String;', 'levelNames', 'Holds Tower0 to Tower5 and boss1 to boss3.');
 
 export const config = {
