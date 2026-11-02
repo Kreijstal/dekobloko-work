@@ -171,6 +171,48 @@ field('sp', 'k', 'Z', 'active', 'The constructor sets it to true and PcmStream.b
 field('so', 'a', 'Ljava/util/Random;', 'random', 'The static initializer assigns it a new Random and the helpers draw game randomness from it.');
 method('so', 'c', '(I)I', 'randomInt', 'Draws from the shared Random with its argument as the bound.');
 method('ej', 'a', '(ZIIZ)Z', 'isWalkable', 'Mover.m keeps the new position only when this returns true for the shifted coordinates.');
+method('bi', 'b', '(IIII)V', 'drawHorizontalLine', 'Clips the row against the clip box then fills width pixels at y; the outline method calls it twice.');
+method('bi', 'e', '(IIII)V', 'drawVerticalLine', 'Clips the column against the clip box then fills height pixels at x; the outline method calls it twice.');
+method('bi', 'c', '(IIIII)V', 'drawRectOutline', 'Draws two horizontal and two vertical lines around the rectangle.');
+method('bi', 'b', '(IIIII)V', 'fillRect', 'Clips x, y, width and height against the clip box then fills the rectangle with a color.');
+method('bi', 'f', '(IIII)V', 'setClip', 'Clamps four edges to zero and the buffer size and stores them as the clip box.');
+method('bi', 'a', '(III)V', 'setPixel', 'Writes the color at x + y * width when the point is inside the clip box.');
+method('bi', 'a', '([III)V', 'setBuffer', 'Stores the pixel array, width and height then resets the clip box to the whole buffer.');
+cls('op', 'AsyncRequest', 'Request handle with a volatile status int and a volatile result completed by the dispatcher thread.');
+field('op', 'f', 'I', 'status', 'The constructor sets it to 0 and the dispatcher thread updates it when the request completes.');
+field('op', 'd', 'Ljava/lang/Object;', 'result', 'Volatile object slot the dispatcher thread fills with the request outcome.');
+method('ec', 'a', '(ILjava/net/URL;)Lop;', 'openUrlStream', 'Queues a request of task type 4 carrying the URL.');
+method('ec', 'a', '(Ljava/awt/Frame;B)Lop;', 'requestFrame', 'Queues a request of task type 7 carrying the Frame.');
+method('ec', 'a', '(ILjava/lang/Runnable;Z)Lop;', 'startThread', 'Queues a request of task type 2 carrying the Runnable.');
+method('ec', 'a', '(ILjava/lang/String;I)Lop;', 'connectSocket', 'Forwards the host string and port to the private socket request builder.');
+method('gm', 'b', '(B)I', 'available', 'Returns the input stream available count, or 0 once closed.');
+method('gm', 'a', '(Z)I', 'readByte', 'Returns one byte from the input stream, or 0 once closed.');
+method('gm', 'a', '(I)V', 'close', 'Sets the closed flag, notifies the writer thread, and finalize calls it.');
+method('gm', 'a', '(II[BI)V', 'readFully', 'Loops over InputStream.read until the requested number of bytes is read.');
+method('gm', 'a', '(IZI[B)V', 'write', 'Copies the bytes into the output ring buffer and notifies the writer thread.');
+method('vn', 'a', '()V', 'setAsRenderTarget', 'Calls Rasterizer.setBuffer with its own pixels, width and height.');
+method('vn', 'e', '(II)V', 'drawWithOffsets', 'Adds the stored x and y offsets to the position before blitting.');
+method('vn', 'c', '(II)V', 'drawMirrored', 'Adds the mirrored x offset (full width minus width minus offset) before blitting.');
+method('vn', 'd', '(II)V', 'drawHalfSize', 'Halves the offsets and samples every other row and column of the pixels.');
+const dual = 'DualLinkNode.c unlinks by patching field_h of the next and field_i of the previous node.';
+field('nb', 'h', 'Lnb;', 'secondaryPrevious', dual);
+field('nb', 'i', 'Lnb;', 'secondaryNext', dual);
+field('nb', 'n', 'J', 'secondaryKey', 'DualLinkNode declares this long beside the secondary link pair.');
+method('nb', 'c', '(B)V', 'unlinkSecondary', dual);
+method('ra', 'a', '(Lnb;B)V', 'addLast', 'Links the node just before the sentinel of the secondary list.');
+method('ra', 'a', '(I)Lnb;', 'removeFirst', 'Unlinks and returns the node after the sentinel, or null when empty.');
+method('uc', 'a', '(ILjava/awt/Component;)V', 'attach', 'The MouseWheelHandler override calls addMouseWheelListener on the component.');
+method('uc', 'a', '(Ljava/awt/Component;B)V', 'detach', 'The MouseWheelHandler override calls removeMouseWheelListener on the component.');
+method('uc', 'a', '(I)I', 'takeRotation', 'The MouseWheelHandler override returns the accumulated wheel rotation and resets it to zero.');
+field('ol', 'e', 'I', 'rotation', 'mouseWheelMoved adds getWheelRotation to it and takeRotation clears it.');
+method('de', 'g', '(I)I', 'readUnsignedMedium', 'Advances the cursor by three and combines the bytes with shifts 16, 8 and 0.');
+method('de', 'b', '(Z)I', 'readVarInt', 'Reads a byte then keeps consuming bytes while the high bit is set.');
+method('de', 'f', '(II)V', 'writeLengthPrefixInt', 'Stores the length as four bytes at the cursor minus the length minus four.');
+method('de', 'c', '(II)V', 'writeMedium', 'Writes the value as three bytes with shifts 16, 8 and 0.');
+method('de', 'g', '(II)V', 'writeLengthPrefixShort', 'Stores the length as two bytes at the cursor minus the length minus two.');
+method('de', 'd', '(II)V', 'writeLengthPrefixByte', 'Stores the length as one byte at the cursor minus the length minus one.');
+method('de', 'a', '(BI)V', 'writeVarInt', 'Emits seven-bit groups with the high bit set on all but the last byte.');
+method('de', 'a', '(II)V', 'writeSignedSmart', 'Writes a biased single byte for values in -64..63 and a longer form otherwise.');
 
 export const config = {
   game: 'zombiedawn', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,

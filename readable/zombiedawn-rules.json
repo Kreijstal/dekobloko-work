@@ -521,6 +521,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:op",
+      "originalName": "op",
+      "to": "AsyncRequest",
+      "evidence": "Request handle with a volatile status int and a volatile result completed by the dispatcher thread.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ra",
       "originalName": "ra",
       "to": "DualLinkDeque",
@@ -801,10 +808,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nb.field_h:Lnb;",
+      "originalName": "field_h",
+      "to": "secondaryPrevious",
+      "evidence": "DualLinkNode.c unlinks by patching field_h of the next and field_i of the previous node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nb.field_i:Lnb;",
+      "originalName": "field_i",
+      "to": "secondaryNext",
+      "evidence": "DualLinkNode.c unlinks by patching field_h of the next and field_i of the previous node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nb.field_n:J",
+      "originalName": "field_n",
+      "to": "secondaryKey",
+      "evidence": "DualLinkNode declares this long beside the secondary link pair.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ol.field_e:I",
+      "originalName": "field_e",
+      "to": "rotation",
+      "evidence": "mouseWheelMoved adds getWheelRotation to it and takeRotation clears it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:on.field_f:[[I",
       "originalName": "field_f",
       "to": "tiles",
       "evidence": "Mover.tileAtPixel indexes this int grid by pixel / 24 for row and column.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:op.field_d:Ljava/lang/Object;",
+      "originalName": "field_d",
+      "to": "result",
+      "evidence": "Volatile object slot the dispatcher thread fills with the request outcome.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:op.field_f:I",
+      "originalName": "field_f",
+      "to": "status",
+      "evidence": "The constructor sets it to 0 and the dispatcher thread updates it when the request completes.",
       "confidence": "reviewed"
     },
     {
@@ -941,10 +990,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bi.a(III)V",
+      "originalName": "a",
+      "to": "setPixel",
+      "evidence": "Writes the color at x + y * width when the point is inside the clip box.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bi.a([I)V",
       "originalName": "a",
       "to": "restoreClip",
       "evidence": "Loads the four clip edges from the supplied array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a([III)V",
+      "originalName": "a",
+      "to": "setBuffer",
+      "evidence": "Stores the pixel array, width and height then resets the clip box to the whole buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.b(IIII)V",
+      "originalName": "b",
+      "to": "drawHorizontalLine",
+      "evidence": "Clips the row against the clip box then fills width pixels at y; the outline method calls it twice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.b(IIIII)V",
+      "originalName": "b",
+      "to": "fillRect",
+      "evidence": "Clips x, y, width and height against the clip box then fills the rectangle with a color.",
       "confidence": "reviewed"
     },
     {
@@ -962,10 +1039,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bi.c(IIIII)V",
+      "originalName": "c",
+      "to": "drawRectOutline",
+      "evidence": "Draws two horizontal and two vertical lines around the rectangle.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bi.d()V",
       "originalName": "d",
       "to": "clear",
       "evidence": "Zeroes every pixel of the buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.e(IIII)V",
+      "originalName": "e",
+      "to": "drawVerticalLine",
+      "evidence": "Clips the column against the clip box then fills height pixels at x; the outline method calls it twice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.f(IIII)V",
+      "originalName": "f",
+      "to": "setClip",
+      "evidence": "Clamps four edges to zero and the buffer size and stores them as the clip box.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cd.c(II)V",
+      "originalName": "c",
+      "to": "drawMirrored",
+      "evidence": "Adds the mirrored x offset (full width minus width minus offset) before blitting. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cd.d(II)V",
+      "originalName": "d",
+      "to": "drawHalfSize",
+      "evidence": "Halves the offsets and samples every other row and column of the pixels. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cd.e(II)V",
+      "originalName": "e",
+      "to": "drawWithOffsets",
+      "evidence": "Adds the stored x and y offsets to the position before blitting. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.a(BI)V",
+      "originalName": "a",
+      "to": "writeVarInt",
+      "evidence": "Emits seven-bit groups with the high bit set on all but the last byte.",
       "confidence": "reviewed"
     },
     {
@@ -987,6 +1113,13 @@
       "originalName": "a",
       "to": "writeShort",
       "evidence": "Writes the value as two bytes, high byte first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.a(II)V",
+      "originalName": "a",
+      "to": "writeSignedSmart",
+      "evidence": "Writes a biased single byte for values in -64..63 and a longer form otherwise.",
       "confidence": "reviewed"
     },
     {
@@ -1032,10 +1165,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:de.b(Z)I",
+      "originalName": "b",
+      "to": "readVarInt",
+      "evidence": "Reads a byte then keeps consuming bytes while the high bit is set.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:de.c(I)I",
       "originalName": "c",
       "to": "readInt",
       "evidence": "Advances the cursor by four and assembles the bytes with shifts 24, 16, 8 and 0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.c(II)V",
+      "originalName": "c",
+      "to": "writeMedium",
+      "evidence": "Writes the value as three bytes with shifts 16, 8 and 0.",
       "confidence": "reviewed"
     },
     {
@@ -1060,6 +1207,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:de.d(II)V",
+      "originalName": "d",
+      "to": "writeLengthPrefixByte",
+      "evidence": "Stores the length as one byte at the cursor minus the length minus one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:de.e(B)B",
       "originalName": "e",
       "to": "readByte",
@@ -1074,10 +1228,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:de.f(II)V",
+      "originalName": "f",
+      "to": "writeLengthPrefixInt",
+      "evidence": "Stores the length as four bytes at the cursor minus the length minus four.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:de.g(B)Z",
       "originalName": "g",
       "to": "verifyCrc32",
       "evidence": "Backs up four bytes, recomputes the checksum and compares it with the stored int.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.g(I)I",
+      "originalName": "g",
+      "to": "readUnsignedMedium",
+      "evidence": "Advances the cursor by three and combines the bytes with shifts 16, 8 and 0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.g(II)V",
+      "originalName": "g",
+      "to": "writeLengthPrefixShort",
+      "evidence": "Stores the length as two bytes at the cursor minus the length minus two.",
       "confidence": "reviewed"
     },
     {
@@ -1113,6 +1288,34 @@
       "originalName": "e",
       "to": "percentLoaded",
       "evidence": "Sums per-group completion for groups with data and returns a 0 to 100 percentage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ec.a(ILjava/lang/Runnable;Z)Lop;",
+      "originalName": "a",
+      "to": "startThread",
+      "evidence": "Queues a request of task type 2 carrying the Runnable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ec.a(ILjava/lang/String;I)Lop;",
+      "originalName": "a",
+      "to": "connectSocket",
+      "evidence": "Forwards the host string and port to the private socket request builder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ec.a(ILjava/net/URL;)Lop;",
+      "originalName": "a",
+      "to": "openUrlStream",
+      "evidence": "Queues a request of task type 4 carrying the URL.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ec.a(Ljava/awt/Frame;B)Lop;",
+      "originalName": "a",
+      "to": "requestFrame",
+      "evidence": "Queues a request of task type 7 carrying the Frame.",
       "confidence": "reviewed"
     },
     {
@@ -1197,6 +1400,41 @@
       "originalName": "l",
       "to": "currentTile",
       "evidence": "Calls tileAtPixel with the own x and y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.a(I)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "Sets the closed flag, notifies the writer thread, and finalize calls it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.a(II[BI)V",
+      "originalName": "a",
+      "to": "readFully",
+      "evidence": "Loops over InputStream.read until the requested number of bytes is read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.a(IZI[B)V",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "Copies the bytes into the output ring buffer and notifies the writer thread.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.a(Z)I",
+      "originalName": "a",
+      "to": "readByte",
+      "evidence": "Returns one byte from the input stream, or 0 once closed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.b(B)I",
+      "originalName": "b",
+      "to": "available",
+      "evidence": "Returns the input stream available count, or 0 once closed.",
       "confidence": "reviewed"
     },
     {
@@ -1305,10 +1543,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nb.c(B)V",
+      "originalName": "c",
+      "to": "unlinkSecondary",
+      "evidence": "DualLinkNode.c unlinks by patching field_h of the next and field_i of the previous node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ol.a(I)I",
+      "originalName": "a",
+      "to": "takeRotation",
+      "evidence": "The MouseWheelHandler override returns the accumulated wheel rotation and resets it to zero. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ol.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "The MouseWheelHandler override calls addMouseWheelListener on the component. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ol.a(Ljava/awt/Component;B)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "The MouseWheelHandler override calls removeMouseWheelListener on the component. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qk.e(II)V",
       "originalName": "e",
       "to": "setState",
       "evidence": "Called with 0 for a Human and 4 otherwise, the values the constructor stores in state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(I)Lnb;",
+      "originalName": "a",
+      "to": "removeFirst",
+      "evidence": "Unlinks and returns the node after the sentinel, or null when empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(Lnb;B)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "Links the node just before the sentinel of the secondary list.",
       "confidence": "reviewed"
     },
     {
@@ -1372,6 +1652,55 @@
       "originalName": "a",
       "to": "fill",
       "evidence": "Abstract hook that writes samples into the int buffer; PcmStream.b calls it while the stream is active. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uc.a(I)I",
+      "originalName": "a",
+      "to": "takeRotation",
+      "evidence": "The MouseWheelHandler override returns the accumulated wheel rotation and resets it to zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uc.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "The MouseWheelHandler override calls addMouseWheelListener on the component.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uc.a(Ljava/awt/Component;B)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "The MouseWheelHandler override calls removeMouseWheelListener on the component.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vn.a()V",
+      "originalName": "a",
+      "to": "setAsRenderTarget",
+      "evidence": "Calls Rasterizer.setBuffer with its own pixels, width and height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vn.c(II)V",
+      "originalName": "c",
+      "to": "drawMirrored",
+      "evidence": "Adds the mirrored x offset (full width minus width minus offset) before blitting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vn.d(II)V",
+      "originalName": "d",
+      "to": "drawHalfSize",
+      "evidence": "Halves the offsets and samples every other row and column of the pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vn.e(II)V",
+      "originalName": "e",
+      "to": "drawWithOffsets",
+      "evidence": "Adds the stored x and y offsets to the position before blitting.",
       "confidence": "reviewed"
     },
     {
@@ -1453,7 +1782,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-zombiedawn-rules.mjs": "3be3fa6dd842d366b967500d4c5e3467e89919b8db83adf93437509f5f033099",
+      "build-zombiedawn-rules.mjs": "90cf0e5fb23bc6a84a0923417bf32701b978c2cca45a8790d2468a15b219c649",
       "reproduce-zombiedawn.mjs": "4caec58ac39c51a3a767b82c92cfb9908c0ff98ebd03b9e6b7c2ba88b5007d4b",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
