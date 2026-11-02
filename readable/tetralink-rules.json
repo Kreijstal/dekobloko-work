@@ -556,6 +556,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ea.field_d:[Lmc;",
+      "originalName": "field_d",
+      "to": "buckets",
+      "evidence": "put and get index this array by the masked key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ea.field_i:I",
+      "originalName": "field_i",
+      "to": "bucketCount",
+      "evidence": "put masks the key with this count minus one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gb.field_n:J",
       "originalName": "field_n",
       "to": "secondaryKey",
@@ -577,6 +591,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:je.field_a:Lmc;",
+      "originalName": "field_a",
+      "to": "current",
+      "evidence": "Cursor advanced by the forward and backward iteration methods.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:je.field_c:Lmc;",
+      "originalName": "field_c",
+      "to": "sentinel",
+      "evidence": "Every insert and removal splices around this node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jo.field_d:Lgb;",
+      "originalName": "field_d",
+      "to": "sentinel",
+      "evidence": "Every insert and removal splices around this node.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mc.field_c:J",
       "originalName": "field_c",
       "to": "key",
@@ -595,6 +630,20 @@
       "originalName": "field_j",
       "to": "next",
       "evidence": "IntrusiveNode.unlink splices field_j and field_e; hash table stores the key in field_c.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tg.field_b:Lmc;",
+      "originalName": "field_b",
+      "to": "current",
+      "evidence": "Holds the node the next step continues from, or null at the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tg.field_e:Lje;",
+      "originalName": "field_e",
+      "to": "deque",
+      "evidence": "Constructor stores the IntrusiveDeque being walked.",
       "confidence": "reviewed"
     },
     {
@@ -988,6 +1037,34 @@
       "to": "nextInt",
       "evidence": "Returns the next generated word of the cipher.",
       "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.a(B)Lmc;",
+      "originalName": "a",
+      "to": "previous",
+      "evidence": "IntrusiveDequeCursor walks the deque sentinel through next and previous links. Advances along the previous link.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.a(Z)Lmc;",
+      "originalName": "a",
+      "to": "first",
+      "evidence": "IntrusiveDequeCursor walks the deque sentinel through next and previous links. Starts after the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.b(B)Lmc;",
+      "originalName": "b",
+      "to": "next",
+      "evidence": "IntrusiveDequeCursor walks the deque sentinel through next and previous links. Advances along the next link.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.b(I)Lmc;",
+      "originalName": "b",
+      "to": "last",
+      "evidence": "IntrusiveDequeCursor walks the deque sentinel through next and previous links. Starts before the sentinel.",
+      "confidence": "reviewed"
     }
   ],
   "classNameLiterals": {
@@ -1005,7 +1082,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-tetralink-rules.mjs": "8b944bd90f590dc4a5bdbb72207687f2fad45671dc1d83bc03d909a3fd3719e9",
+      "build-tetralink-rules.mjs": "2c1ea48aabb84dc1fdf28d2ab777f4889794f1df1ea8f40729a7857139eb0a42",
       "reproduce-tetralink.mjs": "48c559540795e1e28f8942a56656594f876b3ba19e63705d96d166ed11f05afb",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
