@@ -78,6 +78,42 @@ cls('hi', 'GameWorld', 'Largest game class: owns the camera, the zombie list, th
 method('hi', 'a', '(IBIII)Lkd;', 'spawnZombie', 'Creates a kd at a randomly offset position and adds it to the zombie list.');
 cls('on', 'TileMap', 'Final class constructed from tile int arrays and queried per cell by the level map.');
 cls('ej', 'LevelNavigation', 'Grid class of 24-pixel tiles building Point paths over a TileMap.');
+cls('de', 'PacketBuffer', 'IntrusiveNode with a byte payload and cursor, big-endian primitive, string, CRC and RSA operations.');
+const packet = 'PacketBuffer field_h payload and field_j cursor; every read and write indexes through them.';
+field('de', 'h', '[B', 'payload', packet);
+field('de', 'j', 'I', 'position', packet);
+method('de', 'b', '(JI)V', 'writeLong40', 'Writes the low five bytes of the long with shifts 32, 24, 16, 8 and 0.');
+method('de', 'd', '(I)Ljava/lang/String;', 'readString', 'Checks a leading zero byte, scans to the next zero and decodes the bytes.');
+method('de', 'h', '(II)V', 'writeInt', 'Writes four bytes of the int with shifts 24, 16, 8 and 0.');
+method('de', 'e', '(II)I', 'writeCrc32', 'Computes a checksum over the written bytes and appends it as an int.');
+method('de', 'g', '(B)Z', 'verifyCrc32', 'Backs up four bytes, recomputes the checksum and compares it with the stored int.');
+method('de', 'a', '(BLjava/lang/String;)V', 'writeTerminatedStringWithHeader', 'Writes a zero byte, the string bytes and a trailing zero byte.');
+method('de', 'a', '(ILjava/lang/String;)V', 'writeTerminatedString', 'Writes the string bytes then a trailing zero byte; rejects embedded NUL.');
+method('de', 'a', '(II[BI)V', 'readBytes', 'Copies a run of payload bytes into the supplied array advancing the cursor.');
+method('de', 'a', '(IB)V', 'writeShort', 'Writes the value as two bytes, high byte first.');
+method('de', 'i', '(II)V', 'writeByte', 'Writes one byte at the cursor and advances it.');
+method('de', 'e', '(B)B', 'readByte', 'Returns the payload byte at the cursor and advances it.');
+method('de', 'a', '(Ljava/math/BigInteger;ZLjava/math/BigInteger;)V', 'encryptRsa', 'Raises the written bytes to the exponent modulo the modulus and rewrites the result.');
+method('de', 'b', '(II)V', 'padToPosition', 'Writes zero bytes until the cursor reaches the requested position.');
+method('de', 'a', '(CLjava/lang/String;I)[Ljava/lang/String;', 'split', 'Splits a string at every occurrence of the separator character.');
+
+cls('hd', 'SpriteState', 'DualLinkNode subclass holding the six full/trimmed dimension and offset ints.');
+cls('vn', 'Sprite', 'SpriteState subclass owning an int pixel array with software blit kernels.');
+cls('ra', 'DualLinkDeque', 'Circular deque of DualLinkNode with two cursors.');
+cls('dj', 'Js5Archive', 'Caches Object[] groups by name and id and loads them from an underlying store.');
+cls('rb', 'Font', 'DualLinkNode subclass with glyph arrays that draws strings and measures characters.');
+cls('ga', 'UiWidget', 'IntrusiveNode base widget with text, listener and bounds fields whose toString prints <circular [0x...]>.');
+method('hi', 'e', '(I)V', 'draw', 'Renders the world and prints the cam=(x, y) debug overlay and the Cheater! banner.');
+method('hi', 'a', '(ICI)Z', 'handleKeyPress', 'Compares the key code against bound key constants and returns whether it was consumed.');
+method('ZombieDawn', 'a', '(I)V', 'drawFrame', 'Draws the current screen, the progress bar and the Mem and FPS counters.');
+method('ZombieDawn', 'a', '(ZZ)V', 'runTick', 'Increments the tick counter and recomputes screen metrics when the canvas size changes.');
+method('hi', 'a', '(IZ)V', 'update', 'Advances the tick counter field_Z and runs the per-tick sub-updates when the game is active.');
+field('hi', 'S', 'Lwk;', 'camera', 'The cheat overlay prints this object as cam=(x, y).');
+field('hi', 'R', 'Lvo;', 'zombies', 'spawnZombie adds each new Zombie to this deque.');
+field('hi', 'mb', 'Lon;', 'tileMap', 'Holds the TileMap passed to the LevelNavigation constructor.');
+cls('fa', 'SpatialObject', 'DualLinkNode subclass with sibling fa links, stored in spatial grid buckets.');
+cls('tf', 'SpatialBucket', 'Holds a head and tail fa and links or unlinks SpatialObject members.');
+cls('mj', 'SpatialGrid', 'Array of SpatialBucket cells sized from the level extent shifted right by 7.');
 
 export const config = {
   game: 'zombiedawn', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
