@@ -140,6 +140,37 @@ method('g', 'e', '(II)V', 'setState', 'Called with 0 for a Human and 4 otherwise
 cls('ib', 'GameLayer', 'Interface held in a Vector of layers; the game loop calls its tick, draw and key hooks on each one.');
 method('ib', 'a', '(CII)Z', 'onKeyTyped', 'The game loop passes the typed character and key code to each layer until one returns true.');
 method('m', 'o', '(I)V', 'onLoadingFinished', 'Called once after the preload completes; ZombieDawn then switches to the first menu screen.');
+field('on', 'f', '[[I', 'tiles', 'Mover.tileAtPixel indexes this int grid by pixel / 24 for row and column.');
+field('hi', 'H', 'Lej;', 'navigation', 'Mover movement code asks this LevelNavigation whether a position is walkable.');
+field('hi', 'n', 'Lmj;', 'spatialGrid', 'Constructed in GameWorld from the navigation extent shifted right by 7.');
+field('ej', 'u', 'I', 'width', 'GameWorld sizes the SpatialGrid from this value shifted right by 7.');
+field('ej', 'p', 'I', 'height', 'GameWorld sizes the SpatialGrid from this value shifted right by 7.');
+method('de', 'd', '(B)I', 'readUnsignedByte', 'Returns the payload byte at the cursor masked with 255 and advances the cursor.');
+method('de', 'c', '(I)I', 'readInt', 'Advances the cursor by four and assembles the bytes with shifts 24, 16, 8 and 0.');
+method('de', 'c', '(Z)J', 'readLong', 'Reads two ints and combines them as high word shifted left by 32 plus low word.');
+method('de', 'a', '([BIII)V', 'writeBytes', 'Copies a slice of the supplied array into the payload at the cursor.');
+const clip = 'Rasterizer.c resets the clip box from the buffer size and b(int[]) saves it as four ints.';
+field('bi', 'g', 'I', 'clipLeft', clip + ' Index 0.');
+field('bi', 'l', 'I', 'clipTop', clip + ' Index 1.');
+field('bi', 'b', 'I', 'clipRight', clip + ' Index 2.');
+field('bi', 'd', 'I', 'clipBottom', clip + ' Index 3.');
+field('bi', 'f', 'I', 'width', 'Rasterizer.c copies this into the clip right edge.');
+field('bi', 'a', 'I', 'height', 'Rasterizer.c copies this into the clip bottom edge.');
+field('bi', 'c', '[I', 'pixels', 'Rasterizer.d zeroes this array with an unrolled loop over width times height.');
+method('bi', 'c', '()V', 'resetClip', 'Sets the clip box to the whole buffer.');
+method('bi', 'd', '()V', 'clear', 'Zeroes every pixel of the buffer.');
+method('bi', 'b', '([I)V', 'saveClip', 'Stores the four clip edges into the supplied array.');
+method('bi', 'a', '([I)V', 'restoreClip', 'Loads the four clip edges from the supplied array.');
+method('dj', 'a', '(B)Z', 'isIndexLoaded', 'Every other accessor returns early when this reports the archive index is not yet available.');
+method('dj', 'd', '(I)I', 'groupCount', 'Returns the length of the index group array, or -1 while the index is not loaded.');
+method('dj', 'e', '(I)I', 'percentLoaded', 'Sums per-group completion for groups with data and returns a 0 to 100 percentage.');
+method('sp', 'a', '([III)V', 'fill', 'Abstract hook that writes samples into the int buffer; PcmStream.b calls it while the stream is active.');
+method('sp', 'a', '(I)V', 'skip', 'Abstract hook that PcmStream.b calls with the length when the stream is inactive.');
+method('sp', 'b', '([III)V', 'fillOrSkip', 'Calls fill when field_k is set and skip with the length otherwise.');
+field('sp', 'k', 'Z', 'active', 'The constructor sets it to true and PcmStream.b fills only while it is set.');
+field('so', 'a', 'Ljava/util/Random;', 'random', 'The static initializer assigns it a new Random and the helpers draw game randomness from it.');
+method('so', 'c', '(I)I', 'randomInt', 'Draws from the shared Random with its argument as the bound.');
+method('ej', 'a', '(ZIIZ)Z', 'isWalkable', 'Mover.m keeps the new position only when this returns true for the shifted coordinates.');
 
 export const config = {
   game: 'zombiedawn', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,

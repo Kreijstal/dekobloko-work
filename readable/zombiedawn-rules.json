@@ -612,6 +612,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bi.field_a:I",
+      "originalName": "field_a",
+      "to": "height",
+      "evidence": "Rasterizer.c copies this into the clip bottom edge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bi.field_b:I",
+      "originalName": "field_b",
+      "to": "clipRight",
+      "evidence": "Rasterizer.c resets the clip box from the buffer size and b(int[]) saves it as four ints. Index 2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bi.field_c:[I",
+      "originalName": "field_c",
+      "to": "pixels",
+      "evidence": "Rasterizer.d zeroes this array with an unrolled loop over width times height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bi.field_d:I",
+      "originalName": "field_d",
+      "to": "clipBottom",
+      "evidence": "Rasterizer.c resets the clip box from the buffer size and b(int[]) saves it as four ints. Index 3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bi.field_f:I",
+      "originalName": "field_f",
+      "to": "width",
+      "evidence": "Rasterizer.c copies this into the clip right edge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bi.field_g:I",
+      "originalName": "field_g",
+      "to": "clipLeft",
+      "evidence": "Rasterizer.c resets the clip box from the buffer size and b(int[]) saves it as four ints. Index 0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bi.field_l:I",
+      "originalName": "field_l",
+      "to": "clipTop",
+      "evidence": "Rasterizer.c resets the clip box from the buffer size and b(int[]) saves it as four ints. Index 1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:de.field_h:[B",
       "originalName": "field_h",
       "to": "payload",
@@ -623,6 +672,20 @@
       "originalName": "field_j",
       "to": "position",
       "evidence": "PacketBuffer field_h payload and field_j cursor; every read and write indexes through them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ej.field_p:I",
+      "originalName": "field_p",
+      "to": "height",
+      "evidence": "GameWorld sizes the SpatialGrid from this value shifted right by 7.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ej.field_u:I",
+      "originalName": "field_u",
+      "to": "width",
+      "evidence": "GameWorld sizes the SpatialGrid from this value shifted right by 7.",
       "confidence": "reviewed"
     },
     {
@@ -668,6 +731,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hi.field_H:Lej;",
+      "originalName": "field_H",
+      "to": "navigation",
+      "evidence": "Mover movement code asks this LevelNavigation whether a position is walkable.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hi.field_R:Lvo;",
       "originalName": "field_R",
       "to": "zombies",
@@ -686,6 +756,13 @@
       "originalName": "field_mb",
       "to": "tileMap",
       "evidence": "Holds the TileMap passed to the LevelNavigation constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hi.field_n:Lmj;",
+      "originalName": "field_n",
+      "to": "spatialGrid",
+      "evidence": "Constructed in GameWorld from the navigation extent shifted right by 7.",
       "confidence": "reviewed"
     },
     {
@@ -721,6 +798,27 @@
       "originalName": "field_f",
       "to": "key",
       "evidence": "IntrusiveNode unlink reciprocally patches field_d and field_b of its neighbours.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:on.field_f:[[I",
+      "originalName": "field_f",
+      "to": "tiles",
+      "evidence": "Mover.tileAtPixel indexes this int grid by pixel / 24 for row and column.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:so.field_a:Ljava/util/Random;",
+      "originalName": "field_a",
+      "to": "random",
+      "evidence": "The static initializer assigns it a new Random and the helpers draw game randomness from it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sp.field_k:Z",
+      "originalName": "field_k",
+      "to": "active",
+      "evidence": "The constructor sets it to true and PcmStream.b fills only while it is set.",
       "confidence": "reviewed"
     },
     {
@@ -843,6 +941,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bi.a([I)V",
+      "originalName": "a",
+      "to": "restoreClip",
+      "evidence": "Loads the four clip edges from the supplied array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.b([I)V",
+      "originalName": "b",
+      "to": "saveClip",
+      "evidence": "Stores the four clip edges into the supplied array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.c()V",
+      "originalName": "c",
+      "to": "resetClip",
+      "evidence": "Sets the clip box to the whole buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.d()V",
+      "originalName": "d",
+      "to": "clear",
+      "evidence": "Zeroes every pixel of the buffer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:de.a(BLjava/lang/String;)V",
       "originalName": "a",
       "to": "writeTerminatedStringWithHeader",
@@ -885,6 +1011,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:de.a([BIII)V",
+      "originalName": "a",
+      "to": "writeBytes",
+      "evidence": "Copies a slice of the supplied array into the payload at the cursor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:de.b(II)V",
       "originalName": "b",
       "to": "padToPosition",
@@ -896,6 +1029,27 @@
       "originalName": "b",
       "to": "writeLong40",
       "evidence": "Writes the low five bytes of the long with shifts 32, 24, 16, 8 and 0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.c(I)I",
+      "originalName": "c",
+      "to": "readInt",
+      "evidence": "Advances the cursor by four and assembles the bytes with shifts 24, 16, 8 and 0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.c(Z)J",
+      "originalName": "c",
+      "to": "readLong",
+      "evidence": "Reads two ints and combines them as high word shifted left by 32 plus low word.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.d(B)I",
+      "originalName": "d",
+      "to": "readUnsignedByte",
+      "evidence": "Returns the payload byte at the cursor masked with 255 and advances the cursor.",
       "confidence": "reviewed"
     },
     {
@@ -941,6 +1095,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dj.a(B)Z",
+      "originalName": "a",
+      "to": "isIndexLoaded",
+      "evidence": "Every other accessor returns early when this reports the archive index is not yet available.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.d(I)I",
+      "originalName": "d",
+      "to": "groupCount",
+      "evidence": "Returns the length of the index group array, or -1 while the index is not loaded.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.e(I)I",
+      "originalName": "e",
+      "to": "percentLoaded",
+      "evidence": "Sums per-group completion for groups with data and returns a 0 to 100 percentage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(ZIIZ)Z",
+      "originalName": "a",
+      "to": "isWalkable",
+      "evidence": "Mover.m keeps the new position only when this returns true for the shifted coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eo.a(IIII)Lah;",
       "originalName": "a",
       "to": "createHuman",
@@ -959,6 +1141,34 @@
       "originalName": "f",
       "to": "getY",
       "evidence": "Entity renderers pass this through the camera as the screen y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "Abstract hook that PcmStream.b calls with the length when the stream is inactive. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.a([III)V",
+      "originalName": "a",
+      "to": "fill",
+      "evidence": "Abstract hook that writes samples into the int buffer; PcmStream.b calls it while the stream is active. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fn.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "Abstract hook that PcmStream.b calls with the length when the stream is inactive. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fn.a([III)V",
+      "originalName": "a",
+      "to": "fill",
+      "evidence": "Abstract hook that writes samples into the int buffer; PcmStream.b calls it while the stream is active. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -1039,6 +1249,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ip.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "Abstract hook that PcmStream.b calls with the length when the stream is inactive. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ip.a([III)V",
+      "originalName": "a",
+      "to": "fill",
+      "evidence": "Abstract hook that writes samples into the int buffer; PcmStream.b calls it while the stream is active. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kd.e(II)V",
       "originalName": "e",
       "to": "setState",
@@ -1088,10 +1312,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rj.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "Abstract hook that PcmStream.b calls with the length when the stream is inactive. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.a([III)V",
+      "originalName": "a",
+      "to": "fill",
+      "evidence": "Abstract hook that writes samples into the int buffer; PcmStream.b calls it while the stream is active. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sh.a(Ljava/lang/Throwable;Ljava/lang/String;)Laj;",
       "originalName": "a",
       "to": "wrapException",
       "evidence": "Returns the existing ClientException with the context appended, or a new one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:so.c(I)I",
+      "originalName": "c",
+      "to": "randomInt",
+      "evidence": "Draws from the shared Random with its argument as the bound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sp.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "Abstract hook that PcmStream.b calls with the length when the stream is inactive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sp.a([III)V",
+      "originalName": "a",
+      "to": "fill",
+      "evidence": "Abstract hook that writes samples into the int buffer; PcmStream.b calls it while the stream is active.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sp.b([III)V",
+      "originalName": "b",
+      "to": "fillOrSkip",
+      "evidence": "Calls fill when field_k is set and skip with the length otherwise.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tp.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "Abstract hook that PcmStream.b calls with the length when the stream is inactive. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tp.a([III)V",
+      "originalName": "a",
+      "to": "fill",
+      "evidence": "Abstract hook that writes samples into the int buffer; PcmStream.b calls it while the stream is active. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -1173,7 +1453,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-zombiedawn-rules.mjs": "ab7bd2f1206c9ecc2caa380e5aa9b984fbc3d3ca16ac6ae44f7b75365fe3900b",
+      "build-zombiedawn-rules.mjs": "3be3fa6dd842d366b967500d4c5e3467e89919b8db83adf93437509f5f033099",
       "reproduce-zombiedawn.mjs": "4caec58ac39c51a3a767b82c92cfb9908c0ff98ebd03b9e6b7c2ba88b5007d4b",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
