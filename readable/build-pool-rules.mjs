@@ -28,6 +28,8 @@ const classes = {
   qm: ['AbstractAudioSample', 'IntrusiveNode base of PcmSample holding one int.'],
   jg: ['PcmSample', 'AbstractAudioSample with a byte data array, three ints and a flag, constructed from data and loop bounds.'],
   kd: ['PcmStream', 'Abstract IntrusiveNode defining fill, skip and a sibling substream link.'],
+  nb: ['PcmSampleStream', 'PcmStream that steps through sample data with interpolation and loop or ping-pong position wrapping.'],
+  wo: ['DualLinkDeque', 'Sentinel circular deque of DualLinkNode with cursor, length count and tail insertion.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
