@@ -33,6 +33,22 @@ const classes = {
   vh: ['PlatformTaskDispatcher', 'Runnable owning a Thread, a reflective Method and an EventQueue for platform tasks.'],
   gm: ['UiWidget', 'IntrusiveNode base widget with text, listener, renderer and bounds fields.'],
   el: ['WidgetRenderer', 'Interface whose single method paints a UiWidget at a position.'],
+  gn: ['IsaacCipher', 'Two 256-entry int arrays and the 0x9e3779b9 golden-ratio mixing feeding df opcode encryption.'],
+  df: ['IsaacPacketBuffer', 'PacketBuffer subclass owning an IsaacCipher to mask opcodes.'],
+  ao: ['SocketConnector', 'Abstract holder of host and port that creates a Socket.'],
+  gj: ['ProxySocketConnector', 'SocketConnector that consults a ProxySelector and negotiates through the proxy.'],
+  pi: ['AudioOutput', 'Owns the output sample buffer and mixes child PcmStreams for a platform backend.'],
+  vj: ['JavaSoundAudioOutput', 'AudioOutput backed by javax.sound AudioFormat and SourceDataLine.'],
+  sa: ['AudioService', 'Runnable that services up to two AudioOutput slots until stopped.'],
+  tm: ['GzipDecompressor', 'Wraps java.util.zip.Inflater to inflate packet payloads into PacketBuffer.'],
+  ue: ['RandomAccessCacheFile', 'Wraps a RandomAccessFile with tracked position and length for cache reads and writes.'],
+  jp: ['Js5Transport', 'Abstract archive transport with pending and in-flight request queues and two PacketBuffers.'],
+  fh: ['SocketJs5Transport', 'Js5Transport that pumps a BufferedSocket.'],
+  me: ['ArchiveSource', 'Abstract provider returning the archive index and per-group byte arrays.'],
+  fd: ['ArchiveIndex', 'Per-group and per-file id, length and checksum tables decoded from index bytes.'],
+  la: ['ResourceArchive', 'Synchronized cache of decoded groups and files addressed by group and file name or id.'],
+  gl: ['CachedArchiveSource', 'ArchiveSource that stages network and disk data in front of an ArchiveIndex.'],
+  of: ['VertexMesh', 'Short x, y and z vertex arrays with a lazily recomputed bounding box, translation and scaling.'],
   no: ['BufferedSocket', 'Runnable owning a Socket with input and output streams.'],
 };
 const members = {};
@@ -51,6 +67,16 @@ method('ta', 'h', '(I)V', 'unlinkSecondary', ['obfuscationGuard'], 'Clears the s
 method('vl', 'a', '(JBLq;)V', 'put', ['key', 'obfuscationGuard', 'node'], 'Unlinks the node, splices it into the bucket chosen by key and stores the key.');
 method('fj', 'b', '(II)V', 'writeByte', ['obfuscationGuard', 'value'], 'Stores one byte at the cursor and advances it.');
 method('fj', 'i', '(I)I', 'readUnsignedShort', ['obfuscationGuard'], 'Reads two bytes big-endian and advances the cursor by 2.');
+method('rb', 'a', '(Ljava/lang/Throwable;Ljava/lang/String;)Lga;', 'wrapThrowable', ['cause', 'context'], 'Wraps the caught throwable and context text in a ClientException.');
+method('of', 'a', '(I)V', 'computeBounds', ['initialMinY'], 'Scans the vertex arrays once and stores minimum and maximum extents.');
+method('of', 'a', '(IBII)V', 'translate', ['dz', 'obfuscationGuard', 'dx', 'dy'], 'Adds offsets to every x, y and z vertex coordinate and invalidates the bounds.');
+method('of', 'c', '(B)V', 'invalidateBounds', ['obfuscationGuard'], 'Clears the bounds-computed flag.');
+field('ao', 'c', 'Ljava/lang/String;', 'host', 'ProxySocketConnector connects to this host string.');
+field('ao', 'e', 'I', 'port', 'ProxySocketConnector connects to this port.');
+field('of', 'B', '[S', 'vertexX', 'translate adds dx to each element and computeBounds reads it as x.');
+field('of', 'j', '[S', 'vertexY', 'translate adds dy to each element.');
+field('of', 'd', '[S', 'vertexZ', 'translate adds dz to each element.');
+field('of', 'f', 'S', 'vertexCount', 'Loops over vertices run to this bound.');
 field('fj', 'j', '[B', 'payload', 'PacketBuffer byte array indexed by the cursor in every read and write.');
 field('fj', 'n', 'I', 'position', 'PacketBuffer cursor advanced by reads and writes.');
 
