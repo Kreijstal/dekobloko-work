@@ -138,6 +138,11 @@ field('iq', 'w', 'Ljava/lang/String;', 'text', 'The constructor stores its Strin
 field('iq', 'B', 'Lur;', 'listener', 'The constructor stores its ur argument here and forwards activation to it.');
 field('cj', 'C', 'Lnj;', 'children', 'Iterated with an IntrusiveDequeCursor built from this deque.');
 method('iq', 'a', '(ZIIII)V', 'setBounds', 'Stores x, y, height and width from its arguments.');
+field('wk', 'b', 'I', 'status', 'AsyncRequest constructor clears this volatile status to zero.');
+field('wk', 'd', 'Ljava/lang/Object;', 'result', 'AsyncRequest keeps the volatile result object here.');
+field('nj', 'h', 'Lli;', 'sentinel', 'The IntrusiveDeque constructor links this node to itself in both directions.');
+field('sr', 'b', 'Lgp;', 'sentinel', 'The SecondaryNodeDeque constructor links this node to itself in both secondary directions.');
+field('el', 'f', '[Lli;', 'buckets', 'The IterableNodeHashTable constructor allocates one sentinel node per bucket here.');
 field('ae', 's', '[B', 'samples', 'The PcmSample constructor stores its byte array argument here.');
 field('sn', 'n', 'Ldr;', 'sample', 'The abstract stream stores its AbstractAudioSample here.');
 field('uj', 'b', 'I', 'itemCount', 'The constructor stores its argument here and the key handlers wrap the index at it.');
