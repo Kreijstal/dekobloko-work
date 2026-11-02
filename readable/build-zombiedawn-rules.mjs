@@ -114,6 +114,32 @@ field('hi', 'mb', 'Lon;', 'tileMap', 'Holds the TileMap passed to the LevelNavig
 cls('fa', 'SpatialObject', 'DualLinkNode subclass with sibling fa links, stored in spatial grid buckets.');
 cls('tf', 'SpatialBucket', 'Holds a head and tail fa and links or unlinks SpatialObject members.');
 cls('mj', 'SpatialGrid', 'Array of SpatialBucket cells sized from the level extent shifted right by 7.');
+cls('wb', 'FunOrbApplet', 'GameApplet subclass that reads the gameport, gamecrc, instanceid, member and lang applet parameters.');
+const params = 'FunOrbApplet.a(String,IIII) parses this value from a named applet parameter.';
+field('wb', 'q', 'I', 'gamePort1', params + ' Parameter gameport1.');
+field('wb', 'w', 'I', 'gamePort2', params + ' Parameter gameport2.');
+field('wb', 'n', 'I', 'serverNumber', params + ' Parameter servernum.');
+field('wb', 'x', 'I', 'gameCrc', params + ' Parameter gamecrc.');
+field('wb', 'p', 'J', 'instanceId', params + ' Parameter instanceid.');
+field('wb', 'o', 'Z', 'isMember', params + ' Parameter member equals yes.');
+field('wb', 'l', 'I', 'language', params + ' Parameter lang, reset to 0 when 5 or more.');
+field('wb', 'v', 'I', 'affiliateId', params + ' Parameter affid.');
+field('wb', 'u', 'Ljava/lang/String;', 'host', 'Set from getCodeBase().getHost().');
+method('wb', 'a', '(Ljava/lang/String;IIII)V', 'readAppletParameters', 'Reads gameport1, gameport2, servernum, gamecrc, instanceid, member, lang and affid.');
+cls('m', 'GameLoopApplet', 'Abstract FunOrbApplet implementing ib; owns the per-frame login, update and draw sequence and declares abstract game hooks.');
+const move = 'Mover.c turns the target offset into a speed-scaled velocity.';
+field('g', 'Y', 'I', 'targetX', 'Mover.c subtracts the own x from this field to get the horizontal offset.');
+field('g', 'X', 'I', 'targetY', 'Mover.c subtracts the own y from this field to get the vertical offset.');
+field('g', 'O', 'I', 'velocityX', move + ' Horizontal component.');
+field('g', 'T', 'I', 'velocityY', move + ' Vertical component.');
+field('g', 'W', 'I', 'speedScale', 'Mover.c multiplies the requested speed by this and divides by 4; the constructor sets it to 4.');
+method('g', 'c', '(II)V', 'moveToward', 'Computes the normalized offset to the target and scales it into velocity fields.');
+method('g', 'b', '(III)I', 'tileAtPixel', 'Divides both coordinates by 24 and indexes the tile int grid, returning 0 outside it.');
+method('g', 'l', '(I)I', 'currentTile', 'Calls tileAtPixel with the own x and y.');
+method('g', 'e', '(II)V', 'setState', 'Called with 0 for a Human and 4 otherwise, the values the constructor stores in state.');
+cls('ib', 'GameLayer', 'Interface held in a Vector of layers; the game loop calls its tick, draw and key hooks on each one.');
+method('ib', 'a', '(CII)Z', 'onKeyTyped', 'The game loop passes the typed character and key code to each layer until one returns true.');
+method('m', 'o', '(I)V', 'onLoadingFinished', 'Called once after the preload completes; ZombieDawn then switches to the first menu screen.');
 
 export const config = {
   game: 'zombiedawn', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,

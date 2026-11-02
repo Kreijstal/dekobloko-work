@@ -437,6 +437,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ib",
+      "originalName": "ib",
+      "to": "GameLayer",
+      "evidence": "Interface held in a Vector of layers; the game loop calls its tick, draw and key hooks on each one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ii",
       "originalName": "ii",
       "to": "SecondaryNodeDeque",
@@ -476,6 +483,13 @@
       "originalName": "le",
       "to": "IntrusiveNode",
       "evidence": "Long key plus two reciprocal links; its unlink method splices neighbours together.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:m",
+      "originalName": "m",
+      "to": "GameLoopApplet",
+      "evidence": "Abstract FunOrbApplet implementing ib; owns the per-frame login, update and draw sequence and declares abstract game hooks.",
       "confidence": "reviewed"
     },
     {
@@ -577,6 +591,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:wb",
+      "originalName": "wb",
+      "to": "FunOrbApplet",
+      "evidence": "GameApplet subclass that reads the gameport, gamecrc, instanceid, member and lang applet parameters.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:wk",
       "originalName": "wk",
       "to": "Camera",
@@ -609,6 +630,41 @@
       "originalName": "field_F",
       "to": "state",
       "evidence": "ah.k maps this value to IDLE, RUNNING, COWERING, AIMING and other state names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:g.field_O:I",
+      "originalName": "field_O",
+      "to": "velocityX",
+      "evidence": "Mover.c turns the target offset into a speed-scaled velocity. Horizontal component.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:g.field_T:I",
+      "originalName": "field_T",
+      "to": "velocityY",
+      "evidence": "Mover.c turns the target offset into a speed-scaled velocity. Vertical component.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:g.field_W:I",
+      "originalName": "field_W",
+      "to": "speedScale",
+      "evidence": "Mover.c multiplies the requested speed by this and divides by 4; the constructor sets it to 4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:g.field_X:I",
+      "originalName": "field_X",
+      "to": "targetY",
+      "evidence": "Mover.c subtracts the own y from this field to get the vertical offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:g.field_Y:I",
+      "originalName": "field_Y",
+      "to": "targetX",
+      "evidence": "Mover.c subtracts the own x from this field to get the horizontal offset.",
       "confidence": "reviewed"
     },
     {
@@ -675,6 +731,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wb.field_l:I",
+      "originalName": "field_l",
+      "to": "language",
+      "evidence": "FunOrbApplet.a(String,IIII) parses this value from a named applet parameter. Parameter lang, reset to 0 when 5 or more.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wb.field_n:I",
+      "originalName": "field_n",
+      "to": "serverNumber",
+      "evidence": "FunOrbApplet.a(String,IIII) parses this value from a named applet parameter. Parameter servernum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wb.field_o:Z",
+      "originalName": "field_o",
+      "to": "isMember",
+      "evidence": "FunOrbApplet.a(String,IIII) parses this value from a named applet parameter. Parameter member equals yes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wb.field_p:J",
+      "originalName": "field_p",
+      "to": "instanceId",
+      "evidence": "FunOrbApplet.a(String,IIII) parses this value from a named applet parameter. Parameter instanceid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wb.field_q:I",
+      "originalName": "field_q",
+      "to": "gamePort1",
+      "evidence": "FunOrbApplet.a(String,IIII) parses this value from a named applet parameter. Parameter gameport1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wb.field_u:Ljava/lang/String;",
+      "originalName": "field_u",
+      "to": "host",
+      "evidence": "Set from getCodeBase().getHost().",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wb.field_v:I",
+      "originalName": "field_v",
+      "to": "affiliateId",
+      "evidence": "FunOrbApplet.a(String,IIII) parses this value from a named applet parameter. Parameter affid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wb.field_w:I",
+      "originalName": "field_w",
+      "to": "gamePort2",
+      "evidence": "FunOrbApplet.a(String,IIII) parses this value from a named applet parameter. Parameter gameport2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wb.field_x:I",
+      "originalName": "field_x",
+      "to": "gameCrc",
+      "evidence": "FunOrbApplet.a(String,IIII) parses this value from a named applet parameter. Parameter gamecrc.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wk.field_c:I",
       "originalName": "field_c",
       "to": "y",
@@ -689,6 +808,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ZombieDawn.a(CII)Z",
+      "originalName": "a",
+      "to": "onKeyTyped",
+      "evidence": "The game loop passes the typed character and key code to each layer until one returns true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ZombieDawn.a(I)V",
       "originalName": "a",
       "to": "drawFrame",
@@ -700,6 +826,13 @@
       "originalName": "a",
       "to": "runTick",
       "evidence": "Increments the tick counter and recomputes screen metrics when the canvas size changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ZombieDawn.o(I)V",
+      "originalName": "o",
+      "to": "onLoadingFinished",
+      "evidence": "Called once after the preload completes; ZombieDawn then switches to the first menu screen. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -829,6 +962,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:g.b(III)I",
+      "originalName": "b",
+      "to": "tileAtPixel",
+      "evidence": "Divides both coordinates by 24 and indexes the tile int grid, returning 0 outside it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g.c(II)V",
+      "originalName": "c",
+      "to": "moveToward",
+      "evidence": "Computes the normalized offset to the target and scales it into velocity fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g.e(II)V",
+      "originalName": "e",
+      "to": "setState",
+      "evidence": "Called with 0 for a Human and 4 otherwise, the values the constructor stores in state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g.l(I)I",
+      "originalName": "l",
+      "to": "currentTile",
+      "evidence": "Calls tileAtPixel with the own x and y.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hi.a(IBIII)Lkd;",
       "originalName": "a",
       "to": "spawnZombie",
@@ -857,6 +1018,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ib.a(CII)Z",
+      "originalName": "a",
+      "to": "onKeyTyped",
+      "evidence": "The game loop passes the typed character and key code to each layer until one returns true.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ib.a(I)V",
       "originalName": "a",
       "to": "drawFrame",
@@ -871,10 +1039,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kd.e(II)V",
+      "originalName": "e",
+      "to": "setState",
+      "evidence": "Called with 0 for a Human and 4 otherwise, the values the constructor stores in state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:le.b(I)V",
       "originalName": "b",
       "to": "unlink",
       "evidence": "IntrusiveNode unlink reciprocally patches field_d and field_b of its neighbours.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.a(CII)Z",
+      "originalName": "a",
+      "to": "onKeyTyped",
+      "evidence": "The game loop passes the typed character and key code to each layer until one returns true. Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -889,6 +1071,20 @@
       "originalName": "a",
       "to": "runTick",
       "evidence": "Increments the tick counter and recomputes screen metrics when the canvas size changes. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.o(I)V",
+      "originalName": "o",
+      "to": "onLoadingFinished",
+      "evidence": "Called once after the preload completes; ZombieDawn then switches to the first menu screen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qk.e(II)V",
+      "originalName": "e",
+      "to": "setState",
+      "evidence": "Called with 0 for a Human and 4 otherwise, the values the constructor stores in state. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -941,6 +1137,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wb.a(Ljava/lang/String;IIII)V",
+      "originalName": "a",
+      "to": "readAppletParameters",
+      "evidence": "Reads gameport1, gameport2, servernum, gamecrc, instanceid, member, lang and affid.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wk.a(IB)I",
       "originalName": "a",
       "to": "worldToScreenX",
@@ -970,7 +1173,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-zombiedawn-rules.mjs": "443f90efbb290fbfe40b5ead0c811629dd73504ede0532c244280b47f4beaf8f",
+      "build-zombiedawn-rules.mjs": "ab7bd2f1206c9ecc2caa380e5aa9b984fbc3d3ca16ac6ae44f7b75365fe3900b",
       "reproduce-zombiedawn.mjs": "4caec58ac39c51a3a767b82c92cfb9908c0ff98ebd03b9e6b7c2ba88b5007d4b",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
