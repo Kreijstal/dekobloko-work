@@ -36,6 +36,14 @@ const classes = {
   ee: ['UiComponent', 'Widget with bounds, listener and toString that handles key and pointer events.'],
   kc: ['LocalizedStrings', 'Looks up text keys such as BACK and COLLECT_MORE_SEALS.'],
   mf: ['LevelDecoder', 'Decodes the level byte array into LevelEntity objects.'],
+  sl: ['IntrusiveDeque', 'Sentinel-based deque of IntrusiveNode with append, poll and cursor traversal.'],
+  ff: ['JavaScriptBridge', 'Static wrappers around netscape.javascript.JSObject call and eval.'],
+  hd: ['GzipDecoder', 'Owns a java.util.zip.Inflater that decompresses into a PacketBuffer.'],
+  rk: ['BufferedCacheFile', 'Buffers reads and writes over a RandomAccessCacheFile with separate windows.'],
+  la: ['SectorCacheStore', 'Reads and writes archive sectors across a data and an index BufferedCacheFile.'],
+  jk: ['PcmStreamMixer', 'PcmStream owning two IntrusiveDeques of child streams and timed events.'],
+  eg: ['BitmapFont', 'Glyph tables with character and string width queries and string drawing kernels.'],
+  pd: ['GameScreen', 'Sixteen instances are created by index at load; the active one is selected by id.'],
   qe: ['LevelEntity', 'Constructed per level record from position, type and parameter bytes by LevelDecoder.'],
 };
 const members = {};
@@ -73,6 +81,25 @@ field('jd', 'a', 'Ljava/lang/Throwable;', 'cause', 'ClientException keeps the th
 field('gl', 'i', 'Ljava/lang/String;', 'host', 'SocketConnector host text.');
 field('gl', 'd', 'I', 'port', 'SocketConnector port.');
 method('oj', 'a', '(Ljava/lang/Throwable;Ljava/lang/String;)Ljd;', 'wrapException', 'Every generated catch block rethrows the result with a context string.');
+field('pd', 'e', 'I', 'screenId', 'Assigned from the constructor index that selects the screen slot.');
+field('ug', 'i', '[Lpd;', 'screens', 'Filled with new pd(index, client) for indices 0 to 15 at load.');
+field('bb', 'h', 'I', 'activeScreenId', 'Indexes ug.screens when a screen is activated.');
+const ent = 'LevelDecoder passes x, y, type and variant to the LevelEntity constructor in that order.';
+field('qe', 'o', 'I', 'x', ent);
+field('qe', 'H', 'I', 'y', ent);
+field('qe', 'F', 'I', 'type', ent);
+field('qe', 'V', 'I', 'variant', ent);
+field('sl', 'e', 'Lda;', 'sentinel', 'Deque methods link nodes before and after this node.');
+field('sl', 'c', 'Lda;', 'cursor', 'Advanced by the iteration methods.');
+method('sl', 'a', '(B)Lda;', 'pollFirst', 'Unlinks and returns the node after the sentinel, or null when empty.');
+method('sl', 'c', '(I)Lda;', 'next', 'Returns the cursor node and advances it, or null at the sentinel.');
+method('sl', 'c', '(B)Lda;', 'first', 'Returns the node after the sentinel and positions the cursor after it.');
+method('sl', 'a', '(Lda;I)V', 'addLast', 'Unlinks the node then links it before the sentinel.');
+const js = 'Forwards to netscape.javascript.JSObject on the window of the applet.';
+method('ff', 'a', '(Ljava/lang/String;[Ljava/lang/Object;Ljava/applet/Applet;I)Ljava/lang/Object;', 'callWithArguments', js);
+method('ff', 'a', '(Ljava/lang/String;Ljava/applet/Applet;I)Ljava/lang/Object;', 'callWithoutArguments', js);
+method('ff', 'a', '(Ljava/applet/Applet;Ljava/lang/String;B)V', 'evaluate', js);
+method('ok', 'a', '(Ljava/applet/Applet;I)V', 'updatePageLinks', 'Calls the updatelinks page function with home and gamelist targets.');
 field('cg', 'c', '[Ljava/lang/String;', 'levelNames', 'Holds Tower0 to Tower5 and boss1 to boss3.');
 
 export const config = {
