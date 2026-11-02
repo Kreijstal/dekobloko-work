@@ -35,6 +35,9 @@ const classes = {
   ui: ['WidgetListener', 'Single-method callback taking a UiWidget; implemented by button handlers.'],
   ag: ['PcmStream', 'Abstract audio stream linked to a next stream with sample-mixing hooks.'],
   bb: ['PcmSampleStream', 'PcmStream with loop, position and rate state that mixes a PCM sample buffer.'],
+  oa: ['PacketBuffer', 'Byte payload with cursor and big-endian, string, RSA BigInteger and ISAAC-style operations.'],
+  nf: ['WordLanguage', 'Holds a language font, vowel string and word list; validates the letters of a tile array.'],
+  ad: ['WordDictionary', 'Decodes length-prefixed byte arrays from a packet and answers membership for a char[] word.'],
   kl: ['ContextualRuntimeException', 'RuntimeException retaining a cause and context text.'],
 };
 const members = {};
@@ -58,6 +61,16 @@ field('sj', 'j', 'I', 'x', 'Added to the draw offset when blitting the tile spri
 field('sj', 'q', 'I', 'y', 'Added to the draw offset when blitting the tile sprite.');
 field('sj', 'v', 'I', 'baseValue', 'Displayed tile number is baseValue plus twice field_h.');
 field('sj', 'h', 'I', 'carryoverFlag', 'When nonzero the tile prefers the carryover rack over the new rack when returned.');
+field('sj', 'x', 'Z', 'doublesWordScore', 'ni.a doubles the word total when any tile has this flag set.');
+field('vi', 'a', '[I', 'wordScores', 'dc.a stores each submitted word score at the submitted-word index.');
+field('eh', 'a', 'I', 'totalScore', 'dc.a adds each word score to it.');
+field('rh', 'n', 'I', 'unlockedAchievementMask', 'fi.b tests and sets one bit per achievement index in it.');
+field('oa', 'g', '[B', 'payload', 'PacketBuffer byte array that readers index by the cursor.');
+field('oa', 'h', 'I', 'position', 'PacketBuffer cursor advanced by each read.');
+field('vi', 'g', '[Ljava/lang/StringBuilder;', 'usedWords', 'ni.a compares the submitted word against each entry ignoring case.');
+field('n', 'a', 'I', 'submittedWordCount', 'dc.a increments it per submitted word and ends the game at 10; ni.a loops over earlier words up to it.');
+field('of', 'e', 'Ljava/lang/StringBuilder;', 'wordBuffer', 'ni.a clears it then appends each tile letter.');
+field('nf', 'f', 'Lad;', 'dictionary', 'nf.isValidWord forwards the letters to this object.');
 field('od', 'g', 'Lj;', 'submissionRack', 'ac.a maps this rack to the text "submission_rack".');
 field('wk', 'a', 'Lj;', 'carryoverRack', 'ac.a maps this rack to the text "carryover_rack".');
 field('si', 'i', 'Lj;', 'newRack', 'ac.a maps this rack to the text "new_rack".');
@@ -77,6 +90,12 @@ method('sj', 'a', '(IIII)V', 'draw', 'Blits the tile sprite, letter and value te
 method('sj', 'a', '(IILj;)V', 'moveToRack', 'Removes the tile from its rack and places it at the new slot, updating destination.');
 method('ac', 'a', '(ILj;)Ljava/lang/String;', 'rackName', 'Returns submission_rack, carryover_rack or new_rack for a rack.');
 method('eh', 'a', '(Lsj;I)V', 'returnTileToRack', 'Puts a removed tile back in its previous slot or the first free carryover or new rack slot, then closes the gap.');
+method('dc', 'a', '(IZ)V', 'submitWord', 'Scores the submission rack via ni.a, appends the word to the used list and ends the game after the tenth word.');
+method('fi', 'b', '(III)Z', 'unlockAchievement', 'Sets bit param2 of the unlocked mask once and queues an achievement popup; dc.a calls it with score-based indices.');
+method('ni', 'a', '(B)I', 'scoreSubmittedWord', 'Reads the submission rack: 0 if empty, -1 if invalid or already used, else summed tile values, doubled by a special tile.');
+method('nf', 'a', '(I[Lsj;)Z', 'isValidWord', 'Copies tile letters into a char[] and asks the word dictionary.');
+method('nf', 'a', '(IC)C', 'toUpperCase', 'Returns Character.toUpperCase of its argument.');
+method('ad', 'a', '(B[C)Z', 'containsWord', 'Public wrapper over the private lookup used by nf for a char[] word.');
 method('ue', 'b', '(I)V', 'dumpRackState', 'Prints each rack tile and any tile that believes itself elsewhere.');
 
 export const config = {
