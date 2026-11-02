@@ -22,6 +22,12 @@ const classes = {
   ql: ['MouseHandler', 'Implements MouseListener, MouseMotionListener and FocusListener with synchronized callbacks.'],
   po: ['MouseWheelHandler', 'Implements MouseWheelListener and accumulates wheel movement synchronously.'],
   pg: ['JavaSoundAudioOutput', 'Audio stream backed by a javax.sound SourceDataLine and AudioFormat.'],
+  rg: ['DualLinkNode', 'IntrusiveNode subclass with an independent secondary link pair and a long key.'],
+  qo: ['SpriteState', 'DualLinkNode subclass holding the six full and trimmed dimension and offset ints.'],
+  dd: ['Sprite', 'SpriteState subclass owning an int pixel array with static blit kernels.'],
+  qm: ['AbstractAudioSample', 'IntrusiveNode base of PcmSample holding one int.'],
+  jg: ['PcmSample', 'AbstractAudioSample with a byte data array, three ints and a flag, constructed from data and loop bounds.'],
+  kd: ['PcmStream', 'Abstract IntrusiveNode defining fill, skip and a sibling substream link.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
