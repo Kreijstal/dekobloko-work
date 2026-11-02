@@ -46,6 +46,7 @@ const classes = {
   sa: ['RandomAccessCacheFile', 'Wraps a RandomAccessFile with a bounded length and seek-then-write.'],
   vl: ['AsyncRequest', 'Plain request record with a volatile status and result object.'],
   rg: ['DisplayModeEnumerator', 'IEnumModesCallback collecting DirectDraw display modes.'],
+  oj: ['IsaacCipher', 'Seeded from an int array; c(int) yields the next keystream value added to opcode bytes.'],
   ek: ['NotificationToast', 'Queued entry whose int index selects the sprite and text the banner draws while sliding in and out.'],
   kc: ['ModelData', 'Holds per-vertex and per-face arrays that the Model constructor copies and lights.'],
   ob: ['Model', 'Mesh built from ModelData plus five lighting ints, or by merging a Model array.'],
@@ -96,6 +97,15 @@ method('bh', 'b', '(B)I', 'readVarInt', 'Accumulates 7-bit groups while the byte
 method('bh', 'f', '(B)I', 'readSmart', 'Reads one byte below 128, else a short minus 32768.');
 method('bh', 'c', '(B)I', 'readLargeSmart', 'Reads a short when non-negative, else an int masked to 31 bits.');
 method('bh', 'b', '(IB)V', 'writeSmart', 'Writes a byte below 128 or a short offset by 32768.');
+field('bc', 'w', 'Loj;', 'cipher', 'Opcode reads subtract and writes add the next value of this cipher.');
+field('bc', 'y', 'I', 'bitPosition', 'Bit reads index the payload by this bit cursor.');
+method('bc', 'e', '(Z)V', 'beginBitAccess', 'Converts the byte cursor into a bit cursor.');
+method('bc', 'i', '(B)V', 'endBitAccess', 'Rounds the bit cursor up into a byte cursor.');
+method('bc', 'e', '(IB)I', 'readBits', 'Reads a variable number of bits at the bit cursor.');
+method('bc', 'a', '([IB)V', 'setCipherSeed', 'Creates the IsaacCipher from the seed array.');
+method('bc', 'd', '(Z)I', 'readCipheredByte', 'Reads a byte minus the next cipher value.');
+method('bc', 'f', '(IB)V', 'writeCipheredByte', 'Writes a byte plus the next cipher value.');
+method('oj', 'c', '(I)I', 'nextInt', 'Returns the next generated word of the cipher.');
 field('TetraLink', 'L', 'Lje;', 'notificationQueue', 'Frame render peeks the next NotificationToast from this deque.');
 field('TetraLink', 'K', 'I', 'notificationTimer', 'Frame render slides the toast by thresholds of this counter (80 and 230).');
 const loop = 'GameApplet.run drives the abstract hooks around the main loop.';

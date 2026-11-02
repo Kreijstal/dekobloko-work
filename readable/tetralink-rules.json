@@ -367,6 +367,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:oj",
+      "originalName": "oj",
+      "to": "IsaacCipher",
+      "evidence": "Seeded from an int array; c(int) yields the next keystream value added to opcode bytes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pk",
       "originalName": "pk",
       "to": "WidgetContainer",
@@ -500,6 +507,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bc.field_w:Loj;",
+      "originalName": "field_w",
+      "to": "cipher",
+      "evidence": "Opcode reads subtract and writes add the next value of this cipher.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bc.field_y:I",
+      "originalName": "field_y",
+      "to": "bitPosition",
+      "evidence": "Bit reads index the payload by this bit cursor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bh.field_t:I",
       "originalName": "field_t",
       "to": "position",
@@ -623,6 +644,48 @@
       "originalName": "q",
       "to": "loadArchives",
       "evidence": "Assigns archives 3 through 16 to static holders.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.a([IB)V",
+      "originalName": "a",
+      "to": "setCipherSeed",
+      "evidence": "Creates the IsaacCipher from the seed array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.d(Z)I",
+      "originalName": "d",
+      "to": "readCipheredByte",
+      "evidence": "Reads a byte minus the next cipher value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.e(IB)I",
+      "originalName": "e",
+      "to": "readBits",
+      "evidence": "Reads a variable number of bits at the bit cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.e(Z)V",
+      "originalName": "e",
+      "to": "beginBitAccess",
+      "evidence": "Converts the byte cursor into a bit cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.f(IB)V",
+      "originalName": "f",
+      "to": "writeCipheredByte",
+      "evidence": "Writes a byte plus the next cipher value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.i(B)V",
+      "originalName": "i",
+      "to": "endBitAccess",
+      "evidence": "Rounds the bit cursor up into a byte cursor.",
       "confidence": "reviewed"
     },
     {
@@ -834,6 +897,13 @@
       "to": "unlink",
       "evidence": "IntrusiveNode.unlink splices the node out of its neighbours and clears both links.",
       "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oj.c(I)I",
+      "originalName": "c",
+      "to": "nextInt",
+      "evidence": "Returns the next generated word of the cipher.",
+      "confidence": "reviewed"
     }
   ],
   "classNameLiterals": {
@@ -851,7 +921,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-tetralink-rules.mjs": "9b0c0f8477157326dc6d5213366fdb6790fac921944559f8e115b6c25cf55540",
+      "build-tetralink-rules.mjs": "3ab329c111aaa13b7e7688e8af59b95d7ae2043cd6714d8d5ac6b74e110acfc3",
       "reproduce-tetralink.mjs": "48c559540795e1e28f8942a56656594f876b3ba19e63705d96d166ed11f05afb",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
