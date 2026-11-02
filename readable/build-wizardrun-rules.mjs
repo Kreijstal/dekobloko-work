@@ -45,6 +45,30 @@ field('rk', 'l', 'Lrk;', 'secondaryPrevious', 'unlink null-checks and rewires th
 field('rk', 'o', 'J', 'secondaryKey', 'Long key of the second node level.');
 field('va', 'k', '[B', 'payload', 'PacketBuffer byte array indexed by the cursor in every read and write.');
 field('va', 'm', 'I', 'position', 'PacketBuffer cursor advanced by reads and writes.');
+const wr = 'wizardrun';
+field(wr, 'D', '[Lo;', 'numberSprites', 'Loaded from the "numbers" sprite group; element 10 is reused as a score sprite.');
+field('jj', 'a', '[Lo;', 'gemSprites', 'Loaded from the "gems" sprite group.');
+field('jj', 'b', 'Lgb;', 'wizardFont2', 'Loaded from the "wizfont2" font and used for every outlined text draw.');
+field('hj', 'g', 'Lgb;', 'wizardFont', 'Loaded from the "wizfont" font.');
+field('a', 'a', 'Lgb;', 'font12', 'Loaded from the "b12" font.');
+field('pd', 'H', '[Lo;', 'frameSprites', 'Loaded from the "frame" sprite group.');
+field('ve', 'c', '[Lo;', 'wizardSprites', 'Loaded from the "wizard" sprite group.');
+field('ra', 'm', '[Lo;', 'wizardNoHatSprites', 'Loaded from the "wizardnohat" sprite group.');
+field('mi', 'y', 'Lkl;', 'soundArchive', 'Source archive of the spell, jump and bubble sound effects.');
+field('jl', 'u', 'Lkl;', 'bossSoundArchive', 'Source archive of the enemy, boss and hit sound effects.');
+field('si', 'j', '[Lje;', 'soundEffects', 'Filled with decoded spell, jump, land and boss sounds at load.');
+field('nl', 'q', '[Lje;', 'secondarySoundEffects', 'Filled with intro bird, cage and enemy death sounds at load.');
+field('sl', 'q', '[Lji;', 'musicTracks', 'Seven tracks registered with the music mixer after loading.');
+field('th', 'h', 'Z', 'resourcesLoaded', 'Set true when loading finishes; the frame draw returns early while false.');
+method(wr, 'a', '(ZI)V', 'loadGameResources', 'Advances loading with progress percentages, then builds sprites, sounds and music.');
+method(wr, 'u', '(I)V', 'openResourceArchives', 'Opens archive groups 1 to 7 into the archive fields.');
+method(wr, 'a', '(ILjava/lang/String;III)V', 'drawOutlinedText', 'Draws the string four times offset by one pixel, then once on top.');
+method(wr, 'b', '(ILjava/lang/String;III)V', 'drawBorderedText', 'Draws the string in dark colour 1377125 around the position, then once on top.');
+method(wr, 't', '(I)V', 'updateGameState', 'Ticks counters and branches on the shared game state value.');
+method('ok', 'a', '(Ljava/lang/String;FI)V', 'showLoadingProgress', 'Called with a message and 30 to 100 percent between loading stages.');
+method('pe', 'a', '(Ljava/lang/String;Lkl;Ljava/lang/String;I)[Lo;', 'loadSpriteStrip', 'Called with group names like "numbers" and "gems" to fill sprite arrays.');
+method('vg', 'a', '(ILjava/lang/String;Lkl;Ljava/lang/String;)Lo;', 'loadSprite', 'Called with single sprite names like "gamelogo" and "paused".');
+method('ti', 'a', '(ILjava/lang/String;Lkl;Ljava/lang/String;Lkl;)Lgb;', 'loadFont', 'Called with font names like "wizfont" and "b12".');
 method('rk', 'b', '(Z)V', 'unlink', 'Splices the node out of its neighbours and nulls both links.');
 
 export const config = {
