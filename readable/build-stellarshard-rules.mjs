@@ -99,6 +99,14 @@ method('sd', 'a', '(I)Lsd;', 'update', 'Advances the popup and returns null once
 method('kd', 'b', '([III)V', 'mix', 'Abstract fill of an int sample range; PcmSampleStream implements it as the resampling loop.');
 method('kd', 'a', '(I)V', 'skip', 'Abstract advance by a sample count, called instead of mixing while the stream is inactive.');
 
+const motion = 'GameEntity adds the velocity fields to its position each tick and wraps the position around a 640 by 480 field.';
+field('qe', 'a', 'D', 'x', motion);
+field('qe', 'l', 'D', 'y', motion);
+field('qe', 'd', 'D', 'velocityX', motion);
+field('qe', 'k', 'D', 'velocityY', motion);
+field('qe', 'h', 'I', 'heading', 'Heading in 256 units per turn; thrust uses cos and sin of heading times 2 pi over 256.');
+method('qe', 'b', '(I)Lpb;', 'currentSprite', 'Wraps the heading into 0..255 and returns the rotation frame, or an animation frame for kind 11.');
+
 export const config = {
   game: 'stellarshard', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
