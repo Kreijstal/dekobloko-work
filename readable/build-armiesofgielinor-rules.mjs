@@ -4917,6 +4917,41 @@ for(const entry of [
   method(parts[1],parts[2],parts[3],"releaseStatics","Only nulls static references, apart from guard arithmetic and guard-conditioned calls to other statics of its owner; instance state and unrelated helpers on the owner are untouched.",parts[3]==="()V"?{}:{0:"obfuscationGuard"});
 }
 
+// Round 2: additional static cleanup methods and small leaf helpers.
+for(const entry of [
+"ar.e(B)V","ba.i(I)V","ev.a(I)V","ew.a(Z)V","fi.a(I)V","fl.a(B)V","fo.a(Z)V","hg.a(Z)V","it.a(I)V","ju.a(I)V","jv.a(B)V","ko.a(Z)V","ks.e(B)V","lo.a(I)V","mb.d(B)V","ml.k(I)V","mt.a(I)V","ng.w(I)V","qp.g(I)V","sb.b(Z)V","te.a(B)V","tr.g(I)V","uj.h(I)V","ut.p(I)V","wn.c(B)V","wt.e(B)V","cd.a(I)V",
+]){
+  const parts=/^([^.]+).([A-Za-z0-9_$]+)((.*)V)$/.exec(entry);
+  method(parts[1],parts[2],parts[3],"releaseStatics","Only nulls static references, apart from guard arithmetic and guard-conditioned dummy writes or calls; instance state and unrelated behaviour are untouched.");
+}
+method("fm","a","([Lwk;IIII)V","drawHorizontalThreeSlice","Draws sprite 0 at the left, stretches sprite 1 across the remaining width minus twice sprite 2 width, and draws sprite 2 flush right.");
+method("bd","a","(IZI[Lwk;II)V","drawHorizontalThreeSliceWithOpacity","Same left/stretched-middle/right slice layout as the plain variant but through the opacity draw calls with the supplied opacity.");
+method("jp","a","(III[Lwk;II)V","drawHorizontalThreeSliceWithBrightness","Same left/stretched-middle/right slice layout through the brightness draw calls with the supplied brightness.");
+method("fm","a","(III)I","compositeArgbColours","Combines two ARGB colours weighting each channel by its alpha, with summed-alpha reconstruction; the third argument is only a guard constant.");
+method("bv","a","(ZZ)Z","exclusiveOr","Returns param0 ^ param1.");
+method("ca","b","(I)J","millisSinceLastPacketRead","Returns monotonic millis minus the stored last-packet-read time.");
+method("gd","a","(II)I","scaleHslLightness","Scales the low 7 lightness bits of a packed HSL value by the factor, clamps to 2..126 and keeps the upper hue/saturation bits.");
+method("gd","d","(I)I","clampHslLightness","Clamps a lightness value to 2..126.");
+method("go","a","(I)Z","isSessionConnected","True when a session socket exists and the stored connected state equals the current connection state.");
+method("gu","a","(I)Z","debugConsoleHandlesKey","Forwards the typed character and key code to the debug console when it exists and returns its handled result, else false.");
+method("dj","a","(B)V","closeSessionSocket","Closes and clears the session socket when it is non-null.");
+method("hr","b","(B)Ljava/lang/String;","readIncomingNullTerminatedString","Reads a null-terminated string from the incoming packet buffer.");
+method("il","a","(Ljava/awt/Component;B)V","attachPointerInput","Registers the shared pointer handler as mouse, mouse-motion and focus listener on the component.");
+method("dc","a","(Ljava/awt/Component;I)V","detachPointerInput","Removes the shared pointer handler mouse, mouse-motion and focus listeners and clears the held pointer button.");
+method("gh","g","(B)V","notifySelectionChanged","Calls selectionChanged on the listener when it is a dropdown selection listener.");
+method("is","a","(II)Z","isLeapYear","Julian rule before 1582 (with negative-year offset) and Gregorian divisible-by-4/100/400 rule afterwards.");
+method("cu","a","(II)I","bitLength","Counts the bits needed for a positive int by successive 16/8/4/2/1 shifts; negatives use the same scheme with an initial 2.");
+method("lp","a","(Ljava/lang/String;ZZ)I","measureTextWidth","Returns the text width using one of two retained fonts selected by the second flag.");
+method("iu","a","(III)V","focusCameraOnTile","Asks the controller to focus the camera on the supplied tile coordinates.");
+method("iu","d","(I)V","queueScriptedSummon","Adds a fixed SummonEvent to the battlefield pending event queue.");
+Object.assign(classes,{
+  oq:["AlternateKeyedLoginCredentials","KeyedLoginCredentials subclass the credential factory selects when its flag is set; overrides the login kind with a different token and hosts the keyboard attach helper."],
+  is:["LeapYearSupport","Leap-year predicate plus unrelated label strings and a scratch table."],
+  cu:["BitLengthSupport","Integer bit-length counting helper implementing a marker interface; unrelated flags and sprites remain separate."],
+  fm:["SpriteSliceAndBlendSupport","Horizontal three-slice sprite drawing and alpha-weighted ARGB colour compositing; unrelated labels remain separate."],
+  lp:["TextWidthSupport","Measures text width with one of two retained fonts; unrelated map-theme tables remain separate."],
+});
+
 const workflowFiles=['build-armiesofgielinor-rules.mjs','reproduce-armiesofgielinor.mjs','reconstruct-armies-methods.mjs',
   'tests/test-armiesofgielinor-core.mjs','tests/archive-index-probe.mjs','game-export.mjs','compilation-stubs.mjs'];
 export function validateArmiesManifest(rules) {
