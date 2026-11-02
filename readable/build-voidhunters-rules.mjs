@@ -3,6 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
 import {workflowRoot} from './game-export.mjs';
+import {diffClasses, scriptClasses, getters, diffFields} from './voidhunters-diff-names.mjs';
 
 const classes = {
   ksa: ['IntrusiveNode', 'Long key plus two reciprocal links; base of buffers, widgets and sprites.'],
@@ -33,10 +34,43 @@ function method(owner, original, descriptor, to, parameters, evidence) {
 field('ds', 'h', '[B', 'payload', 'PacketBuffer byte array indexed by the cursor in every read and write.');
 field('ds', 'e', 'I', 'position', 'PacketBuffer cursor advanced by reads and writes.');
 
+for (const [original, to] of Object.entries(diffClasses))
+  classes[original] ||= [to, 'Void Hunters state-diff messages name this type: "' + to + ' has changed".'];
+for (const [original, to, text] of [
+  ['ha', 'GraphicsToolkit', 'Abstract base of the OpenGL and software toolkits that VoidHunters selects at startup.'],
+  ['qfa', 'OpenGlToolkit', 'GraphicsToolkit subclass whose source lists GL_ARB extension strings.'],
+  ['dab', 'TickCondition', 'Mission condition whose label reads "Is at tick" and keeps a tick field.'],
+  ['cc', 'BodyCondition', 'Mission condition whose label starts with "Body " and keeps a body id.'],
+  ['iia', 'BodyInZoneCondition', 'Mission condition labelled "Any ship" or "Body " that stores a body id and a zone id.'],
+  ['ih', 'ShipCondition', 'Mission condition labelled "Any ship" or "Ship " that stores ship and team ids.'],
+  ['jsb', 'ShipSpawnedCondition', 'Mission condition labelled "Any ship just spawned" with a team id.'],
+  ['om', 'TeamNodeCondition', 'Mission condition labelled "Any node on team " with a team id.'],
+  ['vp', 'TeamShipComponentCondition', 'Mission condition labelled "Any ship ... on team " with team and component type ids.'],
+  ['cqb', 'VariableCondition', 'Mission condition whose label starts with "Variable " and stores an index and value.'],
+  ['cf', 'SetVariableLabelAction', 'Mission action labelled "Set label of custom variable ".'],
+  ['ika', 'AwardVictoryToTeamAction', 'Mission action labelled "Award victory to team " using "wins_for_team_".'],
+  ['jpa', 'AdjustVariableAction', 'Mission action labelled "Add 1 to" or "Subtract 1 from" with an index and mode.'],
+  ['lrb', 'SetShipTeamAction', 'Mission action labelled "Set team of ship ".'],
+  ['oca', 'RemoveEventAction', 'Mission action labelled "Remove this event".'],
+  ['pob', 'SetVariableAction', 'Mission action labelled "Set custom variable ".'],
+  ['tt', 'AdjustBodyComponentsAction', 'Mission action labelled "Add body components to" or "Subtract body components from".'],
+  ['uoa', 'IncrementVariableAction', 'Mission action labelled "Increment custom variable ".'],
+  ['via', 'AwardVictoryToWinnerAction', 'Mission action labelled "Award victory to the winning player".'],
+]) classes[original] ||= [to, text];
+for (const [original, to] of Object.entries(scriptClasses))
+  classes[original] ||= [to, 'Developer console command registered by name "' + to + '" in ConsoleCommandRegistry.'];
+for (const [owner, original, descriptor, to] of diffFields)
+  field(owner, original, descriptor, to, 'The state-diff method prints "' + to + ' has changed" for this field.');
+for (const [owner, original, descriptor, to] of getters)
+  method(owner, original, descriptor, to, [], 'Body is a single return of the field the state-diff names "' + to.slice(3) + '".');
+method('ntb', 'a', '(Ltv;I)V', 'reportDifferences', ['other', 'obfuscationGuard'], 'Implemented by World, Ship and Component; prints each field that differs from the other state.');
+method('rqa', 'a', '([Lnc;I)Lnc;', 'execute', ['arguments', 'obfuscationGuard'], 'Every console command subclass returns an nc result from an nc argument array.');
+method('VoidHunters', 'f', '(Z)V', 'applyShipCookie', ['logGuard'], 'Reads the fog_voidhunters_ship cookie, logs "Ship cookie=" and applies it.');
+
 export const config = {
   game: 'voidhunters', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-voidhunters-rules.mjs', 'reproduce-voidhunters.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-voidhunters-rules.mjs', 'reproduce-voidhunters.mjs', 'voidhunters-diff-names.mjs', 'reviewed-game.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   readingGuide(rules, mapping) {
     return ['# Reading Void Hunters', '',
