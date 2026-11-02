@@ -20,7 +20,14 @@ const classes = {
   db: ['MouseInputHandler', 'Implements MouseListener, MouseMotionListener and FocusListener to track the pointer.'],
   jb: ['MouseWheelInput', 'Abstract wheel-input hook with component registration and a delta query.'],
   ii: ['MouseWheelHandler', 'MouseWheelInput subclass implementing MouseWheelListener.'],
-  ck: ['DelegatingCanvas', 'Canvas wrapping another Component that it delegates to.'],
+  ck: ['FullscreenFocusCanvas', 'Canvas with focus listener and a Frame field that repaints via paint.'],
+  jm: ['DelegatingCanvas', 'Canvas wrapping another Component whose paint and update it forwards.'],
+  nk: ['PcmPlayerService', 'Base audio output owning PcmStream arrays and an int mix buffer, with a factory choosing the output.'],
+  cj: ['WidgetActionListener', 'Interface whose single callback receives a UiWidget; stored in the UiWidget listener field.'],
+  lh: ['PcmSampleStream', 'PcmStream that steps through a PcmSample with byte-to-int mixing kernels and loop position wrapping.'],
+  sg: ['ArgbSprite', 'Sprite subclass whose kernels extract alpha with pixel >>> 24.'],
+  l: ['SoftwareRasterizer', 'Static int-pixel primitives under shared clip bounds that every Sprite kernel reads.'],
+  gf: ['GameShell', 'Abstract GameApplet subclass reading the affid, gameport1, js5connect and gamecrc applet parameters; base of Terraphoenix.'],
   te: ['RasterBuffer', 'Abstract int pixel array with width and height handed to the rasterizer.'],
   of: ['ImageProducerRasterBuffer', 'RasterBuffer implementing ImageProducer to push pixels to an ImageConsumer.'],
   oj: ['SpriteState', 'DualLinkNode subclass holding the full/trimmed dimension and offset integers.'],
@@ -42,6 +49,10 @@ const classes = {
   r: ['BattleUnit', 'Unit holding its current MapTile with many stat, flag and orientation fields.'],
   e: ['BattleState', 'Battle session owning the LevelMap and unit array; draws Armour, Health and Weapon text.'],
   mk: ['LevelEditor', 'Prints the "Editor started" and "MODE: Walls/Floors/Objects" editor key help.'],
+  fa: ['Archive', 'Synchronized cache of decoded group and file byte arrays addressed by id or name.'],
+  km: ['ArchiveIndex', 'Decodes per-group file counts, ids and name tables from a byte array.'],
+  pk: ['BitmapFont', 'Abstract DualLinkNode subclass that parses col= and img= tags while measuring and drawing strings.'],
+  qe: ['IsaacCipher', 'Int arrays seeded from a key array with the 0x9e3779b9 golden-ratio mix, the ISAAC generator.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
@@ -77,6 +88,19 @@ method('dh', 'e', '(I)Ljava/lang/String;', 'readString', ['obfuscationGuard'], '
 method('dh', 'i', '(II)V', 'writeByte', ['value', 'obfuscationGuard'], 'Stores one byte at the cursor and advances it.');
 method('dh', 'a', '(Ljava/math/BigInteger;BLjava/math/BigInteger;)V', 'rsaEncrypt', ['exponent', 'obfuscationGuard', 'modulus'], 'Applies BigInteger.modPow to the written bytes and rewrites the buffer with a length prefix.');
 method('dh', 'a', '(I[I)V', 'xteaEncrypt', ['obfuscationGuard', 'key'], 'Runs 32 rounds with the 0x9e3779b9 delta over each 8-byte block in place.');
+method('dh', 'h', '(II)V', 'writeShort', ['obfuscationGuard', 'value'], 'Writes value>>8 then value at the cursor.');
+method('dh', 'e', '(II)V', 'writeInt', ['value', 'obfuscationGuard'], 'Writes four big-endian bytes at the cursor.');
+method('dh', 'f', '(B)I', 'readInt', ['obfuscationGuard'], 'Advances the cursor by four and assembles a big-endian int.');
+method('dh', 'a', '(JI)V', 'writeLong', ['value', 'obfuscationGuard'], 'Writes eight big-endian bytes at the cursor.');
+method('dh', 'a', '(I)I', 'readUnsignedByte', ['obfuscationGuard'], 'Returns the masked byte at the cursor and advances it.');
+method('dh', 'a', '(IB)V', 'writeMedium', ['value', 'obfuscationGuard'], 'Writes value>>16, value>>8 and value at the cursor.');
+method('dh', 'a', '(I[III)V', 'xteaDecrypt', ['obfuscationGuard', 'key', 'start', 'end'], 'Runs 32 inverse rounds with the 0x9e3779b9 delta over each 8-byte block.');
+method('dh', 'a', '(Ljava/lang/String;I)V', 'writeString', ['value', 'obfuscationGuard'], 'Encodes the characters then appends a zero terminator.');
+field('e', 'G', 'LTerraphoenix;', 'client', 'BattleState keeps the Terraphoenix applet it was created by.');
+field('dk', 'i', 'Le;', 'state', 'LevelMap back reference to the BattleState that owns it.');
+field('dk', 'l', 'Lmk;', 'editor', 'LevelMap reference to the LevelEditor that draws it.');
+field('mk', 'i', 'Ldk;', 'map', 'LevelEditor edits this LevelMap.');
+field('dl', 'h', 'Lr;', 'unit', 'MapTile occupant BattleUnit.');
 export const config = {
   game: 'terraphoenix', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
