@@ -3,6 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
 import {workflowRoot} from './game-export.mjs';
+import * as engineNames from './pool-names-data.mjs';
 
 // Identities below belong to the pinned Pool export; names from other games are corroborating role evidence only.
 const classes = {
@@ -37,7 +38,7 @@ const field = (owner, original, descriptor, to, evidence) =>
 function method(owner, original, descriptor, to, parameters, evidence) {
   const signature = owner + '.' + original + descriptor;
   if (original !== '<init>') members['M:' + signature] = {to, evidence};
-  for (const [ordinal, name] of parameters.entries()) members[`P:${signature}#${ordinal}`] = {to: name, evidence};
+  for (const [ordinal, name] of parameters.entries()) if (name) members[`P:${signature}#${ordinal}`] = {to: name, evidence};
 }
 const node = 'IntrusiveNode link fields and unlink body; deques and tables splice nodes through them.';
 field('ma', 'k', 'Lma;', 'next', node);
@@ -57,10 +58,15 @@ for (const [original, descriptor, to, names] of [
   ['<init>', '([B)V', '', ['payload']], ['<init>', '(I)V', '', ['capacity']],
 ]) method('ge', original, descriptor, to, names, packet);
 
+for (const [owner, entry] of Object.entries(engineNames.classes)) classes[owner] = entry;
+for (const [owner, original, descriptor, to, parameters, evidence] of engineNames.methods)
+  method(owner, original, descriptor, to, parameters, evidence);
+for (const [owner, original, descriptor, to, evidence] of engineNames.fields) field(owner, original, descriptor, to, evidence);
+
 export const config = {
   game: 'pool', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-pool-rules.mjs', 'reproduce-pool.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-pool-rules.mjs', 'pool-names-data.mjs', 'reproduce-pool.mjs', 'reviewed-game.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   readingGuide(rules, mapping) {
     return ['# Reading Pool', '',
