@@ -34,6 +34,12 @@ const classes = {
   lk: ['RasterBuffer', 'Abstract int pixel array with width and height handed to the rasterizer.'],
   ma: ['ImageProducerRasterBuffer', 'RasterBuffer implementing ImageProducer to push pixels to an ImageConsumer.'],
   a: ['DisplayModeEnumerator', 'IEnumModesCallback collecting DirectDraw display modes.'],
+  fb: ['SpriteState', 'DualLinkNode subclass holding the dimension and offset ints and abstract draw hooks.'],
+  er: ['Sprite', 'SpriteState subclass owning an int pixel array with software blits.'],
+  cr: ['UiWidget', 'Base of the clickable menu components with text strings, sprite arrays and state flags.'],
+  ji: ['TextureOperator', 'IntrusiveNode with an input operator array and per-row scanline producers for procedural textures.'],
+  uj: ['MenuSelectionCursor', 'Keeps a selected index within an item count and moves it with up/down key codes 98 and 99.'],
+  tr: ['GameplayScreen', 'Owns the player grid and draws the in-game debug lines FPS, Current Cell and Fall.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
@@ -48,6 +54,48 @@ field('ig', 'a', 'Ljava/lang/String;', 'host', 'SocketConnector host handed to t
 field('ig', 'b', 'I', 'port', 'SocketConnector port handed to the socket.');
 field('dg', 'a', 'Ljava/lang/Throwable;', 'cause', 'ClientException keeps the wrapped throwable here.');
 method('li', 'c', '(I)V', 'unlink', 'Splices the node out of its neighbours and clears both links.');
+for (const [original, to] of [['o', 'secondaryNext'], ['p', 'secondaryPrevious']])
+  field('gp', original, 'Lgp;', to, 'SecondaryNodeDeque links and unlinks DualLinkNode through these fields.');
+method('gp', 'a', '(I)V', 'unlinkSecondary', 'Splices the node out of the secondary link pair.');
+const deque = 'IntrusiveDeque links nodes around its sentinel field.';
+method('nj', 'a', '(Lli;Z)V', 'addFirst', deque + ' The node is spliced between the sentinel and its next link.');
+method('nj', 'a', '(Lli;B)V', 'addLast', deque + ' The node is spliced between the sentinel and its previous link.');
+method('nj', 'd', '(B)Lli;', 'removeFirst', 'Unlinks and returns the node after the sentinel.');
+method('nj', 'b', '(B)Lli;', 'removeLast', 'Unlinks and returns the node before the sentinel.');
+method('nj', 'c', '(I)V', 'clear', 'Unlinks every node until only the sentinel remains.');
+method('nj', 'c', '(Z)I', 'size', 'Counts nodes by walking from the sentinel until it returns.');
+method('nj', 'a', '(Z)Z', 'isEmpty', 'Tests whether the sentinel points to itself.');
+method('el', 'a', '(JB)Lli;', 'get', 'Walks the bucket chain for the node whose key matches.');
+method('el', 'a', '(JLli;I)V', 'put', 'Masks the key into a bucket and splices the node before the bucket sentinel.');
+method('sr', 'a', '(I)Lgp;', 'removeLast', 'Unlinks and returns the node before the sentinel on the secondary links.');
+method('sr', 'a', '(BLgp;)V', 'addFirst', 'Splices the node after the sentinel on the secondary links.');
+const reads = 'PacketBuffer reads advance the cursor over the byte payload.';
+const writes = 'PacketBuffer writes store into the byte payload at the cursor and advance it.';
+method('ed', 'f', '(II)V', 'writeByte', writes);
+method('ed', 'd', '(II)V', 'writeShort', writes + ' The high byte goes first.');
+method('ed', 'i', '(II)V', 'writeMedium', writes + ' Three bytes, high byte first.');
+method('ed', 'e', '(II)V', 'writeInt', writes + ' Four bytes, high byte first.');
+method('ed', 'a', '(BJ)V', 'writeLong', writes + ' The top byte is shifted by 56.');
+method('ed', 'a', '(BI)V', 'patchShortLength', 'Stores a 16-bit length behind the cursor.');
+method('ed', 'g', '(II)V', 'patchIntLength', 'Stores a 32-bit length behind the cursor.');
+method('ed', 'b', '(BI)V', 'patchByteLength', 'Stores an 8-bit length behind the cursor.');
+method('ed', 'h', '(I)I', 'readUnsignedByte', reads);
+method('ed', 'g', '(I)B', 'readSignedByte', reads);
+method('ed', 'a', '(B)I', 'readUnsignedShort', 'Combines two payload bytes, high byte first.');
+method('ed', 'n', '(I)I', 'readSignedShort', 'Combines two payload bytes and subtracts 65536 above 32767.');
+method('ed', 'm', '(I)I', 'readUnsignedMedium', 'Combines three payload bytes, high byte first.');
+method('ed', 'b', '(Z)I', 'readInt', 'Combines four payload bytes, high byte first.');
+method('ed', 'i', '(I)J', 'readLong', 'Joins two unsigned 32-bit reads into a long.');
+method('ed', 'a', '(I)I', 'readLargeSmart', 'Reads a short when non-negative, else an int masked to 31 bits.');
+method('ed', 'l', '(I)I', 'readSmart', 'Reads one byte below 128, else a short minus 32768.');
+method('ed', 'j', '(I)I', 'readSignedSmart', 'Reads one byte below 128, else a short minus 49152.');
+method('ed', 'a', '(IB)V', 'writeSmart', 'Writes a byte below 128 or a short offset by 32768.');
+method('ed', 'b', '(IB)V', 'writeSignedSmart', 'Writes a byte offset by 64 or a short offset by 49152.');
+method('ed', 'k', '(I)Ljava/lang/String;', 'readNullableString', 'Returns null when the next payload byte is zero.');
+method('ed', 'f', '(I)Ljava/lang/String;', 'readString', 'Scans payload to the zero terminator and builds a string.');
+field('uj', 'b', 'I', 'itemCount', 'The constructor stores its argument here and the key handlers wrap the index at it.');
+field('uj', 'c', 'I', 'selectedIndex', 'Key 98 decrements and key 99 increments this index with wraparound.');
+field('ji', 'u', '[Lji;', 'inputs', 'Row producers read their upstream operators from this array by index.');
 
 export const config = {
   game: 'vertigo2', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,

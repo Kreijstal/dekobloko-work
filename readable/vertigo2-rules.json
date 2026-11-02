@@ -297,6 +297,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cr",
+      "originalName": "cr",
+      "to": "UiWidget",
+      "evidence": "Base of the clickable menu components with text strings, sprite arrays and state flags.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:dg",
       "originalName": "dg",
       "to": "ClientException",
@@ -315,6 +322,20 @@
       "originalName": "el",
       "to": "IterableNodeHashTable",
       "evidence": "Bucket array of IntrusiveNode implementing Iterable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:er",
+      "originalName": "er",
+      "to": "Sprite",
+      "evidence": "SpriteState subclass owning an int pixel array with software blits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fb",
+      "originalName": "fb",
+      "to": "SpriteState",
+      "evidence": "DualLinkNode subclass holding the dimension and offset ints and abstract draw hooks.",
       "confidence": "reviewed"
     },
     {
@@ -343,6 +364,13 @@
       "originalName": "il",
       "to": "MouseWheelInput",
       "evidence": "Abstract wheel-input hook with component registration and a delta query.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ji",
+      "originalName": "ji",
+      "to": "TextureOperator",
+      "evidence": "IntrusiveNode with an input operator array and per-row scanline producers for procedural textures.",
       "confidence": "reviewed"
     },
     {
@@ -430,6 +458,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:tr",
+      "originalName": "tr",
+      "to": "GameplayScreen",
+      "evidence": "Owns the player grid and draws the in-game debug lines FPS, Current Cell and Fall.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:uj",
+      "originalName": "uj",
+      "to": "MenuSelectionCursor",
+      "evidence": "Keeps a selected index within an item count and moves it with up/down key codes 98 and 99.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vk",
       "originalName": "vk",
       "to": "MouseWheelHandler",
@@ -472,6 +514,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gp.field_o:Lgp;",
+      "originalName": "field_o",
+      "to": "secondaryNext",
+      "evidence": "SecondaryNodeDeque links and unlinks DualLinkNode through these fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gp.field_p:Lgp;",
+      "originalName": "field_p",
+      "to": "secondaryPrevious",
+      "evidence": "SecondaryNodeDeque links and unlinks DualLinkNode through these fields.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ig.field_a:Ljava/lang/String;",
       "originalName": "field_a",
       "to": "host",
@@ -483,6 +539,13 @@
       "originalName": "field_b",
       "to": "port",
       "evidence": "SocketConnector port handed to the socket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ji.field_u:[Lji;",
+      "originalName": "field_u",
+      "to": "inputs",
+      "evidence": "Row producers read their upstream operators from this array by index.",
       "confidence": "reviewed"
     },
     {
@@ -507,10 +570,262 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:uj.field_b:I",
+      "originalName": "field_b",
+      "to": "itemCount",
+      "evidence": "The constructor stores its argument here and the key handlers wrap the index at it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_c:I",
+      "originalName": "field_c",
+      "to": "selectedIndex",
+      "evidence": "Key 98 decrements and key 99 increments this index with wraparound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(B)I",
+      "originalName": "a",
+      "to": "readUnsignedShort",
+      "evidence": "Combines two payload bytes, high byte first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(BI)V",
+      "originalName": "a",
+      "to": "patchShortLength",
+      "evidence": "Stores a 16-bit length behind the cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(BJ)V",
+      "originalName": "a",
+      "to": "writeLong",
+      "evidence": "PacketBuffer writes store into the byte payload at the cursor and advance it. The top byte is shifted by 56.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(I)I",
+      "originalName": "a",
+      "to": "readLargeSmart",
+      "evidence": "Reads a short when non-negative, else an int masked to 31 bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(IB)V",
+      "originalName": "a",
+      "to": "writeSmart",
+      "evidence": "Writes a byte below 128 or a short offset by 32768.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.b(BI)V",
+      "originalName": "b",
+      "to": "patchByteLength",
+      "evidence": "Stores an 8-bit length behind the cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.b(IB)V",
+      "originalName": "b",
+      "to": "writeSignedSmart",
+      "evidence": "Writes a byte offset by 64 or a short offset by 49152.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.b(Z)I",
+      "originalName": "b",
+      "to": "readInt",
+      "evidence": "Combines four payload bytes, high byte first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.d(II)V",
+      "originalName": "d",
+      "to": "writeShort",
+      "evidence": "PacketBuffer writes store into the byte payload at the cursor and advance it. The high byte goes first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.e(II)V",
+      "originalName": "e",
+      "to": "writeInt",
+      "evidence": "PacketBuffer writes store into the byte payload at the cursor and advance it. Four bytes, high byte first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.f(I)Ljava/lang/String;",
+      "originalName": "f",
+      "to": "readString",
+      "evidence": "Scans payload to the zero terminator and builds a string.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.f(II)V",
+      "originalName": "f",
+      "to": "writeByte",
+      "evidence": "PacketBuffer writes store into the byte payload at the cursor and advance it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.g(I)B",
+      "originalName": "g",
+      "to": "readSignedByte",
+      "evidence": "PacketBuffer reads advance the cursor over the byte payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.g(II)V",
+      "originalName": "g",
+      "to": "patchIntLength",
+      "evidence": "Stores a 32-bit length behind the cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.h(I)I",
+      "originalName": "h",
+      "to": "readUnsignedByte",
+      "evidence": "PacketBuffer reads advance the cursor over the byte payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.i(I)J",
+      "originalName": "i",
+      "to": "readLong",
+      "evidence": "Joins two unsigned 32-bit reads into a long.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.i(II)V",
+      "originalName": "i",
+      "to": "writeMedium",
+      "evidence": "PacketBuffer writes store into the byte payload at the cursor and advance it. Three bytes, high byte first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.j(I)I",
+      "originalName": "j",
+      "to": "readSignedSmart",
+      "evidence": "Reads one byte below 128, else a short minus 49152.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.k(I)Ljava/lang/String;",
+      "originalName": "k",
+      "to": "readNullableString",
+      "evidence": "Returns null when the next payload byte is zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.l(I)I",
+      "originalName": "l",
+      "to": "readSmart",
+      "evidence": "Reads one byte below 128, else a short minus 32768.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.m(I)I",
+      "originalName": "m",
+      "to": "readUnsignedMedium",
+      "evidence": "Combines three payload bytes, high byte first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.n(I)I",
+      "originalName": "n",
+      "to": "readSignedShort",
+      "evidence": "Combines two payload bytes and subtracts 65536 above 32767.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:el.a(JB)Lli;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Walks the bucket chain for the node whose key matches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:el.a(JLli;I)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Masks the key into a bucket and splices the node before the bucket sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gp.a(I)V",
+      "originalName": "a",
+      "to": "unlinkSecondary",
+      "evidence": "Splices the node out of the secondary link pair.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:li.c(I)V",
       "originalName": "c",
       "to": "unlink",
       "evidence": "Splices the node out of its neighbours and clears both links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.a(Lli;B)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "IntrusiveDeque links nodes around its sentinel field. The node is spliced between the sentinel and its previous link.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.a(Lli;Z)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "IntrusiveDeque links nodes around its sentinel field. The node is spliced between the sentinel and its next link.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.a(Z)Z",
+      "originalName": "a",
+      "to": "isEmpty",
+      "evidence": "Tests whether the sentinel points to itself.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.b(B)Lli;",
+      "originalName": "b",
+      "to": "removeLast",
+      "evidence": "Unlinks and returns the node before the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.c(I)V",
+      "originalName": "c",
+      "to": "clear",
+      "evidence": "Unlinks every node until only the sentinel remains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.c(Z)I",
+      "originalName": "c",
+      "to": "size",
+      "evidence": "Counts nodes by walking from the sentinel until it returns.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.d(B)Lli;",
+      "originalName": "d",
+      "to": "removeFirst",
+      "evidence": "Unlinks and returns the node after the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sr.a(BLgp;)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "Splices the node after the sentinel on the secondary links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sr.a(I)Lgp;",
+      "originalName": "a",
+      "to": "removeLast",
+      "evidence": "Unlinks and returns the node before the sentinel on the secondary links.",
       "confidence": "reviewed"
     }
   ],
@@ -529,7 +844,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-vertigo2-rules.mjs": "6a8bd43ca9ed7d036e6585d41c0f2aa51feaa8424807103926db5736dda8879f",
+      "build-vertigo2-rules.mjs": "06d0001344c22c065f750cc82809a1982772e18cbc6012a6519adc5d740ec4c0",
       "reproduce-vertigo2.mjs": "c16a8b53427e79d4dcb3e40a4a42b4d3ec37e412469473382b608d53f95beae2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
