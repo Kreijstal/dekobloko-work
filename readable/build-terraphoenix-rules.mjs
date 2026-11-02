@@ -147,6 +147,12 @@ field('ii', 'f', 'I', 'wheelDelta', 'mouseWheelMoved accumulates into this field
 method('ii', 'a', '(I)I', 'consumeWheelDelta', ['obfuscationGuard'], 'Returns the accumulated wheel movement and resets it to zero.');
 method('ii', 'a', '(Ljava/awt/Component;B)V', 'unregister', ['component', 'obfuscationGuard'], 'Calls removeMouseWheelListener on the component.');
 method('ii', 'a', '(ILjava/awt/Component;)V', 'register', ['obfuscationGuard', 'component'], 'Calls addMouseWheelListener on the component.');
+field('ci', 'z', '[I', 'pixels', 'Every Sprite blit kernel indexes this int array.');
+field('te', 'c', '[I', 'pixels', 'RasterBuffer int pixel array handed to the rasterizer and image producer.');
+field('el', 'b', 'Ljava/lang/String;', 'context', 'ClientException constructor stores its String argument here and wrapException appends to it.');
+field('el', 'a', 'Ljava/lang/Throwable;', 'cause', 'ClientException constructor stores its Throwable argument here.');
+field('jj', 'a', 'Luf;', 'sentinel', 'IntrusiveDeque methods start every traversal from this node and stop when they return to it.');
+field('jj', 'b', 'Luf;', 'cursor', 'IntrusiveDeque traversal methods read and advance this node.');
 export const config = {
   game: 'terraphoenix', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
