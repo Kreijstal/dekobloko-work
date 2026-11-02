@@ -213,6 +213,26 @@ method('de', 'g', '(II)V', 'writeLengthPrefixShort', 'Stores the length as two b
 method('de', 'd', '(II)V', 'writeLengthPrefixByte', 'Stores the length as one byte at the cursor minus the length minus one.');
 method('de', 'a', '(BI)V', 'writeVarInt', 'Emits seven-bit groups with the high bit set on all but the last byte.');
 method('de', 'a', '(II)V', 'writeSignedSmart', 'Writes a biased single byte for values in -64..63 and a longer form otherwise.');
+method('wm', 'a', '(ZJ)Lle;', 'get', 'Indexes the bucket array by key masked with size minus one and scans the bucket for a node with that key.');
+method('wm', 'a', '(JZLle;)V', 'put', 'Unlinks the node, stores the key and inserts it into the bucket chosen by key masked with size minus one.');
+field('wm', 'c', '[Lle;', 'buckets', 'get and put index this array with the key masked by the bucket count minus one.');
+field('wm', 'f', 'I', 'bucketCount', 'get and put mask the key with this value minus one.');
+method('wk', 'a', '(IZ)I', 'screenToWorldX', 'Adds the camera x and subtracts the screen origin offset from a screen coordinate.');
+method('wk', 'b', '(IZ)I', 'screenToWorldY', 'Adds the camera y and subtracts the screen origin offset from a screen coordinate.');
+method('wk', 'b', '(I)V', 'clampToBounds', 'Raises x and y to their stored minimum values.');
+method('wk', 'c', '(I)V', 'resetPosition', 'Clears the follow flag, sets zoom to 1.0 and restores x and y from stored home values.');
+method('sp', 'c', '()Lsp;', 'firstSubstream', 'PcmMixer returns the head of its substream deque from it.');
+method('sp', 'd', '()Lsp;', 'nextSubstream', 'PcmMixer returns the next substream of its deque from it.');
+method('fi', 'b', '(Lsp;)V', 'addSubstream', 'Appends the stream to the mixer substream deque.');
+method('fi', 'a', '(Lsp;)V', 'removeSubstream', 'Unlinks the stream from the mixer substream deque.');
+method('fi', 'c', '([III)V', 'mixSubstreams', 'Walks the substream deque and calls fillOrSkip on every stream with the shared buffer.');
+cls('qh', 'Path', 'IntrusiveDeque subclass returned by the level navigation search and filled with Point nodes.');
+method('ej', 'a', '(ZIIII)Lqh;', 'findPath', 'Builds start and end Points and returns a Path deque of Points between them.');
+method('kk', 'c', '(I)Lkk;', 'copy', 'Returns a new Point with the same x and y.');
+method('rb', 'a', '(C)I', 'charWidth', 'Looks the character up in the glyph width array.');
+method('rb', 'c', '(Ljava/lang/String;IIII)V', 'drawString', 'The debug overlays call it with x = 5 to print left-aligned text.');
+method('rb', 'a', '(Ljava/lang/String;IIII)V', 'drawStringCentered', 'ZombieDawn calls it with the half screen width as x to print the loading caption.');
+method('rb', 'b', '(Ljava/lang/String;IIII)V', 'drawStringRightAligned', 'GameWorld calls it with x = 630 near the right edge to print the Cheater banner.');
 
 export const config = {
   game: 'zombiedawn', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
