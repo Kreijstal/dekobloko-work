@@ -163,6 +163,19 @@ const classes = {
   qj: ['StrongCacheReference', 'CacheReference holding a strong object.'],
   mb: ['SoftCacheReference', 'CacheReference holding a java.lang.ref.SoftReference.'],
   ei: ['GzipInflater', 'Inflater wrapper decoding gzip data from a PacketBuffer.'],
+  // Direct3D buffers, GL texture/framebuffer wrappers and network/display helpers.
+  cj: ['Direct3DVertexBuffer', 'HardwareVertexBuffer over a jagdx IDirect3DVertexBuffer owned by HardwareDirect3DRenderer; reallocates to a requested size, locks (discarding when dynamic) and unlocks.'],
+  dm: ['Direct3DIndexBuffer', 'HardwareIndexBuffer over a jagdx IDirect3DIndexBuffer; size is element byte size times index count, allocated as 16-bit or 32-bit by BufferElementType, with lock/unlock.'],
+  ed: ['OpenGlTexture2D', 'OpenGlTexture constructed with target 3553 (GL_TEXTURE_2D) implementing HardwareTexture2D; uploads with glTexSubImage2D.'],
+  ik: ['OpenGlRectangleTexture', 'OpenGlTexture constructed with target 34037 (GL_TEXTURE_RECTANGLE_ARB) implementing HardwareTexture2D; allocates with glTexImage2D.'],
+  cu: ['OpenGlRenderbuffer', 'DualLinkNode wrapper of a GL renderbuffer (target 36161) that attaches with glFramebufferRenderbufferEXT, detaches and deletes in finalize; implements the framebuffer attachment interface.'],
+  ws: ['FramebufferAttachment', 'Interface implemented by OpenGlRenderbuffer and texture attachments, with a single detach operation; stored in OpenGlFramebuffer attachment slots.'],
+  wj: ['OpenGlFramebuffer', 'Framebuffer object (target 36160) holding attachment slots with a shared size, bound/unbound through glBindFramebufferEXT.'],
+  jm: ['SocketConnector', 'Abstract host/port socket factory with a direct java.net.Socket path and an abstract connect hook; ProxySocketConnector overrides it. Unrelated static UI strings remain.'],
+  cm: ['ProxySocketConnector', 'SocketConnector that consults a ProxySelector and attempts DIRECT, SOCKS and HTTP CONNECT connections with reflective sun.net proxy-authentication lookup; same role as ProxySocketConnector in other FunOrb games. Unrelated static helpers remain.'],
+  il: ['AwtFullscreenController', 'AWT GraphicsDevice fullscreen driver with saved DisplayMode, refresh-rate selection and mode enumeration; reached reflectively by SystemTaskService via enter/listmodes/exit. Same role as AwtFullscreenController in other games.'],
+  es: ['SecondaryKeyHashTable', 'Power-of-two bucket table of DualLinkNode sentinels keyed by the secondary key: insertion at a bucket tail and cursor-based lookup of nodes sharing a key. Unrelated static helpers remain.'],
+  cc: ['JaggrabDownloader', 'Runnable that sends a literal JAGGRAB request for a URL file over SystemTask-opened sockets/streams, reads the response into a PacketBuffer and closes the streams in finalize.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
@@ -779,6 +792,31 @@ for (const [owner, signature, locals] of [
 ]) for (const [ordinal, originalName, to] of locals)
   members[`L:${owner}.${signature}#${ordinal}`] = {to, expectedOriginalName: originalName,
     evidence: 'Reviewed lexical declaration and its data flow in the pinned Ace source.'};
+
+// Network and Direct3D buffer helpers (named from constructors and data flow).
+const bufferEvidence = 'Reviewed constructor stores, reallocation size comparison, Lock/Unlock calls with discard flag 8192 and renderer device buffer creation.';
+for (const [owner, original, type, to] of [
+  ['cj','f','Ljagdx/IDirect3DVertexBuffer;','buffer'], ['cj','b','I','allocatedSize'], ['cj','c','I','requestedSize'],
+  ['cj','e','Lkr;','renderer'], ['cj','a','Z','dynamic'], ['cj','d','Z','locked'],
+  ['dm','g','Ljagdx/IDirect3DIndexBuffer;','buffer'], ['dm','b','I','allocatedSize'], ['dm','a','I','requestedSize'],
+  ['dm','f','Lkr;','renderer'], ['dm','e','Lla;','elementType'], ['dm','c','Z','dynamic'], ['dm','d','Z','locked'],
+]) field(owner, original, type, to, bufferEvidence);
+const connectEvidence = 'Reviewed SocketConnector constructor use, direct java.net.Socket creation from host and port, and the proxy selector held by ProxySocketConnector.';
+field('jm','e','Ljava/lang/String;','host',connectEvidence);
+field('jm','f','I','port',connectEvidence);
+field('cm','g','Ljava/net/ProxySelector;','proxySelector',connectEvidence);
+method('jm','b','(B)Ljava/net/Socket;','connectDirect',['obfuscationGuard'],connectEvidence);
+const secondaryTableEvidence = 'Reviewed sentinel construction, bucket masking by secondary key, tail insertion and cursor walk over nextSecondaryNode; the same table shape as IterableNodeHashTable but over secondary links.';
+field('es','d','Lwt;','lookupCursor',secondaryTableEvidence);
+field('es','e','[Lwt;','bucketSentinels',secondaryTableEvidence);
+field('es','f','I','bucketCount',secondaryTableEvidence);
+field('es','h','J','lookupKey',secondaryTableEvidence);
+for (const [original, descriptor, to, names] of [
+  ['<init>','(I)V','',['bucketCount']],
+  ['a','(Z)Lwt;','nextWithLookupKey',['obfuscationGuard']],
+  ['a','(IJ)Lwt;','firstWithKey',['obfuscationGuard','key']],
+  ['a','(Lwt;JB)V','put',['node','key','obfuscationGuard']],
+]) method('es', original, descriptor, to, names, secondaryTableEvidence);
 
 export const aceConfig = {
   game: 'aceofskies', version: 16, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
