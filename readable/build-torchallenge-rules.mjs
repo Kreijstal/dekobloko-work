@@ -165,6 +165,24 @@ method('ug', 'f', '(I)V', 'drawFrame', 'The private per-frame method records the
 method('ug', 'd', '(I)V', 'initializeGame', 'Called once from run after the canvas is created and before the tick loop.');
 method('ug', 'c', '(I)V', 'runTick', 'Samples the tick clock into a 32-entry ring and calls tickGame.');
 method('ug', 'g', '(I)V', 'runFrame', 'Samples the frame clock into a 32-entry ring and draws the frame.');
+const spr = 'Sprite constructor takes full size, offsets, stored size and pixels in this order; blits add the offsets.';
+field('tg', 'q', 'I', 'fullWidth', spr);
+field('tg', 'v', 'I', 'fullHeight', spr);
+field('tg', 's', 'I', 'offsetX', spr);
+field('tg', 'p', 'I', 'offsetY', spr);
+field('tg', 'u', 'I', 'storedWidth', spr);
+field('tg', 'x', 'I', 'storedHeight', spr);
+field('ka', 'y', '[I', 'pixels', 'Sprite(width, height) allocates width times height ints here.');
+const tgt = 'RasterBuffer.bindAsTarget passes pixels, width and height to SoftwareRasterizer.setTarget.';
+field('oe', 'c', '[I', 'pixels', tgt);
+field('oe', 'i', 'I', 'width', tgt);
+field('oe', 'h', 'I', 'height', tgt);
+method('oe', 'a', '(I)V', 'bindAsTarget', tgt);
+method('qg', 'a', '([III)V', 'setTarget', 'Stores the pixel array, width and height and resets the clip to the full area.');
+field('qg', 'i', '[I', 'pixels', 'setTarget stores its array argument here.');
+field('qg', 'g', 'I', 'width', 'setTarget stores its width argument here.');
+field('qg', 'f', 'I', 'height', 'setTarget stores its height argument here.');
+field('oe', 'j', '[Ljava/lang/String;', 'helpTopicTitles', 'Static array initialised to Welcome to Tor Challenge!, Characters and Basic controls.');
 field('cg', 'c', '[Ljava/lang/String;', 'levelNames', 'Holds Tower0 to Tower5 and boss1 to boss3.');
 
 export const config = {
