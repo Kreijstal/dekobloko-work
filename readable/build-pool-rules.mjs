@@ -13,6 +13,15 @@ const classes = {
   ge: ['PacketBuffer', 'IntrusiveNode holding a byte payload and cursor with big-endian primitive and string reads and writes.'],
   oa: ['ClientException', 'RuntimeException keeping a cause and context text that wm.a appends call signatures to.'],
   uf: ['PoolMatchController', 'Large session class that moves the cue ball, tracks cue angle and power and labels pockets.'],
+  li: ['IsaacCipher', 'Two 256-entry int arrays seeded with the 0x9e3779b9 golden-ratio mix, the ISAAC generator.'],
+  bg: ['SocketConnector', 'Abstract holder of port and host whose final method calls the abstract Socket factory.'],
+  kr: ['ProxySocketConnector', 'SocketConnector that uses a ProxySelector and writes an HTTP CONNECT request.'],
+  vb: ['BufferedSocket', 'Runnable owning a Socket with input and output streams and a byte buffer.'],
+  sj: ['PlatformTaskDispatcher', 'Runnable with a Thread and reflection Method that queues platform tasks and returns request handles.'],
+  le: ['AsyncRequest', 'Request handle with volatile status and result completed by the dispatcher thread.'],
+  ql: ['MouseHandler', 'Implements MouseListener, MouseMotionListener and FocusListener with synchronized callbacks.'],
+  po: ['MouseWheelHandler', 'Implements MouseWheelListener and accumulates wheel movement synchronously.'],
+  pg: ['JavaSoundAudioOutput', 'Audio stream backed by a javax.sound SourceDataLine and AudioFormat.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
