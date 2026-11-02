@@ -55359,6 +55359,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:a.a(ZZ)V",
+      "originalName": "a",
+      "to": "sendStateControlPacket",
+      "evidence": "a.java: Writes control opcode 37 with a 2-or-3 state byte chosen by the first flag, a zero 40-bit value, and flushes it to the transport; I/O failure closes the transport and counts a failure.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:a.b(B)V",
       "originalName": "b",
       "to": "closeTransport",
@@ -55380,10 +55387,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:a.g(B)V",
+      "originalName": "g",
+      "to": "sendOpcodeSixControlPacket",
+      "evidence": "a.java: Writes control opcode 6 with a 24-bit zero and a 16-bit zero to the transport; I/O failure closes it and counts a failure; guard-derived divisor only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:a.h(B)V",
       "originalName": "h",
       "to": "clearSharedReferences",
       "evidence": "a.java: Nulls field_r, field_u, activeRosetteSprites, field_t; the integer guard is retained. A non-canonical guard calls this method recursively.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.a(B)V",
+      "originalName": "a",
+      "to": "trackFramebufferHeightChange",
+      "evidence": "aa.java: Decrements the lobby overlay counter and, when the framebuffer height differs from the remembered height, shifts the baseline by the difference and stores the new height.",
       "confidence": "reviewed"
     },
     {
@@ -55471,6 +55492,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ac.a([Ljp;IIIIB)V",
+      "originalName": "a",
+      "to": "drawHorizontalThreeSlice",
+      "evidence": "ac.java: Draws left and right end sprites then the middle sprite tiled inside a clip between them, for a horizontal frame of the requested width.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ac.b(I)Z",
       "originalName": "b",
       "to": "isCompleted",
@@ -55496,6 +55524,13 @@
       "originalName": "a",
       "to": "poll",
       "evidence": "ad.java: Polls URL/socket/read tasks, reports terminal phase2/3; guard1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ad.a(ZI)Z",
+      "originalName": "a",
+      "to": "pollGameSocketConnection",
+      "evidence": "ad.java: Requests a socket to the game host on first call, returns false while pending, then wraps the socket as the game transport or records a connection failure.",
       "confidence": "reviewed"
     },
     {
@@ -55653,6 +55688,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ag.a(BLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "showMessageDialogText",
+      "evidence": "ag.java: Stores the message text, then centres and sizes the message dialog frame, text area and cancel button from the wrapped text height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ag.a(I)V",
       "originalName": "a",
       "to": "layoutChildren",
@@ -55807,6 +55849,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ah.a(IIIIIIILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "drawRankingRow",
+      "evidence": "ah.java: Draws an optional rank prefix, the name, and right/centre-aligned numeric columns at the configured column offsets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ah.a(IZB)Z",
       "originalName": "a",
       "to": "handleMenuAction",
@@ -55937,6 +55986,13 @@
       "originalName": "f",
       "to": "clearSharedReferences",
       "evidence": "ai.java: Nulls field_t, cp1252Extensions; the integer guard is retained. A guard-dependent return can skip later releases. Runtime failures are wrapped with diagnostic context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.a(I)Lmh;",
+      "originalName": "a",
+      "to": "getLobbyCaptionContent",
+      "evidence": "aj.java: Returns the content component of the lobby caption holder.",
       "confidence": "reviewed"
     },
     {
@@ -56178,6 +56234,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ap.a(II)I",
+      "originalName": "a",
+      "to": "approximateLogarithm",
+      "evidence": "ap.java: Piecewise lookup table scaled by input magnitude ranges (shifts 2..8 per range), an integer logarithm approximation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ap.a(IIB)V",
       "originalName": "a",
       "to": "setPendingTooltipAnchor",
@@ -56189,6 +56252,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "ap.java: Nulls halloweenCentreSprites, ninjaMidSprite, field_a, field_e, field_d, field_b; the integer guard is retained. A non-canonical guard calls this method recursively.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ap.a(ZLjava/lang/CharSequence;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "normalizeBase37Name",
+      "evidence": "ap.java: Encodes the name to base 37 and decodes it back, returning an empty string for null.",
       "confidence": "reviewed"
     },
     {
@@ -56220,6 +56290,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ba.a(IIILmf;)[Ltp;",
+      "originalName": "a",
+      "to": "loadIndexedSprites",
+      "evidence": "ba.java: Decodes sprite data from the archive and builds indexed sprites, returning null when decoding fails.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ba.a([BIII)I",
       "originalName": "a",
       "to": "computeCrc32",
@@ -56231,6 +56308,13 @@
       "originalName": "b",
       "to": "getTextChoiceContentHeight",
       "evidence": "ba.java: Traced centered text-choice dialog configuration through layout, drawing, hit testing and result handling; body and button font roles are kept distinct.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ba.f(I)V",
+      "originalName": "f",
+      "to": "consumeIntArrayReply",
+      "evidence": "ba.java: Takes the head pending int-array request, reads four ints from the incoming buffer and unlinks the request; closes the transport when none is pending.",
       "confidence": "reviewed"
     },
     {
@@ -56423,6 +56507,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bf.a(B)V",
+      "originalName": "a",
+      "to": "clearLobbyState",
+      "evidence": "bf.java: Nulls current/pending lobby game, clears lobby player and game lists and their indices, and the game player list.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bf.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -56434,6 +56525,13 @@
       "originalName": "a",
       "to": "dispatchAction",
       "evidence": "d.java: Notifies action listener with coordinates/button and this widget; guard below -8. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bf.a(Ljava/lang/String;IFZ)V",
+      "originalName": "a",
+      "to": "showLoadingProgress",
+      "evidence": "bf.java: Creates the loading-progress dialog layer on first use, forwards progress, text and flag to it, clears the raster and redraws.",
       "confidence": "reviewed"
     },
     {
@@ -56469,6 +56567,13 @@
       "originalName": "b",
       "to": "transitionToContent",
       "evidence": "fe.java: Stores pending content; starts fade-out or retargets active resize; byte guard above105. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.m(I)V",
+      "originalName": "m",
+      "to": "resetRetryTimer",
+      "evidence": "bh.java: Stores the current millisecond clock and zeroes the retry counter used by the exponential 3/6/9/12 second retry delays.",
       "confidence": "reviewed"
     },
     {
@@ -56661,10 +56766,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bl.a(IZLjava/lang/CharSequence;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "validateNameText",
+      "evidence": "bl.java: Runs the age/length validator then rejects any character failing the name-character test, returning an error string or null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bl.d(I)V",
       "originalName": "d",
       "to": "refreshMenu",
       "evidence": "km.java: Refresh hook overridden by screens that rebuild their menu data; guard at most -60. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bl.f(I)V",
+      "originalName": "f",
+      "to": "flushPendingTableNameMessage",
+      "evidence": "bl.java: If a pending table name exists, formats it into the indexed message template, shows it as dialog text and clears the pending name.",
       "confidence": "reviewed"
     },
     {
@@ -56969,6 +57088,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cb.e(B)V",
+      "originalName": "e",
+      "to": "showAccountLoginContent",
+      "evidence": "cb.java: Closes any existing dialog, builds a LoginPanel from the account name fallback and transitions the account content layer to it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cb.f(I)V",
       "originalName": "f",
       "to": "clearSharedReferences",
@@ -57078,6 +57204,13 @@
       "originalName": "a",
       "to": "attachBrickMotionPaths",
       "evidence": "cg.java: Indexes decoded paths in deque order and attaches selected path to bricks with flags bit2, with caller-supplied velocity mode; guard35.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cg.b(I)V",
+      "originalName": "b",
+      "to": "layoutMainScreenWidgets",
+      "evidence": "cg.java: Assigns setBounds rectangles to the lobby/main screen root components, tabs, scroll pane and half-width button rows from the framebuffer size.",
       "confidence": "reviewed"
     },
     {
@@ -57193,10 +57326,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ck.a(B)V",
+      "originalName": "a",
+      "to": "resetSessionDisplayState",
+      "evidence": "ck.java: Resets a block of overlay/tooltip/session statics to defaults (mode 13, counters 0, flags false).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ck.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "ck.java: Nulls field_m, field_j, awaitingValidationReply, field_i; the integer guard is retained. A guard-dependent return can skip later releases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ck.a(ILmf;)V",
+      "originalName": "a",
+      "to": "loadLogoSound",
+      "evidence": "ck.java: Decodes the vorbis headers file then loads jagex logo2.packvorbis and converts it to a PCM sound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ck.a(Ljava/awt/Canvas;III)V",
+      "originalName": "a",
+      "to": "drawFramebufferToCanvas",
+      "evidence": "ck.java: Draws the software framebuffer through the canvas Graphics at the given offsets, disposes it, and requests a repaint on failure.",
       "confidence": "reviewed"
     },
     {
@@ -57452,6 +57606,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cr.a(IIIILtg;Ljava/lang/String;III)V",
+      "originalName": "a",
+      "to": "initializeArchiveServices",
+      "evidence": "cr.java: Stores archive host, ports, handshake and service-header words, then creates the archive network client, cache I/O worker and archive source manager.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cr.a(IILjp;I)V",
       "originalName": "a",
       "to": "drawStripedBar",
@@ -57578,10 +57739,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:da.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getLoadingStatusMessage",
+      "evidence": "da.java: Walks index and common-ui group availability checks and returns the first still-pending status message, with a percentage for group downloads.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:da.e(B)V",
       "originalName": "e",
       "to": "clearSharedReferences",
       "evidence": "da.java: Nulls projectedVertexX, field_J, field_C, field_H, packSelectorIcons, bytePool5000; the arithmetic guard expression is evaluated and retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.f(B)V",
+      "originalName": "f",
+      "to": "leaveCurrentGame",
+      "evidence": "da.java: Declines or leaves the current lobby game, or requests a spectate change when the local screen is a spectator.",
       "confidence": "reviewed"
     },
     {
@@ -58033,6 +58208,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dk.a(ILjava/lang/String;Ljava/lang/String;ILoc;I)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithDefaultMessageWidth",
+      "evidence": "dk.java: Forwards to the labeled-field-with-message helper with constant 35 and 170.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dk.a(ILje;)Z",
       "originalName": "a",
       "to": "passesSubmissionGate",
@@ -58054,6 +58236,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dk.a(Ljava/lang/String;Loc;III)I",
+      "originalName": "a",
+      "to": "addLabeledField",
+      "evidence": "dk.java: Adds only a label widget for the given field and returns its height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dk.a(Ljava/lang/String;ZIZI)V",
       "originalName": "a",
       "to": "showTextChoiceDialog",
@@ -58068,10 +58257,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dk.a(Loc;ILjava/lang/String;IILjava/lang/String;I)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithMessage",
+      "evidence": "dk.java: Adds a label widget and a validation message widget under it listening to this panel, returning the combined height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.a(Loc;Ljava/lang/String;III)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithValidationIcon",
+      "evidence": "dk.java: Adds a label widget and a validation icon next to it, returning the label height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dk.c(Z)Ljava/lang/String;",
       "originalName": "c",
       "to": "getLinkOpenTag",
       "evidence": "dk.java: AccountRegistrationPanel.java: Returns the rich-text opening tags for blue underlined link text (<u=2164A2><col=2164A2>) when the guard is true, otherwise null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.h(B)V",
+      "originalName": "h",
+      "to": "refreshMenuScreens",
+      "evidence": "dk.java: Calls refreshMenu on every non-null menu screen.",
       "confidence": "reviewed"
     },
     {
@@ -58121,6 +58331,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "dm.java: Nulls sharedWidgetTheme, contentResizing, field_c, pendingArchiveTransport, field_a, farmFarSprite; the integer guard is retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dm.a(III)I",
+      "originalName": "a",
+      "to": "multiplyQ16",
+      "evidence": "dm.java: Multiplies param0 by a 16.16 fixed-point factor using split high and low 16-bit halves.",
       "confidence": "reviewed"
     },
     {
@@ -58177,6 +58394,13 @@
       "originalName": "b",
       "to": "requestSpectateGame",
       "evidence": "dn.java: Game action10 writes length3/action10 and low16 game ID; caller guard86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn.g(I)Lum;",
+      "originalName": "g",
+      "to": "getSharedTextWidgetRenderer",
+      "evidence": "dn.java: Lazily creates and returns the single shared text widget renderer.",
       "confidence": "reviewed"
     },
     {
@@ -58320,6 +58544,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:e.a(Lmf;I)V",
+      "originalName": "a",
+      "to": "loadFinalFrameImage",
+      "evidence": "e.java: Loads final_frame.jpg and splits it into a three-quarter-height top sprite and the remaining bottom sprite.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:e.a(Lmh;Lmh;Lkn;ILmh;)Log;",
       "originalName": "a",
       "to": "buildQuickChatCategoryMenu",
@@ -58345,6 +58576,13 @@
       "originalName": "a",
       "to": "requestUpdateGameOptions",
       "evidence": "ea.java: Changed current-game options write action5, maxPlayers, joinSortPriority plus spectatorMode shifted6, and settings; guard -11008.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(Z[I)I",
+      "originalName": "a",
+      "to": "findLastNonZeroIndex",
+      "evidence": "ea.java: Scans the array from the end and returns the last index whose value is nonzero.",
       "confidence": "reviewed"
     },
     {
@@ -58418,6 +58656,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ec.h(I)V",
+      "originalName": "h",
+      "to": "showAccountMessageDialog",
+      "evidence": "ec.java: Resets key index, hides layers and pushes the account message dialog.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ed.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -58460,10 +58705,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ee.d(I)V",
+      "originalName": "d",
+      "to": "openLoginPanel",
+      "evidence": "ee.java: Transitions to the login panel with empty message.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ee.e(I)V",
       "originalName": "e",
       "to": "clearSharedReferences",
       "evidence": "ee.java: Nulls field_s, halloweenMoonSprite, field_r; the arithmetic guard expression is evaluated and retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ef.a(I)V",
+      "originalName": "a",
+      "to": "animateLobbyOverlayBounds",
+      "evidence": "ef.java: Interpolates the overlay panel top by a quadratic ease of the counter and relayouts the panel and quick chat menu.",
       "confidence": "reviewed"
     },
     {
@@ -58597,6 +58856,13 @@
       "originalName": "a",
       "to": "paintWidget",
       "evidence": "ub.java: Rendering contract: parentX/widget/parentY with caller guards. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.b(I)V",
+      "originalName": "b",
+      "to": "updateUnreadMessageNotice",
+      "evidence": "ei.java: Builds the unread-message notice text (singular or formatted count plus line break and suffix) and shows it via the loading dialog.",
       "confidence": "reviewed"
     },
     {
@@ -58775,6 +59041,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eq.a(I)V",
+      "originalName": "a",
+      "to": "closeTransientPopups",
+      "evidence": "eq.java: Closes context actions, the name entry popup, the report abuse dialog and the quick chat menu.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eq.a([BII)V",
       "originalName": "a",
       "to": "finishDigest",
@@ -58800,6 +59073,13 @@
       "originalName": "b",
       "to": "clearSharedReferences",
       "evidence": "eq.java: Nulls lobbyPlayerIndex, field_b, gameTransport, field_i; the integer guard is retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eq.c(B)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "describePacketHistory",
+      "evidence": "eq.java: Formats the last three opcodes and current opcode plus a hex dump of the current packet bytes.",
       "confidence": "reviewed"
     },
     {
@@ -59104,6 +59384,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ff.a(BI)V",
+      "originalName": "a",
+      "to": "resendPendingTableTraffic",
+      "evidence": "ff.java: Re-sends every pending table row submission and table data request.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ff.a(I)Lcd;",
       "originalName": "a",
       "to": "getCredentialKind",
@@ -59286,6 +59573,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fj.a(IIIIIIB)V",
+      "originalName": "a",
+      "to": "layoutQuickChatMenu",
+      "evidence": "fj.java: Sets the quick chat root bounds and lays out the chained quick chat menu.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fj.d(B)Z",
       "originalName": "d",
       "to": "pollPageDown",
@@ -59339,6 +59633,13 @@
       "originalName": "a",
       "to": "compress",
       "evidence": "fk.java: MSB-first bit packing with input/output offsets; returns written bytes, zero-length symbols throw; guard below -91.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.a(BLjava/applet/Applet;Ljava/lang/String;Z)V",
+      "originalName": "a",
+      "to": "openUrlInNewWindow",
+      "evidence": "fk.java: Opens the URL via the Windows shell when available, else showDocument in _blank; malformed URLs are logged.",
       "confidence": "reviewed"
     },
     {
@@ -59398,10 +59699,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fl.b(Z)V",
+      "originalName": "b",
+      "to": "resetQuickChatInput",
+      "evidence": "fl.java: Clears the quick chat text buffer and sets the channel to zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fl.e(B)V",
       "originalName": "e",
       "to": "clearAvailabilityCache",
       "evidence": "fl.java: Clears checked username to force later polling; guard -22.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fl.e(I)V",
+      "originalName": "e",
+      "to": "renderLogoGlow",
+      "evidence": "fl.java: Draws the logo pieces into a 540x140 sprite, blurs 15 white silhouettes onto it and draws a half-size copy.",
       "confidence": "reviewed"
     },
     {
@@ -59465,6 +59780,13 @@
       "originalName": "a",
       "to": "choosePopupX",
       "evidence": "fp.java: Prefers anchor X, otherwise right-aligns to anchor if nonnegative, otherwise right-aligns to raster; canonical guard -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fp.a(IILjava/lang/String;Z)Ljp;",
+      "originalName": "a",
+      "to": "renderScaledTextSprite",
+      "evidence": "fp.java: Draws the text centred into a sprite and scales it up by the factor.",
       "confidence": "reviewed"
     },
     {
@@ -59612,6 +59934,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "ga.java: Nulls field_l, arcticCentreSprites; the integer guard is retained. A guard-dependent return can skip later releases. A non-canonical guard calls this method recursively.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.a(ZI)V",
+      "originalName": "a",
+      "to": "drawLobbyOverlays",
+      "evidence": "ga.java: Darkens the screen above the board and draws the lobby, join request or message panels depending on the active counters.",
       "confidence": "reviewed"
     },
     {
@@ -59993,6 +60322,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gp.a(I)Z",
+      "originalName": "a",
+      "to": "isPopupOpen",
+      "evidence": "gp.java: True when context actions, the name entry popup, the report abuse dialog or quick chat UI is open.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gp.a(IIIII)V",
       "originalName": "a",
       "to": "outlineRasterRegion",
@@ -60112,6 +60448,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:h.a(IIIBIZI)Z",
+      "originalName": "a",
+      "to": "dispatchPopupInput",
+      "evidence": "h.java: While a popup is open routes input to the quick chat, context actions and friend name entry and consumes the click.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:h.a(IIIIILoc;I)Z",
       "originalName": "a",
       "to": "handleMouseWheel",
@@ -60217,6 +60560,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:h.g(B)V",
+      "originalName": "g",
+      "to": "buildMainScreenRoots",
+      "evidence": "h.java: Creates the root components, adds the lobby widgets and tabbed panel, then lays them out.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:h.h(B)Loc;",
       "originalName": "h",
       "to": "getFocusedChild",
@@ -60235,6 +60585,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "hb.java: Nulls field_A, field_z; the integer guard is retained. A guard-dependent return can skip later releases. A non-canonical guard also calls ResourceRequest.setQuickChatHelpEntry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.a(IIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawFramedPanel",
+      "evidence": "hb.java: Draws a panel body with optional inset border strips and the nine-slice frame.",
       "confidence": "reviewed"
     },
     {
@@ -60277,6 +60634,13 @@
       "originalName": "a",
       "to": "updateQuickChatInterface",
       "evidence": "hc.java: Controlled real-menu fixtures verify quick-chat outside clicks, selected-row toggles, root update counts, five-pixel panning/hysteresis, overflow and font guard effects. Integrated pointer fixtures open/close submenus and compare message/filter opcode bytes against independent wire references. Real layer deques, recording layer callbacks and owned loading-indicator state verify cleanup order, opacity/removal, tooltip reset and partial failures. Source-level names preserve all control flow and guard placement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.b(I)V",
+      "originalName": "b",
+      "to": "resetFrameTimingHistory",
+      "evidence": "hc.java: Resets the game clock and zeroes the 32-entry render and tick time histories and the due-cycle counter.",
       "confidence": "reviewed"
     },
     {
@@ -61519,6 +61883,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ig.a([Ljp;Z)[Ljp;",
+      "originalName": "a",
+      "to": "createHalfSizeSprites",
+      "evidence": "ig.java: Creates a half-size sprite for each input sprite.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ig.h(I)Ljava/lang/String;",
       "originalName": "h",
       "to": "getLinkCloseTag",
@@ -61614,6 +61985,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "ii.java: Nulls field_l, field_r, field_s; the integer guard is retained. A guard-dependent return can skip later releases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.a(ZC)Z",
+      "originalName": "a",
+      "to": "isSupportedTextChar",
+      "evidence": "ii.java: Accepts printable ASCII, Latin-1 range and the extra cp1252 code points when extended mode is on.",
       "confidence": "reviewed"
     },
     {
@@ -61750,6 +62128,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:il.a(Lie;Ltg;IIIILjava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "initializeAudioOutput",
+      "evidence": "il.java: Creates music and sound PCM players, the audio mixer and connects the synthesizer as root stream.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:il.a(Lnm;ILnm;)V",
       "originalName": "a",
       "to": "insertNodeBefore",
@@ -61782,6 +62167,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "im.java: Nulls desertCapsSprites, field_c, field_d, field_a; the integer guard is retained. A guard-dependent return can skip later releases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:im.a(ILjava/lang/String;ZIIIIILtg;BZJII)V",
+      "originalName": "a",
+      "to": "configureConnection",
+      "evidence": "im.java: Allocates packet buffers and stores host, services and connection settings into statics.",
       "confidence": "reviewed"
     },
     {
@@ -62170,6 +62562,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jd.a(BZLjava/lang/CharSequence;)Z",
+      "originalName": "a",
+      "to": "isValidPlayerName",
+      "evidence": "jd.java: Checks the name shape and that every character is a valid name character.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jd.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -62363,6 +62762,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "ji.java: Nulls backgroundMusicPatchArchive, field_g, field_b, packetRandom; the integer guard is retained. A guard-dependent return can skip later releases. A non-canonical guard calls this method recursively.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ji.a(IZLvm;IIZ)V",
+      "originalName": "a",
+      "to": "scheduleMusicTrack",
+      "evidence": "ji.java: Under the player lock, schedules a new track on the synthesizer unless it is already playing.",
       "confidence": "reviewed"
     },
     {
@@ -63094,6 +63500,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kc.a(Lmf;Lra;II)V",
+      "originalName": "a",
+      "to": "loadLogoAssets",
+      "evidence": "kc.java: Loads logo sound, meshes and final frame, sets up lighting and the logo glow, and initializes the animation tick.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kc.c(B)Z",
       "originalName": "c",
       "to": "advance",
@@ -63217,6 +63630,20 @@
       "originalName": "a",
       "to": "validateText",
       "evidence": "k.java: Concrete text policy returns valid/invalid or pending status; guard106. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kf.a(Ljava/lang/String;BLjava/applet/Applet;)V",
+      "originalName": "a",
+      "to": "openRelativeUrl",
+      "evidence": "kf.java: Resolves the URL against the code base, applies applet parameter changes and opens it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kf.a(Ljava/lang/String;Ljava/lang/String;Lmf;I)[Ljp;",
+      "originalName": "a",
+      "to": "loadTiledFrameSprites",
+      "evidence": "kf.java: Loads the frame sprites and replaces the edge pieces with horizontally and vertically tiled versions.",
       "confidence": "reviewed"
     },
     {
@@ -64046,6 +64473,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ko.a(I)V",
+      "originalName": "a",
+      "to": "tickLobbyTransitions",
+      "evidence": "ko.java: Decrements the first positive of three transition counters and relayouts the matching panels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ko.a(IILjp;ILjp;IIIIILjp;)V",
       "originalName": "a",
       "to": "drawParallaxLayers",
@@ -64578,6 +65012,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lf.a(ZIZ)V",
+      "originalName": "a",
+      "to": "drawOverlayBackdrop",
+      "evidence": "lf.java: Fills a translucent black overlay or clears the raster, then draws the blend helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lf.a(ZZI)V",
       "originalName": "a",
       "to": "advanceScreen",
@@ -64624,6 +65065,13 @@
       "originalName": "g",
       "to": "clearSharedReferences",
       "evidence": "lf.java: Nulls rankingWins, field_t, field_s; the integer guard is retained. A non-canonical guard also writes lastDiagnosticAllocatedHeapKiB = 26L.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lg.a(I)Z",
+      "originalName": "a",
+      "to": "isFullscreenDialogOpen",
+      "evidence": "lg.java: Returns the fullscreen-dialog-open flag.",
       "confidence": "reviewed"
     },
     {
@@ -64991,6 +65439,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lp.n(I)Z",
+      "originalName": "n",
+      "to": "isCursorBlinkVisible",
+      "evidence": "lp.java: True when the frame has focus and bit 8 of the client tick is clear.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lp.o(I)V",
       "originalName": "o",
       "to": "clearSharedReferences",
@@ -65009,6 +65464,13 @@
       "originalName": "a",
       "to": "loadIndexedSprite",
       "evidence": "lq.java: Decodes archive file and constructs first indexed sprite; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lq.a(Lmf;Lmf;BLmf;Lmf;)V",
+      "originalName": "a",
+      "to": "installSoundArchives",
+      "evidence": "lq.java: Stores four archives and creates the sound cache from two of them.",
       "confidence": "reviewed"
     },
     {
@@ -65047,6 +65509,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lq.d(I)V",
+      "originalName": "d",
+      "to": "clearNameEntryPopup",
+      "evidence": "lq.java: Nulls the name entry popup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lq.e(I)Ltk;",
       "originalName": "e",
       "to": "next",
@@ -65058,6 +65527,13 @@
       "originalName": "a",
       "to": "isIncluded",
       "evidence": "m.java: Reviewed conditional text ownership or diagnostic overlay initialization, update, numeric append and drawing callers; render-loop rate is not presented FPS.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.a(I)Z",
+      "originalName": "a",
+      "to": "hasVisibleLayer",
+      "evidence": "m.java: True when the layer stack exists and has a visible top layer.",
       "confidence": "reviewed"
     },
     {
@@ -65212,6 +65688,13 @@
       "originalName": "a",
       "to": "onEnter",
       "evidence": "km.java: Initializes selection from current pointer hit or supplied fallback index; guard above96. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.a([Ljava/lang/String;Z)V",
+      "originalName": "a",
+      "to": "setUsernameSuggestions",
+      "evidence": "md.java: Applies the suggestion strings to the registration and login suggestion panels.",
       "confidence": "reviewed"
     },
     {
@@ -65537,6 +66020,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mh.a(ZC)Z",
+      "originalName": "a",
+      "to": "isValidNameCharacter",
+      "evidence": "mh.java: Accepts alphanumerics, hyphen, space, underscore and non-breaking space and rejects control characters.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mh.a(ZI)V",
       "originalName": "a",
       "to": "updateRoot",
@@ -65579,10 +66069,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mi.a(BLjava/applet/Applet;)V",
+      "originalName": "a",
+      "to": "reloadPage",
+      "evidence": "mi.java: Reopens reload.ws keeping the document query string in the same frame.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mi.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "mi.java: Nulls field_e, field_a, field_b; the integer guard is retained. A guard-dependent return can skip later releases. A non-canonical guard calls this method recursively.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mi.a(Lmf;II)Lpq;",
+      "originalName": "a",
+      "to": "loadMusicPatch",
+      "evidence": "mi.java: Reads the flat file and wraps it in a music patch, or returns null.",
       "confidence": "reviewed"
     },
     {
@@ -65677,6 +66181,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ml.a(Lmf;III)Ljp;",
+      "originalName": "a",
+      "to": "loadRgbSprite",
+      "evidence": "ml.java: Decodes sprite data and builds an RGB sprite, or returns null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ml.b(B)I",
       "originalName": "b",
       "to": "getRightEdge",
@@ -65733,10 +66244,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mm.h(I)V",
+      "originalName": "h",
+      "to": "pumpAudio",
+      "evidence": "mm.java: Pumps both PCM players and every 200 calls unlinks sound playbacks whose source is no longer linked.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mn.a(IIIIIIIII)[Ljp;",
       "originalName": "a",
       "to": "createBeveledFrameSprites",
       "evidence": "mn.java: SpriteGeometry.java: Static helper building nine sprites for a beveled frame: the fill color fills every piece, then bevel strips of the given thickness are drawn in the highlight color on the top and left and in the shadow color on the bottom and right.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mn.a(IILid;Lmm;BII)V",
+      "originalName": "a",
+      "to": "openPlayerContextMenu",
+      "evidence": "mn.java: Creates context actions for the player, adds game, social and report actions and lays out the menu at the anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mn.a(ILmh;Lmm;[ILjava/lang/String;IBJLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "createContextActions",
+      "evidence": "mn.java: Stores the scroll pane and constructs a ContextActionController for the player.",
       "confidence": "reviewed"
     },
     {
@@ -65842,6 +66374,13 @@
       "originalName": "a",
       "to": "buildRgbSprite",
       "evidence": "n.java: Expands first sprite to RGB only, ignoring alpha plane, then releases index/palette/geometry scratch; guard21.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:n.a(I)V",
+      "originalName": "a",
+      "to": "storeIncomingPacketBlock",
+      "evidence": "n.java: Writes 24 bytes of the incoming buffer to the cache file and advances the read position.",
       "confidence": "reviewed"
     },
     {
@@ -66003,6 +66542,13 @@
       "originalName": "a",
       "to": "appendLevelData",
       "evidence": "nc.java: Appends shallow raw payload references only; rejects nonnegative extra pack IDs and retains original metadata array; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.b(I)V",
+      "originalName": "b",
+      "to": "closeFullscreenCanvas",
+      "evidence": "nc.java: Detaches fullscreen canvas input, closes its window frame, restores the saved canvas size and refocuses the window canvas.",
       "confidence": "reviewed"
     },
     {
@@ -66391,6 +66937,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:np.b(Z)V",
+      "originalName": "b",
+      "to": "createWidgetLayerStack",
+      "evidence": "np.java: Installs the shared widget theme and creates the root widget layer stack.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nq.a(B)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -66419,10 +66972,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nq.a(Lmf;Lmf;BLmf;)V",
+      "originalName": "a",
+      "to": "loadCommonUiResources",
+      "evidence": "nq.java: Loads the common-ui frame, button and validation sprites and the arezzo fonts.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nq.c(I)V",
       "originalName": "c",
       "to": "updateHover",
       "evidence": "nq.java: Replaces hover state using sprite pixel hit testing for current pointer; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nq.e(I)V",
+      "originalName": "e",
+      "to": "shutdownAudioPlayers",
+      "evidence": "nq.java: Shuts down the music and sound PCM players when present.",
       "confidence": "reviewed"
     },
     {
@@ -66629,6 +67196,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oc.a(Ltg;BLjava/awt/Canvas;)V",
+      "originalName": "a",
+      "to": "initializeMidiSynthesizer",
+      "evidence": "oc.java: Creates the MIDI synthesizer, sets program defaults and starts mesh audio at 22050 Hz.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oc.a(ZLoc;)Z",
       "originalName": "a",
       "to": "tryFocus",
@@ -66783,6 +67357,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:og.d(B)V",
+      "originalName": "d",
+      "to": "shutdownClient",
+      "evidence": "og.java: Closes the fullscreen canvas and canvas input, disables keyboard input, closes archive connections, sends the logoff opcode and closes the game transport.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:og.d(Z)V",
       "originalName": "d",
       "to": "clearSharedReferences",
@@ -66920,6 +67501,13 @@
       "originalName": "a",
       "to": "layoutRightAligned",
       "evidence": "oj.java: Single line ends at rightX; alignment2 and guard at most -90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ok.a(Z)Z",
+      "originalName": "a",
+      "to": "isAdaptiveResizeAvailable",
+      "evidence": "ok.java: True when a canvas resize controller exists and reports adaptive resize support.",
       "confidence": "reviewed"
     },
     {
@@ -67084,6 +67672,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:on.e(I)V",
+      "originalName": "e",
+      "to": "layoutLobbySlidePanels",
+      "evidence": "on.java: Positions the two lobby panels with a quadratic slide offset from the transition counter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:on.f(I)V",
       "originalName": "f",
       "to": "advanceMotionSegment",
@@ -67116,6 +67711,13 @@
       "originalName": "a",
       "to": "getPaddleSegmentSprites",
       "evidence": "oo.java: Background scene override: Returns this scene's paddle segment sprites for the scale divisor (index divisor-1); some scenes return null for guard-dependent cases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.a(Ljava/applet/Applet;I)V",
+      "originalName": "a",
+      "to": "openSubscribePage",
+      "evidence": "oo.java: Opens subscribe.ws relative to the code base in the top frame.",
       "confidence": "reviewed"
     },
     {
@@ -67385,6 +67987,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pf.a(Ljava/applet/Applet;Z)V",
+      "originalName": "a",
+      "to": "openServerListPage",
+      "evidence": "pf.java: Opens toserverlist.ws relative to the code base in the top frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pf.a(ZI)Z",
+      "originalName": "a",
+      "to": "isScreenCurrentOrPending",
+      "evidence": "pf.java: True when the pending screen (or, if none, the current screen) has the given id.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pf.a(ZIILoc;I)V",
       "originalName": "a",
       "to": "paintWidget",
@@ -67417,6 +68033,13 @@
       "originalName": "a",
       "to": "drawPointerTooltipText",
       "evidence": "pg.java: DelayedPacket.java: Static helper drawing a bordered yellow-backed tooltip box with the text wrapped to500 pixels near the pointer, positioned by the popup chooser helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pg.d(I)V",
+      "originalName": "d",
+      "to": "paintScreenFrame",
+      "evidence": "pg.java: Paints the 642x482 nine-slice frame at (-1,-1).",
       "confidence": "reviewed"
     },
     {
@@ -67574,6 +68197,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pk.a(BLjava/awt/Canvas;Z)V",
+      "originalName": "a",
+      "to": "renderStartupScreen",
+      "evidence": "pk.java: Draws the loading status screen before stage 10, then the logo animation, before the normal frame.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pl.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -67686,6 +68316,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pp.a(B)V",
+      "originalName": "a",
+      "to": "resetArchiveFailureCounters",
+      "evidence": "pp.java: Zeroes failureCount and lastError of the archive fetch client.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pp.a(BCLjava/lang/CharSequence;)I",
       "originalName": "a",
       "to": "countCharacter",
@@ -67774,6 +68411,20 @@
       "originalName": "a",
       "to": "containsPoint",
       "evidence": "q.java: Tests left/top inclusive and right/bottom exclusive rectangle bounds; guard below -25.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:q.a(Ljava/lang/String;ILjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "containsTextOrReverse",
+      "evidence": "q.java: True when the first string contains, starts with or ends with the second string or its reversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:q.a([BB)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "decodeCp1252Bytes",
+      "evidence": "q.java: Decodes the whole byte array as cp1252.",
       "confidence": "reviewed"
     },
     {
@@ -67924,6 +68575,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qc.a(I)V",
+      "originalName": "a",
+      "to": "closeArchiveConnections",
+      "evidence": "qc.java: Closes the archive fetch client, cache worker and remaining transport handles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qc.a(JB)Ljava/lang/String;",
       "originalName": "a",
       "to": "decodeBase37Name",
@@ -67935,6 +68593,13 @@
       "originalName": "a",
       "to": "pollUsernameAvailability",
       "evidence": "qc.java: Returns completed matching response or null while pending; other branch schedules shared request state; guard0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qc.c(I)V",
+      "originalName": "c",
+      "to": "processUiLayerInput",
+      "evidence": "qc.java: Feeds pointer and key events to the layer stack and handles fullscreen focus loss.",
       "confidence": "reviewed"
     },
     {
@@ -68120,6 +68785,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qg.a(BIIZIIII)V",
+      "originalName": "a",
+      "to": "initializeClientServices",
+      "evidence": "qg.java: Applies language, connection configuration, archive services, key map, mouse wheel and canvas input, then packet lengths.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qg.a(IIB)V",
       "originalName": "a",
       "to": "setTextChoiceCenter",
@@ -68148,6 +68820,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qg.a([Ljp;B)[Ljp;",
+      "originalName": "a",
+      "to": "resetSpriteOffsets",
+      "evidence": "qg.java: Zeroes each sprite offset and restores canvas size to sprite size.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qg.b(B)V",
       "originalName": "b",
       "to": "enablePacketFour",
@@ -68173,6 +68852,13 @@
       "originalName": "e",
       "to": "enablePacketFive",
       "evidence": "qg.java: Sets common opcode5 enabled state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.f(Z)V",
+      "originalName": "f",
+      "to": "applyIncomingSessionCookie",
+      "evidence": "qg.java: Reads an incoming string and stores it as the applet session cookie.",
       "confidence": "reviewed"
     },
     {
@@ -68250,6 +68936,13 @@
       "originalName": "a",
       "to": "getValue",
       "evidence": "qi.java: Returns -1 outside retained index range; false guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(Ljava/applet/Applet;I)Lme;",
+      "originalName": "a",
+      "to": "readLastLoginMethod",
+      "evidence": "qi.java: Reads the jagex-last-login-method cookie and returns the matching login preference or the default.",
       "confidence": "reviewed"
     },
     {
@@ -68449,6 +69142,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qj.b(BZ)V",
+      "originalName": "b",
+      "to": "startLocalTwoPlayerGame",
+      "evidence": "qj.java: Builds two player labels and a level sequence, selects a background and starts a local game.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qj.b(I)V",
       "originalName": "b",
       "to": "requestLeaveMatch",
@@ -68624,6 +69324,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qo.a(ILjava/lang/String;Loc;Ljava/lang/String;II)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithDefaultMessageWidth",
+      "evidence": "qo.java: Forwards to the labeled-field-with-message helper with constant 35.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qo.a(ILje;)Z",
       "originalName": "a",
       "to": "passesSubmissionGate",
@@ -68635,6 +69342,13 @@
       "originalName": "a",
       "to": "onUsernameSuggestionChosen",
       "evidence": "vf.java: Copies chosen suggestion into username field and notifies edit; guard56. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qo.a(Ljava/lang/String;IILoc;ILjava/lang/String;Z)I",
+      "originalName": "a",
+      "to": "addLabeledFieldWithMessage",
+      "evidence": "qo.java: Adds a label widget plus validation message widget listening to this panel and returns the combined height.",
       "confidence": "reviewed"
     },
     {
@@ -68705,6 +69419,13 @@
       "originalName": "a",
       "to": "decode",
       "evidence": "qq.java: Decodes mandatory/optional envelopes, up to ten encoded oscillator records into five slots, echo/duration/offset/filter. Original overflow behavior retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:r.a(BI)I",
+      "originalName": "a",
+      "to": "highestOneBit",
+      "evidence": "r.java: Smears bits right then masks, isolating the highest set bit.",
       "confidence": "reviewed"
     },
     {
@@ -69002,6 +69723,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rg.a(Lmf;B)Z",
+      "originalName": "a",
+      "to": "areAllGroupsAvailable",
+      "evidence": "rg.java: Delegates to ensureAllGroupsAvailable on the archive.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rh.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -69055,6 +69783,13 @@
       "originalName": "c",
       "to": "increaseMasterSoundGain",
       "evidence": "ri.java: UsernameSuggestionPanel.java: Static helper raising the master sound gain to the next multiple of32, or to256 once it is224 or more, through applyMasterSoundGain; a false guard also writes field_M.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.a(BLkl;)V",
+      "originalName": "a",
+      "to": "removeSoundStream",
+      "evidence": "rj.java: Removes the stream from the sound mixer.",
       "confidence": "reviewed"
     },
     {
@@ -118570,7 +119305,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-brickabrac-rules.mjs": "462899614929ddae884d36ab9f23edf29ae8cf6b4473f55f0de26024fed04559",
+      "build-brickabrac-rules.mjs": "606e4d826a73908d8081464f4fa650bacfe714a7a9ba7e6e2edd80d72f042eea",
       "reproduce-brickabrac.mjs": "cf12ce797fad528219d9e4598b872993328a80aeea0b802867ec7c7087c8f726",
       "tests/test-brickabrac-core.mjs": "cc450016771c63553dc4cda094aa2618ff6a824ad0db8f0380eb284a28a36124",
       "tests/brickabrac-original-contracts.mjs": "5229844022e06d7da906b8e86bc6f3ee3a66ceeafba568c392b48ae0f703a983",
