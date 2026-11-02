@@ -47,6 +47,10 @@ const classes = {
   hh: ['SecondaryNodeDequeIterator', 'Iterator constructed from a SecondaryNodeDeque.'],
   ng: ['IndexedSprite', 'Sprite base holding an int[] palette and byte[] pixel indices.'],
   tk: ['AsyncRequest', 'Abstract request with a volatile completion flag, a byte[] result accessor and a status accessor.'],
+  bf: ['WhirlpoolDigest', 'Digest state updated with a byte[] and a bit count that yields a 64-byte hash; throws "LOGIC ERROR" on bad state.'],
+  tj: ['CacheFileLocator', 'Private-constructor utility resolving cache Files under the user.home property.'],
+  me: ['MovingBlock', 'IntrusiveNode for a tile in transit with row, column, per-axis step and a 26-pixel progress counter.'],
+  ra: ['LevelView', 'LevelGrid subclass that ActiveLevel builds from its grids and an origin to draw the board; overrides tick.'],
   ri: ['ActiveLevel', 'LevelGrid subclass holding the level in play, its phase and score text.'],
 };
 const members = {};
@@ -112,6 +116,39 @@ field('db', 'X', 'I', 'clickX', pointer);
 field('wg', 'e', 'I', 'clickY', pointer);
 field('rj', 'a', 'I', 'mouseButton', pointer);
 method('of', 'c', '(B)V', 'publishInputState', 'Copies the live mouse fields into the per-frame fields under the handler lock.');
+const stream = 'PcmStream.b mixes into the buffer while field_k is set and otherwise skips the same sample count.';
+method('wh', 'a', '([III)V', 'mix', stream);
+method('wh', 'd', '(I)V', 'skip', stream);
+method('wh', 'b', '([III)V', 'mixIfActive', stream);
+method('fc', 'b', '(I)Z', 'isLinked', 'Returns whether field_e (the previous link) is non-null, which is how a node is known to be in a deque.');
+const table = 'NodeHashTable indexes field_c by key masked with field_b - 1 and walks the bucket ring.';
+method('id', 'a', '(IJ)Lfc;', 'get', table);
+method('id', 'a', '(ZJLfc;)V', 'put', table);
+method('id', 'b', '(I)Lfc;', 'first', 'Resets the bucket cursor to zero and returns the next node.');
+method('id', 'a', '(B)Lfc;', 'next', 'Advances through the bucket rings from the saved bucket index.');
+field('id', 'c', '[Lfc;', 'buckets', table);
+field('id', 'b', 'I', 'bucketCount', table);
+method('cf', 'a', '(I[BII)[B', 'whirlpoolDigest', 'Copies the input range, feeds it to a WhirlpoolDigest with a bit count and returns the 64-byte digest.');
+method('hb', 'a', '(Ljava/lang/Throwable;ILjava/lang/String;)V', 'reportClientError', 'Builds the clienterror.ws request URL from the throwable and context.');
+const moving = 'ActiveLevel moves the avatar tile (value 38) by me.f and ticks progress with me.e until it reaches 26 pixels.';
+field('me', 's', 'I', 'row', moving);
+field('me', 'r', 'I', 'column', moving);
+field('me', 'j', 'I', 'rowStep', moving);
+field('me', 'o', 'I', 'columnStep', moving);
+field('me', 'l', 'I', 'progress', moving);
+field('me', 'n', 'I', 'speed', moving);
+field('me', 'm', 'I', 'tileValue', moving);
+method('me', 'e', '(I)Z', 'advance', 'Adds the speed to the progress counter and reports whether it is still under 26 pixels.');
+method('me', 'f', '(I)V', 'completeStep', 'Stores the progress and moves the row and column by their steps.');
+method('sl', 'a', '(ZI)V', 'tick', 'Base implementation only increments the frame counter; ActiveLevel and the level view override it.');
+field('sl', 'h', 'I', 'tickCount', 'Incremented by tick and used modulo 30 for the blinking avatar marker.');
+field('sl', 'o', '[[B', 'floorKind', 'ActiveLevel.tick compares the value under the avatar with 3..6 to apply belt direction.');
+field('ri', 'D', 'I', 'playerRow', 'The block-step helper stores the row of a MovingBlock whose tile value is 38, the avatar.');
+field('ri', 'Z', 'I', 'playerColumn', 'The block-step helper stores the column of a MovingBlock whose tile value is 38, the avatar.');
+field('ri', 'S', 'Lja;', 'movingBlocks', 'Each tick iterates this deque casting nodes to MovingBlock.');
+const decode = 'LevelData constructor parses a level string: optional *WH size, grid characters, an 8x6 target block, then the name up to a space.';
+field('ea', 'x', 'I', 'levelIndex', decode);
+field('ea', 'q', 'Ljava/lang/String;', 'name', decode);
 
 export const config = {
   game: 'trackcontroller', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
