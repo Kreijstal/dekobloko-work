@@ -818,6 +818,33 @@ for (const [original, descriptor, to, names] of [
   ['a','(Lwt;JB)V','put',['node','key','obfuscationGuard']],
 ]) method('es', original, descriptor, to, names, secondaryTableEvidence);
 
+// GraphicsRenderer drawing API and RenderSprite geometry. Override families carry each name to every back end.
+const rendererApiEvidence = 'Reviewed JavaSoftwareRenderer bodies: clip bounds clamp or intersect field_z/field_w/field_k/field_D, rows are filled by blend mode 0 replace, 1 alpha and 2 additive, and the final ha wrappers delegate with blend mode 1.';
+for (const [original, descriptor, to, names] of [
+  ['KA','(IIII)V','setClip',['left','top','right','bottom']],
+  ['T','(IIII)V','intersectClip',['left','top','right','bottom']],
+  ['K','([I)V','getClip',['bounds']],
+  ['U','(IIIII)V','drawHorizontalLine',['x','y','length','argb','blendMode']],
+  ['aa','(IIIIII)V','fillRect',['x','y','width','height','argb','blendMode']],
+  ['c','(IIIIII)V','drawLine',['x1','y1','x2','y2','argb','blendMode']],
+  ['a','(IIIIII)V','drawRectOutline',['x','y','width','height','argb','blendMode']],
+  ['SA','(IIII[III)V','copyPixels',['x','y','width','height','pixels','offset','stride']],
+  ['d','(IIIIII)V','fillRectAlpha',['height','width','y','obfuscationGuard','argb','x']],
+  ['e','(IIIIII)V','drawRectOutlineAlpha',['argb','height','y','width','x','obfuscationGuard']],
+  ['a','(IIIII)V','drawHorizontalLineAlpha',['y','argb','obfuscationGuard','x','length']],
+  ['a','([IIIIIZ)Lpa;','createArgbSprite',['pixels','offset','stride','width','height']],
+  ['a','(Lvs;[Lvd;Z)Lda;','createFont',['metrics','glyphSprites']],
+]) method('ha', original, descriptor, to, names, rendererApiEvidence);
+const spriteGeometryEvidence = 'Reviewed JavaSoftwareRenderSprite: a/b return the trimmed field_o/field_p while d/c add the left/right and top/bottom padding, and scaled draws divide the full size by the destination size.';
+for (const [original, descriptor, to, names] of [
+  ['a','()I','getWidth',[]], ['b','()I','getHeight',[]], ['d','()I','getFullWidth',[]], ['c','()I','getFullHeight',[]],
+  ['a','(II)V','draw',['x','y']],
+  ['a','(IIIII)V','drawBlended',['x','y','blendMode','argb']],
+  ['a','(IIIIIIII)V','drawScaled',['x','y','destinationWidth','destinationHeight']],
+  ['a','(IIIIIII)V','drawScaled',['x','y','destinationWidth','destinationHeight']],
+  ['b','(IIII)V','drawScaledPlain',['x','y','destinationWidth','destinationHeight']],
+]) method('pa', original, descriptor, to, names, spriteGeometryEvidence);
+
 export const aceConfig = {
   game: 'aceofskies', version: 16, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
   workflowFiles: ['build-aceofskies-rules.mjs', 'reproduce-aceofskies.mjs', 'reviewed-game.mjs',
