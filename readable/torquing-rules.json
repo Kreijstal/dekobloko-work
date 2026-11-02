@@ -535,6 +535,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mm",
+      "originalName": "mm",
+      "to": "UrlRequest",
+      "evidence": "Runnable that reads a URL stream fully into a PacketBuffer and tracks a numeric state, 3 meaning complete.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nj",
       "originalName": "nj",
       "to": "PcmSampleStream",
@@ -574,6 +581,13 @@
       "originalName": "q",
       "to": "IntrusiveNode",
       "evidence": "Long key plus two reciprocal links; subclassed by buffers and list nodes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rc",
+      "originalName": "rc",
+      "to": "PlatformTask",
+      "evidence": "Queued request whose volatile status is 0 pending, 1 success and otherwise failure, with a result object.",
       "confidence": "reviewed"
     },
     {
@@ -815,6 +829,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mm.field_e:I",
+      "originalName": "field_e",
+      "to": "state",
+      "evidence": "Set to 3 when the whole payload was read and incremented on failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mm.field_i:Lfj;",
+      "originalName": "field_i",
+      "to": "buffer",
+      "evidence": "run reads the stream into this PacketBuffer until it is full.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mm.field_k:Ljava/net/URL;",
+      "originalName": "field_k",
+      "to": "url",
+      "evidence": "The connection attempts use its host and the error text prints it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:of.field_B:[S",
       "originalName": "field_B",
       "to": "vertexX",
@@ -861,6 +896,20 @@
       "originalName": "field_h",
       "to": "next",
       "evidence": "IntrusiveNode link fields; hash tables and deques splice nodes through them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_a:I",
+      "originalName": "field_a",
+      "to": "status",
+      "evidence": "Callers treat 0 as pending, 1 as success and anything else as failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rc.field_d:Ljava/lang/Object;",
+      "originalName": "field_d",
+      "to": "result",
+      "evidence": "UrlRequest casts this to the stream or socket produced by the task.",
       "confidence": "reviewed"
     },
     {
@@ -1131,7 +1180,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-torquing-rules.mjs": "876d2b7989dd354a8136aaf4a5827f0942f15ab77a3139cf183697c24e5a415f",
+      "build-torquing-rules.mjs": "756203a5b472f5d70cf997759e4b6ccc4c3c2690934b3df9f088245b34bbaa62",
       "reproduce-torquing.mjs": "2a778be33cf09997c514713d57df9e717c13ffbbb82534f476bf9fdb039bf6a2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

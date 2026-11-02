@@ -57,6 +57,8 @@ const classes = {
   fb: ['AbstractAudioSample', 'IntrusiveNode base of PcmSample holding a single int.'],
   gg: ['PcmSample', 'AbstractAudioSample holding a byte[] of samples, a rate and two loop bounds.'],
   nj: ['PcmSampleStream', 'PcmStream that steps through a PcmSample with interpolation and loop handling.'],
+  mm: ['UrlRequest', 'Runnable that reads a URL stream fully into a PacketBuffer and tracks a numeric state, 3 meaning complete.'],
+  rc: ['PlatformTask', 'Queued request whose volatile status is 0 pending, 1 success and otherwise failure, with a result object.'],
   no: ['BufferedSocket', 'Runnable owning a Socket with input and output streams.'],
 };
 const members = {};
@@ -105,6 +107,11 @@ field('gg', 'm', 'I', 'sampleRate', 'The first constructor argument is stored he
 field('gg', 'n', '[B', 'data', 'The sample byte array constructor argument is stored here.');
 field('gg', 'k', 'I', 'loopStart', 'The third constructor argument is stored here.');
 field('gg', 'o', 'I', 'loopEnd', 'The fourth constructor argument is stored here.');
+field('mm', 'i', 'Lfj;', 'buffer', 'run reads the stream into this PacketBuffer until it is full.');
+field('mm', 'k', 'Ljava/net/URL;', 'url', 'The connection attempts use its host and the error text prints it.');
+field('mm', 'e', 'I', 'state', 'Set to 3 when the whole payload was read and incremented on failure.');
+field('rc', 'a', 'I', 'status', 'Callers treat 0 as pending, 1 as success and anything else as failure.');
+field('rc', 'd', 'Ljava/lang/Object;', 'result', 'UrlRequest casts this to the stream or socket produced by the task.');
 field('fj', 'j', '[B', 'payload', 'PacketBuffer byte array indexed by the cursor in every read and write.');
 field('fj', 'n', 'I', 'position', 'PacketBuffer cursor advanced by reads and writes.');
 
