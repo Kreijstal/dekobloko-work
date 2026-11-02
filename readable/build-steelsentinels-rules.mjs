@@ -232,6 +232,25 @@ engine([
   ['ao','QuickChatPhraseDefinition','DualNode phrase with text fragments, command ids/arguments and linked phrase ids.'],
   ['mn','QuickChatCategory','DualNode category with title, shortcuts, subcategory and phrase ids.'],
 ]);
+// Remaining shared engine classes plus two gameplay tools.
+engine([
+  ['sj','MusicCrossfadeStream','PcmStream holding two MidiPcmStream sequencers and cross-fading between tracks.'],
+  ['nc','WeightedLruCache','Weighted LRU cache of WeightedCacheEntry values keyed by long.'],
+  ['oe','QuickChatPhraseCache','Loads QuickChatPhraseDefinition records from local/global archives into a WeightedLruCache.'],
+  ['co','QuickChatCategoryCache','Loads QuickChatCategory records from local/global archives into a WeightedLruCache.'],
+  ['ha','DateInputWidget','Abstract UiContainer date entry exposing a DateOfBirthValidator.'],
+  ['re','NumericDateInputWidget','DateInputWidget made of day, month and year EditableTextWidgets.'],
+  ['vn','DateOfBirthValidator','DebouncedValidator checking the year range 1890..current against a DateInputWidget.'],
+  ['da','TextLayout','Abstract text layout holding an array of TextLayoutLine.'],
+  ['si','CachedTextLayout','TextLayout caching wrapped text for a font and width.'],
+  ['il','TextLayoutLine','Line extent record with top, bottom and per-character insertion x positions.'],
+  ['me','LoginCredentials','Abstract login credential base.'],
+  ['fb','UsernameCredentials','LoginCredentials with encoded username and password.'],
+  ['pg','AlternateUsernameCredentials','UsernameCredentials variant with no extra state.'],
+  ['on','EmailCredentials','LoginCredentials with email and password strings.'],
+  ['qj','SentinelAnimationEditor','Developer tool editing and printing per-frame Sentinel animation data (idle, walk, jump, air, climb).'],
+  ['bh','SentinelCommandSimulator','Snapshot copied from a Sentinel that replays SentinelCommands ahead of the live world and draws the predicted path.'],
+]);
 const members={};
 function field(owner,original,descriptor,to,evidence) {
   members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};
@@ -808,6 +827,13 @@ for(const [owner,original,descriptor,to,evidence] of [
   ['rm','a','(III)V','updatePointer','Same normalised body as Ace of Skies MenuInputState.updatePointer (similarity 0.62); class identity checked by fields and hierarchy.'],
   ['sg','b','(I)V','close','Same normalised body as Escape Vector BufferedSocket.close (similarity 0.62); class identity checked by fields and hierarchy.'],
   ['gi','c','(BI)V','writeVarInt','Same normalised body as Brick-a-Brac PacketBuffer.writeVarInt (similarity 0.62); class identity checked by fields and hierarchy.'],
+])method(owner,original,descriptor,to,evidence);
+
+for(const [owner,original,descriptor,to,evidence] of [
+  ['sj','a','(ILtg;IIZI)V','selectTrack','Same normalised body as Armies of Gielinor MusicCrossfadeStream.selectTrack (similarity 0.75); class identity checked by fields and hierarchy.'],
+  ['si','a','(Ljava/lang/String;BLmi;I)Lil;','createSingleLine','Same normalised body as GeoBlox CachedTextLayout.createSingleLine (similarity 0.71); class identity checked by fields and hierarchy.'],
+  ['nc','a','(JLjava/lang/Object;I)V','put','Same normalised body as Escape Vector WeightedLruCache.put (similarity 0.59); class identity checked by fields and hierarchy.'],
+  ['il','b','(I)I','width','Same normalised body as Escape Vector TextLayoutLine.width (similarity 0.67); class identity checked by fields and hierarchy.'],
 ])method(owner,original,descriptor,to,evidence);
 
 export function buildSteelRules(input, rows) {

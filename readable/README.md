@@ -3060,6 +3060,16 @@ reuse. Guided projectile motion names target and initial-direction state; launch
 and coasting fixtures preserve its zero-vector behavior and gravity gate.
 Steering helpers now name 8192-unit angles, 16.16 sine/cosine and approximate vector length. Full-turn trig and quadrant fixtures compare mathematical expectations; guided-motion fixtures check bounded turning, target-coordinate refresh/removal and the age-128 coasting boundary. Rendered effects, the initial-direction reversal branch and complete projectile collisions remain unverified.
 
+Steel Sentinels now also names the shared FunOrb engine: PCM/Vorbis/MIDI audio,
+Bzip2/gzip/Huffman codecs, platform bridges, JS5 transport and disk cache,
+the UiComponent widget toolkit with its listeners, painters, validators and
+account forms, the SceneWidget lobby widgets (scrollbar, quick chat, social
+lists) and login credentials. Classes were matched to Escape Vector, GeoBlox and
+Armies of Gielinor by hierarchy and field types, and 650 methods by normalised
+body similarity within the matched class; each rule records its basis. Classes
+that contain only unrelated static helpers, and most gameplay and menu classes,
+remain unnamed.
+
 Explosion reconstruction is reproducible with
 `node readable/reconstruct-steel-explosion.mjs VERIFIED_BYTECODE NEW_RAW_OUTPUT`.
 Omit the output argument for a read-only native check. It requires the
