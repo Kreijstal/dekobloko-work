@@ -44,6 +44,8 @@ const classes = {
   jk: ['PcmStreamMixer', 'PcmStream owning two IntrusiveDeques of child streams and timed events.'],
   eg: ['BitmapFont', 'Glyph tables with character and string width queries and string drawing kernels.'],
   pd: ['GameScreen', 'Sixteen instances are created by index at load; the active one is selected by id.'],
+  wg: ['VorbisSample', 'DualLink-free node holding Ogg Vorbis float windows and codebook state, loaded by name from an archive.'],
+  th: ['VorbisCodebook', 'Holds a float[][] of codebook vectors and returns float arrays.'],
   qe: ['LevelEntity', 'Constructed per level record from position, type and parameter bytes by LevelDecoder.'],
 };
 const members = {};
@@ -100,6 +102,42 @@ method('ff', 'a', '(Ljava/lang/String;[Ljava/lang/Object;Ljava/applet/Applet;I)L
 method('ff', 'a', '(Ljava/lang/String;Ljava/applet/Applet;I)Ljava/lang/Object;', 'callWithoutArguments', js);
 method('ff', 'a', '(Ljava/applet/Applet;Ljava/lang/String;B)V', 'evaluate', js);
 method('ok', 'a', '(Ljava/applet/Applet;I)V', 'updatePageLinks', 'Calls the updatelinks page function with home and gamelist targets.');
+const pb = 'PacketBuffer reads or writes payload bytes at the cursor.';
+method('uf', 'a', '(ZJ)V', 'writeLong', 'Stores eight big-endian bytes and advances the cursor.');
+method('uf', 'k', '(I)J', 'readLong', 'Combines two unsigned ints into a long.');
+method('uf', 'a', '(JI)V', 'writeFiveByteValue', 'Stores the low five big-endian bytes of the long.');
+method('uf', 'a', '(I[BII)V', 'readBytes', 'Copies payload bytes at the cursor into the given array.');
+method('uf', 'a', '(Ljava/lang/String;B)V', 'writeString', 'Rejects embedded zero characters, writes the text and a zero terminator.');
+method('uf', 'a', '(BLjava/lang/String;)V', 'writePrefixedString', 'Writes a zero marker byte followed by the terminated text.');
+method('uf', 'c', '(B)Ljava/lang/String;', 'readPrefixedString', 'Requires a zero marker byte then reads the terminated text.');
+method('uf', 'a', '(I)Ljava/lang/String;', 'readOptionalString', 'Returns null for a zero byte, otherwise reads a string.');
+method('uf', 'e', '(B)I', 'readSignedSmart', 'Reads a byte minus 64 or a short minus 49152.');
+method('uf', 'c', '(BI)V', 'writeSignedSmart', 'Writes values in -64..63 as a byte and larger ones as a short.');
+method('uf', 'b', '(B)I', 'readUnsignedSmart', 'Reads one byte, or a short minus 32768 when the first byte is 128 or more.');
+method('uf', 'b', '(BI)V', 'writeVarInt', 'Writes 7 bits per byte with a continuation flag.');
+method('uf', 'f', '(I)I', 'readVarInt', 'Reads 7 bits per byte while the sign bit continues.');
+method('uf', 'a', '(II)V', 'patchByteLength', 'Writes the length into the byte before the data just written.');
+method('uf', 'b', '(IB)V', 'patchShortLength', 'Writes the length into the two bytes before the data just written.');
+method('uf', 'c', '(II)V', 'patchIntLength', 'Writes the length into the four bytes before the data just written.');
+const pcm = 'Abstract audio stream contract; the mixer calls it for every active stream.';
+method('qd', 'a', '([III)V', 'process', 'Active streams mix; inactive streams skip the same sample count.');
+method('qd', 'b', '([III)V', 'mixInto', pcm);
+method('qd', 'a', '(I)V', 'skip', 'Advances stream time without writing samples.');
+method('qd', 'c', '()Lqd;', 'firstSubstream', 'PcmStreamMixer returns the first child.');
+method('qd', 'b', '()Lqd;', 'nextSubstream', 'PcmStreamMixer returns the next child.');
+method('qd', 'a', '()I', 'activity', pcm);
+method('qd', 'd', '()I', 'priority', 'The base stream returns 255.');
+field('qd', 'j', 'Z', 'active', 'process mixes when true and skips when false.');
+field('qd', 'i', 'Lqd;', 'schedulerNext', 'Link to the next stream held by the scheduler.');
+method('w', 'a', '(I)V', 'unlinkSecondary', 'Splices the node out of the secondary links and clears them.');
+method('ak', 'a', '(Lw;I)V', 'addLast', 'Unlinks the node from its secondary links then inserts it before the sentinel.');
+method('ug', 'a', '(BLjava/lang/String;)V', 'redirectToErrorPage', 'Shows error_game_<code>.ws; callers pass wrongjava, crash and alreadyloaded.');
+const disp = 'PlatformTaskDispatcher queues the request kind and returns a PlatformTask.';
+method('uj', 'a', '(Ljava/lang/String;B[Ljava/lang/Class;Ljava/lang/Class;)Lmi;', 'requestMethod', 'Queues kind 8 with the class, method name and parameter types.');
+method('uj', 'a', '(BLjava/lang/String;Ljava/lang/Class;)Lmi;', 'requestField', 'Queues kind 9 with the class and a name.');
+method('uj', 'a', '(Ljava/net/URL;I)Lmi;', 'requestUrl', 'Queues kind 4 with the URL.');
+method('uj', 'a', '(Ljava/lang/Runnable;ZI)Lmi;', 'requestThread', 'Queues kind 2; the dispatcher wraps the Runnable in a new Thread.');
+method('uj', 'a', '(ILjava/lang/String;I)Lmi;', 'requestSocket', 'Queues a socket request; the dispatcher opens a Socket to the host and port.');
 field('cg', 'c', '[Ljava/lang/String;', 'levelNames', 'Holds Tower0 to Tower5 and boss1 to boss3.');
 
 export const config = {
