@@ -251,6 +251,11 @@ engine([
   ['qj','SentinelAnimationEditor','Developer tool editing and printing per-frame Sentinel animation data (idle, walk, jump, air, climb).'],
   ['bh','SentinelCommandSimulator','Snapshot copied from a Sentinel that replays SentinelCommands ahead of the live world and draws the predicted path.'],
 ]);
+// Gameplay classes read from their only construction/use sites.
+engine([
+  ['ne','FallingPickup','DualNode created by CombatWorld above the arena (y=-180000) at a random x; collecting it adds score, lives, speed or armour bonuses to a Sentinel by pickup type.'],
+  ['fl','TeamColourTinter','Static helper that recolours grey pixels of a raster region using Sentinel.getTeamColour.'],
+]);
 const members={};
 function field(owner,original,descriptor,to,evidence) {
   members[`F:${owner}.field_${original}:${descriptor}`]={to,evidence};
@@ -403,6 +408,56 @@ method('ie','a','(I)V','generateResults','Generates the next ISAAC result block,
 method('ie','b','(I)V','initializeState','Mixes the seed into both ISAAC arrays and generates the first result block.',{0:'obfuscationGuard'});
 method('ie','<init>','([I)V','<init>','Copies the seed into results before ISAAC initialization.',{0:'seed'});
 method('uh','a','(ZII)I','nonnegativeRemainder','Produces the floor-modulo result for a positive divisor, including negative integers.',{0:'obfuscationGuard',1:'value',2:'divisor'});
+// Round: engine classes whose bodies were read in full.
+method('ul','a','(BLck;)Lck;','traverseFrom','Returns the given node (or the first node when null) and primes forward traversal at its successor.');
+method('ul','a','(I)Lck;','previous','Continues backward traversal using the cursor and each node previous link.');
+method('ul','b','(I)Lck;','last','Returns the node before the sentinel and primes backward traversal.');
+method('ul','a','(Z)Lck;','removeFirst','Takes the node after the sentinel, unlinks it and returns it.');
+method('ul','c','(I)Lck;','removeLast','Takes the node before the sentinel, unlinks it and returns it.');
+method('ul','f','(I)Z','isEmpty','Compares the sentinel next link with the sentinel itself.');
+method('ul','a','(ILul;)V','moveAllTo','Moves every node of this deque to another via moveTailTo, starting at the first node.');
+method('ul','a','(Lul;ILck;)V','moveTailTo','Cuts this deque before the given node and appends the cut tail to the target deque.');
+method('gi','a','(Z)I','readUnsignedMedium','Combines three consecutive bytes big-endian and advances the cursor by three.');
+method('gi','g','(B)J','readLong','Reads two unsigned ints and composes them high word first.');
+method('gi','e','(I)I','readVarInt','Reads 7-bit groups while the high bit is set, shifting each group left by seven.');
+method('gi','f','(I)I','readSignedSmart','Reads a one-byte value minus 64 or a two-byte value minus 49152 depending on the first byte.');
+method('gi','h','(I)Ljava/lang/String;','readString','Reads bytes up to a zero terminator and decodes them, returning an empty string when empty.');
+method('gi','g','(I)Ljava/lang/String;','readNullableString','Returns null when the next byte is zero (consumed), otherwise reads a terminated string.');
+method('gi','e','(B)Ljava/lang/String;','readPrefixedString','Requires a leading zero byte, then reads a zero-terminated string.');
+method('gi','a','(Ljava/lang/String;I)V','writeString','Rejects embedded NUL, encodes the string and appends a zero terminator.');
+method('gi','a','(ILjava/lang/String;)V','writePrefixedString','Writes a zero prefix byte, then the encoded string and a zero terminator.');
+method('gi','b','(II)V','padToPosition','Writes zero bytes until the cursor reaches the given position.');
+method('gi','c','(II)V','writeShortLengthPrefix','Stores the given length big-endian in the two bytes before the payload.');
+method('gi','a','(ZI)V','writeIntLengthPrefix','Stores the given length big-endian in the four bytes before the payload.');
+method('gi','a','(B)Z','verifyTrailingChecksum','Moves back four bytes, checksums the preceding data and compares it with the stored int.');
+method('gi','a','(III[I)V','xteaDecryptRange','Reverse XTEA rounds (start sum 0xC6EF3720) on 8-byte blocks of the byte range with a four-word key.');
+method('gi','a','([II)V','xteaEncryptAll','Forward XTEA rounds (delta 0x9E3779B9) on every 8-byte block up to the cursor with a four-word key.');
+method('gi','a','(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V','rsaEncryptContents','Reads the buffer as a BigInteger, applies modPow with the supplied exponent and modulus and rewrites the result.');
+method('pb','a','(III)V','plotAdditive','Adds a colour to the clipped pixel with per-channel saturation.');
+method('pb','b','(III)V','plotPixel','Writes a colour to one pixel after clip-bounds checks.');
+method('pb','a','(IIIII)V','fillRectangle','Clips x,y,width,height to the clip bounds and stores a solid colour in each pixel.');
+method('pb','b','(IIII)V','desaturateRectangle','Replaces each clipped pixel with a grey from its channels.');
+method('pb','f','(IIII)V','halveBrightnessRectangle','Clips the rectangle and halves every pixel channel via halveBrightnessRows.');
+method('pb','a','(I[IIIII)V','halveBrightnessRows','Masks the low bit per channel and shifts right one for each row pixel.');
+method('pb','c','(IIII)V','drawCircleOutline','Midpoint circle with radius squared error terms; plots symmetric points.');
+method('pb','g','(IIII)V','drawHorizontalLine','Clips x extent and y, then stores the colour along a row.');
+method('pb','d','(IIII)V','drawVerticalLine','Clips y extent and x, then stores the colour down a column.');
+method('pb','c','(IIIII)V','drawHorizontalLineAlpha','Row blend of the colour with the existing pixels using alpha out of 256.');
+method('pb','f','(IIIII)V','drawVerticalLineAlpha','Column counterpart of drawHorizontalLineAlpha.');
+method('pb','e','(IIIII)V','drawDropShadow','Draws four bottom and right alpha lines with alpha dropping by 32 for each offset.');
+method('pb','h','(IIIII)V','drawRectangleOutline','Draws two horizontal and two vertical solid lines.');
+method('pb','h','(IIIIII)V','drawRectangleOutlineAlpha','Draws the outline with the alpha line primitives.');
+method('pb','d','(IIIII)V','drawLine','Delegates horizontal runs and otherwise steps along a line between two points.');
+method('pb','a','([I)V','setClip','Copies left, top, right, bottom into the clip fields and refreshes the clip cache.');
+method('pb','b','([I)V','getClip','Writes left, top, right, bottom into the array.');
+method('pb','c','()V','resetClip','Sets the clip bounds to the whole target.');
+method('pb','h','(IIII)V','intersectClip','Narrows each clip bound to the given rectangle.');
+method('pb','b','()V','clear','Zeroes every pixel of the target.');
+method('wk','a','(IIII)V','drawTiled','Calls the plain blit once per tile with spacing equal to the sprite size.');
+method('wk','a','([I[IIIIIII)V','copyOpaqueRows','Copies unconditional pixel runs row by row.');
+method('ne','a','(Lmb;B)V','applyToSentinel','Assigns pickup type to the Sentinel and applies score, bonus-count, armour and world effects by type.');
+method('fl','a','(ILmb;BIII)V','tintGreyPixels','Recolours pixels whose red equals green using the Sentinel team colour.');
+method('ee','a','(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;','replaceAll','Repeatedly replaces the needle inside the haystack by the replacement.',{0:'needle',1:'haystack',2:'replacement',3:'obfuscationGuard'});
 for(const [original,descriptor,to,parameters] of [
   ['i','(I)I','readInt',{0:'obfuscationGuard'}],
   ['c','(B)I','readUnsignedShort',{0:'obfuscationGuard'}],
