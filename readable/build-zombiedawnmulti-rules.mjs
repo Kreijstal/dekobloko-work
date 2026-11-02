@@ -67,6 +67,17 @@ for (const [original, descriptor, to] of [['p', 'Lqa;', 'secondaryNext'], ['k', 
   field('qa', original, descriptor, to, dual);
 field('k', 'm', '[B', 'payload', 'PacketBuffer byte array indexed by the cursor in reads and writes.');
 field('k', 'j', 'I', 'position', 'PacketBuffer cursor advanced by reads and writes.');
+const packet = 'PacketBuffer reads advance the cursor over payload bytes with big-endian shifts and masks.';
+for (const [original, descriptor, to, names] of [
+  ['g', '(I)I', 'readUnsignedByte', ['obfuscationGuard']], ['d', '(I)B', 'readByte', ['obfuscationGuard']],
+  ['d', '(B)I', 'readUnsignedShort', ['obfuscationGuard']], ['c', '(B)I', 'readShort', ['obfuscationGuard']],
+  ['e', '(I)I', 'readUnsignedMedium', ['obfuscationGuard']], ['i', '(I)I', 'readInt', ['obfuscationGuard']],
+  ['a', '(B)J', 'readLong', ['obfuscationGuard']], ['f', '(B)Ljava/lang/String;', 'readString', ['obfuscationGuard']],
+  ['g', '(B)Ljava/lang/String;', 'readNullableString', ['obfuscationGuard']],
+  ['h', '(B)I', 'readUnsignedSmart', ['obfuscationGuard']], ['h', '(I)I', 'readSignedSmart', ['obfuscationGuard']],
+  ['b', '(II)V', 'writeInt', ['obfuscationGuard', 'value']], ['a', '(Ljava/lang/String;B)V', 'writeString', ['value', 'obfuscationGuard']],
+]) method('k', original, descriptor, to, names, packet);
+method('wh', 'a', '(JI)Lbr;', 'get', ['key', 'obfuscationGuard'], 'IterableNodeHashTable.get masks the key into a bucket and walks it comparing node keys.');
 field('wh', 'a', '[Lbr;', 'buckets', 'IterableNodeHashTable bucket array masked by the key.');
 field('dl', 'b', 'Ljava/lang/String;', 'host', 'SocketConnector holds the host string.');
 field('dl', 'f', 'I', 'port', 'SocketConnector holds the port.');
