@@ -46,6 +46,10 @@ const classes = {
   sa: ['RandomAccessCacheFile', 'Wraps a RandomAccessFile with a bounded length and seek-then-write.'],
   vl: ['AsyncRequest', 'Plain request record with a volatile status and result object.'],
   rg: ['DisplayModeEnumerator', 'IEnumModesCallback collecting DirectDraw display modes.'],
+  ek: ['NotificationToast', 'Queued entry whose int index selects the sprite and text the banner draws while sliding in and out.'],
+  kc: ['ModelData', 'Holds per-vertex and per-face arrays that the Model constructor copies and lights.'],
+  ob: ['Model', 'Mesh built from ModelData plus five lighting ints, or by merging a Model array.'],
+  un: ['UrlFetchTask', 'Runnable that opens a URL through the dispatcher and reads it from a DataInputStream.'],
   em: ['MatchSetup', 'Built from exactly two player names with six option bytes and read from a packet.'],
 };
 const members = {};
@@ -92,6 +96,16 @@ method('bh', 'b', '(B)I', 'readVarInt', 'Accumulates 7-bit groups while the byte
 method('bh', 'f', '(B)I', 'readSmart', 'Reads one byte below 128, else a short minus 32768.');
 method('bh', 'c', '(B)I', 'readLargeSmart', 'Reads a short when non-negative, else an int masked to 31 bits.');
 method('bh', 'b', '(IB)V', 'writeSmart', 'Writes a byte below 128 or a short offset by 32768.');
+field('TetraLink', 'L', 'Lje;', 'notificationQueue', 'Frame render peeks the next NotificationToast from this deque.');
+field('TetraLink', 'K', 'I', 'notificationTimer', 'Frame render slides the toast by thresholds of this counter (80 and 230).');
+const loop = 'GameApplet.run drives the abstract hooks around the main loop.';
+method('bg', 'a', '(I)V', 'onStartup', loop + ' Called once after the canvas is built; TetraLink sets up the mixer and key table there.');
+method('bg', 'b', '(I)V', 'onShutdown', loop + ' Called from the destroy path before the static release.');
+method('bg', 'h', '(I)V', 'releaseStaticResources', loop + ' TetraLink nulls the static fields of dozens of classes.');
+method('bg', 'f', '(I)V', 'tick', loop + ' Called once per loop iteration after timing synchronisation.');
+method('bg', 'g', '(I)V', 'renderFrame', loop + ' Called after the canvas is made visible; TetraLink draws the screen and toasts.');
+method('TetraLink', 'q', '(I)V', 'loadArchives', 'Assigns archives 3 through 16 to static holders.');
+method('TetraLink', 'a', '(IIB)Loh;', 'createShadedDiscSprite', 'Draws 24 concentric discs into a new 57 by 57 sprite.');
 
 export const config = {
   game: 'tetralink', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
