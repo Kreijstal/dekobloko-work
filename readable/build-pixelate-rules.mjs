@@ -26,6 +26,12 @@ const classes = {
   ha: ['CanvasRasterBuffer', 'Abstract int pixel buffer with width/height that paints to a Graphics.'],
   i: ['ImageProducerRasterBuffer', 'CanvasRasterBuffer implementing ImageProducer with a consumer and color model.'],
   v: ['MouseWheelHandler', 'Abstract attach/detach/poll interface for mouse wheel input; MouseWheelInput extends it.'],
+  wb: ['MouseInputHandler', 'Implements MouseListener, MouseMotionListener and FocusListener, recording mouse events.'],
+  rp: ['KeyboardInputHandler', 'Implements KeyListener and FocusListener, recording key events.'],
+  vb: ['DisplayModeEnumerator', 'IEnumModesCallback collecting DirectDraw display modes into an int array.'],
+  cp: ['NativeWindowCallback', 'Microsoft Callback subclass that chains to the original window procedure.'],
+  mo: ['BufferedSocket', 'Runnable owning a Socket with input/output streams and a byte buffer.'],
+  cb: ['PlatformTaskDispatcher', 'Runnable dispatching queued platform tasks, owning a native callback and queues.'],
   tn: ['GameApplet', 'Abstract Applet implementing Runnable and focus listener; Pixelate extends it via lb.'],
 };
 const members = {};
