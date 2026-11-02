@@ -49,6 +49,10 @@ const classes = {
   la: ['ResourceArchive', 'Synchronized cache of decoded groups and files addressed by group and file name or id.'],
   gl: ['CachedArchiveSource', 'ArchiveSource that stages network and disk data in front of an ArchiveIndex.'],
   of: ['VertexMesh', 'Short x, y and z vertex arrays with a lazily recomputed bounding box, translation and scaling.'],
+  rm: ['MeshGeometry', 'Parallel vertex and triangle arrays with counts; addVertex appends x, y, z and attributes and returns the index.'],
+  kh: ['Model', 'Wraps a MeshGeometry and a per-model attribute object; the constructor copies or adopts the geometry.'],
+  hc: ['Level', 'Holds a tile grid cut into 100-unit cells, a description string and an id; Torquing reads its description into the tooltip.'],
+  uf: ['TooltipPanel', 'Accumulates wrapped text lines with optional sprites that Torquing fills from a Level description.'],
   no: ['BufferedSocket', 'Runnable owning a Socket with input and output streams.'],
 };
 const members = {};
@@ -77,6 +81,14 @@ field('of', 'B', '[S', 'vertexX', 'translate adds dx to each element and compute
 field('of', 'j', '[S', 'vertexY', 'translate adds dy to each element.');
 field('of', 'd', '[S', 'vertexZ', 'translate adds dz to each element.');
 field('of', 'f', 'S', 'vertexCount', 'Loops over vertices run to this bound.');
+method('rm', 'a', '(IIIBBSS)I', 'addVertex', ['x', 'y', 'z'], 'Stores the first three arguments in parallel vertex arrays and returns the new index.');
+method('kh', 'a', '(Lkh;B)V', 'trimToUsedCounts', ['model', 'obfuscationGuard'], 'Shrinks geometry arrays to their vertex and triangle counts.');
+field('rm', 'o', '[I', 'vertexX', 'addVertex stores its first argument here.');
+field('rm', 'y', '[I', 'vertexY', 'addVertex stores its second argument here.');
+field('rm', 'q', '[I', 'vertexZ', 'addVertex stores its third argument here.');
+field('rm', 'g', 'I', 'vertexCount', 'addVertex indexes with and then increments this counter.');
+field('hc', 's', 'I', 'id', 'The constructor stores its first argument here.');
+field('hc', 'l', 'Ljava/lang/String;', 'description', 'Torquing splits this text on ~ and / and adds it to the tooltip panel.');
 field('fj', 'j', '[B', 'payload', 'PacketBuffer byte array indexed by the cursor in every read and write.');
 field('fj', 'n', 'I', 'position', 'PacketBuffer cursor advanced by reads and writes.');
 
