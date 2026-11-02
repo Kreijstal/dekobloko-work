@@ -100,6 +100,23 @@ field('tg', 'i', 'I', 'keyQueueReadIndex', 'The write index stops advancing when
 field('wd', 'a', '[I', 'keyEventQueue', 'keyPressed stores the code and keyReleased stores its complement.');
 field('wk', 'b', 'I', 'keyEventWriteIndex', 'Advanced modulo 128 after each queued key event.');
 field('lk', 'a', 'I', 'keyEventReadIndex', 'The event write index becomes -1 when it reaches this index.');
+const clip = 'Every fill and blit clamps against this clip bound.';
+field('ed', 'c', 'I', 'clipLeft', clip);
+field('ed', 'i', 'I', 'clipTop', clip);
+field('ed', 'l', 'I', 'clipRight', clip);
+field('ed', 'b', 'I', 'clipBottom', clip);
+field('ed', 'h', 'I', 'width', 'Row stride used to index the pixel array.');
+field('ed', 'd', 'I', 'height', 'resetClip copies it to the bottom clip bound.');
+field('ed', 'k', '[I', 'pixels', 'Target int array written by setPixel and fillRect.');
+method('ed', 'c', '()V', 'resetClip', 'Sets the clip to the full width and height.');
+method('ed', 'c', '(IIII)V', 'setClip', 'Clamps four arguments to the buffer and stores them as clip bounds.');
+method('ed', 'b', '(IIII)V', 'intersectClip', 'Raises the left and top bounds and lowers the right and bottom bounds.');
+method('ed', 'a', '([I)V', 'restoreClip', 'Loads the four clip bounds from an array.');
+method('ed', 'b', '([I)V', 'saveClip', 'Stores the four clip bounds into an array.');
+method('ed', 'a', '(IIIII)V', 'drawRectOutline', 'Draws two horizontal and two vertical lines around a rectangle.');
+method('ed', 'a', '(III)V', 'setPixel', 'Writes one pixel after the clip test.');
+method('ed', 'c', '(IIIII)V', 'fillRect', 'Clips a rectangle and stores the colour into every pixel.');
+method('ed', 'd', '(IIII)V', 'desaturateRect', 'Replaces every pixel in the clipped rectangle with a grey average.');
 method('rk', 'b', '(Z)V', 'unlink', 'Splices the node out of its neighbours and nulls both links.');
 
 export const config = {
