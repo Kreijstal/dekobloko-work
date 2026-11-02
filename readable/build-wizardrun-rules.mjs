@@ -117,6 +117,13 @@ method('ed', 'a', '(IIIII)V', 'drawRectOutline', 'Draws two horizontal and two v
 method('ed', 'a', '(III)V', 'setPixel', 'Writes one pixel after the clip test.');
 method('ed', 'c', '(IIIII)V', 'fillRect', 'Clips a rectangle and stores the colour into every pixel.');
 method('ed', 'd', '(IIII)V', 'desaturateRect', 'Replaces every pixel in the clipped rectangle with a grey average.');
+method('vd', 'b', '(Ljava/lang/String;)I', 'stringWidth', 'Sums glyph advances and returns zero for null; used to centre and right-align text.');
+method('vd', 'b', '(Ljava/lang/String;IIII)V', 'drawStringCentered', 'Draws at x minus half the string width after setting colours.');
+method('vd', 'c', '(Ljava/lang/String;IIII)V', 'drawString', 'Draws at the given x after setting colours.');
+method('vd', 'a', '(Ljava/lang/String;IIII)V', 'drawStringRight', 'Draws at x minus the full string width after setting colours.');
+method('vd', 'a', '(C)I', 'charWidth', 'Indexes the per-glyph advance table with the translated character.');
+method('vd', 'c', '(Ljava/lang/String;I)I', 'maxLineWidth', 'Wraps the text, then returns the widest line width.');
+method('vd', 'a', '(II)V', 'setColors', 'Sets colour and shadow colour and resets alpha to 256 and the other draw state.');
 method('rk', 'b', '(Z)V', 'unlink', 'Splices the node out of its neighbours and nulls both links.');
 
 export const config = {
