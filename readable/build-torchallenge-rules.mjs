@@ -44,8 +44,11 @@ const classes = {
   jk: ['PcmStreamMixer', 'PcmStream owning two IntrusiveDeques of child streams and timed events.'],
   eg: ['BitmapFont', 'Glyph tables with character and string width queries and string drawing kernels.'],
   pd: ['GameScreen', 'Sixteen instances are created by index at load; the active one is selected by id.'],
-  wg: ['VorbisSample', 'DualLink-free node holding Ogg Vorbis float windows and codebook state, loaded by name from an archive.'],
+  wg: ['VorbisSample', 'IntrusiveNode holding Ogg Vorbis float windows and codebook state, loaded by name from an archive.'],
   th: ['VorbisCodebook', 'Holds a float[][] of codebook vectors and returns float arrays.'],
+  lk: ['SpriteLoader', 'TorChallenge calls it with names such as boss1, coins and doors to obtain Sprite arrays.'],
+  lj: ['ResourceArchive', 'Archive handle passed to every named sprite and sound load, caching file objects per group.'],
+  jb: ['PcmScheduledEvent', 'Abstract timed event with an int time, ordered into a PcmStreamMixer deque.'],
   qe: ['LevelEntity', 'Constructed per level record from position, type and parameter bytes by LevelDecoder.'],
 };
 const members = {};
@@ -138,6 +141,25 @@ method('uj', 'a', '(BLjava/lang/String;Ljava/lang/Class;)Lmi;', 'requestField', 
 method('uj', 'a', '(Ljava/net/URL;I)Lmi;', 'requestUrl', 'Queues kind 4 with the URL.');
 method('uj', 'a', '(Ljava/lang/Runnable;ZI)Lmi;', 'requestThread', 'Queues kind 2; the dispatcher wraps the Runnable in a new Thread.');
 method('uj', 'a', '(ILjava/lang/String;I)Lmi;', 'requestSocket', 'Queues a socket request; the dispatcher opens a Socket to the host and port.');
+const task = 'PlatformTaskDispatcher fills this PlatformTask field when it queues or runs the request.';
+field('mi', 'f', 'I', 'kind', 'The dispatcher switches on this request kind in run.');
+field('mi', 'c', 'Ljava/lang/Object;', 'argument', 'Holds the Runnable, URL, host or Object[] used by the request.');
+field('mi', 'a', 'I', 'firstInt', 'Thread priority or socket port depending on the request kind.');
+field('mi', 'b', 'I', 'secondInt', task);
+field('mi', 'g', 'Ljava/lang/Object;', 'result', 'Receives the Thread, Method, Field, Socket or stream the request produced.');
+field('jb', 'i', 'I', 'time', 'PcmStreamMixer orders its event deque by this value.');
+const mouse = 'MouseInputHandler stores the pointer coordinate here in its listener.';
+field('bj', 'c', 'I', 'mouseX', mouse);
+field('qb', 'g', 'I', 'mouseY', mouse);
+field('aa', 'a', 'I', 'pressX', 'MouseInputHandler.mousePressed stores the press x here.');
+field('ll', 'g', 'I', 'pressY', 'MouseInputHandler.mousePressed stores the press y here.');
+method('sl', 'a', '(BLda;)V', 'addFirst', 'Unlinks the node then links it directly after the sentinel.');
+method('sl', 'b', '(B)Lda;', 'last', 'Returns the node before the sentinel and positions the cursor before it.');
+method('sl', 'e', '(B)Lda;', 'previous', 'Returns the cursor node and moves it backwards, or null at the sentinel.');
+method('sl', 'd', '(B)Lda;', 'pollLast', 'Unlinks and returns the node before the sentinel, or null when empty.');
+method('sl', 'a', '(I)V', 'clear', 'Unlinks every node after the sentinel and clears the cursor.');
+method('sl', 'd', '(I)Z', 'isEmpty', 'Compares the sentinel with its next link.');
+method('jk', 'a', '(Lqd;)V', 'addSubstream', 'Appends the stream to its child deque.');
 field('cg', 'c', '[Ljava/lang/String;', 'levelNames', 'Holds Tower0 to Tower5 and boss1 to boss3.');
 
 export const config = {

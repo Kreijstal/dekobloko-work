@@ -472,6 +472,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jb",
+      "originalName": "jb",
+      "to": "PcmScheduledEvent",
+      "evidence": "Abstract timed event with an int time, ordered into a PcmStreamMixer deque.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jd",
       "originalName": "jd",
       "to": "ClientException",
@@ -504,6 +511,20 @@
       "originalName": "la",
       "to": "SectorCacheStore",
       "evidence": "Reads and writes archive sectors across a data and an index BufferedCacheFile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lj",
+      "originalName": "lj",
+      "to": "ResourceArchive",
+      "evidence": "Archive handle passed to every named sprite and sound load, caching file objects per group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lk",
+      "originalName": "lk",
+      "to": "SpriteLoader",
+      "evidence": "TorChallenge calls it with names such as boss1, coins and doors to obtain Sprite arrays.",
       "confidence": "reviewed"
     },
     {
@@ -671,7 +692,14 @@
       "symbol": "C:wg",
       "originalName": "wg",
       "to": "VorbisSample",
-      "evidence": "DualLink-free node holding Ogg Vorbis float windows and codebook state, loaded by name from an archive.",
+      "evidence": "IntrusiveNode holding Ogg Vorbis float windows and codebook state, loaded by name from an archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aa.field_a:I",
+      "originalName": "field_a",
+      "to": "pressX",
+      "evidence": "MouseInputHandler.mousePressed stores the press x here.",
       "confidence": "reviewed"
     },
     {
@@ -679,6 +707,13 @@
       "originalName": "field_h",
       "to": "activeScreenId",
       "evidence": "Indexes ug.screens when a screen is activated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bj.field_c:I",
+      "originalName": "field_c",
+      "to": "mouseX",
+      "evidence": "MouseInputHandler stores the pointer coordinate here in its listener.",
       "confidence": "reviewed"
     },
     {
@@ -738,6 +773,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jb.field_i:I",
+      "originalName": "field_i",
+      "to": "time",
+      "evidence": "PcmStreamMixer orders its event deque by this value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jd.field_a:Ljava/lang/Throwable;",
       "originalName": "field_a",
       "to": "cause",
@@ -752,10 +794,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ll.field_g:I",
+      "originalName": "field_g",
+      "to": "pressY",
+      "evidence": "MouseInputHandler.mousePressed stores the press y here.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_a:I",
+      "originalName": "field_a",
+      "to": "firstInt",
+      "evidence": "Thread priority or socket port depending on the request kind.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_b:I",
+      "originalName": "field_b",
+      "to": "secondInt",
+      "evidence": "PlatformTaskDispatcher fills this PlatformTask field when it queues or runs the request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_c:Ljava/lang/Object;",
+      "originalName": "field_c",
+      "to": "argument",
+      "evidence": "Holds the Runnable, URL, host or Object[] used by the request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_f:I",
+      "originalName": "field_f",
+      "to": "kind",
+      "evidence": "The dispatcher switches on this request kind in run.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_g:Ljava/lang/Object;",
+      "originalName": "field_g",
+      "to": "result",
+      "evidence": "Receives the Thread, Method, Field, Socket or stream the request produced.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pd.field_e:I",
       "originalName": "field_e",
       "to": "screenId",
       "evidence": "Assigned from the constructor index that selects the screen slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qb.field_g:I",
+      "originalName": "field_g",
+      "to": "mouseY",
+      "evidence": "MouseInputHandler stores the pointer coordinate here in its listener.",
       "confidence": "reviewed"
     },
     {
@@ -945,6 +1036,13 @@
       "originalName": "a",
       "to": "skip",
       "evidence": "Advances stream time without writing samples. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jk.a(Lqd;)V",
+      "originalName": "a",
+      "to": "addSubstream",
+      "evidence": "Appends the stream to its child deque.",
       "confidence": "reviewed"
     },
     {
@@ -1151,10 +1249,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sl.a(BLda;)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "Unlinks the node then links it directly after the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sl.a(I)V",
+      "originalName": "a",
+      "to": "clear",
+      "evidence": "Unlinks every node after the sentinel and clears the cursor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sl.a(Lda;I)V",
       "originalName": "a",
       "to": "addLast",
       "evidence": "Unlinks the node then links it before the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sl.b(B)Lda;",
+      "originalName": "b",
+      "to": "last",
+      "evidence": "Returns the node before the sentinel and positions the cursor before it.",
       "confidence": "reviewed"
     },
     {
@@ -1169,6 +1288,27 @@
       "originalName": "c",
       "to": "next",
       "evidence": "Returns the cursor node and advances it, or null at the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sl.d(B)Lda;",
+      "originalName": "d",
+      "to": "pollLast",
+      "evidence": "Unlinks and returns the node before the sentinel, or null when empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sl.d(I)Z",
+      "originalName": "d",
+      "to": "isEmpty",
+      "evidence": "Compares the sentinel with its next link.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sl.e(B)Lda;",
+      "originalName": "e",
+      "to": "previous",
+      "evidence": "Returns the cursor node and moves it backwards, or null at the sentinel.",
       "confidence": "reviewed"
     },
     {
@@ -1418,7 +1558,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-torchallenge-rules.mjs": "551f4daacb9eba2fd4c807375b667be13561aec8008321bd121f533238123103",
+      "build-torchallenge-rules.mjs": "716d8dd98e2fcbd396fd03197f305931f571c52a74e2f8faf9f1b2476920cca9",
       "reproduce-torchallenge.mjs": "b3388fa5e2619e82e11f0eae304b9ea97a779afb046e7272b5997c73407bf7be",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
