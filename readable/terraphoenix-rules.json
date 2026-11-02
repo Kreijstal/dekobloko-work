@@ -857,6 +857,13 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:b",
+      "originalName": "b",
+      "to": "RandomAccessCacheFile",
+      "evidence": "Wraps a RandomAccessFile with seek, read and write at a tracked offset.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:c",
       "originalName": "c",
       "to": "NodeHashTableIterator",
@@ -906,6 +913,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dk",
+      "originalName": "dk",
+      "to": "LevelMap",
+      "evidence": "Grid of MapTile cells plus byte serialisation and line-of-sight and path queries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:dl",
+      "originalName": "dl",
+      "to": "MapTile",
+      "evidence": "One LevelMap cell holding a unit reference, neighbours and a back pointer to its map.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:e",
+      "originalName": "e",
+      "to": "BattleState",
+      "evidence": "Battle session owning the LevelMap and unit array; draws Armour, Health and Weapon text.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:eh",
       "originalName": "eh",
       "to": "GameApplet",
@@ -920,10 +948,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:gb",
+      "originalName": "gb",
+      "to": "WidgetContainer",
+      "evidence": "UiWidget that owns an IntrusiveDeque of child widgets walked with cursors.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gg",
+      "originalName": "gg",
+      "to": "PcmSample",
+      "evidence": "AbstractAudioSample subclass held by the sample streams.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gl",
+      "originalName": "gl",
+      "to": "UiWidget",
+      "evidence": "IntrusiveNode base widget with text, listener and bounds fields.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:he",
       "originalName": "he",
       "to": "PlatformTaskDispatcher",
       "evidence": "Runnable owning a Thread and queued tasks for sockets, reflection, frames and URLs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:id",
+      "originalName": "id",
+      "to": "AbstractAudioSample",
+      "evidence": "IntrusiveNode base of PcmSample holding one int.",
       "confidence": "reviewed"
     },
     {
@@ -941,10 +997,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jj",
+      "originalName": "jj",
+      "to": "IntrusiveDeque",
+      "evidence": "Sentinel-based deque of IntrusiveNode with forward traversal and removal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lj",
+      "originalName": "lj",
+      "to": "PcmStream",
+      "evidence": "Abstract IntrusiveNode defining fill, skip and a sibling substream link.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mj",
       "originalName": "mj",
       "to": "SocketConnector",
       "evidence": "Abstract holder of port and host that creates a Socket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mk",
+      "originalName": "mk",
+      "to": "LevelEditor",
+      "evidence": "Prints the \"Editor started\" and \"MODE: Walls/Floors/Objects\" editor key help.",
       "confidence": "reviewed"
     },
     {
@@ -976,6 +1053,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:r",
+      "originalName": "r",
+      "to": "BattleUnit",
+      "evidence": "Unit holding its current MapTile with many stat, flag and orientation fields.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:tc",
       "originalName": "tc",
       "to": "SecondaryNodeDeque",
@@ -1004,6 +1088,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ul",
+      "originalName": "ul",
+      "to": "JavaSoundAudioOutput",
+      "evidence": "Audio output backed by a javax.sound SourceDataLine and AudioFormat.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vh",
       "originalName": "vh",
       "to": "DualLinkNode",
@@ -1025,6 +1116,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dk.field_f:[[Ldl;",
+      "originalName": "field_f",
+      "to": "tiles",
+      "evidence": "LevelMap two-dimensional MapTile grid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dl.field_s:Ldk;",
+      "originalName": "field_s",
+      "to": "map",
+      "evidence": "MapTile back reference to its LevelMap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:e.field_C:[Lr;",
+      "originalName": "field_C",
+      "to": "units",
+      "evidence": "BattleState holds the array of BattleUnit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:e.field_h:Ldk;",
+      "originalName": "field_h",
+      "to": "map",
+      "evidence": "BattleState holds the LevelMap it plays on.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mj.field_b:I",
       "originalName": "field_b",
       "to": "port",
@@ -1036,6 +1155,181 @@
       "originalName": "field_d",
       "to": "host",
       "evidence": "ProxySocketConnector writes this as the CONNECT host.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:r.field_c:Ldl;",
+      "originalName": "field_c",
+      "to": "tile",
+      "evidence": "BattleUnit current MapTile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_a:Luf;",
+      "originalName": "field_a",
+      "to": "next",
+      "evidence": "IntrusiveDeque traverses field_a forward and field_d backward from its sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_d:Luf;",
+      "originalName": "field_d",
+      "to": "previous",
+      "evidence": "IntrusiveDeque traverses field_a forward and field_d backward from its sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_g:J",
+      "originalName": "field_g",
+      "to": "key",
+      "evidence": "IntrusiveDeque traverses field_a forward and field_d backward from its sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vh.field_i:Lvh;",
+      "originalName": "field_i",
+      "to": "secondaryPrevious",
+      "evidence": "SecondaryNodeDeque traverses field_o forward and field_i backward.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vh.field_m:J",
+      "originalName": "field_m",
+      "to": "secondaryKey",
+      "evidence": "SecondaryNodeDeque traverses field_o forward and field_i backward.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vh.field_o:Lvh;",
+      "originalName": "field_o",
+      "to": "secondaryNext",
+      "evidence": "SecondaryNodeDeque traverses field_o forward and field_i backward.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(I[I)V",
+      "originalName": "a",
+      "to": "xteaEncrypt",
+      "evidence": "Runs 32 rounds with the 0x9e3779b9 delta over each 8-byte block in place.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(Ljava/math/BigInteger;BLjava/math/BigInteger;)V",
+      "originalName": "a",
+      "to": "rsaEncrypt",
+      "evidence": "Applies BigInteger.modPow to the written bytes and rewrites the buffer with a length prefix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.e(I)Ljava/lang/String;",
+      "originalName": "e",
+      "to": "readString",
+      "evidence": "Scans to the zero terminator and decodes the bytes between.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.i(I)I",
+      "originalName": "i",
+      "to": "readUnsignedShort",
+      "evidence": "Reads two bytes big-endian and advances the cursor by two.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.i(II)V",
+      "originalName": "i",
+      "to": "writeByte",
+      "evidence": "Stores one byte at the cursor and advances it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uf.b(B)V",
+      "originalName": "b",
+      "to": "unlink",
+      "evidence": "IntrusiveNode.b splices the neighbours together and clears both links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.c(B)V",
+      "originalName": "c",
+      "to": "unlinkSecondary",
+      "evidence": "DualLinkNode.c splices the secondary links out.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(I[I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Runs 32 rounds with the 0x9e3779b9 delta over each 8-byte block in place.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(I[I)V#1",
+      "originalName": "param1",
+      "to": "key",
+      "evidence": "Runs 32 rounds with the 0x9e3779b9 delta over each 8-byte block in place.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/math/BigInteger;BLjava/math/BigInteger;)V#0",
+      "originalName": "param0",
+      "to": "exponent",
+      "evidence": "Applies BigInteger.modPow to the written bytes and rewrites the buffer with a length prefix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/math/BigInteger;BLjava/math/BigInteger;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Applies BigInteger.modPow to the written bytes and rewrites the buffer with a length prefix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.a(Ljava/math/BigInteger;BLjava/math/BigInteger;)V#2",
+      "originalName": "param2",
+      "to": "modulus",
+      "evidence": "Applies BigInteger.modPow to the written bytes and rewrites the buffer with a length prefix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.e(I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Scans to the zero terminator and decodes the bytes between.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.i(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reads two bytes big-endian and advances the cursor by two.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.i(II)V#0",
+      "originalName": "param0",
+      "to": "value",
+      "evidence": "Stores one byte at the cursor and advances it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:dh.i(II)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Stores one byte at the cursor and advances it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:uf.b(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "IntrusiveNode.b splices the neighbours together and clears both links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vh.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "DualLinkNode.c splices the secondary links out.",
       "confidence": "reviewed"
     }
   ],
@@ -1054,7 +1348,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-terraphoenix-rules.mjs": "b34fb68558e1451bed87d8fc95235a222d4ae2e3b64e9ca74b5f1c0dcec4ac58",
+      "build-terraphoenix-rules.mjs": "4ab3356fde712644b7146a9ab0c2d765b57223aff7d1de66101daa549ec24a50",
       "reproduce-terraphoenix.mjs": "26ebcd63f823ab4b28fe91b15329343bbc2ebca2f78d4652cffe0e8f8baf425a",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
