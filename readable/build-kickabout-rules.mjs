@@ -155,6 +155,7 @@ const classes = {
   ls: ['BigCommand', 'Registered under the console name big.'],
   uj: ['SetLagCommand', 'Registered under the console name set_lag.'],
   lh: ['BroadcastServerCommand', 'Registered under the console name broadcast_server.'],
+  la: ['PlayArea', 'Box with x, y and height ranges; pe.a treats a point as valid only when it lies inside one of the CommonGame play areas.'],
 // END-R2CLASSES
   jc: ['LoggedPlayer', 'toString returns "LoggedPlayer{..}" with home/away side, resign time, reward, membership, tackle, kick, cross, header and goal counters.'],
 };
@@ -205,6 +206,83 @@ field('jc', 'j', 'I', 'crosses', T);
 field('jc', 'h', 'I', 'headers', T);
 
 // BEGIN-R2MEMBERS
+method('tj', 'a', '(Z)I', 'pixelX', 'Returns field_t >> 16 and es.a subtracts it from the footballer\'s x.');
+method('tj', 'c', '(I)I', 'pixelY', 'Returns field_p >> 16, the pitch-length coordinate compared against 0 and 1344 in g().');
+method('tj', 'b', '(Z)I', 'pixelHeight', 'Returns field_v >> 16; g() requires it to be under 30 before the ball can be caught.');
+method('tj', 'e', '(I)I', 'horizontalSpeedSquared', 'Returns vx*vx + vy*vy of the shifted velocity fields.');
+method('tj', 'd', '(I)I', 'computeChecksum', 'XORs every state field through fj.a, matching the checksum compared in Kickabout.');
+method('tj', 'g', '(I)Z', 'canBeCaught', 'True only when uncatchable is zero, height is under 30 and the ball is on the pitch.');
+method('tj', 'a', '(BI[Lla;)V', 'stepPhysics', 'Counts down uncatchable and highFriction, runs lt.a collision and applies friction and gravity.');
+field('tj', 't', 'I', 'positionX', 'Printed first under p=[..] in toString and copied from the carrier\'s x each tick.');
+field('tj', 'p', 'I', 'positionY', 'Printed second under p=[..]; the pitch bounds 0..88080384 are tested on it.');
+field('tj', 'v', 'I', 'height', 'Printed third under p=[..]; below 30 pixels the ball may be caught.');
+field('tj', 'q', 'I', 'velocityX', 'First entry of v=[..] in toString.');
+field('tj', 'h', 'I', 'velocityY', 'Second entry of v=[..] in toString.');
+field('tj', 'n', 'I', 'verticalVelocity', 'Third entry of v=[..]; decreased by 16384 while the ball is airborne.');
+field('tj', 'm', 'I', 'possessorTeam', 'Printed before the slash in posessor=m/s and used to index the team array.');
+field('tj', 's', 'I', 'possessorSlot', 'Printed after the slash in posessor=m/s and used to index the team slot.');
+method('nl', 'f', '(I)I', 'pixelX', 'Returns field_M >> 16 and is compared with the ball\'s pixelX.');
+method('nl', 'a', '(Z)I', 'pixelY', 'Returns field_w >> 16 and is compared with the ball\'s pixelY.');
+method('nl', 'b', '(B)I', 'computeChecksum', 'XORs every state field through fj.a, as the ball and goal state do.');
+method('nl', 'b', '(Z)Z', 'isMovingDiagonally', 'True when the direction mask has one horizontal and one vertical bit set.');
+method('nl', 'a', '(BI)V', 'setAction', 'Stores the action code and loads its duration from the vf.field_I table.');
+method('nl', 'a', '(II)V', 'setDirectionFromMask', 'Decodes the 1/2/4/8 direction bits into the x and y direction components.');
+method('nl', 'd', '(I)I', 'directionMask', 'Re-encodes the x and y direction components as the 1/2/4/8 mask.');
+method('nl', 'b', '(II)V', 'startTackle', 'Sets action 3 (ACTION_TACKLE), derives slide velocity from the angle and records the initiator.');
+method('nl', 'c', '(B)I', 'chargeKickDuration', 'Result is stored as the action time when action 1 (ACTION_CHARGE_KICK) starts.');
+method('nl', 'a', '(B)I', 'dashCooldown', 'Result is stored in the cooldown counter when action 4 (ACTION_DASH) starts.');
+method('nl', 'a', '(ZLup;I)V', 'applyPlayerStats', 'Stores the stats object and derives the speed and acceleration fields from it.');
+method('nl', 'a', '(I[Lla;ZZ)V', 'stepMovement', 'Per-tick update: cooldown and action timers, target velocity per action, lt.a collision and gravity.');
+method('nl', 'a', '(ILml;)V', 'readFullState', 'Reads every simulation field from the packet buffer unconditionally.');
+method('nl', 'b', '(ILml;)V', 'readDeltaState', 'Reads each field group only when a leading flag bit is set.');
+field('nl', 'M', 'I', 'positionX', 'Printed first under loc=[..] and used as the ball\'s x when carried.');
+field('nl', 'w', 'I', 'positionY', 'Printed second under loc=[..] and used as the ball\'s y when carried.');
+field('nl', 'v', 'I', 'height', 'Printed third under loc=[..]; non-zero height triggers gravity.');
+field('nl', 'K', 'I', 'verticalVelocity', 'Fourth loc entry; reduced by 26214 each tick while airborne.');
+field('nl', 'L', 'I', 'actionTime', 'Printed as the first act=[..] entry and counted down while an action runs.');
+field('nl', 'G', 'I', 'directionMask', 'Bit mask 1/2/4/8 for the four movement directions, clamped to the pitch bounds.');
+field('nl', 'j', 'I', 'directionX', 'Set to -1/0/1 from bits 8 and 2 of the direction mask.');
+field('nl', 'n', 'I', 'directionY', 'Set to -1/0/1 from bits 1 and 4 of the direction mask.');
+field('nl', 'N', 'Lup;', 'stats', 'Assigned by applyPlayerStats and queried for speed, strength and trinkets.');
+field('nl', 'F', 'I', 'controllingParticipant', 'Index into the per-participant LoggedPlayer counters for header and cross stats.');
+field('nl', 'C', 'I', 'dashCooldown', 'Counted down every tick and set from dashCooldown() when a dash starts.');
+method('nu', 'd', '(I)V', 'tick', 'Counts down the phase timer, bumps agent version counters, runs b(I) and applies queued player switches.');
+method('nu', 'b', '(I)V', 'stepMatch', 'Per-tick game logic: AI updates, ball physics, possession, tackles, headers and goal detection.');
+method('nu', 'c', '(I)I', 'computeChecksum', 'XORs the checksums of every footballer, the ball and the goal state.');
+method('nu', 'a', '(Lnu;B)V', 'copyStateFrom', 'Copies every participant, agent, phase object and log from another CommonGame.');
+method('nu', 'b', '(B)Lnl;', 'getBallCarrier', 'Returns the footballer indexed by the ball\'s possessor team and slot, or null.');
+method('nu', 'a', '(BI)Lnl;', 'getControlledFootballer', 'Returns the footballer controlled by the given participant.');
+method('nu', 'a', '(BII)I', 'findControllingParticipant', 'Finds the participant on the given team whose controlled slot equals the argument.');
+method('nu', 'b', '(BLki;)V', 'applyPlayingCommand', 'Handles commands 0..7 (kick, dash, slide, switch player) from a ki event in phase 4.');
+method('nu', 'a', '(ILki;)V', 'applyTeamSelectionCommand', 'Phase 0 only: forwards the ki event to the TeamSelectionAgent.');
+method('nu', 'b', '(ZLki;)V', 'applyMoveInput', 'Phase 4 only: stores the event\'s direction mask on the participant\'s footballer.');
+method('gt', 'd', '(I)Z', 'isActive', 'Returns true while the participant has neither resigned nor departed.');
+field('gt', 'g', 'I', 'controlledSlot', 'Read as three bits minus one and compared with the footballer slot in findControllingParticipant.');
+method('hv', 'a', '(ZLnu;I)V', 'updateKeeperAI', 'CommonGame.stepMatch calls it for slot 0 of each team, the keeper with the keeperstate fields.');
+method('hf', 'a', '(ILnu;I)I', 'findClosestOutfielder', 'Loops slots 1..4 and returns the index with the smallest (or largest) ball distance.');
+method('jt', 'a', '(Lnu;BII)Z', 'updateOutfielderAI', 'For an idle slot calls ri.a, otherwise go.a to move towards a target.');
+method('go', 'a', '(ILnu;IIII)V', 'moveToTarget', 'Sets action 11 (ACTION_RUN_HOME) and steers the footballer towards the target coordinates.');
+method('ri', 'a', '(BILnu;I)V', 'updateIdleMovement', 'Only acts while the action is 0: flips direction bits at the pitch limits and re-aims at the ball every tenth tick.');
+method('nb', 'a', '(Lnl;I)I', 'keeperReach', 'Returns 170 minus eight times the keeper state field.');
+method('ue', 'a', '(IILnl;I)V', 'steerTowardsPoint', 'Sets direction bits towards the target coordinates and clears them once within 10 pixels.');
+method('oe', 'e', '(I)I', 'countTeamZero', 'Private loop counting selection entries equal to 0.');
+method('oe', 'd', '(I)I', 'countTeamOne', 'Private loop counting selection entries equal to 1.');
+method('oe', 'a', '(II)Z', 'isReadyOrInactive', 'True when the participant has left or has its ready bit set.');
+method('oe', 'a', '(BI)Z', 'canJoinTeamZero', 'Checks the size limits of both teams before a participant may pick team 0.');
+method('oe', 'b', '(BI)Z', 'canJoinTeamOne', 'Checks the size limits of both teams before a participant may pick team 1.');
+method('oe', 'a', '(III)V', 'applyCommand', 'Command 0 picks team 0, 1 picks team 1 and 2 toggles the ready bit for the participant.');
+field('oe', 'o', 'I', 'readyMask', 'Printed as ready= in toString and toggled per participant by applyCommand command 2.');
+field('oe', 'k', '[I', 'selection', 'Printed as selection=[..]; holds -1, 0 or 1 per participant and indexes the two team counters.');
+method('wr', 'a', '(III)V', 'applyCommand', 'Command 0 selects the previous formation, 1 the next and 2 confirms the team\'s choice.');
+method('wr', 'a', '(B)Z', 'allFormationsConfirmed', 'Returns true when both teams\' confirmed flags are set.');
+field('wr', 'k', '[I', 'formationChoice', 'Printed after team0= and team1= in toString and clamped to the formation table length.');
+field('wr', 'i', '[Z', 'formationConfirmed', 'Printed after the slash in toString and set by command 2.');
+method('ua', 'a', '(Ltj;I)V', 'detectGoal', 'When the free ball is between x 370 and 525 and beyond either goal line it starts the goal counter and records the scorer.');
+method('ua', 'c', '(I)I', 'computeChecksum', 'Returns the checksum of the score, goal counter and scorer.');
+method('ua', 'a', '(Lml;B)V', 'readState', 'Reads the two scores, goal counter and scorer from the buffer when the leading flag is set.');
+method('la', 'a', '(IIII)Z', 'containsPoint', 'Compares x, y and height against the box extents and returns whether the point lies inside.');
+method('pe', 'a', '([Lla;B[I)Z', 'isInsideAnyArea', 'Returns true when the area array is null or any PlayArea contains the x, y, height triple.');
+method('lt', 'a', '(II[Lla;IIIII)[I', 'moveWithinAreas', 'Advances x, y and height separately and reverts and negates a velocity component when the new point leaves every PlayArea.');
 method('a', 'f', '()V', 'closeDevice', 'Body is identical to escapevector/geoblox JavaSoundAudioOutput.closeDevice.');
 method('ah', '$cfr$lcmp', '(JJ)I', 'compareLongs', 'Body is identical to escapevector GameAppletShell.compareLongs.');
 method('as', 'a', '(IF)I', 'computeCoefficients', 'Body is identical to armiesofgielinor/geoblox SoundFilter.computeCoefficients.');

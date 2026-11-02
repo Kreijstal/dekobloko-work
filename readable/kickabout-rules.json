@@ -913,6 +913,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:la",
+      "originalName": "la",
+      "to": "PlayArea",
+      "evidence": "Box with x, y and height ranges; pe.a treats a point as valid only when it lies inside one of the CommonGame play areas.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:lb",
       "originalName": "lb",
       "to": "TextHotspotWidget",
@@ -1459,6 +1466,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gt.field_g:I",
+      "originalName": "field_g",
+      "to": "controlledSlot",
+      "evidence": "Read as three bits minus one and compared with the footballer slot in findControllingParticipant.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gt.field_i:Z",
       "originalName": "field_i",
       "to": "loadedPitch",
@@ -1529,6 +1543,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nl.field_C:I",
+      "originalName": "field_C",
+      "to": "dashCooldown",
+      "evidence": "Counted down every tick and set from dashCooldown() when a dash starts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nl.field_F:I",
+      "originalName": "field_F",
+      "to": "controllingParticipant",
+      "evidence": "Index into the per-participant LoggedPlayer counters for header and cross stats.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nl.field_G:I",
+      "originalName": "field_G",
+      "to": "directionMask",
+      "evidence": "Bit mask 1/2/4/8 for the four movement directions, clamped to the pitch bounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nl.field_I:I",
       "originalName": "field_I",
       "to": "aiWait",
@@ -1543,6 +1578,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nl.field_K:I",
+      "originalName": "field_K",
+      "to": "verticalVelocity",
+      "evidence": "Fourth loc entry; reduced by 26214 each tick while airborne.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nl.field_L:I",
+      "originalName": "field_L",
+      "to": "actionTime",
+      "evidence": "Printed as the first act=[..] entry and counted down while an action runs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nl.field_M:I",
+      "originalName": "field_M",
+      "to": "positionX",
+      "evidence": "Printed first under loc=[..] and used as the ball's x when carried.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nl.field_N:Lup;",
+      "originalName": "field_N",
+      "to": "stats",
+      "evidence": "Assigned by applyPlayerStats and queried for speed, strength and trinkets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nl.field_j:I",
+      "originalName": "field_j",
+      "to": "directionX",
+      "evidence": "Set to -1/0/1 from bits 8 and 2 of the direction mask.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nl.field_l:Z",
       "originalName": "field_l",
       "to": "megamode",
@@ -1550,10 +1620,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nl.field_n:I",
+      "originalName": "field_n",
+      "to": "directionY",
+      "evidence": "Set to -1/0/1 from bits 1 and 4 of the direction mask.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nl.field_u:I",
       "originalName": "field_u",
       "to": "action",
       "evidence": "Switched on by actionName.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nl.field_v:I",
+      "originalName": "field_v",
+      "to": "height",
+      "evidence": "Printed third under loc=[..]; non-zero height triggers gravity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nl.field_w:I",
+      "originalName": "field_w",
+      "to": "positionY",
+      "evidence": "Printed second under loc=[..] and used as the ball's y when carried.",
       "confidence": "reviewed"
     },
     {
@@ -1648,10 +1739,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oe.field_k:[I",
+      "originalName": "field_k",
+      "to": "selection",
+      "evidence": "Printed as selection=[..]; holds -1, 0 or 1 per participant and indexes the two team counters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oe.field_o:I",
+      "originalName": "field_o",
+      "to": "readyMask",
+      "evidence": "Printed as ready= in toString and toggled per participant by applyCommand command 2.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tj.field_A:I",
       "originalName": "field_A",
       "to": "highFriction",
       "evidence": "Printed under this label by toString. (high_friction)",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_h:I",
+      "originalName": "field_h",
+      "to": "velocityY",
+      "evidence": "Second entry of v=[..] in toString.",
       "confidence": "reviewed"
     },
     {
@@ -1662,10 +1774,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:tj.field_m:I",
+      "originalName": "field_m",
+      "to": "possessorTeam",
+      "evidence": "Printed before the slash in posessor=m/s and used to index the team array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_n:I",
+      "originalName": "field_n",
+      "to": "verticalVelocity",
+      "evidence": "Third entry of v=[..]; decreased by 16384 while the ball is airborne.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_p:I",
+      "originalName": "field_p",
+      "to": "positionY",
+      "evidence": "Printed second under p=[..]; the pitch bounds 0..88080384 are tested on it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_q:I",
+      "originalName": "field_q",
+      "to": "velocityX",
+      "evidence": "First entry of v=[..] in toString.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tj.field_r:I",
       "originalName": "field_r",
       "to": "uncatchable",
       "evidence": "Printed under this label by toString.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_s:I",
+      "originalName": "field_s",
+      "to": "possessorSlot",
+      "evidence": "Printed after the slash in posessor=m/s and used to index the team slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_t:I",
+      "originalName": "field_t",
+      "to": "positionX",
+      "evidence": "Printed first under p=[..] in toString and copied from the carrier's x each tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_v:I",
+      "originalName": "field_v",
+      "to": "height",
+      "evidence": "Printed third under p=[..]; below 30 pixels the ball may be caught.",
       "confidence": "reviewed"
     },
     {
@@ -1687,6 +1848,20 @@
       "originalName": "field_n",
       "to": "goalScorer",
       "evidence": "Printed under this label by toString. (goal_scorer)",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wr.field_i:[Z",
+      "originalName": "field_i",
+      "to": "formationConfirmed",
+      "evidence": "Printed after the slash in toString and set by command 2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wr.field_k:[I",
+      "originalName": "field_k",
+      "to": "formationChoice",
+      "evidence": "Printed after team0= and team1= in toString and clamped to the formation table length.",
       "confidence": "reviewed"
     },
     {
@@ -1991,6 +2166,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gm.a(I[Lla;ZZ)V",
+      "originalName": "a",
+      "to": "stepMovement",
+      "evidence": "Per-tick update: cooldown and action timers, target velocity per action, lt.a collision and gravity. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.a(ILnu;IIII)V",
+      "originalName": "a",
+      "to": "moveToTarget",
+      "evidence": "Sets action 11 (ACTION_RUN_HOME) and steers the footballer towards the target coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gq.a(Lgn;Lme;)V",
       "originalName": "a",
       "to": "insertListenerByFrameOffset",
@@ -2019,6 +2208,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gt.d(I)Z",
+      "originalName": "d",
+      "to": "isActive",
+      "evidence": "Returns true while the participant has neither resigned nor departed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(ILnu;I)I",
+      "originalName": "a",
+      "to": "findClosestOutfielder",
+      "evidence": "Loops slots 1..4 and returns the index with the smallest (or largest) ball distance.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hu.a(C)I",
       "originalName": "a",
       "to": "charWidth",
@@ -2037,6 +2240,13 @@
       "originalName": "b",
       "to": "applyStyleTag",
       "evidence": "Body closely matches geoblox BitmapFont.applyStyleTag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hv.a(ZLnu;I)V",
+      "originalName": "a",
+      "to": "updateKeeperAI",
+      "evidence": "CommonGame.stepMatch calls it for slot 0 of each team, the keeper with the keeperstate fields.",
       "confidence": "reviewed"
     },
     {
@@ -2072,6 +2282,13 @@
       "originalName": "a",
       "to": "handlePointerPress",
       "evidence": "Body closely matches steelsentinels SingleChildContainer.handlePointerPress. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jt.a(Lnu;BII)Z",
+      "originalName": "a",
+      "to": "updateOutfielderAI",
+      "evidence": "For an idle slot calls ri.a, otherwise go.a to move towards a target.",
       "confidence": "reviewed"
     },
     {
@@ -2159,10 +2376,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.a(IIII)Z",
+      "originalName": "a",
+      "to": "containsPoint",
+      "evidence": "Compares x, y and height against the box extents and returns whether the point lies inside.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lb.a(Lfd;I)Z",
       "originalName": "a",
       "to": "focusNext",
       "evidence": "Body closely matches steelsentinels TextHotspotWidget.focusNext.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lt.a(II[Lla;IIIII)[I",
+      "originalName": "a",
+      "to": "moveWithinAreas",
+      "evidence": "Advances x, y and height separately and reverts and negates a velocity component when the new point leaves every PlayArea.",
       "confidence": "reviewed"
     },
     {
@@ -2187,6 +2418,97 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nb.a(Lnl;I)I",
+      "originalName": "a",
+      "to": "keeperReach",
+      "evidence": "Returns 170 minus eight times the keeper state field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.a(B)I",
+      "originalName": "a",
+      "to": "dashCooldown",
+      "evidence": "Result is stored in the cooldown counter when action 4 (ACTION_DASH) starts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.a(BI)V",
+      "originalName": "a",
+      "to": "setAction",
+      "evidence": "Stores the action code and loads its duration from the vf.field_I table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.a(II)V",
+      "originalName": "a",
+      "to": "setDirectionFromMask",
+      "evidence": "Decodes the 1/2/4/8 direction bits into the x and y direction components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.a(ILml;)V",
+      "originalName": "a",
+      "to": "readFullState",
+      "evidence": "Reads every simulation field from the packet buffer unconditionally.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.a(I[Lla;ZZ)V",
+      "originalName": "a",
+      "to": "stepMovement",
+      "evidence": "Per-tick update: cooldown and action timers, target velocity per action, lt.a collision and gravity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.a(Z)I",
+      "originalName": "a",
+      "to": "pixelY",
+      "evidence": "Returns field_w >> 16 and is compared with the ball's pixelY.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.a(ZLup;I)V",
+      "originalName": "a",
+      "to": "applyPlayerStats",
+      "evidence": "Stores the stats object and derives the speed and acceleration fields from it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.b(B)I",
+      "originalName": "b",
+      "to": "computeChecksum",
+      "evidence": "XORs every state field through fj.a, as the ball and goal state do.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.b(II)V",
+      "originalName": "b",
+      "to": "startTackle",
+      "evidence": "Sets action 3 (ACTION_TACKLE), derives slide velocity from the angle and records the initiator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.b(ILml;)V",
+      "originalName": "b",
+      "to": "readDeltaState",
+      "evidence": "Reads each field group only when a leading flag bit is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.b(Z)Z",
+      "originalName": "b",
+      "to": "isMovingDiagonally",
+      "evidence": "True when the direction mask has one horizontal and one vertical bit set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.c(B)I",
+      "originalName": "c",
+      "to": "chargeKickDuration",
+      "evidence": "Result is stored as the action time when action 1 (ACTION_CHARGE_KICK) starts.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nl.c(I)Ljava/lang/String;",
       "originalName": "c",
       "to": "archetypeName",
@@ -2201,6 +2523,76 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nl.d(I)I",
+      "originalName": "d",
+      "to": "directionMask",
+      "evidence": "Re-encodes the x and y direction components as the 1/2/4/8 mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.f(I)I",
+      "originalName": "f",
+      "to": "pixelX",
+      "evidence": "Returns field_M >> 16 and is compared with the ball's pixelX.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.a(BI)Lnl;",
+      "originalName": "a",
+      "to": "getControlledFootballer",
+      "evidence": "Returns the footballer controlled by the given participant.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.a(BII)I",
+      "originalName": "a",
+      "to": "findControllingParticipant",
+      "evidence": "Finds the participant on the given team whose controlled slot equals the argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.a(ILki;)V",
+      "originalName": "a",
+      "to": "applyTeamSelectionCommand",
+      "evidence": "Phase 0 only: forwards the ki event to the TeamSelectionAgent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.a(Lnu;B)V",
+      "originalName": "a",
+      "to": "copyStateFrom",
+      "evidence": "Copies every participant, agent, phase object and log from another CommonGame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.b(B)Lnl;",
+      "originalName": "b",
+      "to": "getBallCarrier",
+      "evidence": "Returns the footballer indexed by the ball's possessor team and slot, or null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.b(BLki;)V",
+      "originalName": "b",
+      "to": "applyPlayingCommand",
+      "evidence": "Handles commands 0..7 (kick, dash, slide, switch player) from a ki event in phase 4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.b(I)V",
+      "originalName": "b",
+      "to": "stepMatch",
+      "evidence": "Per-tick game logic: AI updates, ball physics, possession, tackles, headers and goal detection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.b(ZLki;)V",
+      "originalName": "b",
+      "to": "applyMoveInput",
+      "evidence": "Phase 4 only: stores the event's direction mask on the participant's footballer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nu.c(B)Ljava/lang/String;",
       "originalName": "c",
       "to": "phaseName",
@@ -2208,10 +2600,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nu.c(I)I",
+      "originalName": "c",
+      "to": "computeChecksum",
+      "evidence": "XORs the checksums of every footballer, the ball and the goal state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.d(I)V",
+      "originalName": "d",
+      "to": "tick",
+      "evidence": "Counts down the phase timer, bumps agent version counters, runs b(I) and applies queued player switches.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nv.a(ZIILfd;III)Z",
       "originalName": "a",
       "to": "handlePointerPress",
       "evidence": "Body closely matches steelsentinels SingleChildContainer.handlePointerPress. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.a(BI[Lla;)V",
+      "originalName": "a",
+      "to": "stepPhysics",
+      "evidence": "Counts down uncatchable and highFriction, runs lt.a collision and applies friction and gravity. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(BI)Z",
+      "originalName": "a",
+      "to": "canJoinTeamZero",
+      "evidence": "Checks the size limits of both teams before a participant may pick team 0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(II)Z",
+      "originalName": "a",
+      "to": "isReadyOrInactive",
+      "evidence": "True when the participant has left or has its ready bit set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(III)V",
+      "originalName": "a",
+      "to": "applyCommand",
+      "evidence": "Command 0 picks team 0, 1 picks team 1 and 2 toggles the ready bit for the participant.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(BI)Z",
+      "originalName": "b",
+      "to": "canJoinTeamOne",
+      "evidence": "Checks the size limits of both teams before a participant may pick team 1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.d(I)I",
+      "originalName": "d",
+      "to": "countTeamOne",
+      "evidence": "Private loop counting selection entries equal to 1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.e(I)I",
+      "originalName": "e",
+      "to": "countTeamZero",
+      "evidence": "Private loop counting selection entries equal to 0.",
       "confidence": "reviewed"
     },
     {
@@ -2376,6 +2831,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a([Lla;B[I)Z",
+      "originalName": "a",
+      "to": "isInsideAnyArea",
+      "evidence": "Returns true when the area array is null or any PlayArea contains the x, y, height triple.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pm.a(IIILjava/awt/Component;)V",
       "originalName": "a",
       "to": "initialize",
@@ -2429,6 +2891,13 @@
       "originalName": "a",
       "to": "copyStyleTo",
       "evidence": "Body closely matches escapevector TextWidgetPainter.copyStyleTo.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ri.a(BILnu;I)V",
+      "originalName": "a",
+      "to": "updateIdleMovement",
+      "evidence": "Only acts while the action is 0: flips direction bits at the pitch limits and re-aims at the ball every tenth tick.",
       "confidence": "reviewed"
     },
     {
@@ -2523,10 +2992,87 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tj.a(BI[Lla;)V",
+      "originalName": "a",
+      "to": "stepPhysics",
+      "evidence": "Counts down uncatchable and highFriction, runs lt.a collision and applies friction and gravity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.a(Z)I",
+      "originalName": "a",
+      "to": "pixelX",
+      "evidence": "Returns field_t >> 16 and es.a subtracts it from the footballer's x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.b(Z)I",
+      "originalName": "b",
+      "to": "pixelHeight",
+      "evidence": "Returns field_v >> 16; g() requires it to be under 30 before the ball can be caught.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.c(I)I",
+      "originalName": "c",
+      "to": "pixelY",
+      "evidence": "Returns field_p >> 16, the pitch-length coordinate compared against 0 and 1344 in g().",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.d(I)I",
+      "originalName": "d",
+      "to": "computeChecksum",
+      "evidence": "XORs every state field through fj.a, matching the checksum compared in Kickabout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.e(I)I",
+      "originalName": "e",
+      "to": "horizontalSpeedSquared",
+      "evidence": "Returns vx*vx + vy*vy of the shifted velocity fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.g(I)Z",
+      "originalName": "g",
+      "to": "canBeCaught",
+      "evidence": "True only when uncatchable is zero, height is under 30 and the ball is on the pitch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ua.a(Lml;B)V",
+      "originalName": "a",
+      "to": "readState",
+      "evidence": "Reads the two scores, goal counter and scorer from the buffer when the leading flag is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ua.a(Ltj;I)V",
+      "originalName": "a",
+      "to": "detectGoal",
+      "evidence": "When the free ball is between x 370 and 525 and beyond either goal line it starts the goal counter and records the scorer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ua.c(I)I",
+      "originalName": "c",
+      "to": "computeChecksum",
+      "evidence": "Returns the checksum of the score, goal counter and scorer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ub.a(Z)Lfd;",
       "originalName": "a",
       "to": "findFocusedChild",
       "evidence": "Body is identical to escapevector ModalPanel.findFocusedChild.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.a(IILnl;I)V",
+      "originalName": "a",
+      "to": "steerTowardsPoint",
+      "evidence": "Sets direction bits towards the target coordinates and clears them once within 10 pixels.",
       "confidence": "reviewed"
     },
     {
@@ -2880,6 +3426,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wr.a(B)Z",
+      "originalName": "a",
+      "to": "allFormationsConfirmed",
+      "evidence": "Returns true when both teams' confirmed flags are set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wr.a(III)V",
+      "originalName": "a",
+      "to": "applyCommand",
+      "evidence": "Command 0 selects the previous formation, 1 the next and 2 confirms the team's choice.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wt.a(IILjava/util/Hashtable;Ljava/lang/StringBuilder;)Ljava/lang/StringBuilder;",
       "originalName": "a",
       "to": "appendWidgetDiagnostics",
@@ -2916,7 +3476,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-kickabout-rules.mjs": "7fa0ad65fe406f61ed489ce8caf702713374ee85a65f70b286c2037b780d354b",
+      "build-kickabout-rules.mjs": "7958a55ecca5d81d603a55cc7bbf519309faee97ded373e6069358f76e3ff27e",
       "reproduce-kickabout.mjs": "ced425cb07cc59ef9672e56d45c5fdaaf3cc113192449c7eafd4355270fa9245",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
