@@ -43,6 +43,7 @@ const classes = {
   gb: ['AbstractAudioSample', 'Abstract IntrusiveNode base of PcmSample holding one int.'],
   ud: ['PcmSample', 'AbstractAudioSample holding a byte array, sample rate and loop bounds.'],
   gd: ['PcmSampleStream', 'PcmStream mixing a PcmSample with volume, pan and looping.'],
+  ba: ['AudioMixer', 'Owns arrays of PcmStream and mixes them into an int buffer; the SourceDataLine output extends it.'],
   bd: ['BitmapFont', 'DualLinkNode owning glyph tables with width, draw and wrap operations on strings.'],
 };
 const members = {};
@@ -94,6 +95,9 @@ field('sd', 'g', 'D', 'velocityX', popup);
 field('sd', 'a', 'D', 'velocityY', popup);
 field('sd', 'e', 'I', 'value', 'Added to the score tallies when the popup leaves the screen.');
 method('sd', 'a', '(I)Lsd;', 'update', 'Advances the popup and returns null once it leaves the screen.');
+
+method('kd', 'b', '([III)V', 'mix', 'Abstract fill of an int sample range; PcmSampleStream implements it as the resampling loop.');
+method('kd', 'a', '(I)V', 'skip', 'Abstract advance by a sample count, called instead of mixing while the stream is inactive.');
 
 export const config = {
   game: 'stellarshard', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
