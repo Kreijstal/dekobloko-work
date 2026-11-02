@@ -27,8 +27,12 @@ const classes = {
   df: ['Rasterizer', 'Static pixel array with clip bounds and software pixel and rectangle drawing.'],
   rl: ['SpriteState', 'DualLinkNode subclass holding the full and trimmed dimension and offset integers.'],
   mg: ['Sprite', 'SpriteState subclass owning an int pixel array with software blits.'],
-  km: ['UiWidget', 'Widget node with a child deque, sprites, text and bounds fields.'],
   eh: ['Js5Archive', 'Synchronized lookups of byte arrays by group and file index or name over cached Object arrays.'],
+  in: ['AudioStream', 'IntrusiveNode subclass with an abstract fill of an int sample buffer and a linked next stream.'],
+  sc: ['MusicTrack', 'Loaded from the archive by name for the title screen and in-game tracks.'],
+  fm: ['WhirlpoolDigest', 'Keeps a 32-byte bit-length counter, a 64-byte block and eight long state words.'],
+  fi: ['UiWidget', 'IntrusiveNode base widget with a listener, text and bounds fields, hit tests and key and click handlers.'],
+  fd: ['WidgetContainer', 'UiWidget owning an IntrusiveDeque of children traversed with cursors for layout, input and hit tests.'],
   ic: ['GameSession', 'Constructs a GameBoard and CellAnimator and drives turn text, timers and board input.'],
 };
 const members = {};
@@ -93,8 +97,39 @@ method('ic', 'a', '(II)I', 'cellScreenY', 'Converts a grid index to a screen coo
 method('ic', 'a', '(ZII)I', 'cellScreenX', 'Converts a grid index to a screen coordinate from either side using the cell size and board offset.');
 method('ic', 'e', '(I)I', 'turnPulse', 'Triangle wave of the tick counter whose sign depends on the current player.');
 method('ic', 'b', '(IZ)V', 'drawStatusPanel', 'Draws both piece counts and the winner or turn text from the board state.');
+method('uk', 'c', '(I)V', 'tickGame', 'The per-tick method samples a 32-entry clock ring and then calls this.');
+method('uk', 'c', '(Z)V', 'initializeGame', 'Called once from run after the canvas is created and before the tick loop.');
+method('uk', 'd', '(I)V', 'shutdown', 'Called on the exit path of run before System.exit.');
+method('uk', 'a', '(Z)V', 'runTick', 'Samples the tick clock into a 32-entry ring and calls tickGame.');
+field('fb', 'g', 'I', 'row', 'advanceFlips writes displayedCells at this first index.');
+field('fb', 'k', 'I', 'column', 'advanceFlips writes displayedCells at this second index.');
+field('fb', 'q', 'Z', 'newOwnerIsFirstPlayer', 'advanceFlips stores 0 into the displayed cell when set and 1 otherwise.');
+method('jc', 'a', '(Ljava/lang/String;B)V', 'writeString', 'Rejects NUL characters, writes the encoded text and a trailing zero byte.');
+method('jc', 'b', '(Ljava/lang/String;B)V', 'writeZeroPrefixedString', 'Rejects NUL characters and writes a zero byte, the encoded text and a trailing zero byte.');
+method('jc', 'h', '(I)Ljava/lang/String;', 'readString', 'Scans to the zero terminator and decodes the bytes between.');
+method('jc', 'f', '(I)Ljava/lang/String;', 'readOptionalString', 'Returns null for a leading zero byte and otherwise reads a string.');
+method('jc', 'a', '(Ljava/math/BigInteger;Ljava/math/BigInteger;B)V', 'encryptRsa', 'Replaces the buffer with the modPow of its bytes under the given exponent and modulus.');
+method('jc', 'd', '(Z)I', 'readLargeSmart', 'Reads an int when the next byte is negative and otherwise an unsigned short.');
+field('uf', 'n', 'Z', 'boardFilled', 'Set when no empty cell remains after a recount.');
+field('uf', 'x', 'Z', 'playerWipedOut', 'Set when a recount finds one player with zero pieces.');
+field('uf', 'k', 'I', 'lastMoveSourceRow', 'applyMove stores its first index argument, the source row, here.');
+field('uf', 'a', 'I', 'lastMoveSourceColumn', 'applyMove stores its second index argument, the source column, here.');
+field('uf', 'B', 'I', 'lastMovePlayer', 'applyMove stores the moving player here.');
+field('uf', 'm', 'I', 'lastMoveDestRow', 'applyMove stores the destination row, the first cell index it writes, here.');
+field('uf', 'w', 'I', 'lastMoveDestColumn', 'applyMove stores the destination column, the second cell index it writes, here.');
+field('uf', 'e', '[I', 'candidateDestRows', 'recordCandidate stores the destination row of each candidate move.');
+field('uf', 'G', '[I', 'candidateDestColumns', 'recordCandidate stores the destination column of each candidate move.');
+field('uf', 'q', '[I', 'candidateSourceRows', 'recordCandidate stores the source row of each candidate move.');
+field('uf', 't', '[I', 'candidateSourceColumns', 'recordCandidate stores the source column of each candidate move.');
+field('m', 'c', 'I', 'selectedRow', 'chooseAiMove resets it to -1 together with selectedColumn.');
+field('m', 'k', 'I', 'selectedColumn', 'GameSession passes it as the source column to classifyMove.');
+field('ic', 'x', 'I', 'hoverRow', 'tick compares it with the row loop index to find the hovered cell.');
+field('ic', 'h', 'I', 'hoverColumn', 'tick compares it with the column loop index to find the hovered cell.');
 field('ic', 'g', 'Z', 'online', 'Moves, resign and restart send packets instead of acting locally when it is set.');
-field('uf', 'y', 'I', 'difficulty', 'Indexes the per-level board size and turn time tables.');
+field('uf', 'y', 'I', 'timeSetting', 'GameSession indexes the per-move time table with it to reset the turn timer.');
+field('uf', 's', 'I', 'sizeSetting', 'The constructor indexes the 7, 9 and 11 grid size table with it.');
+field('ra', 'a', '[I', 'gridSizes', 'Holds the three board edge lengths 7, 9 and 11.');
+field('sh', 'yb', '[I', 'turnDurations', 'Holds descending per-move tick budgets from 6000 to 500.');
 field('ic', 'C', 'Luf;', 'board', 'Constructed with the GameBoard and read for the turn state.');
 field('ic', 'A', 'Lm;', 'animator', 'Constructed with the CellAnimator for the board.');
 field('ic', 'e', 'I', 'localPlayer', 'Compared with the current player to decide whose turn text to show.');

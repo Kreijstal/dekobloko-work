@@ -248,6 +248,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fd",
+      "originalName": "fd",
+      "to": "WidgetContainer",
+      "evidence": "UiWidget owning an IntrusiveDeque of children traversed with cursors for layout, input and hit tests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fi",
+      "originalName": "fi",
+      "to": "UiWidget",
+      "evidence": "IntrusiveNode base widget with a listener, text and bounds fields, hit tests and key and click handlers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fm",
+      "originalName": "fm",
+      "to": "WhirlpoolDigest",
+      "evidence": "Keeps a 32-byte bit-length counter, a 64-byte block and eight long state words.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:gd",
       "originalName": "gd",
       "to": "ImageProducerRasterBuffer",
@@ -269,17 +290,17 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:in",
+      "originalName": "in",
+      "to": "AudioStream",
+      "evidence": "IntrusiveNode subclass with an abstract fill of an int sample buffer and a linked next stream.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jc",
       "originalName": "jc",
       "to": "PacketBuffer",
       "evidence": "IntrusiveNode with a byte payload and cursor, big-endian primitive, string and RSA operations.",
-      "confidence": "reviewed"
-    },
-    {
-      "symbol": "C:km",
-      "originalName": "km",
-      "to": "UiWidget",
-      "evidence": "Widget node with a child deque, sprites, text and bounds fields.",
       "confidence": "reviewed"
     },
     {
@@ -346,6 +367,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sc",
+      "originalName": "sc",
+      "to": "MusicTrack",
+      "evidence": "Loaded from the archive by name for the title screen and in-game tracks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:uf",
       "originalName": "uf",
       "to": "GameBoard",
@@ -374,10 +402,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fb.field_g:I",
+      "originalName": "field_g",
+      "to": "row",
+      "evidence": "advanceFlips writes displayedCells at this first index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fb.field_j:I",
       "originalName": "field_j",
       "to": "phase",
       "evidence": "advanceFlips switches on values 0, 1 and 2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fb.field_k:I",
+      "originalName": "field_k",
+      "to": "column",
+      "evidence": "advanceFlips writes displayedCells at this second index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fb.field_q:Z",
+      "originalName": "field_q",
+      "to": "newOwnerIsFirstPlayer",
+      "evidence": "advanceFlips stores 0 into the displayed cell when set and 1 otherwise.",
       "confidence": "reviewed"
     },
     {
@@ -409,6 +458,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ic.field_h:I",
+      "originalName": "field_h",
+      "to": "hoverColumn",
+      "evidence": "tick compares it with the column loop index to find the hovered cell.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ic.field_j:I",
       "originalName": "field_j",
       "to": "tickCount",
@@ -427,6 +483,13 @@
       "originalName": "field_w",
       "to": "turnTimer",
       "evidence": "tick decrements it and chooses an AI move when it reaches zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ic.field_x:I",
+      "originalName": "field_x",
+      "to": "hoverRow",
+      "evidence": "tick compares it with the row loop index to find the hovered cell.",
       "confidence": "reviewed"
     },
     {
@@ -465,6 +528,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:m.field_c:I",
+      "originalName": "field_c",
+      "to": "selectedRow",
+      "evidence": "chooseAiMove resets it to -1 together with selectedColumn.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:m.field_d:[[B",
       "originalName": "field_d",
       "to": "displayedCells",
@@ -479,6 +549,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:m.field_k:I",
+      "originalName": "field_k",
+      "to": "selectedColumn",
+      "evidence": "GameSession passes it as the source column to classifyMove.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:m.field_l:Luf;",
       "originalName": "field_l",
       "to": "board",
@@ -486,10 +563,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ra.field_a:[I",
+      "originalName": "field_a",
+      "to": "gridSizes",
+      "evidence": "Holds the three board edge lengths 7, 9 and 11.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sh.field_yb:[I",
+      "originalName": "field_yb",
+      "to": "turnDurations",
+      "evidence": "Holds descending per-move tick budgets from 6000 to 500.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:uf.field_A:I",
       "originalName": "field_A",
       "to": "currentPlayer",
       "evidence": "advanceTurn steps it modulo two and the UI compares it with the local player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_B:I",
+      "originalName": "field_B",
+      "to": "lastMovePlayer",
+      "evidence": "applyMove stores the moving player here.",
       "confidence": "reviewed"
     },
     {
@@ -507,10 +605,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:uf.field_G:[I",
+      "originalName": "field_G",
+      "to": "candidateDestColumns",
+      "evidence": "recordCandidate stores the destination column of each candidate move.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_a:I",
+      "originalName": "field_a",
+      "to": "lastMoveSourceColumn",
+      "evidence": "applyMove stores its second index argument, the source column, here.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:uf.field_c:[Ljava/lang/String;",
       "originalName": "field_c",
       "to": "playerNames",
       "evidence": "The constructor requires exactly two names and the UI prints them as the winner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_e:[I",
+      "originalName": "field_e",
+      "to": "candidateDestRows",
+      "evidence": "recordCandidate stores the destination row of each candidate move.",
       "confidence": "reviewed"
     },
     {
@@ -521,10 +640,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:uf.field_k:I",
+      "originalName": "field_k",
+      "to": "lastMoveSourceRow",
+      "evidence": "applyMove stores its first index argument, the source row, here.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:uf.field_l:I",
       "originalName": "field_l",
       "to": "bestScore",
       "evidence": "recordCandidate compares each move score against it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_m:I",
+      "originalName": "field_m",
+      "to": "lastMoveDestRow",
+      "evidence": "applyMove stores the destination row, the first cell index it writes, here.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_n:Z",
+      "originalName": "field_n",
+      "to": "boardFilled",
+      "evidence": "Set when no empty cell remains after a recount.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_q:[I",
+      "originalName": "field_q",
+      "to": "candidateSourceRows",
+      "evidence": "recordCandidate stores the source row of each candidate move.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_s:I",
+      "originalName": "field_s",
+      "to": "sizeSetting",
+      "evidence": "The constructor indexes the 7, 9 and 11 grid size table with it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_t:[I",
+      "originalName": "field_t",
+      "to": "candidateSourceColumns",
+      "evidence": "recordCandidate stores the source column of each candidate move.",
       "confidence": "reviewed"
     },
     {
@@ -535,10 +696,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:uf.field_w:I",
+      "originalName": "field_w",
+      "to": "lastMoveDestColumn",
+      "evidence": "applyMove stores the destination column, the second cell index it writes, here.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uf.field_x:Z",
+      "originalName": "field_x",
+      "to": "playerWipedOut",
+      "evidence": "Set when a recount finds one player with zero pieces.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:uf.field_y:I",
       "originalName": "field_y",
-      "to": "difficulty",
-      "evidence": "Indexes the per-level board size and turn time tables.",
+      "to": "timeSetting",
+      "evidence": "GameSession indexes the per-move time table with it to reset the turn timer.",
       "confidence": "reviewed"
     },
     {
@@ -546,6 +721,27 @@
       "originalName": "field_z",
       "to": "pieceCounts",
       "evidence": "Recount loops increment one counter per player owning a cell.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Virogrid.c(I)V",
+      "originalName": "c",
+      "to": "tickGame",
+      "evidence": "The per-tick method samples a 32-entry clock ring and then calls this. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Virogrid.c(Z)V",
+      "originalName": "c",
+      "to": "initializeGame",
+      "evidence": "Called once from run after the canvas is created and before the tick loop. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Virogrid.d(I)V",
+      "originalName": "d",
+      "to": "shutdown",
+      "evidence": "Called on the exit path of run before System.exit. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -633,6 +829,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jc.a(Ljava/lang/String;B)V",
+      "originalName": "a",
+      "to": "writeString",
+      "evidence": "Rejects NUL characters, writes the encoded text and a trailing zero byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jc.a(Ljava/math/BigInteger;Ljava/math/BigInteger;B)V",
+      "originalName": "a",
+      "to": "encryptRsa",
+      "evidence": "Replaces the buffer with the modPow of its bytes under the given exponent and modulus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jc.b(Ljava/lang/String;B)V",
+      "originalName": "b",
+      "to": "writeZeroPrefixedString",
+      "evidence": "Rejects NUL characters and writes a zero byte, the encoded text and a trailing zero byte.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jc.c(B)I",
       "originalName": "c",
       "to": "readUnsignedShort",
@@ -661,10 +878,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jc.d(Z)I",
+      "originalName": "d",
+      "to": "readLargeSmart",
+      "evidence": "Reads an int when the next byte is negative and otherwise an unsigned short.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jc.e(I)Z",
       "originalName": "e",
       "to": "verifyChecksum",
       "evidence": "Backs up four bytes and compares the trailing int with a checksum of the preceding bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jc.f(I)Ljava/lang/String;",
+      "originalName": "f",
+      "to": "readOptionalString",
+      "evidence": "Returns null for a leading zero byte and otherwise reads a string.",
       "confidence": "reviewed"
     },
     {
@@ -679,6 +910,13 @@
       "originalName": "g",
       "to": "readUnsignedByte",
       "evidence": "Returns one byte masked with 255 and advances the cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jc.h(I)Ljava/lang/String;",
+      "originalName": "h",
+      "to": "readString",
+      "evidence": "Scans to the zero terminator and decodes the bytes between.",
       "confidence": "reviewed"
     },
     {
@@ -792,6 +1030,34 @@
       "to": "finishGame",
       "evidence": "Stores the winner (or -1 for a draw) and marks the board finished.",
       "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.a(Z)V",
+      "originalName": "a",
+      "to": "runTick",
+      "evidence": "Samples the tick clock into a 32-entry ring and calls tickGame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.c(I)V",
+      "originalName": "c",
+      "to": "tickGame",
+      "evidence": "The per-tick method samples a 32-entry clock ring and then calls this.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.c(Z)V",
+      "originalName": "c",
+      "to": "initializeGame",
+      "evidence": "Called once from run after the canvas is created and before the tick loop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.d(I)V",
+      "originalName": "d",
+      "to": "shutdown",
+      "evidence": "Called on the exit path of run before System.exit.",
+      "confidence": "reviewed"
     }
   ],
   "classNameLiterals": {
@@ -809,7 +1075,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-virogrid-rules.mjs": "bacb9965a92cd3c7d790b34a4b3a2c449141fba2d56e7d8558159f605c0d4905",
+      "build-virogrid-rules.mjs": "e3193bcc8a66877135fb6345a955bf8ee7bd8daa5d4f0f3ce7d3c67a8b0f32fe",
       "reproduce-virogrid.mjs": "3cb290bb3ee6a7e8ba01d7fd67665e62749c1c0cb9e3fcbc7f3e7d2640fb1e4c",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
