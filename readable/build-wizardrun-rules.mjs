@@ -124,6 +124,19 @@ method('vd', 'a', '(Ljava/lang/String;IIII)V', 'drawStringRight', 'Draws at x mi
 method('vd', 'a', '(C)I', 'charWidth', 'Indexes the per-glyph advance table with the translated character.');
 method('vd', 'c', '(Ljava/lang/String;I)I', 'maxLineWidth', 'Wraps the text, then returns the widest line width.');
 method('vd', 'a', '(II)V', 'setColors', 'Sets colour and shadow colour and resets alpha to 256 and the other draw state.');
+const dims = 'Sprite.expandToFullSize copies the trimmed pixels into a full-size array at this offset.';
+field('nl', 'z', 'I', 'width', 'Row length of the trimmed pixel array.');
+field('nl', 'p', 'I', 'height', 'Row count of the trimmed pixel array.');
+field('nl', 'x', 'I', 'fullWidth', dims);
+field('nl', 's', 'I', 'fullHeight', dims);
+field('nl', 'u', 'I', 'offsetX', dims);
+field('nl', 'v', 'I', 'offsetY', dims);
+field('o', 'B', '[I', 'pixels', 'Row-major int pixel array read by every blit.');
+method('o', 'e', '()Lo;', 'copy', 'Allocates a sprite with the same size and offsets and copies every pixel.');
+method('o', 'c', '()Lo;', 'flipHorizontal', 'Copies each row in reverse order and mirrors the horizontal offset.');
+method('o', 'b', '()V', 'bindAsRasterTarget', 'Passes the pixel array, width and height to the rasterizer.');
+method('o', 'd', '()V', 'expandToFullSize', 'Pads the trimmed pixels into a full-size array and zeroes the offsets.');
+method('ed', 'a', '([III)V', 'setTarget', 'Stores the pixel array, width and height, then sets the clip to the full area.');
 method('rk', 'b', '(Z)V', 'unlink', 'Splices the node out of its neighbours and nulls both links.');
 
 export const config = {
