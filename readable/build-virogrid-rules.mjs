@@ -33,6 +33,7 @@ const classes = {
   fm: ['WhirlpoolDigest', 'Keeps a 32-byte bit-length counter, a 64-byte block and eight long state words.'],
   fi: ['UiWidget', 'IntrusiveNode base widget with a listener, text and bounds fields, hit tests and key and click handlers.'],
   fd: ['WidgetContainer', 'UiWidget owning an IntrusiveDeque of children traversed with cursors for layout, input and hit tests.'],
+  qb: ['Model', 'Parsed from archive bytes into short vertex arrays and face arrays for the 3D pipeline.'],
   ic: ['GameSession', 'Constructs a GameBoard and CellAnimator and drives turn text, timers and board input.'],
 };
 const members = {};
@@ -74,6 +75,7 @@ method('uf', 'a', '(BIIB)Z', 'cellEquals', 'Bounds-checks a cell and compares it
 method('uf', 'a', '(Ljc;B)V', 'readCells', 'Fills the grid from a packet buffer when bit 2 of the flag byte is set.');
 method('uf', 'a', '(III)V', 'setTurn', 'Stores the current player and the turn counter.');
 method('uf', 'b', '(II)V', 'collectBestMoves', 'Enumerates all clone and jump offsets for the current player at AI level 1, 2 or 3 and keeps the top-scoring candidates.');
+method('uf', 'a', '(ZIBIIZII)I', 'scoreMove', 'Counts the converted neighbours (plus one for a clone), optionally writes them to the grid, and returns -1 for an invalid move.');
 method('uf', 'b', '(IIIIII)V', 'recordCandidate', 'Appends a move to the candidate arrays unless its score is below the best, clearing them when it is higher.');
 field('uf', 'f', 'I', 'candidateCount', 'recordCandidate increments it per stored move and collectBestMoves resets it.');
 field('uf', 'l', 'I', 'bestScore', 'recordCandidate compares each move score against it.');
@@ -125,6 +127,10 @@ field('m', 'c', 'I', 'selectedRow', 'chooseAiMove resets it to -1 together with 
 field('m', 'k', 'I', 'selectedColumn', 'GameSession passes it as the source column to classifyMove.');
 field('ic', 'x', 'I', 'hoverRow', 'tick compares it with the row loop index to find the hovered cell.');
 field('ic', 'h', 'I', 'hoverColumn', 'tick compares it with the column loop index to find the hovered cell.');
+method('uk', 'a', '(ILjava/lang/String;)V', 'redirectToErrorPage', 'Shows error_game_<code>.ws; callers pass wrongjava, crash and alreadyloaded.');
+method('uk', 'a', '(BZ)V', 'terminate', 'Runs once under a synchronized flag, destroys the loader applet and calls the shutdown hooks.');
+method('uk', 'e', '(I)V', 'recreateCanvas', 'Removes the old canvas from its parent, adds a new one of the configured size and then calls onCanvasCreated.');
+method('uk', 'b', '(Z)V', 'onCanvasCreated', 'Called at the end of recreateCanvas after the new canvas is added and sized.');
 field('ic', 'g', 'Z', 'online', 'Moves, resign and restart send packets instead of acting locally when it is set.');
 field('uf', 'y', 'I', 'timeSetting', 'GameSession indexes the per-move time table with it to reset the turn timer.');
 field('uf', 's', 'I', 'sizeSetting', 'The constructor indexes the 7, 9 and 11 grid size table with it.');
