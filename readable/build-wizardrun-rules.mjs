@@ -29,6 +29,15 @@ const classes = {
   gd: ['DelegatingCanvas', 'Canvas whose update and paint delegate to a wrapped Component.'],
   ta: ['MouseWheelInput', 'Abstract wheel-input hook with component registration and a delta query.'],
   nd: ['MouseWheelHandler', 'MouseWheelInput subclass implementing MouseWheelListener.'],
+  df: ['RasterBuffer', 'Abstract int pixel array with width, height and Image handed to the rasterizer.'],
+  nl: ['SpriteState', 'DualLinkNode subclass holding the six full and trimmed size and offset integers.'],
+  o: ['Sprite', 'SpriteState subclass owning an int pixel array with software blits.'],
+  be: ['ArgbSprite', 'Sprite subclass whose blits extract alpha with pixel >>> 24.'],
+  ed: ['SoftwareRasterizer', 'Static clip bounds and int pixel arrays used by every software fill and blit.'],
+  vd: ['BitmapFont', 'DualLinkNode subclass with glyph sprites, string drawing and width measurement.'],
+  ub: ['UiWidget', 'IntrusiveNode base widget with text, listener and bounds fields.'],
+  u: ['GameShell', 'GameApplet subclass reading applet parameters such as affid, lang, gamecrc and instanceid.'],
+  jj: ['GameGraphicsResources', 'Static holder of the gems sprites and the wizfont2 font loaded at startup.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
@@ -69,6 +78,12 @@ method('ok', 'a', '(Ljava/lang/String;FI)V', 'showLoadingProgress', 'Called with
 method('pe', 'a', '(Ljava/lang/String;Lkl;Ljava/lang/String;I)[Lo;', 'loadSpriteStrip', 'Called with group names like "numbers" and "gems" to fill sprite arrays.');
 method('vg', 'a', '(ILjava/lang/String;Lkl;Ljava/lang/String;)Lo;', 'loadSprite', 'Called with single sprite names like "gamelogo" and "paused".');
 method('ti', 'a', '(ILjava/lang/String;Lkl;Ljava/lang/String;Lkl;)Lgb;', 'loadFont', 'Called with font names like "wizfont" and "b12".');
+field('ok', 'b', 'F', 'loadingProgress', 'showLoadingProgress stores the percentage here and the loading frame draws it.');
+field('dg', 'a', 'Ljava/lang/String;', 'loadingMessage', 'showLoadingProgress stores the stage message here and the loading frame draws it.');
+field('ok', 'd', '[Lo;', 'selectStarSprites', 'Filled with the selstar, selstar2 and selstar3 sprites at load.');
+method('ok', 'a', '(CLjava/lang/CharSequence;B)I', 'countCharacter', 'Loops over the sequence and counts characters equal to the first argument.');
+method('uc', 'a', '(ZLjava/awt/Canvas;)V', 'drawLoadingScreen', 'Draws the progress bar from the loading message and percentage, then presents the canvas.');
+method('p', 'a', '(BLjava/lang/String;ZF)V', 'drawProgressBar', 'Receives the loading message and progress fraction from the loading frame.');
 method('rk', 'b', '(Z)V', 'unlink', 'Splices the node out of its neighbours and nulls both links.');
 
 export const config = {
