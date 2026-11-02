@@ -37,6 +37,13 @@ const classes = {
   pd: ['RasterBuffer', 'Abstract holder of an AWT Image and int pixel array with abstract paint-to-Component methods.'],
   rb: ['Asteroid', 'Entity created by factory m.a and registered in pk; draws the asteroids sprite sheet by size and splits into child rb instances.'],
   ie: ['MenuScreen', 'One of ten menu screens indexed by the current-screen static; hit-tests ab.field_s item lists and runs button actions.'],
+  wd: ['ArchiveSource', 'Abstract provider of an ArchiveIndex and per-group byte arrays.'],
+  lg: ['CachedArchiveSource', 'ArchiveSource that stages network and disk requests with queues and cached index bytes.'],
+  ha: ['ArchiveIndex', 'Decodes a versioned (5 to 7) index into per-group file counts, ids and name tables from a PacketBuffer.'],
+  da: ['Archive', 'Synchronized cache of decoded group and file byte arrays addressed by id or name over an ArchiveSource.'],
+  ej: ['PcmStream', 'Abstract IntrusiveNode defining sample fill, skip and a sibling stream link.'],
+  gj: ['PcmPlayerService', 'Base audio output owning a PcmStream array and int mix buffer, with a factory choosing the output.'],
+  ca: ['JavaSoundAudioOutput', 'PcmPlayerService subclass writing to a javax.sound SourceDataLine.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
