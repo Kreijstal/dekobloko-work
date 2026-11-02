@@ -21,6 +21,13 @@ const classes = {
   ui: ['SpriteState', 'uh subclass holding the dimension and offset integers of a sprite.'],
   wk: ['MouseInput', 'Mouse and mouse-motion listener recording events.'],
   bg: ['KeyboardInput', 'KeyListener and FocusListener recording key events.'],
+  rk: ['IntrusiveDeque', 'Sentinel-based deque of IntrusiveNode with head/next iteration, insertion and removal.'],
+  uj: ['UiWidget', 'IntrusiveNode subclass with text, listener and bounds fields; base of the button and container widgets.'],
+  c: ['PcmStream', 'Abstract IntrusiveNode defining sample fill, skip and a sibling substream link.'],
+  gk: ['AbstractAudioSample', 'IntrusiveNode base of PcmSample holding one integer.'],
+  ud: ['PcmSample', 'Signed byte PCM data with rate, loop start/end and ping-pong flag.'],
+  vi: ['PcmStreamMixer', 'PcmStream owning two IntrusiveDeques of substreams that it iterates when filling.'],
+  fj: ['PcmSampleStream', 'PcmStream built by fj.a(PcmSample, ...) that steps through a PcmSample with looping.'],
   me: ['MouseWheelInput', 'Accumulates MouseWheelListener rotation and resets it when read.'],
 };
 const members = {};
