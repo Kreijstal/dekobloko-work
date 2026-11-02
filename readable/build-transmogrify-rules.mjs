@@ -45,6 +45,9 @@ const classes = {
   hb: ['PcmSample', 'Holds a byte sample array with rate and loop bounds, consumed by PcmSampleStream.'],
   gd: ['AchievementNotice', 'Six-int record queued by unlockAchievement when a popup is wanted.'],
   pi: ['AchievementUnlockEvent', 'Single-int event holding the achievement index, queued by unlockAchievement.'],
+  ed: ['CacheFileLocator', 'Resolves the user.home directory, falling back to ~/, to locate cache files.'],
+  cb: ['AwtFullscreenBridge', 'Wraps GraphicsDevice with enter, exit and listmodes for fullscreen display modes.'],
+  ke: ['DirectDrawFullscreenController', 'Implements IEnumModesCallback and owns a DirectDraw to list and set fullscreen modes.'],
   kl: ['ContextualRuntimeException', 'RuntimeException retaining a cause and context text.'],
 };
 const members = {};
