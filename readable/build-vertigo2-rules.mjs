@@ -46,6 +46,10 @@ const classes = {
   lg: ['Model', 'Mesh holding per-vertex int arrays and per-face byte and short arrays.'],
   wk: ['AsyncRequest', 'Plain request record with a volatile status and result object.'],
   pm: ['BufferedSocket', 'Runnable owning a Socket with input/output streams and a byte buffer.'],
+  dr: ['AbstractAudioSample', 'IntrusiveNode base of loaded sound samples.'],
+  ae: ['PcmSample', 'AbstractAudioSample holding sample bytes, rate and loop bounds.'],
+  ra: ['SamplePlaybackStream', 'PcmStream built from a PcmSample whose private kernels mix its bytes into an int buffer.'],
+  fp: ['PcmStreamMixer', 'PcmStream holding an IntrusiveDeque of child streams and mixing each into the output buffer.'],
   qb: ['JaggrabClient', 'Runnable that writes a JAGGRAB request line to its connection.'],
   ji: ['TextureOperator', 'IntrusiveNode with an input operator array and per-row scanline producers for procedural textures.'],
   uj: ['MenuSelectionCursor', 'Keeps a selected index within an item count and moves it with up/down key codes 98 and 99.'],
@@ -127,6 +131,8 @@ method('Vertigo2', 'n', '(B)V', 'loadBackgroundImages', 'Decodes nebula, planet,
 method('Vertigo2', 'q', '(I)V', 'loadSoundEffects', 'Registers v_menu_select, v_explode and v_deflate effects.');
 method('Vertigo2', 'a', '(ILjava/lang/String;II)V', 'loadSoundEffectVariants', 'Loads a base sound effect plus numbered variants into its slot.');
 method('Vertigo2', 'j', '(B)V', 'loadFonts', 'Builds the BitmapFont instances such as kartika13.');
+field('ae', 's', '[B', 'samples', 'The PcmSample constructor stores its byte array argument here.');
+field('sn', 'n', 'Ldr;', 'sample', 'The abstract stream stores its AbstractAudioSample here.');
 field('uj', 'b', 'I', 'itemCount', 'The constructor stores its argument here and the key handlers wrap the index at it.');
 field('uj', 'c', 'I', 'selectedIndex', 'Key 98 decrements and key 99 increments this index with wraparound.');
 field('ji', 'u', '[Lji;', 'inputs', 'Row producers read their upstream operators from this array by index.');
