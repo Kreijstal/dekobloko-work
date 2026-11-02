@@ -43,6 +43,7 @@ const classes = {
   gb: ['AbstractAudioSample', 'Abstract IntrusiveNode base of PcmSample holding one int.'],
   ud: ['PcmSample', 'AbstractAudioSample holding a byte array, sample rate and loop bounds.'],
   gd: ['PcmSampleStream', 'PcmStream mixing a PcmSample with volume, pan and looping.'],
+  ij: ['LevelScreen', 'Draws the Start level banner, decrements and advances the level counter, and builds the game screen from stellarshard.'],
   ba: ['AudioMixer', 'Owns arrays of PcmStream and mixes them into an int buffer; the SourceDataLine output extends it.'],
   bd: ['BitmapFont', 'DualLinkNode owning glyph tables with width, draw and wrap operations on strings.'],
 };
@@ -106,6 +107,8 @@ field('qe', 'd', 'D', 'velocityX', motion);
 field('qe', 'k', 'D', 'velocityY', motion);
 field('qe', 'h', 'I', 'heading', 'Heading in 256 units per turn; thrust uses cos and sin of heading times 2 pi over 256.');
 method('qe', 'b', '(I)Lpb;', 'currentSprite', 'Wraps the heading into 0..255 and returns the rotation frame, or an animation frame for kind 11.');
+
+field('qi', 'a', 'I', 'level', 'LevelScreen shows it after the Start level text and increments it up to a ceiling; GameEntity caps counts by it.');
 
 export const config = {
   game: 'stellarshard', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
