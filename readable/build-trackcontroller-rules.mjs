@@ -44,6 +44,9 @@ const classes = {
   ll: ['SoftwareRasterizer', 'Static int pixel buffer with clip bounds and fill, line and blit routines.'],
   ch: ['GameShell', 'Abstract GameApplet subclass that TrackController extends.'],
   mg: ['GameScreen', 'Draws the instruction pages and creates the ActiveLevel; throws on unexpected optionNo.'],
+  hh: ['SecondaryNodeDequeIterator', 'Iterator constructed from a SecondaryNodeDeque.'],
+  ng: ['IndexedSprite', 'Sprite base holding an int[] palette and byte[] pixel indices.'],
+  tk: ['AsyncRequest', 'Abstract request with a volatile completion flag, a byte[] result accessor and a status accessor.'],
   ri: ['ActiveLevel', 'LevelGrid subclass holding the level in play, its phase and score text.'],
 };
 const members = {};
@@ -74,6 +77,41 @@ for (const [original, descriptor, to] of [
   ['b', '(Z)Z', 'isEmpty'], ['a', '(Z)I', 'size'], ['e', '(I)V', 'clear']])
   method('ja', original, descriptor, to, deque);
 field('sl', 'd', '[[I', 'tileFlags', 'LevelGrid draws tile sprites chosen by these flags (value & -65 in 7..37).');
+method('sl', 'a', '(Ljava/lang/Throwable;Ljava/lang/String;)Lnl;', 'toClientException', 'Every catch block rethrows through this factory, which returns a ClientException.');
+method('ri', 'b', '(II)V', 'setPhase', 'Stores the new phase in field_J and, for phase 2, totals the level-complete bonus.');
+method('ri', 'a', '(III)V', 'unlockAchievement', 'Guarded by a bit in th.field_l, then queues a cf announcement; called with thresholds from setPhase.');
+method('ri', 'd', '(I)Z', 'matchesTargetLayout', 'Compares every cell of field_i against field_d at a computed offset and returns false on mismatch.');
+field('ri', 'J', 'I', 'phase', 'setPhase stores its argument here and branches on it.');
+field('ri', 'O', 'I', 'score', 'setPhase adds the level bonus to it and compares it against 10000..100000 thresholds.');
+field('sl', 'i', '[[I', 'targetLayout', 'ActiveLevel.matchesTargetLayout compares it cell by cell against the live tile grid.');
+field('qj', 'z', '[I', 'pixels', 'The only int[] field of Sprite; every blit kernel indexes it.');
+const raster = 'SoftwareRasterizer fills index field_i with a row stride of field_d inside the clip bounds.';
+field('ll', 'i', '[I', 'pixels', raster);
+field('ll', 'd', 'I', 'stride', raster);
+field('ll', 'a', 'I', 'clipLeft', 'ig.a passes field_a, field_b, field_e, field_g as left, top, right, bottom.');
+field('ll', 'b', 'I', 'clipTop', 'ig.a passes field_a, field_b, field_e, field_g as left, top, right, bottom.');
+field('ll', 'e', 'I', 'clipRight', 'ig.a passes field_a, field_b, field_e, field_g as left, top, right, bottom.');
+field('ll', 'g', 'I', 'clipBottom', 'ig.a passes field_a, field_b, field_e, field_g as left, top, right, bottom.');
+method('oh', 'a', '(Ljava/lang/String;)I', 'stringWidth', 'ActiveLevel pads its popup width with the value it returns for a message string.');
+method('oh', 'a', '(C)I', 'charWidth', 'Indexes the per-glyph width table with the cp1252-mapped character.');
+const pointer = 'MouseInputHandler writes the live value on events and of.c publishes it once per frame.';
+field('la', 's', 'I', 'liveMouseX', pointer);
+field('wi', 'a', 'I', 'liveMouseY', pointer);
+field('hd', 'q', 'Z', 'inputPending', pointer);
+field('hd', 'p', 'Lcb;', 'mouseHandler', 'Null until the MouseInputHandler is installed; every event handler tests it.');
+field('db', 'bb', 'I', 'liveMouseButton', 'MouseInputHandler stores 1 for left, 2 for right and 0 on release.');
+field('pa', 'a', 'I', 'idleTicks', 'Reset by every mouse event and incremented by of.c once per frame.');
+field('sa', 'M', 'I', 'pressX', 'MouseInputHandler.mousePressed stores the event x here.');
+field('ch', 'x', 'I', 'pressY', 'MouseInputHandler.mousePressed stores the event y here.');
+field('wf', 'd', 'I', 'pendingClick', 'MouseInputHandler.mousePressed stores the button here until of.c consumes it.');
+field('kf', 'b', 'I', 'mouseX', pointer);
+field('fg', 'a', 'I', 'mouseY', pointer);
+field('mg', 'a', 'Z', 'mouseMoved', pointer);
+field('uk', 'a', 'I', 'clickButton', pointer);
+field('db', 'X', 'I', 'clickX', pointer);
+field('wg', 'e', 'I', 'clickY', pointer);
+field('rj', 'a', 'I', 'mouseButton', pointer);
+method('of', 'c', '(B)V', 'publishInputState', 'Copies the live mouse fields into the per-frame fields under the handler lock.');
 
 export const config = {
   game: 'trackcontroller', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
