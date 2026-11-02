@@ -35,6 +35,7 @@ const classes = {
   fd: ['WidgetContainer', 'UiWidget owning an IntrusiveDeque of children traversed with cursors for layout, input and hit tests.'],
   qb: ['Model', 'Parsed from archive bytes into short vertex arrays and face arrays for the 3D pipeline.'],
   ol: ['WidgetListener', 'Single-method interface called with the source widget by click handlers.'],
+  km: ['SpriteWidget', 'Widget node whose normal, mouse-over, held and disabled sprite fields are assigned from the lobby button resources.'],
   ic: ['GameSession', 'Constructs a GameBoard and CellAnimator and drives turn text, timers and board input.'],
 };
 const members = {};
@@ -208,6 +209,20 @@ field('cb', 'd', '[Lmg;', 'achievementIcons', 'Loaded from the achievements_larg
 field('mj', 'F', 'Lmg;', 'unachievedIcon', 'Loaded from the unachieved resource in Virogrid.loadGraphics.');
 field('ad', 'b', 'Lmg;', 'orbCoinIcon', 'Loaded from the orbcoin resource in Virogrid.loadGraphics.');
 field('oi', 'c', '[Lsc;', 'musicTracks', 'Virogrid fills it with the title screen and three in-game tracks.');
+field('db', 'h', 'Lv;', 'generalFont', 'Loaded from the lobby generalfont resource in the lobby loader.');
+field('em', 'd', 'Lv;', 'chatFont', 'Loaded from the lobby chatfont resource in the lobby loader.');
+field('qm', 'Kb', '[Lmg;', 'frameTopSprites', 'Loaded from the commonui frame_top resource in cf.loadCommonUi.');
+field('qg', 'j', '[Lmg;', 'frameBottomSprites', 'Loaded from the commonui frame_bottom resource in cf.loadCommonUi.');
+field('ed', 'd', 'Lmg;', 'jagexLogoGrey', 'Loaded from the commonui jagex_logo_grey resource in cf.loadCommonUi.');
+field('td', 'g', '[Lmg;', 'buttonSprites', 'Loaded from the commonui button resource in cf.loadCommonUi.');
+field('dk', 'j', 'Le;', 'arezzo12Font', 'Loaded from the commonui arezzo12 resource in cf.loadCommonUi.');
+field('dj', 'h', 'Le;', 'arezzo14Font', 'Loaded from the commonui arezzo14 resource in cf.loadCommonUi.');
+field('on', 'b', 'Le;', 'arezzo14BoldFont', 'Loaded from the commonui arezzo14bold resource in cf.loadCommonUi.');
+method('cf', 'a', '(Leh;Leh;ILeh;)V', 'loadCommonUi', 'Loads the commonui frame, button, logo and arezzo font resources.');
+field('km', 'qb', 'Lmg;', 'normalSprite', 'The lobby loader assigns closebutton, upbutton and downbutton to it.');
+field('km', 'sb', 'Lmg;', 'mouseOverSprite', 'The lobby loader assigns the _mouseover resources to it.');
+field('km', 'y', 'Lmg;', 'mouseHeldSprite', 'The lobby loader assigns the _mouseheld resources to it.');
+field('km', 'rb', 'Lmg;', 'disabledSprite', 'The lobby loader assigns the _disabled resources to it.');
 field('ic', 'g', 'Z', 'online', 'Moves, resign and restart send packets instead of acting locally when it is set.');
 field('uf', 'y', 'I', 'timeSetting', 'GameSession indexes the per-move time table with it to reset the turn timer.');
 field('uf', 's', 'I', 'sizeSetting', 'The constructor indexes the 7, 9 and 11 grid size table with it.');
