@@ -25,8 +25,55 @@ const classes = {
   ga: ['IterableNodeHashTable', 'Bucket array of IntrusiveNode implementing Iterable.'],
   ee: ['NodeHashTableIterator', 'Iterator constructed from an IterableNodeHashTable.'],
   rj: ['SecondaryNodeDeque', 'Iterable over DualLinkNode secondary links.'],
+  ja: ['IntrusiveDeque', 'Sentinel-based deque of IntrusiveNode with head/tail insertion, removal and counting.'],
+  id: ['NodeHashTable', 'Bucket array of IntrusiveNode looked up by long key.'],
+  ik: ['PcmSample', 'Holds a byte[] of audio samples with loop flag and loop bounds.'],
+  wh: ['PcmStream', 'Abstract IntrusiveNode that mixes samples into an int[] buffer.'],
+  bh: ['PcmSampleStream', 'PcmStream built from a PcmSample with volume, pitch and loop state.'],
+  al: ['UiWidget', 'Base of the interface components: text, bounds, key and mouse handlers.'],
+  sl: ['LevelGrid', 'Abstract three-layer tile grid drawn in 26-pixel cells.'],
+  ea: ['LevelData', 'LevelGrid subclass that carries a level name and copies its grids from another level.'],
+  kk: ['Archive', 'Looks up cache files by name or group id through an ArchiveSource.'],
+  wi: ['ArchiveSource', 'Abstract provider of archive bytes and the ArchiveIndex.'],
+  pc: ['ArchiveIndex', 'Per-archive tables of group and file ids, name hashes and checksums.'],
+  tc: ['RandomAccessCacheFile', 'Wraps a RandomAccessFile with a tracked length and position.'],
+  il: ['BufferedCacheFile', 'Buffered reads and writes over a RandomAccessCacheFile.'],
+  oh: ['BitmapFont', 'Abstract glyph font with HTML entity table and string measuring and drawing.'],
+  qj: ['Sprite', 'SpriteState subclass owning an int pixel array with software blits.'],
+  g: ['SpriteState', 'DualLinkNode subclass that Sprite extends.'],
+  ll: ['SoftwareRasterizer', 'Static int pixel buffer with clip bounds and fill, line and blit routines.'],
+  ch: ['GameShell', 'Abstract GameApplet subclass that TrackController extends.'],
+  mg: ['GameScreen', 'Draws the instruction pages and creates the ActiveLevel; throws on unexpected optionNo.'],
+  ri: ['ActiveLevel', 'LevelGrid subclass holding the level in play, its phase and score text.'],
 };
 const members = {};
+const method = (owner, original, descriptor, to, evidence) =>
+  members[`M:${owner}.${original}${descriptor}`] = {to, evidence};
+const field = (owner, original, descriptor, to, evidence) =>
+  members[`F:${owner}.field_${original}:${descriptor}`] = {to, evidence};
+const link = 'IntrusiveDeque traverses field_h forward and field_e backward from its sentinel.';
+field('fc', 'h', 'Lfc;', 'next', link);
+field('fc', 'e', 'Lfc;', 'previous', link);
+field('fc', 'b', 'J', 'key', 'NodeHashTable buckets nodes by this long key.');
+method('fc', 'a', '(I)V', 'unlink', 'IntrusiveDeque unlinks a node from its neighbours before reinserting it.');
+const buffer = 'PacketBuffer payload field_j and cursor field_k; reviewed shifts, masks and cursor increments.';
+field('be', 'j', '[B', 'payload', buffer);
+field('be', 'k', 'I', 'position', buffer);
+for (const [original, descriptor, to] of [
+  ['a', '(JI)V', 'writeLong'], ['f', '(B)J', 'readLong'], ['a', '(IB)V', 'writeByte'], ['h', '(I)I', 'readUnsignedByte'],
+  ['f', '(I)B', 'readByte'], ['d', '(B)I', 'readUnsignedShort'], ['e', '(B)I', 'readInt'], ['b', '(ZI)V', 'writeInt'],
+  ['a', '(BLjava/lang/String;)V', 'writeString'], ['g', '(I)Ljava/lang/String;', 'readString'],
+  ['d', '(I)Ljava/lang/String;', 'readOptionalString'], ['l', '(I)I', 'readSmart'],
+  ['a', '(Ljava/math/BigInteger;Ljava/math/BigInteger;Z)V', 'rsaEncrypt'], ['a', '(I[I)V', 'xteaEncrypt'],
+  ['b', '(Z)Z', 'checkCrcTrailer']])
+  method('be', original, descriptor, to, buffer);
+const deque = 'IntrusiveDeque sentinel field_d links nodes through field_h and field_e.';
+for (const [original, descriptor, to] of [
+  ['a', '(I)Lfc;', 'next'], ['d', '(I)Lfc;', 'previous'], ['b', '(I)Lfc;', 'first'], ['a', '(B)Lfc;', 'last'],
+  ['a', '(Lfc;B)V', 'addFirst'], ['a', '(BLfc;)V', 'addLast'], ['b', '(B)Lfc;', 'removeFirst'], ['c', '(B)Lfc;', 'removeLast'],
+  ['b', '(Z)Z', 'isEmpty'], ['a', '(Z)I', 'size'], ['e', '(I)V', 'clear']])
+  method('ja', original, descriptor, to, deque);
+field('sl', 'd', '[[I', 'tileFlags', 'LevelGrid draws tile sprites chosen by these flags (value & -65 in 7..37).');
 
 export const config = {
   game: 'trackcontroller', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
