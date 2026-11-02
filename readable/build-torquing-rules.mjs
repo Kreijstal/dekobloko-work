@@ -53,6 +53,7 @@ const classes = {
   kh: ['Model', 'Wraps a MeshGeometry and a per-model attribute object; the constructor copies or adopts the geometry.'],
   hc: ['Level', 'Holds a tile grid cut into 100-unit cells, a description string and an id; Torquing reads its description into the tooltip.'],
   uf: ['TooltipPanel', 'Accumulates wrapped text lines with optional sprites that Torquing fills from a Level description.'],
+  hn: ['WidgetContainer', 'UiWidget owning an IntrusiveDeque of child widgets that it paints, hit-tests and focuses.'],
   no: ['BufferedSocket', 'Runnable owning a Socket with input and output streams.'],
 };
 const members = {};
@@ -89,6 +90,14 @@ field('rm', 'q', '[I', 'vertexZ', 'addVertex stores its third argument here.');
 field('rm', 'g', 'I', 'vertexCount', 'addVertex indexes with and then increments this counter.');
 field('hc', 's', 'I', 'id', 'The constructor stores its first argument here.');
 field('hc', 'l', 'Ljava/lang/String;', 'description', 'Torquing splits this text on ~ and / and adds it to the tooltip panel.');
+field('hn', 'y', 'Lei;', 'children', 'Container methods iterate this deque to add, paint and hit-test child widgets.');
+field('gm', 'w', 'I', 'x', 'The four-int widget constructor stores its first argument here.');
+field('gm', 'k', 'I', 'y', 'The four-int widget constructor stores its second argument here.');
+field('gm', 'p', 'I', 'width', 'The text constructor fills this from the renderer width query.');
+field('gm', 'o', 'I', 'height', 'The text constructor fills this from the renderer height query.');
+field('gm', 'm', 'Ljava/lang/String;', 'text', 'The text constructor stores its string argument here.');
+field('gm', 'q', 'Lel;', 'renderer', 'Both constructors store the WidgetRenderer argument here.');
+field('gm', 't', 'Lca;', 'listener', 'Both constructors store the listener argument here.');
 field('fj', 'j', '[B', 'payload', 'PacketBuffer byte array indexed by the cursor in every read and write.');
 field('fj', 'n', 'I', 'position', 'PacketBuffer cursor advanced by reads and writes.');
 
