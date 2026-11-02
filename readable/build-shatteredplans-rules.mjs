@@ -367,6 +367,37 @@ method("tl", "a", "(Ljava/lang/String;IB)V", "configureGame", "Passes 480, 640 a
 method("tl", "a", "(IIILjava/lang/String;I)V", "readAppletParameters", "Reads gameport1, gameport2, servernum, instanceid and related applet parameters.");
 method("tl", "a", "(IIIIZIII)V", "initialiseShell", "Creates the helper frame, input handlers, raster and network settings of the shell.");
 method("tl", "i", "(B)I", "serviceConnection", "Returns -1, 0 or 1 for the connection state and starts a reconnect on other results.");
+method("uj", "b", "(B)V", "planTurn", "Interface method that TaskAi and StandardAi use to place fleets and use projects for the turn.");
+method("uj", "a", "(Z)I", "getPersonality", "TaskAi returns the constant 8 and StandardAi returns its level argument.");
+method("uj", "a", "(ZI)V", "setChatEnabled", "Both implementations store the boolean in a chat flag.");
+method("uj", "a", "(I)V", "broadcastChat", "Sends a chat phrase kind through the AiHost to every other player.");
+method("uj", "a", "(B)V", "updateDiplomacy", "Rates every player against the leader each turn and sends chat or alliance proposals.");
+method("ka", "h", "(I)V", "deployDefensiveNet", "Creates the ProjectUse of kind 0 for the Ai's player.");
+method("ka", "f", "(I)V", "deployTerraform", "Creates the ProjectUse of kind 1 for the Ai's player.");
+method("ka", "b", "(Z)V", "deployStellarBomb", "Creates the ProjectUse of kind 2 for the Ai's player.");
+method("ka", "e", "(B)V", "deployTannhauser", "Creates the ProjectUse of kind 3 with two stars for the Ai's player.");
+method("hi", "d", "(B)V", "allocateGarrisons", "Gives unplaced fleets to each GarrisonTask star; its error text says the star is to be garrisoned.");
+method("hi", "h", "(I)V", "buildGarrisonTasks", "Creates a GarrisonTask for every star of every territory of the player.");
+method("hi", "b", "(I)V", "allocateDefenders", "Moves available fleets to each DefendTask star and throws when the defender allocation is not met.");
+method("hi", "c", "(I)V", "buildAttackTasks", "Creates an AttackTask for every foreign star that is a neighbour of an owned star.");
+method("hi", "e", "(I)V", "buildDefendTasks", "Creates a DefendTask for every owned star flagged as threatened.");
+method("hi", "g", "(I)V", "scoreTasks", "Sets the sort key of each DefendTask and AttackTask from its priority, cost and the aggression value.");
+method("hi", "b", "(ZI)V", "executeTasks", "Passes each prioritised task to the defend or attack handler and throws for other task types.");
+method("hi", "a", "(Lac;ZI)V", "performDefendTask", "Checks that the task's star is in a territory of the player and plans the defence.");
+method("hi", "a", "(BLkl;Z)V", "performAttackTask", "Plans the launch of fleets for one AttackTask.");
+method("hi", "a", "(IBLln;Lln;)V", "moveFleets", "Throws unless the origin belongs to the player and the move is legal, then orders the fleets.");
+method("hi", "c", "(B)V", "placeReservesAtBorders", "Places unplaced fleets on owned stars that border other players, or at the capital when none do.");
+method("hi", "a", "(ILln;I)V", "queuePlacement", "Adds to the star's pending garrison and merges with or creates a PlacementOrder.");
+method("hi", "i", "(I)V", "markThreatenedStars", "Flags each owned star that has a non-allied foreign neighbour.");
+method("hi", "a", "(Lln;I)V", "deployDefensiveNet", "Throws unless the player has the resources, then creates a ProjectUse of kind 0.");
+method("hi", "f", "(B)V", "deployTerraform", "Creates the ProjectUse of kind 1 for the best owned star.");
+method("hi", "e", "(B)V", "deployTannhauser", "Creates the ProjectUse of kind 3 linking territories; its errors mention the Tannhauser.");
+method("hi", "a", "(BLln;)V", "deployStellarBomb", "Throws unless the player has the resources, then creates a ProjectUse of kind 2.");
+method("ka", "c", "(Lln;I)I", "starValue", "Adds the star's base value and its four resources weighted by the current need weights.");
+method("ka", "a", "(BLln;)I", "hostileNeighbourFleets", "Sums the garrisons of neighbouring stars owned by players who are not allied.");
+method("ka", "c", "(ILsd;)V", "computeResourceWeights", "Sets each weight from the territory's stock of that resource relative to its first-ranked one.");
+method("ka", "b", "(I)[I", "broadcastPhrases", "Returns the phrase ids that broadcastChat picks from; TaskAi uses a random choice of two ids.");
+method("ka", "a", "(ILsd;B)V", "planTerritory", "Plans placements and moves for one territory with a given number of unplaced fleets.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
