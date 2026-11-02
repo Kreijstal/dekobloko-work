@@ -12,6 +12,24 @@ const classes = {
   ug: ['SocketConnector', 'Abstract holder of host and port that creates a java.net.Socket.'],
   ve: ['ClientException', 'RuntimeException retaining a cause and context text.'],
   dh: ['GameApplet', 'Abstract Applet implementing Runnable and focus/window listeners; main class SolKnight extends it via ab.'],
+  ec: ['DualLinkNode', 'IntrusiveNode subclass with an independent secondary link pair, key and unlink.'],
+  ii: ['IterableNodeHashTable', 'Power-of-two bucket array of IntrusiveNode keyed by long, implementing Iterable.'],
+  n: ['NodeHashTableIterator', 'Iterator constructed from an IterableNodeHashTable walking its buckets.'],
+  ik: ['SecondaryNodeDeque', 'Iterable sentinel deque of DualLinkNode secondary links with insert and poll.'],
+  jl: ['SecondaryNodeDequeIterator', 'Iterator constructed from a SecondaryNodeDeque.'],
+  ad: ['BufferedSocket', 'Runnable owning a Socket with input/output streams and a writer buffer.'],
+  dl: ['PlatformTaskDispatcher', 'Runnable dispatching queued platform tasks such as sockets, reflection and frames.'],
+  cb: ['ProxyAuthenticationRequiredException', 'IOException subclass constructed with a message string.'],
+  qk: ['ProxySocketConnector', 'SocketConnector using ProxySelector and an HTTP CONNECT exchange.'],
+  r: ['IsaacRandom', 'Two 256-entry int arrays and shift/xor mixing steps with the golden-ratio constant.'],
+  sc: ['MouseWheelHandler', 'MouseWheelListener that accumulates wheel rotation under synchronization.'],
+  oa: ['ImageProducerRasterBuffer', 'ImageProducer and ImageObserver that feeds a pixel array to AWT consumers.'],
+  jg: ['FullscreenFocusCanvas', 'Canvas with focus listener and Frame field that repaints via update/paint.'],
+  wk: ['DelegatingCanvas', 'Canvas whose paint and update delegate to a wrapped Component.'],
+  kl: ['MouseInputHandler', 'Synchronized MouseListener, MouseMotionListener and FocusListener recording pointer events.'],
+  qh: ['GameKeyHandler', 'Synchronized KeyListener and FocusListener recording key events.'],
+  rc: ['UiWidget', 'IntrusiveNode base widget with text, listener, bounds and input/draw virtuals.'],
+  ki: ['WidgetContainer', 'UiWidget owning a child deque and forwarding draw, focus and input to children.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
@@ -26,6 +44,15 @@ for (const [original, descriptor, to] of [['a', 'Lgg;', 'next'], ['d', 'Lgg;', '
   field('gg', original, descriptor, to, node);
 method('gg', 'c', '(I)V', 'unlink', ['obfuscationGuard'], node);
 method('gg', 'a', '(Z)Z', 'isLinked', ['obfuscationGuard'], node);
+
+const dual = 'DualLinkNode secondary link fields and unlink body; SecondaryNodeDeque splices them.';
+for (const [original, descriptor, to] of [['k', 'Lec;', 'secondaryNext'], ['i', 'Lec;', 'secondaryPrevious'], ['l', 'J', 'secondaryKey']])
+  field('ec', original, descriptor, to, dual);
+method('ec', 'a', '(I)V', 'unlinkSecondary', ['obfuscationGuard'], dual);
+const table = 'IterableNodeHashTable get masks the key into a bucket and put splices the node after the bucket sentinel.';
+field('ii', 'b', '[Lgg;', 'buckets', table);
+method('ii', 'a', '(JI)Lgg;', 'get', ['key', 'obfuscationGuard'], table);
+method('ii', 'a', '(IJLgg;)V', 'put', ['obfuscationGuard', 'key', 'node'], table);
 
 const packet = 'PacketBuffer field_l payload and field_m cursor; reviewed big-endian shifts/masks and cursor increments.';
 for (const [original, descriptor, to] of [['l', '[B', 'payload'], ['m', 'I', 'position']])
