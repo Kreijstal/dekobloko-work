@@ -23,6 +23,14 @@ const classes = {
   ck: ['FullscreenFocusCanvas', 'Canvas with focus listener and a Frame field that repaints via paint.'],
   jm: ['DelegatingCanvas', 'Canvas wrapping another Component whose paint and update it forwards.'],
   nk: ['PcmPlayerService', 'Base audio output owning PcmStream arrays and an int mix buffer, with a factory choosing the output.'],
+  ij: ['MessageKeys', 'Static table of translation lookup keys such as loginm1, error_js5crc and acceptdraw.'],
+  ad: ['TutorialController', 'Drives the battle tutorial steps through 91 reads of the tutorial message array while holding a BattleState.'],
+  kl: ['TutorialText', 'Holds the tutorial hint strings such as Centring the view and Click on a recruit tab.'],
+  tl: ['VorbisDecoder', 'Builds MDCT cosine and sine tables from a Vorbis byte stream and returns a PcmSample.'],
+  bg: ['IndexedSprite', 'Byte pixel indices plus an int palette with clipped software draw kernels.'],
+  td: ['IndexedSpriteState', 'Abstract holder of the indexed sprite dimension and offset ints with an abstract draw method.'],
+  ui: ['AdminCheatOverlay', 'Draws the ADMIN CHEATS key help (K kills all enemies, Q toggles QA mode, T refills time units).'],
+  sd: ['QuickChatMenu', 'Holds the Quick Chat tooltips for opening, closing and repeating the menu.'],
   cj: ['WidgetActionListener', 'Interface whose single callback receives a UiWidget; stored in the UiWidget listener field.'],
   lh: ['PcmSampleStream', 'PcmStream that steps through a PcmSample with byte-to-int mixing kernels and loop position wrapping.'],
   sg: ['ArgbSprite', 'Sprite subclass whose kernels extract alpha with pixel >>> 24.'],
@@ -101,6 +109,17 @@ field('dk', 'i', 'Le;', 'state', 'LevelMap back reference to the BattleState tha
 field('dk', 'l', 'Lmk;', 'editor', 'LevelMap reference to the LevelEditor that draws it.');
 field('mk', 'i', 'Ldk;', 'map', 'LevelEditor edits this LevelMap.');
 field('dl', 'h', 'Lr;', 'unit', 'MapTile occupant BattleUnit.');
+method('qk', 'a', '(Ljava/lang/Throwable;Ljava/lang/String;)Lel;', 'wrapException', ['cause', 'context'], 'Returns the ClientException, appending context to an existing one or creating a new one.');
+method('bd', 'a', '(Ljava/lang/Throwable;Ljava/lang/String;I)V', 'reportClientError', ['error', 'context', 'obfuscationGuard'], 'Builds the clienterror.ws URL from the error text and fetches it through the task dispatcher.');
+field('ce', 'a', '[Luf;', 'buckets', 'IterableNodeHashTable bucket array of sentinel nodes indexed by key & (capacity - 1).');
+field('ce', 'c', 'I', 'capacity', 'IterableNodeHashTable bucket count used as the key mask.');
+method('ce', 'a', '(JB)Luf;', 'get', ['key', 'obfuscationGuard'], 'Walks the key bucket and returns the node whose key matches.');
+method('ce', 'a', '(Luf;BJ)V', 'put', ['node', 'obfuscationGuard', 'key'], 'Inserts the node into the bucket chosen by key.');
+method('jj', 'a', '(B)Z', 'isEmpty', ['obfuscationGuard'], 'True when the sentinel links back to itself.');
+method('jj', 'c', '(I)V', 'clear', ['obfuscationGuard'], 'Unlinks every node until only the sentinel remains.');
+method('jj', 'd', '(I)Luf;', 'beginBackward', ['obfuscationGuard'], 'Sets the cursor to the sentinel previous link and returns it unless empty.');
+method('jj', 'e', '(B)Luf;', 'nextBackward', ['obfuscationGuard'], 'Returns the cursor node and moves it along the previous link.');
+method('jj', 'b', '(I)Luf;', 'nextForward', ['obfuscationGuard'], 'Returns the cursor node and moves it along the next link.');
 export const config = {
   game: 'terraphoenix', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
