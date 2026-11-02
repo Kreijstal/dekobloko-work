@@ -30,6 +30,13 @@ const classes = {
   qh: ['GameKeyHandler', 'Synchronized KeyListener and FocusListener recording key events.'],
   rc: ['UiWidget', 'IntrusiveNode base widget with text, listener, bounds and input/draw virtuals.'],
   ki: ['WidgetContainer', 'UiWidget owning a child deque and forwarding draw, focus and input to children.'],
+  db: ['SpriteState', 'Abstract DualLinkNode subclass holding six int dimension/offset fields and an abstract blit.'],
+  o: ['Sprite', 'SpriteState subclass owning pixel arrays with software blit kernels.'],
+  ui: ['ArgbSprite', 'Sprite subclass whose kernels extract alpha with pixel >>> 24.'],
+  mg: ['BitmapFont', 'Abstract DualLinkNode subclass that measures and draws strings through abstract glyph blits.'],
+  pd: ['RasterBuffer', 'Abstract holder of an AWT Image and int pixel array with abstract paint-to-Component methods.'],
+  rb: ['Asteroid', 'Entity created by factory m.a and registered in pk; draws the asteroids sprite sheet by size and splits into child rb instances.'],
+  ie: ['MenuScreen', 'One of ten menu screens indexed by the current-screen static; hit-tests ab.field_s item lists and runs button actions.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
@@ -53,6 +60,9 @@ const table = 'IterableNodeHashTable get masks the key into a bucket and put spl
 field('ii', 'b', '[Lgg;', 'buckets', table);
 method('ii', 'a', '(JI)Lgg;', 'get', ['key', 'obfuscationGuard'], table);
 method('ii', 'a', '(IJLgg;)V', 'put', ['obfuscationGuard', 'key', 'node'], table);
+
+members['F:vd.field_d:[Lie;'] = {to: 'screens', evidence: 'vd.field_d is filled with ten new ie(index) menu screens during boot.'};
+members['F:kd.field_a:I'] = {to: 'currentScreenIndex', evidence: 'kd.field_a indexes vd.field_d to tick the active menu screen each frame.'};
 
 const packet = 'PacketBuffer field_l payload and field_m cursor; reviewed big-endian shifts/masks and cursor increments.';
 for (const [original, descriptor, to] of [['l', '[B', 'payload'], ['m', 'I', 'position']])
