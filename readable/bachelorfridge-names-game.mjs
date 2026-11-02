@@ -1,0 +1,64 @@
+// Reviewed names: the battle model, orders, events, effects and animation nodes.
+import {cls, mem, fld, group} from './bachelorfridge-name-api.mjs';
+import './bachelorfridge-names-specials.mjs';
+
+// ---- Battle state and board ---------------------------------------------
+cls('op', 'BattleState', 'Owns the tile grid, per-player rosters, turn order and queued orders; names the board types Pizza, Dessert and Curry.');
+cls('wia', 'BoardTile', 'Grid cell with terrain type and occupant; its debug string prints tile x, y, occupied, object id and powerup.');
+cls('aga', 'BattleCreature', 'Creature on the board; its debug dump prints x, y, hp, splitid, status, friendly and shield.');
+cls('rk', 'CreatureProfile', 'Base of aga that keeps skill arrays, a name and a Random, copy-constructed from another rk or built from a wca.');
+cls('wca', 'CreatureType', 'Table row with name strings and skill index arrays that rk is constructed from.');
+cls('nq', 'CreatureRef', 'Holds two ints or wraps an aga and resolves the creature against a BattleState.');
+cls('ib', 'PlayerRoster', 'Array of up to seven aga creatures of one player with a count and a flag.');
+cls('tk', 'PlayerMatchStats', 'Eighteen private counters of one player read through an index getter.');
+fld('op', 'a', '[[Lwia;', 'tiles', 'op indexes field_a[x][y] for every tile read and write.');
+fld('op', 'z', 'I', 'width', 'op loops x below field_z over the tile grid.');
+fld('op', 'B', 'I', 'height', 'op loops y below field_B over the tile grid.');
+fld('op', 'd', 'I', 'playerCount', 'op allocates one roster per field_d.');
+fld('op', 'S', '[Lib;', 'rosters', 'op creates one ib per player in field_S.');
+fld('aga', 'x', 'I', 'tileX', 'The debug dump prints field_x as x and aga indexes the tile grid with it.');
+fld('aga', 'J', 'I', 'tileY', 'The debug dump prints field_J as y and aga indexes the tile grid with it.');
+fld('aga', 'I', 'I', 'hp', 'aga.i(int) reports the creature as down when field_I is not above zero.');
+fld('aga', 'w', 'Lop;', 'battle', 'aga reads the tile grid and turn data through field_w.');
+fld('aga', 'F', 'I', 'splitId', 'The debug dump prints field_F as splitid.');
+fld('aga', 'C', 'I', 'statusTurns', 'The debug dump prints field_C as the turns left on the status.');
+fld('aga', 'y', 'I', 'statusId', 'The debug dump indexes the status table with field_y.');
+fld('aga', 'E', 'I', 'friendly', 'The debug dump prints field_E as friendly.');
+fld('aga', 'H', 'I', 'shield', 'The debug dump prints field_H as shield.');
+fld('aga', 'D', 'I', 'ownerIndex', 'The debug string prints the owner and ib rosters are indexed with field_D.');
+fld('aga', 'u', 'I', 'rosterSlot', 'The debug string prints field_u as the creature pos and nq stores it.');
+mem('aga', 'i', '(I)Z', 'isDown', 'Returns true when the hp field is not above zero.');
+fld('wia', 'l', 'Laga;', 'occupant', 'The creature standing on the tile.');
+fld('wia', 'n', 'I', 'terrain', 'Tile type index compared with constants such as 20, 21 and 23.');
+
+// ---- Orders, events, effects ----------------------------------------------
+cls('sfa', 'CreatureOrder', 'IntrusiveNode holding an order kind, a move id and a creature reference; toString prints the move name or "Move not found."');
+cls('hia', 'AttackOrder', 'sfa subclass with kind 1 that builds attack events.');
+cls('gm', 'MoveOrder', 'sfa subclass with kind 2 that builds df movement events.');
+cls('td', 'SpecialOrder', 'sfa subclass with kind 4 that dispatches special move ids 88 to 137 to concrete subclasses.');
+cls('cj', 'BattleUpdate', 'Abstract IntrusiveNode that serialises to a PacketBuffer and builds an animation node for a gj.');
+cls('ii', 'CreatureEvent', 'BattleUpdate with a creature reference and a move id, written ahead of its own payload.');
+cls('vja', 'AttackEvent', 'CreatureEvent produced by AttackOrder.');
+cls('df', 'MoveEvent', 'CreatureEvent with kind 2 that stores a direction and distance packed in one byte.');
+cls('bca', 'SpecialEvent', 'CreatureEvent with kind 4 that owns a deque of pp effects applied when it runs.');
+cls('lc', 'BoardChangeBatch', 'BattleUpdate of kind 6 that holds a deque of jm board changes.');
+cls('rv', 'EffectBatch', 'BattleUpdate of kind 5 that holds a deque of pp effects applied without a creature.');
+cls('jm', 'BoardChange', 'Abstract change with a type code that is read, written and applied to a BattleState.');
+cls('pp', 'EventEffect', 'Abstract effect applied to a creature and BattleState; writes a tag byte identifying its subclass.');
+cls('iv', 'DamageEffect', 'Effect that hits a creature for a damage amount, may set a status id and records the hit.');
+cls('cn', 'PlaceCreatureEffect', 'Effect that writes a new grid position into a creature and stores it on that tile.');
+cls('bj', 'MoveCreatureEffect', 'Effect that clears the old tile and stores the creature on a free target tile.');
+cls('sl', 'DamageTileEffect', 'Effect that lowers a tile counter and restores the original terrain at zero.');
+cls('eba', 'SnowEffect', 'Effect that raises the BattleState snow flag; the SNOW special adds it to its event.');
+cls('rla', 'SetFriendlyEffect', 'Effect that stores a value in the creature field that its debug dump prints as friendly.');
+cls('ro', 'ClearTileFlagEffect', 'Effect that clears one boolean flag on the tile at a stored position.');
+cls('at', 'AnimationNode', 'IntrusiveNode with a started flag and a child deque that runs children until all are finished.');
+cls('ana', 'EventAnimation', 'AnimationNode constructed from a gj and a bca event that creates the creature view and attaches effect popups.');
+fld('ii', 'l', 'Lnq;', 'creature', 'ii serialises field_l through er.a ahead of the payload.');
+fld('ii', 'k', 'I', 'moveId', 'ii writes field_k first and subclasses compare it with move ids.');
+fld('sfa', 'g', 'I', 'moveId', 'sfa.toString looks the move name up with field_g.');
+fld('sfa', 'h', 'Lnq;', 'creature', 'td.a resolves field_h against the BattleState.');
+fld('bca', 'o', 'Leaa;', 'effects', 'bca applies each pp in field_o.');
+fld('pp', 'h', 'Lnq;', 'target', 'Effect subclasses resolve field_h to find their creature.');
+fld('ana', 'q', 'Lgj;', 'screen', 'ana constructor stores its gj here.');
+fld('ana', 'p', 'Lbca;', 'event', 'ana constructor stores its bca here and walks its effects.');
