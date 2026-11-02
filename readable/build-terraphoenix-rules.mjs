@@ -23,6 +23,7 @@ const classes = {
   ck: ['FullscreenFocusCanvas', 'Canvas with focus listener and a Frame field that repaints via paint.'],
   jm: ['DelegatingCanvas', 'Canvas wrapping another Component whose paint and update it forwards.'],
   nk: ['PcmPlayerService', 'Base audio output owning PcmStream arrays and an int mix buffer, with a factory choosing the output.'],
+  nf: ['PcmPlayerPump', 'Runnable with volatile flags that loops over its array of PcmPlayerService outputs on its own thread.'],
   mf: ['AsyncRequest', 'Request handle with volatile status and result that the dispatcher thread completes and callers poll.'],
   la: ['CacheFileLocator', 'Stores the cache name and identifier and derives the user.home prefix for cache file paths.'],
   ij: ['MessageKeys', 'Static table of translation lookup keys such as loginm1, error_js5crc and acceptdraw.'],
@@ -153,6 +154,7 @@ field('el', 'b', 'Ljava/lang/String;', 'context', 'ClientException constructor s
 field('el', 'a', 'Ljava/lang/Throwable;', 'cause', 'ClientException constructor stores its Throwable argument here.');
 field('jj', 'a', 'Luf;', 'sentinel', 'IntrusiveDeque methods start every traversal from this node and stop when they return to it.');
 field('jj', 'b', 'Luf;', 'cursor', 'IntrusiveDeque traversal methods read and advance this node.');
+method('uf', 'a', '(B)Z', 'isLinked', ['obfuscationGuard'], 'True when the forward link is non-null.');
 export const config = {
   game: 'terraphoenix', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
