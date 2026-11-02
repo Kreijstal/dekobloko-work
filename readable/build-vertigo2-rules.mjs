@@ -36,7 +36,17 @@ const classes = {
   a: ['DisplayModeEnumerator', 'IEnumModesCallback collecting DirectDraw display modes.'],
   fb: ['SpriteState', 'DualLinkNode subclass holding the dimension and offset ints and abstract draw hooks.'],
   er: ['Sprite', 'SpriteState subclass owning an int pixel array with software blits.'],
-  cr: ['UiWidget', 'Base of the clickable menu components with text strings, sprite arrays and state flags.'],
+  cr: ['UiPanel', 'Menu component built from a parent cr, an IntrusiveDeque of children, a font, sprite arrays and text.'],
+  iq: ['UiWidget', 'IntrusiveNode base widget with text, a ur listener, bounds and key/mouse handlers.'],
+  cj: ['WidgetContainer', 'UiWidget owning an IntrusiveDeque of child widgets.'],
+  cc: ['BitmapFont', 'DualLinkNode font that measures and draws strings from glyph arrays.'],
+  ur: ['WidgetListener', 'Interface whose single callback receives the widget that fired.'],
+  sn: ['PcmStream', 'Abstract audio stream with a next-stream link and mixing callbacks into int buffers.'],
+  r: ['Archive', 'Holds a two-level Object cache and looks entries up by group and file name.'],
+  lg: ['Model', 'Mesh holding per-vertex int arrays and per-face byte and short arrays.'],
+  wk: ['AsyncRequest', 'Plain request record with a volatile status and result object.'],
+  pm: ['BufferedSocket', 'Runnable owning a Socket with input/output streams and a byte buffer.'],
+  qb: ['JaggrabClient', 'Runnable that writes a JAGGRAB request line to its connection.'],
   ji: ['TextureOperator', 'IntrusiveNode with an input operator array and per-row scanline producers for procedural textures.'],
   uj: ['MenuSelectionCursor', 'Keeps a selected index within an item count and moves it with up/down key codes 98 and 99.'],
   tr: ['GameplayScreen', 'Owns the player grid and draws the in-game debug lines FPS, Current Cell and Fall.'],
@@ -93,6 +103,30 @@ method('ed', 'a', '(IB)V', 'writeSmart', 'Writes a byte below 128 or a short off
 method('ed', 'b', '(IB)V', 'writeSignedSmart', 'Writes a byte offset by 64 or a short offset by 49152.');
 method('ed', 'k', '(I)Ljava/lang/String;', 'readNullableString', 'Returns null when the next payload byte is zero.');
 method('ed', 'f', '(I)Ljava/lang/String;', 'readString', 'Scans payload to the zero terminator and builds a string.');
+const bits = 'BitPacketBuffer keeps a bit cursor over the byte payload.';
+method('mi', 'a', '(BII)V', 'writeBits', bits + ' Writes the low bits of a value across payload bytes.');
+method('mi', 'c', '(BI)I', 'readBits', bits + ' Reads a variable number of bits.');
+method('mi', 'p', '(I)V', 'beginBitAccess', 'Converts the byte cursor into a bit cursor.');
+method('mi', 'b', '(B)V', 'endBitAccess', 'Rounds the bit cursor up into a byte cursor.');
+method('mi', 'b', '([II)V', 'setCipherSeed', 'Creates the IsaacCipher from the seed array.');
+method('mi', 'c', '(B)I', 'readCipheredByte', 'Reads a byte minus the next cipher value.');
+method('mi', 'j', '(II)V', 'writeCipheredByte', 'Writes a byte plus the next cipher value.');
+method('wa', 'a', '(B)I', 'nextInt', 'Refills the 256-word block when empty and returns the next generated word.');
+const task = 'PlatformTaskDispatcher wraps every request in enqueueTask with a distinct type code.';
+method('jj', 'a', '(ILjava/lang/Object;III)Lwk;', 'enqueueTask', 'Common entry that queues a typed request and returns its record.');
+method('jj', 'b', '(I)Lwk;', 'requestDisplayModes', task + ' Type 5 carries no payload.');
+method('jj', 'a', '(IIIII)Lwk;', 'requestEnterFullscreen', task + ' Type 6 packs width, height, depth and rate.');
+method('jj', 'a', '(ILjava/lang/Class;Ljava/lang/String;)Lwk;', 'requestDeclaredField', task + ' Type 9 carries a class and a name.');
+method('jj', 'a', '(ZLjava/lang/String;II)Lwk;', 'requestSocketInternal', task + ' Type 1 or 22 carries the host and port.');
+method('jj', 'a', '(IILjava/lang/String;)Lwk;', 'requestSocket', 'Delegates to the internal socket request with the host string and port.');
+method('jj', 'a', '(ZLjava/awt/Frame;)Lwk;', 'requestExitFullscreen', task + ' Type 7 carries the Frame.');
+method('jj', 'a', '(ILjava/lang/Runnable;I)Lwk;', 'startThread', task + ' Type 2 carries a Runnable.');
+method('jj', 'a', '([Ljava/lang/Class;ILjava/lang/Class;Ljava/lang/String;)Lwk;', 'requestDeclaredMethod', task + ' Type 8 carries a class, a name and parameter types.');
+method('jj', 'a', '(ILjava/net/URL;)Lwk;', 'requestUrlStream', task + ' Type 4 carries the URL.');
+method('Vertigo2', 'n', '(B)V', 'loadBackgroundImages', 'Decodes nebula, planet, star and asteroid jpg backgrounds from the archive.');
+method('Vertigo2', 'q', '(I)V', 'loadSoundEffects', 'Registers v_menu_select, v_explode and v_deflate effects.');
+method('Vertigo2', 'a', '(ILjava/lang/String;II)V', 'loadSoundEffectVariants', 'Loads a base sound effect plus numbered variants into its slot.');
+method('Vertigo2', 'j', '(B)V', 'loadFonts', 'Builds the BitmapFont instances such as kartika13.');
 field('uj', 'b', 'I', 'itemCount', 'The constructor stores its argument here and the key handlers wrap the index at it.');
 field('uj', 'c', 'I', 'selectedIndex', 'Key 98 decrements and key 99 increments this index with wraparound.');
 field('ji', 'u', '[Lji;', 'inputs', 'Row producers read their upstream operators from this array by index.');
