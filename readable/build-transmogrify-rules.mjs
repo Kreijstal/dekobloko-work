@@ -32,12 +32,19 @@ const classes = {
   j: ['TileRack', 'Fixed-size array of LetterTile with an origin; named submission_rack, carryover_rack or new_rack in debug output.'],
   sj: ['LetterTile', 'Draws a tile sprite, its letter and a numeric value; tracks its rack, slot and destination.'],
   qg: ['UiWidget', 'IntrusiveNode base widget with text label, listener and bounds fields.'],
-  ui: ['WidgetListener', 'Single-method callback taking a UiWidget; implemented by button handlers.'],
+  ui: ['WidgetRenderer', 'Single draw callback taking offsets and a UiWidget; ni draws a highlight then defers to its superclass.'],
   ag: ['PcmStream', 'Abstract audio stream linked to a next stream with sample-mixing hooks.'],
   bb: ['PcmSampleStream', 'PcmStream with loop, position and rate state that mixes a PCM sample buffer.'],
   oa: ['PacketBuffer', 'Byte payload with cursor and big-endian, string, RSA BigInteger and ISAAC-style operations.'],
   nf: ['WordLanguage', 'Holds a language font, vowel string and word list; validates the letters of a tile array.'],
   ad: ['WordDictionary', 'Decodes length-prefixed byte arrays from a packet and answers membership for a char[] word.'],
+  se: ['SpriteState', 'DualLinkNode subclass holding the six full/trimmed dimension and offset integers.'],
+  ti: ['Sprite', 'SpriteState subclass owning an int pixel array with software blits.'],
+  k: ['IndexedSpriteState', 'Abstract holder of six dimension integers with abstract blit hooks, extended by the paletted sprite.'],
+  ii: ['IndexedSprite', 'Paletted sprite with a byte pixel array and an int palette whose blit skips index zero.'],
+  hb: ['PcmSample', 'Holds a byte sample array with rate and loop bounds, consumed by PcmSampleStream.'],
+  gd: ['AchievementNotice', 'Six-int record queued by unlockAchievement when a popup is wanted.'],
+  pi: ['AchievementUnlockEvent', 'Single-int event holding the achievement index, queued by unlockAchievement.'],
   kl: ['ContextualRuntimeException', 'RuntimeException retaining a cause and context text.'],
 };
 const members = {};
@@ -96,6 +103,12 @@ method('ni', 'a', '(B)I', 'scoreSubmittedWord', 'Reads the submission rack: 0 if
 method('nf', 'a', '(I[Lsj;)Z', 'isValidWord', 'Copies tile letters into a char[] and asks the word dictionary.');
 method('nf', 'a', '(IC)C', 'toUpperCase', 'Returns Character.toUpperCase of its argument.');
 method('ad', 'a', '(B[C)Z', 'containsWord', 'Public wrapper over the private lookup used by nf for a char[] word.');
+method('sj', 'a', '(B)V', 'stepTowardDestination', 'Moves the tile 12 pixels per call toward its destination and plays a sound on arrival.');
+method('Transmogrify', 'a', '(I)V', 'initializeGame', 'Creates the 22050 Hz audio mixer and initial render state during applet startup.');
+method('Transmogrify', 'b', '(I)V', 'renderFrame', 'Selects the drawing canvas and paints loading, menu or game content.');
+method('Transmogrify', 'b', '(B)V', 'updateGame', 'Called every tick by the applet loop; polls input and advances screens.');
+method('Transmogrify', 'c', '(I)V', 'clearAppletStatics', 'Nulls the static fields of dozens of classes at applet shutdown.');
+method('Transmogrify', 'e', '(I)V', 'releaseGameResources', 'Invoked just before destroy at shutdown to release audio and graphics resources.');
 method('ue', 'b', '(I)V', 'dumpRackState', 'Prints each rack tile and any tile that believes itself elsewhere.');
 
 export const config = {

@@ -304,10 +304,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:gd",
+      "originalName": "gd",
+      "to": "AchievementNotice",
+      "evidence": "Six-int record queued by unlockAchievement when a popup is wanted.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:gj",
       "originalName": "gj",
       "to": "BufferedSocket",
       "evidence": "Runnable owning a Socket with input/output streams and a write buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hb",
+      "originalName": "hb",
+      "to": "PcmSample",
+      "evidence": "Holds a byte sample array with rate and loop bounds, consumed by PcmSampleStream.",
       "confidence": "reviewed"
     },
     {
@@ -325,10 +339,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ii",
+      "originalName": "ii",
+      "to": "IndexedSprite",
+      "evidence": "Paletted sprite with a byte pixel array and an int palette whose blit skips index zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:j",
       "originalName": "j",
       "to": "TileRack",
       "evidence": "Fixed-size array of LetterTile with an origin; named submission_rack, carryover_rack or new_rack in debug output.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:k",
+      "originalName": "k",
+      "to": "IndexedSpriteState",
+      "evidence": "Abstract holder of six dimension integers with abstract blit hooks, extended by the paletted sprite.",
       "confidence": "reviewed"
     },
     {
@@ -367,6 +395,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pi",
+      "originalName": "pi",
+      "to": "AchievementUnlockEvent",
+      "evidence": "Single-int event holding the achievement index, queued by unlockAchievement.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qg",
       "originalName": "qg",
       "to": "UiWidget",
@@ -402,6 +437,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:se",
+      "originalName": "se",
+      "to": "SpriteState",
+      "evidence": "DualLinkNode subclass holding the six full/trimmed dimension and offset integers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:sj",
       "originalName": "sj",
       "to": "LetterTile",
@@ -416,10 +458,17 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ti",
+      "originalName": "ti",
+      "to": "Sprite",
+      "evidence": "SpriteState subclass owning an int pixel array with software blits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ui",
       "originalName": "ui",
-      "to": "WidgetListener",
-      "evidence": "Single-method callback taking a UiWidget; implemented by button handlers.",
+      "to": "WidgetRenderer",
+      "evidence": "Single draw callback taking offsets and a UiWidget; ni draws a highlight then defers to its superclass.",
       "confidence": "reviewed"
     },
     {
@@ -717,6 +766,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:Transmogrify.a(I)V",
+      "originalName": "a",
+      "to": "initializeGame",
+      "evidence": "Creates the 22050 Hz audio mixer and initial render state during applet startup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Transmogrify.b(B)V",
+      "originalName": "b",
+      "to": "updateGame",
+      "evidence": "Called every tick by the applet loop; polls input and advances screens.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Transmogrify.b(I)V",
+      "originalName": "b",
+      "to": "renderFrame",
+      "evidence": "Selects the drawing canvas and paints loading, menu or game content.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Transmogrify.c(I)V",
+      "originalName": "c",
+      "to": "clearAppletStatics",
+      "evidence": "Nulls the static fields of dozens of classes at applet shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Transmogrify.e(I)V",
+      "originalName": "e",
+      "to": "releaseGameResources",
+      "evidence": "Invoked just before destroy at shutdown to release audio and graphics resources.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ac.a(ILj;)Ljava/lang/String;",
       "originalName": "a",
       "to": "rackName",
@@ -742,6 +826,41 @@
       "originalName": "a",
       "to": "returnTileToRack",
       "evidence": "Puts a removed tile back in its previous slot or the first free carryover or new rack slot, then closes the gap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.a(I)V",
+      "originalName": "a",
+      "to": "initializeGame",
+      "evidence": "Creates the 22050 Hz audio mixer and initial render state during applet startup. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.b(B)V",
+      "originalName": "b",
+      "to": "updateGame",
+      "evidence": "Called every tick by the applet loop; polls input and advances screens. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.b(I)V",
+      "originalName": "b",
+      "to": "renderFrame",
+      "evidence": "Selects the drawing canvas and paints loading, menu or game content. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.c(I)V",
+      "originalName": "c",
+      "to": "clearAppletStatics",
+      "evidence": "Nulls the static fields of dozens of classes at applet shutdown. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.e(I)V",
+      "originalName": "e",
+      "to": "releaseGameResources",
+      "evidence": "Invoked just before destroy at shutdown to release audio and graphics resources. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -787,6 +906,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sj.a(B)V",
+      "originalName": "a",
+      "to": "stepTowardDestination",
+      "evidence": "Moves the tile 12 pixels per call toward its destination and plays a sound on arrival.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sj.a(IIII)V",
       "originalName": "a",
       "to": "draw",
@@ -823,7 +949,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-transmogrify-rules.mjs": "9b4887d879fe5cb8f5bf01acbe7f501c3a1aed29d03f5ecdc153f4c0e756ca1b",
+      "build-transmogrify-rules.mjs": "9e2171ae5a8334680ae39cf66346b1950294a8e5e9b1af3c5eb23b2fdac2e8d5",
       "reproduce-transmogrify.mjs": "275031618841925c88dcac462520b84fb1be33422795af31727af8ec70c869ee",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
