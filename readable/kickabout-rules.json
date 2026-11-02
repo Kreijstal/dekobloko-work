@@ -430,10 +430,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ch",
+      "originalName": "ch",
+      "to": "LoggedGoal",
+      "evidence": "toString returns \"LoggedGoal{..}\" with scorer/ball positions, goal type (kick, cross, header) and match time.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:gn",
       "originalName": "gn",
       "to": "IntrusiveNode",
       "evidence": "Same shared role as GeoBlox IntrusiveNode: long key plus two node links; base of most Kickabout objects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gt",
+      "originalName": "gt",
+      "to": "ParticipantStatus",
+      "evidence": "Per-participant flags printed by CommonGame.toString: offer_draw, resigned, departed, loaded_pitch, reward and megamode; decoded from the network buffer. Unrelated static helpers remain.",
       "confidence": "reviewed"
     },
     {
@@ -451,6 +465,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jc",
+      "originalName": "jc",
+      "to": "LoggedPlayer",
+      "evidence": "toString returns \"LoggedPlayer{..}\" with home/away side, resign time, reward, membership, tackle, kick, cross, header and goal counters.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:kc",
       "originalName": "kc",
       "to": "IntrusiveNodeHashTable",
@@ -458,10 +479,339 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ma",
+      "originalName": "ma",
+      "to": "NetworkGameClient",
+      "evidence": "GameAppletShell subclass reading applet parameters (affid, gamecrc, gameport1/2, countrylist.ws) and owning shared account/connection client state; same role as Ace of Skies NetworkGameClient.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ml",
       "originalName": "ml",
       "to": "CipherPacketBuffer",
       "evidence": "iw subclass owning the aq ISAAC generator for opcode encryption, matching the shared cipher buffer role.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mo",
+      "originalName": "mo",
+      "to": "MatchAgent",
+      "evidence": "Abstract synchronised match-state component with abstract copy-from and CipherPacketBuffer decode; every subclass toString is \"Agent...\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:nl",
+      "originalName": "nl",
+      "to": "FootballerAgent",
+      "evidence": "MatchAgent whose toString prints \"AgentFootballer[archetype]\" with location, speed, action, direction, kick and tackle state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:nu",
+      "originalName": "nu",
+      "to": "CommonGame",
+      "evidence": "Match state whose toString prints \"CommonGame(players=..)\", phase (TeamSelection..GameOver), surface, tier, winner, per-participant flags and queued moves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:oe",
+      "originalName": "oe",
+      "to": "TeamSelectionAgent",
+      "evidence": "MatchAgent whose toString prints \"AgentTeamSelection\" with ready flags and per-slot selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tj",
+      "originalName": "tj",
+      "to": "BallAgent",
+      "evidence": "MatchAgent whose toString prints \"AgentBall\" with position, velocity, possessor, uncatchable and high-friction flags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ua",
+      "originalName": "ua",
+      "to": "GoalStateAgent",
+      "evidence": "MatchAgent whose toString prints \"AgentGoalState\" with two team scores, goal count and goal scorer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wl",
+      "originalName": "wl",
+      "to": "LineupAgent",
+      "evidence": "MatchAgent whose toString prints \"AgentLineup\" with per-participant lineup slots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wr",
+      "originalName": "wr",
+      "to": "FormationAgent",
+      "evidence": "MatchAgent whose toString prints \"AgentFormation\" with per-team formation choices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ch.field_l:I",
+      "originalName": "field_l",
+      "to": "time",
+      "evidence": "Printed under this label by toString.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ch.field_t:I",
+      "originalName": "field_t",
+      "to": "goalType",
+      "evidence": "toString prints null, kick, cross or header from values 0..3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gt.field_i:Z",
+      "originalName": "field_i",
+      "to": "loadedPitch",
+      "evidence": "CommonGame.toString prints !loaded_pitch when clear.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gt.field_n:Z",
+      "originalName": "field_n",
+      "to": "rewardEligible",
+      "evidence": "CommonGame.toString prints !reward when clear.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gt.field_q:Z",
+      "originalName": "field_q",
+      "to": "offerDraw",
+      "evidence": "CommonGame.toString prints offer_draw when set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gt.field_s:Z",
+      "originalName": "field_s",
+      "to": "resigned",
+      "evidence": "CommonGame.toString prints resigned when set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gt.field_u:Z",
+      "originalName": "field_u",
+      "to": "megamode",
+      "evidence": "CommonGame.toString prints megamode when set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gt.field_v:Z",
+      "originalName": "field_v",
+      "to": "departed",
+      "evidence": "CommonGame.toString prints departed when set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jc.field_h:I",
+      "originalName": "field_h",
+      "to": "headers",
+      "evidence": "Printed under this label by toString.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jc.field_j:I",
+      "originalName": "field_j",
+      "to": "crosses",
+      "evidence": "Printed under this label by toString.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jc.field_o:Z",
+      "originalName": "field_o",
+      "to": "home",
+      "evidence": "toString prints home or away.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jc.field_p:I",
+      "originalName": "field_p",
+      "to": "resignTime",
+      "evidence": "Printed under this label by toString. (resigntime)",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nl.field_I:I",
+      "originalName": "field_I",
+      "to": "aiWait",
+      "evidence": "toString prints it as ai_wait.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nl.field_J:I",
+      "originalName": "field_J",
+      "to": "archetype",
+      "evidence": "Switched on by archetypeName; toString treats 4 as keeper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nl.field_l:Z",
+      "originalName": "field_l",
+      "to": "megamode",
+      "evidence": "toString prints MEGAMODE when set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nl.field_u:I",
+      "originalName": "field_u",
+      "to": "action",
+      "evidence": "Switched on by actionName.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nl.field_y:Z",
+      "originalName": "field_y",
+      "to": "member",
+      "evidence": "toString prints member/!member.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nu.field_G:Z",
+      "originalName": "field_G",
+      "to": "bigHeadMode",
+      "evidence": "Printed under this label by toString. (bigheadmode)",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nu.field_I:I",
+      "originalName": "field_I",
+      "to": "playerCount",
+      "evidence": "Printed under this label by toString. (players)",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nu.field_J:I",
+      "originalName": "field_J",
+      "to": "aiTick",
+      "evidence": "Printed under this label by toString. (ai_tick)",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nu.field_O:I",
+      "originalName": "field_O",
+      "to": "timeLimit",
+      "evidence": "Printed under this label by toString. (timelimit)",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nu.field_R:[Lgt;",
+      "originalName": "field_R",
+      "to": "participantStatus",
+      "evidence": "Indexed per participant; each element prints the status flags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nu.field_Z:I",
+      "originalName": "field_Z",
+      "to": "winner",
+      "evidence": "Printed under this label by toString.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nu.field_m:I",
+      "originalName": "field_m",
+      "to": "tier",
+      "evidence": "Printed under this label by toString.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nu.field_p:Z",
+      "originalName": "field_p",
+      "to": "disableOpponent",
+      "evidence": "Printed under this label by toString. (disable_opponent)",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nu.field_s:Z",
+      "originalName": "field_s",
+      "to": "disableLocal",
+      "evidence": "Printed under this label by toString. (disable_local)",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nu.field_t:I",
+      "originalName": "field_t",
+      "to": "surface",
+      "evidence": "Printed under this label by toString.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nu.field_u:I",
+      "originalName": "field_u",
+      "to": "phase",
+      "evidence": "Compared with 0..5 by phaseName; toString prints it as phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nu.field_v:I",
+      "originalName": "field_v",
+      "to": "phaseTime",
+      "evidence": "Printed under this label by toString. (phase_time)",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_A:I",
+      "originalName": "field_A",
+      "to": "highFriction",
+      "evidence": "Printed under this label by toString. (high_friction)",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_l:I",
+      "originalName": "field_l",
+      "to": "modelId",
+      "evidence": "Printed under this label by toString. (model_id)",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tj.field_r:I",
+      "originalName": "field_r",
+      "to": "uncatchable",
+      "evidence": "Printed under this label by toString.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ua.field_j:[I",
+      "originalName": "field_j",
+      "to": "score",
+      "evidence": "toString prints it as the two-element score.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ua.field_m:I",
+      "originalName": "field_m",
+      "to": "goalCount",
+      "evidence": "Printed under this label by toString. (goal_count)",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ua.field_n:I",
+      "originalName": "field_n",
+      "to": "goalScorer",
+      "evidence": "Printed under this label by toString. (goal_scorer)",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.c(I)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "archetypeName",
+      "evidence": "Maps archetype codes 0..4 to Tank, Htshot, Elite, Ranger and Keeper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.c(Z)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "actionName",
+      "evidence": "Maps action codes to Idle, ACTION_KICK, ACTION_TACKLE, ACTION_DASH, ACTION_DIVE, ACTION_HEADER and similar.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.c(B)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "phaseName",
+      "evidence": "Maps phase 0..5 to TeamSelection, WaitForPlayers, Formation, LineUp, Playing and GameOver.",
       "confidence": "reviewed"
     }
   ],
@@ -480,7 +830,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-kickabout-rules.mjs": "bfd900cfbad79a1548fa039222294fdc4a19ed1fc4dad61149e4ef3ba3c0f3fc",
+      "build-kickabout-rules.mjs": "bbb89c267ac97f84f18554bda7a4dbb9c6000a5dc4b7a9e8c452dea3167cfe84",
       "reproduce-kickabout.mjs": "ced425cb07cc59ef9672e56d45c5fdaaf3cc113192449c7eafd4355270fa9245",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
