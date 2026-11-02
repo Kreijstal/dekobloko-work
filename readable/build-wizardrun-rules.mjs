@@ -84,6 +84,22 @@ field('ok', 'd', '[Lo;', 'selectStarSprites', 'Filled with the selstar, selstar2
 method('ok', 'a', '(CLjava/lang/CharSequence;B)I', 'countCharacter', 'Loops over the sequence and counts characters equal to the first argument.');
 method('uc', 'a', '(ZLjava/awt/Canvas;)V', 'drawLoadingScreen', 'Draws the progress bar from the loading message and percentage, then presents the canvas.');
 method('p', 'a', '(BLjava/lang/String;ZF)V', 'drawProgressBar', 'Receives the loading message and progress fraction from the loading frame.');
+field('ff', 'H', 'Loj;', 'keyHandler', 'Static slot holding the key listener; key events are ignored while it is null.');
+field('tc', 'm', 'Ltf;', 'mouseHandler', 'Static slot holding the mouse listener; mouse events are ignored while it is null.');
+field(wr, 'T', 'I', 'pointerX', 'mouseMoved stores getX here and mouseExited resets it to -1.');
+field('gj', 'a', 'I', 'pointerY', 'mouseMoved stores getY here and mouseExited resets it to -1.');
+field('mh', 'pb', 'I', 'clickX', 'mousePressed stores the click getX here.');
+field('dc', 't', 'I', 'clickY', 'mousePressed stores the click getY here.');
+field('ve', 'd', 'I', 'pressedButton', 'mousePressed stores 1 or 2 here from the button modifiers.');
+field('oc', 'a', 'I', 'mouseIdleTime', 'Every mouse event resets it to 0.');
+field('h', 'p', 'I', 'keyIdleTime', 'Every key press and release resets it to 0.');
+field('ge', 'n', '[I', 'keyCodeQueue', 'keyPressed and keyTyped append a key code at the write index.');
+field('ve', 'a', '[C', 'typedCharQueue', 'keyTyped and keyPressed append the typed character at the write index.');
+field('qh', 'b', 'I', 'keyQueueWriteIndex', 'Advanced modulo 128 after each queued key code and character.');
+field('tg', 'i', 'I', 'keyQueueReadIndex', 'The write index stops advancing when it reaches this index.');
+field('wd', 'a', '[I', 'keyEventQueue', 'keyPressed stores the code and keyReleased stores its complement.');
+field('wk', 'b', 'I', 'keyEventWriteIndex', 'Advanced modulo 128 after each queued key event.');
+field('lk', 'a', 'I', 'keyEventReadIndex', 'The event write index becomes -1 when it reaches this index.');
 method('rk', 'b', '(Z)V', 'unlink', 'Splices the node out of its neighbours and nulls both links.');
 
 export const config = {
