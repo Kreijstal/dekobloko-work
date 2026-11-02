@@ -23,6 +23,8 @@ const classes = {
   ck: ['FullscreenFocusCanvas', 'Canvas with focus listener and a Frame field that repaints via paint.'],
   jm: ['DelegatingCanvas', 'Canvas wrapping another Component whose paint and update it forwards.'],
   nk: ['PcmPlayerService', 'Base audio output owning PcmStream arrays and an int mix buffer, with a factory choosing the output.'],
+  mf: ['AsyncRequest', 'Request handle with volatile status and result that the dispatcher thread completes and callers poll.'],
+  la: ['CacheFileLocator', 'Stores the cache name and identifier and derives the user.home prefix for cache file paths.'],
   ij: ['MessageKeys', 'Static table of translation lookup keys such as loginm1, error_js5crc and acceptdraw.'],
   ad: ['TutorialController', 'Drives the battle tutorial steps through 91 reads of the tutorial message array while holding a BattleState.'],
   kl: ['TutorialText', 'Holds the tutorial hint strings such as Centring the view and Click on a recruit tab.'],
@@ -120,6 +122,31 @@ method('jj', 'c', '(I)V', 'clear', ['obfuscationGuard'], 'Unlinks every node unt
 method('jj', 'd', '(I)Luf;', 'beginBackward', ['obfuscationGuard'], 'Sets the cursor to the sentinel previous link and returns it unless empty.');
 method('jj', 'e', '(B)Luf;', 'nextBackward', ['obfuscationGuard'], 'Returns the cursor node and moves it along the previous link.');
 method('jj', 'b', '(I)Luf;', 'nextForward', ['obfuscationGuard'], 'Returns the cursor node and moves it along the next link.');
+const widget = 'UiWidget constructor stores its arguments in these fields.';
+field('gl', 'o', 'Ljava/lang/String;', 'text', widget);
+field('gl', 'l', 'Lcj;', 'listener', widget);
+field('gl', 'w', 'I', 'x', 'UiWidget bounds constructor stores its first argument here.');
+field('gl', 'u', 'I', 'y', 'UiWidget bounds constructor stores its second argument here.');
+field('gl', 'p', 'I', 'width', 'UiWidget bounds constructor stores its third argument here.');
+field('gl', 'n', 'I', 'height', 'UiWidget bounds constructor stores its fourth argument here.');
+const mouse = 'MouseInputHandler.mouseMoved stores event getX and getY into these statics.';
+field('ie', 'd', 'I', 'mouseX', mouse);
+field('ch', 'd', 'I', 'mouseY', mouse);
+field('a', 'd', 'Ldb;', 'mouseHandler', 'Every MouseInputHandler callback first tests this static for null.');
+field('mf', 'd', 'I', 'status', 'Callers poll this volatile int until the dispatcher sets a non-zero value.');
+field('mf', 'e', 'Ljava/lang/Object;', 'result', 'Holds the DataInputStream or socket once status reports success.');
+method('he', 'a', '(Ljava/net/URL;I)Lmf;', 'requestUrl', ['url', 'obfuscationGuard'], 'Queues task type 4 with the URL and returns the AsyncRequest.');
+method('he', 'a', '(Ljava/lang/Runnable;BI)Lmf;', 'requestThread', ['task', 'obfuscationGuard', 'priority'], 'Queues task type 2 with the Runnable and returns the AsyncRequest.');
+method('he', 'a', '(Ljava/awt/Frame;I)Lmf;', 'requestFrame', ['frame', 'obfuscationGuard'], 'Queues task type 7 with the Frame and returns the AsyncRequest.');
+method('mj', 'b', '(Z)Ljava/net/Socket;', 'createSocket', ['obfuscationGuard'], 'Abstract Socket factory implemented by ProxySocketConnector.');
+method('mj', 'a', '(Z)Ljava/net/Socket;', 'createDirectSocket', ['obfuscationGuard'], 'Opens a plain Socket to the stored host and port.');
+method('tf', 'a', '(I)I', 'available', ['obfuscationGuard'], 'Returns InputStream.available unless the socket is closed.');
+method('tf', 'a', '(B)V', 'close', ['obfuscationGuard'], 'Sets the closed flag, notifies the writer thread and closes the socket.');
+method('tf', 'c', '(I)V', 'throwPendingError', ['obfuscationGuard'], 'Clears the pending-error flag and throws an IOException when it was set.');
+field('ii', 'f', 'I', 'wheelDelta', 'mouseWheelMoved accumulates into this field and the query returns then clears it.');
+method('ii', 'a', '(I)I', 'consumeWheelDelta', ['obfuscationGuard'], 'Returns the accumulated wheel movement and resets it to zero.');
+method('ii', 'a', '(Ljava/awt/Component;B)V', 'unregister', ['component', 'obfuscationGuard'], 'Calls removeMouseWheelListener on the component.');
+method('ii', 'a', '(ILjava/awt/Component;)V', 'register', ['obfuscationGuard', 'component'], 'Calls addMouseWheelListener on the component.');
 export const config = {
   game: 'terraphoenix', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
