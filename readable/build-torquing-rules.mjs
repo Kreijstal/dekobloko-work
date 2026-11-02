@@ -23,6 +23,16 @@ const classes = {
   md: ['DelegatingCanvas', 'Canvas wrapping another Component.'],
   kn: ['RasterBuffer', 'Abstract int pixel array with width and height handed to the rasterizer.'],
   sn: ['ImageProducerRasterBuffer', 'RasterBuffer implementing ImageProducer to push pixels to an ImageConsumer.'],
+  ei: ['IntrusiveDeque', 'Sentinel-based deque of IntrusiveNode used by caches, the mixer and widgets.'],
+  lf: ['PcmStream', 'Abstract audio stream with a next link and a mix(int[], offset, length) contract.'],
+  uh: ['PcmStreamMixer', 'PcmStream that keeps deques of child streams and mixes them synchronously.'],
+  wf: ['SpriteState', 'DualLinkNode subclass holding the six full/trimmed dimension and offset integers.'],
+  t: ['Sprite', 'SpriteState subclass owning an int pixel array with software blits.'],
+  ep: ['ArgbSprite', 'Sprite subclass whose kernels extract alpha with pixel >>> 24.'],
+  ph: ['SoftwareRasterizer', 'Static pixel buffer, clip rectangle and primitive drawing routines.'],
+  vh: ['PlatformTaskDispatcher', 'Runnable owning a Thread, a reflective Method and an EventQueue for platform tasks.'],
+  gm: ['UiWidget', 'IntrusiveNode base widget with text, listener, renderer and bounds fields.'],
+  el: ['WidgetRenderer', 'Interface whose single method paints a UiWidget at a position.'],
   no: ['BufferedSocket', 'Runnable owning a Socket with input and output streams.'],
 };
 const members = {};
@@ -36,6 +46,11 @@ function method(owner, original, descriptor, to, parameters, evidence) {
 const node = 'IntrusiveNode link fields; hash tables and deques splice nodes through them.';
 for (const [original, descriptor, to] of [['h', 'Lq;', 'next'], ['e', 'Lq;', 'previous'], ['f', 'J', 'key']])
   field('q', original, descriptor, to, node);
+method('q', 'f', '(I)V', 'unlink', ['obfuscationGuard'], 'Clears both reciprocal links when the node is linked.');
+method('ta', 'h', '(I)V', 'unlinkSecondary', ['obfuscationGuard'], 'Clears the secondary link pair field_j and field_p.');
+method('vl', 'a', '(JBLq;)V', 'put', ['key', 'obfuscationGuard', 'node'], 'Unlinks the node, splices it into the bucket chosen by key and stores the key.');
+method('fj', 'b', '(II)V', 'writeByte', ['obfuscationGuard', 'value'], 'Stores one byte at the cursor and advances it.');
+method('fj', 'i', '(I)I', 'readUnsignedShort', ['obfuscationGuard'], 'Reads two bytes big-endian and advances the cursor by 2.');
 field('fj', 'j', '[B', 'payload', 'PacketBuffer byte array indexed by the cursor in every read and write.');
 field('fj', 'n', 'I', 'position', 'PacketBuffer cursor advanced by reads and writes.');
 
