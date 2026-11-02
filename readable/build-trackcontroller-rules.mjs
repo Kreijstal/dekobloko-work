@@ -62,6 +62,9 @@ const classes = {
   nb: ['MidiPlayer', 'PcmStream with per-channel int[] state, a MidiFile and a default tempo field of 1000000.'],
   ml: ['VorbisDecoder', 'Static Vorbis codebook and window tables; its a() method returns a decoded PcmSample.'],
   ue: ['IntrusiveDequeCursor', 'Cursor constructed from an IntrusiveDeque that tracks the current IntrusiveNode.'],
+  hf: ['DiskArchiveStore', 'Pairs a data and an index BufferedCacheFile and reads and writes byte[] entries by id.'],
+  rc: ['RasterBuffer', 'Abstract int pixel array with width and height and abstract draw-to-Component and draw-to-Graphics hooks.'],
+  ub: ['ImageProducerRasterBuffer', 'RasterBuffer implementing ImageProducer to push pixels to an ImageConsumer.'],
   ri: ['ActiveLevel', 'LevelGrid subclass holding the level in play, its phase and score text.'],
 };
 const members = {};
@@ -174,6 +177,12 @@ field('ni', 'm', '[Z', 'keyDown', keys);
 field('md', 'b', '[I', 'keyQueue', keys);
 field('hb', 'f', 'I', 'keyQueueRead', keys);
 field('mg', 'f', 'I', 'keyQueueWrite', keys);
+method('hf', 'a', '(BI)[B', 'read', 'Public entry that returns the byte[] stored under an id by walking the index and data files.');
+method('hf', 'a', '(II[BI)Z', 'write', 'Public entry that stores a byte[] under an id, delegating to the private overwrite routine.');
+field('gj', 'f', '[Lea;', 'levels', 'ActiveLevel treats the level as the last when its levelIndex equals this array length.');
+field('ri', 'I', 'Lea;', 'level', 'ActiveLevel reads the level index and the bonus values from this LevelData.');
+field('bk', 'E', 'Loh;', 'font', 'Widgets and ActiveLevel measure and draw all text through this BitmapFont.');
+field('rc', 'b', '[I', 'pixels', 'RasterBuffer declares this as its only int[] and ImageProducerRasterBuffer pushes it to the consumer.');
 
 export const config = {
   game: 'trackcontroller', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
