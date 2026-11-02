@@ -44,6 +44,11 @@ const classes = {
   ej: ['PcmStream', 'Abstract IntrusiveNode defining sample fill, skip and a sibling stream link.'],
   gj: ['PcmPlayerService', 'Base audio output owning a PcmStream array and int mix buffer, with a factory choosing the output.'],
   ca: ['JavaSoundAudioOutput', 'PcmPlayerService subclass writing to a javax.sound SourceDataLine.'],
+  nc: ['IntrusiveDeque', 'Sentinel-based deque of IntrusiveNode with head/tail traversal, insertion and removal.'],
+  mi: ['SoftwareRasterizer', 'Static int-pixel primitives for lines, rectangles and circles under shared clip bounds.'],
+  sg: ['RandomAccessCacheFile', 'Wraps a RandomAccessFile with tracked position and length for cache reads and writes.'],
+  hb: ['BufferedCacheFile', 'Buffers reads and writes over a RandomAccessCacheFile with separate read and write windows.'],
+  nj: ['PlatformTask', 'Request holder with volatile status and result fields filled by PlatformTaskDispatcher.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
