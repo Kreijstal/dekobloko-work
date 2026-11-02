@@ -398,6 +398,40 @@ method("ka", "a", "(BLln;)I", "hostileNeighbourFleets", "Sums the garrisons of n
 method("ka", "c", "(ILsd;)V", "computeResourceWeights", "Sets each weight from the territory's stock of that resource relative to its first-ranked one.");
 method("ka", "b", "(I)[I", "broadcastPhrases", "Returns the phrase ids that broadcastChat picks from; TaskAi uses a random choice of two ids.");
 method("ka", "a", "(ILsd;B)V", "planTerritory", "Plans placements and moves for one territory with a given number of unplaced fleets.");
+method("bi", "f", "(II)V", "draw", "Clips against the raster bounds and copies the non-zero pixels to the target.");
+method("bi", "c", "(II)V", "drawOpaque", "Clips against the raster bounds and copies every pixel row to the target.");
+method("bi", "a", "(III)V", "drawAlpha", "Blends the non-zero pixels over the target with an alpha out of 256.");
+method("bi", "d", "(III)V", "drawTinted", "Tints the grey pixels with the red, green and blue of a colour argument.");
+method("bi", "e", "(II)V", "drawMultiply", "Multiplies each non-zero pixel with the pixel already in the target.");
+method("bi", "e", "(III)V", "drawSilhouette", "Writes one colour for every non-zero pixel.");
+method("bi", "d", "(II)V", "drawHalfSize", "Offsets and size are shifted right by one and the kernel reads two source pixels per target pixel.");
+method("bi", "g", "(II)V", "drawQuarterSize", "Offsets and size are divided by four and the kernel reads four source pixels per target pixel.");
+method("bi", "d", "()V", "rotate180", "Reverses the whole pixel array and mirrors both offsets.");
+method("bi", "b", "()V", "flipVertical", "Swaps the pixel rows from top to bottom and mirrors the vertical offset.");
+method("bi", "a", "()V", "flipHorizontal", "Reverses each pixel row and mirrors the horizontal offset.");
+method("bi", "f", "()V", "rotate90", "Transposes the pixel array and swaps the width, height and offsets.");
+method("bi", "f", "(I)V", "addOutline", "Writes the colour into transparent pixels that touch a non-zero pixel.");
+method("bi", "c", "()Lbi;", "flippedCopy", "Returns a new sprite with each row reversed.");
+method("bi", "g", "()Lbi;", "copy", "Returns a new sprite with the same size, offsets and pixels.");
+method("bi", "e", "()V", "bindAsRenderTarget", "Hands the pixel array and size to the rasterizer as the draw target.");
+method("bi", "a", "(IIII)V", "drawRotated", "Converts the position to sixteenths of a pixel and calls drawRotatedAbout with the sprite centre.");
+method("bi", "b", "(IIIIII)V", "drawRotatedAbout", "Rotates by a 16-bit angle with sine and cosine around a pivot and scales the result.");
+method("bi", "b", "(IIII)V", "drawScaled", "Draws the sprite stretched to the given width and height.");
+method("bi", "b", "(IIIII)V", "drawScaledAlpha", "Draws the stretched sprite with an alpha argument.");
+method("nq", "c", "(II)V", "setColours", "Stores the text colour and the shadow colour and resets the alpha to 256.");
+method("nq", "a", "(III)V", "setColoursAlpha", "Stores the text colour, the shadow colour and an alpha.");
+method("nq", "d", "(Ljava/lang/String;IIII)V", "drawString", "Sets the colours and draws the string at the position.");
+method("nq", "d", "(Ljava/lang/String;IIIII)V", "drawStringAlpha", "Sets the colours with alpha and draws the string at the position.");
+method("nq", "c", "(Ljava/lang/String;IIII)V", "drawCentred", "Sets the colours and draws the string with its centre at the x position.");
+method("nq", "a", "(Ljava/lang/String;IIIII)V", "drawCentredAlpha", "Sets the colours with alpha and draws the string centred on the x position.");
+method("nq", "b", "(Ljava/lang/String;IIII)V", "drawRightAligned", "Sets the colours and draws the string with its right end at the x position.");
+method("nq", "c", "(Ljava/lang/String;IIIII)V", "drawRightAlignedAlpha", "Sets the colours with alpha and draws the string ending at the x position.");
+method("nq", "c", "(Ljava/lang/String;)I", "stringWidth", "Sums glyph advances and skips angle-bracket markup tags.");
+method("nq", "c", "(Ljava/lang/String;I)I", "maxLineWidth", "Wraps the string to a width and returns the widest line.");
+method("nq", "c", "(Ljava/lang/String;II)I", "textHeight", "Wraps the string to a width and multiplies the line count by the line height.");
+method("nq", "a", "(Ljava/lang/String;[I[Ljava/lang/String;)I", "wrapText", "Splits the string into lines that fit the given widths and returns the line count.");
+method("nq", "a", "(Ljava/lang/String;I)I", "lineCount", "Wraps the string to one width and returns the number of lines.");
+method("nq", "a", "(C)I", "charWidth", "Looks up the advance of a character in the width table.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
