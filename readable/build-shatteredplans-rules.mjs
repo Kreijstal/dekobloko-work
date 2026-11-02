@@ -156,7 +156,7 @@ Object.assign(classes, {
   "ag": ["Orderable", "Interface with one compare method taking another ag; fi implements it for sorting by distance."],
   "mg": ["FleetMove", "Holds origin star, destination star, owning Player and ship count for fleets in flight."],
   "hj": ["PlacementEvent", "Event holding owner, star and count that MapViewState adds to the displayed ship counts."],
-  "qi": ["SolarFlareEvent", "Event holding star, user and destroyed count that MapViewState subtracts from the displayed ship counts."],
+  "qi": ["StellarBombEvent", "Event holding star, user and destroyed count that MapViewState subtracts from the displayed ship counts."],
   "nr": ["StarAbandonedEvent", "Event holding a star and the dispersal of its ships that MapViewState uses to clear the owner."],
   "rf": ["AllianceExpiredEvent", "Event created with two Players when an alliance countdown reaches zero."],
   "ca": ["PlayerEliminatedEvent", "Event created with a Player when GameState marks it as eliminated."],
@@ -173,6 +173,37 @@ Object.assign(classes, {
   "cn": ["QuaternaryLinkNode", "TertiaryLinkNode subclass with a fourth independent link pair."],
   "el": ["TertiaryNodeList", "List of TertiaryLinkNode that GameState uses for fleets in flight."],
   "wb": ["QuaternaryNodeList", "List of QuaternaryLinkNode used by GameSession."],
+  "ko": ["WidgetListener", "Empty marker interface that the widget listener interfaces extend."],
+  "bp": ["ButtonListener", "Listener interface with one callback taking a kg widget and four ints."],
+  "od": ["TextFieldListener", "Listener interface with two callbacks that take a go text field."],
+  "hf": ["HoverListener", "Listener interface called with the widget and a boolean when its hover flag changes."],
+  "iq": ["WidgetPainter", "Interface with one paint callback taking a UiWidget and draw offsets."],
+  "pj": ["WidgetMetrics", "Interface that returns size and layout values for a UiWidget."],
+  "o": ["WidgetTheme", "Implements WidgetPainter and WidgetMetrics and holds a font and colour fields."],
+  "i": ["DialPainter", "WidgetPainter that draws the circle, marker and hand of a rp dial."],
+  "tf": ["CheckboxPainter", "WidgetPainter that draws the box and crossing lines of a lk checkbox."],
+  "tp": ["SliderPainter", "WidgetPainter that draws the track and tick marks of a td slider."],
+  "rq": ["LinkPainter", "WidgetPainter that draws underlined link text and a focus rectangle."],
+  "rp": ["DialWidget", "kg subclass with step count, marker index and hand index that i paints."],
+  "lk": ["CheckboxWidget", "kg subclass whose checked flag tf draws as crossing lines."],
+  "td": ["SliderWidget", "kg subclass that tp paints with ticks and a position."],
+  "hl": ["ValidationIndicator", "kg subclass holding a ValidationSource and returning its message as tooltip text."],
+  "kg": ["FocusableWidget", "UiWidget subclass with enabled and focused flags that notifies ButtonListener and releases focus."],
+  "go": ["TextFieldWidget", "kg subclass with caret, selection, clipboard copy and paste and a maximum length."],
+  "qs": ["SingleChildWidget", "UiWidget subclass that keeps one child widget in field_z."],
+  "tc": ["DialogRoot", "qs subclass holding an IntrusiveDeque of Dialog widgets with an active dialog."],
+  "w": ["Dialog", "WidgetContainer subclass with an active flag and a slide animation counter."],
+  "gk": ["ValidationSource", "Interface with a message, an empty test, a change notification and a state accessor."],
+  "ki": ["ValidatableWidget", "Interface with one method that returns the widget's ValidationSource."],
+  "da": ["DebouncedValidator", "ValidationSource that records the change time and waits 350 ms before evaluating."],
+  "u": ["ValidationState", "Identity token class whose toString throws; its instances stand for validation states."],
+  "ml": ["TextFieldValidator", "DebouncedValidator bound to a go text field and a TextFieldListener."],
+  "cc": ["PasswordValidator", "TextFieldValidator that compares the lowercased password with a name text."],
+  "ec": ["UsernameAvailabilityValidator", "TextFieldValidator that caches a looked-up availability result per text."],
+  "fj": ["MatchingTextValidator", "TextFieldValidator that requires equal text in another field whose own validation is valid."],
+  "mb": ["AgeValidator", "TextFieldValidator that accepts a parsed number from 1 to 130."],
+  "mf": ["EmailValidator", "TextFieldValidator that parses an email address and checks a matching confirm validator."],
+  "um": ["PlayerStats", "Sixteen per-player counters formatted as ints and as strings for the end-of-game table."],
 });
 method("ob", "e", "(B)Ljava/lang/String;", "readMarkedString", "Requires a leading zero byte and then reads bytes up to the next zero as a string.");
 method("ob", "a", "(BLjava/lang/String;)V", "writeMarkedString", "Rejects strings containing NUL, writes a zero marker byte and then the string.");
@@ -260,8 +291,8 @@ method("dc", "a", "(Lob;Lfs;Z)V", "readMap", "Reads the galaxy map from the pack
 method("dc", "a", "(B[[Z)V", "buildHostilePairs", "Lists for each candidate the other candidates that are neutral or not allied with it.");
 method("dc", "a", "(II)V", "declareWinner", "Marks the game as finished and stores the winning player index.");
 method("dc", "a", "(IILk;Lse;)V", "processTurn", "Runs the project, combat, movement, victory and bookkeeping phases and increments the turn number.");
-method("dc", "a", "(Lk;ILse;)V", "applyFortifyAndFlareProjects", "Applies project kinds 0 and 2 from the project list and clears the used resource track.");
-method("dc", "a", "(Lse;IILk;)V", "applyWormholeAndTerraformProjects", "Applies project kinds 3 and 1 from the project list.");
+method("dc", "a", "(Lk;ILse;)V", "applyDefensiveNetAndStellarBombProjects", "Applies project kinds 0 and 2, which TaskAi calls Defensive Net and Stellar Bomb, and clears the spent resource track.");
+method("dc", "a", "(Lse;IILk;)V", "applyTannhauserAndTerraformProjects", "Applies project kinds 3 and 1, which TaskAi calls Tannhauser and Terraform.");
 method("dc", "a", "(ILl;)V", "rebindMap", "Points orders, moves, projects and wormholes at the stars of a replacement map.");
 method("dc", "h", "(I)V", "checkVictory", "Asks the VictoryChecker for winners and declares the winner or a draw.");
 method("dc", "a", "(ILln;)V", "abandonStar", "Clears owner, garrison and territory of the star.");
@@ -276,9 +307,9 @@ method("dc", "a", "(IBLob;)V", "readTurnOrders", "Decodes project uses, placemen
 method("dc", "g", "(I)V", "clearTurnState", "Creates fresh order lists and empties the fleet lists of every star and the unplaced counters.");
 method("dc", "a", "(Lpf;ILpf;Lpf;)V", "restorePendingOrders", "Re-adds fleets, placements and project uses from three deques to the live lists.");
 method("dc", "a", "(Lln;BLjava/util/Random;)V", "terraformStar", "Sets all four resources of the star to one and adds two random extra units.");
-method("dc", "a", "(Lln;Z)V", "setFortified", "Stores the fortified flag of the star.");
-method("dc", "a", "(Lln;ILln;)V", "createWormhole", "Links two stars as neighbours, merges their territories and records a timed Wormhole.");
-method("dc", "b", "(BLln;)I", "applySolarFlare", "Halves the garrison of the star, discards its outgoing fleets and returns the lost ships.");
+method("dc", "a", "(Lln;Z)V", "setDefensiveNet", "Stores the flag that the AI messages call a Defensive Net at the star.");
+method("dc", "a", "(Lln;ILln;)V", "createTannhauserWormhole", "Links two stars as neighbours, merges their territories and records a timed Wormhole.");
+method("dc", "b", "(BLln;)I", "applyStellarBomb", "Halves the garrison of the star, discards its outgoing fleets and returns the lost ships.");
 method("dc", "b", "(ILln;)V", "updateTerritoryMembership", "Joins the star to a neighbouring same-owner territory or creates a new one and merges others.");
 method("dc", "a", "(ILfs;)V", "addPlayer", "Grows the player arrays and the alliance tables by one and appends the new player.");
 method("dc", "a", "(Lk;I)V", "markDefeatedPlayers", "Sets the eliminated bit for players without territories and logs the elimination.");
@@ -290,6 +321,27 @@ method("dc", "a", "(ILsd;)V", "splitTerritory", "Walks the stars of a territory 
 method("dc", "a", "(BLln;)V", "detachStarFromTerritory", "Removes the star from its territory and splits or disposes the territory as needed.");
 method("dc", "d", "(II)V", "setTurnNumber", "Stores the turn number.");
 method("dc", "a", "(Lqb;B)[Lgl;", "queryDisplayModes", "Requests display modes from the dispatcher and copies four ints per mode into DisplayModeInfo.");
+method("um", "b", "(B)[I", "statValues", "Returns sixteen ranking values built from the counters.");
+method("um", "a", "(I)[Ljava/lang/String;", "statTexts", "Returns sixteen display strings built from the counters.");
+method("me", "a", "(Ldc;B)Z", "detectWinners", "Returns true when the game is decided and stores the winning players.");
+method("me", "a", "(BLfs;)Z", "isLoser", "Returns true when winners are known and the player is not among them.");
+method("me", "a", "(B)[Lfs;", "getWinners", "Returns the stored winners array.");
+method("me", "b", "(Z)I", "resultsPanelHeight", "Returns the pixel height of the results list for the checker.");
+method("me", "a", "(Lob;B)V", "readScores", "Reads the checker's per-player counters from the packet.");
+method("me", "a", "(ILob;)V", "writeScores", "Writes the checker's per-player counters to the packet.");
+method("me", "b", "(I)[Lfs;", "projectedWinners", "Returns the players that would win now, or the final winners.");
+method("me", "a", "(BLdc;Lkq;)V", "showResults", "Ranks the players and passes them to the game screen's results dialog.");
+method("k", "a", "(ILln;Lln;Lfs;)V", "recordTannhauser", "Appends a ProjectUse of kind 3 with two target stars.");
+method("k", "a", "(Lln;Lfs;BZILln;)V", "recordFleetMove", "Appends a FleetMove with the destination, owner, count and origin.");
+method("k", "a", "(ILfs;Lfs;)V", "recordAllianceExpired", "Appends an AllianceExpiredEvent for two players.");
+method("k", "a", "(Lln;I[I[Lln;)V", "recordStarAbandoned", "Appends a StarAbandonedEvent with the ships dispersed to neighbours.");
+method("k", "a", "(ILln;Z)V", "recordStarAbandonedWithoutNeighbours", "Appends a StarAbandonedEvent with only a lost-ship count.");
+method("k", "a", "(ILln;Lfs;)V", "recordProject", "Appends a ProjectUse of the given kind for a star and player.");
+method("k", "a", "(ILln;Lfs;I)V", "recordStellarBomb", "Appends a StellarBombEvent for a star, user and destroyed count.");
+method("k", "a", "([ILln;I[Lfs;)Leg;", "recordBattle", "Creates a BattleEvent, appends it and returns it.");
+method("k", "a", "(Lfs;Z)V", "recordElimination", "Appends a PlayerEliminatedEvent.");
+method("k", "a", "(Lfs;Lln;B)V", "recordTerraform", "Appends a ProjectUse of kind 1.");
+method("k", "a", "(ILln;I)V", "recordPlacement", "Appends a PlacementEvent for the star's owner.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
