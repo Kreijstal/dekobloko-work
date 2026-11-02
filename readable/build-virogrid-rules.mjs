@@ -16,6 +16,19 @@ const classes = {
   uf: ['GameBoard', 'Owns the byte grid of cells (-1 empty, 0/1 players) and applies clone/jump moves with captures.'],
   m: ['CellAnimator', 'Mirrors the board grid and queues CellFlip animations for cells whose owner changed.'],
   fb: ['CellFlip', 'IntrusiveNode animating one cell through three phases before updating the displayed owner.'],
+  me: ['MouseInputHandler', 'Implements MouseListener, MouseMotionListener and FocusListener to track the pointer.'],
+  ld: ['GameKeyHandler', 'Implements KeyListener and FocusListener to record key state.'],
+  cb: ['MouseWheelInput', 'Abstract wheel-input hook with component registration and a delta query.'],
+  hb: ['MouseWheelHandler', 'MouseWheelInput subclass implementing MouseWheelListener.'],
+  el: ['BufferedSocket', 'Runnable owning a Socket with input/output streams and a write buffer.'],
+  pd: ['PlatformTaskDispatcher', 'Runnable owning a Thread, an EventQueue and a reflection Method for queued platform tasks.'],
+  wf: ['RasterBuffer', 'Abstract int pixel array with an Image handed to the rasterizer.'],
+  gd: ['ImageProducerRasterBuffer', 'RasterBuffer implementing ImageProducer to push pixels to an ImageConsumer.'],
+  df: ['Rasterizer', 'Static pixel array with clip bounds and software pixel and rectangle drawing.'],
+  rl: ['SpriteState', 'DualLinkNode subclass holding the full and trimmed dimension and offset integers.'],
+  mg: ['Sprite', 'SpriteState subclass owning an int pixel array with software blits.'],
+  km: ['UiWidget', 'Widget node with a child deque, sprites, text and bounds fields.'],
+  eh: ['Js5Archive', 'Synchronized lookups of byte arrays by group and file index or name over cached Object arrays.'],
   ic: ['GameSession', 'Constructs a GameBoard and CellAnimator and drives turn text, timers and board input.'],
 };
 const members = {};
@@ -67,6 +80,21 @@ method('m', 'a', '(I)V', 'advanceFlips', 'Steps each CellFlip through its phases
 method('m', 'a', '(Z)V', 'resetToBoard', 'Copies the board cells to the displayed grid and clears the flip deque.');
 method('m', 'a', '(ZI)V', 'syncWithBoard', 'Queues a CellFlip for each cell whose owner differs from the board.');
 field('fb', 'j', 'I', 'phase', 'advanceFlips switches on values 0, 1 and 2.');
+method('ic', 'b', '(B)V', 'resign', 'Offline it makes the opponent the winner; online it sends a packet instead.');
+method('ic', 'a', '(I)V', 'layoutBoard', 'Computes the cell size and offsets that fit the grid into a 360 by 300 area.');
+method('ic', 'c', '(II)V', 'chooseAiMove', 'Collects the best candidate moves and picks one by tick modulo the candidate count.');
+field('ic', 'r', 'I', 'cellSize', 'layoutBoard sets it to the smaller of the two area-over-grid divisions.');
+method('ic', 'a', '(IZ)V', 'tick', 'Per-frame update: counts ticks, runs the board hover pulse, turn timer and flip animations.');
+field('ic', 'w', 'I', 'turnTimer', 'tick decrements it and chooses an AI move when it reaches zero.');
+field('ic', 'j', 'I', 'tickCount', 'tick increments it and the end-of-game sounds key off it modulo 20.');
+method('ic', 'a', '(IIIII)V', 'performMove', 'Applies the move to the board, syncs the animator, checks for game end, else advances the turn and resets the timer.');
+method('ic', 'a', '(B)V', 'restartGame', 'Online it sends a request packet; offline it restarts the board and rebuilds the animator.');
+method('ic', 'a', '(II)I', 'cellScreenY', 'Converts a grid index to a screen coordinate using the cell size and board offset.');
+method('ic', 'a', '(ZII)I', 'cellScreenX', 'Converts a grid index to a screen coordinate from either side using the cell size and board offset.');
+method('ic', 'e', '(I)I', 'turnPulse', 'Triangle wave of the tick counter whose sign depends on the current player.');
+method('ic', 'b', '(IZ)V', 'drawStatusPanel', 'Draws both piece counts and the winner or turn text from the board state.');
+field('ic', 'g', 'Z', 'online', 'Moves, resign and restart send packets instead of acting locally when it is set.');
+field('uf', 'y', 'I', 'difficulty', 'Indexes the per-level board size and turn time tables.');
 field('ic', 'C', 'Luf;', 'board', 'Constructed with the GameBoard and read for the turn state.');
 field('ic', 'A', 'Lm;', 'animator', 'Constructed with the CellAnimator for the board.');
 field('ic', 'e', 'I', 'localPlayer', 'Compared with the current player to decide whose turn text to show.');
