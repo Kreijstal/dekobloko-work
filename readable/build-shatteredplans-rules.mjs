@@ -44,6 +44,8 @@ const classes = {
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
   members[`F:${owner}.field_${original}:${descriptor}`] = {to, evidence};
+const method = (owner, original, descriptor, to, evidence) =>
+  members[`M:${owner}.${original}${descriptor}`] = {to, evidence};
 const node = 'IntrusiveDeque traverses field_f forward and field_e backward from its sentinel.';
 for (const [original, descriptor, to] of [['f', 'Loh;', 'next'], ['e', 'Loh;', 'previous'], ['b', 'J', 'key']])
   field('oh', original, descriptor, to, node);
@@ -53,6 +55,71 @@ field('fs', 't', 'Ljava/lang/String;', 'name', 'AI diagnostics print this as the
 field('ln', 'I', 'Ljava/lang/String;', 'name', 'AI diagnostics print this as the star name.');
 field('li', 'f', 'Ljava/lang/String;', 'host', 'ProxySocketConnector writes this as the CONNECT host.');
 field('li', 'a', 'I', 'port', 'ProxySocketConnector writes this as the CONNECT port.');
+
+// BEGIN GENERATED
+Object.assign(classes, {
+  "ap": ["PcmPlayerService", "Owns a PcmStream array and an int mix buffer, with attach and open hooks and a factory taking the dispatcher."],
+  "oc": ["JavaSoundAudioOutput", "ap subclass that writes mixed bytes to a javax.sound SourceDataLine through an AudioFormat."],
+  "tn": ["PcmStream", "Abstract IntrusiveNode declaring fill, skip and a sibling-stream link for the mixers."],
+  "jg": ["AudioService", "Runnable that pumps its ap[] outputs through the PlatformTaskDispatcher until stopped."],
+  "vk": ["PcmStreamMixer", "PcmStream that keeps two IntrusiveDeques of child streams and listeners and mixes them synchronously."],
+  "bm": ["PcmMixerListener", "IntrusiveNode callback with a delay field that vk invokes at scheduled sample boundaries."],
+  "ga": ["MidiPcmStream", "PcmStream that holds a MIDI reader, channel controller arrays and voice tables and sequences notes."],
+  "pi": ["MidiFileReader", "Reads track offsets, delta times and running status from MIDI bytes held in a PacketBuffer."],
+  "gh": ["MusicTrack", "IntrusiveNode holding the MIDI bytes of a loaded music archive entry plus its patch-usage table."],
+  "qq": ["MusicVoice", "IntrusiveNode holding the patch, envelope, sample and stream state of one sounding note."],
+  "rc": ["MusicVoiceMixer", "PcmStream that mixes the deque of MusicVoice nodes for one MidiPcmStream."],
+  "h": ["MusicCrossfadeStream", "PcmStream holding two MidiPcmStream sequencers and fading between their tracks."],
+  "al": ["PcmSampleStream", "PcmStream that steps through a PcmSample with position, rate and volume ramps."],
+  "kk": ["PcmSample", "Holds signed sample bytes, rate and loop endpoints plus a ping-pong flag."],
+  "pq": ["AbstractPcmSample", "Empty IntrusiveNode base class of PcmSample."],
+  "br": ["MusicPatch", "Per-note sample, envelope, pan and pitch arrays decoded from a patch byte array."],
+  "kc": ["MusicEnvelope", "Holds loop, attack and decay values with two byte arrays used by MusicPatch."],
+  "pk": ["SynthInstrument", "Owns envelopes, a filter and tone tables and renders one voice of a synthesized effect."],
+  "pn": ["SoundEnvelope", "Time and value segments read from a PacketBuffer and stepped by fixed-point interpolation."],
+  "fh": ["AudioFilter", "Reads filter coefficient tables with a PacketBuffer and a SoundEnvelope and interpolates gain."],
+  "dq": ["SynthesizedSoundEffect", "Parses an array of SynthInstrument voices from a PacketBuffer and renders them to a PcmSample."],
+  "io": ["SoundCache", "Two archive sources and two hash tables that decode and cache PcmSamples by name or id."],
+  "fd": ["VorbisSample", "IntrusiveNode built from packed bytes that decodes Vorbis packets into a PcmSample."],
+  "ra": ["RandomAccessCacheFile", "Wraps a RandomAccessFile with tracked position and length for cache reads and writes."],
+  "ej": ["BufferedCacheFile", "Buffers reads and writes over a RandomAccessCacheFile with separate read and write windows."],
+  "ua": ["SectorCacheStore", "Reads and writes archive data through a data file and an index file of BufferedCacheFile."],
+  "rn": ["DiskCacheWorker", "Runnable with a Thread that drains a queue of disk requests."],
+  "jc": ["ArchiveRequest", "DualLinkNode request with a completion flag and abstract byte payload and size accessors."],
+  "tk": ["NetworkArchiveRequest", "ArchiveRequest that holds a PacketBuffer response and the trailer byte count."],
+  "ak": ["DiskArchiveRequest", "ArchiveRequest holding a SectorCacheStore, an operation code and a byte payload."],
+  "ar": ["ArchiveNetworkClient", "Abstract archive download client with pending queues, packet buffers and connect hooks."],
+  "qc": ["SocketArchiveNetworkClient", "ArchiveNetworkClient implemented over a BufferedSocket."],
+  "lc": ["ArchiveSource", "Abstract provider of an ArchiveIndex and per-group byte arrays."],
+  "p": ["CachedArchiveSource", "ArchiveSource that stages network and disk requests and caches index and group bytes."],
+  "ci": ["ArchiveIndex", "Decodes a versioned index into per-group file counts, ids and name tables."],
+  "bc": ["Archive", "Synchronized cache of decoded group and file byte arrays addressed by id or name over an ArchiveSource."],
+  "tj": ["ArchiveSourceManager", "Creates CachedArchiveSource objects over an ArchiveNetworkClient and disk worker using RSA keys."],
+  "pb": ["PlatformTask", "Request holder with volatile status and result fields filled by PlatformTaskDispatcher."],
+  "fk": ["ByteArrayNode", "IntrusiveNode owning a byte array and an int."],
+  "mh": ["IsaacRandom", "Two int arrays with shift and xor mixing steps that produce the opcode cipher stream."],
+  "sl": ["CipherPacketBuffer", "PacketBuffer subclass that adds an IsaacRandom for opcode encryption."],
+  "ea": ["IsaacBackedRandom", "java.util.Random subclass whose next method delegates to an IsaacRandom."],
+  "s": ["GzipInflater", "Wraps a java.util.zip.Inflater that decompresses gzip bytes into a PacketBuffer."],
+  "er": ["WhirlpoolHasher", "Holds long state arrays and byte buffers for a block transform and digest finalization."],
+  "fp": ["FrameTimer", "Abstract timer with reset, sleep-time and update-count methods."],
+  "gs": ["NanoFrameTimer", "FrameTimer that keeps a ring of long samples and advances deadlines."],
+  "fn": ["MicrosoftDisplayController", "Legacy DirectDraw display-mode enumeration and fullscreen switching."],
+  "ic": ["AwtFullscreenController", "AWT GraphicsDevice driver with listmodes, enter and exit methods and a saved DisplayMode."],
+  "lj": ["AwtCursorBridge", "Uses an AWT Robot to move the mouse and set a custom or hidden cursor."],
+  "pp": ["MicrosoftCursorController", "Win32 Callback subclass that sets cursor position and subclasses the window procedure."],
+  "mo": ["MicrosoftDirectSoundInitializer", "Allocates DirectSound cursor and buffer descriptor arrays for the Microsoft JVM."],
+  "pm": ["DirectSoundInitializerMarker", "Empty interface implemented only by mo."],
+  "eb": ["FullscreenFocusCanvas", "Canvas with a Frame field, focus listener and empty update method."],
+  "mc": ["WeightedCacheEntry", "DualLinkNode with an int weight and abstract value and soft-reference accessors."],
+  "m": ["StrongCacheEntry", "WeightedCacheEntry that retains its value in a strong Object field."],
+  "ol": ["WeightedLruCache", "IterableNodeHashTable plus SecondaryNodeDeque with capacity accounting over WeightedCacheEntry values."],
+  "in": ["SecondaryNodeHashTable", "Bucket array of DualLinkNode keyed by long with put and get methods."],
+  "ti": ["IntrusiveNodeHashTable", "Power-of-two bucket array of IntrusiveNode keyed by long with put, get and iteration cursor."],
+  "db": ["DualLinkDeque", "Sentinel deque of DualLinkNode secondary links with cursor, tail insertion and first removal."],
+});
+
+// END GENERATED
 
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
