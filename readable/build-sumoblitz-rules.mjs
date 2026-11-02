@@ -53,6 +53,7 @@ const classes = {
   mf: ['PcmSampleStream', 'PcmStream resampling a byte sample through interpolation kernels with loop handling.'],
   al: ['PcmStreamMixer', 'PcmStream owning two deques of sub-streams and counting down their start delays.'],
   du: ['AudioOutput', 'Owns a PcmStream array and mixing state pumped by an audio thread.'],
+  bs: ['MidiPcmStream', 'PcmStream with per-channel controller arrays and note state advanced by a timing clock.'],
   ee: ['UpgradeStatNames', 'Holder of the Speed, Traction, Bounce, Spikes and Armour upgrade names.'],
   hb: ['GameKeyHandler', 'Implements KeyListener and FocusListener to record key state.'],
 };
