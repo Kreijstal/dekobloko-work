@@ -30,6 +30,7 @@ const members = {};
 
 export const config = {
   game: 'minerdisturbance', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
+  verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
   workflowFiles: ['build-minerdisturbance-rules.mjs', 'reproduce-minerdisturbance.mjs', 'reviewed-game.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   readingGuide(rules, mapping) {
