@@ -137,6 +137,8 @@ method('o', 'c', '()Lo;', 'flipHorizontal', 'Copies each row in reverse order an
 method('o', 'b', '()V', 'bindAsRasterTarget', 'Passes the pixel array, width and height to the rasterizer.');
 method('o', 'd', '()V', 'expandToFullSize', 'Pads the trimmed pixels into a full-size array and zeroes the offsets.');
 method('ed', 'a', '([III)V', 'setTarget', 'Stores the pixel array, width and height, then sets the clip to the full area.');
+method('ed', 'f', '(IIII)V', 'drawHorizontalLine', 'Clips x against the left and right bounds and stores the colour along one row.');
+method('ed', 'e', '(IIII)V', 'drawVerticalLine', 'Clips y against the top and bottom bounds and stores the colour down one column.');
 method('rk', 'b', '(Z)V', 'unlink', 'Splices the node out of its neighbours and nulls both links.');
 
 export const config = {
