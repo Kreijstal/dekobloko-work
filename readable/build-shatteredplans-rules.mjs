@@ -33,6 +33,12 @@ const classes = {
   ge: ['ImageProducerRasterBuffer', 'RasterBuffer implementing ImageProducer to push pixels to an ImageConsumer.'],
   f: ['WidgetContainer', 'UiWidget owning an IntrusiveDeque of children traversed with cursors.'],
   on: ['IntrusiveDequeCursor', 'Cursor constructed from an IntrusiveDeque, used to iterate widget children.'],
+  fs: ['Player', 'Holds the player name, sprites and owned territories; "Star owned by <name>" reads it.'],
+  ln: ['Star', 'DualLinkNode with a name, neighbouring stars and fleet state; AI errors say "Star owned by".'],
+  sd: ['Territory', 'Contiguous star group looked up by the AI ("Cannot find territory of star").'],
+  me: ['VictoryChecker', 'Abstract base of the per-gametype checkers GameState instantiates by gametype.'],
+  dc: ['GameState', 'Owns players, stars, territories and instantiates the VictoryChecker by gametype.'],
+  hi: ['TaskAi', 'AI whose diagnostics begin "TaskAI can\'t find..." and allocate fleets to tasks.'],
   om: ['ArgbSprite', 'Sprite subclass whose kernels extract alpha with pixel >>> 24.'],
 };
 const members = {};
@@ -43,6 +49,8 @@ for (const [original, descriptor, to] of [['f', 'Loh;', 'next'], ['e', 'Loh;', '
   field('oh', original, descriptor, to, node);
 field('ob', 'h', '[B', 'payload', 'PacketBuffer byte array indexed by the cursor in every read and write.');
 field('ob', 'j', 'I', 'position', 'PacketBuffer cursor advanced by reads and writes.');
+field('fs', 't', 'Ljava/lang/String;', 'name', 'AI diagnostics print this as the owner of a star.');
+field('ln', 'I', 'Ljava/lang/String;', 'name', 'AI diagnostics print this as the star name.');
 field('li', 'f', 'Ljava/lang/String;', 'host', 'ProxySocketConnector writes this as the CONNECT host.');
 field('li', 'a', 'I', 'port', 'ProxySocketConnector writes this as the CONNECT port.');
 

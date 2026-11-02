@@ -591,6 +591,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dc",
+      "originalName": "dc",
+      "to": "GameState",
+      "evidence": "Owns players, stars, territories and instantiates the VictoryChecker by gametype.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:df",
       "originalName": "df",
       "to": "DualLinkNode",
@@ -619,10 +626,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fs",
+      "originalName": "fs",
+      "to": "Player",
+      "evidence": "Holds the player name, sprites and owned territories; \"Star owned by <name>\" reads it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ge",
       "originalName": "ge",
       "to": "ImageProducerRasterBuffer",
       "evidence": "RasterBuffer implementing ImageProducer to push pixels to an ImageConsumer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hi",
+      "originalName": "hi",
+      "to": "TaskAi",
+      "evidence": "AI whose diagnostics begin \"TaskAI can't find...\" and allocate fleets to tasks.",
       "confidence": "reviewed"
     },
     {
@@ -672,6 +693,20 @@
       "originalName": "li",
       "to": "SocketConnector",
       "evidence": "Abstract holder of port and host that creates a Socket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ln",
+      "originalName": "ln",
+      "to": "Star",
+      "evidence": "DualLinkNode with a name, neighbouring stars and fleet state; AI errors say \"Star owned by\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:me",
+      "originalName": "me",
+      "to": "VictoryChecker",
+      "evidence": "Abstract base of the per-gametype checkers GameState instantiates by gametype.",
       "confidence": "reviewed"
     },
     {
@@ -752,6 +787,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sd",
+      "originalName": "sd",
+      "to": "Territory",
+      "evidence": "Contiguous star group looked up by the AI (\"Cannot find territory of star\").",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:up",
       "originalName": "up",
       "to": "SecondaryNodeDeque",
@@ -766,6 +808,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fs.field_t:Ljava/lang/String;",
+      "originalName": "field_t",
+      "to": "name",
+      "evidence": "AI diagnostics print this as the owner of a star.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:li.field_a:I",
       "originalName": "field_a",
       "to": "port",
@@ -777,6 +826,13 @@
       "originalName": "field_f",
       "to": "host",
       "evidence": "ProxySocketConnector writes this as the CONNECT host.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ln.field_I:Ljava/lang/String;",
+      "originalName": "field_I",
+      "to": "name",
+      "evidence": "AI diagnostics print this as the star name.",
       "confidence": "reviewed"
     },
     {
@@ -830,7 +886,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-shatteredplans-rules.mjs": "a2225ebc237c1079fa0fa96554c583e1adf4fe8ded8cc2cf9b1d002c857581e6",
+      "build-shatteredplans-rules.mjs": "871440db5b2570631557f9ce201e0707ecf346a0276b6c536945ab1f7edce225",
       "reproduce-shatteredplans.mjs": "c97d18e945d2818780e9aa7d2ed30e04a75e5ba59388010d329585f010e7cd8e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
