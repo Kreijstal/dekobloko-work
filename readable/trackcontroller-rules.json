@@ -472,6 +472,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ue",
+      "originalName": "ue",
+      "to": "IntrusiveDequeCursor",
+      "evidence": "Cursor constructed from an IntrusiveDeque that tracks the current IntrusiveNode.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:uf",
       "originalName": "uf",
       "to": "PlatformTaskDispatcher",
@@ -591,6 +598,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hb.field_f:I",
+      "originalName": "field_f",
+      "to": "keyQueueRead",
+      "evidence": "GameKeyHandler appends codes (release as bitwise complement) to a 128-entry ring that ob.h drains into the down-state array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hd.field_p:Lcb;",
       "originalName": "field_p",
       "to": "mouseHandler",
@@ -682,6 +696,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:md.field_b:[I",
+      "originalName": "field_b",
+      "to": "keyQueue",
+      "evidence": "GameKeyHandler appends codes (release as bitwise complement) to a 128-entry ring that ob.h drains into the down-state array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:me.field_j:I",
       "originalName": "field_j",
       "to": "rowStep",
@@ -735,6 +756,20 @@
       "originalName": "field_a",
       "to": "mouseMoved",
       "evidence": "MouseInputHandler writes the live value on events and of.c publishes it once per frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mg.field_f:I",
+      "originalName": "field_f",
+      "to": "keyQueueWrite",
+      "evidence": "GameKeyHandler appends codes (release as bitwise complement) to a 128-entry ring that ob.h drains into the down-state array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ni.field_m:[Z",
+      "originalName": "field_m",
+      "to": "keyDown",
+      "evidence": "GameKeyHandler appends codes (release as bitwise complement) to a 128-entry ring that ob.h drains into the down-state array.",
       "confidence": "reviewed"
     },
     {
@@ -854,6 +889,41 @@
       "originalName": "field_a",
       "to": "liveMouseY",
       "evidence": "MouseInputHandler writes the live value on events and of.c publishes it once per frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:TrackController.a(I)V",
+      "originalName": "a",
+      "to": "drawFrame",
+      "evidence": "TrackController implements it with the loading-bar and per-screen painting. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:TrackController.b(IZ)Z",
+      "originalName": "b",
+      "to": "loadAssets",
+      "evidence": "Reads the basic and comic12 fonts and the sprite sets from the Archive while the loading bar advances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:TrackController.c(B)V",
+      "originalName": "c",
+      "to": "initialise",
+      "evidence": "TrackController implements it by creating the MidiPlayer, starting audio at 22050 Hz and setting display defaults. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:TrackController.e(I)V",
+      "originalName": "e",
+      "to": "clearStatics",
+      "evidence": "TrackController implements it by calling the static clear method of nearly every class. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:TrackController.h(I)V",
+      "originalName": "h",
+      "to": "shutdown",
+      "evidence": "GameApplet calls it from the destroy path just before clearStatics; TrackController closes its audio state there. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -1165,6 +1235,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ob.h(I)V",
+      "originalName": "h",
+      "to": "publishKeyState",
+      "evidence": "GameKeyHandler appends codes (release as bitwise complement) to a 128-entry ring that ob.h drains into the down-state array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:of.c(B)V",
       "originalName": "c",
       "to": "publishInputState",
@@ -1218,6 +1295,34 @@
       "originalName": "a",
       "to": "tick",
       "evidence": "Base implementation only increments the frame counter; ActiveLevel and the level view override it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.a(I)V",
+      "originalName": "a",
+      "to": "drawFrame",
+      "evidence": "TrackController implements it with the loading-bar and per-screen painting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.c(B)V",
+      "originalName": "c",
+      "to": "initialise",
+      "evidence": "TrackController implements it by creating the MidiPlayer, starting audio at 22050 Hz and setting display defaults.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.e(I)V",
+      "originalName": "e",
+      "to": "clearStatics",
+      "evidence": "TrackController implements it by calling the static clear method of nearly every class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.h(I)V",
+      "originalName": "h",
+      "to": "shutdown",
+      "evidence": "GameApplet calls it from the destroy path just before clearStatics; TrackController closes its audio state there.",
       "confidence": "reviewed"
     },
     {
@@ -1306,7 +1411,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-trackcontroller-rules.mjs": "cc72a289de5facc78bbcb4b0500a20fa86ad6f754da46379753ffe184c3ba27f",
+      "build-trackcontroller-rules.mjs": "115ee761478c727fb3782146ac1e0cce6a80f5f73ab3c2bc61e39cc7910e9ab6",
       "reproduce-trackcontroller.mjs": "a19aeb34065d45283fe3ccc739656e3d43ea775242fdbecb34698f86b84538b9",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -61,6 +61,7 @@ const classes = {
   wb: ['MidiFile', 'Loaded from an Archive by name; its writer emits the MThd header word 1297377380.'],
   nb: ['MidiPlayer', 'PcmStream with per-channel int[] state, a MidiFile and a default tempo field of 1000000.'],
   ml: ['VorbisDecoder', 'Static Vorbis codebook and window tables; its a() method returns a decoded PcmSample.'],
+  ue: ['IntrusiveDequeCursor', 'Cursor constructed from an IntrusiveDeque that tracks the current IntrusiveNode.'],
   ri: ['ActiveLevel', 'LevelGrid subclass holding the level in play, its phase and score text.'],
 };
 const members = {};
@@ -162,6 +163,17 @@ field('ea', 'q', 'Ljava/lang/String;', 'name', decode);
 method('rh', 'b', '(IIII)V', 'activate', 'Casts the listener to ButtonListener and calls it, as the Enter and Space key handler does.');
 field('ii', 'r', '[Lqj;', 'tileSprites', 'LevelGrid.draw indexes this with the tile value 7..37 and blits the sprite into the 26-pixel cell.');
 field('da', 'p', '[[Lqj;', 'avatarSprites', 'LevelGrid.draw indexes it by facing and by an animation frame 0..3 for the avatar tile.');
+method('re', 'e', '(I)V', 'clearStatics', 'TrackController implements it by calling the static clear method of nearly every class.');
+method('re', 'c', '(B)V', 'initialise', 'TrackController implements it by creating the MidiPlayer, starting audio at 22050 Hz and setting display defaults.');
+method('re', 'a', '(I)V', 'drawFrame', 'TrackController implements it with the loading-bar and per-screen painting.');
+method('re', 'h', '(I)V', 'shutdown', 'GameApplet calls it from the destroy path just before clearStatics; TrackController closes its audio state there.');
+method('TrackController', 'b', '(IZ)Z', 'loadAssets', 'Reads the basic and comic12 fonts and the sprite sets from the Archive while the loading bar advances.');
+const keys = 'GameKeyHandler appends codes (release as bitwise complement) to a 128-entry ring that ob.h drains into the down-state array.';
+method('ob', 'h', '(I)V', 'publishKeyState', keys);
+field('ni', 'm', '[Z', 'keyDown', keys);
+field('md', 'b', '[I', 'keyQueue', keys);
+field('hb', 'f', 'I', 'keyQueueRead', keys);
+field('mg', 'f', 'I', 'keyQueueWrite', keys);
 
 export const config = {
   game: 'trackcontroller', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
