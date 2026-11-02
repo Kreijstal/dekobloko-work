@@ -4639,6 +4639,284 @@ for(const entry of [
   method(parts[1],parts[2],parts[3],"releaseStatics","Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",parts[3]==="()V"?{}:{0:"obfuscationGuard"});
 }
 
+// SoftwareRaster primitives and RgbSprite transforms.
+for(const [original,descriptor,to,evidence,parameters] of [
+  ['b','(IIIIII)V','fillRectangleBlended','Clips a rectangle and blends the colour over existing pixels with alpha out of 256.',{0:'x',1:'y',2:'boxWidth',3:'boxHeight',4:'colour',5:'alpha'}],
+  ['f','(IIIIII)V','fillRoundedRectangle','Fills a clipped rectangle with quarter-circle corners of the given radius; zero radius delegates to the plain fill.',{0:'x',1:'y',2:'boxWidth',3:'boxHeight',4:'cornerRadius',5:'colour'}],
+  ['g','(IIII)V','addPixel','Adds the colour scaled by an intensity to one clipped pixel, saturating each channel.',{0:'x',1:'y',2:'colour',3:'intensity'}],
+  ['d','(IIII)V','darkenRectangle','Clips a rectangle and halves every channel of its pixels.',{0:'x',1:'y',2:'boxWidth',3:'boxHeight'}],
+  ['a','()V','resetClip','Restores the clip rectangle to the whole raster and clears scanline masks.',{}],
+  ['b','(IIIII)V','drawRectangleOutline','Draws four one-pixel edges of a rectangle.',{0:'x',1:'y',2:'boxWidth',3:'boxHeight',4:'colour'}],
+  ['c','(IIII)V','grayscaleRectangle','Clips a rectangle and replaces each pixel by an averaged grey value.',{0:'x',1:'y',2:'boxWidth',3:'boxHeight'}],
+  ['a','(IIII[I)V','fillRadialPaletteCircle','Fills a circle given in sixteenth-pixel units, choosing each pixel from a palette by its squared distance from the centre.',{0:'centerX16',1:'centerY16',2:'radius16',3:'paletteScale',4:'palette'}],
+  ['a','(I[IIIII)V','halveRows','Halves every channel across the given number of rows with an eight-pixel unrolled loop.',{}],
+  ['e','(IIIIII)V','drawLineBlended','Draws a blended line with an exclusive end, delegating axis-aligned cases to blended horizontal and vertical lines.',{0:'x1',1:'y1',2:'x2',3:'y2',4:'colour',5:'alpha'}],
+  ['e','(IIIII)V','drawHorizontalLineBlended','Clips and alpha-blends a horizontal run.',{0:'x',1:'y',2:'length',3:'colour',4:'alpha'}],
+  ['a','(III)V','setPixel','Writes one colour at a clipped coordinate.',{0:'x',1:'y',2:'colour'}],
+  ['a','(IIII)V','fillCircle','Fills a clipped circle; zero radius draws one pixel.',{0:'centerX',1:'centerY',2:'radius',3:'colour'}],
+  ['c','(IIIII)V','drawHorizontalLineAdditive','Clips a horizontal run and adds the intensity-scaled colour with channel saturation.',{0:'x',1:'y',2:'length',3:'colour',4:'intensity'}],
+  ['g','(IIIII)V','drawBevelShadow','Draws four progressively fainter blended horizontal and vertical edge pairs.',{0:'x',1:'y',2:'boxWidth',3:'boxHeight',4:'colour'}],
+  ['h','(IIII)V','drawVerticalLine','Clips and fills a vertical run with an opaque colour.',{0:'x',1:'y',2:'length',3:'colour'}],
+  ['b','(IIII)V','intersectClip','Shrinks the clip rectangle to its intersection with the supplied bounds.',{0:'left',1:'top',2:'right',3:'bottom'}],
+  ['a','(IIIIIII)V','fillRoundedRectangleBlended','Rounded rectangle with alpha: opaque delegates to the rounded fill and zero radius to the blended rectangle.',{0:'x',1:'y',2:'boxWidth',3:'boxHeight',4:'cornerRadius',5:'colour',6:'alpha'}],
+  ['d','(IIIIII)V','drawLineBlendedInclusive','Draws a blended line whose end coordinate is included, with axis-aligned cases using inclusive lengths.',{0:'x1',1:'y1',2:'x2',3:'y2',4:'colour',5:'alpha'}],
+  ['f','(IIIII)V','fillRectangle','Clips and fills an opaque rectangle.',{0:'x',1:'y',2:'boxWidth',3:'boxHeight',4:'colour'}],
+  ['b','()V','clearPixels','Sets every raster pixel to zero with an eight-pixel unrolled loop.',{}],
+  ['c','()V','clearScanlineMasks','Drops the cached scanline mask start and width tables.',{}],
+  ['h','(IIIII)V','drawLine','Draws an opaque line, delegating axis-aligned cases to horizontal and vertical runs.',{0:'x1',1:'y1',2:'x2',3:'y2',4:'colour'}],
+  ['e','(IIII)V','drawHorizontalLine','Clips and fills an opaque horizontal run.',{0:'x',1:'y',2:'length',3:'colour'}],
+  ['a','(IIIII)V','fillCircleBlended','Fills a clipped circle with alpha: zero returns, 256 delegates to the opaque circle.',{0:'centerX',1:'centerY',2:'radius',3:'colour',4:'alpha'}],
+  ['a','([I)V','restoreClip','Restores left, top, right and bottom clip edges from a four-element array.',{0:'bounds'}],
+  ['b','([I)V','saveClip','Stores left, top, right and bottom clip edges into a four-element array.',{0:'bounds'}],
+  ['a','(IIIIII)V','fillVerticalGradient','Clips a rectangle and interpolates linearly between two colours from top to bottom.',{0:'x',1:'y',2:'boxWidth',3:'boxHeight',4:'topColour',5:'bottomColour'}],
+  ['d','(IIIII)V','drawVerticalLineBlended','Clips and alpha-blends a vertical run.',{0:'x',1:'y',2:'length',3:'colour',4:'alpha'}],
+]) method('qn',original,descriptor,to,evidence,parameters);
+for(const [original,descriptor,to,evidence,parameters] of [
+  ['d','()V','rotateClockwise','Rebuilds the pixel array by reading columns bottom to top and swaps the pixel, canvas and offset dimensions.',{}],
+  ['a','()V','trimTransparentBorder','Crops pixels to the bounding box of non-zero pixels and moves the offsets, leaving the canvas size unchanged.',{}],
+  ['a','(III)V','drawSilhouette','Clips the sprite and writes one colour for every non-zero source pixel.',{0:'x',1:'y',2:'colour'}],
+  ['c','()V','flipVertically','Swaps pixel rows in place and mirrors the vertical offset in the canvas.',{}],
+  ['c','(III)V','adjustColourChannels','Adds signed offsets to red, green and blue of every non-zero pixel, clamping each channel to 1 through 255.',{0:'redOffset',1:'greenOffset',2:'blueOffset'}],
+  ['g','(I)V','addOutline','Replaces each zero pixel having a non-zero four-neighbour with the outline colour.',{0:'outlineColour'}],
+  ['b','()V','bindAsRasterTarget','Makes the sprite pixels and dimensions the SoftwareRaster target.',{}],
+  ['h','()V','flipHorizontally','Reverses every pixel row in place and mirrors the horizontal offset in the canvas.',{}],
+  ['e','()Lwk;','createMirroredCopy','Returns a new sprite with each row reversed and the horizontal offset mirrored.',{}],
+  ['b','(II)V','drawMultiplied','Clips the sprite and multiplies its channels with non-zero destination pixels, skipping zero source or destination pixels.',{0:'x',1:'y'}],
+  ['b','(IIII)Z','isOpaqueAt','Maps a point into the sprite and reports whether that pixel is non-zero.',{0:'x',1:'y',2:'pointX',3:'pointY'}],
+  ['b','(IIIIII)V','drawRotatedAboutPivot','Draws the sprite rotated by a 16-bit angle and fixed-point scale about a sixteenth-pixel pivot at a sixteenth-pixel destination.',{0:'pivotX16',1:'pivotY16',2:'x16',3:'y16',4:'angle',5:'scale'}],
+  ['a','(IIII)V','drawRotated','Draws the sprite rotated and scaled about the middle of its canvas at whole-pixel coordinates.',{0:'x',1:'y',2:'angle',3:'scale'}],
+]) method('wk',original,descriptor,to,evidence,parameters);
+
+// Unit queries and Battlefield helpers.
+for(const [original,descriptor,to,evidence,parameters] of [
+  ['a','(Z)I','getMovementTargetX','Returns the retained X coordinate of the planned movement target.',{0:'obfuscationGuard'}],
+  ['D','(I)I','getMovementTargetY','Returns the retained Y coordinate of the planned movement target.',{0:'obfuscationGuard'}],
+  ['p','(B)Z','hasUnitDefinitionFlag2','Tests bit 2 of the unit definition flag word at index ten.',{0:'obfuscationGuard'}],
+  ['f','(B)Z','hasUnitDefinitionFlag8','Tests bit 8 of the unit definition flag word at index ten.',{0:'obfuscationGuard'}],
+  ['s','(I)Z','hasUnitDefinitionFlag32','Tests bit 32 of the unit definition flag word at index ten.',{0:'obfuscationGuard'}],
+  ['v','(I)Z','hasUnitDefinitionFlag1','Tests bit 1 of the unit definition flag word at index ten.',{0:'obfuscationGuard'}],
+  ['d','(B)Z','hasUnitDefinitionFlag16','Tests bit 16 of the unit definition flag word at index ten.',{0:'obfuscationGuard'}],
+  ['q','(B)Ljava/lang/String;','getLabelWithStatusSuffixes','Appends the movement-flag-one and full-strength movement-flag-eight suffix labels to the display name.',{0:'obfuscationGuard'}],
+  ['u','(I)Z','hasMovementFlag8AtFullStrength','True when movement flag 8 is set and strength has reached the maximum.',{0:'obfuscationGuard'}],
+  ['z','(I)V','resetPreviewAnimation','Restores the retained model preview for unit types 34 and 7 and selects its first animation.',{0:'obfuscationGuard'}],
+  ['o','(B)Z','hasSpellCostOneOverride','True for unit type 73 or accessory type 4; SpellCastEvent stores it as the cost-one override.',{0:'obfuscationGuard'}],
+  ['r','(B)Z','hasSpellCostThreeOverride','True when definition flag 4096 is set or accessory type is 3; SpellCastEvent stores it as the cost-three override.',{0:'obfuscationGuard'}],
+  ['a','(I)Z','canLifeSteal','True for melee life steal or definition flag 256 unless movement flag one is set.',{0:'obfuscationGuard'}],
+  ['n','(B)V','queueTurnEffectEvents','Queues turn-effect events for bonus strength, missing adjacent flag-eight support for life stealers and poison.',{0:'obfuscationGuard'}],
+  ['l','(I)I','getStatusIconMask','Packs movement, attack, poison, tile effect, flag, equipment, status and immobilized states into display bits 1 through 4096.',{0:'obfuscationGuard'}],
+  ['a','(ZB)V','removeFromPlay','Zeroes strength, marks the unit removed, clears its tile occupant, unlinks it, refreshes nearby tile effects and rechecks player defeat.',{0:'tileUpdateFlag',1:'obfuscationGuard'}],
+]) method('jd',original,descriptor,to,evidence,parameters);
+for(const [original,descriptor,to,evidence,parameters] of [
+  ['a','(IIILjd;)Z','hasEnemyOccupant','True when the tile holds a unit that is not allied to the supplied unit owner.',{0:'tileY',1:'obfuscationGuard',2:'tileX',3:'unit'}],
+  ['a','(ILne;)V','consumeTileCorpse','Clears a corpse flag on an occupied tile and queues a turn-effect event for occupants below maximum strength 99.',{0:'obfuscationGuard',1:'tile'}],
+  ['a','(IZIIII)V','healUnitAt','Adds strength to an allied unit, skipping life-stealers unless allowed, capping at maximum and recording match statistics.',{0:'obfuscationGuard',1:'allowLifeStealers',2:'tileX',3:'tileY',4:'playerId',5:'amount'}],
+  ['g','(IIII)V','assignChosenGodsToAllPlayers','Gives every player the three supplied gods with favour level one in the chosen-god slots.',{0:'thirdGod',1:'firstGod',2:'secondGod',3:'obfuscationGuard'}],
+  ['a','(IIZ)I','getTileEffectsByIndex','Returns the tile effects for a player and that player team by flattened tile index.',{0:'tileIndex',1:'playerId',2:'obfuscationGuard'}],
+  ['h','(II)I','getPlayerTeamSize','Returns the player count of the player team, or -1 when not a team game.',{0:'playerId',1:'obfuscationGuard'}],
+  ['c','(II)I','getTeamSize','Returns the player count of a team index, or -1 when not a team game.',{0:'obfuscationGuard',1:'teamIndex'}],
+  ['a','(ILjava/lang/String;Loj;)V','reportEventFailure','Builds a diagnostic from the event description and turn state, clears pending events and reports a dropped connection.',{0:'obfuscationGuard',1:'context',2:'event'}],
+  ['a','(IZII)V','assignTileOwner','Sets an explicit tile owner inside the map bounds and optionally marks a retained flag.',{0:'tileX',1:'markChanged',2:'tileY',3:'ownerPlayer'}],
+  ['f','(IIII)V','grantBonusStrengthAt','Gives an allied unit at the tile five bonus strength.',{0:'tileX',1:'playerId',2:'obfuscationGuard',3:'tileY'}],
+  ['e','(III)I','getSpellCastDelay','Returns remaining player turns before a spell becomes castable, using campaign rules when a mission is loaded.',{0:'obfuscationGuard',1:'playerId',2:'spellId'}],
+  ['b','(Z)Loj;','peekPendingEvent','Returns the first pending event without removing it, or null when none are pending.',{0:'obfuscationGuard'}],
+  ['b','(BI)I','computeTeamStructureScore','Weights team structure counts by ten, five and two.',{0:'obfuscationGuard',1:'teamIndex'}],
+  ['e','(IIII)V','curePoisonAt','Clears poison on an allied unit at the tile.',{0:'obfuscationGuard',1:'tileX',2:'playerId',3:'tileY'}],
+  ['e','(II)Ljava/lang/String;','getPlayerLabel','Returns a player name, none, or an id fallback for out-of-range values.',{0:'playerId',1:'obfuscationGuard'}],
+  ['c','(B)Z','haveAllPlayersReachedTurnLimit','Checks non-eliminated player turn counts against the turn limit.',{0:'obfuscationGuard'}],
+  ['i','(I)Z','isMatchLimitReached','True when a team has collected the mana target or all players reached the turn limit.',{0:'obfuscationGuard'}],
+  ['i','(II)I','getCollectedManaScore','Combines twenty-five per player index with the team collected mana, capped at the target.',{0:'playerId',1:'obfuscationGuard'}],
+  ['a','(Ljd;III)Z','canEnterTile','True for an unoccupied in-bounds tile or when the moving unit is type 51.',{0:'unit',1:'tileX',2:'tileY',3:'obfuscationGuard'}],
+  ['a','(IIBI)V','assignOwnerToTileSquare','Assigns the same owner to a two-by-two tile block.',{0:'tileY',1:'tileX',2:'obfuscationGuard',3:'ownerPlayer'}],
+  ['f','(B)I','computeManaTarget','Derives the collected-mana target from map structure totals, turn limit and team count, rounded up to the next 500.',{0:'obfuscationGuard'}],
+]) method('ha',original,descriptor,to,evidence,parameters);
+
+// Shared static-helper owners named after their reviewed helpers; unrelated statics remain on each owner.
+Object.assign(classes,{
+  gn:['IndentedTextBuilder','StringBuilder wrapper that appends text at a tracked indent, ends lines and returns the accumulated string; unrelated tagged-packet and quick-chat help statics remain separate.'],
+  oi:['CheckMarkWidgetPainter','WidgetPainter that draws the valid-tick icon for active interactive widgets and an inner focus ring; unrelated achievement text and frame setup statics remain separate.'],
+  ab:['AlphanumericTextSupport','Scans text from a start index for characters accepted by neither alphanumeric test; unrelated foliage-shadow stamping and shared state remain on this owner.'],
+  bk:['MusicTrackSelectionSupport','Selects a music track with channel gain, fade rate and loop flag; unrelated lobby widget wiring and shared tables remain on this owner.'],
+  bn:['CalendarSupport','Returns days in a month with February leap-year handling; unrelated chat-visibility and lobby button handling remain on this owner.'],
+  br:['CampaignLookupSupport','Returns a campaign definition by index and opens validated http or https addresses through the Windows shell; unrelated key state and font statics remain on this owner.'],
+  ck:['StructureTerrainSupport','Classifies terrain types 7, 8, 9, 11 and 14 as structure terrain and resolves URLs against the applet; unrelated animation-sequence tables remain on this owner.'],
+  da:['LocalAccountSupport','Reads the local account name, clears social lists and reads browser cookies; unrelated instruction illustration arguments remain on this owner.'],
+  db:['IgnoreListLookupSupport','Finds an ignored account entry by name; unrelated password-length, validation-icon and label statics remain on this owner.'],
+  de:['SpellCastErrorSupport','Describes why a spell cannot be cast at a tile and reads tiered signed integers from a packet; unrelated labels remain on this owner.'],
+  dj:['TextSplitSupport','Splits text at a delimiter, opens fullscreen canvases and writes browser cookies; unrelated chat recipient and friend count state remain on this owner.'],
+  ds:['PointerCaptureSupport','Snapshots live pointer state under the handler monitor; unrelated chat Huffman codec and sprite statics remain on this owner.'],
+  dt:['DateValiditySupport','Validates a year, month index and day; unrelated viewport height and canvas statics remain on this owner.'],
+  e:['QuickChatMenuCloseSupport','Closes the quick-chat menu and tests whether a name contains a password variant; unrelated arrays remain on this owner.'],
+  eb:['BitCountSupport','Counts set bits in an integer; unrelated minimum password length and labels remain on this owner.'],
+  fk:['DropdownSelectorPainter','WidgetPainter retaining a DropdownSelector; unrelated browser-cookie, packet-length, console-expression parsing and sprite-loading statics remain on this owner.'],
+  fs:['PrivateTextRecipientSupport','Tests whether a name is the active private text recipient; unrelated layout helpers remain on this owner.'],
+  gt:['LocalAccountNameSupport','Compares a name with the local account name and reads six unsigned bytes from a packet; unrelated key-code table and labels remain on this owner.'],
+  gv:['DecodedSpriteSupport','Builds the first decoded sprite from palette indices as an RGB sprite and releases the decode buffers; unrelated labels remain on this owner.'],
+  bj:['AlphaDecodedSpriteSupport','Builds the first decoded sprite as RGB, or as ARGB when alpha lanes are present, then releases the decode buffers; unrelated labels remain on this owner.'],
+  hf:['ClientStateChecksumSupport','Recomputes the client state checksum for a battlefield; unrelated text-chat flag, console kind and unit-model names remain on this owner.'],
+  it:['ChatMessageWriteSupport','Writes a chat message packet with phrase id, channel, recipient name and text; unrelated sprite and font loading remain on this owner.'],
+  ji:['AccountNameCheckSupport','Polls the shared account-name check result for a name; unrelated labels remain on this owner.'],
+  jj:['FriendLookupSupport','Tests a name against the friend list; unrelated labels, archive and socket statics remain on this owner.'],
+  jv:['SoundPanSupport','Plays a sample with pan and volume and maps unit types to unlock groups; unrelated labels remain on this owner.'],
+  ki:['QuinticFadeSupport','Evaluates a fixed12 quintic fade curve; unrelated labels and shared account request state remain on this owner.'],
+  l:['QuickChatCategoryMenuSupport','Builds a quick-chat menu for a category; unrelated labels, sprites and music player state remain on this owner.'],
+  lq:['IntegerPowerSupport','Raises an integer to a power and builds an antialiased font from bytes; unrelated validation state remains on this owner.'],
+  mh:['EffectsGainSupport','Sets the effects gain and reads profile mission scores; unrelated connection state remains on this owner.'],
+  mj:['AudioShutdownSupport','Shuts down the retained audio players; unrelated labels remain on this owner.'],
+  op:['FriendRequestSupport','Requests adding a friend by name; unrelated labels and sprite statics remain on this owner.'],
+  ov:['SpectateRoomRequestSupport','Writes a spectate-room request packet; unrelated labels and connection state remain on this owner.'],
+  pd:['PasswordLengthSupport','Rejects passwords whose length is outside the allowed range; unrelated arrays and labels remain on this owner.'],
+  pg:['UnitAnimationSelectionSupport','Selects a unit animation sequence with default fallback and opens the chat-message context menu; unrelated bit tests remain on this owner.'],
+  ph:['AccountNameCharacterSupport','Accepts account-name characters and detects names made of one repeated character; unrelated cookie writing remains on this owner.'],
+  po:['QuickChatShortcutSupport','Handles quick-chat shortcut packets and reads length-prefixed map data; unrelated labels remain on this owner.'],
+  pv:['AccountNameFoldingSupport','Folds an account-name character to its canonical form and loads indexed sprites; unrelated animation tables remain on this owner.'],
+  qh:['QuicksaveRequestSupport','Requests deletion of the stored quicksave; unrelated option screen helpers remain on this owner.'],
+  qt:['BitReversalSupport','Reverses the low bits of an integer; unrelated labels and sprites remain on this owner.'],
+  rs:['PowerOfTwoSupport','Computes the next power of two and recognizes account-name separators; its node fields and unrelated key state remain on this owner.'],
+  se:['IgnoreRequestSupport','Requests adding an ignored account by name; unrelated music and email-check state remain on this owner.'],
+  so:['FixedSquareRootSupport','Computes a 16-bit fixed-point square root; unrelated validation state and labels remain on this owner.'],
+  th:['FloorModSupport','Floors a modulo with an offset; unrelated private-message and social-list state remain on this owner.'],
+  ti:['TurnSkipToggleSupport','Toggles automatic turn skipping and returns its status text; unrelated socket factory lookup remains on this owner.'],
+  uc:['SpellDefinitionTable','Holds the spell definition table and sets the chat Huffman codec; unrelated labels remain on this owner.'],
+  vi:['MonotonicClockSupport','Compensates backward wall-clock steps with a retained offset and shows the login dialog with a description; unrelated state remains on this owner.'],
+  vs:['QuickChatMenuDisplaySupport','Shows a quick-chat menu; unrelated highlighted console input and labels remain on this owner.'],
+  vv:['ConsoleTokenSupport','Caches tokenized console input and produces the console greeting; unrelated random source and labels remain on this owner.'],
+  wb:['LoginCredentialStagingSupport','Stages login credentials for the next login attempt; unrelated labels and string tables remain on this owner.'],
+  rn:['ProceduralMapSupport','Generates procedural battlefield terrain, performs bitwise and and opens the login dialog; unrelated validation state remains on this owner.'],
+});
+method('gn','a','(II)V','changeIndent','Starts a new line when text is pending and adds the delta to the indent level.',{0:'obfuscationGuard',1:'indentDelta'});
+method('gn','a','(BLjava/lang/String;)V','appendLine','Appends text at the current indent and ends the line.',{0:'obfuscationGuard',1:'text'});
+method('gn','b','(I)V','endLine','Appends a newline and marks the next append as the start of a line.',{0:'obfuscationGuard'});
+method('gn','a','(Ljava/lang/String;I)V','appendText','Writes pending indentation, then appends the text.',{0:'text',1:'obfuscationGuard'});
+method('gn','a','([Ljava/lang/String;B)V','appendJoinedLine','Joins a string array and appends it as one line.',{0:'parts',1:'obfuscationGuard'});
+method('gn','c','(I)Ljava/lang/String;','toText','Returns the accumulated text for the canonical guard.',{0:'obfuscationGuard'});
+method('gn','a','(I)V','writeIndent','Appends one space per indent level and clears the line-start flag.',{0:'obfuscationGuard'});
+field('gn','a','Ljava/lang/StringBuilder;','builder','Accumulated text.');
+field('gn','c','I','indent','Spaces written at the start of each line.');
+field('gn','b','Z','atLineStart','True until indentation is written for the current line.');
+method('bj','e','(I)Lwk;','buildFirstDecodedSprite','Builds an RGB or ARGB sprite from the first decoded sheet frame and releases the decode buffers.',{0:'obfuscationGuard'});
+
+// AiPlanner helpers.
+for(const [original,descriptor,to,evidence,parameters] of [
+  ['a','(IZI)V','addStructureCaptureInfluence','Adds captured-structure influence for a structure tile to the influence map, weighting enemy-owned structures and zeroing it when an own unit can capture the tile.',{0:'tileIndex',1:'guard',2:'sign'}],
+  ['a','(B[[F)V','clearFloatGrid','Sets every element of a two-dimensional float array to zero.',{0:'obfuscationGuard',1:'grid'}],
+  ['c','(Ljd;B)V','reevaluateUnitActions','Finds the planner of the supplied unit and asks it to evaluate its actions again.',{0:'unit',1:'obfuscationGuard'}],
+  ['a','(ILjd;)V','activateUnitPlanner','Registers a planner for an own unit that does not already have one, refreshes its priority and updates the influence map; in state six it also switches to state three and starts at this planner.',{0:'obfuscationGuard',1:'unit'}],
+  ['a','(B)V','resetUnitPlanners','Clears queues, flags all units, drops planners owned by another AI and creates missing planners for every own unit.',{0:'obfuscationGuard'}],
+]) method('ej',original,descriptor,to,evidence,parameters);
+
+// Small role-bearing owners.
+Object.assign(classes,{
+  cp:['EventPresenterFactory','Creates an EventPresenter for an event and returns it only when initialization succeeds; unrelated text labels and sprite statics remain on this owner.'],
+  cw:['AttackRangeOverlaySupport','Draws red blended edge segments for tiles inside the selected unit attack range using movement and attack-target masks; unrelated labels remain on this owner.'],
+  fc:['EmptyWidgetPainter','WidgetPainter whose paint callback draws nothing; the keyboard idle tick counter and labels are unrelated shared statics.'],
+  av:['PointerIdleState','Holds the volatile pointer idle tick counter.'],
+  aq:['AccountCreationInfoText','Holds the account-creation explanation text; its only method clears the static reference.'],
+  gi:['AccountNameCheckStatusSupport','Reports whether the pending name-check state token equals the current account-name check state; unrelated campaign gain, month names and labels remain on this owner.'],
+  sq:['ToastMessage','Intrusive on-screen message with a cosine fade, per-tick advance and chained display of the following message; unrelated console defeat and label statics remain on this owner.'],
+  ah:['LocalCoatSupport','Writes the local coat of arms packet and resolves primitive or named classes; unrelated login password, labels and list refresh remain on this owner.'],
+});
+method('cp','a','(Lic;ILha;ZLoj;Leo;)Lvb;','createEventPresenter','Builds an EventPresenter for the supplied controller, battlefield, renderer and event, returning null when initialization fails.',{0:'controller',1:'obfuscationGuard',2:'battlefield',3:'flag',4:'event',5:'renderer'});
+method('sq','b','(II)V','draw','Fades the message in and out with a cosine alpha at the top of the screen and draws the next message below it.',{0:'obfuscationGuard',1:'y'});
+method('sq','a','(B)V','advance','Advances the message timer, advances the following message after 16 ticks and unlinks at expiry.',{0:'obfuscationGuard'});
+method('ah','b','(B)V','writeLocalCoat','Writes the cipher opcode and the local coat parts and colour indices to the outgoing packet.',{0:'obfuscationGuard'});
+method('ah','a','(Ljava/lang/String;B)Ljava/lang/Class;','loadClassOrPrimitive','Maps single-letter descriptors to primitive classes and otherwise loads the named class.',{0:'name',1:'obfuscationGuard'});
+method('gi','a','(Z)Z','isAccountNameCheckPending','True when the shared pending token is the current account-name check state.',{0:'obfuscationGuard'});
+
+// Array block helpers.
+Object.assign(classes,{
+  vm:['ArrayBlockSupport','Eight-wide unrolled fill, clear and overlap-safe copy helpers for int, byte and object arrays.'],
+});
+method('vm','a','([IIII)V','fillInts','Writes one value into a range of an int array.',{0:'array',1:'start',2:'length',3:'value'});
+method('vm','a','([III)V','clearInts','Writes zero into a range of an int array.',{0:'array',1:'start',2:'length'});
+method('vm','a','([BI[BII)V','copyBytes','Copies a byte range, choosing forward or backward order when source and destination overlap.',{0:'source',1:'sourceStart',2:'destination',3:'destinationStart',4:'length'});
+method('vm','a','([II[III)V','copyInts','Copies an int range, choosing forward or backward order when source and destination overlap.',{0:'source',1:'sourceStart',2:'destination',3:'destinationStart',4:'length'});
+method('vm','a','([Ljava/lang/Object;I[Ljava/lang/Object;II)V','copyObjects','Copies an object range, choosing forward or backward order when source and destination overlap.',{0:'source',1:'sourceStart',2:'destination',3:'destinationStart',4:'length'});
+
+// Membership expansion screen, byte-array pool and terrain scatter owner.
+Object.assign(classes,{
+  oo:['MembershipExpansionScreen','Reads the currency applet parameter, retains benefit text, a UiSelectionState and at least three indexed sprites, and lays out the members expansion screen; unrelated validation-state and room-watch statics remain on this owner.'],
+  od:['ByteArrayPoolSupport','Synchronized pools of byte arrays of fixed sizes: acquiring pops a matching pooled array and releasing pushes it back while the pool has room; unrelated labels and sprite statics remain on this owner.'],
+  on:['TerrainScatterSupport','Scatters a preferred terrain type over a battlefield using a supplied Random; its node fields and unrelated labels remain on this owner.'],
+});
+method('v','b','(III)I','getAveragedOverlayCorner','Averages the overlay values of the four tiles around a corner, using 255 for tiles outside the map.',{0:'tileY',1:'obfuscationGuard',2:'tileX'});
+method('od','a','(II)[B','acquireByteArray','Pops a pooled array for the common pool sizes when one is available, otherwise allocates.',{0:'size',1:'obfuscationGuard'});
+method('od','a','(I[B)V','releaseByteArray','Returns an array to the pool matching its length while that pool has room.',{0:'obfuscationGuard',1:'array'});
+
+// MapTile helpers.
+for(const [original,descriptor,to,evidence,parameters] of [
+  ['j','(I)V','refreshGodFromMetadata','Copies the metadata god identifier onto terrain type 11 tiles.',{0:'obfuscationGuard'}],
+  ['a','(I)V','setModifierFlag8','Creates tile metadata when missing and sets modifier flag 8 for the canonical guard.',{0:'obfuscationGuard'}],
+  ['d','(B)V','clearModifierFlag1','Clears modifier flag 1 on the retained metadata.',{0:'obfuscationGuard'}],
+  ['a','(BLha;)V','attachBattlefield','Retains the battlefield, allocates per-team effect flags and registers the occupying unit with it.',{0:'obfuscationGuard',1:'battlefield'}],
+  ['l','(I)Z','isCaptureStrengthReduced','True when the current capture strength differs from the tile default.',{0:'obfuscationGuard'}],
+  ['a','(II)V','assignOwner','Resets capture strength; terrain type 11 instead clears its owner and returns to terrain zero, marking campaign terrain as changed.',{0:'obfuscationGuard',1:'ownerPlayer'}],
+  ['f','(I)Z','isNotStructure','Negates the structure test.',{0:'obfuscationGuard'}],
+]) method('ne',original,descriptor,to,evidence,parameters);
+
+// UiSelectionState key tests and tick rate.
+method('dl','b','(I)Z','isKeyCode103Pressed','Tests whether the retained polled key code is 103.',{0:'obfuscationGuard'});
+method('dl','e','(I)Z','isKeyCode102Pressed','Tests whether the retained polled key code is 102.',{0:'obfuscationGuard'});
+method('dl','a','(BZ)V','setSharedEmailCheckResult','Stores the accepted flag as the completed result of the shared email check.',{0:'obfuscationGuard',1:'accepted'});
+method('sa','a','(IZ)V','setTicksPerSecond','Sets the nanosecond tick duration to one second divided by the supplied rate.',{0:'ticksPerSecond',1:'obfuscationGuard'});
+
+// AccountRegistrationForm markup helpers.
+method('kd','m','(I)Ljava/lang/String;','getLinkOpenMarkup','Returns the underline and blue colour opening markup for agreement links when the guard is 150.',{0:'obfuscationGuard'});
+method('kd','l','(I)Ljava/lang/String;','getLinkCloseMarkup','Returns the closing colour and underline markup for agreement links when the guard is 29406.',{0:'obfuscationGuard'});
+
+// IndexedSprite scaled draws.
+method('ru','c','(II)V','drawQuarterSize','Draws the sprite at a quarter of its size by averaging four-by-four blocks, substituting the destination pixel for transparent palette entries.',{0:'x',1:'y'});
+method('ru','d','(II)V','drawHalfSize','Draws the sprite at half its size by averaging two-by-two blocks, substituting the destination pixel for transparent palette entries.',{0:'x',1:'y'});
+method('ru','b','(IIII)V','drawFadedToColour','Draws non-transparent pixels as a blend of the palette colour (alpha out of 256) and a flat colour (the remainder); alpha 256 delegates to the plain draw.',{0:'x',1:'y',2:'alpha',3:'fadeColour'});
+
+// Sleep and sine lookups.
+method('ae','a','(JI)V','sleepMillis','Sleeps for the supplied milliseconds and ignores interruption.',{0:'millis',1:'obfuscationGuard'});
+method('ae','b','(II)I','sine8192','Looks up a sine value for an angle masked to 8192 units, reflecting a quarter-wave table by quadrant.',{0:'angle',1:'obfuscationGuard'});
+method('sr','c','(II)I','sine2048','Looks up the shared sine table at an angle masked to 2048 units.',{0:'angle',1:'obfuscationGuard'});
+
+// Small static-helper owners with a single reviewed role.
+Object.assign(classes,{
+  ke:['SoundEffectPreloadSupport','Loads every named sound effect from a SoundCache into the retained sample array; unrelated labels and boolean tables remain on this owner.'],
+  lb:['ResourceClientErrorSupport','Clears the error count and code of the shared resource client; unrelated labels and sprite statics remain on this owner.'],
+  rr:['IndexedDecodedSpriteSupport','Builds the first decoded sprite as an IndexedSprite and releases the decode buffers; unrelated packet-byte read and labels remain on this owner.'],
+  rv:['LocalizedUrlSupport','Rewrites URL path parameters by stripping existing /l=, /p=, /s= and /c= segments and appending the supplied values; unrelated tile drawing and phrase ids remain on this owner.'],
+});
+method('ke','a','(BLp;)V','loadSoundEffectsByName','Resolves every configured effect name through the sound cache into the retained sample array.',{0:'obfuscationGuard',1:'soundCache'});
+method('lb','a','(B)V','resetResourceClientErrors','Sets the shared resource client error count and error code to zero.',{0:'obfuscationGuard'});
+method('rr','b','(I)Lru;','buildFirstDecodedIndexedSprite','Builds an IndexedSprite from the first decoded sheet frame and releases the decode buffers.',{0:'obfuscationGuard'});
+method('rv','a','(Ljava/lang/String;Ljava/lang/String;IILjava/net/URL;)Ljava/net/URL;','applyUrlPathParameters','Removes existing path parameter segments that are being replaced and rebuilds the URL with language, p and s parameters before the remaining path.',{0:'pathParameter',1:'siteParameter',2:'startOffset',3:'language',4:'url'});
+
+// AI weight profile, page reload and theme sprite loading.
+Object.assign(classes,{
+  su:['AiWeightProfile','Holds 62 AI weights and creates an AiPlanner whose weight array is copied from them; the private constructor leaves it uninstantiated and unrelated labels remain on this owner.'],
+  t:['ReloadPageSupport','Finds a string in an array and reloads the applet page with the current query string; unrelated fonts and byte tables remain on this owner.'],
+  vr:['ThemeSpriteLoadingSupport','Loads themed RgbSprites from an archive by the configured name table and renders four theme preview sprites, and compares two account names after normalization; unrelated int table remains on this owner.'],
+});
+method('su','a','(BLha;[Lid;IZ)Lej;','createPlanner','Creates an AiPlanner for the player and copies the retained 62 weights into its weight array.',{0:'obfuscationGuard',1:'battlefield',2:'unitOverrides',3:'playerId',4:'flag'});
+field('su','e','[F','weights','The 62 AI weights copied into each created planner.');
+method('t','a','(Ljava/lang/String;[Ljava/lang/String;B)I','indexOfString','Returns the first array index equal to the supplied string.',{0:'text',1:'candidates',2:'obfuscationGuard'});
+method('t','a','(BLjava/applet/Applet;)V','reloadPage','Opens reload.ws relative to the codebase, keeping the document query string, in the same frame.',{0:'obfuscationGuard',1:'applet'});
+method('vr','a','(Lkl;I)V','loadThemeSprites','Loads the configured themed RgbSprite tables from an archive and renders four theme preview sprites.',{0:'archive',1:'obfuscationGuard'});
+method('vr','a','(ILjava/lang/String;Ljava/lang/String;)Z','accountNamesMatch','Normalizes two account names and compares them, treating two null results as equal.',{0:'obfuscationGuard',1:'firstName',2:'secondName'});
+
+// Nine-slice sprite builder owner.
+Object.assign(classes,{
+  tq:['NineSliceSpriteSupport','Builds nine frame sprites (corner, edge and optional centre) from top and bottom colours by rendering fills into temporary sprites; unrelated option counts, canvas rebuild flag and packet writers remain on this owner.'],
+});
+method('tq','a','(IZIIII)[Lwk;','buildSolidFrameSprites','Renders the vertical-gradient edge, corner and optional centre sprites for a frame of the given height and corner size, restores the previous raster target and returns null when the flag is set.',{0:'topColour',1:'returnNull',2:'height',3:'centreColour',4:'cornerSize',5:'bottomColour'});
+
+// Static cleanup methods that also keep an obfuscator guard-conditioned call to another static of the same owner.
+for(const entry of [
+ "a.a(Z)V","b.a(Z)V","br.a(I)V","bt.c(I)V","bv.k(B)V","cn.f(I)V","co.a(B)V","cq.a(I)V",
+ "cw.a(B)V","dn.k(I)V","ej.a(I)V","eq.a(Z)V","fm.a(I)V","ft.a(I)V","ge.c(I)V","gl.a(Z)V",
+ "gm.e(I)V","go.b(I)V","gv.b(I)V","hl.k(I)V","kj.a(Z)V","kw.b(Z)V","la.b(B)V","me.a(B)V",
+ "mi.a(I)V","mj.c(B)V","mo.a(I)V","np.e(B)V","ns.a(Z)V","pc.d(I)V","pj.a(Z)V","pl.a(Z)V",
+ "ps.c(Z)V","qt.a(B)V","rk.q(I)V","rr.a(I)V","rt.e(B)V","si.a(I)V","sp.a(B)V","sq.a(Z)V",
+ "sr.b(B)V","tj.d(B)V","tk.a(B)V","ua.e(I)V","vv.b(B)V","we.a(B)V","wg.a(I)V",
+]){
+  const parts=/^([^.]+).([A-Za-z0-9_$]+)((.*)V)$/.exec(entry);
+  method(parts[1],parts[2],parts[3],"releaseStatics","Only nulls static references, apart from guard arithmetic and guard-conditioned calls to other statics of its owner; instance state and unrelated helpers on the owner are untouched.",parts[3]==="()V"?{}:{0:"obfuscationGuard"});
+}
+
 const workflowFiles=['build-armiesofgielinor-rules.mjs','reproduce-armiesofgielinor.mjs','reconstruct-armies-methods.mjs',
   'tests/test-armiesofgielinor-core.mjs','tests/archive-index-probe.mjs','game-export.mjs','compilation-stubs.mjs'];
 export function validateArmiesManifest(rules) {
@@ -4989,7 +5267,7 @@ export function buildArmiesManifest() {
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.armiesofgielinor;
-    const rules={schema:1,game:'armiesofgielinor',version:78,
+    const rules={schema:1,game:'armiesofgielinor',version:79,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/armiesofgielinor'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

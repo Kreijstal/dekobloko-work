@@ -3952,6 +3952,20 @@ The probe bypasses battlefield construction and Applet initialization,
 so it is not a full gameplay or multiplayer-server test. Large methods remain.
 Naming follows the pinned raw input’s three generically reconstructed methods.
 
+The remaining-class pass names platform adapters (CursorController,
+MicrosoftCursorController, MicrosoftDisplayController, AwtDisplayController,
+mouse-wheel sources, pixel-array surfaces, SocketFactory/ProxySocketFactory and
+ProxyAuthenticationRequiredException), widget painters and styles (dial and
+marker-slider widgets, WidgetTheme, StatefulWidgetPainter, NineSliceFrame),
+password and keyed LoginCredentials, GzipDecoder, ArchiveLoadSequence,
+ScreenWipeTransition, ProjectileEffect, ToastMessage and ArrayBlockSupport.
+Unrelated shared-statics owners are named after one reviewed helper and say that
+the rest remain separate. Every obfuscator-generated static cleanup method whose
+body only nulls statics is `releaseStatics`; the PacketBuffer writers,
+SoftwareRaster and RgbSprite primitives, selected Unit, Battlefield, MapTile and
+AiPlanner helpers have reviewed names. Roles that stayed unclear (for example
+the intro animation, match-setup layout internals and several node classes) remain opaque.
+
 ## Deko Bloko
 
 The first pass covers all 343 classes and the opaque member/parameter/local
