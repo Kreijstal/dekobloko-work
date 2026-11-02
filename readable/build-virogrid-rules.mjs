@@ -223,6 +223,15 @@ field('km', 'qb', 'Lmg;', 'normalSprite', 'The lobby loader assigns closebutton,
 field('km', 'sb', 'Lmg;', 'mouseOverSprite', 'The lobby loader assigns the _mouseover resources to it.');
 field('km', 'y', 'Lmg;', 'mouseHeldSprite', 'The lobby loader assigns the _mouseheld resources to it.');
 field('km', 'rb', 'Lmg;', 'disabledSprite', 'The lobby loader assigns the _disabled resources to it.');
+field('jb', 'I', '[Lmg;', 'gamePrivacyIcons', 'Loaded from the lobby gameprivacy resource.');
+field('m', 'f', '[Lmg;', 'ratedGameIcons', 'Loaded from the lobby ratedgame resource.');
+field('lc', 'c', '[Lmg;', 'openToMeIcons', 'Loaded from the lobby opentome resource.');
+field('ph', 'm', '[Lmg;', 'allowSpectatorsIcons', 'Loaded from the lobby allowspectators resource.');
+field('j', 'k', '[Lmg;', 'chatFilterIcons', 'Loaded from the lobby chatfilter resource.');
+field('qg', 'u', 'Lmg;', 'displayNameChangedIcon', 'Loaded from the basic display_name_changed resource.');
+method('jd', 'a', '(Leh;B[ILeh;[Lrm;)V', 'loadLobbyResources', 'Loads the lobby fonts and the close, up, down and button sprites.');
+method('Virogrid', 't', '(I)V', 'openArchives', 'Assigns ten archive handles by index 3 and 5 to 12 plus the argument.');
+method('Virogrid', 'c', '(BZ)Z', 'advanceLoading', 'Checks each archive in order, loads fonts, music, sprites and models as they arrive and returns false while loading continues.');
 field('ic', 'g', 'Z', 'online', 'Moves, resign and restart send packets instead of acting locally when it is set.');
 field('uf', 'y', 'I', 'timeSetting', 'GameSession indexes the per-move time table with it to reset the turn timer.');
 field('uf', 's', 'I', 'sizeSetting', 'The constructor indexes the 7, 9 and 11 grid size table with it.');
