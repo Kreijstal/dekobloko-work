@@ -60,6 +60,38 @@ field('bh', 't', 'I', 'position', 'PacketBuffer cursor advanced by reads and use
 field('ca', 'a', 'Ljava/lang/String;', 'host', 'ProxySocketConnector writes this as the CONNECT host.');
 field('ca', 'e', 'I', 'port', 'ProxySocketConnector writes this as the CONNECT port.');
 field('cn', 'a', 'Ljava/lang/Throwable;', 'cause', 'ClientException keeps the wrapped throwable here.');
+function method(owner, original, descriptor, to, evidence) {
+  members['M:' + owner + '.' + original + descriptor] = {to, evidence};
+}
+const link = 'IntrusiveNode.unlink splices the node out of its neighbours and clears both links.';
+method('mc', 'b', '(Z)V', 'unlink', link);
+method('mc', 'a', '(B)Z', 'isLinked', 'Returns whether the previous link is non-null.');
+method('gb', 'e', '(I)V', 'unlinkSecondary', 'Splices the node out of the secondary link pair.');
+method('gb', 'a', '(I)Z', 'isSecondaryLinked', 'Returns whether the secondary previous link is non-null.');
+const table = 'IterableNodeHashTable masks the key into a bucket and splices the node before the bucket sentinel.';
+method('ea', 'a', '(JLmc;Z)V', 'put', table);
+method('ea', 'a', '(JI)Lmc;', 'get', 'Walks the bucket chain for the node whose key matches.');
+const deque = 'IntrusiveDeque links nodes around its sentinel field.';
+method('je', 'a', '(Lmc;Z)V', 'addLast', deque + ' The node is spliced before the sentinel.');
+method('je', 'a', '(Lmc;I)V', 'addFirst', deque + ' The node is spliced after the sentinel.');
+method('je', 'a', '(Z)Lmc;', 'removeFirst', 'Unlinks and returns the node after the sentinel.');
+method('je', 'c', '(B)Lmc;', 'removeLast', 'Unlinks and returns the node before the sentinel.');
+method('je', 'b', '(Z)Z', 'isEmpty', 'Tests whether the sentinel points to itself.');
+method('je', 'b', '(I)V', 'clear', 'Unlinks every node until only the sentinel remains.');
+method('jo', 'a', '(Lgb;I)V', 'addLast', 'DualLinkDeque splices the node before its sentinel on the secondary links.');
+method('jo', 'c', '(I)Lgb;', 'removeFirst', 'Unlinks and returns the node after the sentinel.');
+method('jo', 'd', '(I)I', 'size', 'Counts nodes by walking the secondary links around the sentinel.');
+const reads = 'PacketBuffer reads advance the cursor over the byte payload.';
+method('bh', 'g', '(B)Ljava/lang/String;', 'readString', 'Scans payload to the zero terminator and builds a string.');
+method('bh', 'g', '(I)B', 'readSignedByte', reads);
+method('bh', 'd', '(B)I', 'readUnsignedByte', reads);
+method('bh', 'e', '(I)I', 'readUnsignedShort', 'Combines two payload bytes, high byte first.');
+method('bh', 'd', '(I)I', 'readMedium', 'Combines three payload bytes, high byte first.');
+method('bh', 'c', '(I)J', 'readLong', 'Joins two unsigned 32-bit reads into a long.');
+method('bh', 'b', '(B)I', 'readVarInt', 'Accumulates 7-bit groups while the byte is negative.');
+method('bh', 'f', '(B)I', 'readSmart', 'Reads one byte below 128, else a short minus 32768.');
+method('bh', 'c', '(B)I', 'readLargeSmart', 'Reads a short when non-negative, else an int masked to 31 bits.');
+method('bh', 'b', '(IB)V', 'writeSmart', 'Writes a byte below 128 or a short offset by 32768.');
 
 export const config = {
   game: 'tetralink', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,

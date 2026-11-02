@@ -533,6 +533,181 @@
       "to": "next",
       "evidence": "IntrusiveNode.unlink splices field_j and field_e; hash table stores the key in field_c.",
       "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.b(B)I",
+      "originalName": "b",
+      "to": "readVarInt",
+      "evidence": "Accumulates 7-bit groups while the byte is negative.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.b(IB)V",
+      "originalName": "b",
+      "to": "writeSmart",
+      "evidence": "Writes a byte below 128 or a short offset by 32768.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.c(B)I",
+      "originalName": "c",
+      "to": "readLargeSmart",
+      "evidence": "Reads a short when non-negative, else an int masked to 31 bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.c(I)J",
+      "originalName": "c",
+      "to": "readLong",
+      "evidence": "Joins two unsigned 32-bit reads into a long.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.d(B)I",
+      "originalName": "d",
+      "to": "readUnsignedByte",
+      "evidence": "PacketBuffer reads advance the cursor over the byte payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.d(I)I",
+      "originalName": "d",
+      "to": "readMedium",
+      "evidence": "Combines three payload bytes, high byte first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.e(I)I",
+      "originalName": "e",
+      "to": "readUnsignedShort",
+      "evidence": "Combines two payload bytes, high byte first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.f(B)I",
+      "originalName": "f",
+      "to": "readSmart",
+      "evidence": "Reads one byte below 128, else a short minus 32768.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.g(B)Ljava/lang/String;",
+      "originalName": "g",
+      "to": "readString",
+      "evidence": "Scans payload to the zero terminator and builds a string.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.g(I)B",
+      "originalName": "g",
+      "to": "readSignedByte",
+      "evidence": "PacketBuffer reads advance the cursor over the byte payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(JI)Lmc;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Walks the bucket chain for the node whose key matches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(JLmc;Z)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "IterableNodeHashTable masks the key into a bucket and splices the node before the bucket sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.a(I)Z",
+      "originalName": "a",
+      "to": "isSecondaryLinked",
+      "evidence": "Returns whether the secondary previous link is non-null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.e(I)V",
+      "originalName": "e",
+      "to": "unlinkSecondary",
+      "evidence": "Splices the node out of the secondary link pair.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.a(Lmc;I)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "IntrusiveDeque links nodes around its sentinel field. The node is spliced after the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.a(Lmc;Z)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "IntrusiveDeque links nodes around its sentinel field. The node is spliced before the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.a(Z)Lmc;",
+      "originalName": "a",
+      "to": "removeFirst",
+      "evidence": "Unlinks and returns the node after the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.b(I)V",
+      "originalName": "b",
+      "to": "clear",
+      "evidence": "Unlinks every node until only the sentinel remains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.b(Z)Z",
+      "originalName": "b",
+      "to": "isEmpty",
+      "evidence": "Tests whether the sentinel points to itself.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.c(B)Lmc;",
+      "originalName": "c",
+      "to": "removeLast",
+      "evidence": "Unlinks and returns the node before the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(Lgb;I)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "DualLinkDeque splices the node before its sentinel on the secondary links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.c(I)Lgb;",
+      "originalName": "c",
+      "to": "removeFirst",
+      "evidence": "Unlinks and returns the node after the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.d(I)I",
+      "originalName": "d",
+      "to": "size",
+      "evidence": "Counts nodes by walking the secondary links around the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.a(B)Z",
+      "originalName": "a",
+      "to": "isLinked",
+      "evidence": "Returns whether the previous link is non-null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.b(Z)V",
+      "originalName": "b",
+      "to": "unlink",
+      "evidence": "IntrusiveNode.unlink splices the node out of its neighbours and clears both links.",
+      "confidence": "reviewed"
     }
   ],
   "classNameLiterals": {
@@ -550,7 +725,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-tetralink-rules.mjs": "a844350153d571ee760a5050e79a0de407ec29b1cec319a0bf3a6483a9e7078e",
+      "build-tetralink-rules.mjs": "1afc73d1b83b490584b7ad196b1f9b0ece923b3c060590c5e4dbd2f48f3bbce2",
       "reproduce-tetralink.mjs": "48c559540795e1e28f8942a56656594f876b3ba19e63705d96d166ed11f05afb",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
