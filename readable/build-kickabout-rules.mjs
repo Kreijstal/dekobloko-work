@@ -240,6 +240,111 @@ const classes = {
   gm: ['RenderedFootballer', 'FootballerAgent subclass that adds the animation, model and shadow fields and overrides stepMovement and the state sync.'],
   ob: ['RenderedBall', 'BallAgent subclass that adds the model, spin and shadow fields and overrides stepPhysics and the state sync.'],
   hd: ['UiLayoutNode', 'Tree node with a parent, a tf child list, text, font and sprite slots, offsets and a large draw/layout method; about 30 screens subclass it.'],
+  fn: ['Trinket', 'Holds a trinket type id indexed into the trinket name table rv.field_b, a slot kind and a price; toString prints "name [type]" and many isX methods test the type id.'],
+  at: ['TrinketTile', 'UiLayoutNode built from a Trinket: draws its lowercase name and its price in red when the player lacks the experience.'],
+  gu: ['ContextMenu', 'Holds up to 256 vu items with action ids, addItem methods and a getter that returns the id of the item the pointer released on.'],
+  vu: ['ContextMenuItem', 'UiLayoutNode with an optional icon and a text label whose layout is computed from the icon width; created by ContextMenu and CascadingMenu.'],
+  bb: ['CascadingMenu', 'Menu of vu items with per-item child bb menus, hotkey characters and a hover slide-in offset; clicking an item either opens its child or sends its id.'],
+  ej: ['SelectableTrinketIcon', 'Tile for one trinket type id; clicking toggles pt.field_e and the draw method outlines it using the qe.field_i trinket sprites.'],
+  dn: ['TrinketIcon', 'UiLayoutNode that renders the quarter-size trinket sprite qe.field_i for the given type id.'],
+  he: ['LobbyPlayerRow', 'Constructed from a name, a text and a long id with two boolean flags used by its comparator; rows of the lobby player lists.'],
+  kf: ['TabStrip', 'Takes label strings and one content node per label, lays the labels out evenly and switches the visible content on click.'],
+  na: ['VerticalScrollbar', 'Builds two arrow buttons, a track and a thumb, repeats arrow presses with a 20 then 3 tick delay and maps thumb position to a scroll value.'],
+  np: ['ScrollPane', 'Holds a content node and a na scrollbar, moves the content by the arrow, page and thumb amounts and keeps the bar sized to the viewport.'],
+  om: ['IconLabel', 'Two child nodes, an icon with sprite fields and a text label, laid out side by side with the label width fitted to the remaining space.'],
+  pu: ['TrinketSlot', 'Fixed 32x32 node showing the icon of one Trinket, half size when the boolean argument is set, and drawing a tooltip with its name.'],
+  ji: ['ScrollBar', 'Built from a "scrollbar" skin with arrow, track and thumb nodes and a horizontal flag; copy constructor makes instances, thumb position maps to scroll value.'],
+  tk: ['ScrollContainer', 'Creates a horizontal and a vertical ji bar around a content node and scrolls the content with arrows, pages and thumbs.'],
+  rb: ['TextPromptDialog', 'Modal layout with title, om line, StringBuilder text entry and buttons; a(int) returns the typed text and h() watches for the enter key.'],
+  sl: ['HoverTooltip', 'Created at the rectangle of an existing node with a title and body node; a singleton k.field_m holds the active one.'],
+  vg: ['TextFieldNode', 'hd-toolkit text field with a StringBuilder, selection start and end, clipboard copy and paste and an optional maximum length.'],
+  qb: ['GameSetupPanel', 'hd-toolkit panel holding a byte[] of option selections sized by the option count ss.field_j, restriction arrays tested against them and many option label nodes.'],
+  cf: ['RankingRowNode', 'Row drawn as three columns 40, 196 and 70 wide showing the rank (or = for ties), name and rating copied from a bc entry.'],
+  jb: ['PopupDialog', 'IntrusiveNode queued in np.field_Jb with a slide-in counter, option strings, a selection ko and key handling; subclassed by every dialog.'],
+  i: ['MessageDialog', 'PopupDialog built from a dialog id: title, text from the gd.field_e table, icon and buttons, with a close handler per id.'],
+  aw: ['TutorialChoiceDialog', 'MessageDialog id 8, whose text asks whether to play the Tutorial or practise in Sandbox mode.'],
+  bm: ['AuctionListingDialog', 'MessageDialog id 21 built from a pt auction listing; on close it can write the listing to the outgoing packet.'],
+  ce: ['BuyPlayerDialog', 'MessageDialog id 30 built from a shop slot sp: "Buy <%0> for <%1>?" with the player name and price.'],
+  ha: ['WelcomeDialog', 'MessageDialog id 23, the "Welcome to Kickabout League" text shown to a not-logged-in player with a temporary team.'],
+  hg: ['PromotionDialog', 'MessageDialog id 10, "promoted to the <%1>", showing the division sprite kb.field_E[index].'],
+  hk: ['AuctionBidDialog', 'MessageDialog built from a vc auction item with ids 19, 32 or 37 (bid or buyout confirmation) that sends the bid packet on accept.'],
+  ie: ['SellPlayerDialog', 'MessageDialog id 34, "Do you want to sell <%0> for <%1>?", built from a PlayerStats.'],
+  kn: ['TrinketPickerDialog', 'MessageDialog id 27 with a grid of dn trinket icons ("Mouse over an icon for details").'],
+  no: ['LeagueWinnerDialog', 'MessageDialog id 9, the congratulations text for winning the league.'],
+  nq: ['TournamentChampionDialog', 'MessageDialog id 42, "Congratulations to <%0>! They are the tournament champion."'],
+  pq: ['SquadPickerDialog', 'MessageDialog id 11 embedding an mf squad grid; accepting a selected slot calls oj.b with that player.'],
+  pv: ['HelpTipDialog', 'MessageDialog whose id selects help text 12-17 and which marks the matching tu.field_E.field_J help flag as seen.'],
+  pw: ['AuctionSettingsDialog', 'Large MessageDialog id 18 with price entry, character filter ia.field_e and an offer button for creating an auction.'],
+  qq: ['LoginRequiredDialog', 'MessageDialog id 25, "To access the Multiplayer Lobby, log in or create a free account."'],
+  rt: ['StatChoiceDialog', 'MessageDialog id 20, "EXP at max! Choose a stat to increase by 1%".'],
+  sq: ['SaveChangesDialog', 'MessageDialog id 1, "You have made changes to your team. Would you like to save these changes?"'],
+  vf: ['BuyPitchDialog', 'MessageDialog id 29 built from a jt pitch tile: "Buy <%0> for <%1>?" with the surface name.'],
+  pk: ['LoadingSequence', 'Interface held in NetworkGameClient.field_t whose four methods tu polls: bind archives, poll archives, build assets and poll completion.'],
+  eh: ['GameResourceLoader', 'Implements LoadingSequence: binds the cache archives, decodes sprites and fonts, builds the lobby assets and starts the message-of-the-day request.'],
+  ci: ['IterableDualLinkDeque', 'Iterable circular deque of DualLinkNode with a sentinel; iterator returns a DualLinkDequeIterator and nodes are added before the sentinel.'],
+  eb: ['DiskCacheWorker', 'Runnable thread with a deque of hi requests guarded by a monitor; shutdown joins the thread, as Escape Vector DiskCacheWorker.'],
+  hi: ['DiskCacheRequest', 'Request object with operation code, data bytes and a SectorCacheStore, with progress and getBytes methods, as Escape Vector DiskCacheRequest.'],
+  eq: ['WeightedLruCache', 'Cache with a capacity, an ij entry list and an ht hash table; get, put and weighted eviction, as Escape Vector WeightedLruCache.'],
+  ij: ['WeightedCacheEntry', 'DualLinkNode entry of WeightedLruCache holding the cached object and its weight.'],
+  em: ['DualLinkHashTable', 'Power-of-two array of DualLinkNode sentinels keyed by long with get, put and bucket iteration.'],
+  fu: ['GrowableIntList', 'Int array with a size, growth step and get, set, add and remove-at methods, as GeoBlox GrowableIntList.'],
+  gd: ['ListingRowCache', 'Seven per-category tables of iu cached rows keyed by id with timestamps; add, evict-by-age and get by category and id.'],
+  iq: ['TextLayout', 'Abstract holder of qj lines with character position tables; measures line count, total height and the character index at a pixel position.'],
+  qj: ['TextLayoutLine', 'Stores a line\'s top, bottom and per-character x positions in an int array one longer than the text.'],
+  st: ['CachedTextLayout', 'TextLayout that re-lays out only when the font, text or wrap mode (single, centred, wrapped) differs from the previous call.'],
+  hf: ['PainterStyle', 'Chain-setter style object with colour, font, sprite and alignment fields that are copied into another style when set, used by the widget painters.'],
+  kk: ['TriangleMesh', 'Vertex short arrays with a vertex count, scale and translate methods and a lazy bounds computation, as Escape Vector TriangleMesh.'],
+  ks: ['HuffmanCodec', 'Built from the "huffman" archive file as a code table and encodes and decodes text byte arrays.'],
+  ll: ['DirectByteStorage', 'ByteStorage backed by a direct ByteBuffer, as GeoBlox DirectByteStorage.'],
+  lf: ['IntKeyLookup', 'Open-addressed table built from an int array whose lookup masks the key, as GeoBlox IntKeyLookup.'],
+  pf: ['ByteStorage', 'Abstract base with a byte[] store and retrieve pair that DirectByteStorage implements, as GeoBlox ByteStorage.'],
+  hc: ['OverlayLayer', 'Interface for per-frame layers registered with oa.a: key typed, paint, update and an input-capture query; implemented by the console, cheat listener and overlays.'],
+  md: ['CheatCodeListener', 'OverlayLayer that shifts typed letters into a four-character buffer and reacts to the cheat words.'],
+  nb: ['GameSoundEffect', 'Table entry created with a KaB_ asset name and archive group or from a PcmSample, loaded lazily through b(int).'],
+  n: ['ArchiveManager', 'Holds the network archive client, the disk cache worker and optional RSA keys, opens archives and checks the master index.'],
+  sr: ['SortCriterion', 'Abstract comparator over shop slots with a current direction index; subclasses compare slots by different stats and the base cycles the direction.'],
+  os: ['Bzip2State', 'Decoder state with an 18002-byte block, 256 used flags and 6x258 code tables, as Bzip2State in other games.'],
+  pp: ['MusicPatchPcmStream', 'PcmStream holding a tf of da note nodes and a gq mixer; its mix methods walk the notes, as Steel Sentinels MusicPatchPcmStream.'],
+  pn: ['StrongCacheEntry', 'WeightedCacheEntry subclass that holds the cached object in a strong reference and returns it from a(int).'],
+  q: ['ConsoleTokenCursor', 'Built from a tf of lk tokens into an array; a(byte) returns the next ConsoleExpression and a(int) tests for the end, as Armies of Gielinor ConsoleTokenCursor.'],
+  qe: ['ArchivePreloader', 'Queue of up to 16 oc preload tasks over named archive groups that reports "<name> - n%" progress text while polling.'],
+  rc: ['GzipDecoder', 'Checks the 31,-117 gzip magic in the buffer and inflates the payload into the byte array, as GeoBlox GzipInflater.'],
+  rd: ['GameModeDefinition', 'Constructed with ids, a member flag, a long key and a hex mask string; matches a mode by key and tests the option masks.'],
+  rj: ['SoundCache', 'Loads PcmSample objects from two archives by name or id into kc caches of 256 entries, as Steel Sentinels SoundCache.'],
+  sb: ['StringCursor', 'Wraps a string with a position and length; reads one character at a time and toString shows the caret as a bar.'],
+  sn: ['UrlRequest', 'Built from the applet code base, polls an asynchronous fetch and returns the downloaded bytes as a PacketBuffer; used for the message of the day.'],
+  td: ['TrinketCatalog', 'Static builder that fills pa.field_g with 111 Trinket entries in type id order.'],
+  ti: ['NamedValueContainer', 'Parsed from a PacketBuffer into a list of ue entries and answers lookups by entry name such as motd_message.'],
+  ue: ['NamedValueEntry', 'IntrusiveNode entry of NamedValueContainer holding a name, a type and its payload offset.'],
+  tv: ['ChatMessage', 'Record with sender, text, type and timestamp fields built from a chat packet or from the five default strings, with a b(int) kind query.'],
+  vl: ['LoginMethod', 'Three constant instances created with the texts usename, email and an empty string; saved in the jagex-last-login-method cookie, as GeoBlox LoginMethod.'],
+  w: ['DialogOverlay', 'OverlayLayer that walks the np.field_Jb dialog deque, forwards key and update calls to the active su.field_c dialog and draws it.'],
+  uv: ['PlayerContextMenu', 'Built for a player name and id; owns a ContextMenu, builds its items per relationship and dispatches the chosen action to friend, ignore, invite, report and match handlers.'],
+  nm: ['AnimationClip', 'Loads a named clip such as ka_tank_aggressive_tackle from the characters archive into an array of db frames and a timing table.'],
+  db: ['AnimationFrame', 'Parsed from a byte[] with a je skeleton into per-group transforms, as Armies of Gielinor AnimationFrame.'],
+  dd: ['AnimationPlayer', 'Tracks the current AnimationClip, frame index and blend counters and applies the frame to a qc mesh.'],
+  cp: ['AudioService', 'Runnable thread that loops over two uh player services and keeps their mixers filled, as GeoBlox AudioService.'],
+  tp: ['ReverbCombFilter', 'Delay-line int array with an index and a filter state; ReverbPcmStream creates eight with delays 1139..1640 samples at 44.1 kHz.'],
+  mq: ['ReverbAllPassFilter', 'Delay-line int array with a clear method; ReverbPcmStream creates two with delays 579 and 464 samples at 44.1 kHz.'],
+  ek: ['TrinketShopDialog', 'MessageDialog id 24 containing a ScrollContainer of at trinket tiles built from the pa.field_g table and an accept path through ge.a.'],
+  ib: ['DateOfBirthPanel', 'wt container with a numeric date input fb, a debounced validator hl and a button, drawn with a caption.'],
+  id: ['StatefulTextPainter', 'TextWidgetPainter subclass holding six hf styles, one per widget state, with a copy constructor.'],
+  wt: ['ArrayWidgetContainer', 'Abstract UiWidget implementing the container marker with an fd[] of children that routes drawing, key, hover and pointer events to them, as Armies of Gielinor ArrayWidgetContainer.'],
+  ou: ['StripedProgressBar', 'UiWidget that pre-renders two stripe sprites and scrolls them with a counter to draw an animated progress bar, as Steel Sentinels StripedProgressBar.'],
+  ju: ['ValidationHelpWidget', 'TextHotspotWidget subclass built from a ValidationSource that draws a help balloon with the validation message, as Steel Sentinels ValidationHelpWidget.'],
+  gb: ['ValidationIndicator', 'TextButton subclass built from a ValidationSource that draws the valid or invalid marker and its tooltip text, as Steel Sentinels ValidationIndicator.'],
+  mc: ['TickClock', 'Abstract frame clock base of NanoTickClock, as Steel Sentinels TickClock.'],
+  vi: ['NanoTickClock', 'TickClock using System.nanoTime with a ring of ten recent deltas, as Steel Sentinels NanoTickClock.'],
+  vo: ['LoginDialog', 'ContentTransitionDialog constructed from the modal stack and a child widget with the login form sizes 33, 20 and 30, as Steel Sentinels LoginDialog.'],
+  m: ['WhirlpoolHasher', 'Digest state with a 64-byte block, eight long words, a 32-byte bit counter and process, update and reset methods, as Escape Vector WhirlpoolHasher.'],
+  jj: ['MusicTrackMixer', 'PcmStream with an array of qm MusicTrack slots, a volume per slot and mix, fade and release methods; created with three slots.'],
+  lw: ['ProxyAuthenticationRequiredException', 'IOException thrown by the proxy socket connector with the status line of a failed CONNECT.'],
+  kp: ['LobbyGameRecord', 'Lobby game entry with two player id slots, a 2x5x2 lineup array, option fields and pitch coordinates; read from a packet and copied between instances.'],
+  oi: ['IntValueNode', 'IntrusiveNode holding one int, queued in tf lists such as ec.field_f, as Escape Vector IntValueNode.'],
+  ac: ['TrinketUnlockNotice', 'OverlayLayer that takes queued IntValueNode trinket ids from ec.field_f, slides a panel in from the right and draws the qe.field_i trinket icon.'],
+  cc: ['FixedQuaternion', 'Four 16.16 fixed-point components starting at identity (65536), with axis-angle setup, product and rotation-matrix output, as Armies of Gielinor FixedQuaternion.'],
+  dt: ['OffscreenPlayerArrow', 'Built from a RenderedFootballer and a slot index; places an arrow on the screen edge by sine and cosine of the bearing to the player and draws it with a fade.'],
+  ec: ['LoginText', 'Holds a login text string and a boolean flag that is forced false for empty text; constructed from the stored account name, as Escape Vector LoginText.'],
 // END-R2CLASSES
   jc: ['LoggedPlayer', 'toString returns "LoggedPlayer{..}" with home/away side, resign time, reward, membership, tackle, kick, cross, header and goal counters.'],
 };
@@ -472,6 +577,241 @@ method('hd', 'a', '(BLhd;)V', 'addChild', 'Creates the child tf on first use and
 method('hd', 'b', '(Z)V', 'invalidateChildren', 'Marks every child dirty and recurses into its children.');
 method('hd', 'a', '(ILhd;)V', 'setFocusedNode', 'Recurses into the children and sets the focus flag on the node equal to the argument.');
 method('hd', 'a', '(II)I', 'computeContentWidth', 'Returns the widest of the text, sprite and child extents, starting from the argument.');
+method('fn', 'k', '(I)Z', 'isShinPads', 'Tests type id 56, SHIN PADS in the trinket name table.');
+method('fn', 'c', '(B)Z', 'isTramline', 'Tests type id 68, CHEAT: TRAMLINE in the trinket name table.');
+method('fn', 'e', '(I)Z', 'isMoonball', 'Tests type id 70, CHEAT: MOONBALL in the trinket name table.');
+method('fn', 'c', '(I)Z', 'hasTackleProtection', 'True for type id 55 IMMUNITY or 56 SHIN PADS.');
+method('fn', 'j', '(I)Z', 'isEmpty', 'Tests type id 0, the Empty entry of the trinket name table.');
+method('fn', 'm', '(I)Z', 'isAtomBall', 'Tests type id 67, CHEAT: ATOMBALL in the trinket name table.');
+method('fn', 'l', '(I)Z', 'isPumpkins', 'Tests type id 72, CHEAT: PUMPKINS in the trinket name table.');
+method('fn', 'f', '(Z)Z', 'isTorquing', 'Tests type id 69, CHEAT: TORQUING in the trinket name table.');
+method('fn', 'b', '(Z)Z', 'isSafeTacklerOrShinPads', 'True for type id 54 SAFE TACKLER or 56 SHIN PADS.');
+method('fn', 'n', '(I)Z', 'isMushroom', 'Tests type id 64, CHEAT: MUSHROOM in the trinket name table.');
+method('fn', 'g', '(I)Z', 'isMoonwalk', 'Tests type id 65, CHEAT: MOONWALK in the trinket name table.');
+method('fn', 'a', '(I)Z', 'isActiveHorrorCostume', 'Tests type id 73, COSTUME: HORROR, together with a be.e check.');
+method('fn', 'e', '(Z)Z', 'isWhereAmI', 'Tests type id 63, CHEAT: WHEREAMI in the trinket name table.');
+method('fn', 'c', '(Z)Z', 'isAsteroid', 'Tests type id 71, CHEAT: ASTEROID in the trinket name table.');
+method('fn', 'd', '(I)Z', 'isTankClone', 'Tests type id 59, TANK CLONE in the trinket name table.');
+method('fn', 'h', '(I)Z', 'isHotshotClone', 'Tests type id 60, HOTSHOT CLONE in the trinket name table.');
+method('fn', 'a', '(Z)Z', 'isSlalom', 'Tests type id 62, SLALOM in the trinket name table.');
+method('fn', 'e', '(B)Z', 'isAirplane', 'Tests type id 66, CHEAT: AIRPLANE in the trinket name table.');
+method('fn', 'p', '(I)Z', 'isRangerClone', 'Tests type id 61, RANGER CLONE in the trinket name table.');
+method('fn', 'f', '(B)Ljava/lang/String;', 'getName', 'Returns the rv.field_b name for the trinket type id.');
+method('gu', 'a', '(IILjava/lang/String;)V', 'addItem', 'Creates a vu item with the given id and text, links it into the menu and records its action id.');
+method('gu', 'a', '(Ljava/lang/String;ZILut;)V', 'addItemWithIcon', 'Creates a vu item with an icon sprite and text and records its action id.');
+method('gu', 'a', '(BZ)I', 'getSelectedActionId', 'Returns the action id of the item whose pointer state is set, the default id, or -1 or -2.');
+method('i', 'a', '(II)V', 'handleResult', 'Called with the pressed button result; the base class plays a sound, closes the dialog and subclasses add their action.');
+method('i', 'a', '(B)I', 'dialogHeight', 'Computed from the text and icon heights in the base class; subclasses override it with constants such as 320, 346 or 400.');
+method('i', 'b', '(I)I', 'dialogWidth', 'Base class width from the text and icon; subclasses return constants such as 400, 470 or 545.');
+method('pk', 'a', '(Z)Z', 'pollArchives', 'tu polls it until true before calling buildAssets; GameResourceLoader checks archive downloads in it.');
+method('pk', 'b', '(I)V', 'buildAssets', 'Called once after pollArchives returns true; GameResourceLoader builds sprites, fonts and lobby assets with progress steps.');
+method('pk', 'c', '(I)Z', 'pollReady', 'tu polls it after buildAssets to set the loaded flag; GameResourceLoader also waits for the message of the day.');
+method('pk', 'a', '(I)V', 'bindArchives', 'Called on tu with 7312 when the reload flag is set; GameResourceLoader assigns each archive group to its static field.');
+method('eh', 'b', '(B)V', 'requestMessageOfTheDay', 'Creates the request object for the motd resource.');
+method('eh', 'e', '(I)Z', 'pollMessageOfTheDay', 'Waits for the request then reads the motd_message and motd_image entries.');
+method('vg', 'l', '(I)V', 'deleteSelection', 'Removes the characters between the selection ends from the StringBuilder and collapses the caret.');
+method('vg', 'c', '(Z)V', 'copySelectionToClipboard', 'Puts the selected text into a StringSelection and hands it to the platform dispatcher.');
+method('vg', 'k', '(I)V', 'clear', 'Empties the StringBuilder, resets caret and selection and clears the label text.');
+method('vg', 'a', '(Lbu;I)V', 'setPlatformDispatcher', 'Stores the PlatformTaskDispatcher used for clipboard access.');
+method('vg', 'b', '(IB)V', 'setTextColour', 'Stores the colour on the label node.');
+method('vg', 'j', '(I)I', 'getCaretPosition', 'Returns the caret index field.');
+method('vg', 'b', '(Ljava/lang/String;I)V', 'setText', 'Replaces the text, truncated to the maximum length, and moves the caret to the end.');
+method('vg', 'h', '(B)V', 'cutSelection', 'Copies the selection to the clipboard and then deletes it.');
+method('vg', 'k', '(B)V', 'requestPaste', 'Asks the platform dispatcher for the clipboard contents.');
+method('vg', 'd', '(II)I', 'characterIndexAtWidth', 'Accumulates glyph widths from a start index until the pixel width is reached.');
+method('vg', 'a', '(ICI)Z', 'handleKey', 'Inserts printable characters 32..126 with the maximum length check and handles editing keys.');
+method('vg', 'j', '(B)Ljava/lang/String;', 'getText', 'Returns the StringBuilder as a string.');
+method('vg', 'i', '(B)Ljava/lang/String;', 'getSelectedText', 'Returns the substring between the selection ends.');
+method('vg', 'i', '(I)I', 'nextWordBoundary', 'Scans right from the caret for a character rejected by pi.a.');
+method('vg', 'f', '(II)V', 'setCaret', 'Moves caret and selection anchor to the same index.');
+method('vg', 'h', '(I)I', 'previousWordBoundary', 'Scans left from the caret for a character rejected by pi.a.');
+method('vg', 'a', '(Ljava/lang/String;I)V', 'insertText', 'Truncates to the remaining length and inserts at the caret.');
+method('vg', 'a', '(IBI)V', 'setSelection', 'Clamps both indices to the text length and stores them as caret and anchor.');
+method('vg', 'b', '(I)V', 'updatePointer', 'Maps the pointer x to a character index and handles click, double click and drag selection.');
+method('eo', 'a', '(IIIIII)V', 'drawRectangleOutline', 'Draws the four edges with the horizontal and vertical line helpers.');
+method('eo', 'a', '(ZI)Lhd;', 'createButtonNode', 'Builds an hd with four state sprites copied from the field_c or field_r sprite sets and sized to the first.');
+method('eo', 'b', '()Lhd;', 'createDefaultButtonNode', 'Builds an hd with four state sprites from the field_n set and sized to the first.');
+method('eo', 'a', '(Lut;)Lkg;', 'toIndexedSprite', 'Builds a 256-entry palette from the distinct pixel colours and stores each pixel as a palette index.');
+method('eo', 'a', '(Lut;Lot;)V', 'downscaleByHalf', 'Averages each 2x2 pixel block of the source sprite into one pixel of the destination.');
+method('eo', 'd', '(IIII)V', 'darkenRectangle', 'Clips the rectangle to the raster bounds and darkens its pixels by a fixed factor.');
+method('eo', 'a', '(Lut;IIIIII)V', 'drawSpriteClipped', 'Clamps the size to 640x480 and picks the opaque, 240 or generic alpha blit by the alpha argument.');
+method('eo', 'a', '(III)Z', 'isAngleInRange', 'Masks angles to 13 bits and tests whether the first lies in the arc starting at the second with the given length.');
+method('ci', 'a', '(B)Lam;', 'pollFirst', 'Unlinks and returns the node after the sentinel, or null when the deque is empty.');
+method('ci', 'a', '(ILam;)V', 'addLast', 'Unlinks the node if already linked and inserts it before the sentinel.');
+method('aj', 'a', '(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;', 'replaceAll', 'Loops indexOf and substring to replace every occurrence of the first string in the third with the second.');
+method('dc', 'a', '(IB)V', 'moveToFront', 'Shifts the earlier entries of ue.field_f one place up and stores the selected entry at index 0.');
+method('eb', 'b', '(I)V', 'shutdown', 'Sets the stop flag, notifies the monitor and joins the worker thread.');
+method('eb', 'a', '(IILqh;)Lhi;', 'enqueueRead', 'Creates an operation 3 request for the group and queues it, as Escape Vector enqueueRead.');
+method('eb', 'a', '(ILqh;I)Lhi;', 'readImmediate', 'Creates an operation 1 request and waits for the worker to finish it, as Escape Vector readImmediate.');
+method('eb', 'a', '(ILqh;[BB)Lhi;', 'enqueueOperation', 'Creates a request carrying the data array and operation code and queues it, as Escape Vector enqueueOperation.');
+method('eb', 'a', '(Lhi;Z)V', 'enqueue', 'Adds the request to the deque under the monitor, bumps the pending count and notifies the worker.');
+method('hi', 'a', '(I)I', 'progress', 'Returns 0 while the request is pending, otherwise 100.');
+method('hi', 'b', '(I)[B', 'getBytes', 'Throws while the request is pending, otherwise returns the data array.');
+method('eq', 'a', '(JB)Ljava/lang/Object;', 'get', 'Looks the key up in the hash table and returns the cached object, or null.');
+method('eq', 'a', '(JLjava/lang/Object;B)V', 'put', 'Stores the object with weight 1 under the key.');
+method('eq', 'a', '(ILjava/lang/Object;IJ)V', 'putWeighted', 'Throws if the weight exceeds the capacity, removes any old entry and evicts until the weight fits.');
+method('eq', 'a', '(BJ)V', 'remove', 'Looks up the entry for the key and removes it.');
+method('eq', 'a', '(Lij;I)V', 'removeEntry', 'Unlinks the entry from both lists and returns its weight to the remaining capacity.');
+method('fb', 'l', '(I)I', 'getDay', 'Parses the first two-digit text field as an integer.');
+method('fb', 'h', '(B)I', 'getMonthIndex', 'Parses the second two-digit text field and subtracts one.');
+method('fb', 'm', '(I)I', 'getYear', 'Parses the four-digit text field as an integer.');
+method('fu', 'a', '(IB)I', 'get', 'Throws ArrayIndexOutOfBoundsException past the size and otherwise returns the element.');
+method('fu', 'a', '(I)I', 'size', 'Returns the last index plus one.');
+method('fu', 'c', '(II)V', 'add', 'Stores the value at the next index through the private set method.');
+method('fu', 'a', '(II)V', 'removeAt', 'Shifts later elements down by one and decrements the last index.');
+method('fu', 'a', '(ZII)V', 'set', 'Raises the size if needed, grows the array if the index is past its end and stores the value.');
+method('fu', 'b', '(II)I', 'nextCapacity', 'Doubles or steps the current array length until the requested index fits.');
+method('fu', 'a', '(IZ)V', 'grow', 'Allocates an array of the computed capacity and copies the old contents.');
+method('gd', 'a', '(I[Lbc;J)V', 'addAll', 'Adds every bc row to its category table with the given timestamp.');
+method('gd', 'a', '(BLbc;J)V', 'add', 'Wraps the row in an iu with the timestamp and stores it in its category table by id.');
+method('gd', 'b', '(I)V', 'clear', 'Clears all seven tables and zeroes their counters.');
+method('gd', 'a', '(III)V', 'evictExpired', 'Walks each category table and removes rows outside the id range or past their age.');
+method('gd', 'a', '(IBI)Lbc;', 'get', 'Returns the cached row for the id in the category, or null for an out-of-range category.');
+method('fv', 'a', '(BLjava/lang/String;)Z', 'openUrlWithShell', 'On Windows runs cmd /c start with an http or https address and reports success.');
+method('kk', 'a', '(IIIII)V', 'scale', 'Multiplies each vertex coordinate by a ratio of the arguments.');
+method('kk', 'a', '(IIII)V', 'translate', 'Adds an offset to every vertex from the start index.');
+method('kk', 'a', '(Z)V', 'computeBounds', 'Computes the minimum and maximum vertex extents once and caches them.');
+method('nb', 'a', '(Ljava/lang/Throwable;Ljava/lang/String;)Lbs;', 'wrapException', 'Appends the context text to an existing ClientException or wraps the throwable in a new one; called from every catch block.');
+method('nb', 'b', '(I)Z', 'loadSound', 'Loads the named sound from the archive and stores the decoded PcmSample when it is available.');
+method('nj', 'a', '(I)J', 'monotonicMillis', 'Adds the amount the system clock went backwards to a running offset so the returned time never decreases.');
+method('n', 'a', '(B)Z', 'pollMasterIndex', 'Reads the archive master index and verifies it against the configured RSA keys.');
+method('sr', 'a', '(ILjava/lang/Object;Ljava/lang/Object;)I', 'compare', 'Abstract comparison of two sp shop slots implemented by each sort criterion.');
+method('sr', 'a', '(I)I', 'directionCount', 'Abstract; subclasses return the number of sort directions, 2 in the ones read.');
+method('sr', 'a', '(ZI)V', 'cycleDirection', 'Advances the direction index modulo directionCount when the flag is set, otherwise resets it to 0.');
+method('oa', 'a', '(ZLhc;)V', 'registerOverlay', 'Inserts the OverlayLayer at the front of the sn.field_g vector.');
+method('or', 'a', '(Ljava/lang/String;I)V', 'printError', 'Prints "Error: " followed by the text with %0a replaced by newlines.');
+method('q', 'a', '(B)Llk;', 'readToken', 'Returns the next token and advances the cursor.');
+method('q', 'a', '(I)Z', 'isAtEnd', 'True when the cursor is past the last token.');
+method('rc', 'a', '(ILiw;[B)V', 'decompress', 'Checks the gzip magic bytes at the cursor and inflates into the output array.');
+method('rd', 'a', '(II)Z', 'isLeapYear', 'Tests the Julian rule before year 1582 and the Gregorian rule after it.');
+method('sb', 'b', '(I)C', 'nextChar', 'Returns the character at the position and advances it.');
+method('sb', 'a', '(B)Z', 'isAtEnd', 'True when the position has reached the length.');
+method('sn', 'a', '(B)Z', 'isDone', 'True when there is no pending fetch or the fetch has completed.');
+method('sn', 'a', '(Z)Liw;', 'getResult', 'Returns the downloaded data as a PacketBuffer.');
+method('su', 'a', '(IJ)Ljava/lang/String;', 'decodeBase37Name', 'Converts a base-37 long into a name, rejecting values at or above 6582952005840035281.');
+method('td', 'b', '(I)V', 'buildTrinketTable', 'Allocates 111 Trinket slots and fills them in type id order.');
+method('ti', 'a', '(ILjava/lang/String;)Lue;', 'findEntry', 'Walks the entry list and returns the entry with the given name.');
+method('vl', 'a', '(ILjava/applet/Applet;)V', 'saveLastLoginMethod', 'Writes the method text to the jagex-last-login-method cookie for 31536000 seconds.');
+method('vl', 'a', '(Ljava/lang/String;I)Z', 'matchesName', 'Compares the stored text with the argument, ignoring case.');
+method('nh', 'b', '(I)I', 'rgbToHsv', 'Finds the largest and smallest RGB components and packs a hue in sixths, saturation and value into one int.');
+method('nh', 'a', '(I)I', 'hsvToRgb', 'Private converter that selects one of six hue sectors and rebuilds the packed RGB colour from hue, saturation and value.');
+method('nh', 'a', '([IDDD)V', 'adjustHsv', 'Converts each pixel to HSV, rotates the hue and scales saturation and value, converts back and keeps non-black pixels non-zero.');
+method('nh', 'a', '(Lut;DDD)V', 'adjustSpriteHsv', 'Applies adjustHsv to the sprite\'s pixel array.');
+method('nh', 'a', '(Lot;)Lut;', 'toMaskedSprite', 'Copies an ArgbSprite into a Sprite, writing 0 where the alpha bit is clear and the colour otherwise.');
+method('nh', 'b', '(Lot;)Lot;', 'downscaleArgbByHalf', 'Averages each 2x2 block of ARGB pixels into one pixel of a half-size ArgbSprite.');
+method('kp', 'a', '(BLml;)V', 'readFromPacket', 'Reads two player ids and the option and lineup fields from the packet buffer.');
+method('kp', 'a', '(ZLkp;)V', 'copyFrom', 'Copies the option fields and clones the per-slot arrays from another record.');
+method('jb', 'e', '(I)V', 'beginClose', 'Sets the state field to 2 so the slide-out animation runs and the dialog is removed.');
+method('jb', 'a', '(I)Z', 'isClosed', 'True when the state is 2 and the slide counter has reached zero.');
+method('jb', 'a', '([Ljava/lang/String;B)V', 'setOptionLabels', 'Stores the option label strings used for the buttons.');
+method('jb', 'a', '(IBC)Z', 'handleKey', 'Does nothing outside state 1; enter closes the dialog, other keys move the ko selection and activate the focused option.');
+method('jb', 'a', '(I[Ljava/lang/String;I)V', 'open', 'Resets state and counters, measures the dialog from its option labels and centres it on the 480 pixel height.');
+method('ei', 'a', '(IB)I', 'sine', 'Masks the angle to 13 bits and reads the mg.field_b quarter table with sign handling; the result multiplies the y component of slide velocity.');
+method('we', 'a', '(IZ)I', 'cosine', 'Masks the angle to 13 bits and reads the mg.field_b quarter table, shifted a quarter turn from sine; the result multiplies the x component of slide velocity.');
+method('cc', 'a', '(IZIII)V', 'setFromAxisAngle', 'Halves the angle, stores its cosine in the first component and scales the axis arguments by its sine for the other three.');
+method('cc', 'a', '(I[I)V', 'toRotationMatrix', 'Squares and cross-multiplies the four components to fill the int array with nine rotation matrix entries.');
+method('ec', 'b', '(I)Ljava/lang/String;', 'getText', 'Returns the stored text, never null.');
+method('ec', 'c', '(I)Z', 'getFlag', 'Returns the boolean flag set by the constructor.');
+method('ec', 'a', '(IIIBIII)Z', 'rectangleContains', 'True when the point x and y lies inside the rectangle given by origin and size.');
+method('sj', 'a', '(BI)Z', 'isValidGroup', 'Tests the group id against the table bounds and the archive\'s present flags, as Steel Sentinels ResourceArchive.isValidGroup.');
+method('sj', 'a', '(BLjava/lang/String;I)I', 'getFileId', 'Looks up the file name hash within a group and returns its id, as Armies of Gielinor getFileId.');
+method('sj', 'a', '(I)I', 'getGroupCapacity', 'Returns the number of group slots, as Steel Sentinels getGroupCapacity.');
+method('sj', 'a', '(IB)V', 'loadPackedGroup', 'Decodes a group stored as one packed block, as Steel Sentinels loadPackedGroup.');
+method('sj', 'a', '(III)Z', 'ensureFileAvailable', 'Returns whether the file\'s group is loaded and requests it when missing, as Armies of Gielinor ensureFileAvailable.');
+method('sj', 'a', '(I[III)Z', 'unpackGroup', 'Splits a decompressed group into its files using the stripe table, as Steel Sentinels unpackGroup.');
+method('sj', 'a', '(I[IZI)[B', 'takeFile', 'Returns the file bytes, decrypting with the key when given and releasing the cached copy, as Brick-a-Brac takeFile.');
+method('sj', 'a', '(Ljava/lang/String;I)I', 'getGroupProgressByName', 'Finds the group by name and returns its download percentage, as in three other games.');
+method('sj', 'a', '(Ljava/lang/String;Ljava/lang/String;B)Z', 'ensureFileAvailableByName', 'Looks up group and file by name and calls ensureFileAvailable, as Brick-a-Brac ensureFileAvailableByName.');
+method('sj', 'a', '(Ljava/lang/String;Ljava/lang/String;I)[B', 'takeFileByName', 'Looks up group and file by name and calls takeFile, as Brick-a-Brac takeFileByName.');
+method('sj', 'a', '(Z)Z', 'ensureAllGroupsAvailable', 'Loops all groups and returns true only when each is available, as Steel Sentinels ensureAllGroupsAvailable.');
+method('sj', 'b', '(IB)I', 'getGroupProgress', 'Returns the download percentage of a group id, as in three other games.');
+method('sj', 'b', '(Ljava/lang/String;I)I', 'getGroupId', 'Hashes the group name and returns its id, as Armies of Gielinor getGroupId.');
+method('sj', 'd', '(I)Z', 'ensureIndex', 'Requests the archive index until it is loaded, as Armies of Gielinor ensureIndex.');
+method('ma', 'h', '(B)V', 'enableHandlerGroup1', 'Sets hr.field_h[1], enabling the first built-in server packet handler that ma.i dispatches.');
+method('ma', 'l', '(I)V', 'enableHandlerGroup2', 'Sets hr.field_h[2], enabling the second built-in server packet handler.');
+method('ma', 'g', '(I)V', 'enableHandlerGroup4', 'Sets hr.field_h[4], enabling the fourth built-in server packet handler.');
+method('ma', 'm', '(I)V', 'enableHandlerGroup5', 'Sets hr.field_h[5], enabling the fifth built-in server packet handler.');
+method('ma', 'e', '(I)V', 'enableHandlerGroup', 'Sets the hr.field_h entry at the given index.');
+method('ma', 'a', '(BLjava/lang/CharSequence;Z)Ljava/lang/String;', 'validateAccountName', 'Returns the iv.a error text for the name, or a character-set error, or null when the name is acceptable.');
+method('ma', 'a', '(Ljava/lang/String;IIII)V', 'readAppletParameters', 'Reads the code base host and the gameport1, gameport2 and related applet parameters into the client fields.');
+method('tu', 'a', '(III)I', 'fixedPointDistance', 'Shifts both deltas right by eight and returns the square root of the sum of their squares through pc.a.');
+method('tu', 'a', '(ILpk;)V', 'startWithLoader', 'Stores the LoadingSequence in ma.field_t, enables the packet handler groups and registers the applet as an OverlayLayer.');
+method('ae', 'k', '(I)Z', 'allFieldsValid', 'True when each of the six ValidatedTextWidget fields reports a valid state.');
+method('ae', 'h', '(B)Z', 'submitRegistration', 'Checks allFieldsValid, parses the date fields and sends the registration request.');
+method('ae', 'l', '(I)Ljava/lang/String;', 'closeLinkMarkup', 'Returns the closing colour and underline tags "</col></u>".');
+method('ae', 'b', '(Z)Ljava/lang/String;', 'openLinkMarkup', 'Returns the opening link tags "<u=2164A2><col=2164A2>".');
+method('ae', 'a', '(Lcw;I)Z', 'isFieldValid', 'Reads the field\'s ValidationSource and reports whether its state is the valid constant.');
+method('mb', 'k', '(I)V', 'submit', 'Does nothing unless the name is valid, then sends the chosen display name.');
+method('mb', 'l', '(I)Z', 'isNameValid', 'Delegates to the validation check of the display name field.');
+method('mb', 'a', '(ILcw;)Z', 'isFieldValid', 'Reads the field\'s ValidationSource and compares its state with the valid constant.');
+method('pd', 'l', '(I)V', 'submitLogin', 'Sends the username and password when both are filled in or the guest flag is set.');
+method('pd', 'a', '(Ljava/lang/String;B)V', 'setUsername', 'Fills the username field with the text and focuses the password field.');
+method('pd', 'a', '(I)Ljava/lang/String;', 'getUsername', 'Returns the text of the username field, or an empty string.');
+method('pd', 'h', '(B)V', 'focusFields', 'Gives the focus to the username and password fields.');
+method('fn', 'b', '(I)I', 'speedBonus', 'Returns de.field_b[type]; its entries are +2, +4 and +7 for the SPD trinket types 7..9 and their combinations.');
+method('fn', 'b', '(B)I', 'powerBonus', 'Returns jh.field_Ib[type]; its entries are non-zero for the POW trinket types.');
+method('fn', 'o', '(I)I', 'tackleBonus', 'Returns wb.field_r[type]; its entries are non-zero for the TCK trinket types.');
+method('up', 'a', '(IZ)I', 'trinketSpeedBonus', 'Sums Trinket.speedBonus over the player\'s trinket ids.');
+method('up', 'c', '(ZZ)I', 'trinketPowerBonus', 'Sums Trinket.powerBonus over the player\'s trinket ids.');
+method('up', 'b', '(BZ)I', 'trinketTackleBonus', 'Sums Trinket.tackleBonus over the player\'s trinket ids.');
+method('up', 'd', '(ZI)I', 'effectivePower', 'Adds base power to the trinket power bonus and scales by 8/10 for one trinket condition.');
+method('up', 'a', '(ZI)I', 'effectiveTackle', 'Adds base tackle to the trinket tackle bonus.');
+method('up', 'd', '(ZB)I', 'effectiveSpeed', 'Adds base speed to the trinket speed bonus.');
+field('up', 'q', 'I', 'archetype', 'Indexes the type names in toString (Type:) and the surname table ce.field_G.');
+field('up', 'e', 'I', 'initialIndex', 'Indexes td.field_a for the first-name initial printed by toString.');
+field('up', 'l', 'I', 'surnameIndex', 'Indexes ce.field_G[archetype] for the surname printed by toString.');
+field('up', 'n', 'I', 'power', 'Printed as POW: in toString.');
+field('up', 'o', 'I', 'tackle', 'Printed as TCK: in toString.');
+field('up', 'g', 'I', 'speed', 'Printed as SPD: in toString.');
+field('up', 'r', 'I', 'experience', 'Printed as EXP: in toString.');
+field('up', 'j', 'I', 'appearance', 'Printed as Appearance: in toString.');
+field('up', 'h', '[I', 'trinketIds', 'Printed as the Trinkets list; indexes the pa.field_g trinket table.');
+method('va', 'b', '(III)V', 'switchToNearestTeammate', 'Scans the team\'s outfield slots for the smallest squared distance to the point, doubling it for controlled slots, and queues a switch to that slot.');
+method('va', 'a', '(ZII)V', 'playCrowdReaction', 'Picks a crowd sound id from the tier and whether the home or away side scored or missed, and plays it unless the match is over.');
+method('va', 'h', '(I)I', 'getFocusedParticipant', 'Returns the local seat when it is active, otherwise the participant controlling the ball carrier.');
+method('va', 'i', '(I)V', 'pollLocalInput', 'Turns the pointer position and button state into movement targets and kick events for the controlled footballer.');
+method('va', 'g', '(II)V', 'queueKeypress', 'Creates a type 1 keypress PlayerInputEvent for the local seat and queues it.');
+method('va', 'a', '(Lnu;ZI)V', 'wrapAgentsForRendering', 'Replaces the ball with a RenderedBall and every footballer with a RenderedFootballer built from its team colours and PlayerStats.');
+method('va', 'a', '(Z)V', 'updateCamera', 'Targets the camera at the focused footballer, the ball midpoint or the pitch centre with a distance limit of 340.');
+method('va', 'e', '(B)V', 'updateAimIndicator', 'Draws the kick or tackle aim indicator at the focused footballer from the pending aim and the action timer.');
+method('va', 'a', '(Lki;I)V', 'switchToPredictedReceiver', 'Clones the game, steps it until the ball is free, extrapolates the landing point and queues a switch to the closest teammate.');
+method('gm', 'b', '(IB)V', 'setFacingAngle', 'Stores the angle, adds 1700 modulo 2048 and rebuilds the model view with the matching sprite set.');
+method('gm', 'a', '(IZII)V', 'setPosition', 'Stores the x, y and height fields and, when the flag is clear, also resets the smoothed render position.');
+method('gm', 'a', '(IIIIB)V', 'renderModel', 'Sets the viewport centre, applies facing and animation, draws the mesh and shadow for the footballer.');
+method('gm', 'h', '(B)V', 'drawPlayerLabel', 'Draws the participant name tag above the footballer when a game is attached.');
+method('gm', 'g', '(I)I', 'getRenderedX', 'Returns the smoothed x field shifted right by 16.');
+method('gm', 'b', '(BI)V', 'setAnimationClip', 'Switches the AnimationPlayer to the clip for the given index of the archetype\'s clip table.');
+method('gm', 'a', '(Lvn;B)V', 'setModel', 'Stores the mesh and reapplies the facing angle.');
+method('gm', 'g', '(B)V', 'resetPose', 'Calls the animation flag update with no flags set.');
+method('gm', 'a', '(ZZI)V', 'updateAnimationFlags', 'Splits the bit flags of the argument into the walking, running, diving and tackling animation booleans.');
+method('gm', 'f', '(B)I', 'computeFacingAngle', 'Derives the facing angle from the slide velocity during tackles and headers, otherwise from the direction fields.');
+method('ob', 'k', '(I)I', 'getRenderedX', 'Returns the smoothed x field shifted right by 16.');
+method('uv', 'c', '(III)Z', 'openFriendPrompt', 'With argument 17 creates the TextPromptDialog rb for entering a friend name and stores it in ck.field_b.');
+method('uv', 'a', '(I)Ljava/lang/String;', 'getDisplayName', 'Returns field_a when set, otherwise the player name field_k.');
+method('uv', 'a', '(ZZ)V', 'hideMenu', 'Hides the ContextMenu and optionally rebuilds the pending state.');
+method('uv', 'b', '(I)V', 'showMenu', 'Adds the title item with the player name unless this is the local player, then opens the menu.');
+method('uv', 'a', '(III)Z', 'handlePrimaryAction', 'Handles menu ids 8, 18, 11-14, 19 and 20 by calling static helpers with the player name and id.');
+method('uv', 'a', '(IIB)Z', 'handleSocialAction', 'Handles menu ids 4, 5 and 6 by calling the friend-list add, remove and ignore helpers with the player name.');
+method('uv', 'b', '(III)Z', 'handleSecondaryAction', 'Handles menu ids 0, 1, 2, 3, 10, 15 and 16 by calling static helpers with the stored id and the argument.');
+method('uv', 'd', '(I)V', 'buildMenuItems', 'Adds menu items depending on whether the player is a friend, ignored, in a game or the local user.');
+method('mf', 'j', '(B)Lkq;', 'getSelectedSlot', 'Returns the kq slot at the selected index, or null when none is selected.');
+method('mf', 'a', '(BI)I', 'slotX', 'Column position 52 times the index modulo 3.');
+method('mf', 'b', '(II)I', 'slotY', 'Row position 75 times the index divided by 3.');
+method('mf', 'c', '(Z)V', 'sendSquadOrder', 'Writes packet 81 with the squad order and the club state to the outgoing buffer unless a dialog is open.');
+method('mf', 'a', '(I)V', 'update', 'Counts down the hover timer and updates the hover, selection and drag state of the nine slots.');
+method('mf', 'a', '(BLml;Z)V', 'readListingRows', 'Reads a count of bc rows from the packet and adds them to the ListingRowCache.');
+method('ap', 'f', '(I)V', 'offerDraw', 'Throws unless online, then sends match control code 2 when the local seat has not resigned.');
+method('ap', 'c', '(I)V', 'resign', 'Throws unless online, then sends match control code 1 when the local seat has not resigned.');
+method('ap', 'a', '(II)V', 'sendMatchControl', 'Writes packet 75 with the control code (1 resign, 2 offer draw) when the match is online.');
+method('ap', 'd', '(B)Z', 'isGameOverViewShown', 'True when the phase controller is the GameOverView.');
+method('ap', 'e', '(B)Ltf;', 'getGameOverEntries', 'Returns the GameOverView entry list, or null in other phases.');
+method('fu', 'a', '(IBI)Lki;', 'createCheatEvent', 'Returns new ki(7, ...), the Cheat event type printed by PlayerInputEvent.toString.');
+method('mf', 'a', '(IIB)Lki;', 'createFormationEvent', 'Returns new ki(3, ...), the event type handled by applyFormationCommand.');
+method('mg', 'a', '(IBI)Lki;', 'createTeamEvent', 'Returns new ki(4, ...), the Team event type printed by PlayerInputEvent.toString.');
+method('mg', 'a', '(ZII)Lki;', 'createKeyheldEvent', 'Returns new ki(0, ...), the Keyheld event type printed by PlayerInputEvent.toString.');
+method('ha', 'b', '(III)Lki;', 'createKeypressEvent', 'Returns new ki(1, ...), the Keypress event type printed by PlayerInputEvent.toString.');
+method('hw', 'a', '(IIIBB)Lki;', 'createMouseEvent', 'Returns new ki(2, ...), the Mouse event type printed by PlayerInputEvent.toString, carrying the click coordinates.');
+method('wd', 'a', '(I[Lup;Lgr;II)Lki;', 'createLineupEvent', 'Creates new ki(5, ...) and attaches the PlayerStats array, the LineUp event type.');
 method('a', 'e', '()V', 'writeMixBlock', 'Body is identical to steelsentinels JavaSoundAudioOutput.writeMixBlock.');
 method('a', 'f', '()V', 'closeDevice', 'Body is identical to escapevector/geoblox JavaSoundAudioOutput.closeDevice.');
 method('ah', '$cfr$lcmp', '(JJ)I', 'compareLongs', 'Body is identical to escapevector GameAppletShell.compareLongs.');
@@ -649,15 +989,6 @@ method('up', 'a', '(BLup;)V', 'copyFrom', 'Copies type, stats, names, trinkets, 
 method('up', 'b', '(BLup;)Z', 'isSameAs', 'Compares type, names, stats, trinket list, appearance and flag; two empty players are equal.');
 method('up', 'h', '(I)I', 'computeChecksum', 'Chains ia.a hashing over type, stats, experience, names, trinket ids, appearance and the flag.');
 method('up', 'c', '(B)I', 'getHighestBaseStat', 'Returns the maximum of power, speed and tackle fields.');
-field('up', 'q', 'I', 'playerType', 'toString prints uf.field_e[field_q] as Type and -1 means an empty player.');
-field('up', 'e', 'I', 'initialIndex', 'getDisplayName upper-cases the letter td.field_a[field_e] as the first-name initial.');
-field('up', 'l', 'I', 'surnameIndex', 'getDisplayName appends ce.field_G[type][field_l] as the surname.');
-field('up', 'j', 'I', 'appearance', 'toString prints it as "Appearance".');
-field('up', 'n', 'I', 'power', 'toString prints it as "POW".');
-field('up', 'o', 'I', 'tackle', 'toString prints it as "TCK".');
-field('up', 'g', 'I', 'speed', 'toString prints it as "SPD".');
-field('up', 'r', 'I', 'experience', 'toString prints it as "EXP".');
-field('up', 'h', '[I', 'trinketIds', 'toString prints "Num Trinkets" from its length and the ids list.');
 field('cq', 'k', 'I', 'logType', 'toString maps 0/1/2/3 to Bid/Buy/Own/Outbid.');
 field('cq', 'l', 'I', 'slotIndex', 'toString prints it as "INDEX".');
 field('cq', 'i', 'J', 'auctionId', 'toString prints it as "ID".');
@@ -857,6 +1188,252 @@ method('tu', 'e', '(B)V', 'runFrameStep', 'Per-frame step: connection poll, inpu
 method('ma', 'l', '(B)I', 'pollLogin', 'Calls js.a (login handshake), handles the reconnect message and returns the result code or -1.');
 method('ma', 'i', '(B)I', 'pollLoginResult', 'Calls l, and on success runs the per-opcode setup handlers for the enabled flags; returns the code.');
 method('ma', 'a', '(IIIIIBIZ)V', 'initialiseClient', 'Creates the AWT frame, applies the screen settings, calls uv.a and js.a with the connection data and lm.d.');
+method('Kickabout', 'o', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('aa', 'b', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ac', 'b', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ad', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('af', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ag', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('aj', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ao', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('aq', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ar', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('as', 'a', '()V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('at', 'h', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('au', 'a', '()V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('av', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('b', 'f', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('bd', 'f', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('be', 'd', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('bf', 'b', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('bh', 'c', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('bi', 'f', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('bk', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('bl', 'b', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('bn', 'e', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('bq', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('bs', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('c', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ca', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('cb', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('cd', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ch', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ci', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('cl', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('cp', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('cr', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('cu', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('cv', 'b', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('d', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('da', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('db', 'a', '()V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('dc', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('dh', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('di', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('dl', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('dr', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ds', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('dt', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('du', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('dw', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ea', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ec', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ee', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ef', 'h', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('eh', 'd', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ej', 'h', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('em', 'c', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('eo', 'c', '()V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ep', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('eq', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('er', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('es', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('et', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ew', 'd', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('fc', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ff', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('fh', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('fi', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('fs', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('fv', 'b', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('fw', 'f', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('gd', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('gf', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('gk', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('gl', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('go', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('gr', 'b', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('gs', 'b', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('gu', 'h', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('gw', 'd', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('hh', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('hj', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('hn', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('hq', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('hu', 'a', '()V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('hv', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ic', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('id', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ig', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ih', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ij', 'g', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('il', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('in', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('io', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ip', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('iu', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('iw', 'g', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ja', 'h', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('jc', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('jh', 'k', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('jj', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('jk', 'f', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('jl', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('jt', 'h', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ka', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('kc', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('kd', 'c', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('kh', 'd', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('kj', 'b', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('kk', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('kl', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('km', 'a', '()V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ko', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('kp', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('kq', 'i', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('kr', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ks', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('kt', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ku', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('kw', 'd', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('la', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('lc', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ld', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('lf', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('lh', 'g', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('li', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('lt', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('lu', 'g', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('lw', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('m', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('mc', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('md', 'c', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('mf', 'i', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('mg', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('mi', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('mk', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('mn', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ms', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('mt', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('n', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('nc', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('nd', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ng', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('nh', 'a', '()V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('nj', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('nm', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('np', 'i', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('nr', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ns', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('nw', 'c', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('oa', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('oc', 'b', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('od', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('oe', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('oh', 'b', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ok', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('oo', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('op', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('or', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ov', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('p', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('pe', 'b', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('pg', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ph', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('pi', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('pl', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('po', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('pr', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('pt', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('pu', 'i', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('q', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('qh', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('qj', 'b', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ql', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('qn', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('r', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('rc', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('re', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('rf', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('rg', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('rj', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('rk', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('rl', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('rn', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('rp', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('rr', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('rs', 'b', '()V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ru', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('rv', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('sa', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('sb', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('sc', 'e', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('sd', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('sf', 'f', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('sh', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('sj', 'c', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('sk', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('sl', 'i', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('sn', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('so', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ss', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('st', 'b', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('su', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('tb', 'c', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('tf', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('tg', 'a', '()V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ti', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('tl', 'c', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ts', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('tv', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('u', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ua', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ud', 'e', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('uf', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ug', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('uh', 'a', '()V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('uk', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ul', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('um', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('un', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('up', 'g', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('uq', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('us', 'f', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('uv', 'c', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('v', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('va', 'c', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('vc', 'g', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('vi', 'd', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('vj', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('vk', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('vl', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('vq', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('vr', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('vs', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('vt', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('vv', 'g', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('w', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('wa', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('wc', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('wd', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('we', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('wk', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('wm', 'a', '(B)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('wm', 'c', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('wn', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('wp', 'b', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('wq', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
+method('ws', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
 // END-R2MEMBERS
 
 export const kickConfig = {
