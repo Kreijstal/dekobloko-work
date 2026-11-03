@@ -1363,6 +1363,47 @@ method("nq", "a", "(Lnq;Ljava/lang/String;I)Ljava/lang/String;", "truncateWithEl
 method("nq", "b", "(Ljava/lang/String;IIIII)V", "drawJustified", "Sets the colours, computes the space padding for a target width and draws the string.");
 method("nq", "b", "(Ljava/lang/String;I)V", "computeJustifySpacing", "Counts the spaces outside tags and divides the missing width among them.");
 method("nq", "b", "(Ljava/lang/String;)V", "applyTag", "Handles one markup tag such as a colour or transparency change.");
+method("kq", "b", "(Ljava/lang/String;I)V", "runConsoleCommand", "Handles typed debug commands such as stage numbers and zoomtohome.");
+method("kq", "a", "(IIIIBI)V", "drawPlayerRow", "Draws a player row with a value, a rank label and the name in the player colour, with a given alpha.");
+method("kq", "a", "(IIIII)V", "drawPlayerRow", "Draws a player row with a value, a rank label and the name in the player colour.");
+method("kq", "a", "(BZ)V", "drawOverlays", "Draws the pending overlay windows when their counters are positive.");
+method("kq", "i", "(I)V", "buildDiplomacyPanel", "Creates one diplomacy row per player and adds them to the diplomacy panel.");
+method("kq", "a", "(BLfs;)V", "refreshDiplomacyRow", "Updates one player's diplomacy row for the local player's alliance state.");
+method("kq", "n", "(I)V", "refreshAllPanels", "Refreshes the fleets and production panels and every player's diplomacy row.");
+method("tr", "a", "(BLpf;)V", "drawFleetTrails", "Draws the moving trail points of each fleet visual along its line.");
+method("tr", "b", "(IIB)V", "drawAnnotations", "Draws each star annotation that is within its 150-tick display window.");
+method("tr", "a", "(IIII)V", "updateHoverTarget", "Finds the fleet or star under the pointer and stores it as the hover target.");
+method("tr", "a", "(Lpf;Lpf;ZIZLel;)V", "drawMap", "Draws the whole star map, its overlays and fleets for the current tick.");
+method("ka", "a", "(Lln;B)I", "starWeight", "Weights a star by its ships, doubled with five added when flagged, plus its neighbour count.");
+method("cj", "a", "(Lln;B)I", "starWeight", "Weights a star by its ships, doubled with five added when flagged, plus its neighbour count.");
+method("ka", "d", "(Lln;I)I", "starPriority", "Returns the star's weight with a minimum of one.");
+method("cj", "d", "(Lln;I)I", "starPriority", "Returns the ship count plus neighbour count with a minimum of one.");
+method("ka", "g", "(I)V", "chooseTargetPlayer", "Scores every player against the stars this AI could win and remembers the last player with a negative score.");
+method("cj", "g", "(I)V", "chooseTargetPlayer", "Picks the player this AI should attack from the players that are neither allies nor eliminated.");
+method("ka", "a", "(IILfs;)I", "scorePlayer", "Rates one player as a target from alliance state and the stars it owns.");
+method("om", "b", "(III[I[IIIIIIIIII)V", "blitAdditiveIntensityRows", "Row kernel that scales each pixel by its alpha and an intensity and adds it to the target with saturation.");
+method("om", "b", "([I[IIIIIIIIIIII)V", "blitScaledAlphaRows", "Scaled row kernel that blends pixels over the target using their alpha times a global alpha.");
+method("om", "d", "([I[IIIIIIIII)V", "blitGlobalAlphaRows", "Row kernel that blends pixels over the target using their alpha times a global alpha.");
+method("om", "d", "([I[IIIIIIIIIII)V", "blitColouriseRows", "Row kernel that multiplies grey pixels by a colour and blends with the pixel alpha.");
+method("om", "c", "([I[IIIIIIII)V", "blitAlphaRows", "Row kernel that blends each pixel over the target with its own alpha.");
+method("om", "d", "([I[IIIIIIII)V", "blitAlphaMirroredRows", "Row kernel that blends pixels over the target with their alpha while reading the source backward.");
+method("om", "c", "([I[IIIIIIIIIII)V", "blitScaledRows", "Scaled row kernel that blends pixels over the target with their own alpha.");
+method("om", "c", "([I[IIIIIIIII)V", "blitTintedRows", "Row kernel that tints the pixels with a colour and blends them with their alpha.");
+method("om", "c", "(III)V", "drawAdditive", "Adds the sprite to the target with saturation, scaled by an intensity.");
+method("om", "b", "(III)V", "drawColourised", "Draws the sprite with grey pixels multiplied by a colour.");
+method("om", "b", "(IIII)V", "drawScaled", "Draws the sprite stretched to a width and height.");
+method("om", "d", "(III)V", "drawTinted", "Draws the sprite tinted with a colour.");
+method("om", "b", "(IIIII)V", "drawScaledAlpha", "Draws the stretched sprite with an extra alpha.");
+method("om", "a", "(III)V", "drawAlpha", "Draws the sprite with its alpha multiplied by a global alpha.");
+method("hh", "a", "([I[BIIIIIIIII)V", "blitGlyphTransposedAlphaRows", "Row kernel that blends a colour over the target wherever the transposed glyph mask is set.");
+method("hh", "a", "([I[BIIIIIIII)V", "blitGlyphTransposedRows", "Row kernel that writes a colour wherever the transposed glyph mask is set.");
+method("hh", "b", "([I[BIIIIIIII)V", "blitGlyphAlphaRows", "Row kernel that blends a colour over the target wherever the glyph mask is set.");
+method("hh", "a", "([I[BIIIIIII)V", "blitGlyphRows", "Row kernel that writes a colour wherever the glyph mask is set, four pixels at a time.");
+method("hh", "a", "([I[BIIIIIIIII[I[I)V", "blitGlyphClippedRows", "Row kernel that writes a colour for the glyph mask inside a per-row clip window.");
+method("hh", "b", "(IIIIIIZ)V", "drawGlyph", "Clips and draws one glyph mask in a colour.");
+method("hh", "b", "(IIIIIIIZ)V", "drawGlyphAlpha", "Clips and draws one glyph mask in a colour with an alpha.");
+method("hh", "a", "(IIIIIIZ)V", "drawGlyphTransposed", "Clips and draws one glyph mask transposed in a colour.");
+method("hh", "a", "(IIIIIIIZ)V", "drawGlyphTransposedAlpha", "Clips and draws one transposed glyph mask in a colour with an alpha.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
