@@ -356,6 +356,7 @@ const classes = {
   qi: ['PlayerStatSortCriterion', 'Compares shop slots by power, speed or tackle depending on the direction index modulo three.'],
   lv: ['PopupCard', 'Interface implemented by tooltip-like cards that report a width and height and draw themselves centred on a point.'],
   wc: ['WidgetTheme', 'Its renderer setup, line, alpha rectangle and tooltip box methods match GeoBlox WidgetTheme.'],
+  tb: ['SocketArchiveNetworkClient', 'Socket-based ArchiveNetworkClient subclass with the same attach, close, poll and control packet methods as GeoBlox SocketArchiveNetworkClient.'],
 // END-R2CLASSES
   jc: ['LoggedPlayer', 'toString returns "LoggedPlayer{..}" with home/away side, resign time, reward, membership, tackle, kick, cross, header and goal counters.'],
 };
@@ -1065,6 +1066,19 @@ method('jb', 'a', '(B)I', 'dialogHeight', 'Returns the dialog content height.');
 method('jb', 'a', '(Z)I', 'getOpenSoundId', 'Returns the sound id that plays when the dialog opens, 46 for most dialog types.');
 method('jb', 'a', '(II)V', 'handleResult', 'Called with the index of the dialog button that was pressed.');
 method('jb', 'a', '(IZ)V', 'onUpdate', 'Per-frame hook that dialog subclasses may override; the base does nothing.');
+method('mc', 'b', '(B)J', 'delayMillis', 'Returns how many milliseconds remain before the next tick is due, or zero when it is overdue.');
+method('vi', 'a', '(Z)J', 'averageFrameNanos', 'Records the nanoTime delta since the last call in a ring buffer and returns the frame time used for pacing.');
+method('bi', 'e', '(I)I', 'countPriorityRequests', 'Returns the number of pending plus sent priority archive requests.');
+method('bi', 'b', '(I)I', 'countBackgroundRequests', 'Returns the number of pending plus sent background archive requests.');
+method('bi', 'a', '(I)Z', 'isPriorityQueueFull', 'True when twenty or more priority requests are outstanding.');
+method('bi', 'd', '(I)Z', 'isBackgroundQueueFull', 'True when twenty or more background requests are outstanding.');
+method('bi', 'a', '(IIBBZ)Lui;', 'queueRequest', 'Creates a request keyed by archive and group id and queues it as priority or background, throwing past twenty.');
+method('bi', 'a', '(B)Z', 'pollResponses', 'Abstract poll that reads available archive responses from the connection.');
+method('bi', 'b', '(B)V', 'closeSocket', 'Abstract close of the underlying connection.');
+method('bi', 'a', '(Ljava/lang/Object;IZ)V', 'attachSocket', 'Abstract attach of a freshly opened socket object to the client.');
+method('bi', 'c', '(I)V', 'resetAfterValidationFailure', 'Abstract reset after the server rejected the handshake validation.');
+method('tb', 'a', '(ZZ)V', 'sendControlPacket', 'Writes a control packet whose second byte is 2 or 3 to the socket.');
+method('tb', 'g', '(I)V', 'sendSetupPacket', 'Writes the setup packet to the socket right after connecting.');
 method('a', 'e', '()V', 'writeMixBlock', 'Body is identical to steelsentinels JavaSoundAudioOutput.writeMixBlock.');
 method('a', 'f', '()V', 'closeDevice', 'Body is identical to escapevector/geoblox JavaSoundAudioOutput.closeDevice.');
 method('ah', '$cfr$lcmp', '(JJ)I', 'compareLongs', 'Body is identical to escapevector GameAppletShell.compareLongs.');

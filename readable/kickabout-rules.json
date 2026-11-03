@@ -2495,6 +2495,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:tb",
+      "originalName": "tb",
+      "to": "SocketArchiveNetworkClient",
+      "evidence": "Socket-based ArchiveNetworkClient subclass with the same attach, close, poll and control packet methods as GeoBlox SocketArchiveNetworkClient.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:td",
       "originalName": "td",
       "to": "TrinketCatalog",
@@ -4844,6 +4851,69 @@
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a(B)Z",
+      "originalName": "a",
+      "to": "pollResponses",
+      "evidence": "Abstract poll that reads available archive responses from the connection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a(I)Z",
+      "originalName": "a",
+      "to": "isPriorityQueueFull",
+      "evidence": "True when twenty or more priority requests are outstanding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a(IIBBZ)Lui;",
+      "originalName": "a",
+      "to": "queueRequest",
+      "evidence": "Creates a request keyed by archive and group id and queues it as priority or background, throwing past twenty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a(Ljava/lang/Object;IZ)V",
+      "originalName": "a",
+      "to": "attachSocket",
+      "evidence": "Abstract attach of a freshly opened socket object to the client.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.b(B)V",
+      "originalName": "b",
+      "to": "closeSocket",
+      "evidence": "Abstract close of the underlying connection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.b(I)I",
+      "originalName": "b",
+      "to": "countBackgroundRequests",
+      "evidence": "Returns the number of pending plus sent background archive requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.c(I)V",
+      "originalName": "c",
+      "to": "resetAfterValidationFailure",
+      "evidence": "Abstract reset after the server rejected the handshake validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.d(I)Z",
+      "originalName": "d",
+      "to": "isBackgroundQueueFull",
+      "evidence": "True when twenty or more background requests are outstanding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.e(I)I",
+      "originalName": "e",
+      "to": "countPriorityRequests",
+      "evidence": "Returns the number of pending plus sent priority archive requests.",
       "confidence": "reviewed"
     },
     {
@@ -10020,6 +10090,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mc.b(B)J",
+      "originalName": "b",
+      "to": "delayMillis",
+      "evidence": "Returns how many milliseconds remain before the next tick is due, or zero when it is overdue.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mc.b(I)V",
       "originalName": "b",
       "to": "resetTiming",
@@ -13128,10 +13205,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tb.a(B)Z",
+      "originalName": "a",
+      "to": "pollResponses",
+      "evidence": "Abstract poll that reads available archive responses from the connection. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.a(Ljava/lang/Object;IZ)V",
+      "originalName": "a",
+      "to": "attachSocket",
+      "evidence": "Abstract attach of a freshly opened socket object to the client. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.a(ZZ)V",
+      "originalName": "a",
+      "to": "sendControlPacket",
+      "evidence": "Writes a control packet whose second byte is 2 or 3 to the socket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.b(B)V",
+      "originalName": "b",
+      "to": "closeSocket",
+      "evidence": "Abstract close of the underlying connection. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tb.c(B)V",
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.c(I)V",
+      "originalName": "c",
+      "to": "resetAfterValidationFailure",
+      "evidence": "Abstract reset after the server rejected the handshake validation. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.g(I)V",
+      "originalName": "g",
+      "to": "sendSetupPacket",
+      "evidence": "Writes the setup packet to the socket right after connecting.",
       "confidence": "reviewed"
     },
     {
@@ -14374,6 +14493,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vi.a(Z)J",
+      "originalName": "a",
+      "to": "averageFrameNanos",
+      "evidence": "Records the nanoTime delta since the last call in a ring buffer and returns the frame time used for pacing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.b(B)J",
+      "originalName": "b",
+      "to": "delayMillis",
+      "evidence": "Returns how many milliseconds remain before the next tick is due, or zero when it is overdue. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vi.b(I)V",
       "originalName": "b",
       "to": "resetTiming",
@@ -15544,7 +15677,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-kickabout-rules.mjs": "dff9aa0c8685766bc7b59430adad715df5c364bc035d6e925144de72a28a2a96",
+      "build-kickabout-rules.mjs": "e4a40a125ef02d4f14ee9fe72585b2ec596c469d4eb527ecddc90fd10fab5849",
       "reproduce-kickabout.mjs": "ced425cb07cc59ef9672e56d45c5fdaaf3cc113192449c7eafd4355270fa9245",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
