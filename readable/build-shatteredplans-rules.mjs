@@ -238,6 +238,10 @@ Object.assign(classes, {
   "ub": ["ScrollPane", "qr subclass that holds a content qr, a ScrollBar and a clipping qr and scrolls the content."],
   "qr": ["AnimatedPanel", "Layout box with a child deque and offsets that ease by a quarter of the remaining distance each tick."],
   "hm": ["PanelNode", "Empty DualLinkNode subclass that AnimatedPanel extends."],
+  "qo": ["TextLayout", "Holds an array of TextLayoutLine and answers height, width and character position queries."],
+  "ha": ["TextLayoutLine", "Holds the top and bottom y of one wrapped line and the x offset of each character boundary."],
+  "la": ["RichTextLayout", "TextLayout that rebuilds its lines from a string, font and width unless the cached inputs are unchanged."],
+  "ek": ["ArrayWidgetGroup", "UiWidget that holds its children in a UiWidget array and forwards drawing, input and focus to them."],
 });
 method("ob", "e", "(B)Ljava/lang/String;", "readMarkedString", "Requires a leading zero byte and then reads bytes up to the next zero as a string.");
 method("ob", "a", "(BLjava/lang/String;)V", "writeMarkedString", "Rejects strings containing NUL, writes a zero marker byte and then the string.");
@@ -817,6 +821,23 @@ method("qr", "a", "(Lqr;Z)V", "copyFrom", "Copies the text, sprites and options 
 method("qr", "a", "(IIBII)V", "setTarget", "Stores the target offsets and clears the easing state.");
 method("qr", "a", "(IB)I", "measureWidth", "Measures the widest text or sprite of the panel limited by a width.");
 method("qr", "e", "(Z)I", "measureWidthUnbounded", "Measures the panel width with no limit.");
+method("pj", "a", "(Lvg;Z)Lqo;", "getTextLayout", "Returns the cached qo text layout of the widget, creating it when missing.");
+method("pj", "a", "(IIILvg;ZI)I", "getCharacterIndexAt", "Returns the character index of the widget text nearest to a point.");
+method("pj", "a", "(ZLvg;)I", "getTextWidth", "Returns the layout width plus the padding.");
+method("pj", "a", "(ILvg;)I", "getInnerWidth", "Returns the widget width minus the horizontal padding.");
+method("pj", "a", "(Z)I", "getLineHeight", "Returns the font ascent plus descent.");
+method("pj", "a", "(IIIIILvg;)V", "drawSelection", "Fills the selected character range of the widget text.");
+method("pj", "b", "(ILvg;I)I", "getTextX", "Returns the x origin of the text inside the widget.");
+method("pj", "a", "(BLvg;)I", "getTextHeight", "Returns the layout height plus the padding.");
+method("pj", "a", "(IIIILvg;)V", "drawCaret", "Draws the caret of a focused widget at a character index.");
+method("pj", "a", "(ILvg;I)I", "getTextY", "Returns the y origin of the text inside the widget.");
+method("qo", "a", "(BI)I", "getLineIndexOfCharacter", "Walks the lines subtracting their lengths until the character index falls inside one.");
+method("qo", "b", "(I)I", "getHeight", "Returns the bottom of the last line minus the top of the first line.");
+method("qo", "c", "(I)I", "getMaxLineWidth", "Returns the largest line width.");
+method("ha", "a", "(ZI)I", "getCharacterIndexAtX", "Returns the index of the character boundary nearest to an x position.");
+method("ha", "b", "(I)I", "getWidth", "Returns the offset of the last character boundary.");
+method("la", "a", "(ILjava/lang/String;ILnq;I)V", "layoutSingleLine", "Builds one line for the string with the font, unless the cached inputs are unchanged.");
+method("la", "a", "(ILnq;Ljava/lang/String;B)Lha;", "createLine", "Creates a TextLayoutLine sized from the font and the string length and stores it as the only line.");
 method("ke", "b", "(B)V", "clearStatics", "Assigns null to 6 static fields of the class.");
 method("df", "d", "(I)V", "clearStatics", "Assigns null to 5 static fields of the class.");
 method("dc", "e", "(B)V", "clearStatics", "Assigns null to 6 static fields of the class.");
