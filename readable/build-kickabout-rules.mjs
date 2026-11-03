@@ -1012,6 +1012,15 @@ method('wc', 'a', '(ILjava/lang/String;II)V', 'drawWrappedTooltip', 'Wraps the t
 method('hc', 'a', '(IIC)Z', 'handleKeyTyped', 'Called with the key code and typed character for each overlay layer until one returns true.');
 method('hc', 'a', '(IZ)V', 'update', 'Called once per frame for every overlay layer with a flag telling whether input is still available.');
 method('hc', 'a', '(B)Z', 'capturesInput', 'Returns whether this layer is active and should stop lower layers from receiving input.');
+method('hd', 'a', '(IIIZ)V', 'layoutVerticalContent', 'Stacks the child nodes using their pending heights and spacing and clamps the scroll offsets, matching Armies ClientUiComponent.');
+method('hd', 'a', '(IZ)V', 'draw', 'Draws the whole tree from the screen origin through drawTree with the blink flag.');
+method('hd', 'b', '(IZ)V', 'updateInput', 'Sets the capture flags from the argument and runs the input pass over the whole tree.');
+method('hd', 'a', '(Lhd;B)V', 'applyStyle', 'Copies the sprites, font, colours and flags set on the style node into this node.');
+method('hd', 'g', '(B)I', 'getPreferredWidth', 'Returns computeContentWidth with an unlimited maximum text width.');
+method('hd', 'a', '(ZIIII)V', 'setBounds', 'Clears the pending offsets and stores the x, y, width and height of the node.');
+method('hd', 'a', '(ZILhd;Lhd;)V', 'positionAfter', 'Places a child after the previous sibling plus the given spacing, or at the origin when there is none.');
+method('hd', 'a', '(IIZIII)V', 'updateInputTree', 'Eases the pending offsets then walks the child nodes handling clipped pointer presses and releases.');
+method('hd', 'a', '(ZIZIZIZIZZI)V', 'drawTree', 'Draws this node\'s background, sprites and text then its children, inheriting held and focus state.');
 method('a', 'e', '()V', 'writeMixBlock', 'Body is identical to steelsentinels JavaSoundAudioOutput.writeMixBlock.');
 method('a', 'f', '()V', 'closeDevice', 'Body is identical to escapevector/geoblox JavaSoundAudioOutput.closeDevice.');
 method('ah', '$cfr$lcmp', '(JJ)I', 'compareLongs', 'Body is identical to escapevector GameAppletShell.compareLongs.');
