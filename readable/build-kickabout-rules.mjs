@@ -339,6 +339,12 @@ const classes = {
   m: ['WhirlpoolHasher', 'Digest state with a 64-byte block, eight long words, a 32-byte bit counter and process, update and reset methods, as Escape Vector WhirlpoolHasher.'],
   jj: ['MusicTrackMixer', 'PcmStream with an array of qm MusicTrack slots, a volume per slot and mix, fade and release methods; created with three slots.'],
   lw: ['ProxyAuthenticationRequiredException', 'IOException thrown by the proxy socket connector with the status line of a failed CONNECT.'],
+  kp: ['LobbyGameRecord', 'Lobby game entry with two player id slots, a 2x5x2 lineup array, option fields and pitch coordinates; read from a packet and copied between instances.'],
+  oi: ['IntValueNode', 'IntrusiveNode holding one int, queued in tf lists such as ec.field_f, as Escape Vector IntValueNode.'],
+  ac: ['TrinketUnlockNotice', 'OverlayLayer that takes queued IntValueNode trinket ids from ec.field_f, slides a panel in from the right and draws the qe.field_i trinket icon.'],
+  cc: ['FixedQuaternion', 'Four 16.16 fixed-point components starting at identity (65536), with axis-angle setup, product and rotation-matrix output, as Armies of Gielinor FixedQuaternion.'],
+  dt: ['OffscreenPlayerArrow', 'Built from a RenderedFootballer and a slot index; places an arrow on the screen edge by sine and cosine of the bearing to the player and draws it with a fade.'],
+  ec: ['LoginText', 'Holds a login text string and a boolean flag that is forced false for empty text; constructed from the stored account name, as Escape Vector LoginText.'],
 // END-R2CLASSES
   jc: ['LoggedPlayer', 'toString returns "LoggedPlayer{..}" with home/away side, resign time, reward, membership, tackle, kick, cross, header and goal counters.'],
 };
@@ -693,6 +699,20 @@ method('nh', 'a', '([IDDD)V', 'adjustHsv', 'Converts each pixel to HSV, rotates 
 method('nh', 'a', '(Lut;DDD)V', 'adjustSpriteHsv', 'Applies adjustHsv to the sprite\'s pixel array.');
 method('nh', 'a', '(Lot;)Lut;', 'toMaskedSprite', 'Copies an ArgbSprite into a Sprite, writing 0 where the alpha bit is clear and the colour otherwise.');
 method('nh', 'b', '(Lot;)Lot;', 'downscaleArgbByHalf', 'Averages each 2x2 block of ARGB pixels into one pixel of a half-size ArgbSprite.');
+method('kp', 'a', '(BLml;)V', 'readFromPacket', 'Reads two player ids and the option and lineup fields from the packet buffer.');
+method('kp', 'a', '(ZLkp;)V', 'copyFrom', 'Copies the option fields and clones the per-slot arrays from another record.');
+method('jb', 'e', '(I)V', 'beginClose', 'Sets the state field to 2 so the slide-out animation runs and the dialog is removed.');
+method('jb', 'a', '(I)Z', 'isClosed', 'True when the state is 2 and the slide counter has reached zero.');
+method('jb', 'a', '([Ljava/lang/String;B)V', 'setOptionLabels', 'Stores the option label strings used for the buttons.');
+method('jb', 'a', '(IBC)Z', 'handleKey', 'Does nothing outside state 1; enter closes the dialog, other keys move the ko selection and activate the focused option.');
+method('jb', 'a', '(I[Ljava/lang/String;I)V', 'open', 'Resets state and counters, measures the dialog from its option labels and centres it on the 480 pixel height.');
+method('ei', 'a', '(IB)I', 'sine', 'Masks the angle to 13 bits and reads the mg.field_b quarter table with sign handling; the result multiplies the y component of slide velocity.');
+method('we', 'a', '(IZ)I', 'cosine', 'Masks the angle to 13 bits and reads the mg.field_b quarter table, shifted a quarter turn from sine; the result multiplies the x component of slide velocity.');
+method('cc', 'a', '(IZIII)V', 'setFromAxisAngle', 'Halves the angle, stores its cosine in the first component and scales the axis arguments by its sine for the other three.');
+method('cc', 'a', '(I[I)V', 'toRotationMatrix', 'Squares and cross-multiplies the four components to fill the int array with nine rotation matrix entries.');
+method('ec', 'b', '(I)Ljava/lang/String;', 'getText', 'Returns the stored text, never null.');
+method('ec', 'c', '(I)Z', 'getFlag', 'Returns the boolean flag set by the constructor.');
+method('ec', 'a', '(IIIBIII)Z', 'rectangleContains', 'True when the point x and y lies inside the rectangle given by origin and size.');
 method('a', 'e', '()V', 'writeMixBlock', 'Body is identical to steelsentinels JavaSoundAudioOutput.writeMixBlock.');
 method('a', 'f', '()V', 'closeDevice', 'Body is identical to escapevector/geoblox JavaSoundAudioOutput.closeDevice.');
 method('ah', '$cfr$lcmp', '(JJ)I', 'compareLongs', 'Body is identical to escapevector GameAppletShell.compareLongs.');
