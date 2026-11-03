@@ -1245,6 +1245,16 @@ method("wb", "c", "(I)I", "size", "Counts nodes from the sentinel along the four
 method("wb", "a", "([Lln;I)[[I", "computeShortestHops", "Runs Floyd-Warshall over links between stars of the same territory and returns the hop matrix.");
 method("vp", "d", "(Z)V", "unlinkTertiary", "Joins the third-link neighbours and clears both third links.");
 method("cn", "f", "(B)V", "unlinkQuaternary", "Joins the fourth-link neighbours and clears both fourth links.");
+method("gm", "a", "(BI)V", "setVolume", "Stores the volume and applies a scaled value to the PcmSampleStream.");
+method("fa", "a", "(Lgk;I)V", "setValidationSource", "Stores the ValidationSource of the text field.");
+method("ga", "a", "(III)V", "setPitchBend", "Stores the bend value of a channel and the matching 2 to the power of its scaled value.");
+method("od", "a", "(ILgo;)V", "onEnter", "Called when the Enter key is pressed in the text field.");
+method("od", "a", "(Lgo;I)V", "onTextChanged", "Called when the text of the field changes.");
+method("go", "i", "(B)V", "fireEnter", "Calls the TextFieldListener onEnter callback for the Enter key.");
+method("ka", "c", "(B)Z", "isChatEnabled", "Returns the chat flag that setChatEnabled stores.");
+method("mh", "d", "(I)I", "nextInt", "Refills the 256-entry result array when empty and returns the next value.");
+method("mh", "c", "(I)V", "refill", "Runs the ISAAC generation pass that fills the result array from the state array.");
+method("mh", "a", "(B)V", "seed", "Mixes the seed words with the golden-ratio constant into the state array.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
