@@ -362,8 +362,15 @@
     {
       "symbol": "C:bf",
       "originalName": "bf",
-      "to": "AchievementIcon",
-      "evidence": "IntrusiveNode that builds a 16x-scaled Sprite from an IndexedSprite and draws it for locked achievements.",
+      "to": "PicturePreview",
+      "evidence": "IntrusiveNode that draws an IndexedSprite picture as 16-pixel tile sprites into a cached Sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bg",
+      "originalName": "bg",
+      "to": "StatusBar",
+      "evidence": "Abstract bottom-of-screen bar with a scroll offset, speed and a panel drawing routine.",
       "confidence": "reviewed"
     },
     {
@@ -990,6 +997,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kf",
+      "originalName": "kf",
+      "to": "TimerBarDemo",
+      "evidence": "StatusBar that animates a repeating timer drain for the tutorial page.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:kg",
       "originalName": "kg",
       "to": "VorbisMapping",
@@ -1113,6 +1127,13 @@
       "originalName": "lo",
       "to": "IconTextComponent",
       "evidence": "SceneWidget that lays out an optional icon child and a text child.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ma",
+      "originalName": "ma",
+      "to": "ScoreMarkerBar",
+      "evidence": "StatusBar with a marker position that slides toward the player with the higher score.",
       "confidence": "reviewed"
     },
     {
@@ -1337,6 +1358,13 @@
       "originalName": "p",
       "to": "AudioFilter",
       "evidence": "Reads pole and zero coefficient tables with envelopes from a PacketBuffer and interpolates them per frequency.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pb",
+      "originalName": "pb",
+      "to": "PictureStrip",
+      "evidence": "Scrolling vertical strip of PicturePreviews for every Puzzle picture with an eased scroll to the current one.",
       "confidence": "reviewed"
     },
     {
@@ -1785,6 +1813,13 @@
       "originalName": "uk",
       "to": "GameModeSelectScreen",
       "evidence": "MenuScreen with two hover-animated GameModeCards; its static initialiser also loads the large text resource table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ul",
+      "originalName": "ul",
+      "to": "TimerBar",
+      "evidence": "StatusBar whose value drains each tick and reports empty, used for the challenge timer.",
       "confidence": "reviewed"
     },
     {
@@ -4623,10 +4658,143 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ii.a(B)V",
+      "originalName": "a",
+      "to": "tickChallenge",
+      "evidence": "Ticks the local controller and TimerBar, awards score achievements and starts the next picture in challenge mode.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ii.a(BLjava/lang/String;)Lfl;",
       "originalName": "a",
       "to": "execute",
       "evidence": "Body matches voidhunters/Lo.execute in another FunOrb build (similarity 0.93).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.a(BLwe;)V",
+      "originalName": "a",
+      "to": "readState",
+      "evidence": "Reads the Match state from a PacketBuffer and rebuilds the controllers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.a(BZ)V",
+      "originalName": "a",
+      "to": "updateFastDrop",
+      "evidence": "Applies the fast-drop on and off inputs to the local controller according to the held key state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.a(I)V",
+      "originalName": "a",
+      "to": "startNextRound",
+      "evidence": "Resets the controllers, advances the Match round and restarts every controller.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.a(IB)V",
+      "originalName": "a",
+      "to": "handleKey",
+      "evidence": "Dispatches a key code to menu toggles, debug switches and the movement and rotate inputs of the local player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.a(IBI)V",
+      "originalName": "a",
+      "to": "awardAchievement",
+      "evidence": "Sets the achievement bit in two static masks, queues an achievement notice node and adds an unlock popup entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.a(IC)Z",
+      "originalName": "a",
+      "to": "isSupportedChar",
+      "evidence": "Accepts characters in 32-126 and 160-255 and a few extended code points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.a(IIII)V",
+      "originalName": "a",
+      "to": "queueRemoteInput",
+      "evidence": "Passes a remote player action to that player controller in multiplayer mode only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.a(IIIIBI[B)V",
+      "originalName": "a",
+      "to": "applyRemoteBoardState",
+      "evidence": "Copies a received piece position, score and cell array onto the opponent board and controller.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.a(IIII[Ltf;)V",
+      "originalName": "a",
+      "to": "drawThreeSliceBar",
+      "evidence": "Draws left and right end sprites and tiles the middle sprite between them under a clip.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.a(IZ)V",
+      "originalName": "a",
+      "to": "tick",
+      "evidence": "Per-frame update that ticks the mode specific logic, the HUD and the picture strip.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.a(ZI)V",
+      "originalName": "a",
+      "to": "render",
+      "evidence": "Draws the background, the player controllers, the status bar and the debug overlays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.a(ZIZ)V",
+      "originalName": "a",
+      "to": "showResults",
+      "evidence": "Opens the GameResultsScreen with the mode specific score data and plays the result sound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Sets the static fields of the class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.b(I)V",
+      "originalName": "b",
+      "to": "createControllers",
+      "evidence": "Creates one or two PlayerControllers, the PictureStrip and the MatchHud for the current mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.b(IB)V",
+      "originalName": "b",
+      "to": "resolveMultiplayerPicture",
+      "evidence": "Loads the finished picture on the winning board, resets the other board and scores and moves the Match to its next picture.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.c(I)V",
+      "originalName": "c",
+      "to": "tickPuzzleMode",
+      "evidence": "Ticks the local controller and the PuzzlePieceQueue and ends the puzzle when the queue is used up.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.d(I)V",
+      "originalName": "d",
+      "to": "tickMultiplayer",
+      "evidence": "Counts down timers, ticks each PlayerController and resolves a picture when a board is completed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.h(I)V",
+      "originalName": "h",
+      "to": "advanceChallengePicture",
+      "evidence": "Counts a completed picture, resets the controllers and awards achievements at 30, 40 and 50 pictures.",
       "confidence": "reviewed"
     },
     {
@@ -5054,6 +5222,41 @@
       "originalName": "a",
       "to": "decode",
       "evidence": "Body matches armiesofgielinor/ArchiveIndex.decode in another FunOrb build (similarity 0.92).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(I)Z",
+      "originalName": "a",
+      "to": "isIdle",
+      "evidence": "Returns whether the transition counter is zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(III)V",
+      "originalName": "a",
+      "to": "drawCells",
+      "evidence": "Draws every painted cell sprite and its fade overlay at 32-pixel spacing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.a(Z)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "Draws the grid lines, cell layer, cell frames, particles and sweep effect of the board.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.b(B)V",
+      "originalName": "b",
+      "to": "tick",
+      "evidence": "Updates particles, cell fade values and the transition and sweep counters by one step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.d(I)V",
+      "originalName": "d",
+      "to": "spawnPlacementParticles",
+      "evidence": "Resets the fade of the four piece cells and adds a BoardParticle for each painted one.",
       "confidence": "reviewed"
     },
     {
@@ -7416,10 +7619,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uh.a(III)V",
+      "originalName": "a",
+      "to": "enqueueInput",
+      "evidence": "Adds an action with a tick to the InputQueue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.a(Z)V",
+      "originalName": "a",
+      "to": "drainInputQueue",
+      "evidence": "Repeatedly takes actions from the InputQueue and applies them until it is empty.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uh.c(I)V",
       "originalName": "c",
       "to": "tick",
       "evidence": "Advances the view, timers and queued inputs of one player by one tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.e(I)V",
+      "originalName": "e",
+      "to": "beginPicture",
+      "evidence": "Stores the Match puzzle, restarts the view and sets the timing counters for a new picture.",
       "confidence": "reviewed"
     },
     {
@@ -7901,7 +8125,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-pixelate-rules.mjs": "8131f19935606442a37711067526ee869486e1ca911391fc8267e17e84b456a5",
-      "pixelate-names.json": "375c5c32fc3909eaac40da2e50a50ebcd0837af50c747e6639247b4d6873ad5c",
+      "pixelate-names.json": "4a6e5c74af6bbdef7be4fa682ad4d19a77989ce30cca3f9c09287c8df7221351",
       "reproduce-pixelate.mjs": "d20743b91b4ebab87070936c63ecbb6621d16033a3534eaf98f3e3042004298f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
