@@ -355,6 +355,7 @@ const classes = {
   od: ['PlayerValueSortCriterion', 'Compares two shop slots by their cached player value field.'],
   qi: ['PlayerStatSortCriterion', 'Compares shop slots by power, speed or tackle depending on the direction index modulo three.'],
   lv: ['PopupCard', 'Interface implemented by tooltip-like cards that report a width and height and draw themselves centred on a point.'],
+  wc: ['WidgetTheme', 'Its renderer setup, line, alpha rectangle and tooltip box methods match GeoBlox WidgetTheme.'],
 // END-R2CLASSES
   jc: ['LoggedPlayer', 'toString returns "LoggedPlayer{..}" with home/away side, resign time, reward, membership, tackle, kick, cross, header and goal counters.'],
 };
@@ -978,7 +979,7 @@ method('wv', 'q', '(I)V', 'closeDialog', 'Matches escapevector/steelsentinels Ac
 method('ah', 'a', '(IIIBILjava/lang/String;I)V', 'startAppletShell', 'Matches armiesofgielinor GameAppletShell.startAppletShell by signature and body shape.');
 method('ah', 'd', '(B)Z', 'isHostAllowed', 'Matches escapevector GameAppletShell.isHostAllowed by signature and body shape.');
 method('aq', 'a', '(I)V', 'generateResults', 'Matches steelsentinels IsaacRandom.generateResults by signature and body shape.');
-method('be', 'a', '(I)V', 'drawConsole', 'Matches armiesofgielinor ConsolePanel.drawConsole by signature and body shape.');
+method('be', 'a', '(I)V', 'paint', 'Draws this overlay layer each frame from the OverlayLayer list.');
 method('bu', 'a', '(IIZII)Lwu;', 'requestEnterFullscreen', 'Matches geoblox PlatformTaskDispatcher.requestEnterFullscreen by signature and body shape.');
 method('ct', 'a', '(IIIII)V', 'setBounds', 'Matches escapevector SingleChildContainer.setBounds by signature and body shape.');
 method('dd', 'c', '(I)Z', 'advanceFrame', 'Matches armiesofgielinor AnimationPlayer.advanceFrame by signature and body shape.');
@@ -990,7 +991,7 @@ method('fd', 'a', '(IIIII)V', 'setBounds', 'Matches vertigo2 UiWidget.setBounds 
 method('ga', 'k', '(B)V', 'copySelectedTextToClipboard', 'Matches geoblox TextInputWidget.copySelectedTextToClipboard by signature and body shape.');
 method('ga', 'i', '(B)V', 'clearInputText', 'Matches geoblox TextInputWidget.clearInputText by signature and body shape.');
 method('iw', 'a', '(I[IZI)V', 'xteaDecryptRange', 'Matches steelsentinels PacketBuffer.xteaDecryptRange by signature and body shape.');
-method('kd', 'a', '(I)V', 'drawConsole', 'Matches armiesofgielinor DebugConsole.drawConsole by signature and body shape.');
+method('kd', 'a', '(I)V', 'paint', 'Draws this overlay layer each frame from the OverlayLayer list.');
 method('kg', 'a', '(III)V', 'drawAlpha', 'Matches steelsentinels IndexedSprite.drawAlpha by signature and body shape.');
 method('ou', 'a', '(IIIII)V', 'setBounds', 'Matches escapevector StripedProgressBar.setBounds by signature and body shape.');
 method('pp', 'c', '()Llq;', 'firstSubstream', 'Matches steelsentinels MusicPatchPcmStream.firstSubstream by signature and body shape.');
@@ -1002,6 +1003,15 @@ method('vi', 'b', '(I)V', 'resetTiming', 'Matches escapevector NanoTickClock.res
 method('vm', 'i', '(I)V', 'setSamplePositionFixed', 'Matches geoblox PcmSampleStream.setSamplePositionFixed by signature and body shape.');
 method('wj', 'a', '(IIIII)V', 'setBounds', 'Matches vertigo2 WidgetContainer.setBounds by signature and body shape.');
 method('wt', 'a', '(IIIII)V', 'setBounds', 'Matches armiesofgielinor ArrayWidgetContainer.setBounds by signature and body shape.');
+method('wc', 'a', '(IIBLjava/lang/String;)V', 'drawSingleLineTooltip', 'Measures the text with the theme font, clamps the box to the screen and draws a one-line tooltip.');
+method('wc', 'a', '(IIIIIZ)V', 'drawWidgetLine', 'Draws a line between two points in the given colour through the rasterizer.');
+method('wc', 'a', '(IBILjava/lang/String;)V', 'drawTooltip', 'Draws the tooltip wrapped or on a single line depending on the wrapping flag.');
+method('wc', 'a', '(IIIIIIB)V', 'fillWidgetRectangleAlpha', 'Fills a rectangle with a colour at the given alpha through the rasterizer.');
+method('wc', 'a', '(Lhu;I)V', 'initializeRenderers', 'Builds the default widget painters, colours and metrics for the supplied font.');
+method('wc', 'a', '(ILjava/lang/String;II)V', 'drawWrappedTooltip', 'Wraps the text to a quarter of the screen width and draws a multi-line tooltip box.');
+method('hc', 'a', '(IIC)Z', 'handleKeyTyped', 'Called with the key code and typed character for each overlay layer until one returns true.');
+method('hc', 'a', '(IZ)V', 'update', 'Called once per frame for every overlay layer with a flag telling whether input is still available.');
+method('hc', 'a', '(B)Z', 'capturesInput', 'Returns whether this layer is active and should stop lower layers from receiving input.');
 method('a', 'e', '()V', 'writeMixBlock', 'Body is identical to steelsentinels JavaSoundAudioOutput.writeMixBlock.');
 method('a', 'f', '()V', 'closeDevice', 'Body is identical to escapevector/geoblox JavaSoundAudioOutput.closeDevice.');
 method('ah', '$cfr$lcmp', '(JJ)I', 'compareLongs', 'Body is identical to escapevector GameAppletShell.compareLongs.');
