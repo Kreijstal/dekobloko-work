@@ -4994,6 +4994,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ga.a(IB)V",
+      "originalName": "a",
+      "to": "handleMessage",
+      "evidence": "Decodes a packed MIDI short message and dispatches note, pressure, controller, program and pitch wheel events.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.a(IBI)V",
+      "originalName": "a",
+      "to": "onChannelPressure",
+      "evidence": "Receives a channel pressure event and ignores it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ga.a(II)V",
       "originalName": "a",
       "to": "allNotesOff",
@@ -5010,8 +5024,8 @@
     {
       "symbol": "M:ga.a(III)V",
       "originalName": "a",
-      "to": "setPitchBend",
-      "evidence": "Stores the bend value of a channel and the matching 2 to the power of its scaled value.",
+      "to": "setFineTuning",
+      "evidence": "Stores the data-entry value of a channel and the frequency ratio 2 to the power of its scaled value.",
       "confidence": "reviewed"
     },
     {
@@ -5019,6 +5033,13 @@
       "originalName": "a",
       "to": "noteOn",
       "evidence": "Releases any matching note, then starts a voice for the note and velocity on the channel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.a(IIZI)V",
+      "originalName": "a",
+      "to": "onPolyPressure",
+      "evidence": "Receives a polyphonic key pressure event and ignores it.",
       "confidence": "reviewed"
     },
     {
@@ -5071,6 +5092,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ga.b(IBI)V",
+      "originalName": "b",
+      "to": "setPitchWheel",
+      "evidence": "Stores the pitch wheel value of a channel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ga.b(IZ)V",
       "originalName": "b",
       "to": "stopTrack",
@@ -5092,6 +5120,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ga.c(II)V",
+      "originalName": "c",
+      "to": "setMasterVolume",
+      "evidence": "Stores the master volume that scales every voice.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ga.c(IZ)V",
       "originalName": "c",
       "to": "setTempoScale",
@@ -5110,6 +5145,13 @@
       "originalName": "d",
       "to": "clearStatics",
       "evidence": "Assigns null to 4 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.e(I)V",
+      "originalName": "e",
+      "to": "stop",
+      "evidence": "Stops the current track and releases its voices.",
       "confidence": "reviewed"
     },
     {
@@ -10916,10 +10958,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sm.a(IIZ)V",
+      "originalName": "a",
+      "to": "drawItem",
+      "evidence": "Draws one menu item with its label or slider at the item position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.a(IZ)I",
+      "originalName": "a",
+      "to": "itemWidth",
+      "evidence": "Returns the width of a menu item, a fixed width for sliders.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.a(IZIZ)V",
+      "originalName": "a",
+      "to": "drawItem",
+      "evidence": "Draws one menu item with its label or slider at the item position with an alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.b(IZ)I",
+      "originalName": "b",
+      "to": "itemX",
+      "evidence": "Returns the horizontal position of a menu item.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.c(II)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "itemLabel",
+      "evidence": "Returns the label text for a menu item kind.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.c(IZ)I",
+      "originalName": "c",
+      "to": "itemY",
+      "evidence": "Returns the vertical position of a menu item.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.d(III)I",
+      "originalName": "d",
+      "to": "findHexAt",
+      "evidence": "Returns the index of the hexagonal button under the pointer or minus one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.e(II)V",
+      "originalName": "e",
+      "to": "drawItems",
+      "evidence": "Draws every menu item with its reveal animation and highlight.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sm.f(I)V",
       "originalName": "f",
       "to": "clearStatics",
       "evidence": "Assigns null to 1 static field of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.f(II)I",
+      "originalName": "f",
+      "to": "rowHeight",
+      "evidence": "Returns the row height of the current menu screen.",
       "confidence": "reviewed"
     },
     {
@@ -12429,7 +12534,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-shatteredplans-rules.mjs": "acba3c21f76fdef1e84dcb67c471a247b56931c7e943ce260c8a94b352d7f0e1",
+      "build-shatteredplans-rules.mjs": "b8761151e745ba093ae0499bf956c088d9f53ad85c335757213290437cd93406",
       "reproduce-shatteredplans.mjs": "c97d18e945d2818780e9aa7d2ed30e04a75e5ba59388010d329585f010e7cd8e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

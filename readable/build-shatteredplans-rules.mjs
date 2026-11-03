@@ -1247,7 +1247,7 @@ method("vp", "d", "(Z)V", "unlinkTertiary", "Joins the third-link neighbours and
 method("cn", "f", "(B)V", "unlinkQuaternary", "Joins the fourth-link neighbours and clears both fourth links.");
 method("gm", "a", "(BI)V", "setVolume", "Stores the volume and applies a scaled value to the PcmSampleStream.");
 method("fa", "a", "(Lgk;I)V", "setValidationSource", "Stores the ValidationSource of the text field.");
-method("ga", "a", "(III)V", "setPitchBend", "Stores the bend value of a channel and the matching 2 to the power of its scaled value.");
+method("ga", "a", "(III)V", "setFineTuning", "Stores the data-entry value of a channel and the frequency ratio 2 to the power of its scaled value.");
 method("od", "a", "(ILgo;)V", "onEnter", "Called when the Enter key is pressed in the text field.");
 method("od", "a", "(Lgo;I)V", "onTextChanged", "Called when the text of the field changes.");
 method("go", "i", "(B)V", "fireEnter", "Calls the TextFieldListener onEnter callback for the Enter key.");
@@ -1385,6 +1385,12 @@ method("uj", "a", "(Lfs;I)V", "sendTurnChat", "Picks a chat phrase from the play
 method("uj", "a", "(Lfs;B)V", "sendWarningChat", "Picks a warning phrase for a player with a negative score and sends it through the host.");
 method("hi", "a", "(ILjava/util/Random;I)I", "randomBelow", "Returns a random integer from zero up to but excluding the bound.");
 method("rg", "a", "(IIB)I", "randomInRange", "Returns a random integer between the two bounds inclusive.");
+method("ga", "a", "(IB)V", "handleMessage", "Decodes a packed MIDI short message and dispatches note, pressure, controller, program and pitch wheel events.");
+method("ga", "a", "(IIZI)V", "onPolyPressure", "Receives a polyphonic key pressure event and ignores it.");
+method("ga", "a", "(IBI)V", "onChannelPressure", "Receives a channel pressure event and ignores it.");
+method("ga", "b", "(IBI)V", "setPitchWheel", "Stores the pitch wheel value of a channel.");
+method("ga", "c", "(II)V", "setMasterVolume", "Stores the master volume that scales every voice.");
+method("ga", "e", "(I)V", "stop", "Stops the current track and releases its voices.");
 method("om", "b", "(III[I[IIIIIIIIII)V", "blitAdditiveIntensityRows", "Row kernel that scales each pixel by its alpha and an intensity and adds it to the target with saturation.");
 method("om", "b", "([I[IIIIIIIIIIII)V", "blitScaledAlphaRows", "Scaled row kernel that blends pixels over the target using their alpha times a global alpha.");
 method("om", "d", "([I[IIIIIIIII)V", "blitGlobalAlphaRows", "Row kernel that blends pixels over the target using their alpha times a global alpha.");
@@ -1408,6 +1414,15 @@ method("hh", "b", "(IIIIIIZ)V", "drawGlyph", "Clips and draws one glyph mask in 
 method("hh", "b", "(IIIIIIIZ)V", "drawGlyphAlpha", "Clips and draws one glyph mask in a colour with an alpha.");
 method("hh", "a", "(IIIIIIZ)V", "drawGlyphTransposed", "Clips and draws one glyph mask transposed in a colour.");
 method("hh", "a", "(IIIIIIIZ)V", "drawGlyphTransposedAlpha", "Clips and draws one transposed glyph mask in a colour with an alpha.");
+method("sm", "e", "(II)V", "drawItems", "Draws every menu item with its reveal animation and highlight.");
+method("sm", "a", "(IZIZ)V", "drawItem", "Draws one menu item with its label or slider at the item position with an alpha.");
+method("sm", "a", "(IIZ)V", "drawItem", "Draws one menu item with its label or slider at the item position.");
+method("sm", "d", "(III)I", "findHexAt", "Returns the index of the hexagonal button under the pointer or minus one.");
+method("sm", "a", "(IZ)I", "itemWidth", "Returns the width of a menu item, a fixed width for sliders.");
+method("sm", "b", "(IZ)I", "itemX", "Returns the horizontal position of a menu item.");
+method("sm", "c", "(IZ)I", "itemY", "Returns the vertical position of a menu item.");
+method("sm", "f", "(II)I", "rowHeight", "Returns the row height of the current menu screen.");
+method("sm", "c", "(II)Ljava/lang/String;", "itemLabel", "Returns the label text for a menu item kind.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
