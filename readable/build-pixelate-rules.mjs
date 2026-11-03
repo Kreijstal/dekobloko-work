@@ -51,11 +51,17 @@ method('we', 'e', '(II)V', 'writeByte', ['obfuscationGuard', 'value'], packet);
 method('we', 'c', '(B)I', 'readUnsignedMedium', ['obfuscationGuard'], packet);
 method('we', 'k', '(I)I', 'readInt', ['obfuscationGuard'], packet);
 
+// Reviewed names added in later rounds live in pixelate-names.json:
+// classes [owner, name, evidence], methods and fields [owner, original, descriptor, name, evidence].
+const names = JSON.parse(fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'pixelate-names.json'), 'utf8'));
+for (const [owner, to, evidence] of names.classes) classes[owner] = [to, evidence];
+for (const [owner, original, descriptor, to, evidence] of names.methods) members[`M:${owner}.${original}${descriptor}`] = {to, evidence};
+for (const [owner, original, descriptor, to, evidence] of names.fields) members[`F:${owner}.${original}:${descriptor}`] = {to, evidence};
 
 export const config = {
   game: 'pixelate', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-pixelate-rules.mjs', 'reproduce-pixelate.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-pixelate-rules.mjs', 'pixelate-names.json', 'reproduce-pixelate.mjs', 'reviewed-game.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   readingGuide(rules, mapping) {
     return ['# Reading Pixelate', '',
