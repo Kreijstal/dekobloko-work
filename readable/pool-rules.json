@@ -12092,6 +12092,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:Pool.a(IIII)Z",
+      "originalName": "a",
+      "to": "handleKeyPress",
+      "evidence": "Offers a key press to the focused widget, the chat and the controller in turn and returns whether it was consumed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Pool.a(ZI)V",
+      "originalName": "a",
+      "to": "updateScreenTransition",
+      "evidence": "Counts a fade counter up and down between the current and next screen id and switches screens at the ends of the fade.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:Pool.c(B)V",
       "originalName": "c",
       "to": "shutdownServices",
@@ -12106,6 +12120,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:Pool.d(IZ)Z",
+      "originalName": "d",
+      "to": "loadResources",
+      "evidence": "Steps through the unpacking of sound effects, music, graphics and models and returns false until all are loaded.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:Pool.e(B)V",
       "originalName": "e",
       "to": "updateGame",
@@ -12117,6 +12138,13 @@
       "originalName": "h",
       "to": "releaseAllStatics",
       "evidence": "Called from shutdown; the Pool override calls every class's releaseStatics method. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Pool.m(B)V",
+      "originalName": "m",
+      "to": "fetchArchives",
+      "evidence": "Applies the localised texts from the loaded archive and then requests the numbered archives into static fields.",
       "confidence": "reviewed"
     },
     {
@@ -12218,10 +12246,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:af.a(B)I",
+      "originalName": "a",
+      "to": "evaluateShot",
+      "evidence": "Each rules subclass throws unless the current shot is finished, then derives the end-resolution flags and event records for it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:af.a(I)I",
       "originalName": "a",
       "to": "initialGroup",
       "evidence": "Called with -1 to fill the group-before field of a new shot and FreePlayRules returns -1. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.a(IB)[I",
+      "originalName": "a",
+      "to": "rackOrder",
+      "evidence": "Called by the model with the break seed to get the ball order used when racking, a fixed array or a shuffled one. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -12236,6 +12278,13 @@
       "originalName": "a",
       "to": "isPotLegal",
       "evidence": "The controller calls it for each potted ball of the shot in the loop that decides the shot outcome. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.a(II)Z",
+      "originalName": "a",
+      "to": "isTargetVisible",
+      "evidence": "The nine-ball and eight-ball overrides compute the aim targets and return whether the initial group's target is visible. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -12271,6 +12320,13 @@
       "originalName": "a",
       "to": "nextPlayerIndex",
       "evidence": "Steps through the players modulo the player count until one is not masked out. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.a(Lqe;I)I",
+      "originalName": "a",
+      "to": "groupMessageIndex",
+      "evidence": "Returns a message index from the shot's group before: 9, 10 or 11 for eight-ball and 12 plus the group for nine-ball. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -12376,6 +12432,13 @@
       "originalName": "f",
       "to": "groupOfPlayer",
       "evidence": "Returns the group assigned to the side that the player belongs to.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.h(I)I",
+      "originalName": "h",
+      "to": "timeoutResolution",
+      "evidence": "Called when the host ends a shot; the overrides return flag bits chosen from the ball-in-hand mode and mark the shot fouled. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -13233,10 +13296,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bp.a(IZI)V",
+      "originalName": "a",
+      "to": "configure",
+      "evidence": "Rejects rates outside 8000 to 48000 and stores the sample rate, stereo flag and service thread priority.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bp.a(Ljava/awt/Component;)V",
       "originalName": "a",
       "to": "initDevice",
       "evidence": "Method body closely resembles initDevice in the reviewed JavaSoundAudioOutput classes of other games. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bp.a(Lkd;)V",
+      "originalName": "a",
+      "to": "setRootStream",
+      "evidence": "Stores the root PcmStream that is mixed on every service.",
       "confidence": "reviewed"
     },
     {
@@ -13254,10 +13331,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bp.a([II)V",
+      "originalName": "a",
+      "to": "mixFrames",
+      "evidence": "Clears the buffer, then mixes the root stream and the queued priority streams into it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bp.b()V",
+      "originalName": "b",
+      "to": "writeFrames",
+      "evidence": "JavaSoundAudioOutput clamps each mixed sample to 16 bits, packs little-endian bytes and writes them to the line.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bp.b(I)V",
       "originalName": "b",
       "to": "skipFrames",
       "evidence": "Method body is token-identical to AudioOutput in armiesofgielinor, brickabrac, dekobloko.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bp.b(Lkd;)V",
+      "originalName": "b",
+      "to": "resetStreamTree",
+      "evidence": "Clears the active flag of the stream and, recursively, of its child streams.",
       "confidence": "reviewed"
     },
     {
@@ -13590,6 +13688,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cj.a(BLuf;)V",
+      "originalName": "a",
+      "to": "drawScene",
+      "evidence": "The tiki override draws the table and scenery models for the controller's camera. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cj.a(IIBI)V",
+      "originalName": "a",
+      "to": "playTableSound",
+      "evidence": "The tiki override switches on the event id and plays the matching ball, cue or cushion sound with the given volume and pan. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cj.a(IIIII)V",
+      "originalName": "a",
+      "to": "drawGradientBand",
+      "evidence": "Draws horizontal alpha lines whose colour fades down a band of rows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cj.a(ILdi;)V",
+      "originalName": "a",
+      "to": "loadMusicTracks",
+      "evidence": "The tiki override loads the pool_jungle music and pool_jungle_win_jingle from the archive. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cj.a(ILuf;)V",
       "originalName": "a",
       "to": "updatePottedBalls",
@@ -13618,6 +13744,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cj.a(Luf;I)V",
+      "originalName": "a",
+      "to": "drawSky",
+      "evidence": "Fills a vertical gradient and tiles the sky sprite offset by the camera yaw.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cj.a(ZLmm;)V",
       "originalName": "a",
       "to": "clampCamera",
@@ -13632,6 +13765,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cj.c(II)V",
+      "originalName": "c",
+      "to": "playAmbientSounds",
+      "evidence": "Starts random ambient samples in the free sound slots from the second slot on.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cj.d(Z)V",
       "originalName": "d",
       "to": "releaseModels",
@@ -13643,6 +13783,13 @@
       "originalName": "h",
       "to": "floorColor",
       "evidence": "Returns the constant colour used for the floor faces. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cj.j(I)V",
+      "originalName": "j",
+      "to": "buildSceneryLayers",
+      "evidence": "Empty in the base class; the tiki override creates the depth-sorted deques used to order the scenery models. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -14017,6 +14164,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dd.a([I[IIII)V",
+      "originalName": "a",
+      "to": "copyInts",
+      "evidence": "Copies a run of ints between two arrays in unrolled groups of four.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dd.a([I[IIIIIII)V",
       "originalName": "a",
       "to": "copyOpaqueRows",
@@ -14066,10 +14220,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dd.b(IIII)V",
+      "originalName": "b",
+      "to": "drawRotated",
+      "evidence": "Splits the position into whole and fractional parts and forwards to the pivot rotation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dd.b(IIIII)V",
       "originalName": "b",
       "to": "drawScaledAlpha",
       "evidence": "Method body is token-identical to ArgbSprite in dekobloko, geoblox, steelsentinels. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dd.b(IIIIII)V",
+      "originalName": "b",
+      "to": "drawRotatedAboutPivot",
+      "evidence": "Rotates the four corners with sine and cosine of the angle and rasterises the quad.",
       "confidence": "reviewed"
     },
     {
@@ -14136,10 +14304,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dd.d(III)V",
+      "originalName": "d",
+      "to": "drawRow",
+      "evidence": "Draws one row of the sprite at the given row index, clipped to the raster clip.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dd.d(IIII)V",
       "originalName": "d",
       "to": "drawWithVerticalAlphaGradient",
       "evidence": "Method body closely resembles drawWithVerticalAlphaGradient in the reviewed Sprite classes of other games.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dd.e()V",
+      "originalName": "e",
+      "to": "bindAsRenderTarget",
+      "evidence": "Passes the pixel array, width and height to SoftwareRasterizer.setTarget.",
       "confidence": "reviewed"
     },
     {
@@ -14227,10 +14409,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:di.a(BLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "hasGroupNamed",
+      "evidence": "Returns true when the lower-cased name is in the group name table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.a(IB)Z",
+      "originalName": "a",
+      "to": "loadGroup",
+      "evidence": "Returns true when the group is already loaded or loads it from the provider.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.a(II)[I",
+      "originalName": "a",
+      "to": "getFileIds",
+      "evidence": "Returns the file id array of the group, or a sequence of 0 to count minus 1 when none is stored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.a(III)[B",
+      "originalName": "a",
+      "to": "getFileBytesUnkeyed",
+      "evidence": "Calls getFileBytes without keys.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.a(IILjava/lang/String;)I",
+      "originalName": "a",
+      "to": "getFileId",
+      "evidence": "Looks up a file id in the group by the hash of its lower-cased name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.a(ILjava/lang/String;)I",
+      "originalName": "a",
+      "to": "getGroupProgressByName",
+      "evidence": "Looks up the group by name hash and returns its progress.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.a(I[III)Z",
+      "originalName": "a",
+      "to": "unpackGroup",
+      "evidence": "Splits a loaded group into its files, handling compression, decryption and multi-file chunks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:di.a(Ljava/lang/String;I)Z",
       "originalName": "a",
       "to": "ensureGroupAvailableByName",
       "evidence": "Method body closely resembles ensureGroupAvailableByName in the reviewed ResourceArchive classes of other games.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.a(Ljava/lang/String;ILjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "isNamedFileAvailable",
+      "evidence": "Lower-cases both names, looks up the group and file by hash and checks that the file is loaded.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.a(ZI)I",
+      "originalName": "a",
+      "to": "getFileCount",
+      "evidence": "Returns the number of files in the group.",
       "confidence": "reviewed"
     },
     {
@@ -14241,10 +14486,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:di.a([IIII)[B",
+      "originalName": "a",
+      "to": "getFileBytes",
+      "evidence": "Unpacks the file from its group, retrying the group load, using optional decryption keys.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.b(I)I",
+      "originalName": "b",
+      "to": "getOverallProgress",
+      "evidence": "Sums the group progress over all non-empty groups as a percentage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.b(IB)Z",
+      "originalName": "b",
+      "to": "isGroupValid",
+      "evidence": "Loads the index and checks that the group id is in range and non-empty, throwing instead when the debug flag is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.b(II)[B",
+      "originalName": "b",
+      "to": "getOnlyFileBytes",
+      "evidence": "Returns the bytes of the single file of a one-file group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.b(III)Z",
+      "originalName": "b",
+      "to": "ensureFileLoaded",
+      "evidence": "Checks the file id and loads the group if the file is not yet unpacked.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:di.b(Ljava/lang/String;I)I",
       "originalName": "b",
       "to": "getGroupId",
       "evidence": "Returns minus one when not loaded, otherwise looks up the lower-cased group name hash.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.b(ZI)Z",
+      "originalName": "b",
+      "to": "loadFirstFile",
+      "evidence": "Loads the only file of a single-file group or archive.",
       "confidence": "reviewed"
     },
     {
@@ -14255,10 +14542,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:di.c(II)V",
+      "originalName": "c",
+      "to": "loadGroupData",
+      "evidence": "Reads the packed group from the provider and optionally post-processes it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.c(III)Z",
+      "originalName": "c",
+      "to": "isFileValid",
+      "evidence": "Checks the index is ready and that the file id is below the group's file count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.d(I)Z",
+      "originalName": "d",
+      "to": "isIndexReady",
+      "evidence": "Fetches the index from the provider once and allocates the per-group tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.d(II)I",
+      "originalName": "d",
+      "to": "getGroupProgress",
+      "evidence": "Returns 100 when the group is loaded and otherwise the provider's progress for it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:di.e(I)V",
       "originalName": "e",
       "to": "releaseStatics",
       "evidence": "Public static method whose body only assigns null to static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.f(I)I",
+      "originalName": "f",
+      "to": "getGroupCount",
+      "evidence": "Returns the number of groups in the index.",
       "confidence": "reviewed"
     },
     {
@@ -14437,6 +14759,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eg.a()V",
+      "originalName": "a",
+      "to": "clearCaches",
+      "evidence": "Nulls the cached normal arrays and the bounds flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eg.a(III)I",
       "originalName": "a",
       "to": "addVertex",
@@ -14458,10 +14787,94 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eg.a(IIIII)Lfa;",
+      "originalName": "a",
+      "to": "createModelMesh",
+      "evidence": "Builds a ModelMesh from this builder with the given lighting parameters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(IIIII[I)Lfa;",
+      "originalName": "a",
+      "to": "createModelMeshTransformed",
+      "evidence": "Builds a ModelMesh as above with a twelve-int transform applied to the light direction.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eg.a(Ldi;Ljava/lang/String;Ljava/lang/String;)Leg;",
       "originalName": "a",
       "to": "loadFromArchive",
       "evidence": "Fetches model bytes from an archive by name and constructs a mesh from them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(Leg;IS)I",
+      "originalName": "a",
+      "to": "addMergedVertex",
+      "evidence": "Reuses an existing identical vertex and ORs in the flag, otherwise appends the vertex.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(Lum;IIIZ)V",
+      "originalName": "a",
+      "to": "mergeFrom",
+      "evidence": "Computes bounds and normals of the other builder and merges its faces into this one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(SSS)B",
+      "originalName": "a",
+      "to": "addTextureTriangle",
+      "evidence": "Appends a texture triangle from three vertex indices and returns its index, throwing past 255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a([B)V",
+      "originalName": "a",
+      "to": "decodeTrailer23Model",
+      "evidence": "Decodes a model whose header sits in the last 23 bytes of the data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a([I)V",
+      "originalName": "a",
+      "to": "transform",
+      "evidence": "Applies a 3x3 matrix and an offset in a twelve-int array to every vertex and then clears the caches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.b()V",
+      "originalName": "b",
+      "to": "buildVertexGroups",
+      "evidence": "Counts the vertices per label and builds the label groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.b([B)V",
+      "originalName": "b",
+      "to": "decodeTrailer18Model",
+      "evidence": "Decodes a model whose header sits in the last 18 bytes of the data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.c()V",
+      "originalName": "c",
+      "to": "releaseNormals",
+      "evidence": "Nulls the vertex label and normal arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.d()V",
+      "originalName": "d",
+      "to": "computeNormals",
+      "evidence": "Allocates the per-vertex normals once and accumulates the face normals into them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.e()V",
+      "originalName": "e",
+      "to": "computeBounds",
+      "evidence": "Scans every vertex once to compute the minimum and maximum corners.",
       "confidence": "reviewed"
     },
     {
@@ -15039,6 +15452,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fb.a(F)V",
+      "originalName": "a",
+      "to": "storeBrightness",
+      "evidence": "Stores the brightness with a small random jitter added.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fb.a(II)I",
       "originalName": "a",
       "to": "scaleHslLightness",
@@ -15067,6 +15487,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fb.a(IIIIIIIIIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawTexturedTriangle",
+      "evidence": "Fetches texture pixels from the provider and rasterises a textured triangle from its three vertices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.a(Lin;)V",
+      "originalName": "a",
+      "to": "setTextureProvider",
+      "evidence": "Stores the texture provider used by textured triangles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.a([IIIIII)V",
+      "originalName": "a",
+      "to": "drawFlatSpan",
+      "evidence": "Fills a horizontal run of pixels with one colour, clipped to the span limits and honouring the blend alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.a([IIIIIIII)V",
+      "originalName": "a",
+      "to": "drawShadedSpan",
+      "evidence": "Fills a horizontal run of pixels interpolating a colour across the span and honouring the blend alpha.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fb.b()V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -15074,10 +15522,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fb.b(F)V",
+      "originalName": "b",
+      "to": "setBrightness",
+      "evidence": "Stores the brightness through the private setter and rebuilds the colour palette for entries 0 to 512.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fb.b(II)V",
       "originalName": "b",
       "to": "setProjectionCenter",
       "evidence": "Method body is token-identical to TriangleRasterizer in armiesofgielinor, brickabrac, escapevector.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.c()V",
+      "originalName": "c",
+      "to": "centerProjection",
+      "evidence": "Sets the projection centre to half of the clip width and height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.c(II)V",
+      "originalName": "c",
+      "to": "buildColorPalette",
+      "evidence": "Converts hue, saturation and lightness steps into palette entries between the two indices.",
       "confidence": "reviewed"
     },
     {
@@ -15242,10 +15711,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fj.a(B)I",
+      "originalName": "a",
+      "to": "evaluateShot",
+      "evidence": "Each rules subclass throws unless the current shot is finished, then derives the end-resolution flags and event records for it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fj.a(I)I",
       "originalName": "a",
       "to": "initialGroup",
       "evidence": "Called with -1 to fill the group-before field of a new shot and FreePlayRules returns -1. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(IB)[I",
+      "originalName": "a",
+      "to": "rackOrder",
+      "evidence": "Called by the model with the break seed to get the ball order used when racking, a fixed array or a shuffled one. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -15260,6 +15743,20 @@
       "originalName": "a",
       "to": "isPotLegal",
       "evidence": "The controller calls it for each potted ball of the shot in the loop that decides the shot outcome. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(II)Z",
+      "originalName": "a",
+      "to": "isTargetVisible",
+      "evidence": "The nine-ball and eight-ball overrides compute the aim targets and return whether the initial group's target is visible. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(Lqe;I)I",
+      "originalName": "a",
+      "to": "groupMessageIndex",
+      "evidence": "Returns a message index from the shot's group before: 9, 10 or 11 for eight-ball and 12 plus the group for nine-ball. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -15312,6 +15809,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fj.h(I)I",
+      "originalName": "h",
+      "to": "timeoutResolution",
+      "evidence": "Called when the host ends a shot; the overrides return flag bits chosen from the ball-in-hand mode and mark the shot fouled. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fj.i(I)I",
       "originalName": "i",
       "to": "ballCount",
@@ -15323,6 +15827,27 @@
       "originalName": "n",
       "to": "onShotStart",
       "evidence": "Called by the model when a shot starts animating, empty in the base class. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.a(BLuf;)V",
+      "originalName": "a",
+      "to": "drawScene",
+      "evidence": "The tiki override draws the table and scenery models for the controller's camera. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.a(IIBI)V",
+      "originalName": "a",
+      "to": "playTableSound",
+      "evidence": "The tiki override switches on the event id and plays the matching ball, cue or cushion sound with the given volume and pan. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.a(ILdi;)V",
+      "originalName": "a",
+      "to": "loadMusicTracks",
+      "evidence": "The tiki override loads the pool_jungle music and pool_jungle_win_jingle from the archive. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -15883,6 +16408,27 @@
       "originalName": "g",
       "to": "currentValidationState",
       "evidence": "Abstract state used once the debounce has elapsed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gh.a(BLuf;)V",
+      "originalName": "a",
+      "to": "drawScene",
+      "evidence": "The tiki override draws the table and scenery models for the controller's camera. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gh.a(IIBI)V",
+      "originalName": "a",
+      "to": "playTableSound",
+      "evidence": "The tiki override switches on the event id and plays the matching ball, cue or cushion sound with the given volume and pan. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gh.a(ILdi;)V",
+      "originalName": "a",
+      "to": "loadMusicTracks",
+      "evidence": "The tiki override loads the pool_jungle music and pool_jungle_win_jingle from the archive. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -18336,6 +18882,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lp.d(III)V",
+      "originalName": "d",
+      "to": "drawRow",
+      "evidence": "Draws one row of the sprite at the given row index, clipped to the raster clip. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lp.d(IIII)V",
       "originalName": "d",
       "to": "drawWithVerticalAlphaGradient",
@@ -18602,10 +19155,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mc.a(B)I",
+      "originalName": "a",
+      "to": "evaluateShot",
+      "evidence": "Each rules subclass throws unless the current shot is finished, then derives the end-resolution flags and event records for it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mc.a(I)I",
       "originalName": "a",
       "to": "initialGroup",
       "evidence": "Called with -1 to fill the group-before field of a new shot and FreePlayRules returns -1. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.a(IB)[I",
+      "originalName": "a",
+      "to": "rackOrder",
+      "evidence": "Called by the model with the break seed to get the ball order used when racking, a fixed array or a shuffled one. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -18620,6 +19187,20 @@
       "originalName": "a",
       "to": "isPotLegal",
       "evidence": "The controller calls it for each potted ball of the shot in the loop that decides the shot outcome. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.a(II)Z",
+      "originalName": "a",
+      "to": "isTargetVisible",
+      "evidence": "The nine-ball and eight-ball overrides compute the aim targets and return whether the initial group's target is visible. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.a(Lqe;I)I",
+      "originalName": "a",
+      "to": "groupMessageIndex",
+      "evidence": "Returns a message index from the shot's group before: 9, 10 or 11 for eight-ball and 12 plus the group for nine-ball. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -18669,6 +19250,13 @@
       "originalName": "f",
       "to": "showsTargetBall",
       "evidence": "When true the controller draws the target ball sprite from the rules instead of the player name. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.h(I)I",
+      "originalName": "h",
+      "to": "timeoutResolution",
+      "evidence": "Called when the host ends a shot; the overrides return flag bits chosen from the ball-in-hand mode and mark the shot fouled. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -19162,6 +19750,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nb.a(Ljg;II)Lnb;",
+      "originalName": "a",
+      "to": "createAtStepAndVolume",
+      "evidence": "Returns null for an empty sample and otherwise a stream with the step and the volume shifted left 6.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nb.a(Ljg;III)Lnb;",
       "originalName": "a",
       "to": "createAtRatePercentQ6",
@@ -19194,6 +19789,13 @@
       "originalName": "a",
       "to": "mixInto",
       "evidence": "Advances MIDI events by samples and mixes the note mixer output into the destination array. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nb.a([IIIII)I",
+      "originalName": "a",
+      "to": "mixReverse",
+      "evidence": "Mixes backward from the sample, choosing the aligned or interpolated mono or stereo mixer.",
       "confidence": "reviewed"
     },
     {
@@ -19274,6 +19876,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nb.b([IIIII)I",
+      "originalName": "b",
+      "to": "mixForward",
+      "evidence": "Mixes forward from the sample, choosing the aligned or interpolated mono or stereo mixer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nb.c()I",
       "originalName": "c",
       "to": "priority",
@@ -19288,6 +19897,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nb.c(II)V",
+      "originalName": "c",
+      "to": "rampVolume",
+      "evidence": "Ramps the volume over the given steps and keeps the current pan.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nb.c(II[B[IIIIIIIILnb;II)I",
       "originalName": "c",
       "to": "mixForwardStereoInterpolated",
@@ -19295,10 +19911,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nb.c(Ljg;III)Lnb;",
+      "originalName": "c",
+      "to": "createAtRatePercentPan",
+      "evidence": "Returns null for an empty sample and otherwise a stream whose step is derived from the rate percentage.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nb.d()I",
       "originalName": "d",
       "to": "getSchedulingCost",
       "evidence": "Returns a constant scheduling cost for the synchronized stream. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nb.d(I)V",
+      "originalName": "d",
+      "to": "setVolume",
+      "evidence": "Sets the volume together with the current pan through setVolumeAndPan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nb.d(II)V",
+      "originalName": "d",
+      "to": "rampVolumeInSteps",
+      "evidence": "Ramps the volume with the step count shifted left 6 and keeps the current pan.",
       "confidence": "reviewed"
     },
     {
@@ -19323,10 +19960,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nb.f()I",
+      "originalName": "f",
+      "to": "getPan",
+      "evidence": "Returns the stored pan value, or -1 when none is set.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nb.f(I)V",
       "originalName": "f",
       "to": "setSampleStepMagnitude",
       "evidence": "Method body has the same shape as setSampleStepMagnitude in the reviewed PcmSampleStream classes of other games.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nb.g()Z",
+      "originalName": "g",
+      "to": "isRamping",
+      "evidence": "Returns true while the ramp counter is nonzero.",
       "confidence": "reviewed"
     },
     {
@@ -19344,6 +19995,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nb.j()I",
+      "originalName": "j",
+      "to": "getVolume",
+      "evidence": "Returns the stored volume, or 0 while it still holds the unset value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nb.k()V",
       "originalName": "k",
       "to": "cancelRamp",
@@ -19355,6 +20013,20 @@
       "originalName": "l",
       "to": "getTargetVolume",
       "evidence": "Method body closely resembles getTargetVolume in the reviewed PcmSampleStream classes of other games.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nb.m()I",
+      "originalName": "m",
+      "to": "getSampleStepMagnitude",
+      "evidence": "Returns the absolute value of the sample step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nb.n()I",
+      "originalName": "n",
+      "to": "getPanSteps",
+      "evidence": "Returns the stored pan plus 32 shifted right 6, or -1 when no pan is set.",
       "confidence": "reviewed"
     },
     {
@@ -19579,6 +20251,27 @@
       "originalName": "a",
       "to": "resolveFile",
       "evidence": "Redirects the cache request through the launcher hook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ni.a(BLuf;)V",
+      "originalName": "a",
+      "to": "drawScene",
+      "evidence": "The tiki override draws the table and scenery models for the controller's camera. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ni.a(IIBI)V",
+      "originalName": "a",
+      "to": "playTableSound",
+      "evidence": "The tiki override switches on the event id and plays the matching ball, cue or cushion sound with the given volume and pan. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ni.a(ILdi;)V",
+      "originalName": "a",
+      "to": "loadMusicTracks",
+      "evidence": "The tiki override loads the pool_jungle music and pool_jungle_win_jingle from the archive. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -20415,6 +21108,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oo.a(BLuf;)V",
+      "originalName": "a",
+      "to": "drawScene",
+      "evidence": "The tiki override draws the table and scenery models for the controller's camera.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oo.a(B[Lbf;)V",
       "originalName": "a",
       "to": "buildCushionMeshes",
@@ -20436,6 +21136,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oo.a(IIBI)V",
+      "originalName": "a",
+      "to": "playTableSound",
+      "evidence": "The tiki override switches on the event id and plays the matching ball, cue or cushion sound with the given volume and pan.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oo.a(IIB[Ljg;[Lkf;)V",
       "originalName": "a",
       "to": "updateRollingSounds",
@@ -20454,6 +21161,13 @@
       "originalName": "a",
       "to": "prepareMusic",
       "evidence": "Prepares the score instruments from the sound cache and archive when a music track is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.a(ILdi;)V",
+      "originalName": "a",
+      "to": "loadMusicTracks",
+      "evidence": "The tiki override loads the pool_jungle music and pool_jungle_win_jingle from the archive.",
       "confidence": "reviewed"
     },
     {
@@ -20566,6 +21280,13 @@
       "originalName": "h",
       "to": "floorColor",
       "evidence": "Returns the constant colour used for the floor faces.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.j(I)V",
+      "originalName": "j",
+      "to": "buildSceneryLayers",
+      "evidence": "Empty in the base class; the tiki override creates the depth-sorted deques used to order the scenery models.",
       "confidence": "reviewed"
     },
     {
@@ -20853,6 +21574,13 @@
       "originalName": "a",
       "to": "initDevice",
       "evidence": "Method body closely resembles initDevice in the reviewed JavaSoundAudioOutput classes of other games.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pg.b()V",
+      "originalName": "b",
+      "to": "writeFrames",
+      "evidence": "JavaSoundAudioOutput clamps each mixed sample to 16 bits, packs little-endian bytes and writes them to the line. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -21164,10 +21892,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qe.a(I)Z",
+      "originalName": "a",
+      "to": "isPlayPassChoicePending",
+      "evidence": "True when the end resolution asks for a play or pass choice and neither bit is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(II)Z",
+      "originalName": "a",
+      "to": "canMakeChoice",
+      "evidence": "Checks the choice bits against the end resolution flags and the choices already made.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(II[I)V",
+      "originalName": "a",
+      "to": "addEvent",
+      "evidence": "Creates the event deque if needed and adds an event record with its id and argument array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qe.a(ILal;)Ljava/lang/String;",
       "originalName": "a",
       "to": "describe",
       "evidence": "Builds the \"Shot N phase player\" debug text with break seed, ball-in-hand mode and group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(IZ)V",
+      "originalName": "a",
+      "to": "makeChoice",
+      "evidence": "Records a group, play or pass choice bit and throws if a different one was already made or none is allowed.",
       "confidence": "reviewed"
     },
     {
@@ -21178,6 +21934,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qe.a(Lge;B)V",
+      "originalName": "a",
+      "to": "writeChoices",
+      "evidence": "Writes the choice bits as one byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "describeChoices",
+      "evidence": "Appends group 0, group 1, pass, play and the opponent pass and play choice bits as text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.b(BLge;)V",
+      "originalName": "b",
+      "to": "readChoices",
+      "evidence": "Reads a byte of choice bits and moves to phase 3 when no choice is pending.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qe.b(Lge;B)V",
       "originalName": "b",
       "to": "writeEndResolution",
@@ -21185,10 +21962,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qe.c(B)Z",
+      "originalName": "c",
+      "to": "isOpponentChoicePending",
+      "evidence": "True when the end resolution asks for an opponent choice and neither opponent bit is set.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qe.c(BLge;)B",
       "originalName": "c",
       "to": "readMove",
       "evidence": "Reads the shot number then the angle, tilt and power shorts and the two strike bytes of a move packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.c(I)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "describeOutcome",
+      "evidence": "Builds the firstcontactid, pottings, fouled and resolution debug text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.c(II)V",
+      "originalName": "c",
+      "to": "setEndResolution",
+      "evidence": "Stores the flags if none are set and otherwise reports an error when they differ.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.c(Z)Z",
+      "originalName": "c",
+      "to": "isGroupChoicePending",
+      "evidence": "True when the end resolution asks for a group choice and none of the two group bits is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.d(I)Z",
+      "originalName": "d",
+      "to": "isAnyChoicePending",
+      "evidence": "True when the end resolution is set and a group, play or opponent choice is still missing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.e(I)Ljava/lang/String;",
+      "originalName": "e",
+      "to": "describeAim",
+      "evidence": "Builds the ang, pow and strk debug text and appends the cue ball position when it is set.",
       "confidence": "reviewed"
     },
     {
@@ -21241,6 +22060,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qh.a(IIIII)V",
+      "originalName": "a",
+      "to": "fillCircleBlended",
+      "evidence": "Delegates to the opaque fill at alpha 256 and otherwise blends each scanline of the circle.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qh.a(IIIIII)V",
       "originalName": "a",
       "to": "fillRoundedRectangle",
@@ -21248,10 +22074,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qh.a(IIIIIII)V",
+      "originalName": "a",
+      "to": "fillRoundedRectangleBlended",
+      "evidence": "Delegates to the opaque or alpha rectangle fills for the trivial cases and otherwise blends the rounded corners with the alpha.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qh.a(IIIIIIII[II[IIIIIIII)V",
       "originalName": "a",
       "to": "addRadialGlowScanlines",
       "evidence": "Method body is token-identical to SoftwareRasterizer in armiesofgielinor, brickabrac, dekobloko.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.a(IIII[I)V",
+      "originalName": "a",
+      "to": "fillRadialGlow",
+      "evidence": "Clips a square region and fills its scanlines through the radial glow routine with a colour ramp.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.a(I[IIIII)V",
+      "originalName": "a",
+      "to": "halveRows",
+      "evidence": "Shifts each channel of a run of pixels right by one in unrolled groups of eight.",
       "confidence": "reviewed"
     },
     {
@@ -21266,6 +22113,27 @@
       "originalName": "a",
       "to": "setTarget",
       "evidence": "Method body is token-identical to SoftwareRasterizer in armiesofgielinor, brickabrac, dekobloko.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.a([IIIIIIII)V",
+      "originalName": "a",
+      "to": "blurRows",
+      "evidence": "Averages pixels horizontally across a window of twice the radius plus one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.a([IIIIIIIII)V",
+      "originalName": "a",
+      "to": "blurColumns",
+      "evidence": "Keeps running red, green and blue column sums in shared arrays while averaging pixels vertically.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.b()V",
+      "originalName": "b",
+      "to": "clearScanlineMasks",
+      "evidence": "Nulls the scanline mask start and width arrays.",
       "confidence": "reviewed"
     },
     {
@@ -21752,6 +22620,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rj.a(B)I",
+      "originalName": "a",
+      "to": "evaluateShot",
+      "evidence": "Each rules subclass throws unless the current shot is finished, then derives the end-resolution flags and event records for it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rj.a(BI)Z",
       "originalName": "a",
       "to": "isPlayerActive",
@@ -21763,6 +22638,13 @@
       "originalName": "a",
       "to": "initialGroup",
       "evidence": "Called with -1 to fill the group-before field of a new shot and FreePlayRules returns -1. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.a(IB)[I",
+      "originalName": "a",
+      "to": "rackOrder",
+      "evidence": "Called by the model with the break seed to get the ball order used when racking, a fixed array or a shuffled one. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -21780,10 +22662,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rj.a(II)Z",
+      "originalName": "a",
+      "to": "isTargetVisible",
+      "evidence": "The nine-ball and eight-ball overrides compute the aim targets and return whether the initial group's target is visible. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.a(JBJ)J",
+      "originalName": "a",
+      "to": "multiplyFixedChecked",
+      "evidence": "Multiplies two longs and throws an IllegalStateException when the sign of the product shows an overflow.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rj.a(Lge;Z)V",
       "originalName": "a",
       "to": "readRulesState",
       "evidence": "Called by the model while reading a saved state, empty in the base class. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.a(Lqe;I)I",
+      "originalName": "a",
+      "to": "groupMessageIndex",
+      "evidence": "Returns a message index from the shot's group before: 9, 10 or 11 for eight-ball and 12 plus the group for nine-ball. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -21829,6 +22732,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rj.d(II)V",
+      "originalName": "d",
+      "to": "gainLife",
+      "evidence": "Increments the player's life counter up to a maximum of 15.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.e(B)I",
+      "originalName": "e",
+      "to": "countActivePlayers",
+      "evidence": "Counts the players for whom isPlayerActive is true.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rj.f(I)Z",
       "originalName": "f",
       "to": "showsTargetBall",
@@ -21836,10 +22753,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rj.f(II)V",
+      "originalName": "f",
+      "to": "loseLife",
+      "evidence": "Decrements the player's life counter when it is above zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.h(I)I",
+      "originalName": "h",
+      "to": "timeoutResolution",
+      "evidence": "Called when the host ends a shot; the overrides return flag bits chosen from the ball-in-hand mode and mark the shot fouled. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rj.i(I)I",
       "originalName": "i",
       "to": "ballCount",
       "evidence": "Its result is passed to the model's ball allocation and the rule subclasses return 16. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.j(I)I",
+      "originalName": "j",
+      "to": "pickAutoPotBall",
+      "evidence": "Returns -1 in the base class and the killer override returns a random ball number from 1 to 15 that skips the 8. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -22494,6 +23432,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sq.a(B)I",
+      "originalName": "a",
+      "to": "evaluateShot",
+      "evidence": "Each rules subclass throws unless the current shot is finished, then derives the end-resolution flags and event records for it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sq.a(BI)Z",
       "originalName": "a",
       "to": "isPlayerActive",
@@ -22508,6 +23453,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sq.a(IB)[I",
+      "originalName": "a",
+      "to": "rackOrder",
+      "evidence": "Called by the model with the break seed to get the ball order used when racking, a fixed array or a shuffled one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sq.a(IBI)Z",
       "originalName": "a",
       "to": "isBallInGroup",
@@ -22519,6 +23471,13 @@
       "originalName": "a",
       "to": "isPotLegal",
       "evidence": "The controller calls it for each potted ball of the shot in the loop that decides the shot outcome.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.a(II)Z",
+      "originalName": "a",
+      "to": "isTargetVisible",
+      "evidence": "The nine-ball and eight-ball overrides compute the aim targets and return whether the initial group's target is visible.",
       "confidence": "reviewed"
     },
     {
@@ -22547,6 +23506,13 @@
       "originalName": "a",
       "to": "nextPlayerIndex",
       "evidence": "Steps through the players modulo the player count until one is not masked out.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.a(Lqe;I)I",
+      "originalName": "a",
+      "to": "groupMessageIndex",
+      "evidence": "Returns a message index from the shot's group before: 9, 10 or 11 for eight-ball and 12 plus the group for nine-ball.",
       "confidence": "reviewed"
     },
     {
@@ -22634,10 +23600,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sq.h(I)I",
+      "originalName": "h",
+      "to": "timeoutResolution",
+      "evidence": "Called when the host ends a shot; the overrides return flag bits chosen from the ball-in-hand mode and mark the shot fouled.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sq.i(I)I",
       "originalName": "i",
       "to": "ballCount",
       "evidence": "Its result is passed to the model's ball allocation and the rule subclasses return 16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.j(I)I",
+      "originalName": "j",
+      "to": "pickAutoPotBall",
+      "evidence": "Returns -1 in the base class and the killer override returns a random ball number from 1 to 15 that skips the 8.",
       "confidence": "reviewed"
     },
     {
@@ -24622,6 +25602,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vf.a(BLuf;)V",
+      "originalName": "a",
+      "to": "drawScene",
+      "evidence": "The tiki override draws the table and scenery models for the controller's camera. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vf.a(IIBI)V",
+      "originalName": "a",
+      "to": "playTableSound",
+      "evidence": "The tiki override switches on the event id and plays the matching ball, cue or cushion sound with the given volume and pan. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vf.a(ILdi;)V",
+      "originalName": "a",
+      "to": "loadMusicTracks",
+      "evidence": "The tiki override loads the pool_jungle music and pool_jungle_win_jingle from the archive. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vf.a(ILuf;)V",
       "originalName": "a",
       "to": "updatePottedBalls",
@@ -25070,10 +26071,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vp.a(B)I",
+      "originalName": "a",
+      "to": "evaluateShot",
+      "evidence": "Each rules subclass throws unless the current shot is finished, then derives the end-resolution flags and event records for it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vp.a(I)I",
       "originalName": "a",
       "to": "initialGroup",
       "evidence": "Called with -1 to fill the group-before field of a new shot and FreePlayRules returns -1. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.a(IB)[I",
+      "originalName": "a",
+      "to": "rackOrder",
+      "evidence": "Called by the model with the break seed to get the ball order used when racking, a fixed array or a shuffled one. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -25088,6 +26103,20 @@
       "originalName": "a",
       "to": "isPotLegal",
       "evidence": "The controller calls it for each potted ball of the shot in the loop that decides the shot outcome. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.a(II)Z",
+      "originalName": "a",
+      "to": "isTargetVisible",
+      "evidence": "The nine-ball and eight-ball overrides compute the aim targets and return whether the initial group's target is visible. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.a(Lqe;I)I",
+      "originalName": "a",
+      "to": "groupMessageIndex",
+      "evidence": "Returns a message index from the shot's group before: 9, 10 or 11 for eight-ball and 12 plus the group for nine-ball. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -25130,6 +26159,13 @@
       "originalName": "f",
       "to": "showsTargetBall",
       "evidence": "When true the controller draws the target ball sprite from the rules instead of the player name. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.h(I)I",
+      "originalName": "h",
+      "to": "timeoutResolution",
+      "evidence": "Called when the host ends a shot; the overrides return flag bits chosen from the ball-in-hand mode and mark the shot fouled. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -27341,7 +28377,7 @@
     "files": {
       "build-pool-rules.mjs": "3528233f1a0c3247b6cb31b05a23410e579f3354fe3aca24b17ee3ddd6d48983",
       "pool-names-data.mjs": "e7cefa558f5b27ff8b5d6b54ed3b3e18ef9c3e29af31d7d2eb0b675793a1da51",
-      "pool-names-game.mjs": "79ec7266083da523342ab936e007063685fc57fe10f53e935ff1b85e2ecce0bc",
+      "pool-names-game.mjs": "539c062edefaf99da60891bfe96355a72b5a38bc97a9358a3b6702c5a6eba6d6",
       "reproduce-pool.mjs": "a70c50f3e18ae106fff2130226dafcc1962938974aa6d419716e73302917663c",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
