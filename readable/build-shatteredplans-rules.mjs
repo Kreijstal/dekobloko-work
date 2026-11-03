@@ -546,6 +546,21 @@ method("ia", "a", "(Lfs;Lln;BLln;)V", "addWormholeAnnotation", "Adds annotations
 method("ia", "a", "([IZ[Lsd;[Lfs;Z)V", "setDisplayState", "Stores the displayed garrisons, territories and owners and copies them when asked.");
 method("kq", "f", "(B)Ljava/applet/Applet;", "getHostApplet", "Returns the loader applet when present and otherwise the main applet.");
 method("kq", "a", "(Ljava/lang/String;I)Z", "isPanelVisible", "Returns the visible flag of the production or projects panel named by the prefix.");
+method("kq", "o", "(I)V", "hidePanels", "Clears the visible flag of the production, projects and related panels.");
+method("kq", "a", "(I)V", "buildProjectButtons", "Creates a button for each of the four projects and marks those with five resources as ready.");
+method("kq", "a", "(IILjava/lang/String;)V", "showStatusText", "Shows the text on one line or splits it at the middle space when it is wider than 400 pixels.");
+method("kq", "d", "(B)I", "getAreaHeight", "Returns 480 or the height of the active layout area.");
+method("kq", "i", "(B)V", "disposeWidgets", "Disposes the widgets in the widget deque and clears the panel fields.");
+method("kq", "a", "(ZI)Ljava/lang/String;", "formatMinutesSeconds", "Formats a second count as two-digit minutes, a colon and two-digit seconds.");
+method("kq", "b", "(B)Lbh;", "getMapBounds", "Returns the rectangle of the map area, reduced by the panels that are open.");
+method("kq", "a", "(ILsd;Z)V", "selectTerritory", "Stores the selected territory and updates the production panel entries for it.");
+method("tr", "a", "(Lpf;I)V", "tick", "Eases the camera toward its target, reprojects the stars and ages the annotations.");
+method("tr", "a", "(I[Lfs;)V", "setPlayers", "Stores the players, allocates the per-player arrays and builds the player sprites.");
+method("tr", "j", "(I)V", "buildPlayerSprites", "Creates an ArgbSprite for each player and draws its colour into it.");
+method("tr", "d", "(Lln;I)V", "drawProjectIcons", "Draws an icon next to the star for each ProjectUse that targets it.");
+method("tr", "c", "(IIB)Lmg;", "findFleetAt", "Returns the FleetMove whose handle or marker lies at the point and sets the handle flags.");
+method("km", "a", "(Lln;I)V", "placeUnplacedFleets", "Adds one or up to five unplaced fleets to the star's pending garrison and updates the display arrays.");
+method("km", "c", "(B)[I", "shipsPerPlayer", "Sums the garrison of every owned star per player index.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,

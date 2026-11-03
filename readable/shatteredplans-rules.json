@@ -3552,6 +3552,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:km.a(Lln;I)V",
+      "originalName": "a",
+      "to": "placeUnplacedFleets",
+      "evidence": "Adds one or up to five unplaced fleets to the star's pending garrison and updates the display arrays.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:km.a(Lmg;II)V",
       "originalName": "a",
       "to": "changeMoveSize",
@@ -3563,6 +3570,13 @@
       "originalName": "b",
       "to": "sendReady",
       "evidence": "Sets the local ready bit and writes packet 65.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.c(B)[I",
+      "originalName": "c",
+      "to": "shipsPerPlayer",
+      "evidence": "Sums the garrison of every owned star per player index.",
       "confidence": "reviewed"
     },
     {
@@ -3601,6 +3615,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kq.a(I)V",
+      "originalName": "a",
+      "to": "buildProjectButtons",
+      "evidence": "Creates a button for each of the four projects and marks those with five resources as ready.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.a(IILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "showStatusText",
+      "evidence": "Shows the text on one line or splits it at the middle space when it is wider than 400 pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.a(ILsd;Z)V",
+      "originalName": "a",
+      "to": "selectTerritory",
+      "evidence": "Stores the selected territory and updates the production panel entries for it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kq.a(Ljava/lang/String;I)Z",
       "originalName": "a",
       "to": "isPanelVisible",
@@ -3608,10 +3643,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kq.a(ZI)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatMinutesSeconds",
+      "evidence": "Formats a second count as two-digit minutes, a colon and two-digit seconds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.b(B)Lbh;",
+      "originalName": "b",
+      "to": "getMapBounds",
+      "evidence": "Returns the rectangle of the map area, reduced by the panels that are open.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.d(B)I",
+      "originalName": "d",
+      "to": "getAreaHeight",
+      "evidence": "Returns 480 or the height of the active layout area.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kq.f(B)Ljava/applet/Applet;",
       "originalName": "f",
       "to": "getHostApplet",
       "evidence": "Returns the loader applet when present and otherwise the main applet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.i(B)V",
+      "originalName": "i",
+      "to": "disposeWidgets",
+      "evidence": "Disposes the widgets in the widget deque and clears the panel fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.o(I)V",
+      "originalName": "o",
+      "to": "hidePanels",
+      "evidence": "Clears the visible flag of the production, projects and related panels.",
       "confidence": "reviewed"
     },
     {
@@ -4826,10 +4896,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tr.a(I[Lfs;)V",
+      "originalName": "a",
+      "to": "setPlayers",
+      "evidence": "Stores the players, allocates the per-player arrays and builds the player sprites.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tr.a(Lpf;I)V",
+      "originalName": "a",
+      "to": "tick",
+      "evidence": "Eases the camera toward its target, reprojects the stars and ages the annotations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tr.a(Z)V",
       "originalName": "a",
       "to": "projectStars",
       "evidence": "Projects each star and its cell corners to screen coordinates with the camera. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tr.c(IIB)Lmg;",
+      "originalName": "c",
+      "to": "findFleetAt",
+      "evidence": "Returns the FleetMove whose handle or marker lies at the point and sets the handle flags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tr.d(Lln;I)V",
+      "originalName": "d",
+      "to": "drawProjectIcons",
+      "evidence": "Draws an icon next to the star for each ProjectUse that targets it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tr.j(I)V",
+      "originalName": "j",
+      "to": "buildPlayerSprites",
+      "evidence": "Creates an ArgbSprite for each player and draws its colour into it.",
       "confidence": "reviewed"
     },
     {
@@ -5030,7 +5135,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-shatteredplans-rules.mjs": "76bb88428a1b7e46136426450951375eb17f87e4af569bd9f58856b3e6daa42a",
+      "build-shatteredplans-rules.mjs": "d8e0fbe2c94f61282f0fa2260aead56d3d4a3738dfe8d43578bdc30e6ea002b5",
       "reproduce-shatteredplans.mjs": "c97d18e945d2818780e9aa7d2ed30e04a75e5ba59388010d329585f010e7cd8e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
