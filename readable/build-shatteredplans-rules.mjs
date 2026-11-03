@@ -1453,6 +1453,7 @@ method("rn", "a", "(ILua;I)Lak;", "read", "Returns a read request, reusing the d
 method("rn", "a", "(Lak;I)V", "enqueue", "Adds a request to the synchronized queue and counts it.");
 method("rn", "a", "(ILua;I[B)Lak;", "queueWrite", "Creates a write request with the data and adds it to the queue.");
 method("rn", "a", "(B)V", "shutdown", "Flags the worker to stop, wakes it and joins the thread.");
+method("ek", "a", "(IIIBIII)Z", "rectContains", "Returns whether a point lies inside a rectangle given by its left, top, width and height.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
