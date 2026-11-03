@@ -1389,6 +1389,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qj",
+      "originalName": "qj",
+      "to": "PowerupCommand",
+      "evidence": "Created by requestPowerup, queued, and run by advanceTick 50 ticks later through executePowerup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qk",
       "originalName": "qk",
       "to": "Waypoint",
@@ -2103,6 +2110,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hk.field_f:[I",
+      "originalName": "field_f",
+      "to": "powerupLevels",
+      "evidence": "requestPowerup reads the level of the chosen slot from it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:id.field_E:I",
       "originalName": "field_E",
       "to": "positionY",
@@ -2611,6 +2625,48 @@
       "originalName": "field_u",
       "to": "navigation",
       "evidence": "Passed to the portal and path queries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qj.field_f:I",
+      "originalName": "field_f",
+      "to": "targetOid",
+      "evidence": "executePowerup looks up the targeted zombie or human by this oid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qj.field_g:I",
+      "originalName": "field_g",
+      "to": "executeTick",
+      "evidence": "requestPowerup passes currentTick plus 50 as the first constructor argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qj.field_h:I",
+      "originalName": "field_h",
+      "to": "powerupLevel",
+      "evidence": "Taken from the loadout level array and passed as the first argument of executePowerup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qj.field_k:I",
+      "originalName": "field_k",
+      "to": "extraArgument",
+      "evidence": "Passed through to executePowerup unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qj.field_n:I",
+      "originalName": "field_n",
+      "to": "player",
+      "evidence": "executePowerup receives it as the team index that used the powerup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qj.field_q:I",
+      "originalName": "field_q",
+      "to": "powerupType",
+      "evidence": "executePowerup switches on it with the values 0 to 18 that index the powerup names.",
       "confidence": "reviewed"
     },
     {
@@ -4168,10 +4224,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ge.a(IZ)Z",
+      "originalName": "a",
+      "to": "startScreech",
+      "evidence": "Enters state 15 or 34 unless busy; executePowerup calls it for powerup type 5 (Screech).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.a(ZB)Z",
+      "originalName": "a",
+      "to": "startDetonate",
+      "evidence": "Enters state 13 unless busy and stores the upgrade flag; executePowerup calls it for powerup type 4 (Detonate).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ge.a(ZLth;)V",
       "originalName": "a",
       "to": "setPath",
       "evidence": "Stores the waypoint deque and starts following it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.b(ZB)Z",
+      "originalName": "b",
+      "to": "startPhantom",
+      "evidence": "Enters state 14 or 26 unless busy; executePowerup calls it for powerup type 2 (Phantom).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.c(Z)Z",
+      "originalName": "c",
+      "to": "isBusy",
+      "evidence": "Returns true for the states in which the zombie cannot accept a new command.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.d(BI)Z",
+      "originalName": "d",
+      "to": "hasBeenCursedBy",
+      "evidence": "Tests the bit of the team in the curse mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.d(II)V",
+      "originalName": "d",
+      "to": "startStun",
+      "evidence": "Enters state 23 with a duration; executePowerup calls it for powerup type 8 (Hammer).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.e(II)V",
+      "originalName": "e",
+      "to": "becomeCursedBy",
+      "evidence": "Enters state 31, remembers the team in the curse mask and changes the owner; used for powerup type 7 (Curse).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.e(Z)V",
+      "originalName": "e",
+      "to": "startTeleport",
+      "evidence": "Enters state 29 unless busy; executePowerup calls it for powerup type 18 (Teleport).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.f(Z)V",
+      "originalName": "f",
+      "to": "clearStatusEffects",
+      "evidence": "Clears the stun, fear and teleport counters and flags.",
       "confidence": "reviewed"
     },
     {
@@ -4182,10 +4301,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ge.l(B)Z",
+      "originalName": "l",
+      "to": "startMeltdown",
+      "evidence": "Enters state 17 unless busy; executePowerup calls it for powerup type 1 (Meltdown).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.l(I)V",
+      "originalName": "l",
+      "to": "startFear",
+      "evidence": "Enters state 28 unless busy; executePowerup calls it for powerup type 14 (Fear).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.m(B)V",
+      "originalName": "m",
+      "to": "die",
+      "evidence": "Counts down the lifetime and enters state 9, adding to the team's casualty count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.m(I)V",
+      "originalName": "m",
+      "to": "startCharm",
+      "evidence": "Enters state 27 unless busy; executePowerup calls it for powerup type 16 (Charm).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.n(B)V",
+      "originalName": "n",
+      "to": "fightEnemyZombies",
+      "evidence": "Every tenth tick finds an enemy zombie within 40 units, puts both into state 22, pushes them apart and emits a fight event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.n(I)V",
+      "originalName": "n",
+      "to": "seekAndBiteHumans",
+      "evidence": "Every tenth tick picks a human in range to chase and, within 20 units, starts the bite state and emits an attack event.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ge.o(B)V",
       "originalName": "o",
       "to": "followPath",
       "evidence": "Takes the next waypoint as the target and sets the walking state and speed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.q(B)V",
+      "originalName": "q",
+      "to": "chaseTargetHuman",
+      "evidence": "Moves toward the human target while it stays within range and visible.",
       "confidence": "reviewed"
     },
     {
@@ -5589,6 +5757,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lm.a(IZ)V",
+      "originalName": "a",
+      "to": "stun",
+      "evidence": "Enters state 25 and remembers the stunning duration; used when a human is hit by a Hammer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lm.a(ZII)Lge;",
       "originalName": "a",
       "to": "findVisibleZombie",
@@ -5621,6 +5796,13 @@
       "originalName": "h",
       "to": "tick",
       "evidence": "Counts down the effect timer and starts the portal exit when the unit is at a portal. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lm.j(B)V",
+      "originalName": "j",
+      "to": "startBeingBitten",
+      "evidence": "Switches the human to state 20.",
       "confidence": "reviewed"
     },
     {
@@ -7262,10 +7444,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rl.a(IIII)V",
+      "originalName": "a",
+      "to": "addAreaEffect",
+      "evidence": "Builds an area of the walkable tiles around a point and adds it to the world's area deque.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rl.a(IIIII)V",
       "originalName": "a",
       "to": "requestPowerup",
       "evidence": "Validates the slot and ready tick then queues a delayed powerup command and event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rl.a(IIIIII)V",
+      "originalName": "a",
+      "to": "executeCheat",
+      "evidence": "Rejects with cheat disabled! unless cheats are enabled and otherwise applies a cheat command.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rl.a(IIIIZ)Z",
+      "originalName": "a",
+      "to": "orderZombie",
+      "evidence": "Looks up the zombie, checks the team and gives it a path to the target point.",
       "confidence": "reviewed"
     },
     {
@@ -7290,10 +7493,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rl.a(ILge;Lge;)V",
+      "originalName": "a",
+      "to": "emitFightEvent",
+      "evidence": "Queues the event that tells the screen two zombies are fighting.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rl.a(ILpa;)V",
       "originalName": "a",
       "to": "emitUnitEvent",
       "evidence": "Clears the sync flag and queues a movement event describing the unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rl.a(Llm;Lge;IIB)V",
+      "originalName": "a",
+      "to": "emitAttackEvent",
+      "evidence": "Queues the event that tells the screen a zombie is biting a human.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rl.a(Llm;Lge;Lge;Z)V",
+      "originalName": "a",
+      "to": "emitInfectionEvent",
+      "evidence": "Queues the event that tells the screen a human was infected.",
       "confidence": "reviewed"
     },
     {
@@ -8706,7 +8930,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-zombiedawnmulti-rules.mjs": "e435ac73dc930f0daaa6ebbe74d15d5c58827c9c2db1995b5e12c2b9035c129c",
-      "zombiedawnmulti-names.mjs": "bac4953ae7d4ccfd8038fd5124391ed64721eda9a7999cbbfe05d57f634cc903",
+      "zombiedawnmulti-names.mjs": "4f39f10841a5a812f3cea925c788b7b36297fc33a863f62be358cdcd7040ef0c",
       "reproduce-zombiedawnmulti.mjs": "230795648a86cb8802e140e35a24ea0832e98301dcf408f9e2bd4be81243fab0",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
