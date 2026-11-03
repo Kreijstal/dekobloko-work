@@ -1255,6 +1255,32 @@ method("ka", "c", "(B)Z", "isChatEnabled", "Returns the chat flag that setChatEn
 method("mh", "d", "(I)I", "nextInt", "Refills the 256-entry result array when empty and returns the next value.");
 method("mh", "c", "(I)V", "refill", "Runs the ISAAC generation pass that fills the result array from the state array.");
 method("mh", "a", "(B)V", "seed", "Mixes the seed words with the golden-ratio constant into the state array.");
+method("kq", "a", "(Ljava/lang/String;ZI)V", "setPanelVisible", "Sets the visible flag of the production, projects, fleets, diplomacy, victory or turn panel named by the prefix.");
+method("kq", "a", "(Ljava/lang/String;ZB)V", "setPanelVisible", "Sets the visible flag of the production, projects, fleets, diplomacy or victory panel named by the prefix.");
+method("kq", "a", "(IIBI)V", "drawConquestObjectiveHelp", "Draws the objective heading followed by the Conquest description text.");
+method("kq", "c", "(IIII)V", "drawSolObjectiveHelp", "Draws the objective heading followed by the Sol description and its icon row.");
+method("kq", "b", "(IIII)V", "drawPointsObjectiveHelp", "Draws the objective heading followed by the Points description and its icon rows.");
+method("kq", "e", "(B)V", "refreshTerritoryRows", "Writes each production row's territory number and a text label from the territory's count.");
+method("kq", "a", "(BLkm;)V", "setSession", "Stores the game session and rebuilds the panel layout.");
+method("kq", "a", "(ZLjava/lang/String;)V", "drawTooltip", "Draws a text box near the mouse position, clamped to the screen.");
+method("kq", "e", "(I)V", "refreshFleetsPanel", "Totals the stars' ship counts per owner and fills the fleets panel.");
+method("kq", "f", "(I)V", "refreshProductionPanel", "Rebuilds the production panel rows for the local player's territories.");
+method("km", "a", "(B)I", "getPressedCommandKey", "Returns the single pressed key among Q, V and R, or 0 when none or several are down.");
+method("km", "a", "(Ll;I)V", "setGalaxyMap", "Gives the map to the game state and map view and allocates the per-star arrays.");
+method("km", "i", "(I)V", "writeOrdersPacket", "Writes packet 60 with the turn number, project uses and fleet moves.");
+method("km", "h", "(I)V", "clearStatics", "Assigns null to five static fields of the class.");
+method("ga", "a", "(BIII)V", "noteOff", "Detaches the voice playing a note on a channel and releases it unless sustain holds it.");
+method("ga", "a", "(IIIB)V", "noteOn", "Releases any matching note, then starts a voice for the note and velocity on the channel.");
+method("ga", "a", "(II)V", "allNotesOff", "Releases every held voice of a channel, or of all channels when negative.");
+method("ga", "a", "(IIB)V", "setProgram", "Stores the program of a channel and clears its cached per-note patches.");
+method("ga", "b", "(Lqq;B)I", "computePitch", "Combines a voice's key, vibrato and the channel pitch wheel into one pitch value.");
+method("ga", "a", "(Lqq;B)I", "computePan", "Derives the voice's pan gain from its pan setting and the channel pan controller.");
+method("ga", "a", "(Lqq;I)I", "computeVolume", "Combines channel volume, expression, velocity and envelope into the voice's output volume.");
+method("ga", "a", "(B)V", "tickSequencer", "Steps the track events up to the next scheduled tick, wrapping loops.");
+method("tr", "c", "(III)V", "updateHoverFade", "Counts the hover fade timer up while the hovered star is unchanged and down otherwise.");
+method("hs", "a", "(Ljava/awt/Canvas;B)V", "attachInputListeners", "Registers the mouse, keyboard and optional extra input handler on the canvas.");
+method("hs", "a", "(IIIII)Lln;", "createHexStar", "Creates a star at the hex grid cell of the given index, offsetting every second row.");
+method("hs", "b", "(Ll;I)V", "fillMissingResources", "Gives random resource values to every star whose four resource values are all zero.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
