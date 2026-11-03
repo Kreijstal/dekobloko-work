@@ -1381,6 +1381,10 @@ method("cj", "d", "(Lln;I)I", "starPriority", "Returns the ship count plus neigh
 method("ka", "g", "(I)V", "chooseTargetPlayer", "Scores every player against the stars this AI could win and remembers the last player with a negative score.");
 method("cj", "g", "(I)V", "chooseTargetPlayer", "Picks the player this AI should attack from the players that are neither allies nor eliminated.");
 method("ka", "a", "(IILfs;)I", "scorePlayer", "Rates one player as a target from alliance state and the stars it owns.");
+method("uj", "a", "(Lfs;I)V", "sendTurnChat", "Picks a chat phrase from the player's score and alliance state and sends it through the host.");
+method("uj", "a", "(Lfs;B)V", "sendWarningChat", "Picks a warning phrase for a player with a negative score and sends it through the host.");
+method("hi", "a", "(ILjava/util/Random;I)I", "randomBelow", "Returns a random integer from zero up to but excluding the bound.");
+method("rg", "a", "(IIB)I", "randomInRange", "Returns a random integer between the two bounds inclusive.");
 method("om", "b", "(III[I[IIIIIIIIII)V", "blitAdditiveIntensityRows", "Row kernel that scales each pixel by its alpha and an intensity and adds it to the target with saturation.");
 method("om", "b", "([I[IIIIIIIIIIII)V", "blitScaledAlphaRows", "Scaled row kernel that blends pixels over the target using their alpha times a global alpha.");
 method("om", "d", "([I[IIIIIIIII)V", "blitGlobalAlphaRows", "Row kernel that blends pixels over the target using their alpha times a global alpha.");
