@@ -1178,6 +1178,15 @@ method("us", "a", "(Lob;[Lfs;I)Lfs;", "readPlayer", "Reads a player index from t
 method("ur", "a", "(Ldc;ILob;)Lfs;", "readGamePlayer", "Reads a player of the game's player array from the packet.");
 method("im", "a", "(Lfs;Lob;I)V", "writePlayer", "Writes the player index, or -1, to the packet.");
 method("di", "a", "(Lln;ZLob;)V", "writeStar", "Writes the star index, or -1, to the packet.");
+method("km", "j", "(I)V", "handleCameraInput", "Scrolls and zooms the map camera from the arrow keys, plus and minus keys, mouse drag and wheel.");
+method("km", "a", "(III)V", "handleMapPointer", "Tracks a press and drag on the map and, on release without a drag, selects or cancels stars and project targets.");
+method("km", "a", "(ILln;Lln;I)V", "queueProjectUse", "Reuses or creates the local player's ProjectUse of a kind and stores its target stars.");
+method("km", "b", "(II)V", "runTurnAndPrepareReplay", "Processes the turn with a new TurnEventLog and builds the fleet, battle and snapshot lists for the replay.");
+method("km", "a", "(ZILln;Lln;)V", "queueFleetMove", "Reuses or creates the local player's FleetMove between two stars and moves ships out of the origin.");
+method("km", "a", "(BLmg;)Z", "handleFleetClick", "Changes the size of a clicked FleetMove by one or by modifier-key amounts.");
+method("kq", "a", "(I[Lfs;[I[I[Lfs;[Lqk;BI)V", "showResultsDialog", "Fills the results window with a title, one row per player and the projected winners.");
+method("kq", "a", "(IIII)V", "drawResourceHelp", "Draws the help page with the resource conversion rows and their fleet counts.");
+method("kq", "a", "([Lfs;I)V", "updatePlayerList", "Grows the per-player arrays when players are added and rebuilds the player panels.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
