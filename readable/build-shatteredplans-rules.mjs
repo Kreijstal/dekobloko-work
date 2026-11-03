@@ -245,6 +245,15 @@ Object.assign(classes, {
   "lb": ["Bzip2Decoder", "Static bzip2 decompressor that reads bits from a shared Bzip2State."],
   "na": ["Bzip2State", "Holds the input and output arrays, bit buffer, block tables and counters for one bzip2 decode."],
   "ps": ["ArrayOperations", "Static block copy and fill helpers for int, byte and Object arrays."],
+  "cp": ["CanvasResizeController", "Clamps the requested canvas size to minimum and maximum bounds, recreates the canvas and notifies a listener."],
+  "bn": ["CanvasResizeListener", "Interface with one callback taking three ints that CanvasResizeController calls."],
+  "bq": ["IndexedSpriteState", "Abstract holder of the six dimension and offset ints of an indexed sprite with two abstract draw methods."],
+  "nk": ["IndexedSprite", "IndexedSpriteState subclass holding a palette index byte array and a palette int array."],
+  "hb": ["NodeSequence", "Abstract view of a node container with a size method and two traversal methods."],
+  "dn": ["DualLinkDequeSequence", "NodeSequence over a DualLinkDeque."],
+  "pd": ["TertiaryListSequence", "NodeSequence over a TertiaryNodeList."],
+  "un": ["IntrusiveDequeSequence", "NodeSequence over an IntrusiveDeque."],
+  "vf": ["QuaternaryListSequence", "NodeSequence over a QuaternaryNodeList."],
 });
 method("ob", "e", "(B)Ljava/lang/String;", "readMarkedString", "Requires a leading zero byte and then reads bytes up to the next zero as a string.");
 method("ob", "a", "(BLjava/lang/String;)V", "writeMarkedString", "Rejects strings containing NUL, writes a zero marker byte and then the string.");
@@ -1187,6 +1196,18 @@ method("km", "a", "(BLmg;)Z", "handleFleetClick", "Changes the size of a clicked
 method("kq", "a", "(I[Lfs;[I[I[Lfs;[Lqk;BI)V", "showResultsDialog", "Fills the results window with a title, one row per player and the projected winners.");
 method("kq", "a", "(IIII)V", "drawResourceHelp", "Draws the help page with the resource conversion rows and their fleet counts.");
 method("kq", "a", "([Lfs;I)V", "updatePlayerList", "Grows the per-player arrays when players are added and rebuilds the player panels.");
+method("tc", "k", "(I)V", "deactivateAll", "Clears the active flag of every dialog and the focused widget.");
+method("tc", "i", "(I)V", "updateDialogs", "Animates each dialog, unlinks the ones that report closed and refreshes the focused widget.");
+method("tc", "h", "(B)V", "removeClosedDialogs", "Unlinks each dialog whose closed test is true.");
+method("tc", "g", "(B)Lw;", "getActiveDialog", "Returns the first dialog whose active flag is set.");
+method("tc", "a", "(I)Lvg;", "findFocusedWidget", "Returns the focused widget of the active dialog.");
+method("tc", "a", "(ZLvg;)V", "addDialog", "Adds a Dialog to the deque, stores its active flag and attaches it to this root.");
+method("w", "k", "(I)Z", "isClosed", "Recomputes the slide target and returns true when the animation counter is zero and the dialog is not active.");
+method("w", "a", "(B)Z", "animate", "Moves the slide counter toward its target and returns true when the dialog is closed.");
+method("w", "b", "(IIB)V", "centre", "Sets the bounds so that a dialog of the given width and height is centred on the screen.");
+method("f", "i", "(I)Lvg;", "findFocusedChild", "Returns the first child that has focus.");
+method("f", "a", "(Lvg;Z)Z", "isBeforeFocusedChild", "Walks the siblings before the focused child and tests whether the argument is among them.");
+method("f", "a", "(Lvg;I)Z", "isAfterFocusedChild", "Walks the siblings after the focused child and tests whether the argument is among them.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
