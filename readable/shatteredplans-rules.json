@@ -3055,6 +3055,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bi.a(IIII[I[IIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitScaledAdditiveRows",
+      "evidence": "Row kernel that steps through the source in 16-bit fixed point and adds non-zero pixels with saturation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a(IIII[I[IIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitScaledAdditiveIntensityRows",
+      "evidence": "Scaled row kernel that scales each non-zero pixel by an intensity before adding it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a(III[I[IIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitAdditiveRows",
+      "evidence": "Row kernel that adds each non-zero pixel to the target with per-channel saturation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a(III[I[IIIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitAdditiveIntensityRows",
+      "evidence": "Row kernel that scales each non-zero pixel by an intensity and adds it to the target with saturation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bi.a(I[I[IIIIIIII)V",
       "originalName": "a",
       "to": "blitMultiplyRows",
@@ -3090,10 +3118,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bi.a([I[IIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitColouriseRows",
+      "evidence": "Row kernel that multiplies grey pixels by a colour and copies other non-zero pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a([I[IIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitScaledAlphaRows",
+      "evidence": "Scaled row kernel that blends non-zero pixels over the target with an alpha.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bi.b()V",
       "originalName": "b",
       "to": "flipVertical",
       "evidence": "Swaps the pixel rows from top to bottom and mirrors the vertical offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.b(III)V",
+      "originalName": "b",
+      "to": "drawColourised",
+      "evidence": "Copies the pixels, multiplying grey ones by a colour and leaving coloured ones unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -3132,6 +3181,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bi.b([I[IIIIIIIIIII)V",
+      "originalName": "b",
+      "to": "blitScaledRows",
+      "evidence": "Row kernel that steps through the source in 16-bit fixed point and copies non-zero pixels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bi.c()Lbi;",
       "originalName": "c",
       "to": "flippedCopy",
@@ -3143,6 +3199,20 @@
       "originalName": "c",
       "to": "drawOpaque",
       "evidence": "Clips against the raster bounds and copies every pixel row to the target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.c(III)V",
+      "originalName": "c",
+      "to": "drawAdditive",
+      "evidence": "Adds the non-zero pixels to the target with saturation, scaled by an intensity out of 256.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.c(IIIII)V",
+      "originalName": "c",
+      "to": "drawScaledAdditive",
+      "evidence": "Draws the sprite stretched to a size and adds it to the target with an intensity.",
       "confidence": "reviewed"
     },
     {
@@ -8942,6 +9012,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:om.b(III)V",
+      "originalName": "b",
+      "to": "drawColourised",
+      "evidence": "Copies the pixels, multiplying grey ones by a colour and leaving coloured ones unchanged. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:om.b(IIII)V",
       "originalName": "b",
       "to": "drawScaled",
@@ -8960,6 +9037,13 @@
       "originalName": "c",
       "to": "drawOpaque",
       "evidence": "Clips against the raster bounds and copies every pixel row to the target. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:om.c(III)V",
+      "originalName": "c",
+      "to": "drawAdditive",
+      "evidence": "Adds the non-zero pixels to the target with saturation, scaled by an intensity out of 256. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -11904,7 +11988,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-shatteredplans-rules.mjs": "c62043181c9c2327204291823d88c881f9228716dc402a15972491e872a9c5d1",
+      "build-shatteredplans-rules.mjs": "ea3e277a871fe811049c7cbb744925ac8580b4bff5ba72893b6eee887bb98cad",
       "reproduce-shatteredplans.mjs": "c97d18e945d2818780e9aa7d2ed30e04a75e5ba59388010d329585f010e7cd8e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

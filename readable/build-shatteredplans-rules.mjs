@@ -1348,6 +1348,16 @@ method("hn", "a", "(B)I", "size", "Returns the highest used index plus one.");
 method("hn", "a", "(II)V", "add", "Appends a value after the highest used index.");
 method("cb", "a", "([BB)V", "setBytes", "Copies the bytes into a newly allocated direct buffer.");
 method("cb", "a", "(Z)[B", "toByteArray", "Reads the whole direct buffer back into a byte array.");
+method("bi", "c", "(III)V", "drawAdditive", "Adds the non-zero pixels to the target with saturation, scaled by an intensity out of 256.");
+method("bi", "a", "(III[I[IIIIIIIII)V", "blitAdditiveRows", "Row kernel that adds each non-zero pixel to the target with per-channel saturation.");
+method("bi", "a", "(III[I[IIIIIIIIII)V", "blitAdditiveIntensityRows", "Row kernel that scales each non-zero pixel by an intensity and adds it to the target with saturation.");
+method("bi", "b", "(III)V", "drawColourised", "Copies the pixels, multiplying grey ones by a colour and leaving coloured ones unchanged.");
+method("bi", "a", "([I[IIIIIIIIIII)V", "blitColouriseRows", "Row kernel that multiplies grey pixels by a colour and copies other non-zero pixels.");
+method("bi", "c", "(IIIII)V", "drawScaledAdditive", "Draws the sprite stretched to a size and adds it to the target with an intensity.");
+method("bi", "a", "(IIII[I[IIIIIIIIIII)V", "blitScaledAdditiveRows", "Row kernel that steps through the source in 16-bit fixed point and adds non-zero pixels with saturation.");
+method("bi", "a", "(IIII[I[IIIIIIIIIIII)V", "blitScaledAdditiveIntensityRows", "Scaled row kernel that scales each non-zero pixel by an intensity before adding it.");
+method("bi", "b", "([I[IIIIIIIIIII)V", "blitScaledRows", "Row kernel that steps through the source in 16-bit fixed point and copies non-zero pixels.");
+method("bi", "a", "([I[IIIIIIIIIIII)V", "blitScaledAlphaRows", "Scaled row kernel that blends non-zero pixels over the target with an alpha.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
