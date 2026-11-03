@@ -2936,6 +2936,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bc.a(BII)Z",
+      "originalName": "a",
+      "to": "isFileReady",
+      "evidence": "Checks that a file of a group has been decoded or its group is loaded.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bc.a(BLjava/lang/String;Ljava/lang/String;)Z",
       "originalName": "a",
       "to": "containsFile",
@@ -2978,6 +2985,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bc.a(Ljava/lang/String;B)I",
+      "originalName": "a",
+      "to": "getGroupProgressByName",
+      "evidence": "Looks up a group by lower-cased name and returns its load progress.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.a(Ljava/lang/String;BLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "isFileReadyByName",
+      "evidence": "Looks up a group and a file by lower-cased name and checks that the file is loaded.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.a(Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "ensureGroupLoadedByName",
+      "evidence": "Looks up a group by lower-cased name and loads it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.a(ZI)[B",
+      "originalName": "a",
+      "to": "getSingleFileBytes",
+      "evidence": "Returns the data of a group that holds exactly one file.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bc.a(ZLjava/lang/String;Ljava/lang/String;)[B",
       "originalName": "a",
       "to": "getFileByName",
@@ -3010,6 +3045,20 @@
       "originalName": "b",
       "to": "clearStatics",
       "evidence": "Assigns null to 7 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.b(II)Z",
+      "originalName": "b",
+      "to": "ensureGroupLoaded",
+      "evidence": "Loads the group if it is not loaded and reports whether it is.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.b(Ljava/lang/String;B)Z",
+      "originalName": "b",
+      "to": "hasGroupByName",
+      "evidence": "Returns whether a group with the lower-cased name exists.",
       "confidence": "reviewed"
     },
     {
@@ -10755,6 +10804,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rn.a(B)V",
+      "originalName": "a",
+      "to": "shutdown",
+      "evidence": "Flags the worker to stop, wakes it and joins the thread.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(ILua;I)Lak;",
+      "originalName": "a",
+      "to": "read",
+      "evidence": "Returns a read request, reusing the data of a pending write with the same key when there is one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(ILua;I[B)Lak;",
+      "originalName": "a",
+      "to": "queueWrite",
+      "evidence": "Creates a write request with the data and adds it to the queue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(Lak;I)V",
+      "originalName": "a",
+      "to": "enqueue",
+      "evidence": "Adds a request to the synchronized queue and counts it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rn.a(Z)V",
       "originalName": "a",
       "to": "clearStatics",
@@ -11234,28 +11311,63 @@
       "symbol": "M:th.a(IIIIIIIZ)V",
       "originalName": "a",
       "to": "drawGlyphTransposedAlpha",
-      "evidence": "Clips and draws one transposed glyph mask in a colour with an alpha. Resolved override family. Resolved override family.",
+      "evidence": "Clips and draws one transposed glyph mask in a colour with an alpha.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:th.a(IIIIIIZ)V",
       "originalName": "a",
       "to": "drawGlyphTransposed",
-      "evidence": "Clips and draws one glyph mask transposed in a colour. Resolved override family. Resolved override family.",
+      "evidence": "Clips and draws one transposed glyph mask in a colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:th.a([I[BIIIIIII)V",
+      "originalName": "a",
+      "to": "blitGlyphRows",
+      "evidence": "Row kernel that blends a colour over the target by the glyph coverage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:th.a([I[BIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitGlyphTransposedRows",
+      "evidence": "Row kernel that blends a colour by the transposed glyph coverage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:th.a([I[BIIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitGlyphTransposedAlphaRows",
+      "evidence": "Row kernel that blends a colour by the transposed glyph coverage times an alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:th.a([I[[B)[[B",
+      "originalName": "a",
+      "to": "remapMasks",
+      "evidence": "Replaces each non-zero mask value by the grey level of its palette entry.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:th.b(IIIIIIIZ)V",
       "originalName": "b",
       "to": "drawGlyphAlpha",
-      "evidence": "Clips and draws one glyph mask in a colour with an alpha. Resolved override family. Resolved override family.",
+      "evidence": "Clips and draws one anti-aliased glyph mask in a colour with an alpha.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:th.b(IIIIIIZ)V",
       "originalName": "b",
       "to": "drawGlyph",
-      "evidence": "Clips and draws one glyph mask in a colour. Resolved override family. Resolved override family.",
+      "evidence": "Clips and draws one anti-aliased glyph mask in a colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:th.b([I[BIIIIIIII)V",
+      "originalName": "b",
+      "to": "blitGlyphAlphaRows",
+      "evidence": "Row kernel that blends a colour over the target by the glyph coverage times an alpha.",
       "confidence": "reviewed"
     },
     {
@@ -12604,7 +12716,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-shatteredplans-rules.mjs": "6aef3bd25913bb6d0a41e75e624c578361d98fb6d13c701512ffafb4bf7f13c1",
+      "build-shatteredplans-rules.mjs": "cc443072cf7de29fabe7fbe91f9e13a758f490c74318132e417390cae9c859f5",
       "reproduce-shatteredplans.mjs": "c97d18e945d2818780e9aa7d2ed30e04a75e5ba59388010d329585f010e7cd8e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

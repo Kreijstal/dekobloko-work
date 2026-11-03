@@ -1433,6 +1433,26 @@ method("wk", "a", "(ILjava/lang/CharSequence;IZ)Z", "parseInt", "Parses a digit 
 method("wk", "a", "(Z)V", "reset", "Clears the sprites, text, flags and offsets of the style.");
 method("wk", "a", "(BLwk;)V", "copyTo", "Copies every field of this style into another style.");
 method("wk", "a", "(BLjava/awt/Component;)V", "attachMouseListeners", "Registers the mouse, motion and focus listeners on the component.");
+method("bc", "a", "(Ljava/lang/String;B)I", "getGroupProgressByName", "Looks up a group by lower-cased name and returns its load progress.");
+method("bc", "a", "(Ljava/lang/String;BLjava/lang/String;)Z", "isFileReadyByName", "Looks up a group and a file by lower-cased name and checks that the file is loaded.");
+method("bc", "a", "(Ljava/lang/String;I)Z", "ensureGroupLoadedByName", "Looks up a group by lower-cased name and loads it.");
+method("bc", "b", "(Ljava/lang/String;B)Z", "hasGroupByName", "Returns whether a group with the lower-cased name exists.");
+method("bc", "a", "(BII)Z", "isFileReady", "Checks that a file of a group has been decoded or its group is loaded.");
+method("bc", "a", "(ZI)[B", "getSingleFileBytes", "Returns the data of a group that holds exactly one file.");
+method("bc", "b", "(II)Z", "ensureGroupLoaded", "Loads the group if it is not loaded and reports whether it is.");
+method("th", "b", "(IIIIIIZ)V", "drawGlyph", "Clips and draws one anti-aliased glyph mask in a colour.");
+method("th", "b", "(IIIIIIIZ)V", "drawGlyphAlpha", "Clips and draws one anti-aliased glyph mask in a colour with an alpha.");
+method("th", "a", "(IIIIIIIZ)V", "drawGlyphTransposedAlpha", "Clips and draws one transposed glyph mask in a colour with an alpha.");
+method("th", "a", "(IIIIIIZ)V", "drawGlyphTransposed", "Clips and draws one transposed glyph mask in a colour.");
+method("th", "a", "([I[[B)[[B", "remapMasks", "Replaces each non-zero mask value by the grey level of its palette entry.");
+method("th", "a", "([I[BIIIIIII)V", "blitGlyphRows", "Row kernel that blends a colour over the target by the glyph coverage.");
+method("th", "b", "([I[BIIIIIIII)V", "blitGlyphAlphaRows", "Row kernel that blends a colour over the target by the glyph coverage times an alpha.");
+method("th", "a", "([I[BIIIIIIIII)V", "blitGlyphTransposedAlphaRows", "Row kernel that blends a colour by the transposed glyph coverage times an alpha.");
+method("th", "a", "([I[BIIIIIIII)V", "blitGlyphTransposedRows", "Row kernel that blends a colour by the transposed glyph coverage.");
+method("rn", "a", "(ILua;I)Lak;", "read", "Returns a read request, reusing the data of a pending write with the same key when there is one.");
+method("rn", "a", "(Lak;I)V", "enqueue", "Adds a request to the synchronized queue and counts it.");
+method("rn", "a", "(ILua;I[B)Lak;", "queueWrite", "Creates a write request with the data and adds it to the queue.");
+method("rn", "a", "(B)V", "shutdown", "Flags the worker to stop, wakes it and joins the thread.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
