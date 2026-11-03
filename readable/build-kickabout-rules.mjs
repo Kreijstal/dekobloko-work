@@ -805,6 +805,13 @@ method('ap', 'c', '(I)V', 'resign', 'Throws unless online, then sends match cont
 method('ap', 'a', '(II)V', 'sendMatchControl', 'Writes packet 75 with the control code (1 resign, 2 offer draw) when the match is online.');
 method('ap', 'd', '(B)Z', 'isGameOverViewShown', 'True when the phase controller is the GameOverView.');
 method('ap', 'e', '(B)Ltf;', 'getGameOverEntries', 'Returns the GameOverView entry list, or null in other phases.');
+method('fu', 'a', '(IBI)Lki;', 'createCheatEvent', 'Returns new ki(7, ...), the Cheat event type printed by PlayerInputEvent.toString.');
+method('mf', 'a', '(IIB)Lki;', 'createFormationEvent', 'Returns new ki(3, ...), the event type handled by applyFormationCommand.');
+method('mg', 'a', '(IBI)Lki;', 'createTeamEvent', 'Returns new ki(4, ...), the Team event type printed by PlayerInputEvent.toString.');
+method('mg', 'a', '(ZII)Lki;', 'createKeyheldEvent', 'Returns new ki(0, ...), the Keyheld event type printed by PlayerInputEvent.toString.');
+method('ha', 'b', '(III)Lki;', 'createKeypressEvent', 'Returns new ki(1, ...), the Keypress event type printed by PlayerInputEvent.toString.');
+method('hw', 'a', '(IIIBB)Lki;', 'createMouseEvent', 'Returns new ki(2, ...), the Mouse event type printed by PlayerInputEvent.toString, carrying the click coordinates.');
+method('wd', 'a', '(I[Lup;Lgr;II)Lki;', 'createLineupEvent', 'Creates new ki(5, ...) and attaches the PlayerStats array, the LineUp event type.');
 method('a', 'e', '()V', 'writeMixBlock', 'Body is identical to steelsentinels JavaSoundAudioOutput.writeMixBlock.');
 method('a', 'f', '()V', 'closeDevice', 'Body is identical to escapevector/geoblox JavaSoundAudioOutput.closeDevice.');
 method('ah', '$cfr$lcmp', '(JJ)I', 'compareLongs', 'Body is identical to escapevector GameAppletShell.compareLongs.');
