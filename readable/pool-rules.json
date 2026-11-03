@@ -12085,6 +12085,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:Pool.a(B)V",
+      "originalName": "a",
+      "to": "paintFrame",
+      "evidence": "Called by drawFrameWithTiming; the Pool override draws the current screen and overlays. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Pool.c(B)V",
+      "originalName": "c",
+      "to": "shutdownServices",
+      "evidence": "Called from shutdown; the Pool override stops the audio and cache workers. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Pool.d(B)V",
+      "originalName": "d",
+      "to": "initializeGame",
+      "evidence": "Called once by the run loop after canvas creation; the Pool override sets up the framework, audio and packet tables. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Pool.e(B)V",
+      "originalName": "e",
+      "to": "updateGame",
+      "evidence": "Called by tickWithTiming; the Pool override runs the screen and network updates. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Pool.h(B)V",
+      "originalName": "h",
+      "to": "releaseAllStatics",
+      "evidence": "Called from shutdown; the Pool override calls every class's releaseStatics method. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:a.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -12190,6 +12225,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:af.a(IBI)Z",
+      "originalName": "a",
+      "to": "isBallInGroup",
+      "evidence": "Called with the shot's group before and a ball index when checking each potted ball. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.a(IBLqe;)Z",
+      "originalName": "a",
+      "to": "isPotLegal",
+      "evidence": "The controller calls it for each potted ball of the shot in the loop that decides the shot outcome. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.a(I[Ljava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "joinPlayerNames",
+      "evidence": "Joins the given names with the break tag, returning null when the player index is out of range. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:af.a(Lqe;B)I",
       "originalName": "a",
       "to": "nextPlayerIndex",
@@ -12211,10 +12267,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:af.b(II)B",
+      "originalName": "b",
+      "to": "ballGroup",
+      "evidence": "The controller compares its result for a ball with the initial group when it marks the rack balls. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.b(Lqe;I)Ldd;",
+      "originalName": "b",
+      "to": "targetBallSprite",
+      "evidence": "The controller assigns its result to the sprite of the target indicator widget. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.c(I)V",
+      "originalName": "c",
+      "to": "updateGroupLabels",
+      "evidence": "The EightBall override writes the two group names into the menu label table. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.c(II)I",
+      "originalName": "c",
+      "to": "teamIndex",
+      "evidence": "The controller compares its results for two players to find which seats share a side. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.c(Lqe;I)Z",
+      "originalName": "c",
+      "to": "isFirstContactLegal",
+      "evidence": "The controller shows the foul exclamation and marks the shot fouled when it returns false after a first contact. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:af.e(I)I",
       "originalName": "e",
       "to": "playerCount",
       "evidence": "Returns the model's player count. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.f(I)Z",
+      "originalName": "f",
+      "to": "showsTargetBall",
+      "evidence": "When true the controller draws the target ball sprite from the rules instead of the player name. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -12358,6 +12456,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:al.a(IIIII)V",
+      "originalName": "a",
+      "to": "addOrUpdateShot",
+      "evidence": "Appends a new shot or updates the newest one with the same shot number, then racks the balls if the break seed is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(IIIIII)Z",
+      "originalName": "a",
+      "to": "isCuePathClear",
+      "evidence": "Casts the cue ray against every cushion segment and ball and returns false when it hits one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(IIIIZ)Z",
+      "originalName": "a",
+      "to": "tryPlaceBall",
+      "evidence": "Moves a ball to a spot and keeps the move only if no other ball overlaps it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(IILli;III)V",
+      "originalName": "a",
+      "to": "placeBallAvoidingOverlap",
+      "evidence": "Moves the ball outward in a spiral until no other ball overlaps it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(ILge;)V",
+      "originalName": "a",
+      "to": "readShotFromPacket",
+      "evidence": "Reads the player, shot number, break seed and cue position bytes of a shot header and applies them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(ILli;)V",
+      "originalName": "a",
+      "to": "setUpBreak",
+      "evidence": "Places the cue ball at the break spot and records the initial ball-in-hand mode and cue ball position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(ILli;BII)V",
+      "originalName": "a",
+      "to": "placeCueBall",
+      "evidence": "Forwards the position and random source to the overlap-avoiding placement of the cue ball with a radius of 8192.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:al.a(I[Lpq;Lqe;)V",
       "originalName": "a",
       "to": "potBallsInPockets",
@@ -12365,10 +12512,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:al.a(Lge;B)V",
+      "originalName": "a",
+      "to": "readState",
+      "evidence": "Reads the shot history, the rules state, the ball states and the pockets, restoring potted balls to their pocket centres.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(ZBLqe;)Z",
+      "originalName": "a",
+      "to": "shouldChangePlayer",
+      "evidence": "Decides from the skip counters and the end-resolution flags whether the next shot belongs to another player.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:al.a(Z[I)V",
       "originalName": "a",
       "to": "loadTableOutline",
       "evidence": "Builds the cushion segments and outline point arrays from a coordinate array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a([IIBIII)V",
+      "originalName": "a",
+      "to": "fillCueTransform",
+      "evidence": "Builds a twelve-int matrix from two angles and a strike point and positions the origin from ball 0.",
       "confidence": "reviewed"
     },
     {
@@ -12386,6 +12554,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:al.b(IB)V",
+      "originalName": "b",
+      "to": "clampCueBallPosition",
+      "evidence": "Restricts ball 0 to the kitchen, anywhere or D area chosen by the shot's ball-in-hand mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.b(II)V",
+      "originalName": "b",
+      "to": "setBreakSeed",
+      "evidence": "Stores the break seed in the current shot and calls the rack routine.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.b(ILge;)V",
+      "originalName": "b",
+      "to": "readShotHistory",
+      "evidence": "Reads the shot count and each shot's header, cue values and potted and event lists into the shots deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.c(B)V",
+      "originalName": "c",
+      "to": "undoLastShot",
+      "evidence": "Removes the newest shot, restores the balls from the previous shot's snapshot and reopens that shot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.c(II)V",
+      "originalName": "c",
+      "to": "finishGame",
+      "evidence": "Sets the game-over flag and the winning player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.d(B)Z",
+      "originalName": "d",
+      "to": "isCueBallPotted",
+      "evidence": "Returns true when ball 0 is no longer in play.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:al.d(I)Z",
       "originalName": "d",
       "to": "allBallsStopped",
@@ -12400,10 +12610,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:al.e(B)V",
+      "originalName": "e",
+      "to": "snapshotFinishedShot",
+      "evidence": "Stores the state snapshot and the rules result in the current shot and marks it finished.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:al.e(I)V",
       "originalName": "e",
       "to": "stopAllBalls",
       "evidence": "Calls stop on every ball.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.e(II)V",
+      "originalName": "e",
+      "to": "computeAimTargets",
+      "evidence": "Builds the aim target list for every ball and fixed spot, sorts it by distance and trims overlapping arcs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.f(B)Z",
+      "originalName": "f",
+      "to": "beginNextShot",
+      "evidence": "Creates or recycles a ShotRecord one shot number higher, picks the next player and applies the end-resolution flags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.f(I)I",
+      "originalName": "f",
+      "to": "stateByteLength",
+      "evidence": "Sums the encoded sizes of every ball and pocket plus one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.g(B)V",
+      "originalName": "g",
+      "to": "updateShotState",
+      "evidence": "Resolves collisions, pots balls, records them in the pockets and sets the end resolution when the shot is finished.",
       "confidence": "reviewed"
     },
     {
@@ -12414,10 +12659,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:al.h(B)V",
+      "originalName": "h",
+      "to": "loadDefaultTable",
+      "evidence": "Loads the fixed table outline coordinates through loadTableOutline.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.h(I)Z",
+      "originalName": "h",
+      "to": "finishShot",
+      "evidence": "Requires phase 2, then either advances the player on a resolution flag or begins the next shot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.i(B)V",
+      "originalName": "i",
+      "to": "startShot",
+      "evidence": "Throws Starting new shot, but not animating when the phase is not 1, then snapshots the state and starts the rules.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:al.j(I)Lqe;",
       "originalName": "j",
       "to": "currentShot",
       "evidence": "Returns the newest shot from the shots deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.k(I)V",
+      "originalName": "k",
+      "to": "printState",
+      "evidence": "Prints the balls and pockets lists to standard output.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.o(I)I",
+      "originalName": "o",
+      "to": "historyByteLength",
+      "evidence": "Sums the encoded sizes of the last shots in the shot history.",
       "confidence": "reviewed"
     },
     {
@@ -12789,6 +13069,34 @@
       "originalName": "a",
       "to": "projectCorners",
       "evidence": "Transforms each corner by the camera matrix and perspective-divides into screen x/y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bm.a(BLma;J)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Unlinks the node, stores the key and splices it into the bucket selected by the key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bm.a(I)Lma;",
+      "originalName": "a",
+      "to": "first",
+      "evidence": "Stores the bucket count to scan and returns the first node found by next.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bm.a(ZJ)Lma;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Walks the bucket of the key and returns the node with a matching key, remembering the position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bm.b(I)Lma;",
+      "originalName": "b",
+      "to": "next",
+      "evidence": "Advances across the nodes of the current bucket and then the following buckets.",
       "confidence": "reviewed"
     },
     {
@@ -14822,6 +15130,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fj.a(IBI)Z",
+      "originalName": "a",
+      "to": "isBallInGroup",
+      "evidence": "Called with the shot's group before and a ball index when checking each potted ball. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(IBLqe;)Z",
+      "originalName": "a",
+      "to": "isPotLegal",
+      "evidence": "The controller calls it for each potted ball of the shot in the loop that decides the shot outcome. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fj.a(Z)I",
       "originalName": "a",
       "to": "initialBallInHandMode",
@@ -14829,10 +15151,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fj.b(II)B",
+      "originalName": "b",
+      "to": "ballGroup",
+      "evidence": "The controller compares its result for a ball with the initial group when it marks the rack balls. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.b(Lqe;I)Ldd;",
+      "originalName": "b",
+      "to": "targetBallSprite",
+      "evidence": "The controller assigns its result to the sprite of the target indicator widget. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fj.b(Z)V",
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "Public static method whose body only assigns null to static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.c(I)V",
+      "originalName": "c",
+      "to": "updateGroupLabels",
+      "evidence": "The EightBall override writes the two group names into the menu label table. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.c(Lqe;I)Z",
+      "originalName": "c",
+      "to": "isFirstContactLegal",
+      "evidence": "The controller shows the foul exclamation and marks the shot fouled when it returns false after a first contact. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.f(I)Z",
+      "originalName": "f",
+      "to": "showsTargetBall",
+      "evidence": "When true the controller draws the target ball sprite from the rules instead of the player name. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -17090,24 +17447,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ko.a(B)Lma;",
+      "originalName": "a",
+      "to": "first",
+      "evidence": "Returns the first node and stores its successor as the iteration cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.a(BLma;)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "Unlinks the node if linked then splices it in before the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.a(I)I",
+      "originalName": "a",
+      "to": "size",
+      "evidence": "Counts the nodes by walking from the sentinel's previous link.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.b(B)Lma;",
+      "originalName": "b",
+      "to": "next",
+      "evidence": "Returns the cursor node and advances it forward, or null at the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.b(BLma;)V",
+      "originalName": "b",
+      "to": "addFirst",
+      "evidence": "Unlinks the node if linked then splices it in after the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ko.b(I)Lma;",
       "originalName": "b",
-      "to": "removeLast",
-      "evidence": "Method body closely resembles removeLast in the reviewed IntrusiveDeque classes of other games.",
+      "to": "removeFirst",
+      "evidence": "Unlinks and returns the node after the sentinel, or null when the deque is empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.c(B)Lma;",
+      "originalName": "c",
+      "to": "last",
+      "evidence": "Returns the last node and stores its predecessor as the iteration cursor.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:ko.c(I)Z",
       "originalName": "c",
       "to": "isEmpty",
-      "evidence": "Method body closely resembles isEmpty in the reviewed IntrusiveDeque classes of other games.",
+      "evidence": "Returns true when the sentinel points back to itself.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.d(B)V",
+      "originalName": "d",
+      "to": "clear",
+      "evidence": "Unlinks every node from the tail until the sentinel is alone and resets the cursor.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:ko.e(B)Lma;",
       "originalName": "e",
-      "to": "removeFirst",
-      "evidence": "Method body closely resembles removeFirst in the reviewed IntrusiveDeque classes of other games.",
+      "to": "removeLast",
+      "evidence": "Unlinks and returns the node before the sentinel, or null when the deque is empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.f(B)Lma;",
+      "originalName": "f",
+      "to": "previous",
+      "evidence": "Returns the cursor node and advances it backward, or null at the sentinel.",
       "confidence": "reviewed"
     },
     {
@@ -17118,10 +17531,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kq.a(B)V",
+      "originalName": "a",
+      "to": "paintFrame",
+      "evidence": "Called by drawFrameWithTiming; the Pool override draws the current screen and overlays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.a(BLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "redirectToErrorPage",
+      "evidence": "Prints error_game_, calls the loggedout script and shows the matching error_game .ws document in the top frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.a(I)V",
+      "originalName": "a",
+      "to": "tickWithTiming",
+      "evidence": "Records the tick time in a 32-entry ring and calls the update hook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.a(IZ)V",
+      "originalName": "a",
+      "to": "shutdown",
+      "evidence": "Destroys the canvas and audio, releases the statics and prints Shutdown complete.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.b(B)V",
+      "originalName": "b",
+      "to": "drawFrameWithTiming",
+      "evidence": "Records the frame time in a 32-entry ring, refreshes the canvas now and then and calls the paint hook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.c(B)V",
+      "originalName": "c",
+      "to": "shutdownServices",
+      "evidence": "Called from shutdown; the Pool override stops the audio and cache workers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.d(B)V",
+      "originalName": "d",
+      "to": "initializeGame",
+      "evidence": "Called once by the run loop after canvas creation; the Pool override sets up the framework, audio and packet tables.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.e(B)V",
+      "originalName": "e",
+      "to": "updateGame",
+      "evidence": "Called by tickWithTiming; the Pool override runs the screen and network updates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.f(B)V",
+      "originalName": "f",
+      "to": "recreateCanvas",
+      "evidence": "Removes the old canvas, adds a new DelegatingCanvas of the game size to the container and requests focus.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kq.g(B)V",
       "originalName": "g",
       "to": "releaseStatics",
       "evidence": "Public static method whose body only assigns null to static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.h(B)V",
+      "originalName": "h",
+      "to": "releaseAllStatics",
+      "evidence": "Called from shutdown; the Pool override calls every class's releaseStatics method.",
       "confidence": "reviewed"
     },
     {
@@ -17790,6 +18273,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mc.a(IBI)Z",
+      "originalName": "a",
+      "to": "isBallInGroup",
+      "evidence": "Called with the shot's group before and a ball index when checking each potted ball. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.a(IBLqe;)Z",
+      "originalName": "a",
+      "to": "isPotLegal",
+      "evidence": "The controller calls it for each potted ball of the shot in the loop that decides the shot outcome. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mc.a(Z)I",
       "originalName": "a",
       "to": "initialBallInHandMode",
@@ -17797,10 +18294,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mc.b(II)B",
+      "originalName": "b",
+      "to": "ballGroup",
+      "evidence": "The controller compares its result for a ball with the initial group when it marks the rack balls. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.b(Lqe;I)Ldd;",
+      "originalName": "b",
+      "to": "targetBallSprite",
+      "evidence": "The controller assigns its result to the sprite of the target indicator widget. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.c(I)V",
+      "originalName": "c",
+      "to": "updateGroupLabels",
+      "evidence": "The EightBall override writes the two group names into the menu label table. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.c(Lqe;I)Z",
+      "originalName": "c",
+      "to": "isFirstContactLegal",
+      "evidence": "The controller shows the foul exclamation and marks the shot fouled when it returns false after a first contact. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mc.d(B)V",
       "originalName": "d",
       "to": "releaseStatics",
       "evidence": "Public static method whose body only assigns null to static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.f(I)Z",
+      "originalName": "f",
+      "to": "showsTargetBall",
+      "evidence": "When true the controller draws the target ball sprite from the rules instead of the player name. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -20786,10 +21318,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rj.a(BI)Z",
+      "originalName": "a",
+      "to": "isPlayerActive",
+      "evidence": "The base returns true and nextPlayerIndex skips players for which it is false. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rj.a(I)I",
       "originalName": "a",
       "to": "initialGroup",
       "evidence": "Called with -1 to fill the group-before field of a new shot and FreePlayRules returns -1. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.a(IBI)Z",
+      "originalName": "a",
+      "to": "isBallInGroup",
+      "evidence": "Called with the shot's group before and a ball index when checking each potted ball. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.a(IBLqe;)Z",
+      "originalName": "a",
+      "to": "isPotLegal",
+      "evidence": "The controller calls it for each potted ball of the shot in the loop that decides the shot outcome. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -20804,6 +21357,41 @@
       "originalName": "a",
       "to": "initialBallInHandMode",
       "evidence": "Its result is stored as the new shot's ball-in-hand mode and the rule subclasses return 1. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.b(II)B",
+      "originalName": "b",
+      "to": "ballGroup",
+      "evidence": "The controller compares its result for a ball with the initial group when it marks the rack balls. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.b(Lqe;I)Ldd;",
+      "originalName": "b",
+      "to": "targetBallSprite",
+      "evidence": "The controller assigns its result to the sprite of the target indicator widget. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.c(I)V",
+      "originalName": "c",
+      "to": "updateGroupLabels",
+      "evidence": "The EightBall override writes the two group names into the menu label table. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.c(Lqe;I)Z",
+      "originalName": "c",
+      "to": "isFirstContactLegal",
+      "evidence": "The controller shows the foul exclamation and marks the shot fouled when it returns false after a first contact. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.f(I)Z",
+      "originalName": "f",
+      "to": "showsTargetBall",
+      "evidence": "When true the controller draws the target ball sprite from the rules instead of the player name. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -21143,6 +21731,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sj.a(BLjava/lang/Class;[Ljava/lang/Class;Ljava/lang/String;)Lle;",
+      "originalName": "a",
+      "to": "getDeclaredMethod",
+      "evidence": "Queues opcode 8, which calls Class.getDeclaredMethod with the name and parameter types.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(I)Lle;",
+      "originalName": "a",
+      "to": "listDisplayModes",
+      "evidence": "Queues opcode 5, which returns the available display modes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(IIIIB)Lle;",
+      "originalName": "a",
+      "to": "enterFullscreen",
+      "evidence": "Queues opcode 6, which creates the Jagex Full Screen frame at the packed size and rate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(IILjava/lang/Runnable;)Lle;",
+      "originalName": "a",
+      "to": "startThread",
+      "evidence": "Queues opcode 2, which starts a daemon Thread for the Runnable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(IIZLjava/lang/Object;I)Lle;",
+      "originalName": "a",
+      "to": "queueRequest",
+      "evidence": "Creates a request with the opcode, argument and payload, appends it under the lock and notifies the worker thread.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(ILjava/lang/String;ZB)Lle;",
+      "originalName": "a",
+      "to": "queueSocketRequest",
+      "evidence": "Queues opcode 22 or 1, which opens a socket to the host and port on the worker thread.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(Ljava/awt/Component;III)Lle;",
+      "originalName": "a",
+      "to": "setCursorPosition",
+      "evidence": "Adds the component's screen location to the point and queues opcode 14.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(Ljava/awt/Frame;Z)Lle;",
+      "originalName": "a",
+      "to": "exitFullscreen",
+      "evidence": "Queues opcode 7, which leaves fullscreen for the frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(Ljava/lang/Class;Ljava/lang/String;B)Lle;",
+      "originalName": "a",
+      "to": "getDeclaredField",
+      "evidence": "Queues opcode 9, which calls Class.getDeclaredField on the class and name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(Ljava/lang/String;II)Lle;",
+      "originalName": "a",
+      "to": "openSocket",
+      "evidence": "Forwards the host and port to the private socket request method.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(ZBLjava/awt/Component;)Lle;",
+      "originalName": "a",
+      "to": "setCursorVisible",
+      "evidence": "Queues opcode 15, which the worker turns into a showcursor or setCursorVisible call on the component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sk.a(BI[SS)[S",
       "originalName": "a",
       "to": "extendShortArray",
@@ -21381,10 +22046,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sq.a(BI)Z",
+      "originalName": "a",
+      "to": "isPlayerActive",
+      "evidence": "The base returns true and nextPlayerIndex skips players for which it is false.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sq.a(I)I",
       "originalName": "a",
       "to": "initialGroup",
       "evidence": "Called with -1 to fill the group-before field of a new shot and FreePlayRules returns -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.a(IBI)Z",
+      "originalName": "a",
+      "to": "isBallInGroup",
+      "evidence": "Called with the shot's group before and a ball index when checking each potted ball.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.a(IBLqe;)Z",
+      "originalName": "a",
+      "to": "isPotLegal",
+      "evidence": "The controller calls it for each potted ball of the shot in the loop that decides the shot outcome.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.a(I[Ljava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "joinPlayerNames",
+      "evidence": "Joins the given names with the break tag, returning null when the player index is out of range.",
       "confidence": "reviewed"
     },
     {
@@ -21409,6 +22102,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sq.b(II)B",
+      "originalName": "b",
+      "to": "ballGroup",
+      "evidence": "The controller compares its result for a ball with the initial group when it marks the rack balls.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.b(Lqe;I)Ldd;",
+      "originalName": "b",
+      "to": "targetBallSprite",
+      "evidence": "The controller assigns its result to the sprite of the target indicator widget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.c(I)V",
+      "originalName": "c",
+      "to": "updateGroupLabels",
+      "evidence": "The EightBall override writes the two group names into the menu label table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.c(II)I",
+      "originalName": "c",
+      "to": "teamIndex",
+      "evidence": "The controller compares its results for two players to find which seats share a side.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.c(Lqe;I)Z",
+      "originalName": "c",
+      "to": "isFirstContactLegal",
+      "evidence": "The controller shows the foul exclamation and marks the shot fouled when it returns false after a first contact.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sq.d(I)V",
       "originalName": "d",
       "to": "releaseStatics",
@@ -21420,6 +22148,13 @@
       "originalName": "e",
       "to": "playerCount",
       "evidence": "Returns the model's player count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.f(I)Z",
+      "originalName": "f",
+      "to": "showsTargetBall",
+      "evidence": "When true the controller draws the target ball sprite from the rules instead of the player name.",
       "confidence": "reviewed"
     },
     {
@@ -23775,10 +24510,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vp.a(IBI)Z",
+      "originalName": "a",
+      "to": "isBallInGroup",
+      "evidence": "Called with the shot's group before and a ball index when checking each potted ball. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.a(IBLqe;)Z",
+      "originalName": "a",
+      "to": "isPotLegal",
+      "evidence": "The controller calls it for each potted ball of the shot in the loop that decides the shot outcome. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vp.a(Z)I",
       "originalName": "a",
       "to": "initialBallInHandMode",
       "evidence": "Its result is stored as the new shot's ball-in-hand mode and the rule subclasses return 1. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.b(II)B",
+      "originalName": "b",
+      "to": "ballGroup",
+      "evidence": "The controller compares its result for a ball with the initial group when it marks the rack balls. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.b(Lqe;I)Ldd;",
+      "originalName": "b",
+      "to": "targetBallSprite",
+      "evidence": "The controller assigns its result to the sprite of the target indicator widget. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.c(I)V",
+      "originalName": "c",
+      "to": "updateGroupLabels",
+      "evidence": "The EightBall override writes the two group names into the menu label table. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.c(Lqe;I)Z",
+      "originalName": "c",
+      "to": "isFirstContactLegal",
+      "evidence": "The controller shows the foul exclamation and marks the shot fouled when it returns false after a first contact. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.f(I)Z",
+      "originalName": "f",
+      "to": "showsTargetBall",
+      "evidence": "When true the controller draws the target ball sprite from the rules instead of the player name. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -25990,7 +26774,7 @@
     "files": {
       "build-pool-rules.mjs": "3528233f1a0c3247b6cb31b05a23410e579f3354fe3aca24b17ee3ddd6d48983",
       "pool-names-data.mjs": "e7cefa558f5b27ff8b5d6b54ed3b3e18ef9c3e29af31d7d2eb0b675793a1da51",
-      "pool-names-game.mjs": "0e2bcee8656c503eb4bf30937ea18205c9822c6eae0730594f42ca5515a88185",
+      "pool-names-game.mjs": "9092f34329b426c284b3ad1ad472fe87f84c925761ee6a083725948da7870449",
       "reproduce-pool.mjs": "a70c50f3e18ae106fff2130226dafcc1962938974aa6d419716e73302917663c",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
