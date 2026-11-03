@@ -345,6 +345,10 @@ const classes = {
   cc: ['FixedQuaternion', 'Four 16.16 fixed-point components starting at identity (65536), with axis-angle setup, product and rotation-matrix output, as Armies of Gielinor FixedQuaternion.'],
   dt: ['OffscreenPlayerArrow', 'Built from a RenderedFootballer and a slot index; places an arrow on the screen edge by sine and cosine of the bearing to the player and draws it with a fade.'],
   ec: ['LoginText', 'Holds a login text string and a boolean flag that is forced false for empty text; constructed from the stored account name, as Escape Vector LoginText.'],
+  al: ['FriendsListPanel', 'Scroll pane of friend rows plus Add friend and Remove friend buttons, built in the lobby setup.'],
+  bo: ['QuickChatKeysHelpPanel', 'Title plus rows pairing [BACKSPACE]/[HOME]/[F9]/[F10]/[F11]/[ESC] with Quick Chat key descriptions.'],
+  im: ['ListRow', 'Abstract hd row with abstract draw b(II) and click handler c(IZ), subclassed by auction and shop rows.'],
+  jr: ['ReceivedAuctionItemRow', 'ListRow drawing a ReceivedAuctionItem with take-up and withdraw buttons and the bid/buyout text.'],
 // END-R2CLASSES
   jc: ['LoggedPlayer', 'toString returns "LoggedPlayer{..}" with home/away side, resign time, reward, membership, tackle, kick, cross, header and goal counters.'],
 };
@@ -812,6 +816,8 @@ method('mg', 'a', '(ZII)Lki;', 'createKeyheldEvent', 'Returns new ki(0, ...), th
 method('ha', 'b', '(III)Lki;', 'createKeypressEvent', 'Returns new ki(1, ...), the Keypress event type printed by PlayerInputEvent.toString.');
 method('hw', 'a', '(IIIBB)Lki;', 'createMouseEvent', 'Returns new ki(2, ...), the Mouse event type printed by PlayerInputEvent.toString, carrying the click coordinates.');
 method('wd', 'a', '(I[Lup;Lgr;II)Lki;', 'createLineupEvent', 'Creates new ki(5, ...) and attaches the PlayerStats array, the LineUp event type.');
+method('im', 'a', '(Ljava/applet/Applet;ILjava/lang/String;)V', 'openUrlInBrowser', 'Builds a URL against the code base and hands it to bv.a, which calls showDocument.');
+method('bo', 'a', '(ILjava/lang/String;)Ljava/lang/String;', 'reverseString', 'Fills a char array backwards from the input and returns it as a new String.');
 method('a', 'e', '()V', 'writeMixBlock', 'Body is identical to steelsentinels JavaSoundAudioOutput.writeMixBlock.');
 method('a', 'f', '()V', 'closeDevice', 'Body is identical to escapevector/geoblox JavaSoundAudioOutput.closeDevice.');
 method('ah', '$cfr$lcmp', '(JJ)I', 'compareLongs', 'Body is identical to escapevector GameAppletShell.compareLongs.');
