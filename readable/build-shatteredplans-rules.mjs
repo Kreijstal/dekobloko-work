@@ -254,6 +254,11 @@ Object.assign(classes, {
   "pd": ["TertiaryListSequence", "NodeSequence over a TertiaryNodeList."],
   "un": ["IntrusiveDequeSequence", "NodeSequence over an IntrusiveDeque."],
   "vf": ["QuaternaryListSequence", "NodeSequence over a QuaternaryNodeList."],
+  "as": ["FleetVisual", "IntrusiveNode created from a FleetMove that stores the endpoints, owner, count and trail arrays MapView draws."],
+  "ms": ["ChatMessage", "Abstract outgoing chat message with an abstract write method and an abstract kind getter."],
+  "ee": ["PrivateChatMessage", "ChatMessage that writes a recipient string and a text string; dd.a creates it when a recipient is given and the id is zero."],
+  "kp": ["TargetedChatMessage", "ChatMessage holding a long target id and a text string."],
+  "ds": ["MessageKind", "Holds one int id and a toString; returned by ChatMessage.getKind."],
 });
 method("ob", "e", "(B)Ljava/lang/String;", "readMarkedString", "Requires a leading zero byte and then reads bytes up to the next zero as a string.");
 method("ob", "a", "(BLjava/lang/String;)V", "writeMarkedString", "Rejects strings containing NUL, writes a zero marker byte and then the string.");
@@ -1208,6 +1213,13 @@ method("w", "b", "(IIB)V", "centre", "Sets the bounds so that a dialog of the gi
 method("f", "i", "(I)Lvg;", "findFocusedChild", "Returns the first child that has focus.");
 method("f", "a", "(Lvg;Z)Z", "isBeforeFocusedChild", "Walks the siblings before the focused child and tests whether the argument is among them.");
 method("f", "a", "(Lvg;I)Z", "isAfterFocusedChild", "Walks the siblings after the focused child and tests whether the argument is among them.");
+method("tr", "c", "(Lln;I)V", "drawStarLayers", "Draws the star's glow, project icons and, when zoomed in, its labels.");
+method("tr", "a", "(Lln;III)Lmg;", "findFleetNear", "Returns an incoming FleetMove of the viewer whose midpoint lies within nine pixels of the point.");
+method("tr", "a", "(Lln;B)V", "drawStarSprite", "Selects an animation frame from the tick count and star kind and draws the star sprite.");
+method("tr", "a", "(Lpf;ZZZ)V", "drawFleetVisuals", "Draws each FleetVisual along its path between projected star positions.");
+method("tr", "a", "(BII)V", "drawBattleSummaries", "Draws the owner colours and ship counts of each BattleSnapshot next to its star.");
+method("ms", "a", "(Lob;B)V", "write", "Abstract: writes the message fields to the packet.");
+method("ms", "a", "(B)Lds;", "getKind", "Abstract: returns the MessageKind of the message.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
