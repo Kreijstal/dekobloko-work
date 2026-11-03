@@ -146,3 +146,35 @@ cls('dka', 'ReportAbusePanel', 'Container with three hf buttons headed by the Re
 cls('aha', 'LinkTextWidget', 'hf subclass that stores string lines and hit-tests aia link regions.');
 cls('aia', 'TextLinkRegion', 'IntrusiveNode rectangle with a chained next region used by aha hit tests.');
 cls('jma', 'EffectBatchAnimation', 'AnimationNode that counts down, then applies each pp effect of an rv batch and starts popup animations.');
+
+// ---- Applet shell main loop and hooks ------------------------------------
+mem('ck', 'a', '(I)V', 'createCanvas', 'Removes the old canvas, picks a parent container and adds a new hr canvas to it.');
+mem('ck', 'c', '(I)V', 'renderFrame', 'Samples the frame clock for the fps figure, resizes the canvas and calls the abstract draw hook.');
+mem('ck', 'a', '(B)V', 'draw', 'Abstract hook that renderFrame calls once the canvas is ready.');
+mem('ck', 'f', '(I)V', 'tickOnce', 'Samples the tick clock and calls the abstract update hook inside a synchronized block.');
+mem('ck', 'b', '(B)V', 'update', 'Abstract per-tick hook that tickOnce calls.');
+mem('ck', 'a', '(IZ)V', 'shutdown', 'Runs once under a lock, destroys the loader applet, removes the canvas and prints Shutdown complete.');
+mem('ck', 'd', '(I)V', 'onShutdown', 'Abstract hook that shutdown calls first.');
+mem('ck', 'b', '(I)V', 'releaseGame', 'Abstract hook that shutdown calls after releasing the dispatcher.');
+mem('ck', 'c', '(B)V', 'initialize', 'Abstract hook that run calls once after the canvas is created and before the frame loop.');
+
+// ---- Animations ----------------------------------------------------------------
+cls('ida', 'MovementAnimation', 'Abstract AnimationNode holding a gj, a creature reference and four ints; qf and rka extend it.');
+cls('qf', 'MoveEventAnimation', 'MovementAnimation constructed from a gj and a df move event, with walk, jump and sprint cases.');
+cls('ek', 'DamagePopupAnimation', 'AnimationNode started by jma with a positive effect amount to show it above a creature actor.');
+cls('fha', 'TileEffectAnimation', 'AnimationNode that registers its kj in the tile list on its first step and finishes after a fixed tick count.');
+
+// ---- BattleState methods -----------------------------------------------------
+mem('op', 'c', '(III)Laga;', 'getCreatureAt', 'Scans every roster for the creature whose x and y equal the arguments.');
+mem('op', 'g', '(B)I', 'countCreatures', 'Sums the creature count of every roster.');
+mem('op', 'e', '(III)Z', 'isTileFree', 'Returns true when the tile has no occupant and its terrain is not one of the blocked codes.');
+mem('op', 'b', '(BIII)V', 'setTerrain', 'Stores a terrain code in a tile and resets its flags and counters.');
+mem('op', 'a', '(Lsfa;B)Lcj;', 'executeOrder', 'Builds the event for an order, applies it to the state and appends it to the history deque.');
+mem('op', 'c', '(B)I', 'computeChecksum', 'Folds board type, turn, rosters and positions into one xor hash.');
+mem('op', 'h', '(B)V', 'clearOrders', 'Allocates an empty order table with seven slots per player.');
+mem('op', 'b', '(Llu;B)V', 'write', 'Writes the turn header then the board, turn order and rosters.');
+mem('op', 'a', '(ILlu;)V', 'read', 'Reads the turn header, board, turn order and rosters back from a buffer.');
+mem('op', 'c', '(Llu;B)V', 'writeBoard', 'Writes board type, game type and dimensions followed by the tiles.');
+mem('op', 'd', '(Llu;B)V', 'writeTurnOrder', 'Writes the count and creature references of the turn order array.');
+mem('op', 'a', '(ZI)V', 'endMatch', 'Stores the winner, adds 300 to its score and queues result entries for every creature.');
+mem('op', 'j', '(I)V', 'assignTurnOrderIndices', 'Stores each turn order position plus one on the matching creature.');
