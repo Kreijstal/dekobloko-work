@@ -136,7 +136,17 @@
     ["pf","MenuInputState","Tracks menu pointer and key input state."],
     ["kp","QuickChatPhraseDefinition","DualLinkNode defining a Quick Chat phrase read from a PacketBuffer."],
     ["qe","QuickChatCategory","DualLinkNode defining a Quick Chat category read from a PacketBuffer."],
-    ["oc","StripedProgressBar","UiComponent drawing a striped progress bar for the loading dialogs."]
+    ["oc","StripedProgressBar","UiComponent drawing a striped progress bar for the loading dialogs."],
+    ["hd","PlayerBoard","Per-player byte[] grid with a border, the falling two-by-two piece position and tones, and move, rotate and place actions."],
+    ["dd","Puzzle","Target picture set with IndexedSprite pictures, grid columns and rows, border flags and a current picture index."],
+    ["pm","Match","Holds the player names, scores, PlayerBoards and the Puzzle of one game and applies player actions to the boards."],
+    ["uh","PlayerController","Drives one PlayerBoard over time with its BoardView, falling-piece view and timed input queue."],
+    ["ee","InputQueue","Deque of QueuedInput entries fed by player actions and drained by ticks."],
+    ["rd","QueuedInput","IntrusiveNode carrying an action code and a tick for the InputQueue."],
+    ["kk","BoardView","Draws one PlayerBoard as 32-pixel cells with landing animations and particles."],
+    ["al","FallingPieceView","Computes the screen position and scale of the falling piece and draws its four quadrants from the board tones."],
+    ["tk","BoardParticle","IntrusiveNode particle with double-precision position and velocity spawned when cells are painted."],
+    ["ii","MatchController","Builds the Match and PlayerControllers from player names and runs the game round with its state object."]
   ],
   "methods": [
     ["sj","a","([III)V","process","Body matches armiesofgielinor/PcmStream.process in another FunOrb build (similarity 1.00)."],
@@ -403,7 +413,23 @@
     ["kp","a","(B)Ljava/lang/String;","getPreview","Body matches brickabrac/QuickChatPhraseDefinition.getPreview in another FunOrb build (similarity 0.87)."],
     ["qe","a","(B)V","applyGlobalIds","Body matches armiesofgielinor/QuickChatCategory.applyGlobalIds in another FunOrb build (similarity 0.86)."],
     ["qe","a","(ZLwe;)V","decode","Body matches armiesofgielinor/QuickChatCategory.decode in another FunOrb build (similarity 0.87)."],
-    ["oc","a","(IIILng;)V","updatePointer","Body matches escapevector/StripedProgressBar.updateHover in another FunOrb build (similarity 0.89)."]
+    ["oc","a","(IIILng;)V","updatePointer","Body matches escapevector/StripedProgressBar.updateHover in another FunOrb build (similarity 0.89)."],
+    ["hd","a","(ILwe;)V","readState","Reads piece position, tones, fast-drop flag and board cells from a PacketBuffer and reseeds the piece generator."],
+    ["hd","a","(IB)Z","applyAction","Dispatches action codes 0-7 to move, rotate, place the piece or toggle fast drop on the board."],
+    ["hd","b","(I)V","spawnPiece","Chooses the next piece tones from the weighted table or the recorded stream and rotates them randomly."],
+    ["hd","c","(I)Z","isFullyPainted","Returns whether every interior cell has the painted bit set."],
+    ["hd","a","(I)V","clear","Zeroes every non-border cell and resets the placed, border-touch and flag states."],
+    ["hd","a","(I[B)V","loadCells","Copies a byte array into the board cells."],
+    ["hd","b","(II)V","seedPieces","Resets the piece counter and creates the piece Random from the given seed."],
+    ["hd","a","(Lhh;I)V","loadPicture","Writes the indexed sprite pixels into the interior cells as colour bits with the painted flag."],
+    ["dd","a","(BLjava/util/Random;)V","shufflePictures","Shuffles the picture array with a Random."],
+    ["dd","a","(B)Z","advancePicture","Increments the picture index and returns true when it reaches the picture count."],
+    ["pm","c","(I)Z","startNextPicture","Clears every board and advances the Puzzle to its next picture."],
+    ["pm","a","(Lwe;B)V","readState","Reads the round seed, scores, puzzle index and both board states from a PacketBuffer."],
+    ["pm","d","(I)V","advanceRound","Increments the round counter and reseeds every board."],
+    ["pm","a","(IIII)Z","applyAction","Applies an action to one board and, on placement, scores the painted cells against the picture."],
+    ["uh","c","(I)V","tick","Advances the view, timers and queued inputs of one player by one tick."],
+    ["uh","a","(II)Z","applyInput","Applies a placed, rotate, move or drop input to the Match board and starts the matching animations."]
   ],
   "fields": [
     ["pp","field_p","I","positionQ8","Field role matches positionQ8 in aligned methods of the same shared class in other FunOrb builds."],
@@ -569,6 +595,23 @@
     ["kp","field_y","[Ljava/lang/String;","fragments","Field role matches fragments in aligned methods of the same shared class in other FunOrb builds."],
     ["qe","field_D","[I","phraseIds","Field role matches phraseIds in aligned methods of the same shared class in other FunOrb builds."],
     ["qe","field_z","[I","subcategoryIds","Field role matches subcategoryIds in aligned methods of the same shared class in other FunOrb builds."],
-    ["oc","field_R","I","stripeOffset","Field role matches stripeOffset in aligned methods of the same shared class in other FunOrb builds."]
+    ["oc","field_R","I","stripeOffset","Field role matches stripeOffset in aligned methods of the same shared class in other FunOrb builds."],
+    ["hd","field_r","[B","cells","Board constructor allocates a padded width by height byte array whose edge bytes are set to -1."],
+    ["hd","field_h","I","pieceRow","Moves by one row when actions 0 and 1 pass the collision checks."],
+    ["hd","field_e","I","pieceColumn","Moves by one column when actions 2 and 3 pass the collision checks."],
+    ["hd","field_i","I","paddedWidth","Puzzle columns plus two border cells, used as the row stride of the cells array."],
+    ["hd","field_a","I","paddedHeight","Puzzle rows plus two border cells."],
+    ["hd","field_s","[Z","pieceTones","Four flags choosing tone 1 or 2 for the four cells of the piece when it is placed."],
+    ["hd","field_d","I","piecesPlaced","Incremented each time the piece is placed."],
+    ["hd","field_p","Z","fastDrop","Set by action 7 and cleared by action 6."],
+    ["dd","field_l","[Lhh;","pictures","Target pictures shuffled and advanced through by the Puzzle."],
+    ["dd","field_d","I","pictureIndex","Incremented by advancePicture and compared to the picture count."],
+    ["dd","field_o","I","columns","Constructor argument that sizes the board width."],
+    ["dd","field_k","I","rows","Constructor argument that sizes the board height."],
+    ["dd","field_p","I","borderFlags","Bit mask selecting which board edges are filled with border cells."],
+    ["pm","field_i","[Ljava/lang/String;","playerNames","Constructor argument whose length sets the number of boards."],
+    ["pm","field_v","[I","scores","Per-player score array increased by the placement score."],
+    ["pm","field_a","[Lhd;","boards","One PlayerBoard per player."],
+    ["pm","field_d","Ldd;","puzzle","Puzzle created from the constructor mode and shared by all boards."]
   ]
 }
