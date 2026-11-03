@@ -279,6 +279,47 @@ const classes = {
   rt: ['StatChoiceDialog', 'MessageDialog id 20, "EXP at max! Choose a stat to increase by 1%".'],
   sq: ['SaveChangesDialog', 'MessageDialog id 1, "You have made changes to your team. Would you like to save these changes?"'],
   vf: ['BuyPitchDialog', 'MessageDialog id 29 built from a jt pitch tile: "Buy <%0> for <%1>?" with the surface name.'],
+  pk: ['LoadingSequence', 'Interface held in NetworkGameClient.field_t whose four methods tu polls: bind archives, poll archives, build assets and poll completion.'],
+  eh: ['GameResourceLoader', 'Implements LoadingSequence: binds the cache archives, decodes sprites and fonts, builds the lobby assets and starts the message-of-the-day request.'],
+  ci: ['IterableDualLinkDeque', 'Iterable circular deque of DualLinkNode with a sentinel; iterator returns a DualLinkDequeIterator and nodes are added before the sentinel.'],
+  eb: ['DiskCacheWorker', 'Runnable thread with a deque of hi requests guarded by a monitor; shutdown joins the thread, as Escape Vector DiskCacheWorker.'],
+  hi: ['DiskCacheRequest', 'Request object with operation code, data bytes and a SectorCacheStore, with progress and getBytes methods, as Escape Vector DiskCacheRequest.'],
+  eq: ['WeightedLruCache', 'Cache with a capacity, an ij entry list and an ht hash table; get, put and weighted eviction, as Escape Vector WeightedLruCache.'],
+  ij: ['WeightedCacheEntry', 'DualLinkNode entry of WeightedLruCache holding the cached object and its weight.'],
+  em: ['DualLinkHashTable', 'Power-of-two array of DualLinkNode sentinels keyed by long with get, put and bucket iteration.'],
+  fu: ['GrowableIntList', 'Int array with a size, growth step and get, set, add and remove-at methods, as GeoBlox GrowableIntList.'],
+  gd: ['ListingRowCache', 'Seven per-category tables of iu cached rows keyed by id with timestamps; add, evict-by-age and get by category and id.'],
+  iq: ['TextLayout', 'Abstract holder of qj lines with character position tables; measures line count, total height and the character index at a pixel position.'],
+  qj: ['TextLayoutLine', 'Stores a line\'s top, bottom and per-character x positions in an int array one longer than the text.'],
+  st: ['CachedTextLayout', 'TextLayout that re-lays out only when the font, text or wrap mode (single, centred, wrapped) differs from the previous call.'],
+  hf: ['PainterStyle', 'Chain-setter style object with colour, font, sprite and alignment fields that are copied into another style when set, used by the widget painters.'],
+  kk: ['TriangleMesh', 'Vertex short arrays with a vertex count, scale and translate methods and a lazy bounds computation, as Escape Vector TriangleMesh.'],
+  ks: ['HuffmanCodec', 'Built from the "huffman" archive file as a code table and encodes and decodes text byte arrays.'],
+  ll: ['DirectByteStorage', 'ByteStorage backed by a direct ByteBuffer, as GeoBlox DirectByteStorage.'],
+  lf: ['IntKeyLookup', 'Open-addressed table built from an int array whose lookup masks the key, as GeoBlox IntKeyLookup.'],
+  pf: ['ByteStorage', 'Abstract base with a byte[] store and retrieve pair that DirectByteStorage implements, as GeoBlox ByteStorage.'],
+  hc: ['OverlayLayer', 'Interface for per-frame layers registered with oa.a: key typed, paint, update and an input-capture query; implemented by the console, cheat listener and overlays.'],
+  md: ['CheatCodeListener', 'OverlayLayer that shifts typed letters into a four-character buffer and reacts to the cheat words.'],
+  nb: ['GameSoundEffect', 'Table entry created with a KaB_ asset name and archive group or from a PcmSample, loaded lazily through b(int).'],
+  n: ['ArchiveManager', 'Holds the network archive client, the disk cache worker and optional RSA keys, opens archives and checks the master index.'],
+  sr: ['SortCriterion', 'Abstract comparator over shop slots with a current direction index; subclasses compare slots by different stats and the base cycles the direction.'],
+  os: ['Bzip2State', 'Decoder state with an 18002-byte block, 256 used flags and 6x258 code tables, as Bzip2State in other games.'],
+  pp: ['MusicPatchPcmStream', 'PcmStream holding a tf of da note nodes and a gq mixer; its mix methods walk the notes, as Steel Sentinels MusicPatchPcmStream.'],
+  pn: ['StrongCacheEntry', 'WeightedCacheEntry subclass that holds the cached object in a strong reference and returns it from a(int).'],
+  q: ['ConsoleTokenCursor', 'Built from a tf of lk tokens into an array; a(byte) returns the next ConsoleExpression and a(int) tests for the end, as Armies of Gielinor ConsoleTokenCursor.'],
+  qe: ['ArchivePreloader', 'Queue of up to 16 oc preload tasks over named archive groups that reports "<name> - n%" progress text while polling.'],
+  rc: ['GzipDecoder', 'Checks the 31,-117 gzip magic in the buffer and inflates the payload into the byte array, as GeoBlox GzipInflater.'],
+  rd: ['GameModeDefinition', 'Constructed with ids, a member flag, a long key and a hex mask string; matches a mode by key and tests the option masks.'],
+  rj: ['SoundCache', 'Loads PcmSample objects from two archives by name or id into kc caches of 256 entries, as Steel Sentinels SoundCache.'],
+  sb: ['StringCursor', 'Wraps a string with a position and length; reads one character at a time and toString shows the caret as a bar.'],
+  sn: ['UrlRequest', 'Built from the applet code base, polls an asynchronous fetch and returns the downloaded bytes as a PacketBuffer; used for the message of the day.'],
+  td: ['TrinketCatalog', 'Static builder that fills pa.field_g with 111 Trinket entries in type id order.'],
+  ti: ['NamedValueContainer', 'Parsed from a PacketBuffer into a list of ue entries and answers lookups by entry name such as motd_message.'],
+  ue: ['NamedValueEntry', 'IntrusiveNode entry of NamedValueContainer holding a name, a type and its payload offset.'],
+  tv: ['ChatMessage', 'Record with sender, text, type and timestamp fields built from a chat packet or from the five default strings, with a b(int) kind query.'],
+  vl: ['LoginMethod', 'Three constant instances created with the texts usename, email and an empty string; saved in the jagex-last-login-method cookie, as GeoBlox LoginMethod.'],
+  w: ['DialogOverlay', 'OverlayLayer that walks the np.field_Jb dialog deque, forwards key and update calls to the active su.field_c dialog and draws it.'],
+  uv: ['ChatLine', 'Chat entry built from a name, a long id, two texts and colour fields; owns a ContextMenu and opens the friend, ignore and report prompts from it.'],
 // END-R2CLASSES
   jc: ['LoggedPlayer', 'toString returns "LoggedPlayer{..}" with home/away side, resign time, reward, membership, tackle, kick, cross, header and goal counters.'],
 };
@@ -537,6 +578,96 @@ method('gu', 'a', '(BZ)I', 'getSelectedActionId', 'Returns the action id of the 
 method('i', 'a', '(II)V', 'handleResult', 'Called with the pressed button result; the base class plays a sound, closes the dialog and subclasses add their action.');
 method('i', 'a', '(B)I', 'dialogHeight', 'Computed from the text and icon heights in the base class; subclasses override it with constants such as 320, 346 or 400.');
 method('i', 'b', '(I)I', 'dialogWidth', 'Base class width from the text and icon; subclasses return constants such as 400, 470 or 545.');
+method('pk', 'a', '(Z)Z', 'pollArchives', 'tu polls it until true before calling buildAssets; GameResourceLoader checks archive downloads in it.');
+method('pk', 'b', '(I)V', 'buildAssets', 'Called once after pollArchives returns true; GameResourceLoader builds sprites, fonts and lobby assets with progress steps.');
+method('pk', 'c', '(I)Z', 'pollReady', 'tu polls it after buildAssets to set the loaded flag; GameResourceLoader also waits for the message of the day.');
+method('pk', 'a', '(I)V', 'bindArchives', 'Called on tu with 7312 when the reload flag is set; GameResourceLoader assigns each archive group to its static field.');
+method('eh', 'b', '(B)V', 'requestMessageOfTheDay', 'Creates the request object for the motd resource.');
+method('eh', 'e', '(I)Z', 'pollMessageOfTheDay', 'Waits for the request then reads the motd_message and motd_image entries.');
+method('vg', 'l', '(I)V', 'deleteSelection', 'Removes the characters between the selection ends from the StringBuilder and collapses the caret.');
+method('vg', 'c', '(Z)V', 'copySelectionToClipboard', 'Puts the selected text into a StringSelection and hands it to the platform dispatcher.');
+method('vg', 'k', '(I)V', 'clear', 'Empties the StringBuilder, resets caret and selection and clears the label text.');
+method('vg', 'a', '(Lbu;I)V', 'setPlatformDispatcher', 'Stores the PlatformTaskDispatcher used for clipboard access.');
+method('vg', 'b', '(IB)V', 'setTextColour', 'Stores the colour on the label node.');
+method('vg', 'j', '(I)I', 'getCaretPosition', 'Returns the caret index field.');
+method('vg', 'b', '(Ljava/lang/String;I)V', 'setText', 'Replaces the text, truncated to the maximum length, and moves the caret to the end.');
+method('vg', 'h', '(B)V', 'cutSelection', 'Copies the selection to the clipboard and then deletes it.');
+method('vg', 'k', '(B)V', 'requestPaste', 'Asks the platform dispatcher for the clipboard contents.');
+method('vg', 'd', '(II)I', 'characterIndexAtWidth', 'Accumulates glyph widths from a start index until the pixel width is reached.');
+method('vg', 'a', '(ICI)Z', 'handleKey', 'Inserts printable characters 32..126 with the maximum length check and handles editing keys.');
+method('vg', 'j', '(B)Ljava/lang/String;', 'getText', 'Returns the StringBuilder as a string.');
+method('vg', 'i', '(B)Ljava/lang/String;', 'getSelectedText', 'Returns the substring between the selection ends.');
+method('vg', 'i', '(I)I', 'nextWordBoundary', 'Scans right from the caret for a character rejected by pi.a.');
+method('vg', 'f', '(II)V', 'setCaret', 'Moves caret and selection anchor to the same index.');
+method('vg', 'h', '(I)I', 'previousWordBoundary', 'Scans left from the caret for a character rejected by pi.a.');
+method('vg', 'a', '(Ljava/lang/String;I)V', 'insertText', 'Truncates to the remaining length and inserts at the caret.');
+method('vg', 'a', '(IBI)V', 'setSelection', 'Clamps both indices to the text length and stores them as caret and anchor.');
+method('vg', 'b', '(I)V', 'updatePointer', 'Maps the pointer x to a character index and handles click, double click and drag selection.');
+method('eo', 'a', '(IIIIII)V', 'drawRectangleOutline', 'Draws the four edges with the horizontal and vertical line helpers.');
+method('eo', 'a', '(ZI)Lhd;', 'createButtonNode', 'Builds an hd with four state sprites copied from the field_c or field_r sprite sets and sized to the first.');
+method('eo', 'b', '()Lhd;', 'createDefaultButtonNode', 'Builds an hd with four state sprites from the field_n set and sized to the first.');
+method('eo', 'a', '(Lut;)Lkg;', 'toIndexedSprite', 'Builds a 256-entry palette from the distinct pixel colours and stores each pixel as a palette index.');
+method('eo', 'a', '(Lut;Lot;)V', 'downscaleByHalf', 'Averages each 2x2 pixel block of the source sprite into one pixel of the destination.');
+method('eo', 'd', '(IIII)V', 'darkenRectangle', 'Clips the rectangle to the raster bounds and darkens its pixels by a fixed factor.');
+method('eo', 'a', '(Lut;IIIIII)V', 'drawSpriteClipped', 'Clamps the size to 640x480 and picks the opaque, 240 or generic alpha blit by the alpha argument.');
+method('eo', 'a', '(III)Z', 'isAngleInRange', 'Masks angles to 13 bits and tests whether the first lies in the arc starting at the second with the given length.');
+method('ci', 'a', '(B)Lam;', 'pollFirst', 'Unlinks and returns the node after the sentinel, or null when the deque is empty.');
+method('ci', 'a', '(ILam;)V', 'addLast', 'Unlinks the node if already linked and inserts it before the sentinel.');
+method('aj', 'a', '(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;', 'replaceAll', 'Loops indexOf and substring to replace every occurrence of the first string in the third with the second.');
+method('dc', 'a', '(IB)V', 'moveToFront', 'Shifts the earlier entries of ue.field_f one place up and stores the selected entry at index 0.');
+method('eb', 'b', '(I)V', 'shutdown', 'Sets the stop flag, notifies the monitor and joins the worker thread.');
+method('eb', 'a', '(IILqh;)Lhi;', 'enqueueRead', 'Creates an operation 3 request for the group and queues it, as Escape Vector enqueueRead.');
+method('eb', 'a', '(ILqh;I)Lhi;', 'readImmediate', 'Creates an operation 1 request and waits for the worker to finish it, as Escape Vector readImmediate.');
+method('eb', 'a', '(ILqh;[BB)Lhi;', 'enqueueOperation', 'Creates a request carrying the data array and operation code and queues it, as Escape Vector enqueueOperation.');
+method('eb', 'a', '(Lhi;Z)V', 'enqueue', 'Adds the request to the deque under the monitor, bumps the pending count and notifies the worker.');
+method('hi', 'a', '(I)I', 'progress', 'Returns 0 while the request is pending, otherwise 100.');
+method('hi', 'b', '(I)[B', 'getBytes', 'Throws while the request is pending, otherwise returns the data array.');
+method('eq', 'a', '(JB)Ljava/lang/Object;', 'get', 'Looks the key up in the hash table and returns the cached object, or null.');
+method('eq', 'a', '(JLjava/lang/Object;B)V', 'put', 'Stores the object with weight 1 under the key.');
+method('eq', 'a', '(ILjava/lang/Object;IJ)V', 'putWeighted', 'Throws if the weight exceeds the capacity, removes any old entry and evicts until the weight fits.');
+method('eq', 'a', '(BJ)V', 'remove', 'Looks up the entry for the key and removes it.');
+method('eq', 'a', '(Lij;I)V', 'removeEntry', 'Unlinks the entry from both lists and returns its weight to the remaining capacity.');
+method('fb', 'l', '(I)I', 'getDay', 'Parses the first two-digit text field as an integer.');
+method('fb', 'h', '(B)I', 'getMonthIndex', 'Parses the second two-digit text field and subtracts one.');
+method('fb', 'm', '(I)I', 'getYear', 'Parses the four-digit text field as an integer.');
+method('fu', 'a', '(IB)I', 'get', 'Throws ArrayIndexOutOfBoundsException past the size and otherwise returns the element.');
+method('fu', 'a', '(I)I', 'size', 'Returns the last index plus one.');
+method('fu', 'c', '(II)V', 'add', 'Stores the value at the next index through the private set method.');
+method('fu', 'a', '(II)V', 'removeAt', 'Shifts later elements down by one and decrements the last index.');
+method('fu', 'a', '(ZII)V', 'set', 'Raises the size if needed, grows the array if the index is past its end and stores the value.');
+method('fu', 'b', '(II)I', 'nextCapacity', 'Doubles or steps the current array length until the requested index fits.');
+method('fu', 'a', '(IZ)V', 'grow', 'Allocates an array of the computed capacity and copies the old contents.');
+method('gd', 'a', '(I[Lbc;J)V', 'addAll', 'Adds every bc row to its category table with the given timestamp.');
+method('gd', 'a', '(BLbc;J)V', 'add', 'Wraps the row in an iu with the timestamp and stores it in its category table by id.');
+method('gd', 'b', '(I)V', 'clear', 'Clears all seven tables and zeroes their counters.');
+method('gd', 'a', '(III)V', 'evictExpired', 'Walks each category table and removes rows outside the id range or past their age.');
+method('gd', 'a', '(IBI)Lbc;', 'get', 'Returns the cached row for the id in the category, or null for an out-of-range category.');
+method('fv', 'a', '(BLjava/lang/String;)Z', 'openUrlWithShell', 'On Windows runs cmd /c start with an http or https address and reports success.');
+method('kk', 'a', '(IIIII)V', 'scale', 'Multiplies each vertex coordinate by a ratio of the arguments.');
+method('kk', 'a', '(IIII)V', 'translate', 'Adds an offset to every vertex from the start index.');
+method('kk', 'a', '(Z)V', 'computeBounds', 'Computes the minimum and maximum vertex extents once and caches them.');
+method('nb', 'a', '(Ljava/lang/Throwable;Ljava/lang/String;)Lbs;', 'wrapException', 'Appends the context text to an existing ClientException or wraps the throwable in a new one; called from every catch block.');
+method('nb', 'b', '(I)Z', 'loadSound', 'Loads the named sound from the archive and stores the decoded PcmSample when it is available.');
+method('nj', 'a', '(I)J', 'monotonicMillis', 'Adds the amount the system clock went backwards to a running offset so the returned time never decreases.');
+method('n', 'a', '(B)Z', 'pollMasterIndex', 'Reads the archive master index and verifies it against the configured RSA keys.');
+method('sr', 'a', '(ILjava/lang/Object;Ljava/lang/Object;)I', 'compare', 'Abstract comparison of two sp shop slots implemented by each sort criterion.');
+method('sr', 'a', '(I)I', 'directionCount', 'Abstract; subclasses return the number of sort directions, 2 in the ones read.');
+method('sr', 'a', '(ZI)V', 'cycleDirection', 'Advances the direction index modulo directionCount when the flag is set, otherwise resets it to 0.');
+method('oa', 'a', '(ZLhc;)V', 'registerOverlay', 'Inserts the OverlayLayer at the front of the sn.field_g vector.');
+method('or', 'a', '(Ljava/lang/String;I)V', 'printError', 'Prints "Error: " followed by the text with %0a replaced by newlines.');
+method('q', 'a', '(B)Llk;', 'readToken', 'Returns the next token and advances the cursor.');
+method('q', 'a', '(I)Z', 'isAtEnd', 'True when the cursor is past the last token.');
+method('rc', 'a', '(ILiw;[B)V', 'decompress', 'Checks the gzip magic bytes at the cursor and inflates into the output array.');
+method('rd', 'a', '(II)Z', 'isLeapYear', 'Tests the Julian rule before year 1582 and the Gregorian rule after it.');
+method('sb', 'b', '(I)C', 'nextChar', 'Returns the character at the position and advances it.');
+method('sb', 'a', '(B)Z', 'isAtEnd', 'True when the position has reached the length.');
+method('sn', 'a', '(B)Z', 'isDone', 'True when there is no pending fetch or the fetch has completed.');
+method('sn', 'a', '(Z)Liw;', 'getResult', 'Returns the downloaded data as a PacketBuffer.');
+method('su', 'a', '(IJ)Ljava/lang/String;', 'decodeBase37Name', 'Converts a base-37 long into a name, rejecting values at or above 6582952005840035281.');
+method('td', 'b', '(I)V', 'buildTrinketTable', 'Allocates 111 Trinket slots and fills them in type id order.');
+method('ti', 'a', '(ILjava/lang/String;)Lue;', 'findEntry', 'Walks the entry list and returns the entry with the given name.');
+method('vl', 'a', '(ILjava/applet/Applet;)V', 'saveLastLoginMethod', 'Writes the method text to the jagex-last-login-method cookie for 31536000 seconds.');
+method('vl', 'a', '(Ljava/lang/String;I)Z', 'matchesName', 'Compares the stored text with the argument, ignoring case.');
 method('a', 'e', '()V', 'writeMixBlock', 'Body is identical to steelsentinels JavaSoundAudioOutput.writeMixBlock.');
 method('a', 'f', '()V', 'closeDevice', 'Body is identical to escapevector/geoblox JavaSoundAudioOutput.closeDevice.');
 method('ah', '$cfr$lcmp', '(JJ)I', 'compareLongs', 'Body is identical to escapevector GameAppletShell.compareLongs.');
