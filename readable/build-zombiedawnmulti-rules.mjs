@@ -46,7 +46,7 @@ const classes = {
   gp: ['PcmPlayerService', 'Base audio output owning a PcmStream array and int mix buffer.'],
   mf: ['MouseWheelInput', 'Abstract wheel-input hook with component registration and a delta query.'],
   cf: ['UiWidget', 'IntrusiveNode base widget with text, listener and bounds fields.'],
-  nl: ['WidgetActionListener', 'Interface with one callback receiving the UiWidget that fired; held by UiWidget and implemented by widget owners.'],
+  nl: ['WidgetPainter', 'Interface with one callback that UiWidget.renderWidget invokes with the widget; implemented by the painter classes.'],
   se: ['WidgetContainer', 'UiWidget owning an IntrusiveDeque of children traversed with a cursor.'],
   bm: ['LevelActorSpawner', 'Copies level records into new GameCharacter actors in the GameWorld and logs "Zombie! oid".'],
   ed: ['LevelFileCatalog', 'Static holder of the .zdl level file names such as tutorial.zdl and sandbox.zdl.'],
@@ -80,7 +80,7 @@ for (const [original, descriptor, to, names] of [
   ['b', '(II)V', 'writeInt', ['obfuscationGuard', 'value']], ['a', '(Ljava/lang/String;B)V', 'writeString', ['value', 'obfuscationGuard']],
 ]) method('k', original, descriptor, to, names, packet);
 method('wh', 'a', '(JI)Lbr;', 'get', ['key', 'obfuscationGuard'], 'IterableNodeHashTable.get masks the key into a bucket and walks it comparing node keys.');
-field('cf', 'h', 'Lnl;', 'listener', 'UiWidget holds the WidgetActionListener that receives this widget on activation.');
+field('cf', 'h', 'Lnl;', 'painter', 'UiWidget.renderWidget calls this WidgetPainter with the widget.');
 field('wh', 'a', '[Lbr;', 'buckets', 'IterableNodeHashTable bucket array masked by the key.');
 field('dl', 'b', 'Ljava/lang/String;', 'host', 'SocketConnector holds the host string.');
 field('dl', 'f', 'I', 'port', 'SocketConnector holds the port.');
