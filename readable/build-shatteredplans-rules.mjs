@@ -1167,6 +1167,17 @@ method("je", "a", "(IB)I", "sine", "Looks up a sine value for a 13-bit angle in 
 method("oh", "b", "(II)I", "cosine", "Looks up a cosine value for a 13-bit angle in the quarter table with sign by quadrant.");
 method("ho", "a", "(IILjava/lang/String;)Lli;", "createSocketConnector", "Creates a ProxySocketConnector and stores the port and host.");
 method("ng", "a", "(Lsl;B)Z", "readBoolean", "Reads one bit from the packet bit reader and returns whether it is 1.");
+method("oa", "a", "(IB)C", "cp1252ToChar", "Maps a byte to a char, using the Windows-1252 table for 128 to 159 and throwing for zero.");
+method("uq", "a", "(III[Ljava/lang/String;Lvr;)Ldc;", "createGameState", "Constructs a GameState from the arguments.");
+method("qj", "a", "(BLdc;Lob;)Lqa;", "readPlacementOrder", "Reads a star index and a count from the packet into a PlacementOrder.");
+method("hm", "a", "(Lqa;Lob;Z)V", "writePlacementOrder", "Writes the star index and the count of a PlacementOrder to the packet.");
+method("lp", "a", "(Lmg;BLob;)V", "writeFleetMove", "Writes the origin, destination and ship count of a FleetMove to the packet.");
+method("qq", "a", "(Ldc;ILob;)Lmg;", "readFleetMove", "Reads the origin, destination and ship count of a FleetMove from the packet.");
+method("mg", "a", "(Ldc;Lob;I)Lln;", "readStar", "Reads a star index from the packet and returns the star of the map.");
+method("us", "a", "(Lob;[Lfs;I)Lfs;", "readPlayer", "Reads a player index from the packet and returns the player or null.");
+method("ur", "a", "(Ldc;ILob;)Lfs;", "readGamePlayer", "Reads a player of the game's player array from the packet.");
+method("im", "a", "(Lfs;Lob;I)V", "writePlayer", "Writes the player index, or -1, to the packet.");
+method("di", "a", "(Lln;ZLob;)V", "writeStar", "Writes the star index, or -1, to the packet.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
