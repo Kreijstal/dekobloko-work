@@ -207,6 +207,28 @@ Object.assign(classes, {
   "fm": ["HuffmanCodec", "Built from a code-length byte array and encodes or decodes text bytes; SPClient loads it from the huffman archive file."],
   "sp": ["WidgetStyle", "Holds five WidgetPainter objects and a font that UiWidget constructors use as defaults."],
   "dm": ["ObjectList", "Growable Object array with a count that grows by ten when it is full."],
+  "cm": ["IntHashIndex", "Open-addressing table built from an int array that maps each value to its array index."],
+  "vd": ["MenuComponent", "IntrusiveNode with position, size, enabled flags and a child deque; the base of the older menu widget tree."],
+  "qh": ["MenuWindow", "MenuComponent that draws a framed window with a title and routes hit tests to its children."],
+  "fe": ["MenuButton", "MenuComponent that draws a coloured box with an optional sprite and label."],
+  "qk": ["MenuLabel", "MenuComponent that draws one centred string in a colour."],
+  "jh": ["ToggleButton", "MenuComponent with a selected flag and two sprite and text states that kq reads as a toggle."],
+  "lp": ["MenuList", "MenuComponent that scrolls its children and implements the scroll position callback gj."],
+  "gm": ["SoundPlayback", "IntrusiveNode that pairs a PcmSampleStream with a node and is queued when a sound starts."],
+  "sb": ["Particle", "IntrusiveNode with float position, velocity and life fields created by PlayerStats for the results screen."],
+  "t": ["StarLinkPlanner", "Builds a CandidateLink for every star pair, prunes crossing links and adds the rest as neighbours."],
+  "nc": ["CandidateLink", "IntrusiveNode joining two stars with float length and angle fields used by StarLinkPlanner."],
+  "r": ["UrlLoader", "Runnable that reads a URL such as countrylist.ws into a PacketBuffer on the PlatformTaskDispatcher; also holds the static exception wrapper."],
+  "dp": ["QuickChatCategoryDefinition", "DualLinkNode decoded by opcode from a PacketBuffer into a name string and int arrays of phrase ids."],
+  "si": ["QuickChatPhraseDefinition", "DualLinkNode decoded by opcode from a PacketBuffer into a text, prefix and parameter arrays."],
+  "jo": ["QuickChatPhraseRegistry", "Holds two archives and a WeightedLruCache and returns decoded QuickChatPhraseDefinition objects by id."],
+  "re": ["QuickChatCategoryRegistry", "Holds two archives and a WeightedLruCache and returns decoded QuickChatCategoryDefinition objects by id."],
+  "jk": ["MenuContent", "Empty marker interface for the content objects stored in the field_x slot of a MenuWindow."],
+  "em": ["ProductionContent", "MenuContent that holds the labels, toggles and list of the production panel that kq reads."],
+  "rh": ["ProjectsContent", "MenuContent that holds the label array and list of the projects panel that kq reads."],
+  "ad": ["StatusContent", "MenuContent that holds the sprite button and text label of the status line panel."],
+  "ph": ["ListContent", "MenuContent that holds the list, close buttons and sprite buttons created for a scrolling list window."],
+  "ff": ["SpriteButton", "MenuComponent that draws one Sprite and can replace it."],
 });
 method("ob", "e", "(B)Ljava/lang/String;", "readMarkedString", "Requires a leading zero byte and then reads bytes up to the next zero as a string.");
 method("ob", "a", "(BLjava/lang/String;)V", "writeMarkedString", "Rejects strings containing NUL, writes a zero marker byte and then the string.");
@@ -642,6 +664,28 @@ method("ol", "a", "(JIILjava/lang/Object;)V", "insert", "Evicts least recent ent
 method("dm", "a", "(ZLjava/lang/Object;)V", "add", "Appends the object and grows the array first when it is full.");
 method("dm", "a", "([Ljava/lang/Object;I)V", "copyTo", "Copies the elements from an index to the end into the argument array.");
 method("dm", "a", "(I)V", "grow", "Allocates an array ten elements larger and copies the old elements.");
+method("cm", "a", "(II)I", "get", "Probes the table for the key and returns the stored index or -1.");
+method("vd", "d", "(III)V", "translate", "Adds the offsets to the component and, recursively, to all of its children.");
+method("vd", "e", "(I)V", "unlinkChildren", "Unlinks each child node from the child deque.");
+method("vd", "a", "(BLvd;)Z", "isOrContains", "Returns true for this component or any descendant equal to the argument.");
+method("vd", "c", "(III)Z", "containsPoint", "Tests a point against the component bounds when it is enabled and visible.");
+method("vd", "c", "(Z)V", "dispose", "Disposes each child recursively and then unlinks the children.");
+method("vd", "a", "(Lvd;I)V", "addChild", "Adds the component to the end of the child deque.");
+method("vd", "b", "(BII)Lvd;", "findComponentAt", "Returns this component when the point lies inside it.");
+method("vd", "a", "(BII)V", "moveTo", "Translates the component so that its position equals the arguments.");
+method("vd", "a", "(ZII)V", "resize", "Stores the new width and height.");
+method("jh", "f", "(I)Z", "isSelected", "Returns the selected flag.");
+method("jh", "e", "(B)V", "toggle", "Inverts the selected flag.");
+method("jh", "d", "(Z)V", "setSelected", "Stores the selected flag.");
+method("jh", "g", "(I)V", "select", "Sets the selected flag.");
+method("qk", "a", "(BLjava/lang/String;)V", "setText", "Stores the label string.");
+method("fe", "a", "(BILjava/lang/String;)V", "setLabel", "Stores the label colour and text.");
+method("t", "a", "(ZI)V", "buildLinks", "Creates and prunes candidate links per star and connects the stars that remain.");
+method("r", "a", "(Ljava/lang/Throwable;Ljava/lang/String;)Lrg;", "wrapThrowable", "Wraps a Throwable and a context string into a ClientException, used by every catch block.");
+method("dp", "a", "(Lob;I)V", "decode", "Reads opcodes until a zero byte and fills the definition fields.");
+method("dp", "a", "(IILob;)V", "decodeOpcode", "Reads the data of one opcode into the definition fields.");
+method("si", "a", "(Lob;I)V", "decode", "Reads opcodes until a zero byte and fills the definition fields.");
+method("si", "a", "(Lob;BI)V", "decodeOpcode", "Reads the data of one opcode into the definition fields.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
