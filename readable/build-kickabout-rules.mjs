@@ -320,6 +320,25 @@ const classes = {
   vl: ['LoginMethod', 'Three constant instances created with the texts usename, email and an empty string; saved in the jagex-last-login-method cookie, as GeoBlox LoginMethod.'],
   w: ['DialogOverlay', 'OverlayLayer that walks the np.field_Jb dialog deque, forwards key and update calls to the active su.field_c dialog and draws it.'],
   uv: ['ChatLine', 'Chat entry built from a name, a long id, two texts and colour fields; owns a ContextMenu and opens the friend, ignore and report prompts from it.'],
+  nm: ['AnimationClip', 'Loads a named clip such as ka_tank_aggressive_tackle from the characters archive into an array of db frames and a timing table.'],
+  db: ['AnimationFrame', 'Parsed from a byte[] with a je skeleton into per-group transforms, as Armies of Gielinor AnimationFrame.'],
+  dd: ['AnimationPlayer', 'Tracks the current AnimationClip, frame index and blend counters and applies the frame to a qc mesh.'],
+  cp: ['AudioService', 'Runnable thread that loops over two uh player services and keeps their mixers filled, as GeoBlox AudioService.'],
+  tp: ['ReverbCombFilter', 'Delay-line int array with an index and a filter state; ReverbPcmStream creates eight with delays 1139..1640 samples at 44.1 kHz.'],
+  mq: ['ReverbAllPassFilter', 'Delay-line int array with a clear method; ReverbPcmStream creates two with delays 579 and 464 samples at 44.1 kHz.'],
+  ek: ['TrinketShopDialog', 'MessageDialog id 24 containing a ScrollContainer of at trinket tiles built from the pa.field_g table and an accept path through ge.a.'],
+  ib: ['DateOfBirthPanel', 'wt container with a numeric date input fb, a debounced validator hl and a button, drawn with a caption.'],
+  id: ['StatefulTextPainter', 'TextWidgetPainter subclass holding six hf styles, one per widget state, with a copy constructor.'],
+  wt: ['ArrayWidgetContainer', 'Abstract UiWidget implementing the container marker with an fd[] of children that routes drawing, key, hover and pointer events to them, as Armies of Gielinor ArrayWidgetContainer.'],
+  ou: ['StripedProgressBar', 'UiWidget that pre-renders two stripe sprites and scrolls them with a counter to draw an animated progress bar, as Steel Sentinels StripedProgressBar.'],
+  ju: ['ValidationHelpWidget', 'TextHotspotWidget subclass built from a ValidationSource that draws a help balloon with the validation message, as Steel Sentinels ValidationHelpWidget.'],
+  gb: ['ValidationIndicator', 'TextButton subclass built from a ValidationSource that draws the valid or invalid marker and its tooltip text, as Steel Sentinels ValidationIndicator.'],
+  mc: ['TickClock', 'Abstract frame clock base of NanoTickClock, as Steel Sentinels TickClock.'],
+  vi: ['NanoTickClock', 'TickClock using System.nanoTime with a ring of ten recent deltas, as Steel Sentinels NanoTickClock.'],
+  vo: ['LoginDialog', 'ContentTransitionDialog constructed from the modal stack and a child widget with the login form sizes 33, 20 and 30, as Steel Sentinels LoginDialog.'],
+  m: ['WhirlpoolHasher', 'Digest state with a 64-byte block, eight long words, a 32-byte bit counter and process, update and reset methods, as Escape Vector WhirlpoolHasher.'],
+  jj: ['MusicTrackMixer', 'PcmStream with an array of qm MusicTrack slots, a volume per slot and mix, fade and release methods; created with three slots.'],
+  lw: ['ProxyAuthenticationRequiredException', 'IOException thrown by the proxy socket connector with the status line of a failed CONNECT.'],
 // END-R2CLASSES
   jc: ['LoggedPlayer', 'toString returns "LoggedPlayer{..}" with home/away side, resign time, reward, membership, tackle, kick, cross, header and goal counters.'],
 };
@@ -668,6 +687,12 @@ method('td', 'b', '(I)V', 'buildTrinketTable', 'Allocates 111 Trinket slots and 
 method('ti', 'a', '(ILjava/lang/String;)Lue;', 'findEntry', 'Walks the entry list and returns the entry with the given name.');
 method('vl', 'a', '(ILjava/applet/Applet;)V', 'saveLastLoginMethod', 'Writes the method text to the jagex-last-login-method cookie for 31536000 seconds.');
 method('vl', 'a', '(Ljava/lang/String;I)Z', 'matchesName', 'Compares the stored text with the argument, ignoring case.');
+method('nh', 'b', '(I)I', 'rgbToHsv', 'Finds the largest and smallest RGB components and packs a hue in sixths, saturation and value into one int.');
+method('nh', 'a', '(I)I', 'hsvToRgb', 'Private converter that selects one of six hue sectors and rebuilds the packed RGB colour from hue, saturation and value.');
+method('nh', 'a', '([IDDD)V', 'adjustHsv', 'Converts each pixel to HSV, rotates the hue and scales saturation and value, converts back and keeps non-black pixels non-zero.');
+method('nh', 'a', '(Lut;DDD)V', 'adjustSpriteHsv', 'Applies adjustHsv to the sprite\'s pixel array.');
+method('nh', 'a', '(Lot;)Lut;', 'toMaskedSprite', 'Copies an ArgbSprite into a Sprite, writing 0 where the alpha bit is clear and the colour otherwise.');
+method('nh', 'b', '(Lot;)Lot;', 'downscaleArgbByHalf', 'Averages each 2x2 block of ARGB pixels into one pixel of a half-size ArgbSprite.');
 method('a', 'e', '()V', 'writeMixBlock', 'Body is identical to steelsentinels JavaSoundAudioOutput.writeMixBlock.');
 method('a', 'f', '()V', 'closeDevice', 'Body is identical to escapevector/geoblox JavaSoundAudioOutput.closeDevice.');
 method('ah', '$cfr$lcmp', '(JJ)I', 'compareLongs', 'Body is identical to escapevector GameAppletShell.compareLongs.');
