@@ -1423,6 +1423,16 @@ method("sm", "b", "(IZ)I", "itemX", "Returns the horizontal position of a menu i
 method("sm", "c", "(IZ)I", "itemY", "Returns the vertical position of a menu item.");
 method("sm", "f", "(II)I", "rowHeight", "Returns the row height of the current menu screen.");
 method("sm", "c", "(II)Ljava/lang/String;", "itemLabel", "Returns the label text for a menu item kind.");
+method("aa", "k", "(I)Ljava/lang/String;", "linkEndTag", "Returns the markup that closes a coloured underlined link.");
+method("aa", "l", "(I)Ljava/lang/String;", "linkStartTag", "Returns the markup that opens a coloured underlined link.");
+method("aa", "a", "(ZLki;)Z", "validateField", "Checks one form field.");
+method("aa", "d", "(Z)Z", "validateAge", "Parses the age field as a number and checks it.");
+method("aa", "m", "(I)Z", "validateAll", "Validates every form field and reports whether all pass.");
+method("wk", "a", "([Lbi;I)Lwk;", "setSprites", "Stores the sprite array of the style and returns the style.");
+method("wk", "a", "(ILjava/lang/CharSequence;IZ)Z", "parseInt", "Parses a digit string in a radix from 2 to 36.");
+method("wk", "a", "(Z)V", "reset", "Clears the sprites, text, flags and offsets of the style.");
+method("wk", "a", "(BLwk;)V", "copyTo", "Copies every field of this style into another style.");
+method("wk", "a", "(BLjava/awt/Component;)V", "attachMouseListeners", "Registers the mouse, motion and focus listeners on the component.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
