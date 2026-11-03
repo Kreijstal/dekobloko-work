@@ -240,6 +240,45 @@ const classes = {
   gm: ['RenderedFootballer', 'FootballerAgent subclass that adds the animation, model and shadow fields and overrides stepMovement and the state sync.'],
   ob: ['RenderedBall', 'BallAgent subclass that adds the model, spin and shadow fields and overrides stepPhysics and the state sync.'],
   hd: ['UiLayoutNode', 'Tree node with a parent, a tf child list, text, font and sprite slots, offsets and a large draw/layout method; about 30 screens subclass it.'],
+  fn: ['Trinket', 'Holds a trinket type id indexed into the trinket name table rv.field_b, a slot kind and a price; toString prints "name [type]" and many isX methods test the type id.'],
+  at: ['TrinketTile', 'UiLayoutNode built from a Trinket: draws its lowercase name and its price in red when the player lacks the experience.'],
+  gu: ['ContextMenu', 'Holds up to 256 vu items with action ids, addItem methods and a getter that returns the id of the item the pointer released on.'],
+  vu: ['ContextMenuItem', 'UiLayoutNode with an optional icon and a text label whose layout is computed from the icon width; created by ContextMenu and CascadingMenu.'],
+  bb: ['CascadingMenu', 'Menu of vu items with per-item child bb menus, hotkey characters and a hover slide-in offset; clicking an item either opens its child or sends its id.'],
+  ej: ['SelectableTrinketIcon', 'Tile for one trinket type id; clicking toggles pt.field_e and the draw method outlines it using the qe.field_i trinket sprites.'],
+  dn: ['TrinketIcon', 'UiLayoutNode that renders the quarter-size trinket sprite qe.field_i for the given type id.'],
+  he: ['LobbyPlayerRow', 'Constructed from a name, a text and a long id with two boolean flags used by its comparator; rows of the lobby player lists.'],
+  kf: ['TabStrip', 'Takes label strings and one content node per label, lays the labels out evenly and switches the visible content on click.'],
+  na: ['VerticalScrollbar', 'Builds two arrow buttons, a track and a thumb, repeats arrow presses with a 20 then 3 tick delay and maps thumb position to a scroll value.'],
+  np: ['ScrollPane', 'Holds a content node and a na scrollbar, moves the content by the arrow, page and thumb amounts and keeps the bar sized to the viewport.'],
+  om: ['IconLabel', 'Two child nodes, an icon with sprite fields and a text label, laid out side by side with the label width fitted to the remaining space.'],
+  pu: ['TrinketSlot', 'Fixed 32x32 node showing the icon of one Trinket, half size when the boolean argument is set, and drawing a tooltip with its name.'],
+  ji: ['ScrollBar', 'Built from a "scrollbar" skin with arrow, track and thumb nodes and a horizontal flag; copy constructor makes instances, thumb position maps to scroll value.'],
+  tk: ['ScrollContainer', 'Creates a horizontal and a vertical ji bar around a content node and scrolls the content with arrows, pages and thumbs.'],
+  rb: ['TextPromptDialog', 'Modal layout with title, om line, StringBuilder text entry and buttons; a(int) returns the typed text and h() watches for the enter key.'],
+  sl: ['HoverTooltip', 'Created at the rectangle of an existing node with a title and body node; a singleton k.field_m holds the active one.'],
+  vg: ['TextFieldNode', 'hd-toolkit text field with a StringBuilder, selection start and end, clipboard copy and paste and an optional maximum length.'],
+  qb: ['GameSetupPanel', 'hd-toolkit panel holding a byte[] of option selections sized by the option count ss.field_j, restriction arrays tested against them and many option label nodes.'],
+  cf: ['RankingRowNode', 'Row drawn as three columns 40, 196 and 70 wide showing the rank (or = for ties), name and rating copied from a bc entry.'],
+  jb: ['PopupDialog', 'IntrusiveNode queued in np.field_Jb with a slide-in counter, option strings, a selection ko and key handling; subclassed by every dialog.'],
+  i: ['MessageDialog', 'PopupDialog built from a dialog id: title, text from the gd.field_e table, icon and buttons, with a close handler per id.'],
+  aw: ['TutorialChoiceDialog', 'MessageDialog id 8, whose text asks whether to play the Tutorial or practise in Sandbox mode.'],
+  bm: ['AuctionListingDialog', 'MessageDialog id 21 built from a pt auction listing; on close it can write the listing to the outgoing packet.'],
+  ce: ['BuyPlayerDialog', 'MessageDialog id 30 built from a shop slot sp: "Buy <%0> for <%1>?" with the player name and price.'],
+  ha: ['WelcomeDialog', 'MessageDialog id 23, the "Welcome to Kickabout League" text shown to a not-logged-in player with a temporary team.'],
+  hg: ['PromotionDialog', 'MessageDialog id 10, "promoted to the <%1>", showing the division sprite kb.field_E[index].'],
+  hk: ['AuctionBidDialog', 'MessageDialog built from a vc auction item with ids 19, 32 or 37 (bid or buyout confirmation) that sends the bid packet on accept.'],
+  ie: ['SellPlayerDialog', 'MessageDialog id 34, "Do you want to sell <%0> for <%1>?", built from a PlayerStats.'],
+  kn: ['TrinketPickerDialog', 'MessageDialog id 27 with a grid of dn trinket icons ("Mouse over an icon for details").'],
+  no: ['LeagueWinnerDialog', 'MessageDialog id 9, the congratulations text for winning the league.'],
+  nq: ['TournamentChampionDialog', 'MessageDialog id 42, "Congratulations to <%0>! They are the tournament champion."'],
+  pq: ['SquadPickerDialog', 'MessageDialog id 11 embedding an mf squad grid; accepting a selected slot calls oj.b with that player.'],
+  pv: ['HelpTipDialog', 'MessageDialog whose id selects help text 12-17 and which marks the matching tu.field_E.field_J help flag as seen.'],
+  pw: ['AuctionSettingsDialog', 'Large MessageDialog id 18 with price entry, character filter ia.field_e and an offer button for creating an auction.'],
+  qq: ['LoginRequiredDialog', 'MessageDialog id 25, "To access the Multiplayer Lobby, log in or create a free account."'],
+  rt: ['StatChoiceDialog', 'MessageDialog id 20, "EXP at max! Choose a stat to increase by 1%".'],
+  sq: ['SaveChangesDialog', 'MessageDialog id 1, "You have made changes to your team. Would you like to save these changes?"'],
+  vf: ['BuyPitchDialog', 'MessageDialog id 29 built from a jt pitch tile: "Buy <%0> for <%1>?" with the surface name.'],
 // END-R2CLASSES
   jc: ['LoggedPlayer', 'toString returns "LoggedPlayer{..}" with home/away side, resign time, reward, membership, tackle, kick, cross, header and goal counters.'],
 };
@@ -472,6 +511,32 @@ method('hd', 'a', '(BLhd;)V', 'addChild', 'Creates the child tf on first use and
 method('hd', 'b', '(Z)V', 'invalidateChildren', 'Marks every child dirty and recurses into its children.');
 method('hd', 'a', '(ILhd;)V', 'setFocusedNode', 'Recurses into the children and sets the focus flag on the node equal to the argument.');
 method('hd', 'a', '(II)I', 'computeContentWidth', 'Returns the widest of the text, sprite and child extents, starting from the argument.');
+method('fn', 'k', '(I)Z', 'isShinPads', 'Tests type id 56, SHIN PADS in the trinket name table.');
+method('fn', 'c', '(B)Z', 'isTramline', 'Tests type id 68, CHEAT: TRAMLINE in the trinket name table.');
+method('fn', 'e', '(I)Z', 'isMoonball', 'Tests type id 70, CHEAT: MOONBALL in the trinket name table.');
+method('fn', 'c', '(I)Z', 'hasTackleProtection', 'True for type id 55 IMMUNITY or 56 SHIN PADS.');
+method('fn', 'j', '(I)Z', 'isEmpty', 'Tests type id 0, the Empty entry of the trinket name table.');
+method('fn', 'm', '(I)Z', 'isAtomBall', 'Tests type id 67, CHEAT: ATOMBALL in the trinket name table.');
+method('fn', 'l', '(I)Z', 'isPumpkins', 'Tests type id 72, CHEAT: PUMPKINS in the trinket name table.');
+method('fn', 'f', '(Z)Z', 'isTorquing', 'Tests type id 69, CHEAT: TORQUING in the trinket name table.');
+method('fn', 'b', '(Z)Z', 'isSafeTacklerOrShinPads', 'True for type id 54 SAFE TACKLER or 56 SHIN PADS.');
+method('fn', 'n', '(I)Z', 'isMushroom', 'Tests type id 64, CHEAT: MUSHROOM in the trinket name table.');
+method('fn', 'g', '(I)Z', 'isMoonwalk', 'Tests type id 65, CHEAT: MOONWALK in the trinket name table.');
+method('fn', 'a', '(I)Z', 'isActiveHorrorCostume', 'Tests type id 73, COSTUME: HORROR, together with a be.e check.');
+method('fn', 'e', '(Z)Z', 'isWhereAmI', 'Tests type id 63, CHEAT: WHEREAMI in the trinket name table.');
+method('fn', 'c', '(Z)Z', 'isAsteroid', 'Tests type id 71, CHEAT: ASTEROID in the trinket name table.');
+method('fn', 'd', '(I)Z', 'isTankClone', 'Tests type id 59, TANK CLONE in the trinket name table.');
+method('fn', 'h', '(I)Z', 'isHotshotClone', 'Tests type id 60, HOTSHOT CLONE in the trinket name table.');
+method('fn', 'a', '(Z)Z', 'isSlalom', 'Tests type id 62, SLALOM in the trinket name table.');
+method('fn', 'e', '(B)Z', 'isAirplane', 'Tests type id 66, CHEAT: AIRPLANE in the trinket name table.');
+method('fn', 'p', '(I)Z', 'isRangerClone', 'Tests type id 61, RANGER CLONE in the trinket name table.');
+method('fn', 'f', '(B)Ljava/lang/String;', 'getName', 'Returns the rv.field_b name for the trinket type id.');
+method('gu', 'a', '(IILjava/lang/String;)V', 'addItem', 'Creates a vu item with the given id and text, links it into the menu and records its action id.');
+method('gu', 'a', '(Ljava/lang/String;ZILut;)V', 'addItemWithIcon', 'Creates a vu item with an icon sprite and text and records its action id.');
+method('gu', 'a', '(BZ)I', 'getSelectedActionId', 'Returns the action id of the item whose pointer state is set, the default id, or -1 or -2.');
+method('i', 'a', '(II)V', 'handleResult', 'Called with the pressed button result; the base class plays a sound, closes the dialog and subclasses add their action.');
+method('i', 'a', '(B)I', 'dialogHeight', 'Computed from the text and icon heights in the base class; subclasses override it with constants such as 320, 346 or 400.');
+method('i', 'b', '(I)I', 'dialogWidth', 'Base class width from the text and icon; subclasses return constants such as 400, 470 or 545.');
 method('a', 'e', '()V', 'writeMixBlock', 'Body is identical to steelsentinels JavaSoundAudioOutput.writeMixBlock.');
 method('a', 'f', '()V', 'closeDevice', 'Body is identical to escapevector/geoblox JavaSoundAudioOutput.closeDevice.');
 method('ah', '$cfr$lcmp', '(JJ)I', 'compareLongs', 'Body is identical to escapevector GameAppletShell.compareLongs.');
