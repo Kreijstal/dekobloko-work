@@ -2691,6 +2691,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bi.a(I[I[IIIIIIII)V",
+      "originalName": "a",
+      "to": "blitMultiplyRows",
+      "evidence": "Row kernel that multiplies each non-zero pixel with the target pixel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a([IIIIIIII)V",
+      "originalName": "a",
+      "to": "blitHalfSizeRows",
+      "evidence": "Row kernel that averages a 2 by 2 block of source pixels per target pixel, using the target for transparent ones.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a([I[IIIIIII)V",
+      "originalName": "a",
+      "to": "copyRows",
+      "evidence": "Row kernel that copies every pixel of each row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a([I[IIIIIIII)V",
+      "originalName": "a",
+      "to": "blitRows",
+      "evidence": "Row kernel that copies non-zero pixels, four at a time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a([I[IIIIIIIII)V",
+      "originalName": "a",
+      "to": "blitTintedRows",
+      "evidence": "Row kernel that tints grey pixels with a colour and skips zero pixels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bi.b()V",
       "originalName": "b",
       "to": "flipVertical",
@@ -2719,6 +2754,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bi.b([I[IIIIIIII)V",
+      "originalName": "b",
+      "to": "blitSilhouetteRows",
+      "evidence": "Row kernel that writes one colour for each non-zero pixel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.b([I[IIIIIIIII)V",
+      "originalName": "b",
+      "to": "blitAlphaRows",
+      "evidence": "Row kernel that blends non-zero pixels over the target with an alpha.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bi.c()Lbi;",
       "originalName": "c",
       "to": "flippedCopy",
@@ -2743,7 +2792,7 @@
       "symbol": "M:bi.d(II)V",
       "originalName": "d",
       "to": "drawHalfSize",
-      "evidence": "Offsets and size are shifted right by one and the kernel reads two source pixels per target pixel.",
+      "evidence": "Offsets and size are shifted right by one and the kernel averages a 2 by 2 block of source pixels per target pixel.",
       "confidence": "reviewed"
     },
     {
@@ -2806,7 +2855,7 @@
       "symbol": "M:bi.g(II)V",
       "originalName": "g",
       "to": "drawQuarterSize",
-      "evidence": "Offsets and size are divided by four and the kernel reads four source pixels per target pixel.",
+      "evidence": "Offsets and size are divided by four and the code averages a 4 by 4 block of source pixels per target pixel.",
       "confidence": "reviewed"
     },
     {
@@ -3937,6 +3986,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fa.i(I)V",
+      "originalName": "i",
+      "to": "notifyTextChanged",
+      "evidence": "Calls the TextFieldListener when the listener is one. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fa.l(I)V",
       "originalName": "l",
       "to": "clearStatics",
@@ -4567,10 +4623,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:go.a(BLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "insertText",
+      "evidence": "Replaces the selection by the string, truncated to the maximum length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.a(I)I",
+      "originalName": "a",
+      "to": "findNextWordBoundary",
+      "evidence": "Scans right from the caret for the next word boundary.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:go.a(ICILvg;)Z",
       "originalName": "a",
       "to": "handleKey",
       "evidence": "Handles a key press and returns whether it was consumed. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.a(II)V",
+      "originalName": "a",
+      "to": "moveCaret",
+      "evidence": "Moves the caret and collapses the selection unless shift is held.",
       "confidence": "reviewed"
     },
     {
@@ -4595,10 +4672,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:go.a(ILjava/lang/String;Z)V",
+      "originalName": "a",
+      "to": "setText",
+      "evidence": "Stores the text, treating null as empty, and moves the caret to the end.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.e(Z)V",
+      "originalName": "e",
+      "to": "clear",
+      "evidence": "Empties the text, resets the caret and notifies the listener.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.g(B)I",
+      "originalName": "g",
+      "to": "findPreviousWordBoundary",
+      "evidence": "Scans left from the caret for the previous word boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.h(B)V",
+      "originalName": "h",
+      "to": "cutSelection",
+      "evidence": "Copies the selection to the clipboard and then deletes it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.h(I)V",
+      "originalName": "h",
+      "to": "copyToClipboard",
+      "evidence": "Copies the selected text to the system clipboard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.i(I)V",
+      "originalName": "i",
+      "to": "notifyTextChanged",
+      "evidence": "Calls the TextFieldListener when the listener is one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.k(B)V",
+      "originalName": "k",
+      "to": "deleteSelection",
+      "evidence": "Removes the selected range from the text and collapses the caret.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:go.k(I)V",
       "originalName": "k",
       "to": "clearStatics",
       "evidence": "Assigns null to 5 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.l(B)Ljava/lang/String;",
+      "originalName": "l",
+      "to": "getSelectedText",
+      "evidence": "Returns the substring between the caret and the selection anchor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.m(B)V",
+      "originalName": "m",
+      "to": "pasteFromClipboard",
+      "evidence": "Reads the clipboard string and inserts it at the caret.",
       "confidence": "reviewed"
     },
     {
@@ -5862,6 +6002,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kg.a(IIIB)V",
+      "originalName": "a",
+      "to": "fireAction",
+      "evidence": "Calls the ButtonListener of the widget with its position when the listener is a ButtonListener.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kg.a(IIIIILvg;)V",
       "originalName": "a",
       "to": "handleRelease",
@@ -6209,6 +6356,13 @@
       "originalName": "b",
       "to": "connect",
       "evidence": "Opens a Socket to the stored host and port; ProxySocketConnector consults the proxy selector first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a(IIIB)V",
+      "originalName": "a",
+      "to": "fireAction",
+      "evidence": "Calls the ButtonListener of the widget with its position when the listener is a ButtonListener. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7258,7 +7412,7 @@
       "symbol": "M:om.d(II)V",
       "originalName": "d",
       "to": "drawHalfSize",
-      "evidence": "Offsets and size are shifted right by one and the kernel reads two source pixels per target pixel. Resolved override family.",
+      "evidence": "Offsets and size are shifted right by one and the kernel averages a 2 by 2 block of source pixels per target pixel. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7279,7 +7433,7 @@
       "symbol": "M:om.g(II)V",
       "originalName": "g",
       "to": "drawQuarterSize",
-      "evidence": "Offsets and size are divided by four and the kernel reads four source pixels per target pixel. Resolved override family.",
+      "evidence": "Offsets and size are divided by four and the code averages a 4 by 4 block of source pixels per target pixel. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8851,6 +9005,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ts.a(IIIB)V",
+      "originalName": "a",
+      "to": "fireAction",
+      "evidence": "Calls the ButtonListener of the widget with its position when the listener is a ButtonListener. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ts.a(IIII)V",
       "originalName": "a",
       "to": "drawLayer",
@@ -9650,7 +9811,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-shatteredplans-rules.mjs": "1dac7f62b4115b1cd14c9a8862b10c45304c293c820534f008ce43d42e1d0818",
+      "build-shatteredplans-rules.mjs": "2b40fcd6703fd275a67c9c26a3c5d549cab894a6d75a54647dc1e4833c1a6e89",
       "reproduce-shatteredplans.mjs": "c97d18e945d2818780e9aa7d2ed30e04a75e5ba59388010d329585f010e7cd8e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
