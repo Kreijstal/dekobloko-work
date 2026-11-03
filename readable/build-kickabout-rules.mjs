@@ -1050,6 +1050,8 @@ method('fd', 'g', '(I)V', 'clearKeyboardFocus', 'Virtual hook that the base widg
 method('fd', 'a', '(IIIZ)Z', 'processPointerFrame', 'Updates hover state and dispatches this frame\'s press, release and wheel events to the widget.');
 method('fd', 'a', '(BIIII)Z', 'containsPointer', 'Tests whether a point lies inside the widget rectangle offset by the parent position.');
 method('fd', 'a', '(ILjava/lang/StringBuilder;Ljava/util/Hashtable;I)Z', 'beginWidgetDiagnosticVisit', 'Records the widget in the visited table or appends a circular-reference marker to the output.');
+method('mo', 'a', '(BLmo;)V', 'copyStateFrom', 'Abstract hook that each agent subclass implements by copying the other agent\'s fields into itself.');
+method('tm', 'a', '(B[Lli;)Lli;', 'execute', 'Abstract command body that takes the parsed argument values and returns a result value.');
 method('a', 'e', '()V', 'writeMixBlock', 'Body is identical to steelsentinels JavaSoundAudioOutput.writeMixBlock.');
 method('a', 'f', '()V', 'closeDevice', 'Body is identical to escapevector/geoblox JavaSoundAudioOutput.closeDevice.');
 method('ah', '$cfr$lcmp', '(JJ)I', 'compareLongs', 'Body is identical to escapevector GameAppletShell.compareLongs.');
