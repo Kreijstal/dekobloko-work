@@ -3681,63 +3681,63 @@
       "symbol": "F:up.field_e:I",
       "originalName": "field_e",
       "to": "initialIndex",
-      "evidence": "getDisplayName upper-cases the letter td.field_a[field_e] as the first-name initial.",
+      "evidence": "Indexes td.field_a for the first-name initial printed by toString.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:up.field_g:I",
       "originalName": "field_g",
       "to": "speed",
-      "evidence": "toString prints it as \"SPD\".",
+      "evidence": "Printed as SPD: in toString.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:up.field_h:[I",
       "originalName": "field_h",
       "to": "trinketIds",
-      "evidence": "toString prints \"Num Trinkets\" from its length and the ids list.",
+      "evidence": "Printed as the Trinkets list; indexes the pa.field_g trinket table.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:up.field_j:I",
       "originalName": "field_j",
       "to": "appearance",
-      "evidence": "toString prints it as \"Appearance\".",
+      "evidence": "Printed as Appearance: in toString.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:up.field_l:I",
       "originalName": "field_l",
       "to": "surnameIndex",
-      "evidence": "getDisplayName appends ce.field_G[type][field_l] as the surname.",
+      "evidence": "Indexes ce.field_G[archetype] for the surname printed by toString.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:up.field_n:I",
       "originalName": "field_n",
       "to": "power",
-      "evidence": "toString prints it as \"POW\".",
+      "evidence": "Printed as POW: in toString.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:up.field_o:I",
       "originalName": "field_o",
       "to": "tackle",
-      "evidence": "toString prints it as \"TCK\".",
+      "evidence": "Printed as TCK: in toString.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:up.field_q:I",
       "originalName": "field_q",
-      "to": "playerType",
-      "evidence": "toString prints uf.field_e[field_q] as Type and -1 means an empty player.",
+      "to": "archetype",
+      "evidence": "Indexes the type names in toString (Type:) and the surname table ce.field_G.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:up.field_r:I",
       "originalName": "field_r",
       "to": "experience",
-      "evidence": "toString prints it as \"EXP\".",
+      "evidence": "Printed as EXP: in toString.",
       "confidence": "reviewed"
     },
     {
@@ -5218,6 +5218,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fn.b(B)I",
+      "originalName": "b",
+      "to": "powerBonus",
+      "evidence": "Returns jh.field_Ib[type]; its entries are non-zero for the POW trinket types.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fn.b(I)I",
+      "originalName": "b",
+      "to": "speedBonus",
+      "evidence": "Returns de.field_b[type]; its entries are +2, +4 and +7 for the SPD trinket types 7..9 and their combinations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fn.b(Z)Z",
       "originalName": "b",
       "to": "isSafeTacklerOrShinPads",
@@ -5334,6 +5348,13 @@
       "originalName": "n",
       "to": "isMushroom",
       "evidence": "Tests type id 64, CHEAT: MUSHROOM in the trinket name table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fn.o(I)I",
+      "originalName": "o",
+      "to": "tackleBonus",
+      "evidence": "Returns wb.field_r[type]; its entries are non-zero for the TCK trinket types.",
       "confidence": "reviewed"
     },
     {
@@ -5561,10 +5582,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gm.a(IIIIB)V",
+      "originalName": "a",
+      "to": "renderModel",
+      "evidence": "Sets the viewport centre, applies facing and animation, draws the mesh and shadow for the footballer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.a(IZII)V",
+      "originalName": "a",
+      "to": "setPosition",
+      "evidence": "Stores the x, y and height fields and, when the flag is clear, also resets the smoothed render position.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gm.a(I[Lla;ZZ)V",
       "originalName": "a",
       "to": "stepMovement",
       "evidence": "Per-tick update: cooldown and action timers, target velocity per action, lt.a collision and gravity. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.a(Lvn;B)V",
+      "originalName": "a",
+      "to": "setModel",
+      "evidence": "Stores the mesh and reapplies the facing angle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.a(ZZI)V",
+      "originalName": "a",
+      "to": "updateAnimationFlags",
+      "evidence": "Splits the bit flags of the argument into the walking, running, diving and tackling animation booleans.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.b(BI)V",
+      "originalName": "b",
+      "to": "setAnimationClip",
+      "evidence": "Switches the AnimationPlayer to the clip for the given index of the archetype's clip table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.b(IB)V",
+      "originalName": "b",
+      "to": "setFacingAngle",
+      "evidence": "Stores the angle, adds 1700 modulo 2048 and rebuilds the model view with the matching sprite set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.f(B)I",
+      "originalName": "f",
+      "to": "computeFacingAngle",
+      "evidence": "Derives the facing angle from the slide velocity during tackles and headers, otherwise from the direction fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.g(B)V",
+      "originalName": "g",
+      "to": "resetPose",
+      "evidence": "Calls the animation flag update with no flags set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.g(I)I",
+      "originalName": "g",
+      "to": "getRenderedX",
+      "evidence": "Returns the smoothed x field shifted right by 16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.h(B)V",
+      "originalName": "h",
+      "to": "drawPlayerLabel",
+      "evidence": "Draws the participant name tag above the footballer when a game is attached.",
       "confidence": "reviewed"
     },
     {
@@ -5929,6 +6020,13 @@
       "originalName": "a",
       "to": "update",
       "evidence": "Per-frame update: builds the ko selection from the button positions and, in subclasses, refreshes button states.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hs.a(Z)V",
+      "originalName": "a",
+      "to": "updateCamera",
+      "evidence": "Targets the camera at the focused footballer, the ball midpoint or the pitch centre with a distance limit of 340. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7612,6 +7710,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ob.k(I)I",
+      "originalName": "k",
+      "to": "getRenderedX",
+      "evidence": "Returns the smoothed x field shifted right by 16.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:od.a(I)I",
       "originalName": "a",
       "to": "directionCount",
@@ -9222,6 +9327,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:up.a(IZ)I",
+      "originalName": "a",
+      "to": "trinketSpeedBonus",
+      "evidence": "Sums Trinket.speedBonus over the player's trinket ids.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.a(ZI)I",
+      "originalName": "a",
+      "to": "effectiveTackle",
+      "evidence": "Adds base tackle to the trinket tackle bonus.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:up.b(B)V",
       "originalName": "b",
       "to": "clear",
@@ -9233,6 +9352,13 @@
       "originalName": "b",
       "to": "isSameAs",
       "evidence": "Compares type, names, stats, trinket list, appearance and flag; two empty players are equal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.b(BZ)I",
+      "originalName": "b",
+      "to": "trinketTackleBonus",
+      "evidence": "Sums Trinket.tackleBonus over the player's trinket ids.",
       "confidence": "reviewed"
     },
     {
@@ -9250,10 +9376,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:up.c(ZZ)I",
+      "originalName": "c",
+      "to": "trinketPowerBonus",
+      "evidence": "Sums Trinket.powerBonus over the player's trinket ids.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:up.d(I)Ljava/lang/String;",
       "originalName": "d",
       "to": "getDisplayName",
       "evidence": "Returns \"Empty\", \"Error\" or the upper-cased initial plus \". \" plus the surname from ce.field_G.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.d(ZB)I",
+      "originalName": "d",
+      "to": "effectiveSpeed",
+      "evidence": "Adds base speed to the trinket speed bonus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.d(ZI)I",
+      "originalName": "d",
+      "to": "effectivePower",
+      "evidence": "Adds base power to the trinket power bonus and scales by 8/10 for one trinket condition.",
       "confidence": "reviewed"
     },
     {
@@ -9313,10 +9460,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:va.a(Lki;I)V",
+      "originalName": "a",
+      "to": "switchToPredictedReceiver",
+      "evidence": "Clones the game, steps it until the ball is free, extrapolates the landing point and queues a switch to the closest teammate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.a(Lnu;ZI)V",
+      "originalName": "a",
+      "to": "wrapAgentsForRendering",
+      "evidence": "Replaces the ball with a RenderedBall and every footballer with a RenderedFootballer built from its team colours and PlayerStats.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.a(Z)V",
+      "originalName": "a",
+      "to": "updateCamera",
+      "evidence": "Targets the camera at the focused footballer, the ball midpoint or the pitch centre with a distance limit of 340.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.a(ZII)V",
+      "originalName": "a",
+      "to": "playCrowdReaction",
+      "evidence": "Picks a crowd sound id from the tier and whether the home or away side scored or missed, and plays it unless the match is over.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:va.a(ZLki;)V",
       "originalName": "a",
       "to": "queueInputEvent",
       "evidence": "Starts with CommonGame.enqueueEvent for the event and then forwards key and mouse events to the footballer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.b(III)V",
+      "originalName": "b",
+      "to": "switchToNearestTeammate",
+      "evidence": "Scans the team's outfield slots for the smallest squared distance to the point, doubling it for controlled slots, and queues a switch to that slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.e(B)V",
+      "originalName": "e",
+      "to": "updateAimIndicator",
+      "evidence": "Draws the kick or tackle aim indicator at the focused footballer from the pending aim and the action timer.",
       "confidence": "reviewed"
     },
     {
@@ -9331,6 +9520,27 @@
       "originalName": "f",
       "to": "onButtonClick",
       "evidence": "Abstract click hook; FormationView submits the formation when the button kind is 41. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.g(II)V",
+      "originalName": "g",
+      "to": "queueKeypress",
+      "evidence": "Creates a type 1 keypress PlayerInputEvent for the local seat and queues it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.h(I)I",
+      "originalName": "h",
+      "to": "getFocusedParticipant",
+      "evidence": "Returns the local seat when it is active, otherwise the participant controlling the ball carrier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.i(I)V",
+      "originalName": "i",
+      "to": "pollLocalInput",
+      "evidence": "Turns the pointer position and button state into movement targets and kick events for the controlled footballer.",
       "confidence": "reviewed"
     },
     {
@@ -10049,7 +10259,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-kickabout-rules.mjs": "ff5505f7e80a5577a9e471a54600aac445e09b7fdcfc39f27bd416d708ca97a2",
+      "build-kickabout-rules.mjs": "155ac3068de4f68fb81c4577ff836eb137e5609530a349fa1535da7fd26ed99a",
       "reproduce-kickabout.mjs": "ced425cb07cc59ef9672e56d45c5fdaaf3cc113192449c7eafd4355270fa9245",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
