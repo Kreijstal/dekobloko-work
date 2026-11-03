@@ -234,6 +234,10 @@ Object.assign(classes, {
   "to": ["VorbisResidue", "Reads Vorbis residue parameters and decodes residue vectors into a float array."],
   "fq": ["VorbisMapping", "Small record read by VorbisSample setup after the residues, holding mapping submap arrays."],
   "gf": ["SoftwareRasterizer", "Static int-pixel primitives for clipping, lines, rectangles and circles under shared clip bounds."],
+  "ur": ["ScrollBar", "qr subclass built from up and down button panels, a track and a thumb panel with position mapping methods."],
+  "ub": ["ScrollPane", "qr subclass that holds a content qr, a ScrollBar and a clipping qr and scrolls the content."],
+  "qr": ["AnimatedPanel", "Layout box with a child deque and offsets that ease by a quarter of the remaining distance each tick."],
+  "hm": ["PanelNode", "Empty DualLinkNode subclass that AnimatedPanel extends."],
 });
 method("ob", "e", "(B)Ljava/lang/String;", "readMarkedString", "Requires a leading zero byte and then reads bytes up to the next zero as a string.");
 method("ob", "a", "(BLjava/lang/String;)V", "writeMarkedString", "Rejects strings containing NUL, writes a zero marker byte and then the string.");
@@ -804,6 +808,15 @@ method("bi", "b", "([I[IIIIIIIII)V", "blitAlphaRows", "Row kernel that blends no
 method("bi", "a", "([I[IIIIIII)V", "copyRows", "Row kernel that copies every pixel of each row.");
 method("bi", "b", "([I[IIIIIIII)V", "blitSilhouetteRows", "Row kernel that writes one colour for each non-zero pixel.");
 method("bi", "a", "([IIIIIIII)V", "blitHalfSizeRows", "Row kernel that averages a 2 by 2 block of source pixels per target pixel, using the target for transparent ones.");
+method("qr", "a", "(ILqr;)V", "addChild", "Creates the child deque when needed and appends the child.");
+method("qr", "a", "(ILqr;Lqr;B)V", "layoutAfter", "Positions the child after a previous sibling, or at zero when the sibling is null.");
+method("qr", "b", "(ZI)V", "drawFullRaster", "Draws the panel and its children over the whole raster bounds.");
+method("qr", "a", "(IZZI)V", "layoutChildren", "Computes the offsets and sizes of the children from their own sizes.");
+method("qr", "e", "(B)V", "markDirty", "Sets the dirty flag on each child recursively.");
+method("qr", "a", "(Lqr;Z)V", "copyFrom", "Copies the text, sprites and options of another panel that are set.");
+method("qr", "a", "(IIBII)V", "setTarget", "Stores the target offsets and clears the easing state.");
+method("qr", "a", "(IB)I", "measureWidth", "Measures the widest text or sprite of the panel limited by a width.");
+method("qr", "e", "(Z)I", "measureWidthUnbounded", "Measures the panel width with no limit.");
 method("ke", "b", "(B)V", "clearStatics", "Assigns null to 6 static fields of the class.");
 method("df", "d", "(I)V", "clearStatics", "Assigns null to 5 static fields of the class.");
 method("dc", "e", "(B)V", "clearStatics", "Assigns null to 6 static fields of the class.");
