@@ -3,6 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
 import {workflowRoot} from './game-export.mjs';
+import {reviewedNames} from './zombiedawnmulti-names.mjs';
 
 // Identities below belong to the pinned Zombie Dawn Multi export. Names shared
 // with other FunOrb games are corroborating role evidence only.
@@ -99,10 +100,15 @@ field('rl', 'm', 'Lkb;', 'world', 'GameSimulation reads the tick and actors thro
 field('rl', 'd', '[Lhk;', 'loadouts', 'GameSimulation indexes this array by player for powerup slots.');
 field('rl', 't', 'Z', 'cheatsEnabled', 'GameSimulation prints "cheating" when set and rejects with "cheat disabled!" otherwise.');
 
+for (const [symbol, to, evidence] of reviewedNames) {
+  if (symbol.startsWith('C:')) classes[symbol.slice(2)] = [to, evidence];
+  else members[symbol] = {to, evidence};
+}
+
 export const config = {
   game: 'zombiedawnmulti', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-zombiedawnmulti-rules.mjs', 'reproduce-zombiedawnmulti.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-zombiedawnmulti-rules.mjs', 'zombiedawnmulti-names.mjs', 'reproduce-zombiedawnmulti.mjs', 'reviewed-game.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   readingGuide(rules, mapping) {
     return ['# Reading Zombie Dawn Multi', '',
