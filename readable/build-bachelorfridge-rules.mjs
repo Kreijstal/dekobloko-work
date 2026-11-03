@@ -6,17 +6,22 @@ import {workflowRoot} from './game-export.mjs';
 
 // Identities below belong to the pinned Bachelor Fridge export. Similar names
 // in other games are corroborating role evidence, never copied obfuscated IDs.
-const classes = {
-  bw: ['IntrusiveNode', 'Holds a long key and two links; the only operations are unlink and linked test.'],
-  eo: ['DualLinkNode', 'IntrusiveNode subclass with an independent second link pair and key, unlinked on its own.'],
-  ck: ['GameAppletShell', 'Abstract Applet implementing Runnable and focus/window listeners; base of the game applet.'],
-  ms: ['NetworkGameClient', 'Abstract GameAppletShell subclass that is the direct superclass of BachelorFridge and holds client state.'],
-};
-const members = {};
+import {classes, members, cls} from './bachelorfridge-name-api.mjs';
+import './bachelorfridge-names.mjs';
+import './bachelorfridge-names-engine.mjs';
+import './bachelorfridge-names-game.mjs';
+import './bachelorfridge-names-statics.mjs';
+
+cls('bw', 'IntrusiveNode', 'Holds a long key and two links; the only operations are unlink and linked test.');
+cls('eo', 'DualLinkNode', 'IntrusiveNode subclass with an independent second link pair and key, unlinked on its own.');
+cls('ck', 'GameAppletShell', 'Abstract Applet implementing Runnable and focus/window listeners; base of the game applet.');
+cls('ms', 'NetworkGameClient', 'Abstract GameAppletShell subclass that is the direct superclass of BachelorFridge and holds client state.');
 
 export const config = {
   game: 'bachelorfridge', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
-  workflowFiles: ['build-bachelorfridge-rules.mjs', 'reproduce-bachelorfridge.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-bachelorfridge-rules.mjs', 'reproduce-bachelorfridge.mjs', 'bachelorfridge-name-api.mjs',
+    'bachelorfridge-names.mjs', 'bachelorfridge-names-engine.mjs', 'bachelorfridge-names-engine-members.mjs',
+    'bachelorfridge-names-specials.mjs', 'bachelorfridge-names-game.mjs', 'bachelorfridge-names-statics.mjs', 'reviewed-game.mjs',
     'game-export.mjs', 'compilation-stubs.mjs'],
   verifyCore: () => ({status: 'not-run', reason: 'No game-specific reconstruction or fixtures in this naming wave.'}),
   readingGuide(rules, mapping) {
