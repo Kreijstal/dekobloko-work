@@ -1358,6 +1358,11 @@ method("bi", "a", "(IIII[I[IIIIIIIIIII)V", "blitScaledAdditiveRows", "Row kernel
 method("bi", "a", "(IIII[I[IIIIIIIIIIII)V", "blitScaledAdditiveIntensityRows", "Scaled row kernel that scales each non-zero pixel by an intensity before adding it.");
 method("bi", "b", "([I[IIIIIIIIIII)V", "blitScaledRows", "Row kernel that steps through the source in 16-bit fixed point and copies non-zero pixels.");
 method("bi", "a", "([I[IIIIIIIIIIII)V", "blitScaledAlphaRows", "Scaled row kernel that blends non-zero pixels over the target with an alpha.");
+method("nq", "a", "(Ljava/lang/String;)Ljava/lang/String;", "escapeMarkup", "Replaces each less-than and greater-than character with its lt or gt tag.");
+method("nq", "a", "(Lnq;Ljava/lang/String;I)Ljava/lang/String;", "truncateWithEllipsis", "Shortens the string with three dots when it is wider than the given width.");
+method("nq", "b", "(Ljava/lang/String;IIIII)V", "drawJustified", "Sets the colours, computes the space padding for a target width and draws the string.");
+method("nq", "b", "(Ljava/lang/String;I)V", "computeJustifySpacing", "Counts the spaces outside tags and divides the missing width among them.");
+method("nq", "b", "(Ljava/lang/String;)V", "applyTag", "Handles one markup tag such as a colour or transparency change.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
