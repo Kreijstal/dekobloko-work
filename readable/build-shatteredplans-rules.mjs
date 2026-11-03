@@ -1220,6 +1220,31 @@ method("tr", "a", "(Lpf;ZZZ)V", "drawFleetVisuals", "Draws each FleetVisual alon
 method("tr", "a", "(BII)V", "drawBattleSummaries", "Draws the owner colours and ship counts of each BattleSnapshot next to its star.");
 method("ms", "a", "(Lob;B)V", "write", "Abstract: writes the message fields to the packet.");
 method("ms", "a", "(B)Lds;", "getKind", "Abstract: returns the MessageKind of the message.");
+method("gk", "a", "(B)Ljava/lang/String;", "getMessage", "Returns the diagnostic text for the current input, or null while the input is empty or still changing.");
+method("gk", "a", "(I)Z", "isEmpty", "Returns whether the bound field text is null or empty.");
+method("gk", "c", "(I)Lu;", "getState", "Returns the ValidationState for the current input, using the waiting and empty tokens while it is changing.");
+method("gk", "b", "(I)V", "notifyChanged", "Records the time of the last text change.");
+method("ki", "a", "(B)Lgk;", "getValidationSource", "Returns the ValidationSource attached to the widget.");
+method("da", "a", "(Z)Lu;", "computeState", "Abstract: evaluates the ValidationState once the debounce time has passed.");
+method("da", "c", "(B)Ljava/lang/String;", "computeMessage", "Abstract: evaluates the diagnostic message once the debounce time has passed.");
+method("ml", "b", "(ILjava/lang/String;)Lu;", "computeStateFor", "Abstract: evaluates the ValidationState of a given text.");
+method("ml", "a", "(ZLjava/lang/String;)Ljava/lang/String;", "computeMessageFor", "Abstract: evaluates the diagnostic message of a given text.");
+method("aj", "a", "(Ljava/lang/StringBuilder;IIC)Ljava/lang/StringBuilder;", "padWithChar", "Sets the builder length and fills the new characters with the given char.");
+method("ak", "a", "(ILjava/lang/CharSequence;C)I", "countChar", "Counts how often a character occurs in the sequence.");
+method("hb", "a", "(B)Loh;", "first", "Abstract: returns the first node of the wrapped container and starts a traversal.");
+method("hb", "a", "(Z)Loh;", "next", "Abstract: returns the next node of the traversal.");
+method("hb", "b", "(B)I", "size", "Abstract: returns the number of nodes in the wrapped container.");
+method("el", "a", "(BLvp;)V", "addLast", "Unlinks the node from its third links and splices it before the sentinel.");
+method("el", "a", "(Z)Lvp;", "startForward", "Returns the first node and stores the following one as the cursor.");
+method("el", "b", "(I)I", "size", "Counts nodes from the sentinel along the third links.");
+method("wb", "a", "(BLcn;)V", "addLast", "Unlinks the node from its fourth links and splices it before the sentinel.");
+method("wb", "e", "(I)Lcn;", "startForward", "Returns the first node and stores the following one as the cursor.");
+method("wb", "d", "(I)Lcn;", "nextForward", "Returns the cursor node and advances it.");
+method("wb", "a", "(B)V", "clear", "Unlinks every node from the fourth links.");
+method("wb", "c", "(I)I", "size", "Counts nodes from the sentinel along the fourth links.");
+method("wb", "a", "([Lln;I)[[I", "computeShortestHops", "Runs Floyd-Warshall over links between stars of the same territory and returns the hop matrix.");
+method("vp", "d", "(Z)V", "unlinkTertiary", "Joins the third-link neighbours and clears both third links.");
+method("cn", "f", "(B)V", "unlinkQuaternary", "Joins the fourth-link neighbours and clears both fourth links.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
