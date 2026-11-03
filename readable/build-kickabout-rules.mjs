@@ -230,6 +230,16 @@ const classes = {
   bp: ['ColumnTableWidget', 'qs builds it with column titles Character/Class/Stats/Trinkets/Price and sort icons; jh extends it for the auction table.'],
   jh: ['AuctionTableWidget', 'bp subclass built in wf.b with the gr.field_l auction column titles and filled with jr rows.'],
   jw: ['CheckboxLabelWidget', 'wf creates four with the filter names uf.field_e and toggles bits of the filter mask on click.'],
+  hs: ['MatchPhaseView', 'Abstract view holding the CommonGame, the local seat, an io button array and a ko selection; ap.createPhaseController instantiates one subclass per phase.'],
+  wb: ['TeamSelectionView', 'Created by MatchScreen for phase 0 (TeamSelection).'],
+  fk: ['WaitForPlayersView', 'Created by MatchScreen for phase 1 (WaitForPlayers).'],
+  lr: ['FormationView', 'Created by MatchScreen for phase 2 (Formation).'],
+  bf: ['LineupView', 'Created by MatchScreen for phase 3 (LineUp) with the club state as extra argument.'],
+  va: ['PlayingView', 'Created by MatchScreen for phase 4 (Playing) with the extra scene arguments.'],
+  ol: ['GameOverView', 'Created by MatchScreen for phase 5 (GameOver).'],
+  gm: ['RenderedFootballer', 'FootballerAgent subclass that adds the animation, model and shadow fields and overrides stepMovement and the state sync.'],
+  ob: ['RenderedBall', 'BallAgent subclass that adds the model, spin and shadow fields and overrides stepPhysics and the state sync.'],
+  hd: ['UiLayoutNode', 'Tree node with a parent, a tf child list, text, font and sprite slots, offsets and a large draw/layout method; about 30 screens subclass it.'],
 // END-R2CLASSES
   jc: ['LoggedPlayer', 'toString returns "LoggedPlayer{..}" with home/away side, resign time, reward, membership, tackle, kick, cross, header and goal counters.'],
 };
@@ -429,6 +439,39 @@ method('iw', 'a', '(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V', 'rsaEncryp
 method('iw', 'e', '(II)V', 'writeSignedSmart', 'Writes a byte for -64..63 or a short offset by 49152, as Escape Vector writeSignedSmart.');
 method('iw', 'f', '(I)I', 'readUnsignedSmart', 'Reads one byte or a short minus 32768, as Escape Vector readUnsignedSmart.');
 method('iw', 'a', '([IB)V', 'xteaEncrypt', 'Encrypts the whole buffer from position 0 in eight-byte blocks with the key.');
+method('hs', 'a', '(B)Z', 'isLocalParticipantActive', 'Returns true when the local seat is not -2 and that participant is still active.');
+method('hs', 'd', '(I)V', 'positionButtons', 'Places each io button using the overridable x and y hooks when e() allows it.');
+method('hs', 'c', '(I)V', 'drawPanelBackground', 'Fills the 10,50 620x320 translucent panel with colour 65793.');
+method('hs', 'b', '(II)V', 'drawCountdown', 'Draws the seconds value param1/50 in a box at the top of the view.');
+method('hs', 'a', '(ZLjava/lang/String;)V', 'drawTitle', 'Fills a title bar and draws the upper-cased text centred at x 320.');
+method('hs', 'e', '(I)V', 'drawContent', 'Abstract per-frame draw hook; TeamSelection, WaitForPlayers and Formation views each implement a full panel draw.');
+method('hs', 'f', '(II)V', 'onButtonClick', 'Abstract click hook; FormationView submits the formation when the button kind is 41.');
+method('hs', 'a', '(IZ)V', 'update', 'Per-frame update: builds the ko selection from the button positions and, in subclasses, refreshes button states.');
+method('hs', 'a', '(CII)Z', 'handleKey', 'Moves the ko selection with the arrow keys and activates the focused button on enter.');
+method('hs', 'c', '(II)I', 'buttonY', 'Default y of button n is 342 - 29*n; FormationView overrides it with a constant.');
+method('hs', 'd', '(II)I', 'buttonX', 'Default x of every button is 544; FormationView overrides it with 493.');
+method('hs', 'e', '(II)Z', 'isButtonEnabled', 'Default returns true; FormationView disables buttons depending on the participant\'s team.');
+method('va', 'a', '(ZLki;)V', 'queueInputEvent', 'Starts with CommonGame.enqueueEvent for the event and then forwards key and mouse events to the footballer.');
+method('ol', 'a', '(BI)Ljava/lang/String;', 'formatMatchTime', 'Converts the tick difference to seconds and returns minutes and seconds as two-digit text.');
+method('wl', 'a', '(II)Z', 'isReadyOrInactive', 'True when the participant has left or has its ready bit set.');
+method('wl', 'a', '(ZI)Z', 'hasChosenAllSlots', 'Returns false while any of the participant\'s team slots it owns still has choice -1.');
+method('wl', 'a', '(Lml;Z)V', 'readState', 'Reads the 2x4 slot choices, the ready mask and the chosen player stats from the buffer.');
+method('wl', 'a', '(ILgr;II)Z', 'canSelectPlayer', 'Rejects squad entries that are empty, already used or already picked in another slot of the team.');
+method('wl', 'a', '(Lgr;[Lup;BII)V', 'autoSelectPlayer', 'Scans squad entries 0..8 and applies the first one canSelectPlayer allows.');
+method('wl', 'a', '(IILgr;[Lup;I)V', 'applyCommand', 'Command -1 toggles the ready bit; other values pick or clear a squad entry for a slot.');
+field('wl', 'j', '[[I', 'slotChoice', 'Per team and slot squad index, -1 when unchosen; read as four bits minus one.');
+field('wl', 'm', '[[I', 'slotOwner', 'Participant that owns each team slot; compared with the acting participant.');
+field('wl', 'h', 'I', 'readyMask', 'Bit per participant; toggled by command -1 and tested by isReadyOrInactive.');
+field('wl', 'i', '[[Lup;', 'slotStats', 'PlayerStats chosen for each team slot, copied and read alongside the choices.');
+method('nl', 'c', '(II)V', 'startDive', 'Faces the target x, stores it and sets action 5 (ACTION_DIVE) with extra duration from the keeper stat.');
+method('wt', 'a', '(Ltj;Lnl;BI)Z', 'tryKeeperDive', 'Projects the free ball to the footballer\'s line and calls startDive when it will cross inside the goal mouth.');
+method('es', 'a', '(ILnl;ILnl;Ltj;)V', 'tryKeeperTackle', 'When the ball is possessed and within nb.a reach of the keeper it starts a tackle with action time 200.');
+method('vl', 'a', '(Lnu;B)V', 'computeCameraFocus', 'Clamps the ball position to a 450 pixel radius around the pitch centre (448,672) and stores it.');
+method('tc', 'a', '(IBILnl;I)Z', 'advanceToPoint', 'Clamps the footballer\'s position along its direction bits to the target and stops with a direction reset on arrival.');
+method('hd', 'a', '(BLhd;)V', 'addChild', 'Creates the child tf on first use and appends the node.');
+method('hd', 'b', '(Z)V', 'invalidateChildren', 'Marks every child dirty and recurses into its children.');
+method('hd', 'a', '(ILhd;)V', 'setFocusedNode', 'Recurses into the children and sets the focus flag on the node equal to the argument.');
+method('hd', 'a', '(II)I', 'computeContentWidth', 'Returns the widest of the text, sprite and child extents, starting from the argument.');
 method('a', 'e', '()V', 'writeMixBlock', 'Body is identical to steelsentinels JavaSoundAudioOutput.writeMixBlock.');
 method('a', 'f', '()V', 'closeDevice', 'Body is identical to escapevector/geoblox JavaSoundAudioOutput.closeDevice.');
 method('ah', '$cfr$lcmp', '(JJ)I', 'compareLongs', 'Body is identical to escapevector GameAppletShell.compareLongs.');
@@ -530,7 +573,6 @@ method('uo', 'a', '([I[BIIIIIIIII[I[I)V', 'blitMaskedGlyph', 'Body is identical 
 method('uo', 'b', '(IIIIIIIZ)V', 'drawGlyphAlpha', 'Body is identical to steelsentinels BinaryBitmapFont.drawGlyphAlpha.');
 method('uo', 'b', '([I[BIIIIIIII)V', 'blitBinaryGlyphWithAlpha', 'Body is identical to steelsentinels BinaryBitmapFont.blitBinaryGlyphWithAlpha.');
 method('ut', 'b', '()Lut;', 'copy', 'Body is identical to wizardrun Sprite.copy.');
-method('ut', 'd', '(II)V', 'drawWithOffsets', 'Body is identical to zombiedawn Sprite.drawWithOffsets.');
 method('ut', 'f', '()Lut;', 'flipHorizontal', 'Body is identical to wizardrun Sprite.flipHorizontal.');
 method('ut', 'f', '(II)V', 'drawHalfSize', 'Body is identical to escapevector/geoblox Sprite.drawHalfSize.');
 method('vm', 'a', '(III)V', 'rampVolumeAndPan', 'Body is identical to steelsentinels PcmSampleStream.rampVolumeAndPan.');
@@ -561,7 +603,6 @@ method('vm', 'i', '()V', 'playBackwardFromEnd', 'Body is identical to escapevect
 method('vm', 'm', '()I', 'getTargetVolume', 'Body is identical to geoblox/steelsentinels PcmSampleStream.getTargetVolume.');
 method('tg', 'b', '(I)[F', 'decodePacket', 'Body closely matches steelsentinels VorbisSample.decodePacket.');
 method('tg', 'b', '([B)V', 'decodeSetup', 'Body closely matches steelsentinels VorbisSample.decodeSetup.');
-method('ut', 'a', '(III)V', 'drawWithOffsets', 'Body closely matches zombiedawn Sprite.drawWithOffsets.');
 method('vm', 'j', '()Z', 'adjustRampOrStop', 'Body closely matches steelsentinels PcmSampleStream.adjustRampOrStop.');
 method('vm', 'e', '(I)V', 'fadeOutAndUnlink', 'Body closely matches steelsentinels PcmSampleStream.fadeOutAndUnlink.');
 method('km', 'b', '()Z', 'decodeFloor', 'Body closely matches steelsentinels VorbisFloor.decodeFloor.');
