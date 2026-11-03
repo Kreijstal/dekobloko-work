@@ -242,6 +242,9 @@ Object.assign(classes, {
   "ha": ["TextLayoutLine", "Holds the top and bottom y of one wrapped line and the x offset of each character boundary."],
   "la": ["RichTextLayout", "TextLayout that rebuilds its lines from a string, font and width unless the cached inputs are unchanged."],
   "ek": ["ArrayWidgetGroup", "UiWidget that holds its children in a UiWidget array and forwards drawing, input and focus to them."],
+  "lb": ["Bzip2Decoder", "Static bzip2 decompressor that reads bits from a shared Bzip2State."],
+  "na": ["Bzip2State", "Holds the input and output arrays, bit buffer, block tables and counters for one bzip2 decode."],
+  "ps": ["ArrayOperations", "Static block copy and fill helpers for int, byte and Object arrays."],
 });
 method("ob", "e", "(B)Ljava/lang/String;", "readMarkedString", "Requires a leading zero byte and then reads bytes up to the next zero as a string.");
 method("ob", "a", "(BLjava/lang/String;)V", "writeMarkedString", "Rejects strings containing NUL, writes a zero marker byte and then the string.");
@@ -1148,6 +1151,22 @@ method("wn", "b", "()V", "clearStatics", "Assigns null to 5 static fields of the
 method("wo", "a", "(B)V", "clearStatics", "Assigns null to 1 static field of the class.");
 method("wp", "a", "(B)V", "clearStatics", "Assigns null to 5 static fields of the class.");
 method("wq", "a", "(B)V", "clearStatics", "Assigns null to 1 static field of the class.");
+method("bs", "a", "(I[BBI)I", "crc32", "Updates a CRC-32 register with the table over a byte range and returns the complemented result.");
+method("ps", "a", "([II[III)V", "copyInts", "Copies a range of ints in blocks of eight when the arrays differ.");
+method("ps", "a", "([Ljava/lang/Object;I[Ljava/lang/Object;II)V", "copyObjects", "Copies a range of objects in blocks of eight when the arrays differ.");
+method("ps", "a", "([BI[BII)V", "copyBytes", "Copies a range of bytes in blocks of eight when the arrays differ.");
+method("ps", "a", "([III)V", "zeroFill", "Sets a range of ints to zero in blocks of eight.");
+method("lb", "a", "([BI[BII)I", "decompress", "Stores the buffers in the shared state and runs the block decoder until the input ends.");
+method("lb", "a", "(ILna;)I", "readBits", "Refills the 32-bit buffer from the input and returns the requested number of bits.");
+method("lb", "d", "(Lna;)B", "readByte", "Reads eight bits.");
+method("lb", "c", "(Lna;)B", "readBit", "Reads one bit.");
+method("lb", "e", "(Lna;)V", "collectUsedSymbols", "Stores the symbols marked as used in order.");
+method("lr", "a", "(II[IB[Ljava/lang/Object;)V", "quickSort", "Sorts the int keys between two indices and moves the object values along.");
+method("lr", "a", "(II)[B", "allocateByteArray", "Returns a pooled byte array of one of the common sizes or allocates a new one.");
+method("je", "a", "(IB)I", "sine", "Looks up a sine value for a 13-bit angle in the quarter table with sign by quadrant.");
+method("oh", "b", "(II)I", "cosine", "Looks up a cosine value for a 13-bit angle in the quarter table with sign by quadrant.");
+method("ho", "a", "(IILjava/lang/String;)Lli;", "createSocketConnector", "Creates a ProxySocketConnector and stores the port and host.");
+method("ng", "a", "(Lsl;B)Z", "readBoolean", "Reads one bit from the packet bit reader and returns whether it is 1.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
