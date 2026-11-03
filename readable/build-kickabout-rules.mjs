@@ -349,6 +349,12 @@ const classes = {
   bo: ['QuickChatKeysHelpPanel', 'Title plus rows pairing [BACKSPACE]/[HOME]/[F9]/[F10]/[F11]/[ESC] with Quick Chat key descriptions.'],
   im: ['ListRow', 'Abstract hd row with abstract draw b(II) and click handler c(IZ), subclassed by auction and shop rows.'],
   jr: ['ReceivedAuctionItemRow', 'ListRow drawing a ReceivedAuctionItem with take-up and withdraw buttons and the bid/buyout text.'],
+  vn: ['MeshData', 'Final cv subclass with the same constructors and decode, normal, skin-group and model-factory methods as Armies of Gielinor MeshData.'],
+  cv: ['MeshObject', 'Abstract empty-instance root of MeshData and ModelMeshBase, same as Armies of Gielinor MeshObject.'],
+  ba: ['TrinketCountSortCriterion', 'Compares two shop slots by their trinket count plus the summed bonuses of those trinkets.'],
+  od: ['PlayerValueSortCriterion', 'Compares two shop slots by their cached player value field.'],
+  qi: ['PlayerStatSortCriterion', 'Compares shop slots by power, speed or tackle depending on the direction index modulo three.'],
+  lv: ['PopupCard', 'Interface implemented by tooltip-like cards that report a width and height and draw themselves centred on a point.'],
 // END-R2CLASSES
   jc: ['LoggedPlayer', 'toString returns "LoggedPlayer{..}" with home/away side, resign time, reward, membership, tackle, kick, cross, header and goal counters.'],
 };
@@ -853,6 +859,23 @@ method('bb', 'a', '(IIB)Z', 'handleKeyShortcut', 'Routes the pressed key to the 
 method('bb', 'a', '(ZIIIII)V', 'setLayout', 'Computes the menu width, positions the rows and places the open submenu beside the selected row.');
 method('gu', 'a', '(IIIII)V', 'layoutItems', 'Adds a placeholder item when empty, measures the widest row and positions each row.');
 method('gu', 'a', '(I)Z', 'consumeSelection', 'Returns whether the given action id is the selected one and clears it when Enter was pressed.');
+method('he', 'a', '(BLjava/lang/String;Ljava/lang/String;)V', 'setNames', 'Stores both name strings and refreshes the cached text from the name.');
+method('he', 'a', '(B[I)I', 'sumInts', 'Adds up all elements of an int array.');
+method('eo', 'a', '(Lot;)Lot;', 'mirrorHorizontally', 'Copies an ot image with each row\'s pixels in reverse x order.');
+method('eo', 'b', '(Lot;)Lot;', 'mirrorVertically', 'Copies an ot image with the rows in reverse y order.');
+method('eo', 'a', '(Ljava/lang/String;ILhu;IZ)Lhd;', 'createRenderedButton', 'Renders the lower-cased label into four state images and builds a button hd sized to the first image.');
+method('vn', 'a', '([B)V', 'decodeExtendedFormat', 'Decodes the extended mesh format with the dup-temp opcode layout, matching Armies MeshData.decodeExtendedFormat.');
+method('vn', 'b', '([B)V', 'decodeLegacyFormat', 'Decodes the legacy mesh format from several packet buffers, matching Armies MeshData.decodeLegacyFormat.');
+method('vn', 'b', '()V', 'calculateNormals', 'Accumulates face normals from cross products of edge vectors per vertex.');
+method('vn', 'a', '()V', 'buildSkinGroups', 'Groups vertex and face indices by their skin ids into per-group arrays.');
+method('vn', 'a', '(Lsj;Ljava/lang/String;Ljava/lang/String;)Lvn;', 'load', 'Loads the named mesh file from an archive group into a new MeshData.');
+method('vn', 'a', '(IIIII)Lqc;', 'createModel', 'Returns a new ModelMesh built from this mesh as a ModelMeshBase.');
+method('vn', 'b', '(IIIII)Leg;', 'createModelMesh', 'Returns a new ModelMesh built from this mesh with the given lighting parameters.');
+method('lv', 'a', '(I)I', 'getHeight', 'Implementations return the card height, used to centre the card vertically before drawing.');
+method('lv', 'b', '(I)I', 'getWidth', 'Implementations return the card width, used to centre the card horizontally before drawing.');
+method('lv', 'a', '(III)V', 'drawCentered', 'Draws the card centred on the given x and y coordinates.');
+method('ja', 'c', '(II)V', 'stepSelection', 'Adds the delta to the selected index and wraps it around the item count, refreshing when it changed.');
+method('bn', 'a', '(CB)Ljava/lang/String;', 'charToString', 'Returns String.valueOf of the character.');
 method('a', 'e', '()V', 'writeMixBlock', 'Body is identical to steelsentinels JavaSoundAudioOutput.writeMixBlock.');
 method('a', 'f', '()V', 'closeDevice', 'Body is identical to escapevector/geoblox JavaSoundAudioOutput.closeDevice.');
 method('ah', '$cfr$lcmp', '(JJ)I', 'compareLongs', 'Body is identical to escapevector GameAppletShell.compareLongs.');
