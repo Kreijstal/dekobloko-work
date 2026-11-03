@@ -204,6 +204,9 @@ Object.assign(classes, {
   "mb": ["AgeValidator", "TextFieldValidator that accepts a parsed number from 1 to 130."],
   "mf": ["EmailValidator", "TextFieldValidator that parses an email address and checks a matching confirm validator."],
   "um": ["PlayerStats", "Sixteen per-player counters formatted as ints and as strings for the end-of-game table."],
+  "fm": ["HuffmanCodec", "Built from a code-length byte array and encodes or decodes text bytes; SPClient loads it from the huffman archive file."],
+  "sp": ["WidgetStyle", "Holds five WidgetPainter objects and a font that UiWidget constructors use as defaults."],
+  "dm": ["ObjectList", "Growable Object array with a count that grows by ten when it is full."],
 });
 method("ob", "e", "(B)Ljava/lang/String;", "readMarkedString", "Requires a leading zero byte and then reads bytes up to the next zero as a string.");
 method("ob", "a", "(BLjava/lang/String;)V", "writeMarkedString", "Rejects strings containing NUL, writes a zero marker byte and then the string.");
@@ -613,6 +616,32 @@ method("qb", "b", "(I)V", "shutdown", "Sets the stop flag, wakes the worker and 
 method("l", "b", "(B)V", "computeDistances", "Stores the hop-distance matrix built from the stars' neighbour lists.");
 method("l", "a", "(Lfs;Lvr;ILln;)V", "assignHomeStar", "Makes the star the player's home, creating its Territory and the single-star territory.");
 method("l", "a", "([Lfs;Lvr;I)V", "assignHomeStars", "Gives each player in turn a star of kind 3 as its home star.");
+method("ke", "a", "(II[BI)V", "write", "Copies bytes into the write buffer under a lock and wakes the writer thread.");
+method("ke", "b", "(I)V", "close", "Sets the closed flag, wakes the writer thread and closes the socket streams.");
+method("ke", "a", "(B)I", "readByte", "Reads one byte from the input stream unless the socket is closed.");
+method("ke", "a", "(Z)V", "checkError", "Throws IOException when the writer thread has recorded an error.");
+method("ke", "a", "(I)I", "available", "Returns the number of bytes available from the input stream.");
+method("ke", "a", "([BIIB)V", "readFully", "Reads a number of bytes into the array and throws EOFException when the stream ends.");
+method("li", "a", "(I)Ljava/net/Socket;", "connectDirect", "Opens a Socket to the stored host and port.");
+method("li", "b", "(I)Ljava/net/Socket;", "connect", "Opens a Socket to the stored host and port; ProxySocketConnector consults the proxy selector first.");
+method("pa", "a", "(ILjava/lang/String;Ljava/lang/String;I)Ljava/net/Socket;", "connectThroughHttpProxy", "Opens a socket to a proxy host and sends an HTTP CONNECT request for the target.");
+method("pa", "a", "(ILjava/net/Proxy;)Ljava/net/Socket;", "connectThroughProxy", "Uses a direct connection for DIRECT proxies and an HTTP CONNECT exchange otherwise.");
+method("ib", "a", "(Ljava/awt/Component;I)V", "detachFrom", "Abstract: removes the wheel listener from the component.");
+method("ib", "a", "(Ljava/awt/Component;Z)V", "attachTo", "Abstract: adds the wheel listener to the component.");
+method("ib", "b", "(I)I", "takeRotation", "Abstract: returns the accumulated wheel rotation and resets it.");
+method("qd", "a", "(B)V", "bindAsRenderTarget", "Passes the pixel array and size to the rasterizer as the draw target.");
+method("qd", "a", "(ILjava/awt/Component;BI)V", "allocate", "Abstract: allocates the pixel array and image for a height, component and width.");
+method("qd", "a", "(Ljava/awt/Graphics;IBI)V", "paint", "Abstract: draws the image to the graphics at a position.");
+method("fm", "a", "([BII[BII)I", "encode", "Looks up the code and length of each input byte and writes the bits into the output array.");
+method("fm", "a", "([B[BIIII)I", "decode", "Walks the code tree bit by bit over the input and writes the decoded bytes.");
+method("ol", "a", "(JLjava/lang/Object;B)V", "put", "Stores the value under the key with weight 1 through the private insert.");
+method("ol", "a", "(JI)Ljava/lang/Object;", "get", "Looks up the key, drops cleared entries and moves a found entry to the recency queue.");
+method("ol", "a", "(Lmc;B)V", "removeEntry", "Unlinks the entry from both structures and returns its weight to the budget.");
+method("ol", "a", "(ZJ)V", "remove", "Removes the entry stored under the key.");
+method("ol", "a", "(JIILjava/lang/Object;)V", "insert", "Evicts least recent entries until the weight fits, then stores a StrongCacheEntry.");
+method("dm", "a", "(ZLjava/lang/Object;)V", "add", "Appends the object and grows the array first when it is full.");
+method("dm", "a", "([Ljava/lang/Object;I)V", "copyTo", "Copies the elements from an index to the end into the argument array.");
+method("dm", "a", "(I)V", "grow", "Allocates an array ten elements larger and copies the old elements.");
 // END GENERATED
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
