@@ -12,7 +12,6 @@ const classes = {
   wi: ['PacketBuffer', 'IntrusiveNode holding a byte payload and cursor with big-endian primitive and string encodings.'],
   ii: ['CipherPacketBuffer', 'PacketBuffer subclass adding an opcode cipher and a separate bit cursor.'],
   ga: ['ClientException', 'RuntimeException retaining the original cause and appended context text.'],
-  Bounce: ['BounceDown', 'Main applet class: loads the platform, slime and menu assets named by literals and drives the game states.'],
   dg: ['Platform', 'Platform with a kind code, position, timer; constructed in the platform pool and drawn with the platform sprites.'],
   ud: ['Slime', 'Player slime with form, size, position, velocity and invulnerability blink; drawn with the slime sprite sets.'],
   fj: ['AppletShell', 'Applet/Runnable base with focus and window listeners and abstract client hooks.'],

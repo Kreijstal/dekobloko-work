@@ -13,7 +13,6 @@ const classes = {
   h: ['ContextualRuntimeException', 'RuntimeException subclass retaining a context string and the wrapped Throwable.'],
   cd: ['GameAppletShell', 'Abstract Applet with Runnable, focus and window listeners; resolves code base and applet context.'],
   wb: ['NetworkGameClient', 'Abstract GameAppletShell subclass retaining client connection and timing state; extended by the game applet.'],
-  fleas: ['FleaCircusApplet', 'Public final applet class extending the client shell; owns the game loop, init and the large gameplay logic.'],
   rh: ['ResourceArchive', 'Holds packed groups and unpacked files over an index and a node hash table; same role as GeoBlox ResourceArchive.'],
   pa: ['DualLinkNode', 'IntrusiveNode subclass with an independent secondary key and previous/next link pair, unlinked separately by e().'],
   wf: ['SecondaryNodeDeque', 'Iterable sentinel deque that splices DualLinkNode instances through their secondary links.'],
@@ -32,7 +31,7 @@ export const fleaConfig = {
     return ['# Reading Flea Circus', '',
       'This directory is the single published Java tree. The scripts and reviewed rules live in dekobloko-work/readable; the current reverse dictionary is ../../decompilation/fleacircus-naming.json.', '',
       `This pass names ${Object.keys(classes).length} reviewed classes in ${mapping.files.length} source files. Unresolved roles keep their original names.`, '',
-      'Start at `FleaCircusApplet`, which extends `NetworkGameClient` and `GameAppletShell`. Shared engine roles are matched to other games by reviewed behavior, not by obfuscated spelling.', '',
+      'Start at `fleas` (the applet class, kept under its launch name), which extends `NetworkGameClient` and `GameAppletShell`. Shared engine roles are matched to other games by reviewed behavior, not by obfuscated spelling.', '',
       'Reproduce with `node readable/build-fleacircus-rules.mjs --check`, `node readable/reproduce-fleacircus.mjs --update`, and `node readable/reproduce-fleacircus.mjs --check` from dekobloko-work.', ''].join('\n');
   },
 };
