@@ -99,3 +99,14 @@ test('encrypted-members games consume the unanswered opcode-2 key request as thr
   assert.equal(state.outgoing.length, 0);
   assert.deepEqual([...Buffer.concat(state.chunks.map(c => Buffer.from(c)))], [0]);
 });
+
+test('int-array replies lead with kind 0 and echo the request id', async () => {
+  const {createBrowserGameServer} = await import('../apps/launcher/browser-loader/browser-game-server.mjs');
+  const data = new Map();
+  const server = createBrowserGameServer({game: {internalName: 'brickabrac'}, storage: {getItem: k => data.get(k), setItem: (k, v) => data.set(k, v)}});
+  for (const requestId of [0, 1, 7]) {
+    const state = server.createSocket(); state.outboundIsaac = {next: () => 0};
+    server.handleAccountPacket(state, 5, Uint8Array.of(2, 0, requestId));
+    assert.deepEqual([...Buffer.concat(state.chunks.map(c => Buffer.from(c)))], [4, 6, 0, requestId, 0, 0, 0, 0]);
+  }
+});

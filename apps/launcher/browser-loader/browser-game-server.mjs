@@ -325,8 +325,11 @@ function handleEmbeddedAccountPacket(state, opcode, payload) {
   }
   if (opcode === 5 && payload[0] === 2) {
     const progress = Number(data.progress) || 0;
-    const discriminator = payload[2] || 0;
-    frameAccountPacket(state, 4, [discriminator, 0, progress, 0, 0, 0]);
+    // Int-array reply: kind 0, the request id, then the little-endian values.
+    // Kind 1 is a level-result ack; a client reading it with no matching
+    // pending result closes and reconnects (Brick-A-Brac uses request id 1).
+    const requestId = payload[2] || 0;
+    frameAccountPacket(state, 4, [0, requestId, progress, 0, 0, 0]);
   }
 }
 
