@@ -86,6 +86,22 @@ for (const asynchronous of [false, true]) test(`shared preparation reaches the a
   launcher.dispose();
 });
 
+test('archive key requests get a zero key for plain groups and no reply for encrypted ones', async () => {
+  const {createBrowserGameServer} = await import('../apps/launcher/browser-loader/browser-game-server.mjs');
+  const plain = Uint8Array.of(1, 0, 0, 0, 6, 0, 0, 0, 9, 0x31, 0x41, 0x59, 0x26, 0x53, 0x59);
+  const cipher = Uint8Array.of(2, 0, 0, 0, 6, 0, 0, 0, 9, 0xa1, 0x80, 0x19, 0xac, 0xac, 0xf5);
+  const fetched = [];
+  const server = createBrowserGameServer({game: {internalName: 'crazycrystals', assetRoot: '/a'}, storage: {getItem() {}, setItem() {}},
+    fetchAsset: async url => { fetched.push(url); return new Response(url.endsWith('/5-0.bin') ? plain : cipher); }});
+  for (const [archive, expected] of [[5, [1, ...Array(16).fill(0)]], [13, []]]) {
+    const state = server.createSocket(); state.outboundIsaac = {next: () => 0};
+    server.handleAccountPacket(state, 2, Uint8Array.of(archive, 0, 0));
+    await state.requestChain;
+    assert.deepEqual([...Buffer.concat(state.chunks.map(c => Buffer.from(c)))], expected);
+  }
+  assert.deepEqual(fetched, ['/a/5-0.bin', '/a/13-0.bin']);
+});
+
 test('encrypted-members games consume the unanswered opcode-2 key request as three bytes', async () => {
   const {createBrowserGameServer, ENCRYPTED_MEMBER_DATA} = await import('../apps/launcher/browser-loader/browser-game-server.mjs');
   assert.deepEqual([...ENCRYPTED_MEMBER_DATA].sort(), ['escapevector', 'holdtheline', 'torquing']);
@@ -93,7 +109,8 @@ test('encrypted-members games consume the unanswered opcode-2 key request as thr
   const server = createBrowserGameServer({game: {internalName: 'torquing'}, storage: {getItem: k => data.get(k), setItem: (k, v) => data.set(k, v)}});
   const state = server.createSocket(); state.outboundIsaac = {next: () => 0};
   const seed = [1, 2, 3, 4]; state.inboundIsaac = new server.Isaac(seed); const client = new server.Isaac(seed);
-  // Key request for archive 13 group 0, then a keepalive (opcode 0).
+  // Key request for archive 13 group 0, then a keepalive (opcode 0); the
+  // request's fetch is never answered here, so only the keepalive replies.
   state.outgoing.push((2 + client.next()) & 255, 13, 0, 0, (0 + client.next()) & 255);
   server.processAccountPackets(state);
   assert.equal(state.outgoing.length, 0);

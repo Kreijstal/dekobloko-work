@@ -259,6 +259,7 @@ function saveEmbeddedAccountData(state, data) {
 function handleEmbeddedAccountPacket(state, opcode, payload) {
   if (escape) return escape.handle(state, opcode, payload);
   if (opcode === 0) { frameAccountPacket(state, 0, []); return; }
+  if (opcode === 2 && payload.length === 3) { answerArchiveKeyRequest(state, payload[0], readU16(payload, 1)); return; }
   const data = embeddedAccountData(state);
   data.achievements ??= [];
   data.scores ??= [];
@@ -333,10 +334,39 @@ function handleEmbeddedAccountPacket(state, opcode, payload) {
   }
 }
 
+// The client waits for this reply before it reads the group. Sixteen zero
+// bytes mean "not encrypted". A group that is XTEA-encrypted with a key only
+// the original server knew must not get a zero key (the client would parse
+// ciphertext and crash), so it stays unanswered; see ENCRYPTED_MEMBER_DATA.
+function answerArchiveKeyRequest(state, archive, group) {
+  const url = `${game.assetRoot}/${archive}-${group}.bin${game.assetVersion ? `?v=${game.assetVersion}` : ""}`;
+  state.requestChain = state.requestChain.then(async () => {
+    if (state.closed) return;
+    const response = await fetchAsset(url);
+    if (!response.ok) return;
+    const container = new Uint8Array(await response.arrayBuffer());
+    if (!plainJs5Container(container)) return;
+    frameAccountPacket(state, 1, Array(16).fill(0));
+  }).catch(error => { state.error = error; wakeSocketReaders(state); });
+}
+
+function plainJs5Container(container) {
+  if (container.length < 5) return false;
+  const kind = container[0];
+  if (kind === 0) return true;
+  if (container.length < 15) return false;
+  // Compressed payloads start after the 9-byte header: bzip2 "1AY&SY"
+  // (headerless stream) or the gzip magic. Ciphertext has neither.
+  if (kind === 1) return container[9] === 0x31 && container[10] === 0x41 && container[11] === 0x59 &&
+    container[12] === 0x26 && container[13] === 0x53 && container[14] === 0x59;
+  if (kind === 2) return container[9] === 0x1f && container[10] === 0x8b;
+  return false;
+}
+
 function processEmbeddedAccountPackets(state) {
   const fixedLengths = new Map([[0, 0], [1, 0], [7, 2], [9, 0], [10, 0], [17, 0], [58, 0], [59, 1], [61, 0], [62, 0], [63, 0]]);
-  // Opcode 2 (archive key request: archive byte, group short) goes unanswered.
-  if (escape || ENCRYPTED_MEMBER_DATA.has(game.internalName)) fixedLengths.set(2, 3);
+  // Opcode 2 is the archive key request: archive byte, group short.
+  fixedLengths.set(2, 3);
   while (state.outgoing.length > 0) {
     const pending = state.pendingAccountPacket;
     const decodedOpcode = pending?.decodedOpcode ??

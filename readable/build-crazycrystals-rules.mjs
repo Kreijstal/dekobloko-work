@@ -24,7 +24,7 @@ const classes = {
 const members = {};
 
 export const crazyConfig = {
-  game: 'crazycrystals', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
+  game: 'crazycrystals', version: 1, sourceCommit: '67141d635b7060c02e01505325a82243446974c0', classes, members,
   workflowFiles: ['build-crazycrystals-rules.mjs', 'reproduce-crazycrystals.mjs', 'reviewed-game.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures in this wave.'}),
   readingGuide(rules, mapping) {
