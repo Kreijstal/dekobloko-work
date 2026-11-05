@@ -6,7 +6,13 @@ const GEOBLOX_LOGIN_MODULUS =
 const GEOBLOX_LOGIN_PRIVATE_EXPONENT =
   8109553727684203492859097509616488820285484587366737830582381433702848327062763166760854493136782393824062638162497760964400970638269465352157742135950977n;
 
-export { GEOBLOX_LOGIN_MODULUS as LOGIN_MODULUS };
+// Games whose members-only JS5 group is XTEA-encrypted with a key only the
+// original server knew (escapevector 5:0, holdtheline 10:0, torquing 13:0).
+// A member client requests that key (opcode 2) and waits for it forever, so
+// these accounts are free-to-play; members' content stays locked.
+const ENCRYPTED_MEMBER_DATA = new Set(["escapevector", "holdtheline", "torquing"]);
+
+export { GEOBLOX_LOGIN_MODULUS as LOGIN_MODULUS, ENCRYPTED_MEMBER_DATA };
 export function createBrowserGameServer({ game, storage = globalThis.localStorage, fetchAsset = globalThis.fetch, diagnostics = {} }) {
 if (game.internalName === 'escapevector') diagnostics.accountProtocol = 'escapevector-local-v1';
 const escape = game.internalName === 'escapevector' ? createEscapeAccountService({
@@ -326,7 +332,8 @@ function handleEmbeddedAccountPacket(state, opcode, payload) {
 
 function processEmbeddedAccountPackets(state) {
   const fixedLengths = new Map([[0, 0], [1, 0], [7, 2], [9, 0], [10, 0], [17, 0], [58, 0], [59, 1], [61, 0], [62, 0], [63, 0]]);
-  if (escape) fixedLengths.set(2, 3);
+  // Opcode 2 (archive key request: archive byte, group short) goes unanswered.
+  if (escape || ENCRYPTED_MEMBER_DATA.has(game.internalName)) fixedLengths.set(2, 3);
   while (state.outgoing.length > 0) {
     const pending = state.pendingAccountPacket;
     const decodedOpcode = pending?.decodedOpcode ??
@@ -504,11 +511,9 @@ function processBrowserJs5Writes(state) {
       state.accountName = name;
       storage.setItem("funorb.account.name", name);
       const nameBytes = encodeCp1252(name);
-      // Membership days (365, the u16 after two flag bytes). An Escape Vector
-      // member must load the members' extra data, archive 5 group 0, which
-      // only the original server's XTEA key decrypts; that key is unknown, so
-      // Escape Vector accounts are free-to-play and never wait for it.
-      const memberDays = escape ? 0 : 365;
+      // Membership days (365, the u16 after two flag bytes). A member of an
+      // ENCRYPTED_MEMBER_DATA game would wait forever for the unknown key.
+      const memberDays = ENCRYPTED_MEMBER_DATA.has(game.internalName) ? 0 : 365;
       const payload = Uint8Array.from([
         ...Array.from({length: 8}, (_, index) => Number((identity?.playerId ?? 1n) >> BigInt(56 - index * 8) & 255n)),
         0, 0, memberDays >>> 8, memberDays & 255,
