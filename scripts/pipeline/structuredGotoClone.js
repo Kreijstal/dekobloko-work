@@ -1405,6 +1405,20 @@ function complementProducesBranchLeftOperand(codeItems, leftPairStart, branchInd
 }
 
 
+// A clone replaces the branch's taken edge, so the branch must still target
+// the cloned range. Callers that read label-reference maps computed before an
+// earlier insertion otherwise re-invert an already rewritten branch and point
+// it at the previous clone, orphaning the real fall-through (Crazy Crystals
+// te.a lost its login socket setup this way).
+function branchStillTargetsRange(codeItems, insn, start, end) {
+  const target = findLabelIndex(codeItems, insn && insn.arg);
+  if (target < 0) return false;
+  if (nextInstructionIndex(codeItems, target) === nextInstructionIndex(codeItems, start)) return true;
+  // An identical copy of the range (for example one cloned by an earlier
+  // rewrite) is an equivalent taken edge.
+  return target + (end - start) <= codeItems.length && sameInstructionRange(codeItems, target, start, end - start);
+}
+
 function cloneConditionalRangeAfterBranchWithFallthroughGoto(codeItems, code, branchIndex, start, end, exitLabel, prefix) {
   const insn = codeItems[branchIndex] && codeItems[branchIndex].instruction;
   const cur = op(insn);
@@ -1413,6 +1427,7 @@ function cloneConditionalRangeAfterBranchWithFallthroughGoto(codeItems, code, br
   const cleanExit = labelName(exitLabel);
   if (!cleanExit) return 0;
   if (rangeTouchesExceptionTable(code, codeItems, start, end)) return 0;
+  if (!branchStillTargetsRange(codeItems, insn, start, end)) return 0;
   const fallthrough = nextInstructionIndex(codeItems, branchIndex + 1);
   if (fallthrough < 0 || fallthrough >= start) return 0;
   const cloneId = structuredCloneId;
@@ -2669,12 +2684,15 @@ function cloneObjectSharedReturnTail(codeItems, code) {
   for (const refIndex of refs) {
     const insn = codeItems[refIndex] && codeItems[refIndex].instruction;
     const cur = op(insn);
+    // Earlier clones are inserted before the tail; re-resolve its range.
+    const start = findLabelIndex(codeItems, tailLabel);
+    const end = start + (tailEnd - tailStart);
     if (cur === 'goto') {
-      rewrites += cloneGotoRangeAt(codeItems, code, refIndex, tailStart, tailEnd, 'LCKOBJRET');
+      rewrites += cloneGotoRangeAt(codeItems, code, refIndex, start, end, 'LCKOBJRET');
       continue;
     }
     if (!isConditionalBranch(cur)) continue;
-    rewrites += cloneConditionalRangeAfterBranch(codeItems, code, refIndex, tailStart, tailEnd, 'LCKOBJRET');
+    rewrites += cloneConditionalRangeAfterBranch(codeItems, code, refIndex, start, end, 'LCKOBJRET');
   }
   return rewrites;
 }
@@ -3917,6 +3935,7 @@ function cloneConditionalRangeAfterBranch(codeItems, code, branchIndex, start, e
   if (!isConditionalBranch(cur)) return 0;
   if (start <= branchIndex || end <= start) return 0;
   if (rangeTouchesExceptionTable(code, codeItems, start, end)) return 0;
+  if (!branchStillTargetsRange(codeItems, insn, start, end)) return 0;
   const fallthrough = nextInstructionIndex(codeItems, branchIndex + 1);
   if (fallthrough < 0 || fallthrough >= start) return 0;
   const cloneId = structuredCloneId;
@@ -4554,6 +4573,7 @@ function cloneConditionalRangeAfterBranch(codeItems, code, branchIndex, start, e
   if (!isConditionalBranch(cur)) return 0;
   if (start <= branchIndex || end <= start) return 0;
   if (rangeTouchesExceptionTable(code, codeItems, start, end)) return 0;
+  if (!branchStillTargetsRange(codeItems, insn, start, end)) return 0;
   const fallthrough = nextInstructionIndex(codeItems, branchIndex + 1);
   if (fallthrough < 0 || fallthrough >= start) return 0;
   const cloneId = structuredCloneId;

@@ -9,6 +9,7 @@ import {execFileSync} from 'node:child_process';
 import {createRequire} from 'node:module';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import {inventory, validateNamedExport} from '../scripts/publish-decompiled-games.mjs';
+import {recordVerifiedRawInput} from './pin-game-input.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const funorb = path.resolve(root, '../funorb-decompiled'), tools = path.resolve(root, '../java-tools');
@@ -28,7 +29,13 @@ if (update) assert.equal(git(funorb, 'status', '--porcelain', '--untracked-files
 const manifestPath = path.join(funorb, 'decompilation-provenance.json');
 const manifestBytes = fs.readFileSync(manifestPath), manifest = JSON.parse(manifestBytes);
 const record = manifest.publication.games[game];
-assert.ok(record && !manifest.namedExports?.[game], 'Only an existing raw game may be refreshed');
+assert.ok(record, 'Unknown game');
+// A named game keeps its raw input at the pinned commit; the repair produces a
+// new raw input snapshot for the documented re-pin, never edits named Java.
+const namedReceipt = manifest.namedExports?.[game];
+const rawCommit = namedReceipt?.source?.commit;
+if (namedReceipt) assert.ok(/^[a-f0-9]{40}$/.test(rawCommit || '') && namedReceipt.source.subdirectory === `games/${game}`,
+  'Named game has no pinned raw input');
 // Check every retained source identity before preparing a replacement.
 for (const [id, value] of Object.entries(manifest.publication.games)) {
   const named = manifest.namedExports?.[id];
@@ -38,7 +45,8 @@ for (const [id, value] of Object.entries(manifest.publication.games)) {
   assert.equal(actual.sha256, expected.sha256, 'Existing catalog differs: ' + id);
 }
 const relative = name + '.java', target = path.join(funorb, 'games', game, relative);
-const previousBytes = fs.readFileSync(target);
+const previousBytes = rawCommit ? run('git', ['-C', funorb, 'show', `${rawCommit}:games/${game}/${relative}`])
+  : fs.readFileSync(target);
 const existing = record.sourceRepairs?.classes?.[relative];
 const revision = update ? git(tools, 'rev-parse', 'HEAD') : existing?.generator?.commit;
 assert.match(revision || '', /^[a-f0-9]{40}$/, 'A check requires an existing pinned refresh receipt');
@@ -70,7 +78,14 @@ try {
     '--classpath', jar + path.delimiter + stubs, '--outputdir', generated, input]);
   const outputBytes = fs.readFileSync(path.join(generated, relative));
   const candidate = path.join(temporary, 'game');
-  fs.cpSync(path.join(funorb, 'games', game), candidate, {recursive: true});
+  if (rawCommit) {
+    const rawArchive = run('git', ['-C', funorb, 'archive', '--format=tar', rawCommit, `games/${game}`]);
+    const rawRoot = path.join(temporary, 'raw'); fs.mkdirSync(rawRoot);
+    run('tar', ['-xf', '-', '-C', rawRoot], {input: rawArchive, stdio: ['pipe', 'pipe', 'pipe']});
+    assert.equal(inventory(path.join(rawRoot, 'games', game), '.java').sha256, record.sources.sha256,
+      'Pinned raw input differs from the catalog record');
+    fs.cpSync(path.join(rawRoot, 'games', game), candidate, {recursive: true});
+  } else fs.cpSync(path.join(funorb, 'games', game), candidate, {recursive: true});
   fs.writeFileSync(path.join(candidate, relative), outputBytes);
   const sources = inventory(candidate, '.java', ['README.md']);
   const argumentsFile = path.join(temporary, 'sources.args'), classes = path.join(temporary, 'classes');
@@ -101,15 +116,21 @@ try {
     for (const key of Object.keys(receipt)) assert.deepEqual(receipt[key], existing[key], 'Refresh receipt differs: ' + key);
     assert.equal(sources.sha256, record.sources.sha256);
   } else if (hash(outputBytes) !== hash(previousBytes) || !existing) {
-    receipt.base = {commit: git(funorb, 'rev-parse', 'HEAD'), sourceSha256: hash(previousBytes), sources: record.sources};
+    receipt.base = {commit: rawCommit || git(funorb, 'rev-parse', 'HEAD'), sourceSha256: hash(previousBytes), sources: record.sources};
     receipt.runner = {repository: 'Kreijstal/dekobloko-work', commit: git(root, 'rev-parse', 'HEAD'),
       script: 'readable/refresh-raw-class.mjs'};
     record.sourceRepairs ||= {classes: {}};
     record.sourceRepairs.classes[relative] = receipt;
     record.sources = {files: sources.files, sha256: sources.sha256};
     assert.deepEqual(fs.readFileSync(manifestPath), manifestBytes, 'Manifest changed during refresh');
-    assert.deepEqual(fs.readFileSync(target), previousBytes, 'Source changed during refresh');
-    try {
+    if (rawCommit) {
+      // Freeze the repaired raw input; the caller re-pins the named export to
+      // it. Named Java stays untouched until that regeneration.
+      const pinned = recordVerifiedRawInput({destination: funorb, game, rawSources: candidate, catalog: manifest});
+      fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
+      console.log(JSON.stringify({rawInput: pinned}));
+    } else assert.deepEqual(fs.readFileSync(target), previousBytes, 'Source changed during refresh');
+    if (!rawCommit) try {
       fs.writeFileSync(target, outputBytes);
       fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
     } catch (error) {fs.writeFileSync(target, previousBytes); fs.writeFileSync(manifestPath, manifestBytes); throw error;}

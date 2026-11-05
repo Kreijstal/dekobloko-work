@@ -29,12 +29,23 @@ function optionalRef(repository, reference) {
 /** Git-only staging after the full catalog publication check has succeeded.
  * The caller owns the gate; this helper still checks the committed source
  * identity, named receipt and clean index, and never replaces worktree files. */
-export function recordVerifiedRawInput({destination, game, rawSources}) {
+export function recordVerifiedRawInput({destination, game, rawSources, catalog = null}) {
   if (!/^[a-z0-9_]+$/.test(game)) throw new Error('Invalid game identity');
   destination = path.resolve(destination);
   rawSources = path.resolve(rawSources);
   const parent = cleanHead(destination);
-  const manifest = json(git(destination, ['show', `${parent}:decompilation-provenance.json`]));
+  // A raw class repair of a named game supplies the catalog with the repaired
+  // record; it differs from HEAD only in that game's sources and receipts.
+  const committed = json(git(destination, ['show', `${parent}:decompilation-provenance.json`]));
+  const manifest = catalog ? structuredClone(catalog) : committed;
+  if (catalog) {
+    const strip = value => {
+      const copy = structuredClone(value), entry = copy.publication?.games?.[game];
+      if (entry) { delete entry.sources; delete entry.sourceRepairs; }
+      return JSON.stringify(copy);
+    };
+    if (strip(catalog) !== strip(committed)) throw new Error('Repaired catalog differs from HEAD beyond the repaired game');
+  }
   const record = manifest.publication?.games?.[game];
   const sources = inventory(path.resolve(rawSources), '.java');
   if (!sources.files || !record || record.sources?.files !== sources.files || record.sources?.sha256 !== sources.sha256 ||

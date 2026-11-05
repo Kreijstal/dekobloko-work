@@ -3373,7 +3373,12 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
     STRUCTURED_GOTO_STRING_BUILDER_CHAR_APPEND_TAIL: '1',
   }, () => runStructuredGotoClone(targetAstFrom('renamedOwner', 'renamedMethod', '()V', codeItems)));
   assert.equal(result.changed, true, 'string builder char append tail should be cloned by shape');
-  assert.equal(result.rewrites, 3);
+  // One clone per real reference. A third rewrite used to re-invert the
+  // already rewritten branch from a stale reference, so both of its edges
+  // appended the character.
+  assert.equal(result.rewrites, 2);
+  const branch = codeItems.find((entry) => entry.labelDef === 'LBRANCH_APPEND:').instruction;
+  assert.deepEqual(branch, { op: 'ifeq', arg: 'LSKIP_BRANCH' }, 'a false needsChar() must still skip the append');
   assert.equal(
     codeItems.filter((entry) => entry.instruction && entry.instruction.arg === 'LAPPEND').length,
     0,

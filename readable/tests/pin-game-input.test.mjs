@@ -160,3 +160,25 @@ test('an in-progress ours merge is not mistaken for a clean committed publicatio
     assert.equal(f.git('rev-parse', 'HEAD'), f.parent);assert.equal(f.git('rev-parse', result.reference), result.commit);
   } finally {f.cleanup();}
 });
+
+test('a repaired catalog may change only the repaired game sources and receipts', () => {
+  const f = fixture();
+  try {
+    const repaired = 'class a { static int value = 8; }\n';
+    fs.writeFileSync(path.join(f.rawSources, 'a.java'), repaired);
+    const catalog = structuredClone(f.manifest), record = catalog.publication.games.demo;
+    record.sources = identity(f.rawSources);record.sourceRepairs = {classes: {'a.java': {note: 'fixture repair'}}};
+    assert.throws(() => recordVerifiedRawInput({destination: f.destination, game: 'demo', rawSources: f.rawSources}),
+      /differs from the verified published catalog/, 'HEAD still records the unrepaired input');
+    const widened = structuredClone(catalog);widened.publication.games.other.note = 'changed';
+    assert.throws(() => recordVerifiedRawInput({destination: f.destination, game: 'demo', rawSources: f.rawSources, catalog: widened}),
+      /beyond the repaired game/);
+    const result = recordVerifiedRawInput({destination: f.destination, game: 'demo', rawSources: f.rawSources, catalog});
+    assert.equal(f.git('show', result.commit + ':games/demo/a.java') + '\n', repaired);
+    const snapshot = JSON.parse(f.git('show', result.commit + ':decompilation-provenance.json'));
+    assert.deepEqual(snapshot.publication.games.demo.sources, record.sources);
+    assert.deepEqual(snapshot.publication.games.demo.sourceRepairs, record.sourceRepairs);
+    assert.equal(snapshot.namedExports, undefined);assert.equal(f.git('rev-parse', 'HEAD'), f.parent);
+    assert.equal(f.git('status', '--porcelain'), '');
+  } finally {f.cleanup();}
+});
