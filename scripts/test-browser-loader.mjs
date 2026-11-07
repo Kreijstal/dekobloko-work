@@ -174,3 +174,15 @@ test('Pixelate room chat sent on channel 0 is the room\'s line', async () => {
   assert.deepEqual([...Buffer.concat(state.chunks.map(c => Buffer.from(c)))],
     [11, 11 + 2 * name.length + 2 + 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, ...name, 0, 1, ...name, 2, 0xab, 0xcd]);
 });
+
+test('the Void Hunters trimmed-sprite fix applies to the renamed source file', async (t) => {
+  const {patchGameCompatibility} = await import('../apps/launcher/browser-loader/game-source-patches.mjs');
+  const fs = await import('node:fs');
+  const file = 'games/voidhunters/GetBombletSprayPushMultiplier.java';
+  const url = new URL(`../../funorb-decompiled/${file}`, import.meta.url);
+  if (!fs.existsSync(url)) return t.skip('no funorb-decompiled checkout beside this one');
+  const source = fs.readFileSync(url, 'utf8');
+  const patched = patchGameCompatibility(source, file);
+  assert.notEqual(patched, source, 'the call it rewrites is still in the source');
+  assert.match(patched, /param1\.a\(param2\.field_q, param2\.field_q, param2\.field_r, 0, \(byte\) 64, param2\.field_p\)/);
+});

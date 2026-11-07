@@ -97,7 +97,11 @@ export function patchGameCompatibility(source, sourcePath) {
                 aw.field_j[browserRow] = new int[var3][];
             }`);
   }
-  if (sourcePath !== 'games/voidhunters/wba.java') return source;
+  // Void Hunters draws a trimmed sprite (field_q x field_p pixels at offset
+  // field_k, field_l) as if it were untrimmed (field_m x field_n) and reads
+  // past the pixel array during loading. Matched by its code, not its file:
+  // the readable-naming pass renamed wba.java (GetBombletSprayPushMultiplier).
+  if (!sourcePath.startsWith('games/voidhunters/')) return source;
   return source.replace(
     'var3 = param1.a(param2.field_m, param2.field_m, param2.field_r, 0, (byte) 64, param2.field_n);',
     `var3 = param1.a(param2.field_q, param2.field_q, param2.field_r, 0, (byte) 64, param2.field_p);
