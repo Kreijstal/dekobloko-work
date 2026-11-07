@@ -327,6 +327,9 @@ function chainIdentityProblems(stores) {
       const table = parseReferenceTable(indexLayer.read(255, archive));
       if (table === null) continue;
       for (const group of groups) {
+        // ChainStore answers from the first store holding a group, so a stale
+        // copy behind a recorded one is never served and proves nothing.
+        if (indexLayer.read(archive, group) !== null) continue;
         const entry = table.get(group);
         const stored = cache.read(archive, group);
         if (!entry || stored === null || stored.length < 3) continue;

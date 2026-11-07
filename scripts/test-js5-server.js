@@ -359,6 +359,19 @@ async function main() {
         return true;
       }, 'a chain whose index layer describes another dataset is refused');
 
+      // A recorded group wins the chain, so the cache's copy of it is never
+      // served: a stale one must not refuse an otherwise matching chain.
+      fs.writeFileSync(path.join(foreignIndex, '255-6.bin'),
+        referenceTable([{id: 0, crc: crc32(ours), version: 1}]));
+      fs.writeFileSync(path.join(foreignIndex, '255-255.bin'),
+        masterIndex(new Map([[12, {crc: 1, version: 1}], [6, {crc: 1, version: 1}]])));
+      fs.writeFileSync(path.join(foreignIndex, '12-0.bin'), theirs);
+      assert.deepStrictEqual(openStore([foreignIndex, ownCache]).read(12, 0), theirs,
+        'a group the recording supplies is served from the recording');
+      fs.unlinkSync(path.join(foreignIndex, '12-0.bin'));
+      assert.throws(() => openStore([foreignIndex, ownCache]), /archive 12 group 0/,
+        'without the recorded group the stale copy would be served, so it is refused');
+
       // The same shapes agreeing must still open.
       fs.writeFileSync(path.join(foreignIndex, '255-12.bin'),
         referenceTable([{id: 0, crc: crc32(ours), version: 1}]));
