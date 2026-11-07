@@ -127,3 +127,50 @@ test('int-array replies lead with kind 0 and echo the request id', async () => {
     assert.deepEqual([...Buffer.concat(state.chunks.map(c => Buffer.from(c)))], [4, 6, 0, requestId, 0, 0, 0, 0]);
   }
 });
+
+test('Pixelate gets its saved profile back and enters a lobby of one', async () => {
+  const {createBrowserGameServer} = await import('../apps/launcher/browser-loader/browser-game-server.mjs');
+  const data = new Map();
+  const server = createBrowserGameServer({game: {internalName: 'pixelate'}, storage: {getItem: k => data.get(k), setItem: (k, v) => data.set(k, v)}});
+  const sent = state => { const bytes = [...Buffer.concat(state.chunks.map(c => Buffer.from(c)))]; state.chunks.length = 0; return bytes; };
+  const state = server.createSocket(); state.outboundIsaac = {next: () => 0};
+  state.accountName = 'Tester'; state.playerId = 7n;
+  // An empty profile: [0][0] and the CRC-32 of those two bytes.
+  server.handleAccountPacket(state, 6, Uint8Array.of(0));
+  assert.deepEqual(sent(state), [5, 6, 0, 0, 0x41, 0xd9, 0x12, 0xff]);
+  // A save is acknowledged with its CRC and comes back on the next load.
+  server.handleAccountPacket(state, 6, Uint8Array.of(1, 2, 9, 8, 0xaa, 0xbb, 0xcc, 0xdd));
+  assert.deepEqual(sent(state), [5, 5, 1, 0xaa, 0xbb, 0xcc, 0xdd]);
+  server.handleAccountPacket(state, 6, Uint8Array.of(0));
+  assert.deepEqual(sent(state).slice(0, 6), [5, 8, 0, 2, 9, 8]);
+  // Enter: 14, own id (mode 23), then this player in the list (mode 5).
+  server.handleAccountPacket(state, 9, Uint8Array.of());
+  const name = [...Buffer.from('Tester'), 0], id = [0, 0, 0, 0, 0, 0, 0, 7];
+  assert.deepEqual(sent(state), [14, 10, 9, 23, ...id,
+    10, 19 + 2 * name.length, 5, ...id, ...name, 0, ...name, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  // A lobby chat line comes back from this player with the client's text.
+  server.handleAccountPacket(state, 12, Uint8Array.of(0, 3, 0x12, 0x34, 0x56));
+  assert.deepEqual(sent(state), [11, 12 + name.length + 3, 0, 0, ...id, 0, ...name, 3, 0x12, 0x34, 0x56]);
+  // Create a room, then leave it.
+  server.handleAccountPacket(state, 11, Uint8Array.of(4, 2, 128 + 1, 3, 3));
+  const created = sent(state);
+  assert.deepEqual(created.slice(0, 5), [10, created[1], 4, 0, 1]);
+  server.handleAccountPacket(state, 11, Uint8Array.of(9, 0, 1));
+  assert.deepEqual(sent(state), [10, 1, 0, 10, 4, 9, 0, 1, 0]);
+  server.handleAccountPacket(state, 10, Uint8Array.of());
+  assert.deepEqual(sent(state), [15]);
+});
+
+test('Pixelate room chat sent on channel 0 is the room\'s line', async () => {
+  const {createBrowserGameServer} = await import('../apps/launcher/browser-loader/browser-game-server.mjs');
+  const server = createBrowserGameServer({game: {internalName: 'pixelate'}, storage: {getItem() {}, setItem() {}}});
+  const state = server.createSocket(); state.outboundIsaac = {next: () => 0};
+  state.accountName = 'Tester'; state.playerId = 7n;
+  server.handleAccountPacket(state, 9, Uint8Array.of());
+  server.handleAccountPacket(state, 11, Uint8Array.of(4, 2, 128, 3, 3));
+  state.chunks.length = 0;
+  server.handleAccountPacket(state, 12, Uint8Array.of(0, 2, 0xab, 0xcd));
+  const name = [...Buffer.from('Tester'), 0];
+  assert.deepEqual([...Buffer.concat(state.chunks.map(c => Buffer.from(c)))],
+    [11, 11 + 2 * name.length + 2 + 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, ...name, 0, 1, ...name, 2, 0xab, 0xcd]);
+});

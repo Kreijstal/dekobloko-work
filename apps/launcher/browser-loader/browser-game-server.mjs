@@ -11,8 +11,15 @@ const GEOBLOX_LOGIN_PRIVATE_EXPONENT =
 // A member client requests that key (opcode 2) and waits for it forever, so
 // these accounts are free-to-play; members' content stays locked.
 const ENCRYPTED_MEMBER_DATA = new Set(["escapevector", "holdtheline", "torquing"]);
+// Games whose client loads a saved profile (opcode 6) after every login and
+// waits for it, and whose multiplayer lobby this server hosts. A lobby here
+// has one player, the one in this page; matches are not hosted yet.
+const PROFILE_GAMES = new Set(["pixelate"]);
+const LOBBY_GAMES = new Set(["pixelate"]);
+// Client packet lengths that differ from the shared table, per game.
+const CLIENT_LENGTHS = { pixelate: [[57, 0], [58, 3], [60, 0], [64, 0]] };
 
-export { GEOBLOX_LOGIN_MODULUS as LOGIN_MODULUS, ENCRYPTED_MEMBER_DATA };
+export { GEOBLOX_LOGIN_MODULUS as LOGIN_MODULUS, ENCRYPTED_MEMBER_DATA, LOBBY_GAMES };
 export function createBrowserGameServer({ game, storage = globalThis.localStorage, fetchAsset = globalThis.fetch, diagnostics = {} }) {
 if (game.internalName === 'escapevector') diagnostics.accountProtocol = 'escapevector-local-v1';
 const escape = game.internalName === 'escapevector' ? createEscapeAccountService({
@@ -257,10 +264,16 @@ function saveEmbeddedAccountData(state, data) {
 }
 
 function handleEmbeddedAccountPacket(state, opcode, payload) {
+  // The last client packets, so a client that waits on a reply shows what it asked.
+  diagnostics.accountPackets ??= [];
+  diagnostics.accountPackets.push([opcode, ...payload.slice(0, 32)]);
+  if (diagnostics.accountPackets.length > 64) diagnostics.accountPackets.shift();
   if (escape) return escape.handle(state, opcode, payload);
   if (opcode === 0) { frameAccountPacket(state, 0, []); return; }
   if (opcode === 2 && payload.length === 3) { answerArchiveKeyRequest(state, payload[0], readU16(payload, 1)); return; }
+  if (LOBBY_GAMES.has(game.internalName) && handleLobbyPacket(state, opcode, payload)) return;
   const data = embeddedAccountData(state);
+  if (opcode === 6 && PROFILE_GAMES.has(game.internalName)) { handleProfilePacket(state, data, payload); return; }
   data.achievements ??= [];
   data.scores ??= [];
   if (opcode === 4) {
@@ -367,6 +380,7 @@ function processEmbeddedAccountPackets(state) {
   const fixedLengths = new Map([[0, 0], [1, 0], [7, 2], [9, 0], [10, 0], [17, 0], [58, 0], [59, 1], [61, 0], [62, 0], [63, 0]]);
   // Opcode 2 is the archive key request: archive byte, group short.
   fixedLengths.set(2, 3);
+  for (const [opcode, length] of CLIENT_LENGTHS[game.internalName] || []) fixedLengths.set(opcode, length);
   while (state.outgoing.length > 0) {
     const pending = state.pendingAccountPacket;
     const decodedOpcode = pending?.decodedOpcode ??
@@ -407,6 +421,109 @@ function processEmbeddedAccountPackets(state) {
     const payload = Uint8Array.from(state.outgoing.splice(0, length));
     handleEmbeddedAccountPacket(state, decodedOpcode, payload);
   }
+}
+
+
+// ---- profile and lobby ------------------------------------------------------
+// The saved profile is opaque bytes. Load: [0] -> 5 [0][n][bytes][crc32].
+// Save: [1][n][bytes][crc32] -> 5 [1][the same crc32], which names the save.
+function handleProfilePacket(state, data, payload) {
+  if (payload[0] === 0) {
+    const bytes = Array.isArray(data.profile) ? data.profile.slice(0, 255) : [];
+    const body = [0, bytes.length, ...bytes];
+    frameAccountPacket(state, 5, [...body, ...u32Bytes(crc32(body))]);
+    return;
+  }
+  if (payload[0] === 1 && payload.length >= 6) {
+    const n = payload[1];
+    if (payload.length < 2 + n + 4) return;
+    data.profile = [...payload.slice(2, 2 + n)];
+    saveEmbeddedAccountData(state, data);
+    frameAccountPacket(state, 5, [1, ...payload.slice(2 + n, 6 + n)]);
+  }
+}
+
+// Server opcode 10 carries lobby events by mode. Mode numbers and layouts
+// are Pixelate's (AccountRegistrationPanel.c in the decompiled client).
+const LOBBY = { YOU_LEFT_ROOM: 0, YOU_JOINED_ROOM: 4, PLAYER_ENTERED_LOBBY: 5, ROOM_LISTED: 8,
+  ROOM_REMOVED: 9, PLAYER_JOINED_ROOM: 18, ROOM_UPDATED: 20, YOUR_ID: 23 };
+
+function handleLobbyPacket(state, opcode, payload) {
+  const id = u64Bytes(state.playerId ?? 1n), name = [...encodeCp1252(state.accountName || "Browser Player"), 0];
+  const lobby = state.lobby ??= { inLobby: false, room: null };
+  const roomBody = (room, withCount) => [...(withCount ? [1] : []), room.max, room.who, room.flags, ...room.options,
+    0, 0, 0, 0, 0, 0, ...id, ...name];
+  const leaveRoom = () => {
+    if (!lobby.room) return;
+    frameAccountPacket(state, 10, [LOBBY.YOU_LEFT_ROOM]);
+    frameAccountPacket(state, 10, [LOBBY.ROOM_REMOVED, ...u16Bytes(lobby.room.id), 0]);
+    lobby.room = null;
+  };
+  // A player record: name, then "renamed from" (none), display name, then
+  // ms in the lobby, rating, rated games (varint 0) and two status bytes.
+  if (opcode === 9) {
+    lobby.inLobby = true;
+    frameAccountPacket(state, 14, []);
+    frameAccountPacket(state, 10, [LOBBY.YOUR_ID, ...id]);
+    frameAccountPacket(state, 10, [LOBBY.PLAYER_ENTERED_LOBBY, ...id, ...name, 0, ...name, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    return true;
+  }
+  if (opcode === 10) {
+    leaveRoom();
+    lobby.inLobby = false;
+    frameAccountPacket(state, 15, []);
+    return true;
+  }
+  if (opcode === 12 || opcode === 15) {
+    // Echo lobby and room lines; private messages have nobody to reach. In a
+    // room the client sends channel 0 and the line belongs to the room (1),
+    // which is named by its id and owner.
+    const channel = payload[0] === 0 && lobby.room ? 1 : payload[0];
+    if (channel !== 0 && !(channel === 1 && lobby.room)) return true;
+    const header = [channel, 0, ...id, 0, ...name, ...(channel === 1 ? [...u16Bytes(lobby.room.id), ...name] : [])];
+    frameAccountPacket(state, opcode === 12 ? 11 : 12, [...header, ...payload.slice(1)]);
+    return true;
+  }
+  if (opcode === 11) {
+    const sub = payload[0];
+    if (sub === 4 || sub === 5) {
+      // Create: [4][u8 max][who (+128)][2 option bytes] (DialWidget.a).
+      // Options: [5][u8 max][who | spectators << 6][2 option bytes], where
+      // spectators is 1 or 2 and 2 is flag 0x10 in a room record.
+      const room = lobby.room ?? { id: (lobby.nextRoom = (lobby.nextRoom || 0) + 1), spectators: 1 };
+      if (sub === 5) room.spectators = payload[2] >> 6;
+      Object.assign(room, { max: payload[1], who: payload[2] & 63, flags: 0x80 | (room.spectators === 2 ? 0x10 : 0),
+        options: [payload[3] ?? 0, payload[4] ?? 0] });
+      if (sub === 4 && !lobby.room) {
+        lobby.room = room;
+        frameAccountPacket(state, 10, [LOBBY.YOU_JOINED_ROOM, ...u16Bytes(room.id), ...roomBody(room, false)]);
+        frameAccountPacket(state, 10, [LOBBY.PLAYER_JOINED_ROOM, ...id, ...name, ...name, 0, 0, 0, 0, 0]);
+      } else if (lobby.room) {
+        frameAccountPacket(state, 10, [LOBBY.ROOM_UPDATED, ...roomBody(room, false)]);
+      }
+      frameAccountPacket(state, 10, [LOBBY.ROOM_LISTED, ...u16Bytes(room.id), ...roomBody(room, true)]);
+      return true;
+    }
+    if (sub === 9) { leaveRoom(); return true; }
+    return true;
+  }
+  if (opcode === 7) {
+    // Ranking request [k][s]: an empty table for this lobby of one.
+    frameAccountPacket(state, 6, [payload[0] ?? 0, 0]);
+    return true;
+  }
+  return opcode === 13 || opcode === 14 || opcode === 57;
+}
+
+function u16Bytes(value) { return [(value >>> 8) & 255, value & 255]; }
+function u32Bytes(value) { return [(value >>> 24) & 255, (value >>> 16) & 255, (value >>> 8) & 255, value & 255]; }
+function u64Bytes(value) { return Array.from({length: 8}, (_, index) => Number(BigInt(value) >> BigInt(56 - index * 8) & 255n)); }
+let crcTable;
+function crc32(bytes) {
+  crcTable ??= Array.from({length: 256}, (_, n) => { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; return c >>> 0; });
+  let crc = 0xffffffff;
+  for (const byte of bytes) crc = crcTable[(crc ^ byte) & 255] ^ (crc >>> 8);
+  return (crc ^ 0xffffffff) >>> 0;
 }
 
 function parseEmbeddedLogin(body) {
@@ -542,6 +659,7 @@ function processBrowserJs5Writes(state) {
         ? previousName
         : state.login.username || previousName || "Browser Player");
       state.accountName = name;
+      state.playerId = identity?.playerId ?? 1n;
       storage.setItem("funorb.account.name", name);
       const nameBytes = encodeCp1252(name);
       // Membership days (365, the u16 after two flag bytes). A member of an
