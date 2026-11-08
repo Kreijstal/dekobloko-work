@@ -28,6 +28,7 @@ export function verifyKickaboutCore(input, named, mapping, classpath, temporary)
     const harness=path.join(directory,'KickaboutCoreProbe.java');
     fs.writeFileSync(harness,`import java.util.*;
 import java.time.YearMonth;
+import java.lang.reflect.*;
 public class KickaboutCoreProbe {
   static int checks;
   static void check(String label,Object actual,Object expected) {
@@ -134,7 +135,94 @@ public class KickaboutCoreProbe {
     onlyChildren.${m('tc','a','(I)V')}(-104);
     check("children without phrases",onlyChildren.${f('tc','o','[I')},new int[]{32777});
   }
-  public static void main(String[] args) {sprites();requests();dates();categories();System.out.println("checks:"+checks);}
+  static ${c('vm')} sampleStream(int step,int pan) {
+    ${c('to')} sample=new ${c('to')}(22050,new byte[]{1,-2,3,-4},0,4);
+    return ${c('vm')}.${m('vm','b','(Lto;III)Lvm;')}(sample,step,64,pan);
+  }
+  static void audio() throws Exception {
+    for(int rate:new int[]{7999,48001}) {
+      boolean rejected=false;
+      try {${c('uh')}.${m('uh','a','(IZI)V')}(rate,false,0);}
+      catch(IllegalArgumentException expected) {rejected=true;}
+      check("invalid sample rate",rejected,true);
+    }
+    ${c('uh')}.${m('uh','a','(IZI)V')}(22050,false,0);
+    ${c('vm')} forward=sampleStream(256,8192);
+    int[] mono=new int[6];mono[0]=17;mono[5]=19;
+    forward.${m('vm','a','([III)V')}(mono,1,4);
+    check("mono PCM and untouched bounds",mono,new int[]{17,256,-512,768,-1024,19});
+    check("sample position",forward.${m('vm','g','()I')}(),4);
+    ${c('vm')} reverse=sampleStream(256,8192);
+    reverse.${m('vm','i','(I)V')}(3<<8);
+    reverse.${m('vm','a','(Z)V')}(true);
+    int[] backwards=new int[4];reverse.${m('vm','a','([III)V')}(backwards,0,4);
+    check("reverse PCM",backwards,new int[]{-1024,768,-512,256});
+    ${c('vm')} inactive=sampleStream(256,8192);
+    inactive.${f('lq','e','Z')}=false;
+    int[] silent={7,9};inactive.${m('lq','b','([III)V')}(silent,0,2);
+    check("inactive stream preserves destination",silent,new int[]{7,9});
+    check("inactive stream advances",inactive.${m('vm','g','()I')}(),2);
+    inactive.${f('lq','e','Z')}=true;
+    int[] tail=new int[2];inactive.${m('lq','b','([III)V')}(tail,0,2);
+    check("resumed stream position",tail,new int[]{768,-1024});
+    ${c('vm')} controls=sampleStream(256,8192);
+    controls.${m('vm','b','(I)V')}(96);
+    check("internal volume",controls.${m('vm','m','()I')}(),96);
+    check("volume preserves pan",controls.${m('vm','k','()I')}(),8192);
+    controls.${m('vm','c','(II)V')}(8,128);
+    check("gain ramp pending",controls.${m('vm','n','()Z')}(),true);
+    Method cancelRamp=${c('vm')}.class.getDeclaredMethod("${m('vm','l','()V')}");
+    cancelRamp.setAccessible(true);cancelRamp.invoke(controls);
+    check("ramp cancelled",controls.${m('vm','n','()Z')}(),false);
+    check("cancel snaps to target",controls.${m('vm','m','()I')}(),128);
+    ${c('gq')} mixer=new ${c('gq')}();
+    mixer.${m('gq','a','(Llq;)V')}(sampleStream(256,8192));
+    mixer.${m('gq','a','(Llq;)V')}(sampleStream(256,8192));
+    int[] mixed=new int[4];mixer.${m('gq','a','([III)V')}(mixed,0,4);
+    check("two stream sum",mixed,new int[]{512,-1024,1536,-2048});
+    ${c('to')} empty=new ${c('to')}(22050,new byte[0],0,0);
+    check("empty sample",${c('vm')}.${m('vm','b','(Lto;III)Lvm;')}(empty,256,64,8192),null);
+    ${c('uh')}.${m('uh','a','(IZI)V')}(22050,true,0);
+    for(int pan:new int[]{8192,0,-1}) {
+      ${c('vm')} stereo=sampleStream(256,pan);
+      int[] actual=new int[8];stereo.${m('vm','a','([III)V')}(actual,0,4);
+      int[] expected=pan==8192?new int[]{256,256,-512,-512,768,768,-1024,-1024}:
+        pan==0?new int[]{364,0,-728,0,1092,0,-1456,0}:
+        new int[]{256,-256,-512,512,768,-768,-1024,1024};
+      check("stereo pan "+pan,actual,expected);
+      check("stored pan "+pan,stereo.${m('vm','k','()I')}(),pan<0?-1:pan);
+    }
+    ${c('uh')}.${m('uh','a','(IZI)V')}(22050,false,0);
+  }
+  static int[] midiValues(${c('ru')} midi,String name) throws Exception {
+    Field field=${c('ru')}.class.getDeclaredField(name);field.setAccessible(true);
+    return (int[])field.get(midi);
+  }
+  static void midi() throws Exception {
+    ${c('ru')} midi=new ${c('ru')}();
+    Method dispatch=${c('ru')}.class.getDeclaredMethod("${m('ru','d','(II)V')}",int.class,int.class);
+    dispatch.setAccessible(true);
+    check("initial channel volume",midiValues(midi,"${f('ru','y','[I')}")[2],12800);
+    check("initial channel pan",midiValues(midi,"${f('ru','E','[I')}")[2],8192);
+    check("initial pitch bend",midiValues(midi,"${f('ru','v','[I')}")[2],8192);
+    dispatch.invoke(midi,5,0xB2|(7<<8)|(64<<16));
+    dispatch.invoke(midi,5,0xB2|(39<<8)|(3<<16));
+    check("14-bit channel volume",midiValues(midi,"${f('ru','y','[I')}")[2],8195);
+    check("other channel unchanged",midiValues(midi,"${f('ru','y','[I')}")[1],12800);
+    dispatch.invoke(midi,5,0xB2|(10<<8)|(32<<16));
+    dispatch.invoke(midi,5,0xB2|(42<<8)|(1<<16));
+    check("14-bit channel pan",midiValues(midi,"${f('ru','E','[I')}")[2],4097);
+    dispatch.invoke(midi,5,0xE2|(96<<16));
+    check("pitch bend",midiValues(midi,"${f('ru','v','[I')}")[2],12288);
+    dispatch.invoke(midi,5,0xB2|(32<<8)|(1<<16));
+    dispatch.invoke(midi,5,0xC2|(9<<8));
+    check("bank and program",midiValues(midi,"${f('ru','n','[I')}")[2],137);
+    dispatch.invoke(midi,5,0xB2|(121<<8));
+    check("controller reset volume",midiValues(midi,"${f('ru','y','[I')}")[2],12800);
+    check("controller reset pan",midiValues(midi,"${f('ru','E','[I')}")[2],8192);
+    check("controller reset bend",midiValues(midi,"${f('ru','v','[I')}")[2],8192);
+  }
+  public static void main(String[] args) throws Exception {sprites();requests();dates();categories();audio();midi();System.out.println("checks:"+checks);}
 }
 `);
     const sources=sourceInventory(readable?named:input);
@@ -145,10 +233,12 @@ public class KickaboutCoreProbe {
   }
   assert.equal(outputs[0],outputs[1],'raw and named probe outcomes differ');
   const checks=Number(/^checks:(\d+)$/.exec(outputs[0])?.[1]);
-  assert.ok(checks>=600,'the complete independent probe must execute');
+  assert.ok(checks>=630,'the complete independent probe must execute');
   return {status:'passed',variants:['raw','named'],assertionsPerVariant:checks,
     coverage:['rectangular sprite reflections','copy versus in-place mutation','clockwise rotation and trim offsets',
       'availability request completion, result and query retention',
       'Gregorian calendar boundaries including century leap years',
-      'Quick Chat tagged decoding, record boundaries and global ID marking'],fullGameplayVerified:false};
+      'Quick Chat tagged decoding, record boundaries and global ID marking',
+      'PCM forward/reverse mixing, mono/stereo pan, inactive skipping, gain ramps and summing',
+      'MIDI controller, program/bank and pitch-bend dispatch'],fullGameplayVerified:false};
 }

@@ -1972,6 +1972,234 @@ method('ot', 'c', '([I[IIIIIIIII)V', 'blendShadedGrayscaleRows', 'Recolors grays
 method('ut', 'c', '(IIIII)V', 'drawScaledSilhouette', 'Clips a nearest-scaled sprite and draws its nonzero mask in one supplied color through blitScaledSilhouette; shared body shape agrees in GeoBlox and Bachelor Fridge.');
 method('ut', 'e', '(IIIII)V', 'drawScaledAdditive', 'Clips a nearest-scaled sprite and selects saturated additive blitting with full or scaled intensity; the fifth argument controls additive intensity.');
 
+// Audio scheduling and mixing: names follow the stream graph, sample arithmetic
+// and hardware queue accounting, rather than unrelated moved static helpers.
+Object.assign(classes, {
+  me: ['PcmMixerListener', 'Mixer timer entry with a remaining frame offset; its callback returns the next offset or a negative value to remove it.'],
+});
+method('me', 'a', '(Lgq;)I', 'onTimer', 'Called when the listener frame offset is reached; a nonnegative return reschedules the listener, a negative return removes it.');
+method('me', 'a', '()V', 'onRemoved', 'Invoked immediately after the mixer unlinks this listener.');
+method('gq', 'a', '(Lme;)V', 'removeListener', 'Unlinks a timer listener, invokes its removal callback and updates the next scheduled frame offset.');
+method('gq', 'e', '()V', 'normalizeListenerOffsets', 'Subtracts elapsed mixer frames from every listener offset and resets the elapsed-frame counter.');
+method('lq', 'a', '()I', 'getSchedulingPriority', 'Returns the default priority 255; sample streams override it using current volume and playback progress.');
+method('lq', 'b', '([III)V', 'processFrames', 'Mixes into the destination when the stream is active, otherwise advances it by skipping the same frame count.');
+method('uh', 'b', '()I', 'getBufferedFrameCount', 'Device occupancy contract: the Java Sound override subtracts available output frames from device capacity; the silent base reports its capacity.');
+method('uh', 'a', '(I)V', 'skipFrames', 'Decreases the scheduling countdown and skips frames on the root stream.');
+method('uh', 'a', '(IZI)V', 'configureAudio', 'Validates the 8000..48000 sample rate, selects mono/stereo and stores the audio-service thread priority.');
+method('uh', 'a', '(Lbu;Ljava/awt/Component;II)Luh;', 'createPlayer', 'Creates and opens a Java Sound output, registers it in one of two service slots and falls back to a silent base player if the backend fails.');
+method('uh', 'a', '(Llq;)V', 'setRootStream', 'Stores the root stream mixed by this player.');
+method('uh', 'a', '(Llq;I)V', 'enqueueByPriority', 'Appends the stream to one of eight scheduling buckets selected by priority shifted right five bits.');
+method('uh', 'a', '([II)V', 'mixFrames', 'Clears the output block, schedules active streams within the cost limit and mixes the root stream.');
+method('uh', 'b', '(Llq;)V', 'deactivateStreamTree', 'Recursively clears stream active flags and resets each associated sample scheduling counter.');
+method('uh', 'c', '()V', 'shutdown', 'Unregisters this player, stops an unused service thread, closes the device and releases its sample buffer.');
+method('uh', 'd', '()V', 'serviceOutput', 'Fills the device queue in 256-frame blocks, adjusts latency and reopens failed or inactive devices after the retry delay.');
+method('vm', 'a', '(II)I', 'computeLeftGain', 'Computes the left-channel square-root pan gain from volume and the 0..16384 pan value.');
+method('vm', 'd', '(II)I', 'computeRightGain', 'Computes the right-channel square-root pan gain, including the negative-pan phase-inversion mode.');
+method('vm', 'a', '([IIIII)I', 'mixForwardSpan', 'Selects aligned or interpolated forward kernels and mono/stereo ramp variants, stopping at the supplied output/sample boundaries.');
+method('vm', 'b', '([IIIII)I', 'mixReverseSpan', 'Selects aligned or interpolated reverse kernels and mono/stereo ramp variants, stopping at the supplied boundaries.');
+method('vm', 'b', '(Lto;III)Lvm;', 'createAtFixedStep', 'Creates a stream with the supplied fixed-point sample step, internal volume and pan; returns null for empty samples.');
+method('vm', 'b', '(I)V', 'setInternalVolume', 'Sets the internal volume while preserving the current pan.');
+method('vm', 'c', '(II)V', 'rampInternalVolume', 'Ramps internal volume over the supplied frame count while preserving current pan.');
+method('vm', 'g', '()I', 'getSamplePosition', 'Returns the integer sample index by shifting the fixed-point position right eight bits.');
+method('vm', 'k', '()I', 'getPan', 'Returns the stored pan value or -1 for the special negative-pan mode.');
+method('vm', 'h', '()V', 'refreshChannelGains', 'Copies target volume to current volume and recomputes left/right gains from the stored pan.');
+method('vm', 'l', '()V', 'cancelRamp', 'Clears a pending gain ramp, converts the fade-stop sentinel to zero volume and refreshes current channel gains.');
+method('dp', 'a', '(F)V', 'setInputGain', 'Controls the gain applied to input samples before feeding the reverb delay network.');
+method('dp', 'e', '(F)V', 'setDryGain', 'Controls the unprocessed input contribution added to the reverberated output.');
+method('dp', 'f', '(F)V', 'setFeedbackGain', 'Controls the damped delay sample fed back into each comb filter.');
+method('dp', 'a', '(I[III)I', 'scanNegativePeak', 'Scans a circular buffer range and returns the minimum of the input accumulator and negative absolute sample values.');
+method('ed', 'a', '(Lsj;II)Led;', 'load', 'Loads an archive file and decodes a SoundEffect from its PacketBuffer, returning null while unavailable.');
+method('kv', 'a', '(II)[I', 'synthesize', 'Generates oscillator/envelope samples, applies modulation, gating, echo and filtering, and clamps the result to signed 16-bit range.');
+method('kv', 'a', '(Liw;)V', 'decode', 'Decodes pitch/volume envelopes, optional modulation/gating envelopes, oscillator settings, echo and filter data.');
+method('tg', 'a', '(I)F', 'unpackFloat', 'Unpacks the Vorbis 21-bit signed mantissa and biased exponent into a floating-point value.');
+method('tg', 'a', '([BI)V', 'setBitInput', 'Selects the source byte array and byte offset for Vorbis bit reads, resetting the bit cursor.');
+method('wh', 'a', '(B)V', 'startPlayback', 'Creates the sample stream at the current global volume, applies reverse playback if requested and attaches it to the selected mixer.');
+method('wh', 'b', '(I)V', 'detachPlayback', 'Removes the sample stream from the mixer selected by this sound player.');
+method('wh', 'a', '(I)V', 'releaseStatics', 'Clears static text and sprite-array references while preserving the original guard.');
+method('jk', 'a', '(B)V', 'showAccountChoice', 'Replaces the active account panel with a new AccountChoicePanel.');
+method('jk', 'a', '(I)V', 'drawMatchMinimap', 'Draws the pitch preview with projected footballers, team colors and ball/carrier position when the minimap is enabled.');
+field('me', 'e', 'I', 'frameOffset', 'Remaining mixer frame offset used to order and reschedule timer callbacks.');
+field('lq', 'e', 'Z', 'active', 'Scheduling selects mixInto when true and skipFrames when false.');
+field('lq', 'f', 'Llq;', 'nextScheduledStream', 'Link used within the eight player priority buckets.');
+field('lq', 'g', 'I', 'schedulingPriority', 'Priority assigned when the player enqueues this stream.');
+field('uh', 'c', 'Llq;', 'rootStream', 'Stream graph mixed by the player.');
+field('uh', 'i', 'I', 'sampleRate', 'Validated output sample rate, shared by sample-step and delay calculations.');
+field('uh', 'o', 'Z', 'stereo', 'Selects two interleaved channels instead of mono.');
+field('uh', 'k', '[I', 'mixBuffer', '256-frame mono or stereo buffer written to the output backend.');
+field('dp', 'u', 'F', 'inputGain', 'Gain applied before feeding the reverb network.');
+field('dp', 'w', 'F', 'dryGain', 'Gain of the unprocessed signal mixed into the output.');
+field('dp', 'j', 'F', 'feedbackGain', 'Gain of comb-filter feedback samples.');
+
+method('ru', 'a', '(BIII)V', 'noteOff', 'Clears the channel/key held-note slot and starts its release envelope, preserving portamento reuse behavior.');
+method('ru', 'a', '(BZ)V', 'stopTrack', 'Clears the MIDI reader and pending track, then resets the synthesizer using the supplied stop mode.');
+method('ru', 'a', '(II)V', 'releasePortamentoNotes', 'When portamento is enabled, starts release for unheld notes on the selected channel.');
+method('ru', 'a', '(IIB)V', 'applyInitialProgram', 'Stores the initial program and bank for a channel and applies the program change.');
+method('ru', 'a', '(IIBI)V', 'handlePolyphonicPressure', 'Dispatch target for MIDI status 0xA0; this export intentionally has no pressure-processing body on the valid guard path.');
+method('ru', 'a', '(III)V', 'changeProgram', 'Changes a channel program and clears its exclusive-group note lookup when the program changes.');
+method('ru', 'a', '(IIII)V', 'noteOn', 'Releases the previous key, reuses a portamento voice when possible or constructs a patch note/sample stream with velocity, pan, loop and exclusive-group state.');
+method('ru', 'a', '(IILsj;Lrj;Lqm;)Z', 'prepareTrackSamples', 'Loads instrument patches and all required samples for the track note masks within the optional decoding budget.');
+method('ru', 'a', '(ILda;)Z', 'removeNoteWithoutStream', 'Reports a note with no sample stream and unlinks released notes, clearing their exclusive-group slot if still owned.');
+method('ru', 'a', '(Lda;I)I', 'computeNoteStep', 'Combines note pitch, portamento, pitch bend and vibrato, then converts the result to a fixed-point sample step at the output rate.');
+method('ru', 'a', '(Lqm;ZBZ)V', 'startTrack', 'Stops the old track, parses the MIDI data, initializes every track cursor and schedules its first event, recording loop behavior.');
+method('ru', 'a', '(ZILqm;)V', 'playTrack', 'Public wrapper that starts the supplied track with a full synthesizer reset and requested loop flag.');
+method('ru', 'a', '(ZLda;)I', 'computeNotePan', 'Combines channel pan and the instrument note pan into the 0..16384 stream pan value.');
+method('ru', 'a', '(ZLda;Z)V', 'applySampleOffset', 'Sets the note stream sample position from the channel sample-offset controller, reflecting the position for ping-pong loops when needed.');
+method('ru', 'a', '(ZZ)V', 'resetSynthesizer', 'Stops or releases all notes, resets channel controllers and restores the configured initial programs and banks.');
+method('ru', 'b', '(I)V', 'stop', 'Stops MIDI playback with the full note-stop reset mode.');
+method('ru', 'b', '(II)V', 'resetControllers', 'Resets one or all channels to default volume, pan, expression, pitch bend, modulation, portamento and custom-controller values.');
+method('ru', 'b', '(IIB)V', 'setChannelProgram', 'Public guarded wrapper for initial bank/program configuration.');
+method('ru', 'b', '(III)V', 'setPitchBend', 'Stores the MIDI pitch-bend value for the selected channel.');
+method('ru', 'b', '(ILda;)I', 'computeNoteVolume', 'Combines channel volume/expression, note velocity, master/channel gain and the instrument decay, main and release envelopes.');
+method('ru', 'c', '(II)V', 'setPlaybackTimeScale', 'Sets the time multiplier used with MIDI division to advance event time per output frame; the default is 1000000.');
+method('ru', 'c', '(III)V', 'setRetriggerRate', 'Stores the custom retrigger-rate controller and computes its exponential phase increment.');
+method('ru', 'd', '(II)V', 'dispatchMidiEvent', 'Dispatches packed MIDI status/data bytes to note, program, pressure, controller, pitch-bend and reset handlers.');
+method('ru', 'd', '(III)V', 'setChannelGain', 'Sets the additional gain for one channel or all sixteen channels according to the original channel-selector convention.');
+method('ru', 'e', '(I)V', 'advanceMidiEvents', 'Consumes due events on the earliest MIDI track, handles end/loop/pending-track changes and schedules the next event time.');
+method('ru', 'e', '(II)V', 'resetRetriggerPhase', 'When the custom retrigger mode is enabled, clears each note retrigger phase on the channel.');
+method('ru', 'e', '(III)V', 'handleChannelPressure', 'Dispatch target for MIDI status 0xD0; no channel-pressure processing is implemented on the valid guard path.');
+method('ru', 'f', '(II)V', 'allSoundOff', 'Fades and removes active notes on one or all channels, retaining still-fading streams in the auxiliary mixer.');
+method('ru', 'g', '(II)V', 'allNotesOff', 'Clears held-note slots and starts release for all active notes on one or all channels.');
+method('ru', 'a', '(ZB)V', 'drawGoalScenery', 'Draws the goal-end sprite and repeated surrounding scenery selected by pitch theme and team end.');
+field('ru', 'q', '[I', 'channelBanks', 'Updated by MIDI bank-select controllers 0 and 32 and added to program numbers.');
+field('ru', 'n', '[I', 'channelPrograms', 'Current patch/program identity per channel.');
+field('ru', 'I', '[I', 'initialPrograms', 'Program identities restored by synthesizer reset.');
+field('ru', 'v', '[I', 'pitchBend', 'MIDI 14-bit pitch-bend values, centered at 8192.');
+field('ru', 'j', '[I', 'pitchBendSensitivity', 'Pitch-bend range set through the selected registered parameter.');
+field('ru', 'y', '[I', 'channelVolume', 'Combined coarse/fine MIDI volume controllers 7 and 39.');
+field('ru', 'E', '[I', 'channelPan', 'Combined coarse/fine MIDI pan controllers 10 and 42.');
+field('ru', 'A', '[I', 'channelExpression', 'Combined coarse/fine MIDI expression controllers 11 and 43.');
+field('ru', 'G', '[I', 'modulation', 'Combined coarse/fine modulation controllers 1 and 33, used by vibrato.');
+field('ru', 'B', '[I', 'portamentoTime', 'Combined coarse/fine portamento-time controllers 5 and 37.');
+field('ru', 's', '[I', 'sampleOffsets', 'Custom sample-position controllers 16 and 48.');
+field('ru', 'L', '[I', 'retriggerRates', 'Custom retrigger-rate controllers 17 and 49.');
+field('ru', 'J', '[I', 'channelGains', 'Additional per-channel gain applied to note volume.');
+field('ru', 'p', 'I', 'playbackTimeScale', 'Default 1000000 time multiplier used to advance the MIDI reader per output frame.');
+
+Object.assign(classes, {
+  dk: ['AchievementQuery', 'Queued query completed with an integer result array by the A1 response handler; its factory sends the shared achievement-mask query form.'],
+  ii: ['AchievementSubmission', 'Pending A1 submission serializes an achievement/check-byte pair and four tracking integers, and is removed when the acknowledgement arrives.'],
+  dl: ['LookupQuery', 'Queued lookup read contains a byte-sized table ID and an integer result array filled by the LR1 response handler.'],
+  hr: ['LookupRecordUpdate', 'Lookup write contains table and signed-smart record IDs plus four integer values; LR1 acknowledgements match both identifiers.'],
+  sm: ['HighScoreSubmission', 'Pending high-score submission serializes its identifiers, four tracking integers and an optional integer vector; HS1 acknowledgement removes the matching entry.'],
+  ni: ['HighScoreQuery', 'HS1 response matches this request ID and uses its row and value counts to decode high-score rows and unique participant views.'],
+  wd: ['RankingsRequest', 'Queues a ranking-kind/row-limit query; the response fills participant-name/statistic tables, local player values and a completion flag.'],
+  mp: ['BlobSubmission', 'Pending submission holds optional byte payload and the CRC of its serialized request for request/acknowledgement bookkeeping.'],
+  ea: ['ColorQuantizationBox', 'RGB histogram quantizer stores three low/high cube bounds and a volume; it splits the box with greatest color variance into palette entries.'],
+  er: ['TextHotspotRegion', 'TextHotspotWidget creates one rectangular region per line of hotspot markup, with a hotspot ID and link to the next line region.'],
+  rf: ['SocialTabsPanel', 'Wraps a TabStrip whose pages are a caller-supplied primary page, Friends and Ignore, and lays out their controls.'],
+  op: ['SpriteButtonPainter', 'Draws a three-sprite button strip with state-dependent tint and centered text.'],
+  ri: ['BeveledTextPainter', 'TextWidgetPainter subclass adds a beveled frame for enabled widgets before drawing the inherited text.'],
+  rp: ['PasswordFieldPainter', 'BeveledTextPainter subclass replaces displayed input text with one asterisk per character.'],
+  mn: ['IconButtonPainter', 'Draws a beveled button, the shared pressed-state icon and a focus rectangle.'],
+  ve: ['FullscreenErrorDialog', 'Dismissible modal selects a fullscreen unsupported/focus/timeout message from its reason token and adds a close button.'],
+  hh: ['FullscreenFailureReason', 'Identity tokens selected by fullscreen failure handling and mapped to localized messages by FullscreenErrorDialog.'],
+  fv: ['TooltipOverlay', 'Non-input-capturing overlay draws pointer-adjacent text, currency and rich-layout tooltips and clears stale tooltip state each tick.'],
+  fg: ['QuickChatResolver', 'Empty resolver hook accepted by QuickChatPhraseCache; this export retains the type contract but no resolver operations.'],
+  ka: ['GameQuickChatResolver', 'Resolver token passed when constructing the game Quick Chat phrase cache; no instance resolver operations survive in this export.'],
+  ft: ['DateValidationMarker', 'Empty marker implemented by DateInputValidator; no methods are declared in this export.'],
+  wo: ['AlternateKeyedLoginCredentials', 'Keyed credential variant selected by the credential factory alternate-mode flag and distinguished by its LoginKind token.'],
+});
+method('dk', 'a', '(I)V', 'releaseStatics', 'Clears this class static string and integer arrays under the original guard.');
+method('dk', 'a', '(IIBLsj;)[Lut;', 'loadSpriteSheet', 'Ensures and decodes the archive sprite sheet and builds its Sprite array, returning null while unavailable.');
+method('dk', 'a', '(IIIII)V', 'clipToGridCell', 'Computes the 52-by-75 cell rectangle with shared-border adjustments and applies its raster clip.');
+method('mk', 'a', '(II)Ldk;', 'requestAchievementMask', 'Creates and queues an AchievementQuery, then sends the achievement-mask query packet.');
+method('gf', 'a', '(B)V', 'readAchievementResponse', 'Decodes result arrays or acknowledgements for queued achievement queries/submissions, rejecting unmatched responses.');
+method('te', 'a', '(ILii;B)V', 'writeAchievementSubmission', 'Writes the achievement/check-byte values and four tracking integers, appending CRC and backpatching packet length.');
+method('wp', 'a', '(ILii;I)V', 'submitAchievement', 'Adds the submission to the outstanding deque and serializes it using the supplied opcode.');
+method('pf', 'a', '(ILdl;B)V', 'writeLookupQuery', 'Writes the lookup-read discriminator and byte-sized table ID.');
+method('rf', 'a', '(Lhr;IZ)V', 'writeLookupRecordUpdate', 'Writes the lookup-update discriminator, table ID, signed-smart record ID, four values, CRC and packet length.');
+method('sm', 'a', '(B)V', 'readLookupResponse', 'Fills the next queued lookup query array or acknowledges the matching table/record update, rejecting unmatched responses.');
+method('sm', 'a', '(I)V', 'releaseStatics', 'Clears this class static sprite/text and integer-table references.');
+method('mp', 'a', '(IILsm;)V', 'writeHighScoreSubmission', 'Serializes the high-score record IDs, tracking integers and integer vector with CRC and byte length.');
+method('pd', 'a', '(BILsm;)V', 'submitHighScore', 'Adds a high-score submission to its pending deque and writes its request packet.');
+method('aa', 'a', '(BILmp;)V', 'writeBlobSubmission', 'Serializes optional blob bytes, appends CRC, stores that CRC on the pending submission and backpatches packet length.');
+method('aa', 'c', '(I)J', 'millisSinceSessionStart', 'Subtracts the session start timestamp from the monotonic clock.');
+method('ea', 'a', '(IIIB[Lut;I)V', 'drawNineSlicePanel', 'Draws clipped corners and tiled edges/center from a nine-sprite array, proportionally shrinking opposing borders when needed.');
+method('ea', 'a', '(IIZIII)V', 'drawMatchTimer', 'Converts 50-Hz ticks to minutes/seconds and draws the countdown with its final-seconds pulse and blinking colon.');
+method('ea', 'a', '(IB)V', 'showMessageDialog', 'Creates the shared MessageDialog for the supplied message index if no such dialog is already pending.');
+method('er', 'a', '(BLea;)D', 'computeColorBoxVariance', 'Uses the RGB summed moments and squared moments to compute within-box color variance.');
+method('er', 'a', '(BZ)V', 'drawContentTransition', 'Delegates to the shared ContentTransitionDialog draw hook with the supplied flag.');
+method('rf', 'a', '(IIIIB)V', 'layout', 'Lays out the primary/friends/ignore tabs and their child controls within the supplied bounds.');
+method('rf', 'a', '(II)Z', 'isPowerOfTwoOrZero', 'Tests (value & -value) == value, including zero according to the original predicate.');
+method('rf', 'a', '(ILsj;Lsj;Lsj;)V', 'loadCharacterAnimations', 'Loads the player model variants, per-archetype action clips and cheering fan animations, then fills missing action slots from available archetypes.');
+method('ve', 'a', '(BLjv;Ljava/lang/String;)Lwi;', 'addButton', 'Creates a sprite-backed text button, appends it below existing dialog content and refreshes layout.');
+method('ve', 'p', '(I)V', 'dismiss', 'Clears the inherited open flag if the dialog is still open.');
+method('ve', 'j', '(B)V', 'releaseStatics', 'Clears static text, layout and queue references under the original guard.');
+method('fv', 'a', '(IB)I', 'loadSoundGroup', 'Loads all sound entries assigned to the group, returns percentage while incomplete and -1 after marking the group loaded.');
+method('wo', 'a', '(Lot;Lgm;BI)V', 'drawFootballerOverlay', 'Projects a footballer position and draws an alpha sprite overlay at the current viewport scale and render mode.');
+method('wo', 'a', '(Z)V', 'releaseStatics', 'Clears static strings and sprite references under the original guard.');
+field('dk', 'e', '[I', 'resultValues', 'Integer array installed when the queued achievement query receives its response.');
+field('dk', 'f', 'Z', 'complete', 'Initially false and set true before a completed query is unlinked.');
+field('dl', 'e', 'I', 'tableId', 'Byte-sized lookup table identifier written by the lookup-read request.');
+field('dl', 'f', '[I', 'resultValues', 'Destination array populated by the lookup response.');
+field('hr', 'j', 'I', 'tableId', 'Lookup table identifier serialized as a byte and matched by the acknowledgement.');
+field('hr', 'i', 'I', 'recordId', 'Lookup record identifier serialized as a signed smart and matched by the acknowledgement.');
+field('mp', 'o', '[B', 'payload', 'Optional bytes serialized by the pending blob submission.');
+field('mp', 'm', 'I', 'requestCrc', 'CRC extracted from the serialized blob request and retained for bookkeeping.');
+field('er', 'i', 'I', 'hotspotId', 'Integer parsed from the hotspot markup and delivered to the click listener.');
+field('er', 'g', 'I', 'x', 'Horizontal position of this line region within the text widget.');
+field('er', 'm', 'I', 'y', 'Vertical position of this line region within the text widget.');
+field('er', 'e', 'I', 'width', 'Width used for region hit testing and focus outlining.');
+field('er', 'f', 'I', 'height', 'Height used for region hit testing and focus outlining.');
+field('er', 'j', 'Ler;', 'nextLineRegion', 'Next text line belonging to the same hotspot.');
+field('rf', 'b', 'Lkf;', 'tabs', 'The primary/Friends/Ignore TabStrip owned by this panel.');
+
+Object.assign(classes, {
+  aj: ['ThreadSleepSupport', 'Positive-duration sleep helper splits exact multiples of ten milliseconds into two sleeps, preserving the client timing workaround.'],
+  dc: ['PortraitCacheOrder', 'Moves an entry of the 64-element PlayerPortraitCacheEntry array to the front without changing the relative order of earlier entries.'],
+  h: ['QuickChatMenuBuilder', 'Recursively converts category definitions into CascadingMenu labels, shortcuts, nested categories and phrase actions.'],
+  hv: ['GoalkeeperAiSupport', 'Owns the updateKeeperAI helper for keeper positioning and response decisions; unrelated static account/chat utilities remain in their original owner.'],
+  kr: ['DisplayModeSupport', 'Enumerates the platform fullscreen modes into FullscreenDisplayMode records; unrelated moved UI/string helpers retain their original owner.'],
+  nh: ['SpritePixelSupport', 'Static pixel operations cover HSV adjustment, sprite/ARGB conversion, downsampling and clipped/scaled blending.'],
+  nj: ['MonotonicClock', 'Clock compensates for backward wall-clock changes and is used throughout the loop, networking and audio; unrelated moved static helpers remain.'],
+});
+method('aj', 'a', '(JI)V', 'sleepMillis', 'Sleeps for a positive duration, splitting multiples of ten into duration-1 and one millisecond sleeps.');
+method('h', 'a', '(ILtc;Lhd;Lhd;Lhd;)Lbb;', 'buildCategoryMenu', 'Recursively creates category submenus and phrase items with descriptions and keyboard shortcuts, retaining special phrase IDs.');
+method('h', 'a', '(I)Ltv;', 'getNewestChatMessage', 'Returns the last message in the active chat array, or null when there are no messages.');
+method('h', 'a', '(Z)V', 'releaseStatics', 'Clears static strings, text tables and account/UI references under the original guard.');
+method('hv', 'a', '(Lhu;I)V', 'initializeFadingChat', 'Sets the fading-chat font, remembers the newest message and creates its pending deque and six visible message slots.');
+method('hv', 'a', '(ZLjava/lang/CharSequence;)Ljava/lang/String;', 'normalizeBase37Name', 'Encodes and decodes a name through the shared base-37 alphabet, returning an empty string if normalization fails.');
+method('kr', 'a', '(BLbu;)[Lcl;', 'enumerateFullscreenModes', 'Waits for the platform display-mode task and converts each width/height/bit-depth/refresh-rate tuple into a mode record.');
+method('kr', 'a', '([Ljava/lang/CharSequence;Z)Ljava/lang/String;', 'concatenate', 'Joins the complete character-sequence array through the shared slice-concatenation routine.');
+method('nj', 'a', '(IIII)I', 'placePopupVertically', 'Places the popup below its anchor when it fits, otherwise above or against the bottom viewport edge.');
+method('nj', 'a', '(ILjava/lang/String;Ljava/applet/Applet;)Ljava/lang/String;', 'readCookie', 'Calls the applet JavaScript cookie bridge and returns the trimmed value matching the requested cookie name.');
+method('nj', 'a', '(ZI)V', 'drawActiveDialog', 'Draws the current shared dialog if one is present.');
+method('ni', 'a', '(BLjava/lang/String;)[B', 'loadNamedResource', 'Reads the named file from the shared resource archive using an empty group name.');
+method('ni', 'a', '(I)V', 'releaseStatics', 'Clears static text, sprite arrays, archive and social-panel references under the original guard.');
+method('ni', 'a', '(IIII)Z', 'dispatchKeyInput', 'Routes key input to the active play area, debug console, save dialog or general UI in priority order.');
+method('hr', 'a', '(I)V', 'releaseStatics', 'Clears static text, handler flags and multidimensional sprite-byte tables.');
+method('ii', 'a', '(I)V', 'releaseStatics', 'Clears this class static text references under the original guard.');
+method('ii', 'a', '(Lhn;I)V', 'applyAndQueueManagerAction', 'Applies the manager action to local club state and appends it to the pending action deque.');
+method('ii', 'b', '(I)V', 'buildTrinketPreviewSprites', 'Creates a preview sprite for each trinket model and renders the model into it.');
+method('mp', 'a', '(I)V', 'releaseStatics', 'Clears static sprite, text, archive-preloader, lookup-array and UI references under the original guard.');
+
+method('as', 'a', '(F)F', 'pitchToAngularFrequency', 'Converts logarithmic pitch relative to 32.703197 Hz to angular frequency at the 22050-Hz synthesis rate.');
+method('as', 'a', '(IIF)F', 'interpolateAngularFrequency', 'Interpolates filter-pole pitch between its two envelope endpoints and converts it to angular frequency.');
+method('as', 'a', '(Liw;Lfq;)V', 'decode', 'Reads per-channel filter pairs, gain endpoints, alternate coefficient settings and optional envelope segments.');
+method('mq', 'a', '()V', 'clear', 'Zeroes the all-pass delay buffer.');
+method('tp', 'a', '()V', 'clear', 'Zeroes the comb delay buffer and its damped sample accumulator.');
+method('qm', 'a', '()V', 'releaseNoteMasks', 'Drops the instrument-note mask table after sample preparation.');
+method('qm', 'b', '()V', 'buildNoteMasks', 'Scans MIDI bank/program changes and positive-velocity note events to build a per-instrument 128-note use mask.');
+method('rj', 'a', '(II[I)Lto;', 'getFlatVorbisSample', 'Resolves a flat archive ID to its unique group/file pair and delegates to budgeted Vorbis decoding.');
+method('rj', 'a', '(I[IIB)Lto;', 'getSoundEffect', 'Returns a cached synthesized sound sample or loads/decodes it and deducts decoded bytes from the optional budget.');
+method('rj', 'a', '(JI)Ljava/lang/String;', 'formatCookieExpiry', 'Formats the shared calendar date and time as the GMT timestamp used by settings cookies.');
+method('rj', 'a', '(Ljava/lang/String;Ljava/lang/String;B[I)Lto;', 'getNamedSoundEffect', 'Resolves archive group/file names and retrieves the synthesized sound sample with an optional decoding budget.');
+method('rj', 'a', '(Ljava/lang/String;ZLjava/lang/String;)Lto;', 'getNamedSoundEffect', 'Convenience named synthesized-sound lookup without a decoding budget.');
+method('rj', 'a', '([IIII)Lto;', 'getVorbisSample', 'Uses a separate cache-key namespace for Vorbis samples, retains partial decoders across budget exhaustion and caches completed PCM samples.');
+method('rj', 'b', '(II[I)Lto;', 'getFlatSoundEffect', 'Resolves a flat ID to its unique archive group/file pair and delegates to synthesized sound decoding.');
+method('rs', 'a', '(I)I', 'readStatusMessage', 'Handles MIDI running status and system-exclusive lengths before decoding the event payload.');
+method('rs', 'c', '()V', 'clear', 'Drops MIDI bytes and per-track offset, delta and running-status arrays.');
+method('rs', 'd', '()V', 'markTrackDone', 'Sets the MIDI buffer cursor to -1 so saveTrackPosition marks the current track finished.');
+method('rs', 'e', '()I', 'getTrackCount', 'Returns the per-track position-array length.');
+method('rs', 'e', '(I)J', 'timeAtTick', 'Returns the tempo-adjusted time origin plus tick multiplied by current microseconds-per-quarter-note tempo.');
+method('rs', 'f', '()Z', 'hasData', 'Reports whether MIDI source bytes are installed.');
+method('pp', 'a', '(III[ILda;I)V', 'mixNoteFrames', 'Mixes a note span and handles periodic retrigger restarts, sample offsets and overlap fades when the custom mode is enabled.');
+method('pp', 'a', '(ILda;B)V', 'skipNoteFrames', 'Advances a note span without output, recreating its sample stream when skipping crosses a retrigger boundary.');
+method('cp', 'a', '(BIII)I', 'formationY', 'Selects the lineup slot base Y coordinate, applies the controlling-team slot adjustment and mirrors coordinates for the other pitch end.');
+method('cp', 'a', '(I)I', 'pollResourceConnection', 'Pumps the archive manager and network responses, returning the resource connection handshake status while responses are not ready.');
+method('cp', 'a', '(ILjava/lang/String;)Lwn;', 'pollAccountNameAvailability', 'Returns the completed name-availability response for the same query or starts a new pending query state.');
+method('jk', 'b', '(I)Z', 'tryAcquireChatSendPermit', 'Applies the shared chat-send interval/backoff counter, resetting after thirty seconds and updating its timestamp on an allowed send.');
+
 export const kickConfig = {
   game: 'kickabout', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   workflowFiles: ['build-kickabout-rules.mjs', 'reproduce-kickabout.mjs', 'reviewed-game.mjs',
@@ -1987,7 +2215,8 @@ export const kickConfig = {
       'Start with `CommonGame` for match phases and agents; `ParticipantAgent`, `TeamSelectionAgent`, `FormationAgent` and `LineupAgent` handle participant/team choices. `FootballerAgent`, `BallAgent` and `GoalStateAgent` hold play state.', '',
       '`LobbyMatchPreview`, `FootballerPreview` and `WorldDrawEntry` cover lobby previews and scene ordering. `MarkerSliderWidget`, `RotaryDialWidget` and their painters expose the custom controls. `QuickChatCategoryCache` / `QuickChatCategory` and `AnimationFrameset` describe shared definition loading.', '',
       '`ClubState`, `PlayerStats`, `ManagerAction` and auction classes describe manager mode. `ArchiveRequest` / `NetworkArchiveRequest`, `PacketBuffer`, `CipherPacketBuffer` and the applet hierarchy cover transport and loading. UI focus, hover, drag and drop have explicit listener contracts.', '',
-      'Sprite copy/reflection/rotation, availability-request completion, Gregorian calendar boundaries and Quick Chat category decoding are checked against independent native Java expectations in both raw and named corpora. These focused checks do not establish full gameplay or multiplayer equivalence.', '',
+      '`AchievementQuery` / `AchievementSubmission`, `LookupQuery` / `LookupRecordUpdate`, `HighScoreQuery` / `HighScoreSubmission` and `RankingsRequest` describe queued protocol operations. `PcmPlayerService`, `PcmMixerListener`, `PcmSampleStream` and `MidiPcmStream` expose scheduling, playback and MIDI control.', '',
+      'Sprite operations, request completion, calendar boundaries, Quick Chat decoding, PCM mixing and MIDI controller dispatch are checked against independent native Java expectations in both raw and named corpora. These focused checks do not establish full gameplay or multiplayer equivalence.', '',
       `Decompiler source commit: ${rules.generators.javaTools.commit}.`, ''].join('\n');
   },
 };
