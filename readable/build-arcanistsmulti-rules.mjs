@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
 import {workflowRoot} from './game-export.mjs';
@@ -87,9 +88,23 @@ method('ug', 'a', '(Z)I', 'nextValue', ['obfuscationGuard'], 'Returns buffered r
 field('p', 'g', 'Ljava/lang/Throwable;', 'cause', 'Constructor retains the wrapped throwable.');
 field('p', 'i', 'Ljava/lang/String;', 'context', 'Constructor retains the appended context string.');
 
+// Reviewed names added in later rounds live in arcanistsmulti-names.json:
+// classes [owner, name, evidence], methods and fields [owner, original, descriptor, name, evidence].
+const reviewedNames = JSON.parse(fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'arcanistsmulti-names.json'), 'utf8'));
+for (const [owner, to, evidence] of reviewedNames.classes) {
+  if (classes[owner]) throw new Error('Class already reviewed: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of reviewedNames.methods) {
+  const symbol = `M:${owner}.${original}${descriptor}`;
+  if (members[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+for (const [owner, original, descriptor, to, evidence] of reviewedNames.fields) members[`F:${owner}.${original}:${descriptor}`] = {to, evidence};
+
 export const arcanistsConfig = {
   game: 'arcanistsmulti', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
-  workflowFiles: ['build-arcanistsmulti-rules.mjs', 'reproduce-arcanistsmulti.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-arcanistsmulti-rules.mjs', 'arcanistsmulti-names.json', 'reproduce-arcanistsmulti.mjs', 'reviewed-game.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   verifyCore: async () => ({status: 'not-applicable', reason: 'naming-only pass without game-specific reconstructions'}),
   readingGuide(rules, mapping) {
