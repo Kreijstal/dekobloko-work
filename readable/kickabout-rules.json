@@ -4224,6 +4224,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ap.field_A:Z",
+      "originalName": "field_A",
+      "to": "isTournamentMatch",
+      "evidence": "The match-start flags identify tournament games; gates champion messages, tournament menus and the Tournament Game chat context.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ap.field_h:I",
       "originalName": "field_h",
       "to": "localSeat",
@@ -4256,6 +4263,13 @@
       "originalName": "field_u",
       "to": "stateReceived",
       "evidence": "False draws \"Waiting to receive the game state...\"; set true in beginPhase/readMatchState.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ap.field_v:Z",
+      "originalName": "field_v",
+      "to": "tournamentSpectatorControlsEnabled",
+      "evidence": "The match-start flags enable tournament-specific input-context and return routing for spectators.",
       "confidence": "reviewed"
     },
     {
@@ -4984,6 +4998,27 @@
       "originalName": "field_e",
       "to": "frameOffset",
       "evidence": "Remaining mixer frame offset used to order and reschedule timer callbacks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mo.field_b:I",
+      "originalName": "field_b",
+      "to": "controlSourceAge",
+      "evidence": "Ticks since the last inherited control source; incremented by CommonGame ticks and decoded as an age bounded by sixty-four.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mo.field_c:I",
+      "originalName": "field_c",
+      "to": "deferredCorrectionCount",
+      "evidence": "Limits successive prediction-correction deferrals to sixty-four before accepting the replacement state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mo.field_e:I",
+      "originalName": "field_e",
+      "to": "controlSourceParticipant",
+      "evidence": "ParticipantAgent initializes this to its participant index; physics interactions inherit that source id for prediction reconciliation.",
       "confidence": "reviewed"
     },
     {
@@ -6790,6 +6825,20 @@
       "originalName": "a",
       "to": "leaveMatch",
       "evidence": "Calls ji.k, and for offline matches sets the exit target (ng.a) and goes to transition screen 18; used by button kind 8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ap.b(B)Z",
+      "originalName": "b",
+      "to": "isTournamentSpectator",
+      "evidence": "Combines spectator status with the tournament flag used by the champion notification and Tournament Game input context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ap.b(I)Z",
+      "originalName": "b",
+      "to": "usesTournamentSpectatorControls",
+      "evidence": "Requires a tournament spectator and the extra server flag used by tournament input-context and return-routing controls.",
       "confidence": "reviewed"
     },
     {
@@ -9327,10 +9376,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dt.a(B)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "Draws an active offscreen-player arrow with its optional player number, using the selected raster detail path.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dt.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dt.a(IIII)V",
+      "originalName": "a",
+      "to": "updateScreenIntersection",
+      "evidence": "Projects the target footballer, derives arrow direction and distance and intersects its ray with the viewport edge.",
       "confidence": "reviewed"
     },
     {
@@ -10839,10 +10902,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fn.a(B)I",
+      "originalName": "a",
+      "to": "tackleStunBonus",
+      "evidence": "Returns thirty extra stun ticks for type 57, sixty for type 58 and zero for other trinkets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fn.a(BLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "showLoginWithExtraText",
+      "evidence": "Sets the login extra text and activates its shared account interface.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fn.a(I)Z",
       "originalName": "a",
       "to": "isActiveHorrorCostume",
       "evidence": "Tests type id 73, COSTUME: HORROR, together with a be.e check.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fn.a(IB)V",
+      "originalName": "a",
+      "to": "setSoundEffectVolume",
+      "evidence": "Updates active sound-handle volumes and the shared effect mixer channel gains for channels one and two.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fn.a(Lgm;I)V",
+      "originalName": "a",
+      "to": "drawFootballerShadow",
+      "evidence": "Projects the rendered footballer and draws a cached or generated shadow mask, with a radial fallback at lower detail.",
       "confidence": "reviewed"
     },
     {
@@ -10895,10 +10986,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fn.d(B)V",
+      "originalName": "d",
+      "to": "buildBlurredModelSprite",
+      "evidence": "Renders the shared model scene to a 540 by 140 raster, applies repeated white silhouettes and blur, then halves it into the destination sprite.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fn.d(I)Z",
       "originalName": "d",
       "to": "isTankClone",
       "evidence": "Tests type id 59, TANK CLONE in the trinket name table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fn.d(Z)Lot;",
+      "originalName": "d",
+      "to": "getIconSprite",
+      "evidence": "Selects the trinket icon from its slot and mapped type, using the separate empty-slot sprite for type zero.",
       "confidence": "reviewed"
     },
     {
@@ -10930,6 +11035,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fn.f(I)Ljava/lang/String;",
+      "originalName": "f",
+      "to": "updateChatComposeDisplay",
+      "evidence": "Formats chat target and account prefixes, input status and caret, updates the shared input widget and returns its hover help text.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fn.f(Z)Z",
       "originalName": "f",
       "to": "isTorquing",
@@ -10948,6 +11060,13 @@
       "originalName": "h",
       "to": "isHotshotClone",
       "evidence": "Tests type id 60, HOTSHOT CLONE in the trinket name table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fn.i(I)V",
+      "originalName": "i",
+      "to": "initializeAfterimagePool",
+      "evidence": "Allocates the requested number of reusable EntityAfterimage objects.",
       "confidence": "reviewed"
     },
     {
@@ -10997,6 +11116,13 @@
       "originalName": "p",
       "to": "isRangerClone",
       "evidence": "Tests type id 61, RANGER CLONE in the trinket name table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fn.q(I)V",
+      "originalName": "q",
+      "to": "releaseStatics",
+      "evidence": "Clears shared trinket text, sprite, archive and layout resources under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -11690,6 +11816,13 @@
       "originalName": "a",
       "to": "stepMovement",
       "evidence": "Per-tick update: cooldown and action timers, target velocity per action, lt.a collision and gravity. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.a(Lmo;III)V",
+      "originalName": "a",
+      "to": "reconcileStateFrom",
+      "evidence": "Keeps prediction when correction is deferred, otherwise copies complete state and synchronization metadata. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -13744,6 +13877,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:it.a(Lmo;B)V",
+      "originalName": "a",
+      "to": "inheritControlSource",
+      "evidence": "Resets control-source age and inherits its participant id; ParticipantAgent rejects retagging through its override. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:it.a(Lrj;Lsj;B)V",
       "originalName": "a",
       "to": "initializeGameSoundEffects",
@@ -14329,6 +14469,13 @@
       "originalName": "e",
       "to": "evaluateValidationMessage",
       "evidence": "Abstract message evaluation called by b(int) after the debounce; jd implements it with the describe method on the widget text. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.f(I)Z",
+      "originalName": "f",
+      "to": "areAccountTrinketsDisabled",
+      "evidence": "Disables trinkets for a guest session or an account without positive remaining membership time.",
       "confidence": "reviewed"
     },
     {
@@ -16124,10 +16271,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ma.a(IBLqb;Z)V",
+      "originalName": "a",
+      "to": "updateGameOptionControls",
+      "evidence": "Applies lobby game or matching-preference selections, entitlement and dependency restrictions, tooltips and any changed game-options packet.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ma.a(IIIIIBIZ)V",
       "originalName": "a",
       "to": "initialiseClient",
       "evidence": "Creates the AWT frame, applies the screen settings, calls uv.a and js.a with the connection data and lm.d.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.a(Ljava/lang/String;IB)V",
+      "originalName": "a",
+      "to": "initializeAppletParameters",
+      "evidence": "Loads network applet parameters with the fixed 640 by 480 client dimensions.",
       "confidence": "reviewed"
     },
     {
@@ -16145,6 +16306,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ma.a(ZZZ)I",
+      "originalName": "a",
+      "to": "processAccountMenu",
+      "evidence": "Processes account-name checks, registration, login, guest entry, support and browser actions, country-list loading and menu exit results.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.b(IZ)I",
+      "originalName": "b",
+      "to": "pollAccountMenuSelection",
+      "evidence": "Processes account-menu selection while suppressing the actual login handshake in that call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.b(Z)V",
+      "originalName": "b",
+      "to": "showPendingServerNotice",
+      "evidence": "Formats the pending server notice into the centered message panel and clears the pending reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.c(IZ)V",
+      "originalName": "c",
+      "to": "serviceClientInfrastructure",
+      "evidence": "Updates canvas sizing and shared input, idle logout, resource-connection recovery, staged UI loading, audio setup and canvas replacement.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ma.c(Z)V",
       "originalName": "c",
       "to": "saveSessionCookie",
@@ -16152,10 +16341,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ma.d(Z)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears shared network-client text and resource references under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ma.e(I)V",
       "originalName": "e",
       "to": "enableHandlerGroup",
       "evidence": "Sets the hr.field_h entry at the given index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.f(I)Lhd;",
+      "originalName": "f",
+      "to": "getLobbyPlayerListContent",
+      "evidence": "Returns the shared lobby player-list scroll pane content node on the valid guard path.",
       "confidence": "reviewed"
     },
     {
@@ -16187,10 +16390,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ma.i(I)V",
+      "originalName": "i",
+      "to": "enableChatResponseHandlers",
+      "evidence": "Enables chat response packet ids eleven and twelve together with the supplied additional handler id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.j(B)V",
+      "originalName": "j",
+      "to": "readExternalUrlPacket",
+      "evidence": "Reads the URL flags and ISAAC-decoded URL bytes and opens the decoded external URL.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ma.j(I)V",
       "originalName": "j",
       "to": "dispatchServerPacket",
       "evidence": "Switches on packet opcode so.field_b to the static handlers (gf, sm, ki, tt, gs, qv, ...), logging \"MGS1/MGS2\" for unknown ones.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.k(B)V",
+      "originalName": "k",
+      "to": "updateChatPanelTransition",
+      "evidence": "Adjusts the chat origin when the target changes and advances the shared eased layout countdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.k(I)V",
+      "originalName": "k",
+      "to": "drawQuickChatOverlay",
+      "evidence": "Dims the current raster clip and draws the shared Quick Chat layout when its visibility flag is set.",
       "confidence": "reviewed"
     },
     {
@@ -16212,6 +16443,13 @@
       "originalName": "m",
       "to": "enableHandlerGroup5",
       "evidence": "Sets hr.field_h[5], enabling the fifth built-in server packet handler.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.n(I)V",
+      "originalName": "n",
+      "to": "processStartupInterface",
+      "evidence": "Services the available account menu or startup/loading interface according to client and preparation stages.",
       "confidence": "reviewed"
     },
     {
@@ -16695,6 +16933,69 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Clears shared match-agent text and resource references under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mo.a(ILjava/lang/CharSequence;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "normalizeAccountName",
+      "evidence": "Trims name separators, enforces the twelve-character limit and normalizes allowed account-name characters, returning null for an empty result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mo.a(ILmo;II)Z",
+      "originalName": "a",
+      "to": "shouldDeferStateCorrection",
+      "evidence": "Defers correction for up to sixty-four attempts when the newer state has a recent local-participant control source.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mo.a(Lml;I)V",
+      "originalName": "a",
+      "to": "writeReflectionCheckReply",
+      "evidence": "Waits for reflection tasks, serializes their results or error codes, appends a CRC and removes the completed request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mo.a(Lmo;B)V",
+      "originalName": "a",
+      "to": "inheritControlSource",
+      "evidence": "Resets control-source age and inherits its participant id; ParticipantAgent rejects retagging through its override.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mo.a(Lmo;I)V",
+      "originalName": "a",
+      "to": "copySynchronizationMetadata",
+      "evidence": "Copies the control-source participant and age without copying subclass state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mo.a(Lmo;III)V",
+      "originalName": "a",
+      "to": "reconcileStateFrom",
+      "evidence": "Keeps prediction when correction is deferred, otherwise copies complete state and synchronization metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mo.a(Lmo;Z)V",
+      "originalName": "a",
+      "to": "copyCompleteStateFrom",
+      "evidence": "Copies subclass state through copyStateFrom and then copies the synchronization metadata.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mo.b(I)Lut;",
+      "originalName": "b",
+      "to": "buildFirstDecodedSprite",
+      "evidence": "Expands the first decoded indexed pixel buffer through its palette, preserves trim metadata and clears shared decode buffers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mo.b(Lml;I)V",
+      "originalName": "b",
+      "to": "readSynchronizationMetadata",
+      "evidence": "Reads the bounded control-source age and an optional four-bit source participant id.",
       "confidence": "reviewed"
     },
     {
@@ -17643,6 +17944,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nu.a(I)V",
+      "originalName": "a",
+      "to": "assignInitialControlledSlots",
+      "evidence": "Chooses active participants controlled slots in priority order 3,4,the supplied slot,1, then resets footballer AI waits and the AI tick.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nu.a(IB)V",
       "originalName": "a",
       "to": "enterPhase",
@@ -17657,6 +17965,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nu.a(IJIIZLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "sendTextPromptResponse",
+      "evidence": "Sends the prompt target id, text, selected action and checkbox value in a byte-length-prefixed packet.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nu.a(ILki;)V",
       "originalName": "a",
       "to": "applyTeamSelectionCommand",
@@ -17668,6 +17983,13 @@
       "originalName": "a",
       "to": "switchControlledFootballer",
       "evidence": "Hands a participant's control to another footballer slot and copies the direction mask across.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.a(IZJII)Z",
+      "originalName": "a",
+      "to": "canParticipantUseCheat",
+      "evidence": "Allows special account keys or JMod rights except for megamode, otherwise tests the active participant footballers cheat trinkets.",
       "confidence": "reviewed"
     },
     {
@@ -17692,6 +18014,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nu.a(Lml;I)V",
+      "originalName": "a",
+      "to": "readDeltaState",
+      "evidence": "Decodes phase time, participant deltas and the active phase agents, using delta footballer and ball state during play.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.a(Lml;II)V",
+      "originalName": "a",
+      "to": "readFullState",
+      "evidence": "Decodes participants, phase, kits, formations, lineups and results, then the complete active phase agents and physics state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.a(Lnl;B)V",
+      "originalName": "a",
+      "to": "adjustTackleForLooseBall",
+      "evidence": "Simulates the loose ball trajectory against the tackling footballer and adjusts interception velocity, duration and any aerial action.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nu.a(Lnu;B)V",
       "originalName": "a",
       "to": "copyStateFrom",
@@ -17699,10 +18042,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nu.a(Lnu;III)V",
+      "originalName": "a",
+      "to": "reconcileAgentStatesFrom",
+      "evidence": "Copies phase time and reconciles participant and active phase agents with their prediction-correction policy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared CommonGame text and resource references under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.a(ZLki;)V",
+      "originalName": "a",
+      "to": "applyCheatCommand",
+      "evidence": "Applies the participant cheat event: effect bits, ball-model toggles, big-head mode or megamode.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nu.b(B)Lnl;",
       "originalName": "b",
       "to": "getBallCarrier",
       "evidence": "Returns the footballer indexed by the ball's possessor team and slot, or null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.b(BI)I",
+      "originalName": "b",
+      "to": "findActiveTeamParticipant",
+      "evidence": "Finds the first active participant on the requested team, retaining zero as the original missing-result value.",
       "confidence": "reviewed"
     },
     {
@@ -17741,6 +18112,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nu.b(Z)V",
+      "originalName": "b",
+      "to": "drawOffscreenPlayerArrows",
+      "evidence": "Draws shared OffscreenPlayerArrow entries while the local participant is active.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nu.b(ZLki;)V",
       "originalName": "b",
       "to": "applyMoveInput",
@@ -17759,6 +18137,13 @@
       "originalName": "c",
       "to": "computeChecksum",
       "evidence": "XORs the checksums of every footballer, the ball and the goal state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.c(II)Z",
+      "originalName": "c",
+      "to": "participantHasBall",
+      "evidence": "Compares the participant team and controlled slot with the ball possessor team and slot.",
       "confidence": "reviewed"
     },
     {
@@ -17808,6 +18193,55 @@
       "originalName": "j",
       "to": "releaseStatics",
       "evidence": "Clears static layouts, sprites and lookup arrays while preserving the guard-dependent call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nw.a(B)Lgn;",
+      "originalName": "a",
+      "to": "first",
+      "evidence": "Starts this independent cursor at the owning deque first forward link.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nw.a(BLgn;)Lgn;",
+      "originalName": "a",
+      "to": "lastFrom",
+      "evidence": "Starts reverse traversal at the supplied node, or at the deque last node when null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nw.a(I)Lgn;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "Returns the saved forward node and advances toward the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nw.a(ILgn;)Lgn;",
+      "originalName": "a",
+      "to": "firstFrom",
+      "evidence": "Starts forward traversal at the supplied node, or at the deque first node when null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nw.a(ILut;)V",
+      "originalName": "a",
+      "to": "buildDirectionalMarkerSprites",
+      "evidence": "Builds four marker orientations by reflection and rotation and records their shared dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nw.b(B)Lgn;",
+      "originalName": "b",
+      "to": "previous",
+      "evidence": "Returns the saved reverse node and advances toward the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nw.b(I)Lgn;",
+      "originalName": "b",
+      "to": "last",
+      "evidence": "Starts reverse traversal at the sentinel previous link.",
       "confidence": "reviewed"
     },
     {
@@ -17906,6 +18340,13 @@
       "originalName": "a",
       "to": "drawBall",
       "evidence": "Updates the ball sprite rotation to the requested size and draws the rotated model at the given position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.a(Lmo;III)V",
+      "originalName": "a",
+      "to": "reconcileStateFrom",
+      "evidence": "Keeps prediction when correction is deferred, otherwise copies complete state and synchronization metadata. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -18098,6 +18539,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oj.j(B)V",
+      "originalName": "j",
+      "to": "releaseStatics",
+      "evidence": "Clears shared loading-progress text and option-description tables under the original arithmetic guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ok.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -18119,6 +18567,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ol.a(IBI)I",
+      "originalName": "a",
+      "to": "approachEased",
+      "evidence": "Moves an integer one eighth of the remaining distance toward the target, with a minimum one-unit step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ol.a(IIIILbu;I)Ljava/awt/Frame;",
+      "originalName": "a",
+      "to": "tryEnterFullscreen",
+      "evidence": "Selects a supported bit depth when unspecified, waits for the fullscreen task and cleans up a failed frame.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ol.a(ILhn;II)V",
       "originalName": "a",
       "to": "applyTrainingAction",
@@ -18130,6 +18592,13 @@
       "originalName": "a",
       "to": "update",
       "evidence": "Per-frame update: builds the ko selection from the button positions and, in subclasses, refreshes button states. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ol.b(B)Z",
+      "originalName": "b",
+      "to": "canTrainAnySquadPlayer",
+      "evidence": "Checks the result-view eligibility gates and whether a selected squad player has at least one hundred experience and an improvable stat.",
       "confidence": "reviewed"
     },
     {
@@ -18165,6 +18634,27 @@
       "originalName": "f",
       "to": "onButtonClick",
       "evidence": "Abstract click hook; FormationView submits the formation when the button kind is 41. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ol.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears shared result-view text and resources under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ol.g(II)Ljava/lang/String;",
+      "originalName": "g",
+      "to": "kickActionName",
+      "evidence": "Maps action ids one, two and three to kick, slide and header text, otherwise the null label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ol.h(I)Ltf;",
+      "originalName": "h",
+      "to": "getTrainingActions",
+      "evidence": "Returns the result-view deque populated with ManagerAction training operations.",
       "confidence": "reviewed"
     },
     {
@@ -18679,6 +19169,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pa.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears shared generated-panel text and trinket definition references under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pb.a(B[Lli;)Lli;",
       "originalName": "a",
       "to": "execute",
@@ -18823,6 +19320,13 @@
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pf.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared byte-storage text and integer buffers under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -19061,6 +19565,13 @@
       "originalName": "a",
       "to": "skipNoteFrames",
       "evidence": "Advances a note span without output, recreating its sample stream when skipping crosses a retrigger boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pp.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared music-patch stream text references under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -19323,6 +19834,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pw.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears shared auction-settings text, sprite and scroll-pane resources under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:q.a(B)Llk;",
       "originalName": "a",
       "to": "readToken",
@@ -19348,6 +19866,20 @@
       "originalName": "a",
       "to": "drawScreen",
       "evidence": "Abstract; Kickabout.a(int) calls it with -5 to draw each non-qt screen (qt subclasses draw buttons and panels). Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qa.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears shared league-help sprites, text and Quick Chat layout resources under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qb.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared game-setup panel text references under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -19397,6 +19929,13 @@
       "originalName": "a",
       "to": "drawAlpha",
       "evidence": "Matches steelsentinels IndexedSprite.drawAlpha by signature and body shape. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared archive-preloader text and sprite resources under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -19502,6 +20041,13 @@
       "originalName": "b",
       "to": "bitwiseAnd",
       "evidence": "Returns the bitwise AND of two integer values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qk.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared checkbox text and layout resources under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -19729,10 +20275,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qs.h(B)V",
+      "originalName": "h",
+      "to": "releaseStatics",
+      "evidence": "Clears shared player-shop layouts, sprites and text resources under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qt.a(BZ)V",
       "originalName": "a",
       "to": "updateScreen",
       "evidence": "Abstract; Kickabout.a(int,boolean) calls it each frame on the current and pending screen to handle input. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qt.a(I)V",
+      "originalName": "a",
+      "to": "enqueueLoginRequiredDialog",
+      "evidence": "Appends a new LoginRequiredDialog to the pending dialog deque.",
       "confidence": "reviewed"
     },
     {
@@ -19831,6 +20391,13 @@
       "originalName": "b",
       "to": "buttonCenterX",
       "evidence": "Per-button x: bottom buttons at wr.field_f-50 for kind 37, others 190; subclasses override to place columns.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qt.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears shared button-menu screen text, sprite and audio resources under the original arithmetic guard.",
       "confidence": "reviewed"
     },
     {
@@ -20051,6 +20618,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ra.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears shared game-mode help sprites, text and three-dimensional lookup tables under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rb.a(I)Ljava/lang/String;",
       "originalName": "a",
       "to": "getText",
@@ -20233,6 +20807,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ri.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears shared beveled-text painter text and resources under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rj.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -20352,6 +20933,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rm.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "Clears shared ranking-screen resource references under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rm.g(B)V",
       "originalName": "g",
       "to": "drawLoginRequiredText",
@@ -20419,6 +21007,13 @@
       "originalName": "a",
       "to": "drawScreen",
       "evidence": "Abstract; Kickabout.a(int) calls it with -5 to draw each non-qt screen (qt subclasses draw buttons and panels). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rq.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared server-message screen, frame and text resources under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -20594,6 +21189,13 @@
       "originalName": "b",
       "to": "dialogWidth",
       "evidence": "Base class width from the text and icon; subclasses return constants such as 400, 470 or 545. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rt.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears shared stat-choice dialog sprites and text resources under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -20870,6 +21472,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:s.i(I)V",
+      "originalName": "i",
+      "to": "releaseStatics",
+      "evidence": "Clears shared rotary-dial widget text references under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sa.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -21140,6 +21749,13 @@
       "originalName": "a",
       "to": "lineupSlotX",
       "evidence": "Returns (320 + 70 * slot) shifted left sixteen bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared reflection-check text and resource references under the original recursive guard.",
       "confidence": "reviewed"
     },
     {
@@ -21451,6 +22067,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sq.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears shared save-changes dialog text and model material references under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sr.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -21696,6 +22319,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ta.g(B)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears shared team-management screen resources under the original arithmetic guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tb.a(B)Z",
       "originalName": "a",
       "to": "pollResponses",
@@ -21794,6 +22424,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:td.a(I)V",
+      "originalName": "a",
+      "to": "resetChatComposition",
+      "evidence": "Clears the shared chat input builder and restores compose channel zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:td.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared trinket-catalog layout and text references under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:td.b(I)V",
       "originalName": "b",
       "to": "buildTrinketTable",
@@ -21850,10 +22494,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tf.a(ILgn;)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "Unlinks any existing membership and inserts the node immediately after the deque sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tf.a(ILtf;)V",
+      "originalName": "a",
+      "to": "moveAllTo",
+      "evidence": "Appends this entire deque to the destination using the tail-range splice helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tf.a(Lgn;I)V",
       "originalName": "a",
       "to": "addLast",
       "evidence": "Matches arcanistsmulti/geoblox/stellarshard IntrusiveDeque.addLast by signature and body shape.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tf.a(Ltf;Lgn;I)V",
+      "originalName": "a",
+      "to": "moveTailTo",
+      "evidence": "Detaches the range from the supplied source node through this deque tail and appends it to the destination tail.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tf.a(Z)I",
+      "originalName": "a",
+      "to": "size",
+      "evidence": "Counts the forward links from the sentinel and preserves the original guard result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tf.a(ZLjava/lang/CharSequence;)I",
+      "originalName": "a",
+      "to": "hashCp1252",
+      "evidence": "Computes a base-thirty-one string hash from signed CP1252-encoded bytes.",
       "confidence": "reviewed"
     },
     {
@@ -21871,10 +22550,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tf.b(ILgn;)Lgn;",
+      "originalName": "b",
+      "to": "firstFrom",
+      "evidence": "Starts forward iteration at the supplied node, or at the first node when null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tf.c(I)Lgn;",
+      "originalName": "c",
+      "to": "next",
+      "evidence": "Returns the saved forward cursor and advances it, returning null at the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tf.d(I)Lgn;",
       "originalName": "d",
       "to": "last",
       "evidence": "Body is identical to trackcontroller IntrusiveDeque.last.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tf.e(I)Lgn;",
+      "originalName": "e",
+      "to": "previous",
+      "evidence": "Returns the saved reverse cursor and advances it toward the previous link.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tf.f(I)[Lgn;",
+      "originalName": "f",
+      "to": "toArray",
+      "evidence": "Copies nodes in forward deque order into an exactly sized array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tf.g(I)Lgn;",
+      "originalName": "g",
+      "to": "first",
+      "evidence": "Starts forward traversal at the sentinel next link.",
       "confidence": "reviewed"
     },
     {
@@ -22064,6 +22778,13 @@
       "originalName": "e",
       "to": "horizontalSpeedSquared",
       "evidence": "Returns vx*vx + vy*vy of the shifted velocity fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "Clears shared ball-agent text, sprite and array resources under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -22872,6 +23593,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:up.a(B)Z",
+      "originalName": "a",
+      "to": "beginReconnectGracePeriod",
+      "evidence": "Enables recoverable reconnect handling and sets its fifteen-second deadline, returning whether the client is in its connected stage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.a(BIZIIIIZ)V",
+      "originalName": "a",
+      "to": "drawDetailsPanel",
+      "evidence": "Draws the portrait, name, archetype, stat bars, optional experience, trinket list and price sections.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:up.a(BLiw;)V",
       "originalName": "a",
       "to": "writeToPacket",
@@ -22886,10 +23621,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:up.a(BZ)Z",
+      "originalName": "a",
+      "to": "usesTankAbilities",
+      "evidence": "Recognizes Tank and Keeper archetypes, or an active Tank Clone trinket.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:up.a(I)I",
       "originalName": "a",
       "to": "getHeight",
       "evidence": "Implementations return the card height, used to centre the card vertically before drawing. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.a(IB)V",
+      "originalName": "a",
+      "to": "setChatPanelY",
+      "evidence": "Stores a new shared chat-panel Y origin and reapplies the current easing transition and Quick Chat placement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.a(II)V",
+      "originalName": "a",
+      "to": "sendLobbyGamePreferences",
+      "evidence": "Sends lobby action two with the current game preference bitset, two option values and packed option choices.",
       "confidence": "reviewed"
     },
     {
@@ -22914,10 +23670,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:up.a(ZB)Z",
+      "originalName": "a",
+      "to": "hasShinPads",
+      "evidence": "Checks active trinkets for the Shin Pads type.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:up.a(ZI)I",
       "originalName": "a",
       "to": "effectiveTackle",
       "evidence": "Adds base tackle to the trinket tackle bonus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.a(ZIZ)Z",
+      "originalName": "a",
+      "to": "hasCheatTrinket",
+      "evidence": "Matches cheat ids zero through nine to their granting trinket predicates when trinkets are enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.a(ZZ)I",
+      "originalName": "a",
+      "to": "getTackleStunBonus",
+      "evidence": "Returns the largest enabled trinket stun bonus, added to the tackled footballer action duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.a(ZZB)I",
+      "originalName": "a",
+      "to": "getDetailsPanelHeight",
+      "evidence": "Sums portrait, stats, optional experience, trinkets and optional price section heights.",
       "confidence": "reviewed"
     },
     {
@@ -22949,6 +23733,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:up.b(ZB)Z",
+      "originalName": "b",
+      "to": "hasTackleProtection",
+      "evidence": "Checks enabled trinkets for tackle protection or Shin Pads before allowing a tackle hit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.b(ZI)Z",
+      "originalName": "b",
+      "to": "hasSlalom",
+      "evidence": "Checks enabled trinkets for Slalom.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.b(ZZ)Z",
+      "originalName": "b",
+      "to": "canTackleTeammates",
+      "evidence": "Disallows same-team tackle hits when enabled Safe Tackler or Shin Pads trinkets suppress them.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:up.c(B)I",
       "originalName": "c",
       "to": "getHighestBaseStat",
@@ -22956,10 +23761,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:up.c(BZ)Z",
+      "originalName": "c",
+      "to": "hasActiveHorrorCostume",
+      "evidence": "Checks enabled trinkets for the active horror-costume predicate used by portrait drawing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:up.c(I)Z",
       "originalName": "c",
       "to": "isEmpty",
       "evidence": "Returns field_q == -1 and toString prints \"Empty PlayerStats\" when true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.c(ZB)Z",
+      "originalName": "c",
+      "to": "usesHotshotAbilities",
+      "evidence": "Recognizes the Hotshot archetype or an enabled Hotshot Clone trinket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.c(ZI)Z",
+      "originalName": "c",
+      "to": "usesRangerAbilities",
+      "evidence": "Recognizes the Ranger archetype or an enabled Ranger Clone trinket.",
       "confidence": "reviewed"
     },
     {
@@ -22988,6 +23814,20 @@
       "originalName": "d",
       "to": "effectivePower",
       "evidence": "Adds base power to the trinket power bonus and scales by 8/10 for one trinket condition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.e(I)V",
+      "originalName": "e",
+      "to": "finishUiTransitions",
+      "evidence": "Finishes modal animations, marks the loading dialog to complete and resets shared interaction feedback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.f(I)Z",
+      "originalName": "f",
+      "to": "areTrinketsDisabled",
+      "evidence": "Resolves the per-player override or account default; controls dimming and the explicit Trinkets Disabled label.",
       "confidence": "reviewed"
     },
     {
@@ -25484,7 +26324,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-kickabout-rules.mjs": "cec6e9d55a15bf33c80193363f3706ccd1e2ee1ad684cb2f45fcb838ad838f37",
+      "build-kickabout-rules.mjs": "e3df2bf063c12357bbc664e54f0eb4375397e6d151efeedfcd04ae899089bfe4",
       "reproduce-kickabout.mjs": "ced425cb07cc59ef9672e56d45c5fdaaf3cc113192449c7eafd4355270fa9245",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
