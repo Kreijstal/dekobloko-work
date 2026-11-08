@@ -21565,8 +21565,8 @@
     {
       "symbol": "M:hk.b(I)Z",
       "originalName": "b",
-      "to": "isClientConnected",
-      "evidence": "Returns the shared connected-session flag used by the applet loading and login paths.",
+      "to": "isGuestMode",
+      "evidence": "Returns the guest-mode flag set by Just play or initial startup and cleared after successful account login.",
       "confidence": "reviewed"
     },
     {
@@ -23887,6 +23887,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kh.f(B)V",
+      "originalName": "f",
+      "to": "finishLoginInterface",
+      "evidence": "Clears the login interface busy flag, prepares any unread support-ticket notice and dismisses or refreshes the retained account progress dialog.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kh.f(I)Z",
       "originalName": "f",
       "to": "isUnindexed",
@@ -25665,6 +25672,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:md.a(B)Z",
+      "originalName": "a",
+      "to": "isLoginRequiredPromptOpen",
+      "evidence": "Returns the shared flag gating the dimmed login-required choice panel and its input processing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:md.a(I)V",
       "originalName": "a",
       "to": "initializeRendering",
@@ -25711,6 +25725,13 @@
       "originalName": "a",
       "to": "validationStateForText",
       "evidence": "Abstract mapping from candidate text to a validation state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:me.b(II)V",
+      "originalName": "b",
+      "to": "sendCancelMatchmaking",
+      "evidence": "Sends the one-byte lobby operation three when the matchmaking Cancel control is pressed.",
       "confidence": "reviewed"
     },
     {
@@ -25798,10 +25819,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mg.a(I)Z",
+      "originalName": "a",
+      "to": "isLoginComplete",
+      "evidence": "Requires an open client socket and the completed login state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mg.a(IJ)Lim;",
       "originalName": "a",
       "to": "findLobbyPlayer",
       "evidence": "Returns the lobby player stored under the key in the shared player table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(Z)Z",
+      "originalName": "a",
+      "to": "isGuestOrFreeAccount",
+      "evidence": "Reports guest mode or an account with no active membership value, preserving the supported true guard path.",
       "confidence": "reviewed"
     },
     {
@@ -26250,6 +26285,13 @@
       "originalName": "a",
       "to": "setSuggestions",
       "evidence": "Rebuilds the child buttons from a new array of suggested names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mp.g(B)Z",
+      "originalName": "g",
+      "to": "isFreeChatAllowed",
+      "evidence": "Returns the inverse of the server-controlled free-chat restriction flag used to hide ordinary private and channel messaging actions.",
       "confidence": "reviewed"
     },
     {
@@ -27254,6 +27296,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nj.b(III)I",
+      "originalName": "b",
+      "to": "accountBadgeKind",
+      "evidence": "Selects no badge, the first badge or the second badge according to the two account-level thresholds used by the badge text formatter.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nk.a(I)V",
       "originalName": "a",
       "to": "readByteRecordResponse",
@@ -27272,6 +27321,13 @@
       "originalName": "a",
       "to": "loadLocalizedStrings",
       "evidence": "Loads named localization files from the retained archive, decodes their Windows-1252 text into the shared interface strings and arrays and then releases the temporary archive reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.a(Ljava/lang/String;IB)V",
+      "originalName": "a",
+      "to": "requestLoginTransition",
+      "evidence": "Requests the shared login screen transition and retains the screen identifier to restore afterward; the message compatibility argument is unused.",
       "confidence": "reviewed"
     },
     {
@@ -27307,6 +27363,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Public static method whose body only assigns null to static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.b(I)Z",
+      "originalName": "b",
+      "to": "hasReachedLoginResponse",
+      "evidence": "Tests whether this login state is awaiting the submitted login response, reading the account response body or complete.",
       "confidence": "reviewed"
     },
     {
@@ -27387,6 +27450,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:no.a(IIIIIIIIIIII)I",
+      "originalName": "a",
+      "to": "sweepCirclePair",
+      "evidence": "Aligns the two moving circles to a common start time and solves their relative-motion contact quadratic for equal radii within the remaining fixed-point frame interval.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:no.a(IZLjava/lang/Object;)V",
       "originalName": "a",
       "to": "attachConnection",
@@ -27461,6 +27531,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Public static method whose body only assigns null to static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.a(ZLjava/lang/String;ZZILjava/lang/String;)I",
+      "originalName": "a",
+      "to": "pollLoginRequest",
+      "evidence": "Advances login or reconnect through socket setup, challenge and payload exchange, account response decoding, cipher initialization, retry and error handling.",
       "confidence": "reviewed"
     },
     {
@@ -27590,6 +27667,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:o.c(B)V",
+      "originalName": "c",
+      "to": "requestLoginFromGuestMode",
+      "evidence": "Requires guest mode, marks the requested login transition and opens the login dialog at the initial client stage.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:o.e(I)V",
       "originalName": "e",
       "to": "releaseStatics",
@@ -27622,6 +27706,13 @@
       "originalName": "a",
       "to": "drawLobbyPanels",
       "evidence": "Draws the sliding game panels, optional dimmed chat tab pane and remaining shared lobby panels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a(Z[B)V",
+      "originalName": "a",
+      "to": "decodeSpriteSheet",
+      "evidence": "Decodes sprite dimensions, offsets, palette indices and optional alpha planes into the shared sprite decoder arrays, supporting row-major and column-major storage.",
       "confidence": "reviewed"
     },
     {
@@ -27895,6 +27986,13 @@
       "originalName": "a",
       "to": "scaleVertices",
       "evidence": "Multiplies vertex coordinates by three scale ints and divides by the last.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.b(B)Z",
+      "originalName": "b",
+      "to": "hasActiveLoginResponse",
+      "evidence": "Requires a live client socket and a login state that has reached the response phase.",
       "confidence": "reviewed"
     },
     {
@@ -28276,10 +28374,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ol.a([IIIIIIIII)V",
+      "originalName": "a",
+      "to": "fillTriangleHalfBlend",
+      "evidence": "Fills the clipped triangle by scanline using the supplied half-color and half of each destination pixel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:om.a(IIIB)V",
       "originalName": "a",
       "to": "setChatFilterMode",
       "evidence": "Updates the selected lobby, game or private chat filter, marks filter state changed and sends the packed filter settings when the value differs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:om.a(IZ)V",
+      "originalName": "a",
+      "to": "drawHudAndInterfaceOverlays",
+      "evidence": "Draws active game and preview HUDs, selects normal or chat-composition overlay presentation and draws the corresponding debug overlays.",
       "confidence": "reviewed"
     },
     {
@@ -28444,6 +28556,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oo.a(I[I)V",
+      "originalName": "a",
+      "to": "drawFloorTiles",
+      "evidence": "Draws each retained floor-tile model instance with the supplied camera transform.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.a(I[II[II)V",
+      "originalName": "a",
+      "to": "playSpatialSound",
+      "evidence": "Computes source pan and attenuation, applies the supplied volume scale and plays the selected table sound.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oo.a(Lal;I)V",
       "originalName": "a",
       "to": "buildTableGeometry",
@@ -28507,6 +28633,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oo.a([III[I)V",
+      "originalName": "a",
+      "to": "playSpatialSound",
+      "evidence": "Computes source pan and distance attenuation and plays the selected table sound with that spatial volume.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oo.a([ILeg;I)Lfa;",
       "originalName": "a",
       "to": "createModelMeshWithBallTransform",
@@ -28518,6 +28651,13 @@
       "originalName": "a",
       "to": "drawBall",
       "evidence": "Draws a ball with its shadow, clipped to the table, using the ball skin and the view matrix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.a([Lbf;I)V",
+      "originalName": "a",
+      "to": "cacheFarthestCushionPairs",
+      "evidence": "Finds cushion pairs tied for greatest center distance and retains their segment indices and normalized perpendicular directions.",
       "confidence": "reviewed"
     },
     {
@@ -28602,6 +28742,13 @@
       "originalName": "c",
       "to": "initializeScene",
       "evidence": "The tiki override sets its progress text and the space override builds its scene node lists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.d(I)V",
+      "originalName": "d",
+      "to": "onSceneryTransitionComplete",
+      "evidence": "Retains the empty scene hook called once scenery blending completes, including its compatibility guard side effect.",
       "confidence": "reviewed"
     },
     {
@@ -28717,6 +28864,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:op.a([II[II[IBI[I[IB[I)V",
+      "originalName": "a",
+      "to": "drawProjectedPolyline",
+      "evidence": "Projects the supplied vertex arrays, builds adjacent stroke joins and draws tapered gradient segments, optionally closing the path.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:op.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -28822,6 +28976,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:or.a(I[Lbf;)Z",
+      "originalName": "a",
+      "to": "isPointOrEndpointCushionCollision",
+      "evidence": "Recognizes point collisions or wall collisions whose referenced cushion has an endpoint marked with kind one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:or.a(Ljava/lang/Object;IZ)[B",
       "originalName": "a",
       "to": "unwrapByteStorage",
@@ -28871,10 +29032,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:p.a(BLjava/net/URL;Ljava/applet/Applet;)Ljava/net/URL;",
+      "originalName": "a",
+      "to": "rewriteAppletUrl",
+      "evidence": "Rewrites URL path parameters with retained settings or session values when they differ from the applet parameters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(I)V",
+      "originalName": "a",
+      "to": "recomputeWorldBounds",
+      "evidence": "Recomputes transformed instance bounds from vertices referenced by visible faces, retaining the transform origin in the initial bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(III)V",
+      "originalName": "a",
+      "to": "setBoundaryFacingDirections",
+      "evidence": "Stores signed X and Y facing directions according to which supplied table boundaries the instance position lies beyond.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(IIII)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatTimer",
+      "evidence": "Substitutes hours, minutes and seconds in the localized timer template, retaining negative-value placeholders and the overflow face for hours above one hundred.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(ILjava/lang/String;[I)V",
+      "originalName": "a",
+      "to": "drawProjectedLabel",
+      "evidence": "Projects the center of the retained world bounds and draws the supplied label at that screen position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(I[I)V",
+      "originalName": "a",
+      "to": "drawBoundsWireframe",
+      "evidence": "Draws the twelve projected edges of the retained axis-aligned world bounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:p.a(Ljava/lang/CharSequence;BZ)Z",
       "originalName": "a",
       "to": "isValidDisplayName",
       "evidence": "Length 1 to 12, no leading or trailing separator and limits on consecutive separators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(ZI)V",
+      "originalName": "a",
+      "to": "updateAuxiliaryDialog",
+      "evidence": "Updates the shared auxiliary dialog and clears it when its dismissal poll completes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(Z[I)Z",
+      "originalName": "a",
+      "to": "passesBoundaryFacingTest",
+      "evidence": "Tests the camera-relative instance position against the retained X and Y boundary-facing directions.",
       "confidence": "reviewed"
     },
     {
@@ -28892,10 +29109,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:p.b(I[I)I",
+      "originalName": "b",
+      "to": "distanceSquaredTo",
+      "evidence": "Returns the squared integer distance from the instance translation to the supplied position.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:p.b([II)I",
       "originalName": "b",
       "to": "viewDepth",
       "evidence": "GlowSprite returns the dot product of its position with the view matrix's third row. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.c(I)V",
+      "originalName": "c",
+      "to": "ensureTransformComplete",
+      "evidence": "Supplies the shared default transform when absent or extends a short transform with default elements to twelve entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.c(I[I)V",
+      "originalName": "c",
+      "to": "drawMeshOrDiagnostics",
+      "evidence": "Draws the mesh with its instance transform or renders its bounds and an explanatory label when its radius exceeds the face-bucket capacity.",
       "confidence": "reviewed"
     },
     {
@@ -29172,6 +29410,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pi.a(III[III)I",
+      "originalName": "a",
+      "to": "sampleFractalPalette",
+      "evidence": "Combines three octaves of value noise with quarter, half and full weights and clamps the resulting index into the supplied palette.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pi.b()V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -29183,6 +29428,20 @@
       "originalName": "c",
       "to": "initializeTable",
       "evidence": "Fills a 4096 entry table with random values in a symmetric range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(ZI[B)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "wrapByteStorage",
+      "evidence": "Wraps arrays longer than one hundred thirty-six bytes in direct storage, otherwise retaining or copying the array as requested.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(ZLre;ZII)V",
+      "originalName": "a",
+      "to": "sendEncryptedLoginPayload",
+      "evidence": "Constructs login or reconnect framing, seeds encryption from random words and the server challenge, serializes the payload and machine identifier, encrypts it and flushes the request.",
       "confidence": "reviewed"
     },
     {
@@ -29214,6 +29473,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pk.a(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "validateAccountName",
+      "evidence": "Delegates account-name validation with the standard validation mode and returns its localized error or null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pk.b(B)Z",
+      "originalName": "b",
+      "to": "canAttemptLogin",
+      "evidence": "Allows login attempts after the startup account stage when guest mode is off and a completed login is not already retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pl.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -29235,10 +29508,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pm.a(I)I",
+      "originalName": "a",
+      "to": "getHoveredTutorialControl",
+      "evidence": "Returns the tutorial previous, skip, close or alternate close control index under the pointer, or minus one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(Lfl;IZ)V",
+      "originalName": "a",
+      "to": "sendIntLookupQuery",
+      "evidence": "Writes the retained integer lookup query identifier in operation zero of the integer-record protocol.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a([B[B[[Ljava/lang/String;Ldi;[[Ldd;I[Lqb;[I[[Ldd;I[Ljava/lang/String;Ldi;Z[ILdi;[[Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "initializeLobbyInterface",
+      "evidence": "Forwards the shared lobby configuration, resources and compatibility arguments to the next initialization wrapper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pm.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "Public static method whose body only assigns null to static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pn.a(BLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "showCenteredNotice",
+      "evidence": "Enables the shared notice panel, measures its wrapped text and lays out its centered frame, label and dismissal button.",
       "confidence": "reviewed"
     },
     {
@@ -29253,6 +29554,13 @@
       "originalName": "a",
       "to": "loadIndexedSprites",
       "evidence": "Checks archive availability then loads indexed sprite files for a group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pn.b(I)I",
+      "originalName": "b",
+      "to": "visibilityPriority",
+      "evidence": "Ranks mandatory or privileged messages above own-player and friends-only eligible messages, with other messages at priority zero; callers compare this against their channel filter.",
       "confidence": "reviewed"
     },
     {
@@ -29281,6 +29589,27 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Public static method whose body only assigns null to static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pp.a(Leg;SZ[I[I)V",
+      "originalName": "a",
+      "to": "recenterMeshAtMarkerEdge",
+      "evidence": "Hides the first marker-colored face, finds its longest edge and recenters the mesh at that edge midpoint while retaining world translation and optionally its direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pp.a(Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "drawPointerTooltip",
+      "evidence": "Measures wrapped text, fits its popup to the raster and draws a pale-yellow tooltip at the retained pointer location.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pp.a(Z)Z",
+      "originalName": "a",
+      "to": "isExtraAchievementEnabled",
+      "evidence": "Tests the account or client option that includes the final achievement in the visible count and changes its row spacing.",
       "confidence": "reviewed"
     },
     {
@@ -29424,6 +29753,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pr.a(I)V",
+      "originalName": "a",
+      "to": "releaseVoiceResources",
+      "evidence": "Clears the retained music patch, envelope, PCM sample and sample stream references for this voice.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pr.a(ILjava/applet/Applet;)V",
       "originalName": "a",
       "to": "readUsernameParameter",
@@ -29435,6 +29771,20 @@
       "originalName": "a",
       "to": "rewriteUrlPathParameters",
       "evidence": "Replaces the /l=, /p= and /s= path segments of a URL.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pr.a([IZ)V",
+      "originalName": "a",
+      "to": "projectSceneryBands",
+      "evidence": "Projects five lateral points at every retained scenery depth for the Tiki table gradient bands, using the camera direction and clamping points behind it to the raster bottom.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pr.c(B)V",
+      "originalName": "c",
+      "to": "stopSoundEffectReverb",
+      "evidence": "Removes the retained reverb stream from its mixer and clears the reverb stream, input mixer and playing-sound list when the Tiki scene shuts down.",
       "confidence": "reviewed"
     },
     {
@@ -29452,10 +29802,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qa.a(BILlr;Ljava/lang/String;II)V",
+      "originalName": "a",
+      "to": "drawWrappedPointerTooltip",
+      "evidence": "Wraps long tooltip text, fits the frame near the shared pointer anchor and draws its border, background and paragraph.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qa.a(BZ)V",
+      "originalName": "a",
+      "to": "drawLobbyAndGameOverlays",
+      "evidence": "Draws the lobby panels and then the shared game overlays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qa.a(ILjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "containsNonAlphanumeric",
+      "evidence": "Returns whether the text contains a character outside ASCII letters and digits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qa.a(Ljava/lang/String;I)Ljava/lang/String;",
       "originalName": "a",
       "to": "reverseString",
       "evidence": "Builds a string with the characters in reverse order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qa.a(ZLjava/lang/String;ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "beginLoginWithCredentials",
+      "evidence": "Retains the supplied login credentials and starts the shared logging-in progress transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qa.a([[I[Lbf;[Lpq;I)V",
+      "originalName": "a",
+      "to": "advanceBallPhysicsFrame",
+      "evidence": "Resets per-frame collision bookkeeping, resolves contacts until no further contact exists and then applies friction and spin to every ball still in play.",
       "confidence": "reviewed"
     },
     {
@@ -29522,6 +29907,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qd.a(BI)V",
+      "originalName": "a",
+      "to": "sendMatchmakingRequest",
+      "evidence": "Sends lobby operation two with the retained game settings, matchmaking options and additional filter bytes when Find Opponent is pressed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.a(IC)Z",
+      "originalName": "a",
+      "to": "isNameSeparator",
+      "evidence": "Recognizes nonbreaking space, ordinary space, underscore and hyphen as account-name separators.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qd.a(Z)Z",
       "originalName": "a",
       "to": "ensureMasterIndex",
@@ -29568,6 +29967,20 @@
       "originalName": "a",
       "to": "canMakeChoice",
       "evidence": "Checks the choice bits against the end resolution flags and the choices already made.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(IIIIBI)V",
+      "originalName": "a",
+      "to": "recolorGreenPixelsInRectangle",
+      "evidence": "Clips the rectangle and recolors pixels whose green component exceeds the threshold and is at least their red component, increasing red while reducing green and blue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(IIIZ)V",
+      "originalName": "a",
+      "to": "updateAuxiliaryDialogAndQuickChat",
+      "evidence": "Updates the shared auxiliary dialog and then forwards pointer coordinates and active state to Quick Chat.",
       "confidence": "reviewed"
     },
     {
@@ -29627,10 +30040,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qe.b(II)V",
+      "originalName": "b",
+      "to": "updateIntroPieceRotation",
+      "evidence": "Eases the retained logo intro rotation angle over one hundred twenty ticks and selects signed rotation axes for each piece.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qe.b(Lge;B)V",
       "originalName": "b",
       "to": "writeEndResolution",
       "evidence": "Throws unless the shot is finished, then writes the end resolution flags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.b(Z)Ltc;",
+      "originalName": "b",
+      "to": "createPottedBallList",
+      "evidence": "Creates the one-element initial growable integer list used to retain pocketed ball indices.",
       "confidence": "reviewed"
     },
     {
@@ -29697,6 +30124,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qf.a(IIIBI[Ldd;)V",
+      "originalName": "a",
+      "to": "drawThreeSliceAlpha",
+      "evidence": "Draws alpha-blended end caps and tiles the middle sprite within a temporarily clipped horizontal strip.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qf.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -29715,6 +30149,13 @@
       "originalName": "a",
       "to": "prepareModel",
       "evidence": "Fills the transform from the orientation, picks a texture by depth and bakes the ModelMesh through the scene light values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.a(BI)V",
+      "originalName": "a",
+      "to": "removeNotificationsByKind",
+      "evidence": "Removes queued notifications of the supplied kind, finishing or truncating the current notification according to its active playback position.",
       "confidence": "reviewed"
     },
     {
@@ -29977,6 +30418,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qi.a(B)V",
+      "originalName": "a",
+      "to": "layoutSlidingLobbyPanels",
+      "evidence": "Positions the left and right shared lobby panels using the squared transition fraction and current canvas width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(BLjava/lang/CharSequence;)Z",
+      "originalName": "a",
+      "to": "isValidAccountName",
+      "evidence": "Delegates account-name length and character validation with the standard mode.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qi.a(BLrg;)V",
       "originalName": "a",
       "to": "addLast",
@@ -29988,6 +30443,20 @@
       "originalName": "a",
       "to": "removeFirst",
       "evidence": "Unlinks and returns the node after the sentinel or null if empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(IIZIIZ)[Ldd;",
+      "originalName": "a",
+      "to": "createGradientPanelSprites",
+      "evidence": "Builds the middle row of a nine-slice panel from a vertical gradient with optional transparent rounded upper corners, then restores the raster target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "beginLoginWithRetainedText",
+      "evidence": "Stores the supplied login text and starts the shared logging-in progress transition; the display-name form uses this entry point.",
       "confidence": "reviewed"
     },
     {
@@ -30068,10 +30537,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qo.a(BIII)V",
+      "originalName": "a",
+      "to": "setMenuTextColors",
+      "evidence": "Stores the text colors selected by the menu renderer for headings and selected or unselected menu choices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qo.a(BZ[BLdi;Ldi;I[[Ljava/lang/String;ILdi;[Ljava/lang/String;[[Ldd;[[Ljava/lang/String;[I[B[[Ldd;)V",
+      "originalName": "a",
+      "to": "initializeLobbyInterface",
+      "evidence": "Delegates shared lobby initialization with omitted indexed sprites and integer configuration arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qo.a(IIIBI)V",
+      "originalName": "a",
+      "to": "drawRotatedCentered",
+      "evidence": "Centers the source sprite in eighth-pixel coordinates and delegates nearest-neighbor rotation with the destination center in sixteenth-pixel coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qo.a(IIIIII)V",
       "originalName": "a",
       "to": "rotateNearest",
       "evidence": "Method body is token-identical to ArgbSprite in dekobloko, geoblox, steelsentinels. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qo.a(ILjava/lang/CharSequence;)J",
+      "originalName": "a",
+      "to": "hashText31",
+      "evidence": "Accumulates the text characters into a long with multiplier thirty-one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qo.a(I[BI)I",
+      "originalName": "a",
+      "to": "crc32Prefix",
+      "evidence": "Computes standard CRC-32 from index zero through the supplied byte count.",
       "confidence": "reviewed"
     },
     {
@@ -30086,6 +30590,13 @@
       "originalName": "a",
       "to": "processPressedItems",
       "evidence": "Activates pressed rows and recurses into the open submenu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qp.a(BIII)Z",
+      "originalName": "a",
+      "to": "isValidCalendarDate",
+      "evidence": "Checks a zero-based month and day against the calendar month length for the supplied year.",
       "confidence": "reviewed"
     },
     {
@@ -30173,10 +30684,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qq.m(B)V",
+      "originalName": "m",
+      "to": "showConnectionRestored",
+      "evidence": "Sets the restored-connection progress colors and installs the localized connection-restored content with its Return to Game button.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qq.n(B)V",
       "originalName": "n",
       "to": "clearSharedReferences",
       "evidence": "Method body matches clearSharedReferences in 1 reviewed game with the same descriptor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qq.o(B)V",
+      "originalName": "o",
+      "to": "initializeDecisionDialog",
+      "evidence": "Creates and styles the shared decision panel with its two action buttons.",
       "confidence": "reviewed"
     },
     {
@@ -30191,6 +30716,13 @@
       "originalName": "a",
       "to": "isComplete",
       "evidence": "Returns the query completion flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.a(IZ)V",
+      "originalName": "a",
+      "to": "requestFullscreen",
+      "evidence": "Checks account eligibility, attempts to enter fullscreen, attaches input to a successful fullscreen canvas and displays the resulting shared notice.",
       "confidence": "reviewed"
     },
     {
@@ -30243,6 +30775,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:r.c(B)V",
+      "originalName": "c",
+      "to": "restoreLobbyQuickChat",
+      "evidence": "Resets the Quick Chat channel to the lobby and restores its retained menu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(B)V",
+      "originalName": "a",
+      "to": "hideLoginRequiredPrompt",
+      "evidence": "Clears the flag controlling the shared login-required choice panel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ra.a(ILoi;I)V",
       "originalName": "a",
       "to": "sendIntegerRecordSubmission",
@@ -30268,6 +30814,13 @@
       "originalName": "a",
       "to": "findLobbyGame",
       "evidence": "Finds a lobby game by its identifier in the retained game hash table, returning null when that table is absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V",
+      "originalName": "a",
+      "to": "showDecisionDialog",
+      "evidence": "Initializes the shared decision dialog if necessary, sets its message, two button labels and action identifiers, lays it out and marks it open.",
       "confidence": "reviewed"
     },
     {
@@ -30320,6 +30873,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:re.a(B)V",
+      "originalName": "a",
+      "to": "drawActiveNotification",
+      "evidence": "Draws the current animated notification with its scale and opacity, followed by the enabled shortcut indicator grid when requested.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:re.a(BLge;)V",
       "originalName": "a",
       "to": "writePayload",
@@ -30348,10 +30908,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:re.a(ZLjava/lang/String;I)V",
+      "originalName": "a",
+      "to": "showLoginError",
+      "evidence": "Clears login busy state and installs an error in the account dialog, handling invalid credentials, display-name selection, reconnect wording and input clearing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:re.b(B)Ltf;",
       "originalName": "b",
       "to": "payloadKind",
       "evidence": "Abstract accessor returning the wire-kind descriptor tf for the payload variant.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rf.a(B)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "accountDisplayNameOrEmpty",
+      "evidence": "Returns the retained display name decoded by the account response, or an empty string if absent.",
       "confidence": "reviewed"
     },
     {
@@ -30390,6 +30964,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rg.a(I[Ljava/lang/String;Ljava/lang/String;Llr;I)I",
+      "originalName": "a",
+      "to": "wrapTextToBalancedLines",
+      "evidence": "Balances the target line width according to the measured text width, then splits at spaces, hyphens and explicit break tags into the supplied array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rg.a(JI)V",
+      "originalName": "a",
+      "to": "setSecondaryKey",
+      "evidence": "Sets the secondary intrusive-list key only while the node is unlinked and throws if it is still linked.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rg.a(Z)V",
       "originalName": "a",
       "to": "unlinkNode",
@@ -30401,6 +30989,13 @@
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "Clears retained static references on the supported guard path; the original guard, exceptional and invalid-guard behavior is preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rg.d(I)Z",
+      "originalName": "d",
+      "to": "isSecondaryLinked",
+      "evidence": "Returns whether the secondary intrusive-list next link is retained.",
       "confidence": "reviewed"
     },
     {
@@ -30684,6 +31279,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rk.a(B)V",
+      "originalName": "a",
+      "to": "drawDebugSliders",
+      "evidence": "Ensures the debug sliders exist, draws their translucent backing panel and renders every slider.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rk.a(BII[B[BI)I",
       "originalName": "a",
       "to": "decompress",
@@ -30705,10 +31307,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rk.a(I[I)Z",
+      "originalName": "a",
+      "to": "pollServerPacket",
+      "evidence": "Polls ciphered packet headers and complete payloads, applies optional simulated inbound delay and jitter and advances the diagnostic packet history when returning a ready packet.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rk.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Clears retained static references on the supported guard path; the original guard, exceptional and invalid-guard behavior is preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.b(Z)I",
+      "originalName": "b",
+      "to": "packChatFilterModes",
+      "evidence": "Packs the three retained chat filter values into consecutive two-bit positions for the outbound filter-settings packet.",
       "confidence": "reviewed"
     },
     {
@@ -30796,10 +31412,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ro.a(BLro;)V",
+      "originalName": "a",
+      "to": "prepareClippedStrokeSegment",
+      "evidence": "Clips the perspective segment to the view, projects its endpoints and stroke widths and computes the normalized screen-space segment direction.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ro.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Public static method whose body only assigns null to static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ro.a(IIIIB[I)V",
+      "originalName": "a",
+      "to": "setAndProject",
+      "evidence": "Transforms the world point into camera space, projects its screen coordinates and perspective stroke width when depth permits and clears the cached join direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ro.a(ILoq;)[Lnj;",
+      "originalName": "a",
+      "to": "readLogoMaterials",
+      "evidence": "Reads the supported material version and count from the bit buffer, reuses earlier material references or decodes each new material color and compatibility fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ro.a(Lro;I)V",
+      "originalName": "a",
+      "to": "computeStrokeJoinDirection",
+      "evidence": "Adds this and the previous segment directions and normalizes the result for the polyline stroke join.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ro.b(I)V",
+      "originalName": "b",
+      "to": "pollAccountStateRefresh",
+      "evidence": "Requests account state until complete, merges granted bits and clears pending bits, then refreshes dependent menus and any active account-state screen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ro.b(Lro;I)Z",
+      "originalName": "b",
+      "to": "isSegmentOutsideView",
+      "evidence": "Delegates the view-frustum rejection test using this and the other vertex camera-space coordinates.",
       "confidence": "reviewed"
     },
     {
@@ -30817,6 +31475,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rp.a(Lvh;Lvh;I)V",
+      "originalName": "a",
+      "to": "initializeSocialListContainers",
+      "evidence": "Ensures both social-list containers and lookup tables exist, retains their child lists and clears the current friend and ignore entries.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rq.a()Lkd;",
       "originalName": "a",
       "to": "firstChildStream",
@@ -30824,10 +31489,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rq.a(BI)V",
+      "originalName": "a",
+      "to": "flushPacketsWithSimulatedDelay",
+      "evidence": "Queues pending outbound bytes with optional artificial delay and jitter, restores a due packet to the output buffer and delegates the normal socket flush.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rq.a(I)V",
       "originalName": "a",
       "to": "skip",
       "evidence": "Method body is token-identical to ReverbPcmStream in escapevector. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rq.a(II)V",
+      "originalName": "a",
+      "to": "showShortcutNotification",
+      "evidence": "For an enabled shortcut, constructs its Alt, Control, Shift and digit label and displays the retained shortcut description as a notification.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rq.a(IIZDI[D[I)Z",
+      "originalName": "a",
+      "to": "unprojectPointerToPlane",
+      "evidence": "Builds a normalized camera ray from the screen point, intersects it with the supplied constant-Z plane, stores its world X and Y scaled by one eighth and reports the ray Z direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rq.a(ILnb;)Lkf;",
+      "originalName": "a",
+      "to": "registerReverberatedSound",
+      "evidence": "Wraps the PCM stream as a playing sound, retains it in the shared sound list and adds it to the reverb input mixer.",
       "confidence": "reviewed"
     },
     {
@@ -30856,6 +31549,13 @@
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "Public static method whose body only assigns null to static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rq.c(I)V",
+      "originalName": "c",
+      "to": "initializeReflectionCheckQueue",
+      "evidence": "Creates the shared intrusive queue populated and drained by the reflection-check protocol.",
       "confidence": "reviewed"
     },
     {
@@ -30894,10 +31594,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:s.a(Lge;IZ)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "readHuffmanString",
+      "evidence": "Reads a bounded smart-prefixed Huffman byte sequence, decodes its text and preserves the Cabbage fallback for malformed input.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:s.a(Ljava/applet/Applet;I)V",
       "originalName": "a",
       "to": "openSubscribePage",
       "evidence": "Shows subscribe.ws relative to the applet code base in the _top frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(BZ)Z",
+      "originalName": "a",
+      "to": "pollLoginSocket",
+      "evidence": "Polls the asynchronous socket task, creates the buffered socket, resets packet state and writes the client handshake or records a connection failure.",
       "confidence": "reviewed"
     },
     {
@@ -30964,6 +31678,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sd.a(ZI)I",
+      "originalName": "a",
+      "to": "recordArchiveConnectionFailure",
+      "evidence": "Resets pending archive-connection state, alternates server ports and updates the JS5 failure code and retry count, returning a terminal result after its retry threshold.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sd.a(ZIILfe;I)V",
       "originalName": "a",
       "to": "onButtonActivated",
@@ -30975,6 +31696,13 @@
       "originalName": "g",
       "to": "closeLinkMarkup",
       "evidence": "Returns the closing color and underline markup for the under-thirteen notice links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sd.h(B)Ljava/lang/String;",
+      "originalName": "h",
+      "to": "hyperlinkStyleTag",
+      "evidence": "Returns the blue underline and text-color markup prefix used by this notice panel.",
       "confidence": "reviewed"
     },
     {
@@ -31062,10 +31790,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sg.a(II[BB)[B",
+      "originalName": "a",
+      "to": "extendByteArray",
+      "evidence": "Copies the byte array into a larger array and fills the appended region with the supplied byte.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sg.a(IZ)Z",
       "originalName": "a",
       "to": "isButtonEnabled",
       "evidence": "Delegates to the visibility test when the flag is set. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sg.a(Ljava/awt/Component;Lvk;ILsj;IZ)V",
+      "originalName": "a",
+      "to": "initializeAudioOutputs",
+      "evidence": "Delegates audio-output initialization with the fixed one-thousand-twenty-four buffer setting and shared requested output rate.",
       "confidence": "reviewed"
     },
     {
@@ -31097,10 +31839,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sg.g(I)I",
+      "originalName": "g",
+      "to": "lastItemIndex",
+      "evidence": "Returns the final index in this theme selector item identifier array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sg.h(I)[Ldd;",
+      "originalName": "h",
+      "to": "createDecodedOpaqueSprites",
+      "evidence": "Expands every decoded indexed sprite through the shared palette into RGB sprite pixels and releases the decoder arrays.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sh.$cfr$intArgs$a$a4481b60e878(ZIZIIIIIZIZZ)V",
       "originalName": "$cfr$intArgs$a$a4481b60e878",
       "to": "updateLobbyFrameIntArgs",
       "evidence": "Retains the integer-argument bridge for the shared lobby frame handler with the default white text colors.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sh.a(B[BI)[B",
+      "originalName": "a",
+      "to": "extendByteArrayWithZeros",
+      "evidence": "Delegates byte-array extension using zero as the appended fill value.",
       "confidence": "reviewed"
     },
     {
@@ -31115,6 +31878,13 @@
       "originalName": "a",
       "to": "placePopupVertically",
       "evidence": "Places a popup below its anchor when it fits, otherwise above the anchor or against the bottom screen edge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sh.a(Ldi;BLdi;)V",
+      "originalName": "a",
+      "to": "setMembershipBenefitsArchives",
+      "evidence": "Retains the sprite and font archives used to load the membership-benefits interface resources.",
       "confidence": "reviewed"
     },
     {
@@ -31230,10 +32000,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sj.a(Ljava/lang/String;IZLjava/lang/String;)Lv;",
+      "originalName": "a",
+      "to": "openPreferencesFile",
+      "evidence": "Selects the release, RC or work-in-progress preferences filename, searches the supported directories and opens a limited read-write file or returns null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sj.a(Ljava/net/URL;I)Lle;",
       "originalName": "a",
       "to": "openUrlStream",
       "evidence": "Queues the URL-stream task that opens a DataInputStream from the supplied URL.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(Z)V",
+      "originalName": "a",
+      "to": "shutdown",
+      "evidence": "Signals and joins the platform task thread and closes all retained cache and identifier files, preserving ignored interruption and I/O failures.",
       "confidence": "reviewed"
     },
     {
@@ -31419,6 +32203,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sm.a(Ljava/lang/String;I)Lwc;",
+      "originalName": "a",
+      "to": "pollUsernameAvailability",
+      "evidence": "Starts or reuses the account-protocol username query and returns its completed cached response only for the matching candidate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sm.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -31430,6 +32221,13 @@
       "originalName": "c",
       "to": "getWidgetText",
       "evidence": "Returns the widget's text when the argument is -1 and null otherwise. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.d(I)Z",
+      "originalName": "d",
+      "to": "handleNotificationShortcutToggle",
+      "evidence": "Handles Alt plus a digit with optional Shift and Control, toggles the corresponding notification bit and displays its shortcut notification.",
       "confidence": "reviewed"
     },
     {
@@ -31566,6 +32364,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:so.a([[Ljava/lang/String;ILdi;[[Ldd;[[Ljava/lang/String;II[[Ldd;[Ljava/lang/String;[BI[ILdi;[Ljava/lang/String;[B[ILdi;Z[Lqb;)V",
+      "originalName": "a",
+      "to": "initializeLobbyInterface",
+      "evidence": "Forwards the shared lobby configuration and assets to HighscoresScreen initialization with its fixed compatibility options.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:so.b(BII[I)V",
       "originalName": "b",
       "to": "sortModelsByDepth",
@@ -31612,6 +32417,13 @@
       "originalName": "e",
       "to": "getProgress",
       "evidence": "Returns 100 times position over payload length minus the reserved tail.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sp.h(I)Z",
+      "originalName": "h",
+      "to": "isUsernameAvailabilityPending",
+      "evidence": "Tests the account-protocol state marker set while the username availability query is pending.",
       "confidence": "reviewed"
     },
     {
@@ -31867,6 +32679,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:t.a(IZ)V",
+      "originalName": "a",
+      "to": "drawAuxiliaryDialog",
+      "evidence": "Darkens the current raster clip and draws the shared auxiliary dialog when it is present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.a(IZZ)V",
+      "originalName": "a",
+      "to": "initializeLoginDialog",
+      "evidence": "Delegates login dialog initialization without a prefilled username.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:t.a(I[II)Z",
       "originalName": "a",
       "to": "isBitClear",
@@ -31874,10 +32700,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:t.b(I)V",
+      "originalName": "b",
+      "to": "updateAccountOverlay",
+      "evidence": "Handles fullscreen focus loss when no account overlay is open; otherwise processes its pointer input, dialog animations and queued keyboard events.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:t.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "Clears retained static references on the supported guard path; the original guard, exceptional and invalid-guard behavior is preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ta.a(BIII)V",
+      "originalName": "a",
+      "to": "setChoiceTextColors",
+      "evidence": "Stores the colors selected by the shared choice-panel renderer for selected choices, unselected choices and headings.",
       "confidence": "reviewed"
     },
     {
@@ -32007,6 +32847,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:te.a(BII)V",
+      "originalName": "a",
+      "to": "setTooltipAnchor",
+      "evidence": "Stores the pointer anchor consumed by the tooltip transition and placement logic.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:te.a(II)I",
       "originalName": "a",
       "to": "nextPowerOfTwo",
@@ -32025,6 +32872,20 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Public static method whose body only assigns null to static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tf.a(II)Ldd;",
+      "originalName": "a",
+      "to": "achievementPlaceholderSprite",
+      "evidence": "Selects the locked placeholder for members-only achievements on free accounts, otherwise the unachieved placeholder sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tf.a(III)Z",
+      "originalName": "a",
+      "to": "handleQuickChatKey",
+      "evidence": "Handles closing and resetting the Quick Chat menu and delegates other keys to its shortcut processor.",
       "confidence": "reviewed"
     },
     {
@@ -32063,6 +32924,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:th.b(I)V",
+      "originalName": "b",
+      "to": "closeQuickChat",
+      "evidence": "Hides the shared Quick Chat overlay when it is open.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ti.a(B)Z",
       "originalName": "a",
       "to": "handleDebugSliderInput",
@@ -32091,6 +32959,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tj.a(IIIIIII)Z",
+      "originalName": "a",
+      "to": "containsPoint",
+      "evidence": "Tests a point against a half-open rectangle using inclusive left and top and exclusive right and bottom edges.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tj.a(Z)Z",
       "originalName": "a",
       "to": "settleDialogAnimation",
@@ -32105,6 +32980,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tj.c(III)I",
+      "originalName": "c",
+      "to": "signedAtan2Angle",
+      "evidence": "Extends the first-quadrant angle lookup to a signed full-circle angle with eight-thousand-one-hundred-ninety-two units per turn.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tj.g(B)Z",
       "originalName": "g",
       "to": "advanceDialogAnimation",
@@ -32116,6 +32998,13 @@
       "originalName": "h",
       "to": "releaseStatics",
       "evidence": "Public static method whose body only assigns null to static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.i(I)I",
+      "originalName": "i",
+      "to": "commonInterfaceLoadProgress",
+      "evidence": "Reports staged percentage progress while ensuring the shared common UI archives and optional extra groups are available.",
       "confidence": "reviewed"
     },
     {
@@ -32196,6 +33085,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tl.a(II[BI)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "decodeWindows1252",
+      "evidence": "Decodes the selected byte range using the Windows-1252 extension table, skips zero bytes and replaces undefined extension characters with question marks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tl.a(Ldi;ILjava/lang/String;Ljava/lang/String;)Lqb;",
+      "originalName": "a",
+      "to": "loadIndexedSpriteByName",
+      "evidence": "Resolves the named archive group and file and delegates indexed sprite loading.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tl.a(Ljava/lang/String;III)Ldd;",
       "originalName": "a",
       "to": "createButtonLabel",
@@ -32238,6 +33141,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tl.d(IZ)V",
+      "originalName": "d",
+      "to": "drawSharedInterfaceAndMenu",
+      "evidence": "Draws the shared root interface and renders the retained menu widget passes and tooltip relative to its screen origin.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tl.e(B)V",
       "originalName": "e",
       "to": "onExit",
@@ -32263,6 +33173,13 @@
       "originalName": "g",
       "to": "releaseStatics",
       "evidence": "Public static method whose body only assigns null to static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tl.h(I)I",
+      "originalName": "h",
+      "to": "pollSharedChoiceAction",
+      "evidence": "Processes keyboard and pointer selection for the shared choice menu and returns the activated action identifier, handling action two through its shared reset.",
       "confidence": "reviewed"
     },
     {
@@ -32427,6 +33344,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tn.a(Luf;I)V",
+      "originalName": "a",
+      "to": "showPendingShotDecision",
+      "evidence": "Opens the group-selection or play-or-pass dialog for the player entitled to resolve the current shot decision.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tn.c(B)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -32518,6 +33442,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tq.a(IIZ)[I",
+      "originalName": "a",
+      "to": "createTintedColorPalette",
+      "evidence": "Copies the triangle color palette to a temporary sprite, alpha-blends the supplied color over it and restores the main raster target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tq.a(II[D)[I",
+      "originalName": "a",
+      "to": "doubleArrayToFixed",
+      "evidence": "Converts each double in the supplied array to an integer with the requested number of fractional bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tq.a(JBLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "setPrivateQuickChatRecipient",
+      "evidence": "Selects private Quick Chat, retains the recipient identifier and normalized display name and restores its menu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tq.a(ZJLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "isChatRecipientAvailable",
+      "evidence": "Accepts a social entry with a known server or a player present in the current lobby game.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tq.c(B)Z",
+      "originalName": "c",
+      "to": "isLobbyChatComposerOpen",
+      "evidence": "Requires the shared composer-open flag and the lobby channel selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tq.d(B)V",
+      "originalName": "d",
+      "to": "leaveFullscreen",
+      "evidence": "Detaches fullscreen input, releases the fullscreen frame, restores the prior viewport and focuses the normal canvas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:u.a(BIIZI)Lvh;",
+      "originalName": "a",
+      "to": "createArrowButton",
+      "evidence": "Constructs an arrow button with mirrored direction and the matching normal, disabled and selected sprites used by local game setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:u.a(I)Z",
+      "originalName": "a",
+      "to": "isIntroComplete",
+      "evidence": "Returns whether the shared logo intro tick has advanced beyond two hundred fifty.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ua.a(Ljava/lang/String;I)Ljava/lang/String;",
       "originalName": "a",
       "to": "validationMessageForText",
@@ -32529,6 +33509,13 @@
       "originalName": "a",
       "to": "validationStateForText",
       "evidence": "Abstract mapping from candidate text to a validation state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ua.b(Z)V",
+      "originalName": "b",
+      "to": "drawDecisionDialog",
+      "evidence": "Draws the shared two-button decision panel when its open flag is set.",
       "confidence": "reviewed"
     },
     {
@@ -33248,8 +34235,8 @@
     {
       "symbol": "M:uf.d(Z)Z",
       "originalName": "d",
-      "to": "hasAccountDataOrConnection",
-      "evidence": "Requires either completed account-data loading or the shared connected-session flag.",
+      "to": "hasAccountDataOrGuestMode",
+      "evidence": "Requires either completed account-data loading or guest mode; the guest flag is set by Just play and cleared after successful account login.",
       "confidence": "reviewed"
     },
     {
@@ -34160,6 +35147,13 @@
       "originalName": "d",
       "to": "releaseStatics",
       "evidence": "Public static method whose body only assigns null to static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.d(I)V",
+      "originalName": "d",
+      "to": "onSceneryTransitionComplete",
+      "evidence": "Retains the empty scene hook called once scenery blending completes, including its compatibility guard side effect. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -35108,10 +36102,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:w.a(III)V",
+      "originalName": "a",
+      "to": "setMenuAnchor",
+      "evidence": "Stores the X and Y anchor used by the shared menu renderer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:w.a(ZI)Ltc;",
       "originalName": "a",
       "to": "createGrowableIntList",
       "evidence": "Returns a new tc with the given initial growth settings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.a(ZLjava/lang/CharSequence;B)Z",
+      "originalName": "a",
+      "to": "isValidAccountName",
+      "evidence": "Checks the display-name length rules and then requires every character to satisfy the account-name character predicate.",
       "confidence": "reviewed"
     },
     {
@@ -35126,6 +36134,13 @@
       "originalName": "a",
       "to": "updateProgress",
       "evidence": "Stores the status text, converts the percentage to Q16 and switches colours for the highlight flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.i(B)V",
+      "originalName": "i",
+      "to": "resetArchiveConnectionFailures",
+      "evidence": "Resets the retained JS5 transport failure count and error code to zero.",
       "confidence": "reviewed"
     },
     {
@@ -35192,6 +36207,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wc.b(I)V",
+      "originalName": "b",
+      "to": "advanceBallHighlightPulses",
+      "evidence": "Advances each ball highlight intensity with a decreasing signed velocity, clamps at full intensity and clears completed fades at zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wd.a(BII)V",
       "originalName": "a",
       "to": "layoutTabs",
@@ -35203,6 +36225,13 @@
       "originalName": "a",
       "to": "setTabbedPaneBounds",
       "evidence": "Stores bounds and lays out the tabs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wd.b(II)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "describeShotOutcomeFlags",
+      "evidence": "Formats shot resolution flags for continuation, visits, ball-in-hand variants, wins, losses, group selection, respotting, reracking and ending the turn.",
       "confidence": "reviewed"
     },
     {
@@ -41331,6 +42360,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:kh.f(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Clears the login interface busy flag, prepares any unread support-ticket notice and dismisses or refreshes the retained account progress dialog.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ki.a([FIZ)V#0",
       "originalName": "param0",
       "to": "output",
@@ -42577,6 +43613,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:md.a(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Returns the shared flag gating the dimmed login-required choice panel and its input processing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:me.a(II)Lij;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -42612,6 +43655,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:me.b(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Sends the one-byte lobby operation three when the matchmaking Cancel control is pressed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:me.b(II)V#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "Sends the one-byte lobby operation three when the matchmaking Cancel control is pressed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:me.h(I)[Lqb;#0",
       "originalName": "param0",
       "to": "startIndex",
@@ -42630,6 +43687,20 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Constructs the shared QuickChatHelpDialog with the current fonts and interface styles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mg.a(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Requires an open client socket and the completed login state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mg.a(Z)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reports guest mode or an account with no active membership value, preserving the supported true guard path.",
       "confidence": "reviewed"
     },
     {
@@ -42819,6 +43890,13 @@
       "originalName": "param3",
       "to": "obfuscationGuard",
       "evidence": "Stores the frame and horizontal and vertical padding used by the shared choice-panel renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:mp.g(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Returns the inverse of the server-controlled free-chat restriction flag used to hide ordinary private and channel messaging actions.",
       "confidence": "reviewed"
     },
     {
@@ -43368,6 +44446,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:nk.a(Ljava/lang/String;IB)V#0",
+      "originalName": "param0",
+      "to": "message",
+      "evidence": "Requests the shared login screen transition and retains the screen identifier to restore afterward; the message compatibility argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(Ljava/lang/String;IB)V#1",
+      "originalName": "param1",
+      "to": "resumeScreenId",
+      "evidence": "Requests the shared login screen transition and retains the screen identifier to restore afterward; the message compatibility argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nk.a(Ljava/lang/String;IB)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Requests the shared login screen transition and retains the screen identifier to restore afterward; the message compatibility argument is unused.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:nk.b(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -43379,6 +44478,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Scans decoded Quick Chat category definitions for the root marker and returns null if lookup reaches an invalid category.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:nl.b(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Tests whether this login state is awaiting the submitted login response, reading the account response body or complete.",
       "confidence": "reviewed"
     },
     {
@@ -43438,6 +44544,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:o.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Requires guest mode, marks the requested login transition and opens the login dialog at the initial client stage.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oa.a(III[B)I#0",
       "originalName": "param0",
       "to": "startIndex",
@@ -43494,6 +44607,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oa.a(Z[B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Decodes sprite dimensions, offsets, palette indices and optional alpha planes into the shared sprite decoder arrays, supporting row-major and column-major storage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oa.a(Z[B)V#1",
+      "originalName": "param1",
+      "to": "bytes",
+      "evidence": "Decodes sprite dimensions, offsets, palette indices and optional alpha planes into the shared sprite decoder arrays, supporting row-major and column-major storage.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ob.c(IZ)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -43512,6 +44639,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Restores the saved raster target and clipping bounds, clears the snapshot pixel reference and returns the snapshot to its reuse pool.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oc.b(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Requires a live client socket and a login state that has reached the response phase.",
       "confidence": "reviewed"
     },
     {
@@ -43746,6 +44880,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:om.a(IZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Draws active game and preview HUDs, selects normal or chat-composition overlay presentation and draws the corresponding debug overlays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:om.a(IZ)V#1",
+      "originalName": "param1",
+      "to": "active",
+      "evidence": "Draws active game and preview HUDs, selects normal or chat-composition overlay presentation and draws the corresponding debug overlays.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:on.a(F)F#0",
       "originalName": "param0",
       "to": "octaves",
@@ -43816,6 +44964,97 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:oo.a(I[I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Draws each retained floor-tile model instance with the supplied camera transform.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oo.a(I[I)V#1",
+      "originalName": "param1",
+      "to": "cameraTransform",
+      "evidence": "Draws each retained floor-tile model instance with the supplied camera transform.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oo.a(I[II[II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Computes source pan and attenuation, applies the supplied volume scale and plays the selected table sound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oo.a(I[II[II)V#1",
+      "originalName": "param1",
+      "to": "listenerTransform",
+      "evidence": "Computes source pan and attenuation, applies the supplied volume scale and plays the selected table sound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oo.a(I[II[II)V#2",
+      "originalName": "param2",
+      "to": "volume",
+      "evidence": "Computes source pan and attenuation, applies the supplied volume scale and plays the selected table sound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oo.a(I[II[II)V#3",
+      "originalName": "param3",
+      "to": "sourcePosition",
+      "evidence": "Computes source pan and attenuation, applies the supplied volume scale and plays the selected table sound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oo.a(I[II[II)V#4",
+      "originalName": "param4",
+      "to": "soundId",
+      "evidence": "Computes source pan and attenuation, applies the supplied volume scale and plays the selected table sound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oo.a([III[I)V#0",
+      "originalName": "param0",
+      "to": "listenerTransform",
+      "evidence": "Computes source pan and distance attenuation and plays the selected table sound with that spatial volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oo.a([III[I)V#1",
+      "originalName": "param1",
+      "to": "soundId",
+      "evidence": "Computes source pan and distance attenuation and plays the selected table sound with that spatial volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oo.a([III[I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Computes source pan and distance attenuation and plays the selected table sound with that spatial volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oo.a([III[I)V#3",
+      "originalName": "param3",
+      "to": "sourcePosition",
+      "evidence": "Computes source pan and distance attenuation and plays the selected table sound with that spatial volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oo.a([Lbf;I)V#0",
+      "originalName": "param0",
+      "to": "segments",
+      "evidence": "Finds cushion pairs tied for greatest center distance and retains their segment indices and normalized perpendicular directions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oo.a([Lbf;I)V#1",
+      "originalName": "param1",
+      "to": "pairCapacity",
+      "evidence": "Finds cushion pairs tied for greatest center distance and retains their segment indices and normalized perpendicular directions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:oo.b(Z)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -43827,6 +45066,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Delegates to the scene-specific floor texture getter on the supported guard path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:oo.d(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Retains the empty scene hook called once scenery blending completes, including its compatibility guard side effect.",
       "confidence": "reviewed"
     },
     {
@@ -43949,6 +45195,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:or.a(I[Lbf;)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Recognizes point collisions or wall collisions whose referenced cushion has an endpoint marked with kind one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:or.a(I[Lbf;)Z#1",
+      "originalName": "param1",
+      "to": "segments",
+      "evidence": "Recognizes point collisions or wall collisions whose referenced cushion has an endpoint marked with kind one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:or.a(Ljava/lang/Object;IZ)[B#0",
       "originalName": "param0",
       "to": "storage",
@@ -44030,6 +45290,181 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Shows the retained removed-from-game chat notice with the game owner name and clears that pending name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(BLjava/net/URL;Ljava/applet/Applet;)Ljava/net/URL;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Rewrites URL path parameters with retained settings or session values when they differ from the applet parameters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(BLjava/net/URL;Ljava/applet/Applet;)Ljava/net/URL;#1",
+      "originalName": "param1",
+      "to": "url",
+      "evidence": "Rewrites URL path parameters with retained settings or session values when they differ from the applet parameters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(BLjava/net/URL;Ljava/applet/Applet;)Ljava/net/URL;#2",
+      "originalName": "param2",
+      "to": "applet",
+      "evidence": "Rewrites URL path parameters with retained settings or session values when they differ from the applet parameters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Recomputes transformed instance bounds from vertices referenced by visible faces, retaining the transform origin in the initial bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(III)V#0",
+      "originalName": "param0",
+      "to": "halfHeight",
+      "evidence": "Stores signed X and Y facing directions according to which supplied table boundaries the instance position lies beyond.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(III)V#1",
+      "originalName": "param1",
+      "to": "halfWidth",
+      "evidence": "Stores signed X and Y facing directions according to which supplied table boundaries the instance position lies beyond.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(III)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Stores signed X and Y facing directions according to which supplied table boundaries the instance position lies beyond.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(IIII)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "minutes",
+      "evidence": "Substitutes hours, minutes and seconds in the localized timer template, retaining negative-value placeholders and the overflow face for hours above one hundred.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(IIII)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "seconds",
+      "evidence": "Substitutes hours, minutes and seconds in the localized timer template, retaining negative-value placeholders and the overflow face for hours above one hundred.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(IIII)Ljava/lang/String;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Substitutes hours, minutes and seconds in the localized timer template, retaining negative-value placeholders and the overflow face for hours above one hundred.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(IIII)Ljava/lang/String;#3",
+      "originalName": "param3",
+      "to": "hours",
+      "evidence": "Substitutes hours, minutes and seconds in the localized timer template, retaining negative-value placeholders and the overflow face for hours above one hundred.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(ILjava/lang/String;[I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Projects the center of the retained world bounds and draws the supplied label at that screen position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(ILjava/lang/String;[I)V#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "Projects the center of the retained world bounds and draws the supplied label at that screen position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(ILjava/lang/String;[I)V#2",
+      "originalName": "param2",
+      "to": "cameraTransform",
+      "evidence": "Projects the center of the retained world bounds and draws the supplied label at that screen position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(I[I)V#0",
+      "originalName": "param0",
+      "to": "color",
+      "evidence": "Draws the twelve projected edges of the retained axis-aligned world bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(I[I)V#1",
+      "originalName": "param1",
+      "to": "cameraTransform",
+      "evidence": "Draws the twelve projected edges of the retained axis-aligned world bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(ZI)V#0",
+      "originalName": "param0",
+      "to": "active",
+      "evidence": "Updates the shared auxiliary dialog and clears it when its dismissal poll completes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(ZI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Updates the shared auxiliary dialog and clears it when its dismissal poll completes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(Z[I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Tests the camera-relative instance position against the retained X and Y boundary-facing directions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.a(Z[I)Z#1",
+      "originalName": "param1",
+      "to": "cameraTransform",
+      "evidence": "Tests the camera-relative instance position against the retained X and Y boundary-facing directions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.b(I[I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Returns the squared integer distance from the instance translation to the supplied position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.b(I[I)I#1",
+      "originalName": "param1",
+      "to": "position",
+      "evidence": "Returns the squared integer distance from the instance translation to the supplied position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Supplies the shared default transform when absent or extends a short transform with default elements to twelve entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.c(I[I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Draws the mesh with its instance transform or renders its bounds and an explanatory label when its radius exceeds the face-bucket capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:p.c(I[I)V#1",
+      "originalName": "param1",
+      "to": "cameraTransform",
+      "evidence": "Draws the mesh with its instance transform or renders its bounds and an explanatory label when its radius exceeds the face-bucket capacity.",
       "confidence": "reviewed"
     },
     {
@@ -44145,6 +45580,230 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:pi.a(III[III)I#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "Combines three octaves of value noise with quarter, half and full weights and clamps the resulting index into the supplied palette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(III[III)I#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "Combines three octaves of value noise with quarter, half and full weights and clamps the resulting index into the supplied palette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(III[III)I#2",
+      "originalName": "param2",
+      "to": "z",
+      "evidence": "Combines three octaves of value noise with quarter, half and full weights and clamps the resulting index into the supplied palette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(III[III)I#3",
+      "originalName": "param3",
+      "to": "palette",
+      "evidence": "Combines three octaves of value noise with quarter, half and full weights and clamps the resulting index into the supplied palette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(III[III)I#4",
+      "originalName": "param4",
+      "to": "indexOffset",
+      "evidence": "Combines three octaves of value noise with quarter, half and full weights and clamps the resulting index into the supplied palette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pi.a(III[III)I#5",
+      "originalName": "param5",
+      "to": "indexBits",
+      "evidence": "Combines three octaves of value noise with quarter, half and full weights and clamps the resulting index into the supplied palette.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(ZI[B)Ljava/lang/Object;#0",
+      "originalName": "param0",
+      "to": "copyArray",
+      "evidence": "Wraps arrays longer than one hundred thirty-six bytes in direct storage, otherwise retaining or copying the array as requested.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(ZI[B)Ljava/lang/Object;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Wraps arrays longer than one hundred thirty-six bytes in direct storage, otherwise retaining or copying the array as requested.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(ZI[B)Ljava/lang/Object;#2",
+      "originalName": "param2",
+      "to": "bytes",
+      "evidence": "Wraps arrays longer than one hundred thirty-six bytes in direct storage, otherwise retaining or copying the array as requested.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(ZLre;ZII)V#0",
+      "originalName": "param0",
+      "to": "reconnect",
+      "evidence": "Constructs login or reconnect framing, seeds encryption from random words and the server challenge, serializes the payload and machine identifier, encrypts it and flushes the request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(ZLre;ZII)V#1",
+      "originalName": "param1",
+      "to": "payload",
+      "evidence": "Constructs login or reconnect framing, seeds encryption from random words and the server challenge, serializes the payload and machine identifier, encrypts it and flushes the request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(ZLre;ZII)V#2",
+      "originalName": "param2",
+      "to": "loginOption",
+      "evidence": "Constructs login or reconnect framing, seeds encryption from random words and the server challenge, serializes the payload and machine identifier, encrypts it and flushes the request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(ZLre;ZII)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "Constructs login or reconnect framing, seeds encryption from random words and the server challenge, serializes the payload and machine identifier, encrypts it and flushes the request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pj.a(ZLre;ZII)V#4",
+      "originalName": "param4",
+      "to": "payloadParameter",
+      "evidence": "Constructs login or reconnect framing, seeds encryption from random words and the server challenge, serializes the payload and machine identifier, encrypts it and flushes the request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pk.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "name",
+      "evidence": "Delegates account-name validation with the standard validation mode and returns its localized error or null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pk.a(Ljava/lang/CharSequence;I)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Delegates account-name validation with the standard validation mode and returns its localized error or null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pk.b(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Allows login attempts after the startup account stage when guest mode is off and a completed login is not already retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pm.a(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Returns the tutorial previous, skip, close or alternate close control index under the pointer, or minus one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pm.a(Lfl;IZ)V#0",
+      "originalName": "param0",
+      "to": "query",
+      "evidence": "Writes the retained integer lookup query identifier in operation zero of the integer-record protocol.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pm.a(Lfl;IZ)V#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "Writes the retained integer lookup query identifier in operation zero of the integer-record protocol.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pm.a(Lfl;IZ)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Writes the retained integer lookup query identifier in operation zero of the integer-record protocol.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pn.a(BLjava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Enables the shared notice panel, measures its wrapped text and lays out its centered frame, label and dismissal button.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pn.a(BLjava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "Enables the shared notice panel, measures its wrapped text and lays out its centered frame, label and dismissal button.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pn.b(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Ranks mandatory or privileged messages above own-player and friends-only eligible messages, with other messages at priority zero; callers compare this against their channel filter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pp.a(Leg;SZ[I[I)V#0",
+      "originalName": "param0",
+      "to": "mesh",
+      "evidence": "Hides the first marker-colored face, finds its longest edge and recenters the mesh at that edge midpoint while retaining world translation and optionally its direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pp.a(Leg;SZ[I[I)V#1",
+      "originalName": "param1",
+      "to": "markerColor",
+      "evidence": "Hides the first marker-colored face, finds its longest edge and recenters the mesh at that edge midpoint while retaining world translation and optionally its direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pp.a(Leg;SZ[I[I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Hides the first marker-colored face, finds its longest edge and recenters the mesh at that edge midpoint while retaining world translation and optionally its direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pp.a(Leg;SZ[I[I)V#3",
+      "originalName": "param3",
+      "to": "translation",
+      "evidence": "Hides the first marker-colored face, finds its longest edge and recenters the mesh at that edge midpoint while retaining world translation and optionally its direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pp.a(Leg;SZ[I[I)V#4",
+      "originalName": "param4",
+      "to": "edgeDirection",
+      "evidence": "Hides the first marker-colored face, finds its longest edge and recenters the mesh at that edge midpoint while retaining world translation and optionally its direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pp.a(Ljava/lang/String;I)V#0",
+      "originalName": "param0",
+      "to": "text",
+      "evidence": "Measures wrapped text, fits its popup to the raster and draws a pale-yellow tooltip at the retained pointer location.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pp.a(Ljava/lang/String;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Measures wrapped text, fits its popup to the raster and draws a pale-yellow tooltip at the retained pointer location.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pp.a(Z)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Tests the account or client option that includes the final achievement in the visible count and changes its row spacing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:pq.a(B)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -44177,6 +45836,307 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Computes the contact-point slip velocity from translation and spin and normalizes its planar direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Clears the retained music patch, envelope, PCM sample and sample stream references for this voice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a([IZ)V#0",
+      "originalName": "param0",
+      "to": "cameraTransform",
+      "evidence": "Projects five lateral points at every retained scenery depth for the Tiki table gradient bands, using the camera direction and clamping points behind it to the raster bottom.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.a([IZ)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Projects five lateral points at every retained scenery depth for the Tiki table gradient bands, using the camera direction and clamping points behind it to the raster bottom.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:pr.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Removes the retained reverb stream from its mixer and clears the reverb stream, input mixer and playing-sound list when the Tiki scene shuts down.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(BILlr;Ljava/lang/String;II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Wraps long tooltip text, fits the frame near the shared pointer anchor and draws its border, background and paragraph.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(BILlr;Ljava/lang/String;II)V#1",
+      "originalName": "param1",
+      "to": "wrapWidth",
+      "evidence": "Wraps long tooltip text, fits the frame near the shared pointer anchor and draws its border, background and paragraph.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(BILlr;Ljava/lang/String;II)V#2",
+      "originalName": "param2",
+      "to": "font",
+      "evidence": "Wraps long tooltip text, fits the frame near the shared pointer anchor and draws its border, background and paragraph.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(BILlr;Ljava/lang/String;II)V#3",
+      "originalName": "param3",
+      "to": "text",
+      "evidence": "Wraps long tooltip text, fits the frame near the shared pointer anchor and draws its border, background and paragraph.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(BILlr;Ljava/lang/String;II)V#4",
+      "originalName": "param4",
+      "to": "foreground",
+      "evidence": "Wraps long tooltip text, fits the frame near the shared pointer anchor and draws its border, background and paragraph.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(BILlr;Ljava/lang/String;II)V#5",
+      "originalName": "param5",
+      "to": "background",
+      "evidence": "Wraps long tooltip text, fits the frame near the shared pointer anchor and draws its border, background and paragraph.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(BZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Draws the lobby panels and then the shared game overlays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(BZ)V#1",
+      "originalName": "param1",
+      "to": "active",
+      "evidence": "Draws the lobby panels and then the shared game overlays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(ILjava/lang/String;)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Returns whether the text contains a character outside ASCII letters and digits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(ILjava/lang/String;)Z#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "Returns whether the text contains a character outside ASCII letters and digits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(ZLjava/lang/String;ILjava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "active",
+      "evidence": "Retains the supplied login credentials and starts the shared logging-in progress transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(ZLjava/lang/String;ILjava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "username",
+      "evidence": "Retains the supplied login credentials and starts the shared logging-in progress transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(ZLjava/lang/String;ILjava/lang/String;)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Retains the supplied login credentials and starts the shared logging-in progress transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a(ZLjava/lang/String;ILjava/lang/String;)V#3",
+      "originalName": "param3",
+      "to": "password",
+      "evidence": "Retains the supplied login credentials and starts the shared logging-in progress transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a([[I[Lbf;[Lpq;I)V#0",
+      "originalName": "param0",
+      "to": "points",
+      "evidence": "Resets per-frame collision bookkeeping, resolves contacts until no further contact exists and then applies friction and spin to every ball still in play.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a([[I[Lbf;[Lpq;I)V#1",
+      "originalName": "param1",
+      "to": "segments",
+      "evidence": "Resets per-frame collision bookkeeping, resolves contacts until no further contact exists and then applies friction and spin to every ball still in play.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a([[I[Lbf;[Lpq;I)V#2",
+      "originalName": "param2",
+      "to": "balls",
+      "evidence": "Resets per-frame collision bookkeeping, resolves contacts until no further contact exists and then applies friction and spin to every ball still in play.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qa.a([[I[Lbf;[Lpq;I)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "Resets per-frame collision bookkeeping, resolves contacts until no further contact exists and then applies friction and spin to every ball still in play.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qd.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Sends lobby operation two with the retained game settings, matchmaking options and additional filter bytes when Find Opponent is pressed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qd.a(BI)V#1",
+      "originalName": "param1",
+      "to": "opcode",
+      "evidence": "Sends lobby operation two with the retained game settings, matchmaking options and additional filter bytes when Find Opponent is pressed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qd.a(IC)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Recognizes nonbreaking space, ordinary space, underscore and hyphen as account-name separators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qd.a(IC)Z#1",
+      "originalName": "param1",
+      "to": "character",
+      "evidence": "Recognizes nonbreaking space, ordinary space, underscore and hyphen as account-name separators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qe.a(IIIIBI)V#0",
+      "originalName": "param0",
+      "to": "width",
+      "evidence": "Clips the rectangle and recolors pixels whose green component exceeds the threshold and is at least their red component, increasing red while reducing green and blue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qe.a(IIIIBI)V#1",
+      "originalName": "param1",
+      "to": "height",
+      "evidence": "Clips the rectangle and recolors pixels whose green component exceeds the threshold and is at least their red component, increasing red while reducing green and blue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qe.a(IIIIBI)V#2",
+      "originalName": "param2",
+      "to": "greenThreshold",
+      "evidence": "Clips the rectangle and recolors pixels whose green component exceeds the threshold and is at least their red component, increasing red while reducing green and blue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qe.a(IIIIBI)V#3",
+      "originalName": "param3",
+      "to": "y",
+      "evidence": "Clips the rectangle and recolors pixels whose green component exceeds the threshold and is at least their red component, increasing red while reducing green and blue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qe.a(IIIIBI)V#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "Clips the rectangle and recolors pixels whose green component exceeds the threshold and is at least their red component, increasing red while reducing green and blue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qe.a(IIIIBI)V#5",
+      "originalName": "param5",
+      "to": "x",
+      "evidence": "Clips the rectangle and recolors pixels whose green component exceeds the threshold and is at least their red component, increasing red while reducing green and blue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qe.b(II)V#0",
+      "originalName": "param0",
+      "to": "angle",
+      "evidence": "Eases the retained logo intro rotation angle over one hundred twenty ticks and selects signed rotation axes for each piece.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qe.b(II)V#1",
+      "originalName": "param1",
+      "to": "pieceIndex",
+      "evidence": "Eases the retained logo intro rotation angle over one hundred twenty ticks and selects signed rotation axes for each piece.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qe.b(Z)Ltc;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Creates the one-element initial growable integer list used to retain pocketed ball indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qf.a(IIIBI[Ldd;)V#0",
+      "originalName": "param0",
+      "to": "y",
+      "evidence": "Draws alpha-blended end caps and tiles the middle sprite within a temporarily clipped horizontal strip.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qf.a(IIIBI[Ldd;)V#1",
+      "originalName": "param1",
+      "to": "alpha",
+      "evidence": "Draws alpha-blended end caps and tiles the middle sprite within a temporarily clipped horizontal strip.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qf.a(IIIBI[Ldd;)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "Draws alpha-blended end caps and tiles the middle sprite within a temporarily clipped horizontal strip.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qf.a(IIIBI[Ldd;)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "Draws alpha-blended end caps and tiles the middle sprite within a temporarily clipped horizontal strip.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qf.a(IIIBI[Ldd;)V#4",
+      "originalName": "param4",
+      "to": "width",
+      "evidence": "Draws alpha-blended end caps and tiles the middle sprite within a temporarily clipped horizontal strip.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qf.a(IIIBI[Ldd;)V#5",
+      "originalName": "param5",
+      "to": "sprites",
+      "evidence": "Draws alpha-blended end caps and tiles the middle sprite within a temporarily clipped horizontal strip.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Removes queued notifications of the supplied kind, finishing or truncating the current notification according to its active playback position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qg.a(BI)V#1",
+      "originalName": "param1",
+      "to": "kind",
+      "evidence": "Removes queued notifications of the supplied kind, finishing or truncating the current notification according to its active playback position.",
       "confidence": "reviewed"
     },
     {
@@ -44635,6 +46595,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qi.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Positions the left and right shared lobby panels using the squared transition fraction and current canvas width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qi.a(BLjava/lang/CharSequence;)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Delegates account-name length and character validation with the standard mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qi.a(BLjava/lang/CharSequence;)Z#1",
+      "originalName": "param1",
+      "to": "name",
+      "evidence": "Delegates account-name length and character validation with the standard mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qi.a(IIZIIZ)[Ldd;#0",
+      "originalName": "param0",
+      "to": "topColor",
+      "evidence": "Builds the middle row of a nine-slice panel from a vertical gradient with optional transparent rounded upper corners, then restores the raster target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qi.a(IIZIIZ)[Ldd;#1",
+      "originalName": "param1",
+      "to": "bottomColor",
+      "evidence": "Builds the middle row of a nine-slice panel from a vertical gradient with optional transparent rounded upper corners, then restores the raster target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qi.a(IIZIIZ)[Ldd;#2",
+      "originalName": "param2",
+      "to": "roundRight",
+      "evidence": "Builds the middle row of a nine-slice panel from a vertical gradient with optional transparent rounded upper corners, then restores the raster target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qi.a(IIZIIZ)[Ldd;#3",
+      "originalName": "param3",
+      "to": "height",
+      "evidence": "Builds the middle row of a nine-slice panel from a vertical gradient with optional transparent rounded upper corners, then restores the raster target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qi.a(IIZIIZ)[Ldd;#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "Builds the middle row of a nine-slice panel from a vertical gradient with optional transparent rounded upper corners, then restores the raster target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qi.a(IIZIIZ)[Ldd;#5",
+      "originalName": "param5",
+      "to": "roundLeft",
+      "evidence": "Builds the middle row of a nine-slice panel from a vertical gradient with optional transparent rounded upper corners, then restores the raster target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qi.a(ILjava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Stores the supplied login text and starts the shared logging-in progress transition; the display-name form uses this entry point.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qi.a(ILjava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "Stores the supplied login text and starts the shared logging-in progress transition; the display-name form uses this entry point.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:qn.a([BI[BII)V#0",
       "originalName": "param0",
       "to": "source",
@@ -44761,6 +46798,174 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:qo.a(BIII)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Stores the text colors selected by the menu renderer for headings and selected or unselected menu choices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qo.a(BIII)V#1",
+      "originalName": "param1",
+      "to": "selectedColor",
+      "evidence": "Stores the text colors selected by the menu renderer for headings and selected or unselected menu choices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qo.a(BIII)V#2",
+      "originalName": "param2",
+      "to": "headingColor",
+      "evidence": "Stores the text colors selected by the menu renderer for headings and selected or unselected menu choices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qo.a(BIII)V#3",
+      "originalName": "param3",
+      "to": "unselectedColor",
+      "evidence": "Stores the text colors selected by the menu renderer for headings and selected or unselected menu choices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qo.a(IIIBI)V#0",
+      "originalName": "param0",
+      "to": "angle",
+      "evidence": "Centers the source sprite in eighth-pixel coordinates and delegates nearest-neighbor rotation with the destination center in sixteenth-pixel coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qo.a(IIIBI)V#1",
+      "originalName": "param1",
+      "to": "centerY",
+      "evidence": "Centers the source sprite in eighth-pixel coordinates and delegates nearest-neighbor rotation with the destination center in sixteenth-pixel coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qo.a(IIIBI)V#2",
+      "originalName": "param2",
+      "to": "scale",
+      "evidence": "Centers the source sprite in eighth-pixel coordinates and delegates nearest-neighbor rotation with the destination center in sixteenth-pixel coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qo.a(IIIBI)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "Centers the source sprite in eighth-pixel coordinates and delegates nearest-neighbor rotation with the destination center in sixteenth-pixel coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qo.a(IIIBI)V#4",
+      "originalName": "param4",
+      "to": "centerX",
+      "evidence": "Centers the source sprite in eighth-pixel coordinates and delegates nearest-neighbor rotation with the destination center in sixteenth-pixel coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qo.a(ILjava/lang/CharSequence;)J#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Accumulates the text characters into a long with multiplier thirty-one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qo.a(ILjava/lang/CharSequence;)J#1",
+      "originalName": "param1",
+      "to": "text",
+      "evidence": "Accumulates the text characters into a long with multiplier thirty-one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qo.a(I[BI)I#0",
+      "originalName": "param0",
+      "to": "length",
+      "evidence": "Computes standard CRC-32 from index zero through the supplied byte count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qo.a(I[BI)I#1",
+      "originalName": "param1",
+      "to": "bytes",
+      "evidence": "Computes standard CRC-32 from index zero through the supplied byte count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qo.a(I[BI)I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Computes standard CRC-32 from index zero through the supplied byte count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qp.a(BIII)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Checks a zero-based month and day against the calendar month length for the supplied year.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qp.a(BIII)Z#1",
+      "originalName": "param1",
+      "to": "year",
+      "evidence": "Checks a zero-based month and day against the calendar month length for the supplied year.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qp.a(BIII)Z#2",
+      "originalName": "param2",
+      "to": "month",
+      "evidence": "Checks a zero-based month and day against the calendar month length for the supplied year.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qp.a(BIII)Z#3",
+      "originalName": "param3",
+      "to": "day",
+      "evidence": "Checks a zero-based month and day against the calendar month length for the supplied year.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qq.m(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Sets the restored-connection progress colors and installs the localized connection-restored content with its Return to Game button.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qq.o(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Creates and styles the shared decision panel with its two action buttons.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qr.a(IZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Checks account eligibility, attempts to enter fullscreen, attaches input to a successful fullscreen canvas and displays the resulting shared notice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:qr.a(IZ)V#1",
+      "originalName": "param1",
+      "to": "active",
+      "evidence": "Checks account eligibility, attempts to enter fullscreen, attaches input to a successful fullscreen canvas and displays the resulting shared notice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:r.c(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Resets the Quick Chat channel to the lobby and restores its retained menu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ra.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Clears the flag controlling the shared login-required choice panel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ra.a(ILoi;I)V#0",
       "originalName": "param0",
       "to": "opcode",
@@ -44796,10 +47001,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:rb.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V#0",
+      "originalName": "param0",
+      "to": "message",
+      "evidence": "Initializes the shared decision dialog if necessary, sets its message, two button labels and action identifiers, lays it out and marks it open.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V#1",
+      "originalName": "param1",
+      "to": "secondButtonText",
+      "evidence": "Initializes the shared decision dialog if necessary, sets its message, two button labels and action identifiers, lays it out and marks it open.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V#2",
+      "originalName": "param2",
+      "to": "firstButtonText",
+      "evidence": "Initializes the shared decision dialog if necessary, sets its message, two button labels and action identifiers, lays it out and marks it open.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V#3",
+      "originalName": "param3",
+      "to": "obfuscationGuard",
+      "evidence": "Initializes the shared decision dialog if necessary, sets its message, two button labels and action identifiers, lays it out and marks it open.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V#4",
+      "originalName": "param4",
+      "to": "secondAction",
+      "evidence": "Initializes the shared decision dialog if necessary, sets its message, two button labels and action identifiers, lays it out and marks it open.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rb.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V#5",
+      "originalName": "param5",
+      "to": "firstAction",
+      "evidence": "Initializes the shared decision dialog if necessary, sets its message, two button labels and action identifiers, lays it out and marks it open.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:rc.b(Z)Ljava/lang/String;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Returns the shared text stored by the account-status message setter on the supported guard path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:re.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Draws the current animated notification with its scale and opacity, followed by the enabled shortcut indicator grid when requested.",
       "confidence": "reviewed"
     },
     {
@@ -44814,6 +47068,90 @@
       "originalName": "param1",
       "to": "active",
       "evidence": "Draws the retained name-entry popup when one is open.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:re.a(ZLjava/lang/String;I)V#0",
+      "originalName": "param0",
+      "to": "active",
+      "evidence": "Clears login busy state and installs an error in the account dialog, handling invalid credentials, display-name selection, reconnect wording and input clearing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:re.a(ZLjava/lang/String;I)V#1",
+      "originalName": "param1",
+      "to": "message",
+      "evidence": "Clears login busy state and installs an error in the account dialog, handling invalid credentials, display-name selection, reconnect wording and input clearing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:re.a(ZLjava/lang/String;I)V#2",
+      "originalName": "param2",
+      "to": "errorCode",
+      "evidence": "Clears login busy state and installs an error in the account dialog, handling invalid credentials, display-name selection, reconnect wording and input clearing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rf.a(B)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Returns the retained display name decoded by the account response, or an empty string if absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rg.a(I[Ljava/lang/String;Ljava/lang/String;Llr;I)I#0",
+      "originalName": "param0",
+      "to": "maxWidth",
+      "evidence": "Balances the target line width according to the measured text width, then splits at spaces, hyphens and explicit break tags into the supplied array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rg.a(I[Ljava/lang/String;Ljava/lang/String;Llr;I)I#1",
+      "originalName": "param1",
+      "to": "lines",
+      "evidence": "Balances the target line width according to the measured text width, then splits at spaces, hyphens and explicit break tags into the supplied array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rg.a(I[Ljava/lang/String;Ljava/lang/String;Llr;I)I#2",
+      "originalName": "param2",
+      "to": "text",
+      "evidence": "Balances the target line width according to the measured text width, then splits at spaces, hyphens and explicit break tags into the supplied array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rg.a(I[Ljava/lang/String;Ljava/lang/String;Llr;I)I#3",
+      "originalName": "param3",
+      "to": "font",
+      "evidence": "Balances the target line width according to the measured text width, then splits at spaces, hyphens and explicit break tags into the supplied array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rg.a(I[Ljava/lang/String;Ljava/lang/String;Llr;I)I#4",
+      "originalName": "param4",
+      "to": "startIndex",
+      "evidence": "Balances the target line width according to the measured text width, then splits at spaces, hyphens and explicit break tags into the supplied array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rg.a(JI)V#0",
+      "originalName": "param0",
+      "to": "key",
+      "evidence": "Sets the secondary intrusive-list key only while the node is unlinked and throws if it is still linked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rg.a(JI)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Sets the secondary intrusive-list key only while the node is unlinked and throws if it is still linked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rg.d(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Returns whether the secondary intrusive-list next link is retained.",
       "confidence": "reviewed"
     },
     {
@@ -44908,10 +47246,318 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:rk.a(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Ensures the debug sliders exist, draws their translucent backing panel and renders every slider.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(I[I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Polls ciphered packet headers and complete payloads, applies optional simulated inbound delay and jitter and advances the diagnostic packet history when returning a ready packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.a(I[I)Z#1",
+      "originalName": "param1",
+      "to": "packetLengths",
+      "evidence": "Polls ciphered packet headers and complete payloads, applies optional simulated inbound delay and jitter and advances the diagnostic packet history when returning a ready packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rk.b(Z)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Packs the three retained chat filter values into consecutive two-bit positions for the outbound filter-settings packet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ro.a(BLro;)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Clips the perspective segment to the view, projects its endpoints and stroke widths and computes the normalized screen-space segment direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ro.a(BLro;)V#1",
+      "originalName": "param1",
+      "to": "next",
+      "evidence": "Clips the perspective segment to the view, projects its endpoints and stroke widths and computes the normalized screen-space segment direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ro.a(IIIIB[I)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "Transforms the world point into camera space, projects its screen coordinates and perspective stroke width when depth permits and clears the cached join direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ro.a(IIIIB[I)V#1",
+      "originalName": "param1",
+      "to": "z",
+      "evidence": "Transforms the world point into camera space, projects its screen coordinates and perspective stroke width when depth permits and clears the cached join direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ro.a(IIIIB[I)V#2",
+      "originalName": "param2",
+      "to": "strokeWidth",
+      "evidence": "Transforms the world point into camera space, projects its screen coordinates and perspective stroke width when depth permits and clears the cached join direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ro.a(IIIIB[I)V#3",
+      "originalName": "param3",
+      "to": "y",
+      "evidence": "Transforms the world point into camera space, projects its screen coordinates and perspective stroke width when depth permits and clears the cached join direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ro.a(IIIIB[I)V#4",
+      "originalName": "param4",
+      "to": "obfuscationGuard",
+      "evidence": "Transforms the world point into camera space, projects its screen coordinates and perspective stroke width when depth permits and clears the cached join direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ro.a(IIIIB[I)V#5",
+      "originalName": "param5",
+      "to": "cameraTransform",
+      "evidence": "Transforms the world point into camera space, projects its screen coordinates and perspective stroke width when depth permits and clears the cached join direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ro.a(ILoq;)[Lnj;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reads the supported material version and count from the bit buffer, reuses earlier material references or decodes each new material color and compatibility fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ro.a(ILoq;)[Lnj;#1",
+      "originalName": "param1",
+      "to": "buffer",
+      "evidence": "Reads the supported material version and count from the bit buffer, reuses earlier material references or decodes each new material color and compatibility fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ro.a(Lro;I)V#0",
+      "originalName": "param0",
+      "to": "previous",
+      "evidence": "Adds this and the previous segment directions and normalizes the result for the polyline stroke join.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ro.a(Lro;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Adds this and the previous segment directions and normalizes the result for the polyline stroke join.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ro.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Requests account state until complete, merges granted bits and clears pending bits, then refreshes dependent menus and any active account-state screen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ro.b(Lro;I)Z#0",
+      "originalName": "param0",
+      "to": "other",
+      "evidence": "Delegates the view-frustum rejection test using this and the other vertex camera-space coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ro.b(Lro;I)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Delegates the view-frustum rejection test using this and the other vertex camera-space coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rp.a(Lvh;Lvh;I)V#0",
+      "originalName": "param0",
+      "to": "friendsContainer",
+      "evidence": "Ensures both social-list containers and lookup tables exist, retains their child lists and clears the current friend and ignore entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rp.a(Lvh;Lvh;I)V#1",
+      "originalName": "param1",
+      "to": "ignoresContainer",
+      "evidence": "Ensures both social-list containers and lookup tables exist, retains their child lists and clears the current friend and ignore entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rp.a(Lvh;Lvh;I)V#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Ensures both social-list containers and lookup tables exist, retains their child lists and clears the current friend and ignore entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rq.a(BI)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Queues pending outbound bytes with optional artificial delay and jitter, restores a due packet to the output buffer and delegates the normal socket flush.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rq.a(BI)V#1",
+      "originalName": "param1",
+      "to": "flushParameter",
+      "evidence": "Queues pending outbound bytes with optional artificial delay and jitter, restores a due packet to the output buffer and delegates the normal socket flush.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:rq.a(I)V#0",
       "originalName": "param0",
       "to": "length",
       "evidence": "Method body is token-identical to ReverbPcmStream in escapevector. Resolved override parameter. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rq.a(II)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "For an enabled shortcut, constructs its Alt, Control, Shift and digit label and displays the retained shortcut description as a notification.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rq.a(II)V#1",
+      "originalName": "param1",
+      "to": "shortcutIndex",
+      "evidence": "For an enabled shortcut, constructs its Alt, Control, Shift and digit label and displays the retained shortcut description as a notification.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rq.a(IIZDI[D[I)Z#0",
+      "originalName": "param0",
+      "to": "planeZ",
+      "evidence": "Builds a normalized camera ray from the screen point, intersects it with the supplied constant-Z plane, stores its world X and Y scaled by one eighth and reports the ray Z direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rq.a(IIZDI[D[I)Z#1",
+      "originalName": "param1",
+      "to": "screenY",
+      "evidence": "Builds a normalized camera ray from the screen point, intersects it with the supplied constant-Z plane, stores its world X and Y scaled by one eighth and reports the ray Z direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rq.a(IIZDI[D[I)Z#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Builds a normalized camera ray from the screen point, intersects it with the supplied constant-Z plane, stores its world X and Y scaled by one eighth and reports the ray Z direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rq.a(IIZDI[D[I)Z#3",
+      "originalName": "param3",
+      "to": "projectionScale",
+      "evidence": "Builds a normalized camera ray from the screen point, intersects it with the supplied constant-Z plane, stores its world X and Y scaled by one eighth and reports the ray Z direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rq.a(IIZDI[D[I)Z#4",
+      "originalName": "param4",
+      "to": "screenX",
+      "evidence": "Builds a normalized camera ray from the screen point, intersects it with the supplied constant-Z plane, stores its world X and Y scaled by one eighth and reports the ray Z direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rq.a(IIZDI[D[I)Z#5",
+      "originalName": "param5",
+      "to": "worldPoint",
+      "evidence": "Builds a normalized camera ray from the screen point, intersects it with the supplied constant-Z plane, stores its world X and Y scaled by one eighth and reports the ray Z direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rq.a(IIZDI[D[I)Z#6",
+      "originalName": "param6",
+      "to": "cameraTransform",
+      "evidence": "Builds a normalized camera ray from the screen point, intersects it with the supplied constant-Z plane, stores its world X and Y scaled by one eighth and reports the ray Z direction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rq.a(ILnb;)Lkf;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Wraps the PCM stream as a playing sound, retains it in the shared sound list and adds it to the reverb input mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rq.a(ILnb;)Lkf;#1",
+      "originalName": "param1",
+      "to": "stream",
+      "evidence": "Wraps the PCM stream as a playing sound, retains it in the shared sound list and adds it to the reverb input mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:rq.c(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Creates the shared intrusive queue populated and drained by the reflection-check protocol.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Lge;IZ)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "buffer",
+      "evidence": "Reads a bounded smart-prefixed Huffman byte sequence, decodes its text and preserves the Cabbage fallback for malformed input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Lge;IZ)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "maxLength",
+      "evidence": "Reads a bounded smart-prefixed Huffman byte sequence, decodes its text and preserves the Cabbage fallback for malformed input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:s.a(Lge;IZ)Ljava/lang/String;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Reads a bounded smart-prefixed Huffman byte sequence, decodes its text and preserves the Cabbage fallback for malformed input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(BZ)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Polls the asynchronous socket task, creates the buffered socket, resets packet state and writes the client handshake or records a connection failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sa.a(BZ)Z#1",
+      "originalName": "param1",
+      "to": "reconnect",
+      "evidence": "Polls the asynchronous socket task, creates the buffered socket, resets packet state and writes the client handshake or records a connection failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sd.a(ZI)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Resets pending archive-connection state, alternates server ports and updates the JS5 failure code and retry count, returning a terminal result after its retry threshold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sd.a(ZI)I#1",
+      "originalName": "param1",
+      "to": "errorCode",
+      "evidence": "Resets pending archive-connection state, alternates server ports and updates the JS5 failure code and retry count, returning a terminal result after its retry threshold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sd.h(B)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Returns the blue underline and text-color markup prefix used by this notice panel.",
       "confidence": "reviewed"
     },
     {
@@ -44926,6 +47572,90 @@
       "originalName": "param1",
       "to": "buffer",
       "evidence": "Unpacks the four shared numeric ranking fields consumed by the rankings-response reader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sg.a(II[BB)[B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Copies the byte array into a larger array and fills the appended region with the supplied byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sg.a(II[BB)[B#1",
+      "originalName": "param1",
+      "to": "additionalLength",
+      "evidence": "Copies the byte array into a larger array and fills the appended region with the supplied byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sg.a(II[BB)[B#2",
+      "originalName": "param2",
+      "to": "bytes",
+      "evidence": "Copies the byte array into a larger array and fills the appended region with the supplied byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sg.a(II[BB)[B#3",
+      "originalName": "param3",
+      "to": "fill",
+      "evidence": "Copies the byte array into a larger array and fills the appended region with the supplied byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sg.g(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Returns the final index in this theme selector item identifier array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sg.h(I)[Ldd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Expands every decoded indexed sprite through the shared palette into RGB sprite pixels and releases the decoder arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sh.a(B[BI)[B#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Delegates byte-array extension using zero as the appended fill value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sh.a(B[BI)[B#1",
+      "originalName": "param1",
+      "to": "bytes",
+      "evidence": "Delegates byte-array extension using zero as the appended fill value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sh.a(B[BI)[B#2",
+      "originalName": "param2",
+      "to": "additionalLength",
+      "evidence": "Delegates byte-array extension using zero as the appended fill value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sh.a(Ldi;BLdi;)V#0",
+      "originalName": "param0",
+      "to": "spriteArchive",
+      "evidence": "Retains the sprite and font archives used to load the membership-benefits interface resources.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sh.a(Ldi;BLdi;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Retains the sprite and font archives used to load the membership-benefits interface resources.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sh.a(Ldi;BLdi;)V#2",
+      "originalName": "param2",
+      "to": "fontArchive",
+      "evidence": "Retains the sprite and font archives used to load the membership-benefits interface resources.",
       "confidence": "reviewed"
     },
     {
@@ -44950,6 +47680,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sj.a(Ljava/lang/String;IZLjava/lang/String;)Lv;#0",
+      "originalName": "param0",
+      "to": "suffix",
+      "evidence": "Selects the release, RC or work-in-progress preferences filename, searches the supported directories and opens a limited read-write file or returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(Ljava/lang/String;IZLjava/lang/String;)Lv;#1",
+      "originalName": "param1",
+      "to": "buildChannel",
+      "evidence": "Selects the release, RC or work-in-progress preferences filename, searches the supported directories and opens a limited read-write file or returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(Ljava/lang/String;IZLjava/lang/String;)Lv;#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Selects the release, RC or work-in-progress preferences filename, searches the supported directories and opens a limited read-write file or returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sj.a(Ljava/lang/String;IZLjava/lang/String;)Lv;#3",
+      "originalName": "param3",
+      "to": "product",
+      "evidence": "Selects the release, RC or work-in-progress preferences filename, searches the supported directories and opens a limited read-write file or returns null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sj.a(Ljava/net/URL;I)Lle;#0",
       "originalName": "param0",
       "to": "url",
@@ -44964,10 +47722,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sj.a(Z)V#0",
+      "originalName": "param0",
+      "to": "stop",
+      "evidence": "Signals and joins the platform task thread and closes all retained cache and identifier files, preserving ignored interruption and I/O failures.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:sk.a(B)I#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Returns the pointer idle counter incremented by input snapshots and reset by mouse events.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(Ljava/lang/String;I)Lwc;#0",
+      "originalName": "param0",
+      "to": "username",
+      "evidence": "Starts or reuses the account-protocol username query and returns its completed cached response only for the matching candidate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.a(Ljava/lang/String;I)Lwc;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Starts or reuses the account-protocol username query and returns its completed cached response only for the matching candidate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:sm.d(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Handles Alt plus a digit with optional Shift and Control, toggles the corresponding notification bit and displays its shortcut notification.",
       "confidence": "reviewed"
     },
     {
@@ -44992,10 +47778,262 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:sp.h(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Tests the account-protocol state marker set while the username availability query is pending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:t.a(IZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Darkens the current raster clip and draws the shared auxiliary dialog when it is present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:t.a(IZ)V#1",
+      "originalName": "param1",
+      "to": "active",
+      "evidence": "Darkens the current raster clip and draws the shared auxiliary dialog when it is present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:t.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Handles fullscreen focus loss when no account overlay is open; otherwise processes its pointer input, dialog animations and queued keyboard events.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ta.a(BIII)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Stores the colors selected by the shared choice-panel renderer for selected choices, unselected choices and headings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ta.a(BIII)V#1",
+      "originalName": "param1",
+      "to": "selectedColor",
+      "evidence": "Stores the colors selected by the shared choice-panel renderer for selected choices, unselected choices and headings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ta.a(BIII)V#2",
+      "originalName": "param2",
+      "to": "unselectedColor",
+      "evidence": "Stores the colors selected by the shared choice-panel renderer for selected choices, unselected choices and headings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ta.a(BIII)V#3",
+      "originalName": "param3",
+      "to": "headingColor",
+      "evidence": "Stores the colors selected by the shared choice-panel renderer for selected choices, unselected choices and headings.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:ta.a(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Dismisses the auxiliary account dialog, creates a display-name form and installs it as the shared account content.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:te.a(BII)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Stores the pointer anchor consumed by the tooltip transition and placement logic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:te.a(BII)V#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "Stores the pointer anchor consumed by the tooltip transition and placement logic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:te.a(BII)V#2",
+      "originalName": "param2",
+      "to": "x",
+      "evidence": "Stores the pointer anchor consumed by the tooltip transition and placement logic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tf.a(II)Ldd;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Selects the locked placeholder for members-only achievements on free accounts, otherwise the unachieved placeholder sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tf.a(II)Ldd;#1",
+      "originalName": "param1",
+      "to": "achievementIndex",
+      "evidence": "Selects the locked placeholder for members-only achievements on free accounts, otherwise the unachieved placeholder sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:th.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Hides the shared Quick Chat overlay when it is open.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(IIIIIII)Z#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "Tests a point against a half-open rectangle using inclusive left and top and exclusive right and bottom edges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(IIIIIII)Z#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Tests a point against a half-open rectangle using inclusive left and top and exclusive right and bottom edges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(IIIIIII)Z#2",
+      "originalName": "param2",
+      "to": "height",
+      "evidence": "Tests a point against a half-open rectangle using inclusive left and top and exclusive right and bottom edges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(IIIIIII)Z#3",
+      "originalName": "param3",
+      "to": "y",
+      "evidence": "Tests a point against a half-open rectangle using inclusive left and top and exclusive right and bottom edges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(IIIIIII)Z#4",
+      "originalName": "param4",
+      "to": "width",
+      "evidence": "Tests a point against a half-open rectangle using inclusive left and top and exclusive right and bottom edges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(IIIIIII)Z#5",
+      "originalName": "param5",
+      "to": "top",
+      "evidence": "Tests a point against a half-open rectangle using inclusive left and top and exclusive right and bottom edges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.a(IIIIIII)Z#6",
+      "originalName": "param6",
+      "to": "left",
+      "evidence": "Tests a point against a half-open rectangle using inclusive left and top and exclusive right and bottom edges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.c(III)I#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "Extends the first-quadrant angle lookup to a signed full-circle angle with eight-thousand-one-hundred-ninety-two units per turn.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.c(III)I#1",
+      "originalName": "param1",
+      "to": "y",
+      "evidence": "Extends the first-quadrant angle lookup to a signed full-circle angle with eight-thousand-one-hundred-ninety-two units per turn.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.c(III)I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Extends the first-quadrant angle lookup to a signed full-circle angle with eight-thousand-one-hundred-ninety-two units per turn.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tj.i(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Reports staged percentage progress while ensuring the shared common UI archives and optional extra groups are available.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tl.a(II[BI)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "length",
+      "evidence": "Decodes the selected byte range using the Windows-1252 extension table, skips zero bytes and replaces undefined extension characters with question marks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tl.a(II[BI)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Decodes the selected byte range using the Windows-1252 extension table, skips zero bytes and replaces undefined extension characters with question marks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tl.a(II[BI)Ljava/lang/String;#2",
+      "originalName": "param2",
+      "to": "bytes",
+      "evidence": "Decodes the selected byte range using the Windows-1252 extension table, skips zero bytes and replaces undefined extension characters with question marks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tl.a(II[BI)Ljava/lang/String;#3",
+      "originalName": "param3",
+      "to": "offset",
+      "evidence": "Decodes the selected byte range using the Windows-1252 extension table, skips zero bytes and replaces undefined extension characters with question marks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tl.a(Ldi;ILjava/lang/String;Ljava/lang/String;)Lqb;#0",
+      "originalName": "param0",
+      "to": "archive",
+      "evidence": "Resolves the named archive group and file and delegates indexed sprite loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tl.a(Ldi;ILjava/lang/String;Ljava/lang/String;)Lqb;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Resolves the named archive group and file and delegates indexed sprite loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tl.a(Ldi;ILjava/lang/String;Ljava/lang/String;)Lqb;#2",
+      "originalName": "param2",
+      "to": "fileName",
+      "evidence": "Resolves the named archive group and file and delegates indexed sprite loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tl.a(Ldi;ILjava/lang/String;Ljava/lang/String;)Lqb;#3",
+      "originalName": "param3",
+      "to": "groupName",
+      "evidence": "Resolves the named archive group and file and delegates indexed sprite loading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tl.d(IZ)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Draws the shared root interface and renders the retained menu widget passes and tooltip relative to its screen origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tl.d(IZ)V#1",
+      "originalName": "param1",
+      "to": "active",
+      "evidence": "Draws the shared root interface and renders the retained menu widget passes and tooltip relative to its screen origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tl.h(I)I#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Processes keyboard and pointer selection for the shared choice menu and returns the activated action identifier, handling action two through its shared reset.",
       "confidence": "reviewed"
     },
     {
@@ -45034,6 +48072,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:tn.a(Luf;I)V#0",
+      "originalName": "param0",
+      "to": "controller",
+      "evidence": "Opens the group-selection or play-or-pass dialog for the player entitled to resolve the current shot decision.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tn.a(Luf;I)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Opens the group-selection or play-or-pass dialog for the player entitled to resolve the current shot decision.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:to.a(B)[Lml;#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -45045,6 +48097,153 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "The ballLabel caller selects individual eight-ball number labels when true, and theme group labels otherwise; classic returns true and the other skins false. Resolved override parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIZ)[I#0",
+      "originalName": "param0",
+      "to": "color",
+      "evidence": "Copies the triangle color palette to a temporary sprite, alpha-blends the supplied color over it and restores the main raster target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIZ)[I#1",
+      "originalName": "param1",
+      "to": "alpha",
+      "evidence": "Copies the triangle color palette to a temporary sprite, alpha-blends the supplied color over it and restores the main raster target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(IIZ)[I#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Copies the triangle color palette to a temporary sprite, alpha-blends the supplied color over it and restores the main raster target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(II[D)[I#0",
+      "originalName": "param0",
+      "to": "fractionalBits",
+      "evidence": "Converts each double in the supplied array to an integer with the requested number of fractional bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(II[D)[I#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Converts each double in the supplied array to an integer with the requested number of fractional bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(II[D)[I#2",
+      "originalName": "param2",
+      "to": "values",
+      "evidence": "Converts each double in the supplied array to an integer with the requested number of fractional bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(JBLjava/lang/String;)V#0",
+      "originalName": "param0",
+      "to": "playerId",
+      "evidence": "Selects private Quick Chat, retains the recipient identifier and normalized display name and restores its menu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(JBLjava/lang/String;)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Selects private Quick Chat, retains the recipient identifier and normalized display name and restores its menu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(JBLjava/lang/String;)V#2",
+      "originalName": "param2",
+      "to": "name",
+      "evidence": "Selects private Quick Chat, retains the recipient identifier and normalized display name and restores its menu.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(ZJLjava/lang/String;)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Accepts a social entry with a known server or a player present in the current lobby game.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(ZJLjava/lang/String;)Z#1",
+      "originalName": "param1",
+      "to": "playerId",
+      "evidence": "Accepts a social entry with a known server or a player present in the current lobby game.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.a(ZJLjava/lang/String;)Z#2",
+      "originalName": "param2",
+      "to": "name",
+      "evidence": "Accepts a social entry with a known server or a player present in the current lobby game.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.c(B)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Requires the shared composer-open flag and the lobby channel selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:tq.d(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Detaches fullscreen input, releases the fullscreen frame, restores the prior viewport and focuses the normal canvas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:u.a(BIIZI)Lvh;#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Constructs an arrow button with mirrored direction and the matching normal, disabled and selected sprites used by local game setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:u.a(BIIZI)Lvh;#1",
+      "originalName": "param1",
+      "to": "x",
+      "evidence": "Constructs an arrow button with mirrored direction and the matching normal, disabled and selected sprites used by local game setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:u.a(BIIZI)Lvh;#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "Constructs an arrow button with mirrored direction and the matching normal, disabled and selected sprites used by local game setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:u.a(BIIZI)Lvh;#3",
+      "originalName": "param3",
+      "to": "reverse",
+      "evidence": "Constructs an arrow button with mirrored direction and the matching normal, disabled and selected sprites used by local game setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:u.a(BIIZI)Lvh;#4",
+      "originalName": "param4",
+      "to": "actionId",
+      "evidence": "Constructs an arrow button with mirrored direction and the matching normal, disabled and selected sprites used by local game setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:u.a(I)Z#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Returns whether the shared logo intro tick has advanced beyond two hundred fifty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:ua.b(Z)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Draws the shared two-button decision panel when its open flag is set.",
       "confidence": "reviewed"
     },
     {
@@ -45269,6 +48468,13 @@
       "originalName": "param0",
       "to": "obfuscationGuard",
       "evidence": "Clears and throws a deferred asynchronous writer error on the supported guard path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:vc.d(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Retains the empty scene hook called once scenery blending completes, including its compatibility guard side effect. Resolved override parameter.",
       "confidence": "reviewed"
     },
     {
@@ -45524,6 +48730,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "P:w.a(III)V#0",
+      "originalName": "param0",
+      "to": "x",
+      "evidence": "Stores the X and Y anchor used by the shared menu renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:w.a(III)V#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Stores the X and Y anchor used by the shared menu renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:w.a(III)V#2",
+      "originalName": "param2",
+      "to": "y",
+      "evidence": "Stores the X and Y anchor used by the shared menu renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:w.a(ZLjava/lang/CharSequence;B)Z#0",
+      "originalName": "param0",
+      "to": "mode",
+      "evidence": "Checks the display-name length rules and then requires every character to satisfy the account-name character predicate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:w.a(ZLjava/lang/CharSequence;B)Z#1",
+      "originalName": "param1",
+      "to": "name",
+      "evidence": "Checks the display-name length rules and then requires every character to satisfy the account-name character predicate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:w.a(ZLjava/lang/CharSequence;B)Z#2",
+      "originalName": "param2",
+      "to": "obfuscationGuard",
+      "evidence": "Checks the display-name length rules and then requires every character to satisfy the account-name character predicate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wa.i(B)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Resets the retained JS5 transport failure count and error code to zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "P:wa.l(I)V#0",
       "originalName": "param0",
       "to": "obfuscationGuard",
@@ -45570,6 +48825,27 @@
       "originalName": "param4",
       "to": "fileId",
       "evidence": "Decodes the selected sprite sheet and constructs the binary bitmap font from the corresponding metrics archive file.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wc.b(I)V#0",
+      "originalName": "param0",
+      "to": "obfuscationGuard",
+      "evidence": "Advances each ball highlight intensity with a decreasing signed velocity, clamps at full intensity and clears completed fades at zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wd.b(II)Ljava/lang/String;#0",
+      "originalName": "param0",
+      "to": "flags",
+      "evidence": "Formats shot resolution flags for continuation, visits, ball-in-hand variants, wins, losses, group selection, respotting, reracking and ending the turn.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "P:wd.b(II)Ljava/lang/String;#1",
+      "originalName": "param1",
+      "to": "obfuscationGuard",
+      "evidence": "Formats shot resolution flags for continuation, visits, ball-in-hand variants, wins, losses, group selection, respotting, reracking and ending the turn.",
       "confidence": "reviewed"
     },
     {
@@ -45737,7 +49013,7 @@
     "files": {
       "build-pool-rules.mjs": "a6ced3f9107e24e5c21c1a5ef689041cbea6b93dc16222b53a20377c0e000bab",
       "pool-names-data.mjs": "e7cefa558f5b27ff8b5d6b54ed3b3e18ef9c3e29af31d7d2eb0b675793a1da51",
-      "pool-names-game.mjs": "14db01cd7e7d2af751412440115b9fd320f177176ffe752944eb632fb6d6c9c6",
+      "pool-names-game.mjs": "dcde1d0b993d96155236c05c5b0ae7c89a6fb8aae00cdfa86cf42a5a52cb12e3",
       "reproduce-pool.mjs": "a70c50f3e18ae106fff2130226dafcc1962938974aa6d419716e73302917663c",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
