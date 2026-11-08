@@ -242,10 +242,28 @@ field('ic', 'C', 'Luf;', 'board', 'Constructed with the GameBoard and read for t
 field('ic', 'A', 'Lm;', 'animator', 'Constructed with the CellAnimator for the board.');
 field('ic', 'e', 'I', 'localPlayer', 'Compared with the current player to decide whose turn text to show.');
 
+// Reviewed names added in later rounds live in virogrid-names.json:
+// classes [owner, name, evidence], methods and fields [owner, original, descriptor, name, evidence].
+const names = JSON.parse(fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'virogrid-names.json'), 'utf8'));
+for (const [owner, to, evidence] of names.classes) {
+  if (classes[owner]) throw new Error('Class already reviewed: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of names.methods) {
+  const symbol = `M:${owner}.${original}${descriptor}`;
+  if (members[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+for (const [owner, original, descriptor, to, evidence] of names.fields) {
+  const symbol = `F:${owner}.${original}:${descriptor}`;
+  if (members[symbol]) throw new Error('Field already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export const config = {
   game: 'virogrid', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-virogrid-rules.mjs', 'reproduce-virogrid.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-virogrid-rules.mjs', 'virogrid-names.json', 'reproduce-virogrid.mjs', 'reviewed-game.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   readingGuide(rules, mapping) {
     return ['# Reading Virogrid', '',
