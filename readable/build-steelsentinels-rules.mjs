@@ -891,6 +891,24 @@ for(const [owner,original,descriptor,to,evidence] of [
   ['il','b','(I)I','width','Same normalised body as Escape Vector TextLayoutLine.width (similarity 0.67); class identity checked by fields and hierarchy.'],
 ])method(owner,original,descriptor,to,evidence);
 
+// Reviewed names added in later rounds live in steelsentinels-names.json:
+// classes [owner, name, evidence], methods and fields [owner, original, descriptor, name, evidence].
+const reviewedNames=JSON.parse(fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)),'steelsentinels-names.json'),'utf8'));
+for(const [owner,to,evidence] of reviewedNames.classes) {
+  if(classes[owner]) throw new Error('Class already reviewed: '+owner);
+  classes[owner]=[to,evidence];
+}
+for(const [owner,original,descriptor,to,evidence] of reviewedNames.methods) {
+  const symbol=`M:${owner}.${original}${descriptor}`;
+  if(members[symbol]) throw new Error('Method already reviewed: '+symbol);
+  members[symbol]={to,evidence};
+}
+for(const [owner,original,descriptor,to,evidence] of reviewedNames.fields) {
+  const symbol=`F:${owner}.${original}:${descriptor}`;
+  if(members[symbol]) throw new Error('Field already reviewed: '+symbol);
+  members[symbol]={to,evidence};
+}
+
 export function buildSteelRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -944,7 +962,7 @@ export function buildSteelRules(input, rows) {
   return [...rules.values()].sort((a,b)=>a.symbol<b.symbol?-1:1);
 }
 
-const workflowFiles=['build-steelsentinels-rules.mjs','reproduce-steelsentinels.mjs','reconstruct-steel-explosion.mjs',
+const workflowFiles=['build-steelsentinels-rules.mjs','steelsentinels-names.json','reproduce-steelsentinels.mjs','reconstruct-steel-explosion.mjs',
   'tests/test-steelsentinels-core.mjs','tests/archive-index-probe.mjs','game-export.mjs','compilation-stubs.mjs'];
 export function validateSteelManifest(rules) {
   if(rules.schema!==1||rules.game!=='steelsentinels'||rules.source.commit!==SOURCE_COMMIT) throw new Error('Invalid Steel naming manifest');
