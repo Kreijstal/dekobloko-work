@@ -3274,6 +3274,103 @@ method('td', 'a', '(Z)V', 'releaseStatics', 'Clears shared trinket-catalog layou
 method('tj', 'f', '(I)V', 'releaseStatics', 'Clears shared ball-agent text, sprite and array resources under the original guard.');
 method('oj', 'j', '(B)V', 'releaseStatics', 'Clears shared loading-progress text and option-description tables under the original arithmetic guard.');
 
+
+// Raster and text APIs reviewed against their pixel and layout operations.
+method('ut', 'a', '(III[I[IIIIIIIII)V', 'blitAdditiveRows', 'Adds nonzero source RGB pixels to destination pixels with per-channel saturation.');
+method('ut', 'a', '(III[I[IIIIIIIIII)V', 'blitAdditiveIntensityRows', 'Scales nonzero source RGB intensity before saturated additive blending.');
+method('ut', 'a', '(I[I[IIIIIIII)V', 'blitMultiplyRows', 'Multiplies corresponding RGB channels when both source and destination pixels are nonzero.');
+method('ut', 'a', '([IIIIIIII)V', 'blitHalfSizeAveragedRows', 'Averages each two-by-two source block into one raster pixel, substituting the destination color for transparent samples.');
+method('ut', 'a', '([I[IIIIIII)V', 'copyPixelRows', 'Copies complete pixel rows, including zero pixels, with separate source and destination row skips.');
+method('ut', 'a', '([I[IIIIIIIII)V', 'blitAlphaRows', 'Blends nonzero RGB pixels using one global opacity and the complementary destination weight.');
+method('ut', 'a', '([I[IIIIIIIIIII)V', 'blitScaledRows', 'Samples nearest pixels using sixteen-bit fractional source coordinates and skips transparent zero pixels.');
+method('ut', 'b', '([I[IIIIIIIIIIII)V', 'blitScaledAlphaRows', 'Blends nearest-scaled nonzero RGB pixels using a global opacity.');
+method('ut', 'b', '(III)V', 'drawAlpha', 'Applies trim offsets and raster clipping before opacity blending; the ARGB override also multiplies per-pixel alpha.');
+method('ut', 'c', '()V', 'rotateCounterclockwise', 'Transposes pixels in counterclockwise order and swaps dimensions, canvas dimensions and trim offsets accordingly.');
+method('ut', 'c', '(II)V', 'draw', 'Draws clipped nonzero RGB pixels at the trim-adjusted position; ARGB sprites use their per-pixel alpha.');
+method('ut', 'd', '(II)V', 'drawOpaque', 'Copies all clipped RGB pixels, including zero; the ARGB override retains its native per-pixel-alpha blending.');
+method('ut', 'd', '(III)V', 'drawTinted', 'Clips and recolors neutral RGB pixels with the supplied tint; ARGB sprites blend shaded grayscale pixels.');
+method('ut', 'b', '(IIIIII)V', 'rotateBilinear', 'Inverse-maps a clipped rotated and scaled rectangle and samples through drawBilinearPixel in each rotation quadrant.');
+method('ut', 'c', '(IIII)V', 'drawRotatedBilinear', 'Uses the sprite canvas center as the source pivot and delegates to bilinear rotation at the supplied destination center.');
+method('ot', 'b', '([I[IIIIIIIIIII)V', 'blitArgbScaled', 'Nearest-scales ARGB pixels and blends their source alpha against the destination; matches the reviewed Steel Sentinels body.');
+method('ot', 'c', '([I[IIIIIIIIIIII)V', 'blitArgbScaledAlpha', 'Multiplies nearest-scaled source alpha by a global opacity before RGB blending; matches the reviewed Steel Sentinels body.');
+method('ot', 'd', '([I[IIIIIIIII)V', 'blitArgbAlpha', 'Blends unscaled ARGB rows using source alpha multiplied by global opacity; matches the reviewed Steel Sentinels body.');
+method('kg', 'a', '([I[B[IIIIIIIIII)V', 'copyPaletteRowsScaled', 'Nearest-scales indexed pixels through the palette, skipping index zero; matches the reviewed Steel Sentinels body.');
+method('st', 'a', '(BLjava/lang/String;IILhu;)V', 'layoutRightAlignedLine', 'Caches a single text line with its final character position at the supplied right edge.');
+method('st', 'a', '(IILhu;Ljava/lang/String;I)V', 'layoutCenteredLine', 'Caches a single text line with character positions centered around the supplied X coordinate.');
+method('st', 'a', '(ILhu;IIIBLjava/lang/String;I)V', 'layoutWrappedText', 'Wraps text into cached lines and computes character positions using the requested horizontal and vertical alignment and line spacing.');
+method('st', 'a', '(ILjava/lang/String;BLhu;I)V', 'layoutLeftAlignedLine', 'Caches a single text line beginning at the supplied left X coordinate.');
+method('st', 'a', '(Lnu;II)V', 'initializeMatchMinimap', 'Selects the game and participant for drawMatchMinimap, shows the minimap and resets its slide animation and timing.');
+method('st', 'b', '(III)V', 'setMinimapPosition', 'Stores the horizontal slide offset and vertical origin consumed by drawMatchMinimap.');
+method('st', 'c', '(I)[I', 'createEightIntBuffer', 'Allocates an eight-entry zeroed integer buffer shared by achievement masks and fixed-size lookup/state data.');
+method('lb', 'a', '(B)V', 'rebuildHotspotRegions', 'Parses hotspot tags and builds linked per-line rectangles from the cached text character positions.');
+method('lb', 'a', '(BI)V', 'sendAchievementMaskRequest', 'Sends the subtype-two request queued by TutorialScenerySupport.requestAchievementMask.');
+method('lb', 'a', '(III)Z', 'intersectsPlayerViewport', 'Tests the player footprint with twenty-pixel side margins and forty-pixel upper extent against the 640 by 480 viewport.');
+method('lb', 'a', '(ILjava/lang/String;)V', 'sendModeratorCommand', 'Sends a short-length-prefixed command string on opcode 89 only for a logged-in JMod.');
+method('lb', 'a', '(Lgm;I)Lak;', 'createFootballerDrawEntry', 'Creates a WorldDrawEntry of the supplied kind referencing the rendered footballer.');
+method('lb', 'a', '(Ljava/lang/String;II)V', 'setHotspotHelpText', 'Grows and updates the per-hotspot help-text array returned for the hovered hotspot.');
+method('lb', 'b', '(III)Ler;', 'hitTestHotspot', 'Tests all line rectangles belonging to each hotspot and returns the matching hotspot root region.');
+method('lb', 'b', '(IIII)V', 'dispatchAction', 'Dispatches the base button action and then a hotspot-click callback for the local pointer position.');
+method('lb', 'c', '(IIII)V', 'setBoundsWithTextHeight', 'Uses the text layout preferred height while applying the supplied position and width.');
+method('lb', 'i', '(I)V', 'releaseStatics', 'Clears shared hotspot-widget sprites, text and arrays under the original guard.');
+method('om', 'a', '(I)V', 'readSubmissionAcknowledgement', 'Consumes queued submission acknowledgements, verifies the CRC for subtype zero and matches subtype-one blob requests by request CRC.');
+method('om', 'a', '(IB)V', 'layoutIconAndLabel', 'Measures the first child and places the second child after the requested gap in the remaining width.');
+method('om', 'a', '(IIIIII)V', 'setBoundsAndLayout', 'Applies the composite bounds then lays out the icon and label using the requested gap.');
+method('om', 'a', '(Ljava/math/BigInteger;Liw;BLiw;Ljava/math/BigInteger;)V', 'writeEncryptedLoginBuffer', 'Passes the populated source packet bytes and RSA parameters to writeEncryptedLoginBlock.');
+method('om', 'b', '(II)I', 'measureWidthWithGap', 'Returns the sum of both child preferred widths and the supplied gap.');
+method('om', 'b', '(I)V', 'releaseStatics', 'Clears shared icon-label resource references under the original guard.');
+method('ew', 'a', '(B)V', 'snapshotMouseInput', 'Copies synchronized mouse button, pointer, press and movement state into the tick snapshot and consumes pending edge events.');
+method('ew', 'a', '(IIB[B)V', 'readFully', 'Reads through pending writes, the read buffer and the backing file, fills sparse gaps with zero and throws EOFException for an incomplete request.');
+method('ew', 'a', '(III[B)V', 'write', 'Buffers or directly writes the requested byte range, flushes discontinuous pending writes and updates overlapping read-cache bytes.');
+method('ew', 'a', '(I[B)V', 'readFully', 'Reads exactly the destination array length from the current logical file position.');
+method('ew', 'b', '(I)V', 'refillReadBuffer', 'Seeks to the logical position and fills the read cache until capacity or end of file.');
+method('ew', 'e', '(I)V', 'flush', 'Writes pending bytes to the backing file, updates any overlapping read cache and clears the pending write range.');
+method('ew', 'a', '(ILjava/lang/String;)Z', 'isActivePrivateChatRecipient', 'Checks that chat input is active in private-message compose mode and that the normalized recipient matches.');
+method('ew', 'a', '(ZLsj;Lsj;I)V', 'initializeChatInterface', 'Builds shared chat widgets, loads chat-filter sprites and initializes Quick Chat definitions and menu resources.');
+
+
+method('ew', 'a', '(BILml;III)I', 'readSignedFourRangeBits', 'Builds signed half-range offsets from four bit widths and delegates to the two-bit-selector signed-value decoder.');
+method('ew', 'a', '(IILhu;Lhu;)V', 'configureLoadingDisplay', 'Stores both loading fonts and the display parameter, centers the loading display and updates its font metrics.');
+method('fs', 'a', '(IIIIIIILml;II)I', 'readSignedFourRangeValue', 'Uses a two-bit selector to read a signed value of one of four widths and applies cumulative magnitude offsets.');
+method('aq', 'a', '(IILml;)I', 'readSignedBits', 'Reads the requested bit width and sign-extends its highest bit through XOR and subtraction.');
+method('aq', 'a', '(Ljava/lang/String;I)Ljava/lang/String;', 'highlightConsoleSyntax', 'Tokenizes the console source and wraps its token spans in the configured syntax colors.');
+method('aq', 'c', '(I)Ljava/lang/String;', 'getPendingExternalUrl', 'Returns the stored URL consumed by the account-menu external-browser action.');
+method('ll', 'a', '(I)[B', 'getBytes', 'Returns a new byte array containing the complete direct buffer contents, resetting its position before copying.');
+method('ll', 'a', '([[[IIILea;I)I', 'colorBoxSliceMoment', 'Computes the four signed summed-moment corners for a box cross section at a supplied axis coordinate.');
+method('ll', 'b', '(B)V', 'releaseStatics', 'Clears shared direct-storage sprites, font, menu and arrays under the original guard.');
+method('ll', 'c', '(B)V', 'tickSharedInterface', 'Advances the chat-panel transition and shared UI timers under the original arithmetic guard.');
+method('pf', 'a', '(Liw;I)V', 'readPackedRankingStatistics', 'Reads the four packed ranking statistic fields passed to appendRankingStatistics.');
+method('ou', 'a', '(BLsj;)V', 'loadLogoModels', 'Loads logo.fo3d materials and meshes, scales them and records each mesh center before translating it to the origin.');
+method('ou', 'a', '(III)Lut;', 'createStripedFillSprite', 'Renders the two-color repeating diagonal stripe tile with rounded vertical brightness falloff.');
+method('ou', 'a', '(Z)Lut;', 'createRoundedEndMask', 'Creates the grayscale rounded-end mask multiplied into the striped progress bar end caps.');
+method('ou', 'b', '(IIII)I', 'choosePopupX', 'Keeps the requested X if the popup fits, otherwise tries the opposite anchor side and then right-aligns to the raster.');
+
+
+method('eg', 'a', '(IIIIIIII)V', 'drawOrthographic', 'Rotates and translates vertices, projects them using one constant depth divisor and draws the depth-sorted faces.');
+method('eg', 'a', '(ZZJII)V', 'drawSortedFaces', 'Culls back faces, records optional pointer hits and draws faces by depth and render priority, dispatching near-clipped faces separately.');
+method('eg', 'a', '(ZZLeg;[B[S[I[I[I)Lqc;', 'copyInto', 'Copies vertices into the target model and shares or copies alpha, color and shading arrays according to the requested policy.');
+method('eg', 'a', '(ZZZ)Lqc;', 'copyForAnimation', 'Ensures reusable scratch arrays and copies into the shared animation model with the requested alpha and shading sharing.');
+method('eg', 'a', '([I[I)V', 'drawTransformed', 'Combines camera and model transforms, culls the bounds, projects vertices with perspective and dispatches sorted faces with near-plane clipping.');
+method('eg', 'b', '(I)V', 'rotateY', 'Rotates the X and Z vertex coordinates using the indexed sine and cosine tables and invalidates bounds.');
+method('eg', 'b', '(IIIIIIII)Z', 'isPointInTriangleBounds', 'Tests a point against the axis-aligned bounds of the three projected triangle vertices.');
+method('eg', 'c', '(I)V', 'drawClippedFace', 'Clips a face against depth fifty, interpolates shade values and rasterizes the resulting triangle or two-triangle quad.');
+method('eg', 'e', '(I)V', 'drawFace', 'Chooses the face alpha, flat or shaded color, texture mapping and near-clipped rendering path.');
+method('eg', 'f', '()V', 'rotateYQuarterTurn', 'Maps each X,Z vertex pair to Z,-X and invalidates bounds.');
+method('kk', '$cfr$intArgs$a$842e35442ba4', '(IZZLjava/lang/String;)V', 'showLoginDialog', 'Full-integer guard overload that resets account-interface state, deactivates current modals and pushes the shared login form.');
+method('kk', 'a', '(BZZLjava/lang/String;)V', 'showLoginDialog', 'Resets account-interface state, deactivates current modals and constructs and pushes the shared login form.');
+method('kk', 'a', '(I)V', 'invalidateBounds', 'Marks the triangle mesh cached bounds invalid under the original arithmetic guard.');
+method('kk', 'a', '(ILsj;IILsj;)Lcn;', 'loadFont', 'Loads glyph sprites and font metrics by numeric group and file ids, returning null until the sprite sheet is available.');
+method('kk', 'a', '(ILtf;)Z', 'isWorldDrawListSorted', 'Checks ascending getSortY values through the consecutive WorldDrawEntry nodes at the front of the deque.');
+method('kk', 'a', '(Lup;IZ)Lot;', 'getPlayerPortraitWithClubDefaults', 'Uses the current club kit and appearance defaults unless the player supplies its own appearance, then delegates to getPlayerPortrait.');
+method('gm', 'a', '(Ljava/lang/String;ZB)Lgv;', 'enqueueFadingChatMessage', 'Creates a fading message and either queues it for a later screen or inserts it into the current message display.');
+method('gm', 'a', '(Lsj;ILjava/lang/String;Lsj;Ljava/lang/String;)Lcn;', 'loadFontByName', 'Resolves group and file names in the glyph archive and delegates to the numeric font loader with the metrics archive.');
+method('gm', 'a', '(IIZIIIZIIZZZII)V', 'updateSharedInterface', 'Clears tooltip state, displays pending server notices and routes pointer, keyboard and text-prompt updates through the shared interface.');
+method('gm', 'a', '(IZLhd;Lkq;)V', 'drawPlayerSaleSummary', 'Draws the selected squad player portrait and sale value, a rejection warning or an empty-selection explanation in the supplied panel.');
+method('gm', 'd', '(Z)V', 'drawFootballer', 'Projects and culls the footballer, draws optional diagnostics and renders directly or through the outline and color-effect sprite path.');
+method('gm', 'h', '(I)I', 'getPerspectiveAdjustedY', 'Adjusts rendered world Y for positive height and pitch orientation, capping height below the projection denominator singularity.');
+method('gm', 'i', '(I)V', 'restoreSharedDefaultButtons', 'Restores the default button set on each shared controller from the supplied starting index.');
+method('aq', 'a', '(Z)I', 'getCameraY', 'Returns the integer part of the shared camera Y center used by world projection and camera motion.');
+method('tq', 'h', '(I)I', 'getCameraX', 'Returns the integer part of the shared camera X center used by world projection and camera motion.');
+
 export const kickConfig = {
   game: 'kickabout', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   workflowFiles: ['build-kickabout-rules.mjs', 'reproduce-kickabout.mjs', 'reviewed-game.mjs',
