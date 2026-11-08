@@ -4062,6 +4062,185 @@ method('ub', 'a', '(IB)V', 'queueKitStyleChange', 'Replaces pending kit-style ch
 method('ve', 'a', '(ZII)V', 'queuePitchPurchase', 'Applies and queues manager action seven to buy the supplied pitch surface and tier.');
 method('rt', 'b', '(III)V', 'queuePitchSelection', 'Replaces pending pitch selections and applies and queues manager action eight for the selected owned surface and tier.');
 
+method('df', 'd', '(Z)V', 'releaseTutorialOpponentControl', 'If the tutorial opponent owns the ball, starts its return kick before clearing the opponent controlled-slot selection.');
+method('df', 'g', '(I)I', 'pollFullscreenPromptAction', 'Polls keyboard and pointer selection on the shared fullscreen prompt and returns its configured action, clearing the prompt flag on dismissal.');
+method('dh', 'c', '(B)V', 'closeLegacyFullscreenPrompt', 'Clears the legacy fullscreen-prompt visibility flag under the original guard.');
+method('ej', 'b', '(IIII)V', 'startTutorialKick', 'Configures the ball carrier kick vector, direction and duration, begins action two and adds the original turning delay when needed.');
+method('eq', 'a', '(IZ)V', 'resetContentCarousel', 'Resets the carousel phase and item index and initializes the paired-control selection from the current pointer state.');
+method('ev', 'h', '(I)Ljava/lang/String;', 'getCurrentLoginPassword', 'Returns the registration password while registration is pending, otherwise the password stored for the current login request.');
+method('fj', 'a', '(ZZ)V', 'setTradingEnabled', 'Stores the negation of the supplied trading permission in the shared auction restriction flag.');
+method('fm', 'a', '(BI)I', 'getOffPitchPlayerY', 'Returns the fixed-sixteen off-pitch Y position at eighteen hundred forty-four plus one hundred times the supplied player index.');
+method('fs', 'a', '(B)V', 'advanceLogoSequence', 'Increments the shared logo sequence tick while preserving the original guard behavior.');
+method('gu', 'b', '(I)Z', 'isAccountNameCheckPending', 'Tests whether the shared account-name availability state is the pending state.');
+method('hd', 'a', '(IIII)V', 'renderPitchSurface', 'Tiles the selected pitch surface into the raster, adds the noisy pitch markings and theme stains or street cracks and restores raster state.');
+method('hh', 'b', '(B)Z', 'isAccountInterfaceReady', 'Requires the main client stage to be at least ten and the account-interface loading stage to be at least thirteen.');
+method('hq', 'a', '(B)Z', 'canBeginLogin', 'Requires loaded client resources, no active logged-in account state and no connected account-request response stage.');
+method('j', 'a', '(I)Lut;', 'getSelectedPitchSprite', 'Returns the sprite for the currently selected pitch surface and theme.');
+method('ki', 'a', '(IBI)I', 'getAccountIconTier', 'Selects moderator tier two for rights of at least two, otherwise tier one for the five-point threshold and zero below it.');
+method('lg', 'a', '(Ljava/lang/String;B)Z', 'isInvalidPasswordLength', 'Tests for null input or a length outside the configured password minimum and maximum.');
+method('ls', 'g', '(I)Ljava/lang/String;', 'getCurrentAccountName', 'Selects the registration name, pending availability name or completed account name according to the shared request states.');
+method('s', 'j', '(I)Lec;', 'getCurrentAccountNameText', 'Wraps the currently selected account name and pending availability state in a LoginText value.');
+method('sf', 'a', '(IILnu;Z)V', 'configureFootballerOverlays', 'Stores the match, local participant and team used when drawing ball-carrier and selected-player overlays.');
+method('tu', 'r', '(I)V', 'validateClubStateGuard', 'Retains the compatibility hook that leaves club state unchanged on the valid guard path.');
+method('ue', 'a', '(Ljava/lang/String;B)V', 'validateTextHookGuard', 'Evaluates the arithmetic compatibility guard; the supplied text is otherwise unused and the valid path changes no state.');
+method('vi', 'c', '(I)Z', 'isLegacyFullscreenPromptOpen', 'Returns the shared visibility flag used by the legacy fullscreen prompt.');
+method('vl', 'a', '(IIIII)V', 'drawGridCellHighlight', 'Clips to the selected three-column grid cell, draws its rounded white highlight and restores the raster state.');
+method('vr', 'd', '(I)Z', 'alwaysTrue', 'Preserves the original constant-true compatibility predicate and its guard behavior.');
+method('wq', 'c', '(B)Z', 'hasTuhstatbutSetting', 'Checks the active applet and its cookies for the tuhstatbut marker through the shared marker lookup.');
+
+method('ha', 'a', '(JIIII)Lup;', 'generateShopPlayer', 'Seeds deterministic player generation from the supplied identity and shop coordinates, selecting archetype, stats, trinkets, name and appearance with the original moderator-player path.');
+method('hd', 'a', '(ZII)Z', 'handleChatInput', 'Handles enter, backspace and printable chat characters, enforcing channel eligibility, password disclosure checks and the measured composer width.');
+method('ht', 'a', '(ZB)V', 'updateCameraSmoothing', 'Smooths camera position and zoom toward the target with bounded acceleration and overshoot checks, clamps it to the pitch and damps the vertical shake offset.');
+method('ie', 'g', '(I)V', 'updateTutorial', 'Advances scripted tutorial steps, animated message widths and controls, positions opposing players and records tutorial completion.');
+method('ik', 'a', '(BIIIIIII)V', 'updateTutorialDefender', 'Steers one tutorial defender between its home point and the ball region, starting tackles or chase movement according to possession and action state.');
+
+method('jd', 'a', '(BZ)Ltv;', 'readChatMessage', 'Reads channel, sender, private-message identity and context metadata, then decodes Huffman text or a Quick Chat phrase into a chat message.');
+method('jd', '$cfr$intArgs$a$e7eed804270c', '(IZ)Ltv;', 'readChatMessage', 'Full-integer guard overload reading the same normal or Quick Chat message packet.');
+method('je', 'a', '(Z)I', 'getTutorialMessageIndex', 'Selects the current tutorial text index from the lesson stage, scripted transition, player position, cooldown and match phase.');
+method('jg', 'a', '(IZIIZZI)V', 'drawOptionIcon', 'Draws the selected option sprite with normal, tinted, enlarged or cached glowing-highlight styling.');
+method('ji', 'a', '(BZ)V', 'drawChatBlockingOverlays', 'Draws the dimmed message panel and any active shared input-blocking panel above the chat area.');
+method('jm', 'a', '(IZI)V', 'requestScreenTransition', 'Checks pending manager changes, flushes game-over actions, persists modified settings and prepares the next screen with history and transition sounds.');
+method('jn', 'a', '(ZLwn;B)V', 'showRegistrationResponse', 'Builds the registration success, terms, suggestion or error content and the appropriate retry, help or confirmation actions.');
+
+method('jw', 'a', '(ZB)V', 'drawCheckboxLabel', 'Draws the enabled or disabled checkbox, label and rounded backing, with hover and optional pulse styling.');
+method('jw', 'c', '(IZ)V', 'beginTutorialLesson', 'Resets tutorial movement and control state, configures the selected lesson positions and restrictions and starts its scripted transition.');
+method('ki', 'a', '(Z)V', 'readRankingsResponse', 'Matches the pending rankings request, reads names and packed statistics, selects both top lists and completes and unlinks the request.');
+method('kq', 'h', '(B)V', 'drawSquadSlot', 'Draws a vacant slot or animated player preview, adding loading, selection, new-player and auction-status decorations as required.');
+method('kw', 'b', '(ZB)V', 'updateCapturedPointer', 'Acquires or releases mouse capture, accumulates and clamps relative motion, snapshots pointer buttons and positions and updates the capture indicator.');
+
+method('pt', 'a', '(ZLsj;)V', 'loadLocalizedText', 'Loads the named localized account, game and interface text resources, decodes CP1252 strings and refreshes their shared text and shortcut tables.');
+method('lk', 'a', '(Z[Ltm;)Lli;', 'evaluate', 'Evaluates nested console commands and numeric, boolean, character or string literals, translating invalid numeric literals into console evaluation errors.');
+method('lu', 'a', '(ZIIZZ)V', 'updateHostedGameLobby', 'Updates host and guest lobby controls, option eligibility and start countdowns and routes leave, start and edit-option actions.');
+method('mk', 'a', '(IIIIIIZIIIIIII[III)V', 'rasterizeSortedRgbTriangleHalfBlend', 'Walks the sorted triangle edges, clips scanline spans and interpolates RGB components into half-blended gradient spans.');
+
+method('nm', 'a', '(ILiw;I)V', 'decodeTag', 'Decodes an animation-definition tag, including frame durations and identities, loop metadata, transform masks and per-frame sound references.');
+method('od', 'a', '([II[Lgt;I)V', 'drawMatchParticipantSummary', 'Draws the two team scores and participant names, inactive marks, draw offers and optional latency bars and tooltips.');
+method('og', 'a', '(I[Lut;II)V', 'drawPitchStains', 'Places mirrored and center stain sprites according to the selected pitch theme, retaining the randomized offsets.');
+method('og', 'a', '(Ljava/lang/String;IB)[Ljava/lang/String;', 'wrapTextByCharacterCount', 'Wraps text at spaces and hyphens after the requested character count, dropping null characters and preserving unbroken words.');
+
+method('qh', 'a', '(II)[B', 'readFile', 'Follows the cache file sector chain under the data-file lock, validating file, chunk and archive identities and returning null for missing or malformed data.');
+method('qh', 'a', '(ZII[BI)Z', 'writeFileSectors', 'Writes the cache index and sector chain, reusing a validated existing chain when requested and allocating additional sectors as needed.');
+method('rq', 'a', '(IIBILea;IIII)D', 'maximizeColorBoxSplitScore', 'Scans candidate cuts along one color axis, computes both nonempty partition scores and records the best cut position.');
+method('tr', 'a', '(Lea;ZLea;)I', 'splitColorBox', 'Selects the best red, green or blue moment split, updates the two color-box bounds and volumes and reports whether a split is possible.');
+method('wp', 'a', '([[[D[[[I[[[II[[[I[[[I)V', 'buildColorHistogram', 'Quantizes RGB pixels into the shared thirty-three-cubed grid and accumulates counts, channel sums and squared-color moments.');
+
+method('os', 'a', '(IIIIIIIIIIIIIIII)V', 'rasterizeRgbTriangleHalfBlend', 'Orders the triangle vertices and their RGB components before delegating sorted gradient triangle rasterization.');
+method('os', 'a', '(Lkk;Z[I[IBZZ)V', 'transformAndProjectMesh', 'Combines model and camera transforms, projects vertices, transforms optional auxiliary coordinates and normals and builds the visible face depth buckets.');
+method('qc', 'a', '(Lje;Ldb;Ldb;II[ZZZI[I)V', 'applySkeletonFrames', 'Applies a single skeleton frame or interpolates matching transforms, honoring group masks, pivots, angular wrapping and interpolation flags.');
+method('wj', 'a', '(ILkk;IIZ)V', 'buildFaceDepthBuckets', 'Culls backfacing or unprojected faces when requested and buckets the remaining faces by projected depth, counting their optional priorities.');
+method('th', 'a', '(II[B[II)V', 'groupFaceBucketsByPriority', 'Flattens the shared face depth buckets into priority-grouped output ranges using the supplied face priorities and insertion offsets.');
+
+method('pl', 'a', '(IILqb;IBIIZ)V', 'findValidGameOptionCombination', 'Recursively searches permitted player counts and game options for a combination that satisfies the restriction rules, recording incompatible choices for UI feedback.');
+method('qt', 'd', '(I)Z', 'isTutorialLessonComplete', 'Tests the current lesson possession, player position, team control and scripted off-pitch conditions that allow the tutorial to advance.');
+method('qv', 'a', '(Liw;IILbu;)V', 'readReflectionCheckRequest', 'Reads queued field and method reflection operations and serialized arguments, requests platform lookups and records the original per-operation error codes.');
+method('ra', 'a', '(ZILiw;Lqb;)V', 'readLobbyGameSetup', 'Reads player limits, game flags, option bytes, time and host metadata and the optional participant-name list into a lobby setup panel.');
+
+method('gs', 'c', '(I)V', 'readFreeChatPermission', 'Clears the date-entry prompt flag and reads whether unrestricted chat is permitted from the incoming byte.');
+method('ph', 'a', '(Z)Z', 'isFreeChatAllowed', 'Returns the inverse of the shared free-chat restriction flag.');
+method('jg', 'a', '(ILcn;B)V', 'configureMenuButtonLayout', 'Installs the shared menu-button font, sets its volume-slider width and derives the label or slider layout offset.');
+method('jh', 'a', '(IB)V', 'setTournamentChatColor', 'Sets the channel-four chat color used by tournament and tournament-match chat.');
+method('kc', 'a', '(II)V', 'initializeCurrencyDisplay', 'Sets the displayed and target bank amounts to the supplied value and resets the animated difference and stack height.');
+method('oe', 'c', '(I)V', 'validateSelectionGuard', 'Retains the selection compatibility hook, which changes no state on a valid guard.');
+method('oh', 'a', '(I)V', 'startLoginAfterRegistration', 'Starts the shared account request using the stored registration password and account name and marks the registration-login path.');
+method('oh', 'b', '(I)Z', 'isAccountRequestConnected', 'Requires a nonnull account socket and the connected account protocol stage.');
+method('oi', 'a', '(I)V', 'releaseAwtLoadingResources', 'Clears the shared AWT loading-bar image and font references.');
+method('oi', 'b', '(I)Z', 'canUseMemberTrinkets', 'Requires account trinkets to be enabled and a positive membership value.');
+method('qo', 'c', '(B)Z', 'hasPrivilegedPlatformAccess', 'Returns whether the shared platform dispatcher exists and enables its privileged-task mode.');
+method('u', 'a', '(Z)Ljava/lang/String;', 'getVisibleTextTooltip', 'Returns the pending plain-tooltip text only during its active dwell-time interval and when tooltip display is enabled.');
+method('wq', 'b', '(B)I', 'getMenuPanelWidth', 'Returns the difference between the current menu panel right and left boundaries.');
+method('qs', 'a', '(IIII)V', 'recordPurchasedShopPlayer', 'Records the purchased shop entry, rebuilds and resorts rows without losing scroll position and highlights the corresponding squad slot.');
+method('rn', 'a', '(Ldg;ILdg;III)V', 'configureSharedPanelStyles', 'Stores the shared panel painters and spacing values consumed by the chat and side-panel renderers.');
+
+method('pu', 'a', '(ZI[[ZB[[ZII)Lvn;', 'createAlternateFootballerMesh', 'Builds the alternate footballer body path with optional enlargement, head choice, base recoloring and the two kit-pattern masks.');
+method('rm', 'a', '(IIBLjava/lang/String;IIIII)V', 'drawRankingRow', 'Draws alternating ranking-row cells, rank and player name, rating, match total and the three result percentages.');
+method('rp', 'a', '(ZI)I', 'updateContentCarousel', 'Advances carousel timing and item changes and processes pointer, arrow-key, activation and escape actions for its paired controls.');
+method('rt', 'a', '(Ljava/net/URL;Ljava/lang/String;ILjava/lang/String;Z)Ljava/net/URL;', 'rewriteAppletUrl', 'Rewrites the leading language, settings and session path segments while preserving affiliate segments and the remaining URL path.');
+
+method('gg', 'a', '(IILtj;)V', 'computeGoalkeeperTarget', 'Projects the two goalposts toward the ball and stores their midpoint at the keeper goal-line offset.');
+method('gt', 'c', '(I)Lak;', 'createTutorialTargetMarker', 'Creates the rotating and pulsing type-five world marker from a copy of the tutorial marker sprite.');
+method('ir', 'a', '(ZI)V', 'drawSharedLobbyPanels', 'Draws the shared lobby, optional social tabs and text panel, disabling input while a blocking popup is present.');
+method('la', 'a', '(Lnu;I)V', 'initializeTutorial', 'Stores the tutorial match, creates its target marker, selects the scripted players and starts the first lesson.');
+method('la', 'b', '(I)Z', 'isRegistrationNewsOptIn', 'Returns the newsletter checkbox value retained by beginAccountRegistration.');
+method('mg', 'a', '(B)V', 'playSplashExitSound', 'Starts sound forty-three when available and schedules its fade as the splash is left.');
+method('ng', 'a', '(I)Z', 'isFullscreenPromptOpen', 'Returns the flag set when building the fullscreen prompt menu and cleared on dismissal.');
+method('ng', 'a', '(II)V', 'setLoadingDestination', 'Stores the pending match-loading destination and resets the loading detail and completion flag.');
+method('nl', 'e', '(I)Z', 'usesCardinalOrDashMovement', 'Tests the opposing direction-bit pairs or action four, selecting the cardinal or dash movement case.');
+method('nv', 'a', '(IDDII)V', 'configureSimulatedNetworkLag', 'Sets inbound and outbound packet delay and Gaussian jitter, creating or releasing the corresponding delayed-packet queues.');
+method('nv', 'i', '(I)Z', 'isLoginTransitionActive', 'Tests whether the current and target shared login transition states differ.');
+method('lu', 'a', '(II)V', 'sendHostedGamePreferences', 'Writes game-control subtype five with the hosted player limit, flags and option bytes and backpatches its payload length.');
+method('mp', 'a', '(IB)V', 'sendMatchmakingCancellation', 'Writes the game-control subtype-three cancellation used by the waiting lobby controls.');
+method('oa', 'a', '(ZIIZI[B)V', 'sendGameSetupPreferences', 'Writes game-control subtype four with player count, packed flags and the supplied option bytes.');
+method('pw', 'b', '(IC)Z', 'isAllowedPriceCharacter', 'Tests a character against the shared whitelist used by auction-price input.');
+method('qi', 'b', '(I)I', 'getBigCommandValue', 'Returns the constant one hundred eighty for the valid guard, as consumed by the big console command.');
+method('qp', 'a', '(IZI)Ljava/lang/String;', 'formatAuctionLogMessage', 'Selects the localized auction-log text for an event and substitutes formatted amounts and the net sale value where required.');
+method('qq', 'g', '(B)I', 'getRegistrationAge', 'Returns the numeric age retained from the registration age field.');
+method('qq', 'h', '(B)Lhd;', 'getFriendsListContent', 'Returns the content node of the shared friends-list scroll pane.');
+method('qt', 'f', '(B)Lhd;', 'getIgnoreListContent', 'Returns the content node of the shared ignore-list scroll pane.');
+method('re', 'a', '(I)V', 'drawPromptRows', 'Draws centered shared prompt rows with selected and disabled styles, substituting the reconnect countdown when active.');
+method('re', 'a', '(ZI)Lak;', 'createGoalSceneryEntry', 'Creates a type-three world draw entry whose end-of-pitch flag selects goal scenery.');
+method('re', 'b', '(I)V', 'advancePitchLoading', 'Advances pitch, scenery and audio loading, reports progress and rebuilds the selected pitch graphics when invalidated.');
+method('rg', 'a', '(II)V', 'updateLogoMeshRotation', 'Computes the per-model eased pitch and yaw transform from the current logo-sequence tick.');
+method('rv', 'a', '(IIB)V', 'drawLogoSequence', 'Renders the logo model or static image with the sequence fades, additive shine and caption into the supplied position.');
+method('pe', 'b', '(I)V', 'disableTournamentChatPrefix', 'Clears the flag selecting tournament context in outgoing chat labels.');
+method('ui', 'h', '(I)V', 'enableTournamentChatPrefix', 'Sets the flag selecting tournament context in outgoing chat labels.');
+method('ph', 'a', '(B)V', 'refreshFullscreenPrompt', 'Rebuilds the fullscreen prompt menu if its open flag is set.');
+method('sb', 'b', '(B)V', 'initializeTutorialMessages', 'Populates the shared tutorial message table from the loaded localized strings.');
+method('tu', 'b', '(III)V', 'sendSpectatorGameRequest', 'Writes game-control subtype ten with the requested game identifier, including zero when leaving the spectator game.');
+method('vg', 'e', '(II)Z', 'disableSimulatedNetworkLag', 'Disables both packet delay queues while retaining the configured jitter values and returns success.');
+
+method('ok', 'a', '(IILjava/util/Random;)Leg;', 'createRandomlyRecoloredModel', 'Copies a shared model template, replaces color nine hundred thirty-five with randomized HSL and creates the lit model mesh.');
+method('ok', 'a', '(Ljava/lang/CharSequence;B)[B', 'encodeCp1252', 'Encodes the complete character sequence as CP1252, preserving its extension table and replacing unsupported characters with question marks.');
+method('op', 'a', '(I)V', 'initializeMinimapPitchSprite', 'Draws the pitch boundary, halfway line, circle and penalty areas at double size and downsamples them into the minimap backing sprite.');
+method('op', 'a', '(IBLjava/lang/String;)V', 'parseFormationCoordinates', 'Parses four comma-separated x and y coordinate pairs into the indexed formation layout.');
+method('os', 'a', '(I)V', 'allocateDirectionalIndicatorSprites', 'Allocates the intermediate and rotated directional-indicator rasters using the loaded HUD arrow dimensions.');
+method('p', 'a', '(Z)V', 'configureTutorialPlayAreas', 'Selects the lesson movement and ball boundaries, retaining the distinct allowed regions for each tutorial lesson.');
+method('pa', 'b', '(B)V', 'positionSlidingLobbyPanels', 'Positions the two shared lobby panels using the quadratic slide progress and current raster dimensions.');
+method('pt', 'b', '(I)I', 'getEventAmount', 'Returns the listing amount serialized with the auction event and used by its localized log message.');
+method('rg', 'a', '(BZ)V', 'drawChatOverlays', 'Draws the shared overlay and Quick Chat content, disabling pointer input while a blocking popup exists.');
+method('rg', 'a', '(I)V', 'requestGameExit', 'Sends opcode nine and marks the shared game-exit operation pending until its response arrives.');
+method('sb', 'a', '(IIIIB)V', 'configurePromptTextMetrics', 'Sets the shared prompt baseline, row height and additional text-layout metrics consumed by prompt row rendering.');
+method('sb', 'a', '(ZBII)V', 'beginGameLoading', 'Resets loading progress and details, records the loading mode and target and switches to client stage eighteen.');
+method('sb', 'a', '(ZZI)V', 'updateFriendsListActions', 'Processes the shared social row, adds its game-setup context actions and updates the friend row layout.');
+method('so', 'a', '(IZZZ)V', 'updatePitchAmbientMusic', 'Starts the park or beach ambient track when requested, or configures its fade-out step.');
+method('tr', 'c', '(I)Z', 'blocksGameInput', 'Tests whether the overlay captures input or Quick Chat help is active over a playing or tournament screen.');
+method('u', 'a', '(B)Z', 'pollDownload', 'Polls URL and JAGGRAB connection tasks, starts the reader thread and retries through the supported download paths.');
+method('vi', 'c', '(B)V', 'sendTournamentRoundExit', 'Sends opcode eighty-eight with the active tournament round and marks its exit request pending.');
+method('us', 'a', '(B)I', 'getLogoStartDelayMillis', 'Returns the delay converted to logo ticks by initializeLogoSequence when the account interface becomes ready.');
+method('ws', 'a', '(B)V', 'requestAccountInterface', 'Opens the account interface when necessary, sets client stage eleven and marks its pending loading warning.');
+method('wv', 'a', '(IILjava/lang/String;)V', 'showRequestResponse', 'Replaces the account request progress view with its response message and code-specific retry, recovery, link or confirmation actions.');
+method('wv', 'r', '(I)V', 'showConnectionRestored', 'Changes the progress colors and displays the connection-restored message with its return-to-game button.');
+
+method('na', 'i', '(I)V', 'readLobbyUpdate', 'Dispatches lobby packet subtypes for players, games, invitations, matchmaking, hosted membership, limits and shared lobby identifiers.');
+method('nv', 'a', '(II)V', 'requestReturnToLobby', 'Writes the game-control subtype-one request used by the return-to-lobby button.');
+method('ov', 'a', '(II)V', 'requestRatedMatchmaking', 'Writes game-control subtype zero when the play-rated lobby action passes its availability checks.');
+method('pt', 'a', '(ZI)V', 'requestRatedMatchmaking', 'Writes the same game-control subtype-zero request, preserving this compatibility entry point.');
+method('pp', 'b', '(I)V', 'buildPitchWorldDecorations', 'Creates the theme-specific world decoration lists, including randomized trees, beach props and street decorations.');
+method('se', 'a', '(ZII)Lgg;', 'updateFriendsListRows', 'Lays out friend status and name rows, updates tooltips and context menus and opens add or remove name prompts.');
+method('sr', 'a', '(IIZBII)[Lkg;', 'buildStadiumCrowdFrames', 'Builds the six indexed crowd frames with theme-tinted seat rows and optionally randomized animated spectators.');
+method('tc', 'a', '(II)V', 'updateCurrencyAnimation', 'Moves the displayed currency toward its target, updates the difference and stack height and exposes the currency tooltip on hover.');
+method('ti', 'a', '(IZ)V', 'drawSharedSidebarPanels', 'Clips and draws the sliding lobby sidebars and hosted or matchmaking panels with their input-enabled styles.');
+method('tq', 'a', '(BZ)V', 'setMovementKeyLayout', 'Selects the keyboard layout used to draw the tutorial movement and dash key hints.');
+method('tq', '$cfr$intArgs$a$7ffe4b125357', '(IZ)V', 'setMovementKeyLayout', 'Full-integer guard overload selecting the same tutorial key-hint layout.');
+method('tq', 'a', '(IZIIZB)[Lut;', 'createGradientPanelRowSprites', 'Creates the middle row of a nine-slice panel with a vertical gradient and optional cut-out upper corners.');
+method('ue', 'a', '(B)V', 'drawGoalScoreOverlay', 'Draws the animated goal-score banner, team icons, names and changing score digits with its opening and closing fades.');
+method('uf', 'c', '(I)Z', 'isStartupInterfaceActive', 'Selects startup-interface processing while its loading stage or account readiness requires it, preserving the original compatibility predicate.');
+method('wf', 'a', '(ILut;)[[[Lut;', 'createMovementKeySprites', 'Builds the arrow and letter keyboard-hint sprites for each direction and normal or pressed state.');
+
+method('kw', 'b', '(I)V', 'showLoginAndSetClientStage', 'Requires an active session, marks the login prompt and opens its flagged form before setting the supplied client stage.');
+method('lm', 'c', '(I)Z', 'hasTournamentAssignment', 'Tests the nonzero assignment status read with the tournament lobby packet.');
+method('pq', 'g', '(B)V', 'showLoginAndResetClientStage', 'Requires an active session, marks the login prompt, opens its unflagged form and resets the client stage to zero.');
+method('ri', 'a', '(Lsj;[II[Lkg;Lsj;)V', 'initializeLobbyWidgetStyles', 'Loads lobby fonts, inline crowns and icons, panel and button skins, context-menu styles and the shared scrollbar templates.');
+method('ud', 'a', '(IIII)Z', 'handleChatShortcutKey', 'Routes Quick Chat keys and expanded chat input, dismisses the phrase popup and handles submit or cancel shortcut state.');
+method('ud', 'a', '(ZIZIZZIZIZ)V', 'updateSharedLobbyInterface', 'Updates the common panel transitions and layout, hosted and matchmaking controls, game rows and player rows.');
+method('ud', 'c', '(II)Z', 'isDeferredTypingKey', 'Selects typing and editing key codes deferred by the applet event loop, excluding modified control-key combinations.');
+method('vg', 'b', '(II)V', 'setLoadingLanguage', 'Selects the localized update-server, loading and status strings from their language-indexed tables.');
+method('vl', 'b', '(I)Z', 'isSpecialRewardEnabled', 'Returns the server entitlement bit used to gate the special achievement row and trinket seventy-three, preserving the guard predicate.');
+method('vo', 'a', '(B[B)V', 'decodeSpriteSheet', 'Decodes sprite dimensions, offsets, shared palette and row- or column-ordered pixel and optional alpha planes into the shared sprite tables.');
+method('w', 'a', '(ZZIIZII)V', 'updateLobbyGameRows', 'Builds and lays out lobby game rows, privacy and option icons, participants, times and status notices, then handles tooltips and join or spectate actions.');
+method('wp', 'a', '([I[BI[Ljava/lang/String;II[[Ljava/lang/String;[[Lut;[Ljava/lang/String;Lsj;[[Lut;[Ljava/lang/String;[[Ljava/lang/String;B[B)V', 'initializeLobbyGamePanels', 'Stores game-option labels and assets and builds the lobby game list, rated and hosted controls, participant panes and option menus.');
+method('qf', 'a', '(II)Z', 'isTextureReady', 'ModelMesh retains a face texture identifier only when this provider query succeeds; otherwise it stores minus one.');
+method('qf', 'b', '(II)I', 'getTextureAlphaMode', 'TriangleRasterizer selects its opaque textured scanline path when this provider mode is zero and skips zero texels otherwise.');
+
 export const kickConfig = {
   game: 'kickabout', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   workflowFiles: ['build-kickabout-rules.mjs', 'reproduce-kickabout.mjs', 'reviewed-game.mjs',
@@ -4072,7 +4251,7 @@ export const kickConfig = {
     return ['# Reading Kickabout', '',
       'This directory is the single published Java tree. The scripts and reviewed rules live in dekobloko-work/readable; the current reverse dictionary is ../../decompilation/kickabout-naming.json.', '',
       `Resolved declarations: ${coverage.namedClasses}/${coverage.classes} classes and ${coverage.namedMethods}/${coverage.methods} methods have readable names; ${coverage.constructors} constructors follow their class names.`,
-      `Remaining: ${coverage.unresolvedClasses.length} opaque class names and ${coverage.unresolvedMethods.length} opaque method names. The complete naming goal is still in progress.`,
+      `Remaining: ${coverage.unresolvedClasses.length} opaque class names and ${coverage.unresolvedMethods.length} opaque method names. ${coverage.complete ? 'All resolved class and method declarations have readable names.' : 'The complete naming goal is still in progress.'}`,
       'Audit with `node readable/naming-coverage.mjs kickabout` in dekobloko-work; it exits unsuccessfully while opaque names remain.', '',
       'Start with `CommonGame` for match phases and agents; `ParticipantAgent`, `TeamSelectionAgent`, `FormationAgent` and `LineupAgent` handle participant/team choices. `FootballerAgent`, `BallAgent` and `GoalStateAgent` hold play state.', '',
       '`LobbyMatchPreview`, `FootballerPreview` and `WorldDrawEntry` cover lobby previews and scene ordering. `MarkerSliderWidget`, `RotaryDialWidget` and their painters expose the custom controls. `QuickChatCategoryCache` / `QuickChatCategory` and `AnimationFrameset` describe shared definition loading.', '',
