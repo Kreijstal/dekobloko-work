@@ -222,7 +222,46 @@ public class KickaboutCoreProbe {
     check("controller reset pan",midiValues(midi,"${f('ru','E','[I')}")[2],8192);
     check("controller reset bend",midiValues(midi,"${f('ru','v','[I')}")[2],8192);
   }
-  public static void main(String[] args) throws Exception {sprites();requests();dates();categories();audio();midi();System.out.println("checks:"+checks);}
+  static void textAndNumbers() {
+    // Explicit boundary fixtures: character, ASCII alphanumeric, name separator,
+    // client-printable. Include characters Java classifies more broadly.
+    for(int[] row:new int[][]{{0,0,0,0},{31,0,0,0},{32,0,1,1},{45,0,1,1},
+      {47,0,0,1},{48,1,0,1},{57,1,0,1},{58,0,0,1},{64,0,0,1},{65,1,0,1},
+      {90,1,0,1},{91,0,0,1},{95,0,1,1},{96,0,0,1},{97,1,0,1},{122,1,0,1},
+      {123,0,0,1},{127,0,0,0},{160,0,1,1},{255,0,0,1},{256,0,0,0},
+      {338,0,0,1},{339,0,0,1},{376,0,0,1},{8212,0,0,1},{8364,0,0,1},{0xffff,0,0,0}}) {
+      char ch=(char)row[0];
+      check("ASCII boundary "+row[0],${c('vt')}.${m('vt','a','(CZ)Z')}(ch,true),row[1]!=0);
+      check("separator "+row[0],${c('ca')}.${m('ca','a','(ZC)Z')}(false,ch),row[2]!=0);
+      check("display character "+row[0],${c('rr')}.${m('rr','a','(IC)Z')}(-110,ch),row[3]!=0);
+    }
+    for(int[] row:new int[][]{{0,0},{1,1},{2,2},{3,4},{7,8},{15,16},{16,16},
+      {17,32},{1025,2048},{0x40000000,0x40000000},{0x40000001,Integer.MIN_VALUE}})
+      check("power of two "+row[0],${c('ig')}.${m('ig','a','(BI)I')}((byte)6,row[0]),row[1]);
+    check("short class",${c('dr')}.${m('dr','a','(ILjava/lang/Class;)Ljava/lang/String;')}(-126,String.class),"String");
+    check("array class",${c('dr')}.${m('dr','a','(ILjava/lang/Class;)Ljava/lang/String;')}(-126,int[][].class),"int[][]");
+  }
+  static void colorMoments() {
+    int[][][] count=new int[33][33][33],red=new int[33][33][33];
+    int[][][] green=new int[33][33][33],blue=new int[33][33][33];
+    double[][][] squares=new double[33][33][33];
+    for(int r=1;r<=3;r++)for(int g=1;g<=4;g++)for(int b=1;b<=2;b++) {
+      count[r][g][b]=1;red[r][g][b]=r;green[r][g][b]=g;blue[r][g][b]=b;
+      squares[r][g][b]=r*r+g*g+b*b;
+    }
+    ${c('ld')}.${m('ld','a','([[[I[[[I[[[D[[[I[[[IZ)V')}(count,red,squares,green,blue,false);
+    // Compare the optimized prefix tables with direct sums over the input cells.
+    for(int[] point:new int[][]{{1,1,1},{2,3,1},{32,32,32}}) {
+      int n=0,rs=0,gs=0,bs=0,ss=0;
+      for(int r=1;r<=Math.min(3,point[0]);r++)for(int g=1;g<=Math.min(4,point[1]);g++)
+        for(int b=1;b<=Math.min(2,point[2]);b++) {n++;rs+=r;gs+=g;bs+=b;ss+=r*r+g*g+b*b;}
+      int r=point[0],g=point[1],b=point[2];
+      check("prefix weight",count[r][g][b],n);check("prefix red",red[r][g][b],rs);
+      check("prefix green",green[r][g][b],gs);check("prefix blue",blue[r][g][b],bs);
+      check("prefix squares",squares[r][g][b],(double)ss);
+    }
+  }
+  public static void main(String[] args) throws Exception {sprites();requests();dates();categories();audio();midi();textAndNumbers();colorMoments();System.out.println("checks:"+checks);}
 }
 `);
     const sources=sourceInventory(readable?named:input);
@@ -233,12 +272,14 @@ public class KickaboutCoreProbe {
   }
   assert.equal(outputs[0],outputs[1],'raw and named probe outcomes differ');
   const checks=Number(/^checks:(\d+)$/.exec(outputs[0])?.[1]);
-  assert.ok(checks>=630,'the complete independent probe must execute');
+  assert.ok(checks>=740,'the complete independent probe must execute');
   return {status:'passed',variants:['raw','named'],assertionsPerVariant:checks,
     coverage:['rectangular sprite reflections','copy versus in-place mutation','clockwise rotation and trim offsets',
       'availability request completion, result and query retention',
       'Gregorian calendar boundaries including century leap years',
       'Quick Chat tagged decoding, record boundaries and global ID marking',
       'PCM forward/reverse mixing, mono/stereo pan, inactive skipping, gain ramps and summing',
-      'MIDI controller, program/bank and pitch-bend dispatch'],fullGameplayVerified:false};
+      'MIDI controller, program/bank and pitch-bend dispatch',
+      'text character boundaries, power-of-two rounding and reflective type names',
+      'summed color moments versus direct input-cell sums'],fullGameplayVerified:false};
 }
