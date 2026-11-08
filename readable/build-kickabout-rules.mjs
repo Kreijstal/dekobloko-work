@@ -1802,6 +1802,176 @@ field("it", "p", "I", "team", "LineupAgent uses this field as the first index of
 field("it", "j", "I", "participantIndex", "Constructor receives the CommonGame participant-loop index and stores it here.");
 field("vv", "p", "Z", "pending", "Volatile flag tested by both network and disk requests before returning completed bytes.");
 
+// Archive/configuration records and the canvas policy are identified by their
+// instance state and callers, independently of unrelated moved static helpers.
+Object.assign(classes, {
+  ag: ['SoundStreamHandle', 'Node retains a PCM sample stream, its unscaled target volume and the owning node; sound-volume changes rescale these registered streams.'],
+  bt: ['QuickChatCategoryCache', 'Loads and caches tc category definitions from the local or global Quick Chat archive, setting the global ID bit for IDs >= 32768.'],
+  tc: ['QuickChatCategory', 'Tagged definition contains a description, child category IDs and phrase IDs with keyboard shortcuts, with optional global-ID marking.'],
+  cl: ['FullscreenDisplayMode', 'Fullscreen mode enumeration stores four integers from the platform result: width, height, bit depth and refresh rate.'],
+  ef: ['AnimationFrameset', 'Loads all animation frame files in a group, reuses skeletons by ID and releases pending bytes after constructing AnimationFrame entries.'],
+  hl: ['DateInputValidator', 'Evaluates the day, zero-based month and year of a DateInputWidget, rejecting invalid calendar dates and implausible birth years.'],
+  kh: ['CanvasResizePolicy', 'Clamps requested canvas dimensions to minimum/maximum sizes and an optional aspect ratio, notifies ro and restores the saved size after fullscreen.'],
+  ro: ['CanvasResizeListener', 'Canvas policy invokes this callback with a guard plus the new width and height whenever it changes the canvas size.'],
+  kj: ['LoginKind', 'Small integer-valued token returned by the getLoginKind contract on LoginCredentials and its subclasses.'],
+  mw: ['DirectSoundBackend', 'Legacy audio backend allocates Microsoft DirectSound descriptors and cursors for two output buffers.'],
+  cs: ['LegacySoundBackend', 'Empty marker interface implemented by the Microsoft DirectSound backend; it defines no operations in this export.'],
+  oc: ['ArchivePreloadEntry', 'ArchivePreloader constructs entries holding an archive, group/file names, optional whole-archive name and numeric group ID for progress polling.'],
+  oq: ['VorbisMapping', 'Vorbis setup mapping reads the submap count and mux, then floor and residue IDs for each submap.'],
+  qf: ['TextureProvider', 'TriangleRasterizer requests brightness-adjusted texels, average colors, texture size flags and transparency mode from this interface.'],
+  vs: ['PlayerPortraitCacheEntry', 'Cached rendered footballer portrait plus a copied PlayerStats and appearance key; a 64-entry move-to-front cache reuses the image.'],
+  wn: ['AccountRegistrationResponse', 'RegistrationRequestDialog consumes its success/terms flags, response code, message and alternative-name suggestions.'],
+});
+method('bt', 'a', '(II)Ltc;', 'getCategory', 'Looks up the category ID in a weighted cache, loads the appropriate archive file, decodes it and marks global IDs when needed.');
+method('bt', 'a', '(IZI)Lut;', 'buildStadiumSeatColumn', 'Builds a sprite from a stadium-seat top cap, the requested number of repeated middle pieces and a bottom cap.');
+method('bt', 'a', '(Z)V', 'releaseStatics', 'Clears this class static image, text, layout and integer-array references, preserving the original guard.');
+method('bt', 'b', '(I)Z', 'advanceScriptedTutorialPlayers', 'Branches on the tutorial step and advances its footballers to scripted pitch coordinates, reporting whether they have arrived.');
+method('tc', 'a', '(I)V', 'markGlobalIds', 'Sets bit 32768 in every child-category and phrase ID.');
+method('tc', 'a', '(IZLiw;)V', 'decodeOpcode', 'Decodes category description, child-category shortcuts, phrase shortcuts and the tag-4 flag.');
+method('tc', 'a', '(Liw;I)V', 'decode', 'Reads tagged category fields until the zero terminator.');
+method('ef', 'g', '(B)Z', 'ensureLoaded', 'Returns true once all frames and skeletons are available, constructs the frameset and releases its buffered file bytes.');
+method('ef', 'a', '(Ljava/lang/CharSequence;I)Z', 'isAllowedDisplayName', 'Combines the display-name validity check with the per-character account-name whitelist.');
+method('cl', 'a', '(ZIII)Z', 'isValidCalendarDate', 'Checks the zero-based month range and that the day is between one and the month length for the supplied year.');
+method('kh', 'a', '(B)V', 'applySizeConstraints', 'Clamps width/height to the configured range and aspect ratio, calls the resize listener on changes and updates horizontal centering.');
+method('kh', 'a', '(BLut;)[Lut;', 'centerOnlyPanelSlices', 'Creates a nine-slice array with the supplied sprite in the center and null border slices.');
+method('kh', 'a', '(I)V', 'restoreSavedSize', 'Notifies the resize listener with the width/height remembered before entering fullscreen.');
+method('kh', 'a', '(III)V', 'setAvailableSize', 'Stores the available width and height used by the constraint calculation.');
+method('kh', 'b', '(I)Lvq;', 'enterFullscreen', 'Saves the current canvas size, notifies the listener of the fullscreen dimensions and restores the size if fullscreen creation fails.');
+method('kh', 'c', '(I)V', 'updateCanvasSize', 'Ticks the automatic-resize interval or reapplies the fixed size, preserving the splash-screen and platform capability checks.');
+method('kh', 'e', '(I)Z', 'canAutoResize', 'Tests the platform capability/version thresholds required by the automatic size policy.');
+method('ro', 'a', '(III)V', 'resizeCanvas', 'Callback receives an obfuscation guard, target width and target height from CanvasResizePolicy.');
+method('kj', 'a', '(II)V', 'enqueueHelpTipDialog', 'Appends a new HelpTipDialog for the supplied tip to the pending modal deque.');
+method('kj', 'a', '(IIIII)V', 'drawBeveledFrame', 'Draws top and bottom horizontal borders plus grayscale side borders with a vertical shade ramp.');
+method('kj', 'a', '(IILup;IIZ)Lot;', 'getPlayerPortrait', 'Searches the portrait cache by stats and appearance; renders the least-recent entry subject to the 80 ms throttle when missing.');
+method('oc', 'c', '(B)Lut;', 'buildFirstDecodedSprite', 'Expands palette indices and optional alpha of the first decoded sprite into Sprite or ArgbSprite, then releases the sheet buffers.');
+method('oc', 'a', '(B)V', 'clearAccountChoiceResources', 'Resets the account-choice flag and clears the related layout references.');
+method('hl', 'f', '(I)V', 'releaseStatics', 'Clears this class static layout and indexed-sprite references under the original guard.');
+method('wn', 'a', '(CILjava/lang/CharSequence;)I', 'countCharacterFrom', 'Counts occurrences of the supplied character from the given starting index to the end of a character sequence.');
+method('vs', 'a', '(IIILup;ZI)V', 'renderPortrait', 'Copies player stats and appearance into the cache key, renders the footballer into a scratch surface and downsamples to the portrait.');
+method('vs', 'a', '(II)Z', 'isFadingSoundActive', 'Scans the active fading-sound deque and compares each entry sound ID.');
+method('vs', 'a', '(IJ)I', 'millisToMinutes', 'Divides the supplied millisecond count by 60000 and converts the result to int.');
+method('vs', 'a', '(Ljava/lang/String;[Ljava/lang/String;BI)V', 'completeAccountRegistration', 'Converts the server result code into a successful registration response, name suggestions or a failure message.');
+method('qf', 'a', '(FBI)[I', 'getTexturePixels', 'TriangleRasterizer passes the brightness and texture ID and uses the returned int array as texels.');
+method('qf', 'a', '(BI)I', 'getAverageTextureColor', 'TriangleRasterizer uses the result as the base color for shaded triangles when texture pixels are unavailable.');
+method('qf', 'a', '(ZI)Z', 'isLowDetailTexture', 'Controls the raster span branch using 64-by-64 texel addressing instead of the 128-by-128 branch.');
+field('ag', 'i', 'Lvm;', 'stream', 'PCM sample stream retained for later volume updates.');
+field('ag', 'j', 'I', 'baseVolume', 'Unscaled target volume captured before applying the global volume factor.');
+field('ag', 'k', 'Lgn;', 'owner', 'Owning intrusive node; sound registry cleanup removes handles once it is no longer linked.');
+field('bt', 'f', 'Leq;', 'cache', 'Weighted category cache keyed by category ID.');
+field('bt', 'g', 'Lsj;', 'globalArchive', 'Archive read for category IDs with bit 32768 set.');
+field('bt', 'h', 'Lsj;', 'localArchive', 'Archive read for category IDs below 32768.');
+field('cl', 'f', 'I', 'width', 'First integer of each four-integer platform display mode.');
+field('cl', 'b', 'I', 'height', 'Second integer of each platform display mode.');
+field('cl', 'e', 'I', 'bitDepth', 'Third integer of each platform display mode.');
+field('cl', 'a', 'I', 'refreshRate', 'Fourth integer of each platform display mode.');
+field('ef', 'o', 'I', 'groupId', 'Archive group requested by ensureLoaded.');
+field('ef', 'r', '[[B', 'pendingFrameBytes', 'Raw frame bytes held until all required skeletons become available, then cleared.');
+field('ef', 'q', '[Ldb;', 'frames', 'Decoded frames indexed by archive file ID.');
+field('hl', 'g', 'Lcj;', 'dateInput', 'Date widget read by the validator for day, month and year.');
+field('kh', 'j', 'Lro;', 'resizeListener', 'Callback receiving all canvas-size changes.');
+field('oq', 'b', 'I', 'submapCount', 'Mapping count read from the Vorbis setup bitstream.');
+field('oq', 'c', 'I', 'mux', 'Submap selector read when the mapping has multiple submaps.');
+field('oq', 'a', '[I', 'floorIds', 'One floor index read for each submap.');
+field('oq', 'd', '[I', 'residueIds', 'One residue index read for each submap.');
+field('wn', 'g', 'Z', 'success', 'Constructor flag checked by RegistrationRequestDialog before showing account-created text.');
+field('wn', 'c', 'Z', 'needsTerms', 'Success path opens AccountTermsPanel when this flag is set.');
+field('wn', 'd', 'Ljava/lang/String;', 'message', 'Server-provided failure message shown by the registration dialog.');
+field('wn', 'e', 'I', 'responseCode', 'Numeric response code used by registration error handling.');
+field('wn', 'f', '[Ljava/lang/String;', 'nameSuggestions', 'Alternative account names offered after a name rejection.');
+field('vs', 'd', 'Lup;', 'playerStats', 'Copied player statistics used to validate portrait-cache hits.');
+field('vs', 'h', 'Lot;', 'portrait', 'Rendered and downsampled portrait returned by the cache.');
+field('tc', 'r', 'Ljava/lang/String;', 'description', 'Tag 1 supplies the category display text.');
+field('tc', 'o', '[I', 'subcategoryIds', 'Tag 2 supplies child-category IDs and their keyboard shortcuts.');
+field('tc', 'q', '[C', 'subcategoryShortcuts', 'Shortcut characters parallel to the tag-2 child-category IDs.');
+field('tc', 'n', '[I', 'phraseIds', 'Tag 3 supplies phrase IDs and their keyboard shortcuts.');
+field('tc', 'p', '[C', 'phraseShortcuts', 'Shortcut characters parallel to the tag-3 phrase IDs.');
+field('tc', 't', 'Z', 'tagFourEnabled', 'Flag set by category opcode 4; its further behavior is not present in this export.');
+
+Object.assign(classes, {
+  dg: ['NineSlicePanelPainter', 'Base panel painter delegates its bounds and sprite array to the nine-slice rendering routine; two subclasses provide alternative panel backgrounds.'],
+  nk: ['TexturedPanelPainter', 'Panel painter draws a clipped backdrop sprite with an additive highlight and two inset borders.'],
+  pa: ['GeneratedPanelPainter', 'Panel painter requests a width-specific generated panel sprite from AccountRegistrationPanel using its constructor-selected style.'],
+  cr: ['LinkTextPainter', 'Draws underlined widget text with hover/focus colors and a focus rectangle aligned to the text.'],
+  du: ['MarkerSliderPainter', 'Draws the nv slider track and one circular marker for each stored value, plus its optional caption.'],
+  nv: ['MarkerSliderWidget', 'TextButton holding a growable list of marker positions and a maximum value; its painter maps these positions onto a horizontal track.'],
+  ei: ['RotaryDialPainter', 'Draws the circular s control, an angle-dependent pointer, optional reference marker and caption.'],
+  s: ['RotaryDialWidget', 'TextButton stores the current dial position, reference position, angular range, center and radius; pointer presses update its angle.'],
+  re: ['CheckboxPainter', 'Draws a checkbox square, crossed checked state and configurable text alignment/colors.'],
+  cg: ['CaptionedContainer', 'Single-child container paints a left- or right-side caption using its stored font, width, padding and color.'],
+  oh: ['WorldSpriteDecoration', 'Retains a sprite and world coordinates and draws it through the world-to-screen projection with viewport scaling.'],
+  bl: ['LobbyMatchPreview', 'Holds a lobby game record and participant names, renders a miniature pitch/score panel and sends its selection when clicked.'],
+  rl: ['PlayerArchetypeSortCriterion', 'Compares ShopPlayerSlot entries by the localized archetype name of each PlayerStats.'],
+  j: ['FootballerPreview', 'Owns one rendered footballer, advances its movement/pose and renders a half-size preview sprite.'],
+  ak: ['WorldDrawEntry', 'Depth-ordered scene entry can represent a footballer, ball, team goal or positioned sprite; it supplies a sort Y coordinate and dispatches rendering by kind.'],
+  rk: ['WorldSpriteSequence', 'Holds an indexed sprite sequence at fixed world coordinates and renders the requested frame at the viewport scale.'],
+  ng: ['ServerTextTemplate', 'Decodes a template ID and typed arguments from the network, then resolves literals or lookup-table values into a localized message.'],
+});
+method('dg', 'a', '(IIIII)V', 'drawPanel', 'Draws the stored nine-slice sprites in the supplied panel bounds; subclass overrides draw their custom backgrounds.');
+method('dg', 'a', '(B)V', 'releaseStatics', 'Clears this class static localized-text references under the original guard.');
+method('nv', 'a', '(B)I', 'getMarkerCount', 'Returns the size of the growable marker-position list.');
+method('nv', 'a', '(BI)I', 'getMarkerPosition', 'Returns the marker position at the requested index, or -1 when out of range.');
+method('nv', 'h', '(B)I', 'getMaximumValue', 'Returns the maximum used by MarkerSliderPainter to scale positions along its track.');
+method('nv', 'j', '(I)V', 'releaseStatics', 'Clears static layouts, sprites and lookup arrays while preserving the guard-dependent call.');
+method('ei', 'a', '(I)V', 'releaseStatics', 'Clears static sprite and lookup-table references under the original guard.');
+method('cg', 'k', '(I)V', 'releaseStatics', 'Clears static account layout and localized-text references.');
+method('oh', 'a', '(B)V', 'draw', 'Projects the stored world position and draws the sprite at the current viewport scale.');
+method('bl', 'a', '(I)V', 'draw', 'Draws the match preview background, pitch/player/ball markers or phase message and participant score strip.');
+method('bl', 'a', '(Lkp;ZI)V', 'update', 'Stores the current lobby record, computes hover/click state and sends the selected match slot to the server.');
+method('bl', 'a', '(B)Z', 'ensureBleachersLoaded', 'Requests the scenery/bleachers sprite sheet and returns true after it is available and decoded.');
+method('j', 'a', '(II)V', 'updatePose', 'Sets preview movement direction, advances movement and refreshes the footballer pose.');
+method('j', 'a', '(III)V', 'draw', 'Renders the owned footballer into a scratch surface and draws a half-size image, temporarily reversing facing for the opposite team.');
+method('j', 'a', '(BLjava/lang/String;Ljava/lang/String;)Z', 'containsForwardOrReversed', 'Checks whether the text contains either the supplied string or its reversal.');
+method('j', 'a', '(Z)V', 'releaseStatics', 'Clears the static string array, preserving the original guard-dependent sprite lookup.');
+method('ak', 'a', '(B)I', 'getSortY', 'Returns the world Y coordinate of the represented footballer, ball, goal or sprite for scene draw ordering.');
+method('ak', 'a', '(III)V', 'setSpritePosition', 'Stores sprite world X and its Y adjusted by half the sprite height.');
+method('ak', 'b', '(I)V', 'draw', 'Dispatches by entry kind to sprite drawing, rotating sprite drawing, footballer, ball or goal rendering.');
+method('ak', 'a', '(I)V', 'releaseStatics', 'Clears the static text/sprite references when the original guard matches.');
+method('rk', 'a', '(IZ)V', 'drawFrame', 'Projects the stored world coordinates and draws the selected sequence sprite at the current viewport scale.');
+method('ng', 'a', '(Lml;I)V', 'decode', 'Reads a template ID, argument count and typed literal-string or indexed arguments from the cipher packet buffer.');
+method('ng', 'a', '(B)Ljava/lang/String;', 'format', 'Resolves typed argument values from their lookup tables and substitutes them into the localized template.');
+method('rp', 'a', '(III)I', 'getDaysInMonth', 'Returns the month-length table value, with February adjusted by the Gregorian leap-year test.');
+
+Object.assign(classes, {
+  ff: ['QuickChatCommandType', 'Quick Chat phrase tag 3 looks up this integer command ID and reads the command-specific number of configuration parameters stored in field_d.'],
+  rn: ['VertexNormal', 'MeshData accumulates adjacent triangle normal vectors and a contribution count per vertex; ModelMesh divides the lighting dot product by that count.'],
+  ia: ['FaceNormal', 'MeshData stores one normalized cross-product vector for each flat-shaded triangle; ModelMesh uses it directly for lighting.'],
+  wp: ['LeaderboardParticipant', 'The high-score response parser fills a table of participant names and optional secondary names, marking each entry when included in the unique-participant view.'],
+  en: ['PlayerSurnameSortCriterion', 'Compares ShopPlayerSlot entries using the surname lookup indexed by player archetype and surname index.'],
+  tr: ['ClientUiOverlay', 'Registered with the common overlay stack; updates shared client UI, animates its viewport height, paints overlays and forwards captured keyboard input.'],
+});
+method('bb', 'a', '(BI)Lff;', 'getQuickChatCommandType', 'Looks up a command type by its numeric ID in the registered command-type array.');
+method('rp', 'b', '(I)[Lff;', 'getQuickChatCommandTypes', 'Returns the array of command-type singleton tokens consulted by Quick Chat phrase decoding.');
+method('rn', 'a', '(II)Lqt;', 'getMenuScreen', 'Returns the registered ButtonMenuScreen at the supplied screen index.');
+method('rn', 'b', '(II)I', 'sine', 'Looks up the angle masked to 2047 in the sine table used by model rotations.');
+method('ia', 'a', '(II)I', 'rotateLeftFourBits', 'Returns the 32-bit input rotated left by four bits.');
+method('ia', 'a', '(I)Lgq;', 'getSoundMixer', 'Returns the shared PCM stream mixer.');
+method('ia', 'a', '(ZI)V', 'completePendingAvailabilityCheck', 'Completes the pending AvailabilityCheckRequest with the supplied boolean result.');
+method('ia', 'a', '(B)V', 'releaseStatics', 'Clears static strings, digit characters and the request deque while preserving the original guard assignment.');
+method('en', 'b', '(B)V', 'releaseStatics', 'Clears static validation, integer-array and long-array references under the original guard.');
+method('tr', 'a', '(Z)V', 'releaseStatics', 'Clears static text and array references under the original guard.');
+method('tr', 'd', '(I)V', 'pushRasterState', 'Takes or allocates a RasterStateSnapshot, captures the current raster dimensions/pixels/clip and pushes it onto the active stack.');
+method('tr', 'b', '(I)Ljava/lang/String;', 'describeCurrentPacket', 'Formats current protocol-state values and packet bytes as a hexadecimal string for network error reports.');
+field('ff', 'a', 'I', 'id', 'Numeric command ID searched by getQuickChatCommandType.');
+field('ff', 'd', 'I', 'parameterCount', 'Number of unsigned-short configuration parameters decoded for each Quick Chat command.');
+field('rn', 'a', 'I', 'x', 'Accumulated X component of adjacent face normals.');
+field('rn', 'b', 'I', 'y', 'Accumulated Y component of adjacent face normals.');
+field('rn', 'f', 'I', 'z', 'Accumulated Z component of adjacent face normals.');
+field('rn', 'g', 'I', 'contributions', 'Count incremented once for each contributing triangle, used to normalize vertex lighting.');
+field('ia', 'f', 'I', 'x', 'Normalized X component of the triangle cross product.');
+field('ia', 'a', 'I', 'y', 'Normalized Y component of the triangle cross product.');
+field('ia', 'g', 'I', 'z', 'Normalized Z component of the triangle cross product.');
+field('wp', 'b', 'Ljava/lang/String;', 'name', 'Primary participant name decoded by the high-score response parser.');
+field('wp', 'd', 'Ljava/lang/String;', 'secondaryName', 'Optional secondary name associated with the participant.');
+field('wp', 'g', 'Z', 'includedInUniqueView', 'Set after the parser emits this participant into the unique-participant result group.');
+
+// Shared raster candidates were checked against the actual arithmetic. In
+// particular, Sprite.e scales additive intensity, rather than alpha opacity.
+method('ot', 'b', '(III[I[IIIIIIIIII)V', 'addArgbRows', 'Scales source pixels by their alpha and the supplied intensity, then adds them to destination pixels with saturated RGB carries; shared body shape agrees in Armies of Gielinor, Steel Sentinels, Pool, Pixelate and Bachelor Fridge.');
+method('ot', 'c', '([I[IIIIIIII)V', 'blendArgbRows', 'Uses source alpha and its 256 complement to blend source and destination RGB rows, skipping transparent pixels; shared body shape agrees in five other reviewed games.');
+method('ot', 'c', '([I[IIIIIIIII)V', 'blendShadedGrayscaleRows', 'Recolors grayscale source pixels around the supplied shade color, retains colored pixels and alpha-blends the resulting rows; shared body shape agrees in five other reviewed games.');
+method('ut', 'c', '(IIIII)V', 'drawScaledSilhouette', 'Clips a nearest-scaled sprite and draws its nonzero mask in one supplied color through blitScaledSilhouette; shared body shape agrees in GeoBlox and Bachelor Fridge.');
+method('ut', 'e', '(IIIII)V', 'drawScaledAdditive', 'Clips a nearest-scaled sprite and selects saturated additive blitting with full or scaled intensity; the fifth argument controls additive intensity.');
+
 export const kickConfig = {
   game: 'kickabout', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   workflowFiles: ['build-kickabout-rules.mjs', 'reproduce-kickabout.mjs', 'reviewed-game.mjs',
@@ -1815,8 +1985,9 @@ export const kickConfig = {
       `Remaining: ${coverage.unresolvedClasses.length} opaque class names and ${coverage.unresolvedMethods.length} opaque method names. The complete naming goal is still in progress.`,
       'Audit with `node readable/naming-coverage.mjs kickabout` in dekobloko-work; it exits unsuccessfully while opaque names remain.', '',
       'Start with `CommonGame` for match phases and agents; `ParticipantAgent`, `TeamSelectionAgent`, `FormationAgent` and `LineupAgent` handle participant/team choices. `FootballerAgent`, `BallAgent` and `GoalStateAgent` hold play state.', '',
+      '`LobbyMatchPreview`, `FootballerPreview` and `WorldDrawEntry` cover lobby previews and scene ordering. `MarkerSliderWidget`, `RotaryDialWidget` and their painters expose the custom controls. `QuickChatCategoryCache` / `QuickChatCategory` and `AnimationFrameset` describe shared definition loading.', '',
       '`ClubState`, `PlayerStats`, `ManagerAction` and auction classes describe manager mode. `ArchiveRequest` / `NetworkArchiveRequest`, `PacketBuffer`, `CipherPacketBuffer` and the applet hierarchy cover transport and loading. UI focus, hover, drag and drop have explicit listener contracts.', '',
-      'Sprite copy/reflection/rotation and availability-request completion are checked against independent native Java expectations in both raw and named corpora. These focused checks do not establish full gameplay or multiplayer equivalence.', '',
+      'Sprite copy/reflection/rotation, availability-request completion, Gregorian calendar boundaries and Quick Chat category decoding are checked against independent native Java expectations in both raw and named corpora. These focused checks do not establish full gameplay or multiplayer equivalence.', '',
       `Decompiler source commit: ${rules.generators.javaTools.commit}.`, ''].join('\n');
   },
 };

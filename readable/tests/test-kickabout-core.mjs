@@ -20,13 +20,14 @@ export function verifyKickaboutCore(input, named, mapping, classpath, temporary)
     };
     const m=(owner,name,descriptor)=>member('M',owner,name,descriptor);
     const f=(owner,name,descriptor)=>member('F',owner,name,descriptor);
-    const sprite=c('ut'),request=c('kw');
+    const sprite=c('ut'),request=c('kw'),category=c('tc'),buffer=c('iw');
     const pixels=f('ut','y','[I'),width=f('lu','q','I'),height=f('lu','w','I');
     const offsetX=f('lu','s','I'),offsetY=f('lu','n','I');
     const directory=path.join(temporary,readable?'kickabout-named-core':'kickabout-raw-core');
     fs.mkdirSync(directory);
     const harness=path.join(directory,'KickaboutCoreProbe.java');
     fs.writeFileSync(harness,`import java.util.*;
+import java.time.YearMonth;
 public class KickaboutCoreProbe {
   static int checks;
   static void check(String label,Object actual,Object expected) {
@@ -93,7 +94,47 @@ public class KickaboutCoreProbe {
       check("query retained",r.${m('kw','a','(I)Ljava/lang/String;')}(3),query);
     }
   }
-  public static void main(String[] args) {sprites();requests();System.out.println("checks:"+checks);}
+  static void dates() {
+    for(int year:new int[]{1899,1900,1999,2000,2024,2100}) {
+      for(int month=0;month<12;month++) {
+        int length=YearMonth.of(year,month+1).lengthOfMonth();
+        for(int day:new int[]{0,1,28,29,30,31,32}) {
+          check("calendar "+year+"/"+month+"/"+day,
+            ${c('cl')}.${m('cl','a','(ZIII)Z')}(true,year,day,month),day>=1&&day<=length);
+        }
+      }
+    }
+    for(int month:new int[]{-1,12,99})
+      check("invalid month",${c('cl')}.${m('cl','a','(ZIII)Z')}(true,2024,1,month),false);
+  }
+  static void categories() {
+    ${category} empty=new ${category}();
+    empty.${m('tc','a','(Liw;I)V')}(new ${buffer}(new byte[]{0}),0);
+    check("empty category text",empty.${f('tc','r','Ljava/lang/String;')},null);
+    check("empty category children",empty.${f('tc','o','[I')},null);
+    empty.${m('tc','a','(I)V')}(-104);
+    // A nonzero byte after the terminator checks that decode consumes one record.
+    ${buffer} input=new ${buffer}(new byte[]{1,72,105,0,2,2,0,7,65,1,2,0,3,1,1,44,66,4,0,99});
+    ${category} value=new ${category}();
+    value.${m('tc','a','(Liw;I)V')}(input,0);
+    check("category description",value.${f('tc','r','Ljava/lang/String;')},"Hi");
+    check("child IDs",value.${f('tc','o','[I')},new int[]{7,258});
+    check("child shortcuts",value.${f('tc','q','[C')},new char[]{'A',0});
+    check("phrase IDs",value.${f('tc','n','[I')},new int[]{300});
+    check("phrase shortcuts",value.${f('tc','p','[C')},new char[]{'B'});
+    check("tag 4",value.${f('tc','t','Z')},true);
+    check("record boundary",input.${m('iw','h','(B)I')}((byte)-120),99);
+    value.${m('tc','a','(I)V')}(-104);
+    check("global child IDs",value.${f('tc','o','[I')},new int[]{32775,33026});
+    check("global phrase IDs",value.${f('tc','n','[I')},new int[]{33068});
+    value.${m('tc','a','(I)V')}(-104);
+    check("global IDs idempotent",value.${f('tc','o','[I')},new int[]{32775,33026});
+    ${category} onlyChildren=new ${category}();
+    onlyChildren.${m('tc','a','(Liw;I)V')}(new ${buffer}(new byte[]{2,1,0,9,0,0}),0);
+    onlyChildren.${m('tc','a','(I)V')}(-104);
+    check("children without phrases",onlyChildren.${f('tc','o','[I')},new int[]{32777});
+  }
+  public static void main(String[] args) {sprites();requests();dates();categories();System.out.println("checks:"+checks);}
 }
 `);
     const sources=sourceInventory(readable?named:input);
@@ -104,8 +145,10 @@ public class KickaboutCoreProbe {
   }
   assert.equal(outputs[0],outputs[1],'raw and named probe outcomes differ');
   const checks=Number(/^checks:(\d+)$/.exec(outputs[0])?.[1]);
-  assert.ok(checks>=80,'the complete independent probe must execute');
+  assert.ok(checks>=600,'the complete independent probe must execute');
   return {status:'passed',variants:['raw','named'],assertionsPerVariant:checks,
     coverage:['rectangular sprite reflections','copy versus in-place mutation','clockwise rotation and trim offsets',
-      'availability request completion, result and query retention'],fullGameplayVerified:false};
+      'availability request completion, result and query retention',
+      'Gregorian calendar boundaries including century leap years',
+      'Quick Chat tagged decoding, record boundaries and global ID marking'],fullGameplayVerified:false};
 }
