@@ -332,6 +332,20 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:a",
+      "originalName": "a",
+      "to": "NativeRenderContext",
+      "evidence": "Native renderer context constructed per NativeSoftwareGraphicsToolkit context slot, retaining its toolkit and native handle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ak",
+      "originalName": "ak",
+      "to": "MenuScreen",
+      "evidence": "Screen indexed by constructor mode, retaining selection state and drawing achievement, instruction, score and other game menu pages.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:al",
       "originalName": "al",
       "to": "PcmStreamMixer",
@@ -343,6 +357,13 @@
       "originalName": "aw",
       "to": "HardwareGraphicsToolkit",
       "evidence": "Abstract GraphicsToolkit base of the OpenGL and DirectX toolkits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bq",
+      "originalName": "bq",
+      "to": "LegacyOpenGlEffect",
+      "evidence": "Abstract effect holding the direct legacy OpenGL toolkit; its concrete effects bind textures and OpenGL programs.",
       "confidence": "reviewed"
     },
     {
@@ -367,6 +388,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cq",
+      "originalName": "cq",
+      "to": "FullscreenCanvas",
+      "evidence": "Canvas with a retained fullscreen Frame and volatile focus-loss flag, delegating frame release to the platform helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:dt",
       "originalName": "dt",
       "to": "BufferedSocket",
@@ -378,6 +406,13 @@
       "originalName": "du",
       "to": "AudioOutput",
       "evidence": "Owns a PcmStream array and mixing state pumped by an audio thread.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:e",
+      "originalName": "e",
+      "to": "NativeResource",
+      "evidence": "Native resource disposal contract implemented by the native toolkit and its retained handles and drained by the native resource reaper.",
       "confidence": "reviewed"
     },
     {
@@ -409,6 +444,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fr",
+      "originalName": "fr",
+      "to": "LegacyOpenGlGraphicsToolkit",
+      "evidence": "Direct GraphicsToolkit backend retaining jaggl.OpenGL, native vertex memory and the legacy OpenGL effect manager, distinct from the HardwareGraphicsToolkit backend.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fs",
       "originalName": "fs",
       "to": "PacketBuffer",
@@ -423,10 +465,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:gk",
+      "originalName": "gk",
+      "to": "CompactMeshGeometry",
+      "evidence": "Compact geometry record with short XYZ vertex arrays, face and texture data, integer bounds and per-axis vertex scaling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gl",
+      "originalName": "gl",
+      "to": "SoftwareArgbSprite",
+      "evidence": "SoftwareToolkitSprite whose pixel blit paths extract source alpha from the high byte and composite the retained ARGB pixels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:gp",
       "originalName": "gp",
       "to": "MouseWheelHandler",
       "evidence": "MouseWheelInput subclass implementing MouseWheelListener.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gw",
+      "originalName": "gw",
+      "to": "SceneryParticle",
+      "evidence": "TimedSceneEffect subclass retaining particle texture, scale, rotation, fade and motion state and drawing one of the scenery particle sprites.",
       "confidence": "reviewed"
     },
     {
@@ -458,6 +521,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hr",
+      "originalName": "hr",
+      "to": "ToolkitSprite",
+      "evidence": "Renderer-independent sprite contract with dimensions, tinted and scaled drawing and shared affine rotation helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ia",
       "originalName": "ia",
       "to": "NodeHashTableIterator",
@@ -465,10 +535,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ik",
+      "originalName": "ik",
+      "to": "GraphicsToolkitManager",
+      "evidence": "Manages renderer selection and recreation for the active canvas, retaining toolkit configurations, the current toolkit handle and its resource provider.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ir",
       "originalName": "ir",
       "to": "DirectXGraphicsToolkit",
       "evidence": "Toolkit located by reflection as ir.createToolkit after loading jagdx.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:iv",
+      "originalName": "iv",
+      "to": "LegacyOpenGlEffectManager",
+      "evidence": "Retains and selects the legacy OpenGL effect array and shared texture resources for the direct OpenGL toolkit.",
       "confidence": "reviewed"
     },
     {
@@ -493,10 +577,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:lk",
+      "originalName": "lk",
+      "to": "SoftwareRasterizer",
+      "evidence": "Static software pixel target, dimensions and clipping bounds used by primitive fill, line and blend kernels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mb",
+      "originalName": "mb",
+      "to": "GameInstructions",
+      "evidence": "Static holder of the objective, controls, upgrades and drone instruction pages, plus unrelated obfuscator-distributed utility methods.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:md",
+      "originalName": "md",
+      "to": "PcmMixerListener",
+      "evidence": "Intrusive mixer listener with a sample countdown, release callback and rescheduling callback returning its next delay.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mf",
       "originalName": "mf",
       "to": "PcmSampleStream",
       "evidence": "PcmStream resampling a byte sample through interpolation kernels with loop handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mj",
+      "originalName": "mj",
+      "to": "SoftwareRgbSprite",
+      "evidence": "SoftwareToolkitSprite holding RGB pixels and treating zero pixels as transparent in its software blit paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mq",
+      "originalName": "mq",
+      "to": "MusicPatchEnvelope",
+      "evidence": "Per-voice instrument envelope record with byte envelope curves and vibrato, decay and timing parameters.",
       "confidence": "reviewed"
     },
     {
@@ -521,10 +640,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nt",
+      "originalName": "nt",
+      "to": "TimedSceneEffect",
+      "evidence": "Intrusive positioned effect with a countdown, type and render hook; its update reports expiry at zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nw",
       "originalName": "nw",
       "to": "ProxySocketConnector",
       "evidence": "SocketConnector holding a ProxySelector and writing an HTTP CONNECT request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:oa",
+      "originalName": "oa",
+      "to": "NativeSoftwareGraphicsToolkit",
+      "evidence": "GraphicsToolkit implementation backed by native handles, native drawing calls and per-context native renderer objects.",
       "confidence": "reviewed"
     },
     {
@@ -556,6 +689,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pa",
+      "originalName": "pa",
+      "to": "NativeResourceReaper",
+      "evidence": "Synchronizes native resource disposal and retains deferred resources in an intrusive queue while renderer users are active.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pj",
       "originalName": "pj",
       "to": "DualLinkNode",
@@ -577,10 +717,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qa",
+      "originalName": "qa",
+      "to": "SoftwareGraphicsToolkit",
+      "evidence": "GraphicsToolkit backend retaining a software pixel target and constructing indexed, RGB and ARGB software sprite implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qd",
+      "originalName": "qd",
+      "to": "SoftwareToolkitSprite",
+      "evidence": "ToolkitSprite base holding the software renderer and sprite bounds, with shared software affine raster stepping state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qo",
       "originalName": "qo",
       "to": "ClientExceptionSupport",
       "evidence": "Static helper wrapping a Throwable into a ClientException with context text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qp",
+      "originalName": "qp",
+      "to": "PcmSample",
+      "evidence": "Audio sample containing byte PCM data, source rate, loop bounds and a ping-pong loop flag, consumed by PcmSampleStream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qu",
+      "originalName": "qu",
+      "to": "GameplaySession",
+      "evidence": "Owns the game session update and draw entry points, entity and effect queues, gameplay controls, arena presentation and level progression.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rh",
+      "originalName": "rh",
+      "to": "MidiNoteMixer",
+      "evidence": "PcmStream retaining the active MIDI voice deque, parent MidiPcmStream and mixer for detached sample tails.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ri",
+      "originalName": "ri",
+      "to": "SpriteData",
+      "evidence": "Decoded sprite record containing palette, byte pixel and optional alpha arrays with trimmed and full dimensions and offsets.",
       "confidence": "reviewed"
     },
     {
@@ -595,6 +777,20 @@
       "originalName": "rq",
       "to": "ShaderEffect",
       "evidence": "Abstract effect holding a HardwareGraphicsToolkit with an abstract three-int render hook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rr",
+      "originalName": "rr",
+      "to": "AbstractAudioSample",
+      "evidence": "Intrusive audio-sample base with a scheduling position field, extended by the byte PCM sample record.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sh",
+      "originalName": "sh",
+      "to": "MidiFileReader",
+      "evidence": "Parses MIDI track chunks and retains per-track byte positions, tick deltas, running status and tempo timing.",
       "confidence": "reviewed"
     },
     {
@@ -626,10 +822,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:td",
+      "originalName": "td",
+      "to": "MusicPatch",
+      "evidence": "Instrument patch containing per-note PCM samples, envelope references, tuning and gain arrays and encoded sample identifiers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:te",
+      "originalName": "te",
+      "to": "IntrusiveNodeHashTable",
+      "evidence": "Non-Iterable intrusive hash table with sentinel buckets, long-key lookup, insertion and cursor-based iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tj",
+      "originalName": "tj",
+      "to": "InstrumentNoteMask",
+      "evidence": "Intrusive table entry with one byte mask per MIDI note, created by MusicTrack for each used instrument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tv",
+      "originalName": "tv",
+      "to": "MusicTrack",
+      "evidence": "Decodes a packed track into MIDI bytes and scans note events to build a per-instrument note-use table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ud",
+      "originalName": "ud",
+      "to": "MusicCrossfadeStream",
+      "evidence": "PcmStream retaining two MidiPcmStreams and queued music tracks with crossfade duration and volume state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:uh",
+      "originalName": "uh",
+      "to": "SoftwareIndexedSprite",
+      "evidence": "SoftwareToolkitSprite holding byte pixel indices and an integer palette used by its software blit paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ui",
+      "originalName": "ui",
+      "to": "DeferredNativeResource",
+      "evidence": "Intrusive queue node containing one NativeResource, queued and drained by the native resource reaper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:um",
       "originalName": "um",
       "to": "IterableNodeHashTable",
       "evidence": "Bucket array of IntrusiveNode implementing Iterable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:uu",
+      "originalName": "uu",
+      "to": "MusicVoice",
+      "evidence": "Intrusive active MIDI voice holding its PCM stream, sample, patch and envelope with pitch, gain and release counters.",
       "confidence": "reviewed"
     },
     {
@@ -700,6 +952,34 @@
       "originalName": "field_x",
       "to": "createYourOwnFreeText",
       "evidence": "Static text constant initialised to \"Create your own free Jagex account\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:al.field_o:Ljn;",
+      "originalName": "field_o",
+      "to": "listeners",
+      "evidence": "Delay-ordered mixer listener deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:al.field_p:I",
+      "originalName": "field_p",
+      "to": "consumedSamples",
+      "evidence": "Samples accumulated before the next listener callback and delay normalization.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:al.field_q:Ljn;",
+      "originalName": "field_q",
+      "to": "substreams",
+      "evidence": "Mixer deque traversed for child PCM mixing and skipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:al.field_r:I",
+      "originalName": "field_r",
+      "to": "nextListenerDelay",
+      "evidence": "Countdown to the next scheduled listener, or minus one when no listener remains.",
       "confidence": "reviewed"
     },
     {
@@ -805,6 +1085,20 @@
       "originalName": "field_t",
       "to": "unfortunatelyThereWasAText",
       "evidence": "Static text constant initialised to \"Unfortunately there was a focus problem while s...\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cb.field_d:Ljn;",
+      "originalName": "field_d",
+      "to": "deque",
+      "evidence": "Deque retained by this independent cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cb.field_f:Lms;",
+      "originalName": "field_f",
+      "to": "cursor",
+      "evidence": "Next node returned by this independent forward or backward cursor.",
       "confidence": "reviewed"
     },
     {
@@ -1186,10 +1480,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hj.field_l:Lrr;",
+      "originalName": "field_l",
+      "to": "sample",
+      "evidence": "Audio sample retained by the stream and its scheduling bookkeeping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hj.field_n:Z",
+      "originalName": "field_n",
+      "to": "active",
+      "evidence": "Selects mixing versus silent skipping in mixOrSkip.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hk.field_b:Ljava/lang/String;",
       "originalName": "field_b",
       "to": "mouseOverAnIconText",
       "evidence": "Static text constant initialised to \"Mouse over an icon for details\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hl.field_c:Lpj;",
+      "originalName": "field_c",
+      "to": "sentinel",
+      "evidence": "Circular secondary-link deque sentinel.",
       "confidence": "reviewed"
     },
     {
@@ -1323,6 +1638,20 @@
       "originalName": "field_c",
       "to": "bestHiscoresText",
       "evidence": "Static text constant initialised to \"BEST HISCORES\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jn.field_a:Lms;",
+      "originalName": "field_a",
+      "to": "cursor",
+      "evidence": "Retained primary deque iteration cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jn.field_e:Lms;",
+      "originalName": "field_e",
+      "to": "sentinel",
+      "evidence": "Circular primary deque sentinel used by all insertion, removal and traversal methods.",
       "confidence": "reviewed"
     },
     {
@@ -1547,6 +1876,13 @@
       "originalName": "field_J",
       "to": "thisPasswordContainsRepeatedText",
       "evidence": "Static text constant initialised to \"This password contains repeated characters, and...\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:md.field_k:I",
+      "originalName": "field_k",
+      "to": "delaySamples",
+      "evidence": "Listener delay used by ordered insertion and normalized after samples are consumed.",
       "confidence": "reviewed"
     },
     {
@@ -1935,6 +2271,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qp.field_l:I",
+      "originalName": "field_l",
+      "to": "loopStart",
+      "evidence": "Sample-stream constructor retains this lower loop boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_m:Z",
+      "originalName": "field_m",
+      "to": "pingPong",
+      "evidence": "Sample-stream loop handling reverses direction when this flag is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_n:I",
+      "originalName": "field_n",
+      "to": "sampleRate",
+      "evidence": "Source sample rate used to convert playback rates to fixed-point sample steps.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_o:I",
+      "originalName": "field_o",
+      "to": "loopEnd",
+      "evidence": "Sample-stream constructor retains this upper loop boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_p:[B",
+      "originalName": "field_p",
+      "to": "samples",
+      "evidence": "Signed byte PCM data consumed by the sample interpolation kernels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qq.field_Q:Ljava/lang/String;",
       "originalName": "field_Q",
       "to": "namesShouldContainAText",
@@ -2131,6 +2502,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ui.field_k:Le;",
+      "originalName": "field_k",
+      "to": "resource",
+      "evidence": "Native resource retained by a deferred disposal queue node.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:un.field_c:Ljava/lang/String;",
       "originalName": "field_c",
       "to": "playerNameText",
@@ -2264,10 +2642,1900 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:Sumoblitz.a(IIB)V",
+      "originalName": "a",
+      "to": "playEntityCollisionSound",
+      "evidence": "Chooses a randomized sound for the nonplayer entity type and variant when it collides with the player and delegates sound playback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Sumoblitz.a(Z)V",
+      "originalName": "a",
+      "to": "releaseAllStatics",
+      "evidence": "Calls the per-class static cleanup entry points across the complete client, preserving their original guard arguments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Sumoblitz.b(I)V",
+      "originalName": "b",
+      "to": "updateGame",
+      "evidence": "Services startup and account state, advances screen transitions and gameplay, dispatches inbound packets and services background tasks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Sumoblitz.d(I)V",
+      "originalName": "d",
+      "to": "renderFrame",
+      "evidence": "Selects startup or game presentation, renders screen fades, achievement notices and account overlays, copies the software raster when needed and presents the active toolkit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Sumoblitz.f(I)V",
+      "originalName": "f",
+      "to": "initializeGame",
+      "evidence": "Configures the client, creates the dual MIDI crossfade stream and audio outputs and initializes the shared client services.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Sumoblitz.g(B)V",
+      "originalName": "g",
+      "to": "advanceScreenTransition",
+      "evidence": "Advances achievement notice time, screen fade phases and the gameplay session, then updates the selected menu screen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Sumoblitz.r(I)V",
+      "originalName": "r",
+      "to": "initializeGameArchives",
+      "evidence": "Releases retained loading imagery, opens the game resource archives, initializes random state and constructs the graphics toolkit manager.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:Sumoblitz.s(I)V",
+      "originalName": "s",
+      "to": "releaseStatics",
+      "evidence": "Clears this class retained sprite and integer arrays with the original guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.w(Z)V",
+      "originalName": "w",
+      "to": "disposeNativeResource",
+      "evidence": "Native disposal contract invoked directly or from the deferred resource reaper. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: arcadeModeUnlockedText, field_a, field_c, field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ab.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: weClosedTheConnectionText, field_a, achievedText, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ac.d(Z)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_F. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ad.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_q, field_p, field_n. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ag.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_g, field_J. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ak.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a()Lhj;",
+      "originalName": "a",
+      "to": "firstSubstream",
+      "evidence": "Abstract first-child stream contract used by the audio scheduler and implemented by mixers and MIDI streams. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "Abstract entry point advancing the stream without producing output samples. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(Lhj;)V",
+      "originalName": "a",
+      "to": "removeSubstream",
+      "evidence": "Unlinks the stream from its primary intrusive deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(Lmd;)V",
+      "originalName": "a",
+      "to": "removeListener",
+      "evidence": "Unlinks and releases the listener, then refreshes the next callback countdown from the deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.a(Lms;Lmd;)V",
+      "originalName": "a",
+      "to": "insertListenerByDelay",
+      "evidence": "Splices the listener into delay order and updates the next scheduled callback time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.b(Lhj;)V",
+      "originalName": "b",
+      "to": "addSubstream",
+      "evidence": "Adds the stream to the mixer child deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.b([III)V",
+      "originalName": "b",
+      "to": "mixInto",
+      "evidence": "Abstract PCM mixing entry point implemented by sample streams and mixers. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.c()Lhj;",
+      "originalName": "c",
+      "to": "nextSubstream",
+      "evidence": "Abstract subsequent-child stream contract used by the audio scheduler. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.c(I)V",
+      "originalName": "c",
+      "to": "skipSubstreams",
+      "evidence": "Advances each retained child stream without producing samples.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.c([III)V",
+      "originalName": "c",
+      "to": "mixSubstreams",
+      "evidence": "Invokes active mixing or inactive skipping on every retained child stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.d()I",
+      "originalName": "d",
+      "to": "activityWeight",
+      "evidence": "Abstract scheduler activity-weight contract, returning zero for a pure mixer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:al.e()V",
+      "originalName": "e",
+      "to": "normalizeListenerDelays",
+      "evidence": "Subtracts consumed samples from each listener delay and the next-listener countdown, then resets the consumed count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_j, field_z, field_e. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:an.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_f, field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ao.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: unableToConnectToText, field_y. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ar.f(B)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_E, pointsRemainingText, field_N, connectionTimedOutPleaseText, field_L. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:as.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: livesText, field_y, field_w, field_v. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:au.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_i, field_h, field_j, field_e. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:av.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_C, field_B. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aw.G(I)V",
+      "originalName": "G",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_t, field_j. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: loadingLevelsText, youAreNotCurrentlyText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ba.w(Z)V",
+      "originalName": "w",
+      "to": "disposeNativeResource",
+      "evidence": "Native disposal contract invoked directly or from the deferred resource reaper. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_i. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, lowText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:be.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_t, field_v, field_s. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bf.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_d, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d, field_a, notCompletedText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_b, field_g. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_e, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bl.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bn.g(B)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: dataServerFullOrText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bq.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_d, monthShortNames. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:br.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: instructionsText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bs.a()Lhj;",
+      "originalName": "a",
+      "to": "firstSubstream",
+      "evidence": "Abstract first-child stream contract used by the audio scheduler and implemented by mixers and MIDI streams. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bs.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "Abstract entry point advancing the stream without producing output samples. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bs.b([III)V",
+      "originalName": "b",
+      "to": "mixInto",
+      "evidence": "Abstract PCM mixing entry point implemented by sample streams and mixers. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bs.c()Lhj;",
+      "originalName": "c",
+      "to": "nextSubstream",
+      "evidence": "Abstract subsequent-child stream contract used by the audio scheduler. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bs.d()I",
+      "originalName": "d",
+      "to": "activityWeight",
+      "evidence": "Abstract scheduler activity-weight contract, returning zero for a pure mixer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bs.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_o. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bt.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_e. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bw.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: reassignPowerupsText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:c.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: unfortunatelyThereWasAText, ifYouDoNothingText, field_u. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cb.a(B)Lms;",
+      "originalName": "a",
+      "to": "last",
+      "evidence": "Returns the deque tail and initializes this independent backward cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cb.a(BLms;)Lms;",
+      "originalName": "a",
+      "to": "startBackwardAt",
+      "evidence": "Returns the supplied node or deque tail and retains its previous node for backward traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cb.a(ILms;)Lms;",
+      "originalName": "a",
+      "to": "startForwardAt",
+      "evidence": "Returns the supplied node or deque head and retains its next node for forward traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cb.b(B)Lms;",
+      "originalName": "b",
+      "to": "first",
+      "evidence": "Returns the deque head and initializes this independent forward cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cb.b(I)Lms;",
+      "originalName": "b",
+      "to": "next",
+      "evidence": "Returns the retained cursor node and advances through its next link.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cb.c(B)Lms;",
+      "originalName": "c",
+      "to": "previous",
+      "evidence": "Returns the retained cursor node and advances through its previous link.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_i. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cd.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_f. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: waitingForFontsText, field_p, field_q, field_o. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: playFreeVersionText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b, field_g, field_e. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cj.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_e, leaderboardSortLabels. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ck.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: nameIsAvailableText, field_c, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_z, field_v. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cm.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: levelCompleteText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: byClickingCreateYouText, field_ib, theAccountNameYouText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cp.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, instructionsText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cq.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: backText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ct.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_z, field_A. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cv.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_G, field_F. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dc.m(I)V",
+      "originalName": "m",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: typeYourAgeInText, field_ab. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_B. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.j(I)V",
+      "originalName": "j",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_H, field_M, field_N. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_l, fullScreenText, field_m, scoreFilterLabels. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: weekdayShortNames, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dl.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_h. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: applyText, arcadeGameText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dq.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_v, field_s, field_Z. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dr.c(Z)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_S. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ds.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dt.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_i, moreSuggestionsText, field_p, field_n. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:du.h()V",
+      "originalName": "h",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_i. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dv.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:e.w(Z)V",
+      "originalName": "w",
+      "to": "disposeNativeResource",
+      "evidence": "Native disposal contract invoked directly or from the deferred resource reaper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, difficultyText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eb.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b, field_a, field_f. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: names. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.c(Z)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_n, field_l. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eh.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.d(Z)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: loginText, field_i. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_k. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:em.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:en.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d, field_j, field_h. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eq.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: toCustomerSupportText, field_v. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_h, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:es.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: loadingGraphicsText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eu.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:f.d(Z)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_s, field_r, field_t. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fd.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: clickText, field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ff.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: warningText, createText, field_k, soundText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: connectionRestoredText, field_n. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fl.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_r, waitingForExtraDataText, field_o. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fm.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: ageText, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fn.k(I)V",
+      "originalName": "k",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_u, waitingForSoundEffectsText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fq.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_f, field_d, multiplierText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fr.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: unfortunatelyYourConfigurationDoesnText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fs.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_o, field_m, field_k. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fw.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_m. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_j, field_g. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_t. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: achievementsText, field_a, field_k. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: clickToContinueText, difficultyNames. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gf.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gg.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_r, field_t. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gh.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_g, field_k, notYetAchievedText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_N, previousText, field_v, field_o, field_w, field_u, field_O. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gn.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: pleaseEnterYourAgeText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_p, field_m, field_j, logInCreateAccountText, field_n. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gq.c(Z)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_q, thisEntryDoesnTText, field_o. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: updatesWillSentToText, field_h. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gs.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b, field_a, youNeedToChooseText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gt.l(I)V",
+      "originalName": "l",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: loadingMusicText, field_db, field_gb. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gu.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: musicText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gw.c(Z)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_A, field_C. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.w(Z)V",
+      "originalName": "w",
+      "to": "disposeNativeResource",
+      "evidence": "Native disposal contract invoked directly or from the deferred resource reaper. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_e, field_c, field_g, field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hc.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_b, continueToNextLevelText, field_e, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hd.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: regularText, field_H, field_O. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:he.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_o, field_m, field_n. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.j(I)V",
+      "originalName": "j",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_H, field_F, membershipPromoLines. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hg.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_m, field_l, playTheGameWithoutText, field_k, field_o. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hh.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: connectionLostText, field_a, field_d, field_e, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: checkingText, field_b, field_f. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.a()Lhj;",
+      "originalName": "a",
+      "to": "firstSubstream",
+      "evidence": "Abstract first-child stream contract used by the audio scheduler and implemented by mixers and MIDI streams.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "Abstract entry point advancing the stream without producing output samples.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.a([III)V",
+      "originalName": "a",
+      "to": "mixOrSkip",
+      "evidence": "Mixes active streams into the supplied buffer and advances inactive streams without output.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.b()I",
+      "originalName": "b",
+      "to": "priority",
+      "evidence": "Returns the default audio scheduler priority of two hundred fifty-five.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.b([III)V",
+      "originalName": "b",
+      "to": "mixInto",
+      "evidence": "Abstract PCM mixing entry point implemented by sample streams and mixers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.c()Lhj;",
+      "originalName": "c",
+      "to": "nextSubstream",
+      "evidence": "Abstract subsequent-child stream contract used by the audio scheduler.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.d()I",
+      "originalName": "d",
+      "to": "activityWeight",
+      "evidence": "Abstract scheduler activity-weight contract, returning zero for a pure mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: mouseOverAnIconText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.a(B)Lpj;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "Returns the retained secondary cursor node and advances its secondary next link.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.a(Lpj;B)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "Splices the dual-link node before the secondary sentinel after removing any existing secondary membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.a(Lpj;I)Lpj;",
+      "originalName": "a",
+      "to": "startAt",
+      "evidence": "Starts forward secondary traversal at the supplied node or the sentinel next node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.b(B)Lpj;",
+      "originalName": "b",
+      "to": "removeFirst",
+      "evidence": "Unlinks and returns the secondary node after the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.b(I)Lpj;",
+      "originalName": "b",
+      "to": "first",
+      "evidence": "Starts secondary traversal at the sentinel next node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hm.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_k. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hp.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_o, field_n, field_l. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hq.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: loadingSoundEffectsText, resizableText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ht.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_e, confirmPasswordText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hu.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_f, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hv.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d, reassignText, field_b, unpackingSoundEffectsText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hw.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.w(Z)V",
+      "originalName": "w",
+      "to": "disposeNativeResource",
+      "evidence": "Native disposal contract invoked directly or from the deferred resource reaper. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ia.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: leaderboardSortStatusLabels, suggestedNamesText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ia.b(I)V",
+      "originalName": "b",
+      "to": "reset",
+      "evidence": "Resets the bucket cursor to the first bucket next node and clears the last-returned node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_a, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.c(Z)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: returnToGameText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ig.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: retryText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ik.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:im.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_b, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:in.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_C, field_D, nextText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:io.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_i, field_g, field_b, field_c, field_h, field_f, field_e, field_d, field_a, field_k. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ip.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_y. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:is.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iv.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_b, field_g, field_l. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.w(Z)V",
+      "originalName": "w",
+      "to": "disposeNativeResource",
+      "evidence": "Native disposal contract invoked directly or from the deferred resource reaper. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.w(Z)V",
+      "originalName": "w",
+      "to": "disposeNativeResource",
+      "evidence": "Native disposal contract invoked directly or from the deferred resource reaper. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jc.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: goBackText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jf.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_e, thisIsAHiddenText, field_d, waitingForInstrumentsText, field_f. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b, field_e. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_B, field_z, closeText, achievementDescriptions, backText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ji.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: abcdefghijklmnopqrstuvwxyzabcdefghijText, useThisAlternativeAsText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jj.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_f, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jk.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jl.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jn.a(B)Z",
+      "originalName": "a",
+      "to": "isEmpty",
+      "evidence": "Compares the primary next link of the sentinel to itself.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jn.a(I)Lms;",
+      "originalName": "a",
+      "to": "last",
+      "evidence": "Returns the sentinel previous node and initializes backward iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jn.a(Lms;B)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "Splices the node immediately before the sentinel, unlinking any existing primary membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jn.a(Lms;I)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "Splices the node immediately after the sentinel, unlinking any existing primary membership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jn.b(B)Lms;",
+      "originalName": "b",
+      "to": "removeLast",
+      "evidence": "Unlinks and returns the node before the sentinel, or null when empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jn.b(I)Lms;",
+      "originalName": "b",
+      "to": "first",
+      "evidence": "Returns the sentinel next node and initializes forward iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jn.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jn.c(I)Lms;",
+      "originalName": "c",
+      "to": "removeFirst",
+      "evidence": "Unlinks and returns the node after the sentinel, or null when empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jn.d(B)Lms;",
+      "originalName": "d",
+      "to": "next",
+      "evidence": "Advances the retained cursor through next links until the sentinel is reached.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jn.d(I)Lms;",
+      "originalName": "d",
+      "to": "previous",
+      "evidence": "Advances the retained cursor through previous links until the sentinel is reached.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jn.e(I)V",
+      "originalName": "e",
+      "to": "clear",
+      "evidence": "Unlinks all primary deque nodes and clears the retained cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jp.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_j, field_k. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jq.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ju.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_p. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:k.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: startGameText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: passwordIsValidText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kc.a(Z)V",
+      "originalName": "a",
+      "to": "releaseAllStatics",
+      "evidence": "Calls the per-class static cleanup entry points across the complete client, preserving their original guard arguments. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kc.b(I)V",
+      "originalName": "b",
+      "to": "updateGame",
+      "evidence": "Services startup and account state, advances screen transitions and gameplay, dispatches inbound packets and services background tasks. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kc.d(I)V",
+      "originalName": "d",
+      "to": "renderFrame",
+      "evidence": "Selects startup or game presentation, renders screen fades, achievement notices and account overlays, copies the software raster when needed and presents the active toolkit. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kc.f(I)V",
+      "originalName": "f",
+      "to": "initializeGame",
+      "evidence": "Configures the client, creates the dual MIDI crossfade stream and audio outputs and initializes the shared client services. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kd.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_c, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kf.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_w, field_v, field_u, achievementsText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b, field_c, field_a, field_f, field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kk.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_e, field_f, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kn.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_f, field_c, typeYourEmailAddressText, unpackingGraphicsText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kp.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: classicText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kr.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_f, field_a, field_d, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kt.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ku.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_I, field_J. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kv.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kw.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_b, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:l.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: enemyVariantNames, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: yesNoLabels. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ld.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_F, field_N. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:le.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_k. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lg.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lh.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_k, field_l, field_n, resetStatsText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:li.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_v, loadingText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_f, field_d, field_g, field_l, field_h. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_b, resumeGameText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lm.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lo.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_f, field_c, field_j, field_l, field_e. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lq.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: toServerListText, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lr.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b, field_a, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ls.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_g, field_d, field_b, continueText, field_e, field_c, field_j, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lt.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_m. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lu.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_g, field_e. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lv.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: visitTheAccountManagementText, pleaseSendMeNewsText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lw.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, moreMemoryIsRequiredText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.e(Z)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: namesCannotStartOrText, field_O, waitingForGraphicsText, field_R, field_X. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: namesCannotContainConsecutiveText, logInText, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: controlsHelpLines, field_f, dronesHelpLinesPartTwo, field_c, field_h, field_k, objectiveHelpLines, field_e, upgradesHelpLines, dronesHelpLines. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.f(Z)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: thisPasswordContainsRepeatedText, field_F, field_C. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.a()V",
+      "originalName": "a",
+      "to": "release",
+      "evidence": "Abstract callback invoked after this scheduled mixer listener is unlinked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.a(Lal;)I",
+      "originalName": "a",
+      "to": "onScheduledMix",
+      "evidence": "Abstract mixer callback returning the next sample delay or a negative value to remove the listener.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mf.a()Lhj;",
+      "originalName": "a",
+      "to": "firstSubstream",
+      "evidence": "Abstract first-child stream contract used by the audio scheduler and implemented by mixers and MIDI streams. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mf.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "Abstract entry point advancing the stream without producing output samples. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mf.b()I",
+      "originalName": "b",
+      "to": "priority",
+      "evidence": "Returns the default audio scheduler priority of two hundred fifty-five. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mf.b([III)V",
+      "originalName": "b",
+      "to": "mixInto",
+      "evidence": "Abstract PCM mixing entry point implemented by sample streams and mixers. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mf.c()Lhj;",
+      "originalName": "c",
+      "to": "nextSubstream",
+      "evidence": "Abstract subsequent-child stream contract used by the audio scheduler. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mf.d()I",
+      "originalName": "d",
+      "to": "activityWeight",
+      "evidence": "Abstract scheduler activity-weight contract, returning zero for a pure mixer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mi.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mk.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_w, field_p. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mm.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_g, field_h, field_c, levelSelectText, pleaseWaitText, thisPasswordIsPartText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mn.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_g, field_b, field_j, field_c, highText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mo.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_w, field_t, field_n, membershipBenefitLines. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mp.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mq.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mr.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b, field_f, field_e. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ms.a(Ljava/lang/String;Ljava/lang/Throwable;I)V",
       "originalName": "a",
       "to": "reportClientError",
       "evidence": "Builds a clienterror.ws request URL from the message and throwable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.a(Z)Z",
+      "originalName": "a",
+      "to": "isLinked",
+      "evidence": "Tests whether the primary previous link is retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: createAFreeAccountText, fullscreenPlayIsAnText, field_d, field_j, exclamationPhrases, field_e. Original guard and compatibility branches are preserved.",
       "confidence": "reviewed"
     },
     {
@@ -2278,6 +4546,223 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mu.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_t, myHiscoresText, field_B, field_y. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:n.w(Z)V",
+      "originalName": "w",
+      "to": "disposeNativeResource",
+      "evidence": "Native disposal contract invoked directly or from the deferred resource reaper. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:na.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nd.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_B, errorConnectingToServerText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ng.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_f, noHighscoresText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, endGameText, field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.c()V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d, field_f, field_g, field_h, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_n, field_p. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:no.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b, field_d, field_a, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_h. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ns.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_b, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nt.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_m, field_n, challengeText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.w(Z)V",
+      "originalName": "w",
+      "to": "disposeNativeResource",
+      "evidence": "Native disposal contract invoked directly or from the deferred resource reaper. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:og.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oh.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, toReturnToTheText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_b, field_a, field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oj.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: emailAddressIsUnavailableText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ok.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_j, field_d, field_f. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:om.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: droneNames, unpackingLevelsText, field_m. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:os.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ou.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_g. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ov.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_e, quitText, invalidPasswordText, field_i. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ow.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: loadingFontsText, field_d, field_f, emailText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.w(Z)V",
+      "originalName": "w",
+      "to": "disposeNativeResource",
+      "evidence": "Native disposal contract invoked directly or from the deferred resource reaper. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pb.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pc.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: thisPasswordContainsYourText, field_b, field_d, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pd.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_q, nameText, field_n, field_m. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_E, field_F, orbPointsText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ph.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b, usernameText, youHaveUnreadMessagesText, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: passwordText, field_b, field_c, field_a, yourEmailAddressIsText, field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pj.c(I)V",
       "originalName": "c",
       "to": "unlinkSecondary",
@@ -2285,10 +4770,948 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pj.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_n, field_k, field_q. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pl.j(I)V",
+      "originalName": "j",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: changeDisplayNameText, enterAPasswordForText, levelText, field_v, field_r. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pn.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_n, field_q, field_k, field_p, field_t. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pp.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d, membersText, padTypeNames. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pq.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_y, confirmEmailText, field_F. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pr.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_k. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ps.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d, field_e, scoreText, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pt.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: challengeText, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pu.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_e, blastReadyText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:q.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_p, field_I, field_L, field_N, field_u, field_O, field_J, field_E, field_s, field_q, field_x, field_w, field_z, field_C, field_k, field_Q. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qc.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_e, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, connectionLostAttemptingToText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d, field_c, field_s, field_p, field_a, field_i, field_w, field_v. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: loadingTextTranslations. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qk.g(B)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: unfortunatelyWeAreUnableText, field_V, field_O. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_z, field_A. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qn.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_f, field_b, field_d, creatingAJagexAccountText, field_e. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qo.a(Ljava/lang/Throwable;Ljava/lang/String;)Lsu;",
       "originalName": "a",
       "to": "wrapWithContext",
       "evidence": "Appends context text to a ClientException or wraps the throwable in one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qq.l(I)V",
+      "originalName": "l",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_R, namesShouldContainAText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_e, field_c, field_a, field_b, field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: asYouAreUnderText, field_k, field_o. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qw.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, passwordsMustBeBetweenText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:r.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_r. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, achievementNames, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_m, field_l, field_i. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rd.c(Z)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: loadingExtraDataText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_h, field_f. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rf.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_e, menuText, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rg.e(B)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_A, field_C. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.a()Lhj;",
+      "originalName": "a",
+      "to": "firstSubstream",
+      "evidence": "Abstract first-child stream contract used by the audio scheduler and implemented by mixers and MIDI streams. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_s, field_q, field_r. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "Abstract entry point advancing the stream without producing output samples. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.b([III)V",
+      "originalName": "b",
+      "to": "mixInto",
+      "evidence": "Abstract PCM mixing entry point implemented by sample streams and mixers. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.c()Lhj;",
+      "originalName": "c",
+      "to": "nextSubstream",
+      "evidence": "Abstract subsequent-child stream contract used by the audio scheduler. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.d()I",
+      "originalName": "d",
+      "to": "activityWeight",
+      "evidence": "Abstract scheduler activity-weight contract, returning zero for a pure mixer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rl.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_o, field_l. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rn.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: unfortunatelyYouAreNotText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ro.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rq.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, enterTheNameYouText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rs.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_e, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rt.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_G, field_E, field_C. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rv.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: warningIfYouQuitText, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rw.c(Z)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_r. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:s.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: thisGameHasBeenText, field_n, field_u. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sb.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: openInPopupWindowText, field_b, field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sc.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_o, field_q. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sd.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, achievementsThisGameText, field_e. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:se.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: abcdefghijklmnopqrstuvwxyzabcdefghijText, scoreText, pleaseTryAgainInText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sg.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: passwordsMustBeBetweenText, loadingInstrumentsText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sh.g()V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_d, field_e. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sk.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sl.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: largeScreenSizesAndText, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sn.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sp.d(Z)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_x, field_z. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sr.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, droneDescriptions, field_c, field_i. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ss.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: restartLevelText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:st.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_z, field_B. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:su.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: creatingYourAccountText, unpackingMusicText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sv.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_p, field_s. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tc.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_i, field_j, field_g, field_f. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:td.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: editorText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:te.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_h, field_f, field_g. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tf.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ti.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: typeYourPasswordAgainText, createAFreeAccountText, field_n, timeText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tl.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_k, field_s. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tm.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_b, field_c. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:to.c(Z)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_t, field_m, field_s. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tq.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tr.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_j. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ts.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_e. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tt.c(Z)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: defeatText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ua.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: fullscreenModeWasCancelledText, field_h, field_g, field_n. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uc.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_a, field_d, field_e, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ud.a()Lhj;",
+      "originalName": "a",
+      "to": "firstSubstream",
+      "evidence": "Abstract first-child stream contract used by the audio scheduler and implemented by mixers and MIDI streams. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ud.a(I)V",
+      "originalName": "a",
+      "to": "skip",
+      "evidence": "Abstract entry point advancing the stream without producing output samples. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ud.b([III)V",
+      "originalName": "b",
+      "to": "mixInto",
+      "evidence": "Abstract PCM mixing entry point implemented by sample streams and mixers. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ud.c()Lhj;",
+      "originalName": "c",
+      "to": "nextSubstream",
+      "evidence": "Abstract subsequent-child stream contract used by the audio scheduler. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ud.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_p, field_q. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ud.d()I",
+      "originalName": "d",
+      "to": "activityWeight",
+      "evidence": "Abstract scheduler activity-weight contract, returning zero for a pure mixer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_p. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_b, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.g(Z)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_lb. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.a(I)Lms;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "Advances the current bucket cursor and scans subsequent sentinel buckets for the next node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.a(IJ)Lms;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Selects the bucket by masked long key and retains the next matching-key cursor position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.a(ILms;J)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Unlinks the node, sets its long key and splices it into the masked-key bucket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.c(I)Lms;",
+      "originalName": "c",
+      "to": "first",
+      "evidence": "Resets the bucket index and delegates iteration to the next node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:un.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: playerNameText, field_a, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uo.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_e. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_e, field_f, field_g, cancelText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uq.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ur.k(I)V",
+      "originalName": "k",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: passwordsCanOnlyContainText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:us.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: loggingInText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ut.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_o. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uu.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_o, field_l, field_s. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uv.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_o. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uw.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b, field_c, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_J. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vd.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a, field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ve.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_k, waitingForMusicText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vg.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_k. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.c(Z)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_y, field_z, field_v. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vl.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, accountCreatedSuccessfullyText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vm.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_c, field_b, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vn.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_w, field_N. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: discardText, field_c, field_e, field_d. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vr.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_G, thisPasswordContainsYourText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vs.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vu.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_g, field_h, powerupEffectNames. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vv.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wd.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_j, field_f, continueText, field_e. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:we.e(Z)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_C, field_B, field_z. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wh.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: clickToAssignPointsText, field_w. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wk.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_f, field_h. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: serviceUnavailableText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_f, field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wn.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_b. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wp.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_z, returnToMainMenuText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: allHiscoresText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wr.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_G, field_E. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ws.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: toKeepFullscreenOrText. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wt.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_i, field_h. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wv.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_a. Original guard and compatibility branches are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:xa.w(Z)V",
+      "originalName": "w",
+      "to": "disposeNativeResource",
+      "evidence": "Native disposal contract invoked directly or from the deferred resource reaper. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ya.w(Z)V",
+      "originalName": "w",
+      "to": "disposeNativeResource",
+      "evidence": "Native disposal contract invoked directly or from the deferred resource reaper. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:za.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears retained static references: field_l. Original guard and compatibility branches are preserved.",
       "confidence": "reviewed"
     }
   ],
@@ -2307,13 +5730,14 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-sumoblitz-rules.mjs": "a8471cbe332f8e902e0a80ecdfb28dfacb7051d955445312328fc3ec7824058d",
+      "build-sumoblitz-rules.mjs": "cb8d3b1f75fdd7919893fcbe0bbf48281a521e1808dad28df56ef444da51cefe",
       "reproduce-sumoblitz.mjs": "289a1a5413356d89e0e48a80a0f1f0edc44d127259c6a03dc034d91760751555",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "sumoblitz-string-fields.mjs": "7ed930e392813e90e802d31ec1b4221241f6ac4598b75a3ac4110a28a182c5eb"
+      "sumoblitz-string-fields.mjs": "7ed930e392813e90e802d31ec1b4221241f6ac4598b75a3ac4110a28a182c5eb",
+      "naming-coverage.mjs": "15a5fab4e8fc15559638b61d2f08e07b4822beafde3bf8a122ce76d03f6c04d4"
     }
   },
   "generators": {
