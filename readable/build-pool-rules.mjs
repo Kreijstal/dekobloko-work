@@ -3,6 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
 import {workflowRoot} from './game-export.mjs';
+import {namingCoverage} from './naming-coverage.mjs';
 import * as engineNames from './pool-names-data.mjs';
 import * as gameNames from './pool-names-game.mjs';
 
@@ -74,11 +75,18 @@ export const config = {
   game: 'pool', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
   workflowFiles: ['build-pool-rules.mjs', 'pool-names-data.mjs', 'pool-names-game.mjs', 'reproduce-pool.mjs', 'reviewed-game.mjs',
-    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
+    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs', 'naming-coverage.mjs'],
   readingGuide(rules, mapping) {
+    const coverage = namingCoverage(mapping);
     return ['# Reading Pool', '',
-      `This pass names ${Object.keys(classes).length} reviewed classes in ${mapping.files.length} source files. Unresolved roles keep their original names.`, '',
-      'Start at `Pool`; the shared engine (nodes, deques, hash tables, applet base, packet buffer) uses the same role names as other FunOrb games.', ''].join('\n');
+      'This directory is the single published Java tree. The scripts and reviewed rules live in dekobloko-work/readable; the reverse dictionary is ../../decompilation/pool-naming.json.', '',
+      `Resolved declarations: ${coverage.namedClasses}/${coverage.classes} classes and ${coverage.namedMethods}/${coverage.methods} methods have readable names; ${coverage.constructors} constructors follow their class names.`,
+      `Remaining: ${coverage.unresolvedClasses.length} opaque class names and ${coverage.unresolvedMethods.length} opaque method names. ${coverage.complete ? 'All resolved class and method declarations have readable names.' : 'The complete naming goal is still in progress.'}`,
+      'Audit with `node readable/naming-coverage.mjs pool` in dekobloko-work; it exits unsuccessfully while opaque names remain.', '',
+      'Start at `Pool` and `PoolMatchController`; `PoolGameModel`, `Ball`, `Pocket`, `CushionSegment`, `ShotRecord` and the `GameRules` implementations describe gameplay. `TableScene`, the table themes and `BallSkin` implementations handle its presentation.', '',
+      'The obfuscator moved independent static helpers between owners. Class names describe their retained role; each method name describes its own behavior without relocating code.', '',
+      'Regeneration compiles the raw and named sources and checks resolved bindings, override contracts, labels and class-name literals. Full gameplay and multiplayer behavior have not been verified by this naming workflow.', '',
+      `Decompiler source commit: ${rules.generators.javaTools.commit}.`, ''].join('\n');
   },
 };
 
