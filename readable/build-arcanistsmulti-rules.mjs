@@ -101,6 +101,10 @@ for (const [owner, original, descriptor, to, evidence] of reviewedNames.methods)
   members[symbol] = {to, evidence};
 }
 for (const [owner, original, descriptor, to, evidence] of reviewedNames.fields) members[`F:${owner}.${original}:${descriptor}`] = {to, evidence};
+// parameters [owner, original, descriptor, [name per ordinal or null to keep], evidence].
+for (const [owner, original, descriptor, names, evidence] of reviewedNames.parameters ?? []) {
+  for (const [ordinal, to] of names.entries()) if (to) members[`P:${owner}.${original}${descriptor}#${ordinal}`] = {to, evidence};
+}
 
 export const arcanistsConfig = {
   game: 'arcanistsmulti', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
