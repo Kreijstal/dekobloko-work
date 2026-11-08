@@ -143,14 +143,32 @@ method('bg', 'g', '(I)V', 'renderFrame', loop + ' Called after the canvas is mad
 method('TetraLink', 'q', '(I)V', 'loadArchives', 'Assigns archives 3 through 16 to static holders.');
 method('TetraLink', 'a', '(IIB)Loh;', 'createShadedDiscSprite', 'Draws 24 concentric discs into a new 57 by 57 sprite.');
 
+// Reviewed names added in later rounds live in tetralink-names.json:
+// classes [owner, name, evidence], methods and fields [owner, original, descriptor, name, evidence].
+const names = JSON.parse(fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'tetralink-names.json'), 'utf8'));
+for (const [owner, to, evidence] of names.classes) {
+  if (classes[owner]) throw new Error('Class already reviewed: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of names.methods) {
+  const symbol = `M:${owner}.${original}${descriptor}`;
+  if (members[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+for (const [owner, original, descriptor, to, evidence] of names.fields) {
+  const symbol = `F:${owner}.${original}:${descriptor}`;
+  if (members[symbol]) throw new Error('Field already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export const config = {
   game: 'tetralink', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-tetralink-rules.mjs', 'reproduce-tetralink.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-tetralink-rules.mjs', 'tetralink-names.json', 'reproduce-tetralink.mjs', 'reviewed-game.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   readingGuide(rules, mapping) {
     return ['# Reading Tetra Link', '',
-      `This pass names ${Object.keys(classes).length} reviewed classes in ${mapping.files.length} source files. Unresolved roles keep their original names.`, '',
+      `This pass names ${Object.keys(classes).length} reviewed classes and ${Object.keys(members).length} members in ${mapping.files.length} source files. Unresolved roles keep their original names.`, '',
       'Start at the `TetraLink` applet class; the shared engine (nodes, deques, packet buffer, sockets, widgets, sprites) uses the same role names as other FunOrb games.', ''].join('\n');
   },
 };
