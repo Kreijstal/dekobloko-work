@@ -2,6 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
+import {namingCoverage} from './naming-coverage.mjs';
+import {verifyKickaboutCore} from './tests/test-kickabout-core.mjs';
 import {workflowRoot} from './game-export.mjs';
 
 // Every identity below belongs to the pinned Kickabout export. Similar names in
@@ -1180,7 +1182,7 @@ method('uo', 'a', '([I[BIIIIIIIII[I[I)V', 'blitMaskedGlyph', 'Body is identical 
 method('uo', 'b', '(IIIIIIIZ)V', 'drawGlyphAlpha', 'Body is identical to steelsentinels BinaryBitmapFont.drawGlyphAlpha.');
 method('uo', 'b', '([I[BIIIIIIII)V', 'blitBinaryGlyphWithAlpha', 'Body is identical to steelsentinels BinaryBitmapFont.blitBinaryGlyphWithAlpha.');
 method('ut', 'b', '()Lut;', 'copy', 'Body is identical to wizardrun Sprite.copy.');
-method('ut', 'f', '()Lut;', 'flipHorizontal', 'Body is identical to wizardrun Sprite.flipHorizontal.');
+method('ut', 'f', '()Lut;', 'copyFlippedHorizontally', 'Creates a separate sprite with each pixel row reversed and a mirrored X offset; the original remains unchanged.');
 method('ut', 'f', '(II)V', 'drawHalfSize', 'Body is identical to escapevector/geoblox Sprite.drawHalfSize.');
 method('vm', 'a', '(III)V', 'rampVolumeAndPan', 'Body is identical to steelsentinels PcmSampleStream.rampVolumeAndPan.');
 method('vm', 'a', '(II[B[IIIIIIIIIILvm;II)I', 'mixReverseStereoInterpolatedRamp', 'Body is identical to steelsentinels PcmSampleStream.mixReverseStereoInterpolatedRamp.');
@@ -1703,15 +1705,118 @@ method('wq', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assig
 method('ws', 'a', '(I)V', 'releaseStatics', 'Static method whose body only assigns null to static fields of this class.');
 // END-R2MEMBERS
 
+// Completion work: roles checked against the pinned bodies and their call sites.
+Object.assign(classes, {
+  ab: ["WidgetFocusListener", "TextButton invokes this listener when requesting or clearing keyboard focus, passing its new focus boolean."],
+  co: ["WidgetDropListener", "DropTargetWidget calls this listener with the dragged widget and target; UiWidget passes a null target for a cancelled drop."],
+  eu: ["WidgetDragListener", "DraggableWidget invokes this listener after its drag coordinates change."],
+  uu: ["WidgetHoverListener", "UiWidget invokes this listener when containsPointer changes the stored hover flag."],
+  nf: ["ButtonPointerListener", "TextButton dispatches its pointer press and pointer release hooks to this ButtonListener subinterface."],
+  gl: ["InstrumentEnvelope", "MusicPatch constructs instances into its per-note envelope array; the instance stores two byte-envelope curves and envelope/vibrato integer settings."],
+  it: ["ParticipantAgent", "CommonGame constructs one of these MatchAgents per participant; LineupAgent indexes the two-team slot table using its team field."],
+  kw: ["AvailabilityCheckRequest", "The email availability validator polls completion and a boolean result for the stored queried text; the request cache keys it by that text."],
+  lp: ["CanvasInputBindings", "Its only method attaches the keyboard, mouse/focus and optional wheel handlers to the supplied Canvas."],
+  v: ["EntityAfterimage", "Captures a rendered footballer or ball into a 128x128 sprite and fades it over a 17-tick lifetime at the stored world position."],
+  vv: ["ArchiveRequest", "Abstract DualLinkNode request exposes getBytes/progress and a volatile pending flag; disk-cache and network request subclasses implement it."],
+  ui: ["NetworkArchiveRequest", "ArchiveRequest whose progress and completion depend on the received PacketBuffer position and padding length."],
+  k: ["StreetSceneryLoader", "Static street archive loader installs cars, signs and crack sprite arrays once; the class has no live instance constructor."],
+});
+
+method("cn", "a", "([I[BIIIIIII)V", "blitCoverage", "Shared CoverageBitmapFont implementation: identical normalized operators, constants and identifier-reuse pattern (190 tokens), matching pixelate:M:ld.a([I[BIIIIIII)V. Reviewed against that engine role.");
+method("cn", "a", "([I[BIIIIIIII)V", "blitCoverageAlpha", "Shared CoverageBitmapFont implementation: identical normalized operators, constants and identifier-reuse pattern (196 tokens), matching pixelate:M:ld.a([I[BIIIIIIII)V. Reviewed against that engine role.");
+method("dp", "b", "(F)V", "setWetGain", "Shared ReverbPcmStream implementation: identical normalized operators, constants and identifier-reuse pattern (76 tokens), matching escapevector:M:wb.f(F)V,pool:M:gl.e(F)V. Reviewed against that engine role.");
+method("dp", "d", "(F)V", "setStereoWidth", "Shared ReverbPcmStream implementation: identical normalized operators, constants and identifier-reuse pattern (76 tokens), matching escapevector:M:wb.a(F)V,pool:M:gl.c(F)V. Reviewed against that engine role.");
+method("eg", "a", "(I[IIIIZ)V", "applyGroupTransform", "Shared ModelMesh implementation: identical normalized operators, constants and identifier-reuse pattern (1490 tokens), matching armiesofgielinor:M:gd.a(I[IIIIZ)V. Reviewed against that engine role.");
+method("eg", "a", "(I[IIIIZI[I)V", "applyMaskedGroupTransform", "Shared ModelMesh implementation: identical normalized operators, constants and identifier-reuse pattern (3935 tokens), matching armiesofgielinor:M:gd.a(I[IIIIZI[I)V. Reviewed against that engine role.");
+method("kv", "a", "(III)I", "evaluateWaveform", "Shared SynthesizedSoundInstrument implementation: identical normalized operators, constants and identifier-reuse pattern (95 tokens), matching geoblox:M:ed.a(III)I. Reviewed against that engine role.");
+method("on", "a", "(IIIIII)V", "fillRectangleAlpha", "Shared SoftwareRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (245 tokens), matching geoblox:M:vb.b(IIIIII)V,pixelate:M:t.a(IIIIII)V,pool:M:qh.c(IIIIII)V,bachelorfridge:M:dg.f(IIIIII)V. Reviewed against that engine role.");
+method("on", "a", "(IIIIIII)V", "fillRoundedRectangleBlended", "Shared SoftwareRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (941 tokens), matching pixelate:M:t.a(IIIIIII)V,pool:M:qh.a(IIIIIII)V. Reviewed against that engine role.");
+method("on", "a", "(IIIIIIII[II[IIIIIIII)V", "addRadialGlowScanlines", "Shared SoftwareRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (157 tokens), matching pixelate:M:t.a(IIIIIIII[II[IIIIIIII)V,pool:M:qh.a(IIIIIIII[II[IIIIIIII)V,bachelorfridge:M:dg.a(IIIIIIII[II[IIIIIIII)V. Reviewed against that engine role.");
+method("on", "c", "(IIIII)V", "drawHorizontalLineAlpha", "Shared SoftwareRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (265 tokens), matching geoblox:M:vb.b(IIIII)V,pixelate:M:t.e(IIIII)V,pool:M:qh.e(IIIII)V,bachelorfridge:M:dg.g(IIIII)V. Reviewed against that engine role.");
+method("on", "d", "(IIII)V", "fillCircle", "Shared SoftwareRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (562 tokens), matching geoblox:M:vb.d(IIII)V,pixelate:M:t.c(IIII)V,pool:M:qh.a(IIII)V,bachelorfridge:M:dg.b(IIII)V. Reviewed against that engine role.");
+method("on", "d", "(IIIIII)V", "fillVerticalGradientAdditive", "Shared SoftwareRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (336 tokens), matching pixelate:M:t.f(IIIIII)V. Reviewed against that engine role.");
+method("on", "e", "(IIIIII)V", "drawLineBlendedInclusive", "Shared SoftwareRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (682 tokens), matching pixelate:M:t.h(IIIIII)V,pool:M:qh.b(IIIIII)V. Reviewed against that engine role.");
+method("on", "f", "(IIIII)V", "drawVerticalLineAlpha", "Shared SoftwareRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (259 tokens), matching geoblox:M:vb.c(IIIII)V,pixelate:M:t.f(IIIII)V,pool:M:qh.g(IIIII)V,bachelorfridge:M:dg.b(IIIII)V. Reviewed against that engine role.");
+method("on", "f", "(IIIIII)V", "drawRoundedRectangle", "Shared SoftwareRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (1054 tokens), matching geoblox:M:vb.a(IIIIII)V,pixelate:M:t.e(IIIIII)V. Reviewed against that engine role.");
+method("on", "g", "(IIIIII)V", "fillVerticalGradient", "Shared SoftwareRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (267 tokens), matching geoblox:M:vb.d(IIIIII)V,pixelate:M:t.g(IIIIII)V,pool:M:qh.d(IIIIII)V,bachelorfridge:M:dg.b(IIIIII)V. Reviewed against that engine role.");
+method("on", "h", "(IIIIII)V", "drawRectangleAlpha", "Shared SoftwareRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (88 tokens), matching escapevector:M:em.b(IIIIII)V,pixelate:M:t.b(IIIIII)V. Reviewed against that engine role.");
+method("on", "i", "(IIIIII)V", "fillRoundedRectangle", "Shared SoftwareRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (747 tokens), matching geoblox:M:vb.c(IIIIII)V,pixelate:M:t.d(IIIIII)V,pool:M:qh.a(IIIIII)V,bachelorfridge:M:dg.e(IIIIII)V. Reviewed against that engine role.");
+method("ot", "a", "(IIII)V", "drawScaled", "Shared ArgbSprite implementation: identical normalized operators, constants and identifier-reuse pattern (494 tokens), matching geoblox:M:il.a(IIII)V,pixelate:M:sa.d(IIII)V,pool:M:lp.c(IIII)V,bachelorfridge:M:pa.c(IIII)V. Reviewed against that engine role.");
+method("ot", "a", "(IIIIII)V", "rotateNearest", "Shared ArgbSprite implementation: identical normalized operators, constants and identifier-reuse pattern (4050 tokens), matching geoblox:M:il.b(IIIIII)V,pixelate:M:sa.b(IIIIII)V,pool:M:lp.a(IIIIII)V,bachelorfridge:M:pa.a(IIIIII)V. Reviewed against that engine role.");
+method("ot", "b", "(II)V", "drawVerticalFlip", "Shared ArgbSprite implementation: identical normalized operators, constants and identifier-reuse pattern (307 tokens), matching pixelate:M:sa.c(II)V,bachelorfridge:M:pa.b(II)V. Reviewed against that engine role.");
+method("ot", "d", "(IIIII)V", "drawScaledAlpha", "Shared ArgbSprite implementation: identical normalized operators, constants and identifier-reuse pattern (496 tokens), matching geoblox:M:il.b(IIIII)V,pixelate:M:sa.c(IIIII)V,pool:M:lp.b(IIIII)V,bachelorfridge:M:pa.c(IIIII)V. Reviewed against that engine role.");
+method("ot", "h", "()Lot;", "copyArgb", "Shared ArgbSprite implementation: identical normalized operators, constants and identifier-reuse pattern (95 tokens), matching bachelorfridge:M:pa.i()Lpa;. Reviewed against that engine role.");
+method("t", "a", "(II)V", "buildColorPalette", "Shared TriangleRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (627 tokens), matching pool:M:fb.c(II)V. Reviewed against that engine role.");
+method("t", "a", "(IIIIIII)V", "drawFlatTriangle", "Shared TriangleRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (2479 tokens), matching pool:M:fb.a(IIIIIII)V,bachelorfridge:M:jb.a(IIIIIII)V. Reviewed against that engine role.");
+method("t", "a", "(IIIIIIIII)V", "drawShadedTriangle", "Shared TriangleRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (2921 tokens), matching pool:M:fb.a(IIIIIIIII)V,bachelorfridge:M:jb.a(IIIIIIIII)V. Reviewed against that engine role.");
+method("t", "a", "([IIIIII)V", "drawFlatSpan", "Shared TriangleRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (691 tokens), matching pool:M:fb.a([IIIIII)V. Reviewed against that engine role.");
+method("t", "a", "([IIIIIIII)V", "drawShadedSpan", "Shared TriangleRasterizer implementation: identical normalized operators, constants and identifier-reuse pattern (825 tokens), matching pool:M:fb.a([IIIIIIII)V. Reviewed against that engine role.");
+method("ut", "a", "()V", "flipVertically", "Shared Sprite implementation: identical normalized operators, constants and identifier-reuse pattern (147 tokens), matching bachelorfridge:M:kv.c()V. Reviewed against that engine role.");
+method("ut", "a", "(III)V", "drawSilhouette", "Shared Sprite implementation: identical normalized operators, constants and identifier-reuse pattern (288 tokens), matching geoblox:M:dm.a(III)V,pixelate:M:tf.e(III)V,pool:M:dd.f(III)V,bachelorfridge:M:kv.c(III)V. Reviewed against that engine role.");
+method("ut", "a", "(IIII)V", "drawScaled", "Shared Sprite implementation: identical normalized operators, constants and identifier-reuse pattern (494 tokens), matching geoblox:M:dm.a(IIII)V,pixelate:M:tf.d(IIII)V,pool:M:dd.c(IIII)V,bachelorfridge:M:kv.c(IIII)V. Reviewed against that engine role.");
+method("ut", "a", "(IIIIII)V", "rotateNearest", "Shared Sprite implementation: identical normalized operators, constants and identifier-reuse pattern (3577 tokens), matching pixelate:M:tf.b(IIIIII)V,pool:M:dd.a(IIIIII)V,bachelorfridge:M:kv.a(IIIIII)V. Reviewed against that engine role.");
+method("ut", "a", "(IIII[I[IIIIIIIIIII)V", "blitScaledAdditiveRows", "Shared Sprite implementation: identical normalized operators, constants and identifier-reuse pattern (165 tokens), matching pixelate:M:tf.a(IIII[I[IIIIIIIIIII)V. Reviewed against that engine role.");
+method("ut", "a", "(IIII[I[IIIIIIIIIIII)V", "blitScaledAdditiveIntensityRows", "Shared Sprite implementation: identical normalized operators, constants and identifier-reuse pattern (196 tokens), matching pixelate:M:tf.a(IIII[I[IIIIIIIIIIII)V. Reviewed against that engine role.");
+method("ut", "a", "([I[IIIIIIII)V", "copyNonzeroPixels", "Shared Sprite implementation: identical normalized operators, constants and identifier-reuse pattern (242 tokens), matching pixelate:M:tf.b([I[IIIIIIII)V,pool:M:dd.b([I[IIIIIIII)V,bachelorfridge:M:kv.a([I[IIIIIIII)V. Reviewed against that engine role.");
+method("ut", "a", "([I[IIIIIIIIIIII)V", "blitScaledSilhouette", "Shared Sprite implementation: identical normalized operators, constants and identifier-reuse pattern (121 tokens), matching geoblox:M:dm.b([I[IIIIIIIIIIII)V,bachelorfridge:M:kv.b([I[IIIIIIIIIIII)V. Reviewed against that engine role.");
+method("ut", "b", "(II)V", "drawVerticalFlip", "Shared Sprite implementation: identical normalized operators, constants and identifier-reuse pattern (307 tokens), matching pixelate:M:tf.c(II)V,bachelorfridge:M:kv.b(II)V. Reviewed against that engine role.");
+method("ut", "b", "(IIII)V", "drawScaledAveraged", "Shared Sprite implementation: identical normalized operators, constants and identifier-reuse pattern (840 tokens), matching pixelate:M:tf.a(IIII)V,pool:M:dd.a(IIII)V. Reviewed against that engine role.");
+method("ut", "b", "([I[IIIIIIIII)V", "recolorNeutralPixels", "Shared Sprite implementation: identical normalized operators, constants and identifier-reuse pattern (344 tokens), matching pixelate:M:tf.a([I[IIIIIIIII)V,pool:M:dd.a([I[IIIIIIIII)V,bachelorfridge:M:kv.c([I[IIIIIIIII)V. Reviewed against that engine role.");
+method("ut", "d", "()V", "rotateClockwise", "Shared Sprite implementation: identical normalized operators, constants and identifier-reuse pattern (183 tokens), matching geoblox:M:dm.a()V,pixelate:M:tf.b()V,pool:M:dd.f()V,bachelorfridge:M:kv.f()V. Reviewed against that engine role.");
+method("ut", "d", "(IIIII)V", "drawScaledAlpha", "Shared Sprite implementation: identical normalized operators, constants and identifier-reuse pattern (496 tokens), matching geoblox:M:dm.b(IIIII)V,pixelate:M:tf.c(IIIII)V,pool:M:dd.b(IIIII)V,bachelorfridge:M:kv.c(IIIII)V. Reviewed against that engine role.");
+method("ut", "e", "(II)V", "drawMultiply", "Shared Sprite implementation: identical normalized operators, constants and identifier-reuse pattern (290 tokens), matching geoblox:M:dm.e(II)V,pixelate:M:tf.g(II)V,pool:M:dd.d(II)V,bachelorfridge:M:kv.a(II)V. Reviewed against that engine role.");
+method("ut", "g", "()V", "flipHorizontalInPlace", "Shared Sprite implementation: identical normalized operators, constants and identifier-reuse pattern (124 tokens), matching bachelorfridge:M:kv.e()V. Reviewed against that engine role.");
+method("ab", "a", "(ZLfd;I)V", "focusChanged", "Invoked by TextButton.requestKeyboardFocus and clearKeyboardFocus with the current focus flag.");
+method("co", "a", "(Ljg;Lln;I)V", "dropped", "Invoked with a target on drop, or a null target when UiWidget cancels the drag.");
+method("eu", "a", "(ILjg;II)V", "dragged", "Invoked after DraggableWidget updates its drag coordinates.");
+method("uu", "a", "(ZBLfd;)V", "hoverChanged", "Invoked when UiWidget.containsPointer changes its hover state.");
+method("nf", "a", "(IIIILwi;BI)V", "pointerPressed", "TextButton.handlePointerPress passes its widget and press coordinates to this hook.");
+method("nf", "a", "(Lwi;IIIII)V", "pointerReleased", "TextButton.handlePointerRelease invokes this hook before clearing its pressed-button state.");
+method("lp", "a", "(Ljava/awt/Canvas;B)V", "attachInputHandlers", "Attaches keyboard and mouse/focus handlers, then the optional mouse-wheel handler, to a Canvas.");
+method("ej", "a", "(Ljava/awt/Component;I)V", "attachKeyboardInput", "Disables traversal keys and registers PlayerModelPreview.field_q as KeyListener and FocusListener.");
+method("se", "a", "(ILjava/awt/Component;)V", "attachMouseInput", "Registers ProxyAuthenticationRequiredException.field_e as MouseListener, MouseMotionListener and FocusListener.");
+method("kw", "a", "(B)Z", "isComplete", "Returns the completion flag set by complete; validators wait until this becomes true.");
+method("kw", "b", "(B)Z", "getResult", "Returns the boolean result stored by complete after the asynchronous availability check.");
+method("kw", "a", "(I)Ljava/lang/String;", "getQuery", "Returns the immutable query text supplied to the constructor.");
+method("kw", "a", "(ZB)V", "complete", "Marks the request complete and stores the supplied boolean result.");
+method("kw", "c", "(B)I", "loadStadiumScenery", "Loads stadium seats, seat masks and advertising sprites once; otherwise returns archive group progress.");
+method("gl", "a", "(IBIILml;IIIII)I", "readFourRangeUnsigned", "Reads a two-bit selector, then the selected bit-width and cumulative range offsets.");
+method("gl", "a", "(ILnu;)V", "buildBoundaryCameraLookup", "Samples 10 points along each of four pitch edges for both teams and all four player slots, preserving the original ball position.");
+method("gl", "a", "(IBIII)[Lut;", "createPanelSpriteSlices", "Delegates to the nine-sprite beveled panel generator using fixed one-pixel border widths.");
+method("it", "a", "(Lrj;Lsj;B)V", "initializeGameSoundEffects", "Initializes the indexed game sound table with named menu, crowd, ball and footballer sound resources.");
+method("it", "c", "(I)V", "releaseStatics", "Drops the class scroll-bar reference and preserves the original guard-dependent boolean assignment.");
+method("k", "a", "(ZI)V", "enqueuePromotionDialog", "Appends a new PromotionDialog for the supplied division value to the pending-dialog deque.");
+method("k", "a", "(I)V", "releaseStatics", "Clears this class static sprite, layout and localized-text references under the original guard.");
+method("v", "a", "(I)V", "tick", "Decrements the afterimage remaining lifetime when it is positive.");
+method("v", "a", "(Lgm;IZ)V", "captureFootballer", "Renders a footballer into the private 128x128 sprite and records its position and 17-tick fade lifetime.");
+method("v", "a", "(IBLob;)V", "captureBall", "Renders a ball into the private sprite at its stored world position and resets the 17-tick fade lifetime.");
+method("v", "c", "(I)V", "draw", "Projects the stored world position and draws the sprite with opacity scaled by remaining lifetime.");
+method("v", "d", "(I)Ljava/lang/Boolean;", "takePendingBooleanResult", "Returns ep.field_f once and clears that static result slot.");
+method("rg", "a", "(BLjava/awt/Component;)V", "detach", "AwtMouseWheelInput implementation calls removeMouseWheelListener.");
+method("rg", "b", "(BLjava/awt/Component;)V", "attach", "AwtMouseWheelInput implementation calls addMouseWheelListener.");
+method("rg", "b", "(B)I", "pollRotation", "AwtMouseWheelInput returns its accumulated wheel rotations and resets the counter.");
+field("kw", "d", "Ljava/lang/String;", "query", "Constructor argument returned by getQuery.");
+field("kw", "j", "Z", "complete", "Set before the result is stored by complete and polled by validators.");
+field("kw", "e", "Z", "result", "Boolean payload returned by getResult.");
+field("it", "p", "I", "team", "LineupAgent uses this field as the first index of its two-team slot arrays.");
+field("it", "j", "I", "participantIndex", "Constructor receives the CommonGame participant-loop index and stores it here.");
+field("vv", "p", "Z", "pending", "Volatile flag tested by both network and disk requests before returning completed bytes.");
+
 export const kickConfig = {
   game: 'kickabout', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   workflowFiles: ['build-kickabout-rules.mjs', 'reproduce-kickabout.mjs', 'reviewed-game.mjs',
-    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
-  verifyCore: async () => ({status: 'not-applicable', note: 'No game-specific reconstruction or core fixture in this naming wave.'}),
+    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs', 'naming-coverage.mjs', 'tests/test-kickabout-core.mjs'],
+  verifyCore: verifyKickaboutCore,
   readingGuide(rules, mapping) {
+    const coverage = namingCoverage(mapping);
     return ['# Reading Kickabout', '',
       'This directory is the single published Java tree. The scripts and reviewed rules live in dekobloko-work/readable; the current reverse dictionary is ../../decompilation/kickabout-naming.json.', '',
-      `This pass names ${Object.keys(classes).length} reviewed classes in ${mapping.files.length} source files. Unresolved roles keep their original names.`, '',
+      `Resolved declarations: ${coverage.namedClasses}/${coverage.classes} classes and ${coverage.namedMethods}/${coverage.methods} methods have readable names; ${coverage.constructors} constructors follow their class names.`,
+      `Remaining: ${coverage.unresolvedClasses.length} opaque class names and ${coverage.unresolvedMethods.length} opaque method names. The complete naming goal is still in progress.`,
+      'Audit with `node readable/naming-coverage.mjs kickabout` in dekobloko-work; it exits unsuccessfully while opaque names remain.', '',
+      'Start with `CommonGame` for match phases and agents; `ParticipantAgent`, `TeamSelectionAgent`, `FormationAgent` and `LineupAgent` handle participant/team choices. `FootballerAgent`, `BallAgent` and `GoalStateAgent` hold play state.', '',
+      '`ClubState`, `PlayerStats`, `ManagerAction` and auction classes describe manager mode. `ArchiveRequest` / `NetworkArchiveRequest`, `PacketBuffer`, `CipherPacketBuffer` and the applet hierarchy cover transport and loading. UI focus, hover, drag and drop have explicit listener contracts.', '',
+      'Sprite copy/reflection/rotation and availability-request completion are checked against independent native Java expectations in both raw and named corpora. These focused checks do not establish full gameplay or multiplayer equivalence.', '',
       `Decompiler source commit: ${rules.generators.javaTools.commit}.`, ''].join('\n');
   },
 };
