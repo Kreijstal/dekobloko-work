@@ -311,7 +311,7 @@ const classes = {
   q: ['ConsoleTokenCursor', 'Built from a tf of lk tokens into an array; a(byte) returns the next ConsoleExpression and a(int) tests for the end, as Armies of Gielinor ConsoleTokenCursor.'],
   qe: ['ArchivePreloader', 'Queue of up to 16 oc preload tasks over named archive groups that reports "<name> - n%" progress text while polling.'],
   rc: ['GzipDecoder', 'Checks the 31,-117 gzip magic in the buffer and inflates the payload into the byte array, as GeoBlox GzipInflater.'],
-  rd: ['GameModeDefinition', 'Constructed with ids, a member flag, a long key and a hex mask string; matches a mode by key and tests the option masks.'],
+  rd: ['KitStyleDefinition', 'KitStyleTile binds one definition per kit; its two boolean grids recolor the kit mesh, with achievement, unlock-mask and access restrictions.'],
   rj: ['SoundCache', 'Loads PcmSample objects from two archives by name or id into kc caches of 256 entries, as Steel Sentinels SoundCache.'],
   sb: ['StringCursor', 'Wraps a string with a position and length; reads one character at a time and toString shows the caret as a bar.'],
   sn: ['UrlRequest', 'Built from the applet code base, polls an asynchronous fetch and returns the downloaded bytes as a PacketBuffer; used for the message of the day.'],
@@ -2359,7 +2359,7 @@ method('ds', 'a', '(II)I', 'messageButtonCount', 'Maps message/dialog IDs to the
 method('ds', 'a', '(ILbb;)V', 'attachQuickChatSubmenu', 'Adds the supplied cascading submenu to the shared Quick Chat container.');
 method('gf', 'a', '(ILjava/lang/String;)Lld;', 'validateEmailParts', 'Rejects an empty address or missing separator, then validates the local and domain parts separately.');
 method('gf', 'a', '(Lbu;IIIII)Lvq;', 'createFullscreenCanvas', 'Creates the fullscreen frame and installs a focus-listening canvas with the requested size.');
-method('gf', 'a', '([BIII)Z', 'testGameModeMask', 'Reads an MSB-first mask bit for restricted modes and treats mode selectors two or above as unrestricted.');
+method('gf', 'a', '([BIII)Z', 'testUnlockMask', 'Kit-style and pitch selectors read an MSB-first unlock bit; access levels two or above bypass the mask.');
 method('dr', 'a', '(ILjava/lang/Class;)Ljava/lang/String;', 'shortClassName', 'Formats array types recursively with [] suffixes and removes the package prefix from other reflective class names.');
 method('dr', 'a', '(I)Lhd;', 'getActiveLayoutChild', 'Returns the active shared layout child on the valid guard path.');
 method('mg', 'a', '(JJ)J', 'and', 'Returns the bitwise AND of two long values.');
@@ -2411,7 +2411,7 @@ Object.assign(classes, {
   gw: ['HuffmanTextSupport', 'Reads a bounded Huffman string from PacketBuffer; moved button drawing and UI/network helpers remain.'],
   hq: ['ClientInteractionSupport', 'Gates client interaction on the current state and modal conditions and dismisses Quick Chat.'],
   ig: ['MatchHudSupport', 'Draws match HUD information and handles pitch projections and player staging; unrelated arithmetic and chat helpers remain.'],
-  ih: ['FormationMaskSupport', 'Decodes hexadecimal formation masks into two 13 by 10 grids; moved match and name helpers remain.'],
+  ih: ['KitPatternMaskSupport', 'Decodes the two 13 by 10 kit-pattern grids consumed by the kit mesh recoloring helper; unrelated moved helpers remain.'],
   is: ['TextLineLayoutSupport', 'Computes character positions for a text layout line, including spacing and markup spans; moved auction/tick helpers remain.'],
   iv: ['SharedWidgetFactory', 'Constructs the shared scrollbars, menu panels and controls using a supplied bitmap font.'],
   jl: ['InputLayoutState', 'Retains the prior input layout while an alternate input layout is installed, along with moved resource state.'],
@@ -2448,7 +2448,7 @@ method('gw', 'a', '(I)V', 'createQuickChatKeysHelpPanel', 'Constructs the shared
 method('gw', 'a', '(IBLiw;)Ljava/lang/String;', 'readHuffmanString', 'Reads a smart length bounded by the caller, decompresses and decodes the bytes, and preserves the Cabbage error result.');
 method('gw', 'c', '(I)V', 'enqueueLeagueWinnerDialog', 'Adds a new LeagueWinnerDialog to the pending dialog queue.');
 method('hq', 'b', '(B)V', 'dismissQuickChat', 'Closes Quick Chat if its shared active flag is set.');
-method('ih', 'a', '(ILjava/lang/String;)[[[Z', 'decodeFormationMask', 'Expands hexadecimal nibbles least-significant bit first into two 13 by 10 boolean formation grids.');
+method('ih', 'a', '(ILjava/lang/String;)[[[Z', 'decodeKitPatternMask', 'Expands hexadecimal nibbles least-significant bit first into two 13 by 10 boolean grids used to recolor the kit mesh.');
 method('iv', 'a', '(IZLjava/lang/CharSequence;)Ljava/lang/String;', 'validateAccountName', 'Checks account-name length, normalization and separator runs, returning the original localized failure or null.');
 method('iv', 'a', '(Lcn;B)V', 'createSharedWidgets', 'Builds shared menu panels, scrollbars and controls using the supplied font and sprite resources.');
 method('iv', 'a', '(Z)V', 'releaseStatics', 'Clears the shared text and platform-task references under the original guard.');
@@ -2994,6 +2994,162 @@ method('jb', 'c', '(Z)V', 'releaseStatics', 'Clears shared popup text and secure
 method('jc', 'a', '(IZ)I', 'twice', 'Returns the supplied integer multiplied by two, preserving Java integer overflow behavior.');
 method('jd', 'b', '(B)V', 'releaseStatics', 'Clears shared validation text and integer-array resources under the original arithmetic guard.');
 
+// Archive, cache and kit roles reviewed against their published consumers.
+method('sj', 'a', '(DBDD)V', 'moveProjectionTarget', 'Adds pan and zoom deltas to the shared projection target and applies the original pitch and zoom bounds.');
+method('sj', 'a', '(IIB)I', 'hitTestMenuAction', 'Measures the shared menu rows and returns the action identifier under the pointer, or minus one.');
+method('sj', 'a', '(IIZ)Z', 'isFileIdInRange', 'Loads the archive index and range-checks group and file ids against file-id capacities, preserving the debug exception path.');
+method('sj', 'a', '(Ljava/lang/String;B)Z', 'hasGroupName', 'Lowercases and hashes the supplied group name and checks for an index entry.');
+method('sj', 'a', '(ZI)I', 'getFileIdCapacity', 'Returns the indexed file-id capacity for a valid group, or zero when unavailable.');
+method('sj', 'a', '(ZLjava/lang/String;)Z', 'ensurePackedGroupByName', 'Looks up the lowercased group name then requests its packed bytes.');
+method('sj', 'b', '(BI)Z', 'ensurePackedGroup', 'Returns true for resident packed group bytes, otherwise loads them and checks again.');
+method('sj', 'b', '(I)V', 'initializeReflectionCheckQueue', 'Creates the deque consumed by MatchAgent and ConsoleCommand as ReflectionCheck requests.');
+method('sj', 'b', '(III)[B', 'takeFile', 'Delegates to the existing file extraction method with no XTEA keys, preserving the original guard.');
+method('sj', 'c', '(II)[I', 'getFileIds', 'Returns explicit sparse file ids, or builds the sequential id list for a dense group.');
+method('sj', 'e', '(I)I', 'getOverallProgress', 'Averages group progress over nonempty groups; an empty archive is complete and an unavailable index reports zero.');
+method('ow', 'a', '(Lsj;IBI)Lut;', 'loadSprite', 'Decodes a sprite sheet from the archive and constructs its first sprite, or returns null if unavailable.');
+method('ow', 'a', '(Z)V', 'releaseStatics', 'Clears shared archive-source resources under the original guard.');
+method('n', 'a', '(CLjava/lang/String;BLjava/lang/String;)Ljava/lang/String;', 'replaceCharacter', 'Replaces each occurrence of the supplied character with the literal replacement string, precomputing capacity.');
+method('n', 'a', '(ILjava/lang/String;)V', 'showCenteredMessagePanel', 'Sets the shared message, measures its paragraph height and centers the panel and confirmation button.');
+method('n', 'a', '(Lqh;IIZLqh;)Lwm;', 'getArchiveSource', 'Returns or constructs the per-id cached archive source from the loaded master index CRC, digest and version.');
+method('n', 'a', '(Z)Z', 'hasActiveModal', 'Tests whether the shared modal stack exists and has an active top modal.');
+method('bi', 'a', '(Ljava/lang/String;ILjava/lang/String;)Z', 'isAcceptablePassword', 'PasswordValidator rejects nonalphanumeric and disallowed passwords and passwords containing transformed account names.');
+method('hi', 'a', '(Ljava/applet/Applet;Z)V', 'clearSessionAndReload', 'Clears the session cookie and reloads the applet page.');
+method('eq', 'a', '(I)V', 'layoutAnimatedChatPanel', 'Eases the shared chat panel vertical position using the squared transition counter and positions its Quick Chat overlay.');
+method('eq', 'a', '(Z)Z', 'hasBlockingInputPopup', 'Checks shared context-menu, prompt and routed popup references before allowing normal input.');
+method('pn', 'a', '(I)Ljava/lang/Object;', 'getValue', 'Returns the strongly retained cache value; the shared abstract contract is propagated to overrides.');
+method('pn', 'h', '(B)Z', 'isSoftReference', 'Returns false for a strong entry; WeightedLruCache promotes entries whose corresponding predicate is true.');
+method('pn', 'b', '(I)V', 'releaseStatics', 'Clears shared strong-cache-entry resources under the original guard.');
+method('pn', 'g', '(I)Z', 'hasGameFocus', 'Treats fullscreen as focused, otherwise returns the last game focus snapshot on the valid guard path.');
+method('tb', 'a', '(BI)V', 'enqueueMessageDialog', 'Appends a message dialog; message 28 first closes the current popup and clears the pending queue.');
+method('tb', 'a', '(ILsj;)V', 'initializeSocialPanels', 'Loads the display-name-change sprite and constructs the shared friends, ignore and social containers and controls.');
+method('tb', 'a', '(Ljava/lang/String;I)Z', 'containsLoginPassword', 'Chat submission checks whether text contains the stored login password and displays the explicit password-disclosure warning.');
+method('rd', 'a', '(I)Z', 'usesSecondColorForClashCheck', 'Kit ids zero, thirteen and twenty-three select the second color array in MatchScreen color-clash checks.');
+method('rd', 'a', '(IB[I)Z', 'isAchievementLocked', 'Restricted access levels require the configured achievement bit; definitions without an achievement are unlocked.');
+method('rd', 'a', '(I[BB)Z', 'isUnlockMaskLocked', 'Negates the configured kit unlock bit unless the definition has no unlock-mask requirement.');
+method('rd', 'a', '(JII)Z', 'matchesAccessRequirements', 'Requires access level two for restricted kits and matches the configured long key unless its sentinel allows any key.');
+method('rd', 'a', '(Z)V', 'releaseStatics', 'Clears shared kit-definition resources under the original guard.');
+method('ap', 'a', '(I[IZ[I[I)V', 'separateClashingKitColors', 'Selects each kit dominant color and flips the team color bank when the two colors are too close.');
+method('ap', 'c', '(B)V', 'drawParticipantPanels', 'Draws team participant panels at y=150 for a received online match with an active phase.');
+method('gr', 'a', '(BI)Z', 'hasLogEntryForSlot', 'Tests whether findLogEntryBySlot returns a record for the requested slot.');
+method('gr', 'a', '(II)Z', 'isClubFlagSet', 'Tests the requested bit in the club flags integer under the original guard.');
+method('em', 'a', '(Lam;BJ)V', 'put', 'Unlinks an existing secondary chain membership and inserts the node into the masked hash bucket under its long key.');
+method('em', 'b', '(B)Lam;', 'first', 'Resets the hash table iteration bucket and delegates to its next-entry traversal.');
+method('o', 'a', '(I)Lam;', 'first', 'Starts iteration at the sentinel next link and remembers the following node.');
+method('o', 'b', '(I)Lam;', 'next', 'Advances the saved deque cursor and returns null at the sentinel.');
+method('o', 'c', '(I)I', 'size', 'Counts secondary-linked nodes between the deque sentinel links.');
+method('o', 'd', '(I)V', 'releaseStatics', 'Clears shared deque resources under the original guard.');
+method('lf', 'a', '(BI)I', 'projectPitchY', 'Reflects pitch Y around 1344 when orientation is reversed and applies worldToScreenY.');
+
+
+method('wm', 'a', '(I)Lkl;', 'getIndex', 'Loads and verifies the cached or network archive index and returns it when available.');
+method('wm', 'a', '(II)I', 'getGroupProgress', 'Returns progress from the queued request for the group, or zero if no request exists.');
+method('wm', 'a', '(IIB)Lvv;', 'getValidatedGroupRequest', 'Starts or polls the requested disk, priority or background group transfer and validates its CRC, digest and version before returning completion.');
+method('wm', 'b', '(B)V', 'requestAllGroups', 'Enables background group fetching when a disk cache exists and ensures the pending work deque exists.');
+method('wm', 'b', '(I)V', 'serviceBackgroundRequests', 'Processes bounded disk verification and background fetch queues, then periodically unlinks completed old requests.');
+method('wm', 'b', '(II)[B', 'getGroupBytes', 'Takes bytes from a completed validated priority group request and unlinks that request.');
+method('wm', 'd', '(I)V', 'servicePrefetchQueue', 'Checks explicit group prefetch entries, requesting disk validation or network recovery until the group is valid.');
+method('n', 'a', '(I)V', 'serviceArchiveSources', 'Services every cached source prefetch queue before servicing its background requests.');
+method('em', 'a', '(I)Lam;', 'next', 'Traverses secondary links within the current hash bucket then advances to the next nonempty bucket.');
+method('em', 'a', '(IJ)Lam;', 'get', 'Searches the masked hash bucket for the long key and preserves a cursor for further equal-key entries.');
+method('em', 'a', '(B)Lam;', 'nextWithSameKey', 'Continues from the lookup cursor, returning the next entry with the same long key.');
+method('kc', 'a', '(I)Lgn;', 'next', 'Advances through intrusive-node hash buckets and stores the next node cursor.');
+method('kc', 'a', '(Z)V', 'clear', 'Unlinks every node from every hash bucket and clears both iteration cursors.');
+method('kc', 'a', '(ZJ)Lgn;', 'get', 'Looks up a long key in the masked bucket, retaining a search cursor.');
+method('kc', 'b', '(I)Lgn;', 'first', 'Sets the starting iteration bucket and returns its first available entry.');
+method('ko', 'a', '(III)V', 'updatePointerSelection', 'Updates selected index and button hold/repeat state from pointer presses, releases and hovered indices.');
+method('ko', 'a', '(I)Z', 'isPointerHeld', 'Reports whether a mouse button is latched in the selection controller.');
+method('ko', 'a', '(IIIZ)V', 'restoreSelection', 'Restores pointer-driven versus keyboard-driven selection, held button state and the corresponding selected index.');
+method('ko', 'a', '(ZIB)V', 'resetPointerSelection', 'Clears the held button state and optionally sets a new pointer-driven selected index.');
+method('ko', 'b', '(I)V', 'captureActivationKey', 'Clears pointer activation state and records the current key only when no mouse button is held.');
+method('ko', 'c', '(I)Z', 'isActivated', 'Reports pointer activation or the two keyboard activation codes 84 and 83.');
+method('ko', 'd', '(I)V', 'handleVerticalArrowKeys', 'Wraps selection on key codes 98 and 99 while switching to keyboard-driven selection.');
+method('ml', 'a', '(BI[BI)V', 'readIsaacBytes', 'Reads bytes while subtracting consecutive ISAAC outputs into the destination slice.');
+method('ml', 'a', '(III)V', 'writeBits', 'Masks and packs the requested number of bits into successive bytes, maintaining free bits in the current byte.');
+method('ml', 'b', '(IB)V', 'writeIsaacByte', 'Adds the next ISAAC output to the byte before writing it and advancing position.');
+method('ml', 'k', '(B)I', 'readIsaacByte', 'Subtracts the next ISAAC output from the input byte and masks the unsigned result.');
+method('ml', 'b', '(Z)V', 'finishBitWrite', 'Advances past a partially filled output byte and restores the byte-aligned write state.');
+method('ml', 'n', '(I)V', 'beginBitWrite', 'Zeroes the current output byte and initializes its eight available bit positions.');
+method('ml', 'p', '(I)V', 'beginBitRead', 'Converts the byte position into the initial bit-read cursor.');
+method('ml', 'l', '(B)V', 'finishBitRead', 'Rounds the bit-read cursor upward to the next byte position.');
+method('ml', 'k', '(II)V', 'advanceLoadingProgress', 'Raises the shared loading progress monotonically and reports a stage update.');
+method('ml', 'm', '(I)V', 'releaseStatics', 'Clears shared cipher-buffer text, sprite and integer resources under the original guard.');
+method('ml', 'o', '(I)V', 'initializeExtendedKeyMappings', 'Populates punctuation, bracket and extended Java key-code translations in the shared key map.');
+method('ml', 'a', '(ILsj;)V', 'loadSplitFinalFrameSprites', 'Loads final_frame.jpg and renders its upper and lower sections into separate sprites while preserving raster state.');
+method('ml', 'c', '(Z)V', 'layoutSharedChatControls', 'Repositions shared chat, Quick Chat and input widgets according to the current panel size and expanded state.');
+method('mm', 'a', '(ILjava/lang/String;Ljava/applet/Applet;)Ljava/lang/Object;', 'callJavaScript', 'Invokes a named function on the applet JavaScript window without arguments.');
+method('mm', 'a', '([Ljava/lang/Object;Ljava/applet/Applet;Ljava/lang/String;I)Ljava/lang/Object;', 'callJavaScript', 'Invokes a named function on the applet JavaScript window with the supplied arguments.');
+method('ov', 'a', '(III)Z', 'handleQuickChatKey', 'Dismisses or resets Quick Chat for its control keys, otherwise dispatches category key shortcuts.');
+method('ov', 'b', '(I)V', 'reset', 'Initializes the iterator bucket, current link and returned-node cursor.');
+method('qi', 'a', '(Z)I', 'getCurrentDayOfMonth', 'Sets the shared calendar to the monotonic wall-clock timestamp and returns Calendar.DAY_OF_MONTH.');
+method('qi', 'b', '(B)V', 'releaseStatics', 'Clears the shared player-stat sort text references under the original guard.');
+method('qo', 'a', '(IJJ)I', 'multiplyFixed16', 'Multiplies the long operands and returns their product shifted right by sixteen bits as an integer.');
+method('qo', 'f', '(B)V', 'releaseStatics', 'Clears shared email-validation text under the original guard.');
+method('rb', 'a', '(I)Ljava/lang/String;', 'getText', 'Returns the current prompt input builder contents as a String.');
+method('at', 'c', '(Z)I', 'getPriceTextColor', 'Renders the trinket price white when club money covers it, otherwise red.');
+method('fm', 'a', '(Z)Z', 'hasJagexModeratorRights', 'Tests whether the account rights level is at least two, the JMod threshold documented by the kit-selection message.');
+method('cq', 'b', '(I)V', 'releaseStatics', 'Clears shared auction-log text, sprite and input-builder references under the original guard.');
+field('rd', 'm', 'I', 'styleId', 'Assigned from the kit definition array index and used by KitStyleTile and the kit mesh builder.');
+field('rd', 'g', 'I', 'unlockBitIndex', 'MSB-first unlock-mask index, with minus one meaning no unlock-bit restriction.');
+field('rd', 'k', 'I', 'achievementBitIndex', 'Achievement bit required for this kit style, with minus one meaning no achievement restriction.');
+field('rd', 'j', 'Z', 'requiresJagexModeratorRights', 'Requires rights level at least two; KitStyleTile explicitly labels these kits as available because the player is a JMod.');
+field('rd', 'f', 'J', 'requiredAccessKey', 'Optional exact-match key; minus one permits any key.');
+field('rd', 'l', '[[[Z', 'patternMasks', 'Two kit recoloring masks consumed by the mesh builder.');
+
+
+method('wm', 'a', '(BLut;I)Lut;', 'resizeSpriteByJoiningEdges', 'Draws the source at the left edge, clips to the right half and redraws aligned to the right edge in a target-width sprite.');
+method('wm', 'c', '(B)Z', 'isPublicChatInputActive', 'Checks that chat input is active and that the compose channel is the default channel zero.');
+method('n', 'a', '(III)V', 'prepareRankingStatistics', 'Ensures capacity for ranking rows, sort indices and selection flags, then resets statistic extrema and row count before the rankings response is read.');
+method('df', 'a', '(IIZI)Lvn;', 'createKitMesh', 'Copies the kit template and recolors its two pattern grids with the supplied kit colors.');
+method('pt', 'a', '(IIIII)V', 'pushRasterClip', 'Saves the raster state then intersects its clip rectangle with the supplied bounds.');
+method('ks', 'a', '(IIII)S', 'packHslColor', 'Packs hue in bits ten and above, saturation in bits seven through nine and lightness in the low seven bits.');
+method('ut', 'e', '()V', 'setRasterTarget', 'Installs this sprite pixel buffer, width and height as the software raster target.');
+method('ti', '$cfr$sneakyThrow', '(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;', 'rethrowUnchecked', 'Generic decompiler helper rethrows the original Throwable without wrapping it.');
+method('u', '$cfr$sneakyThrow', '(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;', 'rethrowUnchecked', 'Generic decompiler helper rethrows the original Throwable without wrapping it.');
+method('nb', 'a', '(I)Z', 'hasPendingManagerActions', 'Tests whether the shared deque of queued ManagerAction objects is nonempty.');
+method('nb', 'b', '(B)I', 'getTargetFramesPerSecond', 'Returns one billion divided by the configured nanosecond frame period.');
+method('la', 'a', '(I)Z', 'isGuestSession', 'Returns the session flag set for guest entry and cleared after a successful account login.');
+method('la', 'a', '(Z)V', 'showCurrentQuickChatMenu', 'Opens the shared Quick Chat menu using its current compose context.');
+method('cq', 'e', '(I)Z', 'isLoggedInJagexModerator', 'Requires a nonguest session and rights level at least two, the JMod threshold.');
+method('qb', 'b', '(I)Z', 'isDetachedFromGameTable', 'Reports whether this lobby game setup has no secondary-link membership in its game-id table.');
+method('qb', 'h', '(B)I', 'getGameId', 'Returns the setup panel secondary key used for the lobby game-id table and game-details selection packet.');
+method('he', 'h', '(I)Z', 'isDetachedFromPlayerTable', 'Reports whether the lobby player row has no secondary-link membership.');
+method('rb', 'c', '(Z)V', 'releaseStatics', 'Clears shared prompt text resources under the original guard.');
+method('lo', 'c', '(B)V', 'releaseStatics', 'Clears shared password-validator arrays and text resources under the original guard.');
+method('lm', 'a', '(Z)V', 'releaseStatics', 'Clears shared tournament-lobby validation, text and Quick Chat cache resources under the original guard.');
+method('ln', 'k', '(I)V', 'releaseStatics', 'Clears the shared drop-target integer buffer under the original recursive guard.');
+method('na', 'a', '(I)V', 'releaseStatics', 'Clears shared vertical-scrollbar arrays and text under the original arithmetic guard.');
+method('je', 'a', '(I)V', 'releaseStatics', 'Clears shared skeleton, kit-style and associated text arrays under the original guard.');
+method('jg', 'h', '(B)V', 'releaseStatics', 'Clears shared draggable-widget text and resource references under the original arithmetic guard.');
+method('ji', 'a', '(I)V', 'releaseStatics', 'Clears shared scrollbar text references under the original guard.');
+method('ji', 'k', '(I)V', 'clearFadingSounds', 'Detaches all fading sounds then clears their shared node deque.');
+method('jj', 'a', '(III)V', 'setChannelProgram', 'Applies a channel program change to each constituent MIDI PCM stream from the requested starting index.');
+method('jm', 'a', '(I)V', 'releaseStatics', 'Clears shared delayed-packet text references under the original arithmetic guard.');
+method('jo', 'g', '(I)V', 'releaseStatics', 'Clears shared demo-console text and array resources under the original guard.');
+method('jq', 'a', '(Z)V', 'releaseStatics', 'Clears shared auction-help resource references under the original guard.');
+method('jr', 'i', '(I)V', 'releaseStatics', 'Clears the shared received-auction-row reference under the original guard.');
+method('js', 'a', '(B)V', 'releaseStatics', 'Clears shared app-screen sprite and text resources under the original guard.');
+method('ju', 'h', '(B)V', 'releaseStatics', 'Clears shared validation-help text and long-array resources under the original arithmetic guard.');
+method('kb', 'g', '(I)V', 'releaseStatics', 'Clears shared integer-write command text and mesh arrays under the original guard.');
+method('ki', 'a', '(I)V', 'releaseStatics', 'Clears shared input-event form and text references on the valid guard path.');
+method('kn', 'g', '(I)V', 'releaseStatics', 'Clears shared trinket-picker text and resources under the original guard.');
+method('uv', 'a', '(B)Z', 'consumeSelection', 'Delegates selection consumption to the active player context-menu widget, returning false when absent.');
+
+
+method('ih', 'a', '(III)[Lut;', 'createSolidNineSliceSprites', 'Builds one-pixel solid border sprites and a solid center through the nine-slice sprite helper.');
+method('ih', 'a', '(ILnu;I)V', 'buildMatchKitPreviewSprites', 'Renders both team kit meshes to outlined preview sprites with opposing rotations for the requested viewing team.');
+method('ih', 'a', '(Ljava/lang/CharSequence;Z)Z', 'isValidBasicDisplayName', 'Delegates display-name shape and basic character validation from index zero.');
+method('gv', 'a', '(ZLjava/lang/CharSequence;I)Z', 'isValidBasicDisplayName', 'Checks display-name length, separators and normalization, then requires ASCII alphanumerics or allowed name separators from the requested index.');
+method('jw', 'a', '(CI)Z', 'isBasicDisplayNameCharacter', 'Accepts ASCII letters and digits, hyphen, underscore, space and nonbreaking space, rejecting control characters.');
+method('lh', 'a', '(IBI)Lut;', 'createSolidSprite', 'Creates a square sprite with every pixel initialized to the supplied color.');
+method('cq', 'a', '(IIII)[Lut;', 'createSolidNineSliceSprites', 'Shares a solid border sprite across eight nine-slice positions and supplies a separate 64-pixel square center.');
+method('ko', 'a', '(IIJ)V', 'sendLobbyPlayerRemoval', 'Sends lobby action seven with the player id; used by the Kick, Reject and Cancel controls on lobby player rows.');
+method('mb', 'a', '(B)V', 'releaseStatics', 'Clears the shared display-name form reference under the original guard.');
+method('mh', 'g', '(I)V', 'releaseStatics', 'Clears shared email-availability validation text under the original guard.');
+method('mo', 'a', '(I)V', 'releaseStatics', 'Clears shared match-agent text and resource references under the original guard.');
+method('mr', 'n', '(B)V', 'releaseStatics', 'Clears shared validated-text-widget arrays, text and resources under the original guard.');
+method('mu', 'p', '(I)V', 'releaseStatics', 'Clears shared transition-dialog text and input-panel resources under the original guard.');
+method('pj', 'h', '(B)V', 'releaseStatics', 'Clears shared alpha-container text and layout resources under the original guard.');
+
 export const kickConfig = {
   game: 'kickabout', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   workflowFiles: ['build-kickabout-rules.mjs', 'reproduce-kickabout.mjs', 'reviewed-game.mjs',
@@ -3009,6 +3165,7 @@ export const kickConfig = {
       'Start with `CommonGame` for match phases and agents; `ParticipantAgent`, `TeamSelectionAgent`, `FormationAgent` and `LineupAgent` handle participant/team choices. `FootballerAgent`, `BallAgent` and `GoalStateAgent` hold play state.', '',
       '`LobbyMatchPreview`, `FootballerPreview` and `WorldDrawEntry` cover lobby previews and scene ordering. `MarkerSliderWidget`, `RotaryDialWidget` and their painters expose the custom controls. `QuickChatCategoryCache` / `QuickChatCategory` and `AnimationFrameset` describe shared definition loading.', '',
       '`ClubState`, `PlayerStats`, `ManagerAction` and auction classes describe manager mode. `ArchiveRequest` / `NetworkArchiveRequest`, `PacketBuffer`, `CipherPacketBuffer` and the applet hierarchy cover transport and loading. UI focus, hover, drag and drop have explicit listener contracts.', '',
+      '`KitStyleDefinition` stores the kit pattern masks and achievement, unlock and JMod-rights requirements. `KitPatternMaskSupport` decodes those masks; `AuctionsHelpScreen.createKitMesh` applies them to the template mesh.', '',
       '`AchievementQuery` / `AchievementSubmission`, `LookupQuery` / `LookupRecordUpdate`, `HighScoreQuery` / `HighScoreSubmission` and `RankingsRequest` describe queued protocol operations. `PcmPlayerService`, `PcmMixerListener`, `PcmSampleStream` and `MidiPcmStream` expose scheduling, playback and MIDI control.', '',
       '`LocalizedTextLoader` supplies the language pack. `ClientProtocolStage`, `RegistrationRequestState`, `AccountNameCheckState` and `AccountInputValidationResult` distinguish transport and account states. `ModelMaterialDecoder` / `ModelMaterial` decode the logo model palette.', '',
       '`TutorialScenerySupport` builds tutorial boundaries and scenery; `PitchDecorationSupport` supplies surface decorations and `GoalSpriteLoader` loads goal sprites. `SharedWidgetFactory`, `MatchUiLayoutSupport` and `SocialListLayoutSupport` build and position the common UI. `ConsoleLexer` / `ConsoleTokenParser` retain console token source positions.', '',

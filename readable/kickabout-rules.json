@@ -1790,8 +1790,8 @@
     {
       "symbol": "C:ih",
       "originalName": "ih",
-      "to": "FormationMaskSupport",
-      "evidence": "Decodes hexadecimal formation masks into two 13 by 10 grids; moved match and name helpers remain.",
+      "to": "KitPatternMaskSupport",
+      "evidence": "Decodes the two 13 by 10 kit-pattern grids consumed by the kit mesh recoloring helper; unrelated moved helpers remain.",
       "confidence": "reviewed"
     },
     {
@@ -3267,8 +3267,8 @@
     {
       "symbol": "C:rd",
       "originalName": "rd",
-      "to": "GameModeDefinition",
-      "evidence": "Constructed with ids, a member flag, a long key and a hex mask string; matches a mode by key and tests the option masks.",
+      "to": "KitStyleDefinition",
+      "evidence": "KitStyleTile binds one definition per kit; its two boolean grids recolor the kit mesh, with achievement, unlock-mask and access restrictions.",
       "confidence": "reviewed"
     },
     {
@@ -5323,6 +5323,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rd.field_f:J",
+      "originalName": "field_f",
+      "to": "requiredAccessKey",
+      "evidence": "Optional exact-match key; minus one permits any key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rd.field_g:I",
+      "originalName": "field_g",
+      "to": "unlockBitIndex",
+      "evidence": "MSB-first unlock-mask index, with minus one meaning no unlock-bit restriction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rd.field_j:Z",
+      "originalName": "field_j",
+      "to": "requiresJagexModeratorRights",
+      "evidence": "Requires rights level at least two; KitStyleTile explicitly labels these kits as available because the player is a JMod.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rd.field_k:I",
+      "originalName": "field_k",
+      "to": "achievementBitIndex",
+      "evidence": "Achievement bit required for this kit style, with minus one meaning no achievement restriction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rd.field_l:[[[Z",
+      "originalName": "field_l",
+      "to": "patternMasks",
+      "evidence": "Two kit recoloring masks consumed by the mesh builder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rd.field_m:I",
+      "originalName": "field_m",
+      "to": "styleId",
+      "evidence": "Assigned from the kit definition array index and used by KitStyleTile and the kit mesh builder.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rf.field_b:Lkf;",
       "originalName": "field_b",
       "to": "tabs",
@@ -6723,6 +6765,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ap.a(I[IZ[I[I)V",
+      "originalName": "a",
+      "to": "separateClashingKitColors",
+      "evidence": "Selects each kit dominant color and flips the team color bank when the two colors are too close.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ap.a(Ljava/applet/Applet;I)V",
       "originalName": "a",
       "to": "openSupportPage",
@@ -6748,6 +6797,13 @@
       "originalName": "b",
       "to": "beginPhase",
       "evidence": "Sets the phase via nu.a, then rebuilds the controller and clears the selected seat state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ap.c(B)V",
+      "originalName": "c",
+      "to": "drawParticipantPanels",
+      "evidence": "Draws team participant panels at y=150 for a received online match with an active phase.",
       "confidence": "reviewed"
     },
     {
@@ -6916,6 +6972,13 @@
       "originalName": "b",
       "to": "interpolateRadius",
       "evidence": "Body is identical to armiesofgielinor/geoblox SoundFilter.interpolateRadius.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:at.c(Z)I",
+      "originalName": "c",
+      "to": "getPriceTextColor",
+      "evidence": "Renders the trinket price white when club money covers it, otherwise red.",
       "confidence": "reviewed"
     },
     {
@@ -7511,6 +7574,13 @@
       "originalName": "a",
       "to": "attachSocket",
       "evidence": "Abstract attach of a freshly opened socket object to the client.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a(Ljava/lang/String;ILjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "isAcceptablePassword",
+      "evidence": "PasswordValidator rejects nonalphanumeric and disallowed passwords and passwords containing transformed account names.",
       "confidence": "reviewed"
     },
     {
@@ -8543,10 +8613,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cq.a(IIII)[Lut;",
+      "originalName": "a",
+      "to": "createSolidNineSliceSprites",
+      "evidence": "Shares a solid border sprite across eight nine-slice positions and supplies a separate 64-pixel square center.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cq.a(Ljava/applet/Applet;B)V",
       "originalName": "a",
       "to": "openSubscribePage",
       "evidence": "Builds a URL for \"subscribe.ws\" from the code base and shows it in \"_top\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cq.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears shared auction-log text, sprite and input-builder references under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cq.e(I)Z",
+      "originalName": "e",
+      "to": "isLoggedInJagexModerator",
+      "evidence": "Requires a nonguest session and rights level at least two, the JMod threshold.",
       "confidence": "reviewed"
     },
     {
@@ -8869,6 +8960,13 @@
       "originalName": "a",
       "to": "setSharedUiArchives",
       "evidence": "Installs the pair of shared UI archive references on the valid guard path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(IIZI)Lvn;",
+      "originalName": "a",
+      "to": "createKitMesh",
+      "evidence": "Copies the kit template and recolors its two pattern grids with the supplied kit colors.",
       "confidence": "reviewed"
     },
     {
@@ -9712,6 +9810,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:em.a(B)Lam;",
+      "originalName": "a",
+      "to": "nextWithSameKey",
+      "evidence": "Continues from the lookup cursor, returning the next entry with the same long key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:em.a(I)Lam;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "Traverses secondary links within the current hash bucket then advances to the next nonempty bucket.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:em.a(IJ)Lam;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Searches the masked hash bucket for the long key and preserves a cursor for further equal-key entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:em.a(Lam;BJ)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Unlinks an existing secondary chain membership and inserts the node into the masked hash bucket under its long key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:em.b(B)Lam;",
+      "originalName": "b",
+      "to": "first",
+      "evidence": "Resets the hash table iteration bucket and delegates to its next-entry traversal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:em.c(B)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -10104,6 +10237,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eq.a(I)V",
+      "originalName": "a",
+      "to": "layoutAnimatedChatPanel",
+      "evidence": "Eases the shared chat panel vertical position using the squared transition counter and positions its Quick Chat overlay.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eq.a(ILjava/lang/Object;IJ)V",
       "originalName": "a",
       "to": "putWeighted",
@@ -10129,6 +10269,13 @@
       "originalName": "a",
       "to": "removeEntry",
       "evidence": "Unlinks the entry from both lists and returns its weight to the remaining capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eq.a(Z)Z",
+      "originalName": "a",
+      "to": "hasBlockingInputPopup",
+      "evidence": "Checks shared context-menu, prompt and routed popup references before allowing normal input.",
       "confidence": "reviewed"
     },
     {
@@ -10654,6 +10801,13 @@
       "originalName": "a",
       "to": "setTransitionProgress",
       "evidence": "Kickabout passes progress 0-256, whether this screen is entering and the other screen; qt turns it into a horizontal slide offset. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fm.a(Z)Z",
+      "originalName": "a",
+      "to": "hasJagexModeratorRights",
+      "evidence": "Tests whether the account rights level is at least two, the JMod threshold documented by the kit-selection message.",
       "confidence": "reviewed"
     },
     {
@@ -11408,8 +11562,8 @@
     {
       "symbol": "M:gf.a([BIII)Z",
       "originalName": "a",
-      "to": "testGameModeMask",
-      "evidence": "Reads an MSB-first mask bit for restricted modes and treats mode selectors two or above as unrestricted.",
+      "to": "testUnlockMask",
+      "evidence": "Kit-style and pitch selectors read an MSB-first unlock bit; access levels two or above bypass the mask.",
       "confidence": "reviewed"
     },
     {
@@ -11805,6 +11959,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gr.a(BI)Z",
+      "originalName": "a",
+      "to": "hasLogEntryForSlot",
+      "evidence": "Tests whether findLogEntryBySlot returns a record for the requested slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gr.a(II)Z",
+      "originalName": "a",
+      "to": "isClubFlagSet",
+      "evidence": "Tests the requested bit in the club flags integer under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gr.a(III)Lhn;",
       "originalName": "a",
       "to": "createOrderSwapAction",
@@ -12026,6 +12194,13 @@
       "originalName": "a",
       "to": "draw",
       "evidence": "Draws the background box and the text with the current alpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gv.a(ZLjava/lang/CharSequence;I)Z",
+      "originalName": "a",
+      "to": "isValidBasicDisplayName",
+      "evidence": "Checks display-name length, separators and normalization, then requires ASCII alphanumerics or allowed name separators from the requested index.",
       "confidence": "reviewed"
     },
     {
@@ -12274,6 +12449,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:he.h(I)Z",
+      "originalName": "h",
+      "to": "isDetachedFromPlayerTable",
+      "evidence": "Reports whether the lobby player row has no secondary-link membership.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hf.a(BI)Lhf;",
       "originalName": "a",
       "to": "withOffsetX",
@@ -12397,6 +12579,13 @@
       "originalName": "a",
       "to": "progress",
       "evidence": "Returns 0 while the request is pending, otherwise 100.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(Ljava/applet/Applet;Z)V",
+      "originalName": "a",
+      "to": "clearSessionAndReload",
+      "evidence": "Clears the session cookie and reloads the applet page.",
       "confidence": "reviewed"
     },
     {
@@ -13254,10 +13443,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ih.a(III)[Lut;",
+      "originalName": "a",
+      "to": "createSolidNineSliceSprites",
+      "evidence": "Builds one-pixel solid border sprites and a solid center through the nine-slice sprite helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ih.a(ILjava/lang/String;)[[[Z",
       "originalName": "a",
-      "to": "decodeFormationMask",
-      "evidence": "Expands hexadecimal nibbles least-significant bit first into two 13 by 10 boolean formation grids.",
+      "to": "decodeKitPatternMask",
+      "evidence": "Expands hexadecimal nibbles least-significant bit first into two 13 by 10 boolean grids used to recolor the kit mesh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(ILnu;I)V",
+      "originalName": "a",
+      "to": "buildMatchKitPreviewSprites",
+      "evidence": "Renders both team kit meshes to outlined preview sprites with opposing rotations for the requested viewing team.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(Ljava/lang/CharSequence;Z)Z",
+      "originalName": "a",
+      "to": "isValidBasicDisplayName",
+      "evidence": "Delegates display-name shape and basic character validation from index zero.",
       "confidence": "reviewed"
     },
     {
@@ -13282,10 +13492,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ij.a(I)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "getValue",
+      "evidence": "Returns the strongly retained cache value; the shared abstract contract is propagated to overrides. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ij.g(B)V",
       "originalName": "g",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ij.h(B)Z",
+      "originalName": "h",
+      "to": "isSoftReference",
+      "evidence": "Returns false for a strong entry; WeightedLruCache promotes entries whose corresponding predicate is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -14108,6 +14332,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:je.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared skeleton, kit-style and associated text arrays under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jf.a(B[Lli;)Lli;",
       "originalName": "a",
       "to": "execute",
@@ -14150,6 +14381,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jg.h(B)V",
+      "originalName": "h",
+      "to": "releaseStatics",
+      "evidence": "Clears shared draggable-widget text and resource references under the original arithmetic guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jh.b(II)V",
       "originalName": "b",
       "to": "cycleColumnSort",
@@ -14161,6 +14399,13 @@
       "originalName": "k",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ji.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared scrollbar text references under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -14234,6 +14479,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ji.k(I)V",
+      "originalName": "k",
+      "to": "clearFadingSounds",
+      "evidence": "Detaches all fading sounds then clears their shared node deque.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jj.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -14245,6 +14497,13 @@
       "originalName": "a",
       "to": "skipFrames",
       "evidence": "Body closely matches steelsentinels PcmStreamMixer.skipFrames. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jj.a(III)V",
+      "originalName": "a",
+      "to": "setChannelProgram",
+      "evidence": "Applies a channel program change to each constituent MIDI PCM stream from the requested starting index.",
       "confidence": "reviewed"
     },
     {
@@ -14318,6 +14577,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jm.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared delayed-packet text references under the original arithmetic guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jn.a(ILwi;IBI)V",
       "originalName": "a",
       "to": "onAction",
@@ -14346,6 +14612,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jo.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears shared demo-console text and array resources under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jq.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared auction-help resource references under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jr.b(II)V",
       "originalName": "b",
       "to": "drawRow",
@@ -14357,6 +14637,20 @@
       "originalName": "c",
       "to": "updateRow",
       "evidence": "Handles the row's button presses for this frame. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jr.i(I)V",
+      "originalName": "i",
+      "to": "releaseStatics",
+      "evidence": "Clears the shared received-auction-row reference under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:js.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared app-screen sprite and text resources under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -14479,6 +14773,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ju.h(B)V",
+      "originalName": "h",
+      "to": "releaseStatics",
+      "evidence": "Clears shared validation-help text and long-array resources under the original arithmetic guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jw.a(CI)Z",
+      "originalName": "a",
+      "to": "isBasicDisplayNameCharacter",
+      "evidence": "Accepts ASCII letters and digits, hyphen, underscore, space and nonbreaking space, rejecting control characters.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:k.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -14514,6 +14822,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kb.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears shared integer-write command text and mesh arrays under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kc.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -14521,10 +14836,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kc.a(I)Lgn;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "Advances through intrusive-node hash buckets and stores the next node cursor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kc.a(Lgn;IJ)V",
       "originalName": "a",
       "to": "put",
       "evidence": "Matches escapevector/geoblox IntrusiveNodeHashTable.put by signature and body shape.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kc.a(Z)V",
+      "originalName": "a",
+      "to": "clear",
+      "evidence": "Unlinks every node from every hash bucket and clears both iteration cursors.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kc.a(ZJ)Lgn;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Looks up a long key in the masked bucket, retaining a search cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kc.b(I)Lgn;",
+      "originalName": "b",
+      "to": "first",
+      "evidence": "Sets the starting iteration bucket and returns its first available entry.",
       "confidence": "reviewed"
     },
     {
@@ -14738,6 +15081,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ki.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared input-event form and text references on the valid guard path.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kj.a(II)V",
       "originalName": "a",
       "to": "enqueueHelpTipDialog",
@@ -14899,6 +15249,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kn.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears shared trinket-picker text and resources under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ko.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -14913,10 +15270,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ko.a(I)Z",
+      "originalName": "a",
+      "to": "isPointerHeld",
+      "evidence": "Reports whether a mouse button is latched in the selection controller.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.a(III)V",
+      "originalName": "a",
+      "to": "updatePointerSelection",
+      "evidence": "Updates selected index and button hold/repeat state from pointer presses, releases and hovered indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.a(IIIZ)V",
+      "originalName": "a",
+      "to": "restoreSelection",
+      "evidence": "Restores pointer-driven versus keyboard-driven selection, held button state and the corresponding selected index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.a(IIJ)V",
+      "originalName": "a",
+      "to": "sendLobbyPlayerRemoval",
+      "evidence": "Sends lobby action seven with the player id; used by the Kick, Reject and Cancel controls on lobby player rows.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ko.a(IZ)V",
       "originalName": "a",
       "to": "handleArrowKeys",
       "evidence": "Moves the index with keys 96/97 wrapping at the ends and clears the mouse flag on 98/99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.a(ZIB)V",
+      "originalName": "a",
+      "to": "resetPointerSelection",
+      "evidence": "Clears the held button state and optionally sets a new pointer-driven selected index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.b(I)V",
+      "originalName": "b",
+      "to": "captureActivationKey",
+      "evidence": "Clears pointer activation state and records the current key only when no mouse button is held.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.c(I)Z",
+      "originalName": "c",
+      "to": "isActivated",
+      "evidence": "Reports pointer activation or the two keyboard activation codes 84 and 83.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ko.d(I)V",
+      "originalName": "d",
+      "to": "handleVerticalArrowKeys",
+      "evidence": "Wraps selection on key codes 98 and 99 while switching to keyboard-driven selection.",
       "confidence": "reviewed"
     },
     {
@@ -14973,6 +15386,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ks.a(IIII)S",
+      "originalName": "a",
+      "to": "packHslColor",
+      "evidence": "Packs hue in bits ten and above, saturation in bits seven through nine and lightness in the low seven bits.",
       "confidence": "reviewed"
     },
     {
@@ -15130,10 +15550,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.a(I)Z",
+      "originalName": "a",
+      "to": "isGuestSession",
+      "evidence": "Returns the session flag set for guest entry and cleared after a successful account login.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.a(IIII)Z",
       "originalName": "a",
       "to": "containsPoint",
       "evidence": "Compares x, y and height against the box extents and returns whether the point lies inside.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(Z)V",
+      "originalName": "a",
+      "to": "showCurrentQuickChatMenu",
+      "evidence": "Opens the shared Quick Chat menu using its current compose context.",
       "confidence": "reviewed"
     },
     {
@@ -15214,6 +15648,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lf.a(BI)I",
+      "originalName": "a",
+      "to": "projectPitchY",
+      "evidence": "Reflects pitch Y around 1344 when orientation is reversed and applies worldToScreenY.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lg.a(I)V",
       "originalName": "a",
       "to": "validationChanged",
@@ -15253,6 +15694,13 @@
       "originalName": "a",
       "to": "execute",
       "evidence": "Abstract command body that takes the parsed argument values and returns a result value. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lh.a(IBI)Lut;",
+      "originalName": "a",
+      "to": "createSolidSprite",
+      "evidence": "Creates a square sprite with every pixel initialized to the supplied color.",
       "confidence": "reviewed"
     },
     {
@@ -15396,6 +15844,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lm.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared tournament-lobby validation, text and Quick Chat cache resources under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lm.b(I)V",
       "originalName": "b",
       "to": "drawStatsPanel",
@@ -15424,6 +15879,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ln.k(I)V",
+      "originalName": "k",
+      "to": "releaseStatics",
+      "evidence": "Clears the shared drop-target integer buffer under the original recursive guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lo.a(BLjava/lang/String;)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeText",
@@ -15442,6 +15904,13 @@
       "originalName": "b",
       "to": "containsEmailPart",
       "evidence": "Matches steelsentinels PasswordValidator.containsEmailPart by signature and body shape.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lo.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears shared password-validator arrays and text resources under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -15746,6 +16215,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mb.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears the shared display-name form reference under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mb.a(BLfd;II)V",
       "originalName": "a",
       "to": "updatePointerState",
@@ -15984,6 +16460,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mh.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "Clears shared email-availability validation text under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mi.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -16061,10 +16544,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ml.a(BI[BI)V",
+      "originalName": "a",
+      "to": "readIsaacBytes",
+      "evidence": "Reads bytes while subtracting consecutive ISAAC outputs into the destination slice.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ml.a(B[I)V",
       "originalName": "a",
       "to": "installCipher",
       "evidence": "Matches arcanistsmulti CipherPacketBuffer.installCipher by signature and body shape.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.a(III)V",
+      "originalName": "a",
+      "to": "writeBits",
+      "evidence": "Masks and packs the requested number of bits into successive bytes, maintaining free bits in the current byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.a(ILsj;)V",
+      "originalName": "a",
+      "to": "loadSplitFinalFrameSprites",
+      "evidence": "Loads final_frame.jpg and renders its upper and lower sections into separate sprites while preserving raster state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.b(IB)V",
+      "originalName": "b",
+      "to": "writeIsaacByte",
+      "evidence": "Adds the next ISAAC output to the byte before writing it and advancing position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.b(Z)V",
+      "originalName": "b",
+      "to": "finishBitWrite",
+      "evidence": "Advances past a partially filled output byte and restores the byte-aligned write state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.c(Z)V",
+      "originalName": "c",
+      "to": "layoutSharedChatControls",
+      "evidence": "Repositions shared chat, Quick Chat and input widgets according to the current panel size and expanded state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.k(B)I",
+      "originalName": "k",
+      "to": "readIsaacByte",
+      "evidence": "Subtracts the next ISAAC output from the input byte and masks the unsigned result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.k(II)V",
+      "originalName": "k",
+      "to": "advanceLoadingProgress",
+      "evidence": "Raises the shared loading progress monotonically and reports a stage update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.l(B)V",
+      "originalName": "l",
+      "to": "finishBitRead",
+      "evidence": "Rounds the bit-read cursor upward to the next byte position.",
       "confidence": "reviewed"
     },
     {
@@ -16075,10 +16621,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ml.m(I)V",
+      "originalName": "m",
+      "to": "releaseStatics",
+      "evidence": "Clears shared cipher-buffer text, sprite and integer resources under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.n(I)V",
+      "originalName": "n",
+      "to": "beginBitWrite",
+      "evidence": "Zeroes the current output byte and initializes its eight available bit positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.o(I)V",
+      "originalName": "o",
+      "to": "initializeExtendedKeyMappings",
+      "evidence": "Populates punctuation, bracket and extended Java key-code translations in the shared key map.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ml.p(I)V",
+      "originalName": "p",
+      "to": "beginBitRead",
+      "evidence": "Converts the byte position into the initial bit-read cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mm.a(ILjava/lang/String;Ljava/applet/Applet;)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "callJavaScript",
+      "evidence": "Invokes a named function on the applet JavaScript window without arguments.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mm.a(Ljava/lang/String;Ljava/applet/Applet;B)V",
       "originalName": "a",
       "to": "evaluateScript",
       "evidence": "Body is identical to geoblox AppletJavaScriptBridge.evaluateScript.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mm.a([Ljava/lang/Object;Ljava/applet/Applet;Ljava/lang/String;I)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "callJavaScript",
+      "evidence": "Invokes a named function on the applet JavaScript window with the supplied arguments.",
       "confidence": "reviewed"
     },
     {
@@ -16100,6 +16688,13 @@
       "originalName": "a",
       "to": "copyStateFrom",
       "evidence": "Abstract hook that each agent subclass implements by copying the other agent's fields into itself.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mo.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared match-agent text and resource references under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -16156,6 +16751,13 @@
       "originalName": "m",
       "to": "notifyTextChanged",
       "evidence": "Notifies the registered TextInputListener of a text change when the listener implements that contract. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mr.n(B)V",
+      "originalName": "n",
+      "to": "releaseStatics",
+      "evidence": "Clears shared validated-text-widget arrays, text and resources under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -16229,6 +16831,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mu.p(I)V",
+      "originalName": "p",
+      "to": "releaseStatics",
+      "evidence": "Clears shared transition-dialog text and input-panel resources under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mv.$cfr$intArgs$a$6121ff5511c4(I)V",
       "originalName": "$cfr$intArgs$a$6121ff5511c4",
       "to": "buildSharedContextActions",
@@ -16264,10 +16873,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:n.a(CLjava/lang/String;BLjava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "replaceCharacter",
+      "evidence": "Replaces each occurrence of the supplied character with the literal replacement string, precomputing capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:n.a(I)V",
+      "originalName": "a",
+      "to": "serviceArchiveSources",
+      "evidence": "Services every cached source prefetch queue before servicing its background requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:n.a(III)V",
+      "originalName": "a",
+      "to": "prepareRankingStatistics",
+      "evidence": "Ensures capacity for ranking rows, sort indices and selection flags, then resets statistic extrema and row count before the rankings response is read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:n.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "showCenteredMessagePanel",
+      "evidence": "Sets the shared message, measures its paragraph height and centers the panel and confirmation button.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:n.a(Lqh;IIZLqh;)Lwm;",
+      "originalName": "a",
+      "to": "getArchiveSource",
+      "evidence": "Returns or constructs the per-id cached archive source from the loaded master index CRC, digest and version.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:n.a(Z)Z",
+      "originalName": "a",
+      "to": "hasActiveModal",
+      "evidence": "Tests whether the shared modal stack exists and has an active top modal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:n.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:na.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared vertical-scrollbar arrays and text under the original arithmetic guard.",
       "confidence": "reviewed"
     },
     {
@@ -16327,6 +16985,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nb.a(I)Z",
+      "originalName": "a",
+      "to": "hasPendingManagerActions",
+      "evidence": "Tests whether the shared deque of queued ManagerAction objects is nonempty.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nb.a(Ljava/lang/Throwable;Ljava/lang/String;)Lbs;",
       "originalName": "a",
       "to": "wrapException",
@@ -16338,6 +17003,13 @@
       "originalName": "a",
       "to": "keeperReach",
       "evidence": "Returns 170 minus eight times the keeper state field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nb.b(B)I",
+      "originalName": "b",
+      "to": "getTargetFramesPerSecond",
+      "evidence": "Returns one billion divided by the configured nanosecond frame period.",
       "confidence": "reviewed"
     },
     {
@@ -17146,6 +17818,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:o.a(I)Lam;",
+      "originalName": "a",
+      "to": "first",
+      "evidence": "Starts iteration at the sentinel next link and remembers the following node.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:o.a(ILam;)V",
       "originalName": "a",
       "to": "addLast",
@@ -17157,6 +17836,27 @@
       "originalName": "b",
       "to": "removeFirst",
       "evidence": "Matches brickabrac/tetralink/zombiedawn DualLinkDeque.removeFirst by signature and body shape.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:o.b(I)Lam;",
+      "originalName": "b",
+      "to": "next",
+      "evidence": "Advances the saved deque cursor and returns null at the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:o.c(I)I",
+      "originalName": "c",
+      "to": "size",
+      "evidence": "Counts secondary-linked nodes between the deque sentinel links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:o.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "Clears shared deque resources under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -17902,6 +18602,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ov.a(III)Z",
+      "originalName": "a",
+      "to": "handleQuickChatKey",
+      "evidence": "Dismisses or resets Quick Chat for its control keys, otherwise dispatches category key shortcuts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ov.b(I)V",
+      "originalName": "b",
+      "to": "reset",
+      "evidence": "Initializes the iterator bucket, current link and returned-node cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ow.a(I)Lkl;",
+      "originalName": "a",
+      "to": "getIndex",
+      "evidence": "Loads and verifies the cached or network archive index and returns it when available. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ow.a(II)I",
+      "originalName": "a",
+      "to": "getGroupProgress",
+      "evidence": "Returns progress from the queued request for the group, or zero if no request exists. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ow.a(Lsj;IBI)Lut;",
+      "originalName": "a",
+      "to": "loadSprite",
+      "evidence": "Decodes a sprite sheet from the archive and constructs its first sprite, or returns null if unavailable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ow.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared archive-source resources under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ow.b(II)[B",
+      "originalName": "b",
+      "to": "getGroupBytes",
+      "evidence": "Takes bytes from a completed validated priority group request and unlinks that request. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:p.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -18175,6 +18924,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pj.h(B)V",
+      "originalName": "h",
+      "to": "releaseStatics",
+      "evidence": "Clears shared alpha-container text and layout resources under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pk.a(I)V",
       "originalName": "a",
       "to": "bindArchives",
@@ -18221,6 +18977,34 @@
       "originalName": "a",
       "to": "drawImage",
       "evidence": "Body is identical to steelsentinels BufferedImageRasterBuffer.drawImage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pn.a(I)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "getValue",
+      "evidence": "Returns the strongly retained cache value; the shared abstract contract is propagated to overrides.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pn.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears shared strong-cache-entry resources under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pn.g(I)Z",
+      "originalName": "g",
+      "to": "hasGameFocus",
+      "evidence": "Treats fullscreen as focused, otherwise returns the last game focus snapshot on the valid guard path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pn.h(B)Z",
+      "originalName": "h",
+      "to": "isSoftReference",
+      "evidence": "Returns false for a strong entry; WeightedLruCache promotes entries whose corresponding predicate is true.",
       "confidence": "reviewed"
     },
     {
@@ -18406,6 +19190,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pt.a(IIIII)V",
+      "originalName": "a",
+      "to": "pushRasterClip",
+      "evidence": "Saves the raster state then intersects its clip rectangle with the supplied bounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pt.a(Liw;B)V",
       "originalName": "a",
       "to": "readFromPacket",
@@ -18560,6 +19351,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qb.b(I)Z",
+      "originalName": "b",
+      "to": "isDetachedFromGameTable",
+      "evidence": "Reports whether this lobby game setup has no secondary-link membership in its game-id table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qb.h(B)I",
+      "originalName": "h",
+      "to": "getGameId",
+      "evidence": "Returns the setup panel secondary key used for the lobby game-id table and game-details selection packet.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qc.a()V",
       "originalName": "a",
       "to": "finishAnimation",
@@ -18648,6 +19453,20 @@
       "originalName": "a",
       "to": "compare",
       "evidence": "Abstract comparison of two sp shop slots implemented by each sort criterion. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(Z)I",
+      "originalName": "a",
+      "to": "getCurrentDayOfMonth",
+      "evidence": "Sets the shared calendar to the monotonic wall-clock timestamp and returns Calendar.DAY_OF_MONTH.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears the shared player-stat sort text references under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -18777,10 +19596,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qo.a(IJJ)I",
+      "originalName": "a",
+      "to": "multiplyFixed16",
+      "evidence": "Multiplies the long operands and returns their product shifted right by sixteen bits as an integer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qo.a(Ljava/lang/String;I)Lrv;",
       "originalName": "a",
       "to": "validateText",
       "evidence": "Abstract validation of a text; each subclass (name, age, email, password) returns valid or invalid state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qo.f(B)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "Clears shared email-validation text under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -19218,6 +20051,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rb.a(I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getText",
+      "evidence": "Returns the current prompt input builder contents as a String.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.c(Z)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "Clears shared prompt text resources under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rc.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -19232,10 +20079,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rd.a(I)Z",
+      "originalName": "a",
+      "to": "usesSecondColorForClashCheck",
+      "evidence": "Kit ids zero, thirteen and twenty-three select the second color array in MatchScreen color-clash checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rd.a(IB[I)Z",
+      "originalName": "a",
+      "to": "isAchievementLocked",
+      "evidence": "Restricted access levels require the configured achievement bit; definitions without an achievement are unlocked.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rd.a(II)Z",
       "originalName": "a",
       "to": "isLeapYear",
       "evidence": "Tests the Julian rule before year 1582 and the Gregorian rule after it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rd.a(I[BB)Z",
+      "originalName": "a",
+      "to": "isUnlockMaskLocked",
+      "evidence": "Negates the configured kit unlock bit unless the definition has no unlock-mask requirement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rd.a(JII)Z",
+      "originalName": "a",
+      "to": "matchesAccessRequirements",
+      "evidence": "Requires access level two for restricted kits and matches the configured long key unless its sentinel allows any key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rd.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Clears shared kit-definition resources under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -20275,6 +21157,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sj.a(DBDD)V",
+      "originalName": "a",
+      "to": "moveProjectionTarget",
+      "evidence": "Adds pan and zoom deltas to the shared projection target and applies the original pitch and zoom bounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sj.a(I)I",
       "originalName": "a",
       "to": "getGroupCapacity",
@@ -20296,10 +21185,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sj.a(IIB)I",
+      "originalName": "a",
+      "to": "hitTestMenuAction",
+      "evidence": "Measures the shared menu rows and returns the action identifier under the pointer, or minus one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sj.a(III)Z",
       "originalName": "a",
       "to": "ensureFileAvailable",
       "evidence": "Returns whether the file's group is loaded and requests it when missing, as Armies of Gielinor ensureFileAvailable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(IIZ)Z",
+      "originalName": "a",
+      "to": "isFileIdInRange",
+      "evidence": "Loads the archive index and range-checks group and file ids against file-id capacities, preserving the debug exception path.",
       "confidence": "reviewed"
     },
     {
@@ -20314,6 +21217,13 @@
       "originalName": "a",
       "to": "takeFile",
       "evidence": "Returns the file bytes, decrypting with the key when given and releasing the cached copy, as Brick-a-Brac takeFile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(Ljava/lang/String;B)Z",
+      "originalName": "a",
+      "to": "hasGroupName",
+      "evidence": "Lowercases and hashes the supplied group name and checks for an index entry.",
       "confidence": "reviewed"
     },
     {
@@ -20345,6 +21255,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sj.a(ZI)I",
+      "originalName": "a",
+      "to": "getFileIdCapacity",
+      "evidence": "Returns the indexed file-id capacity for a valid group, or zero when unavailable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(ZLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "ensurePackedGroupByName",
+      "evidence": "Looks up the lowercased group name then requests its packed bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.b(BI)Z",
+      "originalName": "b",
+      "to": "ensurePackedGroup",
+      "evidence": "Returns true for resident packed group bytes, otherwise loads them and checks again.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.b(I)V",
+      "originalName": "b",
+      "to": "initializeReflectionCheckQueue",
+      "evidence": "Creates the deque consumed by MatchAgent and ConsoleCommand as ReflectionCheck requests.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sj.b(IB)I",
       "originalName": "b",
       "to": "getGroupProgress",
@@ -20356,6 +21294,13 @@
       "originalName": "b",
       "to": "ensureFlatFileAvailable",
       "evidence": "Matches armiesofgielinor ResourceArchive.ensureFlatFileAvailable by signature and body shape.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.b(III)[B",
+      "originalName": "b",
+      "to": "takeFile",
+      "evidence": "Delegates to the existing file extraction method with no XTEA keys, preserving the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -20373,10 +21318,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sj.c(II)[I",
+      "originalName": "c",
+      "to": "getFileIds",
+      "evidence": "Returns explicit sparse file ids, or builds the sequential id list for a dense group.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sj.d(I)Z",
       "originalName": "d",
       "to": "ensureIndex",
       "evidence": "Requests the archive index until it is loaded, as Armies of Gielinor ensureIndex.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.e(I)I",
+      "originalName": "e",
+      "to": "getOverallProgress",
+      "evidence": "Averages group progress over nonempty groups; an empty archive is complete and an unavailable index reports zero.",
       "confidence": "reviewed"
     },
     {
@@ -20744,10 +21703,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tb.a(BI)V",
+      "originalName": "a",
+      "to": "enqueueMessageDialog",
+      "evidence": "Appends a message dialog; message 28 first closes the current popup and clears the pending queue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.a(ILsj;)V",
+      "originalName": "a",
+      "to": "initializeSocialPanels",
+      "evidence": "Loads the display-name-change sprite and constructs the shared friends, ignore and social containers and controls.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tb.a(Ljava/lang/Object;IZ)V",
       "originalName": "a",
       "to": "attachSocket",
       "evidence": "Abstract attach of a freshly opened socket object to the client. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.a(Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "containsLoginPassword",
+      "evidence": "Chat submission checks whether text contains the stored login password and displays the explicit password-disclosure warning.",
       "confidence": "reviewed"
     },
     {
@@ -21014,6 +21994,13 @@
       "originalName": "b",
       "to": "currentYear",
       "evidence": "Returns the Date year adjusted from the legacy 1900 epoch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ti.$cfr$sneakyThrow(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;",
+      "originalName": "$cfr$sneakyThrow",
+      "to": "rethrowUnchecked",
+      "evidence": "Generic decompiler helper rethrows the original Throwable without wrapping it.",
       "confidence": "reviewed"
     },
     {
@@ -21378,6 +22365,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:u.$cfr$sneakyThrow(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;",
+      "originalName": "$cfr$sneakyThrow",
+      "to": "rethrowUnchecked",
+      "evidence": "Generic decompiler helper rethrows the original Throwable without wrapping it.",
       "confidence": "reviewed"
     },
     {
@@ -22186,6 +23180,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ut.e()V",
+      "originalName": "e",
+      "to": "setRasterTarget",
+      "evidence": "Installs this sprite pixel buffer, width and height as the software raster target.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ut.e(II)V",
       "originalName": "e",
       "to": "drawMultiply",
@@ -22225,6 +23226,13 @@
       "originalName": "a",
       "to": "hoverChanged",
       "evidence": "Invoked when UiWidget.containsPointer changes its hover state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uv.a(B)Z",
+      "originalName": "a",
+      "to": "consumeSelection",
+      "evidence": "Delegates selection consumption to the active player context-menu widget, returning false when absent.",
       "confidence": "reviewed"
     },
     {
@@ -24160,10 +25168,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wm.a(BLut;I)Lut;",
+      "originalName": "a",
+      "to": "resizeSpriteByJoiningEdges",
+      "evidence": "Draws the source at the left edge, clips to the right half and redraws aligned to the right edge in a target-width sprite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(I)Lkl;",
+      "originalName": "a",
+      "to": "getIndex",
+      "evidence": "Loads and verifies the cached or network archive index and returns it when available.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(II)I",
+      "originalName": "a",
+      "to": "getGroupProgress",
+      "evidence": "Returns progress from the queued request for the group, or zero if no request exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(IIB)Lvv;",
+      "originalName": "a",
+      "to": "getValidatedGroupRequest",
+      "evidence": "Starts or polls the requested disk, priority or background group transfer and validates its CRC, digest and version before returning completion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.b(B)V",
+      "originalName": "b",
+      "to": "requestAllGroups",
+      "evidence": "Enables background group fetching when a disk cache exists and ensures the pending work deque exists.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.b(I)V",
+      "originalName": "b",
+      "to": "serviceBackgroundRequests",
+      "evidence": "Processes bounded disk verification and background fetch queues, then periodically unlinks completed old requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.b(II)[B",
+      "originalName": "b",
+      "to": "getGroupBytes",
+      "evidence": "Takes bytes from a completed validated priority group request and unlinks that request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.c(B)Z",
+      "originalName": "c",
+      "to": "isPublicChatInputActive",
+      "evidence": "Checks that chat input is active and that the compose channel is the default channel zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wm.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of this class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.d(I)V",
+      "originalName": "d",
+      "to": "servicePrefetchQueue",
+      "evidence": "Checks explicit group prefetch entries, requesting disk validation or network recovery until the group is valid.",
       "confidence": "reviewed"
     },
     {
@@ -24413,7 +25484,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-kickabout-rules.mjs": "e75b73a2709883a56dceea1a0a404321b8ad10d940a1c2d6f0ece6ff83f238be",
+      "build-kickabout-rules.mjs": "cec6e9d55a15bf33c80193363f3706ccd1e2ee1ad684cb2f45fcb838ad838f37",
       "reproduce-kickabout.mjs": "ced425cb07cc59ef9672e56d45c5fdaaf3cc113192449c7eafd4355270fa9245",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
