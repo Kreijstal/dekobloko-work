@@ -258,7 +258,7 @@ const classes = {
   ji: ['ScrollBar', 'Built from a "scrollbar" skin with arrow, track and thumb nodes and a horizontal flag; copy constructor makes instances, thumb position maps to scroll value.'],
   tk: ['ScrollContainer', 'Creates a horizontal and a vertical ji bar around a content node and scrolls the content with arrows, pages and thumbs.'],
   rb: ['TextPromptDialog', 'Modal layout with title, om line, StringBuilder text entry and buttons; a(int) returns the typed text and h() watches for the enter key.'],
-  sl: ['HoverTooltip', 'Created at the rectangle of an existing node with a title and body node; a singleton k.field_m holds the active one.'],
+  sl: ['SocialNamePrompt', 'Friend and ignore actions create this anchored name-entry prompt; its input result is dispatched to the corresponding social request.'],
   vg: ['TextFieldNode', 'hd-toolkit text field with a StringBuilder, selection start and end, clipboard copy and paste and an optional maximum length.'],
   qb: ['GameSetupPanel', 'hd-toolkit panel holding a byte[] of option selections sized by the option count ss.field_j, restriction arrays tested against them and many option label nodes.'],
   cf: ['RankingRowNode', 'Row drawn as three columns 40, 196 and 70 wide showing the rank (or = for ties), name and rating copied from a bc entry.'],
@@ -3650,7 +3650,7 @@ method('kl', 'c', '(I)V', 'advanceSelectionOverlayFrame', 'Advances the shared s
 method('vc', 'a', '(IIB)I', 'floorDiv', 'Adjusts negative integer division to floor rounding for the positive row-size divisors used by scrolling.');
 method('vc', 'a', '(Ljava/lang/String;I)V', 'setChatChannelLabel', 'Stores the label used when formatting channel-four chat message prefixes.');
 method('vc', 'b', '(I)I', 'loadBeachSprites', 'Polls the beach group, returns loading progress until available and loads its deckchairs, parasol, ball, bucket, palms, starfish, ice cream and stains once.');
-method('vc', 'f', '(B)V', 'closeSharedPopups', 'Closes the player context menu, hover tooltip, text prompt and Quick Chat menu.');
+method('vc', 'f', '(B)V', 'closeSharedPopups', 'Closes the player context menu, social-name prompt, text prompt and Quick Chat menu.');
 method('vc', 'h', '(B)V', 'updateTutorialPossessionAssist', 'Keeps tutorial possession on the selected footballer and enables catch assistance again when a loose slow ball and the controlled player are in the eligible area.');
 method('vc', 'i', '(B)V', 'drawPlayerSelectionOverlays', 'Draws the ball-carrier overlay and animated control rings for active participants on the relevant team, emphasizing the local participant.');
 method('vu', 'a', '(I)V', 'releaseStatics', 'Clears shared context-menu-item archive, array, scroll-container and string references under the original guard.');
@@ -3715,10 +3715,128 @@ method('sk', 'a', '(Z)V', 'readAcknowledgementResult', 'Consumes four integer fi
 method('ju', 'a', '(FLjava/lang/String;B)V', 'setLoadingStatus', 'Stores the loading progress value and label rendered by the shared loading canvas path.');
 method('ju', 'a', '(IILsj;B)Lut;', 'loadSprite', 'Decodes the requested archive sprite sheet and constructs its first Sprite, returning null until the sheet is available.');
 method('ra', 'a', '(IIIII)[I', 'clampTooltipPosition', 'Keeps the supplied tooltip rectangle inside the six-hundred-forty by four-hundred-eighty viewport with a two-pixel margin.');
-method('ra', 'i', '(B)V', 'closeHoverTooltip', 'Clears the shared HoverTooltip reference under the original guard.');
+method('ra', 'i', '(B)V', 'closeSocialNamePrompt', 'Clears the shared social-name input prompt under the original guard.');
 method('bh', 'a', '(Z)V', 'requestLoadingProgressDialog', 'When enabled, opens the shared loading-progress dialog and queues account-menu action four.');
 method('lj', 'a', '(IZ)I', 'scaleLobbyPreviewCoordinate', 'Scales a pitch coordinate by twenty-three over two hundred fifty-six for the dimensions of LobbyGameRecord match previews.');
 method('dn', 'a', '(I)V', 'validateLoadingGuard', 'Evaluates the original arithmetic guard used by the loading-canvas path; it changes no state on a valid input.');
+
+method('bs', 'a', '(I)V', 'layoutPlayerListPanel', 'Positions the Name and optional Rating headers and lays out the shared scrolling player list in the remaining panel space.');
+method('cb', 'a', '(ILjava/lang/String;B[IJ)Z', 'canSendQuickChat', 'Requires phrase data and, for private chat, an eligible recipient according to canSendPrivateChatTo.');
+method('cf', 'a', '(IIIIIII)V', 'layoutChatPanelOverlay', 'Applies the shared chat overlay bounds and updates the optional anchored menu layout when the chat panel moves.');
+method('cg', 'a', '(Ljava/lang/String;B)V', 'updateTooltipTracking', 'Tracks the hovered label, dwell time and tooltip anchor, resets on pointer motion and expires the temporary tooltip state.');
+method('ch', 'a', '(Lut;Lot;Lot;I)V', 'initializeAchievementSprites', 'Stores locked and unachieved sprites, initializes the achievement sprite table to its placeholder and scales the shared badge to thirty-two pixels.');
+method('cm', 'a', '(IBI)V', 'drawPanelContents', 'Draws the modal gradient, borders, title and separators; overrides add their dialog-specific contents.');
+method('cn', 'a', '([I[BIIIIIIIII)V', 'blitGlyphCoverageAlpha', 'Blends glyph coverage bytes multiplied by the requested alpha into the destination raster, honoring source stride and row skips.');
+method('cn', 'b', '([I[BIIIIIIII)V', 'blitGlyphCoverage', 'Blends the glyph color using each unsigned coverage byte and the destination color using its complementary coverage.');
+method('qa', 'a', '(Ltv;I)I', 'getChatMessageColor', 'Chooses the chat row color from its channel, sender identity, system-message flag and private-message direction.');
+method('qa', 'h', '(I)Lwc;', 'getDefaultWidgetTheme', 'Lazily creates the shared widget theme with its configured renderers, font, spacing and colors.');
+method('qa', 'i', '(I)V', 'drawFootballerAbilityIndicators', 'Draws dash cooldown or action indicator alpha masks over the team outfield players, scaling them with the pitch projection.');
+method('qg', 'a', '(I)V', 'resetSocialListState', 'Clears shared social display counts and ordering deques, detaches the secondary links of both social tables and stores the requested social protocol state.');
+method('qg', 'a', '(IIII)Z', 'moveTutorialBallToward', 'Moves the tutorial ball toward the supplied fixed-point target at the requested pixel step without overshoot, returning true when it was already at the target.');
+
+method('sl', 'a', '(BZ)I', 'updateAndGetResult', 'Updates prompt input and name text, returning pending, canceled or confirmed status; confirmation exposes the entered social name.');
+method('sl', 'h', '(B)Z', 'handleNameInputKey', 'Handles backspace, normalized account-name characters, confirmation and cancellation while the prompt remains pending.');
+method('ne', 'g', '(I)V', 'releaseStatics', 'Clears shared gameplay-help sprite, key-state, deque and text references under the original guard.');
+method('ne', 'j', '(B)Lhd;', 'createTrinketPickerGrid', 'Builds centered rows of selectable trinket icons, hiding locked entries and conditionally including the Halloween row.');
+method('ne', 'k', '(B)Z', 'hasActiveSocialNamePrompt', 'Returns whether the shared friend-or-ignore name prompt is present.');
+method('lc', 'a', '(IIZ)V', 'updateSocialNamePrompt', 'Polls the active prompt, dispatches confirmed names to friend or ignore add/remove requests, displays any error and clears the completed prompt.');
+method('lf', 'a', '(I)V', 'initializeAccountModals', 'Obtains the default widget theme, creates the shared modal stack and opens the login dialog.');
+method('lf', 'a', '(II)I', 'get', 'Probes the open-addressed integer key/value table, returning the stored value or minus one when absent.');
+method('lf', 'a', '(Ljava/lang/String;I)Z', 'isFriend', 'Tests whether the shared friend lookup finds a player with the supplied name.');
+method('ju', 'a', '(III[Lut;I)V', 'drawHorizontalSpriteStrip', 'Draws the left and right sprites and clips and tiles the center sprite across the remaining width, restoring the raster clip afterward.');
+method('oj', 'a', '(ILvc;)V', 'enqueueReceivedItemDialog', 'Queues a dialog of type nineteen containing the supplied received auction item.');
+method('oj', 'b', '(II)V', 'enqueueAuctionSettingsDialog', 'Queues the auction settings dialog for the supplied selected item.');
+method('oj', 'p', '(I)V', 'stopProgressAnimation', 'Disables progress-bar animation and records that it should remain disabled after the warning state ends.');
+
+method('bt', 'a', '(I)V', 'returnToLobby', 'Handles the Return to lobby button, sending the appropriate spectator exit or game withdrawal request and recording a pending return when necessary.');
+method('dg', 'a', '(BIILup;)V', 'enqueueStatChoiceDialog', 'Queues the stat-choice dialog using the supplied player and selection parameters.');
+method('dn', 'a', '(ZIZ)V', 'updateTextPrompt', 'Polls the shared text prompt, sends confirmed text and mute choices and clears the completed prompt and player menu.');
+method('eh', 'a', '(IILjava/lang/StringBuilder;)V', 'appendFixed16Decimal', 'Appends the signed integer part of a fixed-sixteen value, a decimal point and its fractional part scaled to thousandths without zero padding.');
+method('ej', 'a', '(ZI)V', 'updateTrinketSelection', 'Toggles the clicked trinket selection and records the hovered trinket for preview.');
+method('fk', 'b', '(III)I', 'integerPower', 'Computes an integer power by exponentiation by squaring, retaining Java integer overflow behavior.');
+method('fp', 'a', '(ILjava/lang/Class;)Z', 'isNumericPrimitive', 'Recognizes the byte, short, int, long, float and double primitive Class objects.');
+method('ge', 'a', '(Lgv;Z)V', 'prependFadingChatMessage', 'Shifts the fading-message array, inserts the supplied message first and resets its display timer.');
+method('gu', 'a', '(IBI)V', 'sendGameWithdrawalRequest', 'Writes game-control subtype nine and the game identity, used by join-request withdrawal and Return to lobby.');
+method('gu', 'b', '(IBI)V', 'setMusicFadeOutStep', 'Stores the negated supplied fade step for the selected player in the shared music mixer.');
+method('gv', 'a', '(IILni;)V', 'writeHighScoreQuery', 'Writes query subtype zero with the high-score query identity and its two byte-sized parameters.');
+method('gw', 'b', '(I)V', 'sendReadyReflectionCheckReplies', 'Drains ready reflection checks into opcode-eight packets and backpatches each byte-sized payload length.');
+method('he', 'a', '(IZIII)Lwh;', 'createFadingSoundPlayer', 'Delegates creation with the selected sound-bank sample and adjusts the supplied flag according to the shared sound mode.');
+method('he', 'a', '(Lvm;Z)V', 'removeSoundSubstream', 'Removes the supplied PCM stream from the shared mixer when that mixer exists.');
+method('ib', 'a', '(B)V', 'layoutChildWidgets', 'Implements the array-container layout hook by positioning the date input and its action button together inside their parent.');
+method('ib', 'a', '(Ljava/lang/String;I)[B', 'loadNamedResource', 'Reads a named resource with an empty child filename from the shared resource archive.');
+method('ik', 'a', '(FLjava/lang/String;ZB)V', 'showLoadingProgress', 'Creates and pushes the loading-progress dialog if needed, updates its progress and warning state and redraws the shared interface.');
+
+method('im', 'a', '(BLjava/lang/CharSequence;I)I', 'parseIntegerInRadix', 'Delegates integer parsing with the requested radix and the original signed-input option.');
+method('im', 'h', '(I)V', 'releaseMouseCapture', 'Restores the saved pointer coordinates, requests cursor visibility and clears the active capture flag.');
+method('iw', 'b', '(BJ)V', 'writeLong40', 'Writes the low forty bits of a long in five big-endian bytes.');
+method('iw', 'h', '(II)J', 'readUnsignedLongBytes', 'Reads one through eight big-endian bytes into a long and rejects other byte counts.');
+method('jb', 'a', '(III)V', 'drawPopup', 'Clips to the popup bounds, tiles its background, draws its decoration and body, adds the border and restores clipping.');
+method('jb', 'a', '(ZII)I', 'findItemAt', 'Returns the first popup item whose rectangle contains the supplied pointer coordinates, or minus one.');
+method('jg', 'a', '(IBZI)V', 'updateQuickChatMenu', 'Updates the active Quick Chat overlay and cascading menu input, dismisses it on outside interaction and adjusts horizontal placement to remain visible.');
+method('jh', 'a', '(III)V', 'selectSortColumn', 'Selects an available sort criterion and cycles its direction when the same column is selected again.');
+method('jj', 'a', '(IIB)V', 'setPlayerVolume', 'Sets the selected MIDI player volume after checking the player index and zero-through-two-hundred-fifty-six volume bounds.');
+method('jm', 'a', '(III)V', 'updateLoadingProgress', 'Interpolates the current loading stage percentage and repaints its status at most once per twenty-five milliseconds.');
+method('jr', 'a', '(III)V', 'drawLoadingSpinner', 'Selects one of six spinner sprites using the current time modulo six hundred milliseconds and draws it at the supplied anchor.');
+method('kq', 'a', '(BLgr;I)V', 'updateAuctionStatusIcon', 'Finds the selected squad slot in the club auction log and chooses the owned or external auction icon, clearing it when no entry exists.');
+method('ku', 'a', '(Ljava/lang/String;IZ)V', 'showAccountRequestDialog', 'Records the shared request flags, constructs an account-request dialog with the supplied message and pushes it on the modal stack.');
+method('la', 'a', '(II)V', 'drawBounds', 'Projects the play-area corners and draws a translucent filled rectangle with an opaque outline.');
+method('lg', 'a', '(II)Ljs;', 'resolveScreen', 'Resolves the match, tournament lobby, black fade, splash or numbered menu screen from its screen identifier.');
+method('lg', 'd', '(I)V', 'releaseStatics', 'Clears shared validation-provider text resources under the original guard.');
+method('ln', 'a', '(ILhd;Lhd;)V', 'initializeSocialLists', 'Initializes the friend and ignore hash tables and their display deques from the supplied widgets and resets social-list state.');
+method('lu', 'a', '(IIIII)V', 'drawRotatedCentered', 'Converts the destination center to subpixel coordinates and delegates nearest-neighbor sprite rotation around its logical center.');
+method('md', 'b', '(I)V', 'initializeFootballerPreviewBuffers', 'Allocates the four-player preview array and its one-hundred-by-two-hundred sprite buffer.');
+method('mr', 'a', '(ILl;)V', 'setValidationSource', 'Replaces the validation source used by this text widget.');
+method('mr', 'a', '(Lob;Z)Lak;', 'createBallDrawEntry', 'Creates a ball-type world draw entry retaining the supplied rendered ball.');
+method('mr', 'a', '(ZI)V', 'initializeChatHistory', 'Resets chat counters and allocates the channel counters and history capacity from the supplied row limit.');
+method('mu', 'a', '(Lml;B)Z', 'readBooleanBit', 'Reads a single packet bit and returns whether it is one.');
+method('mu', 'b', '(Lfd;I)V', 'replaceContentWidget', 'Unlinks the old content container, wraps and positions the new widget when present and attaches the replacement alpha container.');
+method('na', 'h', '(I)V', 'initializeSocialTabs', 'Builds the shared social content and tab containers, adds the configured panels and lays out the chat controls.');
+method('nb', 'a', '(B)V', 'initializePlayerPortraitCache', 'Allocates and constructs the shared sixty-four player-portrait cache entries.');
+method('nb', 'a', '(Z)V', 'releaseStatics', 'Clears shared sound-effect text and widget-theme references on the enabled path.');
+method('nk', 'b', '(B)Z', 'pollKeyEvent', 'Dequeues one key-code and character pair from the synchronized circular input queue, returning false when empty.');
+method('nk', '$cfr$intArgs$b$c4997cb15529', '(I)Z', 'pollKeyEvent', 'Full-integer guard overload dequeuing the next synchronized key-code and character pair.');
+method('nk', 'a', '(I)V', 'releaseStatics', 'Clears the shared text resource under the original guard.');
+method('nk', 'a', '(IJ)Lhe;', 'findLobbyPlayerById', 'Looks up a lobby-player row in the shared identity hash table.');
+method('nl', 'a', '(IB)I', 'getChargeKickPower', 'Maps the kick charge phase and effective player power to a triangular zero-through-two-hundred-fifty-six power curve.');
+method('nl', 'a', '(ZB)C', 'decodeCp1252Byte', 'Decodes a nonzero byte using the shared CP1252 extension table, substituting a question mark for unmapped extension entries.');
+method('nl', 'd', '(B)Z', 'canStartAction', 'Allows the idle action and allows action four only for a footballer with tank abilities.');
+method('nl', 'e', '(B)V', 'releaseStatics', 'Clears the shared footballer-agent text and array resources under the original guard.');
+
+method('p', 'a', '(BI)I', 'nextRandomInt', 'Returns a bounded random integer from the shared random source.');
+method('pb', 'a', '(Z)[Lvl;', 'getLoginMethods', 'Returns the three supported login-method singleton objects in their original order.');
+method('pb', 'g', '(I)V', 'releaseStatics', 'Clears shared command text and login-method references under the original guard.');
+method('pq', 'b', '(II)I', 'bitCount', 'Counts set bits in the supplied integer using parallel mask-and-add stages.');
+method('pq', 'g', '(I)V', 'releaseStatics', 'Clears the shared squad-picker cache, layout array, image data and text resources under the original guard.');
+method('pu', 'h', '(B)V', 'showHoverTooltip', 'Requests the detailed trinket tooltip while this slot is hovered.');
+method('pv', 'g', '(B)V', 'releaseStatics', 'Clears shared help-tip text, sprite and animation resources under the original guard.');
+method('qp', 'a', '(I)V', 'releaseStatics', 'Clears shared account-message text and resource references under the original guard.');
+method('qq', 'g', '(I)V', 'releaseStatics', 'Clears shared login-required dialog text resources on the valid guard path.');
+method('rq', 'a', '(BJ)V', 'sleepIgnoringInterrupt', 'Sleeps for the supplied millisecond duration and ignores InterruptedException, preserving other failures.');
+method('s', 'c', '(IIII)V', 'enqueueTrinketShopDialog', 'Queues a trinket-shop dialog with the supplied item and selection parameters.');
+method('sc', 'a', '(Z)V', 'layoutOpponentWidget', 'Centers the opponent-search widget horizontally and positions it below the search-area midpoint.');
+method('sc', 'g', '(B)V', 'drawDebugPitchCrosshair', 'Projects the shared debug pitch coordinates and draws a red circle crosshair.');
+method('sr', 'a', '(ZB)V', 'drawChatAndPopups', 'Draws the shared chat interface and its shared popups with the supplied input state.');
+method('ss', 'a', '(Ljava/lang/String;BLjava/lang/String;)V', 'setAccountStatusText', 'Delegates the supplied account-status text to the shared formatter with its default mode.');
+method('te', 'a', '(IBIZIZIZIZIZ)V', 'updateSharedInterface', 'Delegates the supplied interface geometry and input flags with white text colors to the shared interface updater.');
+method('te', '$cfr$intArgs$a$20586b1b86c8', '(IIIZIZIZIZIZ)V', 'updateSharedInterface', 'Full-integer guard overload delegating the shared interface update with white text colors.');
+method('tk', 'h', '(B)V', 'releaseDecodedSpriteBuffers', 'Clears the shared decoded sprite pixels, dimensions, palette and offset arrays.');
+method('tk', 'i', '(B)V', 'releaseStatics', 'Clears shared scroll-container text, sprite arrays and deque resources under the original guard.');
+method('tq', 'g', '(I)V', 'releaseStatics', 'Clears the shared command text and game reference under the original guard.');
+method('tu', 'q', '(I)V', 'releaseAppletStatics', 'Clears shared applet text, array and club-state references under the original guard; its distinct name preserves the separate inherited instance cleanup hook.');
+method('u', 'b', '(I)Liw;', 'getCompletedResponse', 'Returns the downloaded response buffer only when the downloader has reached its completed state.');
+method('ue', 'a', '(I)V', 'releaseStatics', 'Clears the shared portrait cache, text and support resource references under the original guard.');
+method('ue', 'f', '(B)Ljava/lang/String;', 'getLocalPlayerName', 'Returns the shared local player name or an empty string when none has been received.');
+method('vf', 'g', '(B)V', 'releaseStatics', 'Clears shared pitch-purchase text, palette and image-data resources under the original guard.');
+method('vo', 'j', '(B)V', 'releaseStatics', 'Clears the shared login-dialog sprite, text and raster data under the original guard.');
+method('vr', 'a', '(II)I', 'getLoadingStagePercent', 'Returns the selected game loading-stage percentage or one hundred beyond the configured stage table.');
+method('vr', 'b', '(I)V', 'resetChatComposerLayout', 'Delegates the shared chat-composer layout reset.');
+method('vr', 'c', '(I)V', 'showCurrentLoginForm', 'Opens the login form using the shared current account name and no supplied password.');
+method('wf', 'h', '(B)V', 'releaseStatics', 'Clears the shared auctions-screen text resources under the original guard.');
+method('wg', 'a', '(IBI)V', 'setCursorPosition', 'Delegates the supplied cursor coordinates to the Windows SetCursorPos API.');
+method('wi', 'a', '(I)V', 'releaseStatics', 'Clears the shared text-button resources and boolean array under the original guard.');
+method('wq', 'a', '(IIIBLjava/lang/String;I)V', 'drawWrappedTextPanel', 'Delegates wrapped text-panel drawing with the supplied geometry and the shared default alignment and padding.');
+method('wr', 'a', '(Z)V', 'releaseStatics', 'Clears shared formation-agent text resources under the original guard.');
+method('wv', 'j', '(B)V', 'releaseStatics', 'Clears shared account-request dialog text resources under the original guard.');
 
 export const kickConfig = {
   game: 'kickabout', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
