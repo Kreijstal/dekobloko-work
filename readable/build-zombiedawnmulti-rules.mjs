@@ -105,10 +105,28 @@ for (const [symbol, to, evidence] of reviewedNames) {
   else members[symbol] = {to, evidence};
 }
 
+// Reviewed names added in later rounds live in zombiedawnmulti-names.json:
+// classes [owner, name, evidence], methods and fields [owner, original, descriptor, name, evidence].
+const names = JSON.parse(fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'zombiedawnmulti-names.json'), 'utf8'));
+for (const [owner, to, evidence] of names.classes) {
+  if (classes[owner]) throw new Error('Class already reviewed: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of names.methods) {
+  const symbol = `M:${owner}.${original}${descriptor}`;
+  if (members[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+for (const [owner, original, descriptor, to, evidence] of names.fields) {
+  const symbol = `F:${owner}.${original}:${descriptor}`;
+  if (members[symbol]) throw new Error('Field already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export const config = {
   game: 'zombiedawnmulti', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-zombiedawnmulti-rules.mjs', 'zombiedawnmulti-names.mjs', 'reproduce-zombiedawnmulti.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-zombiedawnmulti-rules.mjs', 'zombiedawnmulti-names.mjs', 'zombiedawnmulti-names.json', 'reproduce-zombiedawnmulti.mjs', 'reviewed-game.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   readingGuide(rules, mapping) {
     return ['# Reading Zombie Dawn Multi', '',
