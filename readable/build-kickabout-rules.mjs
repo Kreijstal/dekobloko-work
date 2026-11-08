@@ -2395,6 +2395,174 @@ field('gf', 'g', 'I', 'color', '24-bit material color retained by the FO3D decod
 field('gg', 'Gb', 'Ljava/lang/String;', 'name', 'Current player name used to find the row in friend/ignore tables.');
 field('gg', 'Cb', 'I', 'listIndex', 'Position assigned when inserting the row into the ordered social list.');
 
+Object.assign(classes, {
+  bq: ['MatchUiLayoutSupport', 'Lays out the shared match/chat controls, option rows and modal panel for the current viewport.'],
+  br: ['KitUnlockNoticeSupport', 'Builds the locked-kit achievement requirement notice and inspects the shared dialog.'],
+  ca: ['GradientRasterSupport', 'Blends a fixed-point RGB gradient span with the destination; unrelated moved auction and name helpers remain.'],
+  cu: ['RankingRowFactory', 'Pools and initializes ranking rows with numeric or tied rank labels; moved codec and manager helpers remain.'],
+  d: ['FixedVelocitySupport', 'Decelerates a fixed-point velocity; unrelated moved state-reset helper remains.'],
+  ee: ['GameMediaSupport', 'Installs the shared Huffman codec, detaches the shared sound stream and draws a viewport-scaled sprite.'],
+  et: ['ThumbnailStateFactory', 'Creates paired darkened/normal labeled thumbnail sprites from an input sprite.'],
+  fa: ['PendingRequestAcknowledgement', 'Intrusive request record with a byte and short wire token; the response handler removes a pending record before consuming four response integers.'],
+  fc: ['LoginResponseUiSupport', 'Updates login forms and messages for server response codes, including the display-name and guest paths.'],
+  fj: ['ConsoleLexer', 'Tokenizes console text into quoted, punctuation and identifier/number expressions.'],
+  fs: ['PanelSpriteFactory', 'Builds vertically shaded panel sprites; moved bit decoding, animation and footballer helpers remain.'],
+  gs: ['SelectionMarkerSupport', 'Draws the four shared selection-marker sprites around the tracked position; unrelated moved UI helpers remain.'],
+  gw: ['HuffmanTextSupport', 'Reads a bounded Huffman string from PacketBuffer; moved button drawing and UI/network helpers remain.'],
+  hq: ['ClientInteractionSupport', 'Gates client interaction on the current state and modal conditions and dismisses Quick Chat.'],
+  ig: ['MatchHudSupport', 'Draws match HUD information and handles pitch projections and player staging; unrelated arithmetic and chat helpers remain.'],
+  ih: ['FormationMaskSupport', 'Decodes hexadecimal formation masks into two 13 by 10 grids; moved match and name helpers remain.'],
+  is: ['TextLineLayoutSupport', 'Computes character positions for a text layout line, including spacing and markup spans; moved auction/tick helpers remain.'],
+  iv: ['SharedWidgetFactory', 'Constructs the shared scrollbars, menu panels and controls using a supplied bitmap font.'],
+  jl: ['InputLayoutState', 'Retains the prior input layout while an alternate input layout is installed, along with moved resource state.'],
+  lt: ['PlayAreaMovementSupport', 'Computes constrained movement within the supplied play areas.'],
+  mi: ['ConsoleArgumentSupport', 'Finds an expression boundary by source position; moved Quick Chat composition and capability helpers remain.'],
+  mt: ['GoalSpriteLoader', 'Checks and loads scenery/goal_top and scenery/goal_bottom into the shared goal sprites.'],
+  mv: ['DefaultPlayerFactory', 'Constructs the default archetype-four player with balanced stats and trinket 110; moved context-menu helper remains.'],
+  nc: ['LoginPacketSupport', 'Builds and sends the encrypted login packet with seed, machine token, flags and credentials.'],
+  ns: ['NotificationPanelPositionSupport', 'Computes the shared vertical panel offset from the bottom of the 480-pixel viewport.'],
+  oa: ['OverlayLayerSupport', 'Registers shared overlay layers and invokes shared widget painting and audio shutdown helpers.'],
+  ok: ['Cp1252EncodingSupport', 'Encodes text into the client single-byte character set with explicit CP1252 extension mappings.'],
+  oo: ['PlatformTaskState', 'Holds the shared PlatformTaskDispatcher and volatile repaint request flag alongside moved UI resources.'],
+  pe: ['MeshPreviewSupport', 'Draws a model mesh into a sprite with the preview projection; moved loading, modal and area helpers remain.'],
+  vp: ['MatchTextInputOverlay', 'Overlay active on match screens -1/-2 that draws blinking text input and routes keyboard interaction.'],
+});
+method('bq', 'a', '(BLjava/applet/Applet;)V', 'reloadAppletPage', 'Opens reload.ws in the current frame, preserving the document query and session URL decoration.');
+method('bq', 'a', '(IZ)V', 'layoutMatchUi', 'Sizes and positions shared match controls, optional rows, chat area and modal panel from the viewport.');
+method('br', 'a', '(BI)V', 'enqueueLockedKitNotice', 'Builds message 35 using the kit achievement name/requirement or the original default/member text.');
+method('br', 'a', '(Z)V', 'releaseStatics', 'Clears static text references under the original guard.');
+method('ca', 'a', '(IIIIIIIII[I)V', 'blendGradientSpanHalf', 'Adds fixed-point RGB gradient components to half of each masked destination pixel and advances the component accumulators.');
+method('cu', 'a', '(ZIIIZZ)Lcf;', 'createRankingRow', 'Takes a row from the pool or allocates one, installs its rank fields and sets an equals label for a tied rank.');
+method('ee', 'a', '(Lks;Z)V', 'installHuffmanCodec', 'Installs the supplied shared HuffmanCodec while preserving the original guard branch.');
+method('ee', 'b', '(B)V', 'releaseSharedAudioStream', 'Detaches the shared stream from the PCM mixer and clears its associated references.');
+method('ee', 'a', '(III)V', 'drawViewportScaledSprite', 'Projects the shared sprite through the viewport scale and offsets and selects its original blending path.');
+method('et', 'a', '(ILjava/lang/String;Lut;I)[Lut;', 'createThumbnailStates', 'Creates two labeled thumbnail states, darkening the first and preserving the second at normal brightness.');
+method('fa', 'a', '(IBILsj;)[Lut;', 'loadSpriteSheet', 'Decodes an archive sprite sheet and materializes the Sprite array, returning null while unavailable.');
+method('fc', 'a', '(Ljava/lang/String;II)V', 'showLoginResponse', 'Updates account dialog status, guest retry text and display-name forms for the received login response.');
+method('fj', 'a', '(ZLjava/lang/String;)Ltf;', 'tokenize', 'Splits console text into quoted tokens, parentheses, commas and identifier/number expressions.');
+method('fs', 'a', '(ILgm;I)V', 'captureFootballer', 'Passes the rendered footballer to the active preview capture helper with the requested slot.');
+method('gs', 'a', '(B)V', 'drawSelectionMarkers', 'Draws the four directional marker sprites around the tracked position when marker display is enabled.');
+method('gs', 'b', '(I)V', 'drawWorldEntries', 'Draws each shared WorldDrawEntry in array order.');
+method('gs', 'd', '(I)V', 'clearPlayerPreviewResource', 'Clears the shared player-preview resource while synchronized on its previous value.');
+method('gw', 'a', '(I)V', 'createQuickChatKeysHelpPanel', 'Constructs the shared QuickChatKeysHelpPanel from its localized labels and style.');
+method('gw', 'a', '(IBLiw;)Ljava/lang/String;', 'readHuffmanString', 'Reads a smart length bounded by the caller, decompresses and decodes the bytes, and preserves the Cabbage error result.');
+method('gw', 'c', '(I)V', 'enqueueLeagueWinnerDialog', 'Adds a new LeagueWinnerDialog to the pending dialog queue.');
+method('hq', 'b', '(B)V', 'dismissQuickChat', 'Closes Quick Chat if its shared active flag is set.');
+method('ih', 'a', '(ILjava/lang/String;)[[[Z', 'decodeFormationMask', 'Expands hexadecimal nibbles least-significant bit first into two 13 by 10 boolean formation grids.');
+method('iv', 'a', '(IZLjava/lang/CharSequence;)Ljava/lang/String;', 'validateAccountName', 'Checks account-name length, normalization and separator runs, returning the original localized failure or null.');
+method('iv', 'a', '(Lcn;B)V', 'createSharedWidgets', 'Builds shared menu panels, scrollbars and controls using the supplied font and sprite resources.');
+method('iv', 'a', '(Z)V', 'releaseStatics', 'Clears the shared text and platform-task references under the original guard.');
+method('lt', 'a', '(B)I', 'constantOne', 'Returns one on the valid guard path; used as the one-byte availability/read count in the login response handler.');
+method('mi', 'a', '(I[Llk;I)I', 'findExpressionBoundary', 'Finds the first following expression whose source position exceeds the supplied character boundary.');
+method('mi', 'a', '(JLjava/lang/String;BI[I)Z', 'beginPrivateQuickChat', 'Validates the recipient, stores its name/key and compose mode, builds and displays the appropriate Quick Chat menu.');
+method('mi', 'a', '(Z)I', 'constantThree', 'Returns three for the ThreeCommand console result, retaining the original guard cleanup branch.');
+method('mt', 'a', '(B)Z', 'ensureGoalSprites', 'Checks and loads the scenery goal_top and goal_bottom resources once both are available.');
+method('mv', 'a', '(Z)V', 'releaseStatics', 'Clears the shared string on the original enabled guard.');
+method('mv', 'b', '(Z)Lup;', 'createDefaultPlayer', 'Creates the archetype-four default player with power, speed and tackle 50 and trinket ID 110.');
+method('nc', 'a', '(Lnu;BIZ)V', 'configureParticipantNamePanel', 'Stores the current game and panel mode, lowercases participant names and measures their font widths before laying out the panel.');
+method('nc', 'a', '(ZZLps;II)V', 'sendLoginPacket', 'Writes the login seed, token, credentials, flags, applet value and encrypted blocks, backpatches length and flushes.');
+method('ns', 'a', '(I)V', 'updateBottomPanelOffset', 'Sets the shared panel Y offset to 480 minus its height minus 21 under the valid guard.');
+method('oa', 'a', '(BZ)V', 'drawSharedWidget', 'Draws the shared widget passes and tooltip at the origin.');
+method('oa', 'b', '(I)V', 'shutdownSharedAudio', 'Runs the shared stream and audio cleanup helpers under the original guard.');
+method('pe', 'a', '(B)I', 'getCommonUiLoadProgress', 'Reports staged completion of the commonui archive/index/font prerequisites, returning 100 when ready.');
+method('pe', 'a', '(BLef;)V', 'setSharedAnimationFrameset', 'Installs the shared animation frameset on the valid guard path.');
+method('pe', 'a', '(Leg;Lut;II)V', 'renderMeshPreview', 'Selects and clears the target sprite raster and draws the mesh at the preview projection before restoring drawing state.');
+
+Object.assign(classes, {
+  mj: ['PitchAppearanceSupport', 'Builds recolored pitch sprites and corner variants for the selected surface; moved projection and sound helpers remain.'],
+  mk: ['TutorialScenerySupport', 'Builds the per-stage tutorial boundary polygons and scenery list; moved raster and bit-decoding helpers remain.'],
+  or: ['FootballerAiOverlaySupport', 'Draws footballer AI bounds, target direction and wait timing; moved error and packing helpers remain.'],
+  pg: ['SharedPanelFactory', 'Constructs shared social and modal panel trees; moved player-preview and prompt helpers remain.'],
+  pl: ['GameOptionMenuSupport', 'Builds setup option menus while evaluating option dependencies and enabled choices.'],
+  po: ['SocialRowOrderSupport', 'Orders social rows by list position and online/current-world status; moved screen and help helpers remain.'],
+  pr: ['LeagueRatingRequirements', 'Holds league rating thresholds checked when describing promotion/rewards in GameOverView; unrelated moved UI state remains.'],
+  ql: ['MatchHudRoutingSupport', 'Routes active match HUD drawing and welcome dialogs; unrelated moved sorting, socket and account helpers remain.'],
+  qn: ['SharedChatLayoutSupport', 'Lays out the shared chat text/input area and its adjacent panel rows.'],
+  sg: ['ByteArrayPoolState', 'Retains the 250-slot pool of 5000-byte arrays used by the shared byte allocator; unrelated moved layout/palette state remains.'],
+  su: ['WidgetStyleFactory', 'Builds a widget with normal/hover/pressed style sprites and text properties; moved pricing, ranking and canvas helpers remain.'],
+  te: ['QuickChatMenuFactory', 'Builds cascading Quick Chat menus from phrase IDs and display texts; moved sprite, protocol and configuration helpers remain.'],
+  tl: ['ConsoleTokenParser', 'Parses identifier, boolean and numeric tokens from StringCursor; a moved high-score response handler remains.'],
+  tn: ['SocialUiState', 'Holds the shared SocialTabsPanel and related layout/sprite state along with the localized social instructions.'],
+  tt: ['SocialListProtocolSupport', 'Decodes friend/ignore list insertions, renames and connection state; a moved bitmap-font factory remains.'],
+  uf: ['RegistrationUiSupport', 'Polls completed account registration responses and initializes shared UI resources; moved spinner/predicate helpers remain.'],
+  ug: ['SocialListLayoutSupport', 'Lays out social player rows, name tooltips and context actions; moved projection and intrusive-node helpers remain.'],
+  uk: ['SharedScrollbarState', 'Retains the shared VerticalScrollbar used by friend, squad and chat panels, alongside a protocol-stage sentinel.'],
+  ul: ['TextInputUiSupport', 'Draws shared text/tutorial panels and forwards text-input updates; a moved indexed-sprite palette helper remains.'],
+  um: ['MachineTokenStorageSupport', 'Persists the incoming 24-byte machine token and advances the packet offset even when storage fails.'],
+  un: ['ByteArrayPool', 'Allocates bytes from the fixed 100/5000/30000-byte pools or configured extra pools before creating new arrays.'],
+  vb: ['PitchDecorationSupport', 'Builds surface-specific world decoration sequences along the pitch; moved hashing and saved-layout helpers remain.'],
+  vj: ['RasterGlowSupport', 'Adds a neighborhood-alpha glow to the software raster and blends constant-color spans; moved screen helpers remain.'],
+});
+method('fs', 'a', '(IIIIIB)[Lut;', 'createPanelSprites', 'Builds nine panel slices with fixed-color ends, vertical-gradient sides and optional center, restoring the previous raster.');
+method('is', 'a', '(BLvc;)V', 'enqueueAuctionPurchaseDialog', 'Opens auction dialog mode 32 for the received item; its constructor formats the purchase price.');
+method('is', 'a', '(I)V', 'tickWorldEntries', 'Ticks every shared WorldDrawEntry in array order.');
+method('is', 'a', '(Lhu;Ljava/lang/String;Lqj;II)V', 'computeCharacterPositions', 'Measures each character prefix, adds fixed-point space justification and gives markup spans a shared position.');
+method('is', 'b', '(I)V', 'releaseStatics', 'Clears the static layout, random and text references under the original guard.');
+method('mj', 'a', '(BI)V', 'buildPitchSprites', 'Creates palette ranges and surface-tinted pitch sprites, including mirrored corners and clipped edge composites.');
+method('mj', 'a', '(DIDD)V', 'setProjectionTarget', 'Stores the scaled projection target and reflects its coordinates across the pitch when the view is reversed.');
+method('mj', 'a', '(I)V', 'releaseStatics', 'Clears the shared account-name-check state and preserves the invalid-guard assignment.');
+method('mj', 'a', '(ZLvm;)V', 'detachSampleStream', 'Removes the supplied sample stream from the shared PCM mixer.');
+method('mk', 'b', '(I)V', 'buildTutorialScenery', 'Builds boundary polygons and scenery sprites for the current tutorial stage, then installs the draw list.');
+method('or', 'a', '(Lnu;IIB)V', 'drawFootballerAiOverlay', 'Draws the footballer movement region, target/route, allowed direction box and AI wait bar.');
+method('or', 'a', '(Z)I', 'getKeyboardIdleTicks', 'Returns the volatile idle counter incremented by the client tick and reset by GameKeyHandler input.');
+method('or', 'b', '(Z)V', 'compactFaceDepthBuckets', 'Compacts face-index buckets from their fixed stride of sixteen using each bucket recorded count before face rendering.');
+method('pg', 'a', '(I)I', 'pollPromptAction', 'Processes prompt input and pointer selection, dismisses selected actions and handles the original timed default action.');
+method('pg', 'a', '(IILup;II)Lgm;', 'createThrottledPlayerPreview', 'Limits preview creation to one per 80 milliseconds and builds the rendered player using the original eligibility predicate.');
+method('pg', 'a', '(IZ)V', 'createSharedPanels', 'Builds social tabs and the shared modal panel hierarchy, then runs viewport layout.');
+method('pg', 'a', '(ZI)[Ljava/lang/String;', 'getMessageButtonLabels', 'Selects the localized button-label array for the supplied message/dialog identifier.');
+method('po', 'a', '(Lgg;BLgg;)Z', 'precedesSocialRow', 'Compares social list positions with the original current-world and offline weighting.');
+method('po', '$cfr$intArgs$a$d1a766881558', '(Lgg;ILgg;)Z', 'precedesSocialRow', 'Full-integer guard bridge for the same social-row ordering predicate.');
+method('po', 'a', '(IZ)V', 'updateQuickChatKeysHelp', 'Processes the active Quick Chat keys help panel and clears it when it completes.');
+method('ql', 'a', '(BZ[I)V', 'drawMatchHud', 'Draws active match time and participant status, conditionally the score and the additional overlay.');
+method('ql', 'a', '(ZLjava/lang/String;Ljava/lang/String;I)V', 'setAccountStatusText', 'Stores the two account status strings and enters their original client display state.');
+method('qn', 'a', '(IIIIII)V', 'layoutChatAndSidePanels', 'Positions the chat input/text area and adjacent rows from the shared viewport and layout dimensions.');
+method('sg', 'a', '(Z)V', 'releaseStatics', 'Clears the pool, palette, constants and layout references while preserving the recursive guard branch.');
+method('su', 'a', '(BLup;)I', 'getReducedPlayerValue', 'Returns two thirds of the shared player value, with a minimum of ten.');
+method('su', 'a', '(IBIIII)V', 'appendRankingStatistics', 'Appends ranking values and computes win share per thousand while updating the shared range values.');
+method('su', 'a', '(IIILjava/awt/Canvas;)V', 'drawRasterToCanvas', 'Draws the shared raster onto Canvas Graphics, disposes the graphics and requests repaint on failure.');
+method('su', 'a', '(IIIZILhu;IIIIIII)Lhd;', 'createStyledWidget', 'Builds a widget with five state sprite sets and the supplied font and text color.');
+method('su', 'a', '(ILjava/lang/String;)Lkw;', 'createAvailabilityRequest', 'Constructs an AvailabilityCheckRequest for the supplied value.');
+method('te', 'a', '(IIIZI)[Lut;', 'createSolidPanelSprites', 'Creates a nine-slice panel from shared solid-color edge sprites and an optional center sprite.');
+method('te', 'a', '(ILhd;[ILhd;Lhd;)Lbb;', 'createPhraseMenu', 'Resolves phrase IDs to display text and numbered shortcuts and creates the cascading menu, returning null on lookup failure.');
+method('te', 'a', '(Z)V', 'releaseStatics', 'Clears the static text and sprite references under the original guard.');
+method('te', 'a', '(ZLjava/lang/String;)V', 'setLoginExtraText', 'Stores the optional text serialized into the login packet.');
+method('tl', 'a', '(Lsb;Z)Llk;', 'readBareToken', 'Reads until whitespace or punctuation, classifies booleans/numbers/identifiers and retains the source position.');
+method('tl', 'b', '(I)V', 'readHighScoreResponse', 'Matches the queued high-score query and decodes its ranked names and score tables into the response views.');
+method('tt', 'a', '(B)V', 'readSocialListUpdate', 'Handles friend/ignore insertion, rename and connection-state packets, preserving lookup and list-order behavior.');
+method('tt', 'a', '(I[B)Luo;', 'createBinaryFont', 'Builds a BinaryBitmapFont from font bytes and the shared decoded sprite metrics, then releases the temporary sprite data.');
+method('tt', 'a', '(Z)V', 'releaseStatics', 'Clears static UI and sprite references under the original guard.');
+method('uf', 'a', '(B)V', 'buildLoadingSpinnerSprites', 'Draws and rotates the six-segment spinner and downsamples each state into its shared ARGB sprite.');
+method('uf', 'a', '(I)Lwn;', 'pollRegistrationResponse', 'Returns a completed registration response and resets its request state; rejects polling in the idle state.');
+method('uf', 'a', '([[Lut;Lsj;[IZ[B[Lkg;Lsj;I[[Ljava/lang/String;[[Ljava/lang/String;Lsj;[B[Ljava/lang/String;I[Ljava/lang/String;[[Lut;[III[Ljava/lang/String;)V', 'initializeSharedUiResources', 'Passes loaded fonts, sprites, archives and localized tables to the shared UI construction helpers.');
+method('ug', 'a', '(II)I', 'worldToScreenX', 'Reflects world X for a reversed view and applies the shared horizontal projection.');
+method('ug', 'a', '(IIZ)V', 'layoutSocialRows', 'Updates the social list viewport and each named row, tooltip, context action and remove/add prompt.');
+method('ug', 'a', '(Lgn;ILgn;)V', 'insertNodeBefore', 'Unlinks the supplied intrusive node if necessary and splices it between the given node and its previous node.');
+method('ul', 'a', '(BLjava/lang/String;)V', 'drawTutorialCaptionPanel', 'Draws the tutorial caption background and active footballer portrait with the original clipping and style.');
+method('ul', 'a', '(IIIZBIIIILjava/lang/String;)V', 'drawWrappedTextPanel', 'Measures and draws wrapped text with optional rounded translucent background and outline.');
+method('ul', 'a', '(Lkg;B[I)Lkg;', 'copyWithPalette', 'Creates an indexed-sprite view sharing the original pixels and dimensions but using the supplied palette.');
+method('ul', 'a', '(ZIIZ)V', 'updateTextInput', 'Forwards shared text-input geometry and enabled state to the text-entry handler.');
+method('um', 'a', '(B)V', 'storeMachineToken', 'Writes the next 24 packet bytes to the token file when available and always consumes the token bytes.');
+method('un', 'a', '(IZ)[B', 'allocateBytes', 'Reuses an exact-size array from the fixed or configured pools, clearing the consumed slot, or allocates a fresh array.');
+method('un', 'a', '(Lnu;II)V', 'setActiveMatch', 'Installs the active match/player index and clears the four shared per-player counters.');
+method('vb', 'a', '(Z)V', 'buildPitchDecorations', 'Builds world sprite sequences for the selected surface and decoration mode, retaining the original random placement.');
+method('vj', 'a', '(I)V', 'applyRasterGlow', 'Adds an RGB glow derived from the mean center/neighbor alpha with the original saturated-add arithmetic.');
+method('vj', 'a', '(IZ)V', 'returnToPreviousScreen', 'Closes the game modes help state if active and switches to the stored previous screen.');
+method('vj', 'a', '([IIIII)V', 'blendConstantSpanHalf', 'Adds a constant color to half the masked source pixels over the supplied array span.');
+method('br', 'a', '(I)Z', 'handleSharedPromptKey', 'Forwards the current typed key to the shared name-entry prompt when present, returning whether it handled input.');
+method('gw', 'a', '(IIIII[Lut;)V', 'drawThreeSliceStrip', 'Draws the left and right caps and clips/tiles the center sprite across the remaining width with the supplied draw parameter.');
+method('ig', 'a', '(ZII)V', 'drawControlLegend', 'Measures and draws the selected control-name and key-label columns with a translucent rounded background.');
+method('ig', 'b', '(II)V', 'drawNumericRewardPanel', 'Draws the shared numeric total and signed change with digit sprites and localized positive/negative labels.');
+method('mv', 'a', '(B)V', 'buildSharedContextActions', 'Adds the configured context actions with IDs one and two and their shared heading.');
+method('mv', '$cfr$intArgs$a$6121ff5511c4', '(I)V', 'buildSharedContextActions', 'Full-integer guard bridge for the same configured context actions.');
+method('po', 'a', '(Ljs;I)I', 'getScreenPanelWidth', 'Returns the configured panel width for each screen ID, including zero for match/tutorial screens.');
+method('tl', 'a', '(I)I', 'getMouseIdleTicks', 'Returns the idle counter incremented by the client tick and reset by mouse interaction.');
+method('ul', 'b', '(I)V', 'updateTutorialMarker', 'Positions the tutorial marker at the ball, relevant footballer or fixed stage target according to the current tutorial stage.');
+method('vp', 'a', '(II)V', 'setRenderDetail', 'Changes the detail setting and builds or clears per-archetype, animation-frame and direction mask caches while reporting progress.');
+method('vp', 'a', '(IIB)I', 'hitTestPairedControls', 'Returns zero or one when the pointer lies in either shared control rectangle, otherwise minus one.');
+method('vp', 'b', '(B)V', 'releaseStatics', 'Clears the shared resource and localized text references under the original guard.');
+method('vp', 'b', '(I)Z', 'isMatchInputActive', 'Reports the shared input-enabled flag while either match screen -1 or -2 is shown.');
+method('vp', 'c', '(I)V', 'clearSharedMouseHandler', 'Clears the shared MouseInputHandler while synchronized on its previous instance.');
+
 export const kickConfig = {
   game: 'kickabout', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   workflowFiles: ['build-kickabout-rules.mjs', 'reproduce-kickabout.mjs', 'reviewed-game.mjs',
@@ -2412,6 +2580,7 @@ export const kickConfig = {
       '`ClubState`, `PlayerStats`, `ManagerAction` and auction classes describe manager mode. `ArchiveRequest` / `NetworkArchiveRequest`, `PacketBuffer`, `CipherPacketBuffer` and the applet hierarchy cover transport and loading. UI focus, hover, drag and drop have explicit listener contracts.', '',
       '`AchievementQuery` / `AchievementSubmission`, `LookupQuery` / `LookupRecordUpdate`, `HighScoreQuery` / `HighScoreSubmission` and `RankingsRequest` describe queued protocol operations. `PcmPlayerService`, `PcmMixerListener`, `PcmSampleStream` and `MidiPcmStream` expose scheduling, playback and MIDI control.', '',
       '`LocalizedTextLoader` supplies the language pack. `ClientProtocolStage`, `RegistrationRequestState`, `AccountNameCheckState` and `AccountInputValidationResult` distinguish transport and account states. `ModelMaterialDecoder` / `ModelMaterial` decode the logo model palette.', '',
+      '`TutorialScenerySupport` builds tutorial boundaries and scenery; `PitchDecorationSupport` supplies surface decorations and `GoalSpriteLoader` loads goal sprites. `SharedWidgetFactory`, `MatchUiLayoutSupport` and `SocialListLayoutSupport` build and position the common UI. `ConsoleLexer` / `ConsoleTokenParser` retain console token source positions.', '',
       'The obfuscator moved independent static helpers between owners. Owner names describe their retained role; individual method names describe each helper without changing its placement or calls.', '',
       'Sprite operations, request completion, calendar and character boundaries, Quick Chat decoding, PCM mixing, MIDI controller dispatch and summed color moments are checked against independent native Java expectations in both raw and named corpora. These focused checks do not establish full gameplay or multiplayer equivalence.', '',
       `Decompiler source commit: ${rules.generators.javaTools.commit}.`, ''].join('\n');
