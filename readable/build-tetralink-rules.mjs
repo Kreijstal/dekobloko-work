@@ -51,7 +51,7 @@ const classes = {
   kc: ['ModelData', 'Holds per-vertex and per-face arrays that the Model constructor copies and lights.'],
   ob: ['Model', 'Mesh built from ModelData plus five lighting ints, or by merging a Model array.'],
   un: ['UrlFetchTask', 'Runnable that opens a URL through the dispatcher and reads it from a DataInputStream.'],
-  em: ['MatchSetup', 'Built from exactly two player names with six option bytes and read from a packet.'],
+  em: ['GameBoard', 'Two player names plus two six-row byte bitmask arrays (one per player); findDropRow, placePiece and checkGameEnd scan for four in a row across rows, columns and diagonals of the 7x6 grid.'],
 };
 const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
