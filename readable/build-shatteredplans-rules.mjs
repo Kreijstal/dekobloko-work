@@ -3,6 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
 import {workflowRoot} from './game-export.mjs';
+import {namingCoverage} from './naming-coverage.mjs';
 
 // Identities below belong to the pinned Shattered Plans export. Similar names
 // in GeoBlox/Monkey Puzzle 2 are corroborating role evidence only.
@@ -1455,15 +1456,140 @@ method("rn", "a", "(ILua;I[B)Lak;", "queueWrite", "Creates a write request with 
 method("rn", "a", "(B)V", "shutdown", "Flags the worker to stop, wakes it and joins the thread.");
 method("ek", "a", "(IIIBIII)Z", "rectContains", "Returns whether a point lies inside a rectangle given by its left, top, width and height.");
 // END GENERATED
+
+// These declarations were checked against their owned fields, constructors and
+// callers. The independently refactored reference client corroborates shared UI
+// roles, but is not a generation input and does not replace the pinned sources:
+// lexi-lambda/shattered-plans@ee34e6ca8259b16b8878e5c6360e1c31efa2c53f.
+Object.assign(classes, {
+  a: ['HitRegion', 'Intrusive node with enabled state and rectangle bounds; hit testing returns itself only when the point is inside.'],
+  aa: ['AccountCreationForm', 'Owns username, email/confirmation, password/confirmation, age and opt-in inputs, links to terms/privacy/conduct, and creates the account submission controls.'],
+  ab: ['AccountValidationText', 'Retains password length/character rejection messages and the unavailable-email message.'],
+  ah: ['ValidationMessageWidget', 'Text widget retaining a ValidationSource, validation sprite and help text; hover/drawing consult validation state.'],
+  ao: ['SolidNineSliceFactory', 'Builds nine-slice entries from shared solid-color square sprites and an optional solid center sprite.'],
+  be: ['BytePayloadNode', 'IntrusiveNode whose constructor retains a byte array. Unrelated static helpers remain in place.'],
+  bg: ['LoginMethodPreference', 'Retains a preference string and saves it in the jagex-last-login-method browser cookie.'],
+  bj: ['NameSuggestionsPanel', 'Builds normalized account-name suggestion buttons plus More Suggestions and calls the supplied suggestion listener.'],
+  bl: ['BufferedImageRasterBuffer', 'RasterBuffer implemented with a DataBufferInt, DirectColorModel and WritableRaster, painted through its owning Component.'],
+  c: ['PolygonSpanIterator', 'Sorts polygon edges, advances their Q16 x intersections by scanline and emits paired left/right endpoints until the clip bottom.'],
+  cb: ['DirectByteArrayStorage', 'ByteArrayStorage implementation that positions and fills its java.nio.ByteBuffer with supplied bytes.'],
+  cl: ['RasterStateFrame', 'Saved pixel target, dimensions and clip bounds; the raster-state push helper copies the current SoftwareRasterizer values into it.'],
+  di: ['FleetTrailPoint', 'Intrusive node created by MapView.drawFleetTrails to retain the interpolated fleet x/y and elevated trail coordinate.'],
+  dj: ['WidgetFocusListener', 'FocusableWidget notifies this listener with its current isFocused flag after focus changes.'],
+  cd: ['WidgetDragListener', 'DraggableWidget notifies this listener when pointer dragging changes its position.'],
+  dr: ['WidgetPointerListener', 'ButtonListener extension notified separately by FocusableWidget.handlePress and handleRelease.'],
+  dl: ['NameSuggestionListener', 'NameSuggestionsPanel calls the string callback for a selected name and the no-string callback for More Suggestions.'],
+  e: ['AccountFieldValue', 'Retains account-form text and a flag controlling whether that text is included in the next account request; an empty string clears the flag.'],
+  'ee$1$CfrPartitionedBody': ['GameTextLoader', 'Generated local loader whose sections decode the game menu, instructions, fleet, diplomacy and victory text resources.'],
+  eq: ['ReflectionCheck', 'Retains reflection operation kinds, platform tasks, serialized argument bytes and error/result arrays for a queued check.'],
+  fa: ['ValidatedTextInputWidget', 'TextFieldWidget implementing ValidatableWidget; it retains a ValidationSource and notifies/queries it on text and hover changes.'],
+  fr: ['DraggableWidget', 'Single-child wrapper that moves with the held pointer, notifies a drag listener and optionally eases back to its saved origin.'],
+  he: ['IntNode', 'IntrusiveNode whose constructor stores one integer value.'],
+  hh: ['BinaryBitmapFont', 'BitmapFont implementation retaining one byte mask per glyph; its row kernels write solid pixels wherever a mask byte is nonzero.'],
+  hn: ['IntList', 'Growable primitive integer array with size, indexed get/set and append operations.'],
+  le: ['ByteArrayStorage', 'Abstract holder contract with a setBytes operation implemented using a direct ByteBuffer by DirectByteArrayStorage.'],
+  nq: ['BitmapFont', 'DualLinkNode with glyph widths, bearings, kerning and shared text-style state; concrete subclasses implement binary/coverage glyph row drawing.'],
+  op: ['HyperlinkListener', 'TextHotspotWidget dispatches the selected link id to this listener; AccountCreationForm opens the corresponding terms/privacy/conduct document.'],
+  ts: ['TextHotspotWidget', 'Text widget that hit-tests retained link rectangles and dispatches their ids to its HyperlinkListener.'],
+  th: ['CoverageBitmapFont', 'BitmapFont implementation whose glyph kernels blend each destination pixel by its byte coverage and optional global alpha.'],
+  'vi$1$CfrPartitionedBody': ['ClientTextLoader', 'Generated local loader whose sections decode shared login, account, menu, membership and subscription text resources.'],
+  vm: ['QuickChatMenu', 'Animated menu with per-entry text/shortcut arrays, selected entries and nested QuickChatMenu submenus; its factory consumes QuickChatPhraseDefinition.'],
+});
+
+for (const [owner, original, descriptor, to, evidence] of [
+  ['bp', 'a', '(Lkg;IIII)V', 'onButtonClicked', 'FocusableWidget.fireAction invokes this callback with the activated widget and pointer/action values.'],
+  ['iq', 'a', '(Lvg;IZIB)V', 'paintWidget', 'UiWidget.drawLayer invokes the painter contract to render the widget at its parent origin with its active state.'],
+  ['dj', 'a', '(IZLvg;)V', 'onFocusChanged', 'FocusableWidget invokes the listener when gaining or losing focus, passing its focus flag.'],
+  ['cd', 'a', '(BILfr;I)V', 'onWidgetDragged', 'DraggableWidget.updateHover invokes the listener after changing the dragged wrapper position.'],
+  ['dr', 'a', '(IIIILkg;B)V', 'onPointerReleased', 'FocusableWidget.handleRelease invokes this listener before clearing its held-button state.'],
+  ['dr', 'a', '(Lkg;IIIIII)V', 'onPointerPressed', 'FocusableWidget.handlePress invokes this listener after recording the pressed button.'],
+  ['op', 'a', '(IIILts;)V', 'onLinkClicked', 'TextHotspotWidget hit testing invokes this callback with the selected retained hyperlink id.'],
+  ['dl', 'a', '(ILjava/lang/String;)V', 'onNameSuggested', 'NameSuggestionsPanel invokes this callback with the selected canonicalized name.'],
+  ['dl', 'a', '(I)V', 'onMoreSuggestionsRequested', 'NameSuggestionsPanel invokes this callback for its last More Suggestions button.'],
+  ['a', 'a', '(III)Z', 'containsPoint', 'Tests enabled state and half-open x/y rectangle bounds.'],
+  ['a', 'b', '(III)La;', 'hitTest', 'Returns this hit region when containsPoint succeeds, otherwise null.'],
+  ['a', 'a', '(II)I', 'signedBitLength', 'Computes the bit width by staged right shifts, retaining distinct positive, zero and negative cases.'],
+  ['ao', 'a', '(BIIII)[Lbi;', 'createSolidNineSlice', 'Shares a light square among top/left/corners, a shadow square among bottom/right entries, and optionally allocates a solid center.'],
+  ['bg', 'a', '(BLjava/lang/String;)Z', 'matches', 'Compares the supplied string with the retained login preference value.'],
+  ['bg', 'a', '(Ljava/applet/Applet;Z)V', 'saveBrowserPreference', 'Writes the retained value to the jagex-last-login-method cookie with a one-year lifetime.'],
+  ['bg', 'a', '(Ljava/lang/String;I)I', 'parseIntegerOrAuto', 'Returns minus one for case-insensitive auto, otherwise delegates to the character-sequence integer parser.'],
+  ['bg', 'a', '(II)V', 'buildMenuDividerSprites', 'Builds two-pixel divider sprites with gray/white rows and faded end pixels, restoring the prior raster state.'],
+  ['bj', 'a', '([Ljava/lang/String;I)V', 'setSuggestions', 'Normalizes the supplied names and rebuilds the name buttons plus More Suggestions, or clears the current suggestions.'],
+  ['bj', 'k', '(I)V', 'resetPolygonScanlineBuckets', 'Resets the scanline bounds/counter and clears or allocates one polygon-edge bucket per raster row.'],
+  ['cl', 'a', '(II[IIIIII)V', 'setRasterState', 'Copies the pixel target, dimensions and clip values supplied by the raster-state push helper into this frame.'],
+  ['c', 'a', '()Z', 'nextSpan', 'Advances active polygon edges by scanline, sorts intersections and exposes the next left/right span.'],
+  ['c', 'a', '(II)V', 'sortEdgesByStartY', 'Partitions four-integer edge records around their start-y value and recursively sorts the two ranges.'],
+  ['c', 'b', '(II)V', 'sortActiveEdgesByX', 'Uses adjacent swaps to order active four-integer edge records by their current x intersections.'],
+  ['c', 'a', '([III)V', 'appendPolygonEdges', 'Appends directed top-to-bottom edge records from coordinate pairs, skipping horizontal edges and growing the edge array.'],
+  ['c', 'c', '()V', 'resetEdges', 'Resets the retained edge-data length to zero.'],
+  ['c', 'd', '()V', 'initializeScanlines', 'Sorts edges by start y, initializes Q16 intersections/slopes at the clipped first scanline and resets active cursors.'],
+  ['gr', 'a', '(BII)Lbi;', 'createSolidSquare', 'Allocates a square Sprite and fills every pixel with the supplied color.'],
+  ['aq', 'a', '(BLbi;)V', 'pushSpriteRaster', 'Pushes the current raster state and installs the supplied sprite pixel target and dimensions.'],
+  ['e', 'a', '(B)Ljava/lang/String;', 'text', 'Returns the retained string value.'],
+  ['e', 'a', '(I)Z', 'shouldSubmitText', 'Returns the flag tested by the account request writer before it includes this value in the marked-string payload; the constructor clears it for empty text.'],
+  ['wh', 'a', '(Z)V', 'pushRasterState', 'Reuses or allocates a RasterStateFrame, copies the complete current raster target/clip and pushes it on the retained stack.'],
+  ['wh', 'a', '([Lbi;IIBI)V', 'drawHorizontalSpriteStrip', 'Draws the left/right endcaps, clips the interior and tiles the middle sprite across it, then restores clipping.'],
+  ['ee', 'a', '(ILbc;)V', 'loadGameText', 'Constructs and runs the game-specific text loader over the supplied resource archive.'],
+  ['ee$1$CfrPartitionedBody', 'runChunk0', '()V', 'loadMenusAndInstructionOverview', 'Loads text_game_name, benefits and menu resources through instruction headings, fleet icons and star-type instruction labels.'],
+  ['ee$1$CfrPartitionedBody', 'runChunk1', '()V', 'loadInstructionsAndFleetControls', 'Loads instruction details and gameplay interaction text through fleet-placement tooltips.'],
+  ['ee$1$CfrPartitionedBody', 'runChunk2', '()V', 'loadDiplomacyAndVictoryText', 'Loads fleet completion/treaty tooltips, diplomatic actions and victory status resources.'],
+  ['vi', 'a', '(Lbc;Z)V', 'loadClientText', 'Constructs and runs the shared login/account/menu/membership text loader over the supplied archive.'],
+  ['vi$1$CfrPartitionedBody', 'runChunk0', '()V', 'loadLoginAndAccountRules', 'Loads login error/status and account creation strings through the first rule pillar entries.'],
+  ['vi$1$CfrPartitionedBody', 'runChunk1', '()V', 'loadAccountRulesAndMenuText', 'Continues account rules and support messages through menu/introduction/login actions.'],
+  ['vi$1$CfrPartitionedBody', 'runChunk2', '()V', 'loadMenuAndMembershipText', 'Loads highscore and main/pause menu actions through membership login requirements.'],
+  ['vi$1$CfrPartitionedBody', 'runChunk3', '()V', 'loadSubscriptionText', 'Loads alternate membership/login prompts and subscription prices through the sentence separator.'],
+]) method(owner, original, descriptor, to, evidence);
+
+for (const [owner, original, descriptor, to, evidence] of [
+  ['bi', 'a', '(IIIIII)V', 'rotateNearest', 'Reviewed inverse fixed-point sprite transform and clipping branches; normalized body exactly matches Pool Sprite.rotateNearest and Kickabout Sprite.rotateNearest.'],
+  ['om', 'a', '(IIIIII)V', 'rotateNearest', 'Reviewed the corresponding alpha-sprite transform; normalized body exactly matches the named Pool and Kickabout ArgbSprite implementations.'],
+  ['gf', 'a', '(IIIIIIII[II[IIIIIIII)V', 'addRadialGlowScanlines', 'Walks the radial squared-distance recurrence and adds lookup colors with RGB saturation; normalized body exactly matches Pool and Kickabout raster kernels.'],
+  ['gf', 'e', '(IIIIII)V', 'fillVerticalGradientAdditive', 'Interpolates each gradient row color and adds it to destination pixels with saturation; normalized body exactly matches Kickabout.'],
+  ['gf', 'a', '(I[IIIII)V', 'halveRgbRows', 'Halves RGB channels with the retained 0xfefefe mask over each row, preserving row stride and the unrolled eight-pixel loop.'],
+  ['gf', 'b', '(IIII[I)V', 'addRadialGlowQ4', 'Computes clipped bounds and squared-distance recurrences from Q4 center/radius coordinates, then invokes the radial additive scanline kernel.'],
+  ['lb', 'a', '([I[I[I[BIII)V', 'buildHuffmanTables', 'Sorts symbols by code length and computes canonical limit/base tables; normalized body exactly matches the reviewed Pool and Kickabout bzip2 helper.'],
+  ['nk', 'a', '([I[B[IIIIIIII)V', 'blendPaletteRowsWithAlpha', 'Skips transparent index zero and blends palette colors with the supplied global alpha; normalized body exactly matches Pool and Kickabout.'],
+  ['nk', 'b', '([I[B[IIIIIIII)V', 'copyNonzeroPaletteRows', 'Copies nonzero palette indices with four-pixel unrolling and row strides; normalized body exactly matches Pool and Kickabout.'],
+  ['nk', 'a', '(III)V', 'drawAlpha', 'Clips the indexed sprite bounds and calls blendPaletteRowsWithAlpha with the requested alpha.'],
+  ['om', 'h', '()Lom;', 'copyArgb', 'Allocates an ArgbSprite, copies its dimensions/padding and pixel array; normalized body exactly matches Kickabout ArgbSprite.copyArgb.'],
+  ['om', 'h', '(II)V', 'drawMirroredHorizontal', 'Mirrors the padded x offset and reads source rows backward through the alpha-mirrored row kernel.'],
+  ['om', 'i', '(II)V', 'drawRotated180', 'Mirrors both padded offsets and combines backward source rows with upward destination row strides.'],
+  ['to', 'a', '([FIZ)V', 'decode', 'Decodes eight residue passes using the configured phrasebook and vector codebooks, preserving channel interleaving; normalized body exactly matches Pool VorbisResidue.decode.'],
+]) method(owner, original, descriptor, to, evidence);
+
+for (const [owner, original, descriptor, to, evidence] of [
+  ['a', 'l', 'I', 'x', 'Subtracts this value from pointer x before testing width.'],
+  ['a', 'h', 'I', 'y', 'Subtracts this value from pointer y before testing height.'],
+  ['a', 'n', 'I', 'width', 'Half-open horizontal bound used by containsPoint.'],
+  ['a', 'm', 'I', 'height', 'Half-open vertical bound used by containsPoint.'],
+  ['a', 'k', 'Z', 'enabled', 'Hit testing rejects the region when this flag is false.'],
+  ['bg', 'b', 'Ljava/lang/String;', 'value', 'Preference value compared by matches and written to the login-method cookie.'],
+  ['c', 'f', '[I', 'edgeData', 'Packed four-integer polygon edges and their active Q16 intersection/slope values.'],
+  ['c', 'g', 'I', 'edgeDataLength', 'Number of populated integers in edgeData.'],
+  ['c', 'c', 'I', 'activeStart', 'First active edge record after removing completed edges.'],
+  ['c', 'd', 'I', 'activeEnd', 'End of active edge records after inserting newly started edges.'],
+  ['c', 'b', 'I', 'nextPair', 'Cursor of the next pair of active edge intersections to emit.'],
+  ['c', 'h', 'I', 'scanlineY', 'Current polygon scanline, advanced until the clip bottom.'],
+  ['c', 'e', 'I', 'spanLeft', 'First Q16 edge intersection shifted to integer x for the emitted span.'],
+  ['c', 'a', 'I', 'spanRight', 'Second Q16 edge intersection shifted to integer x for the emitted span.'],
+]) field(owner, original, descriptor, to, evidence);
+
 export const config = {
   game: 'shatteredplans', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
   workflowFiles: ['build-shatteredplans-rules.mjs', 'reproduce-shatteredplans.mjs', 'reviewed-game.mjs',
-    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
+    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs', 'naming-coverage.mjs'],
   readingGuide(rules, mapping) {
+    const coverage = namingCoverage(mapping);
     return ['# Reading Shattered Plans', '',
-      `This pass names ${Object.keys(classes).length} reviewed classes in ${mapping.files.length} source files. Unresolved roles keep their original names.`, '',
-      'Start at `ShatteredPlansClient`; the shared engine (nodes, deques, packet buffer, sockets, widgets, sprites) uses the same role names as other FunOrb games.', ''].join('\n');
+      'This directory is the single published Java tree. Reproducible rules live in dekobloko-work/readable; the reverse dictionary is ../../decompilation/shatteredplans-naming.json.', '',
+      `Resolved declarations: ${coverage.namedClasses}/${coverage.classes} classes and ${coverage.namedMethods}/${coverage.methods} methods have readable names; ${coverage.constructors} constructors follow their class names.`,
+      `Remaining: ${coverage.unresolvedClasses.length} opaque class names and ${coverage.unresolvedMethods.length} opaque method names. ${coverage.complete ? 'All resolved class and method declarations have readable names.' : 'The complete naming goal is still in progress.'}`, '',
+      'Audit with `node readable/naming-coverage.mjs shatteredplans` in dekobloko-work; it exits unsuccessfully while opaque names remain.', '',
+      'Start at `ShatteredPlansClient`, `GameSession` and `GameState`. `Player`, `Star`, `Territory`, fleet orders, map generators and victory checkers describe gameplay; `TaskAi` allocates fleets to attack, defense and garrison tasks.', '',
+      'The obfuscator moved unrelated static helpers between owners. Class names describe retained instance roles; static helper names describe their own behavior without relocating code.', '',
+      'Regeneration compiles the complete raw and renamed sources and verifies resolved bindings, overrides, labels and class-name literals. Full gameplay, native interfaces and multiplayer behavior have not been verified by this naming workflow.', '',
+      `Decompiler source commit: ${rules.generators.javaTools.commit}.`, ''].join('\n');
   },
 };
 
