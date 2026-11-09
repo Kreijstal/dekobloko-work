@@ -2974,6 +2974,138 @@ for (const [owner, descriptor, names] of [
   ['sd', '(II)V', ['maxWeight', 'maxBuckets']],
 ]) parameters(owner, '<init>', descriptor, names, 'Constructor parameter roles verified against allocation, retained resource handles or cache capacity.');
 
+// Procedural water data: the floating-point slice sampler and the fixed-point
+// octave accumulator are distinct algorithms. Packed output variants retain the
+// renderer names because their luminance/alpha channel conventions differ.
+Object.assign(classes, {
+  ab: ['NoiseSliceGenerator', 'Abstract floating-point volume-slice sampler consumed by octave and byte-volume generation.'],
+  vu: ['PerlinNoiseSliceGenerator', 'Seeded 512-entry permutation table, eight gradient vectors, quintic fades and trilinear interpolation generate a tileable 3D noise slice.'],
+  en: ['FixedPointPerlinNoise3D', 'Seeded fixed-point lattice/permutation sampler traversing volume voxels and octaves through abstract accumulation/output hooks.'],
+  ml: ['RidgedNoise3D', 'Fixed-point noise accumulator squaring offset-minus-absolute-noise, weighting subsequent ridges and clamping emitted bytes.'],
+  ff: ['TurbulenceNoise3D', 'Fixed-point octave-weighted noise sum converted to an absolute, clamped turbulence value before byte output.'],
+  ct: ['HardwareRidgedWaterNoise', 'Ridged-volume output used by hardware water textures; writes full luminance and scaled ridge alpha to each texel.'],
+  ip: ['LegacyRidgedWaterNoise', 'Legacy GL water ridge output replicating the scaled ridge byte into both luminance and alpha.'],
+  ks: ['HardwareTurbulentWaterNoise', 'Hardware water turbulence output replicating the biased half-intensity byte into both channels.'],
+  qb: ['LegacyTurbulentWaterNoise', 'Legacy GL water turbulence volume packing the biased half-intensity byte into both channels.'],
+  ch: ['LegacyWaterTextureResources', 'Creates legacy water ridge/turbulence volumes or sixteen-frame texture arrays and a shader-generated normal volume.'],
+  tq: ['LegacyOpenGlDisplayLists', 'Retains a consecutive range from glGenLists and wraps glNewList, glEndList and indexed glCallList.'],
+  rp: ['SoftwareRenderContext', 'Software toolkit context matched to a Runnable thread, retaining row-offset and scratch arrays.'],
+  bg: ['SoftwareScanlineOffsets', 'Owns the software rendering row-offset array filled from clip top/left and target width.'],
+  cg: ['CursorController', 'Owns an AWT Robot for pointer movement and remembers the component whose cursor was hidden.'],
+});
+
+for (const [owner, original, descriptor, to, names, evidence] of [
+  ['ab', 'a', '(FIFFIII[FIFI)V', 'generateSlice', ['stepX', 'outputOffset', 'stepY', 'stepZ', 'slice', 'depth', 'latticeStep', 'output', 'width', 'amplitude', 'height'], 'Samples a width-by-height slice at fixed Z with wrapped lattice coordinates; callers supply latticeStep one.'],
+  ['en', 'a', '(IIII)V', 'generateVolume', ['depth', 'guard', 'height', 'width'], 'Traverses depth, rows, columns and octaves using Q12 coordinates, then emits one completed voxel.'],
+  ['en', 'a', '(III)V', 'accumulateOctave', ['octave', 'guard', 'valueQ12'], 'Hook receives each interpolated octave sample before the voxel output hook runs.'],
+  ['en', 'a', '(Z)V', 'finishVoxel', ['guard'], 'Hook converts the accumulated octave state to one emitted voxel and resets the accumulator.'],
+  ['en', 'b', '(I)V', 'resetOutput', ['guard'], 'Resets output position and the per-voxel accumulator before volume traversal.'],
+  ['en', 'a', '(B)V', 'initializeOctaveFrequencies', ['guard'], 'Builds the per-octave powers-of-two table used to scale lattice coordinates.'],
+  ['en', 'c', '(I)V', 'initializePermutation', ['shuffleStart'], 'Initializes and seed-shuffles the doubled permutation table from the requested start index.'],
+  ['ml', 'a', '(BII)V', 'writeVoxel', ['value', 'index', 'guard'], 'Output hook stores the byte at the voxel index; water subclasses pack it into luminance/alpha channels.'],
+  ['ff', 'a', '(IBI)V', 'writeVoxel', ['index', 'value', 'bias'], 'Output hook stores the converted turbulence byte; subclasses replicate its biased half-intensity into two channels.'],
+  ['ct', 'a', '(IIZI)[B', 'generate', ['width', 'height', 'guard', 'depth'], 'Allocates two bytes per voxel, runs the ridged generator and returns its hardware luminance/alpha data.'],
+  ['ip', 'a', '(BIII)[B', 'generate', ['guard', 'width', 'height', 'depth'], 'Allocates two bytes per voxel and returns the legacy luminance/alpha ridged volume.'],
+  ['ks', 'b', '(IIII)[B', 'generate', ['guard', 'width', 'height', 'depth'], 'Allocates two bytes per voxel and runs the turbulence generator for hardware texture data.'],
+  ['qb', 'a', '(IBII)[B', 'generate', ['depth', 'guard', 'width', 'height'], 'Allocates two bytes per voxel and returns the legacy turbulence volume.'],
+  ['mr', 'a', '(FFIILab;FFFIII)[B', 'generateNoiseVolume', ['amplitude', 'persistence', 'width', 'guard', 'generator', 'frequencyX', 'frequencyY', 'frequencyZ', 'depth', 'octaves', 'height'], 'Allocates width times height times depth bytes and fills each slice with octave noise.'],
+  ['cn', 'a', '(FLab;I[BIFFFIFIII)V', 'fillNoiseVolume', ['frequencyZ', 'generator', 'outputOffset', 'output', 'octaves', 'amplitude', 'frequencyX', 'persistence', 'guard', 'frequencyY', 'height', 'depth', 'width'], 'Generates each noise slice and advances output by one width-times-height plane.'],
+  ['ls', 'a', '(FFII[BIFIIIIFLab;F)V', 'fillNoiseSlice', ['frequencyZ', 'frequencyX', 'outputOffset', 'height', 'output', 'slice', 'amplitude', 'depth', 'guard', 'width', 'octaves', 'frequencyY', 'generator', 'persistence'], 'Adds successive float-noise octaves into a byte plane, doubling frequencies, scaling amplitude by persistence and adding the final 127 bias.'],
+  ['an', 'a', '(FFIFI)F', 'noiseGradientDot', ['offsetY', 'offsetZ', 'gradientIndex', 'offsetX', 'guard'], 'Returns the dot product of the indexed three-component noise gradient and the XYZ offsets.'],
+  ['nw', 'a', '(IFFF)F', 'lerp', ['guard', 'from', 'to', 'fraction'], 'Returns from plus fraction times the difference between to and from.'],
+  ['qf', 'a', '(IIIII)I', 'perlinGradientDot', ['offsetY', 'offsetZ', 'axisThreshold', 'hash', 'offsetX'], 'Selects signed gradient components using the low four hash bits; callers supply the conventional axis threshold eight.'],
+  ['gf', 'a', '(II)I', 'quinticSmoothStepQ12', ['valueQ12', 'guard'], 'Evaluates the quintic fade polynomial with Q12 multiplication, supplying the 4096-entry fixed-point fade table.'],
+  ['gf', 'a', '(IB)I', 'countSetBits', ['value', 'guard'], 'Counts bits by masked pair/nibble sums and folded byte/word sums.'],
+  ['eb', 'a', '(II)I', 'bitwiseAnd', ['left', 'right'], 'Returns the bitwise conjunction of its two int arguments.'],
+  ['as', 'f', '(I)V', 'ensureHardwareWaterNoise', ['guard'], 'Lazily generates and stores the hardware ridged and turbulence byte volumes.'],
+  ['mq', 'a', '(Lfr;B)V', 'ensureLegacyWaterNoise', ['toolkit', 'guard'], 'Lazily generates legacy ridge/turbulence bytes and the height-noise volume when normal-map shader support exists.'],
+  ['ct', 'a', '(ILah;)V', 'awardDroneDefeatScore', ['guard', 'drone'], 'Awards enemy defeat points, updates variety/boss achievements and emits score text before variant bookkeeping.'],
+  ['ct', 'b', '(Z)V', 'resetArcadeGameplay', ['initializeRound'], 'Reinitializes drones, pickups, arena pads, random state, score, lives, elapsed ticks and pause state for arcade gameplay.'],
+  ['qb', 'd', '(I)V', 'advanceToNextLevel', ['guard'], 'Saves the current score, increments level index and updates level/progression state before resetting the next-level score and multiplier.'],
+  ['ip', 'd', '(I)V', 'updateDisplayDialogs', ['guard'], 'Handles display-mode error dialogs, pointer dispatch, animation advancement and queued keys for the display dialog layer.'],
+  ['ff', 'a', '(BLki;)V', 'loadGameSoundEffects', ['guard', 'archive'], 'Loads named arena, menu, drone and player sound effects and creates the three retained looping streams.'],
+  ['ks', 'a', '(ILjava/awt/Canvas;Ld;ZILki;)Lha;', 'createToolkitForCanvas', ['backend', 'canvas', 'textures', 'guard', 'options', 'shaders'], 'Reads canvas dimensions and delegates to the renderer factory with those dimensions.'],
+  ['ks', 'd', '(I)V', 'releaseStatics', ['guard'], 'Clears retained UI sprite, text and style static references.'],
+  ['ch', 'a', '(I)V', 'showConnectionLost', ['guard'], 'Closes dialogs, sets reconnect flags and displays the connection-lost message after the socket cleanup helper.'],
+  ['tq', 'a', '(II)V', 'beginList', ['index', 'mode'], 'Begins compiling a display list at base id plus index with the supplied GL list mode.'],
+  ['tq', 'a', '(Z)V', 'endList', ['guard'], 'Ends the current GL display-list definition.'],
+  ['tq', 'a', '(BC)V', 'callList', ['guard', 'index'], 'Executes the GL list at base id plus the unsigned char index.'],
+  ['rp', 'a', '(Ljava/lang/Runnable;Z)V', 'setThread', ['thread', 'guard'], 'Retains the Runnable identity used by the software toolkit to find a thread context.'],
+  ['rp', 'a', '(I)V', 'resetScanlineOffsets', ['guard'], 'Replaces the context scanline-offset holder with fresh renderer-owned storage.'],
+  ['rp', 'a', '(Z)V', 'initializePunctuationKeyMap', ['guard'], 'Installs the bracket, punctuation and extra-key translations in the AWT key-code table.'],
+  ['rp', 'b', '(Z)V', 'releaseStatics', ['guard'], 'Clears the retained static text reference.'],
+]) {
+  method(owner, original, descriptor, to, evidence);
+  parameters(owner, original, descriptor, names, evidence + ' Parameter roles follow the sample traversal, packing, caller arguments or called API.');
+}
+
+for (const [owner, original, descriptor, to, evidence] of [
+  ['vu', 'f', '[I', 'permutation', 'Doubled seeded permutation table used for 3D lattice-gradient hashes.'],
+  ['en', 'a', 'I', 'periodX', 'Base X lattice period multiplied by the octave frequency.'],
+  ['en', 'b', 'I', 'periodY', 'Base Y lattice period multiplied by the octave frequency.'],
+  ['en', 'i', 'I', 'periodZ', 'Base Z lattice period multiplied by the octave frequency.'],
+  ['en', 'e', 'I', 'seed', 'Seed used to create the permutation-shuffling Random.'],
+  ['en', 'g', 'I', 'octaveCount', 'Number of octave samples accumulated for each voxel.'],
+  ['en', 'c', '[S', 'octaveFrequencies', 'Powers of two controlling successive octave lattice scales.'],
+  ['en', 'f', '[S', 'permutation', 'Doubled short permutation table used by fixed-point gradient hashing.'],
+  ['ml', 'k', 'I', 'ridgeGainQ12', 'Gain multiplying the preceding ridge signal before weight clamping.'],
+  ['ml', 's', 'I', 'ridgeOffsetQ12', 'Offset from which absolute noise is subtracted before squaring the ridge signal.'],
+  ['ml', 'q', 'I', 'ridgeSignalQ12', 'Current squared and weighted ridge signal.'],
+  ['ml', 't', 'I', 'ridgeWeightQ12', 'Previous-signal gain clamped to zero through 4096.'],
+  ['ml', 'r', 'I', 'amplitudeMultiplierQ12', 'Fixed octave amplitude multiplier derived from the exponent argument.'],
+  ['ml', 'v', 'I', 'amplitudeQ12', 'Amplitude weighting later ridge octaves, reset after each voxel.'],
+  ['ml', 'm', 'I', 'accumulatedQ12', 'Accumulated ridge value converted and clamped for output.'],
+  ['ml', 'o', 'I', 'outputIndex', 'Sequential voxel index reset before volume traversal.'],
+  ['ml', 'n', '[B', 'samples', 'Single-channel output used by the base byte-writer hook.'],
+  ['ff', 'l', '[I', 'octaveWeightsQ12', 'Powers of persistence scaled by 4096, one per octave.'],
+  ['ff', 'p', 'I', 'accumulatedQ12', 'Signed octave sum made absolute and clamped by the voxel completion hook.'],
+  ['ff', 'q', 'I', 'outputIndex', 'Sequential voxel index reset before generation.'],
+  ['ff', 'r', '[B', 'samples', 'Base single-channel byte output.'],
+  ['ct', 'y', '[B', 'pixels', 'Hardware ridged luminance/alpha output with two bytes per voxel.'],
+  ['ip', 'x', '[B', 'pixels', 'Legacy ridged output with the scaled ridge replicated into both channels.'],
+  ['ks', 's', '[B', 'pixels', 'Hardware turbulence output with replicated biased half-intensity channels.'],
+  ['qb', 's', '[B', 'pixels', 'Legacy turbulence output with replicated biased half-intensity channels.'],
+  ['mu', 'y', '[I', 'noiseFadeQ12', 'Quintic interpolation fade sampled for every Q12 fractional coordinate from zero through 4095.'],
+  ['qu', 'i', '[[F', 'noiseGradients', 'Eight signed three-component gradient vectors consumed by floating-point noise.'],
+  ['ab', 'b', 'Ljava/lang/Object;', 'hardwareHeightNoise', 'Cached height-noise bytes used to construct hardware normal-map textures.'],
+  ['pd', 'n', 'Ljava/lang/Object;', 'hardwareRidgedWaterData', 'Stored hardware ridged luminance/alpha noise volume.'],
+  ['mk', 'd', 'Ljava/lang/Object;', 'hardwareTurbulentWaterData', 'Stored hardware turbulence luminance/alpha noise volume.'],
+  ['ic', 'b', 'Ljava/lang/Object;', 'legacyRidgedWaterData', 'Stored legacy ridged luminance/alpha volume.'],
+  ['qu', 'j', 'Ljava/lang/Object;', 'legacyTurbulentWaterData', 'Stored legacy turbulence luminance/alpha volume.'],
+  ['dj', 'm', 'Ljava/lang/Object;', 'legacyHeightNoise', 'Stored single-channel height noise uploaded for legacy GPU normal-map generation.'],
+  ['ch', 'b', 'Lek;', 'ridgedVolume', 'Legacy GL ridge noise volume sampled by water effects.'],
+  ['ch', 'f', 'Lek;', 'turbulenceVolume', 'Legacy GL turbulence noise volume.'],
+  ['ch', 'c', 'Lek;', 'normalMap', 'RGBA normal-plus-height volume generated from the height field.'],
+  ['ch', 'i', '[Lus;', 'ridgedSlices', 'Sixteen ridge texture frames used instead of volume sampling.'],
+  ['ch', 'a', '[Lus;', 'turbulenceSlices', 'Sixteen turbulence texture frames used instead of volume sampling.'],
+  ['ch', 'g', 'Z', 'useVolumeTextures', 'Renderer capability selects 3D textures or 2D frame arrays.'],
+  ['tq', 'b', 'I', 'baseListId', 'First GL list id returned by glGenLists.'],
+  ['rp', 'a', 'Lqa;', 'toolkit', 'Owning software renderer.'],
+  ['rp', 'e', 'Ljava/lang/Runnable;', 'thread', 'Runnable identity matched to the current rendering thread.'],
+  ['rp', 'c', 'Lbg;', 'scanlineOffsets', 'Holder of per-row framebuffer offsets populated when clipping changes.'],
+  ['rp', 'f', '[I', 'scratchIndices', 'Context scratch index array initialized with minus-one entries.'],
+  ['bg', 'a', '[I', 'rowOffsets', 'Framebuffer base index per clipped row, incremented by target width.'],
+  ['cg', 'a', 'Ljava/awt/Component;', 'hiddenCursorComponent', 'Component using the blank cursor until showcursor restores its default.'],
+  ['cg', 'b', 'Ljava/awt/Robot;', 'robot', 'AWT Robot used by the reflected movemouse entry point.'],
+]) field(owner, original, descriptor, to, evidence);
+
+for (const [owner, descriptor, names] of [
+  ['vu', '(I)V', ['seed']],
+  ['en', '(IIIII)V', ['noiseSeed', 'octaves', 'xPeriod', 'yPeriod', 'zPeriod']],
+  ['ml', '(IIIIIFFF)V', ['noiseSeed', 'octaves', 'xPeriod', 'yPeriod', 'zPeriod', 'amplitudeExponent', 'ridgeOffset', 'ridgeGain']],
+  ['ff', '(IIIIIF)V', ['noiseSeed', 'octaves', 'xPeriod', 'yPeriod', 'zPeriod', 'persistence']],
+  ['ch', '(Lfr;)V', ['toolkit']],
+  ['tq', '(Lfr;I)V', ['toolkit', 'count']],
+  ['rp', '(Lqa;)V', ['owner']],
+  ['bg', '(Lqa;Lrp;)V', ['toolkit', 'context']],
+]) parameters(owner, '<init>', descriptor, names, 'Constructor roles verified against permutation setup, octave/period initialization, native allocation or software context ownership.');
+
+// PlatformTaskDispatcher invokes these original public method spellings through
+// getDeclaredMethod. Only their parameters, fields and owned class literals change.
+parameters('cg', 'movemouse', '(II)V', ['x', 'y'], 'Robot.mouseMove screen coordinates; reflected entry point name is preserved.');
+parameters('cg', 'showcursor', '(Ljava/awt/Component;Z)V', ['component', 'show'], 'Restores the previous hidden cursor and optionally hides this component cursor; reflected name is preserved.');
+parameters('cg', 'setcustomcursor', '(Ljava/awt/Component;[IIILjava/awt/Point;)V', ['component', 'pixels', 'width', 'height', 'hotspot'], 'Creates a custom cursor from ARGB pixels, dimensions and hotspot; reflected name is preserved.');
+
 export const config = {
   game: 'sumoblitz', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
