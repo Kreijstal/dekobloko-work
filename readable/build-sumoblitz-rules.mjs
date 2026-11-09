@@ -5596,6 +5596,160 @@ for (const [owner, original, descriptor, to, evidence] of [
   ['dm', 'e', 'I', 'pendingTooltipY', 'Per-update pointer y anchor consumed and cleared by updateTooltip.'],
 ]) field(owner, original, descriptor, to, evidence);
 
+// Native sprite/toolkit operations are identified from the Java callers that
+// forward the same handles and arguments. The reverse dictionary retains every
+// original JNI-facing spelling alongside the readable source declarations.
+for (const [owner, original, descriptor, to, names, evidence] of [
+  ['j', 'M', '(J)I', 'nativeWidth', ['handle'], 'The width wrapper forwards this sprite handle and returns the native result unchanged.'],
+  ['j', 'I', '(J)I', 'nativeHeight', ['handle'], 'The height wrapper forwards this sprite handle and returns the native result unchanged.'],
+  ['j', 'wa', '(J)I', 'nativePaddedWidth', ['handle'], 'The paddedWidth wrapper forwards this sprite handle and returns the native result unchanged.'],
+  ['j', 'JA', '(J)I', 'nativePaddedHeight', ['handle'], 'The paddedHeight wrapper forwards this sprite handle and returns the native result unchanged.'],
+  ['j', 'W', '(JIIIII)V', 'nativeDraw', ['handle', 'x', 'y', 'colorMode', 'color', 'blendMode'], 'Called by draw with the retained native handle and the same drawing arguments.'],
+  ['j', 'A', '(JIIII)V', 'nativeSetInsets', ['handle', 'left', 'top', 'right', 'bottom'], 'Called by setInsets with the retained native handle and the same edge arguments.'],
+  ['j', 'RA', '(JIIIIIIII)V', 'nativeDrawScaled', ['handle', 'x', 'y', 'width', 'height', 'colorMode', 'color', 'blendMode', 'flags'], 'Called by drawScaled with the retained native handle and the same scaled-drawing arguments.'],
+  ['j', 'b', '(JFFFFFFIIII)V', 'nativeDrawAffine', ['handle', 'x0', 'y0', 'x1', 'y1', 'x2', 'y2', 'colorMode', 'color', 'blendMode', 'flags'], 'Called by drawAffine with the retained native handle and the same three destination corners and drawing arguments.'],
+  ['j', 'R', '(JZ)V', 'nativeDispose', ['handle', 'deferred'], 'Native endpoint used by disposeNativeResource for this sprite handle.'],
+  ['j', 'ua', '(Loa;[IIIIIZ)V', 'nativeCreateFromPixels', ['toolkit', 'pixels', 'offset', 'stride', 'width', 'height', 'copyPixels'], 'Constructor endpoint used for integer-pixel sprites; toolkit createSprite forwards pixel layout and dimensions into it.'],
+  ['j', 'ma', '(Loa;[I[B[BIIII)V', 'nativeCreateFromPalette', ['toolkit', 'palette', 'indices', 'alpha', 'offset', 'stride', 'width', 'height'], 'Constructor endpoint used for SpriteData palette, index and optional alpha arrays.'],
+  ['oa', 'wa', '(IIIIII)V', 'nativeDrawLine', ['x0', 'y0', 'x1', 'y1', 'color', 'blendMode'], 'Called by drawLine with exactly these six line arguments.'],
+  ['oa', 'n', '(JJ)V', 'nativeBindRenderTarget', ['spriteHandle', 'bufferHandle'], 'Used by render-target binding with sprite/buffer handles and by sprite-only binding with a zero buffer handle.'],
+  ['oa', 't', '(Lp;)V', 'nativeBindCanvasSurface', ['surface'], 'Endpoint called by bindCanvasSurface for the selected surface or explicit null.'],
+  ['oa', 'va', '(Lza;)V', 'nativeUseHeap', ['heap'], 'Endpoint called by useHeap after retaining the current native graphics heap.'],
+  ['oa', 'ma', '(J)V', 'nativeBindTransform', ['handle'], 'Endpoint called by bindTransform with the retained native transform handle.'],
+  ['oa', 'd', '(I)V', 'nativeUpdateTime', ['timeMillis'], 'Endpoint called by updateTime between deferred-disposal processing and per-heap updates.'],
+  ['oa', 'FA', '()V', 'nativeDisposeToolkit', [], 'Called by toolkit disposal after clearing contexts and disposing all owned heaps.'],
+  ['oa', 'MA', '(Ld;II)V', 'nativeInitializeToolkit', ['textures'], 'Constructor endpoint supplied with the texture provider before contexts and surfaces are created.'],
+  ['oa', 'AA', '(SSIBBIZBBBBZZZZZBZZI)V', 'nativeUploadTextureMetadata', ['textureId'], 'Endpoint called by uploadTextureMetadata with a texture id and its metadata fields.'],
+  ['oa', 'CA', '(S[ISIBBIZBBBBZZZZZBZZI)V', 'nativeUploadTexturePixels', ['textureId', 'pixels'], 'Endpoint called by uploadTexturePixels with ready integer pixels and the corresponding metadata fields.'],
+  ['d', 'a', '(I)I', 'textureCount', ['guard'], 'Used as the native interface capacity and the upper bound of a loop over all texture metadata.'],
+  ['d', 'b', '(II)Z', 'isTextureReady', ['guard', 'textureId'], 'Texture caches and native uploads return early when this texture readiness check fails.'],
+  ['d', 'a', '(II)Lwm;', 'metadata', ['guard', 'textureId'], 'Returns the per-texture metadata consumed by material binding and all upload paths.'],
+  ['d', 'a', '(IZFIII)[F', 'loadFloatPixels', null, 'Texture-cache acquisition overload returning floating-point pixels for float post-processing uploads.'],
+  ['d', 'a', '(IIIZFI)[I', 'loadPixels', null, 'Integer-pixel acquisition overload used by both texture caches and native texture upload.'],
+  ['d', 'a', '(ZIBIFI)[I', 'loadPixels', null, 'Alternative integer-pixel acquisition overload selected by texture effect metadata in both texture caches.'],
+  ['dl', 'a', '(I)[F', 'rotationMatrix', ['guard'], 'Writes the nine rotation coefficients and zero translation into the shared column-major four-by-four scratch matrix and returns it.'],
+  ['dl', 'b', '(B)[F', 'affineMatrix', ['guard'], 'Writes rotation and translation into the shared column-major four-by-four scratch matrix and returns it.'],
+  ['dl', 'c', '(I)V', 'resetIdentity', ['guard'], 'Zeros off-diagonal/translation terms and sets the three diagonal rotation terms to one.'],
+  ['dl', 'a', '([FIFFFF)V', 'transformPlane', ['destination', 'guard', 'normalY', 'normalZ', 'offset', 'normalX'], 'Rotates the plane normal, transforms an axis intercept of the original plane and derives the output plane offset from that point.'],
+  ['dl', 'a', '(IIBII[FI)V', 'uploadFloatMipmaps', ['width', 'height', 'guard', 'target', 'internalFormat', 'pixels', 'format'], 'Uploads successive float texture levels, averaging each two-by-two group per format component and swapping scratch arrays until the smaller dimension reaches one.'],
+  ['gk', 'a', '(B)V', 'invalidateBounds', ['guard'], 'Clears the cached bounds-valid flag; vertex translation and optional rescaling call this hook.'],
+  ['gk', 'a', '(Z)V', 'computeBounds', ['guard'], 'Computes and caches the minimum and maximum of all three short coordinate arrays when bounds are invalid.'],
+  ['gk', 'a', '(IIBI)V', 'translateVertices', null, 'Adds one supplied offset to each coordinate array and invalidates cached bounds.'],
+  ['gk', 'a', '(IIIZI)V', 'scaleVertices', null, 'Scales each coordinate array by its supplied numerator over the shared denominator, with optional bounds invalidation.'],
+  ['gk', 'b', '(Z)V', 'refreshMaxHeapMiB', ['guard'], 'Reflectively reads Runtime.maxMemory and updates the shared heap-size-in-MiB field while preserving failure handling.'],
+]) {
+  method(owner, original, descriptor, to, evidence);
+  if (names) parameters(owner, original, descriptor, names, evidence);
+}
+
+const glyphBlitParameters = ['glyph', 'pixels', 'color', 'sourceOffset', 'destinationOffset',
+  'width', 'height', 'destinationRowSkip', 'sourceRowSkip'];
+const maskedGlyphBlitParameters = [...glyphBlitParameters, 'x', 'y', 'glyphStride', 'mask', 'maskX', 'maskY'];
+for (const [owner, original, descriptor, to, names, evidence] of [
+  ['at', 'a', '([B[IIIIIIII)V', 'blitGlyphAlpha', glyphBlitParameters, 'Nonzero binary glyph pixels blend the supplied color with the destination using its high-byte alpha.'],
+  ['at', 'b', '([B[IIIIIIII)V', 'blitGlyph', glyphBlitParameters, 'Four-pixel-unrolled binary glyph loop copies the supplied color at nonzero glyph positions.'],
+  ['at', 'a', '([B[IIIIIIIIIIILaa;II)V', 'blitMaskedGlyph', maskedGlyphBlitParameters, 'Clips binary glyph rows to scanline mask spans and copies the supplied color for nonzero glyph pixels.'],
+  ['at', 'b', '([B[IIIIIIIIIIILaa;II)V', 'blitMaskedGlyphAlpha', maskedGlyphBlitParameters, 'Clips rows to scanline mask spans and blends nonzero binary glyph pixels using the supplied color alpha.'],
+  ['it', 'a', '([B[IIIIIIII)V', 'blitCoverageGlyph', glyphBlitParameters, 'Uses each unsigned glyph byte as coverage to blend the supplied color with the destination.'],
+  ['it', 'a', '([B[IIIIIIIIIIILaa;II)V', 'blitMaskedCoverageGlyph', maskedGlyphBlitParameters, 'Combines scanline-mask span clipping with per-byte glyph coverage blending.'],
+  ['je', 'a', '([B[IIIIIIII)V', 'blitSolidGlyph', glyphBlitParameters, 'Copies a solid supplied color wherever the indexed glyph byte is nonzero.'],
+  ['je', 'a', '([B[IIIIIIIIIIILaa;II)V', 'blitMaskedSolidGlyph', maskedGlyphBlitParameters, 'Clips glyph rows against mask spans and copies the supplied solid color for nonzero glyph bytes.'],
+  ['je', 'a', '([B[I[IIIIIII)V', 'blitPaletteGlyph', ['indices', 'pixels', 'palette', 'sourceOffset', 'destinationOffset', 'width', 'height', 'destinationRowSkip', 'sourceRowSkip'], 'Four-pixel-unrolled glyph loop reads unsigned nonzero indices through the supplied color palette.'],
+  ['je', 'a', '([B[I[IIIIIIIIIIILaa;II)V', 'blitMaskedPaletteGlyph', ['indices', 'pixels', 'palette', 'unused', 'sourceOffset', 'destinationOffset', 'width', 'height', 'destinationRowSkip', 'sourceRowSkip', 'x', 'y', 'glyphStride', 'mask', 'maskX', 'maskY'], 'Clips rows to mask spans and copies palette colors selected by nonzero glyph indices; the extra leading integer is unused.'],
+]) {
+  method(owner, original, descriptor, to, evidence);
+  parameters(owner, original, descriptor, names, evidence);
+}
+
+for (const [owner, original, descriptor, to, evidence] of [
+  ['ri', 'g', '[I', 'palette', 'Shared RGB palette decoded before each sprite sheet index stream.'],
+  ['ri', 'e', '[B', 'indices', 'Byte palette-index plane allocated as width times height by the sheet decoder.'],
+  ['ri', 'a', '[B', 'alpha', 'Optional byte alpha plane decoded when the sprite-sheet flags specify alpha.'],
+  ['ri', 'h', 'I', 'width', 'Decoded sprite width used to size index planes and toolkit sprite constructors.'],
+  ['ri', 'i', 'I', 'height', 'Decoded sprite height used to size index planes and toolkit sprite constructors.'],
+  ['ri', 'c', 'I', 'leftInset', 'Horizontal offset read from sheet metadata and passed as the left sprite inset.'],
+  ['ri', 'd', 'I', 'topInset', 'Vertical offset read from sheet metadata and passed as the top sprite inset.'],
+  ['ri', 'b', 'I', 'rightInset', 'Sheet width minus sprite width and left offset, passed as the right sprite inset.'],
+  ['ri', 'f', 'I', 'bottomInset', 'Sheet height minus sprite height and top offset, passed as the bottom sprite inset.'],
+  ['gk', 'd', 'Z', 'boundsValid', 'Whether the cached coordinate extrema have been computed since the last invalidation.'],
+]) field(owner, original, descriptor, to, evidence);
+
+for (const [owner, original, descriptor, to, names, evidence] of [
+  ['wb', 'a', '(III)V', 'drawAlpha', ['x', 'y', 'opacity'], 'Clips the sprite to the raster and delegates to the uniform-alpha blitter; the ARGB override additionally retains source alpha.'],
+  ['wb', 'b', '(III)V', 'drawRecolored', ['x', 'y', 'color'], 'Clips the sprite and invokes neutral-pixel recoloring; the ARGB override performs the same neutral-pixel recoloring with source alpha.'],
+  ['wb', 'c', '(II)V', 'drawPixels', ['x', 'y'], 'Draws the clipped pixel rectangle through the raw blitter; the ARGB override uses its per-pixel alpha blitter.'],
+  ['wb', 'd', '(III)V', 'drawAdditive', ['x', 'y', 'intensity'], 'Clips and adds source colors with saturation, selecting the scaled kernel unless intensity is 256; the ARGB override scales by source alpha.'],
+  ['mg', 'b', '(III[I[IIIIIIIIII)V', 'addArgbPixelsSaturating', ['pixel', 'componentSum', 'sum', 'destination', 'source', 'sourceOffset', 'column', 'destinationOffset', 'row', 'width', 'height', 'destinationRowSkip', 'sourceRowSkip', 'intensity'], 'Scales each source color by source alpha times intensity and adds it to the destination with saturated RGB carries.'],
+  ['mg', 'd', '([I[IIIIIIIII)V', 'recolorNeutralArgbPixels', ['destination', 'source', 'pixel', 'sourceOffset', 'destinationOffset', 'width', 'height', 'destinationRowSkip', 'sourceRowSkip', 'color'], 'Recolors only equal-channel source pixels around the neutral midpoint, retaining other colors and compositing with source alpha.'],
+  ['oc', 'a', '(Lah;Z)V', 'placeAndRegisterDrone', ['drone', 'guard'], 'Separates the supplied drone from existing drones and arena pads, adjusts arena-edge position and installs it in a free nonplayer slot or extends the active slot range.'],
+  ['oc', 'd', '(I)I', 'completedLevelCount', ['guard'], 'Counts the twenty-five completed-level flags; upgrade allocation compares this count with allocated points.'],
+  ['oc', 'a', '(IIZIII)V', 'appendHiscoreRow', null, 'Called while decoding each hiscore result row; stores its rank/stats, computes a stat proportion and advances the retained row count.'],
+  ['oc', 'a', '(Ljava/lang/String;ZB)V', 'showAccountProgressDialog', ['message', 'returnToLogin', 'guard'], 'Creates the animated account message dialog with the requested message and login-return behavior, then pushes it on the dialog layer.'],
+  ['oc', 'a', '(IBIIIII)Z', 'containsPoint', ['top', 'guard', 'x', 'left', 'height', 'y', 'width'], 'Tests inclusive left/top and exclusive right/bottom bounds for the supplied point.'],
+  ['oc', 'a', '(ICI)Ljava/lang/String;', 'repeatCharacter', ['count', 'character', 'guard'], 'Fills a newly allocated char array with the supplied character and constructs a String.'],
+  ['kn', 'a', '(BB)C', 'decodeCp1252Byte', ['value', 'guard'], 'Rejects zero, maps extension bytes 128 through 159 through the CP1252 table and substitutes a question mark for undefined table entries.'],
+  ['kn', 'a', '(ZB)V', 'renderOpenDialogs', ['dimBackground', 'guard'], 'If account dialogs are open, optionally dims the raster before rendering the retained dialog root.'],
+  ['kn', 'a', '(ZI)V', 'drawDimmedAccountDialogs', ['unused', 'guard'], 'Delegates to drawAccountDialogs with background dimming enabled and forwards the unused compatibility input.'],
+  ['dh', 'b', '(IIZ)I', 'floorDivideByPositive', ['value', 'divisor', 'guard'], 'Adjusts Java truncating integer division by the input sign to produce floor division for a positive divisor.'],
+  ['eb', 'a', '(III)I', 'floorModByPositive', ['divisor', 'guard', 'value'], 'Adjusts Java remainder by the input sign and divisor minus one to return the floor remainder for a positive divisor.'],
+  ['ov', 'a', '(II)I', 'signum', ['guard', 'value'], 'Returns minus one, zero or one according to the supplied integer sign.'],
+  ['gi', 'a', '(III)V', 'setTooltipAnchor', ['y', 'x', 'guard'], 'Sets the per-update tooltip anchor consumed by updateTooltip.'],
+  ['gj', 'a', '(BI)I', 'nextGameplayRandomInt', ['guard', 'bound'], 'Delegates bounded sampling to the retained gameplay random source used by session and particle updates.'],
+  ['jt', 'a', '(B)Z', 'canAutoResizeCanvas', ['guard'], 'Requires a retained resizing controller and forwards its canAutoResize predicate.'],
+  ['jt', 'a', '(I)V', 'increaseMusicVolume', ['guard'], 'Rounds music volume up to the next multiple of thirty-two, capped at 256.'],
+  ['rj', 'a', '(B)V', 'increaseMusicVolume', ['guard'], 'Delegates the music-volume increase to the shared volume-step helper.'],
+  ['kq', 'l', '(I)V', 'decreaseMusicVolume', ['guard'], 'Delegates to the music-volume decrease helper with its required zero argument.'],
+  ['kq', 'e', '(Z)V', 'setOpenIfActive', ['keepOpen'], 'Updates the open flag only when this dialog is already open.'],
+  ['kq', 'k', '(I)V', 'releaseMembershipStatics', ['guard'], 'Clears retained membership-dialog sprites and localized player/message labels on the valid guard path.'],
+  ['ju', 'g', '(I)V', 'beginUpgradeReassignment', ['guard'], 'Copies selected speed, traction and bounce into the pending levels and derives their total allocated points above the baseline of one each.'],
+  ['mu', 'e', '(I)V', 'showBlankLoginForm', ['guard'], 'Calls showLoginForm with an empty identifier and no message.'],
+  ['nt', 'a', '(B)Z', 'isAccountConnected', ['guard'], 'Requires a nonnull account socket and the CONNECTED account phase.'],
+  ['ua', 'a', '(II)[Lwb;', 'createSolidPanelSlices', ['color', 'guard'], 'Creates a nine-slice array with only its center populated by a solid sixty-four-square sprite; widget styles use the result as background slices.'],
+  ['ua', 'f', '(I)V', 'enableAutomaticCanvasResizing', ['guard'], 'Requires a resizing controller, enables its automatic flag and notifies browser resizing.'],
+  ['um', 'b', '(I)V', 'disableAutomaticCanvasResizing', ['mode'], 'Clears the resizing controller automatic flag when present and notifies the browser with the supplied mode.'],
+  ['vb', 'a', '(BZ)V', 'initializeGraphicsOptions', ['guard', 'unused'], 'Delegates to the shared graphics-options initialization helper.'],
+  ['vk', 'a', '(I)V', 'resetReflectionChecks', ['guard'], 'Replaces the shared reflection-check queue with an empty intrusive deque.'],
+]) {
+  method(owner, original, descriptor, to, evidence);
+  if (names) parameters(owner, original, descriptor, names, evidence);
+}
+
+for (const [owner, original, descriptor, to, evidence] of [
+  ['mu', 'x', 'I', 'width', 'Stored pixel-row width used by raster binding, clipping and image construction.'],
+  ['mu', 'u', 'I', 'height', 'Stored pixel-row count used by raster binding, clipping and image construction.'],
+  ['mu', 'v', 'I', 'offsetX', 'Horizontal inset added before drawing the stored sprite pixel rectangle.'],
+  ['mu', 'A', 'I', 'offsetY', 'Vertical inset added before drawing the stored sprite pixel rectangle.'],
+  ['mu', 'z', 'I', 'paddedWidth', 'Untrimmed width retained separately from pixel width and horizontal inset.'],
+  ['mu', 'w', 'I', 'paddedHeight', 'Untrimmed height retained separately from pixel height and vertical inset.'],
+  ['dl', 'n', 'F', 'm00', 'Column-major rotation-matrix element zero, also multiplying input x in output x.'],
+  ['dl', 'j', 'F', 'm10', 'Column-major rotation-matrix element one, also multiplying input x in output y.'],
+  ['dl', 'l', 'F', 'm20', 'Column-major rotation-matrix element two, also multiplying input x in output z.'],
+  ['dl', 'b', 'F', 'm01', 'Column-major rotation-matrix element four, also multiplying input y in output x.'],
+  ['dl', 'e', 'F', 'm11', 'Column-major rotation-matrix element five, also multiplying input y in output y.'],
+  ['dl', 'o', 'F', 'm21', 'Column-major rotation-matrix element six, also multiplying input y in output z.'],
+  ['dl', 'm', 'F', 'm02', 'Column-major rotation-matrix element eight, also multiplying input z in output x.'],
+  ['dl', 'k', 'F', 'm12', 'Column-major rotation-matrix element nine, also multiplying input z in output y.'],
+  ['dl', 'd', 'F', 'm22', 'Column-major rotation-matrix element ten, also multiplying input z in output z.'],
+  ['dl', 'c', 'F', 'translateX', 'Translation term written into matrix element twelve.'],
+  ['dl', 'i', 'F', 'translateY', 'Translation term written into matrix element thirteen.'],
+  ['dl', 'g', 'F', 'translateZ', 'Translation term written into matrix element fourteen.'],
+  ['wm', 'f', '[Z', 'completedLevels', 'Twenty-five flags set by level completion and consulted by level selection and earned-upgrade counting.'],
+  ['wt', 'h', '[I', 'pendingUpgradeLevels', 'Editable speed, traction and bounce levels copied at the start of upgrade reassignment.'],
+  ['pl', 'u', 'I', 'allocatedUpgradePoints', 'Sum of pending speed, traction and bounce levels above their baseline of one each.'],
+]) field(owner, original, descriptor, to, evidence);
+
+for (const [owner, original, descriptor, to, names, evidence] of [
+  ['aw', 'o', '(B)Z', 'supportsUnderwaterShaders', ['guard'], 'Queries effect slot three; both driver factories construct their underwater shader effect for that slot.'],
+  ['aw', 'M', '(I)I', 'underwaterSurfaceHeight', ['guard'], 'Both underwater drivers use this value as the distance of a horizontal plane with normal (0,-1,0); the sentinel selects the ground rather than model shader.'],
+  ['pn', 'e', '(B)V', 'bindUnderwaterProgram', ['guard'], 'Selects the lit/unlit ground/model assembly program, enables it, transforms the water plane into view space and refreshes fog uniforms.'],
+  ['ol', 'd', '(I)V', 'bindUnderwaterShader', ['guard'], 'Selects the lit/unlit ground/model vertex shader, refreshes its uniforms when changed and uploads the transformed horizontal water plane.'],
+]) {
+  method(owner, original, descriptor, to, evidence);
+  parameters(owner, original, descriptor, names, evidence);
+}
+field('aw', 'Pb', 'I', 'waterSurfaceHeight', 'Horizontal-plane distance used by both underwater driver variants.');
+field('mo', 'n', '[F', 'transformMatrixScratch', 'Shared identity-initialized four-by-four buffer populated and returned by LegacyOpenGlTransform3D matrix accessors.');
+
 export const config = {
   game: 'sumoblitz', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
