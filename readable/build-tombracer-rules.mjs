@@ -123,10 +123,28 @@ method('vna', 'c', '(B)Lvg;', 'pollLast', [], 'Unlinks and returns sentinel.prev
 method('lba', 'a', '(BLqea;I)Lloa;', 'createMazeGenerator', [], 'Throws "Unrecognised maze gen type" for a bad id.');
 method('jga', 'a', '(BLcn;)V', 'loadStrings', [], 'Loads keyed strings such as playtutorial into static fields.');
 
+// Reviewed names added in later rounds live in tombracer-names.json:
+// classes [owner, name, evidence], methods and fields [owner, original, descriptor, name, evidence].
+const names = JSON.parse(fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'tombracer-names.json'), 'utf8'));
+for (const [owner, to, evidence] of names.classes) {
+  if (classes[owner]) throw new Error('Class already reviewed: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of names.methods) {
+  const symbol = `M:${owner}.${original}${descriptor}`;
+  if (members[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+for (const [owner, original, descriptor, to, evidence] of names.fields) {
+  const symbol = `F:${owner}.${original}:${descriptor}`;
+  if (members[symbol]) throw new Error('Field already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export const config = {
   game: 'tombracer', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-tombracer-rules.mjs', 'reproduce-tombracer.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-tombracer-rules.mjs', 'tombracer-names.json', 'reproduce-tombracer.mjs', 'reviewed-game.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   readingGuide(rules, mapping) {
     return ['# Reading Tomb Racer', '',
