@@ -738,6 +738,13 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:ae",
+      "originalName": "ae",
+      "to": "UiWidget",
+      "evidence": "IntrusiveNode subclass with bounds, focus, pointer and key handlers and a debug dump; base of every widget. Same shape as Zombie Dawn Multi cf (UiWidget).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:aea",
       "originalName": "aea",
       "to": "PlatformMazeComponent",
@@ -784,6 +791,13 @@
       "originalName": "aw",
       "to": "MirrorComponent",
       "evidence": "rn.createComponent builds it for types 19, 59, which rn's constructor labels \"Pushable Mirror\", \"Fixed Mirror\" in dsa.field_a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:b",
+      "originalName": "b",
+      "to": "WidgetContainer",
+      "evidence": "UiWidget holding children in an IntrusiveDeque and forwarding focus, key and pointer events to them.",
       "confidence": "reviewed"
     },
     {
@@ -1872,6 +1886,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qr",
+      "originalName": "qr",
+      "to": "SingleChildWidget",
+      "evidence": "UiWidget wrapping one child widget field_x and forwarding focus and events to it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qta",
       "originalName": "qta",
       "to": "BladeShooterComponent",
@@ -1974,6 +1995,13 @@
       "originalName": "rsa",
       "to": "ConstrainToLatticeLocomotor",
       "evidence": "ki.readLocomotor builds it for type 12, which the locomotor name table ce.field_n labels \"Constrain To Lattice\". Extends osa.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rva",
+      "originalName": "rva",
+      "to": "ArrayWidgetGroup",
+      "evidence": "UiWidget holding its children in a fixed ae[] array and forwarding focus and events to them.",
       "confidence": "reviewed"
     },
     {
@@ -2173,6 +2201,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:uja",
+      "originalName": "uja",
+      "to": "IntrusiveDequeCursor",
+      "evidence": "Cursor over an IntrusiveDeque sentinel with first/next forward and last/previous backward walks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:uk",
       "originalName": "uk",
       "to": "MovingSawComponent",
@@ -2366,6 +2401,13 @@
       "originalName": "wu",
       "to": "ModelFactory",
       "evidence": "Implements mfa: maps 6-bit model category ids to TrapModel subclasses and fills the 21 category names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:b.field_u:Lvna;",
+      "originalName": "field_u",
+      "to": "children",
+      "evidence": "Deque of child widgets every WidgetContainer loop iterates.",
       "confidence": "reviewed"
     },
     {
@@ -3426,6 +3468,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qr.field_x:Lae;",
+      "originalName": "field_x",
+      "to": "child",
+      "evidence": "The wrapped widget every SingleChildWidget method forwards to.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rva.field_w:[Lae;",
+      "originalName": "field_w",
+      "to": "children",
+      "evidence": "Child widget array iterated by every ArrayWidgetGroup method.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:si.field_F:[Ljava/lang/String;",
       "originalName": "field_F",
       "to": "restartMessages",
@@ -3542,6 +3598,20 @@
       "originalName": "field_h",
       "to": "position",
       "evidence": "PacketBuffer cursor advanced by reads and writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uja.field_b:Lvna;",
+      "originalName": "field_b",
+      "to": "deque",
+      "evidence": "The IntrusiveDeque whose sentinel the cursor walks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uja.field_d:Lvg;",
+      "originalName": "field_d",
+      "to": "nextNode",
+      "evidence": "The node the cursor returns on its next step.",
       "confidence": "reviewed"
     },
     {
@@ -3755,6 +3825,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ada.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ada.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ada.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -3762,10 +3846,143 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ae.a(BIC)Z",
+      "originalName": "a",
+      "to": "dispatchKeyInput",
+      "evidence": "Offers a key to handleKeyInput when focused and treats key code 80 as a focus request. Same shape as Zombie Dawn Multi cf (UiWidget).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(BIIII)V",
+      "originalName": "a",
+      "to": "setBounds",
+      "evidence": "Stores x, y, width and height; refreshLayout re-applies the stored bounds through it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(BILjava/util/Hashtable;Ljava/lang/StringBuilder;)Z",
+      "originalName": "a",
+      "to": "beginDiagnosticVisit",
+      "evidence": "Debug-dump helper recording a widget in the visited table before printing it. Same shape as Zombie Dawn Multi cf (UiWidget).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(BLae;IIII)V",
+      "originalName": "a",
+      "to": "handlePointerRelease",
+      "evidence": "Base implementation clears the press state field_s. Same shape as Zombie Dawn Multi cf (UiWidget).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(IIIII)Z",
+      "originalName": "a",
+      "to": "containsPointer",
+      "evidence": "Bounds test of a pointer position against the widget rectangle. Same shape as Zombie Dawn Multi cf (UiWidget).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(IIIIILae;I)Z",
+      "originalName": "a",
+      "to": "handlePointerPress",
+      "evidence": "Overridden by buttons and containers to consume a pointer press. Same shape as Zombie Dawn Multi cf (UiWidget).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(ILjava/lang/StringBuilder;Ljava/util/Hashtable;I)V",
+      "originalName": "a",
+      "to": "appendDiagnosticProperties",
+      "evidence": "Appends the widget's fields to the debug dump. Same shape as Zombie Dawn Multi cf (UiWidget).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(ILjava/util/Hashtable;Ljava/lang/StringBuilder;I)Ljava/lang/StringBuilder;",
+      "originalName": "a",
+      "to": "appendDiagnostics",
+      "evidence": "Debug dump entry point that containers extend with their children. Same shape as Zombie Dawn Multi cf (UiWidget).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(IZII)Z",
+      "originalName": "a",
+      "to": "processPointerFrame",
+      "evidence": "Top-level per-frame pointer dispatch: hover update, press, release and drag handling. Same shape as Zombie Dawn Multi cf (UiWidget).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(Lae;Z)Z",
+      "originalName": "a",
+      "to": "requestKeyboardFocus",
+      "evidence": "Containers forward it to the child that can take keyboard focus. Same shape as Zombie Dawn Multi cf (UiWidget).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(Z)I",
+      "originalName": "a",
+      "to": "getTopLayer",
+      "evidence": "Number of render layers; containers return the maximum over their children.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.b(B)Z",
+      "originalName": "b",
+      "to": "hasKeyboardFocus",
+      "evidence": "Containers return whether any child is focused. Same shape as Zombie Dawn Multi cf (UiWidget).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.b(III)V",
+      "originalName": "b",
+      "to": "renderWithTooltip",
+      "evidence": "Calls renderLayer for every layer up to getTopLayer, then draws the hover tooltip text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.c(B)V",
+      "originalName": "c",
+      "to": "refreshLayout",
+      "evidence": "Calls setBounds with the widget's own stored bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getHoverText",
+      "evidence": "Tooltip text shown by renderWithTooltip. Same shape as Zombie Dawn Multi cf (UiWidget).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ae.e(B)V",
       "originalName": "e",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.f(B)V",
+      "originalName": "f",
+      "to": "clearKeyboardFocus",
+      "evidence": "Empty in the base; containers recurse into every child.",
       "confidence": "reviewed"
     },
     {
@@ -4007,6 +4224,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:at.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:at.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:at.i(B)V",
       "originalName": "i",
       "to": "releaseStatics",
@@ -4046,6 +4277,139 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(BIIII)V",
+      "originalName": "a",
+      "to": "setBounds",
+      "evidence": "Stores x, y, width and height; refreshLayout re-applies the stored bounds through it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(BLae;IIII)V",
+      "originalName": "a",
+      "to": "handlePointerRelease",
+      "evidence": "Base implementation clears the press state field_s. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(IB)I",
+      "originalName": "a",
+      "to": "highestOneBit",
+      "evidence": "Smears the bits right and returns ~x & value, the highest set bit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(IIIIILae;I)Z",
+      "originalName": "a",
+      "to": "handlePointerPress",
+      "evidence": "Overridden by buttons and containers to consume a pointer press. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(III[B)[B",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Allocates a byte array of the given length and copies a range of the source into it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(ILjava/util/Hashtable;Ljava/lang/StringBuilder;I)Ljava/lang/StringBuilder;",
+      "originalName": "a",
+      "to": "appendDiagnostics",
+      "evidence": "Debug dump entry point that containers extend with their children. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(Lae;B)Z",
+      "originalName": "a",
+      "to": "focusNextChild",
+      "evidence": "Walks forward from the focused child to the next one that accepts keyboard focus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(Lae;I)V",
+      "originalName": "a",
+      "to": "addChild",
+      "evidence": "Appends a widget to the children deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(Lae;Z)Z",
+      "originalName": "a",
+      "to": "requestKeyboardFocus",
+      "evidence": "Containers forward it to the child that can take keyboard focus. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.a(Z)I",
+      "originalName": "a",
+      "to": "getTopLayer",
+      "evidence": "Number of render layers; containers return the maximum over their children. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.b(B)Z",
+      "originalName": "b",
+      "to": "hasKeyboardFocus",
+      "evidence": "Containers return whether any child is focused. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.b(I)V",
+      "originalName": "b",
+      "to": "refreshChildLayouts",
+      "evidence": "Calls refreshLayout on every child.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.b(Lae;B)Z",
+      "originalName": "b",
+      "to": "focusPreviousChild",
+      "evidence": "Walks backward from the focused child to the previous one that accepts keyboard focus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getHoverText",
+      "evidence": "Tooltip text shown by renderWithTooltip. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.f(B)V",
+      "originalName": "f",
+      "to": "clearKeyboardFocus",
+      "evidence": "Empty in the base; containers recurse into every child. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.g(B)Lae;",
+      "originalName": "g",
+      "to": "getFocusedChild",
+      "evidence": "Returns the first child whose hasKeyboardFocus is true.",
       "confidence": "reviewed"
     },
     {
@@ -4455,6 +4819,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bra.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bra.i(B)V",
       "originalName": "i",
       "to": "releaseStatics",
@@ -4627,6 +4998,20 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cca.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cca.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5659,6 +6044,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:efa.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:efa.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:efa.c(Z)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -6160,6 +6559,27 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.a(BIIII)V",
+      "originalName": "a",
+      "to": "setBounds",
+      "evidence": "Stores x, y, width and height; refreshLayout re-applies the stored bounds through it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getHoverText",
+      "evidence": "Tooltip text shown by renderWithTooltip. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -6989,10 +7409,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gn.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gn.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gn.g(B)Lae;",
+      "originalName": "g",
+      "to": "getFocusedChild",
+      "evidence": "Returns the first child whose hasKeyboardFocus is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7147,6 +7581,13 @@
       "originalName": "s",
       "to": "drawCircle",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz SoftwareGraphicsToolkit.drawCircle. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:haa.a(Lae;Z)Z",
+      "originalName": "a",
+      "to": "requestKeyboardFocus",
+      "evidence": "Containers forward it to the child that can take keyboard focus. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7829,6 +8270,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ij.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ija.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -8151,6 +8599,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:je.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.a(IIIII)Z",
+      "originalName": "a",
+      "to": "containsPointer",
+      "evidence": "Bounds test of a pointer position against the widget rectangle. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jea.c(B)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -8354,6 +8816,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jo.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.a(Lae;Z)Z",
+      "originalName": "a",
+      "to": "requestKeyboardFocus",
+      "evidence": "Containers forward it to the child that can take keyboard focus. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jo.g(B)V",
       "originalName": "g",
       "to": "releaseStatics",
@@ -8396,10 +8879,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jsa.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jsa.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getHoverText",
+      "evidence": "Tooltip text shown by renderWithTooltip. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jsa.e(I)V",
       "originalName": "e",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jta.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jta.b(Z)Lae;",
+      "originalName": "b",
+      "to": "getFocusedChild",
+      "evidence": "Returns the child when it has keyboard focus. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8424,10 +8935,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jw.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jw.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jw.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:k.a(BLae;IIII)V",
+      "originalName": "a",
+      "to": "handlePointerRelease",
+      "evidence": "Base implementation clears the press state field_s. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8442,6 +8974,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kd.a(IIIIILae;I)Z",
+      "originalName": "a",
+      "to": "handlePointerPress",
+      "evidence": "Overridden by buttons and containers to consume a pointer press. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9082,10 +9621,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:laa.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:laa.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:laa.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9100,6 +9653,13 @@
       "originalName": "d",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9268,6 +9828,41 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lga.a(BIIII)V",
+      "originalName": "a",
+      "to": "setBounds",
+      "evidence": "Stores x, y, width and height; refreshLayout re-applies the stored bounds through it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lga.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lga.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lga.a(Lae;Z)Z",
+      "originalName": "a",
+      "to": "requestKeyboardFocus",
+      "evidence": "Containers forward it to the child that can take keyboard focus. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lga.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getHoverText",
+      "evidence": "Tooltip text shown by renderWithTooltip. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9873,10 +10468,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mha.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mha.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mha.a(Lae;Z)Z",
+      "originalName": "a",
+      "to": "requestKeyboardFocus",
+      "evidence": "Containers forward it to the child that can take keyboard focus. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mha.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mha.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getHoverText",
+      "evidence": "Tooltip text shown by renderWithTooltip. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9975,6 +10598,20 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mr.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mr.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -10776,6 +11413,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:op.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:op.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:op.f(I)V",
       "originalName": "f",
       "to": "releaseStatics",
@@ -11018,6 +11669,13 @@
       "originalName": "a",
       "to": "draw",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz SoftwareIndexedSprite.draw. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pg.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -11658,10 +12316,108 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qr.a(BIIII)V",
+      "originalName": "a",
+      "to": "setBounds",
+      "evidence": "Stores x, y, width and height; refreshLayout re-applies the stored bounds through it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.a(BLae;IIII)V",
+      "originalName": "a",
+      "to": "handlePointerRelease",
+      "evidence": "Base implementation clears the press state field_s. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.a(IIIIILae;I)Z",
+      "originalName": "a",
+      "to": "handlePointerPress",
+      "evidence": "Overridden by buttons and containers to consume a pointer press. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.a(ILjava/util/Hashtable;Ljava/lang/StringBuilder;I)Ljava/lang/StringBuilder;",
+      "originalName": "a",
+      "to": "appendDiagnostics",
+      "evidence": "Debug dump entry point that containers extend with their children. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.a(Lae;Z)Z",
+      "originalName": "a",
+      "to": "requestKeyboardFocus",
+      "evidence": "Containers forward it to the child that can take keyboard focus. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.a(Z)I",
+      "originalName": "a",
+      "to": "getTopLayer",
+      "evidence": "Number of render layers; containers return the maximum over their children. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.b(B)Z",
+      "originalName": "b",
+      "to": "hasKeyboardFocus",
+      "evidence": "Containers return whether any child is focused. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qr.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.b(Z)Lae;",
+      "originalName": "b",
+      "to": "getFocusedChild",
+      "evidence": "Returns the child when it has keyboard focus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.c(I)V",
+      "originalName": "c",
+      "to": "refreshChildLayout",
+      "evidence": "Calls refreshLayout on the child.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getHoverText",
+      "evidence": "Tooltip text shown by renderWithTooltip. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.f(B)V",
+      "originalName": "f",
+      "to": "clearKeyboardFocus",
+      "evidence": "Empty in the base; containers recurse into every child. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -11889,6 +12645,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rg.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rg.h(B)V",
       "originalName": "h",
       "to": "releaseStatics",
@@ -12001,6 +12764,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rj.a(BLae;IIII)V",
+      "originalName": "a",
+      "to": "handlePointerRelease",
+      "evidence": "Base implementation clears the press state field_s. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.a(IIIIILae;I)Z",
+      "originalName": "a",
+      "to": "handlePointerPress",
+      "evidence": "Overridden by buttons and containers to consume a pointer press. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.a(ILjava/util/Hashtable;Ljava/lang/StringBuilder;I)Ljava/lang/StringBuilder;",
+      "originalName": "a",
+      "to": "appendDiagnostics",
+      "evidence": "Debug dump entry point that containers extend with their children. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.a(Lae;Z)Z",
+      "originalName": "a",
+      "to": "requestKeyboardFocus",
+      "evidence": "Containers forward it to the child that can take keyboard focus. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.b(B)Z",
+      "originalName": "b",
+      "to": "hasKeyboardFocus",
+      "evidence": "Containers return whether any child is focused. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rj.f(B)V",
+      "originalName": "f",
+      "to": "clearKeyboardFocus",
+      "evidence": "Empty in the base; containers recurse into every child. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rja.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -12015,10 +12834,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rk.a(BIIII)V",
+      "originalName": "a",
+      "to": "setBounds",
+      "evidence": "Stores x, y, width and height; refreshLayout re-applies the stored bounds through it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rk.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -12050,10 +12890,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rla.a(BIIII)V",
+      "originalName": "a",
+      "to": "setBounds",
+      "evidence": "Stores x, y, width and height; refreshLayout re-applies the stored bounds through it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rla.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rla.a(IIIIILae;I)Z",
+      "originalName": "a",
+      "to": "handlePointerPress",
+      "evidence": "Overridden by buttons and containers to consume a pointer press. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rla.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rla.a(Lae;Z)Z",
+      "originalName": "a",
+      "to": "requestKeyboardFocus",
+      "evidence": "Containers forward it to the child that can take keyboard focus. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rla.b(B)Z",
+      "originalName": "b",
+      "to": "hasKeyboardFocus",
+      "evidence": "Containers return whether any child is focused. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rla.b(Z)V",
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rla.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getHoverText",
+      "evidence": "Tooltip text shown by renderWithTooltip. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rla.f(B)V",
+      "originalName": "f",
+      "to": "clearKeyboardFocus",
+      "evidence": "Empty in the base; containers recurse into every child. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -12155,6 +13051,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rr.a(IIIIILae;I)Z",
+      "originalName": "a",
+      "to": "handlePointerPress",
+      "evidence": "Overridden by buttons and containers to consume a pointer press. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rr.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -12253,6 +13156,111 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rva.a(BIIII)V",
+      "originalName": "a",
+      "to": "setBounds",
+      "evidence": "Stores x, y, width and height; refreshLayout re-applies the stored bounds through it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rva.a(BLae;IIII)V",
+      "originalName": "a",
+      "to": "handlePointerRelease",
+      "evidence": "Base implementation clears the press state field_s. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rva.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rva.a(I)Lae;",
+      "originalName": "a",
+      "to": "getFocusedChild",
+      "evidence": "Returns the first non-null child whose hasKeyboardFocus is true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rva.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rva.a(IIIIILae;I)Z",
+      "originalName": "a",
+      "to": "handlePointerPress",
+      "evidence": "Overridden by buttons and containers to consume a pointer press. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rva.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rva.a(ILae;I)Z",
+      "originalName": "a",
+      "to": "focusForwardFrom",
+      "evidence": "Scans the children array forward from an index for one that takes keyboard focus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rva.a(ILjava/util/Hashtable;Ljava/lang/StringBuilder;I)Ljava/lang/StringBuilder;",
+      "originalName": "a",
+      "to": "appendDiagnostics",
+      "evidence": "Debug dump entry point that containers extend with their children. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rva.a(Lae;BI)Z",
+      "originalName": "a",
+      "to": "focusBackwardFrom",
+      "evidence": "Scans the children array backward for one that takes keyboard focus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rva.a(Lae;Z)Z",
+      "originalName": "a",
+      "to": "requestKeyboardFocus",
+      "evidence": "Containers forward it to the child that can take keyboard focus. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rva.a(Z)I",
+      "originalName": "a",
+      "to": "getTopLayer",
+      "evidence": "Number of render layers; containers return the maximum over their children. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rva.b(B)Z",
+      "originalName": "b",
+      "to": "hasKeyboardFocus",
+      "evidence": "Containers return whether any child is focused. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rva.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getHoverText",
+      "evidence": "Tooltip text shown by renderWithTooltip. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rva.f(B)V",
+      "originalName": "f",
+      "to": "clearKeyboardFocus",
+      "evidence": "Empty in the base; containers recurse into every child. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:s.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -12327,6 +13335,34 @@
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sd.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sd.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sd.a(Lae;Z)Z",
+      "originalName": "a",
+      "to": "requestKeyboardFocus",
+      "evidence": "Containers forward it to the child that can take keyboard focus. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sd.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getHoverText",
+      "evidence": "Tooltip text shown by renderWithTooltip. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -12694,6 +13730,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:so.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:so.d(B)Ljava/lang/String;",
+      "originalName": "d",
+      "to": "getHoverText",
+      "evidence": "Tooltip text shown by renderWithTooltip. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:spa.a(II)I",
       "originalName": "a",
       "to": "hashState",
@@ -12750,6 +13800,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sr.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sra.c(B)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -12768,6 +13825,27 @@
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sta.a(BIIII)V",
+      "originalName": "a",
+      "to": "setBounds",
+      "evidence": "Stores x, y, width and height; refreshLayout re-applies the stored bounds through it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sta.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sta.a(IIIIILae;I)Z",
+      "originalName": "a",
+      "to": "handlePointerPress",
+      "evidence": "Overridden by buttons and containers to consume a pointer press. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -12922,6 +14000,20 @@
       "originalName": "k",
       "to": "tick",
       "evidence": "Abstract per-step update every Behaviour implements (timers, sensors, switch output). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tha.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tha.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -13097,6 +14189,34 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tra.a(CLae;IZ)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Overridden by text and container widgets to consume a typed character. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tra.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tra.a(IIIIILae;I)Z",
+      "originalName": "a",
+      "to": "handlePointerPress",
+      "evidence": "Overridden by buttons and containers to consume a pointer press. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tra.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -13667,10 +14787,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uja.a(B)Lvg;",
+      "originalName": "a",
+      "to": "last",
+      "evidence": "Returns sentinel.previous and remembers its predecessor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uja.a(I)Lvg;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "Returns the remembered node and advances forward.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uja.a(Lvg;B)Lvg;",
+      "originalName": "a",
+      "to": "startBackwardAt",
+      "evidence": "Starts a backward walk at the given node, or at the last node when null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uja.a(Z)Lvg;",
+      "originalName": "a",
+      "to": "first",
+      "evidence": "Returns sentinel.next and remembers its successor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uja.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uja.c(I)Lvg;",
+      "originalName": "c",
+      "to": "previous",
+      "evidence": "Returns the remembered node and advances backward.",
       "confidence": "reviewed"
     },
     {
@@ -14269,6 +15424,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vp.a(BLae;IIII)V",
+      "originalName": "a",
+      "to": "handlePointerRelease",
+      "evidence": "Base implementation clears the press state field_s. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.a(IIIIILae;I)Z",
+      "originalName": "a",
+      "to": "handlePointerPress",
+      "evidence": "Overridden by buttons and containers to consume a pointer press. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.a(IILae;I)V",
+      "originalName": "a",
+      "to": "updatePointerState",
+      "evidence": "Per-frame pointer hover update overridden by interactive widgets. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.a(ILjava/util/Hashtable;Ljava/lang/StringBuilder;I)Ljava/lang/StringBuilder;",
+      "originalName": "a",
+      "to": "appendDiagnostics",
+      "evidence": "Debug dump entry point that containers extend with their children. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.c(I)V",
+      "originalName": "c",
+      "to": "refreshChildLayout",
+      "evidence": "Calls refreshLayout on the child. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vp.e(I)V",
       "originalName": "e",
       "to": "releaseStatics",
@@ -14364,6 +15554,27 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vua.a(IIII)V",
+      "originalName": "a",
+      "to": "renderLayer",
+      "evidence": "Called once per layer index by renderWithTooltip up to getTopLayer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vua.a(IIIIILae;I)Z",
+      "originalName": "a",
+      "to": "handlePointerPress",
+      "evidence": "Overridden by buttons and containers to consume a pointer press. Same shape as Zombie Dawn Multi cf (UiWidget). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vua.c(I)V",
+      "originalName": "c",
+      "to": "refreshChildLayout",
+      "evidence": "Calls refreshLayout on the child. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -14971,7 +16182,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "d4905750cffe27f944aa00d8dabb3958ec34aebe811e583d4e87f6a2ca11f174",
+      "tombracer-names.json": "06a6863a676b09fd5e05855bdab8613ec6092f96ce296fbe88a4a649bc0e08e2",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
