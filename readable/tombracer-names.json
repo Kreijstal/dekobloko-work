@@ -272,7 +272,12 @@
     ["kca","TextFieldValidator","Abstract validator bound to a TextInputWidget. Body matches several games TextFieldValidator."],
     ["fka","SoundTone","Synthesized tone with envelopes (co), an AudioFilter and harmonic tables. Body matches several games SoundTone/SynthInstrument."],
     ["ppa","SectorCacheStore","Disk cache store of a data file and an index file (both BufferedCacheFile) in fixed sectors. Body matches several games SectorCacheStore."],
-    ["vq","VorbisCodebook","Vorbis codebook with code lengths, lookup values and a decode tree. Body matches several games VorbisCodebook."]
+    ["vq","VorbisCodebook","Vorbis codebook with code lengths, lookup values and a decode tree. Body matches several games VorbisCodebook."],
+    ["ts","RoomEffectTraps","Per-Room helper that spawns and removes temporary trap sets as the PlayerSimulation effect slots 4, 5 and 6 switch on and off; slot 5 adds a room-sized Darkness trap."],
+    ["eb","LoadingStage","Interface with readiness and step methods; TombRacer registers the game asset loader sra as its only implementation."],
+    ["sra","GameAssetLoader","LoadingStage that opens the game's ResourceArchives 16 to 30 and loads their contents."],
+    ["te","CorpseList","Deque of Corpses that can be cloned from another list and handed to a Room or a render scene."],
+    ["wf","StatusEffect","Timed Player status of a 4-bit kind with a duration encoded in 50-tick units; Player keeps at most three and sets its status flag each tick."]
   ],
   "methods": [
     ["rn","a","(ILla;I)Lcsa;","createComponent","Instantiates the RoomComponent subclass for a type id or throws \"Unrecognised component type\"."],
@@ -1550,7 +1555,31 @@
     ["ppa","a","(I[BIB)Z","write","Writes a file, overwriting or appending sectors. Body matches reference SectorCacheStore.write."],
     ["vq","a","(II)I","computeLookupValueCount","Integer root used for lookup type 1 value counts. Body matches reference VorbisCodebook.computeLookupValueCount."],
     ["vq","b","()V","buildDecodeTree","Builds the Huffman decode tree from the code lengths. Body matches reference VorbisCodebook.buildDecodeTree."],
-    ["vq","c","()I","decodeScalar","Reads one codeword from the bitstream. Body matches reference VorbisCodebook.decodeScalar."]
+    ["vq","c","()I","decodeScalar","Reads one codeword from the bitstream. Body matches reference VorbisCodebook.decodeScalar."],
+    ["dt","f","(II)Z","isEffectActive","True when the effect slot is set for the player or for the player's current room."],
+    ["ts","c","(Z)V","update","Compares effect slots 4, 5 and 6 with the spawned trap sets and spawns or removes them."],
+    ["ts","a","(ZB)V","spawnDarknessTrap","Adds a room-sized Trap carrying a DarknessBehaviour."],
+    ["ts","b","(B)V","forgetTraps","Drops the references to every spawned trap set."],
+    ["ts","a","(B)Ldt;","getSimulation","Returns the room's PlayerSimulation."],
+    ["sra","a","(B)V","openArchives","Opens archives 16 to 30 into its ResourceArchive fields."],
+    ["dd","a","(II)Lcn;","openArchive","Static helper creating the ResourceArchive for an archive id."],
+    ["roa","b","(B)Lup;","getEffect","Returns effect."],
+    ["roa","b","(I)I","getCooldown","Returns cooldown."],
+    ["roa","a","(IB)V","setCooldown","Stores cooldown."],
+    ["roa","a","(IZ)V","refillAmmo","Sets ammo to maxAmmo, or to -1 (unlimited)."],
+    ["roa","a","(B)Z","hasUnlimitedAmmo","True when ammo is -1."],
+    ["te","a","(I)V","clear","Empties corpses."],
+    ["te","a","(ILvna;)V","copyFrom","Appends a copy of every Corpse in another deque."],
+    ["te","a","(Lla;I)V","attachToRoom","Calls the Corpse room hook on each corpse with the Room."],
+    ["wf","a","(B)I","getKind","Returns kind."],
+    ["wf","c","(I)V","tick","Decrements remaining."],
+    ["wf","b","(B)Z","isExpired","True for a timed status whose remaining time ran out."],
+    ["wf","d","(I)V","restart","Sets remaining to duration."],
+    ["wf","e","(I)Lwf;","copy","Returns a new StatusEffect with the same kind and duration."],
+    ["wf","a","(ILkh;)V","encode","Writes kind (4 bits) and duration / 50 (6 bits)."],
+    ["hca","a","(Lwf;B)V","addStatusEffect","Appends a StatusEffect unless it is applied immediately, keeping at most three."],
+    ["dt","a","(Lla;I)V","onRoomReset","Sets the reset flags and notifies the SimulationObserver."],
+    ["eha","a","(ILla;)V","onRoomReset","PlayerSimulation.onRoomReset forwards the Room here."]
   ],
   "fields": [
     ["fua","field_c","[Ljava/lang/String;","behaviourTypeNames","33 display names indexed by the behaviour type id that bda.readBehaviour dispatches on."],
@@ -1743,6 +1772,20 @@
     ["wda","field_f","Lla;","room","Locomotor.getRoom returns it."],
     ["wda","field_k","Z","enabled","The enable setter stores it unless the locomotor is locked."],
     ["ff","field_J","[Ljava/lang/String;","colouredPlayerNames","Built as <col=colour>name</col> from the raw player names."],
-    ["ff","field_l","[Ljava/lang/String;","playerNames","Raw player names; colouredPlayerNames wraps each in a colour tag."]
+    ["ff","field_l","[Ljava/lang/String;","playerNames","Raw player names; colouredPlayerNames wraps each in a colour tag."],
+    ["ts","field_c","Lla;","room","The Room passed to the constructor; spawned traps are added to it."],
+    ["ts","field_f","[Lfsa;","darknessTraps","The room-sized Darkness trap spawned for effect slot 5."],
+    ["la","field_g","Lts;","effectTraps","Room creates its RoomEffectTraps here."],
+    ["roa","field_f","Lup;","effect","The Effect the Weapon's shots carry."],
+    ["roa","field_v","I","cooldown","Set after firing and decremented once per Weapon tick."],
+    ["roa","field_q","I","ammo","Decremented per shot while positive; -1 means unlimited."],
+    ["roa","field_p","I","maxAmmo","refillAmmo copies it into ammo."],
+    ["te","field_a","Lvna;","corpses","Deque of Corpse nodes every CorpseList method iterates."],
+    ["wf","field_f","I","kind","Encoded in 4 bits; Player.tick sets statusFlags[kind] while the status lasts."],
+    ["wf","field_h","I","duration","Encoded as duration / 50 in 6 bits; restart copies it into remaining."],
+    ["wf","field_i","I","remaining","tick decrements it; isExpired is true once it reaches zero for a timed status."],
+    ["hca","field_fb","Lvna;","statusEffects","Player.tick ticks each StatusEffect, drops expired ones and sets their status flags."],
+    ["la","field_f","Lpta;","puddlePool","Room reset creates it as an ObjectPool of 50 Puddles; allocatePuddle takes from it."],
+    ["la","field_D","Lte;","corpses","The room's CorpseList, cleared on reset."]
   ]
 }

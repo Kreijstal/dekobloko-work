@@ -1095,6 +1095,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:eb",
+      "originalName": "eb",
+      "to": "LoadingStage",
+      "evidence": "Interface with readiness and step methods; TombRacer registers the game asset loader sra as its only implementation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ef",
       "originalName": "ef",
       "to": "WeaponItemBehaviour",
@@ -2579,6 +2586,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sra",
+      "originalName": "sra",
+      "to": "GameAssetLoader",
+      "evidence": "LoadingStage that opens the game's ResourceArchives 16 to 30 and loads their contents.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ss",
       "originalName": "ss",
       "to": "DiskCacheWorker",
@@ -2604,6 +2618,13 @@
       "originalName": "tca",
       "to": "MovingWallComponent",
       "evidence": "rn.createComponent builds it for type 15, which rn's constructor labels \"Moving Wall\" in dsa.field_a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:te",
+      "originalName": "te",
+      "to": "CorpseList",
+      "evidence": "Deque of Corpses that can be cloned from another list and handed to a Room or a render scene.",
       "confidence": "reviewed"
     },
     {
@@ -2653,6 +2674,13 @@
       "originalName": "tra",
       "to": "TextInputWidget",
       "evidence": "Focusable text field with clipboard copy and paste and a submit notification. Body matches several games TextInputWidget (pasteClipboardText).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ts",
+      "originalName": "ts",
+      "to": "RoomEffectTraps",
+      "evidence": "Per-Room helper that spawns and removes temporary trap sets as the PlayerSimulation effect slots 4, 5 and 6 switch on and off; slot 5 adds a room-sized Darkness trap.",
       "confidence": "reviewed"
     },
     {
@@ -2898,6 +2926,13 @@
       "originalName": "wda",
       "to": "Locomotor",
       "evidence": "Base class ki instantiates per type id, throwing \"Unrecognised locomotor type\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wf",
+      "originalName": "wf",
+      "to": "StatusEffect",
+      "evidence": "Timed Player status of a 4-bit kind with a duration encoded in 50-tick units; Player keeps at most three and sets its status flag each tick.",
       "confidence": "reviewed"
     },
     {
@@ -3748,6 +3783,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hca.field_fb:Lvna;",
+      "originalName": "field_fb",
+      "to": "statusEffects",
+      "evidence": "Player.tick ticks each StatusEffect, drops expired ones and sets their status flags.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hca.field_g:Lgma;",
       "originalName": "field_g",
       "to": "carried",
@@ -3951,6 +3993,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:la.field_D:Lte;",
+      "originalName": "field_D",
+      "to": "corpses",
+      "evidence": "The room's CorpseList, cleared on reset.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:la.field_E:I",
       "originalName": "field_E",
       "to": "formatVersion",
@@ -4011,6 +4060,20 @@
       "originalName": "field_c",
       "to": "particlePool",
       "evidence": "Room.reset builds this ObjectPool with a Particle prototype and capacity 100.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:la.field_f:Lpta;",
+      "originalName": "field_f",
+      "to": "puddlePool",
+      "evidence": "Room reset creates it as an ObjectPool of 50 Puddles; allocatePuddle takes from it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:la.field_g:Lts;",
+      "originalName": "field_g",
+      "to": "effectTraps",
+      "evidence": "Room creates its RoomEffectTraps here.",
       "confidence": "reviewed"
     },
     {
@@ -4343,6 +4406,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:roa.field_f:Lup;",
+      "originalName": "field_f",
+      "to": "effect",
+      "evidence": "The Effect the Weapon's shots carry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:roa.field_p:I",
+      "originalName": "field_p",
+      "to": "maxAmmo",
+      "evidence": "refillAmmo copies it into ammo.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:roa.field_q:I",
+      "originalName": "field_q",
+      "to": "ammo",
+      "evidence": "Decremented per shot while positive; -1 means unlimited.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:roa.field_v:I",
+      "originalName": "field_v",
+      "to": "cooldown",
+      "evidence": "Set after firing and decremented once per Weapon tick.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:rva.field_w:[Lae;",
       "originalName": "field_w",
       "to": "children",
@@ -4385,10 +4476,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:te.field_a:Lvna;",
+      "originalName": "field_a",
+      "to": "corpses",
+      "evidence": "Deque of Corpse nodes every CorpseList method iterates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tia.field_c:[Ljava/lang/String;",
       "originalName": "field_c",
       "to": "fallDeathMessages",
       "evidence": "Static initialiser fills it with \"<%0>\" message variants starting \"<%0> took a tumble\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ts.field_c:Lla;",
+      "originalName": "field_c",
+      "to": "room",
+      "evidence": "The Room passed to the constructor; spawned traps are added to it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ts.field_f:[Lfsa;",
+      "originalName": "field_f",
+      "to": "darknessTraps",
+      "evidence": "The room-sized Darkness trap spawned for effect slot 5.",
       "confidence": "reviewed"
     },
     {
@@ -4599,6 +4711,27 @@
       "originalName": "field_n",
       "to": "trap",
       "evidence": "Locomotor.attachToTrap stores the owning Trap here.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wf.field_f:I",
+      "originalName": "field_f",
+      "to": "kind",
+      "evidence": "Encoded in 4 bits; Player.tick sets statusFlags[kind] while the status lasts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wf.field_h:I",
+      "originalName": "field_h",
+      "to": "duration",
+      "evidence": "Encoded as duration / 50 in 6 bits; restart copies it into remaining.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wf.field_i:I",
+      "originalName": "field_i",
+      "to": "remaining",
+      "evidence": "tick decrements it; isExpired is true once it reaches zero for a timed status.",
       "confidence": "reviewed"
     },
     {
@@ -7227,6 +7360,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dd.a(II)Lcn;",
+      "originalName": "a",
+      "to": "openArchive",
+      "evidence": "Static helper creating the ResourceArchive for an archive id.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dd.a(ILjava/lang/Object;J)V",
       "originalName": "a",
       "to": "put",
@@ -7661,6 +7801,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dt.a(Lla;I)V",
+      "originalName": "a",
+      "to": "onRoomReset",
+      "evidence": "Sets the reset flags and notifies the SimulationObserver.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dt.b(B)V",
       "originalName": "b",
       "to": "dumpState",
@@ -7686,6 +7833,13 @@
       "originalName": "e",
       "to": "getEffectSlot",
       "evidence": "Returns one of the nine player effect slots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dt.f(II)Z",
+      "originalName": "f",
+      "to": "isEffectActive",
+      "evidence": "True when the effect slot is set for the player or for the player's current room.",
       "confidence": "reviewed"
     },
     {
@@ -7770,6 +7924,13 @@
       "originalName": "a",
       "to": "decode",
       "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eb.a(B)V",
+      "originalName": "a",
+      "to": "openArchives",
+      "evidence": "Opens archives 16 to 30 into its ResourceArchive fields. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7896,6 +8057,13 @@
       "originalName": "a",
       "to": "pollQueuedEvent",
       "evidence": "Removes and returns the first QueuedPlayerEvent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eha.a(ILla;)V",
+      "originalName": "a",
+      "to": "onRoomReset",
+      "evidence": "PlayerSimulation.onRoomReset forwards the Room here.",
       "confidence": "reviewed"
     },
     {
@@ -10528,6 +10696,13 @@
       "originalName": "a",
       "to": "applyProjectileEffect",
       "evidence": "Room sums it over the collidables a Projectile overlaps to apply its Effect. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.a(Lwf;B)V",
+      "originalName": "a",
+      "to": "addStatusEffect",
+      "evidence": "Appends a StatusEffect unless it is applied immediately, keeping at most three.",
       "confidence": "reviewed"
     },
     {
@@ -17706,6 +17881,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:roa.a(B)Z",
+      "originalName": "a",
+      "to": "hasUnlimitedAmmo",
+      "evidence": "True when ammo is -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:roa.a(IB)V",
+      "originalName": "a",
+      "to": "setCooldown",
+      "evidence": "Stores cooldown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:roa.a(IZ)V",
+      "originalName": "a",
+      "to": "refillAmmo",
+      "evidence": "Sets ammo to maxAmmo, or to -1 (unlimited).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:roa.b(B)Lup;",
+      "originalName": "b",
+      "to": "getEffect",
+      "evidence": "Returns effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:roa.b(I)I",
+      "originalName": "b",
+      "to": "getCooldown",
+      "evidence": "Returns cooldown.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rpa.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -18679,6 +18889,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sra.a(B)V",
+      "originalName": "a",
+      "to": "openArchives",
+      "evidence": "Opens archives 16 to 30 into its ResourceArchive fields.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sra.c(B)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -18858,6 +19075,27 @@
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:te.a(I)V",
+      "originalName": "a",
+      "to": "clear",
+      "evidence": "Empties corpses.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:te.a(ILvna;)V",
+      "originalName": "a",
+      "to": "copyFrom",
+      "evidence": "Appends a copy of every Corpse in another deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:te.a(Lla;I)V",
+      "originalName": "a",
+      "to": "attachToRoom",
+      "evidence": "Calls the Corpse room hook on each corpse with the Room.",
       "confidence": "reviewed"
     },
     {
@@ -19253,10 +19491,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ts.a(B)Ldt;",
+      "originalName": "a",
+      "to": "getSimulation",
+      "evidence": "Returns the room's PlayerSimulation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ts.a(ZB)V",
+      "originalName": "a",
+      "to": "spawnDarknessTrap",
+      "evidence": "Adds a room-sized Trap carrying a DarknessBehaviour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ts.b(B)V",
+      "originalName": "b",
+      "to": "forgetTraps",
+      "evidence": "Drops the references to every spawned trap set.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ts.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ts.c(Z)V",
+      "originalName": "c",
+      "to": "update",
+      "evidence": "Compares effect slots 4, 5 and 6 with the spawned trap sets and spawns or removes them.",
       "confidence": "reviewed"
     },
     {
@@ -19292,6 +19558,13 @@
       "originalName": "a",
       "to": "createTrap",
       "evidence": "Abstract factory every concrete component implements to build its Trap. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tu.a(ILla;)V",
+      "originalName": "a",
+      "to": "onRoomReset",
+      "evidence": "PlayerSimulation.onRoomReset forwards the Room here. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -21045,10 +21318,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wf.a(B)I",
+      "originalName": "a",
+      "to": "getKind",
+      "evidence": "Returns kind.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wf.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes kind (4 bits) and duration / 50 (6 bits).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.b(B)Z",
+      "originalName": "b",
+      "to": "isExpired",
+      "evidence": "True for a timed status whose remaining time ran out.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.c(I)V",
+      "originalName": "c",
+      "to": "tick",
+      "evidence": "Decrements remaining.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.d(I)V",
+      "originalName": "d",
+      "to": "restart",
+      "evidence": "Sets remaining to duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.e(I)Lwf;",
+      "originalName": "e",
+      "to": "copy",
+      "evidence": "Returns a new StatusEffect with the same kind and duration.",
       "confidence": "reviewed"
     },
     {
@@ -21600,7 +21915,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "0028f703cf0b337fcd14eead3263eaefa85e16b7e576f6041220093dd60dd5a1",
+      "tombracer-names.json": "0ba1260ec9f2009290827499ad30868f7c0bac1f960633fcc7a89a72b7c7d782",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
