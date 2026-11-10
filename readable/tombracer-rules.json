@@ -759,6 +759,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:aia",
+      "originalName": "aia",
+      "to": "PitSnake",
+      "evidence": "One snake of a SnakePitBehaviour, placed at a random offset inside the pit area with a fixed 24-unit size.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:aja",
       "originalName": "aja",
       "to": "CoinBagItemComponent",
@@ -1764,6 +1771,13 @@
       "originalName": "koa",
       "to": "SwitchLinkList",
       "evidence": "Array of Switchable targets encoded as a local flag plus an 8-bit local or global id each.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kpa",
+      "originalName": "kpa",
+      "to": "FlagSet",
+      "evidence": "Fixed-size boolean array; toString prints \"flags:\" and one 0/1 per flag; packed into bits when encoded.",
       "confidence": "reviewed"
     },
     {
@@ -3265,6 +3279,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:csa.field_j:I",
+      "originalName": "field_j",
+      "to": "x",
+      "evidence": "Decoded as a signed 8- or 12-bit coordinate; mirroring replaces it with Room.mirrorX.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:csa.field_k:I",
+      "originalName": "field_k",
+      "to": "height",
+      "evidence": "Decoded with width when hasSize is true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:csa.field_l:I",
+      "originalName": "field_l",
+      "to": "width",
+      "evidence": "Decoded when hasSize is true; intersectsRect uses it as the box width.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:csa.field_m:I",
       "originalName": "field_m",
       "to": "typeId",
@@ -3276,6 +3311,34 @@
       "originalName": "field_o",
       "to": "room",
       "evidence": "RoomComponent.getRoom returns it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:csa.field_p:I",
+      "originalName": "field_p",
+      "to": "y",
+      "evidence": "Decoded right after x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:csa.field_r:I",
+      "originalName": "field_r",
+      "to": "angle",
+      "evidence": "Decoded as a 4-bit fraction of 8192 when hasAngle is true; mirroring negates it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cu.field_s:I",
+      "originalName": "field_s",
+      "to": "health",
+      "evidence": "Reduced by the size of each Effect whose type is a vulnerability; destroyTarget runs when it reaches zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cu.field_w:Lkpa;",
+      "originalName": "field_w",
+      "to": "vulnerabilities",
+      "evidence": "Effect-type set tested by isVulnerableTo before health is reduced.",
       "confidence": "reviewed"
     },
     {
@@ -3874,6 +3937,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hca.field_a:I",
+      "originalName": "field_a",
+      "to": "heldItemKind",
+      "evidence": "-1 when nothing is held; dropHeldItem spawns a MiscItemBehaviour trap of the matching kind.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hca.field_b:I",
       "originalName": "field_b",
       "to": "facingX",
@@ -4095,6 +4165,13 @@
       "originalName": "field_f",
       "to": "targets",
       "evidence": "The linked Switchables written by encode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kpa.field_a:[Z",
+      "originalName": "field_a",
+      "to": "flags",
+      "evidence": "The booleans every FlagSet method reads or writes.",
       "confidence": "reviewed"
     },
     {
@@ -4518,6 +4595,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rea.field_n:I",
+      "originalName": "field_n",
+      "to": "phase",
+      "evidence": "Crusher cycle phase: 1 waiting, 2 winding up (crushes at its end), 3 crushed, 4 retracting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rea.field_o:I",
+      "originalName": "field_o",
+      "to": "windUpTicks",
+      "evidence": "Duration of phase 2 (default 25); the crush Effect is applied when it ends.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rea.field_s:I",
+      "originalName": "field_s",
+      "to": "crushedTicks",
+      "evidence": "Duration of phase 3 (default 25).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rea.field_t:Lup;",
+      "originalName": "field_t",
+      "to": "crushEffect",
+      "evidence": "Damage Effect (preset 0, size 100) applied over the crusher area at the end of phase 2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rea.field_v:I",
+      "originalName": "field_v",
+      "to": "waitTicks",
+      "evidence": "Duration of phase 1 (default 50).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rea.field_w:I",
+      "originalName": "field_w",
+      "to": "phaseTicks",
+      "evidence": "Incremented every tick and compared with the current phase duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rea.field_x:I",
+      "originalName": "field_x",
+      "to": "retractTicks",
+      "evidence": "Duration of phase 4 (default 50).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:roa.field_f:Lup;",
       "originalName": "field_f",
       "to": "effect",
@@ -4550,6 +4676,13 @@
       "originalName": "field_w",
       "to": "children",
       "evidence": "Child widget array iterated by every ArrayWidgetGroup method.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sea.field_n:[Laia;",
+      "originalName": "field_n",
+      "to": "snakes",
+      "evidence": "Up to 50 PitSnakes, one per 24x24 cell quarter of the pit area, at random positions.",
       "confidence": "reviewed"
     },
     {
@@ -5498,6 +5631,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aw.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aw.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aw.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aw.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:b.a(BIIII)V",
       "originalName": "a",
       "to": "setBounds",
@@ -5957,6 +6118,34 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bia.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bia.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bia.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bia.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -6933,6 +7122,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:csa.a(III)V",
+      "originalName": "a",
+      "to": "setPosition",
+      "evidence": "Stores y and x.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:csa.a(IIZ)Llj;",
       "originalName": "a",
       "to": "findSwitchable",
@@ -7087,6 +7283,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:csa.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:csa.n(I)Lgpa;",
       "originalName": "n",
       "to": "getGlobalId",
@@ -7105,6 +7308,27 @@
       "originalName": "r",
       "to": "getTypeId",
       "evidence": "RoomComponentFactory.writeComponent writes it as the 10-bit component type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:csa.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:csa.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:csa.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true.",
       "confidence": "reviewed"
     },
     {
@@ -7255,6 +7479,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cu.a(IB)Z",
+      "originalName": "a",
+      "to": "isVulnerableTo",
+      "evidence": "Whether an Effect type is in vulnerabilities.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cu.a(II)I",
       "originalName": "a",
       "to": "hashState",
@@ -7283,10 +7514,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cu.b(I)Lfsa;",
+      "originalName": "b",
+      "to": "getTargetTrap",
+      "evidence": "Returns the owning Trap itself or its root, depending on the target flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cu.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cu.g(B)V",
+      "originalName": "g",
+      "to": "destroyTarget",
+      "evidence": "Ends the target Trap with reason 2.",
       "confidence": "reviewed"
     },
     {
@@ -7927,10 +8172,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dna.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dna.r(B)V",
       "originalName": "r",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dna.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dna.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dna.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9124,10 +9397,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:er.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:er.s(B)V",
       "originalName": "s",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -10307,6 +10608,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ga.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gaa.a(BLkh;)V",
       "originalName": "a",
       "to": "encode",
@@ -10374,6 +10703,13 @@
       "originalName": "r",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -10755,6 +11091,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gw.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gw.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gw.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gw.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:h.a(CIIIZLaa;II)V",
       "originalName": "a",
       "to": "drawMaskedGlyph",
@@ -10930,6 +11294,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hca.J(I)V",
+      "originalName": "J",
+      "to": "clearHeldItem",
+      "evidence": "Resets the held item to -1 with the default speed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hca.K(I)Lroa;",
       "originalName": "K",
       "to": "getWeapon",
@@ -10969,6 +11340,13 @@
       "originalName": "a",
       "to": "kill",
       "evidence": "Unless already dying or respawning: plays the death sounds, sets lifeState 1 with the cause and its timer, and counts the death per cause.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.a(IBII)V",
+      "originalName": "a",
+      "to": "setHeldItem",
+      "evidence": "Stores the held item kind together with its speed and strength values.",
       "confidence": "reviewed"
     },
     {
@@ -11039,6 +11417,13 @@
       "originalName": "a",
       "to": "placeInRoom",
       "evidence": "Stores the Room and start coordinates; Room.enterAtEntrance calls it with the entrance.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.a(Lroa;Z)V",
+      "originalName": "a",
+      "to": "equipWeapon",
+      "evidence": "Calls setWeapon with the given Weapon.",
       "confidence": "reviewed"
     },
     {
@@ -11273,6 +11658,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hca.p(I)V",
+      "originalName": "p",
+      "to": "dropHeldItem",
+      "evidence": "Spawns a 32x32 pushable Trap with a MiscItemBehaviour for the held item at the Player and clears the held item.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hca.r(B)I",
       "originalName": "r",
       "to": "getDeathCount",
@@ -11291,6 +11683,27 @@
       "originalName": "t",
       "to": "bankRoomTreasure",
       "evidence": "Adds each roomTreasure count into treasure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.u(B)I",
+      "originalName": "u",
+      "to": "getHeldItemKind",
+      "evidence": "Returns heldItemKind.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.x(I)Z",
+      "originalName": "x",
+      "to": "isHoldingItem",
+      "evidence": "True when heldItemKind is not -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.y(I)V",
+      "originalName": "y",
+      "to": "fireWeapon",
+      "evidence": "Fires the Weapon in the facing direction from the Player's position and plays the firing sound.",
       "confidence": "reviewed"
     },
     {
@@ -11644,6 +12057,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hn.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hna.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -11924,6 +12365,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ih.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:iha.a()V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -12162,6 +12624,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ipa.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ipa.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ipa.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ipa.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:iqa.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -12365,10 +12855,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jb.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jb.s(B)V",
       "originalName": "s",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -12383,6 +12901,34 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jc.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jc.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jc.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jc.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -12460,6 +13006,27 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -13478,6 +14045,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kpa.a(II)Z",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Returns one flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kpa.a(IIZ)V",
+      "originalName": "a",
+      "to": "set",
+      "evidence": "Stores one flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kpa.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Packs the flags into one integer of length bits and writes it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kpa.a(ZI)V",
+      "originalName": "a",
+      "to": "setAll",
+      "evidence": "Stores the same value in every flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kq.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -13566,6 +14161,34 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kt.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kt.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kt.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kt.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -14150,10 +14773,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lda.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lda.r(B)V",
       "originalName": "r",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lda.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lda.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lda.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -14206,10 +14857,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lea.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lea.r(B)V",
       "originalName": "r",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lea.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lea.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lea.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -14479,6 +15158,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ln.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ln.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ln.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ln.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lo.a(II)I",
       "originalName": "a",
       "to": "hashState",
@@ -14731,6 +15438,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:m.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ma.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -14868,6 +15603,34 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -15158,6 +15921,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mh.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mha.a(IIII)V",
       "originalName": "a",
       "to": "renderLayer",
@@ -15221,10 +16012,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mj.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mj.s(B)V",
       "originalName": "s",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -15631,6 +16450,34 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nja.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nja.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nja.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nja.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -16453,10 +17300,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oma.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oma.r(B)V",
       "originalName": "r",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oma.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oma.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oma.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -16485,6 +17360,34 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ona.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ona.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ona.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ona.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -17090,10 +17993,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ps.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ps.s(B)V",
       "originalName": "s",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ps.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ps.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ps.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -17262,6 +18193,34 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pw.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pw.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pw.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pw.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -17762,6 +18721,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qta.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qta.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qta.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qu.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -17895,6 +18875,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rea.a(IIIII)V",
+      "originalName": "a",
+      "to": "setTimings",
+      "evidence": "Stores the four phase durations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rea.a(Z)I",
       "originalName": "a",
       "to": "getTypeId",
@@ -17916,10 +18903,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rea.b(II)V",
+      "originalName": "b",
+      "to": "setPhase",
+      "evidence": "Stores the phase and resets phaseTicks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rea.c(I)Z",
+      "originalName": "c",
+      "to": "isWaiting",
+      "evidence": "True in phase 1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rea.k(I)V",
       "originalName": "k",
       "to": "tick",
       "evidence": "Abstract per-step update every Behaviour implements (timers, sensors, switch output). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rea.l(I)Z",
+      "originalName": "l",
+      "to": "isRetracting",
+      "evidence": "True in phase 4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rea.r(I)Z",
+      "originalName": "r",
+      "to": "isWindingUp",
+      "evidence": "True in phase 2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rea.s(I)Z",
+      "originalName": "s",
+      "to": "isCrushed",
+      "evidence": "True in phase 3.",
       "confidence": "reviewed"
     },
     {
@@ -18784,6 +19806,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:saa.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:saa.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:saa.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:saa.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sba.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -18907,6 +19957,20 @@
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sea.b(II)Laia;",
+      "originalName": "b",
+      "to": "getSnake",
+      "evidence": "Returns one PitSnake.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sea.c(I)I",
+      "originalName": "c",
+      "to": "getSnakeCount",
+      "evidence": "Returns the number of snakes.",
       "confidence": "reviewed"
     },
     {
@@ -19089,6 +20153,34 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -19568,6 +20660,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sua.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sua.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sua.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sua.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sv.d(I)V",
       "originalName": "d",
       "to": "releaseStatics",
@@ -19628,6 +20748,34 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tca.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tca.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tca.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tca.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -19911,10 +21059,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tp.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tp.t(B)V",
       "originalName": "t",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tp.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tp.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -20286,6 +21455,34 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uea.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uea.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uea.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uea.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -20765,6 +21962,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uk.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uka.a(ZILla;)Lfsa;",
       "originalName": "a",
       "to": "createTrap",
@@ -20779,10 +22004,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uka.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uka.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uka.t(B)V",
       "originalName": "t",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uka.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uka.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -21248,6 +22501,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ve.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ve.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ve.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ve.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vf.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -21385,6 +22666,34 @@
       "originalName": "e",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vka.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vka.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vka.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vka.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -21955,10 +23264,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wfa.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wfa.r(B)V",
       "originalName": "r",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wfa.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wfa.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wfa.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -22081,10 +23418,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wha.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wha.r(B)V",
       "originalName": "r",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wha.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wha.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wha.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -22305,6 +23670,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wpa.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wpa.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wpa.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wq.b(Z)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -22330,6 +23716,34 @@
       "originalName": "e",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wqa.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wqa.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wqa.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wqa.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -22410,10 +23824,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wta.n(B)Z",
+      "originalName": "n",
+      "to": "hasAngle",
+      "evidence": "The decoder reads the 4-bit angle only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wta.r(B)V",
       "originalName": "r",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wta.s(I)Z",
+      "originalName": "s",
+      "to": "isSwitchable",
+      "evidence": "Switchable.toggle flips the component only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wta.t(I)I",
+      "originalName": "t",
+      "to": "getRenderLayer",
+      "evidence": "Layer passed with the component when it is added to the render scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wta.v(I)Z",
+      "originalName": "v",
+      "to": "hasSize",
+      "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -22524,7 +23966,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "13f7a0367f365c39ddecb83793eddc73a4dd800f42b74fd335f8ab427c8d6139",
+      "tombracer-names.json": "f7561c270803220dba95db681e0e330dc88e81a0f508f75f7817634c0df898f3",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
