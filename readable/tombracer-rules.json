@@ -773,6 +773,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:aga",
+      "originalName": "aga",
+      "to": "AnimatedLight",
+      "evidence": "Owns a SceneLight created through GraphicsToolkit.createLight and varies it by a mode (flicker, pulse and others) each tick.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:aia",
       "originalName": "aia",
       "to": "PitSnake",
@@ -3482,6 +3489,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:uh",
+      "originalName": "uh",
+      "to": "LightSource",
+      "evidence": "IntrusiveNode wrapping an AnimatedLight with a position; RoomLighting queues these and picks the active SceneLights from them.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:uha",
       "originalName": "uha",
       "to": "CircleMovementLocomotor",
@@ -3885,6 +3899,20 @@
       "originalName": "ww",
       "to": "Model",
       "evidence": "Software 3D model extending ka with vertex, face and colour arrays, normals and bounds. Body matches several games Model.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aga.field_c:Lob;",
+      "originalName": "field_c",
+      "to": "light",
+      "evidence": "The SceneLight created through GraphicsToolkit.createLight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aga.field_d:I",
+      "originalName": "field_d",
+      "to": "mode",
+      "evidence": "setMode stores it; applyModeParameters switches on it.",
       "confidence": "reviewed"
     },
     {
@@ -5540,6 +5568,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nv.field_i:Z",
+      "originalName": "field_i",
+      "to": "stopped",
+      "evidence": "stop sets it; Behaviour.isRenderExpired returns it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nv.field_k:Z",
+      "originalName": "field_k",
+      "to": "locked",
+      "evidence": "toggle does nothing while it is set.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nv.field_m:Lla;",
       "originalName": "field_m",
       "to": "room",
@@ -5719,6 +5761,13 @@
       "originalName": "field_l",
       "to": "phase",
       "evidence": "The MatchPhase the MatchScreen currently runs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qh.field_x:I",
+      "originalName": "field_x",
+      "to": "localPlayerIndex",
+      "evidence": "Constructor argument (0 in practice and single-player setups); the MatchScreen indexes players and MatchState arrays by it for the local player.",
       "confidence": "reviewed"
     },
     {
@@ -6058,6 +6107,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:uh.field_o:Laga;",
+      "originalName": "field_o",
+      "to": "animatedLight",
+      "evidence": "Constructor stores the AnimatedLight.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:uia.field_g:[B",
       "originalName": "field_g",
       "to": "payload",
@@ -6205,6 +6261,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wda.field_i:Z",
+      "originalName": "field_i",
+      "to": "locked",
+      "evidence": "Encoded after enabled; toggle and setEnabled do nothing while it is set.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wda.field_k:Z",
       "originalName": "field_k",
       "to": "enabled",
@@ -6268,6 +6331,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:TombRacer.a(Lkh;IB)Z",
+      "originalName": "a",
+      "to": "handleGamePacket",
+      "evidence": "Handles the game-level server opcodes 67, 68 and 74 against the current match and returns whether the opcode was consumed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:TombRacer.a(ZZ)V",
       "originalName": "a",
       "to": "updateScreen",
@@ -6317,10 +6387,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:TombRacer.x(I)V",
+      "originalName": "x",
+      "to": "finishFrame",
+      "evidence": "Clears the lights, blits the software overlay pixels and presents the frame.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:TombRacer.y(I)V",
       "originalName": "y",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:TombRacer.z(I)V",
+      "originalName": "z",
+      "to": "beginFrame",
+      "evidence": "Clears the GraphicsToolkit and sets up the centred projection before the frame is drawn.",
       "confidence": "reviewed"
     },
     {
@@ -6335,6 +6419,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ab.a(IIIIIII)Z",
+      "originalName": "a",
+      "to": "isPointInRect",
+      "evidence": "True when the point lies within the rectangle's x and y ranges.",
       "confidence": "reviewed"
     },
     {
@@ -6608,6 +6699,20 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aga.a(IB)V",
+      "originalName": "a",
+      "to": "setMode",
+      "evidence": "Stores the animation mode and loads its waveform parameters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aga.b(B)V",
+      "originalName": "b",
+      "to": "applyModeParameters",
+      "evidence": "Switches on the mode to set the waveform shape, offset, amplitude and period of the light animation.",
       "confidence": "reviewed"
     },
     {
@@ -7605,6 +7710,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bla.a(ZII)I",
+      "originalName": "a",
+      "to": "fromOffsetBinary",
+      "evidence": "Subtracts the bias 2^(bits-1) from an unsigned field; Trap decoding reads positions through it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bla.a(ZILla;)Lfsa;",
       "originalName": "a",
       "to": "createTrap",
@@ -7819,6 +7931,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bs.a(III)I",
+      "originalName": "a",
+      "to": "divideFixed16",
+      "evidence": "Divides a value shifted left by 16 by the divisor using long arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -8396,6 +8515,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cka.a(IIIIIF)Lob;",
+      "originalName": "a",
+      "to": "createLight",
+      "evidence": "Creates a SceneLight with a position, radius, colour and intensity; AnimatedLight builds its light through it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cka.a(IIIIII)V",
       "originalName": "a",
       "to": "drawLine",
@@ -8627,6 +8753,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cla.a(II)Z",
+      "originalName": "a",
+      "to": "isPowerOfTwoOrZero",
+      "evidence": "True when the value equals its lowest set bit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cm.a(IIIIIIIIIIIIIIII)V",
       "originalName": "a",
       "to": "drawMeshQuad",
@@ -8666,6 +8799,13 @@
       "originalName": "b",
       "to": "getColourRow",
       "evidence": "Base throws \"This operation does not have a colour output\"; operators return the red, green and blue rows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(B)I",
+      "originalName": "a",
+      "to": "currentYear",
+      "evidence": "Returns 1900 plus Date.getYear().",
       "confidence": "reviewed"
     },
     {
@@ -9733,6 +9873,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dfa.a(III)I",
+      "originalName": "a",
+      "to": "positiveModulo",
+      "evidence": "Returns the remainder shifted into the range 0 to the divisor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dfa.b(B)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -10101,6 +10248,13 @@
       "originalName": "a",
       "to": "takeRegistrationResponse",
       "evidence": "Returns the stored response once the request state reaches done and resets the state; body matches brickabrac takeRegistrationResponse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dqa.a(ZII)I",
+      "originalName": "a",
+      "to": "toOffsetBinary",
+      "evidence": "Adds the bias 2^(bits-1) to a signed value; Trap encoding writes positions through it.",
       "confidence": "reviewed"
     },
     {
@@ -10801,6 +10955,13 @@
       "originalName": "a",
       "to": "textureTransform",
       "evidence": "Returns the texture transform. Body matches sumoblitz HardwareGraphicsToolkit.textureTransform.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eo.a(IIIIIF)Lob;",
+      "originalName": "a",
+      "to": "createLight",
+      "evidence": "Creates a SceneLight with a position, radius, colour and intensity; AnimatedLight builds its light through it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -11539,6 +11700,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:et.b(III)I",
+      "originalName": "b",
+      "to": "min",
+      "evidence": "Returns the smaller of the two values.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:et.b([III)V",
       "originalName": "b",
       "to": "fill",
@@ -11963,6 +12131,13 @@
       "originalName": "b",
       "to": "drawOverlay",
       "evidence": "rfa.draw calls it on every registered listener. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.a(II)I",
+      "originalName": "a",
+      "to": "bitwiseOr",
+      "evidence": "Returns the bitwise or of the two ints.",
       "confidence": "reviewed"
     },
     {
@@ -13282,6 +13457,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:go.e(III)I",
+      "originalName": "e",
+      "to": "floorDivide",
+      "evidence": "Divides rounding towards negative infinity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:goa.a(IILkh;[B)[B",
       "originalName": "a",
       "to": "readPackedByteArray",
@@ -13510,6 +13692,13 @@
       "originalName": "a",
       "to": "present",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz LegacyOpenGlGraphicsToolkit.present. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(IIIIIF)Lob;",
+      "originalName": "a",
+      "to": "createLight",
+      "evidence": "Creates a SceneLight with a position, radius, colour and intensity; AnimatedLight builds its light through it.",
       "confidence": "reviewed"
     },
     {
@@ -14787,6 +14976,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hva.a(F)F",
+      "originalName": "a",
+      "to": "octaveToAngularFrequency",
+      "evidence": "Converts an octave offset from C1 (32.7 Hz) to radians per sample at 11025 Hz.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hva.a(IF)I",
       "originalName": "a",
       "to": "computeCoefficients",
@@ -15001,6 +15197,13 @@
       "originalName": "c",
       "to": "getMonochromeRow",
       "evidence": "Base throws \"This operation does not have a monochrome output\"; operators return one row of 0-4096 values. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iia.d(III)I",
+      "originalName": "d",
+      "to": "max",
+      "evidence": "Returns the larger of the two values.",
       "confidence": "reviewed"
     },
     {
@@ -15757,6 +15960,13 @@
       "originalName": "b",
       "to": "detachFromThread",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz jaggl.OpenGL.detachFromThread.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseOr",
+      "evidence": "Returns the bitwise or of the two longs.",
       "confidence": "reviewed"
     },
     {
@@ -17013,6 +17223,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kha.b(II)I",
+      "originalName": "b",
+      "to": "bitwiseXor",
+      "evidence": "Returns the bitwise exclusive or of the two ints.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ki.a(BLkh;)V",
       "originalName": "a",
       "to": "encode",
@@ -17556,6 +17773,13 @@
       "originalName": "a",
       "to": "skip",
       "evidence": "Abstract advance by a sample count without mixing. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:l.a(III)I",
+      "originalName": "a",
+      "to": "alphaBlend",
+      "evidence": "Blends two ARGB colours by the first colour's alpha.",
       "confidence": "reviewed"
     },
     {
@@ -18627,6 +18851,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lr.a(FIFF)F",
+      "originalName": "a",
+      "to": "lerp",
+      "evidence": "Linear interpolation between the two values by the fraction.",
       "confidence": "reviewed"
     },
     {
@@ -20058,6 +20289,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nk.a(BF)F",
+      "originalName": "a",
+      "to": "fade",
+      "evidence": "Perlin fade curve 6t^5 - 15t^4 + 10t^3.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nk.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -20104,6 +20342,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:no.a(BC)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "charToString",
+      "evidence": "Returns String.valueOf of the character.",
       "confidence": "reviewed"
     },
     {
@@ -20380,10 +20625,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nv.c(Z)V",
+      "originalName": "c",
+      "to": "stop",
+      "evidence": "Sets stopped; Trap.remove calls it on every Behaviour.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nv.d(B)Z",
       "originalName": "d",
       "to": "isRenderExpired",
       "evidence": "vf unlinks every scene entry whose Renderable returns true; Player returns false and Puddle returns its removed flag. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nv.d(I)Z",
+      "originalName": "d",
+      "to": "isTouchingPlayer",
+      "evidence": "Tests the Player's box against the Trap's box.",
       "confidence": "reviewed"
     },
     {
@@ -20545,6 +20804,13 @@
       "originalName": "a",
       "to": "present",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz LegacyOpenGlGraphicsToolkit.present. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a(IIIIIF)Lob;",
+      "originalName": "a",
+      "to": "createLight",
+      "evidence": "Creates a SceneLight with a position, radius, colour and intensity; AnimatedLight builds its light through it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -20769,6 +21035,13 @@
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oea.a(III)I",
+      "originalName": "a",
+      "to": "floorModulo",
+      "evidence": "Returns the non-negative remainder of the value by a power-of-two divisor.",
       "confidence": "reviewed"
     },
     {
@@ -21042,6 +21315,13 @@
       "originalName": "v",
       "to": "hasSize",
       "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseXor",
+      "evidence": "Returns the bitwise exclusive or of the two longs.",
       "confidence": "reviewed"
     },
     {
@@ -22445,6 +22725,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qia.c(II)I",
+      "originalName": "c",
+      "to": "leftChannelVolume",
+      "evidence": "Scales the volume by the square root of 16384 minus the pan; a negative pan keeps it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qia.c(II[B[IIIIIIIILqia;II)I",
       "originalName": "c",
       "to": "mixForwardStereoInterpolated",
@@ -22463,6 +22750,13 @@
       "originalName": "d",
       "to": "fadeOut",
       "evidence": "Ramps the volume to zero before unlinking the stream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qia.d(II)I",
+      "originalName": "d",
+      "to": "rightChannelVolume",
+      "evidence": "Scales the volume by the square root of the pan (0 to 16384); a negative pan inverts it.",
       "confidence": "reviewed"
     },
     {
@@ -22911,6 +23205,13 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.c(Z)V",
+      "originalName": "c",
+      "to": "stop",
+      "evidence": "Sets stopped; Trap.remove calls it on every Behaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -23649,6 +23950,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rp.a(IIII)I",
+      "originalName": "a",
+      "to": "clamp",
+      "evidence": "Clamps the value between the minimum and maximum.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rpa.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -23688,6 +23996,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rra.a(ZI)I",
+      "originalName": "a",
+      "to": "atanFixed16",
+      "evidence": "Arctangent of a 16.16 ratio from the table, in units where 2048 is a quarter turn.",
       "confidence": "reviewed"
     },
     {
@@ -24195,6 +24510,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sea.c(II)I",
+      "originalName": "c",
+      "to": "bitwiseAnd",
+      "evidence": "Returns the bitwise and of the two ints.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sea.k(I)V",
       "originalName": "k",
       "to": "tick",
@@ -24255,6 +24577,13 @@
       "originalName": "a",
       "to": "present",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz LegacyOpenGlGraphicsToolkit.present. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sfa.a(IIIIIF)Lob;",
+      "originalName": "a",
+      "to": "createLight",
+      "evidence": "Creates a SceneLight with a position, radius, colour and intensity; AnimatedLight builds its light through it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -24535,6 +24864,13 @@
       "originalName": "a",
       "to": "hashState",
       "evidence": "Each Behaviour folds its mutable fields into the running hash with mixHash. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ska.a(III)I",
+      "originalName": "a",
+      "to": "atan2FirstQuadrant",
+      "evidence": "Angle of a non-negative vector through atanFixed16, using 2048 minus the inverse ratio past 45 degrees.",
       "confidence": "reviewed"
     },
     {
@@ -25854,6 +26190,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ua.a(II)I",
+      "originalName": "a",
+      "to": "abs",
+      "evidence": "Returns the absolute value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ua.a(ILjava/lang/String;I)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeGameJoinStatus",
@@ -26708,6 +27051,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uma.a(ILkh;I)I",
+      "originalName": "a",
+      "to": "readSignedBits",
+      "evidence": "Reads a field of the given bit width from the BitPacketBuffer and sign-extends it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:un.a(BLuia;I)V",
       "originalName": "a",
       "to": "decodeParameter",
@@ -27366,6 +27716,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vi.a(JJ)J",
+      "originalName": "a",
+      "to": "bitwiseAnd",
+      "evidence": "Returns the bitwise and of the two longs.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:via.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -27944,6 +28301,13 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wda.a(ZZ)V",
+      "originalName": "a",
+      "to": "setEnabled",
+      "evidence": "Unless locked, stores the enabled flag.",
       "confidence": "reviewed"
     },
     {
@@ -28936,7 +29300,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "fd69f0f526dfdaa8c73aa741d49821565d9eaf2cb464e61c265d348eb306eb11",
+      "tombracer-names.json": "d1887e01c6341472d05eb7b608f74f6a7169863b5b436125377db324a7c75323",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
