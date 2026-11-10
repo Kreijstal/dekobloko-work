@@ -1116,10 +1116,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dfa",
+      "originalName": "dfa",
+      "to": "GameScreen",
+      "evidence": "Abstract screen with key, tick and render callbacks; the match screen qh and two other screens extend it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:dg",
       "originalName": "dg",
       "to": "TrapModel",
       "evidence": "Abstract renderable attached to a Trap (Trap keeps them in a deque); ModelFactory reads one per 6-bit category id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:dj",
+      "originalName": "dj",
+      "to": "ParticleEffects",
+      "evidence": "Per-Room helper spawning particle bursts (sparks, debris, beam hits) from the room's particle pool with cosmetic randomness.",
       "confidence": "reviewed"
     },
     {
@@ -1291,10 +1305,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fh",
+      "originalName": "fh",
+      "to": "WallTile",
+      "evidence": "Renderable 32x32 cell of a WallModel; WallModel fills a grid of them over its area and records which neighbours exist.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fia",
       "originalName": "fia",
       "to": "PlatformTaskDispatcher",
       "evidence": "Runnable owning a Thread that runs reflection, URL and cursor requests for the applet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fja",
+      "originalName": "fja",
+      "to": "PlayPhase",
+      "evidence": "MatchPhase drawing the in-room HUD: player score lines, the course number, a debug FPS line and \"Par Time\"/\"Room total\" timings.",
       "confidence": "reviewed"
     },
     {
@@ -2222,6 +2250,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nia",
+      "originalName": "nia",
+      "to": "MaskBlendOperator",
+      "evidence": "TextureOperator choosing input 0 where the mask input 2 is 4096, input 1 where it is 0 and interpolating between them otherwise. createTextureOperator builds it for operator id 21.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nj",
       "originalName": "nj",
       "to": "ControllerLocomotor",
@@ -2348,6 +2383,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:opa",
+      "originalName": "opa",
+      "to": "ResultsPhase",
+      "evidence": "MatchPhase drawing the end-of-round tally of money (\"$\"), multipliers (\"x\") and bonuses (\"+\") per player.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:oqa",
       "originalName": "oqa",
       "to": "ConstrainToFacingArcLocomotor",
@@ -2387,6 +2429,13 @@
       "originalName": "pc",
       "to": "BeamSegment",
       "evidence": "Linked segment (field_h) built by the beam shooter, trip beam, mirror and wind zone behaviours; the collision grid queries bodies along it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pca",
+      "originalName": "pca",
+      "to": "TileGridCell",
+      "evidence": "One cell of a TileGrid; setTile attaches it to its grid and position.",
       "confidence": "reviewed"
     },
     {
@@ -2530,6 +2579,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qh",
+      "originalName": "qh",
+      "to": "MatchScreen",
+      "evidence": "GameScreen of a match: built with the player names by TombRacer for online games and by the practice setup, owns the MatchState and the server packet handler v.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qi",
       "originalName": "qi",
       "to": "AllPlatformsMazeComponent",
@@ -2562,6 +2618,13 @@
       "originalName": "qr",
       "to": "SingleChildWidget",
       "evidence": "UiWidget wrapping one child widget field_x and forwarding focus and events to it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qra",
+      "originalName": "qra",
+      "to": "MatchPhase",
+      "evidence": "Abstract phase of a MatchScreen holding the MatchState, the MatchScreen and its MatchProtocol; six concrete phases extend it.",
       "confidence": "reviewed"
     },
     {
@@ -2929,6 +2992,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:tqa",
+      "originalName": "tqa",
+      "to": "TileGrid",
+      "evidence": "Renderable grid of pca tiles that Room reset builds with a 32-unit cell size.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:tra",
       "originalName": "tra",
       "to": "TextInputWidget",
@@ -3066,6 +3136,13 @@
       "originalName": "ut",
       "to": "SwitchSource",
       "evidence": "Interface of the switch behaviours (pressure, touch, time, key lock, trip beam, sensor, effect) that SwitchModel draws: level, maximum, colours and state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:v",
+      "originalName": "v",
+      "to": "MatchProtocol",
+      "evidence": "Match packet handler: dispatches server opcodes 77-93 to packet handlers and queues outgoing C2SActionPackets.",
       "confidence": "reviewed"
     },
     {
@@ -3615,6 +3692,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dj.field_c:Lla;",
+      "originalName": "field_c",
+      "to": "room",
+      "evidence": "The Room whose spawnParticle the effects call.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:dra.field_b:[Ljava/lang/String;",
       "originalName": "field_b",
       "to": "musicTrackNames",
@@ -4077,6 +4161,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hba.field_b:I",
+      "originalName": "field_b",
+      "to": "textureHeightMask",
+      "evidence": "Wraps row neighbours (y - 1 and y + 1) in the blur and normal TextureOperators.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hca.field_C:[Z",
       "originalName": "field_C",
       "to": "statusFlags",
@@ -4329,6 +4420,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ht.field_Fb:[I",
+      "originalName": "field_Fb",
+      "to": "textureColumnCoords",
+      "evidence": "Per-column 0-4096 x coordinate read by the gradient and pattern TextureOperators.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:id.field_g:[Ljava/lang/String;",
       "originalName": "field_g",
       "to": "laserDeathMessages",
@@ -4406,6 +4504,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:la.field_B:Ltqa;",
+      "originalName": "field_B",
+      "to": "tileGrid",
+      "evidence": "Room reset creates its TileGrid here.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:la.field_D:Lte;",
       "originalName": "field_D",
       "to": "corpses",
@@ -4417,6 +4522,13 @@
       "originalName": "field_E",
       "to": "formatVersion",
       "evidence": "Initialised to 26 and written as the first byte by the encoder; factories branch on it to read older streams.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:la.field_F:Ldj;",
+      "originalName": "field_F",
+      "to": "particleEffects",
+      "evidence": "Room reset creates its ParticleEffects here.",
       "confidence": "reviewed"
     },
     {
@@ -4567,6 +4679,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lma.field_x:[[Lfh;",
+      "originalName": "field_x",
+      "to": "tiles",
+      "evidence": "Grid of WallTiles covering the wall area in 32-unit cells.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:loa.field_a:Lqea;",
       "originalName": "field_a",
       "to": "random",
@@ -4637,6 +4756,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ns.field_g:I",
+      "originalName": "field_g",
+      "to": "textureWidth",
+      "evidence": "Row length every TextureOperator loops over.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nta.field_b:[Ljava/lang/String;",
       "originalName": "field_b",
       "to": "crushDeathMessages",
@@ -4704,6 +4830,13 @@
       "originalName": "field_l",
       "to": "blocked",
       "evidence": "Room clears it and sets it when any collidable along the segment intercepts the beam.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pca.field_i:Ltqa;",
+      "originalName": "field_i",
+      "to": "grid",
+      "evidence": "The TileGrid the cell was attached to.",
       "confidence": "reviewed"
     },
     {
@@ -4791,6 +4924,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qda.field_i:I",
+      "originalName": "field_i",
+      "to": "textureHeight",
+      "evidence": "Number of rows a whole-image TextureOperator generates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qea.field_d:I",
       "originalName": "field_d",
       "to": "remaining",
@@ -4805,6 +4945,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qh.field_k:Lff;",
+      "originalName": "field_k",
+      "to": "matchState",
+      "evidence": "The MatchState the match screen simulates and the packet handlers update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qh.field_l:Lqra;",
+      "originalName": "field_l",
+      "to": "phase",
+      "evidence": "The MatchPhase the MatchScreen currently runs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qh.field_z:Lv;",
+      "originalName": "field_z",
+      "to": "protocol",
+      "evidence": "The MatchProtocol that handles the match's server packets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qr.field_u:[Ljava/lang/String;",
       "originalName": "field_u",
       "to": "sawDeathMessages",
@@ -4816,6 +4977,27 @@
       "originalName": "field_x",
       "to": "child",
       "evidence": "The wrapped widget every SingleChildWidget method forwards to.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qra.field_c:Lff;",
+      "originalName": "field_c",
+      "to": "matchState",
+      "evidence": "The MatchState of the owning MatchScreen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qra.field_f:Lv;",
+      "originalName": "field_f",
+      "to": "protocol",
+      "evidence": "The owning MatchScreen's MatchProtocol.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qra.field_h:Lqh;",
+      "originalName": "field_h",
+      "to": "screen",
+      "evidence": "The owning MatchScreen.",
       "confidence": "reviewed"
     },
     {
@@ -4917,6 +5099,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:sj.field_b:[I",
+      "originalName": "field_b",
+      "to": "textureRowCoords",
+      "evidence": "Per-row 0-4096 y coordinate read by the gradient and pattern TextureOperators.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:sk.field_e:[Lvg;",
       "originalName": "field_e",
       "to": "buckets",
@@ -4959,6 +5148,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:tqa.field_f:Lla;",
+      "originalName": "field_f",
+      "to": "room",
+      "evidence": "The Room the grid belongs to.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tqa.field_j:[Lpca;",
+      "originalName": "field_j",
+      "to": "tiles",
+      "evidence": "Row-major tile array indexed by tileIndex.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ts.field_c:Lla;",
       "originalName": "field_c",
       "to": "room",
@@ -4991,6 +5194,13 @@
       "originalName": "field_g",
       "to": "loadingQuipsShort",
       "evidence": "Static initialiser fills it with literal strings starting \"Building tombs\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uca.field_c:Lqea;",
+      "originalName": "field_c",
+      "to": "cosmeticRandom",
+      "evidence": "Global IsaacCipher that Player and ParticleEffects use for particle spreads instead of the room random.",
       "confidence": "reviewed"
     },
     {
@@ -5061,6 +5271,13 @@
       "originalName": "field_d",
       "to": "nextNode",
       "evidence": "The node the cursor returns on its next step.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:una.field_b:I",
+      "originalName": "field_b",
+      "to": "textureWidthMask",
+      "evidence": "Wraps column neighbours (x - 1 and x + 1) in the blur and normal TextureOperators.",
       "confidence": "reviewed"
     },
     {
@@ -7892,6 +8109,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cu.j(B)Lkpa;",
+      "originalName": "j",
+      "to": "getVulnerabilities",
+      "evidence": "Returns vulnerabilities.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cu.k(I)V",
       "originalName": "k",
       "to": "tick",
@@ -8407,6 +8631,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a(BI)I",
+      "originalName": "a",
+      "to": "randomBelow",
+      "evidence": "Returns a bounded value from the global cosmetic random.",
       "confidence": "reviewed"
     },
     {
@@ -15116,6 +15347,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.b(Z)Ldj;",
+      "originalName": "b",
+      "to": "getParticleEffects",
+      "evidence": "Returns particleEffects.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.b(ZII)V",
       "originalName": "b",
       "to": "setEffectSlot",
@@ -15162,6 +15400,13 @@
       "originalName": "e",
       "to": "getRenderZ",
       "evidence": "Room returns 0 while attached objects add a 16.16 offset to their parent's height value. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.f(B)Ltqa;",
+      "originalName": "f",
+      "to": "getTileGrid",
+      "evidence": "Returns tileGrid.",
       "confidence": "reviewed"
     },
     {
@@ -19701,6 +19946,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rea.d(Z)I",
+      "originalName": "d",
+      "to": "getRetractTicks",
+      "evidence": "Returns retractTicks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rea.g(B)I",
+      "originalName": "g",
+      "to": "getPhaseTicks",
+      "evidence": "Returns phaseTicks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rea.j(B)I",
+      "originalName": "j",
+      "to": "getWindUpTicks",
+      "evidence": "Returns windUpTicks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rea.k(I)V",
       "originalName": "k",
       "to": "tick",
@@ -21955,10 +22221,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tqa.a(BII)I",
+      "originalName": "a",
+      "to": "tileIndex",
+      "evidence": "Converts a cell position to an index into tiles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tqa.a(IBI)Z",
+      "originalName": "a",
+      "to": "containsCell",
+      "evidence": "Bounds check of a column and row against the grid size.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tqa.a(ILiq;)V",
       "originalName": "a",
       "to": "render",
       "evidence": "Implementations hand themselves or their models to the iq target; Projectile and others draw through dea.field_a. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tqa.a(ILpca;II)V",
+      "originalName": "a",
+      "to": "setTile",
+      "evidence": "Stores a tile at a cell and attaches it to the grid.",
       "confidence": "reviewed"
     },
     {
@@ -24932,7 +25219,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "ea145ae4076da17c3164abfa095af1b4019befb7f0cce683c831c1e9ee568cf6",
+      "tombracer-names.json": "81ec47a3c70f4e889a0523435c2a74d38b0bf0472db08ea47d81a5798c167e42",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -319,7 +319,18 @@
     ["fs","CurveOperator","TextureOperator mapping its input through a 257-entry lookup curve. createTextureOperator builds it for operator id 8."],
     ["bma","BrickOperator","TextureOperator laying out rows of bricks with alternating offsets from the vertical coordinate. createTextureOperator builds it for operator id 4."],
     ["qv","MandelbrotOperator","TextureOperator iterating z = z^2 + c per pixel until escape and outputting the scaled iteration count. createTextureOperator builds it for operator id 31."],
-    ["pv","FlipOperator","TextureOperator mirroring its input vertically and/or horizontally by two decoded flags. createTextureOperator builds it for operator id 9."]
+    ["pv","FlipOperator","TextureOperator mirroring its input vertically and/or horizontally by two decoded flags. createTextureOperator builds it for operator id 9."],
+    ["nia","MaskBlendOperator","TextureOperator choosing input 0 where the mask input 2 is 4096, input 1 where it is 0 and interpolating between them otherwise. createTextureOperator builds it for operator id 21."],
+    ["dfa","GameScreen","Abstract screen with key, tick and render callbacks; the match screen qh and two other screens extend it."],
+    ["qh","MatchScreen","GameScreen of a match: built with the player names by TombRacer for online games and by the practice setup, owns the MatchState and the server packet handler v."],
+    ["v","MatchProtocol","Match packet handler: dispatches server opcodes 77-93 to packet handlers and queues outgoing C2SActionPackets."],
+    ["dj","ParticleEffects","Per-Room helper spawning particle bursts (sparks, debris, beam hits) from the room's particle pool with cosmetic randomness."],
+    ["tqa","TileGrid","Renderable grid of pca tiles that Room reset builds with a 32-unit cell size."],
+    ["pca","TileGridCell","One cell of a TileGrid; setTile attaches it to its grid and position."],
+    ["fh","WallTile","Renderable 32x32 cell of a WallModel; WallModel fills a grid of them over its area and records which neighbours exist."],
+    ["qra","MatchPhase","Abstract phase of a MatchScreen holding the MatchState, the MatchScreen and its MatchProtocol; six concrete phases extend it."],
+    ["fja","PlayPhase","MatchPhase drawing the in-room HUD: player score lines, the course number, a debug FPS line and \"Par Time\"/\"Room total\" timings."],
+    ["opa","ResultsPhase","MatchPhase drawing the end-of-round tally of money (\"$\"), multipliers (\"x\") and bonuses (\"+\") per player."]
   ],
   "methods": [
     ["rn","a","(ILla;I)Lcsa;","createComponent","Instantiates the RoomComponent subclass for a type id or throws \"Unrecognised component type\"."],
@@ -1720,7 +1731,17 @@
     ["ci","a","(BLuia;I)V","decodeParameter","Operators read the parameter with the given index from the PacketBuffer."],
     ["ci","c","(III)[I","getInputMonochromeRow","Returns a row of an input operator, taking the red channel of a colour input."],
     ["ci","a","(III)[[I","getInputColourRow","Returns a colour row of an input operator, replicating a monochrome input into three channels."],
-    ["gu","a","(BI)Lci;","createTextureOperator","Static switch building the TextureOperator subclass for an operator id."]
+    ["gu","a","(BI)Lci;","createTextureOperator","Static switch building the TextureOperator subclass for an operator id."],
+    ["dj","a","(BI)I","randomBelow","Returns a bounded value from the global cosmetic random."],
+    ["la","b","(Z)Ldj;","getParticleEffects","Returns particleEffects."],
+    ["tqa","a","(IBI)Z","containsCell","Bounds check of a column and row against the grid size."],
+    ["tqa","a","(ILpca;II)V","setTile","Stores a tile at a cell and attaches it to the grid."],
+    ["tqa","a","(BII)I","tileIndex","Converts a cell position to an index into tiles."],
+    ["la","f","(B)Ltqa;","getTileGrid","Returns tileGrid."],
+    ["cu","j","(B)Lkpa;","getVulnerabilities","Returns vulnerabilities."],
+    ["rea","j","(B)I","getWindUpTicks","Returns windUpTicks."],
+    ["rea","d","(Z)I","getRetractTicks","Returns retractTicks."],
+    ["rea","g","(B)I","getPhaseTicks","Returns phaseTicks."]
   ],
   "fields": [
     ["fua","field_c","[Ljava/lang/String;","behaviourTypeNames","33 display names indexed by the behaviour type id that bda.readBehaviour dispatches on."],
@@ -1953,6 +1974,26 @@
     ["csa","field_r","I","angle","Decoded as a 4-bit fraction of 8192 when hasAngle is true; mirroring negates it."],
     ["kpa","field_a","[Z","flags","The booleans every FlagSet method reads or writes."],
     ["ci","field_j","[Lci;","inputs","Input operators read by getInputMonochromeRow and getInputColourRow."],
-    ["ci","field_g","Z","monochrome","Set from the constructor; inputs with it are read through getMonochromeRow."]
+    ["ci","field_g","Z","monochrome","Set from the constructor; inputs with it are read through getMonochromeRow."],
+    ["ht","field_Fb","[I","textureColumnCoords","Per-column 0-4096 x coordinate read by the gradient and pattern TextureOperators."],
+    ["sj","field_b","[I","textureRowCoords","Per-row 0-4096 y coordinate read by the gradient and pattern TextureOperators."],
+    ["ns","field_g","I","textureWidth","Row length every TextureOperator loops over."],
+    ["qda","field_i","I","textureHeight","Number of rows a whole-image TextureOperator generates."],
+    ["una","field_b","I","textureWidthMask","Wraps column neighbours (x - 1 and x + 1) in the blur and normal TextureOperators."],
+    ["hba","field_b","I","textureHeightMask","Wraps row neighbours (y - 1 and y + 1) in the blur and normal TextureOperators."],
+    ["qh","field_k","Lff;","matchState","The MatchState the match screen simulates and the packet handlers update."],
+    ["qh","field_z","Lv;","protocol","The MatchProtocol that handles the match's server packets."],
+    ["dj","field_c","Lla;","room","The Room whose spawnParticle the effects call."],
+    ["la","field_F","Ldj;","particleEffects","Room reset creates its ParticleEffects here."],
+    ["uca","field_c","Lqea;","cosmeticRandom","Global IsaacCipher that Player and ParticleEffects use for particle spreads instead of the room random."],
+    ["tqa","field_j","[Lpca;","tiles","Row-major tile array indexed by tileIndex."],
+    ["tqa","field_f","Lla;","room","The Room the grid belongs to."],
+    ["la","field_B","Ltqa;","tileGrid","Room reset creates its TileGrid here."],
+    ["pca","field_i","Ltqa;","grid","The TileGrid the cell was attached to."],
+    ["lma","field_x","[[Lfh;","tiles","Grid of WallTiles covering the wall area in 32-unit cells."],
+    ["qra","field_c","Lff;","matchState","The MatchState of the owning MatchScreen."],
+    ["qra","field_h","Lqh;","screen","The owning MatchScreen."],
+    ["qra","field_f","Lv;","protocol","The owning MatchScreen's MatchProtocol."],
+    ["qh","field_l","Lqra;","phase","The MatchPhase the MatchScreen currently runs."]
   ]
 }
