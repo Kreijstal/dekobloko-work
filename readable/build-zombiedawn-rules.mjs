@@ -72,7 +72,7 @@ field('g', 'F', 'I', 'state', 'ah.k maps this value to IDLE, RUNNING, COWERING, 
 cls('ah', 'Human', 'Mover whose state names are IDLE, RUNNING, COWERING, SCREECHCOWER, AIMING, SHOOTING and KNOCKBACK.');
 method('ah', 'k', '(B)Ljava/lang/String;', 'stateName', 'Switches over the state and returns IDLE, RUNNING, COWERING, AIMING or KNOCKBACK.');
 cls('kd', 'Zombie', 'Mover spawned by the world, drawn with a selection ring and an infection target.');
-cls('eo', 'HumanFactory', 'Chooses among Human subclasses wo, po and qk by a type index.');
+cls('eo', 'AccountServerResult', 'Result record (error flag, message text, status code, suggested names) built for account server replies; the createHuman static only sits here by obfuscation.');
 method('eo', 'a', '(IIII)Lah;', 'createHuman', 'Returns new wo, po or qk instances depending on the type argument.');
 cls('hi', 'GameWorld', 'Largest game class: owns the camera, the zombie list, the level map and the cheat overlay.');
 method('hi', 'a', '(IBIII)Lkd;', 'spawnZombie', 'Creates a kd at a randomly offset position and adds it to the zombie list.');
