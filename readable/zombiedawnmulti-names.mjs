@@ -402,7 +402,7 @@ export const reviewedNames = [
   ["M:gq.a([III)V", "process", "Body closely matches pool PcmStream.process."],
   ["M:h.a(IIB)Z", "isWithinRange", "Tests whether a point is within 60 units of the portal centre."],
   ["M:h.a(ILnm;)V", "draw", "Draws the portal and its marker through the camera."],
-  ["M:h.a(Lul;I)V", "loadGraphics", "Loads every named sprite of the game from the resource archive into static tables."],
+  ["M:h.a(Lul;I)V", "loadGameText", "Reads the game text files (game options, achievements, zombie speech, instructions, powerup and trait tips, level names, tutorial) from the archive and decodes them into static strings."],
   ["M:h.a(Lul;ILul;Lul;)Z", "areGraphicsArchivesReady", "Checks that the commonui and button.gif archives are loaded."],
   ["M:h.b(III)Z", "containsPoint", "Tests a point against the 75 by 75 box of the portal."],
   ["M:h.b(Z)V", "releaseStatics", "Sets every static field of the class to null and has no other effect."],

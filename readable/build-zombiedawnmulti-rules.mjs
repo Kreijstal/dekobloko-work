@@ -123,6 +123,23 @@ for (const [owner, original, descriptor, to, evidence] of names.fields) {
   members[symbol] = {to, evidence};
 }
 
+// Decompiler chunk scaffolding: CFR splits two oversized text loaders into a method-local class.
+classes['ah$1$CfrPartitionedBody'] = ['TranslatedTextLoader',
+  'Method-local loader state shared by the four sections of TranslatedUiText.loadTranslatedStrings.'];
+for (const [original, to, evidence] of [
+  ['runChunk0', 'loadLobbyChatAndGameOptionText', 'Loads the login-message, ticketing, lobby/chat menu, status and game-option text section.'],
+  ['runChunk1', 'loadReportAbuseAndAccountCreationText', 'Loads the report-abuse rules, account-creation, month-name, login and waiting/loading text section.'],
+  ['runChunk2', 'loadLoadingRatingsAndReconnectText', 'Loads the unpacking/loading, graphics, level, high-score, multiplayer, quick-chat, rating, members, reconnect and fullscreen text section.'],
+  ['runChunk3', 'loadGraphicsLoginPromptAndSubscriptionText', 'Loads the remaining graphics-option labels, must-login prompts and subscription-cost labels.'],
+]) members[`M:ah$1$CfrPartitionedBody.${original}()V`] = {to, evidence};
+classes['h$1$CfrPartitionedBody'] = ['GameTextLoader',
+  'Method-local loader state shared by the three sections of PortalView.loadGameText.'];
+for (const [original, to, evidence] of [
+  ['runChunk0', 'loadMenuAchievementSpeechAndInstructionText', 'Loads game-option, menu, achievement, level-select, zombie speech, instructions and intro text.'],
+  ['runChunk1', 'loadPowerupTraitAndLevelText', 'Loads key-code labels, powerup and trait names, teasers and tips, research-tree names, level names and get-ready text.'],
+  ['runChunk2', 'loadTutorialAndBonusLevelText', 'Loads the remaining get-ready text, bonus-level text, tutorial pages and difficulty/tutorial toggle labels.'],
+]) members[`M:h$1$CfrPartitionedBody.${original}()V`] = {to, evidence};
+
 export const config = {
   game: 'zombiedawnmulti', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
