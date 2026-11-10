@@ -1144,6 +1144,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hj",
+      "originalName": "hj",
+      "to": "MazeGrid",
+      "evidence": "Row-major int grid of width x height cells filled with an initial value; every MazeGenerator.generate carves into one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:hma",
       "originalName": "hma",
       "to": "SecondaryNodeDeque",
@@ -1323,6 +1330,13 @@
       "originalName": "kta",
       "to": "AudioOutput",
       "evidence": "Owns an int mix buffer and output stream; extended by the SourceDataLine implementation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kua",
+      "originalName": "kua",
+      "to": "Corpse",
+      "evidence": "Renderable built by Player.createCorpse at the player's position when the death timer runs out; Room.recordDeath keeps the last 10.",
       "confidence": "reviewed"
     },
     {
@@ -1771,6 +1785,13 @@
       "originalName": "ro",
       "to": "PathMoveLocomotor",
       "evidence": "ki.readLocomotor builds it for type 5, which the locomotor name table ce.field_n labels \"Path Move\". PathMoverComponent constructs one directly.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:roa",
+      "originalName": "roa",
+      "to": "Weapon",
+      "evidence": "Built by tt.createWeaponPreset for presets 0, 1, 2 and 4 (\"Unknown/unimplemented weapon preset\" otherwise); Player keeps one.",
       "confidence": "reviewed"
     },
     {
@@ -2285,6 +2306,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:csa.field_m:I",
+      "originalName": "field_m",
+      "to": "typeId",
+      "evidence": "getTypeId returns it; RoomComponentFactory passes the type id to every component constructor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:csa.field_o:Lla;",
       "originalName": "field_o",
       "to": "room",
@@ -2565,6 +2593,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hca.field_M:I",
+      "originalName": "field_M",
+      "to": "lifeStateTimer",
+      "evidence": "Player.tick decrements it in the non-alive states and changes state when it reaches 0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hca.field_X:I",
       "originalName": "field_X",
       "to": "previousX",
@@ -2579,10 +2614,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hca.field_i:Lroa;",
+      "originalName": "field_i",
+      "to": "weapon",
+      "evidence": "Player.setWeapon stores the Weapon here and ticks it every step.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hca.field_k:I",
       "originalName": "field_k",
       "to": "previousY",
       "evidence": "Player copies y into it before moving and getPreviousY returns it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hca.field_lb:I",
+      "originalName": "field_lb",
+      "to": "lifeState",
+      "evidence": "Player.tick switches on it; when state 1 expires it records a Corpse and restarts the Room.",
       "confidence": "reviewed"
     },
     {
@@ -2597,6 +2646,27 @@
       "originalName": "field_z",
       "to": "y",
       "evidence": "Player.toString prints x, y, vx and vy in that order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hj.field_a:I",
+      "originalName": "field_a",
+      "to": "height",
+      "evidence": "MazeGrid row count and the y bound of isInBounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hj.field_c:[I",
+      "originalName": "field_c",
+      "to": "cells",
+      "evidence": "MazeGrid stores width * height cell values here.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hj.field_f:I",
+      "originalName": "field_f",
+      "to": "width",
+      "evidence": "MazeGrid row stride and the x bound of isInBounds.",
       "confidence": "reviewed"
     },
     {
@@ -3013,6 +3083,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vja.field_c:Lfsa;",
+      "originalName": "field_c",
+      "to": "template",
+      "evidence": "TrapSpawner.encode writes this Trap with Trap.encode after the spawner header.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vna.field_b:Lvg;",
       "originalName": "field_b",
       "to": "cursor",
@@ -3118,6 +3195,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aea.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:af.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -3181,10 +3265,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ana.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ana.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ana.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -3300,6 +3398,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aw.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:b.h(B)V",
       "originalName": "h",
       "to": "releaseStatics",
@@ -3412,6 +3517,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bg.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bg.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bg.e(B)V",
       "originalName": "e",
       "to": "releaseStatics",
@@ -3447,10 +3566,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bha.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bha.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bia.C(I)V",
       "originalName": "C",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bia.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -3486,6 +3626,20 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bn.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bn.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -3577,6 +3731,20 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bs.a(Lkh;I)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 4 bits, the width EventFactory.readEvent reads; gfa appends two fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bs.b(B)I",
+      "originalName": "b",
+      "to": "getTypeId",
+      "evidence": "GameEvent.encode writes it as 4 bits; gfa returns 0, the only id readEvent accepts.",
       "confidence": "reviewed"
     },
     {
@@ -3755,6 +3923,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cfa.c(I)I",
+      "originalName": "c",
+      "to": "getCurrentPlayerTicks",
+      "evidence": "Returns currentPlayerTicks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cfa.f(I)Z",
+      "originalName": "f",
+      "to": "isFinished",
+      "evidence": "Returns finished.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cfa.g(I)I",
+      "originalName": "g",
+      "to": "getCurrentPlayerId",
+      "evidence": "Returns currentPlayerId.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ch.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -3916,6 +4105,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:csa.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:csa.b(B)I",
       "originalName": "b",
       "to": "getRenderX",
@@ -3986,6 +4182,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:csa.r(I)I",
+      "originalName": "r",
+      "to": "getTypeId",
+      "evidence": "RoomComponentFactory.writeComponent writes it as the 10-bit component type.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ct.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -4000,10 +4203,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cu.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cu.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cu.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -4266,6 +4483,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dja.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dja.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dk.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -4413,6 +4644,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dt.l(I)I",
+      "originalName": "l",
+      "to": "getRoomCount",
+      "evidence": "Returns roomCount.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dt.m(I)Leha;",
       "originalName": "m",
       "to": "getObserver",
@@ -4476,6 +4714,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ef.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ef.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:efa.c(Z)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -4525,10 +4777,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eia.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eia.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eia.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -4784,6 +5050,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eq.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eq.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
@@ -4791,10 +5064,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eq.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eq.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5148,6 +5435,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fqa.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fr.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -5155,10 +5449,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fra.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fra.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fra.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5281,6 +5589,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.e(Z)I",
+      "originalName": "e",
+      "to": "getLocalY",
+      "evidence": "Returns localY.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.f(B)Lla;",
       "originalName": "f",
       "to": "getRoom",
@@ -5358,6 +5673,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fva.a(IILhj;I)V",
+      "originalName": "a",
+      "to": "generate",
+      "evidence": "Abstract carving step each maze generator implements (stack backtracking, stripes, frontier growth or recursive division) over the hj grid. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fw.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -5376,6 +5698,13 @@
       "originalName": "A",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5407,6 +5736,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ge.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ge.r(B)V",
       "originalName": "r",
       "to": "releaseStatics",
@@ -5418,6 +5754,20 @@
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gfa.a(Lkh;I)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 4 bits, the width EventFactory.readEvent reads; gfa appends two fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gfa.b(B)I",
+      "originalName": "b",
+      "to": "getTypeId",
+      "evidence": "GameEvent.encode writes it as 4 bits; gfa returns 0, the only id readEvent accepts. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5575,10 +5925,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gpa.a(B)I",
+      "originalName": "a",
+      "to": "getId",
+      "evidence": "Returns id.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gpa.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gpa.b(I)Z",
+      "originalName": "b",
+      "to": "isDud",
+      "evidence": "Returns dud.",
       "confidence": "reviewed"
     },
     {
@@ -5621,6 +5985,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gw.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5701,10 +6072,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hca.a(IBLroa;)V",
+      "originalName": "a",
+      "to": "setWeapon",
+      "evidence": "Stores the Weapon and initialises it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hca.a(ILiq;)V",
       "originalName": "a",
       "to": "render",
       "evidence": "Implementations hand themselves or their models to the iq target; Projectile and others draw through dea.field_a. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.a(Lla;IIZ)V",
+      "originalName": "a",
+      "to": "placeInRoom",
+      "evidence": "Stores the Room and start coordinates; Room.enterAtEntrance calls it with the entrance.",
       "confidence": "reviewed"
     },
     {
@@ -5733,6 +6118,13 @@
       "originalName": "d",
       "to": "getX",
       "evidence": "Player returns x; Trap and RoomComponent transform their local x through the parent they are attached to. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.d(II)V",
+      "originalName": "d",
+      "to": "tick",
+      "evidence": "Per-step Player update: saves the previous position, decrements timers and runs the life-state machine that records a Corpse and restarts the room.",
       "confidence": "reviewed"
     },
     {
@@ -5782,6 +6174,13 @@
       "originalName": "o",
       "to": "savePreviousPosition",
       "evidence": "Copies x and y into previousX and previousY.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.o(I)Lkua;",
+      "originalName": "o",
+      "to": "createCorpse",
+      "evidence": "Builds a Corpse at the player's position, raised when the player is in death state 4.",
       "confidence": "reviewed"
     },
     {
@@ -5862,10 +6261,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hi.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hi.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -5876,6 +6289,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hia.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hia.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hia.e(I)V",
       "originalName": "e",
       "to": "releaseStatics",
@@ -5883,10 +6310,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hj.a(BII)I",
+      "originalName": "a",
+      "to": "cellIndex",
+      "evidence": "Returns column + width * row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.a(IIB)Z",
+      "originalName": "a",
+      "to": "isInBounds",
+      "evidence": "Returns whether 0 <= x < width and 0 <= y < height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.a(IIII)V",
+      "originalName": "a",
+      "to": "setCell",
+      "evidence": "Stores a value at (row, column).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hj.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.b(BII)I",
+      "originalName": "b",
+      "to": "getCell",
+      "evidence": "Returns the value at (row, column).",
       "confidence": "reviewed"
     },
     {
@@ -5943,6 +6398,13 @@
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -6107,6 +6569,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ib.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 4 bits; TrapSpawner appends its own data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ib.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Spawner.encode writes it as the 4-bit spawner type.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ic.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -6156,6 +6632,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ih.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:iha.a()V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -6198,10 +6681,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:im.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:im.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:im.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -6247,6 +6744,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ipa.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:iqa.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -6265,6 +6769,20 @@
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; ControllerLocomotor also attaches each of its child locomotors. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ira.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ira.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -6366,10 +6884,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jb.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jb.s(B)V",
       "originalName": "s",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jc.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -6412,6 +6944,13 @@
       "originalName": "D",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -6594,6 +7133,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jra.a(IILhj;I)V",
+      "originalName": "a",
+      "to": "generate",
+      "evidence": "Abstract carving step each maze generator implements (stack backtracking, stripes, frontier growth or recursive division) over the hj grid. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -6793,10 +7339,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kj.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kj.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -6912,6 +7472,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kt.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kta.b()V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -6979,6 +7546,13 @@
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(BZ)V",
+      "originalName": "a",
+      "to": "enterAtEntrance",
+      "evidence": "Builds traps from components on first entry, notifies the observer and places the Player at the entrance.",
       "confidence": "reviewed"
     },
     {
@@ -7073,6 +7647,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.i(B)V",
+      "originalName": "i",
+      "to": "restart",
+      "evidence": "Calls enterAtEntrance; Player.tick calls it after recording a death.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.k(I)V",
       "originalName": "k",
       "to": "resetEntrance",
@@ -7091,6 +7672,13 @@
       "originalName": "n",
       "to": "getAllTraps",
       "evidence": "Queries the traps over a rectangle spanning the full width and height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.q(B)I",
+      "originalName": "q",
+      "to": "getId",
+      "evidence": "Returns id.",
       "confidence": "reviewed"
     },
     {
@@ -7185,6 +7773,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lda.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lda.r(B)V",
       "originalName": "r",
       "to": "releaseStatics",
@@ -7196,6 +7791,13 @@
       "originalName": "a",
       "to": "blitGlyphAlpha",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz SoftwareBinaryFont.blitGlyphAlpha.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lea.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7231,6 +7833,13 @@
       "originalName": "i",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lg.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7318,6 +7927,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ln.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lo.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lo.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lo.e(I)V",
       "originalName": "e",
       "to": "releaseStatics",
@@ -7325,10 +7955,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:loa.a(IILhj;I)V",
+      "originalName": "a",
+      "to": "generate",
+      "evidence": "Abstract carving step each maze generator implements (stack backtracking, stripes, frontier growth or recursive division) over the hj grid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lpa.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lpa.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lpa.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7409,6 +8060,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:m.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ma.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -7472,10 +8130,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mc.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mc.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7497,6 +8169,13 @@
       "originalName": "A",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7640,6 +8319,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mh.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mha.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -7651,6 +8337,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7682,10 +8375,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mo.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mo.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mo.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7829,10 +8536,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nj.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nj.e(B)V",
       "originalName": "e",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nja.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7990,10 +8718,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nv.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nv.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nv.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour.",
       "confidence": "reviewed"
     },
     {
@@ -8186,10 +8928,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oh.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oh.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oh.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8242,10 +8998,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ok.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ok.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oka.d(I)V",
       "originalName": "d",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oma.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8267,6 +9044,13 @@
       "originalName": "A",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ona.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8298,10 +9082,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oqa.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oqa.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:or.e(I)V",
       "originalName": "e",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:osa.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8333,10 +9138,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ov.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ov.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ov.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8386,6 +9205,13 @@
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pd.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8442,6 +9268,20 @@
       "originalName": "a",
       "to": "readSpawner",
       "evidence": "Throws \"Unrecognised spawner type\" for a bad id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.a(I)I",
+      "originalName": "a",
+      "to": "getCourse",
+      "evidence": "Returns course.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.a(Z)I",
+      "originalName": "a",
+      "to": "getStart",
+      "evidence": "Returns start.",
       "confidence": "reviewed"
     },
     {
@@ -8536,6 +9376,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ps.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ps.s(B)V",
       "originalName": "s",
       "to": "releaseStatics",
@@ -8547,6 +9394,20 @@
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; ControllerLocomotor also attaches each of its child locomotors. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pt.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pt.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8648,6 +9509,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pw.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qaa.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -8715,6 +9583,13 @@
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8935,6 +9810,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qta.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qu.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -8970,10 +9852,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ra.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:raa.a(IIIII)V",
       "originalName": "a",
       "to": "draw",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz SoftwareRgbSprite.draw.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9012,10 +9915,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rea.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rea.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rea.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9054,10 +9971,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rh.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rh.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rha.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ri.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ri.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9075,10 +10020,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rja.a(IILhj;I)V",
+      "originalName": "a",
+      "to": "generate",
+      "evidence": "Abstract carving step each maze generator implements (stack backtracking, stripes, frontier growth or recursive division) over the hj grid. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rk.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rl.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rl.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9145,6 +10111,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ro.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ro.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rpa.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -9177,6 +10157,20 @@
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; ControllerLocomotor also attaches each of its child locomotors. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rsa.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rsa.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9236,10 +10230,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sa.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sa.e(I)V",
       "originalName": "e",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:saa.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9271,10 +10286,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sea.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sea.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sea.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9341,6 +10370,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sg.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sg.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sg.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -9359,6 +10402,13 @@
       "originalName": "B",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9418,10 +10468,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ska.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ska.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ska.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9446,10 +10510,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sm.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sm.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9464,6 +10542,20 @@
       "originalName": "a",
       "to": "blitPaletteGlyph",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz SoftwarePaletteFont.blitPaletteGlyph.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:spa.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:spa.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9516,6 +10608,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sua.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sv.d(I)V",
       "originalName": "d",
       "to": "releaseStatics",
@@ -9555,6 +10654,13 @@
       "originalName": "D",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tca.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9600,6 +10706,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:th.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:th.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:th.g(B)V",
       "originalName": "g",
       "to": "releaseStatics",
@@ -9642,6 +10762,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tl.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tl.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tl.l(I)V",
       "originalName": "l",
       "to": "releaseStatics",
@@ -9663,6 +10797,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tna.a(IILhj;I)V",
+      "originalName": "a",
+      "to": "generate",
+      "evidence": "Abstract carving step each maze generator implements (stack backtracking, stripes, frontier growth or recursive division) over the hj grid. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tna.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -9674,6 +10815,13 @@
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tp.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9737,6 +10885,13 @@
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tt.a(II)Lroa;",
+      "originalName": "a",
+      "to": "createWeaponPreset",
+      "evidence": "Returns the Weapon for preset 0, 1, 2 or 4 and throws \"Unknown/unimplemented weapon preset\" otherwise.",
       "confidence": "reviewed"
     },
     {
@@ -9824,6 +10979,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uc.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uca.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -9838,10 +11000,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ue.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ue.r(I)V",
       "originalName": "r",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uea.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9880,6 +11063,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uha.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uha.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uha.e(I)V",
       "originalName": "e",
       "to": "releaseStatics",
@@ -9887,10 +11084,290 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uia.a(B)Z",
+      "originalName": "a",
+      "to": "verifyCrc32",
+      "evidence": "Compares the CRC of the bytes before the last four with the trailing int.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a(BI)V",
+      "originalName": "a",
+      "to": "writeIntLE",
+      "evidence": "Stores four bytes least significant first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a(B[I)V",
+      "originalName": "a",
+      "to": "encryptXtea",
+      "evidence": "XTEA-encrypts every whole 8-byte block, starting the sum at 0 and adding the golden-ratio delta.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a(I)I",
+      "originalName": "a",
+      "to": "readUnsignedMedium",
+      "evidence": "Reads three big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a(IB)V",
+      "originalName": "a",
+      "to": "writeInt",
+      "evidence": "Stores four big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a(II)V",
+      "originalName": "a",
+      "to": "backpatchIntLength",
+      "evidence": "Writes the length as an int just before the last length bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a(II[II)V",
+      "originalName": "a",
+      "to": "decryptXteaRange",
+      "evidence": "XTEA-decrypts the 8-byte blocks of a range, starting the sum at -957401312.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a(IJ)V",
+      "originalName": "a",
+      "to": "writeLong",
+      "evidence": "Stores eight big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a(ILjava/math/BigInteger;Ljava/math/BigInteger;)V",
+      "originalName": "a",
+      "to": "rsaEncryptContents",
+      "evidence": "Replaces the written bytes with their modPow by the exponent and modulus.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a(I[BII)V",
+      "originalName": "a",
+      "to": "writeBytes",
+      "evidence": "Copies the given range of the source array into the payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a(JI)V",
+      "originalName": "a",
+      "to": "writeLong56",
+      "evidence": "Stores the low seven bytes of the long, big-endian.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a(Ljava/lang/String;B)V",
+      "originalName": "a",
+      "to": "writeVersionedString",
+      "evidence": "Writes a leading byte, then the NUL-terminated string.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a(Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "writeBase38Name",
+      "evidence": "Packs up to 20 characters into base-38 longs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a(Ljava/lang/String;Z)V",
+      "originalName": "a",
+      "to": "writeString",
+      "evidence": "Rejects NUL characters and encodes the string followed by a terminator.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uia.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a(ZJ)V",
+      "originalName": "a",
+      "to": "writeLong40",
+      "evidence": "Stores the low five bytes of the long, big-endian.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a([BIII)V",
+      "originalName": "a",
+      "to": "readBytes",
+      "evidence": "Copies the requested number of payload bytes into the destination array at the offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.b(B)I",
+      "originalName": "b",
+      "to": "readVarInt",
+      "evidence": "Accumulates 7-bit groups while the high bit is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.b(I)J",
+      "originalName": "b",
+      "to": "readLong",
+      "evidence": "Combines two readInt values into a long.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.b(IB)V",
+      "originalName": "b",
+      "to": "backpatchShortLength",
+      "evidence": "Writes the length as a short just before the last length bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.b(II)V",
+      "originalName": "b",
+      "to": "padZerosTo",
+      "evidence": "Writes zero bytes until the cursor reaches the target position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.b(Z)I",
+      "originalName": "b",
+      "to": "readShort",
+      "evidence": "Reads two big-endian bytes and sign-extends values above 32767.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.c(B)B",
+      "originalName": "c",
+      "to": "readByte",
+      "evidence": "Returns the next payload byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.c(I)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "readNullableString",
+      "evidence": "Returns null for a leading NUL byte, otherwise readString.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.c(IB)V",
+      "originalName": "c",
+      "to": "writeUnsignedSmart",
+      "evidence": "Writes 0-127 as one byte and up to 32767 as a short plus 32768.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.c(II)V",
+      "originalName": "c",
+      "to": "writeVarInt",
+      "evidence": "Writes 7-bit groups with the continuation bit set on all but the last.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.d(B)I",
+      "originalName": "d",
+      "to": "readUnsignedSmart",
+      "evidence": "Reads one byte below 128, otherwise an unsigned short minus 32768.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.d(I)I",
+      "originalName": "d",
+      "to": "readUnsignedShort",
+      "evidence": "Reads two big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.d(IB)V",
+      "originalName": "d",
+      "to": "backpatchByteLength",
+      "evidence": "Writes the length as a byte just before the last length bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.d(II)V",
+      "originalName": "d",
+      "to": "writeShortLE",
+      "evidence": "Stores the low byte then the high byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.e(B)Ljava/lang/String;",
+      "originalName": "e",
+      "to": "readString",
+      "evidence": "Reads bytes up to a NUL terminator and decodes them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.e(I)I",
+      "originalName": "e",
+      "to": "readInt",
+      "evidence": "Reads four big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.e(II)V",
+      "originalName": "e",
+      "to": "writeSignedSmart",
+      "evidence": "Writes -64..63 as one byte plus 64 and -16384..16383 as a short plus 49152.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.f(B)I",
+      "originalName": "f",
+      "to": "readSignedSmart",
+      "evidence": "Reads one byte minus 64 below 128, otherwise an unsigned short minus 49152.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.f(I)Ljava/lang/String;",
+      "originalName": "f",
+      "to": "readVersionedString",
+      "evidence": "Requires a leading 0 byte, then reads a NUL-terminated string.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.f(II)V",
+      "originalName": "f",
+      "to": "writeShort",
+      "evidence": "Stores two big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.g(I)I",
+      "originalName": "g",
+      "to": "readUnsignedShortOrInt",
+      "evidence": "Reads an int masked positive when the high bit is set, otherwise an unsigned short.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.g(II)I",
+      "originalName": "g",
+      "to": "appendCrc32",
+      "evidence": "Computes the CRC of the written bytes and writes it as an int.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.h(I)I",
+      "originalName": "h",
+      "to": "readUnsignedByte",
+      "evidence": "Returns the next payload byte masked to 0-255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.h(II)V",
+      "originalName": "h",
+      "to": "writeMedium",
+      "evidence": "Stores three big-endian bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.i(II)V",
+      "originalName": "i",
+      "to": "writeByte",
+      "evidence": "Stores one byte at the cursor.",
       "confidence": "reviewed"
     },
     {
@@ -9922,6 +11399,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uk.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uka.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uka.t(B)V",
       "originalName": "t",
       "to": "releaseStatics",
@@ -9929,10 +11420,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ula.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ula.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ula.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9985,6 +11490,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:up.b(I)I",
+      "originalName": "b",
+      "to": "getPreset",
+      "evidence": "Returns preset.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uq.a(ILiq;)V",
       "originalName": "a",
       "to": "render",
@@ -10003,6 +11515,20 @@
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; ControllerLocomotor also attaches each of its child locomotors. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uqa.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uqa.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -10125,6 +11651,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vd.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vd.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
@@ -10132,10 +11665,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vd.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vda.d(B)V",
       "originalName": "d",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ve.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -10188,10 +11735,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vja.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 4 bits; TrapSpawner appends its own data. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vja.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Spawner.encode writes it as the 4-bit spawner type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vk.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vka.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -10447,6 +12015,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wda.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wda.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wda.d(I)V",
       "originalName": "d",
       "to": "releaseStatics",
@@ -10472,6 +12054,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wfa.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -10510,10 +12099,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wh.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wh.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wh.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -10524,10 +12127,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wha.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wha.r(B)V",
       "originalName": "r",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wi.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wi.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -10573,6 +12197,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wma.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wma.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
@@ -10580,10 +12211,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wma.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wn.a(Z)I",
+      "originalName": "a",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wn.a(ZLfsa;)V",
       "originalName": "a",
       "to": "attachToTrap",
       "evidence": "Base stores the Trap; subclasses then configure the trap (flags, collision layers) for their type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wn.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -10622,10 +12274,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wpa.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wq.b(Z)V",
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wqa.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -10650,6 +12316,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ws.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ws.c(I)I",
+      "originalName": "c",
+      "to": "getTypeId",
+      "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ws.e(I)V",
       "originalName": "e",
       "to": "releaseStatics",
@@ -10661,6 +12341,13 @@
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wta.a(ZLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -10722,7 +12409,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "cc6ae727e8ee71d14e4a98f74327c163df698ce4f4fa9b004be02936bdc10fcc",
+      "tombracer-names.json": "5353a8888238543454abef13fe0a8ba75df4ecb822fd4df76bcc26b2c8ab1dff",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
