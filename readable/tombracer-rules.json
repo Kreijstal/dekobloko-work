@@ -3552,6 +3552,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:uoa",
+      "originalName": "uoa",
+      "to": "TriangleRasterizer",
+      "evidence": "Holds the sine/cosine and reciprocal tables plus the viewport size, centre and row offsets that the triangle fill routines read.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:up",
       "originalName": "up",
       "to": "Effect",
@@ -4245,6 +4252,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dja.field_o:I",
+      "originalName": "field_o",
+      "to": "requiredWeight",
+      "evidence": "The switch turns on when a positive load reaches this weight; encoded in 8 bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dja.field_t:I",
+      "originalName": "field_t",
+      "to": "loadWeight",
+      "evidence": "Sum of getWeight over the bodies standing on the switch this tick.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:dra.field_b:[Ljava/lang/String;",
       "originalName": "field_b",
       "to": "musicTrackNames",
@@ -4511,6 +4532,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fsa.field_A:Z",
+      "originalName": "field_A",
+      "to": "attachedToParent",
+      "evidence": "An attached child falls with its parent and is skipped by overlap tests.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fsa.field_B:Lvna;",
       "originalName": "field_B",
       "to": "locomotors",
@@ -4522,6 +4550,13 @@
       "originalName": "field_C",
       "to": "removed",
       "evidence": "remove sets it once and returns early when it is already set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_D:Z",
+      "originalName": "field_D",
+      "to": "locomotorsEnabled",
+      "evidence": "tick only runs the locomotors while it is set and the trap is not frozen.",
       "confidence": "reviewed"
     },
     {
@@ -4539,10 +4574,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fsa.field_G:I",
+      "originalName": "field_G",
+      "to": "freezeTicks",
+      "evidence": "tick counts it down and treats the trap as frozen while it is positive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_I:I",
+      "originalName": "field_I",
+      "to": "crushThreshold",
+      "evidence": "Number of pushed ticks before a crush destroys the trap; zero makes it uncrushable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_J:I",
+      "originalName": "field_J",
+      "to": "initialLocalX",
+      "evidence": "Snapshot of localX taken by saveInitialPlacement and mirrored with the room.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fsa.field_K:Lvna;",
       "originalName": "field_K",
       "to": "children",
       "evidence": "The decoding constructor adds nested Traps here; the label is \"Compound Trap\" when it is non-empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_L:I",
+      "originalName": "field_L",
+      "to": "pushMode",
+      "evidence": "Passed as the push mode to Room collision when the trap moves; mode 2 crushes what it pushes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_M:Z",
+      "originalName": "field_M",
+      "to": "movedThisTick",
+      "evidence": "Set when the local position changed during the tick and cleared at the end of tick.",
       "confidence": "reviewed"
     },
     {
@@ -4560,10 +4630,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fsa.field_P:Z",
+      "originalName": "field_P",
+      "to": "blockedY",
+      "evidence": "Set when collision cancels the vertical part of a move.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_Q:Z",
+      "originalName": "field_Q",
+      "to": "blockedX",
+      "evidence": "Set when collision cancels the horizontal part of a move.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_R:I",
+      "originalName": "field_R",
+      "to": "pushedTicks",
+      "evidence": "Counts consecutive ticks in which the trap was pushed, starting from a random 1 to 3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_S:I",
+      "originalName": "field_S",
+      "to": "weight",
+      "evidence": "Encoded in 8 bits; pressure switches sum getWeight over the bodies on them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_T:Z",
+      "originalName": "field_T",
+      "to": "alwaysBlocksBeams",
+      "evidence": "Lets interceptsBeam and applyBeamEffect proceed even when the beam level exceeds the obstruction level.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fsa.field_U:I",
       "originalName": "field_U",
       "to": "previousX",
       "evidence": "savePreviousPosition stores the world x here; getPreviousX returns it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_V:I",
+      "originalName": "field_V",
+      "to": "collisionLevel",
+      "evidence": "Passed to Room collision tests as the level this trap collides at when it moves; zero means it never collides.",
       "confidence": "reviewed"
     },
     {
@@ -4595,10 +4707,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fsa.field_db:I",
+      "originalName": "field_db",
+      "to": "verticalSize",
+      "evidence": "Added to the elevation to give the top elevation; encoded in 8 bits and defaults to 32.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fsa.field_eb:Z",
       "originalName": "field_eb",
       "to": "removeWhenLocomotorsDone",
       "evidence": "Decoded flag; the Trap tick removes the Trap once this is set and its locomotor list is empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_f:I",
+      "originalName": "field_f",
+      "to": "obstructionLevel",
+      "evidence": "overlapsBox and interceptsBeam ignore movers whose collision level exceeds it; cleared when the trap falls.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_g:I",
+      "originalName": "field_g",
+      "to": "parentRotationSin",
+      "evidence": "Sine of the parent's facing angle, used to rotate the local offset into room space.",
       "confidence": "reviewed"
     },
     {
@@ -4623,10 +4756,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fsa.field_ib:I",
+      "originalName": "field_ib",
+      "to": "initialAngle",
+      "evidence": "Snapshot of the angle taken by saveInitialPlacement and negated when the room is mirrored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_j:I",
+      "originalName": "field_j",
+      "to": "initialLocalY",
+      "evidence": "Snapshot of localY taken by saveInitialPlacement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_jb:Z",
+      "originalName": "field_jb",
+      "to": "independent",
+      "evidence": "Constructor flag; independent children are detached from their parent when the trap is attached to the room.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fsa.field_kb:I",
       "originalName": "field_kb",
       "to": "fallSpeed",
       "evidence": "startFalling resets it; the tick adds 16384 per step while falling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_l:Z",
+      "originalName": "field_l",
+      "to": "pushedThisTick",
+      "evidence": "tryPush sets it and tick consumes it to advance pushedTicks.",
       "confidence": "reviewed"
     },
     {
@@ -4641,6 +4802,13 @@
       "originalName": "field_p",
       "to": "removeWhenBehavioursDone",
       "evidence": "Decoded flag; the Trap tick removes the Trap once this is set and its behaviour list is empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_r:Z",
+      "originalName": "field_r",
+      "to": "floating",
+      "evidence": "Unless set, a trap standing over a pit starts falling in tick; items clear it and saws or moving walls set it.",
       "confidence": "reviewed"
     },
     {
@@ -4669,6 +4837,20 @@
       "originalName": "field_v",
       "to": "pushable",
       "evidence": "isPushable returns it for a direct push.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_w:I",
+      "originalName": "field_w",
+      "to": "parentRotationCos",
+      "evidence": "Cosine of the parent's facing angle, used to rotate the local offset into room space.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_x:Z",
+      "originalName": "field_x",
+      "to": "collidesWithRelatives",
+      "evidence": "Set on independent traps so they no longer ignore collisions with traps of the same root.",
       "confidence": "reviewed"
     },
     {
@@ -4935,6 +5117,13 @@
       "originalName": "field_e",
       "to": "respawnX",
       "evidence": "respawn copies it into x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hca.field_f:I",
+      "originalName": "field_f",
+      "to": "heldItemWeight",
+      "evidence": "setHeldItem stores the collected item's weight and dropHeldItem gives it back to the dropped item.",
       "confidence": "reviewed"
     },
     {
@@ -6146,6 +6335,55 @@
       "originalName": "field_b",
       "to": "textureWidthMask",
       "evidence": "Wraps column neighbours (x - 1 and x + 1) in the blur and normal TextureOperators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uoa.field_a:[I",
+      "originalName": "field_a",
+      "to": "sinTable",
+      "evidence": "2048 entries of 65536 times the sine.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uoa.field_b:I",
+      "originalName": "field_b",
+      "to": "viewportHeight",
+      "evidence": "Height of the viewport set by setViewport and used to clip rows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uoa.field_c:[I",
+      "originalName": "field_c",
+      "to": "cosTable",
+      "evidence": "2048 entries of 65536 times the cosine.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uoa.field_d:[I",
+      "originalName": "field_d",
+      "to": "rowOffsets",
+      "evidence": "Pixel offset of each viewport row in the raster buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uoa.field_e:I",
+      "originalName": "field_e",
+      "to": "viewportWidth",
+      "evidence": "Width of the viewport set by setViewport and used to clip spans.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uoa.field_f:I",
+      "originalName": "field_f",
+      "to": "centerX",
+      "evidence": "Half the viewport width, the projection centre.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uoa.field_g:I",
+      "originalName": "field_g",
+      "to": "centerY",
+      "evidence": "Half the viewport height, the projection centre.",
       "confidence": "reviewed"
     },
     {
@@ -8032,6 +8270,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bua.a(II)I",
+      "originalName": "a",
+      "to": "cos2048",
+      "evidence": "Looks up TriangleRasterizer.cosTable for a 2048-step angle.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bv.f(I)V",
       "originalName": "f",
       "to": "releaseStatics",
@@ -9019,6 +9264,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:csa.b(I)I",
+      "originalName": "b",
+      "to": "getWeight",
+      "evidence": "Trap returns its weight; Player adds its held item and weapon weight; pressure switches sum it. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:csa.b(III)V",
       "originalName": "b",
       "to": "setSize",
@@ -9537,6 +9789,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:db.a(I)Z",
+      "originalName": "a",
+      "to": "restsOnFloor",
+      "evidence": "Trap returns true unless floating, Player true, Projectile false; conveyors only push bodies that rest on the floor. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:db.a(ILgma;)Z",
+      "originalName": "a",
+      "to": "crush",
+      "evidence": "Trap destroys itself with reason 3 once crushable; Player is killed with cause 3. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:db.a(ILgma;IIILffa;II)Z",
       "originalName": "a",
       "to": "overlapsBox",
@@ -9572,6 +9838,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:db.a(Lgma;I)Z",
+      "originalName": "a",
+      "to": "canBeCrushedBy",
+      "evidence": "Trap is crushable once pushed for crushThreshold ticks; Player always; Room asks it in push mode 2. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:db.a(Lup;IIIII)I",
       "originalName": "a",
       "to": "applyAreaEffect",
@@ -9604,6 +9877,13 @@
       "originalName": "b",
       "to": "getRenderX",
       "evidence": "Player returns x, Projectile returns x and Room returns width / 2. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:db.b(I)I",
+      "originalName": "b",
+      "to": "getWeight",
+      "evidence": "Trap returns its weight; Player adds its held item and weapon weight; pressure switches sum it. Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -11294,6 +11574,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ep.a(I)Z",
+      "originalName": "a",
+      "to": "restsOnFloor",
+      "evidence": "Trap returns true unless floating, Player true, Projectile false; conveyors only push bodies that rest on the floor. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ep.a(IB)I",
       "originalName": "a",
       "to": "hashState",
@@ -11319,6 +11606,13 @@
       "originalName": "a",
       "to": "moveTo",
       "evidence": "Removes the Player from the collision grid, sets the position and previous position, and reinserts it. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(ILgma;)Z",
+      "originalName": "a",
+      "to": "crush",
+      "evidence": "Trap destroys itself with reason 3 once crushable; Player is killed with cause 3. Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -11361,6 +11655,13 @@
       "originalName": "a",
       "to": "tryPush",
       "evidence": "Trap returns true for a zero push, refuses when not pushable, damps the push by 11/12 per chain step and moves. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(Lgma;I)Z",
+      "originalName": "a",
+      "to": "canBeCrushedBy",
+      "evidence": "Trap is crushable once pushed for crushThreshold ticks; Player always; Room asks it in push mode 2. Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -11410,6 +11711,13 @@
       "originalName": "b",
       "to": "getRenderX",
       "evidence": "Player returns x, Projectile returns x and Room returns width / 2. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.b(I)I",
+      "originalName": "b",
+      "to": "getWeight",
+      "evidence": "Trap returns its weight; Player adds its held item and weapon weight; pressure switches sum it. Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -11980,6 +12288,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ffa.a(I)Z",
+      "originalName": "a",
+      "to": "restsOnFloor",
+      "evidence": "Trap returns true unless floating, Player true, Projectile false; conveyors only push bodies that rest on the floor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ffa.a(ILgma;)Z",
+      "originalName": "a",
+      "to": "crush",
+      "evidence": "Trap destroys itself with reason 3 once crushable; Player is killed with cause 3. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ffa.a(ILgma;IIILffa;II)Z",
       "originalName": "a",
       "to": "overlapsBox",
@@ -11998,6 +12320,13 @@
       "originalName": "a",
       "to": "tryPush",
       "evidence": "Trap returns true for a zero push, refuses when not pushable, damps the push by 11/12 per chain step and moves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ffa.a(Lgma;I)Z",
+      "originalName": "a",
+      "to": "canBeCrushedBy",
+      "evidence": "Trap is crushable once pushed for crushThreshold ticks; Player always; Room asks it in push mode 2. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -12026,6 +12355,13 @@
       "originalName": "a",
       "to": "getCollisionId",
       "evidence": "Unique grid key: Player 2+2n, Trap 3(n+1), db 5+5n, Projectile 7+7n; CollisionGrid hashes entries by it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ffa.b(I)I",
+      "originalName": "b",
+      "to": "getWeight",
+      "evidence": "Trap returns its weight; Player adds its held item and weapon weight; pressure switches sum it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -12498,6 +12834,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.C(B)Z",
+      "originalName": "C",
+      "to": "wasBlockedY",
+      "evidence": "Returns whether collision cancelled vertical movement this tick.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.C(I)Z",
       "originalName": "C",
       "to": "hasParent",
@@ -12505,10 +12848,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.D(I)Z",
+      "originalName": "D",
+      "to": "isAttachedToParent",
+      "evidence": "True when the trap is attached and has a parent.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.E(I)Ljava/lang/String;",
       "originalName": "E",
       "to": "describe",
       "evidence": "Builds \"Compound Trap\", \"Empty Trap\" or \"Regular Trap\" plus the SwitchableId in brackets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.F(B)V",
+      "originalName": "F",
+      "to": "savePreviousPositionsRecursive",
+      "evidence": "Saves the previous position of the trap and all its descendants.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.G(I)V",
+      "originalName": "G",
+      "to": "disableLocomotors",
+      "evidence": "Clears locomotorsEnabled.",
       "confidence": "reviewed"
     },
     {
@@ -12526,6 +12890,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.L(I)V",
+      "originalName": "L",
+      "to": "enableLocomotors",
+      "evidence": "Sets locomotorsEnabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.M(I)I",
+      "originalName": "M",
+      "to": "getInitialAngle",
+      "evidence": "Returns initialAngle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.N(I)V",
+      "originalName": "N",
+      "to": "saveInitialPlacement",
+      "evidence": "Records the local position and angle of the trap and its descendants as their initial placement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.O(I)I",
+      "originalName": "O",
+      "to": "getInitialLocalX",
+      "evidence": "Returns initialLocalX.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.P(I)I",
+      "originalName": "P",
+      "to": "getTopElevation",
+      "evidence": "Elevation plus verticalSize; text spewers spawn their particles there.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.Q(I)I",
       "originalName": "Q",
       "to": "getTop",
@@ -12537,6 +12936,13 @@
       "originalName": "a",
       "to": "getHeight",
       "evidence": "io overlap tests pair this extent with getY; Player returns its square size. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.a(BI)V",
+      "originalName": "a",
+      "to": "setWeight",
+      "evidence": "Stores the weight; dropped items take the player's held item weight.",
       "confidence": "reviewed"
     },
     {
@@ -12561,10 +12967,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.a(I)Z",
+      "originalName": "a",
+      "to": "restsOnFloor",
+      "evidence": "Trap returns true unless floating, Player true, Projectile false; conveyors only push bodies that rest on the floor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.a(IB)V",
       "originalName": "a",
       "to": "setAngle",
       "evidence": "Stores angle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.a(IBZ)V",
+      "originalName": "a",
+      "to": "setCollisionLevel",
+      "evidence": "Sets the collision level, optionally on every descendant too.",
       "confidence": "reviewed"
     },
     {
@@ -12603,6 +13023,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.a(ILgma;)Z",
+      "originalName": "a",
+      "to": "crush",
+      "evidence": "Trap destroys itself with reason 3 once crushable; Player is killed with cause 3.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.a(ILgma;IIILffa;II)Z",
       "originalName": "a",
       "to": "overlapsBox",
@@ -12635,6 +13062,20 @@
       "originalName": "a",
       "to": "tryPush",
       "evidence": "Trap returns true for a zero push, refuses when not pushable, damps the push by 11/12 per chain step and moves. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.a(Lgma;B)Z",
+      "originalName": "a",
+      "to": "ignoresCollisionWith",
+      "evidence": "True for itself and, unless it collides with relatives, for traps with the same root.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.a(Lgma;I)Z",
+      "originalName": "a",
+      "to": "canBeCrushedBy",
+      "evidence": "Trap is crushable once pushed for crushThreshold ticks; Player always; Room asks it in push mode 2.",
       "confidence": "reviewed"
     },
     {
@@ -12680,6 +13121,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.a(ZI)V",
+      "originalName": "a",
+      "to": "setAlwaysBlocksBeams",
+      "evidence": "Sets alwaysBlocksBeams.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.b(B)I",
       "originalName": "b",
       "to": "getRenderX",
@@ -12691,6 +13139,41 @@
       "originalName": "b",
       "to": "setSize",
       "evidence": "Stores height and width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.b(BZ)V",
+      "originalName": "b",
+      "to": "setFloating",
+      "evidence": "Sets whether the trap ignores pits under it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.b(I)I",
+      "originalName": "b",
+      "to": "getWeight",
+      "evidence": "Trap returns its weight; Player adds its held item and weapon weight; pressure switches sum it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.b(ILgma;)Z",
+      "originalName": "b",
+      "to": "isCrushable",
+      "evidence": "True when the crush threshold is non-zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.b(IZ)V",
+      "originalName": "b",
+      "to": "tick",
+      "evidence": "Counts down lifetime and freeze time, runs locomotors, behaviours and children, then handles falling into pits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.b(ZI)V",
+      "originalName": "b",
+      "to": "setAttachedToParent",
+      "evidence": "Sets whether the trap falls with and is skipped together with its parent.",
       "confidence": "reviewed"
     },
     {
@@ -12743,10 +13226,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.d(BZ)V",
+      "originalName": "d",
+      "to": "setIndependent",
+      "evidence": "Sets the independent flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.d(I)I",
       "originalName": "d",
       "to": "getX",
       "evidence": "Player returns x; Trap and RoomComponent transform their local x through the parent they are attached to. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.d(II)V",
+      "originalName": "d",
+      "to": "setCrushThreshold",
+      "evidence": "Sets the number of pushed ticks before a crush destroys the trap.",
       "confidence": "reviewed"
     },
     {
@@ -12799,6 +13296,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.g(II)V",
+      "originalName": "g",
+      "to": "setPushMode",
+      "evidence": "Sets the push mode used when the trap moves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.g(Z)I",
+      "originalName": "g",
+      "to": "getCollisionLevel",
+      "evidence": "Returns the collision level used when the trap moves.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.h(B)Lew;",
       "originalName": "h",
       "to": "getScope",
@@ -12810,6 +13321,13 @@
       "originalName": "h",
       "to": "isExpired",
       "evidence": "ObjectPool.update frees objects for which it returns true; Projectile returns its finished flag. Resolved override family. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.h(II)V",
+      "originalName": "h",
+      "to": "setObstructionLevel",
+      "evidence": "Sets the obstruction level.",
       "confidence": "reviewed"
     },
     {
@@ -12869,6 +13387,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.m(B)Z",
+      "originalName": "m",
+      "to": "isFrozen",
+      "evidence": "True while freezeTicks is positive.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.m(I)V",
       "originalName": "m",
       "to": "toggle",
@@ -12887,6 +13412,20 @@
       "originalName": "n",
       "to": "getGlobalId",
       "evidence": "koa encodes this 8-bit id when the target is outside the encoding scope. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.o(B)I",
+      "originalName": "o",
+      "to": "getInitialLocalY",
+      "evidence": "Returns initialLocalY.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.p(B)Z",
+      "originalName": "p",
+      "to": "wasBlockedX",
+      "evidence": "Returns whether collision cancelled horizontal movement this tick.",
       "confidence": "reviewed"
     },
     {
@@ -12911,6 +13450,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.t(B)I",
+      "originalName": "t",
+      "to": "countDependentChildren",
+      "evidence": "Counts the children that are not independent; encode writes it before the child records.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.u(B)V",
       "originalName": "u",
       "to": "savePreviousPosition",
@@ -12932,6 +13478,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.w(B)Z",
+      "originalName": "w",
+      "to": "isIndependent",
+      "evidence": "True when this trap or an ancestor is independent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.x(B)V",
+      "originalName": "x",
+      "to": "updateParentRotation",
+      "evidence": "Recomputes the parent rotation sine and cosine for this trap and its descendants.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.x(I)Ldt;",
       "originalName": "x",
       "to": "getSimulation",
@@ -12943,6 +13503,13 @@
       "originalName": "y",
       "to": "getRandom",
       "evidence": "Returns the room's random.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.z(B)Z",
+      "originalName": "z",
+      "to": "isFloating",
+      "evidence": "Returns the floating flag.",
       "confidence": "reviewed"
     },
     {
@@ -13342,6 +13909,13 @@
       "originalName": "a",
       "to": "tryPush",
       "evidence": "Trap returns true for a zero push, refuses when not pushable, damps the push by 11/12 per chain step and moves. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gma.b(I)I",
+      "originalName": "b",
+      "to": "getWeight",
+      "evidence": "Trap returns its weight; Player adds its held item and weapon weight; pressure switches sum it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -13898,6 +14472,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hca.a(I)Z",
+      "originalName": "a",
+      "to": "restsOnFloor",
+      "evidence": "Trap returns true unless floating, Player true, Projectile false; conveyors only push bodies that rest on the floor. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hca.a(IBI)V",
       "originalName": "a",
       "to": "kill",
@@ -13947,6 +14528,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hca.a(ILgma;)Z",
+      "originalName": "a",
+      "to": "crush",
+      "evidence": "Trap destroys itself with reason 3 once crushable; Player is killed with cause 3. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hca.a(ILgma;IIILffa;II)Z",
       "originalName": "a",
       "to": "overlapsBox",
@@ -13986,6 +14574,13 @@
       "originalName": "a",
       "to": "collectTreasure",
       "evidence": "Counts a treasure of one of the three kinds in roomTreasure, remembers its source Trap and notifies the SimulationObserver.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.a(Lgma;I)Z",
+      "originalName": "a",
+      "to": "canBeCrushedBy",
+      "evidence": "Trap is crushable once pushed for crushThreshold ticks; Player always; Room asks it in push mode 2. Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -14063,6 +14658,13 @@
       "originalName": "b",
       "to": "clearWeapon",
       "evidence": "Calls setWeapon with null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.b(I)I",
+      "originalName": "b",
+      "to": "getWeight",
+      "evidence": "Trap returns its weight; Player adds its held item and weapon weight; pressure switches sum it. Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -14931,6 +15533,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hua.a(BI)I",
+      "originalName": "a",
+      "to": "sin2048",
+      "evidence": "Looks up TriangleRasterizer.sinTable for a 2048-step angle.",
       "confidence": "reviewed"
     },
     {
@@ -19274,10 +19883,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mda.a(I)Z",
+      "originalName": "a",
+      "to": "restsOnFloor",
+      "evidence": "Trap returns true unless floating, Player true, Projectile false; conveyors only push bodies that rest on the floor. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mda.a(IBII)V",
       "originalName": "a",
       "to": "setPosition",
       "evidence": "ObjectPool.spawn passes x, y and z; Projectile stores them as x, y and its render height. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mda.a(ILgma;)Z",
+      "originalName": "a",
+      "to": "crush",
+      "evidence": "Trap destroys itself with reason 3 once crushable; Player is killed with cause 3. Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -19313,6 +19936,13 @@
       "originalName": "a",
       "to": "tryPush",
       "evidence": "Trap returns true for a zero push, refuses when not pushable, damps the push by 11/12 per chain step and moves. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mda.a(Lgma;I)Z",
+      "originalName": "a",
+      "to": "canBeCrushedBy",
+      "evidence": "Trap is crushable once pushed for crushThreshold ticks; Player always; Room asks it in push mode 2. Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -19355,6 +19985,13 @@
       "originalName": "b",
       "to": "getRenderX",
       "evidence": "Player returns x, Projectile returns x and Room returns width / 2. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mda.b(I)I",
+      "originalName": "b",
+      "to": "getWeight",
+      "evidence": "Trap returns its weight; Player adds its held item and weapon weight; pressure switches sum it. Resolved override family. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -27093,6 +27730,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uoa.a(IIII)V",
+      "originalName": "a",
+      "to": "setViewport",
+      "evidence": "Stores the viewport size and row offsets and recentres the projection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uoa.b()V",
+      "originalName": "b",
+      "to": "useRasterClip",
+      "evidence": "Sets the viewport to the SoftwareRasterizer clip rectangle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uoa.c()V",
+      "originalName": "c",
+      "to": "centerProjection",
+      "evidence": "Sets the projection centre to half the viewport size.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:up.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -29300,7 +29958,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "d1887e01c6341472d05eb7b608f74f6a7169863b5b436125377db324a7c75323",
+      "tombracer-names.json": "42060bd0312890864688f5dc5cf439d623642013717c13293e539446b62f1e72",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
