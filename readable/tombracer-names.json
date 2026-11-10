@@ -330,7 +330,12 @@
     ["fh","WallTile","Renderable 32x32 cell of a WallModel; WallModel fills a grid of them over its area and records which neighbours exist."],
     ["qra","MatchPhase","Abstract phase of a MatchScreen holding the MatchState, the MatchScreen and its MatchProtocol; six concrete phases extend it."],
     ["fja","PlayPhase","MatchPhase drawing the in-room HUD: player score lines, the course number, a debug FPS line and \"Par Time\"/\"Room total\" timings."],
-    ["opa","ResultsPhase","MatchPhase drawing the end-of-round tally of money (\"$\"), multipliers (\"x\") and bonuses (\"+\") per player."]
+    ["opa","ResultsPhase","MatchPhase drawing the end-of-round tally of money (\"$\"), multipliers (\"x\") and bonuses (\"+\") per player."],
+    ["fl","KaleidoscopeOperator","TextureOperator folding each pixel into one octant around the centre by its atan2 angle before sampling its input. createTextureOperator builds it for operator id 23."],
+    ["bk","LineNoiseOperator","TextureOperator drawing a seeded number (default 2000) of short lines (default length 16) at random angles and positions. createTextureOperator builds it for operator id 38."],
+    ["ab","RewardChoicePhase","MatchPhase laying out the three reward choices of the match's CommonChooseReward as a 3x1 grid of buttons."],
+    ["qka","StandingsPhase","MatchPhase that ranks every player by the MatchState scores (field_v) before drawing the standings."],
+    ["fv","RewardChoiceSlot","One cell of the RewardChoicePhase grid with its position and owning phase."]
   ],
   "methods": [
     ["rn","a","(ILla;I)Lcsa;","createComponent","Instantiates the RoomComponent subclass for a type id or throws \"Unrecognised component type\"."],
@@ -1741,7 +1746,8 @@
     ["cu","j","(B)Lkpa;","getVulnerabilities","Returns vulnerabilities."],
     ["rea","j","(B)I","getWindUpTicks","Returns windUpTicks."],
     ["rea","d","(Z)I","getRetractTicks","Returns retractTicks."],
-    ["rea","g","(B)I","getPhaseTicks","Returns phaseTicks."]
+    ["rea","g","(B)I","getPhaseTicks","Returns phaseTicks."],
+    ["qh","a","(ILqra;)V","setPhase","Replaces the current MatchPhase; the match flow switches between the play, results and other phases through it."]
   ],
   "fields": [
     ["fua","field_c","[Ljava/lang/String;","behaviourTypeNames","33 display names indexed by the behaviour type id that bda.readBehaviour dispatches on."],
@@ -1994,6 +2000,7 @@
     ["qra","field_c","Lff;","matchState","The MatchState of the owning MatchScreen."],
     ["qra","field_h","Lqh;","screen","The owning MatchScreen."],
     ["qra","field_f","Lv;","protocol","The owning MatchScreen's MatchProtocol."],
-    ["qh","field_l","Lqra;","phase","The MatchPhase the MatchScreen currently runs."]
+    ["qh","field_l","Lqra;","phase","The MatchPhase the MatchScreen currently runs."],
+    ["fv","field_h","Lab;","phase","The RewardChoicePhase that created the slot."]
   ]
 }
