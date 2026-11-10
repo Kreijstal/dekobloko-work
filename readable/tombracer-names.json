@@ -183,7 +183,8 @@
     ["wu","ModelFactory","Implements mfa: maps 6-bit model category ids to TrapModel subclasses and fills the 21 category names."],
     ["mfa","ModelCodec","Interface ModelFactory implements to read, write and create TrapModels; rm.field_a holds the instance the Trap decoder uses."],
     ["npa","CollisionGrid","Spatial hash of ffa shapes over 32-unit cells (shifted by a scale); Room keeps one and queries it for overlapping traps, players and projectiles."],
-    ["ffa","Collidable","Interface of shapes stored in the CollisionGrid: position and extent getters, a unique id and the collision callbacks."]
+    ["ffa","Collidable","Interface of shapes stored in the CollisionGrid: position and extent getters, a unique id and the collision callbacks."],
+    ["gfa","EffectEvent","The only GameEvent type (id 0): carries a 4-bit effect slot and a 6-bit value and applies them to a PlayerSimulation's or Room's 9 effect slots."]
   ],
   "methods": [
     ["rn","a","(ILla;I)Lcsa;","createComponent","Instantiates the RoomComponent subclass for a type id or throws \"Unrecognised component type\"."],
@@ -1086,7 +1087,17 @@
     ["npa","b","(Lffa;I)V","insert","Adds an entry for the shape in every cell its bounds cover (optionally only cells it really overlaps)."],
     ["npa","a","(Lffa;I)V","pruneOutsideBounds","Removes the shape's cell entries that no longer intersect its current bounds."],
     ["npa","a","(Lffa;B)V","remove","Removes every cell entry keyed by the shape's collision id."],
-    ["npa","b","(I)[Lffa;","copyResults","Returns a copy of the current query result buffer."]
+    ["npa","b","(I)[Lffa;","copyResults","Returns a copy of the current query result buffer."],
+    ["pi","a","(Lkh;I)V","decode","Reads the GameEvent, instigator (3 bits), course (3), start (32) and duration (8), plus the room when applicable."],
+    ["pi","b","(Lkh;I)V","encode","Writes the GameEvent and the fields decode reads, in the same order and widths."],
+    ["pi","c","(I)I","getEnd","Returns end (start + 50 * duration)."],
+    ["gfa","a","(Z)Z","isRoomScoped","True for slots 4 and 5, which EffectEvent applies to the Room instead of the PlayerSimulation."],
+    ["la","b","(ZII)V","setEffectSlot","Stores a value in one of the nine room effect slots."],
+    ["la","c","(II)V","clearEffectSlot","Resets one room effect slot to -1."],
+    ["la","b","(IB)Z","hasEffect","Returns whether a room effect slot is not -1."],
+    ["la","a","(II)I","getEffectSlot","Returns one room effect slot."],
+    ["dt","b","(II)V","setEffectSlot","Stores a value in one of the nine player effect slots."],
+    ["dt","c","(II)Z","hasOwnEffect","Returns whether a player effect slot is not -1."]
   ],
   "fields": [
     ["fua","field_c","[Ljava/lang/String;","behaviourTypeNames","33 display names indexed by the behaviour type id that bda.readBehaviour dispatches on."],
@@ -1224,6 +1235,12 @@
     ["dg","field_l","I","category","getCategory returns it; ModelFactory passes the category id to every model constructor."],
     ["dg","field_k","Lgr;","part","TrapModel.attach stores the TrapPart here."],
     ["dg","field_h","Lgma;","body","TrapModel.attach stores the WorldBody whose position the model follows."],
-    ["la","field_u","Lnpa;","collisionGrid","Room.reset creates the CollisionGrid; traps and projectiles are inserted and queried through it."]
+    ["la","field_u","Lnpa;","collisionGrid","Room.reset creates the CollisionGrid; traps and projectiles are inserted and queried through it."],
+    ["pi","field_g","Lbs;","event","PendingEvent.decode reads it with EventFactory.readEvent and encode writes it first."],
+    ["pi","field_l","I","end","PendingEvent.decode sets it to start + 50 * duration."],
+    ["gfa","field_n","I","effectSlot","EffectEvent encodes it as 4 bits and indexes the simulation or room effect slots with it."],
+    ["gfa","field_k","I","value","EffectEvent encodes it as 6 bits after the slot."],
+    ["dt","field_j","[I","effectSlots","Nine slots initialised to -1; EffectEvent writes player-scoped slots here."],
+    ["la","field_b","[I","effectSlots","Nine slots initialised to -1; EffectEvent writes room-scoped slots here."]
   ]
 }

@@ -1144,6 +1144,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:gfa",
+      "originalName": "gfa",
+      "to": "EffectEvent",
+      "evidence": "The only GameEvent type (id 0): carries a 4-bit effect slot and a 6-bit value and applies them to a PlayerSimulation's or Room's 9 effect slots.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:gma",
       "originalName": "gma",
       "to": "WorldBody",
@@ -2607,6 +2614,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dt.field_j:[I",
+      "originalName": "field_j",
+      "to": "effectSlots",
+      "evidence": "Nine slots initialised to -1; EffectEvent writes player-scoped slots here.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:dt.field_m:I",
       "originalName": "field_m",
       "to": "roomCount",
@@ -2842,6 +2856,20 @@
       "originalName": "field_j",
       "to": "skeletonDeathMessages",
       "evidence": "Static initialiser fills it with \"<%0>\" message variants starting \"<%0> communed with the dead\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gfa.field_k:I",
+      "originalName": "field_k",
+      "to": "value",
+      "evidence": "EffectEvent encodes it as 6 bits after the slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gfa.field_n:I",
+      "originalName": "field_n",
+      "to": "effectSlot",
+      "evidence": "EffectEvent encodes it as 4 bits and indexes the simulation or room effect slots with it.",
       "confidence": "reviewed"
     },
     {
@@ -3111,6 +3139,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:la.field_b:[I",
+      "originalName": "field_b",
+      "to": "effectSlots",
+      "evidence": "Nine slots initialised to -1; EffectEvent writes room-scoped slots here.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:la.field_c:Lpta;",
       "originalName": "field_c",
       "to": "particlePool",
@@ -3293,6 +3328,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pi.field_g:Lbs;",
+      "originalName": "field_g",
+      "to": "event",
+      "evidence": "PendingEvent.decode reads it with EventFactory.readEvent and encode writes it first.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pi.field_h:I",
       "originalName": "field_h",
       "to": "room",
@@ -3318,6 +3360,13 @@
       "originalName": "field_k",
       "to": "duration",
       "evidence": "PendingEvent.toString prints instigator, course, room, start and duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_l:I",
+      "originalName": "field_l",
+      "to": "end",
+      "evidence": "PendingEvent.decode sets it to start + 50 * duration.",
       "confidence": "reviewed"
     },
     {
@@ -4427,6 +4476,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bs.a(Z)Z",
+      "originalName": "a",
+      "to": "isRoomScoped",
+      "evidence": "True for slots 4 and 5, which EffectEvent applies to the Room instead of the PlayerSimulation. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bs.b(B)I",
       "originalName": "b",
       "to": "getTypeId",
@@ -5481,6 +5537,20 @@
       "originalName": "b",
       "to": "dumpState",
       "evidence": "Prints \"DUMPING STATE on tick\" and the Player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dt.b(II)V",
+      "originalName": "b",
+      "to": "setEffectSlot",
+      "evidence": "Stores a value in one of the nine player effect slots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dt.c(II)Z",
+      "originalName": "c",
+      "to": "hasOwnEffect",
+      "evidence": "Returns whether a player effect slot is not -1.",
       "confidence": "reviewed"
     },
     {
@@ -6769,6 +6839,13 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "Writes getTypeId as 4 bits, the width EventFactory.readEvent reads; gfa appends two fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gfa.a(Z)Z",
+      "originalName": "a",
+      "to": "isRoomScoped",
+      "evidence": "True for slots 4 and 5, which EffectEvent applies to the Room instead of the PlayerSimulation.",
       "confidence": "reviewed"
     },
     {
@@ -8823,6 +8900,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.a(II)I",
+      "originalName": "a",
+      "to": "getEffectSlot",
+      "evidence": "Returns one room effect slot.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.a(IIBI)Lhr;",
       "originalName": "a",
       "to": "spawnParticle",
@@ -8893,6 +8977,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.b(IB)Z",
+      "originalName": "b",
+      "to": "hasEffect",
+      "evidence": "Returns whether a room effect slot is not -1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.b(ZII)V",
+      "originalName": "b",
+      "to": "setEffectSlot",
+      "evidence": "Stores a value in one of the nine room effect slots.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.c(B)I",
       "originalName": "c",
       "to": "getRenderY",
@@ -8904,6 +9002,13 @@
       "originalName": "c",
       "to": "getCourseIndex",
       "evidence": "Returns the course index printed by Room.toString.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.c(II)V",
+      "originalName": "c",
+      "to": "clearEffectSlot",
+      "evidence": "Resets one room effect slot to -1.",
       "confidence": "reviewed"
     },
     {
@@ -10937,10 +11042,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pi.a(Lkh;I)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the GameEvent, instigator (3 bits), course (3), start (32) and duration (8), plus the room when applicable.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pi.a(Z)I",
       "originalName": "a",
       "to": "getStart",
       "evidence": "Returns start.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.b(Lkh;I)V",
+      "originalName": "b",
+      "to": "encode",
+      "evidence": "Writes the GameEvent and the fields decode reads, in the same order and widths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.c(I)I",
+      "originalName": "c",
+      "to": "getEnd",
+      "evidence": "Returns end (start + 50 * duration).",
       "confidence": "reviewed"
     },
     {
@@ -14845,7 +14971,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "1bac644a34bdd8bc0ffcde2cc3e0da56cec25de2f6f7c0787e55515f00f9dca8",
+      "tombracer-names.json": "d4905750cffe27f944aa00d8dabb3958ec34aebe811e583d4e87f6a2ca11f174",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
