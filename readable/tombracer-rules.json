@@ -1053,6 +1053,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ffa",
+      "originalName": "ffa",
+      "to": "Collidable",
+      "evidence": "Interface of shapes stored in the CollisionGrid: position and extent getters, a unique id and the collision callbacks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fg",
       "originalName": "fg",
       "to": "VorbisSample",
@@ -1645,6 +1652,13 @@
       "originalName": "nja",
       "to": "InvisibleTouchSwitchComponent",
       "evidence": "rn.createComponent builds it for type 56, which rn's constructor labels \"Invisible Touch Switch\" in dsa.field_a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:npa",
+      "originalName": "npa",
+      "to": "CollisionGrid",
+      "evidence": "Spatial hash of ffa shapes over 32-unit cells (shifted by a scale); Room keeps one and queries it for overlapping traps, players and projectiles.",
       "confidence": "reviewed"
     },
     {
@@ -2530,6 +2544,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dg.field_h:Lgma;",
+      "originalName": "field_h",
+      "to": "body",
+      "evidence": "TrapModel.attach stores the WorldBody whose position the model follows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dg.field_k:Lgr;",
+      "originalName": "field_k",
+      "to": "part",
+      "evidence": "TrapModel.attach stores the TrapPart here.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dg.field_l:I",
+      "originalName": "field_l",
+      "to": "category",
+      "evidence": "getCategory returns it; ModelFactory passes the category id to every model constructor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:dra.field_b:[Ljava/lang/String;",
       "originalName": "field_b",
       "to": "musicTrackNames",
@@ -3115,6 +3150,13 @@
       "originalName": "field_s",
       "to": "projectilePool",
       "evidence": "Room.reset builds this ObjectPool with a Projectile prototype and capacity 25; dumpDebug prints it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:la.field_u:Lnpa;",
+      "originalName": "field_u",
+      "to": "collisionGrid",
+      "evidence": "Room.reset creates the CollisionGrid; traps and projectiles are inserted and queried through it.",
       "confidence": "reviewed"
     },
     {
@@ -3734,6 +3776,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aka.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aka.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aka.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aka.o(B)V",
       "originalName": "o",
       "to": "releaseStatics",
@@ -3745,6 +3808,20 @@
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -3787,6 +3864,13 @@
       "originalName": "k",
       "to": "tick",
       "evidence": "Abstract per-step update every Behaviour implements (timers, sensors, switch output). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ao.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -4245,6 +4329,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:boa.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:boa.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:boa.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:boa.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -4466,6 +4571,27 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -4840,6 +4966,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cv.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cv.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cv.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cv.n(B)V",
       "originalName": "n",
       "to": "releaseStatics",
@@ -4872,6 +5019,13 @@
       "originalName": "a",
       "to": "render",
       "evidence": "Implementations hand themselves or their models to the iq target; Projectile and others draw through dea.field_a. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:db.a(Z)I",
+      "originalName": "a",
+      "to": "getCollisionId",
+      "evidence": "Unique grid key: Player 2+2n, Trap 3(n+1), db 5+5n, Projectile 7+7n; CollisionGrid hashes entries by it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -4987,6 +5141,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dc.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dc.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dc.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dc.e(B)I",
       "originalName": "e",
       "to": "getRenderZ",
@@ -5043,10 +5218,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dg.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dg.a(ILiq;)V",
       "originalName": "a",
       "to": "render",
       "evidence": "Implementations hand themselves or their models to the iq target; Projectile and others draw through dea.field_a. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows.",
       "confidence": "reviewed"
     },
     {
@@ -5068,6 +5264,13 @@
       "originalName": "e",
       "to": "getRenderZ",
       "evidence": "Room returns 0 while attached objects add a 16.16 offset to their parent's height value. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.h(B)I",
+      "originalName": "h",
+      "to": "getCategory",
+      "evidence": "Returns the category id ModelFactory writes before the model.",
       "confidence": "reviewed"
     },
     {
@@ -5624,6 +5827,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ep.a(Z)I",
+      "originalName": "a",
+      "to": "getCollisionId",
+      "evidence": "Unique grid key: Player 2+2n, Trap 3(n+1), db 5+5n, Projectile 7+7n; CollisionGrid hashes entries by it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ep.b(B)I",
       "originalName": "b",
       "to": "getRenderX",
@@ -5929,6 +6139,13 @@
       "originalName": "a",
       "to": "getHeight",
       "evidence": "io overlap tests pair this extent with getY; Player returns its square size. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ffa.a(Z)I",
+      "originalName": "a",
+      "to": "getCollisionId",
+      "evidence": "Unique grid key: Player 2+2n, Trap 3(n+1), db 5+5n, Projectile 7+7n; CollisionGrid hashes entries by it.",
       "confidence": "reviewed"
     },
     {
@@ -6282,6 +6499,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.a(Z)I",
+      "originalName": "a",
+      "to": "getCollisionId",
+      "evidence": "Unique grid key: Player 2+2n, Trap 3(n+1), db 5+5n, Projectile 7+7n; CollisionGrid hashes entries by it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.b(B)I",
       "originalName": "b",
       "to": "getRenderX",
@@ -6387,6 +6611,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fu.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fu.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fua.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -6447,6 +6685,27 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gaa.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gaa.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gaa.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -6867,6 +7126,13 @@
       "originalName": "a",
       "to": "canPickUp",
       "evidence": "Returns false for item types 0 and 3 while the player already carries something.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.a(Z)I",
+      "originalName": "a",
+      "to": "getCollisionId",
+      "evidence": "Unique grid key: Player 2+2n, Trap 3(n+1), db 5+5n, Projectile 7+7n; CollisionGrid hashes entries by it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -7570,6 +7836,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ioa.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ioa.i(I)V",
       "originalName": "i",
       "to": "releaseStatics",
@@ -8130,6 +8403,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kga.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kga.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kga.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kga.n(B)V",
       "originalName": "n",
       "to": "releaseStatics",
@@ -8211,6 +8505,27 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ki.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ki.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ki.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8463,6 +8778,20 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kva.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kva.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -8788,6 +9117,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lfa.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lfa.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lfa.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lfa.i(I)V",
       "originalName": "i",
       "to": "releaseStatics",
@@ -8883,6 +9233,27 @@
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lma.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lma.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lma.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9250,6 +9621,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mda.a(Z)I",
+      "originalName": "a",
+      "to": "getCollisionId",
+      "evidence": "Unique grid key: Player 2+2n, Trap 3(n+1), db 5+5n, Projectile 7+7n; CollisionGrid hashes entries by it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mda.b(B)I",
       "originalName": "b",
       "to": "getRenderX",
@@ -9345,6 +9723,13 @@
       "originalName": "a",
       "to": "createModel",
       "evidence": "ModelFactory builds an empty TrapModel of the given category.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mfa.a(ILkh;Ldg;)V",
+      "originalName": "a",
+      "to": "writeModel",
+      "evidence": "ModelFactory writes the model category as 6 bits, then the model's own encode.",
       "confidence": "reviewed"
     },
     {
@@ -9712,10 +10097,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:npa.a(II)I",
+      "originalName": "a",
+      "to": "toCell",
+      "evidence": "Converts a coordinate to a cell index by the grid shift and a 32-unit cell size, rounding negatives down.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:npa.a(Lffa;B)V",
+      "originalName": "a",
+      "to": "remove",
+      "evidence": "Removes every cell entry keyed by the shape's collision id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:npa.a(Lffa;I)V",
+      "originalName": "a",
+      "to": "pruneOutsideBounds",
+      "evidence": "Removes the shape's cell entries that no longer intersect its current bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:npa.b(I)[Lffa;",
+      "originalName": "b",
+      "to": "copyResults",
+      "evidence": "Returns a copy of the current query result buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:npa.b(Lffa;I)V",
+      "originalName": "b",
+      "to": "insert",
+      "evidence": "Adds an entry for the shape in every cell its bounds cover (optionally only cells it really overlaps).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:npa.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nq.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nq.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nq.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -10209,6 +10650,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oo.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oo.j(I)V",
       "originalName": "j",
       "to": "releaseStatics",
@@ -10584,6 +11032,27 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pqa.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pqa.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pqa.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -11375,6 +11844,27 @@
       "originalName": "c",
       "to": "getTypeId",
       "evidence": "Each subclass returns the id readLocomotor maps to it (ApproachPlayerLocomotor 1, FleeLocomotor 3, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ria.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ria.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ria.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -13695,6 +14185,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vsa.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vsa.a(ILla;Lkh;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vsa.a(Lgr;Lgma;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vsa.q(B)V",
       "originalName": "q",
       "to": "releaseStatics",
@@ -14269,6 +14780,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wu.a(ILkh;Ldg;)V",
+      "originalName": "a",
+      "to": "writeModel",
+      "evidence": "ModelFactory writes the model category as 6 bits, then the model's own encode. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wu.a(Lla;Lkh;Z)Ldg;",
       "originalName": "a",
       "to": "readModel",
@@ -14327,7 +14845,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "cfdd3af97f07b21d514de5d72f88ceb1698f90bea03b510a25a86f8c364e55e4",
+      "tombracer-names.json": "1bac644a34bdd8bc0ffcde2cc3e0da56cec25de2f6f7c0787e55515f00f9dca8",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

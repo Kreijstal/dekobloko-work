@@ -181,7 +181,9 @@
     ["ao","DirectRenderModel","ModelFactory's fallback for the remaining categories, 0 (\"OLD directrender\") and the unused placeholder slot."],
     ["dg","TrapModel","Abstract renderable attached to a Trap (Trap keeps them in a deque); ModelFactory reads one per 6-bit category id."],
     ["wu","ModelFactory","Implements mfa: maps 6-bit model category ids to TrapModel subclasses and fills the 21 category names."],
-    ["mfa","ModelCodec","Interface ModelFactory implements to read, write and create TrapModels; rm.field_a holds the instance the Trap decoder uses."]
+    ["mfa","ModelCodec","Interface ModelFactory implements to read, write and create TrapModels; rm.field_a holds the instance the Trap decoder uses."],
+    ["npa","CollisionGrid","Spatial hash of ffa shapes over 32-unit cells (shifted by a scale); Room keeps one and queries it for overlapping traps, players and projectiles."],
+    ["ffa","Collidable","Interface of shapes stored in the CollisionGrid: position and extent getters, a unique id and the collision callbacks."]
   ],
   "methods": [
     ["rn","a","(ILla;I)Lcsa;","createComponent","Instantiates the RoomComponent subclass for a type id or throws \"Unrecognised component type\"."],
@@ -1073,7 +1075,18 @@
     ["ea","a","(IB)V","setRound","Stores its argument in round."],
     ["ue","a","(IZ)V","setItemType","Stores its argument in itemType."],
     ["mfa","a","(Lla;Lkh;Z)Ldg;","readModel","ModelFactory reads a 6-bit category and builds that TrapModel from the stream."],
-    ["mfa","a","(II)Ldg;","createModel","ModelFactory builds an empty TrapModel of the given category."]
+    ["mfa","a","(II)Ldg;","createModel","ModelFactory builds an empty TrapModel of the given category."],
+    ["mfa","a","(ILkh;Ldg;)V","writeModel","ModelFactory writes the model category as 6 bits, then the model's own encode."],
+    ["dg","h","(B)I","getCategory","Returns the category id ModelFactory writes before the model."],
+    ["dg","a","(BLkh;)V","encode","Writes an optional 8-bit value behind a presence bit; subclasses append their own fields."],
+    ["dg","a","(ILla;Lkh;)V","decode","Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields."],
+    ["dg","a","(Lgr;Lgma;B)V","attach","Stores the TrapPart and the WorldBody the model follows."],
+    ["ffa","a","(Z)I","getCollisionId","Unique grid key: Player 2+2n, Trap 3(n+1), db 5+5n, Projectile 7+7n; CollisionGrid hashes entries by it."],
+    ["npa","a","(II)I","toCell","Converts a coordinate to a cell index by the grid shift and a 32-unit cell size, rounding negatives down."],
+    ["npa","b","(Lffa;I)V","insert","Adds an entry for the shape in every cell its bounds cover (optionally only cells it really overlaps)."],
+    ["npa","a","(Lffa;I)V","pruneOutsideBounds","Removes the shape's cell entries that no longer intersect its current bounds."],
+    ["npa","a","(Lffa;B)V","remove","Removes every cell entry keyed by the shape's collision id."],
+    ["npa","b","(I)[Lffa;","copyResults","Returns a copy of the current query result buffer."]
   ],
   "fields": [
     ["fua","field_c","[Ljava/lang/String;","behaviourTypeNames","33 display names indexed by the behaviour type id that bda.readBehaviour dispatches on."],
@@ -1207,6 +1220,10 @@
     ["qea","field_d","I","remaining","nextInt counts it down through the result table and refills at 0."],
     ["qea","field_g","[I","results","nextInt returns entries of this table from the end."],
     ["bb","field_g","[Ljava/lang/String;","modelCategoryNames","ModelFactory fills these 21 names indexed by model category id."],
-    ["fsa","field_O","Lvna;","models","The Trap decoder reads TrapModels through ModelCodec.readModel and attaches each to this deque."]
+    ["fsa","field_O","Lvna;","models","The Trap decoder reads TrapModels through ModelCodec.readModel and attaches each to this deque."],
+    ["dg","field_l","I","category","getCategory returns it; ModelFactory passes the category id to every model constructor."],
+    ["dg","field_k","Lgr;","part","TrapModel.attach stores the TrapPart here."],
+    ["dg","field_h","Lgma;","body","TrapModel.attach stores the WorldBody whose position the model follows."],
+    ["la","field_u","Lnpa;","collisionGrid","Room.reset creates the CollisionGrid; traps and projectiles are inserted and queried through it."]
   ]
 }
