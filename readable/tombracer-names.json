@@ -158,7 +158,30 @@
     ["roa","Weapon","Built by tt.createWeaponPreset for presets 0, 1, 2 and 4 (\"Unknown/unimplemented weapon preset\" otherwise); Player keeps one."],
     ["hj","MazeGrid","Row-major int grid of width x height cells filled with an initial value; every MazeGenerator.generate carves into one."],
     ["sia","ShellListener","Interface whose instances rfa keeps in a Vector and calls each draw, each tick and for each typed key until one consumes it; TombRacer registers itself."],
-    ["kna","PrefabComponent","Abstract RoomComponent base of every concrete component; each implements createTrap and the base instantiates it with attached child components."]
+    ["kna","PrefabComponent","Abstract RoomComponent base of every concrete component; each implements createTrap and the base instantiates it with attached child components."],
+    ["ria","TestModel","ModelFactory builds it for model category 1, which the category table bb.field_g labels \"TEMP model test\"."],
+    ["ioa","LegacySwitchModel","ModelFactory builds it for model category 3, which the category table bb.field_g labels \"OLD switch\"."],
+    ["am","FurnitureModel","ModelFactory builds it for model category 4, which the category table bb.field_g labels \"Furniture\"."],
+    ["gaa","LightSourceModel","ModelFactory builds it for model category 5, which the category table bb.field_g labels \"Light Source\"."],
+    ["lfa","DoorwayModel","ModelFactory builds it for model category 6, which the category table bb.field_g labels \"Doorway\"."],
+    ["boa","BlockModel","ModelFactory builds it for model category 7, which the category table bb.field_g labels \"Block\"."],
+    ["fu","HazardModel","ModelFactory builds it for model category 8, which the category table bb.field_g labels \"Hazard\"."],
+    ["cv","SwitchModel","ModelFactory builds it for model category 9, which the category table bb.field_g labels \"Switch\"."],
+    ["kva","PitModel","ModelFactory builds it for model category 10, which the category table bb.field_g labels \"Pit\"."],
+    ["dc","CrusherModel","ModelFactory builds it for model category 11, which the category table bb.field_g labels \"Crusher\"."],
+    ["kga","ItemModel","ModelFactory builds it for model category 12, which the category table bb.field_g labels \"Item\"."],
+    ["oo","SnakePitModel","ModelFactory builds it for model category 13, which the category table bb.field_g labels \"SnakePit\"."],
+    ["ki","PlantModel","ModelFactory builds it for model category 14, which the category table bb.field_g labels \"Plant\"."],
+    ["lma","WallModel","ModelFactory builds it for model category 15, which the category table bb.field_g labels \"Wall\"."],
+    ["nq","TrapBaseModel","ModelFactory builds it for model category 16, which the category table bb.field_g labels \"Trap Base\"."],
+    ["ce","PlatformModel","ModelFactory builds it for model category 17, which the category table bb.field_g labels \"Platform\"."],
+    ["aka","MonsterModel","ModelFactory builds it for model category 18, which the category table bb.field_g labels \"Monster\"."],
+    ["vsa","BridgeModel","ModelFactory builds it for model category 19, which the category table bb.field_g labels \"Bridge\"."],
+    ["pqa","GasVentModel","ModelFactory builds it for model category 20, which the category table bb.field_g labels \"Gas Vent\"."],
+    ["ao","DirectRenderModel","ModelFactory's fallback for the remaining categories, 0 (\"OLD directrender\") and the unused placeholder slot."],
+    ["dg","TrapModel","Abstract renderable attached to a Trap (Trap keeps them in a deque); ModelFactory reads one per 6-bit category id."],
+    ["wu","ModelFactory","Implements mfa: maps 6-bit model category ids to TrapModel subclasses and fills the 21 category names."],
+    ["mfa","ModelCodec","Interface ModelFactory implements to read, write and create TrapModels; rm.field_a holds the instance the Trap decoder uses."]
   ],
   "methods": [
     ["rn","a","(ILla;I)Lcsa;","createComponent","Instantiates the RoomComponent subclass for a type id or throws \"Unrecognised component type\"."],
@@ -1048,7 +1071,9 @@
     ["dba","a","(IB)V","setGraphicsMode","Stores its argument in graphicsMode."],
     ["ea","a","(II)V","setHash","Stores its argument in hash."],
     ["ea","a","(IB)V","setRound","Stores its argument in round."],
-    ["ue","a","(IZ)V","setItemType","Stores its argument in itemType."]
+    ["ue","a","(IZ)V","setItemType","Stores its argument in itemType."],
+    ["mfa","a","(Lla;Lkh;Z)Ldg;","readModel","ModelFactory reads a 6-bit category and builds that TrapModel from the stream."],
+    ["mfa","a","(II)Ldg;","createModel","ModelFactory builds an empty TrapModel of the given category."]
   ],
   "fields": [
     ["fua","field_c","[Ljava/lang/String;","behaviourTypeNames","33 display names indexed by the behaviour type id that bda.readBehaviour dispatches on."],
@@ -1180,6 +1205,8 @@
     ["sra","field_u","[Ljava/lang/String;","connectingTranslations","Static initialiser fills it with literal strings starting \"Connecting to update server\"."],
     ["tba","field_i","[Ljava/lang/String;","reconnectingMessages","Static initialiser fills it with literal strings starting \"Connection lost - attempting to reconnect\"."],
     ["qea","field_d","I","remaining","nextInt counts it down through the result table and refills at 0."],
-    ["qea","field_g","[I","results","nextInt returns entries of this table from the end."]
+    ["qea","field_g","[I","results","nextInt returns entries of this table from the end."],
+    ["bb","field_g","[Ljava/lang/String;","modelCategoryNames","ModelFactory fills these 21 names indexed by model category id."],
+    ["fsa","field_O","Lvna;","models","The Trap decoder reads TrapModels through ModelCodec.readModel and attaches each to this deque."]
   ]
 }
