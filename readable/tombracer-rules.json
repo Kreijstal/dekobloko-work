@@ -1223,8 +1223,8 @@
     {
       "symbol": "C:dl",
       "originalName": "dl",
-      "to": "AchievementsOverlay",
-      "evidence": "MatchOverlay listing achievements with \"Achieved\" and \"Rating\"; MatchScreen tracks while one is shown.",
+      "to": "MessageOverlay",
+      "evidence": "MatchOverlay drawing a centred panel with a title, text and footer and an optional animated content widget, sliding away once finished; PlayPhase and the tutorial hints show it.",
       "confidence": "reviewed"
     },
     {
@@ -1414,6 +1414,13 @@
       "originalName": "fia",
       "to": "PlatformTaskDispatcher",
       "evidence": "Runnable owning a Thread that runs reflection, URL and cursor requests for the applet.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fj",
+      "originalName": "fj",
+      "to": "RoomViewRenderer",
+      "evidence": "Draws one player's current Room into a screen rectangle of the MatchScreen; each PlayerViewport owns one.",
       "confidence": "reviewed"
     },
     {
@@ -1865,6 +1872,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ir",
+      "originalName": "ir",
+      "to": "IntPoint",
+      "evidence": "Pair of int coordinates (x first, y second) used for ComponentMount offsets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ira",
       "originalName": "ira",
       "to": "ConstrainToRectangleLocomotor",
@@ -1932,6 +1946,13 @@
       "originalName": "jh",
       "to": "FlameShooterComponent",
       "evidence": "rn.createComponent builds it for type 27, which rn's constructor labels \"Flame Shooter\" in dsa.field_a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jha",
+      "originalName": "jha",
+      "to": "FloatingMessage",
+      "evidence": "IntrusiveNode text notice with fade-in, hold and fade-out durations; MatchScoringObserver posts \"Room complete\" and penalty texts as these.",
       "confidence": "reviewed"
     },
     {
@@ -2404,6 +2425,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mka",
+      "originalName": "mka",
+      "to": "ComponentMount",
+      "evidence": "Attachment point of a RoomComponent: a local IntPoint offset, its rotated copy and an angle; attach hands the child RoomComponent its parent and slot.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ml",
       "originalName": "ml",
       "to": "RandomAccessFileHandle",
@@ -2562,6 +2590,13 @@
       "originalName": "oa",
       "to": "NativeSoftwareGraphicsToolkit",
       "evidence": "GraphicsToolkit backed by the native sw3d library (field_nativeid). Body matches sumoblitz/aceofskies NativeSoftwareGraphicsToolkit (createSprite, createFont).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ob",
+      "originalName": "ob",
+      "to": "SceneLight",
+      "evidence": "Abstract IntrusiveNode with a position, radius, colour and float intensity; GraphicsToolkit.setLights uploads arrays of them (OpenGlToolkit through glLightfv on GL_LIGHT0 + i).",
       "confidence": "reviewed"
     },
     {
@@ -2807,6 +2842,13 @@
       "originalName": "pw",
       "to": "PressureSwitchComponent",
       "evidence": "rn.createComponent builds it for types 3, 4, 54, 55, which rn's constructor labels \"Pressure Switch 1x1\", \"Pressure Switch 2x2\", \"Pressure Switch X\", \"Pressure Switch Y\" in dsa.field_a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qa",
+      "originalName": "qa",
+      "to": "PlayerViewport",
+      "evidence": "PlayPhase keeps one per player: an animated screen rectangle (moved and resized towards its target) in which the player's room is rendered.",
       "confidence": "reviewed"
     },
     {
@@ -3202,6 +3244,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sna",
+      "originalName": "sna",
+      "to": "TutorialHints",
+      "evidence": "MatchScreen helper that queues tutorial MessageOverlays (\"The temple door creaks open...\", pushing blocks, snakes) as the local player reaches each course.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:sp",
       "originalName": "sp",
       "to": "MicrosoftDisplayController",
@@ -3248,6 +3297,13 @@
       "originalName": "sua",
       "to": "RotaterMountComponent",
       "evidence": "rn.createComponent builds it for type 30, which rn's constructor labels \"Rotater Mount\" in dsa.field_a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sva",
+      "originalName": "sva",
+      "to": "RoomLighting",
+      "evidence": "Per-Room holder of up to four active SceneLights and the queued light sources, handing the lights to the GraphicsToolkit while rendering.",
       "confidence": "reviewed"
     },
     {
@@ -3374,6 +3430,13 @@
       "originalName": "tu",
       "to": "MatchScoringObserver",
       "evidence": "Only SimulationObserver subclass: awards \"Room complete\" and speed bonuses, applies \"Death penalty\"/\"Reset penalty\" and queues PenaltyNotices for the MatchState.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ub",
+      "originalName": "ub",
+      "to": "ObjectList",
+      "evidence": "Growable Object array with a size and growth increment (default 10); Trap.collectParts returns one.",
       "confidence": "reviewed"
     },
     {
@@ -4056,10 +4119,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:csa.field_q:I",
+      "originalName": "field_q",
+      "to": "parentSlot",
+      "evidence": "attachToParent stores the parent's mount index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:csa.field_r:I",
       "originalName": "field_r",
       "to": "angle",
       "evidence": "Decoded as a 4-bit fraction of 8192 when hasAngle is true; mirroring negates it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:csa.field_t:[Lmka;",
+      "originalName": "field_t",
+      "to": "mounts",
+      "evidence": "setMounts stores the ComponentMounts and binds each to this component and its index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:csa.field_u:Lcsa;",
+      "originalName": "field_u",
+      "to": "parent",
+      "evidence": "attachToParent stores the RoomComponent this one is mounted on.",
       "confidence": "reviewed"
     },
     {
@@ -4368,6 +4452,13 @@
       "originalName": "field_v",
       "to": "roundWins",
       "evidence": "setRoundWinner increments the winner's entry; getMatchWinner picks the largest.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fja.field_n:[Lqa;",
+      "originalName": "field_n",
+      "to": "viewports",
+      "evidence": "One PlayerViewport per player, ticked and rendered by the PlayPhase.",
       "confidence": "reviewed"
     },
     {
@@ -5029,6 +5120,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ir.field_d:I",
+      "originalName": "field_d",
+      "to": "y",
+      "evidence": "Second constructor argument; ComponentMount rotates it with the x coordinate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ir.field_f:I",
+      "originalName": "field_f",
+      "to": "x",
+      "evidence": "First constructor argument; ComponentMount rotates it with the y coordinate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:iu.field_r:[I",
       "originalName": "field_r",
       "to": "pixels",
@@ -5355,6 +5460,41 @@
       "originalName": "field_p",
       "to": "kind",
       "evidence": "ConsoleToken.toString compares it with each token-kind constant.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mka.field_a:Lir;",
+      "originalName": "field_a",
+      "to": "offset",
+      "evidence": "Local offset passed to the constructor; rotateBy rotates it into rotatedOffset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mka.field_d:I",
+      "originalName": "field_d",
+      "to": "slot",
+      "evidence": "setOwner stores the mount's index in the owner's mount array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mka.field_e:Lcsa;",
+      "originalName": "field_e",
+      "to": "child",
+      "evidence": "attach stores the mounted RoomComponent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mka.field_g:Lcsa;",
+      "originalName": "field_g",
+      "to": "owner",
+      "evidence": "setOwner stores the RoomComponent that has this mount.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mka.field_h:Lir;",
+      "originalName": "field_h",
+      "to": "rotatedOffset",
+      "evidence": "Offset rotated by the owner's cosine and sine.",
       "confidence": "reviewed"
     },
     {
@@ -5764,6 +5904,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:sva.field_a:[Lob;",
+      "originalName": "field_a",
+      "to": "activeLights",
+      "evidence": "Four-entry SceneLight array passed to GraphicsToolkit.setLights.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sva.field_c:Lla;",
+      "originalName": "field_c",
+      "to": "room",
+      "evidence": "Constructor stores the Room.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tba.field_i:[Ljava/lang/String;",
       "originalName": "field_i",
       "to": "reconnectingMessages",
@@ -5824,6 +5978,27 @@
       "originalName": "field_h",
       "to": "hasPlayerOrders",
       "evidence": "S2CActionPacket.decode reads one flag per player before reading that player's orders.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ub.field_a:I",
+      "originalName": "field_a",
+      "to": "growth",
+      "evidence": "Constructor argument (default 10) used when the backing array grows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ub.field_e:[Ljava/lang/Object;",
+      "originalName": "field_e",
+      "to": "elements",
+      "evidence": "Backing array copied and shifted by insert.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ub.field_f:I",
+      "originalName": "field_f",
+      "to": "size",
+      "evidence": "insert increments it; size returns it.",
       "confidence": "reviewed"
     },
     {
@@ -8256,6 +8431,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cka.a(I[Lob;)V",
+      "originalName": "a",
+      "to": "setLights",
+      "evidence": "OpenGlToolkit uploads each SceneLight with glLightfv on GL_LIGHT0 + index. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cka.a(Ljpa;Z)Lnh;",
       "originalName": "a",
       "to": "createSprite",
@@ -8613,6 +8795,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:csa.a(B[Lmka;)V",
+      "originalName": "a",
+      "to": "setMounts",
+      "evidence": "Stores the ComponentMounts and binds each one to this component and its index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:csa.a(II)Lmka;",
+      "originalName": "a",
+      "to": "getMount",
+      "evidence": "Returns the ComponentMount at the index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:csa.a(III)V",
       "originalName": "a",
       "to": "setPosition",
@@ -8641,6 +8837,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:csa.a(Lcsa;IB)V",
+      "originalName": "a",
+      "to": "attachToParent",
+      "evidence": "Stores the parent RoomComponent and its mount index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:csa.a(Lla;I)V",
+      "originalName": "a",
+      "to": "mirror",
+      "evidence": "Mirrors x across the Room (when unmounted), negates the angle and toggles the mirrored flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:csa.a(ZILcsa;)Z",
+      "originalName": "a",
+      "to": "hasDescendant",
+      "evidence": "True when the component is mounted on this one, directly or (when recursive) further down.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:csa.a(ZLkh;)V",
       "originalName": "a",
       "to": "encode",
@@ -8659,6 +8876,13 @@
       "originalName": "b",
       "to": "getRenderX",
       "evidence": "Player returns x, Projectile returns x and Room returns width / 2. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:csa.b(III)V",
+      "originalName": "b",
+      "to": "setSize",
+      "evidence": "Stores width and height.",
       "confidence": "reviewed"
     },
     {
@@ -8687,6 +8911,13 @@
       "originalName": "d",
       "to": "getX",
       "evidence": "Player returns x; Trap and RoomComponent transform their local x through the parent they are attached to. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:csa.d(Z)V",
+      "originalName": "d",
+      "to": "updateRotation",
+      "evidence": "Recomputes the cosine and sine of the angle and rotates every mount and mounted child.",
       "confidence": "reviewed"
     },
     {
@@ -10594,6 +10825,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eo.a(I[Lob;)V",
+      "originalName": "a",
+      "to": "setLights",
+      "evidence": "OpenGlToolkit uploads each SceneLight with glLightfv on GL_LIGHT0 + index. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eo.a(Ldn;B)V",
       "originalName": "a",
       "to": "applyTexCoordGeneration",
@@ -11795,6 +12033,13 @@
       "originalName": "b",
       "to": "shutdown",
       "evidence": "Stops the dispatcher thread. Body matches several games PlatformTaskDispatcher.shutdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(IIIIILqh;I)V",
+      "originalName": "a",
+      "to": "render",
+      "evidence": "Draws the given player's Room into the rectangle unless the player has finished or is not visible.",
       "confidence": "reviewed"
     },
     {
@@ -13272,6 +13517,13 @@
       "originalName": "a",
       "to": "drawLine",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz SoftwareGraphicsToolkit.drawLine. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(I[Lob;)V",
+      "originalName": "a",
+      "to": "setLights",
+      "evidence": "OpenGlToolkit uploads each SceneLight with glLightfv on GL_LIGHT0 + index.",
       "confidence": "reviewed"
     },
     {
@@ -15757,6 +16009,27 @@
       "originalName": "v",
       "to": "hasSize",
       "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jha.a(ZIII)V",
+      "originalName": "a",
+      "to": "setTiming",
+      "evidence": "Stores the fade-in, hold and fade-out durations and restarts the elapsed count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jha.b(I)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "getText",
+      "evidence": "Returns the message text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jha.e(B)Z",
+      "originalName": "e",
+      "to": "isExpired",
+      "evidence": "True once the elapsed ticks reach the total of fade-in, hold and fade-out.",
       "confidence": "reviewed"
     },
     {
@@ -19190,10 +19463,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mka.a(IIB)V",
+      "originalName": "a",
+      "to": "rotateBy",
+      "evidence": "Rotates the offset by the given sine and cosine into rotatedOffset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mka.a(IILcsa;)V",
+      "originalName": "a",
+      "to": "setOwner",
+      "evidence": "Stores the owning RoomComponent and the slot index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mka.a(Lcsa;I)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Stores the child RoomComponent, attaches it to the owner at this slot and positions it at the offset.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mka.a(Ldh;ILdh;)Z",
       "originalName": "a",
       "to": "compareDisplayModes",
       "evidence": "Orders display modes by width, height and depth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mka.c(B)Lir;",
+      "originalName": "c",
+      "to": "getOffset",
+      "evidence": "Returns the local offset.",
       "confidence": "reviewed"
     },
     {
@@ -20254,6 +20555,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.a(I[Lob;)V",
+      "originalName": "a",
+      "to": "setLights",
+      "evidence": "OpenGlToolkit uploads each SceneLight with glLightfv on GL_LIGHT0 + index. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.a(Ljava/awt/Canvas;)V",
       "originalName": "a",
       "to": "bindCanvasSurface",
@@ -20685,6 +20993,13 @@
       "originalName": "A",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ona.a(Lla;I)V",
+      "originalName": "a",
+      "to": "mirror",
+      "evidence": "Mirrors x across the Room (when unmounted), negates the angle and toggles the mirrored flag. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -21874,7 +22189,7 @@
       "symbol": "M:qh.a(ILme;)V",
       "originalName": "a",
       "to": "removeOverlay",
-      "evidence": "Unlinks the MatchOverlay and clears the achievements flag for an AchievementsOverlay.",
+      "evidence": "Unlinks the MatchOverlay and clears the message flag for a MessageOverlay.",
       "confidence": "reviewed"
     },
     {
@@ -21895,7 +22210,7 @@
       "symbol": "M:qh.a(Lme;I)V",
       "originalName": "a",
       "to": "addOverlay",
-      "evidence": "Appends the MatchOverlay and notes when it is an AchievementsOverlay.",
+      "evidence": "Appends the MatchOverlay and notes when it is a MessageOverlay.",
       "confidence": "reviewed"
     },
     {
@@ -22540,6 +22855,13 @@
       "originalName": "a",
       "to": "createPathMove",
       "evidence": "Constructs and configures a PathMoveLocomotor for this component.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.a(Lla;I)V",
+      "originalName": "a",
+      "to": "mirror",
+      "evidence": "Mirrors x across the Room (when unmounted), negates the angle and toggles the mirrored flag. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -23943,6 +24265,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sfa.a(I[Lob;)V",
+      "originalName": "a",
+      "to": "setLights",
+      "evidence": "OpenGlToolkit uploads each SceneLight with glLightfv on GL_LIGHT0 + index. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sfa.a(Ljava/lang/Runnable;)Ltw;",
       "originalName": "a",
       "to": "contextForThread",
@@ -24384,6 +24713,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sna.a(Ljava/lang/String;Lms;II)V",
+      "originalName": "a",
+      "to": "queueHint",
+      "evidence": "Builds a MessageOverlay with the text and optional content widget and queues it with a delay.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:so.a(IILae;I)V",
       "originalName": "a",
       "to": "updatePointerState",
@@ -24675,6 +25011,13 @@
       "originalName": "a",
       "to": "createToolkitSprite",
       "evidence": "Creates a ToolkitSprite from the SpriteData through the GraphicsToolkit, or null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sua.a(Lla;I)V",
+      "originalName": "a",
+      "to": "mirror",
+      "evidence": "Mirrors x across the Room (when unmounted), negates the angle and toggles the mirrored flag. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -25539,10 +25882,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ub.a(BLjava/lang/Object;)V",
+      "originalName": "a",
+      "to": "add",
+      "evidence": "Inserts the object at the end.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ub.a(I)I",
+      "originalName": "a",
+      "to": "size",
+      "evidence": "Returns size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ub.a(IILjava/lang/Object;)V",
+      "originalName": "a",
+      "to": "insert",
+      "evidence": "Shifts the elements after the index up by one, growing the array when full, and stores the object.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ub.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ub.a(ZI)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Returns the element at the index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ub.a([Ljava/lang/Object;Z)V",
+      "originalName": "a",
+      "to": "copyInto",
+      "evidence": "Copies the elements into the given array as far as it fits.",
       "confidence": "reviewed"
     },
     {
@@ -28558,7 +28936,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "ab22fc56a36e5cec1c78e6afd65fa9c08e9f931c131e4094bece26583c308c27",
+      "tombracer-names.json": "fd69f0f526dfdaa8c73aa741d49821565d9eaf2cb464e61c265d348eb306eb11",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
