@@ -1340,6 +1340,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ds",
+      "originalName": "ds",
+      "to": "MatchStatistics",
+      "evidence": "Per-player counters that MatchScoringObserver feeds on penalties, destroyed traps and completed rooms; MatchState creates it with the player count.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:dt",
       "originalName": "dt",
       "to": "PlayerSimulation",
@@ -4973,6 +4980,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ds.field_c:[I",
+      "originalName": "field_c",
+      "to": "treasureScore",
+      "evidence": "Per-player total of the treasure values banked on completed rooms.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ds.field_e:[I",
+      "originalName": "field_e",
+      "to": "trapsDestroyed",
+      "evidence": "Per-player count added to when a trap the player affected is destroyed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ds.field_i:[Z",
+      "originalName": "field_i",
+      "to": "penalised",
+      "evidence": "Per-player flag set whenever a penalty is recorded.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:dsa.field_a:[Ljava/lang/String;",
       "originalName": "field_a",
       "to": "componentTypeNames",
@@ -5243,6 +5271,13 @@
       "originalName": "field_C",
       "to": "roundSeed",
       "evidence": "Seed passed to the course generator; the match seed for the first round, then the match seed plus round number.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ff.field_D:Lds;",
+      "originalName": "field_D",
+      "to": "statistics",
+      "evidence": "MatchStatistics created with the player count; MatchScoringObserver updates it.",
       "confidence": "reviewed"
     },
     {
@@ -6212,6 +6247,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hm.field_k:I",
+      "originalName": "field_k",
+      "to": "width",
+      "evidence": "Passed as the width to glTexImage2D.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hm.field_l:I",
+      "originalName": "field_l",
+      "to": "height",
+      "evidence": "Passed as the height to glTexImage2D.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hma.field_d:Lod;",
       "originalName": "field_d",
       "to": "sentinel",
@@ -7159,43 +7208,43 @@
     {
       "symbol": "F:pf.field_a:I",
       "originalName": "field_a",
-      "to": "height",
-      "evidence": "Sprite height; paddedHeight adds the top and bottom insets.",
+      "to": "width",
+      "evidence": "Second constructor argument, the pixel row length; paddedWidth adds the left and right insets.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:pf.field_f:I",
       "originalName": "field_f",
-      "to": "width",
-      "evidence": "Sprite width; paddedWidth adds the left and right insets.",
+      "to": "height",
+      "evidence": "Third constructor argument, the row count; paddedHeight adds the top and bottom insets.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:pf.field_g:I",
       "originalName": "field_g",
-      "to": "insetBottom",
-      "evidence": "Third setInsets argument, added to the height in paddedHeight.",
+      "to": "insetRight",
+      "evidence": "Third setInsets argument, added to the width in paddedWidth.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:pf.field_l:I",
       "originalName": "field_l",
-      "to": "insetTop",
-      "evidence": "First setInsets argument, added to the height in paddedHeight.",
+      "to": "insetLeft",
+      "evidence": "First setInsets argument, added to the width in paddedWidth.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:pf.field_o:I",
       "originalName": "field_o",
-      "to": "insetLeft",
-      "evidence": "Second setInsets argument, added to the width in paddedWidth.",
+      "to": "insetTop",
+      "evidence": "Second setInsets argument, added to the height in paddedHeight.",
       "confidence": "reviewed"
     },
     {
       "symbol": "F:pf.field_v:I",
       "originalName": "field_v",
-      "to": "insetRight",
-      "evidence": "Fourth setInsets argument, added to the width in paddedWidth.",
+      "to": "insetBottom",
+      "evidence": "Fourth setInsets argument, added to the height in paddedHeight.",
       "confidence": "reviewed"
     },
     {
@@ -7847,6 +7896,13 @@
       "originalName": "field_j",
       "to": "type",
       "evidence": "updateType sets it from the preset: Damage 0, Light 1, White Light 2, fire 3 (Heat), Water 4, Ice 5 (Cold), matching gp.effectTypeNames.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uta.field_j:Z",
+      "originalName": "field_j",
+      "to": "open",
+      "evidence": "Whether the console is shown; key handling and drawing are skipped while it is false.",
       "confidence": "reviewed"
     },
     {
@@ -12953,10 +13009,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dm.a(B)Z",
+      "originalName": "a",
+      "to": "unmap",
+      "evidence": "OpenGlVertexBuffer unmaps its OpenGL buffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dm.a(I)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "OpenGlBuffer queues its buffer name for deletion; shared with VertexBuffer. Resolved override family. Resolved override family. Resolved override family. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dm.a(II)V",
+      "originalName": "a",
+      "to": "allocate",
+      "evidence": "OpenGlVertexBuffer grows the buffer to the format stride times the vertex count; OpenGlBuffer grows to a byte size. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dm.a(ZB)Ljaclib/memory/Buffer;",
       "originalName": "a",
       "to": "map",
       "evidence": "Maps the buffer for writing. Body matches sumoblitz OpenGlVertexBuffer (map). Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dm.b(I)Luna;",
+      "originalName": "b",
+      "to": "getFormat",
+      "evidence": "OpenGlVertexBuffer returns its vertex format, whose stride sizes the buffer. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -13177,10 +13261,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ds.a(III)V",
+      "originalName": "a",
+      "to": "recordPenalty",
+      "evidence": "Increments the counter for the penalty kind's category and marks the player penalised.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ds.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ds.b(III)V",
+      "originalName": "b",
+      "to": "addTreasureScore",
+      "evidence": "Adds banked treasure value to the player's total.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ds.d(II)V",
+      "originalName": "d",
+      "to": "markPenalised",
+      "evidence": "Sets the player's penalised flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ds.d(III)V",
+      "originalName": "d",
+      "to": "addTrapsDestroyed",
+      "evidence": "Adds to the player's destroyed trap count.",
       "confidence": "reviewed"
     },
     {
@@ -13835,10 +13947,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eja.a(B)Z",
+      "originalName": "a",
+      "to": "unmap",
+      "evidence": "OpenGlVertexBuffer unmaps its OpenGL buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eja.a(I)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "OpenGlBuffer queues its buffer name for deletion; shared with VertexBuffer. Resolved override family. Resolved override family. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eja.a(II)V",
+      "originalName": "a",
+      "to": "allocate",
+      "evidence": "OpenGlVertexBuffer grows the buffer to the format stride times the vertex count; OpenGlBuffer grows to a byte size.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eja.a(ZB)Ljaclib/memory/Buffer;",
       "originalName": "a",
       "to": "map",
       "evidence": "Maps the buffer for writing. Body matches sumoblitz OpenGlVertexBuffer (map). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eja.b(I)Luna;",
+      "originalName": "b",
+      "to": "getFormat",
+      "evidence": "OpenGlVertexBuffer returns its vertex format, whose stride sizes the buffer.",
       "confidence": "reviewed"
     },
     {
@@ -15606,6 +15746,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fga.a(I)Z",
+      "originalName": "a",
+      "to": "isModal",
+      "evidence": "When a listener returns true the listeners after it are updated as covered; ConsoleWindow returns whether it is open. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fga.a(ZZ)V",
       "originalName": "a",
       "to": "updateScreen",
@@ -17195,6 +17342,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gf.a(B)I",
+      "originalName": "a",
+      "to": "getHeight",
+      "evidence": "OpenGlTexture2D returns the height it uploaded.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gf.a(BZZ)V",
+      "originalName": "a",
+      "to": "setWrap",
+      "evidence": "OpenGlTexture2D sets repeat or clamp-to-edge wrapping for s and t.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gf.a(FB)F",
       "originalName": "a",
       "to": "textureV",
@@ -17206,6 +17367,13 @@
       "originalName": "a",
       "to": "textureU",
       "evidence": "Scales a texel x into a texture coordinate. Body matches reference OpenGlTexture2D (textureU). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gf.b(I)I",
+      "originalName": "b",
+      "to": "getWidth",
+      "evidence": "OpenGlTexture2D returns the width it uploaded.",
       "confidence": "reviewed"
     },
     {
@@ -17267,8 +17435,8 @@
     {
       "symbol": "M:gh.a()I",
       "originalName": "a",
-      "to": "height",
-      "evidence": "SoftwareToolkitSprite returns its height; same role as Sum Oblitz ToolkitSprite.height. Resolved override family.",
+      "to": "width",
+      "evidence": "SoftwareToolkitSprite returns its width (the row length of its pixels). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -17302,29 +17470,29 @@
     {
       "symbol": "M:gh.b()I",
       "originalName": "b",
-      "to": "paddedWidth",
-      "evidence": "Width plus the left and right insets. Resolved override family.",
+      "to": "paddedHeight",
+      "evidence": "Height plus the top and bottom insets. Resolved override family.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:gh.b(IIII)V",
       "originalName": "b",
       "to": "setInsets",
-      "evidence": "Stores the top, left, bottom and right insets. Resolved override family.",
+      "evidence": "Stores the left, top, right and bottom insets. Resolved override family.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:gh.c()I",
       "originalName": "c",
-      "to": "width",
-      "evidence": "SoftwareToolkitSprite returns its width; same role as Sum Oblitz ToolkitSprite.width. Resolved override family.",
+      "to": "height",
+      "evidence": "SoftwareToolkitSprite returns its height (the row count of its pixels). Resolved override family.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:gh.d()I",
       "originalName": "d",
-      "to": "paddedHeight",
-      "evidence": "Height plus the top and bottom insets. Resolved override family.",
+      "to": "paddedWidth",
+      "evidence": "Width plus the left and right insets. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -19043,6 +19211,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hl.a(I)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "OpenGlBuffer queues its buffer name for deletion; shared with VertexBuffer. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.a(II)V",
+      "originalName": "a",
+      "to": "allocate",
+      "evidence": "OpenGlVertexBuffer grows the buffer to the format stride times the vertex count; OpenGlBuffer grows to a byte size. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hl.a(Ljaggl/MapBuffer;I)Z",
       "originalName": "a",
       "to": "unmap",
@@ -19061,6 +19243,20 @@
       "originalName": "f",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hm.a(B)I",
+      "originalName": "a",
+      "to": "getHeight",
+      "evidence": "OpenGlTexture2D returns the height it uploaded. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hm.a(BZZ)V",
+      "originalName": "a",
+      "to": "setWrap",
+      "evidence": "OpenGlTexture2D sets repeat or clamp-to-edge wrapping for s and t. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -19089,6 +19285,13 @@
       "originalName": "b",
       "to": "bind",
       "evidence": "Binds the texture on the toolkit. Body matches sumoblitz OpenGlTexture (bind). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hm.b(I)I",
+      "originalName": "b",
+      "to": "getWidth",
+      "evidence": "OpenGlTexture2D returns the width it uploaded. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -20263,8 +20466,8 @@
     {
       "symbol": "M:j.a()I",
       "originalName": "a",
-      "to": "height",
-      "evidence": "SoftwareToolkitSprite returns its height; same role as Sum Oblitz ToolkitSprite.height. Resolved override family.",
+      "to": "width",
+      "evidence": "SoftwareToolkitSprite returns its width (the row length of its pixels). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -20291,29 +20494,29 @@
     {
       "symbol": "M:j.b()I",
       "originalName": "b",
-      "to": "paddedWidth",
-      "evidence": "Width plus the left and right insets. Resolved override family.",
+      "to": "paddedHeight",
+      "evidence": "Height plus the top and bottom insets. Resolved override family.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:j.b(IIII)V",
       "originalName": "b",
       "to": "setInsets",
-      "evidence": "Stores the top, left, bottom and right insets. Resolved override family.",
+      "evidence": "Stores the left, top, right and bottom insets. Resolved override family.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:j.c()I",
       "originalName": "c",
-      "to": "width",
-      "evidence": "SoftwareToolkitSprite returns its width; same role as Sum Oblitz ToolkitSprite.width. Resolved override family.",
+      "to": "height",
+      "evidence": "SoftwareToolkitSprite returns its height (the row count of its pixels). Resolved override family.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:j.d()I",
       "originalName": "d",
-      "to": "paddedHeight",
-      "evidence": "Height plus the top and bottom insets. Resolved override family.",
+      "to": "paddedWidth",
+      "evidence": "Width plus the left and right insets. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -20963,8 +21166,8 @@
     {
       "symbol": "M:jja.a()I",
       "originalName": "a",
-      "to": "height",
-      "evidence": "SoftwareToolkitSprite returns its height; same role as Sum Oblitz ToolkitSprite.height. Resolved override family.",
+      "to": "width",
+      "evidence": "SoftwareToolkitSprite returns its width (the row length of its pixels). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -20998,29 +21201,29 @@
     {
       "symbol": "M:jja.b()I",
       "originalName": "b",
-      "to": "paddedWidth",
-      "evidence": "Width plus the left and right insets. Resolved override family.",
+      "to": "paddedHeight",
+      "evidence": "Height plus the top and bottom insets. Resolved override family.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:jja.b(IIII)V",
       "originalName": "b",
       "to": "setInsets",
-      "evidence": "Stores the top, left, bottom and right insets. Resolved override family.",
+      "evidence": "Stores the left, top, right and bottom insets. Resolved override family.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:jja.c()I",
       "originalName": "c",
-      "to": "width",
-      "evidence": "SoftwareToolkitSprite returns its width; same role as Sum Oblitz ToolkitSprite.width. Resolved override family.",
+      "to": "height",
+      "evidence": "SoftwareToolkitSprite returns its height (the row count of its pixels). Resolved override family.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:jja.d()I",
       "originalName": "d",
-      "to": "paddedHeight",
-      "evidence": "Height plus the top and bottom insets. Resolved override family.",
+      "to": "paddedWidth",
+      "evidence": "Width plus the left and right insets. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -21133,6 +21336,20 @@
       "originalName": "a",
       "to": "handleKey",
       "evidence": "Routes a key press to the phase, then handles Enter for chat and passes it to the first overlay. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jn.b(II)Z",
+      "originalName": "b",
+      "to": "isActionEnabled",
+      "evidence": "Action 28 depends on a shared condition; every other action is enabled. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jn.c(II)Z",
+      "originalName": "c",
+      "to": "isItemEnabled",
+      "evidence": "False for an item whose action is 28 when the shared condition fails; true otherwise. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -23880,6 +24097,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lia.a(I)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "OpenGlBuffer queues its buffer name for deletion; shared with VertexBuffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lia.a(IIZ)Z",
+      "originalName": "a",
+      "to": "allocate",
+      "evidence": "og stores the stride and grows the buffer to the given byte size. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lia.a(IZ)Ljaclib/memory/Buffer;",
+      "originalName": "a",
+      "to": "mapBuffer",
+      "evidence": "og maps the OpenGL array buffer for writing. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lia.a(Z)Z",
+      "originalName": "a",
+      "to": "unmapBuffer",
+      "evidence": "og unmaps the OpenGL array buffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lj.h(B)Lew;",
       "originalName": "h",
       "to": "getScope",
@@ -25835,8 +26080,8 @@
     {
       "symbol": "M:nh.a()I",
       "originalName": "a",
-      "to": "height",
-      "evidence": "SoftwareToolkitSprite returns its height; same role as Sum Oblitz ToolkitSprite.height.",
+      "to": "width",
+      "evidence": "SoftwareToolkitSprite returns its width (the row length of its pixels).",
       "confidence": "reviewed"
     },
     {
@@ -25877,29 +26122,29 @@
     {
       "symbol": "M:nh.b()I",
       "originalName": "b",
-      "to": "paddedWidth",
-      "evidence": "Width plus the left and right insets.",
+      "to": "paddedHeight",
+      "evidence": "Height plus the top and bottom insets.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:nh.b(IIII)V",
       "originalName": "b",
       "to": "setInsets",
-      "evidence": "Stores the top, left, bottom and right insets.",
+      "evidence": "Stores the left, top, right and bottom insets.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:nh.c()I",
       "originalName": "c",
-      "to": "width",
-      "evidence": "SoftwareToolkitSprite returns its width; same role as Sum Oblitz ToolkitSprite.width.",
+      "to": "height",
+      "evidence": "SoftwareToolkitSprite returns its height (the row count of its pixels).",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:nh.d()I",
       "originalName": "d",
-      "to": "paddedHeight",
-      "evidence": "Height plus the top and bottom insets.",
+      "to": "paddedWidth",
+      "evidence": "Width plus the left and right insets.",
       "confidence": "reviewed"
     },
     {
@@ -27191,6 +27436,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:og.a(I)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "OpenGlBuffer queues its buffer name for deletion; shared with VertexBuffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:og.a(IIZ)Z",
+      "originalName": "a",
+      "to": "allocate",
+      "evidence": "og stores the stride and grows the buffer to the given byte size. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:og.a(IZ)Ljaclib/memory/Buffer;",
+      "originalName": "a",
+      "to": "mapBuffer",
+      "evidence": "og maps the OpenGL array buffer for writing. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:og.a(Z)Z",
+      "originalName": "a",
+      "to": "unmapBuffer",
+      "evidence": "og unmaps the OpenGL array buffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oh.a(II)I",
       "originalName": "a",
       "to": "hashState",
@@ -28129,6 +28402,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(B)I",
+      "originalName": "a",
+      "to": "getHeight",
+      "evidence": "OpenGlTexture2D returns the height it uploaded. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(BZZ)V",
+      "originalName": "a",
+      "to": "setWrap",
+      "evidence": "OpenGlTexture2D sets repeat or clamp-to-edge wrapping for s and t. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(FB)F",
       "originalName": "a",
       "to": "textureV",
@@ -28157,6 +28444,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.b(I)I",
+      "originalName": "b",
+      "to": "getWidth",
+      "evidence": "OpenGlTexture2D returns the width it uploaded. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.e(I)V",
       "originalName": "e",
       "to": "releaseStatics",
@@ -28166,8 +28460,8 @@
     {
       "symbol": "M:pf.a()I",
       "originalName": "a",
-      "to": "height",
-      "evidence": "SoftwareToolkitSprite returns its height; same role as Sum Oblitz ToolkitSprite.height. Resolved override family.",
+      "to": "width",
+      "evidence": "SoftwareToolkitSprite returns its width (the row length of its pixels). Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -28201,8 +28495,8 @@
     {
       "symbol": "M:pf.b()I",
       "originalName": "b",
-      "to": "paddedWidth",
-      "evidence": "Width plus the left and right insets. Resolved override family.",
+      "to": "paddedHeight",
+      "evidence": "Height plus the top and bottom insets. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -28216,21 +28510,21 @@
       "symbol": "M:pf.b(IIII)V",
       "originalName": "b",
       "to": "setInsets",
-      "evidence": "Stores the top, left, bottom and right insets. Resolved override family.",
+      "evidence": "Stores the left, top, right and bottom insets. Resolved override family.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:pf.c()I",
       "originalName": "c",
-      "to": "width",
-      "evidence": "SoftwareToolkitSprite returns its width; same role as Sum Oblitz ToolkitSprite.width. Resolved override family.",
+      "to": "height",
+      "evidence": "SoftwareToolkitSprite returns its height (the row count of its pixels). Resolved override family.",
       "confidence": "reviewed"
     },
     {
       "symbol": "M:pf.d()I",
       "originalName": "d",
-      "to": "paddedHeight",
-      "evidence": "Height plus the top and bottom insets. Resolved override family.",
+      "to": "paddedWidth",
+      "evidence": "Width plus the left and right insets. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -28325,6 +28619,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pia.a(B)I",
+      "originalName": "a",
+      "to": "getHeight",
+      "evidence": "OpenGlTexture2D returns the height it uploaded. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pia.a(BZZ)V",
+      "originalName": "a",
+      "to": "setWrap",
+      "evidence": "OpenGlTexture2D sets repeat or clamp-to-edge wrapping for s and t. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pia.a(FB)F",
       "originalName": "a",
       "to": "textureV",
@@ -28350,6 +28658,13 @@
       "originalName": "b",
       "to": "bind",
       "evidence": "Binds the texture on the toolkit. Body matches sumoblitz OpenGlTexture (bind). Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pia.b(I)I",
+      "originalName": "b",
+      "to": "getWidth",
+      "evidence": "OpenGlTexture2D returns the width it uploaded. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -28420,6 +28735,13 @@
       "originalName": "a",
       "to": "update",
       "evidence": "Per-frame MatchScreen update: spectator switching, phase update, overlays, tutorial hints and stats. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pk.b(IB)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "getActionLabel",
+      "evidence": "Returns the label of a menu action from the label table, with special cases for actions 29 to 31. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -29704,6 +30026,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qm.a(I)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "OpenGlBuffer queues its buffer name for deletion; shared with VertexBuffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qm.a(IIZ)Z",
+      "originalName": "a",
+      "to": "allocate",
+      "evidence": "og stores the stride and grows the buffer to the given byte size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qm.a(IZ)Ljaclib/memory/Buffer;",
+      "originalName": "a",
+      "to": "mapBuffer",
+      "evidence": "og maps the OpenGL array buffer for writing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qm.a(Z)Z",
+      "originalName": "a",
+      "to": "unmapBuffer",
+      "evidence": "og unmaps the OpenGL array buffer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qna.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -29771,6 +30121,20 @@
       "originalName": "a",
       "to": "update",
       "evidence": "Per-frame MatchScreen update: spectator switching, phase update, overlays, tutorial hints and stats. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qp.b(IB)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "getActionLabel",
+      "evidence": "Returns the label of a menu action from the label table, with special cases for actions 29 to 31. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qp.c(II)Z",
+      "originalName": "c",
+      "to": "isItemEnabled",
+      "evidence": "False for an item whose action is 28 when the shared condition fails; true otherwise. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -30485,6 +30849,13 @@
       "originalName": "a",
       "to": "handleKey",
       "evidence": "rfa offers each typed key to the listeners until one returns true; TombRacer handles its debug key codes. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rfa.a(I)Z",
+      "originalName": "a",
+      "to": "isModal",
+      "evidence": "When a listener returns true the listeners after it are updated as covered; ConsoleWindow returns whether it is open. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -31839,10 +32210,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sf.a(B)Z",
+      "originalName": "a",
+      "to": "unmap",
+      "evidence": "OpenGlVertexBuffer unmaps its OpenGL buffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.a(I)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "OpenGlBuffer queues its buffer name for deletion; shared with VertexBuffer. Resolved override family. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.a(II)V",
+      "originalName": "a",
+      "to": "allocate",
+      "evidence": "OpenGlVertexBuffer grows the buffer to the format stride times the vertex count; OpenGlBuffer grows to a byte size. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sf.a(ZB)Ljaclib/memory/Buffer;",
       "originalName": "a",
       "to": "map",
       "evidence": "Maps the buffer for writing. Body matches sumoblitz OpenGlVertexBuffer (map).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.b(I)Luna;",
+      "originalName": "b",
+      "to": "getFormat",
+      "evidence": "OpenGlVertexBuffer returns its vertex format, whose stride sizes the buffer. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -32116,6 +32515,13 @@
       "originalName": "a",
       "to": "handleKey",
       "evidence": "rfa offers each typed key to the listeners until one returns true; TombRacer handles its debug key codes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sia.a(I)Z",
+      "originalName": "a",
+      "to": "isModal",
+      "evidence": "When a listener returns true the listeners after it are updated as covered; ConsoleWindow returns whether it is open.",
       "confidence": "reviewed"
     },
     {
@@ -35087,6 +35493,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uta.a(I)Z",
+      "originalName": "a",
+      "to": "isModal",
+      "evidence": "When a listener returns true the listeners after it are updated as covered; ConsoleWindow returns whether it is open. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uta.a(II)Ljea;",
       "originalName": "a",
       "to": "createSelectionStyle",
@@ -35385,6 +35798,20 @@
       "originalName": "a",
       "to": "update",
       "evidence": "Per-frame MatchScreen update: spectator switching, phase update, overlays, tutorial hints and stats. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vba.b(IB)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "getActionLabel",
+      "evidence": "Returns the label of a menu action from the label table, with special cases for actions 29 to 31. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vba.c(II)Z",
+      "originalName": "c",
+      "to": "isItemEnabled",
+      "evidence": "False for an item whose action is 28 when the shared condition fails; true otherwise. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -37754,6 +38181,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wv.b(IB)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "getActionLabel",
+      "evidence": "Returns the label of a menu action from the label table, with special cases for actions 29 to 31.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wv.b(II)Z",
+      "originalName": "b",
+      "to": "isActionEnabled",
+      "evidence": "Action 28 depends on a shared condition; every other action is enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wv.c(II)Z",
+      "originalName": "c",
+      "to": "isItemEnabled",
+      "evidence": "False for an item whose action is 28 when the shared condition fails; true otherwise.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wv.g(II)I",
       "originalName": "g",
       "to": "getItemY",
@@ -37833,7 +38281,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "0f922ab6b40e56341da0b4cfaa5f638d39211b062c9c1737ad170dc9f9609239",
+      "tombracer-names.json": "3d733b705ccc13219fac0a1acceea7c8bf739335f8a77cd0797309a75b8bf8b9",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
