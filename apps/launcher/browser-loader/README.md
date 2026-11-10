@@ -101,10 +101,24 @@ argument spellings. Retained JS5 verification keys are untouched. ABI v12
 invalidates classes compiled before this fix; users only need to reload once
 the updated Deko source is available, while local account records remain intact.
 
+AOG's readable export omits the successful connection branch in
+`EffectPresentation.a(boolean, int)`. The browser adapter restores that branch
+from the original `tb.a(ZI)Z` bytecode, including packet resets, connection state,
+the preamble and socket-failure handling. Socket writer selection now derives
+the byte array, offset and length from typed parameters and the copy loop,
+so readable names reach the embedded account endpoint. ABI v14 rebuilds older
+cached classes. `test-armies-browser-login.mjs` executes the restored method in
+native Java for pending, fresh, reconnect and failed connections.
+The local endpoint also recognizes AOG's zero-length profile/coat requests and
+returns its version-9 profile, fixed-size coat and empty quicksave metadata with
+the game's own packet lengths. Coat, equipped-spell edits and CRC-checked user
+preferences persist by profile; preferences also complete the menu loading gate.
+
 Validation:
 
 ```sh
 node --test scripts/test-browser-loader.mjs
+node --test scripts/test-armies-browser-login.mjs
 # From the sibling cloner:
 npm run test:games
 npm run test:browser-natives

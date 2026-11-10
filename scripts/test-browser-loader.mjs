@@ -2,7 +2,28 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {configureApplet, createGameLauncher, sourcePatchAbi} from '../apps/launcher/browser-loader/loader.mjs';
 import {introPreparationPolicy} from '../apps/intro/manifest.mjs';
-import {patchLoginEncryption} from '../apps/launcher/browser-loader/game-source-patches.mjs';
+import {patchLoginEncryption, patchSocketWriter} from '../apps/launcher/browser-loader/game-source-patches.mjs';
+
+for (const order of ['sourceOffset + index', 'index + sourceOffset']) {
+  for (const condition of ['index < length', 'length > index', 'index >= length', 'length <= index']) {
+    test(`readable socket writer reaches the endpoint: ${order}, ${condition}`, () => {
+      const source = `final class BufferedSocket implements Runnable {
+    private OutputStream output;
+    final void write(byte[] source, byte guard, int sourceOffset, int length) throws IOException {
+        for (int index = 0; ${condition}; index++) {
+            this.buffer[this.writePosition] = source[${order}];
+        }
+    }
+    public void run() {}
+}`;
+      const patched = patchSocketWriter(source);
+      assert.ok(patched.includes('this.output.write(source, sourceOffset, length);'));
+      assert.ok(!patched.includes('for (int index'));
+      assert.equal(patchSocketWriter(patched), patched);
+      assert.ok(patched.endsWith('    public void run() {}\n}'));
+    });
+  }
+}
 
 for (const [exponent, modulus] of [['param2','param1'],['exponent','modulus'],['e$1','n_2']]) {
   test(`local RSA selection survives parameter naming: ${exponent}, ${modulus}`, () => {
@@ -68,7 +89,7 @@ for (const asynchronous of [false, true]) test(`shared preparation reaches the a
   launcher.configure(controller, {sourceIdentity: 'b168d7edeb104599156b5f908df62dfdc9f3b250',
     runtimeManifest: {jvmOptions: {prepareWasmPreparedUpgradesOnly: true}},
     decoder: {inflate() {}, inflateRaw() {}}});
-  assert.equal(sourcePatchAbi, 'catalog-account-server-v13-custom-escape-level-clear-tow-route');
+  assert.equal(sourcePatchAbi, 'catalog-account-server-v14-armies-login');
   const intro = introPreparationPolicy('d1e394b07ecc5cabd0f5a4aa0801bfa3345db13811a5104e0fa85f0720740b98');
   for (let generation = 0; generation < 2; generation++) {
     const ownPolicy = {maxMethods: 12, priorityMethods: ['Render.draw()V']};

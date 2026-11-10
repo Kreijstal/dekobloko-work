@@ -15,6 +15,7 @@ const geobloxSources = [
   // The RSA adapter changes login bytecode only; retain the same logo helpers.
   ['b168d7edeb104599156b5f908df62dfdc9f3b250', 'catalog-account-server-v12-typed-login-rsa'],
   ['b168d7edeb104599156b5f908df62dfdc9f3b250', 'catalog-account-server-v13-custom-escape-level-clear-tow-route'],
+  ['b168d7edeb104599156b5f908df62dfdc9f3b250', 'catalog-account-server-v14-armies-login'],
 ];
 
 export function geobloxPreparationPolicy(sourceIdentity, patchIdentity) {

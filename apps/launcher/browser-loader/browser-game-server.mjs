@@ -1,6 +1,6 @@
 // Browser-local FunOrb JS5 and account server. Wire layouts follow
 // dekobloko-work/docs/protocol.md; no external game socket is opened.
-import {createEscapeAccountService} from './escape-account-service.mjs';
+import {accountRecordCrc, createEscapeAccountService} from './escape-account-service.mjs';
 const GEOBLOX_LOGIN_MODULUS =
   "11973412243201758229960950560686127507773492912549650743509000901608172722598946199955197779881834924802077886527584849063419486935491686535661281977348827";
 const GEOBLOX_LOGIN_PRIVATE_EXPONENT =
@@ -230,6 +230,7 @@ class GeobloxIsaac {
 
 function frameAccountPacket(state, opcode, payload) {
   const lengths = { 0: 0, 1: 16, 2: -2, 3: -1, 4: -1, 5: -1, 6: -2, 7: -1, 8: -2, 9: -1, 10: -1, 11: -1, 12: -1, 13: -1, 14: 0, 15: 0, 16: -1, 17: -1, 18: 1 };
+  if (game.internalName === 'armiesofgielinor') Object.assign(lengths, {75: 12, 80: -2, 81: -1});
   const framing = lengths[opcode] ?? (payload.length ? -1 : 0);
   const bytes = [(opcode + state.outboundIsaac.next()) & 255];
   if (framing === -1) bytes.push(payload.length & 255);
@@ -263,6 +264,48 @@ function handleEmbeddedAccountPacket(state, opcode, payload) {
   const data = embeddedAccountData(state);
   data.achievements ??= [];
   data.scores ??= [];
+  if (game.internalName === 'armiesofgielinor') {
+    if (opcode === 6) {
+      const intBytes = value => [value >>> 24, value >>> 16, value >>> 8, value];
+      if (payload.length === 1 && payload[0] === 0) {
+        const preferences = data.preferences || [];
+        const reply = [0, preferences.length, ...preferences];
+        frameAccountPacket(state, 5, [...reply, ...intBytes(accountRecordCrc(reply))]);
+      } else if (payload[0] === 1 && payload.length === payload[1] + 6 &&
+        accountRecordCrc(payload.subarray(0, -4)) === readU32(payload, payload.length - 4)) {
+        data.preferences = Array.from(payload.subarray(2, -4));
+        saveEmbeddedAccountData(state, data);
+        frameAccountPacket(state, 5, [1, ...payload.subarray(-4)]);
+      }
+      return;
+    }
+    if (opcode === 69) {
+      // Six (part, colour) pairs; 255 represents a missing decoration.
+      frameAccountPacket(state, 75, data.coat || [0, 0, 255, 0, 255, 0, 0, 0, 255, 0, 0, 0]);
+      return;
+    }
+    if (opcode === 71) {
+      data.coat = Array.from(payload);
+      saveEmbeddedAccountData(state, data);
+      return;
+    }
+    if (opcode === 75) {
+      // PlayerProfile.decode(version 9, includeSpellQuantities=true): 135
+      // quantities, five u16 slots, credit, seven u16 unlock masks, debit,
+      // progression credit and an empty CampaignProgress campaign mask.
+      const profile = [9, ...Array(135).fill(0), ...Array(10).fill(255), ...Array(28).fill(0)];
+      if (data.equippedSpells) profile.splice(136, 10, ...data.equippedSpells);
+      frameAccountPacket(state, 80, profile);
+      // AOG gates its logged-in menu on receiving quicksave metadata too.
+      frameAccountPacket(state, 81, [0]);
+      return;
+    }
+    if (opcode === 76) {
+      data.equippedSpells = Array.from(payload);
+      saveEmbeddedAccountData(state, data);
+      return;
+    }
+  }
   if (opcode === 4) {
     if (payload.length === 23 && payload[0] === 1) {
       if (!data.achievements.includes(payload[1])) data.achievements.push(payload[1]);
@@ -365,6 +408,9 @@ function plainJs5Container(container) {
 
 function processEmbeddedAccountPackets(state) {
   const fixedLengths = new Map([[0, 0], [1, 0], [7, 2], [9, 0], [10, 0], [17, 0], [58, 0], [59, 1], [61, 0], [62, 0], [63, 0]]);
+  if (game.internalName === 'armiesofgielinor') {
+    for (const [opcode, length] of [[69, 0], [71, 12], [75, 0], [76, 10], [81, 0]]) fixedLengths.set(opcode, length);
+  }
   // Opcode 2 is the archive key request: archive byte, group short.
   fixedLengths.set(2, 3);
   while (state.outgoing.length > 0) {

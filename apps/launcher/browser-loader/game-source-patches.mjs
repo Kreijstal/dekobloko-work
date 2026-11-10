@@ -43,12 +43,23 @@ export function patchSocketWriter(source) {
     if (end < 0) return source;
     const body = source.slice(headers.lastIndex, end);
     headers.lastIndex = end + 1;
-    const copy = /this\.\w+\[this\.\w+\] = (param\d+)\[((?:param|var)\w+) \+ ((?:param|var)\w+)\];/.exec(body);
+    const parameters = new Map([...signature.matchAll(/\b(byte\[\]|int|boolean|byte)\s+([A-Za-z_$][\w$]*)\s*(?=[,)])/g)]
+      .map(match => [match[2], match[1]]));
+    const copy = /this\.\w+\[this\.\w+\] = ([A-Za-z_$][\w$]*)\[([A-Za-z_$][\w$]*) \+ ([A-Za-z_$][\w$]*)\];/.exec(body);
     if (!copy) continue;
     const bytes = copy[1];
-    const offset = copy[2].startsWith("param") ? copy[2] : copy[3];
-    const counter = copy[2].startsWith("var") ? copy[2] : copy[3];
-    const limit = new RegExp(`if \\(\\(?${counter} >= (param\\d+)\\)?\\)`).exec(body)?.[1] || new RegExp(`if \\((param\\d+) <= ${counter}\\)`).exec(body)?.[1];
+    if (parameters.get(bytes) !== 'byte[]') continue;
+    const offset = parameters.get(copy[2]) === 'int' ? copy[2] : copy[3];
+    const counter = offset === copy[2] ? copy[3] : copy[2];
+    if (parameters.get(offset) !== 'int' || parameters.has(counter)) continue;
+    // The counter is local; offset and limit are int parameters. This works
+    // for readable names as well as the older paramN/varN exports, and for
+    // both bounded for-loops and while-loops with an explicit exit.
+    const escape = name => name.replace(/[$]/g, '\\$&');
+    const limit = [...parameters].find(([name, type]) => type === 'int' && name !== offset && (
+      new RegExp(`\\b${escape(counter)}\\s*(?:>=|<)\\s*${escape(name)}\\b`).test(body) ||
+      new RegExp(`\\b${escape(name)}\\s*(?:<=|>)\\s*${escape(counter)}\\b`).test(body)
+    ))?.[0];
     if (!limit) continue;
     result += source.slice(cursor, match.index) + `${signature}\n        this.${output}.write(${bytes}, ${offset}, ${limit});\n    }`;
     cursor = end + 1;
@@ -87,6 +98,30 @@ export function selectGameSources(files, gameId) {
 // software-renderer conversion uses the logical canvas size against the smaller
 // cropped buffer. Upload the cropped rectangle and retain its four margins.
 export function patchGameCompatibility(source, sourcePath) {
+  if (sourcePath === 'games/armiesofgielinor/EffectPresentation.java') {
+    // The readable export lost tb.a(ZI)Z's successful socket branch. Restore
+    // the original JAR's offsets 68..156 (SHA-256 97a2342b166f8d22259eda3e84cd04f30861ea8978d676164e913ccb146f1afa).
+    // Without it, login opens sockets but never sends the connection header.
+    return source.replace(`        if (AccountRegistrationForm.field_J.status != 1) {
+        }
+        SpectateRoomRequestSupport.connectionState = DirectByteStorage.field_o;`, `        if (AccountRegistrationForm.field_J.status == 1) {
+          try {
+            MoveAttackRequest.sessionSocket = new BufferedSocket((java.net.Socket) AccountRegistrationForm.field_J.result, wj.field_n);
+            CipherPacketBuffer incoming = ByteStorage.incomingPacket;
+            EmailValidator.outgoingPacket.position = 0;
+            SpectateRoomRequestSupport.connectionState = sg.field_a;
+            incoming.position = 0;
+            QuickChatCommandDefinition.thirdPreviousOpcode = PrintCoatConsoleCommand.secondPreviousOpcode = TurnTimerDial.previousOpcode = param0 ? -2 : -1;
+            ChatMessageWriteSupport.a(MusicPatch.field_t, false, CampaignRewardPreview.field_d, EmailValidator.outgoingPacket, SpriteDropdownMenu.field_v);
+            hb.$cfr$intArgs$a$e9dea5688aa5(83, -1);
+          } catch (java.io.IOException failure) {
+            SpectateRoomRequestSupport.connectionState = DirectByteStorage.field_o;
+          }
+          if (ArmiesOfGielinor.obfuscationControl) SpectateRoomRequestSupport.connectionState = DirectByteStorage.field_o;
+        } else {
+          SpectateRoomRequestSupport.connectionState = DirectByteStorage.field_o;
+        }`);
+  }
   if (sourcePath === 'games/armiesofgielinor/qv.java') {
     // Older cloned heaps incorrectly allocate primitive rows for a partially
     // dimensioned int[][][]. Explicit reference-array allocations preserve
