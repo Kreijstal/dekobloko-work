@@ -284,7 +284,7 @@ export const reviewedNames = [
   ["M:em.a(ILdj;)V", "setBirthDateValidator", "Body closely matches pool BirthDateInputWidget.setBirthDateValidator."],
   ["M:em.a(Ljava/lang/String;IILcf;Z)V", "drawCenteredLabel", "Body closely matches pool BirthDateInputWidget.drawCenteredLabel."],
   ["M:em.d(B)Ljava/lang/String;", "getHoverText", "Body closely matches pool BirthDateInputWidget.getHoverText."],
-  ["M:em.g(B)I", "getMonthIndex", "Body closely matches pool BirthDateInputWidget.getMonthIndex."],
+  ["M:em.g(B)I", "getYear", "Parses the third, 40-pixel-wide text field (the four-digit year); day and zero-based month come from the other two fields."],
   ["M:eo.a(B)V", "releaseStatics", "Sets every static field of the class to null and has no other effect."],
   ["M:ep.a(IIIIIII)V", "drawFlatTriangle", "Body is token-identical to bachelorfridge TriangleRasterizer.drawFlatTriangle."],
   ["M:ep.a([IIIIII)V", "drawFlatSpan", "Body is token-identical to the shared TriangleRasterizer span fill."],
