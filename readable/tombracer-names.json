@@ -2816,7 +2816,38 @@
     ["l","a","(Lrta;I)I","voiceVolume","Combines channel volume, expression, note velocity, master volume and decay into a voice volume, as Sum Oblitz's voiceVolume."],
     ["l","b","(ILrta;)I","voicePan","Scales the channel pan by the voice's pan position, as Sum Oblitz's voicePan."],
     ["l","a","(IZI)V","changeProgram","Sets a channel's program and clears its note-to-voice table when it changes."],
-    ["l","d","(II)V","releasePortamentoVoices","When the channel's flag 2 is set, starts the release of its voices that have no note slot."]
+    ["l","d","(II)V","releasePortamentoVoices","When the channel's flag 2 is set, starts the release of its voices that have no note slot."],
+    ["v","c","(I)V","drawDebugInfo","Draws the 'unack' and 'received' counters of the protocol."],
+    ["v","d","(I)Ltt;","pollReceivedAction","Takes the next received S2CActionPacket from the receive queue."],
+    ["fia","a","(IIBLjava/lang/Object;I)Lnaa;","enqueueTask","Queues an AsyncRequest of the given task type for the dispatcher thread."],
+    ["fia","a","(Ljava/lang/Runnable;II)Lnaa;","startThread","Queues a request to start a thread for the runnable."],
+    ["fia","a","(Ljava/net/URL;I)Lnaa;","requestUrlStream","Queues a request to open a stream to the URL."],
+    ["fia","a","(Ljava/awt/Frame;I)Lnaa;","requestExitFullscreen","Queues a request to leave fullscreen for the frame."],
+    ["fia","a","(IIIBI)Lnaa;","requestEnterFullscreen","Queues task 6 with the packed display mode."],
+    ["fia","a","(I)Lnaa;","requestDisplayModes","Queues task 5, which lists the fullscreen display modes."],
+    ["fia","b","(I)Lnaa;","requestClipboardContents","Queues task 18, which reads the system clipboard."],
+    ["fia","a","(BLjava/awt/datatransfer/Transferable;)Lnaa;","requestSetClipboard","Queues task 19, which puts the transferable on the system clipboard."],
+    ["fia","a","(ILjava/lang/String;I)Lnaa;","requestSocket","Queues a request to open a socket to the host and port."],
+    ["fia","a","(ILjava/lang/String;ZI)Lnaa;","requestSocketInternal","Shared helper that queues the socket request task."],
+    ["fia","a","(ILjava/lang/String;Ljava/lang/Class;)Lnaa;","requestDeclaredField","Queues a reflective getDeclaredField lookup."],
+    ["fia","a","(I[Ljava/lang/Class;Ljava/lang/String;Ljava/lang/Class;)Lnaa;","requestDeclaredMethod","Queues a reflective getDeclaredMethod lookup."],
+    ["fia","a","([BLjava/io/File;Z)Z","writeFileBytes","Writes the bytes to the file, as Sum Oblitz's writeFileBytes."],
+    ["jo","c","(I)I","getVerticalPageFraction","Viewport height over content height in 16.16 fixed point, as in Armies of Gielinor."],
+    ["maa","a","()V","release","Drops the payload and the per-track arrays."],
+    ["maa","b","(I)I","readMessage","Reads the next message of a track through readNextMessage."],
+    ["maa","c","()I","trackCount","Returns the number of tracks."],
+    ["maa","d","(I)J","tickTime","Converts a tick to time from the tempo base and ticks."],
+    ["maa","e","()V","markTrackDone","Sets the buffer position to -1."],
+    ["maa","e","(I)V","seekTrack","Moves the buffer to a track's saved position."],
+    ["maa","f","(I)V","saveTrackPosition","Stores the buffer position as the track's position."],
+    ["maa","g","()Z","isReady","True while a payload is loaded."],
+    ["qia","j","()I","getStepMagnitude","Returns the absolute sample step."],
+    ["qia","m","()Z","isRamping","True while a volume or pan ramp has steps left."],
+    ["qia","l","()I","getVolume","Returns the volume, or 0 once the stream has been stopped."],
+    ["qia","f","()I","getPan","Returns the pan, or -1 when negative."],
+    ["asa","a","(ZIII)V","setTranslation","Sets the identity rotation with the given x, y and z translation, as Sum Oblitz's AffineTransform3D.setTranslation."],
+    ["asa","a","(FIFF)V","translate","Adds float offsets to the translation."],
+    ["asa","b","(II)V","setRotationX","Sets a rotation about the x axis by a 16384-step angle with zero translation, as Sum Oblitz's setRotationX."]
   ],
   "fields": [
     ["fua","field_c","[Ljava/lang/String;","behaviourTypeNames","33 display names indexed by the behaviour type id that bda.readBehaviour dispatches on."],
@@ -3355,6 +3386,7 @@
     ["uh","field_q","I","z","Subtracted from the render z in getInfluence."],
     ["uh","field_g","Z","disabled","getInfluence returns -1 while it is set."],
     ["sva","field_b","Lvna;","lightSources","LightSources added by addLightSource; the lights for each renderable are chosen from them."],
-    ["uq","field_e","Lpca;","cell","TileGridCell the renderable belongs to."]
+    ["uq","field_e","Lpca;","cell","TileGridCell the renderable belongs to."],
+    ["v","field_h","Lvna;","unacknowledged","Sent actions not yet acknowledged; the debug overlay prints its size as 'unack'."]
   ]
 }
