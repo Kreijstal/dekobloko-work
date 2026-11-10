@@ -808,6 +808,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bo",
+      "originalName": "bo",
+      "to": "GamePacket",
+      "evidence": "Interface with one BitPacketBuffer reader and one writer, implemented by the S2C/C2S packets whose toString names them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bqa",
+      "originalName": "bqa",
+      "to": "S2CNewRoomPacket",
+      "evidence": "toString prints \"S2CNewRoomPacket (force:, playerid:, roomid:, course ticks:, room ticks:, disregard:, treasure:)\".",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bs",
       "originalName": "bs",
       "to": "GameEvent",
@@ -819,6 +833,20 @@
       "originalName": "bu",
       "to": "JavaSoundAudioOutput",
       "evidence": "AudioOutput backed by a javax.sound SourceDataLine and AudioFormat.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cf",
+      "originalName": "cf",
+      "to": "S2CRoundResultPacket",
+      "evidence": "toString prints \"S2CRoundResultPacket: winner: totals:\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cfa",
+      "originalName": "cfa",
+      "to": "CommonChooseReward",
+      "evidence": "toString prints \"CommonChooseReward[ finished= takenCount= currentPos= currentPlayerId= reward={} currentPlayerTicks=]\".",
       "confidence": "reviewed"
     },
     {
@@ -857,6 +885,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dba",
+      "originalName": "dba",
+      "to": "C2SSubmitSettingsPacket",
+      "evidence": "toString prints \"C2SSubmitSettingsPacket: graphics mode: Sfx vol: Music Vol:\".",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:df",
       "originalName": "df",
       "to": "RevolverItemComponent",
@@ -875,6 +910,13 @@
       "originalName": "dt",
       "to": "PlayerSimulation",
       "evidence": "Holds the tick counter, Player and rooms; prints \"DUMPING STATE on tick\" and \"Player:\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ea",
+      "originalName": "ea",
+      "to": "C2SActionPacket",
+      "evidence": "toString prints \"C2SActionPacket hash: round:\" followed by its orders.",
       "confidence": "reviewed"
     },
     {
@@ -980,6 +1022,13 @@
       "originalName": "ge",
       "to": "ShooterComponent",
       "evidence": "Abstract base of exactly the arrow, laser, flame, blade and white-light shooter components.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gpa",
+      "originalName": "gpa",
+      "to": "SwitchableId",
+      "evidence": "toString prints \"SwitchableID: <id> dud: <flag>\"; Behaviour keeps two of them.",
       "confidence": "reviewed"
     },
     {
@@ -1274,6 +1323,13 @@
       "originalName": "mh",
       "to": "DoorwayComponent",
       "evidence": "rn.createComponent builds it for types 20, 21, 44, 45, which rn's constructor labels \"Door 3x1\", \"Door 4x1\", \"Empty Doorway 3x1\", \"Empty Doorway 4x1\" in dsa.field_a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mi",
+      "originalName": "mi",
+      "to": "ConsoleToken",
+      "evidence": "toString prints Method{}, Number{}, Boolean{}, Char{}, String{}, ArgStart, ArgEnd or ArgComma by token kind.",
       "confidence": "reviewed"
     },
     {
@@ -1648,6 +1704,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:tt",
+      "originalName": "tt",
+      "to": "S2CActionPacket",
+      "evidence": "toString prints \"S2CActionPacket playerOrders:\".",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:tta",
       "originalName": "tta",
       "to": "KeyItemComponent",
@@ -1673,6 +1736,13 @@
       "originalName": "uea",
       "to": "BrazierComponent",
       "evidence": "rn.createComponent builds it for type 7, which rn's constructor labels \"Brazier\" in dsa.field_a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ufa",
+      "originalName": "ufa",
+      "to": "PlayerProfile",
+      "evidence": "toString prints \"Profile - RoomsComplete[] CharUnlocked[] CourUnlocked[] WorldMedals[]\".",
       "confidence": "reviewed"
     },
     {
@@ -1718,10 +1788,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:up",
+      "originalName": "up",
+      "to": "Effect",
+      "evidence": "toString prints \"Effect: preset <preset>, size <size>\".",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:uqa",
       "originalName": "uqa",
       "to": "ConstrainToCircleLocomotor",
       "evidence": "ki.readLocomotor builds it for type 8, which the locomotor name table ce.field_n labels \"Constrain To Circle\". Extends osa.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vca",
+      "originalName": "vca",
+      "to": "S2CEventPacket",
+      "evidence": "toString returns \"S2CEventPacket\"; decode reads one PendingEvent.",
       "confidence": "reviewed"
     },
     {
@@ -1865,10 +1949,143 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bqa.field_a:I",
+      "originalName": "field_a",
+      "to": "roomTicks",
+      "evidence": "S2CNewRoomPacket.toString prints this value with its label and decode reads it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bqa.field_b:I",
+      "originalName": "field_b",
+      "to": "courseTicks",
+      "evidence": "S2CNewRoomPacket.toString prints this value with its label and decode reads it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bqa.field_c:I",
+      "originalName": "field_c",
+      "to": "roomId",
+      "evidence": "S2CNewRoomPacket.toString prints this value with its label and decode reads it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bqa.field_d:[I",
+      "originalName": "field_d",
+      "to": "treasure",
+      "evidence": "decode fills it with 8-bit values and formatTreasure joins them for the \"treasure:\" label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bqa.field_e:Z",
+      "originalName": "field_e",
+      "to": "force",
+      "evidence": "S2CNewRoomPacket.toString prints this value with its label and decode reads it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bqa.field_f:I",
+      "originalName": "field_f",
+      "to": "disregard",
+      "evidence": "S2CNewRoomPacket.toString prints this value with its label and decode reads it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bqa.field_h:I",
+      "originalName": "field_h",
+      "to": "playerId",
+      "evidence": "S2CNewRoomPacket.toString prints this value with its label and decode reads it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ce.field_n:[Ljava/lang/String;",
       "originalName": "field_n",
       "to": "locomotorTypeNames",
       "evidence": "17 display names indexed by the locomotor type id that ki.readLocomotor dispatches on.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cf.field_b:[I",
+      "originalName": "field_b",
+      "to": "totals",
+      "evidence": "S2CRoundResultPacket.toString prints these as the totals.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cf.field_d:I",
+      "originalName": "field_d",
+      "to": "winner",
+      "evidence": "S2CRoundResultPacket.toString prints it as the winner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cf.field_g:I",
+      "originalName": "field_g",
+      "to": "playerCount",
+      "evidence": "decode reads it first and sizes every per-player array by it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cfa.field_a:I",
+      "originalName": "field_a",
+      "to": "currentPlayerTicks",
+      "evidence": "CommonChooseReward.toString prints this value under the same label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cfa.field_d:I",
+      "originalName": "field_d",
+      "to": "currentPos",
+      "evidence": "CommonChooseReward.toString prints this value under the same label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cfa.field_e:Z",
+      "originalName": "field_e",
+      "to": "finished",
+      "evidence": "CommonChooseReward.toString prints this value under the same label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cfa.field_f:I",
+      "originalName": "field_f",
+      "to": "takenCount",
+      "evidence": "CommonChooseReward.toString prints this value under the same label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cfa.field_h:I",
+      "originalName": "field_h",
+      "to": "currentPlayerId",
+      "evidence": "CommonChooseReward.toString prints this value under the same label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cfa.field_i:[I",
+      "originalName": "field_i",
+      "to": "reward",
+      "evidence": "CommonChooseReward.toString prints this value under the same label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dba.field_e:I",
+      "originalName": "field_e",
+      "to": "musicVolume",
+      "evidence": "C2SSubmitSettingsPacket.toString prints it as the Music Vol.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dba.field_f:I",
+      "originalName": "field_f",
+      "to": "soundEffectsVolume",
+      "evidence": "C2SSubmitSettingsPacket.toString prints it as the Sfx vol.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dba.field_h:I",
+      "originalName": "field_h",
+      "to": "graphicsMode",
+      "evidence": "C2SSubmitSettingsPacket.toString prints it as the graphics mode (4 bits).",
       "confidence": "reviewed"
     },
     {
@@ -1897,6 +2114,27 @@
       "originalName": "field_g",
       "to": "player",
       "evidence": "PlayerSimulation prints this Player in its state dump.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ea.field_f:I",
+      "originalName": "field_f",
+      "to": "hash",
+      "evidence": "C2SActionPacket.toString prints it as the hash.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ea.field_g:[I",
+      "originalName": "field_g",
+      "to": "orders",
+      "evidence": "C2SActionPacket.toString appends each entry; decode reads each as 7 bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ea.field_m:I",
+      "originalName": "field_m",
+      "to": "round",
+      "evidence": "C2SActionPacket.toString prints it as the round.",
       "confidence": "reviewed"
     },
     {
@@ -1963,6 +2201,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gpa.field_c:Z",
+      "originalName": "field_c",
+      "to": "dud",
+      "evidence": "SwitchableId.toString prints it as dud.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gpa.field_d:I",
+      "originalName": "field_d",
+      "to": "id",
+      "evidence": "SwitchableId.toString prints it as the SwitchableID.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hca.field_H:I",
       "originalName": "field_H",
       "to": "velocityX",
@@ -2005,6 +2257,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kh.field_i:I",
+      "originalName": "field_i",
+      "to": "bitPosition",
+      "evidence": "readBits and begin/endBitAccess advance this bit index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kh.field_k:I",
+      "originalName": "field_k",
+      "to": "bitsLeftInByte",
+      "evidence": "writeBits fills the current byte while this many bits remain free.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kh.field_n:Lqea;",
+      "originalName": "field_n",
+      "to": "opcodeCipher",
+      "evidence": "readCipheredOpcode and writeCipheredOpcode draw from this IsaacCipher.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:la.field_N:I",
       "originalName": "field_N",
       "to": "courseIndex",
@@ -2037,6 +2310,20 @@
       "originalName": "field_d",
       "to": "context",
       "evidence": "ClientException keeps the context text passed to its constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_m:Ljava/lang/String;",
+      "originalName": "field_m",
+      "to": "text",
+      "evidence": "ConsoleToken.toString prints it inside the kind label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_p:I",
+      "originalName": "field_p",
+      "to": "kind",
+      "evidence": "ConsoleToken.toString compares it with each token-kind constant.",
       "confidence": "reviewed"
     },
     {
@@ -2110,6 +2397,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:tt.field_f:[[I",
+      "originalName": "field_f",
+      "to": "playerOrders",
+      "evidence": "S2CActionPacket.decode reads 7-bit orders per player when the player flag is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tt.field_h:[Z",
+      "originalName": "field_h",
+      "to": "hasPlayerOrders",
+      "evidence": "S2CActionPacket.decode reads one flag per player before reading that player's orders.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ufa.field_m:Ljava/util/BitSet;",
+      "originalName": "field_m",
+      "to": "coursesUnlocked",
+      "evidence": "PlayerProfile.toString prints it as CourUnlocked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ufa.field_n:[I",
+      "originalName": "field_n",
+      "to": "worldMedals",
+      "evidence": "PlayerProfile.toString prints each entry under WorldMedals.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ufa.field_o:Ljava/util/BitSet;",
+      "originalName": "field_o",
+      "to": "roomsComplete",
+      "evidence": "PlayerProfile.toString prints it as RoomsComplete.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ufa.field_s:Ljava/util/BitSet;",
+      "originalName": "field_s",
+      "to": "charactersUnlocked",
+      "evidence": "PlayerProfile.toString prints it as CharUnlocked.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ug.field_r:[Ljava/lang/String;",
       "originalName": "field_r",
       "to": "mazeGeneratorTypeNames",
@@ -2128,6 +2457,27 @@
       "originalName": "field_h",
       "to": "position",
       "evidence": "PacketBuffer cursor advanced by reads and writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:up.field_b:I",
+      "originalName": "field_b",
+      "to": "size",
+      "evidence": "Effect.toString prints it as the size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:up.field_f:I",
+      "originalName": "field_f",
+      "to": "preset",
+      "evidence": "Effect.toString prints it as the preset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vca.field_a:Lpi;",
+      "originalName": "field_a",
+      "to": "event",
+      "evidence": "S2CEventPacket.decode stores the PendingEvent read from the buffer here.",
       "confidence": "reviewed"
     },
     {
@@ -2166,10 +2516,920 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:TombRacer.d(I)V",
+      "originalName": "d",
+      "to": "shutdownGame",
+      "evidence": "Abstract hook GameApplet.shutdown calls inside its first try block. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:TombRacer.e(I)V",
+      "originalName": "e",
+      "to": "clearAllStatics",
+      "evidence": "Abstract hook GameApplet.shutdown calls last; TombRacer implements it by calling every class's static release method. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:TombRacer.h(I)V",
+      "originalName": "h",
+      "to": "initializeGame",
+      "evidence": "Abstract hook GameApplet.run calls once after creating the canvas and before the main loop. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:TombRacer.y(I)V",
+      "originalName": "y",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aaa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ab.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aba.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ad.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ada.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.e(B)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:afa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aia.i(I)V",
+      "originalName": "i",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ak.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aka.o(B)V",
+      "originalName": "o",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ala.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:an.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ao.i(I)V",
+      "originalName": "i",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aoa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aoa.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aoa.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ap.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ap.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ap.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:apa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aq.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aqa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ara.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asa.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:at.i(B)V",
+      "originalName": "i",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aua.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ava.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aw.A(I)V",
+      "originalName": "A",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.h(B)V",
+      "originalName": "h",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bba.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bca.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bd.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bda.a(ZBLla;Lkh;)Lnv;",
       "originalName": "a",
       "to": "readBehaviour",
       "evidence": "Throws \"Unrecognised behaviour type\" for a bad id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.d()V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bf.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bfa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bg.e(B)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bga.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bga.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bga.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bia.C(I)V",
+      "originalName": "C",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bja.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bl.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bm.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bn.d(Z)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bo.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bo.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:boa.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bp.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bpa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bq.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bqa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bqa.a(I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatTreasure",
+      "evidence": "Joins the treasure counts with commas for toString.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bqa.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bqa.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bra.i(B)V",
+      "originalName": "i",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bs.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bsa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bt.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bta.d(Z)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bv.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bva.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bw.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:c.m(I)V",
+      "originalName": "m",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cb.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cba.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cea.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cfa.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cha.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cia.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cj.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cla.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cm.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cm.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cm.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cna.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cp.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cq.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cr.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cra.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ct.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cu.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cua.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cv.n(B)V",
+      "originalName": "n",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cva.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:daa.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:db.h(B)V",
+      "originalName": "h",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dba.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dba.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dba.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dca.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dd.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dda.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dea.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.s(B)V",
+      "originalName": "s",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dfa.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dga.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dia.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dka.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dl.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dma.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dna.r(B)V",
+      "originalName": "r",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dp.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dpa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dq.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dqa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dra.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ds.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dsa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
       "confidence": "reviewed"
     },
     {
@@ -2180,10 +3440,703 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dt.n(I)V",
+      "originalName": "n",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dta.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:du.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dua.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dva.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dw.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ea.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:efa.c(Z)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ega.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eh.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eia.l(I)V",
+      "originalName": "l",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eka.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ela.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:em.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ena.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eo.x(B)V",
+      "originalName": "x",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eoa.b()V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.j(I)V",
+      "originalName": "j",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:epa.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eq.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.s(B)V",
+      "originalName": "s",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:era.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:es.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:esa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eta.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eu.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eua.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fca.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fd.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fda.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fe.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ff.a(IIIII)V",
       "originalName": "a",
       "to": "resyncPlayerToRoom",
       "evidence": "Throws \"Could not resync player to room\" when the room is missing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fg.b()V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fha.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fk.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fka.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fla.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fma.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fn.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fna.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:foa.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:foa.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:foa.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fp.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fpa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fq.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fr.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fra.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fs.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fta.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fua.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fv.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fva.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fw.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:g.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.A(I)V",
+      "originalName": "A",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gba.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gca.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.e(Z)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gda.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.r(B)V",
+      "originalName": "r",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gea.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gfa.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gg.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gga.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gh.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gha.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gia.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gka.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gla.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gn.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:go.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gp.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gpa.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gqa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gsa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gta.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gu.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gv.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:haa.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hb.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hba.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hd.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hda.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:he.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.g(B)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hg.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hga.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hia.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hj.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hk.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hka.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hla.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hm.g(B)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
       "confidence": "reviewed"
     },
     {
@@ -2201,10 +4154,654 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hma.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hna.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hoa.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hq.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hqa.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hra.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hsa.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ht.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hu.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hua.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hv.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hva.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hw.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iaa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ida.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iea.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ifa.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iga.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iha.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iia.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ija.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ik.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:in.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ina.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:io.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ioa.i(I)V",
+      "originalName": "i",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ip.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ipa.D(I)V",
+      "originalName": "D",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iqa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ir.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ira.j(B)V",
+      "originalName": "j",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:is.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:it.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iw.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaa.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.s(B)V",
+      "originalName": "s",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jd.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jea.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jf.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jga.a(BLcn;)V",
       "originalName": "a",
       "to": "loadStrings",
       "evidence": "Loads keyed strings such as playtutorial into static fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.D(I)V",
+      "originalName": "D",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jia.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jja.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jk.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jl.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jla.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jm.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jma.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jn.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jna.a(B)Z",
+      "originalName": "a",
+      "to": "isHostAllowed",
+      "evidence": "Always returns true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jna.a(BZ)V",
+      "originalName": "a",
+      "to": "shutdown",
+      "evidence": "Runs the shutdown hooks once, exits when hosted in a frame and prints \"Shutdown complete - clean:\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jna.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "reportError",
+      "evidence": "Prints \"error_game_\" plus the code and opens the matching error_game_*.ws page.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jna.a(Z)V",
+      "originalName": "a",
+      "to": "tick",
+      "evidence": "Abstract update hook GameApplet.runUpdateTick calls after recording the tick time.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jna.a(ZIIIIILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "startAppletShell",
+      "evidence": "Rejects a second load with \"alreadyloaded\", stores the frame size and starts the PlatformTaskDispatcher.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jna.b(B)V",
+      "originalName": "b",
+      "to": "recreateCanvas",
+      "evidence": "Removes the old canvas and installs a new DelegatingCanvas in the hosting container.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jna.c(I)V",
+      "originalName": "c",
+      "to": "draw",
+      "evidence": "Abstract hook GameApplet.runDrawPass calls after the fps bookkeeping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jna.d(I)V",
+      "originalName": "d",
+      "to": "shutdownGame",
+      "evidence": "Abstract hook GameApplet.shutdown calls inside its first try block.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jna.e(I)V",
+      "originalName": "e",
+      "to": "clearAllStatics",
+      "evidence": "Abstract hook GameApplet.shutdown calls last; TombRacer implements it by calling every class's static release method.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jna.f(I)V",
+      "originalName": "f",
+      "to": "runDrawPass",
+      "evidence": "Records the frame time for the fps estimate, re-applies the canvas size every 50 passes and calls draw.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jna.g(I)V",
+      "originalName": "g",
+      "to": "runUpdateTick",
+      "evidence": "Records the tick time in a 32-entry ring and calls the tick hook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jna.h(I)V",
+      "originalName": "h",
+      "to": "initializeGame",
+      "evidence": "Abstract hook GameApplet.run calls once after creating the canvas and before the main loop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jo.g(B)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jq.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jr.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jra.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:js.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jsa.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jta.c(Z)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ju.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jv.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jw.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kd.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.T(I)V",
+      "originalName": "T",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kea.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kga.n(B)V",
+      "originalName": "n",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.a(BII)V",
+      "originalName": "a",
+      "to": "writeBits",
+      "evidence": "BitPacketBuffer bit cursor: masks the value to the bit count and packs it MSB-first into the payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.a(I[I)V",
+      "originalName": "a",
+      "to": "initializeCipher",
+      "evidence": "Creates the IsaacCipher from the seed array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.b(BI)I",
+      "originalName": "b",
+      "to": "readBits",
+      "evidence": "BitPacketBuffer bit cursor: assembles the requested number of bits MSB-first from the payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.g(B)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.h(B)V",
+      "originalName": "h",
+      "to": "beginBitAccess",
+      "evidence": "BitPacketBuffer bit cursor: sets the bit position to position * 8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.i(B)V",
+      "originalName": "i",
+      "to": "endBitAccess",
+      "evidence": "BitPacketBuffer bit cursor: rounds the bit position up to the next byte and stores it as position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.i(I)V",
+      "originalName": "i",
+      "to": "beginBitWrite",
+      "evidence": "BitPacketBuffer bit cursor: clears the current byte and sets the free-bit count; packet encoders call it with 8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.j(I)I",
+      "originalName": "j",
+      "to": "readCipheredOpcode",
+      "evidence": "Returns the next byte minus the next ISAAC output, masked to 0-255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.k(I)V",
+      "originalName": "k",
+      "to": "endBitWrite",
+      "evidence": "BitPacketBuffer bit cursor: advances position past a partly filled byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.k(II)V",
+      "originalName": "k",
+      "to": "writeCipheredOpcode",
+      "evidence": "Writes the value plus the next ISAAC output as one byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kha.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
       "confidence": "reviewed"
     },
     {
@@ -2215,10 +4812,171 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ki.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kia.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kka.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kla.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kma.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kn.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kna.y(I)V",
+      "originalName": "y",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kp.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kpa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kr.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kra.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ksa.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kt.A(I)V",
+      "originalName": "A",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kta.b()V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ku.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kua.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kv.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kva.i(I)V",
+      "originalName": "i",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kw.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.d(Z)V",
       "originalName": "d",
       "to": "dumpDebug",
       "evidence": "Prints \"Rooms ID:\" and the projectile list.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:laa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
       "confidence": "reviewed"
     },
     {
@@ -2229,10 +4987,591 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lba.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.e(Z)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lca.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ld.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lda.r(B)V",
+      "originalName": "r",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lea.r(B)V",
+      "originalName": "r",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lfa.i(I)V",
+      "originalName": "i",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lga.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lha.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:li.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lja.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lka.a(ILkh;I)Lbs;",
       "originalName": "a",
       "to": "readEvent",
       "evidence": "Reads an event from the stream; \"Event type unrecognised\" on a bad id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lm.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lma.n(B)V",
+      "originalName": "n",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lo.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lpa.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lq.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lqa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lra.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lt.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lta.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lta.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lta.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lu.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lva.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lw.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:maa.b()V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mba.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.g(B)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mca.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.A(I)V",
+      "originalName": "A",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:me.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mh.A(I)V",
+      "originalName": "A",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mha.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mi.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.s(B)V",
+      "originalName": "s",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mka.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mma.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mna.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mpa.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mq.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:msa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mu.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mua.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nb.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nba.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nc.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nda.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nea.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nfa.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ng.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nga.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nia.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.e(B)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nka.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nla.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nm.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nma.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:npa.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nr.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nr.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nr.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nra.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nra.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nra.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ns.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nsa.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nta.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nv.j(I)V",
+      "originalName": "j",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nw.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:o.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oba.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oc.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oca.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
       "confidence": "reviewed"
     },
     {
@@ -2264,10 +5603,234 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oda.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:of.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ofa.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oia.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oj.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oka.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oma.r(B)V",
+      "originalName": "r",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:on.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ona.A(I)V",
+      "originalName": "A",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.j(I)V",
+      "originalName": "j",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ooa.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:op.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:opa.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:or.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:osa.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ot.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ota.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ou.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ova.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ow.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pba.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pc.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pca.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pd.l(I)V",
+      "originalName": "l",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pda.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ph.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pha.a(Lkh;Lla;I)Lib;",
       "originalName": "a",
       "to": "readSpawner",
       "evidence": "Throws \"Unrecognised spawner type\" for a bad id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pk.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pka.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pla.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
       "confidence": "reviewed"
     },
     {
@@ -2299,10 +5862,409 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pn.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pna.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:po.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:poa.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ppa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pq.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ps.s(B)V",
+      "originalName": "s",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pt.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pta.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pu.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pua.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pv.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qaa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qb.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qda.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qea.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qf.g(B)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qfa.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qha.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qka.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qna.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qo.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qoa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qp.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qpa.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qpa.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qpa.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qq.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qqa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qr.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qra.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qu.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qw.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:r.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ra.B(I)V",
+      "originalName": "B",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ra.a(BLla;Z)Lro;",
       "originalName": "a",
       "to": "createPathMove",
       "evidence": "Constructs and configures a PathMoveLocomotor for this component.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.g(B)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rba.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rd.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rf.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rfa.a(Z)V",
+      "originalName": "a",
+      "to": "tick",
+      "evidence": "Abstract update hook GameApplet.runUpdateTick calls after recording the tick time. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rfa.c(I)V",
+      "originalName": "c",
+      "to": "draw",
+      "evidence": "Abstract hook GameApplet.runDrawPass calls after the fps bookkeeping. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rg.h(B)V",
+      "originalName": "h",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rga.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rha.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ria.i(I)V",
+      "originalName": "i",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rja.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rl.d(Z)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rla.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rm.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rma.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
       "confidence": "reviewed"
     },
     {
@@ -2341,6 +6303,160 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rpa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rq.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rr.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rra.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rsa.j(B)V",
+      "originalName": "j",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rt.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rta.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ru.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rua.g(Z)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rv.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:s.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sba.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sd.g(B)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sda.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:se.e(B)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sea.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sg.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sga.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.B(I)V",
+      "originalName": "B",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sj.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sja.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sk.a(B)Lvg;",
       "originalName": "a",
       "to": "next",
@@ -2376,6 +6492,657 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sk.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ska.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sl.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sla.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sma.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:spa.d(Z)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sq.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sqa.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sra.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ssa.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:st.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sta.h(B)V",
+      "originalName": "h",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sv.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ta.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:taa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tba.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tca.D(I)V",
+      "originalName": "D",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:td.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tda.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tea.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tfa.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tg.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tga.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:th.g(B)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tha.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tia.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tja.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tka.c(B)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tl.l(I)V",
+      "originalName": "l",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tla.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tn.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tna.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:to.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tp.t(B)V",
+      "originalName": "t",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tq.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tqa.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tr.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ts.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tt.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tt.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tu.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tv.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tw.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ua.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ua.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ua.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uaa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ub.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uba.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uc.E(I)V",
+      "originalName": "E",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uda.h(I)V",
+      "originalName": "h",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.r(I)V",
+      "originalName": "r",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ufa.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.l(I)V",
+      "originalName": "l",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uga.g(I)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uha.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uia.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uja.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uka.t(B)V",
+      "originalName": "t",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ula.g(B)V",
+      "originalName": "g",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uma.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:un.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uo.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uoa.a()V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:up.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uq.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uqa.j(B)V",
+      "originalName": "j",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ur.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:us.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uta.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uu.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uu.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uu.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uua.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uv.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uw.f(I)V",
+      "originalName": "f",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vba.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vca.a(B)Lpi;",
+      "originalName": "a",
+      "to": "getEvent",
+      "evidence": "Returns the decoded PendingEvent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vca.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vca.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vca.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vda.d(B)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vf.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vg.l(B)Z",
       "originalName": "l",
       "to": "isLinked",
@@ -2383,10 +7150,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vg.o(I)V",
+      "originalName": "o",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vg.p(I)V",
       "originalName": "p",
       "to": "unlink",
       "evidence": "IntrusiveNode unlink body splices field_e and field_a of its neighbours.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:via.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vja.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vk.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vka.e(Z)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vla.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vm.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vn.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
       "confidence": "reviewed"
     },
     {
@@ -2401,6 +7231,335 @@
       "originalName": "c",
       "to": "pollLast",
       "evidence": "Unlinks and returns sentinel.previous or null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:voa.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vp.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vra.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vra.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vra.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vs.i(B)V",
+      "originalName": "i",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vsa.q(B)V",
+      "originalName": "q",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vt.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vta.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vu.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vua.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vv.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:waa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wba.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wda.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wea.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wfa.r(B)V",
+      "originalName": "r",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wg.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wga.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "C2SSubmitSettingsPacket implements it by writing 4, 8 and 8 bits between begin/endBitWrite. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wga.a(Lkh;B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wga.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wh.l(I)V",
+      "originalName": "l",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wha.r(B)V",
+      "originalName": "r",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wi.e(B)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wj.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wja.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wk.b(B)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wl.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wn.b(I)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wo.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:woa.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wp.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wpa.D(I)V",
+      "originalName": "D",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wq.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wqa.e(Z)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wr.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wra.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ws.e(I)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wsa.c(I)V",
+      "originalName": "c",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wta.r(B)V",
+      "originalName": "r",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wua.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:za.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
       "confidence": "reviewed"
     },
     {
@@ -2434,7 +7593,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "6ac779cee8999c071c153a21fb8f022e4bbce6b8b2c8e0f30dba0050f18dff37",
+      "tombracer-names.json": "9cea13153192294828cf8f1b6f8ecabc75fb85fece4dae32282ade4ccf6f5dbd",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
