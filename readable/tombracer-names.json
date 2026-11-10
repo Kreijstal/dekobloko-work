@@ -289,7 +289,37 @@
     ["sd","ValidationMessageWidget","HotspotTextWidget showing a validator status icon and message. Body matches several games ValidationMessageWidget."],
     ["oj","VerticalScrollbar","Component scrollbar with up/down buttons and a draggable thumb. Body matches several games VerticalScrollbar."],
     ["aia","PitSnake","One snake of a SnakePitBehaviour, placed at a random offset inside the pit area with a fixed 24-unit size."],
-    ["kpa","FlagSet","Fixed-size boolean array; toString prints \"flags:\" and one 0/1 per flag; packed into bits when encoded."]
+    ["kpa","FlagSet","Fixed-size boolean array; toString prints \"flags:\" and one 0/1 per flag; packed into bits when encoded."],
+    ["t","Teleportable","Interface of Player, Trap and Projectile that PortalBehaviour moves between linked portals."],
+    ["on","TeleportState","Per-body portal state of a Teleportable; PortalBehaviour checks it before and marks it after a teleport."],
+    ["qc","WidgetListener","Empty base interface of the widget callback interfaces."],
+    ["tsa","ButtonListener","WidgetListener with a single button-activated callback, implemented by dialogs and forms."],
+    ["tma","HotspotListener","Callback for clicked links in a HotspotTextWidget."],
+    ["cd","TextInputListener","WidgetListener with two TextInputWidget callbacks, implemented by LoginForm and TextFieldValidator."],
+    ["tpa","WidgetParent","Marker interface of the widget containers (WidgetContainer, ArrayWidgetGroup, SingleChildWidget)."],
+    ["nha","RenderSurface","Interface implemented by ToolkitSprite and passed to GraphicsToolkit.createRenderTarget."],
+    ["mw","RenderBuffer","Depth/colour buffer interface passed to GraphicsToolkit.createRenderTarget."],
+    ["jca","RenderTarget","Interface returned by GraphicsToolkit.createRenderTarget."],
+    ["ks","Framebuffer","Framebuffer interface implemented by OpenGlFramebuffer."],
+    ["wia","FramebufferAttachment","Interface of the OpenGlFramebuffer attachment slots, implemented by OpenGlRenderbuffer."],
+    ["mta","GpuBuffer","Base interface of the hardware vertex and index buffers."],
+    ["eja","VertexBuffer","GpuBuffer interface implemented by OpenGlVertexBuffer and its Direct3D counterpart."],
+    ["iva","GpuTexture","Base interface of the hardware textures implemented by OpenGlTexture."],
+    ["gf","GpuTexture2D","GpuTexture interface implemented by OpenGlTexture2D and the Direct3D 2D texture."],
+    ["nga","MonochromeFillOperator","TextureOperator filling every row with one constant value (default 4096). createTextureOperator builds it for operator id 0."],
+    ["lm","ColourFillOperator","TextureOperator filling the red, green and blue rows with one decoded colour. createTextureOperator builds it for operator id 1."],
+    ["qga","HorizontalGradientOperator","TextureOperator whose monochrome row is the shared horizontal coordinate table. createTextureOperator builds it for operator id 2."],
+    ["gm","VerticalGradientOperator","TextureOperator filling each row with the vertical coordinate of that row. createTextureOperator builds it for operator id 3."],
+    ["sba","InvertOperator","TextureOperator returning 4096 minus its input. createTextureOperator builds it for operator id 22."],
+    ["jda","GreyscaleOperator","TextureOperator averaging the three channels of its colour input. createTextureOperator builds it for operator id 24."],
+    ["hv","ThresholdOperator","TextureOperator outputting 4096 where its input lies between two limits and 0 elsewhere. createTextureOperator builds it for operator id 26."],
+    ["ksa","RangeOperator","TextureOperator mapping its 0-4096 input linearly onto a decoded minimum and maximum. createTextureOperator builds it for operator id 30."],
+    ["cl","BoxBlurOperator","TextureOperator averaging its input over a decoded horizontal and vertical radius. createTextureOperator builds it for operator id 5."],
+    ["wja","ClampOperator","TextureOperator clamping its input between a decoded minimum and maximum. createTextureOperator builds it for operator id 6."],
+    ["fs","CurveOperator","TextureOperator mapping its input through a 257-entry lookup curve. createTextureOperator builds it for operator id 8."],
+    ["bma","BrickOperator","TextureOperator laying out rows of bricks with alternating offsets from the vertical coordinate. createTextureOperator builds it for operator id 4."],
+    ["qv","MandelbrotOperator","TextureOperator iterating z = z^2 + c per pixel until escape and outputting the scaled iteration count. createTextureOperator builds it for operator id 31."],
+    ["pv","FlipOperator","TextureOperator mirroring its input vertically and/or horizontally by two decoded flags. createTextureOperator builds it for operator id 9."]
   ],
   "methods": [
     ["rn","a","(ILla;I)Lcsa;","createComponent","Instantiates the RoomComponent subclass for a type id or throws \"Unrecognised component type\"."],
@@ -1680,7 +1710,17 @@
     ["kpa","a","(IIZ)V","set","Stores one flag."],
     ["kpa","a","(ZI)V","setAll","Stores the same value in every flag."],
     ["kpa","a","(II)Z","get","Returns one flag."],
-    ["kpa","a","(Lkh;B)V","encode","Packs the flags into one integer of length bits and writes it."]
+    ["kpa","a","(Lkh;B)V","encode","Packs the flags into one integer of length bits and writes it."],
+    ["t","j","(B)Z","canTeleport","PortalBehaviour only moves bodies that return true."],
+    ["t","c","(Z)Lon;","getTeleportState","PortalBehaviour reads and updates this TeleportState around a teleport."],
+    ["tma","a","(Llga;III)V","onHotspotAction","Receives the clicked HotspotTextWidget link."],
+    ["eha","a","(ILhca;Lla;)V","onRoomEntered","Room.enterAtEntrance reports the Player and the Room it entered."],
+    ["ci","c","(II)[I","getMonochromeRow","Base throws \"This operation does not have a monochrome output\"; operators return one row of 0-4096 values."],
+    ["ci","b","(II)[[I","getColourRow","Base throws \"This operation does not have a colour output\"; operators return the red, green and blue rows."],
+    ["ci","a","(BLuia;I)V","decodeParameter","Operators read the parameter with the given index from the PacketBuffer."],
+    ["ci","c","(III)[I","getInputMonochromeRow","Returns a row of an input operator, taking the red channel of a colour input."],
+    ["ci","a","(III)[[I","getInputColourRow","Returns a colour row of an input operator, replicating a monochrome input into three channels."],
+    ["gu","a","(BI)Lci;","createTextureOperator","Static switch building the TextureOperator subclass for an operator id."]
   ],
   "fields": [
     ["fua","field_c","[Ljava/lang/String;","behaviourTypeNames","33 display names indexed by the behaviour type id that bda.readBehaviour dispatches on."],
@@ -1911,6 +1951,8 @@
     ["csa","field_l","I","width","Decoded when hasSize is true; intersectsRect uses it as the box width."],
     ["csa","field_k","I","height","Decoded with width when hasSize is true."],
     ["csa","field_r","I","angle","Decoded as a 4-bit fraction of 8192 when hasAngle is true; mirroring negates it."],
-    ["kpa","field_a","[Z","flags","The booleans every FlagSet method reads or writes."]
+    ["kpa","field_a","[Z","flags","The booleans every FlagSet method reads or writes."],
+    ["ci","field_j","[Lci;","inputs","Input operators read by getInputMonochromeRow and getInputColourRow."],
+    ["ci","field_g","Z","monochrome","Set from the constructor; inputs with it are read through getMonochromeRow."]
   ]
 }
