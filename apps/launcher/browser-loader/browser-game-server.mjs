@@ -264,21 +264,25 @@ function handleEmbeddedAccountPacket(state, opcode, payload) {
   const data = embeddedAccountData(state);
   data.achievements ??= [];
   data.scores ??= [];
-  if (game.internalName === 'armiesofgielinor') {
-    if (opcode === 6) {
-      const intBytes = value => [value >>> 24, value >>> 16, value >>> 8, value];
-      if (payload.length === 1 && payload[0] === 0) {
-        const preferences = data.preferences || [];
-        const reply = [0, preferences.length, ...preferences];
-        frameAccountPacket(state, 5, [...reply, ...intBytes(accountRecordCrc(reply))]);
-      } else if (payload[0] === 1 && payload.length === payload[1] + 6 &&
-        accountRecordCrc(payload.subarray(0, -4)) === readU32(payload, payload.length - 4)) {
-        data.preferences = Array.from(payload.subarray(2, -4));
-        saveEmbeddedAccountData(state, data);
-        frameAccountPacket(state, 5, [1, ...payload.subarray(-4)]);
-      }
-      return;
+  // CRC-checked user preferences, shared by the FunOrb account clients: a
+  // read ([0]) is answered with [0, length, bytes, crc]; a write is
+  // acknowledged with its crc. Clients gate their logged-in state on the read
+  // (Zombie Dawn stayed at "Logging in..." while it was answered for AOG only).
+  if (opcode === 6) {
+    const intBytes = value => [value >>> 24, value >>> 16, value >>> 8, value];
+    if (payload.length === 1 && payload[0] === 0) {
+      const preferences = data.preferences || [];
+      const reply = [0, preferences.length, ...preferences];
+      frameAccountPacket(state, 5, [...reply, ...intBytes(accountRecordCrc(reply))]);
+    } else if (payload[0] === 1 && payload.length === payload[1] + 6 &&
+      accountRecordCrc(payload.subarray(0, -4)) === readU32(payload, payload.length - 4)) {
+      data.preferences = Array.from(payload.subarray(2, -4));
+      saveEmbeddedAccountData(state, data);
+      frameAccountPacket(state, 5, [1, ...payload.subarray(-4)]);
     }
+    return;
+  }
+  if (game.internalName === 'armiesofgielinor') {
     if (opcode === 69) {
       // Six (part, colour) pairs; 255 represents a missing decoration.
       frameAccountPacket(state, 75, data.coat || [0, 0, 255, 0, 255, 0, 0, 0, 255, 0, 0, 0]);
