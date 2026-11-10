@@ -6130,9 +6130,10 @@ function simplifyConstantBooleanBranches(codeItems) {
     if (branchLabel && (refCounts.get(branchLabel) || 0) > 0) continue;
     const value = constantOp === 'iconst_1';
     const taken = (branchOp === 'ifne' && value) || (branchOp === 'ifeq' && !value);
-    if (taken) continue;
     codeItems[i].instruction = 'nop';
-    codeItems[branchIndex].instruction = 'nop';
+    codeItems[branchIndex].instruction = taken
+      ? { op: 'goto', arg: labelName(branch.arg) }
+      : 'nop';
     rewrites += 1;
   }
   return rewrites;
