@@ -773,6 +773,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ag",
+      "originalName": "ag",
+      "to": "FollowCamera",
+      "evidence": "Camera that follows a target within 24 pixels, recentres after 50 still frames and clamps itself to the room bounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:aga",
       "originalName": "aga",
       "to": "AnimatedLight",
@@ -2159,6 +2166,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:iq",
+      "originalName": "iq",
+      "to": "Camera",
+      "evidence": "Interface passed to every render call; RenderScene updates it each frame and Room sets its bounds and shakes it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ir",
       "originalName": "ir",
       "to": "IntPoint",
@@ -2247,6 +2261,13 @@
       "originalName": "jf",
       "to": "LoadProfileCommand",
       "evidence": "Registered as the 'loadProfile' console command taking a profile name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jfa",
+      "originalName": "jfa",
+      "to": "CameraTarget",
+      "evidence": "Renderable that a FollowCamera can follow; Player implements it.",
       "confidence": "reviewed"
     },
     {
@@ -2660,6 +2681,13 @@
       "originalName": "lja",
       "to": "PlayerContextMenu",
       "evidence": "ContextMenu of actions on a named player. Body matches several games PlayerContextMenu (getDisplayName, handleEscape).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lk",
+      "originalName": "lk",
+      "to": "RoomRegion",
+      "evidence": "Rectangle decoded into the TileGrid with an 8-bit type, two flags and a VariantMask; DefaultRoomObjectRenderer draws it as a translucent box.",
       "confidence": "reviewed"
     },
     {
@@ -4735,6 +4763,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ag.field_a:I",
+      "originalName": "field_a",
+      "to": "stillFrames",
+      "evidence": "Frames the target stayed within 24 pixels; after 50 the camera creeps towards it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_d:I",
+      "originalName": "field_d",
+      "to": "x",
+      "evidence": "Camera x, moved towards the target and clamped to the bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_f:I",
+      "originalName": "field_f",
+      "to": "maxX",
+      "evidence": "Upper x bound set by setBounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_g:Ljfa;",
+      "originalName": "field_g",
+      "to": "target",
+      "evidence": "CameraTarget the camera follows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_h:I",
+      "originalName": "field_h",
+      "to": "y",
+      "evidence": "Camera y, moved towards the target and clamped to the bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_i:I",
+      "originalName": "field_i",
+      "to": "minX",
+      "evidence": "Lower x bound set by setBounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_l:I",
+      "originalName": "field_l",
+      "to": "minY",
+      "evidence": "Lower y bound set by setBounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ag.field_m:I",
+      "originalName": "field_m",
+      "to": "maxY",
+      "evidence": "Upper y bound set by setBounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:aga.field_c:Lob;",
       "originalName": "field_c",
       "to": "light",
@@ -4746,6 +4830,20 @@
       "originalName": "field_d",
       "to": "mode",
       "evidence": "setMode stores it; applyModeParameters switches on it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aia.field_i:I",
+      "originalName": "field_i",
+      "to": "scaredTicks",
+      "evidence": "Set to 200 by a type-3 effect; while positive the snake avoids the effect's position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aia.field_k:I",
+      "originalName": "field_k",
+      "to": "cooldownTicks",
+      "evidence": "Random 50 to 99 ticks during which tick does nothing.",
       "confidence": "reviewed"
     },
     {
@@ -4907,6 +5005,48 @@
       "originalName": "field_n",
       "to": "locomotorTypeNames",
       "evidence": "17 display names indexed by the locomotor type id that ki.readLocomotor dispatches on.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ce.field_q:I",
+      "originalName": "field_q",
+      "to": "style",
+      "evidence": "Tile style set by maze and trap factories; portals force 1 and mobile bodies 3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ce.field_r:[[Leh;",
+      "originalName": "field_r",
+      "to": "tiles",
+      "evidence": "PlatformTile grid built from the body's size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ce.field_s:I",
+      "originalName": "field_s",
+      "to": "rows",
+      "evidence": "Body height in tiles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ce.field_u:I",
+      "originalName": "field_u",
+      "to": "offsetX",
+      "evidence": "Added to each PlatformTile's render x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ce.field_x:I",
+      "originalName": "field_x",
+      "to": "offsetY",
+      "evidence": "Added to each PlatformTile's render y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ce.field_z:I",
+      "originalName": "field_z",
+      "to": "columns",
+      "evidence": "Body width in tiles.",
       "confidence": "reviewed"
     },
     {
@@ -5414,10 +5554,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ep.field_B:Z",
+      "originalName": "field_B",
+      "to": "expandsOnImpact",
+      "evidence": "When set, the first impact stops the projectile and doubles its base size instead of bouncing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ep.field_C:Z",
+      "originalName": "field_C",
+      "to": "highCollision",
+      "evidence": "Selects collision level 3 instead of 1 for the projectile's moves.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ep.field_D:I",
       "originalName": "field_D",
       "to": "serial",
       "evidence": "The constructor takes the next value of the global projectile counter sd.field_G.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ep.field_E:I",
+      "originalName": "field_E",
+      "to": "style",
+      "evidence": "Init argument that drawProjectile switches on to pick the projectile's look.",
       "confidence": "reviewed"
     },
     {
@@ -5442,6 +5603,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ep.field_I:I",
+      "originalName": "field_I",
+      "to": "bouncesLeft",
+      "evidence": "Decremented on each impact; the projectile is destroyed when it reaches zero.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ep.field_J:I",
       "originalName": "field_J",
       "to": "baseSize",
@@ -5456,10 +5624,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ep.field_j:I",
+      "originalName": "field_j",
+      "to": "lifetime",
+      "evidence": "Last init argument; drawProjectile fades by age over lifetime.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ep.field_o:I",
       "originalName": "field_o",
       "to": "size",
       "evidence": "Width and height of the projectile, reset from baseSize when it is fired.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ep.field_p:Z",
+      "originalName": "field_p",
+      "to": "pushesObjects",
+      "evidence": "When set, moves go through the room's move resolution instead of the plain blocked-box test.",
       "confidence": "reviewed"
     },
     {
@@ -5502,6 +5684,13 @@
       "originalName": "field_w",
       "to": "spin",
       "evidence": "Added to the angle every tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ep.field_x:I",
+      "originalName": "field_x",
+      "to": "age",
+      "evidence": "Zeroed on init and incremented each tick; the projectile ends when it reaches the lifetime.",
       "confidence": "reviewed"
     },
     {
@@ -6702,6 +6891,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hr.field_A:I",
+      "originalName": "field_A",
+      "to": "startSize",
+      "evidence": "Size at age zero; drawParticle interpolates towards the end size.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hr.field_B:I",
       "originalName": "field_B",
       "to": "x",
@@ -6713,6 +6909,13 @@
       "originalName": "field_i",
       "to": "expired",
       "evidence": "Particle.tick sets it at end of life and isExpired returns it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_j:I",
+      "originalName": "field_j",
+      "to": "accelerationY",
+      "evidence": "Added to the y velocity each tick.",
       "confidence": "reviewed"
     },
     {
@@ -6730,6 +6933,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hr.field_m:I",
+      "originalName": "field_m",
+      "to": "angle",
+      "evidence": "Rotation drawn by drawParticle; setRotation sets it with the spin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_n:I",
+      "originalName": "field_n",
+      "to": "accelerationX",
+      "evidence": "Added to the x velocity each tick; dust uses a small drag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_o:I",
+      "originalName": "field_o",
+      "to": "accelerationZ",
+      "evidence": "Added to the z velocity each tick; dust uses it as gravity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_p:I",
+      "originalName": "field_p",
+      "to": "seed",
+      "evidence": "Random value assigned at spawn and used by drawParticle for variation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hr.field_q:I",
       "originalName": "field_q",
       "to": "velocityX",
@@ -6737,10 +6968,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hr.field_r:I",
+      "originalName": "field_r",
+      "to": "spin",
+      "evidence": "Rotation speed set with the angle.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:hr.field_s:I",
       "originalName": "field_s",
       "to": "lifetime",
       "evidence": "Particle.tick expires the particle once age reaches it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_u:I",
+      "originalName": "field_u",
+      "to": "kind",
+      "evidence": "Particle kind drawParticle switches on to choose sprites.",
       "confidence": "reviewed"
     },
     {
@@ -6769,6 +7014,13 @@
       "originalName": "field_y",
       "to": "velocityY",
       "evidence": "Added to y every tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hr.field_z:I",
+      "originalName": "field_z",
+      "to": "endSize",
+      "evidence": "Size at the end of the lifetime.",
       "confidence": "reviewed"
     },
     {
@@ -6849,10 +7101,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jma.field_b:I",
+      "originalName": "field_b",
+      "to": "phaseTimer",
+      "evidence": "Ticks left in the current phase; tickPhaseTimer counts it down.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jma.field_c:I",
+      "originalName": "field_c",
+      "to": "usesLeft",
+      "evidence": "Activations left; when it runs out the switch locks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jma.field_d:Lkoa;",
       "originalName": "field_d",
       "to": "links",
       "evidence": "SwitchLinkList of the switchables the switch drives.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jma.field_e:I",
+      "originalName": "field_e",
+      "to": "activateDelay",
+      "evidence": "Ticks spent activating before the switch turns on.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jma.field_f:I",
+      "originalName": "field_f",
+      "to": "rearmDelay",
+      "evidence": "Ticks after turning off before a new press is accepted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jma.field_g:Z",
+      "originalName": "field_g",
+      "to": "locked",
+      "evidence": "Set when the uses run out; setInput then ignores every input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jma.field_i:I",
+      "originalName": "field_i",
+      "to": "pressDelay",
+      "evidence": "Ticks the input must stay pressed before activation starts; zero skips the pressing phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jma.field_k:I",
+      "originalName": "field_k",
+      "to": "deactivateDelay",
+      "evidence": "Ticks spent deactivating before the switch is off again.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jma.field_l:I",
+      "originalName": "field_l",
+      "to": "releaseDelay",
+      "evidence": "Ticks the input must stay released before deactivation starts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jma.field_m:Z",
+      "originalName": "field_m",
+      "to": "firesOnActivate",
+      "evidence": "When set, turning on toggles the linked targets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jma.field_n:I",
+      "originalName": "field_n",
+      "to": "phase",
+      "evidence": "0 off, 1 pressing, 2 activating, 3 on, 4 releasing, 5 deactivating; setInput advances it.",
       "confidence": "reviewed"
     },
     {
@@ -7364,6 +7686,62 @@
       "originalName": "field_b",
       "to": "winnerIndex",
       "evidence": "Read as four bits minus two and passed to MatchScreen when the match ends.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lk.field_g:Z",
+      "originalName": "field_g",
+      "to": "flipped",
+      "evidence": "Flag toggled when the room is mirrored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lk.field_i:Lla;",
+      "originalName": "field_i",
+      "to": "room",
+      "evidence": "Room passed to the constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lk.field_j:I",
+      "originalName": "field_j",
+      "to": "type",
+      "evidence": "First 8-bit field of the encoded region.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lk.field_k:I",
+      "originalName": "field_k",
+      "to": "width",
+      "evidence": "Width read as 10 bits and shifted by 16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lk.field_m:Lbca;",
+      "originalName": "field_m",
+      "to": "variantMask",
+      "evidence": "VariantMask decoded after the flags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lk.field_n:I",
+      "originalName": "field_n",
+      "to": "x",
+      "evidence": "Centre x read as 12 bits and shifted by 16; mirrored with the room.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lk.field_o:I",
+      "originalName": "field_o",
+      "to": "height",
+      "evidence": "Height read as 10 bits and shifted by 16.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lk.field_p:I",
+      "originalName": "field_p",
+      "to": "y",
+      "evidence": "Centre y read as 12 bits and shifted by 16.",
       "confidence": "reviewed"
     },
     {
@@ -8823,6 +9201,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vd.field_A:Lfsa;",
+      "originalName": "field_A",
+      "to": "openCellTemplate",
+      "evidence": "Template trap decoded into every maze cell whose MazeGrid value is zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vd.field_o:Lfsa;",
+      "originalName": "field_o",
+      "to": "itemTemplate",
+      "evidence": "Template trap decoded at the item positions picked after generation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vd.field_r:Lfsa;",
+      "originalName": "field_r",
+      "to": "filledCellTemplate",
+      "evidence": "Template trap encoded once and decoded into every maze cell whose MazeGrid value is positive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vd.field_s:I",
+      "originalName": "field_s",
+      "to": "generatorType",
+      "evidence": "Two-bit type passed to createMazeGenerator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vd.field_v:I",
+      "originalName": "field_v",
+      "to": "itemCount",
+      "evidence": "Number of item positions to place, read as three bits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vf.field_j:Lvna;",
       "originalName": "field_j",
       "to": "nodes",
@@ -8883,6 +9296,13 @@
       "originalName": "field_e",
       "to": "sentinel",
       "evidence": "IntrusiveDeque splices nodes next to this node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vsa.field_t:I",
+      "originalName": "field_t",
+      "to": "style",
+      "evidence": "Bridge style set by setStyle and switched on when picking tile sprites.",
       "confidence": "reviewed"
     },
     {
@@ -9432,6 +9852,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aea.a(IZLla;)Lfsa;",
+      "originalName": "a",
+      "to": "createFilledCellTrap",
+      "evidence": "Builds the template trap for filled maze cells. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aea.a(Lla;ZZ)Lfsa;",
+      "originalName": "a",
+      "to": "createOpenCellTrap",
+      "evidence": "Builds the template trap for open maze cells; maze subclasses supply platforms or floors. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aea.a(ZLkh;)V",
       "originalName": "a",
       "to": "encode",
@@ -9488,10 +9922,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ag.a(B)V",
+      "originalName": "a",
+      "to": "update",
+      "evidence": "Called once per frame by RenderScene.updateAnimations. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ag.a(IBIII)V",
+      "originalName": "a",
+      "to": "setBounds",
+      "evidence": "Sets the y and x ranges the camera may cover. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ag.a(IIII)V",
+      "originalName": "a",
+      "to": "nudge",
+      "evidence": "Adds an offset to the camera position; Room uses it for the earthquake shake. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ag.a(IIIII)V",
+      "originalName": "a",
+      "to": "setViewport",
+      "evidence": "Stores the viewport rectangle used to clamp the camera.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ag.a(Ljfa;I)V",
+      "originalName": "a",
+      "to": "setTarget",
+      "evidence": "Sets the CameraTarget to follow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ag.a(Z)V",
+      "originalName": "a",
+      "to": "clampToBounds",
+      "evidence": "Re-applies the camera bounds. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ag.b(B)I",
+      "originalName": "b",
+      "to": "getY",
+      "evidence": "Returns the camera y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ag.b(I)V",
+      "originalName": "b",
+      "to": "applyBounds",
+      "evidence": "Clamps both axes of the camera to its bounds for the viewport size.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ag.b(III)Z",
       "originalName": "b",
       "to": "hasFlag2048",
       "evidence": "Tests bit 2048 of its second argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ag.b(IIIII)I",
+      "originalName": "b",
+      "to": "clampAxis",
+      "evidence": "Clamps one axis so the viewport stays inside the range, centring it when the range is smaller.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ag.c(I)I",
+      "originalName": "c",
+      "to": "getX",
+      "evidence": "Returns the camera x.",
       "confidence": "reviewed"
     },
     {
@@ -9520,6 +10024,62 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aia.a(I)Z",
+      "originalName": "a",
+      "to": "isScared",
+      "evidence": "True while scared ticks remain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aia.a(IIIB)V",
+      "originalName": "a",
+      "to": "calm",
+      "evidence": "SnakePitBehaviour calls it for a type-4 effect: clears the scared ticks and the cooldown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aia.a(IIIIBLfsa;Lla;)V",
+      "originalName": "a",
+      "to": "tick",
+      "evidence": "Advances the snake: waits out the cooldown, picks random lunges and moves towards or away from its target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aia.a(IIIZ)V",
+      "originalName": "a",
+      "to": "scareFrom",
+      "evidence": "SnakePitBehaviour calls it for a type-3 effect: sets 200 scared ticks and stores the effect position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aia.a(ILhca;II)Z",
+      "originalName": "a",
+      "to": "overlapsPlayer",
+      "evidence": "Tests the snake's box at an offset against half the player's box.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aia.a(Lla;I)V",
+      "originalName": "a",
+      "to": "startCooldown",
+      "evidence": "Sets a random 50 to 99 tick cooldown from the room's random.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aia.a([BIII)I",
+      "originalName": "a",
+      "to": "computeCrc32",
+      "evidence": "Table-driven CRC-32 over a byte range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aia.b(I)Z",
+      "originalName": "b",
+      "to": "isCoolingDown",
+      "evidence": "True while the cooldown is positive.",
       "confidence": "reviewed"
     },
     {
@@ -9565,6 +10125,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aka.a(BI)V",
+      "originalName": "a",
+      "to": "onRemoved",
+      "evidence": "Called when the model leaves its layer or its trap is destroyed; platforms queue a crumble sound. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aka.a(BLkh;)V",
       "originalName": "a",
       "to": "encode",
@@ -9583,6 +10150,13 @@
       "originalName": "a",
       "to": "attach",
       "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aka.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9660,6 +10234,13 @@
       "originalName": "a",
       "to": "decode",
       "evidence": "Reads the optional 8-bit value for rooms of format 15 and later; subclasses read their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -9786,6 +10367,13 @@
       "originalName": "a",
       "to": "attach",
       "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ao.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -11000,6 +11588,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:boa.a(BI)V",
+      "originalName": "a",
+      "to": "onRemoved",
+      "evidence": "Called when the model leaves its layer or its trap is destroyed; platforms queue a crumble sound. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:boa.a(BLkh;)V",
       "originalName": "a",
       "to": "encode",
@@ -11021,10 +11616,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:boa.a(Lgma;ILgr;)V",
+      "originalName": "a",
+      "to": "configureFor",
+      "evidence": "Called by ModelFactory after attaching; subclasses adapt their style to the body and part. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:boa.a(Lgr;Lgma;B)V",
       "originalName": "a",
       "to": "attach",
       "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:boa.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -11623,6 +12232,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ce.a(BI)V",
+      "originalName": "a",
+      "to": "onRemoved",
+      "evidence": "Called when the model leaves its layer or its trap is destroyed; platforms queue a crumble sound. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ce.a(BILuw;)V",
       "originalName": "a",
       "to": "addToLayer",
@@ -11651,6 +12267,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ce.a(Leh;I)I",
+      "originalName": "a",
+      "to": "pickTileSprite",
+      "evidence": "Chooses a sprite index for a PlatformTile from the style and the tile's neighbours.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.a(Lgma;ILgr;)V",
+      "originalName": "a",
+      "to": "configureFor",
+      "evidence": "Called by ModelFactory after attaching; subclasses adapt their style to the body and part. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ce.a(Lgr;Lgma;B)V",
       "originalName": "a",
       "to": "attach",
@@ -11658,10 +12288,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ce.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ce.a(Luw;I)V",
       "originalName": "a",
       "to": "removeFromScene",
       "evidence": "Removes the model from its current layer and marks it outside the scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.a(Z)V",
+      "originalName": "a",
+      "to": "buildTiles",
+      "evidence": "Splits the body into a grid of PlatformTiles, falling back to a single tile.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.b(IB)V",
+      "originalName": "b",
+      "to": "setStyle",
+      "evidence": "Sets the tile style; maze and trap factories pass 0, 2 or 4.",
       "confidence": "reviewed"
     },
     {
@@ -11686,10 +12337,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ce.i(I)I",
+      "originalName": "i",
+      "to": "getOffsetY",
+      "evidence": "Returns the tile y offset.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ce.k(B)I",
       "originalName": "k",
       "to": "getSceneLayer",
       "evidence": "Layer the model belongs in: 7 normally and 2 while its body falls into a pit. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.k(I)I",
+      "originalName": "k",
+      "to": "getOffsetX",
+      "evidence": "Returns the tile x offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.l(I)V",
+      "originalName": "l",
+      "to": "releaseStatics",
+      "evidence": "Clears the static tables and locomotor type names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.n(B)I",
+      "originalName": "n",
+      "to": "getStyle",
+      "evidence": "Returns the tile style.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.o(B)V",
+      "originalName": "o",
+      "to": "buildSingleTile",
+      "evidence": "Creates a one-by-one PlatformTile grid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.p(B)Z",
+      "originalName": "p",
+      "to": "isTiled",
+      "evidence": "False for the portal style.",
       "confidence": "reviewed"
     },
     {
@@ -13198,10 +13891,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cv.a(Lgma;ILgr;)V",
+      "originalName": "a",
+      "to": "configureFor",
+      "evidence": "Called by ModelFactory after attaching; subclasses adapt their style to the body and part. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cv.a(Lgr;Lgma;B)V",
       "originalName": "a",
       "to": "attach",
       "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cv.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -13653,6 +14360,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dc.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dc.d(I)V",
       "originalName": "d",
       "to": "tick",
@@ -13821,6 +14535,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dg.a(BI)V",
+      "originalName": "a",
+      "to": "onRemoved",
+      "evidence": "Called when the model leaves its layer or its trap is destroyed; platforms queue a crumble sound.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dg.a(BILuw;)V",
       "originalName": "a",
       "to": "addToLayer",
@@ -13884,10 +14605,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dg.a(Lgma;ILgr;)V",
+      "originalName": "a",
+      "to": "configureFor",
+      "evidence": "Called by ModelFactory after attaching; subclasses adapt their style to the body and part.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dg.a(Lgr;Lgma;B)V",
       "originalName": "a",
       "to": "attach",
       "evidence": "Stores the TrapPart and the WorldBody the model follows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render.",
       "confidence": "reviewed"
     },
     {
@@ -15837,6 +16572,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ep.a(IBIZ)V",
+      "originalName": "a",
+      "to": "moveAndBounce",
+      "evidence": "Moves along each axis, reflecting the velocity and calling onImpact when blocked.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ep.a(IIB)V",
       "originalName": "a",
       "to": "setXY",
@@ -15879,6 +16621,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ep.a(ILla;IIII)V",
+      "originalName": "a",
+      "to": "init",
+      "evidence": "Resets the projectile for reuse with sizes, style, lifetime and the room.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ep.a(ILup;)V",
       "originalName": "a",
       "to": "setEffect",
@@ -15890,6 +16639,13 @@
       "originalName": "a",
       "to": "tick",
       "evidence": "ObjectPool.update calls it on every active object each step. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(IZII)V",
+      "originalName": "a",
+      "to": "moveAndApply",
+      "evidence": "Moves along each axis applying the projectile's area effect on the way.",
       "confidence": "reviewed"
     },
     {
@@ -15991,10 +16747,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ep.b(ILup;)I",
+      "originalName": "b",
+      "to": "reactToEffect",
+      "evidence": "Destroys the projectile when another effect counters its own and may leave a puddle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.b(IZ)V",
+      "originalName": "b",
+      "to": "setPushesObjects",
+      "evidence": "Sets whether the projectile pushes objects when moving.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ep.b(Z)I",
       "originalName": "b",
       "to": "getVelocityY",
       "evidence": "Returns velocityY.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.b(ZI)V",
+      "originalName": "b",
+      "to": "setHighCollision",
+      "evidence": "Sets whether the projectile collides at level 3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.b(ZZ)V",
+      "originalName": "b",
+      "to": "onImpact",
+      "evidence": "Plays the impact sound, expands or spends a bounce, and destroys the projectile when no bounces are left.",
       "confidence": "reviewed"
     },
     {
@@ -16012,10 +16796,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ep.c(III)Z",
+      "originalName": "c",
+      "to": "isMoveBlocked",
+      "evidence": "Tests a move against the room at the projectile's collision level.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ep.c(Z)Lon;",
       "originalName": "c",
       "to": "getTeleportState",
       "evidence": "PortalBehaviour reads and updates this TeleportState around a teleport. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.c(ZZ)V",
+      "originalName": "c",
+      "to": "setExpandsOnImpact",
+      "evidence": "Sets whether the first impact expands the projectile.",
       "confidence": "reviewed"
     },
     {
@@ -16054,6 +16852,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ep.e(Z)I",
+      "originalName": "e",
+      "to": "getLifetime",
+      "evidence": "Returns the lifetime in ticks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ep.f(B)Z",
       "originalName": "f",
       "to": "isFromPlayer",
@@ -16072,6 +16877,20 @@
       "originalName": "f",
       "to": "getAngle",
       "evidence": "Returns angle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.g(I)I",
+      "originalName": "g",
+      "to": "getAge",
+      "evidence": "Returns the ticks since init.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.h(B)V",
+      "originalName": "h",
+      "to": "spawnImpactParticles",
+      "evidence": "Spawns impact particles that depend on the effect type.",
       "confidence": "reviewed"
     },
     {
@@ -16107,6 +16926,13 @@
       "originalName": "k",
       "to": "getVelocityX",
       "evidence": "Returns velocityX.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.l(I)I",
+      "originalName": "l",
+      "to": "getStyle",
+      "evidence": "Returns the drawing style.",
       "confidence": "reviewed"
     },
     {
@@ -18875,6 +19701,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fu.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fu.d(I)V",
       "originalName": "d",
       "to": "tick",
@@ -19033,6 +19866,13 @@
       "originalName": "a",
       "to": "attach",
       "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gaa.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -19852,6 +20692,13 @@
       "originalName": "a",
       "to": "drawParticle",
       "evidence": "Draws a particle to the render target. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gva.a(Liq;ILlk;)V",
+      "originalName": "a",
+      "to": "drawRegion",
+      "evidence": "Draws a RoomRegion as a translucent light-blue box.",
       "confidence": "reviewed"
     },
     {
@@ -21325,6 +22172,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hn.A(I)I",
+      "originalName": "A",
+      "to": "getItemCount",
+      "evidence": "Returns the configured item count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.B(I)I",
+      "originalName": "B",
+      "to": "getGeneratorType",
+      "evidence": "Returns 0, the only generator type MazeComponent uses.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.a(IZLla;)Lfsa;",
+      "originalName": "a",
+      "to": "createFilledCellTrap",
+      "evidence": "Builds the template trap for filled maze cells.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.a(Lla;ZZ)Lfsa;",
+      "originalName": "a",
+      "to": "createOpenCellTrap",
+      "evidence": "Builds the template trap for open maze cells; maze subclasses supply platforms or floors.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hn.a(ZILla;)Lfsa;",
       "originalName": "a",
       "to": "createTrap",
@@ -21336,6 +22211,20 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.a(ZLla;B)Lfsa;",
+      "originalName": "a",
+      "to": "createItemTemplate",
+      "evidence": "Builds a one-tile item trap of the configured kind, or null when no items are placed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hn.e(Z)V",
+      "originalName": "e",
+      "to": "releaseStatics",
+      "evidence": "Clears static strings.",
       "confidence": "reviewed"
     },
     {
@@ -21430,10 +22319,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hr.a(B)I",
+      "originalName": "a",
+      "to": "getKind",
+      "evidence": "Returns the particle kind.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(I)I",
+      "originalName": "a",
+      "to": "getSeed",
+      "evidence": "Returns the random seed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hr.a(IBII)V",
       "originalName": "a",
       "to": "setPosition",
       "evidence": "ObjectPool.spawn passes x, y and z; Projectile stores them as x, y and its render height. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(II)V",
+      "originalName": "a",
+      "to": "setAngle",
+      "evidence": "Sets the angle with zero spin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(III)V",
+      "originalName": "a",
+      "to": "setRotation",
+      "evidence": "Sets the angle and spin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(IIII)V",
+      "originalName": "a",
+      "to": "setVelocity",
+      "evidence": "Sets the three velocities with zero acceleration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(IIIIIIB)V",
+      "originalName": "a",
+      "to": "setMotion",
+      "evidence": "Sets the x, y and z velocities and their accelerations.",
       "confidence": "reviewed"
     },
     {
@@ -21479,10 +22410,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hr.a(ZI)V",
+      "originalName": "a",
+      "to": "setSeed",
+      "evidence": "Sets the random seed; spawnParticle assigns a value below 100.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(ZIIII)V",
+      "originalName": "a",
+      "to": "configure",
+      "evidence": "Resets motion and age and sets end size, kind, start size and lifetime.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hr.b(B)I",
       "originalName": "b",
       "to": "getRenderX",
       "evidence": "Player returns x, Projectile returns x and Room returns width / 2. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.b(I)I",
+      "originalName": "b",
+      "to": "getEndSize",
+      "evidence": "Returns the end size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.b(III)V",
+      "originalName": "b",
+      "to": "setPlanarVelocity",
+      "evidence": "Sets the x and y velocities with zero z velocity.",
       "confidence": "reviewed"
     },
     {
@@ -21497,6 +22456,13 @@
       "originalName": "c",
       "to": "getRenderY",
       "evidence": "Player returns y, Projectile returns y and Room returns height / 2. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.c(I)I",
+      "originalName": "c",
+      "to": "getStartSize",
+      "evidence": "Returns the start size.",
       "confidence": "reviewed"
     },
     {
@@ -21539,6 +22505,13 @@
       "originalName": "e",
       "to": "getZ",
       "evidence": "Returns z.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.f(B)I",
+      "originalName": "f",
+      "to": "getAngle",
+      "evidence": "Returns the angle.",
       "confidence": "reviewed"
     },
     {
@@ -22214,6 +23187,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ioa.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ioa.i(I)V",
       "originalName": "i",
       "to": "releaseStatics",
@@ -22323,6 +23303,34 @@
       "originalName": "z",
       "to": "usesBehaviourModels",
       "evidence": "When true PrefabComponent rebuilds the trap's models from its behaviours after instantiating it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iq.a(B)V",
+      "originalName": "a",
+      "to": "update",
+      "evidence": "Called once per frame by RenderScene.updateAnimations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iq.a(IBIII)V",
+      "originalName": "a",
+      "to": "setBounds",
+      "evidence": "Sets the y and x ranges the camera may cover.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iq.a(IIII)V",
+      "originalName": "a",
+      "to": "nudge",
+      "evidence": "Adds an offset to the camera position; Room uses it for the earthquake shake.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iq.a(Z)V",
+      "originalName": "a",
+      "to": "clampToBounds",
+      "evidence": "Re-applies the camera bounds.",
       "confidence": "reviewed"
     },
     {
@@ -23425,6 +24433,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jma.a(B)V",
+      "originalName": "a",
+      "to": "deactivate",
+      "evidence": "Enters the off phase with the rearm delay and fires the targets when the on flag is set.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jma.a(BLew;)V",
       "originalName": "a",
       "to": "resolveLinks",
@@ -23439,10 +24454,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jma.a(I)V",
+      "originalName": "a",
+      "to": "beginDeactivate",
+      "evidence": "Enters the deactivating phase, or turns off directly when there is no deactivation delay.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jma.a(II)I",
       "originalName": "a",
       "to": "hashState",
       "evidence": "Folds the phase and countdown into a running hash with fs.a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jma.a(IIIIII)V",
+      "originalName": "a",
+      "to": "setDelays",
+      "evidence": "Sets the press, release, rearm, deactivation and activation delays.",
       "confidence": "reviewed"
     },
     {
@@ -23467,10 +24496,87 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jma.b(B)Z",
+      "originalName": "b",
+      "to": "isActive",
+      "evidence": "True while on, releasing or deactivating.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jma.b(I)Z",
+      "originalName": "b",
+      "to": "isEngaged",
+      "evidence": "True while pressing, activating or on.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jma.b(II)V",
+      "originalName": "b",
+      "to": "setUses",
+      "evidence": "Sets how many activations are left; trap factories pass 0 or 1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jma.b(Z)Z",
+      "originalName": "b",
+      "to": "tickPhaseTimer",
+      "evidence": "Counts the phase timer down and returns true once it has run out.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jma.c(B)V",
+      "originalName": "c",
+      "to": "cancelRelease",
+      "evidence": "Returns to the on phase when the input is pressed again while releasing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jma.c(I)V",
+      "originalName": "c",
+      "to": "cancelPress",
+      "evidence": "Returns to the off phase when the input is released while pressing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jma.d(B)V",
+      "originalName": "d",
+      "to": "fireTargets",
+      "evidence": "Spends a use and toggles every linked target, locking the switch when the uses run out.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jma.d(I)V",
+      "originalName": "d",
+      "to": "beginActivate",
+      "evidence": "Enters the activating phase, or turns on directly when there is no activation delay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jma.e(B)V",
+      "originalName": "e",
+      "to": "beginRelease",
+      "evidence": "Enters the releasing phase, or deactivation directly when there is no release delay.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jma.e(I)V",
       "originalName": "e",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jma.f(I)V",
+      "originalName": "f",
+      "to": "beginPress",
+      "evidence": "Enters the pressing phase, or activation directly when there is no press delay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jma.g(I)V",
+      "originalName": "g",
+      "to": "activate",
+      "evidence": "Enters the on phase and fires the targets when firing on activation.",
       "confidence": "reviewed"
     },
     {
@@ -24356,10 +25462,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kga.a(Lgma;ILgr;)V",
+      "originalName": "a",
+      "to": "configureFor",
+      "evidence": "Called by ModelFactory after attaching; subclasses adapt their style to the body and part. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kga.a(Lgr;Lgma;B)V",
       "originalName": "a",
       "to": "attach",
       "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kga.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -24500,6 +25620,13 @@
       "originalName": "a",
       "to": "attach",
       "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ki.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -25333,6 +26460,13 @@
       "originalName": "a",
       "to": "removeFromLayer",
       "evidence": "Removes the model from a layer of the RenderScene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kva.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -26554,6 +27688,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lfa.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lfa.d(I)V",
       "originalName": "d",
       "to": "tick",
@@ -26764,10 +27905,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lk.a(B)I",
+      "originalName": "a",
+      "to": "getX",
+      "evidence": "Returns the centre x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes type, position, size, both flags and the VariantMask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a(II)V",
+      "originalName": "a",
+      "to": "setX",
+      "evidence": "Sets the centre x; TileGrid.expand shifts regions with it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lk.a(ILiq;)V",
       "originalName": "a",
       "to": "render",
       "evidence": "Implementations hand themselves or their models to the iq target; Projectile and others draw through dea.field_a. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a(IZ)Z",
+      "originalName": "a",
+      "to": "isInVariant",
+      "evidence": "Asks the VariantMask whether the region exists in a variant.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.a(Lla;B)V",
+      "originalName": "a",
+      "to": "mirror",
+      "evidence": "Mirrors the x across the room and toggles the flipped flag.",
       "confidence": "reviewed"
     },
     {
@@ -26782,6 +27958,27 @@
       "originalName": "b",
       "to": "getRenderX",
       "evidence": "Player returns x, Projectile returns x and Room returns width / 2. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.b(I)I",
+      "originalName": "b",
+      "to": "getWidth",
+      "evidence": "Returns the width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.b(II)V",
+      "originalName": "b",
+      "to": "setY",
+      "evidence": "Sets the centre y; TileGrid.expand shifts regions with it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.b(Z)I",
+      "originalName": "b",
+      "to": "getHeight",
+      "evidence": "Returns the height.",
       "confidence": "reviewed"
     },
     {
@@ -26806,10 +28003,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lk.f(B)Z",
+      "originalName": "f",
+      "to": "isOutsideActiveVariant",
+      "evidence": "True when the room has an active variant that excludes the region; such regions are not drawn.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lk.f(I)V",
       "originalName": "f",
       "to": "updateAnimation",
       "evidence": "Renderable per-frame hook; MonsterModel advances its animation and plays its sounds there. Resolved override family. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lk.g(B)I",
+      "originalName": "g",
+      "to": "getY",
+      "evidence": "Returns the centre y.",
       "confidence": "reviewed"
     },
     {
@@ -26855,6 +28066,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lma.a(IIILfh;)I",
+      "originalName": "a",
+      "to": "checkerParity",
+      "evidence": "Returns the checkerboard parity of a tile position for straight tiles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lma.a(ILla;Lkh;)V",
       "originalName": "a",
       "to": "decode",
@@ -26869,10 +28087,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lma.a(Lfh;B)Lka;",
+      "originalName": "a",
+      "to": "getTileModel",
+      "evidence": "Returns the model for a WallTile from the wall style and tile kind.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lma.a(Lgr;Lgma;B)V",
       "originalName": "a",
       "to": "attach",
       "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lma.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -26911,6 +28143,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lma.j(I)V",
+      "originalName": "j",
+      "to": "buildTiles",
+      "evidence": "Computes the wall's bounds and builds its WallTile grid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lma.k(I)Z",
+      "originalName": "k",
+      "to": "isDynamic",
+      "evidence": "True when the body is mobile or a Trap; dynamic walls register no tile occupancy.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lma.m(B)I",
       "originalName": "m",
       "to": "getOccupancyLayer",
@@ -26922,6 +28168,13 @@
       "originalName": "n",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lma.o(B)Z",
+      "originalName": "o",
+      "to": "isOnTrap",
+      "evidence": "True when the body is a Trap.",
       "confidence": "reviewed"
     },
     {
@@ -27555,6 +28808,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mb.a(Liq;ILlk;)V",
+      "originalName": "a",
+      "to": "drawRegion",
+      "evidence": "Draws a RoomRegion as a translucent light-blue box. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mb.a(Liq;ZLep;)V",
       "originalName": "a",
       "to": "drawProjectile",
@@ -27786,6 +29046,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mda.a(IBIII)V",
+      "originalName": "a",
+      "to": "moveBy",
+      "evidence": "Moves a sliding puddle per axis, undoing blocked moves.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mda.a(IIIII)I",
+      "originalName": "a",
+      "to": "resolveMove",
+      "evidence": "Runs the room's move resolution for sliding puddles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mda.a(IIILla;II)V",
+      "originalName": "a",
+      "to": "init",
+      "evidence": "Resets the puddle with kind, sizes, a timer and the room.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mda.a(ILgma;)Z",
       "originalName": "a",
       "to": "crush",
@@ -27828,6 +29109,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mda.a(Lgma;B)Z",
+      "originalName": "a",
+      "to": "isSolidFor",
+      "evidence": "True for the sliding kind; crush and canBeCrushedBy use it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mda.a(Lgma;I)Z",
       "originalName": "a",
       "to": "canBeCrushedBy",
@@ -27839,6 +29127,20 @@
       "originalName": "a",
       "to": "mirrorInRoom",
       "evidence": "Mirrors x through the Room, negates velocityX and negates the angle modulo 8192. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mda.a(Lla;IIIII)V",
+      "originalName": "a",
+      "to": "spawn",
+      "evidence": "Room.spawnPuddle entry: picks a random timer for kind 0 and calls init.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mda.a(Lup;I)I",
+      "originalName": "a",
+      "to": "reactToEffect",
+      "evidence": "Changes or removes the puddle when hit by fire, ice or other effects.",
       "confidence": "reviewed"
     },
     {
@@ -28010,6 +29312,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mda.j(B)V",
+      "originalName": "j",
+      "to": "releaseStatics",
+      "evidence": "Clears a static field.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mda.j(I)Z",
       "originalName": "j",
       "to": "isFallingIntoPit",
@@ -28042,6 +29351,13 @@
       "originalName": "r",
       "to": "getKind",
       "evidence": "Returns kind.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mda.s(I)V",
+      "originalName": "s",
+      "to": "savePreviousPosition",
+      "evidence": "Copies x and y to the previous position.",
       "confidence": "reviewed"
     },
     {
@@ -29316,6 +30632,13 @@
       "originalName": "a",
       "to": "attach",
       "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nq.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -30761,6 +32084,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oo.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oo.a(Luw;I)V",
       "originalName": "a",
       "to": "removeFromScene",
@@ -32021,10 +33351,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pqa.a(Lgma;ILgr;)V",
+      "originalName": "a",
+      "to": "configureFor",
+      "evidence": "Called by ModelFactory after attaching; subclasses adapt their style to the body and part. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pqa.a(Lgr;Lgma;B)V",
       "originalName": "a",
       "to": "attach",
       "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pqa.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -32935,6 +34279,20 @@
       "originalName": "a",
       "to": "loadNativeLibraryForClass",
       "evidence": "Loads a native library through the class's loader by reflection and caches the result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(IZLla;)Lfsa;",
+      "originalName": "a",
+      "to": "createFilledCellTrap",
+      "evidence": "Builds the template trap for filled maze cells. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qi.a(Lla;ZZ)Lfsa;",
+      "originalName": "a",
+      "to": "createOpenCellTrap",
+      "evidence": "Builds the template trap for open maze cells; maze subclasses supply platforms or floors. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -34384,6 +35742,13 @@
       "originalName": "a",
       "to": "attach",
       "evidence": "Stores the TrapPart and the WorldBody the model follows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ria.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -37866,6 +39231,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uc.a(IZLla;)Lfsa;",
+      "originalName": "a",
+      "to": "createFilledCellTrap",
+      "evidence": "Builds the template trap for filled maze cells. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uc.a(Lla;ZZ)Lfsa;",
+      "originalName": "a",
+      "to": "createOpenCellTrap",
+      "evidence": "Builds the template trap for open maze cells; maze subclasses supply platforms or floors. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uc.a(ZLkh;)V",
       "originalName": "a",
       "to": "encode",
@@ -38020,6 +39399,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ug.a(BIZ)V",
+      "originalName": "a",
+      "to": "initializeServices",
+      "evidence": "Calls initializeSharedServices with the shared archive ids and a 5000 ms timeout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.a(BZZ)I",
+      "originalName": "a",
+      "to": "pollLoginResponse",
+      "evidence": "Advances the login state machine and handles the login reply.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.a(II)V",
+      "originalName": "a",
+      "to": "initializeDefaultServices",
+      "evidence": "Calls initializeServices without the optional flag; TombRacer.initializeGame uses it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ug.a(IIIIIIIZ)V",
       "originalName": "a",
       "to": "initializeSharedServices",
@@ -38034,10 +39434,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ug.a(IZ)I",
+      "originalName": "a",
+      "to": "pollLogin",
+      "evidence": "Wraps pollLoginResponse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.b(BZ)V",
+      "originalName": "b",
+      "to": "enableDefaultMessageGroups",
+      "evidence": "Sets flags 0, 3, 7, 16, 17 and 18 and flag 8 from the argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.d(B)V",
+      "originalName": "d",
+      "to": "enableMessageGroups11To13",
+      "evidence": "Sets message-group flags 11, 12 and 13.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.e(B)I",
+      "originalName": "e",
+      "to": "attemptReconnect",
+      "evidence": "Polls the reconnect handshake, reporting \"reconnect\" errors and scheduling the next try 15 seconds later.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.f(B)V",
+      "originalName": "f",
+      "to": "readServerTextMessage",
+      "evidence": "Reads a flag byte and a text payload from the server packet and shows the message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.g(B)V",
+      "originalName": "g",
+      "to": "enableMessageGroup4",
+      "evidence": "Sets message-group flag 4.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ug.i(I)V",
       "originalName": "i",
       "to": "initializePacketLengths",
       "evidence": "Fills the shell packet length table (-1 and -2 for variable lengths). Body matches sumoblitz GameClientShell (initializeAccountPacketLengths).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.j(I)V",
+      "originalName": "j",
+      "to": "enableMessageGroup2",
+      "evidence": "Sets message-group flag 2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.k(I)V",
+      "originalName": "k",
+      "to": "storeSessionCookie",
+      "evidence": "Writes the session value as a browser cookie.",
       "confidence": "reviewed"
     },
     {
@@ -38055,10 +39511,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ug.n(I)V",
+      "originalName": "n",
+      "to": "resetConnectionStatics",
+      "evidence": "Clears static connection state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.o(I)V",
+      "originalName": "o",
+      "to": "enableMessageGroup5",
+      "evidence": "Sets message-group flag 5.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.p(I)V",
+      "originalName": "p",
+      "to": "enableMessageGroup6",
+      "evidence": "Sets message-group flag 6.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ug.q(I)Z",
       "originalName": "q",
       "to": "isFreeChatAllowed",
       "evidence": "Negation of the chat restriction flag ok.field_s. Body matches pool UsernameSuggestionsPanel (isFreeChatAllowed).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.s(I)V",
+      "originalName": "s",
+      "to": "enableMessageGroup1",
+      "evidence": "Sets message-group flag 1, which updateConnection polls.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.t(I)I",
+      "originalName": "t",
+      "to": "updateConnection",
+      "evidence": "Runs attemptReconnect and then polls every enabled message group.",
       "confidence": "reviewed"
     },
     {
@@ -39546,6 +41037,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vd.a(BLfsa;)V",
+      "originalName": "a",
+      "to": "setOpenCellTemplate",
+      "evidence": "MazeComponent passes the trap built by createOpenCellTrap.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vd.a(II)I",
       "originalName": "a",
       "to": "hashState",
@@ -39560,6 +41058,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vd.a(IIIILkh;I)V",
+      "originalName": "a",
+      "to": "spawnCellTrap",
+      "evidence": "Decodes a template trap and adds it as a child at a maze cell.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vd.a(IILpc;I)Z",
       "originalName": "a",
       "to": "interceptsBeam",
@@ -39567,10 +41072,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vd.a(Lfsa;B)V",
+      "originalName": "a",
+      "to": "setFilledCellTemplate",
+      "evidence": "MazeComponent passes the trap built by createFilledCellTrap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vd.a(Lfsa;I)V",
+      "originalName": "a",
+      "to": "setItemTemplate",
+      "evidence": "MazeComponent passes the item trap it built.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vd.a(Z)I",
       "originalName": "a",
       "to": "getTypeId",
       "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vd.a(ZI)V",
+      "originalName": "a",
+      "to": "setGeneratorType",
+      "evidence": "Sets the generator type, optionally regenerating.",
       "confidence": "reviewed"
     },
     {
@@ -39592,6 +41118,27 @@
       "originalName": "b",
       "to": "floorLog2Magnitude",
       "evidence": "Returns the floor log2 of the absolute value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vd.b(ZI)V",
+      "originalName": "b",
+      "to": "setItemCount",
+      "evidence": "Sets how many items the maze places.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vd.c(I)V",
+      "originalName": "c",
+      "to": "generateMaze",
+      "evidence": "Runs the MazeGenerator for the trap's size and decodes the templates into child traps per cell and item.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vd.d(Z)V",
+      "originalName": "d",
+      "to": "initTemplates",
+      "evidence": "Sizes the template traps to one cell and marks them as not top-level.",
       "confidence": "reviewed"
     },
     {
@@ -40386,6 +41933,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vsa.a(Lcn;Lfia;I)V",
+      "originalName": "a",
+      "to": "initNativeLibraries",
+      "evidence": "Stores the task dispatcher and archive and picks the platform-specific native library folder.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vsa.a(Lgr;Lgma;B)V",
       "originalName": "a",
       "to": "attach",
@@ -40393,10 +41947,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vsa.a(Liq;IIIB)V",
+      "originalName": "a",
+      "to": "drawAt",
+      "evidence": "Abstract per-model draw at the body's position, called from render. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vsa.a(Luw;I)V",
       "originalName": "a",
       "to": "removeFromScene",
       "evidence": "Removes the model from its current layer and marks it outside the scene. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vsa.b(BI)V",
+      "originalName": "b",
+      "to": "setStyle",
+      "evidence": "Sets the bridge style.",
       "confidence": "reviewed"
     },
     {
@@ -40425,6 +41993,13 @@
       "originalName": "k",
       "to": "getSceneLayer",
       "evidence": "Layer the model belongs in: 7 normally and 2 while its body falls into a pit. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vsa.n(B)V",
+      "originalName": "n",
+      "to": "buildTiles",
+      "evidence": "Builds the bridge's tile grid from the body size.",
       "confidence": "reviewed"
     },
     {
@@ -42117,7 +43692,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "c6487eb7fe6fdeb7facded288f6e4e62f2a879328bb1a17941fed64875fd6c69",
+      "tombracer-names.json": "3694f2561d8e28e1eb748663bf3576ecf15c02c589a35e1a9f6d39499d2f207d",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
