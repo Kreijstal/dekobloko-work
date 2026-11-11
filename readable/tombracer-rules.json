@@ -892,6 +892,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bca",
+      "originalName": "bca",
+      "to": "VariantMask",
+      "evidence": "Packet-encoded FlagSet of three variants; Trap.isInVariant asks it whether the trap exists in a variant (-1 means all).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bda",
       "originalName": "bda",
       "to": "WhiteNoiseOperator",
@@ -1627,6 +1634,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fm",
+      "originalName": "fm",
+      "to": "SoundEvent",
+      "evidence": "Sound id, x, y and an extra parameter queued by Room.queueSound.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fma",
       "originalName": "fma",
       "to": "ArchiveManager",
@@ -1659,6 +1673,13 @@
       "originalName": "foa",
       "to": "S2CRoundDeadlinePacket",
       "evidence": "Server opcode 93: carries the tick by which the round must end; MatchScreen beeps as it approaches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fq",
+      "originalName": "fq",
+      "to": "RoomHeader",
+      "evidence": "Header decoded from each room file in roomdata.csv: one flag, a two-bit value and two eight-bit values encoded with writeBits.",
       "confidence": "reviewed"
     },
     {
@@ -1708,6 +1729,13 @@
       "originalName": "fva",
       "to": "RecursiveBacktrackerMazeGenerator",
       "evidence": "lba.createMazeGenerator builds it for type 0, which AppletGameShell.field_r labels \"Recursive Backtracker\"; it carves from an 8192-entry int stack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:g",
+      "originalName": "g",
+      "to": "RoomDefinition",
+      "evidence": "Room file entry from roomdata.csv holding its archive group, file name, data buffer and RoomHeader; Room instances are built from it.",
       "confidence": "reviewed"
     },
     {
@@ -3902,6 +3930,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sqa",
+      "originalName": "sqa",
+      "to": "SoundEventQueue",
+      "evidence": "Abstract queue of SoundEvents that Room fills through queueSound and clears when the scene is rebuilt.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:sra",
       "originalName": "sra",
       "to": "GameAssetLoader",
@@ -4158,6 +4193,13 @@
       "originalName": "uha",
       "to": "CircleMovementLocomotor",
       "evidence": "ki.readLocomotor builds it for type 9, which the locomotor name table ce.field_n labels \"Circle Movement\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ui",
+      "originalName": "ui",
+      "to": "SwitchableIdAllocator",
+      "evidence": "Hands out sequential SwitchableIds (global ones from 1024, local ones wrapping at 256) while Room assigns ids to traps and components.",
       "confidence": "reviewed"
     },
     {
@@ -4490,6 +4532,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:w",
+      "originalName": "w",
+      "to": "SoundEventPlayer",
+      "evidence": "SoundEventQueue that plays queued events through the sound table, capping concurrent sounds at 15 and per-id counts, and can be muted.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:wba",
       "originalName": "wba",
       "to": "OpenGlSceneLight",
@@ -4718,6 +4767,13 @@
       "originalName": "field_g",
       "to": "modelCategoryNames",
       "evidence": "ModelFactory fills these 21 names indexed by model category id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bca.field_b:Lkpa;",
+      "originalName": "field_b",
+      "to": "flags",
+      "evidence": "Three-entry FlagSet, all set by default, encoded with the room.",
       "confidence": "reviewed"
     },
     {
@@ -5152,6 +5208,13 @@
       "originalName": "field_i",
       "to": "sceneLayer",
       "evidence": "Layer the model currently occupies in the RenderScene, or -1 when not in the scene.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dg.field_j:Z",
+      "originalName": "field_j",
+      "to": "occupiesTiles",
+      "evidence": "True while the model's footprint is registered in the room's TileGrid.",
       "confidence": "reviewed"
     },
     {
@@ -5708,6 +5771,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fm.field_f:I",
+      "originalName": "field_f",
+      "to": "parameter",
+      "evidence": "Fourth constructor argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fm.field_g:I",
+      "originalName": "field_g",
+      "to": "x",
+      "evidence": "Second constructor argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fm.field_i:I",
+      "originalName": "field_i",
+      "to": "y",
+      "evidence": "Third constructor argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fm.field_k:I",
+      "originalName": "field_k",
+      "to": "soundId",
+      "evidence": "First constructor argument, the sound table index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:foa.field_c:I",
       "originalName": "field_c",
       "to": "deadlineTick",
@@ -5803,6 +5894,13 @@
       "originalName": "field_G",
       "to": "freezeTicks",
       "evidence": "tick counts it down and treats the trap as frozen while it is positive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_H:I",
+      "originalName": "field_H",
+      "to": "statCategory",
+      "evidence": "Set by trap factories (snake pit, revolver, boulder) and counted by MatchScoringObserver when a room is entered.",
       "confidence": "reviewed"
     },
     {
@@ -5904,6 +6002,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fsa.field_W:[Z",
+      "originalName": "field_W",
+      "to": "handledEffectTypes",
+      "evidence": "Six flags indexed by Effect.type; behaviours set them in attachToTrap and the apply*Effect methods check them.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fsa.field_X:Lfsa;",
       "originalName": "field_X",
       "to": "parent",
@@ -5929,6 +6034,13 @@
       "originalName": "field_bb",
       "to": "previousLocalY",
       "evidence": "savePreviousPosition copies localY here; tryPush compares against it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_cb:Z",
+      "originalName": "field_cb",
+      "to": "isTopLevel",
+      "evidence": "Cleared when the trap gets a parent; Room.addTrap only adds top-level traps and mirror uses absolute coordinates for them.",
       "confidence": "reviewed"
     },
     {
@@ -5967,6 +6079,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fsa.field_h:[Z",
+      "originalName": "field_h",
+      "to": "supportReactions",
+      "evidence": "Three flags indexed by support kind; notifySupport only forwards to behaviours for flagged kinds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fsa.field_hb:I",
       "originalName": "field_hb",
       "to": "fallDepth",
@@ -6002,6 +6121,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fsa.field_k:[Z",
+      "originalName": "field_k",
+      "to": "surfaceKinds",
+      "evidence": "Three flags indexed by surface kind; getSurfaceCoverage returns 0 for unflagged kinds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fsa.field_kb:I",
       "originalName": "field_kb",
       "to": "fallSpeed",
@@ -6016,10 +6142,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fsa.field_lb:I",
+      "originalName": "field_lb",
+      "to": "tickStartX",
+      "evidence": "Copied from previousX at the start of each top-level tick; PlatformBehaviour pushes riders by the difference.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fsa.field_mb:I",
       "originalName": "field_mb",
       "to": "localY",
       "evidence": "The decoding Trap constructor and Trap.encode read and write it second, as 12 signed bits in 16.16; getY transforms it through the parent trap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_n:I",
+      "originalName": "field_n",
+      "to": "tickStartY",
+      "evidence": "Copied from previousY at the start of each top-level tick; PlatformBehaviour pushes riders by the difference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_o:Lbca;",
+      "originalName": "field_o",
+      "to": "variantMask",
+      "evidence": "VariantMask copied from the PrefabComponent that instantiated the trap.",
       "confidence": "reviewed"
     },
     {
@@ -6083,6 +6230,13 @@
       "originalName": "field_y",
       "to": "room",
       "evidence": "Trap.getRoom returns it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fsa.field_z:I",
+      "originalName": "field_z",
+      "to": "destroyStatType",
+      "evidence": "Read by MatchScoringObserver.onTrapDestroyed; 0 counts as a destroyed trap in the statistics.",
       "confidence": "reviewed"
     },
     {
@@ -6202,6 +6356,13 @@
       "originalName": "field_b",
       "to": "textureHeightMask",
       "evidence": "Wraps row neighbours (y - 1 and y + 1) in the blur and normal TextureOperators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hca.field_A:I",
+      "originalName": "field_A",
+      "to": "slowTicks",
+      "evidence": "Set to 25 by slime and slowing effects; while positive the player's move is halved.",
       "confidence": "reviewed"
     },
     {
@@ -6905,6 +7066,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:la.field_G:Lsqa;",
+      "originalName": "field_G",
+      "to": "soundQueue",
+      "evidence": "SoundEventQueue that queueSound appends to.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:la.field_H:Lqea;",
+      "originalName": "field_H",
+      "to": "seededRandom",
+      "evidence": "IsaacCipher seeded with the room's random seed on reset; trap models draw layout variations from it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:la.field_I:I",
       "originalName": "field_I",
       "to": "tick",
@@ -6947,6 +7122,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:la.field_P:Lfq;",
+      "originalName": "field_P",
+      "to": "header",
+      "evidence": "RoomHeader of the RoomDefinition the room was built from.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:la.field_Q:I",
       "originalName": "field_Q",
       "to": "entranceX",
@@ -6958,6 +7140,13 @@
       "originalName": "field_S",
       "to": "scene",
       "evidence": "createScene builds it with room for 10 entries; getScene returns it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:la.field_T:Z",
+      "originalName": "field_T",
+      "to": "mirrored",
+      "evidence": "Constructor flag; loadFromData mirrors the room when it is set.",
       "confidence": "reviewed"
     },
     {
@@ -7031,6 +7220,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:la.field_o:Lffa;",
+      "originalName": "field_o",
+      "to": "mainSupporter",
+      "evidence": "Collidable that covered most of the box in the last classifySupport call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:la.field_q:Lui;",
+      "originalName": "field_q",
+      "to": "componentIdAllocator",
+      "evidence": "SwitchableIdAllocator used for the components in assignSwitchableIds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:la.field_r:I",
+      "originalName": "field_r",
+      "to": "ticksSinceReset",
+      "evidence": "Zeroed by reset and incremented every tick.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:la.field_s:Lpta;",
       "originalName": "field_s",
       "to": "projectilePool",
@@ -7070,6 +7280,13 @@
       "originalName": "field_x",
       "to": "id",
       "evidence": "Room.toString and the debug dump print it as the room id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:la.field_y:Lui;",
+      "originalName": "field_y",
+      "to": "trapIdAllocator",
+      "evidence": "SwitchableIdAllocator used for the traps in assignSwitchableIds.",
       "confidence": "reviewed"
     },
     {
@@ -7584,6 +7801,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pca.field_d:[I",
+      "originalName": "field_d",
+      "to": "layerOccupancy",
+      "evidence": "Per-layer count of trap models occupying the cell; isOccupied tests it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pca.field_e:Luq;",
       "originalName": "field_e",
       "to": "renderable",
@@ -7595,6 +7819,13 @@
       "originalName": "field_f",
       "to": "row",
       "evidence": "Row given when the cell is attached to its grid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pca.field_g:I",
+      "originalName": "field_g",
+      "to": "wideOccupancy",
+      "evidence": "Count of models occupying the cell through their widened footprint.",
       "confidence": "reviewed"
     },
     {
@@ -7773,10 +8004,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qh.field_B:[I",
+      "originalName": "field_B",
+      "to": "pingTimes",
+      "evidence": "Per-player unsigned shorts read from server opcode 75 after the ping is echoed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qh.field_f:Lvna;",
       "originalName": "field_f",
       "to": "overlays",
       "evidence": "addOverlay appends MatchOverlays here and removeOverlay unlinks them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qh.field_g:[Lw;",
+      "originalName": "field_g",
+      "to": "soundPlayers",
+      "evidence": "One SoundEventPlayer per player, created in initPlayers.",
       "confidence": "reviewed"
     },
     {
@@ -7808,6 +8053,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qh.field_t:Z",
+      "originalName": "field_t",
+      "to": "hasMessageOverlay",
+      "evidence": "Set when a MessageOverlay is added and cleared with the overlays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qh.field_u:[Z",
+      "originalName": "field_u",
+      "to": "courseResultAnnounced",
+      "evidence": "Per-player flag so announceCourseResult runs once when a player finishes or times out.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qh.field_v:[[Z",
+      "originalName": "field_v",
+      "to": "actionStates",
+      "evidence": "Configured keys and arrow keys by nine actions; the hold counters advance when either source has the action down.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qh.field_w:Z",
       "originalName": "field_w",
       "to": "pausedByOverlay",
@@ -7819,6 +8085,13 @@
       "originalName": "field_x",
       "to": "localPlayerIndex",
       "evidence": "Constructor argument (0 in practice and single-player setups); the MatchScreen indexes players and MatchState arrays by it for the local player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qh.field_y:[I",
+      "originalName": "field_y",
+      "to": "actionHoldTicks",
+      "evidence": "Nine per-action counters incremented while any input source holds the action and zeroed when released; packed into the input bit mask.",
       "confidence": "reviewed"
     },
     {
@@ -8050,6 +8323,13 @@
       "originalName": "field_f",
       "to": "positions",
       "evidence": "Score position of each player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sqa.field_b:Lvna;",
+      "originalName": "field_b",
+      "to": "events",
+      "evidence": "Deque of queued SoundEvents.",
       "confidence": "reviewed"
     },
     {
@@ -8323,6 +8603,20 @@
       "originalName": "field_q",
       "to": "z",
       "evidence": "Subtracted from the render z in getInfluence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ui.field_b:I",
+      "originalName": "field_b",
+      "to": "nextGlobalId",
+      "evidence": "Starts at 1024 and increments for every global SwitchableId.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ui.field_d:I",
+      "originalName": "field_d",
+      "to": "nextLocalId",
+      "evidence": "Starts at 0 and wraps at 256 for local SwitchableIds.",
       "confidence": "reviewed"
     },
     {
@@ -8603,6 +8897,27 @@
       "originalName": "field_c",
       "to": "owner",
       "evidence": "HardwareGraphicsToolkit passed to the constructor and used for every state change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:w.field_e:Z",
+      "originalName": "field_e",
+      "to": "muted",
+      "evidence": "When set, play ignores every event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:w.field_g:Lvna;",
+      "originalName": "field_g",
+      "to": "playing",
+      "evidence": "Deque of playing sounds, capped at 15.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:w.field_i:[I",
+      "originalName": "field_i",
+      "to": "playingCounts",
+      "evidence": "Per-sound-id count of playing instances, limited by a per-id maximum.",
       "confidence": "reviewed"
     },
     {
@@ -9404,6 +9719,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ana.a(IIIIBI)I",
+      "originalName": "a",
+      "to": "getSurfaceCoverage",
+      "evidence": "Coverage of a box by this behaviour's surface kind; floors, platforms and darkness override it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ana.a(IILup;IBI)I",
       "originalName": "a",
       "to": "onAreaEffect",
@@ -10010,6 +10332,27 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bca.a(B)V",
+      "originalName": "a",
+      "to": "init",
+      "evidence": "Creates a three-flag set with every flag set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bca.a(BLkh;)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Encodes the flag set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bca.a(II)Z",
+      "originalName": "a",
+      "to": "includes",
+      "evidence": "True for variant -1 or when the variant's flag is set.",
       "confidence": "reviewed"
     },
     {
@@ -11630,6 +11973,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ck.a(IIIIIIBII)Z",
+      "originalName": "a",
+      "to": "containsCentredBox",
+      "evidence": "True when one centred box lies entirely inside another.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cka.GA(I)V",
       "originalName": "GA",
       "to": "clear",
@@ -12337,6 +12687,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:csa.b(Z)Z",
+      "originalName": "b",
+      "to": "isMobile",
+      "evidence": "True for bodies that move; TrapModel only registers tile occupancy for immobile ones. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:csa.c(B)I",
       "originalName": "c",
       "to": "getRenderY",
@@ -12460,6 +12817,13 @@
       "originalName": "k",
       "to": "getPreviousY",
       "evidence": "Player returns the y it saved before moving. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:csa.l(I)Z",
+      "originalName": "l",
+      "to": "isOutsideActiveVariant",
+      "evidence": "True when the body is excluded by the room's active variant; TrapModel skips rendering it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -12848,10 +13212,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cv.f(B)I",
+      "originalName": "f",
+      "to": "getWideOccupancyMode",
+      "evidence": "Widened occupancy mode, -1 for none; 1 enlarges the footprint by one tile. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cv.k(B)I",
       "originalName": "k",
       "to": "getSceneLayer",
       "evidence": "Layer the model belongs in: 7 normally and 2 while its body falls into a pit. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cv.m(B)I",
+      "originalName": "m",
+      "to": "getOccupancyLayer",
+      "evidence": "Tile occupancy layer of the model, -1 for none; pits, walls and some switches override it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -13058,6 +13436,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:db.a(ZIIIII)I",
+      "originalName": "a",
+      "to": "getSurfaceCoverage",
+      "evidence": "Area of a box that this collidable covers for a surface kind; Room sums it to decide support. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:db.a(ZLkh;)V",
       "originalName": "a",
       "to": "encode",
@@ -13076,6 +13461,13 @@
       "originalName": "b",
       "to": "getWeight",
       "evidence": "Trap returns its weight; Player adds its held item and weapon weight; pressure switches sum it. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:db.b(Z)Z",
+      "originalName": "b",
+      "to": "isMobile",
+      "evidence": "True for bodies that move; TrapModel only registers tile occupancy for immobile ones. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -13181,6 +13573,13 @@
       "originalName": "k",
       "to": "getPreviousY",
       "evidence": "Player returns the y it saved before moving. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:db.l(I)Z",
+      "originalName": "l",
+      "to": "isOutsideActiveVariant",
+      "evidence": "True when the body is excluded by the room's active variant; TrapModel skips rendering it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -13548,10 +13947,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dg.e(I)V",
+      "originalName": "e",
+      "to": "refreshTileOccupancy",
+      "evidence": "Re-runs updateTileOccupancy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.f(B)I",
+      "originalName": "f",
+      "to": "getWideOccupancyMode",
+      "evidence": "Widened occupancy mode, -1 for none; 1 enlarges the footprint by one tile.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dg.f(I)V",
       "originalName": "f",
       "to": "updateAnimation",
       "evidence": "Renderable per-frame hook; MonsterModel advances its animation and plays its sounds there.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.g(I)V",
+      "originalName": "g",
+      "to": "updateTileOccupancy",
+      "evidence": "Adds or removes the model's footprint in the TileGrid as the body appears or expires.",
       "confidence": "reviewed"
     },
     {
@@ -13569,6 +13989,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dg.i(B)V",
+      "originalName": "i",
+      "to": "detachBody",
+      "evidence": "Clears the body and drops the footprint it registered.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dg.j(B)Lgma;",
       "originalName": "j",
       "to": "getBody",
@@ -13580,6 +14007,13 @@
       "originalName": "k",
       "to": "getSceneLayer",
       "evidence": "Layer the model belongs in: 7 normally and 2 while its body falls into a pit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.m(B)I",
+      "originalName": "m",
+      "to": "getOccupancyLayer",
+      "evidence": "Tile occupancy layer of the model, -1 for none; pits, walls and some switches override it.",
       "confidence": "reviewed"
     },
     {
@@ -15522,6 +15956,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ep.a(ZIIIII)I",
+      "originalName": "a",
+      "to": "getSurfaceCoverage",
+      "evidence": "Area of a box that this collidable covers for a surface kind; Room sums it to decide support. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ep.b(B)I",
       "originalName": "b",
       "to": "getRenderX",
@@ -16502,6 +16943,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ffa.a(ZIIIII)I",
+      "originalName": "a",
+      "to": "getSurfaceCoverage",
+      "evidence": "Area of a box that this collidable covers for a surface kind; Room sums it to decide support.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ffa.b(I)I",
       "originalName": "b",
       "to": "getWeight",
@@ -16999,6 +17447,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fm.a(I)I",
+      "originalName": "a",
+      "to": "getY",
+      "evidence": "Returns the y position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fm.b(I)I",
+      "originalName": "b",
+      "to": "getX",
+      "evidence": "Returns the x position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fm.c(I)I",
+      "originalName": "c",
+      "to": "getParameter",
+      "evidence": "Returns the extra parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fm.e(I)I",
+      "originalName": "e",
+      "to": "getSoundId",
+      "evidence": "Returns the sound id.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fma.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -17167,6 +17643,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fq.a(Lkh;I)V",
+      "originalName": "a",
+      "to": "encode",
+      "evidence": "Writes the flag, the two-bit value and both eight-bit values.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fq.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -17286,6 +17769,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.A(I)V",
+      "originalName": "A",
+      "to": "refreshModelOccupancy",
+      "evidence": "Lets every TrapModel re-register its tile occupancy, recursing into children.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.B(I)V",
+      "originalName": "B",
+      "to": "removeFromRoomRecursive",
+      "evidence": "Removes the trap and its children from the collision grid and the room scene.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.C(B)Z",
       "originalName": "C",
       "to": "wasBlockedY",
@@ -17300,10 +17797,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.D(B)V",
+      "originalName": "D",
+      "to": "saveTickStartPositions",
+      "evidence": "Saves the previous position and copies it to the tick-start fields, recursing into children.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.D(I)Z",
       "originalName": "D",
       "to": "isAttachedToParent",
       "evidence": "True when the trap is attached and has a parent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.E(B)I",
+      "originalName": "E",
+      "to": "getStatCategory",
+      "evidence": "Returns the statistics category set by the trap factory.",
       "confidence": "reviewed"
     },
     {
@@ -17321,6 +17832,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.F(I)V",
+      "originalName": "F",
+      "to": "addToRoomRecursive",
+      "evidence": "Adds the trap to the scene, initialises it and inserts it in the collision grid, recursing into children.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.G(I)V",
       "originalName": "G",
       "to": "disableLocomotors",
@@ -17335,10 +17853,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.I(I)I",
+      "originalName": "I",
+      "to": "getTickStartX",
+      "evidence": "Returns the x saved at the start of the tick.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.J(I)Z",
       "originalName": "J",
       "to": "isEmpty",
       "evidence": "True when the Trap has no children, behaviours or locomotors, the case describe labels \"Empty Trap\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.K(I)V",
+      "originalName": "K",
+      "to": "releaseStatics",
+      "evidence": "Clears a static field.",
       "confidence": "reviewed"
     },
     {
@@ -17412,6 +17944,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.a(BLir;)V",
+      "originalName": "a",
+      "to": "toWorldSpace",
+      "evidence": "Converts a point in the parent's rotated local space into world coordinates.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.a(BLnv;)V",
       "originalName": "a",
       "to": "addBehaviour",
@@ -17423,6 +17962,13 @@
       "originalName": "a",
       "to": "isPushable",
       "evidence": "Room treats an overlapped collidable that returns false as blocking; Trap.tryPush refuses when it is false. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.a(BZI)V",
+      "originalName": "a",
+      "to": "setReactsToSupport",
+      "evidence": "Sets a support-reaction flag here and on every ancestor.",
       "confidence": "reviewed"
     },
     {
@@ -17447,10 +17993,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.a(II)Z",
+      "originalName": "a",
+      "to": "isInVariant",
+      "evidence": "Asks the VariantMask whether the trap exists in a variant.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.a(III)V",
       "originalName": "a",
       "to": "moveTo",
       "evidence": "Removes the Player from the collision grid, sets the position and previous position, and reinserts it. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.a(IIIII)I",
+      "originalName": "a",
+      "to": "resolveMoveCollision",
+      "evidence": "Runs the room's collision resolution for a move and returns 2 when blocked.",
       "confidence": "reviewed"
     },
     {
@@ -17503,6 +18063,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.a(ILgma;Lffa;I)V",
+      "originalName": "a",
+      "to": "notifySupport",
+      "evidence": "Forwards a body standing on this trap to the behaviours when the trap reacts to that support kind.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.a(ILgr;)I",
+      "originalName": "a",
+      "to": "indexOfPart",
+      "evidence": "Returns the part's index among collectParts, or -1.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.a(ILiq;)V",
       "originalName": "a",
       "to": "render",
@@ -17531,10 +18105,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.a(IZI)V",
+      "originalName": "a",
+      "to": "setHandlesEffectType",
+      "evidence": "Sets a handled-effect flag here and on every ancestor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.a(IZIIII)Z",
       "originalName": "a",
       "to": "tryPush",
       "evidence": "Trap returns true for a zero push, refuses when not pushable, damps the push by 11/12 per chain step and moves. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.a(Lbca;B)V",
+      "originalName": "a",
+      "to": "setVariantMask",
+      "evidence": "Stores the VariantMask handed over by PrefabComponent.instantiate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.a(Lffa;Z)Z",
+      "originalName": "a",
+      "to": "ignoresCollidable",
+      "evidence": "Returns ignoresCollisionWith for WorldBody collidables and false otherwise.",
       "confidence": "reviewed"
     },
     {
@@ -17549,6 +18144,20 @@
       "originalName": "a",
       "to": "canBeCrushedBy",
       "evidence": "Trap is crushable once pushed for crushThreshold ticks; Player always; Room asks it in push mode 2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.a(Lgr;BLdg;)V",
+      "originalName": "a",
+      "to": "addModel",
+      "evidence": "Appends a TrapModel and attaches it to the given part and this trap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.a(Lir;I)V",
+      "originalName": "a",
+      "to": "toParentSpace",
+      "evidence": "Converts a world point into the parent's rotated local space.",
       "confidence": "reviewed"
     },
     {
@@ -17615,10 +18224,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.a(ZBI)V",
+      "originalName": "a",
+      "to": "setProvidesSurface",
+      "evidence": "Sets a surface-kind flag here and on every ancestor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.a(ZI)V",
       "originalName": "a",
       "to": "setAlwaysBlocksBeams",
       "evidence": "Sets alwaysBlocksBeams.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.a(ZIB)Llj;",
+      "originalName": "a",
+      "to": "findSwitchableRecursive",
+      "evidence": "Matches the id against itself, then searches locomotors, behaviours and child traps.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.a(ZIIIII)I",
+      "originalName": "a",
+      "to": "getSurfaceCoverage",
+      "evidence": "Sums the behaviours' coverage of a box for a surface kind the trap provides.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.a(ZZLui;Lui;)V",
+      "originalName": "a",
+      "to": "assignSwitchableIds",
+      "evidence": "Takes global and local SwitchableIds from the allocators and recurses into locomotors, behaviours and children.",
       "confidence": "reviewed"
     },
     {
@@ -17650,6 +18287,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.b(IB)Z",
+      "originalName": "b",
+      "to": "handlesEffectType",
+      "evidence": "Returns the handled-effect flag for an Effect type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.b(II)Lgr;",
+      "originalName": "b",
+      "to": "getPartAt",
+      "evidence": "Returns the part at an index of collectParts, or null when out of range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.b(III)V",
+      "originalName": "b",
+      "to": "setLocalPosition",
+      "evidence": "Sets the local x and y.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.b(IIIII)V",
       "originalName": "b",
       "to": "moveBy",
@@ -17671,6 +18329,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.b(Z)Z",
+      "originalName": "b",
+      "to": "isMobile",
+      "evidence": "True when the trap or an ancestor is pushable or has locomotors; static traps register tile occupancy.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.b(ZI)V",
       "originalName": "b",
       "to": "setAttachedToParent",
@@ -17682,6 +18347,13 @@
       "originalName": "c",
       "to": "getRenderY",
       "evidence": "Player returns y, Projectile returns y and Room returns height / 2. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.c(BZ)V",
+      "originalName": "c",
+      "to": "setTopLevel",
+      "evidence": "Sets the top-level flag; maze and spawner code clear it for traps they own.",
       "confidence": "reviewed"
     },
     {
@@ -17748,10 +18420,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.d(IB)V",
+      "originalName": "d",
+      "to": "removeChildrenOutsideVariant",
+      "evidence": "Unlinks child traps that do not exist in the given variant.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.d(II)V",
       "originalName": "d",
       "to": "setCrushThreshold",
       "evidence": "Sets the number of pushed ticks before a crush destroys the trap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.d(IZ)Z",
+      "originalName": "d",
+      "to": "hasMovedThisTick",
+      "evidence": "True when this trap, or optionally an ancestor, moved this tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.d(Z)Z",
+      "originalName": "d",
+      "to": "hasChildren",
+      "evidence": "True when the children deque is not empty.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.d(ZI)Z",
+      "originalName": "d",
+      "to": "isChildMoveBlocked",
+      "evidence": "Tests each child's move collision and returns true when one is blocked.",
       "confidence": "reviewed"
     },
     {
@@ -17766,6 +18466,13 @@
       "originalName": "e",
       "to": "getY",
       "evidence": "Player returns y; Trap and RoomComponent transform their local y through the parent they are attached to. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.e(II)V",
+      "originalName": "e",
+      "to": "setDestroyStatType",
+      "evidence": "Sets the value onTrapDestroyed reads to credit a destroyed trap.",
       "confidence": "reviewed"
     },
     {
@@ -17801,6 +18508,13 @@
       "originalName": "f",
       "to": "addHeight",
       "evidence": "Adds to the elevation offset of every model and to verticalSize.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.f(Z)Z",
+      "originalName": "f",
+      "to": "getPushableFlag",
+      "evidence": "Returns the raw pushable field.",
       "confidence": "reviewed"
     },
     {
@@ -17902,6 +18616,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.j(II)Z",
+      "originalName": "j",
+      "to": "providesSurface",
+      "evidence": "Returns the surface-kind flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.k(B)Lub;",
       "originalName": "k",
       "to": "collectParts",
@@ -17913,6 +18634,27 @@
       "originalName": "k",
       "to": "getPreviousY",
       "evidence": "Player returns the y it saved before moving. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.k(II)Z",
+      "originalName": "k",
+      "to": "reactsToSupport",
+      "evidence": "Returns the support-reaction flag for a support kind.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.l(I)Z",
+      "originalName": "l",
+      "to": "isOutsideActiveVariant",
+      "evidence": "True when the parent is, or when the room has an active variant that the trap's VariantMask excludes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.l(II)V",
+      "originalName": "l",
+      "to": "setStatCategory",
+      "evidence": "Trap factories set 1 or 2 here; MatchScoringObserver counts traps by it.",
       "confidence": "reviewed"
     },
     {
@@ -17937,6 +18679,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.n(B)Z",
+      "originalName": "n",
+      "to": "isTopLevel",
+      "evidence": "Returns whether the trap has no parent and lives directly in the room.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.n(I)Lgpa;",
       "originalName": "n",
       "to": "getGlobalId",
@@ -17958,6 +18707,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.o(II)V",
+      "originalName": "o",
+      "to": "shiftLocalPosition",
+      "evidence": "Removes the trap from the collision grid, offsets its local position, reinserts it and saves the placement.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.p(B)Z",
       "originalName": "p",
       "to": "wasBlockedX",
@@ -17972,10 +18728,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.r(B)I",
+      "originalName": "r",
+      "to": "getLeft",
+      "evidence": "Returns x minus half the width.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.r(I)Lfsa;",
       "originalName": "r",
       "to": "getRoot",
       "evidence": "Follows parent links to the top-level trap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.s(B)Z",
+      "originalName": "s",
+      "to": "isPushableNow",
+      "evidence": "Pushable, not falling into a pit, not expired and obstructing at level one or more.",
       "confidence": "reviewed"
     },
     {
@@ -17990,6 +18760,13 @@
       "originalName": "t",
       "to": "countDependentChildren",
       "evidence": "Counts the children that are not independent; encode writes it before the child records.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.t(I)V",
+      "originalName": "t",
+      "to": "spawnDestroyParticles",
+      "evidence": "Called from destroy: spawns room particles at the trap's position and elevation.",
       "confidence": "reviewed"
     },
     {
@@ -18028,6 +18805,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.w(I)I",
+      "originalName": "w",
+      "to": "getDestroyStatType",
+      "evidence": "Returns the destroy statistic type, -1 when the trap does not count.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.x(B)V",
       "originalName": "x",
       "to": "updateParentRotation",
@@ -18042,6 +18826,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fsa.y(B)I",
+      "originalName": "y",
+      "to": "getTickStartY",
+      "evidence": "Returns the y saved at the start of the tick.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fsa.y(I)Lqea;",
       "originalName": "y",
       "to": "getRandom",
@@ -18053,6 +18844,13 @@
       "originalName": "z",
       "to": "isFloating",
       "evidence": "Returns the floating flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.z(I)V",
+      "originalName": "z",
+      "to": "reinsertIntoCollisionGrid",
+      "evidence": "Prunes and reinserts the trap in the room's collision grid, recursing into children.",
       "confidence": "reviewed"
     },
     {
@@ -18728,6 +19526,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gma.b(Z)Z",
+      "originalName": "b",
+      "to": "isMobile",
+      "evidence": "True for bodies that move; TrapModel only registers tile occupancy for immobile ones.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gma.c(I)I",
       "originalName": "c",
       "to": "getWidth",
@@ -18795,6 +19600,13 @@
       "originalName": "k",
       "to": "getPreviousY",
       "evidence": "Player returns the y it saved before moving.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gma.l(I)Z",
+      "originalName": "l",
+      "to": "isOutsideActiveVariant",
+      "evidence": "True when the body is excluded by the room's active variant; TrapModel skips rendering it.",
       "confidence": "reviewed"
     },
     {
@@ -19337,6 +20149,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hca.D(I)V",
+      "originalName": "D",
+      "to": "releaseStatics",
+      "evidence": "Clears the static sprite and quip tables.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hca.E(I)I",
       "originalName": "E",
       "to": "getFacingX",
@@ -19348,6 +20167,13 @@
       "originalName": "F",
       "to": "getRoomTreasureScore",
       "evidence": "Sums the room treasure counts weighted by the three treasure values; added to the score when a room is completed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.G(I)V",
+      "originalName": "G",
+      "to": "applySlow",
+      "evidence": "Sets slowTicks to 25; slime puddles call it every tick a player stands in them.",
       "confidence": "reviewed"
     },
     {
@@ -19533,6 +20359,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hca.a(Lgma;II)Z",
+      "originalName": "a",
+      "to": "canBeHitBy",
+      "evidence": "False when invulnerable, dying or the source is the player itself.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hca.a(Lla;IIZ)V",
       "originalName": "a",
       "to": "placeInRoom",
@@ -19596,6 +20429,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hca.a(ZIIII)I",
+      "originalName": "a",
+      "to": "resolveMove",
+      "evidence": "Runs the room's move resolution for the player's box, halving the move while slowed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.a(ZIIIII)I",
+      "originalName": "a",
+      "to": "getSurfaceCoverage",
+      "evidence": "Area of a box that this collidable covers for a surface kind; Room sums it to decide support. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hca.b(B)I",
       "originalName": "b",
       "to": "getRenderX",
@@ -19631,6 +20478,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hca.b(Z)Z",
+      "originalName": "b",
+      "to": "isMobile",
+      "evidence": "True for bodies that move; TrapModel only registers tile occupancy for immobile ones. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hca.b(ZZ)V",
       "originalName": "b",
       "to": "setInvulnerable",
@@ -19663,6 +20517,13 @@
       "originalName": "c",
       "to": "getTreasure",
       "evidence": "Returns one of the three treasure counts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.c(IIIIII)[Liu;",
+      "originalName": "c",
+      "to": "createScrollbarSprites",
+      "evidence": "Draws gradient and filled sprites for a scrollbar track and thumb.",
       "confidence": "reviewed"
     },
     {
@@ -19750,6 +20611,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hca.f(Z)I",
+      "originalName": "f",
+      "to": "getRawY",
+      "evidence": "Returns the y field.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hca.g(B)I",
       "originalName": "g",
       "to": "getElevation",
@@ -19761,6 +20629,13 @@
       "originalName": "g",
       "to": "getFacingAngle",
       "evidence": "Player returns directionToAngle(facingY, facingX); static bodies return 0. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.g(II)V",
+      "originalName": "g",
+      "to": "playSound",
+      "evidence": "Queues a sound at the player's position; items call it when collected.",
       "confidence": "reviewed"
     },
     {
@@ -19824,6 +20699,13 @@
       "originalName": "k",
       "to": "getPreviousY",
       "evidence": "Player returns the y it saved before moving. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.l(I)Z",
+      "originalName": "l",
+      "to": "isOutsideActiveVariant",
+      "evidence": "True when the body is excluded by the room's active variant; TrapModel skips rendering it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -19929,6 +20811,13 @@
       "originalName": "v",
       "to": "getScore",
       "evidence": "Returns score.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hca.w(I)I",
+      "originalName": "w",
+      "to": "getRawX",
+      "evidence": "Returns the x field.",
       "confidence": "reviewed"
     },
     {
@@ -24461,6 +25350,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kva.f(B)I",
+      "originalName": "f",
+      "to": "getWideOccupancyMode",
+      "evidence": "Widened occupancy mode, -1 for none; 1 enlarges the footprint by one tile. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kva.h(I)V",
       "originalName": "h",
       "to": "mirror",
@@ -24479,6 +25375,13 @@
       "originalName": "k",
       "to": "getSceneLayer",
       "evidence": "Layer the model belongs in: 7 normally and 2 while its body falls into a pit. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kva.m(B)I",
+      "originalName": "m",
+      "to": "getOccupancyLayer",
+      "evidence": "Tile occupancy layer of the model, -1 for none; pits, walls and some switches override it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -24629,10 +25532,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.a(B)I",
+      "originalName": "a",
+      "to": "getTicksSinceReset",
+      "evidence": "Returns the tick count since the last reset.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.a(BI)V",
       "originalName": "a",
       "to": "setTick",
       "evidence": "Stores tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(BLfq;)V",
+      "originalName": "a",
+      "to": "setHeader",
+      "evidence": "Stores the RoomHeader of the RoomDefinition.",
       "confidence": "reviewed"
     },
     {
@@ -24671,6 +25588,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.a(IIBIII)V",
+      "originalName": "a",
+      "to": "spawnRunDust",
+      "evidence": "Spawns dust particles on the cell under a running player, always on dusty tiles and one time in five elsewhere.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.a(IIII)Lep;",
       "originalName": "a",
       "to": "spawnProjectile",
@@ -24678,10 +25602,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.a(IIIIB)V",
+      "originalName": "a",
+      "to": "queueSound",
+      "evidence": "Appends a SoundEvent with id and position to the sound queue when one is set.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.a(IIIII)[Lfsa;",
       "originalName": "a",
       "to": "findTrapsInRect",
       "evidence": "Returns the traps from the collision grid that intersect the rectangle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(IIIIIII)V",
+      "originalName": "a",
+      "to": "addTileOccupancy",
+      "evidence": "Adds a model footprint to the TileGrid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(IIIIIILgma;)I",
+      "originalName": "a",
+      "to": "sumSurfaceCoverage",
+      "evidence": "Sums every collidable's coverage of a box for a surface kind.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(IIIIIZ)Z",
+      "originalName": "a",
+      "to": "isBoxInRoom",
+      "evidence": "Tests a centred box against the room rectangle: containment when asked, otherwise overlap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(IIIIZIB)Z",
+      "originalName": "a",
+      "to": "isTileBoxOccupied",
+      "evidence": "Asks the TileGrid whether a box touches an occupied cell in a layer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(IILgma;IIB)I",
+      "originalName": "a",
+      "to": "classifySupportAt",
+      "evidence": "Classifies support for a box at a position using the collision grid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(IILgma;I[Lffa;II)I",
+      "originalName": "a",
+      "to": "classifySupport",
+      "evidence": "Returns 0 when floors cover less than the box, otherwise 2 on a platform or 1 on floor, remembering the main supporter.",
       "confidence": "reviewed"
     },
     {
@@ -24699,6 +25672,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.a(ILgma;)I",
+      "originalName": "a",
+      "to": "updateSupport",
+      "evidence": "Classifies a body's support and notifies the supporting traps.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(ILgma;ILpc;Lgma;Lup;)Z",
+      "originalName": "a",
+      "to": "castBeamSegment",
+      "evidence": "Traces a beam segment and applies its Effect to the collidables it touches.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.a(ILiq;)V",
       "originalName": "a",
       "to": "render",
@@ -24713,10 +25700,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.a(ILpc;Lgma;B)Z",
+      "originalName": "a",
+      "to": "traceBeamSegment",
+      "evidence": "Marks the segment blocked when any collidable along it intercepts the beam.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(ILsqa;)V",
+      "originalName": "a",
+      "to": "setSoundQueue",
+      "evidence": "Stores the SoundEventQueue that MatchScreen creates for the viewed room.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.a(IZ)V",
       "originalName": "a",
       "to": "setCourseIndex",
       "evidence": "Stores the course index printed by toString.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(Lcsa;I)V",
+      "originalName": "a",
+      "to": "addComponent",
+      "evidence": "Appends a RoomComponent and adds it to the scene.",
       "confidence": "reviewed"
     },
     {
@@ -24738,6 +25746,20 @@
       "originalName": "a",
       "to": "applyProjectileEffect",
       "evidence": "Sums applyProjectileEffect over every collidable the projectile overlaps.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(Lffa;IIIIIZLgma;I)Z",
+      "originalName": "a",
+      "to": "isBoxBlocked",
+      "evidence": "True when a collidable at the collision level overlaps the box and was not already overlapped at the body's previous position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(Lffa;Lgma;IIIIIIIIIIZ)I",
+      "originalName": "a",
+      "to": "resolveMove",
+      "evidence": "Scans the collidables a move overlaps, pushing pushable ones, and returns how the move was blocked.",
       "confidence": "reviewed"
     },
     {
@@ -24790,10 +25812,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.a(ZIIIII)V",
+      "originalName": "a",
+      "to": "spawnDust",
+      "evidence": "Spawns dust particles on dusty cells one time in five, optionally adding a particle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(ZILgma;I)Z",
+      "originalName": "a",
+      "to": "isOnFloorAt",
+      "evidence": "True when classifySupportAt reports floor support for a 2x2 tile box.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(ZLpc;Lup;)I",
+      "originalName": "a",
+      "to": "applyBeamEffectToAll",
+      "evidence": "Applies a beam Effect to every collidable along a segment and sums the results.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.b(B)I",
       "originalName": "b",
       "to": "getRenderX",
       "evidence": "Player returns x, Projectile returns x and Room returns width / 2. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.b(BI)V",
+      "originalName": "b",
+      "to": "removeObjectsOutsideVariant",
+      "evidence": "Removes traps and obstacles that do not exist in a variant and trims the tile grid.",
       "confidence": "reviewed"
     },
     {
@@ -24811,6 +25861,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.b(II)V",
+      "originalName": "b",
+      "to": "expandBorder",
+      "evidence": "Grows the room by a number of tiles on every side, shifting the entrance, traps, components and obstacles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.b(IIII)Lmda;",
       "originalName": "b",
       "to": "allocatePuddle",
@@ -24822,6 +25879,20 @@
       "originalName": "b",
       "to": "spawnPuddle",
       "evidence": "Refreshes an overlapping Puddle of the same kind or allocates a new one from the pool at a position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.b(IIIIIII)V",
+      "originalName": "b",
+      "to": "removeTileOccupancy",
+      "evidence": "Removes a model footprint from the TileGrid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.b(IZ)V",
+      "originalName": "b",
+      "to": "mirrorRoom",
+      "evidence": "Mirrors the tile grid, traps, obstacles, components, entrance and optionally the pools and player.",
       "confidence": "reviewed"
     },
     {
@@ -24874,6 +25945,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.d(I)Lui;",
+      "originalName": "d",
+      "to": "getComponentIdAllocator",
+      "evidence": "Returns the allocator for component SwitchableIds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.d(II)V",
       "originalName": "d",
       "to": "tick",
@@ -24892,6 +25970,20 @@
       "originalName": "e",
       "to": "getRenderZ",
       "evidence": "Room returns 0 while attached objects add a 16.16 offset to their parent's height value. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.e(I)Lui;",
+      "originalName": "e",
+      "to": "getTrapIdAllocator",
+      "evidence": "Returns the allocator for trap SwitchableIds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.e(Z)Lqea;",
+      "originalName": "e",
+      "to": "getSeededRandom",
+      "evidence": "Returns the room-seeded IsaacCipher.",
       "confidence": "reviewed"
     },
     {
@@ -24923,10 +26015,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.h(B)Z",
+      "originalName": "h",
+      "to": "isMirrored",
+      "evidence": "Returns the mirrored flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.h(I)V",
+      "originalName": "h",
+      "to": "rebuildScene",
+      "evidence": "Clears the scene and adds the player, corpses, pools, traps, obstacles, components and tiles back to it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.i(B)V",
       "originalName": "i",
       "to": "restart",
       "evidence": "Calls enterAtEntrance; Player.tick calls it after recording a death.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.i(I)I",
+      "originalName": "i",
+      "to": "getActiveVariant",
+      "evidence": "Returns the active variant index, or -1 when there is none.",
       "confidence": "reviewed"
     },
     {
@@ -24965,6 +26078,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.m(I)V",
+      "originalName": "m",
+      "to": "assignSwitchableIds",
+      "evidence": "Resets both allocators and assigns ids to every trap and component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.n(I)[Lfsa;",
       "originalName": "n",
       "to": "getAllTraps",
@@ -24972,10 +26092,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.o(B)Z",
+      "originalName": "o",
+      "to": "hasActiveVariant",
+      "evidence": "True when an active variant is set.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.p(B)I",
       "originalName": "p",
       "to": "getTick",
       "evidence": "Returns tick; Player adds a delay to it for its exit deadline.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.p(I)V",
+      "originalName": "p",
+      "to": "releaseStatics",
+      "evidence": "Clears the static sprite and string tables.",
       "confidence": "reviewed"
     },
     {
@@ -24990,6 +26124,13 @@
       "originalName": "q",
       "to": "getRandom",
       "evidence": "Returns random.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.r(I)V",
+      "originalName": "r",
+      "to": "reenterAtEntrance",
+      "evidence": "Calls enterAtEntrance without a reset.",
       "confidence": "reviewed"
     },
     {
@@ -25420,6 +26561,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lfa.f(B)I",
+      "originalName": "f",
+      "to": "getWideOccupancyMode",
+      "evidence": "Widened occupancy mode, -1 for none; 1 enlarges the footprint by one tile. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lfa.h(I)V",
       "originalName": "h",
       "to": "mirror",
@@ -25431,6 +26579,13 @@
       "originalName": "i",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lfa.m(B)I",
+      "originalName": "m",
+      "to": "getOccupancyLayer",
+      "evidence": "Tile occupancy layer of the model, -1 for none; pits, walls and some switches override it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -25742,10 +26897,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lma.f(B)I",
+      "originalName": "f",
+      "to": "getWideOccupancyMode",
+      "evidence": "Widened occupancy mode, -1 for none; 1 enlarges the footprint by one tile. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lma.h(I)V",
       "originalName": "h",
       "to": "mirror",
       "evidence": "Called when the room is mirrored; WallModel mirrors its wall tiles. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lma.m(B)I",
+      "originalName": "m",
+      "to": "getOccupancyLayer",
+      "evidence": "Tile occupancy layer of the model, -1 for none; pits, walls and some switches override it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -25879,6 +27048,20 @@
       "originalName": "a",
       "to": "hashState",
       "evidence": "Each Behaviour folds its mutable fields into the running hash with mixHash. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lpa.a(IIIIBI)I",
+      "originalName": "a",
+      "to": "getSurfaceCoverage",
+      "evidence": "Coverage of a box by this behaviour's surface kind; floors, platforms and darkness override it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lpa.a(Lffa;BLgma;I)V",
+      "originalName": "a",
+      "to": "onSupport",
+      "evidence": "Called when a body is supported by the trap; platforms carry riders and pits kill players. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -26694,6 +27877,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mda.a(ZIIIII)I",
+      "originalName": "a",
+      "to": "getSurfaceCoverage",
+      "evidence": "Area of a box that this collidable covers for a surface kind; Room sums it to decide support. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mda.b(B)I",
       "originalName": "b",
       "to": "getRenderX",
@@ -26705,6 +27895,13 @@
       "originalName": "b",
       "to": "getWeight",
       "evidence": "Trap returns its weight; Player adds its held item and weapon weight; pressure switches sum it. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mda.b(Z)Z",
+      "originalName": "b",
+      "to": "isMobile",
+      "evidence": "True for bodies that move; TrapModel only registers tile occupancy for immobile ones. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -26824,6 +28021,13 @@
       "originalName": "k",
       "to": "getPreviousY",
       "evidence": "Player returns the y it saved before moving. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mda.l(I)Z",
+      "originalName": "l",
+      "to": "isOutsideActiveVariant",
+      "evidence": "True when the body is excluded by the room's active variant; TrapModel skips rendering it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -27265,6 +28469,20 @@
       "originalName": "a",
       "to": "hashState",
       "evidence": "Each Behaviour folds its mutable fields into the running hash with mixHash. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mo.a(IIIIBI)I",
+      "originalName": "a",
+      "to": "getSurfaceCoverage",
+      "evidence": "Coverage of a box by this behaviour's surface kind; floors, platforms and darkness override it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mo.a(Lffa;BLgma;I)V",
+      "originalName": "a",
+      "to": "onSupport",
+      "evidence": "Called when a body is supported by the trap; platforms carry riders and pits kill players. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -28367,6 +29585,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nv.a(IIIIBI)I",
+      "originalName": "a",
+      "to": "getSurfaceCoverage",
+      "evidence": "Coverage of a box by this behaviour's surface kind; floors, platforms and darkness override it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nv.a(IIIIIILffa;)Z",
       "originalName": "a",
       "to": "blocksOverlap",
@@ -28406,6 +29631,13 @@
       "originalName": "a",
       "to": "onBeamEffect",
       "evidence": "Per-behaviour hook summed by Trap.applyBeamEffect; the base returns 0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nv.a(Lffa;BLgma;I)V",
+      "originalName": "a",
+      "to": "onSupport",
+      "evidence": "Called when a body is supported by the trap; platforms carry riders and pits kill players.",
       "confidence": "reviewed"
     },
     {
@@ -29550,6 +30782,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oo.f(B)I",
+      "originalName": "f",
+      "to": "getWideOccupancyMode",
+      "evidence": "Widened occupancy mode, -1 for none; 1 enlarges the footprint by one tile. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oo.h(I)V",
       "originalName": "h",
       "to": "mirror",
@@ -29568,6 +30807,13 @@
       "originalName": "k",
       "to": "getSceneLayer",
       "evidence": "Layer the model belongs in: 7 normally and 2 while its body falls into a pit. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oo.m(B)I",
+      "originalName": "m",
+      "to": "getOccupancyLayer",
+      "evidence": "Tile occupancy layer of the model, -1 for none; pits, walls and some switches override it. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -30012,6 +31258,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pca.a(B)I",
+      "originalName": "a",
+      "to": "getCenterX",
+      "evidence": "Returns the centre x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pca.a(BI)V",
+      "originalName": "a",
+      "to": "addWideOccupancy",
+      "evidence": "Adds a delta to the wide occupancy count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pca.a(BLiq;)V",
+      "originalName": "a",
+      "to": "render",
+      "evidence": "Renders the cell's renderable.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pca.a(BLla;Lkh;)V",
       "originalName": "a",
       "to": "decode",
@@ -30026,10 +31293,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pca.a(II)Z",
+      "originalName": "a",
+      "to": "isOccupied",
+      "evidence": "True when a layer's occupancy count is positive.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pca.a(IIILtqa;)V",
       "originalName": "a",
       "to": "attach",
       "evidence": "Stores the grid, column and row and computes the cell centre.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pca.a(IIZ)V",
+      "originalName": "a",
+      "to": "addOccupancy",
+      "evidence": "Adds a delta to one layer's occupancy.",
       "confidence": "reviewed"
     },
     {
@@ -30040,10 +31321,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pca.a(I[I)Z",
+      "originalName": "a",
+      "to": "isOccupiedByAny",
+      "evidence": "True when any of the layers is occupied.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pca.a(Lkh;I)V",
       "originalName": "a",
       "to": "encode",
       "evidence": "Writes the tile type in eight bits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pca.a(Lpca;I)V",
+      "originalName": "a",
+      "to": "copyTileType",
+      "evidence": "Copies another cell's tile type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pca.a(Luw;B)V",
+      "originalName": "a",
+      "to": "addToScene",
+      "evidence": "Adds the renderable to scene layer 4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pca.a(Z)I",
+      "originalName": "a",
+      "to": "getCenterY",
+      "evidence": "Returns the centre y.",
       "confidence": "reviewed"
     },
     {
@@ -30061,6 +31370,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pca.b(Z)Z",
+      "originalName": "b",
+      "to": "hasWideOccupancy",
+      "evidence": "True when the wide occupancy count is positive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pca.c(B)I",
+      "originalName": "c",
+      "to": "getColumn",
+      "evidence": "Returns the column.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pca.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -30072,6 +31395,13 @@
       "originalName": "d",
       "to": "getRoom",
       "evidence": "Returns the grid's room.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pca.f(I)I",
+      "originalName": "f",
+      "to": "getRow",
+      "evidence": "Returns the row.",
       "confidence": "reviewed"
     },
     {
@@ -31265,6 +32595,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qh.a(BI)V",
+      "originalName": "a",
+      "to": "onMatchWinner",
+      "evidence": "Server opcode 67: shows the match result when the announced winner differs from the current one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qh.a(BII)V",
       "originalName": "a",
       "to": "onRewardChoice",
@@ -31321,6 +32658,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qh.a(ILkh;)V",
+      "originalName": "a",
+      "to": "decodeInitialState",
+      "evidence": "Decodes the MatchState sent with the match start and opens character select, round or standings accordingly.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qh.a(ILme;)V",
       "originalName": "a",
       "to": "removeOverlay",
@@ -31342,6 +32686,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qh.a(Lhca;BI)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatDeathMessage",
+      "evidence": "Picks a random message for a death cause and wraps it in the player's colour with the player's name substituted.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qh.a(Lme;I)V",
       "originalName": "a",
       "to": "addOverlay",
@@ -31353,6 +32704,20 @@
       "originalName": "a",
       "to": "showStandings",
       "evidence": "Switches to a new StandingsPhase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.a(ZI)V",
+      "originalName": "a",
+      "to": "sendInputMask",
+      "evidence": "Packs the held actions into a bit mask, queues it for the player and hands it to the protocol.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.a(ZII)V",
+      "originalName": "a",
+      "to": "setActionHoldTicks",
+      "evidence": "Sets an action's hold counter to a negative value so the action is suppressed for that many ticks.",
       "confidence": "reviewed"
     },
     {
@@ -31370,6 +32735,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qh.a(ZZZ)V",
+      "originalName": "a",
+      "to": "updateInputStates",
+      "evidence": "Copies the key bindings into the input-state table and advances the action hold counters.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qh.a([[II)V",
       "originalName": "a",
       "to": "showResults",
@@ -31381,6 +32753,27 @@
       "originalName": "b",
       "to": "setCharacterChoice",
       "evidence": "Stores a player's character choice in the match state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.b(ILkh;)V",
+      "originalName": "b",
+      "to": "decodePingTimes",
+      "evidence": "Reads one unsigned short per player after TombRacer echoes the server's ping (opcode 75).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.b(Z)V",
+      "originalName": "b",
+      "to": "releaseStatics",
+      "evidence": "Clears the static font and sprite data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.b(ZZI)V",
+      "originalName": "b",
+      "to": "endMatch",
+      "evidence": "Server opcode 66: optionally saves the unfinished course and switches to the standings phase.",
       "confidence": "reviewed"
     },
     {
@@ -31402,6 +32795,13 @@
       "originalName": "d",
       "to": "isSpectating",
       "evidence": "True when the local player index is -2; only spectators can cycle the viewed player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.d(I)Z",
+      "originalName": "d",
+      "to": "hasMessageOverlay",
+      "evidence": "Returns whether a MessageOverlay is showing.",
       "confidence": "reviewed"
     },
     {
@@ -31440,6 +32840,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qh.g(II)Z",
+      "originalName": "g",
+      "to": "isActionJustPressed",
+      "evidence": "True on the first tick an action's hold counter reaches one.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qh.h(B)V",
       "originalName": "h",
       "to": "showCharacterSelect",
@@ -31461,10 +32868,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qh.i(B)V",
+      "originalName": "i",
+      "to": "clearOverlays",
+      "evidence": "Clears the overlay deque and the message-overlay flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qh.i(II)V",
       "originalName": "i",
       "to": "showMatchResult",
       "evidence": "Records the match winner and switches to the standings phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.j(B)V",
+      "originalName": "j",
+      "to": "initPlayers",
+      "evidence": "Gives every player a PlayerModel, binds the character choice and creates its simulation observer and SoundEventPlayer.",
       "confidence": "reviewed"
     },
     {
@@ -34912,10 +36333,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sqa.a(B)V",
+      "originalName": "a",
+      "to": "stopAll",
+      "evidence": "Stops every playing sound and clears the per-id counts. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sqa.a(ILfm;)V",
+      "originalName": "a",
+      "to": "enqueue",
+      "evidence": "Appends a SoundEvent.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sqa.b(B)V",
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sqa.c(B)V",
+      "originalName": "c",
+      "to": "clear",
+      "evidence": "Clears the queued events.",
       "confidence": "reviewed"
     },
     {
@@ -35864,6 +37306,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tqa.a(IB)V",
+      "originalName": "a",
+      "to": "removeObjectsOutsideVariant",
+      "evidence": "Unlinks tile objects that do not exist in a variant.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tqa.a(IBI)Z",
       "originalName": "a",
       "to": "containsCell",
@@ -35882,6 +37331,27 @@
       "originalName": "a",
       "to": "getCell",
       "evidence": "Returns the cell at a column and row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tqa.a(IIIIIIII)V",
+      "originalName": "a",
+      "to": "adjustOccupancy",
+      "evidence": "Adds a delta to the layer and wide occupancy of every cell under a box.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tqa.a(IIIIIIZ)V",
+      "originalName": "a",
+      "to": "addOccupancy",
+      "evidence": "Calls adjustOccupancy with +1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tqa.a(IIZIIII)V",
+      "originalName": "a",
+      "to": "removeOccupancy",
+      "evidence": "Calls adjustOccupancy with -1.",
       "confidence": "reviewed"
     },
     {
@@ -35934,6 +37404,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tqa.b(III)V",
+      "originalName": "b",
+      "to": "expand",
+      "evidence": "Resizes the grid to the room and copies the old tiles shifted by the added border.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tqa.b(IIZIIII)Z",
+      "originalName": "b",
+      "to": "isBoxOccupied",
+      "evidence": "True when a box leaves the grid (if asked) or touches a cell occupied in a layer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tqa.c(B)I",
       "originalName": "c",
       "to": "getRenderY",
@@ -35966,6 +37450,13 @@
       "originalName": "e",
       "to": "getRenderZ",
       "evidence": "Room returns 0 while attached objects add a 16.16 offset to their parent's height value. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tqa.f(B)V",
+      "originalName": "f",
+      "to": "mirror",
+      "evidence": "Rebuilds the tiles mirrored horizontally and mirrors the tile objects.",
       "confidence": "reviewed"
     },
     {
@@ -36694,6 +38185,20 @@
       "originalName": "e",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.a(B)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Restarts global ids at 1024 and local ids at 0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ui.a(IZ)Lgpa;",
+      "originalName": "a",
+      "to": "allocate",
+      "evidence": "Returns the next global or local SwitchableId.",
       "confidence": "reviewed"
     },
     {
@@ -39147,10 +40652,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:w.a(B)V",
+      "originalName": "a",
+      "to": "stopAll",
+      "evidence": "Stops every playing sound and clears the per-id counts.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:w.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.a(Lfm;I)Lfla;",
+      "originalName": "a",
+      "to": "play",
+      "evidence": "Plays a SoundEvent unless muted, too many sounds play or the id is capped; some ids trigger companion sounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.a(Z)V",
+      "originalName": "a",
+      "to": "resetCounts",
+      "evidence": "Zeroes the per-id playing counts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.a(ZI)V",
+      "originalName": "a",
+      "to": "setMuted",
+      "evidence": "Sets the muted flag, stopping sounds first when asked.",
       "confidence": "reviewed"
     },
     {
@@ -40584,7 +42117,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "37f1415e54db4f01ca18edaaf752e01debaa9fafc9abd802324f444da289d36d",
+      "tombracer-names.json": "c6487eb7fe6fdeb7facded288f6e4e62f2a879328bb1a17941fed64875fd6c69",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
