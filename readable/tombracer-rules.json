@@ -1718,6 +1718,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fla",
+      "originalName": "fla",
+      "to": "PlayingSound",
+      "evidence": "SoundEventPlayer.playing holds it: one playing sound stream with fade-in/out volume steps and pan, released through the per-sound playing counts.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fm",
       "originalName": "fm",
       "to": "SoundEvent",
@@ -3199,6 +3206,13 @@
       "originalName": "nr",
       "to": "S2CRewardChoicePacket",
       "evidence": "GamePacket carrying a 3-bit player index and a 2-bit reward choice (or -1) that MatchScreen forwards to the RewardChoicePhase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:nra",
+      "originalName": "nra",
+      "to": "C2SRoomResultPacket",
+      "evidence": "GamePacket sent with opcode 74 by hba after a room: room ticks, room id, course id and the eight obfuscated anti-tamper counters.",
       "confidence": "reviewed"
     },
     {
@@ -6177,6 +6191,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:eq.field_o:Z",
+      "originalName": "field_o",
+      "to": "passesProjectiles",
+      "evidence": "blocksOverlap ignores projectiles while it is set.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eq.field_t:Z",
+      "originalName": "field_t",
+      "to": "passesBeams",
+      "evidence": "interceptsBeam returns false without stopping the beam while it is set.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:f.field_a:I",
       "originalName": "field_a",
       "to": "maxTargets",
@@ -6961,6 +6989,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ge.field_F:I",
+      "originalName": "field_F",
+      "to": "timingPatternId",
+      "evidence": "4-bit timing pattern id read when the shooter uses a timing pattern.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ge.field_H:I",
+      "originalName": "field_H",
+      "to": "phaseOffset",
+      "evidence": "4-bit phase (sixteenths of the pattern) read unless the phase is randomised.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ge.field_I:Z",
+      "originalName": "field_I",
+      "to": "randomPhase",
+      "evidence": "When set the phase offset is drawn from the room random at setup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gea.field_b:[[I",
       "originalName": "field_b",
       "to": "points",
@@ -7448,6 +7497,20 @@
       "originalName": "field_d",
       "to": "sentinel",
       "evidence": "SecondaryNodeDeque poll takes sentinel.field_g.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hn.field_H:I",
+      "originalName": "field_H",
+      "to": "itemType",
+      "evidence": "2-bit item kind: 1 makes coin items, otherwise the other MiscItemBehaviour type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hn.field_I:I",
+      "originalName": "field_I",
+      "to": "itemCount",
+      "evidence": "3-bit count of items placed in maze cells; getItemCount returns it and no item trap is made when it is zero.",
       "confidence": "reviewed"
     },
     {
@@ -8473,6 +8536,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lpa.field_n:I",
+      "originalName": "field_n",
+      "to": "weightThreshold",
+      "evidence": "Accumulated standing weight that starts the collapse countdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lpa.field_q:I",
+      "originalName": "field_q",
+      "to": "collapseDelay",
+      "evidence": "Ticks between reaching the weight threshold and the platform falling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lpa.field_u:I",
+      "originalName": "field_u",
+      "to": "collapseCountdown",
+      "evidence": "-1 while idle; set to collapseDelay once enough weight stands on the platform, then counted down to the fall.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lq.field_p:[Ljava/lang/String;",
       "originalName": "field_p",
       "to": "achievementNames",
@@ -9072,6 +9156,34 @@
       "originalName": "field_j",
       "to": "column",
       "evidence": "Column given when the cell is attached to its grid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pd.field_n:Z",
+      "originalName": "field_n",
+      "to": "waitingForPlayerToLeave",
+      "evidence": "While set the item is not collectable until the player stops overlapping it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pd.field_o:Z",
+      "originalName": "field_o",
+      "to": "collected",
+      "evidence": "Set when tryCollect succeeds; cleared when the respawn timer runs out.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pd.field_q:I",
+      "originalName": "field_q",
+      "to": "respawnTicks",
+      "evidence": "When positive, the item reappears this many ticks after being collected.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pd.field_r:I",
+      "originalName": "field_r",
+      "to": "respawnTimer",
+      "evidence": "Counts down from respawnTicks after collection; at zero the item is available again.",
       "confidence": "reviewed"
     },
     {
@@ -11070,6 +11182,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aea.D(I)Z",
+      "originalName": "D",
+      "to": "supportsItems",
+      "evidence": "Subclass flag: when true the maze stores an item count and item type and can place item traps. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aea.a(IIIIIIIIBI)V",
+      "originalName": "a",
+      "to": "drawBezierCurve",
+      "evidence": "Draws a cubic Bezier curve as 32 line segments (or a single line for a straight curve).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aea.a(IZLla;)Lfsa;",
       "originalName": "a",
       "to": "createFilledCellTrap",
@@ -11259,6 +11385,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aga.a(IILha;IIII)V",
+      "originalName": "a",
+      "to": "createLight",
+      "evidence": "Creates the toolkit light with the given position, radius and colour.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aga.a(ZII)V",
+      "originalName": "a",
+      "to": "updateIntensity",
+      "evidence": "Sets the light intensity from its waveform (flicker, pulse, sawtooth, square) at the given tick.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aga.b(B)V",
       "originalName": "b",
       "to": "applyModeParameters",
@@ -11413,6 +11553,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ak.a(Lha;[Ljpa;I)[Lnh;",
+      "originalName": "a",
+      "to": "createToolkitSprites",
+      "evidence": "Converts each sprite data entry into a toolkit sprite.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ak.a([Lbfa;I)Lbfa;",
       "originalName": "a",
       "to": "invoke",
@@ -11480,6 +11627,13 @@
       "originalName": "f",
       "to": "updateAnimation",
       "evidence": "Renderable per-frame hook; MonsterModel advances its animation and plays its sounds there. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aka.i(I)I",
+      "originalName": "i",
+      "to": "getModelHeading",
+      "evidence": "Converts the body facing angle into the 2048-unit heading used to orient the monster model.",
       "confidence": "reviewed"
     },
     {
@@ -11599,6 +11753,13 @@
       "originalName": "a",
       "to": "generate",
       "evidence": "Allocates two bytes per voxel and generates the volume.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ama.a(Lil;Ljava/lang/String;II[Ljava/lang/String;)I",
+      "originalName": "a",
+      "to": "splitIntoBalancedLines",
+      "evidence": "Splits text at spaces/hyphens into lines of roughly equal width and returns the line count.",
       "confidence": "reviewed"
     },
     {
@@ -11833,6 +11994,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:apa.a(BIIII)V",
+      "originalName": "a",
+      "to": "drawFrame",
+      "evidence": "Draws the widget's nine-slice frame sprites at the given bounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aq.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -11854,10 +12022,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ara.a(IIIIII)V",
+      "originalName": "a",
+      "to": "drawClippedLine",
+      "evidence": "Draws a line into the scanline buffer, using fast paths for horizontal and vertical lines and Bresenham otherwise.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ara.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:as.a(II)I",
+      "originalName": "a",
+      "to": "sumRoomParTimes",
+      "evidence": "Sums the par times of the course's rooms from the given index on.",
       "confidence": "reviewed"
     },
     {
@@ -12554,6 +12736,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bba.a(Lcsa;ZZ)Z",
+      "originalName": "a",
+      "to": "containsComponent",
+      "evidence": "True when the region holds the component directly or, if requested, as a descendant.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bc.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -12617,6 +12806,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bd.a(I[IIIIIII)V",
+      "originalName": "a",
+      "to": "capture",
+      "evidence": "Records the raster pixels, size and clip bounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bda.a(ZBLla;Lkh;)Lnv;",
       "originalName": "a",
       "to": "readBehaviour",
@@ -12628,6 +12824,13 @@
       "originalName": "c",
       "to": "getMonochromeRow",
       "evidence": "Base throws \"This operation does not have a monochrome output\"; operators return one row of 0-4096 values. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bda.d(III)I",
+      "originalName": "d",
+      "to": "hashNoise",
+      "evidence": "Integer lattice noise: hashes the coordinates into a 12-bit value.",
       "confidence": "reviewed"
     },
     {
@@ -12845,6 +13048,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bfa.a(Z)Z",
+      "originalName": "a",
+      "to": "booleanValue",
+      "evidence": "Returns the console value as a boolean.",
       "confidence": "reviewed"
     },
     {
@@ -13107,6 +13317,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bj.b(B)V",
+      "originalName": "b",
+      "to": "onDecoded",
+      "evidence": "Hook called after a texture operator is decoded so it can build its lookup tables. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bj.c(I)V",
+      "originalName": "c",
+      "to": "buildStripeTables",
+      "evidence": "Computes the start and end positions of each stripe from the stripe count and width.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bj.c(II)[I",
       "originalName": "c",
       "to": "getMonochromeRow",
@@ -13121,6 +13345,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bja.a(BLcn;ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "loadMenuBackgrounds",
+      "evidence": "Loads map.png and wall_bg.jpg (and further menu images) with loading progress.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bja.a(I)I",
       "originalName": "a",
       "to": "getMaxLineWidth",
@@ -13128,10 +13359,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bja.a(IBI)V",
+      "originalName": "a",
+      "to": "startSinglePlayerMatch",
+      "evidence": "Creates a single-player MatchScreen for the course and game mode and shows character select.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bja.a(II)I",
       "originalName": "a",
       "to": "findLineIndex",
       "evidence": "Returns the line containing a vertical position. Body matches reference WidgetTextLayout (findLineIndex).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bja.a(III)I",
+      "originalName": "a",
+      "to": "characterIndexAt",
+      "evidence": "Returns the character index under the point in the laid-out lines, or -1.",
       "confidence": "reviewed"
     },
     {
@@ -13160,6 +13405,13 @@
       "originalName": "a",
       "to": "decodeParameter",
       "evidence": "Operators read the parameter with the given index from the PacketBuffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.b(B)V",
+      "originalName": "b",
+      "to": "onDecoded",
+      "evidence": "Hook called after a texture operator is decoded so it can build its lookup tables. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -13251,6 +13503,20 @@
       "originalName": "a",
       "to": "decodeParameter",
       "evidence": "Operators read the parameter with the given index from the PacketBuffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bma.b(B)V",
+      "originalName": "b",
+      "to": "onDecoded",
+      "evidence": "Hook called after a texture operator is decoded so it can build its lookup tables. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bma.c(I)V",
+      "originalName": "c",
+      "to": "generateBrickLayout",
+      "evidence": "Builds the randomised brick row and column offsets from the seed.",
       "confidence": "reviewed"
     },
     {
@@ -13527,6 +13793,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bra.a(Ljava/lang/String;BLqc;)Lrj;",
+      "originalName": "a",
+      "to": "appendDialogButton",
+      "evidence": "Adds a 30x15 focusable button 38 pixels below the previous one and grows the dialog layout.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bra.i(B)V",
       "originalName": "i",
       "to": "releaseStatics",
@@ -13611,6 +13884,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bt.a(BIII)I",
+      "originalName": "a",
+      "to": "clampToScreenX",
+      "evidence": "Keeps a box of the given width inside the screen horizontally.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bt.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -13688,6 +13968,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bta.a(Z)V",
+      "originalName": "a",
+      "to": "onFogChanged",
+      "evidence": "Hook the hardware toolkit calls before applying fog parameters; effects upload fog range and colour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bta.a(ZI)V",
       "originalName": "a",
       "to": "refreshState",
@@ -13758,6 +14045,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bua.a(IBII)I",
+      "originalName": "a",
+      "to": "getAnimationLength",
+      "evidence": "Looks up the animation sequence and returns its length, or 0 when missing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bua.a(II)I",
       "originalName": "a",
       "to": "cos2048",
@@ -13821,6 +14115,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bua.c(B)I",
+      "originalName": "c",
+      "to": "getCurrentAnimationLength",
+      "evidence": "Returns the length of the animation sequence currently selected on the animator.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bua.c(I)Z",
       "originalName": "c",
       "to": "hasFrameChanged",
@@ -13839,6 +14140,13 @@
       "originalName": "e",
       "to": "isFinished",
       "evidence": "Asks the SequencePlayer whether the animation has finished.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bv.b(III)V",
+      "originalName": "b",
+      "to": "layoutTabs",
+      "evidence": "Splits the width evenly among the tab buttons and positions the page area below them.",
       "confidence": "reviewed"
     },
     {
@@ -13961,6 +14269,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:caa.a(B)V",
+      "originalName": "a",
+      "to": "startTutorial",
+      "evidence": "Starts a tutorial (game mode 3) match on the tutorial course.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:caa.a(Lff;Lla;I)V",
       "originalName": "a",
       "to": "sendRoomCompletedStat",
@@ -13996,6 +14311,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cb.a(IB)V",
+      "originalName": "a",
+      "to": "setDrawBuffer",
+      "evidence": "Selects the colour attachment glDrawBuffer writes to.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cb.a(II)V",
+      "originalName": "a",
+      "to": "detachAttachment",
+      "evidence": "Detaches the attachment in the slot and clears its bit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cb.a(ILkba;Z)V",
+      "originalName": "a",
+      "to": "attachRenderbuffer",
+      "evidence": "Attaches a renderbuffer to the slot, recording the framebuffer size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cb.a(ILrt;II)V",
+      "originalName": "a",
+      "to": "attachTextureLevel",
+      "evidence": "Attaches a texture to the slot, recording the framebuffer size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cb.a(ZLrt;I)V",
+      "originalName": "a",
+      "to": "attachTexture",
+      "evidence": "Attaches a 2D texture to the given colour slot.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cb.b(B)V",
       "originalName": "b",
       "to": "unbindReadFramebuffer",
@@ -14003,10 +14353,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cb.b(II)V",
+      "originalName": "b",
+      "to": "setReadBuffer",
+      "evidence": "Selects the colour attachment glReadBuffer reads from.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cb.c(B)V",
       "originalName": "c",
       "to": "bindReadFramebuffer",
       "evidence": "Binds the framebuffer for reading. Body matches sumoblitz LegacyOpenGlFramebuffer (bindReadFramebuffer).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cb.c(I)Z",
+      "originalName": "c",
+      "to": "isComplete",
+      "evidence": "True when glCheckFramebufferStatus reports the framebuffer complete.",
       "confidence": "reviewed"
     },
     {
@@ -14021,6 +14385,13 @@
       "originalName": "d",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cb.e(I)I",
+      "originalName": "e",
+      "to": "getBindTarget",
+      "evidence": "Returns the GL target (framebuffer, draw or read) the framebuffer is bound to.",
       "confidence": "reviewed"
     },
     {
@@ -14066,6 +14437,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cca.a(II)Z",
+      "originalName": "a",
+      "to": "scrollByLines",
+      "evidence": "Moves the vertical scrollbar by the given number of steps.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cca.a(IIIILae;II)Z",
       "originalName": "a",
       "to": "handleMouseWheel",
@@ -14091,6 +14469,13 @@
       "originalName": "a",
       "to": "setVerticalScrollControl",
       "evidence": "Stores the ScrollControlWidget as a field and as the child at the given index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cca.c(I)V",
+      "originalName": "c",
+      "to": "updateScrollbars",
+      "evidence": "Updates the scrollbars' ranges and positions from the content size.",
       "confidence": "reviewed"
     },
     {
@@ -14248,6 +14633,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ce.j(I)V",
+      "originalName": "j",
+      "to": "startAudioOutput",
+      "evidence": "Creates the two MIDI/PCM streams, their mixer and starts the audio output.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ce.k(B)I",
       "originalName": "k",
       "to": "getSceneLayer",
@@ -14304,6 +14696,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cf.a(II)V",
+      "originalName": "a",
+      "to": "setSoundVolume",
+      "evidence": "Stores the sound effect volume and applies it to the sound mixers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cf.a(IIII)I",
       "originalName": "a",
       "to": "wrapDelta",
@@ -14353,6 +14752,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cfa.a(IB)V",
+      "originalName": "a",
+      "to": "takeReward",
+      "evidence": "Gives the current chooser the reward in the slot (or none for -1), plays its sound and moves to the next chooser.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cfa.a(II)I",
       "originalName": "a",
       "to": "getReward",
@@ -14392,6 +14798,20 @@
       "originalName": "c",
       "to": "getCurrentPlayerTicks",
       "evidence": "Returns currentPlayerTicks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cfa.d(B)V",
+      "originalName": "d",
+      "to": "tickChooser",
+      "evidence": "Advances the chooser timer and sound player, moving on when there is no current chooser.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cfa.d(I)V",
+      "originalName": "d",
+      "to": "advanceToNextChooser",
+      "evidence": "Picks the next player in standings order who finished the course, or finishes when rewards or players run out.",
       "confidence": "reviewed"
     },
     {
@@ -14472,6 +14892,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cha.a(I)V",
+      "originalName": "a",
+      "to": "makeTarget",
+      "evidence": "Makes this buffer the software rasterizer target.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cha.a(IILjava/awt/Component;B)V",
       "originalName": "a",
       "to": "initialize",
@@ -14514,6 +14941,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ci.a(II)Lroa;",
+      "originalName": "a",
+      "to": "createFullWeapon",
+      "evidence": "Creates a weapon preset with its ammo set to the maximum.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ci.a(III)[[I",
       "originalName": "a",
       "to": "getInputColourRow",
@@ -14525,6 +14959,13 @@
       "originalName": "a",
       "to": "decodeAntialiasedFont",
       "evidence": "Creates an AntialiasedBitmapFont from encoded bytes and the shared decode buffers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.b(B)V",
+      "originalName": "b",
+      "to": "onDecoded",
+      "evidence": "Hook called after a texture operator is decoded so it can build its lookup tables.",
       "confidence": "reviewed"
     },
     {
@@ -14567,6 +15008,27 @@
       "originalName": "c",
       "to": "getInputMonochromeRow",
       "evidence": "Returns a row of an input operator, taking the red channel of a colour input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cia.a(B)I",
+      "originalName": "a",
+      "to": "getY",
+      "evidence": "Returns the integer y position (16.16 fixed point).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cia.a(I)I",
+      "originalName": "a",
+      "to": "getX",
+      "evidence": "Returns the integer x position (16.16 fixed point).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cia.a(III)V",
+      "originalName": "a",
+      "to": "setPosition",
+      "evidence": "Sets the position in 16.16 fixed point.",
       "confidence": "reviewed"
     },
     {
@@ -14899,6 +15361,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cl.a(ZBII)Z",
+      "originalName": "a",
+      "to": "compareRankingEntries",
+      "evidence": "Orders two ranking rows by their score keys for the ranking sort.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cl.b(II)[[I",
       "originalName": "b",
       "to": "getColourRow",
@@ -14910,6 +15379,13 @@
       "originalName": "c",
       "to": "getMonochromeRow",
       "evidence": "Base throws \"This operation does not have a monochrome output\"; operators return one row of 0-4096 values. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cla.a(B)J",
+      "originalName": "a",
+      "to": "getPbufferHandle",
+      "evidence": "Returns the native pbuffer handle.",
       "confidence": "reviewed"
     },
     {
@@ -14931,6 +15407,20 @@
       "originalName": "f",
       "to": "initConsole",
       "evidence": "Clears the screen and, when the access level is at least 2, creates the FunOrbConsole and registers it and the shared listener.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cla.g(I)Z",
+      "originalName": "g",
+      "to": "ensurePacketPayload",
+      "evidence": "Reads the variable packet size (byte or short) and waits until the payload is buffered.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cla.h(I)V",
+      "originalName": "h",
+      "to": "releasePbuffer",
+      "evidence": "Releases the native pbuffer handle when one is held.",
       "confidence": "reviewed"
     },
     {
@@ -14990,6 +15480,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cn.a(BI)I",
+      "originalName": "a",
+      "to": "getFileCount",
+      "evidence": "Returns the number of files in the group.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cn.a(I)Z",
       "originalName": "a",
       "to": "areAllGroupsAvailable",
@@ -15001,6 +15498,20 @@
       "originalName": "a",
       "to": "getGroupProgress",
       "evidence": "Returns the load progress of a group. Body matches escapevector ResourceArchive (getGroupProgress).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(IBI)Z",
+      "originalName": "a",
+      "to": "ensureFileReady",
+      "evidence": "True when the file is unpacked or its packed group is loaded.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(II)Z",
+      "originalName": "a",
+      "to": "ensureFileReadyById",
+      "evidence": "Checks a file by single id, treating one-group and one-file-per-group archives specially.",
       "confidence": "reviewed"
     },
     {
@@ -15039,10 +15550,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cn.a(Ljava/lang/String;Ljava/lang/String;I)Z",
+      "originalName": "a",
+      "to": "hasFile",
+      "evidence": "True when the named group contains the named file.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cn.a(Z)I",
       "originalName": "a",
       "to": "getOverallProgress",
       "evidence": "Returns the archive's overall load percentage, as in other games' archives.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.a(ZII)[B",
+      "originalName": "a",
+      "to": "getFile",
+      "evidence": "Returns the file's bytes from the group.",
       "confidence": "reviewed"
     },
     {
@@ -15081,6 +15606,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cn.c(I)I",
+      "originalName": "c",
+      "to": "getGroupCount",
+      "evidence": "Returns the number of groups in the index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cn.c(II)V",
       "originalName": "c",
       "to": "loadPackedGroup",
@@ -15113,6 +15645,13 @@
       "originalName": "e",
       "to": "ensureGroupLoaded",
       "evidence": "Returns whether a group is loaded, requesting it if not. Body matches escapevector ResourceArchive.ensureGroupLoaded.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cn.f(II)[B",
+      "originalName": "f",
+      "to": "getFileById",
+      "evidence": "Returns a file addressed by a single id, treating one-group and one-file-per-group archives specially.",
       "confidence": "reviewed"
     },
     {
@@ -15284,6 +15823,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cqa.a(Z)V",
+      "originalName": "a",
+      "to": "onFogChanged",
+      "evidence": "Hook the hardware toolkit calls before applying fog parameters; effects upload fog range and colour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cqa.a(ZI)V",
       "originalName": "a",
       "to": "refreshState",
@@ -15291,10 +15837,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cqa.b(B)V",
+      "originalName": "b",
+      "to": "onViewMatrixChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the view matrix; effects upload it to shader constant 0. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cqa.b(I)V",
+      "originalName": "b",
+      "to": "onProjectionChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the projection; effects upload the transposed projection. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cqa.b(Z)V",
+      "originalName": "b",
+      "to": "onModelMatrixChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the model matrix; effects re-upload their transform constants. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cqa.c(I)Z",
       "originalName": "c",
       "to": "isSupported",
       "evidence": "Abstract: whether the hardware supports the effect; the toolkit checks it at start-up. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cqa.c(Z)V",
+      "originalName": "c",
+      "to": "onTextureMatrixChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the texture matrix; effects upload its first two rows. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -16110,6 +16684,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cua.a(BLjava/applet/Applet;)V",
+      "originalName": "a",
+      "to": "clearSessionAndReload",
+      "evidence": "Clears the session cookie and reloads the page.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cua.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -16201,6 +16782,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cw.a(I)V",
+      "originalName": "a",
+      "to": "releaseAll",
+      "evidence": "Drops the framebuffers, textures and renderbuffers and releases every effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cw.a(ILoga;)Z",
+      "originalName": "a",
+      "to": "addEffect",
+      "evidence": "Initialises and adds a post-process effect, sizing it to the current target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cw.a(ZLoga;)V",
+      "originalName": "a",
+      "to": "removeEffect",
+      "evidence": "Releases and unlinks a post-process effect and updates the target format.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cw.b(B)Z",
+      "originalName": "b",
+      "to": "hasFramebuffer",
+      "evidence": "True when the post-process framebuffer exists.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:d.a(BI)Ldw;",
       "originalName": "a",
       "to": "metadata",
@@ -16250,10 +16859,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:da.a(III)V",
+      "originalName": "a",
+      "to": "setColours",
+      "evidence": "Sets the text and shadow colours and clears the style state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(IIIIILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "drawCentred",
+      "evidence": "Draws the text centred on x with the given colours.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(IILjava/lang/String;III)V",
+      "originalName": "a",
+      "to": "drawRight",
+      "evidence": "Draws the text ending at x with the given colours.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(IZLjava/lang/String;III)V",
+      "originalName": "a",
+      "to": "drawLeft",
+      "evidence": "Draws the text starting at x with the given colours.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:da.a(Ljava/lang/String;I)V",
       "originalName": "a",
       "to": "applyStyleTag",
       "evidence": "Applies one inline tag such as col= or /col to the GameFont colour state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(ZILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "computeJustification",
+      "evidence": "Computes the extra per-space width needed to justify the text to the given width.",
       "confidence": "reviewed"
     },
     {
@@ -16642,6 +17286,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dba.a(II)V",
+      "originalName": "a",
+      "to": "setMusicVolume",
+      "evidence": "Stores the music volume, clamped to 255.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dba.a(ILkh;)V",
       "originalName": "a",
       "to": "encode",
@@ -16667,6 +17318,13 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "Writes an optional 8-bit value behind a presence bit; subclasses append their own fields. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dc.a(IIB)V",
+      "originalName": "a",
+      "to": "ensureRankingCapacity",
+      "evidence": "Grows the parallel ranking arrays to hold the requested number of rows.",
       "confidence": "reviewed"
     },
     {
@@ -16716,6 +17374,13 @@
       "originalName": "a",
       "to": "writeVoxel",
       "evidence": "Stores one voxel byte at the next output index. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dca.f(I)Ljava/lang/String;",
+      "originalName": "f",
+      "to": "readIncomingString",
+      "evidence": "Reads a string from the incoming packet buffer.",
       "confidence": "reviewed"
     },
     {
@@ -16831,6 +17496,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dea.a(BZZ)V",
+      "originalName": "a",
+      "to": "updateFall",
+      "evidence": "Applies gravity and bounces at the rest position, playing a sound on the first landing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dea.a(I)V",
+      "originalName": "a",
+      "to": "closeGameSocket",
+      "evidence": "Closes and drops the game socket.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dea.a(IB)Ljava/lang/String;",
       "originalName": "a",
       "to": "formatTime",
@@ -16842,6 +17521,34 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dea.b(I)Z",
+      "originalName": "b",
+      "to": "isSettled",
+      "evidence": "True when the drop is at rest with negligible velocity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dea.c(I)V",
+      "originalName": "c",
+      "to": "startDrop",
+      "evidence": "Starts the drop from a random height above the rest position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dea.d(I)V",
+      "originalName": "d",
+      "to": "snapToRest",
+      "evidence": "Places the drop at its rest position with no velocity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dea.e(I)I",
+      "originalName": "e",
+      "to": "getPosition",
+      "evidence": "Returns the current drop position.",
       "confidence": "reviewed"
     },
     {
@@ -17090,6 +17797,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dg.g(B)Z",
+      "originalName": "g",
+      "to": "isFinished",
+      "evidence": "True once the trap part has stopped or its body has expired.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dg.g(I)V",
       "originalName": "g",
       "to": "updateTileOccupancy",
@@ -17171,6 +17885,13 @@
       "originalName": "a",
       "to": "advanceLobbyTransitions",
       "evidence": "Steps the lobby panel transition counters toward their targets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:di.a(I)Ljava/applet/Applet;",
+      "originalName": "a",
+      "to": "getApplet",
+      "evidence": "Returns the hosting applet.",
       "confidence": "reviewed"
     },
     {
@@ -17314,6 +18035,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dja.a(Lffa;B)Z",
+      "originalName": "a",
+      "to": "isPressingPlate",
+      "evidence": "True when a body resting on the floor overlaps (or lies fully on) the pressure plate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dja.a(Z)I",
       "originalName": "a",
       "to": "getTypeId",
@@ -17391,6 +18119,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dk.a(BZ)I",
+      "originalName": "a",
+      "to": "getTotalDuration",
+      "evidence": "Sums the frame durations, including the looping tail.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dk.a(ILuia;)V",
       "originalName": "a",
       "to": "decode",
@@ -17430,6 +18165,13 @@
       "originalName": "a",
       "to": "handleKey",
       "evidence": "Overlay key handler; MessageOverlay forwards keys to its input field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dl.a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
+      "originalName": "a",
+      "to": "setMessages",
+      "evidence": "Stores the overlay's three text lines.",
       "confidence": "reviewed"
     },
     {
@@ -17591,6 +18333,13 @@
       "originalName": "v",
       "to": "hasSize",
       "evidence": "The decoder reads width and height only when it is true. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:doa.b(III)Lg;",
+      "originalName": "b",
+      "to": "findCourseRoom",
+      "evidence": "Finds the room definition with the given id in the course from the given index.",
       "confidence": "reviewed"
     },
     {
@@ -17773,6 +18522,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dra.a(Z)V",
+      "originalName": "a",
+      "to": "sendReflectionCheckResponses",
+      "evidence": "Writes a reflection-check reply packet for every completed check.",
       "confidence": "reviewed"
     },
     {
@@ -18266,6 +19022,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eba.f(I)Ljava/lang/Object;",
+      "originalName": "f",
+      "to": "getValue",
+      "evidence": "Returns the softly referenced value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ec.a(IIIIIILjava/awt/Graphics;I)V",
       "originalName": "a",
       "to": "drawRegion",
@@ -18347,6 +19110,13 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ef.g(B)V",
+      "originalName": "g",
+      "to": "onRespawn",
+      "evidence": "Called when the respawn timer expires; weapon and power-up items replace their payload with a fresh copy. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -18504,6 +19274,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eha.a(IIIILpc;II)I",
+      "originalName": "a",
+      "to": "clipBeamToBox",
+      "evidence": "Clips the beam segment against a centred box, returning the hit distance (and logging bad results).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eha.a(IILhca;Lfsa;)V",
       "originalName": "a",
       "to": "onTreasureCollected",
@@ -18539,6 +19316,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eha.a(Ldt;II)V",
+      "originalName": "a",
+      "to": "stepSimulation",
+      "evidence": "When the simulation is racing, updates its pending events and steps it with the input.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eha.a(Ldt;Lpi;Z)V",
       "originalName": "a",
       "to": "queueEvent",
@@ -18571,6 +19355,13 @@
       "originalName": "a",
       "to": "hasAnyMask55",
       "evidence": "Tests mask 55 against its second argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eia.a(BI)Z",
+      "originalName": "a",
+      "to": "isTriggeredBy",
+      "evidence": "True when the effect type is in the switch's trigger set.",
       "confidence": "reviewed"
     },
     {
@@ -18627,6 +19418,13 @@
       "originalName": "a",
       "to": "setTriggeringType",
       "evidence": "Sets whether an effect type charges the switch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eia.a(ZII)V",
+      "originalName": "a",
+      "to": "setTriggeredBy",
+      "evidence": "Adds or removes an effect type from the switch's trigger set.",
       "confidence": "reviewed"
     },
     {
@@ -18798,10 +19596,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eka.d(II)Ldfa;",
+      "originalName": "d",
+      "to": "getScreenById",
+      "evidence": "Returns the match screen (-1), the other special screen (-2) or the menu screen with the id.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ela.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ela.a(ILjava/lang/String;[Lbfa;)Z",
+      "originalName": "a",
+      "to": "matches",
+      "evidence": "True when the method name and argument types match the console call.",
       "confidence": "reviewed"
     },
     {
@@ -18889,6 +19701,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:en.a(Lcg;)V",
+      "originalName": "a",
+      "to": "prependStream",
+      "evidence": "Adds the stream at the front of the mixer's stream list.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:en.a(Ljva;)V",
       "originalName": "a",
       "to": "removeListener",
@@ -18949,6 +19768,13 @@
       "originalName": "e",
       "to": "normalizeListenerFrameOffsets",
       "evidence": "Rebases the listener frame offsets. Body matches sumoblitz PcmStreamMixer (normalizeListenerFrameOffsets).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ena.a(B)Z",
+      "originalName": "a",
+      "to": "ensureLoaded",
+      "evidence": "Loads the animation's frame group and decodes its frames once available.",
       "confidence": "reviewed"
     },
     {
@@ -19841,10 +20667,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eq.a(IZ)V",
+      "originalName": "a",
+      "to": "setPassesBeams",
+      "evidence": "Sets whether beams pass through this block (trap factories enable it).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eq.a(Z)I",
       "originalName": "a",
       "to": "getTypeId",
       "evidence": "Each subclass returns the id readBehaviour maps to it (DarknessBehaviour 3, VortexBehaviour 27, ...). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eq.a(ZI)V",
+      "originalName": "a",
+      "to": "setPassesProjectiles",
+      "evidence": "Sets whether projectiles pass through this block.",
       "confidence": "reviewed"
     },
     {
@@ -19908,6 +20748,13 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "RoomComponentFactory.writeComponent calls it after writing getTypeId as 10 bits. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.b(II)V",
+      "originalName": "b",
+      "to": "playMusicTrack",
+      "evidence": "Loads and plays the music track with its volume and, for the game track, sets the channel instruments.",
       "confidence": "reviewed"
     },
     {
@@ -20016,10 +20863,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:es.d(I)J",
+      "originalName": "d",
+      "to": "averageDelta",
+      "evidence": "Records the time since the previous call and returns the average of the last ten deltas.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:esa.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:esa.a(I)Lufa;",
+      "originalName": "a",
+      "to": "getProfile",
+      "evidence": "Returns the player profile.",
       "confidence": "reviewed"
     },
     {
@@ -20219,6 +21080,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:f.a(I)V",
+      "originalName": "a",
+      "to": "pruneTargets",
+      "evidence": "Removes null targets and targets no longer valid in their room region, compacting the array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:f.a(Lcsa;Z)V",
       "originalName": "a",
       "to": "resolveTargets",
@@ -20237,6 +21105,13 @@
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "Only nulls or resets static fields, like the other releaseStatics cleanup methods.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.a(IIZI)Z",
+      "originalName": "a",
+      "to": "isValidDate",
+      "evidence": "True when the month is 0-11 and the day lies within that month.",
       "confidence": "reviewed"
     },
     {
@@ -20310,6 +21185,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fba.a(IFIZIIII)[I",
+      "originalName": "a",
+      "to": "generatePerlinRow",
+      "evidence": "Configures a PerlinNoise2D and fills one row of noise values.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fba.a(II)[B",
       "originalName": "a",
       "to": "acquireByteArray",
@@ -20317,10 +21199,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fba.a(I[FI)[F",
+      "originalName": "a",
+      "to": "copyFloats",
+      "evidence": "Returns a copy of the first n floats.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fca.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fd.a(B)Lfd;",
+      "originalName": "a",
+      "to": "copy",
+      "evidence": "Returns a copy of this record.",
       "confidence": "reviewed"
     },
     {
@@ -20366,6 +21262,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fe.a(IILae;ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "drawFieldLabel",
+      "evidence": "Draws a label centred below the input widget.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fe.d(B)Ljava/lang/String;",
       "originalName": "d",
       "to": "getHoverText",
@@ -20387,10 +21290,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fe.i(B)Z",
+      "originalName": "i",
+      "to": "isEmpty",
+      "evidence": "True when any of the day, month or year fields is empty.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fe.j(B)I",
       "originalName": "j",
       "to": "getDay",
       "evidence": "Parses the day field. Body matches reference BirthDateInputWidget (getDay).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fea.a(ZI)V",
+      "originalName": "a",
+      "to": "loadSoundEffect",
+      "evidence": "Loads the sound effect with the given id into the sound table.",
       "confidence": "reviewed"
     },
     {
@@ -20919,6 +21836,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fh.a(I)V",
+      "originalName": "a",
+      "to": "mirrorSides",
+      "evidence": "Swaps the two mirrored side flags; WallModel.mirror calls it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fh.a(II)I",
       "originalName": "a",
       "to": "bitwiseOr",
@@ -20930,6 +21854,20 @@
       "originalName": "a",
       "to": "render",
       "evidence": "Implementations hand themselves or their models to the iq target; Projectile and others draw through dea.field_a. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.a(ZBZZZ)V",
+      "originalName": "a",
+      "to": "computeEdgeFlags",
+      "evidence": "Derives which sides of the wall tile are solid from its shape and rotation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.a(ZLjava/awt/Canvas;I)V",
+      "originalName": "a",
+      "to": "drawLoadingScreen",
+      "evidence": "Draws the AWT loading bar or the full loading screen while the loader stage is below 10.",
       "confidence": "reviewed"
     },
     {
@@ -21318,10 +22256,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fla.a(IIIII)V",
+      "originalName": "a",
+      "to": "updateVolumeAndPan",
+      "evidence": "Recomputes the volume and pan from the listener and source positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fla.a(ILw;)V",
+      "originalName": "a",
+      "to": "release",
+      "evidence": "Decrements the player's count for the sound, unlinks it and queues the stream release.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fla.a(ILw;Z)V",
+      "originalName": "a",
+      "to": "update",
+      "evidence": "Steps the fade and releases the sound when its stream has finished.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fla.b(I)V",
+      "originalName": "b",
+      "to": "fadeInStep",
+      "evidence": "Raises the volume by one fade step up to the target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fla.c(I)V",
+      "originalName": "c",
+      "to": "fadeOutStep",
+      "evidence": "Lowers the volume by one fade step.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fm.a(I)I",
       "originalName": "a",
       "to": "getY",
       "evidence": "Returns the y position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fm.a(ZI)I",
+      "originalName": "a",
+      "to": "withFullAlpha",
+      "evidence": "Returns the colour with alpha 255.",
       "confidence": "reviewed"
     },
     {
@@ -21423,6 +22403,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fn.c(Z)V",
+      "originalName": "c",
+      "to": "onTextureMatrixChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the texture matrix; effects upload its first two rows. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fn.d(I)V",
       "originalName": "d",
       "to": "releaseStatics",
@@ -21437,10 +22424,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fna.a(III)Z",
+      "originalName": "a",
+      "to": "containsPoint",
+      "evidence": "True when the point lies on the menu entry sprite.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fna.a(ILjava/lang/String;)Lhra;",
       "originalName": "a",
       "to": "validateEmail",
       "evidence": "Splits an address at '@' and validates the local part and the domain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fna.a(Z)V",
+      "originalName": "a",
+      "to": "finishDropAnimation",
+      "evidence": "Snaps the menu entry's drop animation to rest.",
       "confidence": "reviewed"
     },
     {
@@ -21455,6 +22456,13 @@
       "originalName": "a",
       "to": "update",
       "evidence": "Updates the entry's widget and grows or shrinks the hover offset by one per tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fna.b(I)Lnh;",
+      "originalName": "b",
+      "to": "getSprite",
+      "evidence": "Returns the sprite for the entry state (highlighted, disabled, ...).",
       "confidence": "reviewed"
     },
     {
@@ -21584,6 +22592,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fpa.a(Ljava/awt/Canvas;B)V",
+      "originalName": "a",
+      "to": "attachCanvasInput",
+      "evidence": "Attaches the keyboard, mouse and mouse wheel listeners to the canvas.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fq.a(Lkh;I)V",
       "originalName": "a",
       "to": "encode",
@@ -21616,6 +22631,13 @@
       "originalName": "B",
       "to": "getMaxTargets",
       "evidence": "Abstract: maximum number of target components; CauldronComponent returns 3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fqa.a(Lut;B)V",
+      "originalName": "a",
+      "to": "bindSwitchState",
+      "evidence": "Takes the switch state from the source and applies the initial on/off state.",
       "confidence": "reviewed"
     },
     {
@@ -21724,10 +22746,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fs.a(Z)V",
+      "originalName": "a",
+      "to": "computeVirtualEndpoints",
+      "evidence": "Mirrors the first and last segments to create virtual endpoints for spline interpolation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fs.a(ZLjava/lang/CharSequence;)Z",
       "originalName": "a",
       "to": "isValidAccountName",
       "evidence": "True when the name passes the basic check and every character is an account-name character.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fs.b(B)V",
+      "originalName": "b",
+      "to": "onDecoded",
+      "evidence": "Hook called after a texture operator is decoded so it can build its lookup tables. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -21742,6 +22778,27 @@
       "originalName": "c",
       "to": "getMonochromeRow",
       "evidence": "Base throws \"This operation does not have a monochrome output\"; operators return one row of 0-4096 values. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fs.d(B)V",
+      "originalName": "d",
+      "to": "buildCurveTable",
+      "evidence": "Builds the 257-entry curve lookup by interpolating the control points.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fs.d(II)[I",
+      "originalName": "d",
+      "to": "getControlPoint",
+      "evidence": "Returns the curve control point, or the virtual point beyond either end.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.A(B)Z",
+      "originalName": "A",
+      "to": "isRoomVariantActive",
+      "evidence": "Returns whether the trap's room has an active variant.",
       "confidence": "reviewed"
     },
     {
@@ -22127,6 +23184,13 @@
       "originalName": "a",
       "to": "addModel",
       "evidence": "Appends a TrapModel and attaches it to the given part and this trap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fsa.a(Liq;I)V",
+      "originalName": "a",
+      "to": "updateForCamera",
+      "evidence": "Passes the camera to every behaviour and child trap.",
       "confidence": "reviewed"
     },
     {
@@ -22851,6 +23915,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ft.a(Lq;I)V",
+      "originalName": "a",
+      "to": "releaseGridEntry",
+      "evidence": "Returns a collision grid entry to the pool when it has room.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fta.a(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)Ljava/lang/String;",
       "originalName": "a",
       "to": "replaceAll",
@@ -22928,6 +23999,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fv.a(I)V",
+      "originalName": "a",
+      "to": "drawSlot",
+      "evidence": "Draws the reward slot frame and, when it holds a reward, the reward icon and its label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fv.a(IZI)Z",
+      "originalName": "a",
+      "to": "containsPoint",
+      "evidence": "True when the point lies inside the slot rectangle.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fva.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -22939,6 +24024,20 @@
       "originalName": "a",
       "to": "generate",
       "evidence": "Abstract carving step each maze generator implements (stack backtracking, stripes, frontier growth or recursive division) over the hj grid. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fva.a(ILhj;II)Z",
+      "originalName": "a",
+      "to": "isUnvisitedCell",
+      "evidence": "True when the cell is strictly inside the grid and still unvisited (-1).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fva.a(Lhj;III)V",
+      "originalName": "a",
+      "to": "carveFrom",
+      "evidence": "Recursive backtracker: visits the four neighbours in random order and carves into each unvisited one.",
       "confidence": "reviewed"
     },
     {
@@ -22988,6 +24087,13 @@
       "originalName": "q",
       "to": "applyDefaults",
       "evidence": "Called from the RoomComponent constructor; subclasses set their default size and settings. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.r(B)Z",
+      "originalName": "r",
+      "to": "isMatchScreenActive",
+      "evidence": "True when the current screen is a MatchScreen.",
       "confidence": "reviewed"
     },
     {
@@ -23103,6 +24209,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gb.a(I)V",
+      "originalName": "a",
+      "to": "pushRasterState",
+      "evidence": "Saves the current raster target and clip into a pooled snapshot on the raster stack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gba.a(IIILka;ILka;IIIII)V",
+      "originalName": "a",
+      "to": "drawModelRow",
+      "evidence": "Draws end-cap models at both ends and repeats the middle model between them.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gba.a(IZLg;ILdt;)Lla;",
       "originalName": "a",
       "to": "createRoom",
@@ -23208,6 +24328,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ge.A(I)Z",
+      "originalName": "A",
+      "to": "usesTimingPattern",
+      "evidence": "Subclass flag: when true the shooter reads and writes a 4-bit timing pattern id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.B(I)Z",
+      "originalName": "B",
+      "to": "usesPhaseOffset",
+      "evidence": "Subclass flag: when true the shooter also stores a phase offset into its timing pattern.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.C(I)Z",
+      "originalName": "C",
+      "to": "canRandomisePhase",
+      "evidence": "Subclass flag: when true a bit chooses between a fixed and a random phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.a(BLmra;Lla;)V",
+      "originalName": "a",
+      "to": "applyTimingPattern",
+      "evidence": "Gives the shooter behaviour its timing pattern, offset by the fixed or random phase (or a random weapon cooldown).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ge.a(Lfsa;ILnv;I)V",
       "originalName": "a",
       "to": "addMuzzleLight",
@@ -23229,6 +24377,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ge.s(B)Z",
+      "originalName": "s",
+      "to": "hasRandomPhase",
+      "evidence": "Returns whether the phase offset is randomised at setup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ge.s(I)Z",
       "originalName": "s",
       "to": "isSwitchable",
@@ -23247,6 +24402,13 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "Writes the waypoints.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gea.a(Z)V",
+      "originalName": "a",
+      "to": "mirror",
+      "evidence": "Negates the x coordinate of every waypoint.",
       "confidence": "reviewed"
     },
     {
@@ -23985,6 +25147,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gu.a(IZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "addChatMessage",
+      "evidence": "Appends a chat message entry to the chat history.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gu.a(Z)Z",
       "originalName": "a",
       "to": "pausesGame",
@@ -24048,10 +25217,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gva.a(IILtqa;II)Z",
+      "originalName": "a",
+      "to": "isConnectedNeighbour",
+      "evidence": "True when the neighbouring cell is outside the grid or has the same tile type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gva.a(ILiq;Lhr;)V",
+      "originalName": "a",
+      "to": "drawTextParticle",
+      "evidence": "Projects a text particle and draws its fading background box and wrapped text.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gva.a(ILla;)V",
       "originalName": "a",
       "to": "prepareRoom",
       "evidence": "DefaultRoomObjectRenderer gives every empty tile cell a renderable and lays out the grid. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gva.a(ILpca;Lmba;ILtqa;I)V",
+      "originalName": "a",
+      "to": "styleConnectedTile",
+      "evidence": "Counts same-type neighbours on the four sides and picks the matching wall/edge style for the tile renderable.",
       "confidence": "reviewed"
     },
     {
@@ -24076,10 +25266,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gva.a(Lla;IIIII)V",
+      "originalName": "a",
+      "to": "restyleTileRange",
+      "evidence": "Restyles every default tile renderable in the given cell rectangle of the room grid.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gva.a(Lmda;ILiq;)V",
       "originalName": "a",
       "to": "drawPuddle",
       "evidence": "Draws a puddle to the render target. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gw.a(IIII[FII)V",
+      "originalName": "a",
+      "to": "generateFloatMipmaps",
+      "evidence": "Halves a power-of-two float texture repeatedly, averaging 2x2 texels per component.",
       "confidence": "reviewed"
     },
     {
@@ -24318,6 +25522,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hba.a(IJBI)V",
+      "originalName": "a",
+      "to": "sendRoomResult",
+      "evidence": "Builds a C2SRoomResultPacket from the course id, the tracked room id/ticks and the checksum counters and sends it (opcode 74).",
       "confidence": "reviewed"
     },
     {
@@ -25525,6 +26736,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hi.b(I)V",
+      "originalName": "b",
+      "to": "updateBeltVelocity",
+      "evidence": "Rotates the conveyor's local belt velocity by the trap facing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hi.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -25557,6 +26775,13 @@
       "originalName": "a",
       "to": "hashState",
       "evidence": "Each Locomotor folds its mutable fields into the running hash with mixHash. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hia.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "drawTooltip",
+      "evidence": "Draws a wrapped tooltip box with a yellow background near the pointer.",
       "confidence": "reviewed"
     },
     {
@@ -25826,6 +27051,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hn.D(I)Z",
+      "originalName": "D",
+      "to": "supportsItems",
+      "evidence": "Subclass flag: when true the maze stores an item count and item type and can place item traps.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hn.a(IZLla;)Lfsa;",
       "originalName": "a",
       "to": "createFilledCellTrap",
@@ -26033,6 +27265,13 @@
       "originalName": "a",
       "to": "tick",
       "evidence": "ObjectPool.update calls it on every active object each step. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hr.a(Ljava/lang/String;Lcn;Ljava/lang/String;I)[Liu;",
+      "originalName": "a",
+      "to": "loadSpritesByName",
+      "evidence": "Resolves the group and file by name and decodes their sprites.",
       "confidence": "reviewed"
     },
     {
@@ -26344,6 +27583,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ib.a(B)V",
+      "originalName": "a",
+      "to": "resolveSwitchLinks",
+      "evidence": "Resolves the switch links of the spawner's template trap. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ib.a(BLui;ZLui;)V",
+      "originalName": "a",
+      "to": "assignSwitchableIds",
+      "evidence": "Assigns switchable ids to the spawner's template trap. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ib.a(IIII)V",
       "originalName": "a",
       "to": "spawn",
@@ -26362,6 +27615,13 @@
       "originalName": "a",
       "to": "getTypeId",
       "evidence": "Spawner.encode writes it as the 4-bit spawner type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ib.a(ZII)Llj;",
+      "originalName": "a",
+      "to": "findSwitchableRecursive",
+      "evidence": "Searches the template trap tree for the switchable with the given id. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -26463,6 +27723,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ifa.b(B)V",
+      "originalName": "b",
+      "to": "onDecoded",
+      "evidence": "Hook called after a texture operator is decoded so it can build its lookup tables. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ifa.c(II)[I",
       "originalName": "c",
       "to": "getMonochromeRow",
@@ -26509,6 +27776,34 @@
       "originalName": "a",
       "to": "initialize",
       "evidence": "Creates the pixel storage for the canvas at the given width and height. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.A(I)Z",
+      "originalName": "A",
+      "to": "usesTimingPattern",
+      "evidence": "Subclass flag: when true the shooter reads and writes a 4-bit timing pattern id. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.B(I)Z",
+      "originalName": "B",
+      "to": "usesPhaseOffset",
+      "evidence": "Subclass flag: when true the shooter also stores a phase offset into its timing pattern. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.C(I)Z",
+      "originalName": "C",
+      "to": "canRandomisePhase",
+      "evidence": "Subclass flag: when true a bit chooses between a fixed and a random phase. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ih.a(BLjava/lang/String;)[Lmi;",
+      "originalName": "a",
+      "to": "tokenizeCommand",
+      "evidence": "Tokenizes a console command line into an array, caching the last line's tokens.",
       "confidence": "reviewed"
     },
     {
@@ -26586,6 +27881,13 @@
       "originalName": "a",
       "to": "decodeParameter",
       "evidence": "Operators read the parameter with the given index from the PacketBuffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iia.b(B)V",
+      "originalName": "b",
+      "to": "onDecoded",
+      "evidence": "Hook called after a texture operator is decoded so it can build its lookup tables. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -27002,6 +28304,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:im.g(B)Lkoa;",
+      "originalName": "g",
+      "to": "getSwitchLinks",
+      "evidence": "Returns the portal's switch link list.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:im.g(I)V",
       "originalName": "g",
       "to": "resolveSwitchLinks",
@@ -27314,6 +28623,13 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "Writes the locomotor fields; subclasses call super then append their own, mirroring readLocomotor. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ira.a(ZIB)V",
+      "originalName": "a",
+      "to": "showMenuScreen",
+      "evidence": "Switches to the menu screen with the given id, managing the background demo match and music.",
       "confidence": "reviewed"
     },
     {
@@ -27975,6 +29291,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jc.a(IIBIIIILka;ILka;I)V",
+      "originalName": "a",
+      "to": "drawModelRow",
+      "evidence": "Draws end-cap models at both ends and repeats the middle model between them.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jc.a(Ljava/lang/String;Ljava/applet/Applet;B)V",
       "originalName": "a",
       "to": "openRelativeUrl",
@@ -28245,6 +29568,27 @@
       "originalName": "a",
       "to": "loadStrings",
       "evidence": "Loads keyed strings such as playtutorial into static fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.A(I)Z",
+      "originalName": "A",
+      "to": "usesTimingPattern",
+      "evidence": "Subclass flag: when true the shooter reads and writes a 4-bit timing pattern id. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.B(I)Z",
+      "originalName": "B",
+      "to": "usesPhaseOffset",
+      "evidence": "Subclass flag: when true the shooter also stores a phase offset into its timing pattern. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.C(I)Z",
+      "originalName": "C",
+      "to": "canRandomisePhase",
+      "evidence": "Subclass flag: when true a bit chooses between a fixed and a random phase. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -29767,6 +31111,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kga.a(Lcka;I)V",
+      "originalName": "a",
+      "to": "ensureWaterNoiseTextures",
+      "evidence": "Generates the ridged and turbulent water noise textures (and the 3D noise volume when supported) once.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kga.a(Lgma;ILgr;)V",
       "originalName": "a",
       "to": "configureFor",
@@ -29921,6 +31272,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ki.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detachKeyboardHandler",
+      "evidence": "Removes the shared keyboard handler as key and focus listener and resets the key queue.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ki.a(ILla;Lkh;)V",
       "originalName": "a",
       "to": "decode",
@@ -30012,6 +31370,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kj.d(Z)Z",
+      "originalName": "d",
+      "to": "hasPlayerFired",
+      "evidence": "Returns whether the player fired a weapon this tick.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.e(Z)Z",
+      "originalName": "e",
+      "to": "isPlayerInRange",
+      "evidence": "True when the player is closer to the sensor than its range.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kj.g(B)I",
       "originalName": "g",
       "to": "getLitColour",
@@ -30044,6 +31416,20 @@
       "originalName": "k",
       "to": "tick",
       "evidence": "Abstract per-step update every Behaviour implements (timers, sensors, switch output). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.l(I)Z",
+      "originalName": "l",
+      "to": "isPlayerInSensorArc",
+      "evidence": "True when the sensor trap's facing is within half its arc of the direction to the player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.r(I)Z",
+      "originalName": "r",
+      "to": "isPlayerFacingSensor",
+      "evidence": "True when the player's facing is within half the arc of the direction back toward the sensor.",
       "confidence": "reviewed"
     },
     {
@@ -30362,6 +31748,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:koa.a(B)V",
+      "originalName": "a",
+      "to": "pruneDudTargets",
+      "evidence": "Removes null and dud-id targets from the link list, compacting the array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:koa.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -30516,6 +31909,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kqa.b(I)V",
+      "originalName": "b",
+      "to": "releaseAllSounds",
+      "evidence": "Queues a release for every playing sound stream at its current volume and pan.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kr.a()V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -30639,6 +32039,13 @@
       "originalName": "a",
       "to": "decodeParameter",
       "evidence": "Operators read the parameter with the given index from the PacketBuffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ksa.b(B)V",
+      "originalName": "b",
+      "to": "onDecoded",
+      "evidence": "Hook called after a texture operator is decoded so it can build its lookup tables. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -30971,6 +32378,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kva.a(BLoia;)Lka;",
+      "originalName": "a",
+      "to": "getEdgeModel",
+      "evidence": "Picks the pit edge model for the piece from its grid position in the styled pit set.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kva.a(ILla;Lkh;)V",
       "originalName": "a",
       "to": "decode",
@@ -31062,6 +32476,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kw.a(II)I",
+      "originalName": "a",
+      "to": "smootherStep",
+      "evidence": "Evaluates 6t^5-15t^4+10t^3 in 12-bit fixed point.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kw.a(III)V",
       "originalName": "a",
       "to": "setParameters",
@@ -31087,6 +32508,13 @@
       "originalName": "a",
       "to": "enable",
       "evidence": "Abstract: activates the effect for the given lighting setting. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kw.b(B)Ljava/awt/Canvas;",
+      "originalName": "b",
+      "to": "getActiveCanvas",
+      "evidence": "Returns the fullscreen canvas when one exists, otherwise the applet canvas.",
       "confidence": "reviewed"
     },
     {
@@ -32434,6 +33862,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lg.a(ZLjava/lang/CharSequence;I)Z",
+      "originalName": "a",
+      "to": "isValidPlayerName",
+      "evidence": "True when the name is a valid display name made only of name characters.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lg.a(ZLkh;)V",
       "originalName": "a",
       "to": "encode",
@@ -32980,6 +34415,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ln.b(II)Lmg;",
+      "originalName": "b",
+      "to": "createTimingPattern",
+      "evidence": "Builds one of the nine predefined on/off timing patterns by id.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ln.n(B)Z",
       "originalName": "n",
       "to": "hasAngle",
@@ -33127,6 +34569,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lpa.a(IB)V",
+      "originalName": "a",
+      "to": "setCollapseDelay",
+      "evidence": "Sets the ticks between the threshold being reached and the fall.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lpa.a(II)I",
       "originalName": "a",
       "to": "hashState",
@@ -33173,6 +34622,20 @@
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lpa.b(II)V",
+      "originalName": "b",
+      "to": "setWeightThreshold",
+      "evidence": "Sets the standing weight that starts the collapse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lpa.d(Z)Z",
+      "originalName": "d",
+      "to": "isCollapsing",
+      "evidence": "True once the collapse countdown has started.",
       "confidence": "reviewed"
     },
     {
@@ -33383,6 +34846,13 @@
       "originalName": "a",
       "to": "fillRow",
       "evidence": "Fills one row of noise values. Body matches reference PerlinNoise2D (fillRow).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lva.b(B)V",
+      "originalName": "b",
+      "to": "onDecoded",
+      "evidence": "Hook called after a texture operator is decoded so it can build its lookup tables. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -33841,10 +35311,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mc.b(I)V",
+      "originalName": "b",
+      "to": "updateMirrorDirection",
+      "evidence": "Recomputes the mirror normal sine and cosine when the trap facing changes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mc.g(B)V",
       "originalName": "g",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mc.j(B)V",
+      "originalName": "j",
+      "to": "updateMirrorSegment",
+      "evidence": "Positions the mirror's reflecting segment across the trap along its normal.",
       "confidence": "reviewed"
     },
     {
@@ -34443,6 +35927,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mfa.a(Lgr;Lgma;I)Ldg;",
+      "originalName": "a",
+      "to": "createTrapModel",
+      "evidence": "Chooses the trap model kind for the part and body (snake pit, pit, crusher, item, block, switch, ...) and builds it. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mfa.a(Lla;Lkh;Z)Ldg;",
       "originalName": "a",
       "to": "readModel",
@@ -34639,6 +36130,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mj.a(BLjava/lang/String;Lcn;Lcn;I)V",
+      "originalName": "a",
+      "to": "loadFonts",
+      "evidence": "Loads the game's bitmap fonts one by one, advancing the loading progress.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mj.a(ZILla;)Lfsa;",
       "originalName": "a",
       "to": "createTrap",
@@ -34734,6 +36232,13 @@
       "originalName": "a",
       "to": "getChild",
       "evidence": "Returns child.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mka.a(IBLla;I)V",
+      "originalName": "a",
+      "to": "mirror",
+      "evidence": "Mirrors the mount horizontally: negates the offset x and the angle and mirrors the mounted child.",
       "confidence": "reviewed"
     },
     {
@@ -35332,6 +36837,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nfa.a(IIIII)V",
+      "originalName": "a",
+      "to": "fillClippedCircle",
+      "evidence": "Fills a circle row by row into the scanline buffer using the midpoint algorithm and the clip bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nfa.a(Lcn;Ljava/lang/String;ZILcn;Lcn;)V",
+      "originalName": "a",
+      "to": "loadCharacterAnimations",
+      "evidence": "Loads the character animation sequences (idle, run, pull, ...) for every character with loading progress.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nfa.b(II)[[I",
       "originalName": "b",
       "to": "getColourRow",
@@ -35602,6 +37121,13 @@
       "originalName": "e",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.e(I)V",
+      "originalName": "e",
+      "to": "advanceStep",
+      "evidence": "Moves to the next step of the controller's step list, wrapping to the first.",
       "confidence": "reviewed"
     },
     {
@@ -36011,6 +37537,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nra.a(II)V",
+      "originalName": "a",
+      "to": "setRoomId",
+      "evidence": "Stores the room id written as a short.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nra.a(IIIII)V",
+      "originalName": "a",
+      "to": "setIntCounters",
+      "evidence": "Stores the four int anti-tamper counters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nra.a(IJ)V",
+      "originalName": "a",
+      "to": "setRoomTicks",
+      "evidence": "Stores the room ticks written first as a long.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nra.a(ILkh;)V",
       "originalName": "a",
       "to": "encode",
@@ -36018,10 +37565,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nra.a(JJZJJ)V",
+      "originalName": "a",
+      "to": "setLongCounters",
+      "evidence": "Stores the four long anti-tamper counters.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nra.a(Lkh;B)V",
       "originalName": "a",
       "to": "decode",
       "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nra.b(II)V",
+      "originalName": "b",
+      "to": "setCourseId",
+      "evidence": "Stores the course id written as a byte.",
       "confidence": "reviewed"
     },
     {
@@ -36347,6 +37908,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nv.b(ILiq;)V",
+      "originalName": "b",
+      "to": "updateForCamera",
+      "evidence": "Per-camera hook a trap passes to each of its behaviours.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nv.b(Z)Lla;",
       "originalName": "b",
       "to": "getRoom",
@@ -36512,6 +38080,13 @@
       "originalName": "a",
       "to": "createToolkit",
       "evidence": "Creates a GraphicsToolkit of a type for a canvas at its current size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nw.b(B)V",
+      "originalName": "b",
+      "to": "onDecoded",
+      "evidence": "Hook called after a texture operator is decoded so it can build its lookup tables. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -36799,6 +38374,13 @@
       "originalName": "a",
       "to": "setPosition",
       "evidence": "Abstract; the subclasses store the three coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.a(Lha;I)V",
+      "originalName": "a",
+      "to": "createGameToolkitSprites",
+      "evidence": "Converts the game's sprite sets into toolkit sprites for the hardware renderer.",
       "confidence": "reviewed"
     },
     {
@@ -37327,6 +38909,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oja.a(Z)V",
+      "originalName": "a",
+      "to": "onFogChanged",
+      "evidence": "Hook the hardware toolkit calls before applying fog parameters; effects upload fog range and colour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oja.a(ZI)V",
       "originalName": "a",
       "to": "refreshState",
@@ -37334,10 +38923,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oja.b(B)V",
+      "originalName": "b",
+      "to": "onViewMatrixChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the view matrix; effects upload it to shader constant 0. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oja.b(I)V",
+      "originalName": "b",
+      "to": "onProjectionChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the projection; effects upload the transposed projection. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oja.b(Z)V",
+      "originalName": "b",
+      "to": "onModelMatrixChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the model matrix; effects re-upload their transform constants. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oja.c(I)Z",
       "originalName": "c",
       "to": "isSupported",
       "evidence": "Abstract: whether the hardware supports the effect; the toolkit checks it at start-up. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oja.c(Z)V",
+      "originalName": "c",
+      "to": "onTextureMatrixChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the texture matrix; effects upload its first two rows. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -37359,6 +38976,13 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ok.g(B)V",
+      "originalName": "g",
+      "to": "onRespawn",
+      "evidence": "Called when the respawn timer expires; weapon and power-up items replace their payload with a fresh copy. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -37621,6 +39245,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ona.b(II)I",
+      "originalName": "b",
+      "to": "mirrorDirection",
+      "evidence": "Maps a direction index to its horizontally mirrored index.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ona.n(B)Z",
       "originalName": "n",
       "to": "hasAngle",
@@ -37838,6 +39469,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:opa.a(ILjava/lang/String;IILjava/lang/String;I)V",
+      "originalName": "a",
+      "to": "writeChatMessage",
+      "evidence": "Writes a chat packet: channel byte, optional recipient name and the Huffman-encoded message.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:opa.a(IZ)V",
       "originalName": "a",
       "to": "update",
@@ -37985,10 +39623,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:osa.e(B)I",
+      "originalName": "e",
+      "to": "getAnchorAngle",
+      "evidence": "Returns the trap's initial angle.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:osa.e(I)V",
       "originalName": "e",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:osa.f(I)I",
+      "originalName": "f",
+      "to": "getAnchorX",
+      "evidence": "Returns the trap's initial local x plus the constraint offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:osa.g(B)I",
+      "originalName": "g",
+      "to": "getAnchorY",
+      "evidence": "Returns the trap's initial local y plus the constraint offset.",
       "confidence": "reviewed"
     },
     {
@@ -38052,6 +39711,13 @@
       "originalName": "b",
       "to": "randomFlag",
       "evidence": "Returns true with probability one half from the generator's random.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ou.b(I)V",
+      "originalName": "b",
+      "to": "initRandom",
+      "evidence": "Seeds the course ISAAC random and draws a random value per room.",
       "confidence": "reviewed"
     },
     {
@@ -38122,6 +39788,13 @@
       "originalName": "b",
       "to": "isScreenActive",
       "evidence": "True when the current GameScreen has the given id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ov.b(ILiq;)V",
+      "originalName": "b",
+      "to": "updateForCamera",
+      "evidence": "Per-camera hook a trap passes to each of its behaviours. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -38307,6 +39980,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:paa.i(B)Z",
+      "originalName": "i",
+      "to": "isEmpty",
+      "evidence": "True when any of the day, month or year fields is empty. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:paa.j(B)I",
       "originalName": "j",
       "to": "getDay",
@@ -38328,6 +40008,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pb.f(I)Ljava/lang/Object;",
+      "originalName": "f",
+      "to": "getValue",
+      "evidence": "Returns the softly referenced value. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pba.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -38339,6 +40026,20 @@
       "originalName": "a",
       "to": "releaseMouseHandler",
       "evidence": "Drops the shared mouse handler under its lock.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pc.a(IB)V",
+      "originalName": "a",
+      "to": "shortenTo",
+      "evidence": "Moves the segment end toward the start to the given fixed-point fraction of its length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pc.a(IIIII)V",
+      "originalName": "a",
+      "to": "setEndpoints",
+      "evidence": "Sets the segment start and end coordinates.",
       "confidence": "reviewed"
     },
     {
@@ -38535,6 +40236,20 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pd.c(I)Z",
+      "originalName": "c",
+      "to": "isCollected",
+      "evidence": "Returns whether the item is currently collected.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pd.g(B)V",
+      "originalName": "g",
+      "to": "onRespawn",
+      "evidence": "Called when the respawn timer expires; weapon and power-up items replace their payload with a fresh copy.",
       "confidence": "reviewed"
     },
     {
@@ -40617,6 +42332,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qi.D(I)Z",
+      "originalName": "D",
+      "to": "supportsItems",
+      "evidence": "Subclass flag: when true the maze stores an item count and item type and can place item traps. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qi.a(ILjava/lang/String;Ljava/lang/Class;)Z",
       "originalName": "a",
       "to": "loadNativeLibraryForClass",
@@ -40992,6 +42714,13 @@
       "originalName": "a",
       "to": "handleKey",
       "evidence": "Abstract MatchPhase key handler; MatchScreen stops when it returns true. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qka.a(II)V",
+      "originalName": "a",
+      "to": "handleMenuChoice",
+      "evidence": "Ends the match for choice 0 or sends the continue packet (opcode 67) for choice 1.",
       "confidence": "reviewed"
     },
     {
@@ -41478,6 +43207,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qra.a(B)V",
+      "originalName": "a",
+      "to": "createMenuButton",
+      "evidence": "Creates the phase's single menu entry and centres it near the bottom of the screen.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qra.a(CII)Z",
       "originalName": "a",
       "to": "handleKey",
@@ -41513,6 +43249,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qra.c(I)V",
+      "originalName": "c",
+      "to": "updateMenuButton",
+      "evidence": "Updates the phase menu entry from pointer and keyboard input.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qra.d(I)V",
+      "originalName": "d",
+      "to": "drawMenuButton",
+      "evidence": "Draws the phase menu entry.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qra.e(I)Z",
       "originalName": "e",
       "to": "allowsChat",
@@ -41538,6 +43288,27 @@
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "Only nulls or resets static fields, like the other releaseStatics cleanup methods.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qta.A(I)Z",
+      "originalName": "A",
+      "to": "usesTimingPattern",
+      "evidence": "Subclass flag: when true the shooter reads and writes a 4-bit timing pattern id. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qta.B(I)Z",
+      "originalName": "B",
+      "to": "usesPhaseOffset",
+      "evidence": "Subclass flag: when true the shooter also stores a phase offset into its timing pattern. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qta.C(I)Z",
+      "originalName": "C",
+      "to": "canRandomisePhase",
+      "evidence": "Subclass flag: when true a bit chooses between a fixed and a random phase. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -41716,6 +43487,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ra.r(B)Ljava/lang/String;",
+      "originalName": "r",
+      "to": "getLocalPlayerNameOrEmpty",
+      "evidence": "Returns the stored local player name, or \"\" when there is none.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:raa.a(IIIII)V",
       "originalName": "a",
       "to": "draw",
@@ -41783,6 +43561,13 @@
       "originalName": "g",
       "to": "resolveSwitchLinks",
       "evidence": "Switch behaviours resolve their target lists against the trap's scope after loading. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.j(B)V",
+      "originalName": "j",
+      "to": "evaluateCondition",
+      "evidence": "Evaluates the condition kind (stopped, moved, covered, effect active) and updates the switch links.",
       "confidence": "reviewed"
     },
     {
@@ -42028,6 +43813,13 @@
       "originalName": "j",
       "to": "getWindUpTicks",
       "evidence": "Returns windUpTicks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rea.k(B)V",
+      "originalName": "k",
+      "to": "clampPhaseTicks",
+      "evidence": "Raises the crushed, wait, wind-up and retract durations to at least one tick.",
       "confidence": "reviewed"
     },
     {
@@ -42479,10 +44271,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rja.a(IILhj;B)V",
+      "originalName": "a",
+      "to": "addFrontierCell",
+      "evidence": "Marks a filled in-bounds cell as frontier and queues it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rja.a(IILhj;I)V",
       "originalName": "a",
       "to": "generate",
       "evidence": "Abstract carving step each maze generator implements (stack backtracking, stripes, frontier growth or recursive division) over the hj grid. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rja.a(ILhj;II)V",
+      "originalName": "a",
+      "to": "addToMaze",
+      "evidence": "Opens the cell and queues its four neighbours two cells away as frontier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rja.a(Lhj;III)V",
+      "originalName": "a",
+      "to": "carveFrom",
+      "evidence": "Runs randomised Prim: picks random frontier cells and carves a passage to an adjacent maze cell.",
       "confidence": "reviewed"
     },
     {
@@ -42595,6 +44408,13 @@
       "originalName": "d",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rl.g(B)V",
+      "originalName": "g",
+      "to": "onRespawn",
+      "evidence": "Called when the respawn timer expires; weapon and power-up items replace their payload with a fresh copy. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -42763,6 +44583,13 @@
       "originalName": "a",
       "to": "invoke",
       "evidence": "Each console command subclass runs its action on the parsed arguments and returns a ConsoleValue. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rna.a([SZI)[S",
+      "originalName": "a",
+      "to": "copyShorts",
+      "evidence": "Returns a copy of the first n shorts.",
       "confidence": "reviewed"
     },
     {
@@ -43113,6 +44940,13 @@
       "originalName": "j",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rsa.k(B)V",
+      "originalName": "k",
+      "to": "ensureOddSpacing",
+      "evidence": "Rounds both lattice spacings up to odd values.",
       "confidence": "reviewed"
     },
     {
@@ -43627,6 +45461,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sea.a(IILaia;BLup;)V",
+      "originalName": "a",
+      "to": "applyEffectToSnake",
+      "evidence": "Scares the snake for effect type 3 and calms it for type 4.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sea.a(IILup;IBI)I",
       "originalName": "a",
       "to": "onAreaEffect",
@@ -43694,6 +45535,13 @@
       "originalName": "c",
       "to": "bitwiseAnd",
       "evidence": "Returns the bitwise and of the two ints.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sea.d(Z)V",
+      "originalName": "d",
+      "to": "spawnSnakes",
+      "evidence": "Creates up to 50 snakes at random positions, one per four snake-sized areas of the pit.",
       "confidence": "reviewed"
     },
     {
@@ -44131,10 +45979,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ska.a(ILin;)Lmi;",
+      "originalName": "a",
+      "to": "readLiteralToken",
+      "evidence": "Reads a console literal (true/false, number or word) up to the next separator.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ska.a(ILmg;)V",
       "originalName": "a",
       "to": "setTimingPattern",
       "evidence": "Replaces the shooter's TimingPattern. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ska.a(Lroa;B)V",
+      "originalName": "a",
+      "to": "setWeapon",
+      "evidence": "Stores the weapon this shooter fires.",
       "confidence": "reviewed"
     },
     {
@@ -44177,6 +46039,13 @@
       "originalName": "k",
       "to": "tick",
       "evidence": "Abstract per-step update every Behaviour implements (timers, sensors, switch output). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ska.l(I)Lroa;",
+      "originalName": "l",
+      "to": "getWeapon",
+      "evidence": "Returns the weapon this shooter fires.",
       "confidence": "reviewed"
     },
     {
@@ -44334,6 +46203,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sm.r(I)Z",
+      "originalName": "r",
+      "to": "isPlayerUnlocking",
+      "evidence": "True when the player holding a key stands next to the lock long enough (consuming the key).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sma.a(B)V",
       "originalName": "a",
       "to": "resetForRemainingPlayers",
@@ -44345,6 +46221,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sma.a(Ljava/lang/String;I)I",
+      "originalName": "a",
+      "to": "loadNativeLibrary",
+      "evidence": "Extracts the named native library from the archive into the cache and loads it.",
       "confidence": "reviewed"
     },
     {
@@ -44583,6 +46466,13 @@
       "originalName": "a",
       "to": "enqueue",
       "evidence": "Appends a SoundEvent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sqa.a(IZ)V",
+      "originalName": "a",
+      "to": "playQueuedEvents",
+      "evidence": "Plays and unlinks every queued sound event, then updates each playing sound. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -44877,6 +46767,13 @@
       "originalName": "q",
       "to": "applyDefaults",
       "evidence": "Called from the RoomComponent constructor; subclasses set their default size and settings. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sua.r(B)V",
+      "originalName": "r",
+      "to": "updateMusicFadeIn",
+      "evidence": "Raises the music volume step by step while the fade counter is below 224, then sets full volume.",
       "confidence": "reviewed"
     },
     {
@@ -45349,6 +47246,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:te.a(Luw;I)V",
+      "originalName": "a",
+      "to": "addToScene",
+      "evidence": "Adds every corpse to the render scene layer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tea.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -45566,6 +47470,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tja.f(I)Ljava/lang/Object;",
+      "originalName": "f",
+      "to": "getValue",
+      "evidence": "Returns the softly referenced value. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tk.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -45713,6 +47624,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tna.a(IIILhj;II)V",
+      "originalName": "a",
+      "to": "divide",
+      "evidence": "Recursive division: splits the chamber with a wall in each axis and opens gaps in three of them.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tna.a(IILhj;I)V",
       "originalName": "a",
       "to": "generate",
@@ -45752,6 +47670,27 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Only nulls or resets static fields, like the other releaseStatics cleanup methods.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tp.A(I)Z",
+      "originalName": "A",
+      "to": "usesTimingPattern",
+      "evidence": "Subclass flag: when true the shooter reads and writes a 4-bit timing pattern id. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tp.B(I)Z",
+      "originalName": "B",
+      "to": "usesPhaseOffset",
+      "evidence": "Subclass flag: when true the shooter also stores a phase offset into its timing pattern. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tp.C(I)Z",
+      "originalName": "C",
+      "to": "canRandomisePhase",
+      "evidence": "Subclass flag: when true a bit chooses between a fixed and a random phase. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -45874,6 +47813,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tqa.a(BLkh;Lla;)V",
+      "originalName": "a",
+      "to": "decodeCells",
+      "evidence": "Reads every cell and, from format 10, the room regions from the bit stream.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tqa.a(I)I",
       "originalName": "a",
       "to": "getColumnCount",
@@ -45937,6 +47883,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tqa.a(ILkh;)V",
+      "originalName": "a",
+      "to": "encodeCells",
+      "evidence": "Writes every cell followed by the region count and regions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tqa.a(ILla;I)V",
       "originalName": "a",
       "to": "resizeToRoom",
@@ -45962,6 +47915,13 @@
       "originalName": "a",
       "to": "toCellCoordinate",
       "evidence": "Divides a world coordinate by the tile size, rounding towards negative infinity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tqa.a(Luw;I)V",
+      "originalName": "a",
+      "to": "addTilesToScene",
+      "evidence": "Adds every tile renderable to the render scene.",
       "confidence": "reviewed"
     },
     {
@@ -46210,6 +48170,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ts.a(B[BIIIII)V",
+      "originalName": "a",
+      "to": "generateByteMipmaps",
+      "evidence": "Halves a power-of-two byte texture repeatedly, averaging 2x2 texels per component.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ts.a(I)V",
       "originalName": "a",
       "to": "removeBarrier",
@@ -46305,6 +48272,20 @@
       "originalName": "a",
       "to": "decode",
       "evidence": "C2SSubmitSettingsPacket implements it by reading 4, 8 and 8 bits between begin/endBitAccess. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tt.a(ZI)Z",
+      "originalName": "a",
+      "to": "hasOrdersFor",
+      "evidence": "True when the packet carries orders for the player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tt.a(ZII)I",
+      "originalName": "a",
+      "to": "getOrder",
+      "evidence": "Returns the player's order value in the given slot.",
       "confidence": "reviewed"
     },
     {
@@ -46588,6 +48569,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uc.D(I)Z",
+      "originalName": "D",
+      "to": "supportsItems",
+      "evidence": "Subclass flag: when true the maze stores an item count and item type and can place item traps. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uc.E(I)V",
       "originalName": "E",
       "to": "releaseStatics",
@@ -46627,6 +48615,13 @@
       "originalName": "a",
       "to": "handleKey",
       "evidence": "Abstract MatchPhase key handler; MatchScreen stops when it returns true. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uda.a(IB)Z",
+      "originalName": "a",
+      "to": "isCharacterAvailable",
+      "evidence": "True when the character is free or unlocked for the player's membership and profile.",
       "confidence": "reviewed"
     },
     {
@@ -46718,6 +48713,13 @@
       "originalName": "a",
       "to": "encode",
       "evidence": "Writes getTypeId as 6 bits plus two flags; every subclass appends its own fields, mirroring readBehaviour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.g(B)V",
+      "originalName": "g",
+      "to": "onRespawn",
+      "evidence": "Called when the respawn timer expires; weapon and power-up items replace their payload with a fresh copy. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -46837,6 +48839,13 @@
       "originalName": "a",
       "to": "decode",
       "evidence": "Reads the profile's version, flags and the rooms, courses and characters bit sets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ufa.a(Z)V",
+      "originalName": "a",
+      "to": "clearChatInput",
+      "evidence": "Clears the chat input buffer and resets the chat mode.",
       "confidence": "reviewed"
     },
     {
@@ -47883,6 +49892,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:un.b(B)V",
+      "originalName": "b",
+      "to": "onDecoded",
+      "evidence": "Hook called after a texture operator is decoded so it can build its lookup tables. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:un.c(II)[I",
       "originalName": "c",
       "to": "getMonochromeRow",
@@ -48177,6 +50193,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:usa.a(Z)V",
+      "originalName": "a",
+      "to": "onFogChanged",
+      "evidence": "Hook the hardware toolkit calls before applying fog parameters; effects upload fog range and colour. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:usa.a(ZI)V",
       "originalName": "a",
       "to": "refreshState",
@@ -48184,10 +50207,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:usa.b(B)V",
+      "originalName": "b",
+      "to": "onViewMatrixChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the view matrix; effects upload it to shader constant 0. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:usa.b(I)V",
+      "originalName": "b",
+      "to": "onProjectionChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the projection; effects upload the transposed projection. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:usa.b(Z)V",
+      "originalName": "b",
+      "to": "onModelMatrixChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the model matrix; effects re-upload their transform constants. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:usa.c(I)Z",
       "originalName": "c",
       "to": "isSupported",
       "evidence": "Abstract: whether the hardware supports the effect; the toolkit checks it at start-up. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:usa.c(Z)V",
+      "originalName": "c",
+      "to": "onTextureMatrixChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the texture matrix; effects upload its first two rows. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -48905,6 +50956,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vd.a(Lpc;I)Z",
+      "originalName": "a",
+      "to": "traceBeamThroughMaze",
+      "evidence": "Walks the beam across the maze cells and stops it at the first filled cell.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vd.a(Z)I",
       "originalName": "a",
       "to": "getTypeId",
@@ -48916,6 +50974,13 @@
       "originalName": "a",
       "to": "setGeneratorType",
       "evidence": "Sets the generator type, optionally regenerating.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vd.a(ZIIILpc;I)Z",
+      "originalName": "a",
+      "to": "clipBeamToCell",
+      "evidence": "Clips the beam to a cell box and shortens the segment when it hits.",
       "confidence": "reviewed"
     },
     {
@@ -49311,6 +51376,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vja.a(B)V",
+      "originalName": "a",
+      "to": "resolveSwitchLinks",
+      "evidence": "Resolves the switch links of the spawner's template trap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vja.a(BLui;ZLui;)V",
+      "originalName": "a",
+      "to": "assignSwitchableIds",
+      "evidence": "Assigns switchable ids to the spawner's template trap.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vja.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -49343,6 +51422,13 @@
       "originalName": "a",
       "to": "getTypeId",
       "evidence": "Spawner.encode writes it as the 4-bit spawner type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vja.a(ZII)Llj;",
+      "originalName": "a",
+      "to": "findSwitchableRecursive",
+      "evidence": "Searches the template trap tree for the switchable with the given id.",
       "confidence": "reviewed"
     },
     {
@@ -49441,6 +51527,13 @@
       "originalName": "a",
       "to": "decodeParameter",
       "evidence": "Operators read the parameter with the given index from the PacketBuffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vla.b(B)V",
+      "originalName": "b",
+      "to": "onDecoded",
+      "evidence": "Hook called after a texture operator is decoded so it can build its lookup tables. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -49644,6 +51737,13 @@
       "originalName": "a",
       "to": "decodeParameter",
       "evidence": "Operators read the parameter with the given index from the PacketBuffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:voa.b(B)V",
+      "originalName": "b",
+      "to": "onDecoded",
+      "evidence": "Hook called after a texture operator is decoded so it can build its lookup tables. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -49962,6 +52062,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vsa.a(ZLfaa;)V",
+      "originalName": "a",
+      "to": "assignTileAnimator",
+      "evidence": "Gives a bridge tile its sway animator for the bridge style and rebuilds the tiles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vsa.b(BI)V",
       "originalName": "b",
       "to": "setStyle",
@@ -50249,6 +52356,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vw.a(Z)V",
+      "originalName": "a",
+      "to": "onFogChanged",
+      "evidence": "Hook the hardware toolkit calls before applying fog parameters; effects upload fog range and colour.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vw.a(ZI)V",
       "originalName": "a",
       "to": "refreshState",
@@ -50256,10 +52370,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vw.b(B)V",
+      "originalName": "b",
+      "to": "onViewMatrixChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the view matrix; effects upload it to shader constant 0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vw.b(I)V",
+      "originalName": "b",
+      "to": "onProjectionChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the projection; effects upload the transposed projection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vw.b(Z)V",
+      "originalName": "b",
+      "to": "onModelMatrixChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the model matrix; effects re-upload their transform constants.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vw.c(I)Z",
       "originalName": "c",
       "to": "isSupported",
       "evidence": "Abstract: whether the hardware supports the effect; the toolkit checks it at start-up.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vw.c(Z)V",
+      "originalName": "c",
+      "to": "onTextureMatrixChanged",
+      "evidence": "Hook the hardware toolkit calls after changing the texture matrix; effects upload its first two rows.",
       "confidence": "reviewed"
     },
     {
@@ -50274,6 +52416,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:w.a(IZ)V",
+      "originalName": "a",
+      "to": "playQueuedEvents",
+      "evidence": "Plays and unlinks every queued sound event, then updates each playing sound.",
       "confidence": "reviewed"
     },
     {
@@ -50382,6 +52531,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wd.a(BIZLla;Lfsa;Z)V",
+      "originalName": "a",
+      "to": "configureBlockTrap",
+      "evidence": "Sets weight, obstruction, collision, pushing and block behaviour on a trap for the given block kind.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wd.a(BLkda;[BI)Lmf;",
       "originalName": "a",
       "to": "compileAssemblyProgram",
@@ -50400,6 +52556,13 @@
       "originalName": "a",
       "to": "setCharacter",
       "evidence": "Stores the character id and switches the player's animator to it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wd.a(IIII[IIII)V",
+      "originalName": "a",
+      "to": "generateMipmaps",
+      "evidence": "Halves a power-of-two texture repeatedly, averaging 2x2 texels into each mip level.",
       "confidence": "reviewed"
     },
     {
@@ -50606,6 +52769,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wea.a(IILsq;ZLjava/awt/Component;Lfia;)V",
+      "originalName": "a",
+      "to": "initAudioOutputs",
+      "evidence": "Starts the audio outputs for the mixer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wea.a(IIZB)V",
       "originalName": "a",
       "to": "setRoom",
@@ -50788,6 +52958,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wh.a(BLmg;)V",
+      "originalName": "a",
+      "to": "setTimingPattern",
+      "evidence": "Stores the timing pattern driving the trip beam.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wh.a(II)I",
       "originalName": "a",
       "to": "hashState",
@@ -50883,6 +53060,13 @@
       "originalName": "p",
       "to": "freezesInTimeStop",
       "evidence": "Trap.tick skips the behaviour while time is frozen when it returns true; conveyors, crushers and shooters do. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wh.q(B)V",
+      "originalName": "q",
+      "to": "updateBeamSegment",
+      "evidence": "Positions the beam segment at the trap edge along its facing for its length and elevation.",
       "confidence": "reviewed"
     },
     {
@@ -51264,6 +53448,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wna.b(B)V",
+      "originalName": "b",
+      "to": "onDecoded",
+      "evidence": "Hook called after a texture operator is decoded so it can build its lookup tables. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wna.b(II)[[I",
       "originalName": "b",
       "to": "getColourRow",
@@ -51338,6 +53529,27 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wpa.A(I)Z",
+      "originalName": "A",
+      "to": "usesTimingPattern",
+      "evidence": "Subclass flag: when true the shooter reads and writes a 4-bit timing pattern id. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wpa.B(I)Z",
+      "originalName": "B",
+      "to": "usesPhaseOffset",
+      "evidence": "Subclass flag: when true the shooter also stores a phase offset into its timing pattern. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wpa.C(I)Z",
+      "originalName": "C",
+      "to": "canRandomisePhase",
+      "evidence": "Subclass flag: when true a bit chooses between a fixed and a random phase. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -51499,6 +53711,13 @@
       "originalName": "q",
       "to": "applyDefaults",
       "evidence": "Called from the RoomComponent constructor; subclasses set their default size and settings. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wqa.r(B)Z",
+      "originalName": "r",
+      "to": "isDialogOpen",
+      "evidence": "True when a modal dialog, popup or menu is open.",
       "confidence": "reviewed"
     },
     {
@@ -51716,6 +53935,13 @@
       "originalName": "a",
       "to": "writeModel",
       "evidence": "ModelFactory writes the model category as 6 bits, then the model's own encode. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wu.a(Lgr;Lgma;I)Ldg;",
+      "originalName": "a",
+      "to": "createTrapModel",
+      "evidence": "Chooses the trap model kind for the part and body (snake pit, pit, crusher, item, block, switch, ...) and builds it.",
       "confidence": "reviewed"
     },
     {
@@ -51966,7 +54192,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "c9b61a1d60a4207aacb9387de5c401effe66d893729e9f25be34587efb587b23",
+      "tombracer-names.json": "9f568aa328c8cf1baf16859ad0b66abcc05d98efeaf8c85ab2511a40c47ff5dc",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
