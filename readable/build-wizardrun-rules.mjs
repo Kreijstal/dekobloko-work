@@ -3,6 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
 import {workflowRoot} from './game-export.mjs';
+import {namingCoverage} from './naming-coverage.mjs';
 
 // Identities below belong to the pinned Wizard Run export. Similar roles in
 // other FunOrb games are corroborating evidence only.
@@ -141,15 +142,33 @@ method('ed', 'f', '(IIII)V', 'drawHorizontalLine', 'Clips x against the left and
 method('ed', 'e', '(IIII)V', 'drawVerticalLine', 'Clips y against the top and bottom bounds and stores the colour down one column.');
 method('rk', 'b', '(Z)V', 'unlink', 'Splices the node out of its neighbours and nulls both links.');
 
+// Reviewed additions stay keyed by original declaration identities. They are
+// inputs to the binding-aware naming tool, not edits to the published Java.
+const names = JSON.parse(fs.readFileSync(new URL('./wizardrun-names.json', import.meta.url), 'utf8'));
+for (const [owner, to, evidence] of names.classes) classes[owner] = [to, evidence];
+for (const [owner, original, descriptor, to, evidence] of names.methods)
+  members[`M:${owner}.${original}${descriptor}`] = {to, evidence};
+for (const [owner, original, descriptor, to, evidence] of names.fields)
+  members[`F:${owner}.${original}:${descriptor}`] = {to, evidence};
+
 export const config = {
-  game: 'wizardrun', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
+  game: 'wizardrun', version: 2, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-wizardrun-rules.mjs', 'reproduce-wizardrun.mjs', 'reviewed-game.mjs',
-    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
+  workflowFiles: ['build-wizardrun-rules.mjs', 'wizardrun-names.json', 'reproduce-wizardrun.mjs', 'reviewed-game.mjs',
+    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs', 'naming-coverage.mjs'],
   readingGuide(rules, mapping) {
+    const coverage = namingCoverage(mapping);
     return ['# Reading Wizard Run', '',
-      `This pass names ${Object.keys(classes).length} reviewed classes in ${mapping.files.length} source files. Unresolved roles keep their original names.`, '',
-      'Start at `wizardrun`; the shared engine (nodes, deques, packet buffer, sockets, widgets, sprites) uses the same role names as other FunOrb games.', ''].join('\n');
+      `Resolved declarations: ${coverage.namedClasses}/${coverage.classes} classes and ${coverage.namedMethods}/${coverage.methods} methods have readable names; ${coverage.constructors} constructors follow their class names.`,
+      `Remaining: ${coverage.unresolvedClasses.length} opaque classes and ${coverage.unresolvedMethods.length} opaque methods. ${coverage.complete ? 'All class and method declarations have readable names.' : 'The complete naming goal is still in progress.'}`, '',
+      'Start at `wizardrun`. Shared engine code includes named audio synthesis, Vorbis, PCM mixing, rasterization, sprites, archive transport and cache storage.', '',
+      'Reproduce in dekobloko-work:', '',
+      '```sh',
+      'env -u JAVA_TOOL_OPTIONS node readable/build-wizardrun-rules.mjs --check',
+      'env -u JAVA_TOOL_OPTIONS node readable/reproduce-wizardrun.mjs --check',
+      'node readable/naming-coverage.mjs wizardrun',
+      '```', '',
+      'Coverage checks all resolved classes, nested classes and methods. It exits unsuccessfully while opaque names remain. Reproduction verifies bindings and reversal to the pinned original source; it does not prove gameplay correctness.', ''].join('\n');
   },
 };
 
