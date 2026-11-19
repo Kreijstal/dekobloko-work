@@ -3,6 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
 import {workflowRoot} from './game-export.mjs';
+import {namingCoverage} from './naming-coverage.mjs';
 
 // Every identity below belongs to the pinned Hold the Line export. Similar names
 // in other games are corroborating role evidence, never copied obfuscated IDs.
@@ -18,15 +19,32 @@ const classes = {
   tj: ['PcmStream', 'Linked abstract audio stream that mixes into an int buffer and has sub-streams.'],
 };
 const members = {};
+// Additional reviewed names retain immutable original declaration identities.
+const names = JSON.parse(fs.readFileSync(new URL('./holdtheline-names.json', import.meta.url), 'utf8'));
+for (const [owner, to, evidence] of names.classes) classes[owner] = [to, evidence];
+for (const [owner, original, descriptor, to, evidence] of names.methods)
+  members[`M:${owner}.${original}${descriptor}`] = {to, evidence};
+for (const [owner, original, descriptor, to, evidence] of names.fields)
+  members[`F:${owner}.${original}:${descriptor}`] = {to, evidence};
 export const holdTheLineConfig = {
-  game: 'holdtheline', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
+  game: 'holdtheline', version: 2, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-holdtheline-rules.mjs', 'reproduce-holdtheline.mjs', 'reviewed-game.mjs', 'game-export.mjs'],
+  workflowFiles: ['build-holdtheline-rules.mjs', 'holdtheline-names.json', 'reproduce-holdtheline.mjs', 'reviewed-game.mjs',
+    'game-export.mjs', 'compilation-stubs.mjs', 'naming-coverage.mjs'],
   readingGuide(rules, mapping) {
+    const coverage = namingCoverage(mapping);
     return ['# Reading Hold the Line', '',
       'This directory is the single published Java tree. The scripts and reviewed rules live in dekobloko-work/readable.', '',
-      `This pass names ${Object.keys(classes).length} reviewed classes in ${mapping.files.length} source files. Unresolved roles keep their original names.`, '',
-      'Start at `HoldTheLine`, a `NetworkGameClient` and `GameAppletShell`.', ''].join('\n');
+      `Resolved declarations: ${coverage.namedClasses}/${coverage.classes} classes and ${coverage.namedMethods}/${coverage.methods} methods have readable names; ${coverage.constructors} constructors follow their class names.`,
+      `Remaining: ${coverage.unresolvedClasses.length} opaque classes and ${coverage.unresolvedMethods.length} opaque methods. ${coverage.complete ? 'All class and method declarations have readable names.' : 'The complete naming goal is still in progress.'}`, '',
+      'Start at `HoldTheLine`, a `NetworkGameClient` and `GameAppletShell`. Its `initializeGame`, `loadGameResources`, `updateGameTick`, `renderGameFrame` and `shutdownGame` methods expose the client lifecycle.', '',
+      '`RaceWorld` owns the course, vehicles and world collections. `RaceVehicle` and `VehicleDefinition` describe vehicle state and tuning; `MovingEntity` supplies shared motion. `RoadSegment`, `StraightRoadSegment`, `CurvedRoadSegment`, `TrackBoundary`, `Point2i` and `Vector2f` expose the course geometry.', '',
+      'Shared components include named UI widgets, account forms and validators, archive/cache transport, PCM/MIDI/Vorbis audio, sprites, rasterization and fonts. Unrelated static helpers remain in their original containing classes; for example, `EntitySound` also holds the shared exception wrapper.', '',
+      'Reproduce in dekobloko-work:', '', '```sh',
+      'env -u JAVA_TOOL_OPTIONS node readable/build-holdtheline-rules.mjs --check',
+      'env -u JAVA_TOOL_OPTIONS node readable/reproduce-holdtheline.mjs --check',
+      'node readable/naming-coverage.mjs holdtheline', '```', '',
+      'Names and evidence are keyed by original declarations in `holdtheline-names.json`. Reproduction verifies compilation, symbol bindings and exact source restoration. Full gameplay has not been runtime-tested. Fields and local variables are outside the complete class/method naming claim.', ''].join('\n');
   },
 };
 
