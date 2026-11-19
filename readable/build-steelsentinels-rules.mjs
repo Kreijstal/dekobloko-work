@@ -6,6 +6,7 @@ import {captureProcess} from './tools/lib/capture-process.mjs';
 import {sourceInventory} from './tools/readable-java.mjs';
 import {buildCompilationStubs} from './compilation-stubs.mjs';
 import {archivedInput, digest, funorbRepository, verifyToolPin, workflowRoot} from './game-export.mjs';
+import {namingCoverage} from './naming-coverage.mjs';
 
 const SOURCE_COMMIT = '56c18e5fa3eda13b7324b0df50a3746fc39e3242';
 // Evidence below refers to this immutable Java input, not to another game's map.
@@ -963,18 +964,38 @@ export function buildSteelRules(input, rows) {
 }
 
 const workflowFiles=['build-steelsentinels-rules.mjs','steelsentinels-names.json','reproduce-steelsentinels.mjs','reconstruct-steel-explosion.mjs',
-  'tests/test-steelsentinels-core.mjs','tests/archive-index-probe.mjs','game-export.mjs','compilation-stubs.mjs'];
+  'tests/test-steelsentinels-core.mjs','tests/test-steelsentinels-naming.mjs','tests/archive-index-probe.mjs',
+  'game-export.mjs','compilation-stubs.mjs','naming-coverage.mjs'];
 export function validateSteelManifest(rules) {
-  if(rules.schema!==1||rules.game!=='steelsentinels'||rules.source.commit!==SOURCE_COMMIT) throw new Error('Invalid Steel naming manifest');
+  if(rules.schema!==1||rules.game!=='steelsentinels'||rules.version!==8||rules.source.commit!==SOURCE_COMMIT) throw new Error('Invalid Steel naming manifest');
+  if(JSON.stringify(Object.keys(rules.readabilityWorkflow.files))!==JSON.stringify(workflowFiles)) throw new Error('Steel naming workflow inventory changed');
   for(const [file,sha] of Object.entries(rules.readabilityWorkflow.files))
     if(digest(fs.readFileSync(path.join(workflowRoot,file)))!==sha) throw new Error('Naming workflow changed: '+file);
   if(JSON.stringify(rules.generators.namingTool)!==JSON.stringify(verifyToolPin())) throw new Error('Naming tool identity changed');
 }
+export function assertSteelNamingComplete(mapping) {
+  const coverage=namingCoverage(mapping);
+  // The older shared audit recognizes runChunk but not the dispatcher helpers
+  // in this pinned export. Require semantic names for both generated forms.
+  const partitions=mapping.symbols.filter(row=>row.symbol.startsWith('M:')&&/^runPartition\d+$/.test(row.renamedName));
+  const unresolved=[...coverage.unresolvedClasses,...coverage.unresolvedMethods,...partitions];
+  if(unresolved.length) throw new Error('Steel class/method naming incomplete: '+unresolved.map(row=>row.symbol).join(', '));
+  return coverage;
+}
 export function buildSteelGuide(rules,mapping) {
   const link=owner=>`[${classes[owner][0]}](${classes[owner][0]}.java)`;
+  const coverage=assertSteelNamingComplete(mapping);
   return ['# Reading Steel Sentinels','',
     'Java here is the single published version. Rebuild from pinned raw Git input with Deko’s `readable/reproduce-steelsentinels.mjs`. The current reverse dictionary is `../../decompilation/steelsentinels-naming.json`.','',
-    `This gameplay naming pass names ${Object.keys(classes).length} reviewed classes across ${mapping.files.length} compiled classes. Unknown class/member purposes remain unresolved. Profile and charge names describe observed roles; finer encodings remain open. Renamed identifiers have no opaque suffixes; the dictionary preserves original identities.`, '',
+    `Resolved declarations: ${coverage.namedClasses}/${coverage.classes} classes and ${coverage.namedMethods}/${coverage.methods} methods have readable names; ${coverage.constructors} constructors follow their class names. There are no opaque class or method names, including local loader classes and catalogue dispatcher methods. Fields and local variables are outside this complete class/method naming claim. Profile and charge names describe observed roles; finer encodings remain open. The dictionary preserves original identities.`, '',
+    'Reproduce and validate in dekobloko-work:', '',
+    '```sh',
+    'env -u JAVA_TOOL_OPTIONS node readable/build-steelsentinels-rules.mjs --check',
+    'env -u JAVA_TOOL_OPTIONS node readable/reproduce-steelsentinels.mjs --check',
+    'node readable/naming-coverage.mjs steelsentinels',
+    'node --test readable/tests/test-steelsentinels-naming.mjs readable/tests/test-naming-coverage.mjs',
+    '```', '',
+    '`ContextMenu.loadInterfaceText` uses a local `ClientInterfaceTextLoader` for shared client text. `SectorCacheStore.loadLocalizedText` uses `SteelGameTextLoader` for campaign, equipment, tutorial, controls, designer and statistics text. Their loading stages have names based on the resource keys they read. `BattleTerrain.buildPartCatalogue` uses `PartCatalogueBuilder` to allocate sprite storage, build sentinel bodies and equipment, and index the resulting catalogue. The regeneration check rejects opaque declarations and numbered dispatcher helpers.', '',
     '| Start here | Follow |','| --- | --- |',
     `| ${link('nb')} → ${link('ee')} | Player control, game display, world updates and synchronization checksum. |`,
     `| ${link('mb')} | Sentinel position/velocity, player/team, chassis, modules, armour, charge, command queues and combat updates. |`,
@@ -993,14 +1014,14 @@ export function buildSteelGuide(rules,mapping) {
     'Compilation and symbol/override checks cover the complete game. The raw/named core probe independently checks module aliases/bonuses, armour and charge mutations, terrain boundaries, part aggregation, synchronization checksums, command timing, queue routing, ordering and equal-tick replacement. Packet fixtures cover every bit alignment/width, primitive byte order, slice offsets, cipher consumption across block boundaries, bounded-random rejection and hash collisions/duplicate keys. Ciphertext traces must also match the raw export; round trips alone are insufficient. It allocates controlled world/sentinel/terrain fixtures without game construction and replaces only the client branch-control flag at runtime. It does not prove whole-game playability, projectile simulation, rendering or live server compatibility. Dictionary reversal recovers every original source byte.','',
     'ParticleEffect now names duration, age, effect type and its choice of terrain profile. Age gains a random 0–3 increment below 200, followed by the ordinary increment; duration is not a guaranteed count of updates. Fixtures check damping with Java truncation, terrain contact/exceptions, gravity and strict age > duration expiry. Type 10 emits a type-9 child. createParticle initializes an object from a 10,000-entry cyclic reuse buffer, not a free list: acquisition neither checks liveness nor unlinks existing membership. pendingRemovals uses DualNodeDeque secondary links until world simulation unlinks the primary links. Probes preserve those boundaries and restore the global buffer/cursor afterward.','',
     'Projectile.advanceGuidedMotion exposes launch acceleration, target steering and the gravity gate. Its target and initial-direction fields and phase-dependent locals now have reviewed names. Independent launch/coasting fixtures cover zero vectors, signed motion and ages 0, 1, 19, 128 and 129 with transient visual emission suppressed. Steering helpers now expose 8192-unit angles and 16.16 sine/cosine. Fixtures cover full-turn trig values, axis/quadrant angles, bounded turning at ages 20–127, target updates/removal and the coasting boundary. The initial-direction reversal branch, rendered effects and complete projectile collisions remain unverified.','',
-    'The pinned raw input reconstructs Explosion.advanceExplosion with the generic compiler’s bounded node splitting, copy certificate and original-edge proof. Native bytecode/old/new Java fixtures cover 790 scenarios and 2,288 checks with visual emission suppressed. BattleTerrain.java and rl.java retain dispatcher fallbacks; large methods and full collision/rendering work remain.',''].join('\n');
+    'The pinned raw input reconstructs Explosion.advanceExplosion with the generic compiler’s bounded node splitting, copy certificate and original-edge proof. Native bytecode/old/new Java fixtures cover 790 scenarios and 2,288 checks with visual emission suppressed. BattleTerrain.java and PacketLoopHelpers.java retain dispatcher fallbacks; large methods and full collision/rendering work remain.',''].join('\n');
 }
 export function buildSteelManifest() {
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'steel-naming-rules-'));
   try {
     const catalog=JSON.parse(captureProcess('git',['-C',funorbRepository,'show',SOURCE_COMMIT+':decompilation-provenance.json']).stdout);
     const record=catalog.publication.games.steelsentinels;
-    const rules={schema:1,game:'steelsentinels',version:7,
+    const rules={schema:1,game:'steelsentinels',version:8,
       source:{repository:'Kreijstal/funorb-decompiled',commit:SOURCE_COMMIT,subdirectory:'games/steelsentinels'},inputTreeSha256:record.sources.sha256};
     const input=archivedInput(rules,temporary),stubs=buildCompilationStubs(funorbRepository,temporary);
     const helper=path.join(temporary,'helper'),compiled=path.join(temporary,'classes');fs.mkdirSync(helper);fs.mkdirSync(compiled);

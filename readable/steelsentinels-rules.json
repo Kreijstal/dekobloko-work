@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "game": "steelsentinels",
-  "version": 7,
+  "version": 8,
   "source": {
     "repository": "Kreijstal/funorb-decompiled",
     "commit": "56c18e5fa3eda13b7324b0df50a3746fc39e3242",
@@ -1935,6 +1935,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dn$1$CfrPartitionedBody",
+      "originalName": "$CfrPartitionedBody",
+      "to": "ClientInterfaceTextLoader",
+      "evidence": "dn$1$CfrPartitionedBody.java: Local helper in ContextMenu.loadInterfaceText; stores the archive and temporary byte array while loading client, account, lobby and display text in order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:e",
       "originalName": "e",
       "to": "AccountRequestResult",
@@ -2275,6 +2282,13 @@
       "originalName": "hd",
       "to": "BattleTerrain",
       "evidence": "hd.java: Seed-derived terrain profiles, clamped profile accessors and spawn positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hd$1$CfrPartitionedState",
+      "originalName": "$CfrPartitionedState",
+      "to": "PartCatalogueBuilder",
+      "evidence": "hd$1$CfrPartitionedState.java: Local state holder in BattleTerrain.buildPartCatalogue; allocates part sprite storage, builds body/equipment definitions and indexes the completed catalogue.",
       "confidence": "reviewed"
     },
     {
@@ -3311,6 +3325,13 @@
       "originalName": "rc",
       "to": "SectorCacheStore",
       "evidence": "rc.java: Sector-based cache file store with index and data files.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rc$1$CfrPartitionedBody",
+      "originalName": "$CfrPartitionedBody",
+      "to": "SteelGameTextLoader",
+      "evidence": "rc$1$CfrPartitionedBody.java: Local helper in SectorCacheStore.loadLocalizedText; loads Steel Sentinels campaign, equipment, tutorial, controls, designer and statistics text from named archive resources.",
       "confidence": "reviewed"
     },
     {
@@ -8438,6 +8459,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dn$1$CfrPartitionedBody.run()V",
+      "originalName": "run",
+      "to": "loadAllText",
+      "evidence": "dn$1$CfrPartitionedBody.java: Runs the four client text-loading stages in source order with their original exception context and finished flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn$1$CfrPartitionedBody.runChunk0()V",
+      "originalName": "runChunk0",
+      "to": "loadLobbyAndConnectionText",
+      "evidence": "dn$1$CfrPartitionedBody.java: Loads 226 named resources from loginm3 through rule_0_1: connection errors, lobby/chat/game options, social actions and the start of report-abuse rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn$1$CfrPartitionedBody.runChunk1()V",
+      "originalName": "runChunk1",
+      "to": "loadRegistrationAndLoadingText",
+      "evidence": "dn$1$CfrPartitionedBody.java: Loads 238 resources from rule_0_2 through music_colon: remaining rules, account/login/registration forms, validators, social errors and asset-loading messages.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn$1$CfrPartitionedBody.runChunk2()V",
+      "originalName": "runChunk2",
+      "to": "loadGameMenusAndDisplayText",
+      "evidence": "dn$1$CfrPartitionedBody.java: Loads 245 resources from fullscreen through mustlogin3,2: menus, scores, achievements, multiplayer results, quick chat, membership, reconnect and graphics/fullscreen prompts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn$1$CfrPartitionedBody.runChunk3()V",
+      "originalName": "runChunk3",
+      "to": "loadLoginWarningsAndSubscriptionText",
+      "evidence": "dn$1$CfrPartitionedBody.java: Loads the remaining login/discard warning variants, thirteen monthly subscription labels and sentence_separator.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dn.a(CI)Z",
       "originalName": "a",
       "to": "isAsciiLetterOrDigit",
@@ -11564,6 +11620,34 @@
       "originalName": "f",
       "to": "releaseStatics",
       "evidence": "hc.java: Nulls the static fields of LabeledField.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hd$1$CfrPartitionedState.run()V",
+      "originalName": "run",
+      "to": "buildCatalogue",
+      "evidence": "hd$1$CfrPartitionedState.java: Dispatches the catalogue builder phases according to the preserved state cursor until construction finishes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hd$1$CfrPartitionedState.runPartition0()V",
+      "originalName": "runPartition0",
+      "to": "allocatePartSpriteStorage",
+      "evidence": "hd$1$CfrPartitionedState.java: Catalogue states 0 through 53 create the definition deque, initialize the part sprite arrays and fill the particle-part placeholders.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hd$1$CfrPartitionedState.runPartition1()V",
+      "originalName": "runPartition1",
+      "to": "buildSentinelBodyDefinitions",
+      "evidence": "hd$1$CfrPartitionedState.java: Catalogue state 57 constructs drone bodies and named Golem, Slave, Aghilla, Turtle, Commando and other sentinel heads, chassis, limbs and attachments, then initializes the equipment iteration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hd$1$CfrPartitionedState.runPartition2()V",
+      "originalName": "runPartition2",
+      "to": "buildEquipmentAndIndexCatalogue",
+      "evidence": "hd$1$CfrPartitionedState.java: Catalogue states 58 through 101 build equipment/module definitions, populate the 110-entry component lookup array and preserve completion/error/guard handling.",
       "confidence": "reviewed"
     },
     {
@@ -19757,6 +19841,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rc$1$CfrPartitionedBody.run()V",
+      "originalName": "run",
+      "to": "loadAllText",
+      "evidence": "rc$1$CfrPartitionedBody.java: Runs the seven game text-loading stages in source order with the original exception context and completion flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc$1$CfrPartitionedBody.runChunk0()V",
+      "originalName": "runChunk0",
+      "to": "loadCampaignAndAchievementText",
+      "evidence": "rc$1$CfrPartitionedBody.java: Loads 221 resources including game/expansion names, boss dialogue, achievement names and criteria, mission briefings, module names and initial pickup tips.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc$1$CfrPartitionedBody.runChunk1()V",
+      "originalName": "runChunk1",
+      "to": "loadEquipmentNamesAndDescriptions",
+      "evidence": "rc$1$CfrPartitionedBody.java: Loads 221 resources including remaining pickup tips, module descriptions, weapon names/kill strings, command/category names, weapon statistics and initial sentinel descriptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc$1$CfrPartitionedBody.runChunk2()V",
+      "originalName": "runChunk2",
+      "to": "loadWeaponOptionsAndInstructions",
+      "evidence": "rc$1$CfrPartitionedBody.java: Loads 212 resources including remaining sentinel descriptions, weapon descriptions, game-option labels/tooltips and most instruction_set entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc$1$CfrPartitionedBody.runChunk3()V",
+      "originalName": "runChunk3",
+      "to": "loadMissionAndTutorialText",
+      "evidence": "rc$1$CfrPartitionedBody.java: Loads 217 resources including remaining instruction entries, campaign/mission titles, tutorial page names, alternate controls and the initial tutorial paragraphs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc$1$CfrPartitionedBody.runChunk4()V",
+      "originalName": "runChunk4",
+      "to": "loadControlsAndComponentText",
+      "evidence": "rc$1$CfrPartitionedBody.java: Loads 229 resources including remaining tutorial paragraphs, designer configuration tutorial, controls/key names, map/mode briefings, component names and combat-status captions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc$1$CfrPartitionedBody.runChunk5()V",
+      "originalName": "runChunk5",
+      "to": "loadMatchStatisticsAndDesignerText",
+      "evidence": "rc$1$CfrPartitionedBody.java: Loads 229 resources including replay controls, teams/sentinel names, GAMEBEST_TIP achievements, designer slot labels/warnings, ratings/stat hints and the initial rank titles.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc$1$CfrPartitionedBody.runChunk6()V",
+      "originalName": "runChunk6",
+      "to": "loadRankAndMissionExitText",
+      "evidence": "rc$1$CfrPartitionedBody.java: Loads the final five RANK_TXT values, mission/test-field exit labels, reference manual and cooperative highscores labels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rc.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -25470,14 +25610,16 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-steelsentinels-rules.mjs": "ade843a557c9965e322fcb58bfaf19dd18c6e92989dfed662ffae45eaf2c8b80",
-      "steelsentinels-names.json": "b278472668b5bf19da361b6d58b483c0bab41707eee3c098b817984d15cb2b85",
+      "build-steelsentinels-rules.mjs": "00c65566007eba51486cf906fbb74fa31f91f730664968bda4feca39a021c10a",
+      "steelsentinels-names.json": "76c5850f4ca81408a5099d7311d6ba757ce1a5c265d16beac244239eb238beab",
       "reproduce-steelsentinels.mjs": "6dd69838b697249fd7c99bc8469e53b7306265e77588f8b1df18348a9ebead28",
       "reconstruct-steel-explosion.mjs": "cadc0a0fec0a18c1282d769a399661a45868e207a3a2eb507c5f79ac233868f5",
       "tests/test-steelsentinels-core.mjs": "879d81107b2095edeed88cded1663381f5935fe167110fe76132b612e393a08d",
+      "tests/test-steelsentinels-naming.mjs": "cf1202806ee4960241e86c41b8ca190f103420632606d2ca61b8a5fe3825f230",
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
-      "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
+      "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
+      "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2"
     }
   },
   "generators": {
