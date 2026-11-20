@@ -11665,6 +11665,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:aq.field_p:[I",
+      "originalName": "field_p",
+      "to": "faceSortIndices",
+      "evidence": "Original face-index storage shared by fixed-depth buckets,compaction/category grouping and logo drawing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:aqa.field_b:Ltbb;",
       "originalName": "field_b",
       "to": "trail",
@@ -11830,6 +11837,13 @@
       "originalName": "field_J",
       "to": "centerX",
       "evidence": "Local dial center X used by hit test and renderer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ata.field_L:Ljava/lang/String;",
+      "originalName": "field_L",
+      "to": "settingsFileName",
+      "evidence": "Original game_settings.dat cache filename.",
       "confidence": "reviewed"
     },
     {
@@ -12509,6 +12523,13 @@
       "originalName": "field_a",
       "to": "tabs",
       "evidence": "Original tab widget containing supplied first panel plus Friends and Ignore.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bs.field_b:[I",
+      "originalName": "field_b",
+      "to": "faceDepthBucketCounts",
+      "evidence": "Original per-depth-bucket face counts used by clearing,bucketing and compaction.",
       "confidence": "reviewed"
     },
     {
@@ -14756,6 +14777,13 @@
       "originalName": "field_a",
       "to": "assassinationText",
       "evidence": "Original Assassination objective label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eo.field_o:[I",
+      "originalName": "field_o",
+      "to": "sqrtLookupTable",
+      "evidence": "Original4096-scaled square-root lookup used by approximate vector length;values preserved exactly.",
       "confidence": "reviewed"
     },
     {
@@ -22683,6 +22711,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pca.field_j:I",
+      "originalName": "field_j",
+      "to": "bucketedFaceCount",
+      "evidence": "Original number of accepted logo faces consumed by sorted drawing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pca.field_k:I",
       "originalName": "field_k",
       "to": "playerId",
@@ -29921,6 +29956,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wqb.field_e:Ljava/util/Hashtable;",
+      "originalName": "field_e",
+      "to": "preferences",
+      "evidence": "Original Hashtable read by integer preference accessors and replaced by saved-settings load.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wsa.field_a:I",
       "originalName": "field_a",
       "to": "end",
@@ -31160,6 +31202,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:am.a(I)V",
+      "originalName": "a",
+      "to": "clearFaceDepthBuckets",
+      "evidence": "Full eight-at-a-time clearing loop and face bucket producer reviewed. Preserve array-length assumptions,guard lobby initialization and exception wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(IIII[I)V",
+      "originalName": "a",
+      "to": "fillPolygon",
+      "evidence": "Full software/toolkit polygon dispatch and ShipComponent callers reviewed:retain color alpha split,renderer feature gate,no-op path,argument ordering and guard scalar assignment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a([BLllb;IILllb;ZIIILllb;)V",
+      "originalName": "a",
+      "to": "initializeLobbyState",
+      "evidence": "Full body and Entering lobby transition caller reviewed:reset original packet bitsets,player/game collections,counters and widget child deques. Preserve supplied sizes,original null handling,guard text clearing and order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:am.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -32063,6 +32126,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:asa.a(Ljava/io/File;B)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "readSerializedObject",
+      "evidence": "Full file/ObjectInputStream body and preferences loader reviewed. Preserve absent-file result,close order,IO/class-not-found suppression and wrong-guard stream lifetime.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:asb.a(B)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -32581,10 +32651,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bab.a(Ljava/lang/String;I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "highlightConsoleSyntax",
+      "evidence": "Full token loop and CommandConsole consumer reviewed:wrap original string,char,method,number,boolean token spans in original color markup. Preserve source offsets,trailing text,guard cleanup and exception wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bab.a(Ljava/lang/String;JI)V",
+      "originalName": "a",
+      "to": "selectPrivateQuickChatTarget",
+      "evidence": "Full body and private quick-chat context-menu action reviewed:set display/normalized name,key,channel2 then select default quick-chat menu. Preserve partial updates on guard failure.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bab.a(Z)V",
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_a, field_b. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bab.a(ZLml;)V",
+      "originalName": "a",
+      "to": "attachPresetComponents",
+      "evidence": "Full hardcoded hardpoint graph and createPresetShip chassis11 branch reviewed. Preserve component IDs,attachment slots,construction order and false-guard syntax-highlighter call;no new gameplay behavior.",
       "confidence": "reviewed"
     },
     {
@@ -35430,6 +35521,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cnb.a(ILdj;Ldj;IILjava/lang/String;Z)I",
+      "originalName": "a",
+      "to": "sendAndPollAccountRequest",
+      "evidence": "Complete account request state machine reviewed:retain encrypted request construction,status-driven stages,availability reply,suggestions,session cookies,timeouts and port retry. Preserve all opcodes,length encodings,random calls,guard cleanup and failure behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cnb.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -36617,6 +36715,20 @@
       "originalName": "e",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_o. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.a(II)Lsw;",
+      "originalName": "a",
+      "to": "getToolkitFont",
+      "evidence": "Full indexed toolkit font getter and font-ascent consumer reviewed. Preserve index failure,guard raster-target call and exact return.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.a(ILphb;)V",
+      "originalName": "a",
+      "to": "pushSpriteRasterTarget",
+      "evidence": "Full raster body reviewed:push existing state then set Sprite pixels/padded dimensions as target. Preserve padded geometry,guard scalar assignment and exception wrapping.",
       "confidence": "reviewed"
     },
     {
@@ -39648,6 +39760,13 @@
       "originalName": "b",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_a, field_b; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:etb.b(I)Ljava/awt/Container;",
+      "originalName": "b",
+      "to": "getGameContainer",
+      "evidence": "Full getter reviewed:return original desktop container if present,otherwise original applet getter. Preserve guard shared-label clearing and casts.",
       "confidence": "reviewed"
     },
     {
@@ -43046,6 +43165,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gpb.a(Ljava/lang/String;B)Z",
+      "originalName": "a",
+      "to": "tryLoadNativeLibrary",
+      "evidence": "Full native-library wrapper and renderer callers reviewed:delegate existing class-specific loader with original PanelHeightQuery.class literal. Preserve false bad guard and exception wrapping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gq.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -46084,6 +46210,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ifb.a(III)Z",
+      "originalName": "a",
+      "to": "needsFaceAttachmentGroups",
+      "evidence": "Full0x400 predicate and OpenGlModel face attachment grouping caller reviewed. Preserve ignored argument,bad-guard connection-close call and exact mask.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ifb.a(Z)I",
       "originalName": "a",
       "to": "getFiringSoundId",
@@ -46123,6 +46256,13 @@
       "originalName": "h",
       "to": "hasRecoil",
       "evidence": "True applies opposite firing force to the source body and enables the recoil fraction used by component geometry. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ifb.l(I)V",
+      "originalName": "l",
+      "to": "closeGameConnection",
+      "evidence": "Full body reviewed:close original BufferedSocket and null its shared reference when guard passes. Preserve close-before-null order and failure behavior.",
       "confidence": "reviewed"
     },
     {
@@ -46774,6 +46914,13 @@
       "originalName": "a",
       "to": "formatByteArray",
       "evidence": "Return null for null input or signed byte values separated by commas inside square brackets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ila.c(B)V",
+      "originalName": "c",
+      "to": "compactFaceDepthBuckets",
+      "evidence": "Full in-place bucket compaction and logo drawing consumer reviewed:copy each original16-entry bucket to contiguous face sort indices. Preserve overlap semantics,first bucket read before guard and exception wrapping.",
       "confidence": "reviewed"
     },
     {
@@ -51082,6 +51229,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:km.e(I)V",
+      "originalName": "e",
+      "to": "activatePublicChatInput",
+      "evidence": "Full body reviewed:activate original chat input and select channel0. Preserve assignment order and wrong-guard scalar mutation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:km.g(B)V",
       "originalName": "g",
       "to": "clearSharedReferences",
@@ -51968,6 +52122,20 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_o, field_p. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.a(II)I",
+      "originalName": "a",
+      "to": "countBits",
+      "evidence": "Full population-count body and audio line capacity caller reviewed. Preserve caller-supplied first-stage mask,shift masks,integer overflow and final8-bit result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lb.a(IIZ)I",
+      "originalName": "a",
+      "to": "floorDivide",
+      "evidence": "Full signed adjustment body and MusicPatch interpolation consumers reviewed:retain floor-style division for positive divisors. Preserve zero/negative divisor behavior,overflow and true-guard widget clearing.",
       "confidence": "reviewed"
     },
     {
@@ -52874,10 +53042,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ll.a(I)I",
+      "originalName": "a",
+      "to": "processArchiveLoading",
+      "evidence": "Full body and network loading caller reviewed:process disk/archive requests then poll connection only when network requests report incomplete. Preserve guard arithmetic,status and ordering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a(ZB)I",
+      "originalName": "a",
+      "to": "updateMenuCarousel",
+      "evidence": "Full animation/pointer/keyboard body and GameMenuScreen menu7 consumer reviewed. Preserve image readiness gates,wrap direction,fade counters,button result codes,ESC handling and guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ll.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.e(B)V",
+      "originalName": "e",
+      "to": "loadPreferences",
+      "evidence": "Full cached game_settings.dat deserializer and integer preference consumer reviewed:replace existing preferences only for Hashtable result. Preserve exception suppression,null/wrong-type behavior and guard sprite clearing.",
       "confidence": "reviewed"
     },
     {
@@ -55660,6 +55849,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mla.a(Ljava/lang/String;Lds;I)I",
+      "originalName": "a",
+      "to": "writeHuffmanString",
+      "evidence": "Full string writer and chat packet caller reviewed:encode original single-byte characters,write unsigned-smart uncompressed length,compress with existing Huffman codec and return written byte count. Preserve guard66,position updates and exception wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mla.a(ZZIZII)Lasb;",
+      "originalName": "a",
+      "to": "createArchive",
+      "evidence": "Full cache file/provider/archive factory reviewed. Preserve shared data/index file ownership transfer,prefetch flag,cache sizes,guard recursion and original IO exception conversion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mla.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -57057,6 +57260,13 @@
       "originalName": "a",
       "to": "create",
       "evidence": "Factory contract for a default state object; concrete factories construct their state type, while abstract-only factories return null. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ng.a(IBILasb;)[Lcaa;",
+      "originalName": "a",
+      "to": "loadIndexedSprites",
+      "evidence": "Full decoder wrapper reviewed:decode exact archive group/file then create indexed sprite array. Preserve failure null,post-decode guard arithmetic and exception wrapping.",
       "confidence": "reviewed"
     },
     {
@@ -58471,6 +58681,13 @@
       "originalName": "e",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_p; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nt.a(BIIIIIII)V",
+      "originalName": "a",
+      "to": "fillBorderedEllipse",
+      "evidence": "Full bounds dispatcher and unclipped ellipse body reviewed:dispatch circle/equal-radius case or clipped/unclipped ellipse path. Preserve guard no-op,bounds inequalities and argument permutations.",
       "confidence": "reviewed"
     },
     {
@@ -64669,6 +64886,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:prb.b(Z)V",
+      "originalName": "b",
+      "to": "shutdownAudioOutputs",
+      "evidence": "Full output shutdown body reviewed:stop existing music/effects outputs in original order under original false guard. Preserve null branches and failure behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:prb.e(B)[Lri;",
+      "originalName": "e",
+      "to": "getQuickChatDynamicCommands",
+      "evidence": "Full command-array factory reviewed:return original fourteen command definitions in exact order. Preserve guard null and fresh array identity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ps.a(B[B)V",
       "originalName": "a",
       "to": "setBytes",
@@ -67532,6 +67763,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qu.a(ILjava/lang/String;Ljava/lang/String;Lasb;)[Lcaa;",
+      "originalName": "a",
+      "to": "loadNamedIndexedSprites",
+      "evidence": "Full named group/file lookup and indexed sprite decoder reviewed. Preserve guard arithmetic,lookup argument order and exception wrapping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qu.a(Lllb;ILllb;Lno;Lllb;Lllb;Lllb;ZLllb;Lllb;Lllb;Lpjb;)V",
+      "originalName": "a",
+      "to": "buildChatPanel",
+      "evidence": "Complete UI construction and MissionVariable lobby builder caller reviewed:build original chat scrollpane/filter widgets,colors,labels and eligibility panel. Preserve every node relationship,condition,global mutation and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qu.a(Lml;I)V",
+      "originalName": "a",
+      "to": "attachPresetComponents",
+      "evidence": "Full four-arm attachment loop and createPresetShip chassis1 default branch reviewed. Preserve component IDs,hardpoints,loop order and bad-guard chat-panel construction.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qu.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -67550,6 +67802,27 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_a, field_d. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qua.a(IBII)I",
+      "originalName": "a",
+      "to": "approximateVectorLength",
+      "evidence": "Complete fixed-point lookup-based three-component length body and camera projection caller reviewed. Preserve sign/overflow quirks,all reduction branches,lookup precision,early approximation and bad-guard texture clearing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qua.a(Ldj;ZLdj;)I",
+      "originalName": "a",
+      "to": "pollAccountRequest",
+      "evidence": "Full wrapper,account request state machine and network reply consumer reviewed:delegate original two request texts with original null/default options. Preserve argument permutation and guard singleton clearing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qua.a(Ljava/lang/CharSequence;Z)J",
+      "originalName": "a",
+      "to": "hashString31",
+      "evidence": "Full body and Widget identifier constructor reviewed:accumulate31-times previous hash plus UTF-16 code unit in long arithmetic. Preserve overflow,null behavior and false-guard-34.",
       "confidence": "reviewed"
     },
     {
@@ -69429,10 +69702,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rta.a(Ljava/lang/Throwable;Ljava/lang/String;)Lhva;",
+      "originalName": "a",
+      "to": "wrapClientException",
+      "evidence": "Full common exception helper reviewed:append context to existing ClientException,otherwise wrap original Throwable. Preserve null/context concatenation and existing-instance reuse.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rta.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rta.e(I)Z",
+      "originalName": "e",
+      "to": "isAccountRequestPending",
+      "evidence": "Full enum comparison and AccountRequestText caller reviewed:compare original account request state to pendingAccountRequest. Preserve wrong-guard login-stage clearing.",
       "confidence": "reviewed"
     },
     {
@@ -69653,10 +69940,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sab.a(IIIIIIII)V",
+      "originalName": "a",
+      "to": "fillBorderedEllipseUnclipped",
+      "evidence": "Complete two-radius ellipse span loop and bounds-checking caller reviewed. Preserve outer/inner colors,scan conversion,span endpoints,integer overflow and final guard scalar assignment.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sab.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sab.a([ZI[Z)[Z",
+      "originalName": "a",
+      "to": "copyBooleanArray",
+      "evidence": "Full array helper reviewed:reuse matching destination or allocate,copy with original array operation,null source returnsnull. Preserve aliasing and guard scalar mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sab.e(B)Z",
+      "originalName": "e",
+      "to": "loadHardwareRendererLibraries",
+      "evidence": "Full native loader predicate and hardware toolkit constructors reviewed:load jaclib then hw3d only on success. Preserve short circuit and guard arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -72691,6 +72999,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tga.a([IIB[BI)V",
+      "originalName": "a",
+      "to": "groupBucketedFaces",
+      "evidence": "Full bucket/category scatter and logo renderer consumer reviewed:copy bucketed faces into category prefix positions,increment supplied offsets. Preserve signed byte indexing,in-place overwrite order,unused initial arguments and guard label clearing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tga.d(B)Ljava/lang/String;",
       "originalName": "d",
       "to": "getTooltip",
@@ -75512,10 +75827,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uhb.a(BZZ)V",
+      "originalName": "a",
+      "to": "releaseColorPalettes",
+      "evidence": "Full HSL/HSV reference-count decrement body and toolkit release callers reviewed. Preserve independent flags,zero-only array disposal,underflow and post-update guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uhb.a(IIIZZ)Lasb;",
+      "originalName": "a",
+      "to": "createArchive",
+      "evidence": "Full wrapper,cache-backed factory and network archive consumers reviewed. Preserve original flags,argument permutation,guard cleanup and exception wrapping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uhb.a(Ljava/lang/String;Ljava/lang/String;I)V",
       "originalName": "a",
       "to": "showLoginForm",
       "evidence": "Close retained account-status dialog if present,construct original credential form with supplied name/message and transition modal content;retain guard recursion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uhb.a(ZIBLwma;I)V",
+      "originalName": "a",
+      "to": "bucketLogoFacesByDepth",
+      "evidence": "Complete face filtering/depth bucketing body and logo render consumer reviewed. Preserve culling sign,sentinel vertices,16-entry bucket spill,Out of range diagnostic,category counts/prefix sums and guard arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -80052,6 +80388,20 @@
       "originalName": "a",
       "to": "createArray",
       "evidence": "Factory contract creating an array with the requested length and concrete component state type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wqa.a(ILbc;IILbc;I)V",
+      "originalName": "a",
+      "to": "configureMenuItemStyles",
+      "evidence": "Full setter and game menu style consumers reviewed:set original item gap,padding,normal/selected background resources. Preserve first two assignments before guard and later assignment order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wqa.a(ZI)Z",
+      "originalName": "a",
+      "to": "isMenuScreenActive",
+      "evidence": "Full predicate and menu/music consumers reviewed:original nonnegative menu-index test. Preserve true-guard unconditionaltrue and all signed integer behavior.",
       "confidence": "reviewed"
     },
     {
@@ -90577,10 +90927,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-voidhunters-rules.mjs": "4d6e1b7a2e3774ca74f8ea307b8121d8054c63715b0129a0d9b328b24a17629b",
+      "build-voidhunters-rules.mjs": "9b528666f8f1a42cf1211b67e1f1c808ee3eb62e6861bf92ed3e929de3681561",
       "reproduce-voidhunters.mjs": "d166931d08f6ab274d50d2e60dae5ee815aca9510dc1d347a3a1a7488c0c4c4a",
       "voidhunters-diff-names.mjs": "f7928b13a33683097852e5efeb451e5072777f5635a2c1c5e45bb335900df785",
-      "voidhunters-names.json": "dde44a749fef290bc426b046ef800d73bb21e32c4772efc8ab5b67f2b1f23e05",
+      "voidhunters-names.json": "f027d6e82fef15578f9293c152688f5360c1db0e471dbdd8f224775a9f6f1335",
       "voidhunters-coverage.mjs": "f79a71b3bca059c0136cb7dc8d859532fcc0002e2e2a446cfc65a740f8a45cb7",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
