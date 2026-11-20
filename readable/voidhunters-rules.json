@@ -1221,6 +1221,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bra",
+      "originalName": "bra",
+      "to": "ToolkitCanvasContext",
+      "evidence": "Original context retains toolkit,backend option,canvas,time origin and reusable clip/projection/depth-range snapshot.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:brb",
       "originalName": "brb",
       "to": "SetSpinningBladeAimarc",
@@ -2523,6 +2530,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fab",
+      "originalName": "fab",
+      "to": "GraphicsToolkitSelector",
+      "evidence": "Original canvas renderer selector retains prioritized enabled backend options,loads native dependencies,reuses/replaces toolkits and restores view state;unrelated static data/font/encryption helpers remain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fb",
       "originalName": "fb",
       "to": "SetSniperCannonRandomness",
@@ -2835,6 +2849,13 @@
       "originalName": "frb",
       "to": "GetLaserFireForce",
       "evidence": "Developer console command registered by name \"GetLaserFireForce\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fs",
+      "originalName": "fs",
+      "to": "GraphicsBackendOption",
+      "evidence": "Original backend candidate holds renderer id,enabled flag and multisample count passed through toolkit factory to OpenGL init/Direct3D presentation-format selection.",
       "confidence": "reviewed"
     },
     {
@@ -3773,6 +3794,13 @@
       "originalName": "hva",
       "to": "ClientException",
       "evidence": "RuntimeException retaining a cause and context text.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hw",
+      "originalName": "hw",
+      "to": "TimingGraph",
+      "evidence": "Original500-entry nanosecond timing ring draws connected graph samples against40000000ns scale;render and update callers supply nanoTime differences.",
       "confidence": "reviewed"
     },
     {
@@ -5502,6 +5530,13 @@
       "originalName": "mea",
       "to": "OpenGlPostEffect",
       "evidence": "Intrusive ordered post-effect contract for initialization, resize, pass setup/finish, precision/depth requirements and cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:meb",
+      "originalName": "meb",
+      "to": "UnderlinedLinkRenderer",
+      "evidence": "Original renderer draws underlined hover/focus-tinted text with alignment-aware focus border;retains unrelated static lobby-game lookup and texture-coordinate token.",
       "confidence": "reviewed"
     },
     {
@@ -8445,6 +8480,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:t",
+      "originalName": "t",
+      "to": "ToolkitViewState",
+      "evidence": "Original captured view state stores toolkit clip,projection parameters,near/far depth range and elapsed-time origin for renderer replacement;unrelated preset-ship factory retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:taa",
       "originalName": "taa",
       "to": "GetTrapMouse",
@@ -11203,10 +11245,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bra.field_a:Ljava/awt/Canvas;",
+      "originalName": "field_a",
+      "to": "canvas",
+      "evidence": "Original canvas retained with toolkit selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bra.field_b:Lfs;",
+      "originalName": "field_b",
+      "to": "backendOption",
+      "evidence": "Original candidate descriptor retained in selected context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bra.field_c:Lt;",
+      "originalName": "field_c",
+      "to": "viewState",
+      "evidence": "Original lazily reused clip/projection/depth-range capture.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bra.field_e:J",
+      "originalName": "field_e",
+      "to": "timeOriginMillis",
+      "evidence": "Original millisecond origin subtracted from current time for updateFrame,and preserved across toolkit replacement.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bra.field_f:[Ljava/lang/String;",
       "originalName": "field_f",
       "to": "menuLabels",
       "evidence": "Original global menu row text array used for action hit testing and menu rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bra.field_g:Lha;",
+      "originalName": "field_g",
+      "to": "toolkit",
+      "evidence": "Original GraphicsToolkit used by context and state capture/restore.",
       "confidence": "reviewed"
     },
     {
@@ -13296,6 +13373,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fab.field_a:Ld;",
+      "originalName": "field_a",
+      "to": "textureProvider",
+      "evidence": "Original texture provider supplied to toolkit construction.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fab.field_c:[Lfs;",
+      "originalName": "field_c",
+      "to": "backendOptions",
+      "evidence": "Original prioritized candidate array,retained by reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fab.field_d:Z",
+      "originalName": "field_d",
+      "to": "selectionCurrent",
+      "evidence": "Original flag marks context selected for current options;cleared when options reference changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fab.field_e:Lbra;",
+      "originalName": "field_e",
+      "to": "context",
+      "evidence": "Original selected toolkit/canvas context.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fba.field_a:[Lcda;",
       "originalName": "field_a",
       "to": "zonelists",
@@ -14028,6 +14133,27 @@
       "originalName": "field_d",
       "to": "archiveId",
       "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fs.field_a:I",
+      "originalName": "field_a",
+      "to": "backendId",
+      "evidence": "Original toolkit factory selector id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fs.field_b:Z",
+      "originalName": "field_b",
+      "to": "enabled",
+      "evidence": "Original candidate availability flag disabled after dependency or creation failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fs.field_c:I",
+      "originalName": "field_c",
+      "to": "multisamples",
+      "evidence": "Original configured sample count forwarded to OpenGL init and Direct3D multisample format selection.",
       "confidence": "reviewed"
     },
     {
@@ -15533,6 +15659,20 @@
       "originalName": "field_b",
       "to": "cause",
       "evidence": "Original Throwable retained by the context wrapper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hw.field_a:I",
+      "originalName": "field_a",
+      "to": "writeIndex",
+      "evidence": "Original next timing sample index in fixed500entry ring.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hw.field_c:[J",
+      "originalName": "field_c",
+      "to": "samplesNanos",
+      "evidence": "Original nanosecond durations from render/update nanoTime differences.",
       "confidence": "reviewed"
     },
     {
@@ -17752,6 +17892,27 @@
       "originalName": "field_f",
       "to": "enabled",
       "evidence": "Reviewed full post-processing allocation, shader setup and output pass consumers establish this role.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:meb.field_a:I",
+      "originalName": "field_a",
+      "to": "verticalAlignment",
+      "evidence": "Original drawParagraph vertical alignment0/1/2 also controls focus-border y position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:meb.field_b:Lno;",
+      "originalName": "field_b",
+      "to": "font",
+      "evidence": "Original BitmapFont used by link drawing and focus geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:meb.field_e:I",
+      "originalName": "field_e",
+      "to": "horizontalAlignment",
+      "evidence": "Original drawParagraph horizontal alignment0/1/2 also controls focus-border x position.",
       "confidence": "reviewed"
     },
     {
@@ -23950,6 +24111,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:t.field_a:I",
+      "originalName": "field_a",
+      "to": "farPlane",
+      "evidence": "Original toolkit far-plane value captured/restored.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:t.field_b:[I",
+      "originalName": "field_b",
+      "to": "clipBounds",
+      "evidence": "Original four-element clip bound array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:t.field_c:J",
+      "originalName": "field_c",
+      "to": "timeOriginMillis",
+      "evidence": "Original context elapsed-time origin retained by snapshot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:t.field_d:[I",
+      "originalName": "field_d",
+      "to": "projectionParameters",
+      "evidence": "Original captured projection parameter array returned by toolkit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:t.field_f:I",
+      "originalName": "field_f",
+      "to": "nearPlane",
+      "evidence": "Original toolkit near-plane value captured/restored.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ta.field_b:[I",
       "originalName": "field_b",
       "to": "serverPacketLengths",
@@ -24713,6 +24909,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:uca.field_H:I",
+      "originalName": "field_H",
+      "to": "activeSpecialOrderId",
+      "evidence": "Original selected order id sent through SpecialOrderSubmessage and returned after action-hotkey resolution.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:uca.field_I:I",
       "originalName": "field_I",
       "to": "radialMenuY",
@@ -24762,6 +24965,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:uca.field_Z:Lhw;",
+      "originalName": "field_Z",
+      "to": "updateTimingGraph",
+      "evidence": "Original graph receiving elapsed session-update duration and drawn in debug timing overlay.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uca.field_b:Lhw;",
+      "originalName": "field_b",
+      "to": "renderTimingGraph",
+      "evidence": "Original graph receiving elapsed render duration and drawn beside update graph.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:uca.field_c:[I",
       "originalName": "field_c",
       "to": "lastPlayerShipY",
@@ -24801,6 +25018,13 @@
       "originalName": "field_m",
       "to": "state",
       "evidence": "CommonGameState constructed from player names and launch parameters, consumed by game-start and subsequent server packets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uca.field_p:I",
+      "originalName": "field_p",
+      "to": "pendingSpecialOrderId",
+      "evidence": "Original click/hotkey-selected order staged until activation;cleared after activation unless original held-modifier condition retains it. This is not set by hover alone.",
       "confidence": "reviewed"
     },
     {
@@ -30383,6 +30607,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bra.a(B)Lt;",
+      "originalName": "a",
+      "to": "captureViewState",
+      "evidence": "Lazily reuse original snapshot and capture current toolkit state;preserve wrong-guard time-origin assignment-31.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bra.a(Z)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -35703,6 +35934,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fab.a(BLjava/awt/Canvas;)Z",
+      "originalName": "a",
+      "to": "updateForCanvas",
+      "evidence": "Attempt original selection when missing/stale/wrong canvas,update toolkit frame with elapsed origin time and return native toolkit identity change;preserve guard cleanup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fab.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -35710,10 +35948,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fab.a(IILds;[BLjava/math/BigInteger;BLjava/math/BigInteger;)V",
+      "originalName": "a",
+      "to": "writeRsaXteaPayload",
+      "evidence": "Generate original four SecureRandom key words,pad data to8bytes,XTEA-encrypt it,RSA-wrap marker10/keys/original length,and append both buffers;preserve sizes,argument order,guards and existing crypto routines.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fab.a(I[B)V",
       "originalName": "a",
       "to": "loadPlayerGameData",
       "evidence": "Decode/validate PlayerGameData bytes,retain corrupt-data fallback and version rejection,then install the state and invoke its existing follow-up.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fab.a(Lasb;Ljava/lang/String;ILasb;Ljava/lang/String;)Larb;",
+      "originalName": "a",
+      "to": "loadSoftwareMonochromeFontByName",
+      "evidence": "Resolve original group/file names and invoke existing monochrome font loader using both archives;preserve guarded shared-string cleanup and exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fab.a(Ljava/awt/Canvas;B)V",
+      "originalName": "a",
+      "to": "selectForCanvas",
+      "evidence": "Walk original enabled backend preferences,wait for required native loads,reuse compatible context or replace toolkit and restore view;preserve disabling failed candidates,heap allocation and exception/guard paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fab.a(Z[Lfs;)V",
+      "originalName": "a",
+      "to": "setBackendOptions",
+      "evidence": "Retain original options array only when reference differs,reject empty array and mark selection stale;preserve identity-based behavior and bad-guard cleanup.",
       "confidence": "reviewed"
     },
     {
@@ -36781,6 +37047,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fja.a([II)[Lfs;",
+      "originalName": "a",
+      "to": "createBackendOptions",
+      "evidence": "Create original prioritized backend options with multisample count2,appending software0 fallback only when final supplied id differs;preserve empty input failure and guard cleanup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fja.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -37366,6 +37639,20 @@
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fs.a(BLfs;)Z",
+      "originalName": "a",
+      "to": "hasSameBackend",
+      "evidence": "Compare original backend ids only,retaining true shortcut under wrong byte guard and null behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fs.a(Lbra;I)Z",
+      "originalName": "a",
+      "to": "isCompatibleWithContext",
+      "evidence": "Original selector compatibility hook returns true for all contexts;preserve wrong-guard enabled=false assignment and no added validation.",
       "confidence": "reviewed"
     },
     {
@@ -41146,6 +41433,20 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_d, field_e; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hw.a(IIIII)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "Draw original500sample graph,cursor marker and current/max microsecond labels using40000000ns scale;preserve forced buffer sizing,arithmetic and bad-guard sample injection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hw.a(JB)V",
+      "originalName": "a",
+      "to": "addSample",
+      "evidence": "Append original nanosecond duration and wrap write cursor only for matching byte guard;preserve write-before-wrap and invalid-guard behavior.",
       "confidence": "reviewed"
     },
     {
@@ -48909,6 +49210,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_c, field_d; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:meb.a(II)Lmm;",
+      "originalName": "a",
+      "to": "getLobbyGameById",
+      "evidence": "Return original cached lobby game entry by supplied id or null when cache absent;preserve wrong-guard recursion.",
       "confidence": "reviewed"
     },
     {
@@ -62611,6 +62919,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rpa.a(IIZ)Lsg;",
+      "originalName": "a",
+      "to": "createPresetShip",
+      "evidence": "Create original default or chassis-specific preset tree from type/variant,then recompute mass and thruster bindings;preserve every preset branch and guard reference cleanup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rpa.a(ILnv;B)V",
       "originalName": "a",
       "to": "attachRenderbuffer",
@@ -65628,6 +65943,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:t.a(IB)Lsg;",
+      "originalName": "a",
+      "to": "createPresetShip",
+      "evidence": "Delegate original preset-ship builder with fixed variant0 and true flag,or return null for low guard;this constructs a ship,not an id lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.a(ILbra;)V",
+      "originalName": "a",
+      "to": "capture",
+      "evidence": "Capture original clip/projection/depth range/time origin only under guard4;preserve array identity and no other state capture.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.b(ILbra;)V",
+      "originalName": "b",
+      "to": "restore",
+      "evidence": "Restore original clip/projection/depth range/time origin into supplied context;preserve projection second-index guard argument instead of normalizing it.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ta.a(B)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -67546,10 +67882,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uca.a(BZLrsb;)Z",
+      "originalName": "a",
+      "to": "updateSpecialOrderMenu",
+      "evidence": "Update original status aggregation,button/radial layout,tooltips,shortcut/click handling and cooldown drawing;boolean selects drawing/status pass versus activation/key pass. Preserve tutorial null behavior,division/clip math and all early exits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uca.a(B[Ljava/lang/String;)[Ljava/lang/String;",
       "originalName": "a",
       "to": "removeNullStrings",
       "evidence": "Return the same array when every entry is non-null; otherwise copy non-null strings in order into a compact array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.a(I)V",
+      "originalName": "a",
+      "to": "drawLobbyGameEntries",
+      "evidence": "Walk original lobby id range0..99 and draw existing flagged entries in a vertical list only under original local/toolkit gate;preserve sparse entries and arithmetic guard.",
       "confidence": "reviewed"
     },
     {
@@ -67665,6 +68015,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uca.a(ILrsb;BLsg;)V",
+      "originalName": "a",
+      "to": "drawActionCursor",
+      "evidence": "Draw original action-dependent cross/circle/error cursor at pointer,with local ship/blueprint/order gates and existing target-range helper;preserve early exits,colors and bad-guard updateSession call.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uca.a(ILrsb;Z)Z",
       "originalName": "a",
       "to": "updateVotingPanel",
@@ -67707,10 +68064,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uca.a(Lkla;BILmm;)I",
+      "originalName": "a",
+      "to": "drawLobbyGameEntry",
+      "evidence": "Draw and process original lobby game row,join/spectate/reject controls,icon tooltip and close cross,then upload clipped software pixels;preserve transitions,packet helpers and original geometry/guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uca.a(Llbb;Lsg;ZLrsb;I)V",
       "originalName": "a",
       "to": "drawObjectiveMarkers",
       "evidence": "Draw pooled ship/body/map-zone objective markers and resource-node markers in active mission phases, excluding debris currently dragged by the local ship.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.a(Llw;BIZ)V",
+      "originalName": "a",
+      "to": "handleSpecialOrderHotkey",
+      "evidence": "On original shortcut key press edge without modifier82,stage enabled pending order or cancel prior pending order;preserve radial deactivation,previous-key checks and bad-guard updateSession call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.a(Llw;ZLsg;IZ)V",
+      "originalName": "a",
+      "to": "handleSpecialOrderPointer",
+      "evidence": "On input pass,stage or cancel original pending order on enabled primary press;on draw pass show original order tooltip. Preserve self-destruct tooltip,radial deactivation and guarded field mutation.",
       "confidence": "reviewed"
     },
     {
@@ -67732,6 +68110,13 @@
       "originalName": "a",
       "to": "drawFogOfWar",
       "evidence": "Build original software/GPU fog target,reveal allied ship/resource/pod circles,compose mask and tutorial sensor outline;preserve all complex early exits,target pops,renderer restoration and guarded networked mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.a(Lsg;ZII)V",
+      "originalName": "a",
+      "to": "drawWeaponAimArcs",
+      "evidence": "For original locally owned newly attached ship,draw weapon arc limits and target line through world camera when original weapon predicate permits;preserve dormant predicate behavior,guards and range math.",
       "confidence": "reviewed"
     },
     {
@@ -67798,6 +68183,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uca.b(BZ)V",
+      "originalName": "b",
+      "to": "updateChatControls",
+      "evidence": "Update original chat-toggle label/hit state with temporary pointer-coordinate translation,restore globals and synchronize selected-team chat color/name;preserve modal/input/spectator gates and bad-guard draw call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.b(I)I",
+      "originalName": "b",
+      "to": "resolveActiveSpecialOrder",
+      "evidence": "Return original active special-order id after optional debug Ctrl/click action-hotkey override and blueprint dump;retain wrong-guard save-status draw.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uca.b(IBII)Z",
       "originalName": "b",
       "to": "isMouseInRadialSegment",
@@ -67821,8 +68220,8 @@
     {
       "symbol": "M:uca.b(ZI)V",
       "originalName": "b",
-      "to": "activateHoveredOrder",
-      "evidence": "Activate an available hovered special order, update selected order/group and clear hover according to the original mouse/modifier conditions.",
+      "to": "activatePendingSpecialOrder",
+      "evidence": "Correct earlier hover interpretation:original click and hotkey handlers stage field_p,then this method copies pending id to active field_H and clears pending/drag state under original modifier rules;hover alone does not stage it.",
       "confidence": "reviewed"
     },
     {
@@ -83059,10 +83458,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-voidhunters-rules.mjs": "7914fa02f6ca8373adc57227ca9e02bdb8121bb14749de6bd93985b0a7860054",
+      "build-voidhunters-rules.mjs": "81df3eefde1ae70a1fd18cf1bb2a89611d3d01b498c9bce64ef358156012563a",
       "reproduce-voidhunters.mjs": "d166931d08f6ab274d50d2e60dae5ee815aca9510dc1d347a3a1a7488c0c4c4a",
       "voidhunters-diff-names.mjs": "f7928b13a33683097852e5efeb451e5072777f5635a2c1c5e45bb335900df785",
-      "voidhunters-names.json": "b4201f500735fc8c240f273aac5ffbba8a622cee64af5ff23b69de236cb5523c",
+      "voidhunters-names.json": "27453cfd0cf5b8c7ea50f15f794546c360bf813cad85064c937c66995764284e",
       "voidhunters-coverage.mjs": "0b6c78523ef2b0271428e9d017570778b20bb985cdeaa6cdadb2fb04c854665a",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
