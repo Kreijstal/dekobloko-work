@@ -451,6 +451,13 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:a",
+      "originalName": "a",
+      "to": "NativeSoftwareRenderContext",
+      "evidence": "Native renderer context bound to the current thread and selected by NativeSoftwareToolkit; delegates thick-line drawing to its native handle.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:aa",
       "originalName": "aa",
       "to": "GlyphMask",
@@ -773,10 +780,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:aw",
+      "originalName": "aw",
+      "to": "PopupMenuWidget",
+      "evidence": "Widget with up to256 icon/text items, per-item result ids, constrained popup placement and pending/dismissed selection handling.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:awa",
       "originalName": "awa",
       "to": "SetShipAimLines",
       "evidence": "Developer console command registered by name \"SetShipAimLines\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ba",
+      "originalName": "ba",
+      "to": "NativeSoftwareResourceHandle",
+      "evidence": "Opaque native-resource handle returned by NativeSoftwareToolkit, with native disposal and deferred-finalization ownership.",
       "confidence": "reviewed"
     },
     {
@@ -1246,6 +1267,13 @@
       "originalName": "cn",
       "to": "TickConditionFactory",
       "evidence": "GameStateFactory implementation whose reviewed create/createArray bodies construct TickCondition and its typed arrays. Abstract-only scalar construction may return null; unrelated static helpers remain in place.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cna",
+      "originalName": "cna",
+      "to": "IconTextWidget",
+      "evidence": "Widget containing optional icon and text child widgets, with shared measurement and layout.",
       "confidence": "reviewed"
     },
     {
@@ -2079,6 +2107,13 @@
       "originalName": "fga",
       "to": "PcmSampleStream",
       "evidence": "PcmStream playing signed byte samples through fixed-point resampling, loop boundaries, gain/pan ramps and mono/stereo mixing kernels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fgb",
+      "originalName": "fgb",
+      "to": "WidgetNode",
+      "evidence": "DualLinkNode base whose sole subclass is Widget; unrelated static protocol helper and shared widget registry remain in place.",
       "confidence": "reviewed"
     },
     {
@@ -4077,6 +4112,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:llb",
+      "originalName": "llb",
+      "to": "Widget",
+      "evidence": "UI tree node with bounds, clipped mouse processing, styled sprite/text drawing, child layout and selected-widget propagation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:lna",
       "originalName": "lna",
       "to": "SetBombletSprayProjectileLife",
@@ -4361,6 +4403,13 @@
       "originalName": "mlb",
       "to": "GetSpinningBladeAimarc",
       "evidence": "Developer console command registered by name \"GetSpinningBladeAimarc\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mm",
+      "originalName": "mm",
+      "to": "LobbyGameEntry",
+      "evidence": "Widget record decoded from game-list packets and used by join/invitation actions and ordered lobby-game rendering.",
       "confidence": "reviewed"
     },
     {
@@ -5120,6 +5169,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:p",
+      "originalName": "p",
+      "to": "NativeSoftwareSurface",
+      "evidence": "Canvas-backed native software surface owns dimensions/native handle, resize and presentation operations with original retry/error behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:paa",
       "originalName": "paa",
       "to": "GetMachineGunPulsetime",
@@ -5768,6 +5824,13 @@
       "originalName": "qwa",
       "to": "GetReloadBarHeight",
       "evidence": "Developer console command registered by name \"GetReloadBarHeight\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:r",
+      "originalName": "r",
+      "to": "RenderResourceNode",
+      "evidence": "DualLinkNode marker base whose only declared subclass is the native software resource-handle wrapper.",
       "confidence": "reviewed"
     },
     {
@@ -7325,6 +7388,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:wc",
+      "originalName": "wc",
+      "to": "IntrusiveDequeIterator",
+      "evidence": "Independent cursor over an IntrusiveDeque with first/next,last/previous and optional explicit start-node operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:wcb",
       "originalName": "wcb",
       "to": "Direct3DTransparentWaterEffect",
@@ -7640,6 +7710,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:a.field_a:Ljava/lang/Runnable;",
+      "originalName": "field_a",
+      "to": "ownerThread",
+      "evidence": "Stored Thread.currentThread reference used by toolkit lookup; preserve the original Runnable declared type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:a.field_b:Loa;",
+      "originalName": "field_b",
+      "to": "toolkit",
+      "evidence": "Context constructor retains its native software toolkit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ab.field_a:I",
       "originalName": "field_a",
       "to": "loopEndMillis",
@@ -7948,6 +8032,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:aw.field_Ab:I",
+      "originalName": "field_Ab",
+      "to": "selectionResult",
+      "evidence": "Minus two initially means pending; Enter dismissal stores minus one and selection polling returns it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aw.field_Eb:[I",
+      "originalName": "field_Eb",
+      "to": "itemResults",
+      "evidence": "Each menu-item index maps to the caller-supplied result id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aw.field_Gb:[Lcna;",
+      "originalName": "field_Gb",
+      "to": "items",
+      "evidence": "Append, measurement, layout and click processing use this menu-item array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aw.field_Ib:I",
+      "originalName": "field_Ib",
+      "to": "itemCount",
+      "evidence": "Incremented on item append and bounds all item traversal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bba.field_b:[Lwm;",
       "originalName": "field_b",
       "to": "conditions",
@@ -7994,6 +8106,13 @@
       "originalName": "field_d",
       "to": "seed",
       "evidence": "The state-diff method prints \"seed has changed\" for this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bha.field_a:Z",
+      "originalName": "field_a",
+      "to": "connected",
+      "evidence": "Own reportDifferences explicitly prints boolean connected; CarouselEvent sets it before join/leave callbacks.",
       "confidence": "reviewed"
     },
     {
@@ -8155,6 +8274,20 @@
       "originalName": "field_a",
       "to": "levels",
       "evidence": "Sixteen per-channel target levels consumed by the MIDI transition mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cna.field_vb:Lllb;",
+      "originalName": "field_vb",
+      "to": "iconWidget",
+      "evidence": "Constructor creates this child only when an icon sprite is supplied.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cna.field_yb:Lllb;",
+      "originalName": "field_yb",
+      "to": "textWidget",
+      "evidence": "Constructor creates this child only when text is supplied.",
       "confidence": "reviewed"
     },
     {
@@ -10279,6 +10412,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jha.field_p:I",
+      "originalName": "field_p",
+      "to": "graphicsQuality",
+      "evidence": "Launch and settings code load/store this value under graphics_quality and apply the corresponding feature preset.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jma.field_o:Lfo;",
       "originalName": "field_o",
       "to": "archiveDisk",
@@ -10696,6 +10836,90 @@
       "originalName": "field_h",
       "to": "targetRopeLength",
       "evidence": "The state-diff method prints \"targetRopeLength has changed\" for this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:llb.field_G:I",
+      "originalName": "field_G",
+      "to": "height",
+      "evidence": "Vertical extent used for clipping, layout, style alignment and drag clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:llb.field_K:I",
+      "originalName": "field_K",
+      "to": "y",
+      "evidence": "Local vertical position assigned by setBounds and added to the parent origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:llb.field_L:I",
+      "originalName": "field_L",
+      "to": "x",
+      "evidence": "Local horizontal position assigned by setBounds and added to the parent origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:llb.field_M:I",
+      "originalName": "field_M",
+      "to": "screenX",
+      "evidence": "Parent X plus local X, used as the absolute horizontal drawing/input origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:llb.field_N:Z",
+      "originalName": "field_N",
+      "to": "inheritInteractionState",
+      "evidence": "When true, drawTree retains parent-supplied hover/pressed/selected states instead of replacing them with this widget state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:llb.field_R:Ljava/lang/String;",
+      "originalName": "field_R",
+      "to": "text",
+      "evidence": "Text measured and drawn through the widget bitmap font.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:llb.field_Z:Z",
+      "originalName": "field_Z",
+      "to": "draggable",
+      "evidence": "When the retained mouse button is pressed, move/clamp local bounds to follow the pointer only if this flag is true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:llb.field_eb:Lno;",
+      "originalName": "field_eb",
+      "to": "font",
+      "evidence": "Bitmap font used for widget content width, text alignment and paragraph drawing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:llb.field_hb:I",
+      "originalName": "field_hb",
+      "to": "width",
+      "evidence": "Horizontal extent used for clipping, style alignment and drag clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:llb.field_lb:Lij;",
+      "originalName": "field_lb",
+      "to": "children",
+      "evidence": "Intrusive deque appended by addChild and traversed for input, drawing, layout and selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:llb.field_u:I",
+      "originalName": "field_u",
+      "to": "screenY",
+      "evidence": "Parent Y plus local Y, used as the absolute vertical drawing/input origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:llb.field_y:Z",
+      "originalName": "field_y",
+      "to": "enabled",
+      "evidence": "Input and rendering combine inherited enablement with this flag.",
       "confidence": "reviewed"
     },
     {
@@ -11959,6 +12183,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:p.field_e:I",
+      "originalName": "field_e",
+      "to": "width",
+      "evidence": "Surface constructor/resize store requested width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:p.field_f:Ljava/awt/Canvas;",
+      "originalName": "field_f",
+      "to": "canvas",
+      "evidence": "Surface constructor retains the AWT canvas used for resize, tree locking, presentation and repaint.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:p.field_g:I",
+      "originalName": "field_g",
+      "to": "height",
+      "evidence": "Surface constructor/resize store requested height.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pb.field_a:Lmj;",
       "originalName": "field_a",
       "to": "dataType",
@@ -12117,6 +12362,13 @@
       "originalName": "field_x",
       "to": "projectiles",
       "evidence": "The state-diff method prints \"projectiles has changed\" for this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pe.field_y:I",
+      "originalName": "field_y",
+      "to": "objectiveType",
+      "evidence": "MissionBuilder reads MissionState.nextround.votedObjective and passes it unchanged to World.setObjectiveType; special offline launch selects13 and the team-switching fixture selects minus one.",
       "confidence": "reviewed"
     },
     {
@@ -14668,6 +14920,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wc.field_b:Lksa;",
+      "originalName": "field_b",
+      "to": "cursor",
+      "evidence": "Iterator traversal methods advance this reference through next or previous links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wc.field_c:Lij;",
+      "originalName": "field_c",
+      "to": "deque",
+      "evidence": "Independent iterator constructor retains the supplied intrusive deque.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wfa.field_F:[I",
       "originalName": "field_F",
       "to": "pixels",
@@ -14938,6 +15204,55 @@
       "originalName": "n",
       "to": "clearSharedReferences",
       "evidence": "Releases the static integer array, preserving its guard branch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.E(JZ)V",
+      "originalName": "E",
+      "to": "disposeContextNative",
+      "evidence": "Native target of disposeNative, supplied with context handle and original deferred-disposal flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.HA(JLha;II)V",
+      "originalName": "HA",
+      "to": "initializeContextNative",
+      "evidence": "Constructor initializes the context against its native software toolkit and two renderer settings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.M(J)V",
+      "originalName": "M",
+      "to": "bindContextNative",
+      "evidence": "Native target of the bind-to-thread wrapper, supplied with the context handle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.a()V",
+      "originalName": "a",
+      "to": "bindToCurrentThread",
+      "evidence": "Retain Thread.currentThread and invoke native context binding; toolkit lookup compares this reference to the current thread.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.a(Lha;IIIIIII)V",
+      "originalName": "a",
+      "to": "drawThickLine",
+      "evidence": "Toolkit drawThickLine delegates all seven arguments to this context wrapper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.b()V",
+      "originalName": "b",
+      "to": "bindNativeContext",
+      "evidence": "Pass this native context handle to the native binding operation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.na(JLha;IIIIIII)V",
+      "originalName": "na",
+      "to": "drawThickLineNative",
+      "evidence": "Native thick-line target receives context handle, toolkit and original drawing arguments.",
       "confidence": "reviewed"
     },
     {
@@ -16530,6 +16845,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aw.a(IILphb;Ljava/lang/String;)V",
+      "originalName": "a",
+      "to": "addItem",
+      "evidence": "Append an icon/text menu item with the supplied result id and inherited hover style.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aw.a(IZ)I",
+      "originalName": "a",
+      "to": "updateAndGetSelection",
+      "evidence": "Process widget input and return a clicked item id, minus one for outside-click dismissal, or the retained pending selection result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aw.a(Ljava/lang/String;BI)V",
+      "originalName": "a",
+      "to": "addItem",
+      "evidence": "Append a text-only menu item with the supplied result id and inherited hover style.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aw.a(Z)V",
+      "originalName": "a",
+      "to": "applyGraphicsQualityPreset",
+      "evidence": "Reset graphics feature flags and apply the selected quality preset; launch code reads this selector from the graphics_quality preference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aw.b(IIIII)V",
+      "originalName": "b",
+      "to": "layoutPopup",
+      "evidence": "Ensure a fallback item, measure the widest item, constrain popup placement and position each item in vertically stacked rows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aw.e(B)Z",
+      "originalName": "e",
+      "to": "pollSelectionPending",
+      "evidence": "Report whether selection remains pending, processing the original Enter-key dismissal while pending.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aw.h(I)V",
       "originalName": "h",
       "to": "clearSharedReferences",
@@ -16838,10 +17195,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bea.a(ILrsb;)V",
+      "originalName": "a",
+      "to": "generateMission",
+      "evidence": "Ensure option totals, construct the seeded Random, clear the target World and dispatch the full mission-world builder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(IZLjava/util/Random;Lrsb;I)V",
+      "originalName": "a",
+      "to": "populateMissionWorld",
+      "evidence": "Set the World objective type from the voted objective, initialize nebula/terrain/objective state and apply original team-swap conditions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bea.a(Lfaa;Z)V",
       "originalName": "a",
       "to": "readState",
       "evidence": "Deserializes state fields from the supplied bit packet buffer, including integer fields and one-bit booleans. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(Lrsb;Ljava/util/Random;Lpe;I)V",
+      "originalName": "a",
+      "to": "buildMissionWorld",
+      "evidence": "Read MissionState.votedObjective and pass it through world setup and populateMissionWorld, retaining this builder on the World.",
       "confidence": "reviewed"
     },
     {
@@ -16978,10 +17356,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bha.a(Ltja;III)V",
+      "originalName": "a",
+      "to": "onJoin",
+      "evidence": "CarouselEvent marks the player connected and invokes this callback while logging Applied join; Player initializes its team and adds the join message.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bha.a(Ltv;I)V",
       "originalName": "a",
       "to": "reportDifferences",
       "evidence": "Implemented by World, Ship and Component; prints each field that differs from the other state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bha.a(ZLtja;II)V",
+      "originalName": "a",
+      "to": "onLeave",
+      "evidence": "CarouselEvent marks the player disconnected and invokes this callback while logging Applied leave; Player appends the leave message.",
       "confidence": "reviewed"
     },
     {
@@ -18179,6 +18571,27 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_a, field_b. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cna.a(BII)V",
+      "originalName": "a",
+      "to": "layoutContents",
+      "evidence": "Measure optional icon/text children, fit them into available width and position them using the inherited horizontal and vertical alignment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cna.a(III)I",
+      "originalName": "a",
+      "to": "measurePreferredWidth",
+      "evidence": "Sum optional icon/text preferred widths plus the original padding and gap.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cna.a(IIIIIII)V",
+      "originalName": "a",
+      "to": "setBoundsAndLayout",
+      "evidence": "Set the item widget bounds, then lay out its icon and text with supplied padding/gap.",
       "confidence": "reviewed"
     },
     {
@@ -20832,6 +21245,13 @@
       "originalName": "a",
       "to": "create",
       "evidence": "Factory contract for a default state object; concrete factories construct their state type, while abstract-only factories return null. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eta.a(BLmm;)V",
+      "originalName": "a",
+      "to": "insertSortedLobbyGame",
+      "evidence": "Unlink a game entry, scan until its ordering position and insert before that entry or append at the end.",
       "confidence": "reviewed"
     },
     {
@@ -29340,6 +29760,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lbb.a(B)I",
+      "originalName": "a",
+      "to": "getMissionGenerationSeed",
+      "evidence": "Return next-round missionGenerationSeed under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.a(BII)V",
+      "originalName": "a",
+      "to": "adjustCustomVariable",
+      "evidence": "Read the indexed custom variable value and write it back plus the supplied delta.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.a(BLrsb;)[I",
+      "originalName": "a",
+      "to": "countPlayersByTeam",
+      "evidence": "Count participating players with valid selected-team indices into the original two-team result array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lbb.a(BLtv;)Z",
       "originalName": "a",
       "to": "differsFrom",
@@ -29347,10 +29788,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lbb.a(I)V",
+      "originalName": "a",
+      "to": "extendPhaseCountdown",
+      "evidence": "Log the phase and add600 seconds expressed in original simulation ticks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.a(IBILrsb;II)V",
+      "originalName": "a",
+      "to": "accelerateCompletedVoteCountdown",
+      "evidence": "When every connected player has sufficient votes in the requested range or has its skip-vote sentinel, reduce countdown by16 and clamp to zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.a(II)Let;",
+      "originalName": "a",
+      "to": "getCustomVariable",
+      "evidence": "Return the indexed custom variable when its array/index/slot are valid, otherwise null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.a(III)V",
+      "originalName": "a",
+      "to": "initializeMatch",
+      "evidence": "Create MissionGenerationData with supplied seed/objective and configured round count, and reset MatchResults.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.a(ILrsb;)V",
+      "originalName": "a",
+      "to": "startMission",
+      "evidence": "Build a seeded mission, preserve carry-over/team preparation, record mission/vote statistics, consume a round and enter phase5 with reset player round state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lbb.a(Lfaa;Z)V",
       "originalName": "a",
       "to": "readState",
       "evidence": "Deserializes state fields from the supplied bit packet buffer, including integer fields and one-bit booleans. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.a(Ljava/util/Random;ILrsb;)V",
+      "originalName": "a",
+      "to": "assignUnassignedPlayersToTeams",
+      "evidence": "Count selected teams, choose unassigned participating players in randomized order and assign through the existing balanced-team selector.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.a(Lrsb;B)[I",
+      "originalName": "a",
+      "to": "countOptionVotes",
+      "evidence": "Count non-negative votes from connected players into31 option totals.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.a(Lrsb;BI)V",
+      "originalName": "a",
+      "to": "unassignPlayerFromTeam",
+      "evidence": "Choose a participating player on the requested oversized team through the original kills-plus-assists scan and invoke its autobalance unassignment; preserve original comparison assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.a(Lrsb;IB)V",
+      "originalName": "a",
+      "to": "updateMissionPhases",
+      "evidence": "Advance countdowns and phase timers, collect/select mission votes, generate the mission, update mission logic and return completed rounds to the ready room.",
       "confidence": "reviewed"
     },
     {
@@ -29368,6 +29872,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lbb.a(ZI)I",
+      "originalName": "a",
+      "to": "getTeamScore",
+      "evidence": "Return the indexed team score when in range, otherwise zero under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.a(ZLrsb;)Z",
+      "originalName": "a",
+      "to": "hasPhaseSkipRequest",
+      "evidence": "Check connected players for special order54, whose exact registered label is Skip current mission phase.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.a([IZ)V",
+      "originalName": "a",
+      "to": "setVotedOptions",
+      "evidence": "Retain the supplied option totals in next-round generation data.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lbb.b(B)Lqqb;",
       "originalName": "b",
       "to": "getCurrentMatch",
@@ -29382,10 +29907,101 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lbb.b(I)V",
+      "originalName": "b",
+      "to": "decrementRoundsLeft",
+      "evidence": "Decrement next-round roundsLeft when generation data exists and clear it when the original completion comparison is met.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.b(II)I",
+      "originalName": "b",
+      "to": "getCustomVariableValue",
+      "evidence": "Return the indexed custom variable value or zero when absent/out of range under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.b(III)V",
+      "originalName": "b",
+      "to": "setCustomVariableValue",
+      "evidence": "Get or extend the indexed variable slot and assign its value when non-null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.b(ILrsb;)V",
+      "originalName": "b",
+      "to": "rebalanceTeams",
+      "evidence": "Find a team-size difference exceeding one and unassign half the excess from the larger team.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lbb.b(Lfaa;I)V",
       "originalName": "b",
       "to": "writeState",
       "evidence": "Serializes state fields into the supplied bit packet buffer; confirmed by SettingsChange, MissionVariable and PlayerVote implementations. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.b(Z)V",
+      "originalName": "b",
+      "to": "skipPhaseCountdown",
+      "evidence": "Log the current phase and reset its countdown to zero, preserving the guarded variable-array clearing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.b(ZI)V",
+      "originalName": "b",
+      "to": "finishRound",
+      "evidence": "While in phase5, retain winner/time in a RoundResult and advance to phase6 with a ten-second countdown.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.c(B)Z",
+      "originalName": "c",
+      "to": "isPreGamePhase",
+      "evidence": "Return true for mission phases0,1,2 or3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.c(I)Z",
+      "originalName": "c",
+      "to": "isMultiRoundMatch",
+      "evidence": "Require retained next-round data and an objective whose configured round count exceeds one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.c(II)Let;",
+      "originalName": "c",
+      "to": "getCustomVariableForWrite",
+      "evidence": "Return an existing indexed slot or extend the variable array and allocate the newly requested slot; existing null holes remain null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.c(III)V",
+      "originalName": "c",
+      "to": "setMissionPhase",
+      "evidence": "Set the phase and countdown and reset the elapsed phase timer, preserving the guard-dependent variable clearing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.c(Z)[I",
+      "originalName": "c",
+      "to": "getVotedOptions",
+      "evidence": "Return next-round optionTotals under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.d(B)I",
+      "originalName": "d",
+      "to": "getRoundsLeft",
+      "evidence": "Return next-round roundsLeft after the original guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.d(I)I",
+      "originalName": "d",
+      "to": "getVotedObjective",
+      "evidence": "Return next-round votedObjective under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -29414,6 +30030,20 @@
       "originalName": "f",
       "to": "getPhaseTimer",
       "evidence": "Body is a single return of the field the state-diff names \"PhaseTimer\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.f(I)Z",
+      "originalName": "f",
+      "to": "hasNextRound",
+      "evidence": "Report whether next-round generation data exists under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lbb.g(B)I",
+      "originalName": "g",
+      "to": "getWinner",
+      "evidence": "Return the retained mission winner under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -29802,10 +30432,101 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:llb.a(IB)I",
+      "originalName": "a",
+      "to": "getContentWidth",
+      "evidence": "Return the maximum of wrapped text width, sprite width and each child right edge.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:llb.a(IIIII)V",
+      "originalName": "a",
+      "to": "setBounds",
+      "evidence": "Assign local X/Y/width/height and reset all four pending animation deltas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:llb.a(IIIZ)V",
+      "originalName": "a",
+      "to": "layoutVerticalChildren",
+      "evidence": "Optionally stack children vertically with supplied spacing, update content height and clamp current/pending scroll positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:llb.a(ILllb;)V",
+      "originalName": "a",
+      "to": "applyStyle",
+      "evidence": "Copy supplied style properties when they differ from defaults, preserving all existing conditional assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:llb.a(Lllb;ILllb;I)V",
+      "originalName": "a",
+      "to": "positionBelow",
+      "evidence": "Position the target widget below the preceding widget with supplied spacing, inheriting pending vertical layout deltas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:llb.a(ZI)V",
+      "originalName": "a",
+      "to": "updateInput",
+      "evidence": "Initialize shared mouse-claim flags and process this widget tree against full-raster bounds.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:llb.a(ZIIZII)V",
+      "originalName": "a",
+      "to": "updateInputTree",
+      "evidence": "Ease pending bounds changes, intersect clipping, process mouse/drag state and visit children in reverse order while preserving shared input claims.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:llb.a(ZIZIZZZZZII)V",
+      "originalName": "a",
+      "to": "drawTree",
+      "evidence": "Resolve enabled/hover/pressed/selected style variants, draw backgrounds/sprites/text and recursively draw children within saved/restored clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:llb.a(ZLllb;)V",
+      "originalName": "a",
+      "to": "setSelectedWidget",
+      "evidence": "Recursively select only the supplied widget by identity and optionally mirror its selection into the configured highlight state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:llb.b(ILllb;)V",
+      "originalName": "b",
+      "to": "addChild",
+      "evidence": "Create a child deque when absent and append the supplied widget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:llb.b(ZI)V",
+      "originalName": "b",
+      "to": "draw",
+      "evidence": "Draw this widget tree against the complete software raster with the original state defaults.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:llb.e(I)I",
+      "originalName": "e",
+      "to": "getPreferredWidth",
+      "evidence": "Return content width with an effectively unbounded text wrap limit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:llb.f(I)V",
       "originalName": "f",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_H, field_V, field_kb. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:llb.g(I)V",
+      "originalName": "g",
+      "to": "inheritInteractionStateInDescendants",
+      "evidence": "Recursively mark descendants to retain parent-supplied interaction states during rendering.",
       "confidence": "reviewed"
     },
     {
@@ -31591,6 +32312,27 @@
       "originalName": "e",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_p, field_q; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mm.a(Lmm;I)Z",
+      "originalName": "a",
+      "to": "comesBefore",
+      "evidence": "Ordering predicate used by sorted insertion of lobby game entries, retaining invitation/status/joinability/time priorities exactly.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mm.e(B)Z",
+      "originalName": "e",
+      "to": "isSecondaryDetached",
+      "evidence": "Return the negation of the inherited secondary-link membership predicate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mm.f(B)I",
+      "originalName": "f",
+      "to": "getGameId",
+      "evidence": "Return the game entry secondary key as an integer; join/invitation actions and packet lookup consume this id.",
       "confidence": "reviewed"
     },
     {
@@ -33582,10 +34324,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nwa.a(II)V",
+      "originalName": "a",
+      "to": "expireMessages",
+      "evidence": "Update the shared current tick and remove messages whose age reaches the configured lifetime.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nwa.a(Lfaa;Z)V",
       "originalName": "a",
       "to": "readState",
       "evidence": "Deserializes state fields from the supplied bit packet buffer, including integer fields and one-bit booleans. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nwa.a(Lrha;Z)V",
+      "originalName": "a",
+      "to": "addMessage",
+      "evidence": "Stamp the current tick, append the supplied message and remove the oldest when the configured capacity is exceeded.",
       "confidence": "reviewed"
     },
     {
@@ -33617,10 +34373,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.AA(SSIBBIZBBBBZZZZZBZZI)V",
+      "originalName": "AA",
+      "to": "uploadTextureMetadataNative",
+      "evidence": "Native texture metadata target called by loadTextureMetadata with the decoded original fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.CA(S[ISIBBIZBBBBZZZZZBZZI)V",
+      "originalName": "CA",
+      "to": "uploadTexturePixelsNative",
+      "evidence": "Native pixel-upload target called with texture id, generated pixels and decoded texture metadata.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.DA(IIII)V",
       "originalName": "DA",
       "to": "setProjectionParameters",
       "evidence": "Set projection center and horizontal/vertical scales; OpenGL perspective matrix derives frustum from these four values. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.FA()V",
+      "originalName": "FA",
+      "to": "disposeToolkitNative",
+      "evidence": "Native disposal target invoked by renderer teardown after clearing its surfaces and heaps.",
       "confidence": "reviewed"
     },
     {
@@ -33642,6 +34419,20 @@
       "originalName": "KA",
       "to": "setClip",
       "evidence": "Clamp and set clip edges; software updates raster scanline state and OpenGL enables scissor test. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.MA(Ld;II)V",
+      "originalName": "MA",
+      "to": "initializeToolkitNative",
+      "evidence": "Native toolkit construction receives its texture provider and original renderer initialization constants.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.OA()Ljava/lang/Object;",
+      "originalName": "OA",
+      "to": "createResourceHandle",
+      "evidence": "Return a newly constructed NativeSoftwareResourceHandle for this toolkit, preserving Object as the callback return type.",
       "confidence": "reviewed"
     },
     {
@@ -33670,6 +34461,13 @@
       "originalName": "U",
       "to": "drawHorizontalLine",
       "evidence": "Software advances contiguous pixels on one row; clips x extent and supports replace/alpha/additive blend modes. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.WA(S)Z",
+      "originalName": "WA",
+      "to": "loadTexturePixels",
+      "evidence": "Require ready texture metadata, generate RGB/ARGB128x128 pixels and upload pixels with the original texture metadata fields.",
       "confidence": "reviewed"
     },
     {
@@ -33778,6 +34576,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.a(Ljava/awt/Canvas;)V",
+      "originalName": "a",
+      "to": "selectCanvasSurface",
+      "evidence": "Look up the canvas surface by hash code and pass it to native surface selection, or clear selection for null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a(Ljava/awt/Canvas;II)V",
+      "originalName": "a",
+      "to": "ensureCanvasSurface",
+      "evidence": "Create and retain a missing native canvas surface, otherwise resize it when requested dimensions differ.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.a(Lpw;)V",
       "originalName": "a",
       "to": "setViewTransform",
@@ -33848,10 +34660,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.c(S)Z",
+      "originalName": "c",
+      "to": "loadTextureMetadata",
+      "evidence": "Read the requested texture metadata and submit its original fields to the native metadata loader.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.d()Lpw;",
       "originalName": "d",
       "to": "createTransform",
       "evidence": "Return backend-specific transform implementation. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.d(I)V",
+      "originalName": "d",
+      "to": "updateFrameNative",
+      "evidence": "Native frame-update target invoked with elapsed time after draining deferred disposal.",
       "confidence": "reviewed"
     },
     {
@@ -33883,10 +34709,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.f(I)V",
+      "originalName": "f",
+      "to": "bindRenderContext",
+      "evidence": "Bind the indexed render context to the calling thread.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.f(II)V",
       "originalName": "f",
       "to": "setDepthRange",
       "evidence": "Set near/far values used in OpenGL perspective matrix coefficients and depth normalization. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.g()V",
+      "originalName": "g",
+      "to": "collectNativeResources",
+      "evidence": "Run GC/finalization and drain the existing native-disposal queue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.g(I)V",
+      "originalName": "g",
+      "to": "createRenderContexts",
+      "evidence": "Allocate the requested context count and construct each against the renderer settings.",
       "confidence": "reviewed"
     },
     {
@@ -33932,10 +34779,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.ma(J)V",
+      "originalName": "ma",
+      "to": "setViewTransformNative",
+      "evidence": "Native target receives the NativeSoftwareTransform3D handle selected by setViewTransform.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.n()Z",
       "originalName": "n",
       "to": "supportsResizableBackbuffer",
       "evidence": "Resolved call sites in jc.a(I)V explicitly print has_resizable_backbuffer beside this capability result; reviewed complete diagnostic block and backend implementation. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.n(JJ)V",
+      "originalName": "n",
+      "to": "bindRenderTargetsNative",
+      "evidence": "Native target binds color/depth handles for a framebuffer or a sprite handle with zero depth.",
       "confidence": "reviewed"
     },
     {
@@ -33995,6 +34856,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.t(Lp;)V",
+      "originalName": "t",
+      "to": "selectCanvasSurfaceNative",
+      "evidence": "Native target used when selecting or clearing the renderer canvas surface.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.u()V",
       "originalName": "u",
       "to": "applyPostProcessing",
@@ -34006,6 +34874,13 @@
       "originalName": "v",
       "to": "copyFrontToBackBuffer",
       "evidence": "OpenGL reads front color buffer, draws copied pixels to back buffer, flushes and restores clip/read/draw state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.va(Lza;)V",
+      "originalName": "va",
+      "to": "setHeapNative",
+      "evidence": "Native target receives the graphics heap selected by setHeap.",
       "confidence": "reviewed"
     },
     {
@@ -34023,6 +34898,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.wa(IIIIII)V",
+      "originalName": "wa",
+      "to": "drawLineNative",
+      "evidence": "Native target receiving all six arguments from GraphicsToolkit.drawLine implementation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.x()Z",
       "originalName": "x",
       "to": "supportsOffscreenRendering",
@@ -34034,6 +34916,13 @@
       "originalName": "xa",
       "to": "setAmbientLight",
       "evidence": "OpenGL updates ambient intensity used by glLightModelfv ambient color. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.y()La;",
+      "originalName": "y",
+      "to": "getCurrentRenderContext",
+      "evidence": "Return the context whose retained thread reference matches Thread.currentThread, or null.",
       "confidence": "reviewed"
     },
     {
@@ -35220,6 +36109,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:p.H(IIII)V",
+      "originalName": "H",
+      "to": "presentNative",
+      "evidence": "Native presentation target receives original offsets and actual canvas width/height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(II)V",
+      "originalName": "a",
+      "to": "present",
+      "evidence": "Under the canvas tree lock, obtain actual canvas size and call native presentation, then clear the original failure flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(Ljava/awt/Canvas;II)V",
+      "originalName": "a",
+      "to": "resize",
+      "evidence": "Store requested surface dimensions and delegate native canvas resizing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(Ljava/lang/Exception;)V",
+      "originalName": "a",
+      "to": "handlePresentationFailure",
+      "evidence": "Record first failure time, repaint during the original30-second grace period and then throw the existing exception message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.oa(Ljava/awt/Canvas;II)V",
+      "originalName": "oa",
+      "to": "resizeSurfaceNative",
+      "evidence": "Native resize target invoked after replacing stored width and height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.sa(Loa;Ljava/awt/Canvas;II)V",
+      "originalName": "sa",
+      "to": "initializeSurfaceNative",
+      "evidence": "Constructor initializes this surface against its toolkit, canvas and dimensions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:p.w(Z)V",
       "originalName": "w",
       "to": "disposeNative",
@@ -35626,6 +36557,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.b(IB)V",
+      "originalName": "b",
+      "to": "setObjectiveType",
+      "evidence": "Store the selected voted-objective id under the original guard; verified the complete MissionBuilder call chain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.b(IBLanb;)V",
       "originalName": "b",
       "to": "registerBodyPartition",
@@ -35742,6 +36680,13 @@
       "originalName": "d",
       "to": "findShipByOwner",
       "evidence": "Scan ships for matching owner id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.d(Z)I",
+      "originalName": "d",
+      "to": "getObjectiveType",
+      "evidence": "Return the mode/objective id supplied unchanged from MissionState.votedObjective through MissionBuilder.",
       "confidence": "reviewed"
     },
     {
@@ -40323,6 +41268,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rsb.a(II)V",
+      "originalName": "a",
+      "to": "initializePlayers",
+      "evidence": "Allocate the requested CarouselPlayerInfo array and create each element through the configured factory. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rsb.a(Lfaa;B)V",
       "originalName": "a",
       "to": "writeCompactState",
@@ -42458,10 +43410,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tfa.a(B)Z",
+      "originalName": "a",
+      "to": "isParticipating",
+      "evidence": "Return connected or the existing bot-enabled mode condition.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tfa.a(BLtv;)Z",
       "originalName": "a",
       "to": "differsFrom",
       "evidence": "State comparison contract: SettingsChange and MissionVariable return whether stored values differ; concrete implementations retain their original comparison formulas. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tfa.a(I)V",
+      "originalName": "a",
+      "to": "unassignForAutobalance",
+      "evidence": "Retain the supplied autobalance notification timer and reset the selected team to the original unassigned sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tfa.a(IB)V",
+      "originalName": "a",
+      "to": "removeVote",
+      "evidence": "Remove the first matching vote, shrink the array or clear it when the last vote is removed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tfa.a(III)I",
+      "originalName": "a",
+      "to": "countVotesInRange",
+      "evidence": "Count retained vote values inside the supplied inclusive minimum/maximum range.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tfa.a(IIIII)V",
+      "originalName": "a",
+      "to": "castVote",
+      "evidence": "Insert the requested vote and limit other votes in the same range, preserving the original negative-choice handling and maximum count.",
       "confidence": "reviewed"
     },
     {
@@ -42472,10 +43459,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tfa.a(Ltja;III)V",
+      "originalName": "a",
+      "to": "onJoin",
+      "evidence": "CarouselEvent marks the player connected and invokes this callback while logging Applied join; Player initializes its team and adds the join message. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tfa.a(Ltv;I)V",
       "originalName": "a",
       "to": "reportDifferences",
       "evidence": "Implemented by World, Ship and Component; prints each field that differs from the other state. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tfa.a(ZLtja;II)V",
+      "originalName": "a",
+      "to": "onLeave",
+      "evidence": "CarouselEvent marks the player disconnected and invokes this callback while logging Applied leave; Player appends the leave message. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tfa.b(B)V",
+      "originalName": "b",
+      "to": "clearVotes",
+      "evidence": "Clear the votes array under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -42486,10 +43494,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tfa.b(I)V",
+      "originalName": "b",
+      "to": "resetRoundStatistics",
+      "evidence": "Reset deaths, assists and kills to zero under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tfa.b(Lfaa;I)V",
       "originalName": "b",
       "to": "writeState",
       "evidence": "Serializes state fields into the supplied bit packet buffer; confirmed by SettingsChange, MissionVariable and PlayerVote implementations. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tfa.c(B)V",
+      "originalName": "c",
+      "to": "updateAutobalanceTimer",
+      "evidence": "Decrement a positive unassigned-for-autobalance timer by one under the original guard.",
       "confidence": "reviewed"
     },
     {
@@ -42686,6 +43708,20 @@
       "originalName": "a",
       "to": "differsFrom",
       "evidence": "State comparison contract: SettingsChange and MissionVariable return whether stored values differ; concrete implementations retain their original comparison formulas. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tja.a(I)I",
+      "originalName": "a",
+      "to": "countConnectedPlayers",
+      "evidence": "Count non-null slot-array entries whose connected flag is true, preserving the original array assumptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tja.a(II)V",
+      "originalName": "a",
+      "to": "initializePlayers",
+      "evidence": "Allocate the requested CarouselPlayerInfo array and create each element through the configured factory.",
       "confidence": "reviewed"
     },
     {
@@ -43505,6 +44541,13 @@
       "originalName": "a",
       "to": "getLocalTeam",
       "evidence": "Resolve the local player selected team with game-mode and owned-ship overrides, preserving the spectator fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.a(BI)V",
+      "originalName": "a",
+      "to": "drawMissionStatusPanel",
+      "evidence": "Measure and draw labeled custom-variable values and objective-ship health bars, including recent damage indication.",
       "confidence": "reviewed"
     },
     {
@@ -45811,10 +46854,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wc.a(B)Lksa;",
+      "originalName": "a",
+      "to": "previous",
+      "evidence": "Return the current cursor node and advance through previous links until the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.a(BLksa;)Lksa;",
+      "originalName": "a",
+      "to": "startBackward",
+      "evidence": "Start backward iteration at the supplied node or at the deque tail when null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.a(I)Lksa;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "Return the current cursor node and advance through next links until the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.a(Lksa;I)Lksa;",
+      "originalName": "a",
+      "to": "startForward",
+      "evidence": "Start forward iteration at the supplied node or at the deque head when null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.b(B)Lksa;",
+      "originalName": "b",
+      "to": "last",
+      "evidence": "Return sentinel.previous and advance the independent cursor backward, or clear it when empty.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wc.b(I)V",
       "originalName": "b",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_a, field_d. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wc.c(I)Lksa;",
+      "originalName": "c",
+      "to": "first",
+      "evidence": "Return sentinel.next and advance the independent cursor forward, or clear it when empty.",
       "confidence": "reviewed"
     },
     {
@@ -56956,10 +58041,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-voidhunters-rules.mjs": "27fec4e29c07779727dcf71b7ccbf5fe7192f97147fd94ab6d90a1df4252b38c",
+      "build-voidhunters-rules.mjs": "5d2a4ccd48bc8bc4d8387297fcca8743ed89f162a4a6fa62c0647bfc2b9990c2",
       "reproduce-voidhunters.mjs": "d166931d08f6ab274d50d2e60dae5ee815aca9510dc1d347a3a1a7488c0c4c4a",
       "voidhunters-diff-names.mjs": "f7928b13a33683097852e5efeb451e5072777f5635a2c1c5e45bb335900df785",
-      "voidhunters-names.json": "83bc75c213dd438f474d7310fe155fdd4bb23fa63e44a47cdea897fbded12bac",
+      "voidhunters-names.json": "3a6d7b12b3e0a571e99c929c777ce72790c6ff1d7d715ff33f3cb82412c518b5",
       "voidhunters-coverage.mjs": "0b6c78523ef2b0271428e9d017570778b20bb985cdeaa6cdadb2fb04c854665a",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
