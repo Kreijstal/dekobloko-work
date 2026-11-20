@@ -2012,6 +2012,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dr",
+      "originalName": "dr",
+      "to": "ChatInputResetter",
+      "evidence": "Only functional helper clears shared chat StringBuilder and sets NetworkMessageState.chatChannel0;typing/submission/rendering callers identify the buffer. Preserve unrelated static fields and initializer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:dra",
       "originalName": "dra",
       "to": "MidiCrossfadeStream",
@@ -2065,6 +2072,13 @@
       "originalName": "dtb",
       "to": "MissionBuilderFactory",
       "evidence": "GameStateFactory implementation whose reviewed create/createArray bodies construct MissionBuilder and its typed arrays. Abstract-only scalar construction may return null; unrelated static helpers remain in place.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:du",
+      "originalName": "du",
+      "to": "BufferedImageRasterBuffer",
+      "evidence": "RasterBuffer implementation wraps its int pixel array in DirectColorModel/DataBufferInt/WritableRaster/BufferedImage and draws clipped regions to Canvas;distinct from AppletRasterBuffer hierarchy. Retain private throwing constructor and guards.",
       "confidence": "reviewed"
     },
     {
@@ -4371,6 +4385,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jg",
+      "originalName": "jg",
+      "to": "AwtRobotCursorController",
+      "evidence": "Full original class owns java.awt.Robot,mouseMove,custom cursor image creation and remembered hidden-cursor component;PlatformService loads it via four owned Class.forName sites. Preserve reflected lowercase public method names and null/visibility behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jga",
       "originalName": "jga",
       "to": "WorldFactory",
@@ -4872,6 +4893,13 @@
       "originalName": "kkb",
       "to": "GetWaitForPlayers",
       "evidence": "Developer console command registered by name \"GetWaitForPlayers\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kl",
+      "originalName": "kl",
+      "to": "ShieldInfoPool",
+      "evidence": "Original128-entry reusable shieldinfo pool;allocator grows active count until full and logs shieldinfo slots,world resets count each tick. Unrelated input/cookie helpers remain on owner.",
       "confidence": "reviewed"
     },
     {
@@ -9306,6 +9334,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:uwa",
+      "originalName": "uwa",
+      "to": "ShieldInfo",
+      "evidence": "Pooled per-tick shield/countermeasure record;ShieldBehaviour and countermeasure WeaponBehaviour populate it,World intercepts/draws its circle/arc. Original allocator explicitly reports shieldinfo slots.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:va",
       "originalName": "va",
       "to": "SetBurstFireReload",
@@ -11567,6 +11602,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ccb.field_a:Lkl;",
+      "originalName": "field_a",
+      "to": "shieldInfoPool",
+      "evidence": "Original shared per-tick shield/countermeasure records populated by ShieldBehaviour/WeaponBehaviour and consumed by World.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:cda.field_a:[Ljo;",
       "originalName": "field_a",
       "to": "zones",
@@ -12831,6 +12873,34 @@
       "originalName": "field_q",
       "to": "pendingValidation",
       "evidence": "State returned when asynchronous username/email availability has not completed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:du.field_g:Ljava/awt/Rectangle;",
+      "originalName": "field_g",
+      "to": "clipRectangle",
+      "evidence": "Reusable rectangle set to requested output region before drawImage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:du.field_h:Ljava/awt/Image;",
+      "originalName": "field_h",
+      "to": "image",
+      "evidence": "Original BufferedImage backed directly by inherited int pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:du.field_i:Ljava/awt/Canvas;",
+      "originalName": "field_i",
+      "to": "canvas",
+      "evidence": "Destination canvas retained as image observer for drawImage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:du.field_j:Ljava/awt/Shape;",
+      "originalName": "field_j",
+      "to": "previousClip",
+      "evidence": "Graphics clip saved before drawing and restored on original paths.",
       "confidence": "reviewed"
     },
     {
@@ -16278,6 +16348,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jg.field_a:Ljava/awt/Component;",
+      "originalName": "field_a",
+      "to": "hiddenCursorComponent",
+      "evidence": "Component whose cursor is replaced by transparent1x1 image;restored/updated by original showcursor branches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jg.field_b:Ljava/awt/Robot;",
+      "originalName": "field_b",
+      "to": "robot",
+      "evidence": "Original AWT Robot used by reflected movemouse method.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jha.field_p:I",
       "originalName": "field_p",
       "to": "graphicsQuality",
@@ -16912,6 +16996,20 @@
       "originalName": "field_e",
       "to": "midi",
       "evidence": "Reconstructed MIDI file bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_b:[Luwa;",
+      "originalName": "field_b",
+      "to": "entries",
+      "evidence": "Original fixed128 reusable shieldinfo slots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kl.field_d:I",
+      "originalName": "field_d",
+      "to": "size",
+      "evidence": "Active shieldinfo prefix length reset each tick and incremented by acquire.",
       "confidence": "reviewed"
     },
     {
@@ -25707,6 +25805,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:uwa.field_a:I",
+      "originalName": "field_a",
+      "to": "deltaX",
+      "evidence": "Previous-to-current center X displacement from shield behavior;World moving-shield tests subtract it from current X.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uwa.field_b:I",
+      "originalName": "field_b",
+      "to": "angle",
+      "evidence": "Direction angle used as arc center for drawing and signed hit-angle comparison.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uwa.field_c:I",
+      "originalName": "field_c",
+      "to": "kind",
+      "evidence": "Original0 shields and1 countermeasures,assigned by their behaviors and selected by World hit/retarget logic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uwa.field_d:I",
+      "originalName": "field_d",
+      "to": "radius",
+      "evidence": "Original circle radius used in interception tests and scaled for rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uwa.field_e:Lanb;",
+      "originalName": "field_e",
+      "to": "body",
+      "evidence": "Original emitting ShipBody;World derives owning ship/team and shield energy consumer from it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uwa.field_f:I",
+      "originalName": "field_f",
+      "to": "y",
+      "evidence": "World-space center Y from behavior setter,projection and interception calculations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uwa.field_g:I",
+      "originalName": "field_g",
+      "to": "x",
+      "evidence": "World-space center X from behavior setter,projection and interception calculations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uwa.field_h:I",
+      "originalName": "field_h",
+      "to": "deltaY",
+      "evidence": "Previous-to-current center Y displacement from shield behavior;World moving-shield tests subtract it from current Y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uwa.field_i:I",
+      "originalName": "field_i",
+      "to": "arcHalfAngle",
+      "evidence": "Directional shield half-angle used for angle-minus/plus arc drawing and abs(relativeAngle)<limit collision test;-1 marks full circle.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vba.field_o:[I",
       "originalName": "field_o",
       "to": "menuRowSpacing",
@@ -34048,6 +34209,13 @@
       "originalName": "b",
       "to": "compress",
       "evidence": "Read each source symbol canonical code and bit length, pack those bits into the destination and return destination bytes written; reject symbols with zero code length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dr.a(I)V",
+      "originalName": "a",
+      "to": "clearChatInput",
+      "evidence": "Set original shared chat-input builder length0 and reset chat channel0;retain wrong-guard int assignment and static state.",
       "confidence": "reviewed"
     },
     {
@@ -46476,10 +46644,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kl.a(I)Luwa;",
+      "originalName": "a",
+      "to": "acquire",
+      "evidence": "Reuse or lazily allocate next shieldinfo record up to original128 capacity,increment active count or log exhaustion and returnnull;retain nonzero-guard null return.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(Ljava/applet/Applet;I)V",
+      "originalName": "a",
+      "to": "writeSessionMarkerCookie",
+      "evidence": "Set original in-memory session flag and delegate cookie tuhstatbut=rvnadlm with negative lifetime (Discard);retain bad-guard shared-string cleanup and original exception behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.a(Ljava/awt/Canvas;I)V",
+      "originalName": "a",
+      "to": "detachCanvasInput",
+      "evidence": "Remove original keyboard,mouse/focus and optional wheel listeners from canvas through original helpers;retain arithmetic failure point and ordering.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kl.b(I)V",
       "originalName": "b",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_a, field_c, field_e. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kl.c(I)V",
+      "originalName": "c",
+      "to": "reset",
+      "evidence": "Reset active shieldinfo count for next world tick;retain bad-guard array cleanup.",
       "confidence": "reviewed"
     },
     {
@@ -46781,6 +46977,13 @@
       "originalName": "c",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_q, field_r, field_s. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.a(FBIII)V",
+      "originalName": "a",
+      "to": "drawCircle",
+      "evidence": "Dispatch original circle outline to software rasterizer or enabled hardware raster path with original radius conversion/minimum1,alpha handling and bad-byte array cleanup.",
       "confidence": "reviewed"
     },
     {
@@ -56283,6 +56486,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(BLanb;Llta;)V",
+      "originalName": "a",
+      "to": "drawBodyIdDebug",
+      "evidence": "When original debug bit8 enabled,draw body numeric id above bounding-box top in magenta;retain arithmetic guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(BLanb;Lml;Lwfb;)V",
       "originalName": "a",
       "to": "spawnComponentRadialProjectiles",
@@ -56315,6 +56525,13 @@
       "originalName": "a",
       "to": "updateMissionLogic",
       "evidence": "Outside debug mode, invoke spawn-point updates, update resource-node capture and process mission-control events.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(BLtj;Z)V",
+      "originalName": "a",
+      "to": "resolvePendingProjectileHit",
+      "evidence": "Transfer original closest component trace into pending projectile hit,reset trace,resolve/clear shared hit record with world and supplied mode;retain shared body reference and arithmetic guard.",
       "confidence": "reviewed"
     },
     {
@@ -56416,10 +56633,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(IIIIIII[IB)V",
+      "originalName": "a",
+      "to": "spawnPolygonParticles",
+      "evidence": "Rejection-sample original outline bounds/interior,alternate particle properties and radial velocities,then spawn requested count;retain RNG calls,retry behavior,casts/division and invalid-guard spawnpoint insertion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(IIIIZII)V",
       "originalName": "a",
       "to": "spawnRadialProjectiles",
       "evidence": "Emit original evenly spaced type5 radial projectiles with retained speed/lifetime,team/owner/damage and optional sound51/55; shared by multiple effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(IIILtj;II)V",
+      "originalName": "a",
+      "to": "applyProjectileCountermeasure",
+      "evidence": "For supplied projectile type(default caller6),choose nearest covering kind1 countermeasure,transfer owner/team when originating body is ship and target former firer with original lifetime reset;retain all early returns.",
       "confidence": "reviewed"
     },
     {
@@ -56458,10 +56689,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(II[IBIII)V",
+      "originalName": "a",
+      "to": "spawnContactParticles",
+      "evidence": "Contact-force caller supplies collision point and component outline;derive tangent particle velocity from point-to-component direction and maximum outline X,then delegate original particles;retain early guard return.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(II[Ltfa;Llbb;)V",
       "originalName": "a",
       "to": "updatePlayerRespawns",
       "evidence": "Advance timers for players without ships when team respawn allowed,choose saved/preset ships,spawn and restore unmatched carried-over component debris;retain objective13 timer clamp,disconnected-player policy,guards and possible null failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(IJI)V",
+      "originalName": "a",
+      "to": "sendLobbyPlayerRemovalRequest",
+      "evidence": "Target-key request packet with supplied opcode and fixed request byte7;PlayerContextMenu action1 labels prove kick,reject and withdraw-invitation uses. Preserve byte-length framing and bad-guard string cleanup.",
       "confidence": "reviewed"
     },
     {
@@ -56497,6 +56742,55 @@
       "originalName": "a",
       "to": "isTeamRespawnAllowed",
       "evidence": "Require original phase3 or5,phase5 timer not past objective Armageddon threshold,and original team respawn gate;preserve equality boundary and guarded update call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ILlta;I)V",
+      "originalName": "a",
+      "to": "drawShieldsAndCountermeasures",
+      "evidence": "Draw active shield records as animated directional arcs or circular countermeasure fields;skip original visibility2 ships and retain arithmetic,draw order and bad-guard map-zone cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ILml;Lanb;)V",
+      "originalName": "a",
+      "to": "destroyHooksOnComponent",
+      "evidence": "Find grappling hooks whose grabbed body id and resolved component match supplied body/component and destroy them;retain null-body return and invalid-guard attachment call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ILml;Lanb;BILml;Lanb;II)Z",
+      "originalName": "a",
+      "to": "handleGrapplingHookContact",
+      "evidence": "Handle component type28 hook contacting launcher or other body:remove returning hook,grab component at transformed local coordinates or allow ordinary contact. Original false suppresses contact force processing;preserve both operand passes,guards and owner comparison.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ILml;Limb;ZBLsg;Lnbb;)Z",
+      "originalName": "a",
+      "to": "moveDebrisTowardBlueprintHardpoint",
+      "evidence": "Apply original attraction,damping and angular alignment to mutable blueprint debris,set dragging and attempt nearby attachment;return original active/movable status,including false on blocked placement;retain guards and debug arrow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ILnbb;Lsg;BI)Lnbb;",
+      "originalName": "a",
+      "to": "acquireDraggedDebris",
+      "evidence": "Return supplied debris when nonnull,otherwise find nearest draggable debris around ship and set dragging id on success;retain invalid-byte objective mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ILnwa;[Ltfa;)V",
+      "originalName": "a",
+      "to": "processCollisionsAndDestroyedEntities",
+      "evidence": "Original orchestrator runs ship/debris/asteroid/hook collision helpers,projectile body/shield/countermeasure hits and interceptions,then destroyed-entity processing;preserve queue,settings gates,asteroid change marking and all argument guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ILvra;Lboa;Lsg;)V",
+      "originalName": "a",
+      "to": "updateBlueprintAssembly",
+      "evidence": "Decode target blueprint component words,search original tree depths for a missing or mismatched component to acquire/move and clear drag/target blueprint if none;retain guard,decode and traversal order.",
       "confidence": "reviewed"
     },
     {
@@ -56542,6 +56836,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(Lanb;Lanb;Lgda;IZ)V",
+      "originalName": "a",
+      "to": "applyContactDamage",
+      "evidence": "Apply original component collision/spinning-blade damage,attacker recording,spawn protection,spin decay,destroyed-component detachment and projectile/particle/sound effects;retain pre-damage destroyed flags,settings aliases,kind22 gate and bad-guard diagnostic call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Lanb;Lgda;IILanb;)V",
+      "originalName": "a",
+      "to": "applyContactForces",
+      "evidence": "Compute opposing contact forces from both intersecting polygon edge normals and supplied scale,apply at contact point to two bodies;retain int arithmetic,edge indices and bad-guard height mutation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(Lanb;ZZZI)V",
       "originalName": "a",
       "to": "destroyBody",
@@ -56584,10 +56892,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(Lij;B)V",
+      "originalName": "a",
+      "to": "resolveShipDebrisCollisions",
+      "evidence": "Resolve ship/debris contacts through partition candidates,skip dragged/destroyed bodies,apply original phantom/settings collision modes and clear phantom flag after separation;retain ordering,change notifications and bad-byte side call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Lij;I[Lcrb;)V",
+      "originalName": "a",
+      "to": "resolveShipAsteroidCollisions",
+      "evidence": "Query asteroid candidates for each live ship,resolve contacts with original fighter force reduction and mark asteroid field changed;retain destroyed-chassis break conditions and wrong-guard projectile call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Lij;Z)V",
+      "originalName": "a",
+      "to": "resolveShipCollisions",
+      "evidence": "Resolve eligible live ship pairs once via original partition indices,team/fighter/settings gates,attacker recording and damage/force modes;retain int ordering,guards and partition cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Lij;[Lanb;[Lanb;IIII)Z",
+      "originalName": "a",
+      "to": "resolveBodyArrayCollisions",
+      "evidence": "Loop original supplied live body arrays and resolve contacts with passed body kinds and force scale,OR collision results;callers use grappling hooks versus debris,asteroids and ships. Preserve bad-guard true and destroyed-body breaks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(Lit;B)V",
       "originalName": "a",
       "to": "addEscapePod",
       "evidence": "Append an EscapePod through the original typed-array helper unless the existing array already has15 entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Llbb;[Ltfa;BLnwa;)V",
+      "originalName": "a",
+      "to": "applySandboxEditorCommands",
+      "evidence": "Interpret original per-player special-order IDs for debug toggle,sandbox enemy spawning,owner/team changes,clone/delete/place terrain/entities,mission-event/condition/action editing,zone/world resizing,custom variables,countdowns and test messages. FULL636-line body read in two bounded parts;retain all IDs,settings,RNG/order,unreachable state branches and arithmetic guard.",
       "confidence": "reviewed"
     },
     {
@@ -56605,6 +56948,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(Llta;Lsg;III)V",
+      "originalName": "a",
+      "to": "drawRepairTargetIndicator",
+      "evidence": "When original repair special order4 active and charge/target predicates permit,draw green repair-radius circle at supplied world target through original rendering dispatch;retain bad-guard projectile cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Lml;Lml;ILsg;I)Z",
+      "originalName": "a",
+      "to": "detachMisplacedComponentOfType",
+      "evidence": "Recursively find requested component type whose corresponding blueprint hardpoint is empty/different,detach descendants/component and trigger original effect;return whether found,retaining guards and ordering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Lml;Lsg;Lml;IILml;)Z",
+      "originalName": "a",
+      "to": "findAndMoveBlueprintComponentAtDepth",
+      "evidence": "Traverse corresponding hardpoint trees to requested depth,find missing/mismatched desired type,search undragged debris or detach misplaced matching type,then move it toward desired hardpoint;retain drag reset,first-match behavior and wrong-guard true.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(Lnbb;B)V",
       "originalName": "a",
       "to": "addDebris",
@@ -56616,6 +56980,13 @@
       "originalName": "a",
       "to": "resolveDraggedDebris",
       "evidence": "Retain existing dragged debris or,when trigger128 and no debris,aim ship,update chassis transforms and detach at point;store original dragging id and refresh thruster bindings,retaining bad-guard world-height mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Lnbb;IZLsg;II)Z",
+      "originalName": "a",
+      "to": "processDraggedDebrisAttachment",
+      "evidence": "Move mutable debris to target/attachment plan,check obstructions,world/ship/asteroid bounds and component limit,detach obstructing parts and attach eligible component. Original boolean reports blocked placement rather than attachment success;preserve all physics,copy-on-write and drag-release behavior.",
       "confidence": "reviewed"
     },
     {
@@ -56647,10 +57018,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(Lsg;Llta;I)V",
+      "originalName": "a",
+      "to": "drawShipOrOffscreenIndicator",
+      "evidence": "Draw visible ship plus owner/team/AI/id debug,or original team-colored size/distance-scaled offscreen indicator at camera bounds;retain visibility/rectangle tests and invalid-guard attachment call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Lsg;ZILnbb;II)V",
+      "originalName": "a",
+      "to": "updateDraggedDebrisPosition",
+      "evidence": "Align/move dragged debris to nearest hardpoint and compute attachment preview while saving/restoring ship chassis,or attract/teleport to target when no hardpoint;retain transform math,force settings,guard and change notifications.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Ltfa;ILsg;Llta;BLsg;III)V",
+      "originalName": "a",
+      "to": "drawPlayerShip",
+      "evidence": "Draw first eligible visible ship matching supplied player owner,trails and optional substituted preview ship,drag/repair/self-destruct overlays and debug text;retain filters,first-match break and bad-byte spawnpoint cleanup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(Ltfa;ILtfa;Lsg;)Z",
       "originalName": "a",
       "to": "updateComponentDragging",
       "evidence": "Reset preview/plan,copy original current/prior controls,handle target blueprint or detach/drag/release paths and looping sound;preserve return meanings,all guards and original helper ordering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Ltfa;Lsg;BLsg;IIILlta;)V",
+      "originalName": "a",
+      "to": "drawDraggedDebrisPreview",
+      "evidence": "Render original drag/blueprint attachment preview,optional copied/repositioned debris,obstruction cross/components,tether,label and hardpoint outline;retain early guards,target range clamp,temporary sprite flag and attachment-plan side effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Ltj;IIBII)V",
+      "originalName": "a",
+      "to": "resolveProjectileShieldHit",
+      "evidence": "Choose nearest hostile kind0 shield intersection before closest component trace using circle/arc and moving-shield tests;impact/unlink projectile,consume shield energy and spawn original effects. Preserve type exclusions,fraction math,thresholds and guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Ltj;Lanb;I)Z",
+      "originalName": "a",
+      "to": "isProjectileWithinExpandedBodyBounds",
+      "evidence": "Test projectile current point within body bounding box expanded on both sides by absolute projectile dx/dy;retain guard>=-43 unconditionaltrue and original point/rectangle argument order.",
       "confidence": "reviewed"
     },
     {
@@ -56672,6 +57085,13 @@
       "originalName": "a",
       "to": "getAsteroids",
       "evidence": "Return AsteroidField stored asteroid collection through its array getter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ZIIBZLanb;ILanb;Lij;)Z",
+      "originalName": "a",
+      "to": "resolveBodyCollision",
+      "evidence": "Broad-phase bounding boxes,collect component edge contacts or hook circle contacts,apply original contact damage/hook logic/forces and one collision sound,then clear queue;retain original bool modes,kind gates and early-return behavior.",
       "confidence": "reviewed"
     },
     {
@@ -56728,6 +57148,20 @@
       "originalName": "a",
       "to": "registerBodyPartitions",
       "evidence": "Register each non-null member of the supplied body array in the supplied partition group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a([Lcrb;I)V",
+      "originalName": "a",
+      "to": "resolveProjectileCollisions",
+      "evidence": "For each projectile reset shared trace/hit/body state,query swept partition bounds and test ships/debris/hooks/asteroids,then shield/countermeasure and final damage resolution;retain team/spawn-protection gates,attacker recording,iteration order and guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a([Lcrb;ZLij;)V",
+      "originalName": "a",
+      "to": "resolveAsteroidCollisions",
+      "evidence": "Resolve moving asteroid pairs through partition candidates with original duplicate suppression and force scale,mark field changed and stop on destroyed chassis;retain skipped final outer slot and bad-guard map-zone cleanup.",
       "confidence": "reviewed"
     },
     {
@@ -57057,6 +57491,13 @@
       "originalName": "j",
       "to": "getEscapePods",
       "evidence": "Body is a single return of the field the state-diff names \"EscapePods\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.k(I)V",
+      "originalName": "k",
+      "to": "processProjectileInterceptions",
+      "evidence": "For original projectile types1/6,scan differently typed projectiles within2048,apply beam-intercept damage or expire/unlink and burst effects;retain iterator mechanics and special6-vs5 burst path.",
       "confidence": "reviewed"
     },
     {
@@ -61827,6 +62268,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qs.a(Ljava/applet/Applet;ILjava/lang/String;Ljava/lang/String;J)V",
+      "originalName": "a",
+      "to": "writeCookie",
+      "evidence": "Write original document.cookie JavaScript using cookiehost applet parameter,version/path/domain and Discard for negative lifetime or original expiry/Max-Age;retain raw concatenation,swallowed Throwable and guards.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qs.a(Z)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -62657,6 +63105,13 @@
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rib.a(Ljava/awt/Component;B)V",
+      "originalName": "a",
+      "to": "detachKeyboardListeners",
+      "evidence": "Remove shared key/focus listeners from supplied component and reset original key index;retain arithmetic guard between removals.",
       "confidence": "reviewed"
     },
     {
@@ -68043,6 +68498,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uab.a(BLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detachMouseListeners",
+      "evidence": "Remove shared mouse/motion/focus listeners and reset original mouse state;retain bad-byte predicate side call and ordering.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uab.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -70518,6 +70980,27 @@
       "originalName": "d",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_d; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uwa.a(IIIIII)[Lphb;",
+      "originalName": "a",
+      "to": "createGradientNineSliceSprites",
+      "evidence": "Create original nine-sprite arrangement with gradient vertical edges,solid corners/top/bottom and optional center;restore raster only on original successful branch,retain bad-guard null return and dimensions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uwa.a(IIIIIIBLanb;II)V",
+      "originalName": "a",
+      "to": "configure",
+      "evidence": "Assign original shield kind,center,radius,arc half-angle,angle,body and center displacement to pooled record;retain bad-byte partial assignment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uwa.a(ILfaa;B)I",
+      "originalName": "a",
+      "to": "readSignedBits",
+      "evidence": "Read supplied bit width and sign-extend with original XOR/subtraction;retain wrong-byte constant-29 and existing shifts/invalid-width behavior.",
       "confidence": "reviewed"
     },
     {
@@ -83998,7 +84481,7 @@
   ],
   "classNameLiterals": {
     "policy": "direct-owned-class-for-name",
-    "expectedEdits": 10
+    "expectedEdits": 15
   },
   "labels": {
     "policy": "lexical-targets",
@@ -84011,10 +84494,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-voidhunters-rules.mjs": "30ab2d59400c21d66573facc5153a4560a71b345aa79eb25e11f8da23eb2e2bb",
+      "build-voidhunters-rules.mjs": "d94602f46992752eb1e74e74c40be1c7ca3683a7c6ce0e3835867107bd4ee80e",
       "reproduce-voidhunters.mjs": "d166931d08f6ab274d50d2e60dae5ee815aca9510dc1d347a3a1a7488c0c4c4a",
       "voidhunters-diff-names.mjs": "f7928b13a33683097852e5efeb451e5072777f5635a2c1c5e45bb335900df785",
-      "voidhunters-names.json": "2f66ac752556eadab3e3026e90830be2ede1b6f8de0361e05c6b10d1fd0aa4d7",
+      "voidhunters-names.json": "ddcd4a290ebc84569e2edd61f61d60d019a156b7e18bf1ac8b60ec5941b86379",
       "voidhunters-coverage.mjs": "0b6c78523ef2b0271428e9d017570778b20bb985cdeaa6cdadb2fb04c854665a",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
