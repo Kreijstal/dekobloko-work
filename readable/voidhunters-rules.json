@@ -1263,6 +1263,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:c",
+      "originalName": "c",
+      "to": "DelayedPacket",
+      "evidence": "Incoming/outgoing simulated-lag queues retain release time,payload and opcode-or-length metadata;unrelated draw-line helper remains on same owner.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ca",
       "originalName": "ca",
       "to": "SetDebugLineLife",
@@ -2250,6 +2257,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:elb",
+      "originalName": "elb",
+      "to": "PerlinNoiseVolumeGenerator",
+      "evidence": "Generate3D fixed-point lattice gradients and fade-interpolated octave samples through reset/accumulate/finish callbacks,using original scales and seeded table.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:em",
       "originalName": "em",
       "to": "SetDebrisProjectileCollision",
@@ -2775,6 +2789,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ft",
+      "originalName": "ft",
+      "to": "GpuRidgedNoiseVolume",
+      "evidence": "Modern WaterTextures source emits original two-byte voxels with first255 and second scaled ridge value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fta",
       "originalName": "fta",
       "to": "Direct3DUnderwaterMaterialEffect",
@@ -3052,6 +3073,13 @@
       "originalName": "gn",
       "to": "OpenGlGpuRectangleTexture",
       "evidence": "GPU rectangle texture uses OpenGL target34037 with unnormalized pixel coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gna",
+      "originalName": "gna",
+      "to": "FractalNoiseVolumeGenerator",
+      "evidence": "Accumulate original per-octave amplitudes,then absolute/clamp final sample before byte output;absolute value occurs after sum,not separately per octave.",
       "confidence": "reviewed"
     },
     {
@@ -4805,6 +4833,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:krb",
+      "originalName": "krb",
+      "to": "LegacyFractalNoiseVolume",
+      "evidence": "LegacyOpenGlWaterTextures source emits original duplicated remapped fractal bytes per voxel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ks",
       "originalName": "ks",
       "to": "GetLaserReload",
@@ -4823,6 +4858,13 @@
       "originalName": "ksb",
       "to": "InvertTextureOperation",
       "evidence": "Replace each monochrome or RGB input sample with4096 minus its value; factory operation22.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kt",
+      "originalName": "kt",
+      "to": "RidgedNoiseVolumeGenerator",
+      "evidence": "Accumulate original squared offset-minus-absolute-noise signal with clamped feedback weight and retained octave amplitude recurrence;do not substitute a standard ridged-noise formula.",
       "confidence": "reviewed"
     },
     {
@@ -4984,6 +5026,13 @@
       "originalName": "lfa",
       "to": "ColorizeTextureOperation",
       "evidence": "Tint equal-channel input samples by configured channel values and replace non-gray inputs with the configured color; factory operation11.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lfb",
+      "originalName": "lfb",
+      "to": "CacheFiles",
+      "evidence": "Static cache initialization records build/game/user-home context and resolves File paths through retained launcher cacheRedirect hook.",
       "confidence": "reviewed"
     },
     {
@@ -6331,6 +6380,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ola",
+      "originalName": "ola",
+      "to": "GpuFractalNoiseVolume",
+      "evidence": "Modern WaterTextures source emits original duplicated remapped fractal bytes per voxel.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:olb",
       "originalName": "olb",
       "to": "ColorKeyScaleTextureOperation",
@@ -7546,6 +7602,13 @@
       "originalName": "rja",
       "to": "GetBombletSprayFireForce",
       "evidence": "Developer console command registered by name \"GetBombletSprayFireForce\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rjb",
+      "originalName": "rjb",
+      "to": "LegacyRidgedNoiseVolume",
+      "evidence": "LegacyOpenGlWaterTextures source emits original duplicate scaled ridge bytes per voxel.",
       "confidence": "reviewed"
     },
     {
@@ -10930,6 +10993,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:c.field_d:I",
+      "originalName": "field_d",
+      "to": "opcodeOrLength",
+      "evidence": "Original incoming queue stores packet opcode;outgoing queue stores buffered byte count. Retain shared representation and interpretation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:c.field_e:J",
+      "originalName": "field_e",
+      "to": "releaseTimeMillis",
+      "evidence": "Original current monotonic millis plus simulated lag,compared strictlyless-than now before release.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:c.field_f:[B",
+      "originalName": "field_f",
+      "to": "payload",
+      "evidence": "Original delayed incoming/outgoing bytes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ca.field_p:Lij;",
       "originalName": "field_p",
       "to": "pendingIntegerArrayReads",
@@ -12533,6 +12617,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:elb.field_a:I",
+      "originalName": "field_a",
+      "to": "octaveCount",
+      "evidence": "Original octave count controls frequency array and callback loop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:elb.field_b:I",
+      "originalName": "field_b",
+      "to": "yScale",
+      "evidence": "Original lattice scale on second volume coordinate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:elb.field_c:[S",
+      "originalName": "field_c",
+      "to": "octaveFrequencies",
+      "evidence": "Original short powers-of-two octave scales.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:elb.field_d:[S",
+      "originalName": "field_d",
+      "to": "permutation",
+      "evidence": "Original512-entry seeded hash table including original shuffle quirks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:elb.field_e:I",
+      "originalName": "field_e",
+      "to": "seed",
+      "evidence": "Original Random seed for shared gradient table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:elb.field_g:I",
+      "originalName": "field_g",
+      "to": "zScale",
+      "evidence": "Original lattice scale on third volume coordinate.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:elb.field_h:I",
+      "originalName": "field_h",
+      "to": "xScale",
+      "evidence": "Original lattice scale on first volume coordinate.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ema.field_o:[Lmfb;",
       "originalName": "field_o",
       "to": "weaponDefinitions",
@@ -13506,6 +13639,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ft.field_u:[B",
+      "originalName": "field_u",
+      "to": "voxels",
+      "evidence": "Original GPU ridge two-byte voxel output.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fwa.field_b:Ljava/math/BigInteger;",
       "originalName": "field_b",
       "to": "signatureExponent",
@@ -14000,6 +14140,34 @@
       "originalName": "field_l",
       "to": "width",
       "evidence": "Reviewed native GPU texture allocation, dimensions, coordinate conversion, pixel update, binding and filtering operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gna.field_i:[B",
+      "originalName": "field_i",
+      "to": "output",
+      "evidence": "Original base output array,retaining absent allocation and concrete-hook overrides.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gna.field_j:I",
+      "originalName": "field_j",
+      "to": "accumulatedValue",
+      "evidence": "Original weighted signed octave sum,absolute-valued only at finish.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gna.field_k:[I",
+      "originalName": "field_k",
+      "to": "octaveAmplitudes",
+      "evidence": "Original Q12 constructor-amplitude powers,with retained short cast.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gna.field_l:I",
+      "originalName": "field_l",
+      "to": "outputIndex",
+      "evidence": "Original fractal cursor,including original base-hook increment behavior.",
       "confidence": "reviewed"
     },
     {
@@ -16159,6 +16327,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:krb.field_n:[B",
+      "originalName": "field_n",
+      "to": "voxels",
+      "evidence": "Original legacy fractal two-byte voxel output.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ksa.field_a:Lksa;",
       "originalName": "field_a",
       "to": "previous",
@@ -16180,10 +16355,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kt.field_i:I",
+      "originalName": "field_i",
+      "to": "octaveAmplitude",
+      "evidence": "Original Q12 current octave amplitude,reset after each sample.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kt.field_j:I",
+      "originalName": "field_j",
+      "to": "ridgeWeight",
+      "evidence": "Original previous-signal feedback times gain,clamped0..4096.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kt.field_k:[B",
+      "originalName": "field_k",
+      "to": "output",
+      "evidence": "Original base output array,retaining absent allocation and concrete-hook overrides.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kt.field_l:I",
       "originalName": "field_l",
       "to": "soundEffectVolume",
       "evidence": "Global gain set by the volume update helper and multiplied into playback base gains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kt.field_m:I",
+      "originalName": "field_m",
+      "to": "outputIndex",
+      "evidence": "Original ridged sample cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kt.field_n:I",
+      "originalName": "field_n",
+      "to": "signal",
+      "evidence": "Original most recently squared/weighted ridge signal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kt.field_o:I",
+      "originalName": "field_o",
+      "to": "ridgeOffset",
+      "evidence": "Original Q12 offset before absolute-noise subtraction and squaring.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kt.field_p:I",
+      "originalName": "field_p",
+      "to": "accumulatedValue",
+      "evidence": "Original ridged octave accumulator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kt.field_q:I",
+      "originalName": "field_q",
+      "to": "ridgeGain",
+      "evidence": "Original Q12 feedback gain multiplier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kt.field_s:I",
+      "originalName": "field_s",
+      "to": "amplitudeMultiplier",
+      "evidence": "Original Q12 multiplier from retained pow(0.5,-constructorArgument),without assuming attenuation.",
       "confidence": "reviewed"
     },
     {
@@ -16513,6 +16751,34 @@
       "originalName": "field_l",
       "to": "green",
       "evidence": "Configured green channel or grayscale green multiplier.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lfb.field_b:Ljava/lang/String;",
+      "originalName": "field_b",
+      "to": "userHome",
+      "evidence": "Original retained user.home path plus slash,or literal~/fallback;preserve guard clearing and launcher-hook behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lfb.field_c:I",
+      "originalName": "field_c",
+      "to": "buildId",
+      "evidence": "Original PlatformService-supplied build id retained even though current redirect hook ignores it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lfb.field_d:Z",
+      "originalName": "field_d",
+      "to": "initialized",
+      "evidence": "Original flag initializedfalse and settrue after cache context setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lfb.field_e:Ljava/lang/String;",
+      "originalName": "field_e",
+      "to": "gameName",
+      "evidence": "Original PlatformService-supplied game name forwarded to cache redirect.",
       "confidence": "reviewed"
     },
     {
@@ -18490,6 +18756,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ocb.field_h:[I",
+      "originalName": "field_h",
+      "to": "perlinFadeTable",
+      "evidence": "Original4096-entry Q12 fade table used by gradient interpolation and initialized through original fade helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ocb.field_k:Luf;",
       "originalName": "field_k",
       "to": "emailField",
@@ -18753,6 +19026,13 @@
       "originalName": "field_g",
       "to": "size",
       "evidence": "Reviewed socket worker, native vertex/index buffer and vertex declaration implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ola.field_n:[B",
+      "originalName": "field_n",
+      "to": "voxels",
+      "evidence": "Original GPU fractal two-byte voxel output.",
       "confidence": "reviewed"
     },
     {
@@ -21406,6 +21686,13 @@
       "originalName": "field_h",
       "to": "spanEndX",
       "evidence": "Reviewed full edge setup/iteration/drawing:packed four-int record offsets and retained span/active-range cursors preserve original scan conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rjb.field_t:[B",
+      "originalName": "field_t",
+      "to": "voxels",
+      "evidence": "Original legacy ridge two-byte voxel output.",
       "confidence": "reviewed"
     },
     {
@@ -29326,6 +29613,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:c.a(IIIIII)V",
+      "originalName": "a",
+      "to": "drawLine",
+      "evidence": "Draw original toolkit line with opaque alpha or original software line,retaining endpoint order and guard return behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ca.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -33519,6 +33813,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:elb.a(B)V",
+      "originalName": "a",
+      "to": "initializeFrequencies",
+      "evidence": "Allocate original short octave-frequency array from powers of2;retain short conversion and guard early return.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:elb.a(I)V",
+      "originalName": "a",
+      "to": "finishSample",
+      "evidence": "Contract finalizes original voxel and advances/writes original output through subclass hook;retain all guard/cursor behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:elb.a(IBII)V",
+      "originalName": "a",
+      "to": "generate",
+      "evidence": "Sample original width/height/depth Q12 coordinate arrays,wrap lattice neighbors,interpolate8 hashed gradients for every octave and invoke original callbacks;preserve all arithmetic/order and guard early return.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:elb.a(III)V",
+      "originalName": "a",
+      "to": "accumulateOctave",
+      "evidence": "Contract receives original octave index and gradient-noise sample;ridged/fractal implementations preserve their distinct accumulation recurrences.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:elb.a(Z)V",
+      "originalName": "a",
+      "to": "resetGeneration",
+      "evidence": "Contract resets original accumulation and,under original boolean,output cursor before3D generation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:elb.b(B)V",
+      "originalName": "b",
+      "to": "initializePermutation",
+      "evidence": "Retain original seeded255-iteration table initialization/shuffle,mirrored entries and zero slots;preserve guard cleanup rather than correcting permutation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:elb.c(B)V",
       "originalName": "c",
       "to": "clearSharedReferences",
@@ -35899,6 +36235,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ft.a(IBI)V",
+      "originalName": "a",
+      "to": "writeSample",
+      "evidence": "Write original ridged sample byte at supplied index in retained base output;preserve null base-buffer behavior and guard recursion. Concrete leaves override pair layout. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ft.a(IIZI)[B",
+      "originalName": "a",
+      "to": "generateVolume",
+      "evidence": "Allocate original two-byte voxel array and invoke generator with original reordered dimensions only when boolean false;otherwise return null while retaining allocation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ft.b(I)V",
+      "originalName": "b",
+      "to": "increaseSoundEffectVolume",
+      "evidence": "Raise original sound-effect gain to next32-unit step with cap256;retain original recursive guard path,negative-remainder behavior and delegate arguments.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fta.a(B)Z",
       "originalName": "a",
       "to": "isSupported",
@@ -36501,6 +36858,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gha.a(BI)I",
+      "originalName": "a",
+      "to": "perlinFade",
+      "evidence": "Evaluate original Q12 quintic interpolation fade from input coordinate,retaining integer rounding/overflow and guarded shader-helper call.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gha.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -36778,6 +37142,41 @@
       "originalName": "e",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_k; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gna.a(I)V",
+      "originalName": "a",
+      "to": "finishSample",
+      "evidence": "Contract finalizes original voxel and advances/writes original output through subclass hook;retain all guard/cursor behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gna.a(IIB)V",
+      "originalName": "a",
+      "to": "writeSample",
+      "evidence": "Retain original base fractal hook own cursor increment,ignored supplied index and unsigned remap;concrete leaves use original passed index for pairs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gna.a(III)V",
+      "originalName": "a",
+      "to": "accumulateOctave",
+      "evidence": "Contract receives original octave index and gradient-noise sample;ridged/fractal implementations preserve their distinct accumulation recurrences. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gna.a(Ljava/lang/Throwable;Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "reportClientError",
+      "evidence": "Build original throwable/message diagnostic,print it and request original clienterror.ws URL via platform service;retain replacements,request wait,one-byte response read and swallowed exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gna.a(Z)V",
+      "originalName": "a",
+      "to": "resetGeneration",
+      "evidence": "Contract resets original accumulation and,under original boolean,output cursor before3D generation. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -38206,6 +38605,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_q. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hcb.a(IIIBI)I",
+      "originalName": "a",
+      "to": "perlinGradientDot",
+      "evidence": "Select original two signed coordinates from hash low4bits and return their sum;retain axis order,hash12/14 cases and arithmetic guard.",
       "confidence": "reviewed"
     },
     {
@@ -44635,6 +45041,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:krb.a(IIB)V",
+      "originalName": "a",
+      "to": "writeSample",
+      "evidence": "Retain original base fractal hook own cursor increment,ignored supplied index and unsigned remap;concrete leaves use original passed index for pairs. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:krb.b(IBII)[B",
+      "originalName": "b",
+      "to": "generateVolume",
+      "evidence": "Allocate original duplicate-fractal voxel array and generate only for original guard-29;retain null result otherwise.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ks.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -44688,6 +45108,41 @@
       "originalName": "a",
       "to": "getMonochromeRow",
       "evidence": "Monochrome output contract; the base throws when that output is unavailable. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kt.a(I)V",
+      "originalName": "a",
+      "to": "finishSample",
+      "evidence": "Contract finalizes original voxel and advances/writes original output through subclass hook;retain all guard/cursor behavior. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kt.a(IBI)V",
+      "originalName": "a",
+      "to": "writeSample",
+      "evidence": "Write original ridged sample byte at supplied index in retained base output;preserve null base-buffer behavior and guard recursion. Concrete leaves override pair layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kt.a(III)V",
+      "originalName": "a",
+      "to": "accumulateOctave",
+      "evidence": "Contract receives original octave index and gradient-noise sample;ridged/fractal implementations preserve their distinct accumulation recurrences. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kt.a(Lwma;IIIIIII)V",
+      "originalName": "a",
+      "to": "drawLitMesh",
+      "evidence": "Compute original normal-based diffuse/highlight values and draw projected mesh faces through original flat/Gouraud triangle helpers;retain masks,negative-index/bounds behavior,model flags and guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kt.a(Z)V",
+      "originalName": "a",
+      "to": "resetGeneration",
+      "evidence": "Contract resets original accumulation and,under original boolean,output cursor before3D generation. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -45647,6 +46102,20 @@
       "originalName": "a",
       "to": "decodeParameter",
       "evidence": "Decodes one parameter opcode; the graph node loader dispatches each tagged parameter before postDecode. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lfb.a(IILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "initialize",
+      "evidence": "Retain original build id,game name,user.home lookup/fallback and initialization flag;preserve guarded resolve call and swallowed property exception.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lfb.a(Ljava/lang/String;B)Ljava/io/File;",
+      "originalName": "a",
+      "to": "resolveCacheFile",
+      "evidence": "Delegate original cache redirect using retained game/build state and file name;preserve guarded user-home clearing and ignored build argument behavior.",
       "confidence": "reviewed"
     },
     {
@@ -52895,10 +53364,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ola.a(IIB)V",
+      "originalName": "a",
+      "to": "writeSample",
+      "evidence": "Retain original base fractal hook own cursor increment,ignored supplied index and unsigned remap;concrete leaves use original passed index for pairs. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ola.a(IIII)[B",
+      "originalName": "a",
+      "to": "generateVolume",
+      "evidence": "Allocate original duplicate-fractal voxel array and invoke generator;retain original dimension order and bad-guard reference clearing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ola.b(I)V",
       "originalName": "b",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_o, field_p, field_q. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ola.d(B)[Lcaa;",
+      "originalName": "d",
+      "to": "createIndexedSprites",
+      "evidence": "Construct original indexed sprites from decoded global dimensions,offsets,pixels and palette,then invoke original shared cleanup;retain recursive guard behavior.",
       "confidence": "reviewed"
     },
     {
@@ -60102,6 +60592,20 @@
       "originalName": "e",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_o. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rjb.a(IBI)V",
+      "originalName": "a",
+      "to": "writeSample",
+      "evidence": "Write original ridged sample byte at supplied index in retained base output;preserve null base-buffer behavior and guard recursion. Concrete leaves override pair layout. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rjb.b(IBII)[B",
+      "originalName": "b",
+      "to": "generateVolume",
+      "evidence": "Allocate original duplicate-ridge voxel array and invoke generator with original dimension order;preserve bad-guard recursion.",
       "confidence": "reviewed"
     },
     {
@@ -80791,10 +81295,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-voidhunters-rules.mjs": "ea6de0932130daca323b2dcef729f330ae8ce9f8944600738b543eaa07e42f7a",
+      "build-voidhunters-rules.mjs": "9074ee630f2fcef10bf57e699a9ac124e1bb3734789eb3afff09464a3bd63a04",
       "reproduce-voidhunters.mjs": "d166931d08f6ab274d50d2e60dae5ee815aca9510dc1d347a3a1a7488c0c4c4a",
       "voidhunters-diff-names.mjs": "f7928b13a33683097852e5efeb451e5072777f5635a2c1c5e45bb335900df785",
-      "voidhunters-names.json": "c09ea44f95967ca79701c105be78077a104780eae602e345732a5547a19ccf92",
+      "voidhunters-names.json": "b2de9408eec1f089f7ed7104240d0f721ff79efdf8b544f1a638d48f03f86eb5",
       "voidhunters-coverage.mjs": "0b6c78523ef2b0271428e9d017570778b20bb985cdeaa6cdadb2fb04c854665a",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
