@@ -941,6 +941,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bma",
+      "originalName": "bma",
+      "to": "OpenGlUnderwaterMaterialEffect",
+      "evidence": "GPU material effect loads gl shader assets uw_ground_lit/unlit and uw_model_lit/unlit, selects ARB vertex program and supplies underwater plane/fog uniforms.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bmb",
       "originalName": "bmb",
       "to": "SoundCache",
@@ -2222,6 +2229,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fta",
+      "originalName": "fta",
+      "to": "Direct3DUnderwaterMaterialEffect",
+      "evidence": "GPU material effect loads corresponding dx underwater ground/model vertex shaders and uploads plane, depth/fog, matrix and texture uniforms.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ftb",
       "originalName": "ftb",
       "to": "GetMassDriverAimarc",
@@ -2425,6 +2439,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:gla",
+      "originalName": "gla",
+      "to": "OpenGlArbProgram",
+      "evidence": "Owns native ARB program id bound by glBindProgramARB; finalizer enqueues program disposal through OpenGlGpuToolkit.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:gmb",
       "originalName": "gmb",
       "to": "SpawnChoiceFactory",
@@ -2625,6 +2646,13 @@
       "originalName": "hcb",
       "to": "GetDebrisCarryOver",
       "evidence": "Developer console command registered by name \"GetDebrisCarryOver\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hd",
+      "originalName": "hd",
+      "to": "BodyIdReferences",
+      "evidence": "Implemented by mission conditions/actions that collect referenced body ids into MissionControl reserved-id list.",
       "confidence": "reviewed"
     },
     {
@@ -6576,6 +6604,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:uca",
+      "originalName": "uca",
+      "to": "GameSession",
+      "evidence": "Active offline/network game session owns CommonGameState, player-specific arrays, camera/HUD/input state and ship preview; constructed by Start game packet parser and offline launchers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ucb",
       "originalName": "ucb",
       "to": "WorldPoint",
@@ -9383,6 +9418,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gla.field_a:Ljp;",
+      "originalName": "field_a",
+      "to": "toolkit",
+      "evidence": "Reviewed underwater shader asset names, complete uniform-upload paths and native ARB program ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gla.field_c:I",
+      "originalName": "field_c",
+      "to": "programId",
+      "evidence": "Reviewed underwater shader asset names, complete uniform-upload paths and native ARB program ownership.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gn.field_j:I",
       "originalName": "field_j",
       "to": "height",
@@ -10542,6 +10591,13 @@
       "originalName": "field_g",
       "to": "distance",
       "evidence": "Reviewed construction and consumers in attachment planning, component collision collection and special-order display.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lua.field_a:I",
+      "originalName": "field_a",
+      "to": "revision",
+      "evidence": "NebulaField.markChanged stores the incrementing global revision counter after each nebula insertion or removal.",
       "confidence": "reviewed"
     },
     {
@@ -11735,6 +11791,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pe.field_b:Lbea;",
+      "originalName": "field_b",
+      "to": "missionBuilder",
+      "evidence": "Reviewed World body insertion/query, vertical bounds, partition registration and copy-on-write implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pe.field_e:Laib;",
+      "originalName": "field_e",
+      "to": "asteroidField",
+      "evidence": "Reviewed World body insertion/query, vertical bounds, partition registration and copy-on-write implementations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pe.field_f:Luna;",
       "originalName": "field_f",
       "to": "missionControl",
@@ -11746,6 +11816,13 @@
       "originalName": "field_g",
       "to": "grapplingHooks",
       "evidence": "The state-diff method prints \"grapplingHooks has changed\" for this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pe.field_h:Z",
+      "originalName": "field_h",
+      "to": "debrisArrayMutable",
+      "evidence": "Reviewed World body insertion/query, vertical bounds, partition registration and copy-on-write implementations.",
       "confidence": "reviewed"
     },
     {
@@ -11798,10 +11875,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pe.field_p:Llua;",
+      "originalName": "field_p",
+      "to": "nebulaField",
+      "evidence": "Reviewed World body insertion/query, vertical bounds, partition registration and copy-on-write implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pe.field_r:I",
+      "originalName": "field_r",
+      "to": "height",
+      "evidence": "Reviewed World body insertion/query, vertical bounds, partition registration and copy-on-write implementations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pe.field_t:[Lcq;",
       "originalName": "field_t",
       "to": "mapZones",
       "evidence": "The state-diff method prints \"mapZones has changed\" for this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pe.field_u:Lfba;",
+      "originalName": "field_u",
+      "to": "partitioningManager",
+      "evidence": "Reviewed World body insertion/query, vertical bounds, partition registration and copy-on-write implementations.",
       "confidence": "reviewed"
     },
     {
@@ -11931,10 +12029,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pf.field_Ob:I",
+      "originalName": "field_Ob",
+      "to": "underwaterFogStrength",
+      "evidence": "Reviewed underwater shader asset names, complete uniform-upload paths and native ARB program ownership.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pf.field_P:Lmkb;",
       "originalName": "field_P",
       "to": "circleVertexBuffer",
       "evidence": "Reviewed GPU geometry, projection, lighting and texture native-format conversion operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pf.field_Pb:I",
+      "originalName": "field_Pb",
+      "to": "waterPlaneDistance",
+      "evidence": "Reviewed underwater shader asset names, complete uniform-upload paths and native ARB program ownership.",
       "confidence": "reviewed"
     },
     {
@@ -12106,6 +12218,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pf.field_ib:I",
+      "originalName": "field_ib",
+      "to": "underwaterDepthScale",
+      "evidence": "Reviewed underwater shader asset names, complete uniform-upload paths and native ARB program ownership.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pf.field_ic:Lvmb;",
       "originalName": "field_ic",
       "to": "quadVertexDeclaration",
@@ -12201,6 +12320,13 @@
       "originalName": "field_ub",
       "to": "fogEnabled",
       "evidence": "Reviewed GPU geometry, projection, lighting and texture native-format conversion operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pf.field_v:I",
+      "originalName": "field_v",
+      "to": "underwaterFogColor",
+      "evidence": "Reviewed underwater shader asset names, complete uniform-upload paths and native ARB program ownership.",
       "confidence": "reviewed"
     },
     {
@@ -13898,6 +14024,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:uca.field_L:I",
+      "originalName": "field_L",
+      "to": "localPlayerIndex",
+      "evidence": "Read from the server packet, used to resolve the local snapshot player and assigned to submitted player actions; negative values represent spectators.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uca.field_N:Z",
+      "originalName": "field_N",
+      "to": "networked",
+      "evidence": "True in network Start game packet construction and false in offline session construction; packet creation rejects false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uca.field_m:Loma;",
+      "originalName": "field_m",
+      "to": "state",
+      "evidence": "CommonGameState constructed from player names and launch parameters, consumed by game-start and subsequent server packets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ucb.field_a:I",
       "originalName": "field_a",
       "to": "x",
@@ -13951,6 +14098,13 @@
       "originalName": "field_b",
       "to": "events",
       "evidence": "The state-diff method prints \"events has changed\" for this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:una.field_c:I",
+      "originalName": "field_c",
+      "to": "currentEventIndex",
+      "evidence": "MissionControl.processEvents stores current iteration index and resets it to-1 afterwards.",
       "confidence": "reviewed"
     },
     {
@@ -16667,6 +16821,13 @@
       "originalName": "b",
       "to": "onDepthRangeChanged",
       "evidence": "Callback from clipping-plane update before native fog parameters are recalculated. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bma.e(I)V",
+      "originalName": "e",
+      "to": "applyUnderwaterProgram",
+      "evidence": "Select lit/unlit ground/model ARB program, enable it, transform water plane and upload plane/fog parameters.",
       "confidence": "reviewed"
     },
     {
@@ -21679,6 +21840,13 @@
       "originalName": "c",
       "to": "onModelTransformChanged",
       "evidence": "Callback after shared model/world transform update. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fta.d(B)V",
+      "originalName": "d",
+      "to": "applyUnderwaterShader",
+      "evidence": "Select lit/unlit ground/model Direct3D vertex shader, refresh dependent uniforms on change, transform water plane and upload it.",
       "confidence": "reviewed"
     },
     {
@@ -29333,10 +29501,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lua.a(B)Lqsa;",
+      "originalName": "a",
+      "to": "acquireTemporaryObjective",
+      "evidence": "Acquire or allocate the next objective pool slot, increment its cursor and report exhausted temp objective slots through the existing diagnostic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lua.a(BI)Lqob;",
+      "originalName": "a",
+      "to": "removeNebula",
+      "evidence": "Remove and return the indexed nebula and mark the field changed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lua.a(BLtv;)Z",
       "originalName": "a",
       "to": "differsFrom",
       "evidence": "State comparison contract: SettingsChange and MissionVariable return whether stored values differ; concrete implementations retain their original comparison formulas. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lua.a(I)V",
+      "originalName": "a",
+      "to": "markChanged",
+      "evidence": "Store and advance the shared revision counter.",
       "confidence": "reviewed"
     },
     {
@@ -29347,10 +29536,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lua.a(Lqob;I)I",
+      "originalName": "a",
+      "to": "addNebula",
+      "evidence": "Append a nebula below the 4095-entry limit, mark changed and return the new index, or return minus one at capacity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lua.a(Ltv;I)V",
       "originalName": "a",
       "to": "reportDifferences",
       "evidence": "Implemented by World, Ship and Component; prints each field that differs from the other state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lua.a(Z)[Lqob;",
+      "originalName": "a",
+      "to": "getNebulae",
+      "evidence": "Return the nebula array, preserving the original guarded revision mutation.",
       "confidence": "reviewed"
     },
     {
@@ -29631,6 +29834,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_c, field_d; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mfa.a(II)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getPlayerName",
+      "evidence": "Return the indexed stored player name or the original Bot/Unknown fallback based on the snapshot and game mode. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -33883,6 +34093,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oma.a(II)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getPlayerName",
+      "evidence": "Return the indexed stored player name or the original Bot/Unknown fallback based on the snapshot and game mode.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oma.a(Lfaa;Z)V",
       "originalName": "a",
       "to": "readState",
@@ -34436,10 +34653,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(B)V",
+      "originalName": "a",
+      "to": "initializeMissingState",
+      "evidence": "Fill default dimensions and missing typed collections/fields, initialize nebula through mission builder when necessary and rebuild partition state.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(BI)Lit;",
       "originalName": "a",
       "to": "findEscapePodByOwner",
       "evidence": "Scan escape pod array for matching owner id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(BII)Lanb;",
+      "originalName": "a",
+      "to": "findBodyAtPoint",
+      "evidence": "Search ships,debris,asteroids and grappling hooks in order for a component containing requested point.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(BLcrb;)V",
+      "originalName": "a",
+      "to": "addAsteroid",
+      "evidence": "Constrain asteroid to world bounds, initialize tick/transforms, insert through asteroid field and register spatial partition on success.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(BLmqb;)V",
+      "originalName": "a",
+      "to": "addGrapplingHook",
+      "evidence": "Initialize grappling-hook tick/transforms and insert into typed hook body array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(BLrdb;)V",
+      "originalName": "a",
+      "to": "addSpawnPoint",
+      "evidence": "Append supplied spawn point to intrusive deque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(BLrsb;)V",
+      "originalName": "a",
+      "to": "updateMissionLogic",
+      "evidence": "Outside debug mode, invoke spawn-point updates, update resource-node capture and process mission-control events.",
       "confidence": "reviewed"
     },
     {
@@ -34457,6 +34716,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(IBI[Lanb;)Lanb;",
+      "originalName": "a",
+      "to": "findBodyAtPoint",
+      "evidence": "Scan supplied body array for first non-null body whose chassis component contains requested point.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(II)V",
       "originalName": "a",
       "to": "initializeRespawnTimers",
@@ -34464,10 +34730,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(IIIIII)Lrca;",
+      "originalName": "a",
+      "to": "findSpawnLocation",
+      "evidence": "Sample one hundred positions within the requested rectangle and world margins, reject asteroid overlap and retain the point furthest from its nearest opposing ship.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(III[Lanb;I)Z",
+      "originalName": "a",
+      "to": "overlapsBodyBoundingCircles",
+      "evidence": "Test distance from the supplied point against the supplied radius plus each non-null body bounding extent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(IILanb;)V",
+      "originalName": "a",
+      "to": "removeBody",
+      "evidence": "Remove the matching typed-array entry and its spatial partition registration, preserving debris copy-on-write and asteroid-field mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ILanb;)Z",
+      "originalName": "a",
+      "to": "overlapsAnyBodyBoundingCircle",
+      "evidence": "Test the supplied body bounding circle against the asteroid, ship and debris arrays without excluding the supplied body.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ILanb;[Lanb;I)Z",
+      "originalName": "a",
+      "to": "addBodyToArray",
+      "evidence": "Find free slot with permitted global id, make debris array mutable when needed, assign body and id and report success.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ILbea;)V",
+      "originalName": "a",
+      "to": "setMissionBuilder",
+      "evidence": "Retain supplied MissionBuilder used for missing world initialization and clearance geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ILcq;)V",
+      "originalName": "a",
+      "to": "addMapZone",
+      "evidence": "Append supplied map zone through typed-array insertion helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(IZ)V",
       "originalName": "a",
       "to": "setTeamsSwapped",
       "evidence": "Assign swapped-team flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(IZI)V",
+      "originalName": "a",
+      "to": "removeNebula",
+      "evidence": "Remove the indexed nebula from its field and optionally remove its bounds from spatial partitions.",
       "confidence": "reviewed"
     },
     {
@@ -34492,6 +34814,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(Lnbb;B)V",
+      "originalName": "a",
+      "to": "addDebris",
+      "evidence": "Constrain debris, apply accumulated forces, initialize tick/transforms, allocate slot/id and mark phantom, preserving original partition condition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Lqob;I)V",
+      "originalName": "a",
+      "to": "addNebula",
+      "evidence": "Delegate nebula insertion with spatial registration enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Lrba;B)V",
+      "originalName": "a",
+      "to": "addResourceNode",
+      "evidence": "Append supplied resource node through typed-array insertion helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Lsg;B)V",
+      "originalName": "a",
+      "to": "addShip",
+      "evidence": "Initialize ship tick/transforms, constrain to world bounds, start spawn protection, allocate body slot/id and register spatial partition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Ltj;Z)V",
+      "originalName": "a",
+      "to": "addProjectile",
+      "evidence": "Append projectile unless current collection already contains1023 entries.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(Ltv;I)V",
       "originalName": "a",
       "to": "reportDifferences",
@@ -34506,10 +34863,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(ZIII)Lanb;",
+      "originalName": "a",
+      "to": "findNearestEnemyOrDebris",
+      "evidence": "Return the closest ship on another team, optionally considering debris under the original configuration condition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ZLqob;B)V",
+      "originalName": "a",
+      "to": "addNebula",
+      "evidence": "Append the supplied nebula and optionally register its bounds when insertion succeeds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(ZZI)Z",
       "originalName": "a",
       "to": "isDebrisBeingDragged",
       "evidence": "Search ships for dragging id, optionally requiring no target blueprint.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Z[I[I)Z",
+      "originalName": "a",
+      "to": "extendsOutsideBounds",
+      "evidence": "Compare the four inner bounds with their corresponding outer bounds and report any extension.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a([Lanb;ZI)V",
+      "originalName": "a",
+      "to": "registerBodyPartitions",
+      "evidence": "Register each non-null member of the supplied body array in the supplied partition group.",
       "confidence": "reviewed"
     },
     {
@@ -34534,6 +34919,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.b(I)V",
+      "originalName": "b",
+      "to": "updateResourceNodeCapture",
+      "evidence": "Scan ships inside each resource node, advance uncontested enemy-team capture and decay the timer otherwise.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.b(IBLanb;)V",
+      "originalName": "b",
+      "to": "registerBodyPartition",
+      "evidence": "Register body bounding box and id in supplied partition group.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.b(IZ)V",
       "originalName": "b",
       "to": "setDebug",
@@ -34552,6 +34951,13 @@
       "originalName": "b",
       "to": "countDebris",
       "evidence": "Count non-null debris slots.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.b([Lanb;ZI)Lanb;",
+      "originalName": "b",
+      "to": "getBodyAtIndex",
+      "evidence": "Return supplied body-array element when index is in bounds, otherwise null, preserving original guard.",
       "confidence": "reviewed"
     },
     {
@@ -34611,10 +35017,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.d(BI)Lanb;",
+      "originalName": "d",
+      "to": "getBodyById",
+      "evidence": "Resolve global id by subtracting typed-array capacities across ships,debris,asteroids and grappling hooks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.d(I)[Lsg;",
       "originalName": "d",
       "to": "getShips",
       "evidence": "Body is a single return of the field the state-diff names \"Ships\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.d(IB)Z",
+      "originalName": "d",
+      "to": "isBodyIdReserved",
+      "evidence": "Returntrue when mission control exists and supplied body id occurs in its reserved-id array; verified complete target and callee bodies.",
       "confidence": "reviewed"
     },
     {
@@ -34653,6 +35073,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.e(II)V",
+      "originalName": "e",
+      "to": "setHeight",
+      "evidence": "Assign vertical world extent; resolved callers pair it with setWidth and getHeight for bounds and map scaling.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.e(Z)I",
       "originalName": "e",
       "to": "getMapZoneCount",
@@ -34664,6 +35091,13 @@
       "originalName": "f",
       "to": "getSpawnPoints",
       "evidence": "Body is a single return of the field the state-diff names \"SpawnPoints\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.f(BI)V",
+      "originalName": "f",
+      "to": "removeNebula",
+      "evidence": "Delegate indexed nebula removal with spatial unregistration enabled.",
       "confidence": "reviewed"
     },
     {
@@ -34681,10 +35115,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.f(Z)V",
+      "originalName": "f",
+      "to": "initializeSpatialPartitions",
+      "evidence": "Ensure the partition manager exists, then register nebula bounds and ship, debris and asteroid groups under the original mode condition.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.g(B)I",
       "originalName": "g",
       "to": "getWidth",
       "evidence": "Body is a single return of the field the state-diff names \"Width\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.g(BI)Lanb;",
+      "originalName": "g",
+      "to": "findBodyWithComponentType",
+      "evidence": "Return the first debris body or ship whose component tree contains the requested component type.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.g(I)V",
+      "originalName": "g",
+      "to": "clearWorld",
+      "evidence": "Clear ship/debris/asteroid/projectile/particle/spawn/hook collections, timers, mission/map/resource/nebula/partition state and escape pods under original guard.",
       "confidence": "reviewed"
     },
     {
@@ -34734,6 +35189,20 @@
       "originalName": "j",
       "to": "getEscapePods",
       "evidence": "Body is a single return of the field the state-diff names \"EscapePods\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.l(I)V",
+      "originalName": "l",
+      "to": "makeDebrisArrayMutable",
+      "evidence": "Copy shared debris pointer array once before mutation and mark ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.m(I)I",
+      "originalName": "m",
+      "to": "getHeight",
+      "evidence": "Return vertical world extent; consumed by Y-position bounds and map generation/minimap dimensions.",
       "confidence": "reviewed"
     },
     {
@@ -34790,6 +35259,20 @@
       "originalName": "C",
       "to": "applyTextureTransform",
       "evidence": "Apply current texture-unit transform or identity and native coordinate transform mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pf.D(B)I",
+      "originalName": "D",
+      "to": "getUnderwaterFogColor",
+      "evidence": "Return packed colour used as texture-unit fog constant by both underwater shader backends.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pf.D(I)I",
+      "originalName": "D",
+      "to": "getUnderwaterDepthScale",
+      "evidence": "Return integer depth divisor whose reciprocal is uploaded to underwater fog shader constants.",
       "confidence": "reviewed"
     },
     {
@@ -35189,6 +35672,13 @@
       "originalName": "a",
       "to": "setHeap",
       "evidence": "Select NativeHeap used by backend buffer/scratch allocations. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pf.a(Z)I",
+      "originalName": "a",
+      "to": "getUnderwaterFogStrength",
+      "evidence": "Return underwater fog strength normalized by255 in shader parameter upload.",
       "confidence": "reviewed"
     },
     {
@@ -35770,6 +36260,13 @@
       "originalName": "t",
       "to": "applyActiveTextureUnit",
       "evidence": "Select OpenGL active texture33984+unit; Direct3D uses current unit in subsequent state calls.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pf.u(B)I",
+      "originalName": "u",
+      "to": "getWaterPlaneDistance",
+      "evidence": "Return plane-distance input transformed with view matrix for underwater shader; Integer.MAX_VALUE selects ground shader variant.",
       "confidence": "reviewed"
     },
     {
@@ -37915,10 +38412,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qob.a(BII)Z",
+      "originalName": "a",
+      "to": "containsPoint",
+      "evidence": "Test the point distance from the nebula center against radius 32768 under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qob.a(BLtv;)Z",
       "originalName": "a",
       "to": "differsFrom",
       "evidence": "State comparison contract: SettingsChange and MissionVariable return whether stored values differ; concrete implementations retain their original comparison formulas. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qob.a(IZ)I",
+      "originalName": "a",
+      "to": "getParticleRadius",
+      "evidence": "Return 8192 times three minus the particle index modulo three, preserving the guarded static assignment.",
       "confidence": "reviewed"
     },
     {
@@ -37929,10 +38440,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qob.a(Lsg;IILlta;I)V",
+      "originalName": "a",
+      "to": "drawParticle",
+      "evidence": "Draw a time-offset nebula particle using the sprite variant or circle fallback, transformed and clipped through the supplied viewport.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qob.a(Ltv;I)V",
       "originalName": "a",
       "to": "reportDifferences",
       "evidence": "Implemented by World, Ship and Component; prints each field that differs from the other state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qob.a(Z)I",
+      "originalName": "a",
+      "to": "getX",
+      "evidence": "Return the nebula x coordinate, preserving the original guarded coordinate mutation.",
       "confidence": "reviewed"
     },
     {
@@ -42199,10 +42724,94 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uca.a(B)I",
+      "originalName": "a",
+      "to": "getLocalTeam",
+      "evidence": "Resolve the local player selected team with game-mode and owned-ship overrides, preserving the spectator fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.a(IB)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getPlayerName",
+      "evidence": "Delegate player-index lookup to CommonGameState, which returns the stored name, Bot label or Unknown fallback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.a(IIFIBLsg;Lrsb;I)V",
+      "originalName": "a",
+      "to": "drawShipPreview",
+      "evidence": "Position and rotate the supplied preview ship at the origin, integrate it in the snapshot world and draw through a local scaled viewport.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.a(IZLhna;)V",
+      "originalName": "a",
+      "to": "submitPlayerAction",
+      "evidence": "Assign the local player index to the action and submit through the shared action dispatcher with session state and network mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.b(IBII)Z",
+      "originalName": "b",
+      "to": "isMouseInRadialSegment",
+      "evidence": "Test mouse distance between the inner and outer radii and its wrapped angular difference against half the segment angle width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.b(ZII)I",
+      "originalName": "b",
+      "to": "getRadialSegmentAngle",
+      "evidence": "Compute the radial segment center angle in 8192-unit full turns, preserving the original segment-index adjustment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.c(I)V",
+      "originalName": "c",
+      "to": "updateRadialMenuActivation",
+      "evidence": "Open the radial menu on a new key-81 press at the mouse position, close it on release and adjust its alpha in steps of 32.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.d(IIII)I",
+      "originalName": "d",
+      "to": "calculateEdgeFadeAlpha",
+      "evidence": "Calculate a 0-to-255 edge-band alpha from position, extent and band width with the original branch precedence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.e(B)Z",
+      "originalName": "e",
+      "to": "isChatAvailable",
+      "evidence": "Test networked or explicitly enabled chat mode and the initialized chat-toggle widget referenced by the constructor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.f(I)I",
+      "originalName": "f",
+      "to": "getHeldActionHotkey",
+      "evidence": "Find the first held configured action key and encode the held modifier keys with the original numeric offsets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uca.f(Z)V",
       "originalName": "f",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_D. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.i(I)V",
+      "originalName": "i",
+      "to": "beginPacket",
+      "evidence": "Require a networked session and write the supplied opcode through the ISAAC packet writer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.m(I)I",
+      "originalName": "m",
+      "to": "getPressedActionHotkey",
+      "evidence": "Find the first newly pressed configured action key using prior keyboard state and encode the original modifier offsets.",
       "confidence": "reviewed"
     },
     {
@@ -42633,6 +43242,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:una.a(BLwm;)V",
+      "originalName": "a",
+      "to": "addCondition",
+      "evidence": "Append condition to currently selected mission event when selection is valid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:una.a(I)V",
+      "originalName": "a",
+      "to": "toggleSelectedConditionNegation",
+      "evidence": "Toggle negation of currently selected condition/item in selected event.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:una.a(IB)Z",
+      "originalName": "a",
+      "to": "isIdAvailable",
+      "evidence": "Returnfalse for ids in reservedIds, otherwise true, including when reservedIds is absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:una.a(IILpe;)V",
+      "originalName": "a",
+      "to": "decrementSelectedItemParameter",
+      "evidence": "Read selected event item parameter, subtract1 and apply it with supplied World context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:una.a(ILbba;)V",
+      "originalName": "a",
+      "to": "addEvent",
+      "evidence": "Append supplied event then rebuild reserved body ids.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:una.a(ILkb;)I",
+      "originalName": "a",
+      "to": "toOpenGlTextureFormat",
+      "evidence": "Map RGB/RGBA/alpha/luminance/depth texture format tokens to native OpenGL external-format constants.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:una.a(ILrsb;)V",
+      "originalName": "a",
+      "to": "processEvents",
+      "evidence": "Iterate current mission event array, evaluate/execute each against supplied snapshot and reset active event index afterwards.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:una.a(Lfaa;Z)V",
       "originalName": "a",
       "to": "readState",
@@ -42640,10 +43298,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:una.a(Lrna;I)V",
+      "originalName": "a",
+      "to": "addAction",
+      "evidence": "Append action to currently selected mission event when selection is valid.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:una.a(Ltv;I)V",
       "originalName": "a",
       "to": "reportDifferences",
       "evidence": "Implemented by World, Ship and Component; prints each field that differs from the other state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:una.a(ZLpe;I)V",
+      "originalName": "a",
+      "to": "incrementSelectedItemParameter",
+      "evidence": "Read selected event item parameter, add1 and apply it with supplied World context.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:una.b(B)V",
+      "originalName": "b",
+      "to": "selectNextItem",
+      "evidence": "Cycle selected condition/action index within current event item count.",
       "confidence": "reviewed"
     },
     {
@@ -42665,6 +43344,48 @@
       "originalName": "b",
       "to": "writeState",
       "evidence": "Serializes state fields into the supplied bit packet buffer; confirmed by SettingsChange, MissionVariable and PlayerVote implementations. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:una.c(B)V",
+      "originalName": "c",
+      "to": "removeEvent",
+      "evidence": "Remove active executing event and adjust iteration index, or remove editor selection and clamp selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:una.c(I)V",
+      "originalName": "c",
+      "to": "createEvent",
+      "evidence": "Append new empty MissionEvent and select its index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:una.d(B)V",
+      "originalName": "d",
+      "to": "rebuildReservedIds",
+      "evidence": "Collect referenced body ids from all event conditions/actions implementing BodyIdReferences.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:una.e(B)V",
+      "originalName": "e",
+      "to": "removeSelectedItem",
+      "evidence": "Remove selected condition/action from selected event and clamp selected item index.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:una.f(B)V",
+      "originalName": "f",
+      "to": "moveSelectedEventUp",
+      "evidence": "Swap selected event with previous entry and decrement selection when possible.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:una.g(B)V",
+      "originalName": "g",
+      "to": "selectNextEvent",
+      "evidence": "Cycle selected event and reset selected condition/action to0.",
       "confidence": "reviewed"
     },
     {
@@ -55279,7 +56000,7 @@
       "build-voidhunters-rules.mjs": "27fec4e29c07779727dcf71b7ccbf5fe7192f97147fd94ab6d90a1df4252b38c",
       "reproduce-voidhunters.mjs": "d166931d08f6ab274d50d2e60dae5ee815aca9510dc1d347a3a1a7488c0c4c4a",
       "voidhunters-diff-names.mjs": "f7928b13a33683097852e5efeb451e5072777f5635a2c1c5e45bb335900df785",
-      "voidhunters-names.json": "8791a7de19b5e4de04cdc9786b67970c61181774f673768d6d61457f256a294b",
+      "voidhunters-names.json": "e94a24b227b58e0cebb9ef18e9179f05551fae5d87a7193e050e8e90daef5c9b",
       "voidhunters-coverage.mjs": "0b6c78523ef2b0271428e9d017570778b20bb985cdeaa6cdadb2fb04c854665a",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
