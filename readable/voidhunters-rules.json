@@ -8655,6 +8655,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:tf",
+      "originalName": "tf",
+      "to": "PolygonAreaEstimator",
+      "evidence": "Only helper estimates signed polygon area using mean-centered,shifted coordinates and adjacent cross products;original omits closing edge and retains int overflow/truncation. Used for mission subdivision/density.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:tfa",
       "originalName": "tfa",
       "to": "Player",
@@ -30040,6 +30047,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bea.a(BLjava/util/Random;[[I)I",
+      "originalName": "a",
+      "to": "findLargestPolygonIndex",
+      "evidence": "Select greatest original centered/shifted polygon-area estimate,with original random fallback and wrong-byte21 result;retain signed comparisons and overflow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(BLpe;[Lwm;[Lanb;)[Lanb;",
+      "originalName": "a",
+      "to": "collectConditionBodies",
+      "evidence": "Collect resolved bodies referenced by BodyDestroyed/BodyInZone conditions through original append helper;retain ordering,missing-body handling and guard cleanup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bea.a(BLtv;)Z",
       "originalName": "a",
       "to": "differsFrom",
@@ -30061,10 +30082,136 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bea.a(IIIILjava/util/Random;Lpe;I)V",
+      "originalName": "a",
+      "to": "createShipDeliveryObjective",
+      "evidence": "Create two target zones and point timers,five neutral ships,zone-delivery scoring and all-targets-destroyed draw event;retain placement retries without resampling their initial angle/radius,guards and event order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bea.a(IIIZ)[[I",
       "originalName": "a",
       "to": "createRectangleOrTriangle",
       "evidence": "Return original centered rectangle outline or its first three vertices as triangle according to boolean; preserve half-size arithmetic and array layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(IILjava/util/Random;[[I)[[I",
+      "originalName": "a",
+      "to": "subdividePolygons",
+      "evidence": "Repeatedly choose largest estimated polygon,cut with original random line and split on exactly two edge intersections;retain interpolation/append order,retry-count growth,seed guard and RNG sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(IILmm;IIZII)V",
+      "originalName": "a",
+      "to": "searchCompatibleLobbyOptions",
+      "evidence": "Recursively search original allowed lobby option/player-count combinations,matching restriction pairs and enabled/current choices;retain global validity/unavailable-option flags,fallback enumeration,early exits and unused lobby parameter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(IILpe;B)[Lanb;",
+      "originalName": "a",
+      "to": "createModuleCollectionObjective",
+      "evidence": "Initialize team module counters,reset/recount body component totals,award victory at100 and add original four AI ships;retain integer placement,guards and returned body array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(IILpe;I)[Lanb;",
+      "originalName": "a",
+      "to": "createReinforcementCaptureObjective",
+      "evidence": "Initialize500-point reinforcement budgets,decrement by spawned component totals,create three resource nodes and periodically drain opposing budget on capture,then add two AI ships;AdjustVariableAction mode1 is original decrement. Retain thresholds,event ordering and parameter guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(IILpe;[Lbba;)[Lanb;",
+      "originalName": "a",
+      "to": "collectEventBodies",
+      "evidence": "Collect condition-referenced world bodies from supplied event suffix using original accumulation helper;retain guard side call and null/array behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(IILuna;)V",
+      "originalName": "a",
+      "to": "addTimedTeamVictoryEvents",
+      "evidence": "Create tick0 configured time-limit initialization in custom variable10,per-tick decrement while>=1 and victory for supplied team when timer<1;retain original labelteam+4,scale,guard and event order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(II[I)[I",
+      "originalName": "a",
+      "to": "expandTerrainTypeArray",
+      "evidence": "Allocate original twice-polygon-count terrain-type vector and copy entire supplied type array before opposite-polygon duplication;retain copy failure behavior and guard cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(II[IIBI)Z",
+      "originalName": "a",
+      "to": "hasPolygonEdgeClearance",
+      "evidence": "Test original angle-dependent clearance circle at candidate against every polygon edge;radius comes from sin(4*angle),and any original intersection result other than-1 fails. Preserve257 handling,integer arithmetic and bad-guard call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(II[Lanb;[Lanb;)I",
+      "originalName": "a",
+      "to": "remapBodyId",
+      "evidence": "Map original body id through aligned original/copied body arrays or retain unmatched id;retain guard lobby-search side call and exact array/null failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(II[Lcq;Lpe;[Lcq;)I",
+      "originalName": "a",
+      "to": "remapMapZoneIndex",
+      "evidence": "Map original world zone index through aligned original/copied zone arrays or retain unmatched index;retain guarded getMapZoneIndex calls and side effects.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(ILjava/util/Random;B[[I)[I",
+      "originalName": "a",
+      "to": "chooseTerrainTypes",
+      "evidence": "Derive original nebula/asteroid/debris/empty weights from options/objective,choose per-polygon types and attempt original minimum-debris overwrites;retain duplicate overwrite behavior,RNG sequence and guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(ILjava/util/Random;IILpe;)[Lanb;",
+      "originalName": "a",
+      "to": "createEscortObjective",
+      "evidence": "Create team0 AI target,per-player surrounding debris and edge destination zone with opposing destroy/arrival victory events;retain original coordinate comparisons,angles and returned debris array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(ILjava/util/Random;Lrsb;)V",
+      "originalName": "a",
+      "to": "swapMissionTeams",
+      "evidence": "Swap original ship/spawn teams,reassign owned ships to random eligible player or AI and swap selected event team parameters/labels;retain original conditions,guard and mutation order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(ILjava/util/Random;Lrsb;BI)V",
+      "originalName": "a",
+      "to": "createTeamShipTargetObjective",
+      "evidence": "Create original preset4 team1 target,assign random eligible owner or AI and add its destruction victory event for team0;retain original orientation,placement and arithmetic guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(ILjava/util/Random;[IB)I",
+      "originalName": "a",
+      "to": "chooseWeightedIndex",
+      "evidence": "Choose original random integer within supplied total then subtract weights until selected bucket;retain default0 for unmatched total,negative/overflow behavior and arithmetic guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(ILpe;IILjava/util/Random;I)V",
+      "originalName": "a",
+      "to": "createRandomBlueprintTargetObjective",
+      "evidence": "Add reinforcement-limit events,decode one random built-in blueprint as team1 AI target and award team0 victory on its destruction;retain original settings/time inputs,catch/print behavior and seed guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(ILpe;[Lcq;)[Lcq;",
+      "originalName": "a",
+      "to": "duplicateRotatedMapZones",
+      "evidence": "Copy supplied zones into world at180-degree-rotated rectangle origins(-x-width,-y-height),return aligned copies;retain bad-guard null and append order.",
       "confidence": "reviewed"
     },
     {
@@ -30075,10 +30222,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bea.a(IZILjava/util/Random;Lrsb;)V",
+      "originalName": "a",
+      "to": "populateObjectiveEntitiesAndEvents",
+      "evidence": "Dispatch original objective builders,then for symmetric objectives duplicate selected bodies,zones and newly generated events with remapped references;retain objective IDs,eligibility counts,phase order and copy gating.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bea.a(IZLjava/util/Random;Lrsb;I)V",
       "originalName": "a",
       "to": "populateMissionWorld",
       "evidence": "Set the World objective type from the voted objective, initialize nebula/terrain/objective state and apply original team-swap conditions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(IZLpe;)V",
+      "originalName": "a",
+      "to": "setWorldDimensionsFromOptions",
+      "evidence": "Compute original width/height using objective-specific defaults and options14..17,apply minimums and set world dimensions;retain integer arithmetic and guard cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(I[Lbba;[Lcq;[Lcq;Lpe;[Lanb;B[Lanb;)V",
+      "originalName": "a",
+      "to": "duplicateOppositeTeamEvents",
+      "evidence": "Copy supplied event suffix,remap BodyDestroyed/BodyInZone body+zone references and swap victory team parameters,then append copies;retain exact supported condition/action types,guard and ordering.",
       "confidence": "reviewed"
     },
     {
@@ -30089,10 +30257,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bea.a(Ljava/util/Random;ILpe;)V",
+      "originalName": "a",
+      "to": "spawnNeutralAiFleets",
+      "evidence": "Create original0..4 paired neutral AI fleets at opposite centers,using option29/30 and original collision/range/retry logic;retain all RNG calls,clamps and guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(Ljava/util/Random;Lpe;[[II[I)V",
+      "originalName": "a",
+      "to": "populateAsteroidsAndDebris",
+      "evidence": "Populate type1 polygons with collision-checked asteroids and type2 with weighted component debris influenced by options20..28;retain area estimate,excluded types,paired-type substitutions,retries and RNG/guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(Ljava/util/Random;[[IBII)[I",
+      "originalName": "a",
+      "to": "chooseTerrainTypesForObjective",
+      "evidence": "Wrap terrain-type selection and original objective8 debris/empty center-radius adjustment;retain erroneous repeated polygon[var8] lookup in inner relocation loop,all thresholds and bad-byte call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(Ljava/util/Random;[[I[III)[I",
+      "originalName": "a",
+      "to": "chooseWeightedPolygonTypes",
+      "evidence": "Allocate one type per polygon and choose weighted indices using supplied weights/total;retain length-only polygon use and guard side call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(Ljava/util/Random;[[I[ILpe;ZI)V",
+      "originalName": "a",
+      "to": "populateNebulae",
+      "evidence": "Sample original type0 polygon bounds,check interior/edge clearance and add nebulae with supplied mode;retain area-estimate density,attempt counts,RNG calls and guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(Lpe;I)V",
+      "originalName": "a",
+      "to": "rebuildNebulae",
+      "evidence": "Recreate deterministic nebula terrain from retained seed/objective/options without asteroid/debris creation,then replay saved clearance areas;World calls when nebula field absent. Retain guard and all iteration order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(Lpe;II)V",
+      "originalName": "a",
+      "to": "addTimedWinnerEvents",
+      "evidence": "Initialize original300-second custom timer10,label it, decrement while>=1 and award victory to current winner at expiry;retain otherwise-unused parameter,guard-dependent calls and event order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(Lpe;III)V",
+      "originalName": "a",
+      "to": "createDataArrayScoringObjective",
+      "evidence": "Initialize opposing15000-point counters and decrement opponent while team holds component47 Data array,award victory at zero and spawn neutral Data array debris;component label traced through original registration table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(Lpe;IIIIII)V",
+      "originalName": "a",
+      "to": "addReinforcementLimitEvents",
+      "evidence": "Initialize per-team reinforcement counters from half eligible-player count,consume on ship spawn,clamp belowzero and award victory when depleted with no ships;optionally add original shared timer. Retain original labels,thresholds,guards and event order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bea.a(Lrna;ILpe;I)V",
       "originalName": "a",
       "to": "swapActionTeamParameter",
       "evidence": "Read original mission-action parameter,swap only values0/1 through retained helper and store it; other parameter values unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(Lrsb;IILjava/util/Random;)I",
+      "originalName": "a",
+      "to": "chooseRandomTeamPlayerIndex",
+      "evidence": "Choose uniform original eligible selected-team player index,allowing disconnected players only under original setting;return-1 when none and retain bad-guard call/RNG order.",
       "confidence": "reviewed"
     },
     {
@@ -30103,10 +30341,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bea.a(Lrsb;[Lanb;BLjava/util/Random;)[Lanb;",
+      "originalName": "a",
+      "to": "duplicateOppositeTeamBodies",
+      "evidence": "Copy ships/debris at opposite positions and angles+4096;swap ship teams and reassign owned ships to eligible opposite-team player or AI;retain trail mutability,type filters,RNG and guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bea.a(Ltv;I)V",
       "originalName": "a",
       "to": "reportDifferences",
       "evidence": "Implemented by World, Ship and Component; prints each field that differs from the other state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(Luna;B)I",
+      "originalName": "a",
+      "to": "findTeamWithoutVictoryAction",
+      "evidence": "Scan team0/1 victory-action references;return sole missing team,-2 if both missing or-1 if neither/no event array. Preserve exact sentinel progression and guard.",
       "confidence": "reviewed"
     },
     {
@@ -30117,6 +30369,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bea.a(ZIIZLpe;ZLjava/util/Random;)V",
+      "originalName": "a",
+      "to": "generateTerrain",
+      "evidence": "Create rectangle/triangle,subdivide polygons,choose terrain types and optionally duplicate opposite polygons/types,then populate nebulae and optional asteroids/debris and retain debug polygons;preserve flags,RNG,guards and ordering.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bea.a(ZLdmb;)V",
       "originalName": "a",
       "to": "addClearanceArea",
@@ -30124,10 +30383,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bea.a(ZLjava/util/Random;Lpe;I)V",
+      "originalName": "a",
+      "to": "ensureTimedVictoryEvents",
+      "evidence": "If original mode permits and exactly one team lacks explicit victory action,add configured timed victory events for that team;retain unused Random parameter,guarded control lookup and early returns.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a(ZZLpe;)V",
+      "originalName": "a",
+      "to": "createTeamSpawnPoints",
+      "evidence": "Create original four spawn points per team in two-by-two layout,with alternate spacing/center mode and world clamps;retain integer ordering and wrong-bool side call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a([II)I",
+      "originalName": "a",
+      "to": "sumWeights",
+      "evidence": "Sum original integer weight array without widening or validation;retain overflow and wrong-guard reference cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a([III)Z",
+      "originalName": "a",
+      "to": "isPolygonCenterWithinRadius",
+      "evidence": "Test approximate distance from origin to polygon bounding-box center strictly below supplied radius;retain integer midpoint truncation and bad-guard seed mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a([Lbba;Lpe;IZ)[Lcq;",
+      "originalName": "a",
+      "to": "collectEventMapZones",
+      "evidence": "Collect BodyInZone-referenced world zones from supplied event suffix;retain original accumulation order,null behavior and false-guard clearance insertion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a([Lwm;[Lcq;ILpe;)[Lcq;",
+      "originalName": "a",
+      "to": "collectConditionMapZones",
+      "evidence": "Append resolved zones referenced by BodyInZone conditions using original append helper;retain missing-zone behavior,order and wrong-guard null result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.a([[I[IIB)[[I",
+      "originalName": "a",
+      "to": "duplicateRotatedPolygons",
+      "evidence": "Append original requested prefix of polygons with coordinates negated and copy terrain type into supplied extended vector;retain existing array references,iteration/order and wrong-byte null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bea.b(BLtv;)V",
       "originalName": "b",
       "to": "copyTo",
       "evidence": "Copies this instance state into the supplied destination; confirmed by assignments in SettingsChange, MissionVariable and PlayerVote. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bea.b(IILpe;I)[Lanb;",
+      "originalName": "b",
+      "to": "createAiShipTargetObjective",
+      "evidence": "Create original preset1 team1 AI target and award team0 victory on destruction;retain arithmetic guard and original null return rather than returning created ship.",
       "confidence": "reviewed"
     },
     {
@@ -34128,6 +34443,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dmb.a(Lpe;Z)V",
+      "originalName": "a",
+      "to": "clearNebulae",
+      "evidence": "Clear retained nebulae according to saved clearance area;circle removes radius and rectangle retains original x+width/2,y+height/2 argument calculations. Propagate contract to both reviewed overrides without geometry fixes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dmb.a(Ltv;I)V",
       "originalName": "a",
       "to": "reportDifferences",
@@ -35721,6 +36043,13 @@
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ela.a(B[I)[I",
+      "originalName": "a",
+      "to": "getPolygonBounds",
+      "evidence": "Return original minX,maxX,minY,maxY over coordinate pairs;retain empty-array extrema,odd-length failure and bad-byte recursion.",
       "confidence": "reviewed"
     },
     {
@@ -60021,6 +60350,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ptb.a(Lpe;Z)V",
+      "originalName": "a",
+      "to": "clearNebulae",
+      "evidence": "Clear retained nebulae according to saved clearance area;circle removes radius and rectangle retains original x+width/2,y+height/2 argument calculations. Propagate contract to both reviewed overrides without geometry fixes. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ptb.a(Ltv;I)V",
       "originalName": "a",
       "to": "reportDifferences",
@@ -63210,6 +63546,13 @@
       "originalName": "a",
       "to": "readState",
       "evidence": "Deserializes state fields from the supplied bit packet buffer, including integer fields and one-bit booleans. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rgb.a(Lpe;Z)V",
+      "originalName": "a",
+      "to": "clearNebulae",
+      "evidence": "Clear retained nebulae according to saved clearance area;circle removes radius and rectangle retains original x+width/2,y+height/2 argument calculations. Propagate contract to both reviewed overrides without geometry fixes. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -67249,6 +67592,13 @@
       "originalName": "l",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_b; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tf.a(II[I)I",
+      "originalName": "a",
+      "to": "estimateArea",
+      "evidence": "Compute original signed mean-centered shifted adjacent-edge cross-product sum/2,omitting closing edge;retain int overflow,empty/odd-array failures and guard recursion.",
       "confidence": "reviewed"
     },
     {
@@ -84725,10 +85075,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-voidhunters-rules.mjs": "3f4bc5760371b2a34f9809229beb09feedaf50ddd00e2c86278f2586fa291f75",
+      "build-voidhunters-rules.mjs": "a9e53b6145e5e7ac8f170225f3e8bc5db9e678db8c735a531b9216c472de99cb",
       "reproduce-voidhunters.mjs": "d166931d08f6ab274d50d2e60dae5ee815aca9510dc1d347a3a1a7488c0c4c4a",
       "voidhunters-diff-names.mjs": "f7928b13a33683097852e5efeb451e5072777f5635a2c1c5e45bb335900df785",
-      "voidhunters-names.json": "1fc46ab74b7d13241e27afb5836da9de2a5c4eff1f885d90f1abad85bfd52864",
+      "voidhunters-names.json": "27a3aa184ddc59185269ebfe03a10ef767eb87f4c5b2bf46c38610c9cff65a2e",
       "voidhunters-coverage.mjs": "0b6c78523ef2b0271428e9d017570778b20bb985cdeaa6cdadb2fb04c854665a",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
