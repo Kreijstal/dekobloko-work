@@ -1137,6 +1137,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:br",
+      "originalName": "br",
+      "to": "IntegerArrayReadRequest",
+      "evidence": "Queued read request supplies a byte-sized record type and an int array filled in place by the original record reply handler.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:brb",
       "originalName": "brb",
       "to": "SetSpinningBladeAimarc",
@@ -1764,6 +1771,13 @@
       "originalName": "dn",
       "to": "SetCountermeasureLauncherAimspeed",
       "evidence": "Developer console command registered by name \"SetCountermeasureLauncherAimspeed\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:dnb",
+      "originalName": "dnb",
+      "to": "ClientDataWriteRequest",
+      "evidence": "Queued clientdata write retains the submitted bytes and payload CRC matched by the server acknowledgement.",
       "confidence": "reviewed"
     },
     {
@@ -3426,6 +3440,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ifa",
+      "originalName": "ifa",
+      "to": "HighscoreValueRequest",
+      "evidence": "Queued highscore operation matched by the type1 reply id;preserve the original read-and-ignore handling of its returned long.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ifb",
       "originalName": "ifb",
       "to": "FighterBayWeaponDefinition",
@@ -3500,6 +3521,13 @@
       "originalName": "ijb",
       "to": "GetMassDriverProjectileOndamageParticles",
       "evidence": "Developer console command registered by name \"GetMassDriverProjectileOndamageParticles\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ik",
+      "originalName": "ik",
+      "to": "IntegerRecordWriteRequest",
+      "evidence": "Queued record write supplies a byte-sized type,signed-smart record id and four integer payload values;acknowledgement matches type/id.",
       "confidence": "reviewed"
     },
     {
@@ -3906,6 +3934,13 @@
       "originalName": "jl",
       "to": "SetClientSideDragging",
       "evidence": "Developer console command registered by name \"SetClientSideDragging\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jla",
+      "originalName": "jla",
+      "to": "UiToggleButton",
+      "evidence": "Focusable UI control toggles its active flag before invoking the existing base action callback;retain unrelated clientdata factory on its original owner.",
       "confidence": "reviewed"
     },
     {
@@ -4333,6 +4368,13 @@
       "originalName": "koa",
       "to": "RangeTextureOperation",
       "evidence": "Scale input by upper-minus-lower then add the decoded lower bound; factory operation30.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kob",
+      "originalName": "kob",
+      "to": "ClientDataReadRequest",
+      "evidence": "Queued clientdata read retains reply bytes and a completion flag,consumed by PlayerGameData loading.",
       "confidence": "reviewed"
     },
     {
@@ -6454,6 +6496,13 @@
       "originalName": "qmb",
       "to": "GetSpinningBladeAimspeed",
       "evidence": "Developer console command registered by name \"GetSpinningBladeAimspeed\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qn",
+      "originalName": "qn",
+      "to": "HighscoreTableRequest",
+      "evidence": "Queued type0 highscore request retains its reply id,row limit and value-column count consumed by the original HS reply decoder.",
       "confidence": "reviewed"
     },
     {
@@ -8830,6 +8879,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ahb.field_o:Lij;",
+      "originalName": "field_o",
+      "to": "pendingClientDataWrites",
+      "evidence": "Queued write requests traversed on resend and acknowledgement matching.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:aia.field_h:I",
       "originalName": "field_h",
       "to": "width",
@@ -9107,6 +9163,13 @@
       "originalName": "field_c",
       "to": "lines",
       "evidence": "Retained line geometry traversed by height,right-edge and caret hit-testing helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ar.field_d:Z",
+      "originalName": "field_d",
+      "to": "playerGameDataLoaded",
+      "evidence": "Flag set after applying the player clientdata and checked before starting another load.",
       "confidence": "reviewed"
     },
     {
@@ -9453,10 +9516,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:br.field_d:[I",
+      "originalName": "field_d",
+      "to": "values",
+      "evidence": "Array filled in place by the type0 reply,with the original byte-count limit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:br.field_e:I",
+      "originalName": "field_e",
+      "to": "recordType",
+      "evidence": "Byte-sized type written in the read request.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bva.field_f:[Lqma;",
       "originalName": "field_f",
       "to": "streams",
       "evidence": "Reviewed socket worker, native vertex/index buffer and vertex declaration implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ca.field_p:Lij;",
+      "originalName": "field_p",
+      "to": "pendingIntegerArrayReads",
+      "evidence": "FIFO queue traversed for array-read resends and consumed by read replies.",
       "confidence": "reviewed"
     },
     {
@@ -9702,6 +9786,13 @@
       "originalName": "field_yb",
       "to": "textWidget",
       "evidence": "Constructor creates this child only when text is supplied.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:cnb.field_q:Lij;",
+      "originalName": "field_q",
+      "to": "pendingClientDataReads",
+      "evidence": "Queued read requests traversed on resend and consumed in reply order.",
       "confidence": "reviewed"
     },
     {
@@ -10136,6 +10227,20 @@
       "originalName": "field_l",
       "to": "blurRedSums",
       "evidence": "Reviewed complete BitmapFont layout/style/glyph drawing and SoftwareRasterizer2D pixel operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dnb.field_d:I",
+      "originalName": "field_d",
+      "to": "payloadCrc",
+      "evidence": "CRC read back from the outgoing packet and matched by the write acknowledgement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:dnb.field_e:[B",
+      "originalName": "field_e",
+      "to": "data",
+      "evidence": "Bytes submitted by construction and serialized by the write helper.",
       "confidence": "reviewed"
     },
     {
@@ -11028,6 +11133,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fjb.field_c:Lkob;",
+      "originalName": "field_c",
+      "to": "playerGameDataRequest",
+      "evidence": "Current read request polled while loading PlayerGameData.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fka.field_d:Lml;",
       "originalName": "field_d",
       "to": "first",
@@ -11784,6 +11896,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gtb.field_d:Lij;",
+      "originalName": "field_d",
+      "to": "activeLoopingSounds",
+      "evidence": "Playback queue of looping spatial sound records refreshed per frame and faded/unlinked when no longer refreshed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gva.field_b:Ljava/lang/String;",
       "originalName": "field_b",
       "to": "message",
@@ -12246,6 +12365,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ifa.field_i:I",
+      "originalName": "field_i",
+      "to": "id",
+      "evidence": "Unsigned-short reply id matched before reading the original ignored long value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ih.field_c:I",
       "originalName": "field_c",
       "to": "shipId",
@@ -12369,6 +12495,20 @@
       "originalName": "field_h",
       "to": "width",
       "evidence": "Stored sprite width used by row traversal and horizontal clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ik.field_f:I",
+      "originalName": "field_f",
+      "to": "recordType",
+      "evidence": "Byte-sized type written in the request and matched by its acknowledgement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ik.field_g:I",
+      "originalName": "field_g",
+      "to": "recordId",
+      "evidence": "Signed-smart id written in the request and matched by its acknowledgement.",
       "confidence": "reviewed"
     },
     {
@@ -13149,6 +13289,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kob.field_d:Z",
+      "originalName": "field_d",
+      "to": "complete",
+      "evidence": "Set true when the read reply is accepted,before unlinking its request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kob.field_f:[B",
+      "originalName": "field_f",
+      "to": "data",
+      "evidence": "Clientdata reply bytes retained after successful CRC validation;may be null for an empty payload.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kra.field_a:[I",
       "originalName": "field_a",
       "to": "quarterSine",
@@ -13741,6 +13895,13 @@
       "originalName": "field_g",
       "to": "toolkit",
       "evidence": "Reviewed socket worker, native vertex/index buffer and vertex declaration implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mhb.field_o:Lij;",
+      "originalName": "field_o",
+      "to": "pendingIntegerRecordWrites",
+      "evidence": "Queue traversed for record-write resends and type/id acknowledgement lookup.",
       "confidence": "reviewed"
     },
     {
@@ -14420,6 +14581,13 @@
       "originalName": "field_x",
       "to": "officialHost",
       "evidence": "Whether the code-base host is jagex.com or a subdomain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ms.field_y:Lij;",
+      "originalName": "field_y",
+      "to": "activeOneShotSounds",
+      "evidence": "Playback queue of one-shot sound records,pruned when their PcmStream handles are no longer linked.",
       "confidence": "reviewed"
     },
     {
@@ -16912,6 +17080,27 @@
       "originalName": "field_b",
       "to": "attributeCount",
       "evidence": "Reviewed socket worker, native vertex/index buffer and vertex declaration implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qn.field_e:I",
+      "originalName": "field_e",
+      "to": "id",
+      "evidence": "Unsigned-short reply id matched by the highscore table decoder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qn.field_g:I",
+      "originalName": "field_g",
+      "to": "columnCount",
+      "evidence": "Number of integer score columns read per table row.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qn.field_i:I",
+      "originalName": "field_i",
+      "to": "rowLimit",
+      "evidence": "Size of each decoded table category and limit applied to the first result category.",
       "confidence": "reviewed"
     },
     {
@@ -20468,6 +20657,13 @@
       "originalName": "a",
       "to": "encodeCp1252Character",
       "evidence": "Pass ASCII1..127/Latin1 160..255 directly,map Windows-1252 extensions to signed bytes,and replace unsupported characters with63; retain the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aeb.a(IILik;)V",
+      "originalName": "a",
+      "to": "sendIntegerRecordWrite",
+      "evidence": "Write original opcode/write-operation1,type,record id and four values,append CRC and byte length,retaining the exact payload order.",
       "confidence": "reviewed"
     },
     {
@@ -25952,6 +26148,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dnb.c(B)Ltja;",
+      "originalName": "c",
+      "to": "readCarouselState",
+      "evidence": "Reset the shared state buffer,create the configured CarouselSlot state and read its compact or ordinary representation with the original bit-read boundaries.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dob.a([IB[I)[I",
       "originalName": "a",
       "to": "copyIntsReusingArray",
@@ -26236,6 +26439,13 @@
       "originalName": "a",
       "to": "getMonochromeRow",
       "evidence": "Monochrome output contract; the base throws when that output is unavailable. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:drb.a(ZI)Lkob;",
+      "originalName": "a",
+      "to": "requestClientData",
+      "evidence": "Create/queue a read request and send its original opcode/operation bytes,retaining the false guard result.",
       "confidence": "reviewed"
     },
     {
@@ -27142,6 +27352,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eg.e(B)V",
+      "originalName": "e",
+      "to": "savePlayerGameData",
+      "evidence": "When the original network/session gates permit,encode PlayerGameData,retain blueprint filtering and200-byte limit,and submit the resulting clientdata bytes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ega.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -27272,6 +27489,13 @@
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ejb.a(I)V",
+      "originalName": "a",
+      "to": "handleHighscoreReply",
+      "evidence": "Match table/value replies to queued requests,read original names/scores/columns and unlink completed requests;retain discarded intermediate result arrays and all failure paths.",
       "confidence": "reviewed"
     },
     {
@@ -27891,6 +28115,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eva.a(Lbr;II)V",
+      "originalName": "a",
+      "to": "sendIntegerArrayRead",
+      "evidence": "Write the original opcode,length2,read-operation0 and record-type byte for the supplied array request.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eva.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -28063,6 +28294,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_b; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fab.a(I[B)V",
+      "originalName": "a",
+      "to": "loadPlayerGameData",
+      "evidence": "Decode/validate PlayerGameData bytes,retain corrupt-data fallback and version rejection,then install the state and invoke its existing follow-up.",
       "confidence": "reviewed"
     },
     {
@@ -33386,6 +33624,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ik.a(I)[I",
+      "originalName": "a",
+      "to": "captureSettingsValues",
+      "evidence": "Return the original235-entry static settings snapshot used by SettingsInstance initialization,retaining all original indices,aliases and guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ika.a(BLtv;)Z",
       "originalName": "a",
       "to": "differsFrom",
@@ -35091,6 +35336,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_B; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jla.a([BBI)Ldnb;",
+      "originalName": "a",
+      "to": "submitClientData",
+      "evidence": "Create and queue a write request for the supplied bytes,then send it through the original CRC-framed helper.",
       "confidence": "reviewed"
     },
     {
@@ -37124,10 +37376,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kob.a(BIIII)V",
+      "originalName": "a",
+      "to": "drawHighlightedBounds",
+      "evidence": "Draw the original GPU pulsing boundary guides or nested software outlines around the supplied bounds.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kob.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_e; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kob.a(II)I",
+      "originalName": "a",
+      "to": "alignToEight",
+      "evidence": "Round the supplied integer up to a multiple of8 using the original guard and integer arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -39151,6 +39417,13 @@
       "originalName": "a",
       "to": "renderShapes",
       "evidence": "Install the supplied target and clipping bounds,then dispatch fill/outline/combined drawing according to each shape color sentinel; preserve target-state sharing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.b(II)V",
+      "originalName": "b",
+      "to": "resendIntegerRecordRequests",
+      "evidence": "Traverse pending integer writes then array reads and resend each through its existing serializer.",
       "confidence": "reviewed"
     },
     {
@@ -41240,10 +41513,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ms.e(B)V",
+      "originalName": "e",
+      "to": "enableClientDataReplies",
+      "evidence": "Enable common reply opcode5,whose read/write operations resolve the clientdata request queues.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ms.e(I)V",
       "originalName": "e",
       "to": "dispatchCommonServerPacket",
       "evidence": "Validate the received common opcode against the allowed mask and dispatch its original handler;preserve unknown-packet logging/disconnection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.e(Z)V",
+      "originalName": "e",
+      "to": "enableIntegerRecordReplies",
+      "evidence": "Set common reply opcode4 enablement,whose handler resolves the integer read/write queues.",
       "confidence": "reviewed"
     },
     {
@@ -42948,6 +43235,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nv.a(BLdnb;I)V",
+      "originalName": "a",
+      "to": "sendClientDataWrite",
+      "evidence": "Write the supplied opcode,write-operation1,payload length/bytes and CRC;retain the CRC on the request for acknowledgement matching.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nv.a(I)V",
       "originalName": "a",
       "to": "detachFromFramebuffer",
@@ -44198,6 +44492,13 @@
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ogb.a(I)V",
+      "originalName": "a",
+      "to": "handleIntegerRecordReply",
+      "evidence": "Fill/unlink the first array-read request or match/unlink a write by type/id;preserve the original unusual byte-to-int shift expression and all failure paths.",
       "confidence": "reviewed"
     },
     {
@@ -48863,6 +49164,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qf.a(IB)V",
+      "originalName": "a",
+      "to": "resendClientDataRequests",
+      "evidence": "Resend pending clientdata writes and reads in their original queue order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qf.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -50172,10 +50480,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qn.a(CBLjava/lang/CharSequence;)I",
+      "originalName": "a",
+      "to": "countOccurrences",
+      "evidence": "Count exact occurrences of the supplied character across the CharSequence,retaining the original guard result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qn.a(IB)Z",
+      "originalName": "a",
+      "to": "isVoteOptionVisible",
+      "evidence": "Require original available-or-coming-soon eligibility and current-mode allowance;GameSession uses this predicate before adding option widgets.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qn.a(Z)V",
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_d, field_h. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qn.c(B)V",
+      "originalName": "c",
+      "to": "initializeSoundQueues",
+      "evidence": "Create the existing one-shot/looping playback queues and shared RNG,retaining guard-triggered option checks.",
       "confidence": "reviewed"
     },
     {
@@ -51240,6 +51569,13 @@
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rl.b(Z)V",
+      "originalName": "b",
+      "to": "updatePlayerGameDataLoading",
+      "evidence": "Start a clientdata read if needed,poll completion,decode/apply returned PlayerGameData and mark loading complete before existing follow-ups.",
       "confidence": "reviewed"
     },
     {
@@ -55034,6 +55370,13 @@
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tma.e(B)V",
+      "originalName": "e",
+      "to": "handleClientDataReply",
+      "evidence": "For reads validate CRC,retain bytes and signal/unlink the first request;for writes find/unlink the request by its payload CRC;preserve unknown-reply failures.",
       "confidence": "reviewed"
     },
     {
@@ -60081,6 +60424,13 @@
       "originalName": "a",
       "to": "setSessionCookie",
       "evidence": "Retain the session String,write the original cookieprefix/cookiehost session cookie through JavaScript and invoke the existing session follow-up;preserve empty-cookie expiry and swallowed failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wva.b(II)V",
+      "originalName": "b",
+      "to": "sendClientDataRead",
+      "evidence": "Write the supplied ISAAC opcode followed by the original length1 and read-operation0 bytes.",
       "confidence": "reviewed"
     },
     {
@@ -70144,10 +70494,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-voidhunters-rules.mjs": "4d10c6a632721bec3a4cdd87c66ced54691f48426495fa6e6d51c8b8f97b9b8a",
+      "build-voidhunters-rules.mjs": "664b81fa576820281bb87ee5dd4b8ff7abbd9d329fbd5ccb4fea23ba7034f53d",
       "reproduce-voidhunters.mjs": "d166931d08f6ab274d50d2e60dae5ee815aca9510dc1d347a3a1a7488c0c4c4a",
       "voidhunters-diff-names.mjs": "f7928b13a33683097852e5efeb451e5072777f5635a2c1c5e45bb335900df785",
-      "voidhunters-names.json": "94ecc99ff443cb5c47a9dbfa15fb01c3f1ba5d2b86c662c0ec5a0fa3b4cdba26",
+      "voidhunters-names.json": "0f3c4baaaa9d3c291423fb9a0d2333df490a77f3a8e94fd7adf936c40922689d",
       "voidhunters-coverage.mjs": "0b6c78523ef2b0271428e9d017570778b20bb985cdeaa6cdadb2fb04c854665a",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
