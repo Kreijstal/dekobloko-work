@@ -2446,6 +2446,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:feb",
+      "originalName": "feb",
+      "to": "ToolkitRasterStateCache",
+      "evidence": "Returns cached per-toolkit clip/render-target stack,checking original toolkit identity and retaining fast last-used cache.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ff",
       "originalName": "ff",
       "to": "GetAutozoomAmountMultiply",
@@ -3741,6 +3748,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:im",
+      "originalName": "im",
+      "to": "OpenGlSpriteTexture",
+      "evidence": "OpenGlTexture2D specialization retains logical image size and U/V bounds for full,rectangle or power-of-two-padded sprite textures.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ima",
       "originalName": "ima",
       "to": "IndexedSpriteData",
@@ -4543,6 +4557,13 @@
       "originalName": "kkb",
       "to": "GetWaitForPlayers",
       "evidence": "Developer console command registered by name \"GetWaitForPlayers\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kla",
+      "originalName": "kla",
+      "to": "ToolkitRasterStateStack",
+      "evidence": "Retains renderer clip/render-target frames and a reusable frame pool;pushes clip/targets and restores previous framebuffer/clip on pop.",
       "confidence": "reviewed"
     },
     {
@@ -6247,6 +6268,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ot",
+      "originalName": "ot",
+      "to": "LoginFormNavigation",
+      "evidence": "Static empty-credential-form transition helper;unrelated original strings remain on owner.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ota",
       "originalName": "ota",
       "to": "VorbisFloor",
@@ -6569,6 +6597,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pr",
+      "originalName": "pr",
+      "to": "SecondaryNodeHashTable",
+      "evidence": "Masked buckets with DualLinkNode secondaryPrevious/Next/key,duplicate-key lookup continuation and retained full-table iteration cursor.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pra",
       "originalName": "pra",
       "to": "GetMissionTimeLimit",
@@ -6790,6 +6825,13 @@
       "originalName": "qg",
       "to": "LegacyOpenGlMaterialEffect",
       "evidence": "Legacy OpenGlToolkit effect contract;manager selects enable/disable,render state,parameters,texture and support operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qgb",
+      "originalName": "qgb",
+      "to": "ToolkitRasterStateCacheEntry",
+      "evidence": "Intrusive cache entry retains toolkit identity and its raster-state stack.",
       "confidence": "reviewed"
     },
     {
@@ -7283,6 +7325,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:rla",
+      "originalName": "rla",
+      "to": "GuestPlayNoticePanel",
+      "evidence": "Shown by Just play control;original notice explains account benefits and offers Create account,Go Back and Just play controls.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rm",
       "originalName": "rm",
       "to": "EmailSyntaxValidator",
@@ -7637,6 +7686,13 @@
       "originalName": "sj",
       "to": "SetSalvoUsesAllEnergy",
       "evidence": "Developer console command registered by name \"SetSalvoUsesAllEnergy\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sja",
+      "originalName": "sja",
+      "to": "ToolkitRasterState",
+      "evidence": "Linked frame captures original toolkit target and four clip bounds for stack restoration/pooling.",
       "confidence": "reviewed"
     },
     {
@@ -8855,6 +8911,13 @@
       "originalName": "vl",
       "to": "GetMassDriverFireForce",
       "evidence": "Developer console command registered by name \"GetMassDriverFireForce\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vla",
+      "originalName": "vla",
+      "to": "LoginForm",
+      "evidence": "Credential text fields labelled Login/Password,submit button,optional account/guest/back actions and disabled-name reconnect mode.",
       "confidence": "reviewed"
     },
     {
@@ -13842,6 +13905,104 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:im.field_l:Z",
+      "originalName": "field_l",
+      "to": "fullNormalizedCoordinates",
+      "evidence": "Original constructor flag true for full-size normalized2D coordinates and false for rectangle/padded cases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:im.field_m:I",
+      "originalName": "field_m",
+      "to": "logicalWidth",
+      "evidence": "Original image width retained separately from inherited allocated texture width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:im.field_n:F",
+      "originalName": "field_n",
+      "to": "uMax",
+      "evidence": "Full2D1.0,rectangle pixel width,or logical/allocated width ratio.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:im.field_o:F",
+      "originalName": "field_o",
+      "to": "vMax",
+      "evidence": "Full2D1.0,rectangle pixel height,or logical/allocated height ratio.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:im.field_p:I",
+      "originalName": "field_p",
+      "to": "logicalHeight",
+      "evidence": "Original image height retained separately from inherited allocated texture height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ima.field_a:[B",
+      "originalName": "field_a",
+      "to": "alpha",
+      "evidence": "Optional per-pixel alpha plane,discarded by original decoder if every alpha byte is255.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ima.field_b:[I",
+      "originalName": "field_b",
+      "to": "palette",
+      "evidence": "Shared RGB palette used by unsigned pixel indices;retain original zero substitution for nonzero palette entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ima.field_c:I",
+      "originalName": "field_c",
+      "to": "leftPadding",
+      "evidence": "Original left offset within padded canvas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ima.field_d:I",
+      "originalName": "field_d",
+      "to": "bottomPadding",
+      "evidence": "Full canvas height minus height and top padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ima.field_e:I",
+      "originalName": "field_e",
+      "to": "height",
+      "evidence": "Unpadded pixel height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ima.field_f:I",
+      "originalName": "field_f",
+      "to": "width",
+      "evidence": "Unpadded pixel width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ima.field_g:I",
+      "originalName": "field_g",
+      "to": "topPadding",
+      "evidence": "Original top offset within padded canvas.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ima.field_h:[B",
+      "originalName": "field_h",
+      "to": "pixels",
+      "evidence": "Palette-index byte plane in original row-major output layout.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ima.field_i:I",
+      "originalName": "field_i",
+      "to": "rightPadding",
+      "evidence": "Full canvas width minus width and left padding.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:imb.field_c:I",
       "originalName": "field_c",
       "to": "connectedComponentIdx",
@@ -14644,6 +14805,41 @@
       "originalName": "field_e",
       "to": "midi",
       "evidence": "Reconstructed MIDI file bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kla.field_a:Lsja;",
+      "originalName": "field_a",
+      "to": "freeFrames",
+      "evidence": "Head of reusable frame pool.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kla.field_c:Laja;",
+      "originalName": "field_c",
+      "to": "target",
+      "evidence": "Currently tracked toolkit sprite render target or null default.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kla.field_e:Lsja;",
+      "originalName": "field_e",
+      "to": "frames",
+      "evidence": "Head of captured clip/render-target frame stack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kla.field_f:Lha;",
+      "originalName": "field_f",
+      "to": "toolkit",
+      "evidence": "Graphics toolkit whose clip/render target is managed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kla.field_g:[I",
+      "originalName": "field_g",
+      "to": "clipBounds",
+      "evidence": "Four-element scratch array filled by toolkit getClip.",
       "confidence": "reviewed"
     },
     {
@@ -18462,6 +18658,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pr.field_a:Lfh;",
+      "originalName": "field_a",
+      "to": "lookupNode",
+      "evidence": "Next candidate secondary-chain node for duplicate-key lookup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pr.field_b:J",
+      "originalName": "field_b",
+      "to": "lookupKey",
+      "evidence": "Key retained for duplicate-key continuation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pr.field_e:I",
+      "originalName": "field_e",
+      "to": "iteratorBucket",
+      "evidence": "Next bucket index used by full-table first/next traversal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pr.field_f:I",
+      "originalName": "field_f",
+      "to": "bucketCount",
+      "evidence": "Retained constructor bucket count,masked by original lookup/insert operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pr.field_g:[Lfh;",
+      "originalName": "field_g",
+      "to": "buckets",
+      "evidence": "Array of self-linked DualLinkNode secondary-chain sentinels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pr.field_h:Lfh;",
+      "originalName": "field_h",
+      "to": "iteratorNode",
+      "evidence": "Next secondary-chain node for full-table traversal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ptb.field_d:I",
       "originalName": "field_d",
       "to": "height",
@@ -18942,6 +19180,20 @@
       "originalName": "field_b",
       "to": "toolkit",
       "evidence": "OpenGlToolkit passed to constructor and used by each effect for GL state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qgb.field_d:Lkla;",
+      "originalName": "field_d",
+      "to": "stateStack",
+      "evidence": "Cached raster-state stack associated with retained toolkit identity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qgb.field_e:Lha;",
+      "originalName": "field_e",
+      "to": "toolkit",
+      "evidence": "Retained toolkit identity checked by cache lookup.",
       "confidence": "reviewed"
     },
     {
@@ -19537,6 +19789,27 @@
       "originalName": "field_c",
       "to": "parameterCount",
       "evidence": "Phrase opcode3 uses this value to size and decode the command configuration arguments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rla.field_w:Lhtb;",
+      "originalName": "field_w",
+      "to": "createAccountButton",
+      "evidence": "Original Create a free Account control dispatches account-form transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rla.field_y:Lhtb;",
+      "originalName": "field_y",
+      "to": "backButton",
+      "evidence": "Original Go Back control returns to an empty credential form.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rla.field_z:Lhtb;",
+      "originalName": "field_z",
+      "to": "playGuestButton",
+      "evidence": "Original Just play control dispatches guest-play helper.",
       "confidence": "reviewed"
     },
     {
@@ -20426,6 +20699,48 @@
       "originalName": "field_p",
       "to": "textureYCoordinates",
       "evidence": "Shared normalized Y coordinates built as index*4096/height,aliased to X coordinates for square textures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sja.field_a:I",
+      "originalName": "field_a",
+      "to": "clipBottom",
+      "evidence": "Captured bottom clip bound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sja.field_e:Lsja;",
+      "originalName": "field_e",
+      "to": "next",
+      "evidence": "Next captured frame or next free-pool frame depending on original ownership.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sja.field_f:I",
+      "originalName": "field_f",
+      "to": "clipTop",
+      "evidence": "Captured top clip bound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sja.field_h:I",
+      "originalName": "field_h",
+      "to": "clipLeft",
+      "evidence": "Captured left clip bound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sja.field_k:Laja;",
+      "originalName": "field_k",
+      "to": "target",
+      "evidence": "Captured toolkit sprite render target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sja.field_l:I",
+      "originalName": "field_l",
+      "to": "clipRight",
+      "evidence": "Captured right clip bound.",
       "confidence": "reviewed"
     },
     {
@@ -22512,6 +22827,69 @@
       "originalName": "field_o",
       "to": "activeHintIndex",
       "evidence": "Original active-hint gate selected from positive timers and temporarily overridden for boundary hint.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vla.field_A:Lhtb;",
+      "originalName": "field_A",
+      "to": "alternateButton",
+      "evidence": "Original Back,Just play or Quit to website control selected by mode flags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vla.field_B:Z",
+      "originalName": "field_B",
+      "to": "reconnectMode",
+      "evidence": "Disables login-name field and selects Retry/Quit buttons;constructor rejects combination with alternate account/guest flags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vla.field_F:Z",
+      "originalName": "field_F",
+      "to": "showCreateAccountButton",
+      "evidence": "Enables original additional account-creation control.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vla.field_G:Luf;",
+      "originalName": "field_G",
+      "to": "passwordField",
+      "evidence": "Second text field drawn next to original Password label and passed to login submission helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vla.field_v:Ljava/lang/String;",
+      "originalName": "field_v",
+      "to": "headerMessage",
+      "evidence": "Optional text rendered above credential rows and included in layout height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vla.field_w:Z",
+      "originalName": "field_w",
+      "to": "showGuestOption",
+      "evidence": "Selects original Just play alternate control and corresponding guest action.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vla.field_x:Lhtb;",
+      "originalName": "field_x",
+      "to": "submitButton",
+      "evidence": "Button dispatches credential submission;Retry label in original reconnect mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vla.field_y:Luf;",
+      "originalName": "field_y",
+      "to": "loginField",
+      "evidence": "First text field drawn next to original Login label and passed as name to submit helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vla.field_z:Lhtb;",
+      "originalName": "field_z",
+      "to": "createAccountButton",
+      "evidence": "Optional account-creation control invoking original account-flow helper.",
       "confidence": "reviewed"
     },
     {
@@ -31888,6 +32266,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:feb.a(Lha;Z)Lkla;",
+      "originalName": "a",
+      "to": "getStateStack",
+      "evidence": "Return original last-toolkit fast cache or intrusive toolkit-id entry,replace mismatched identity entry,then retain last result.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ff.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -32795,6 +33180,13 @@
       "originalName": "a",
       "to": "getShortcutKey",
       "evidence": "GameSession uses returned key as existing shortcut-name table index for hint/button label;minus1 retains numeric fallback. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fpa.a(IIZII)V",
+      "originalName": "a",
+      "to": "pushClip",
+      "evidence": "Dispatch original clip push to per-toolkit state stack or software raster stack;retain supplied bounds and recursive guard behavior.",
       "confidence": "reviewed"
     },
     {
@@ -35647,6 +36039,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hka.a(ILjava/awt/Canvas;Z)V",
+      "originalName": "a",
+      "to": "drawGameFrame",
+      "evidence": "Dispatch original loading progress,software clear/draw/presentation or accelerated canvas rendering according to existing state and helpers;retain guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hka.a(Lasb;I)V",
+      "originalName": "a",
+      "to": "initializeSocialWidgets",
+      "evidence": "Load display-name-change sprite and create original Add friend/Remove friend and Add name/Remove name lists plus Name/Location header widgets;retain style/child order and guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hka.a(Z)Z",
       "originalName": "a",
       "to": "requiresPrimaryPress",
@@ -37464,6 +37870,69 @@
       "originalName": "c",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_q; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ima.a()I",
+      "originalName": "a",
+      "to": "getPaddedWidth",
+      "evidence": "Return retained width plus left/right padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ima.a(Lasb;I)Lima;",
+      "originalName": "a",
+      "to": "loadFirst",
+      "evidence": "Fetch original single-file archive entry and return first decoded sprite,retaining null and empty-array behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ima.a(Lasb;II)Lima;",
+      "originalName": "a",
+      "to": "loadFirst",
+      "evidence": "Fetch archive group/file using original argument order and return first decoded sprite,retaining null behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ima.a(Lasb;Ljava/lang/String;Ljava/lang/String;)[Lima;",
+      "originalName": "a",
+      "to": "loadAll",
+      "evidence": "Fetch original named archive entry and decode all sprites,retaining null/name argument behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ima.a([B)[Lima;",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Read original trailing sprite count/dimensions/padding/palette and sequential or column-major index/alpha planes;retain shared palette,zero-color substitution and alpha-elision quirks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ima.b()[I",
+      "originalName": "b",
+      "to": "toArgbPixels",
+      "evidence": "Expand palette indices into padded ARGB array;retain original alpha shifting,palette-zero transparency and row placement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ima.b(Lasb;Ljava/lang/String;Ljava/lang/String;)Lima;",
+      "originalName": "b",
+      "to": "loadFirst",
+      "evidence": "Fetch original named archive entry and return first decoded sprite,retaining original name argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ima.c()I",
+      "originalName": "c",
+      "to": "getPaddedHeight",
+      "evidence": "Return retained height plus top/bottom padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ima.d()V",
+      "originalName": "d",
+      "to": "normalize",
+      "evidence": "Expand pixel indices and optional alpha into padded dimensions,clear all padding and retain original early-return behavior.",
       "confidence": "reviewed"
     },
     {
@@ -40876,6 +41345,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kga.a(I)V",
+      "originalName": "a",
+      "to": "showAccountCreationForm",
+      "evidence": "Construct original AccountCreationForm and transition existing modal content;retain guard mutation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kga.a(IIIZ)[Lphb;",
       "originalName": "a",
       "to": "createBorderedSpriteTiles",
@@ -41202,6 +41678,41 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_b, field_d; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kla.a(IIIIB)V",
+      "originalName": "a",
+      "to": "pushClip",
+      "evidence": "Capture current state and intersect renderer clip with supplied original bounds,retaining guard no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kla.a(Laja;I)V",
+      "originalName": "a",
+      "to": "pushRenderTarget",
+      "evidence": "Delegate original render-target push with false flag;retain original guarded stack mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kla.a(Laja;IZ)V",
+      "originalName": "a",
+      "to": "pushRenderTarget",
+      "evidence": "Capture current clip/target,restore original default framebuffer if target active,bind supplied target with original flag and retain it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kla.a(Z)V",
+      "originalName": "a",
+      "to": "pop",
+      "evidence": "Restore captured framebuffer/target and clip,unlink stack frame and return frame to original reusable pool;retain guarded extra push calls.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kla.b(I)V",
+      "originalName": "b",
+      "to": "pushState",
+      "evidence": "Capture toolkit clip and current target into pooled/new frame,link it only under original guard;preserve wrong-guard allocation behavior.",
       "confidence": "reviewed"
     },
     {
@@ -42668,10 +43179,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lja.a(B)I",
+      "originalName": "a",
+      "to": "getAimArc",
+      "evidence": "Existing ShipComponent.getAimArc delegates here;return original grappling aim-arc setting with guard mutation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lja.a(BLtv;)Z",
       "originalName": "a",
       "to": "differsFrom",
       "evidence": "State comparison contract: SettingsChange and MissionVariable return whether stored values differ; concrete implementations retain their original comparison formulas. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lja.a(II[IIIIIBLpe;ILanb;)V",
+      "originalName": "a",
+      "to": "fireOrRecall",
+      "evidence": "Launch ready hook within original aim tolerance with inherited motion,forces and reload;otherwise start recall of retained live hook,keeping original effects/guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lja.a(ILlta;[IILpe;II)V",
+      "originalName": "a",
+      "to": "drawRope",
+      "evidence": "Project launcher muzzle and current hook into screen space,draw rope with original tension-dependent color and preserve attachment lookups/guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lja.a(ILmqb;)V",
+      "originalName": "a",
+      "to": "startRecall",
+      "evidence": "Set target rope to original minimum if changed,clear grabbed object and set hook retracting;retain original guarded no-op.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lja.a(Lanb;Lpe;IZBII[I)V",
+      "originalName": "a",
+      "to": "update",
+      "evidence": "Update original hook/reload state,rope spring/extension bounds,attachment forces and retraction;retain all original break/damage/disappearance/guard paths.",
       "confidence": "reviewed"
     },
     {
@@ -42682,10 +43228,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lja.a(Lpe;I)V",
+      "originalName": "a",
+      "to": "destroyHook",
+      "evidence": "Apply original hook-destruction helper and clear retained hook id only if world lookup succeeds;retain stale-id behavior otherwise.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lja.a(Ltv;I)V",
       "originalName": "a",
       "to": "reportDifferences",
       "evidence": "Implemented by World, Ship and Component; prints each field that differs from the other state. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lja.b(B)Z",
+      "originalName": "b",
+      "to": "hasNoHook",
+      "evidence": "Return original hook-id-minus1 predicate,retaining guarded true result.",
       "confidence": "reviewed"
     },
     {
@@ -42707,6 +43267,20 @@
       "originalName": "c",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_c; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lja.d(B)I",
+      "originalName": "d",
+      "to": "getAimSpeed",
+      "evidence": "Existing ShipComponent.getAimSpeed delegates here;return original configured grappling aim speed or2048 under original salvoaim1 condition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lja.e(B)V",
+      "originalName": "e",
+      "to": "showLoginForm",
+      "evidence": "Forward null first string and original retained login name to form transition helper;preserve recursive guard path.",
       "confidence": "reviewed"
     },
     {
@@ -45664,6 +46238,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mqb.a(IZ)V",
+      "originalName": "a",
+      "to": "setRetracting",
+      "evidence": "Assign original boolean retracting state with original arithmetic guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mqb.a(Lfaa;B)V",
       "originalName": "a",
       "to": "writeCompactState",
@@ -45706,6 +46287,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mqb.d(IIIII)V",
+      "originalName": "d",
+      "to": "setGrabbedComponent",
+      "evidence": "Store original body id plus1,component path and component-relative offsets only under original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mqb.f(Z)V",
+      "originalName": "f",
+      "to": "clearGrabbedObject",
+      "evidence": "Clear encoded grabbed-object id only;retain old component/offset data and guarded firing-player mutation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mqb.j(B)V",
       "originalName": "j",
       "to": "clearSharedReferences",
@@ -45720,10 +46315,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mqb.l(B)I",
+      "originalName": "l",
+      "to": "getGrabbedObjectId",
+      "evidence": "Decode original stored body id by subtracting1;retain arithmetic guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mqb.l(I)I",
       "originalName": "l",
       "to": "getGrabbedComponentId",
       "evidence": "Body is a single return of the field the state-diff names \"GrabbedComponentId\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mqb.m(I)I",
+      "originalName": "m",
+      "to": "getFiredFromPlayer",
+      "evidence": "Return retained firing-player id with original guarded difference-report call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mqb.n(I)V",
+      "originalName": "n",
+      "to": "destroyHook",
+      "evidence": "Apply original chassis maximum-health scaled damage under original guard;do not replace with entity unlink/removal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mqb.o(I)I",
+      "originalName": "o",
+      "to": "getGrabbedComponentOffsetx",
+      "evidence": "Return retained component-relative X offset with original guard side call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mqb.p(I)I",
+      "originalName": "p",
+      "to": "getFiredFromId",
+      "evidence": "Return retained firing-body id with original guard side call.",
       "confidence": "reviewed"
     },
     {
@@ -50018,6 +50648,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ot.a(I)V",
+      "originalName": "a",
+      "to": "showEmptyLoginForm",
+      "evidence": "Transition to original credential form with empty login-name and null message through existing helper;retain guarded static-string mutation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ot.a(Z)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -53091,10 +53728,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pr.a(I)V",
+      "originalName": "a",
+      "to": "continueAsGuest",
+      "evidence": "Original Just play notice button calls this helper chain;retain original reset call and guarded transition helper invocation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pr.a(IJ)Lfh;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Retain lookup key,scan original masked bucket for matching secondary key and retain next candidate for duplicate-key continuation;preserve original capacity-plus-argument mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pr.a(Lfh;BJ)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Unlink existing secondary chain,insert supplied node before masked-bucket sentinel and retain original secondary key/guard mutation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pr.b(I)V",
       "originalName": "b",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_c. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pr.c(I)Lfh;",
+      "originalName": "c",
+      "to": "first",
+      "evidence": "Reset full-table bucket index then invoke original next helper;retain guarded extra advancement.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pr.d(I)Lfh;",
+      "originalName": "d",
+      "to": "next",
+      "evidence": "Advance retained secondary-link iterator through current bucket then later bucket sentinels;preserve original index/complement guard branch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pr.e(I)Lfh;",
+      "originalName": "e",
+      "to": "getNextSameKey",
+      "evidence": "Continue retained bucket scan after prior lookup for another matching secondary key;null cursor when exhausted,with arithmetic guard.",
       "confidence": "reviewed"
     },
     {
@@ -56472,6 +57151,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rla.c(Z)Z",
+      "originalName": "c",
+      "to": "hasActivePointerPosition",
+      "evidence": "Require original pointer-enable flag and at least one coordinate different from minus1;preserve original either-coordinate condition and guard side call.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rla.i(B)V",
       "originalName": "i",
       "to": "clearSharedReferences",
@@ -58541,6 +59227,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_d, field_j; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sja.a(ILsja;ILaja;III)V",
+      "originalName": "a",
+      "to": "setState",
+      "evidence": "Retain supplied next frame,target and four original clip bounds;preserve original parameter order and guard cleanup.",
       "confidence": "reviewed"
     },
     {
@@ -60826,6 +61519,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:to.e(B)V",
+      "originalName": "e",
+      "to": "showGuestPlayNotice",
+      "evidence": "Transition existing modal content to account-benefits/guest-choice notice under original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:toa.a(I)I",
       "originalName": "a",
       "to": "getEndX",
@@ -62233,6 +62933,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uhb.a(Ljava/lang/String;Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "showLoginForm",
+      "evidence": "Close retained account-status dialog if present,construct original credential form with supplied name/message and transition modal content;retain guard recursion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uhb.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -62398,6 +63105,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_b; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.a(IIIIZ)[Lphb;",
+      "originalName": "a",
+      "to": "createBeveledSpriteTiles",
+      "evidence": "Build nine-slice sprite array sharing top/left and bottom/right color tiles,optionally center fill;retain exact sharing,size and guard mutation.",
       "confidence": "reviewed"
     },
     {
@@ -63234,10 +63948,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uw.a(BLfaa;Ltv;)V",
+      "originalName": "a",
+      "to": "readStateFromBits",
+      "evidence": "Begin bit-read mode,invoke supplied state readState then end bit-read mode;retain original guard early return and exception behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uw.a(I)I",
       "originalName": "a",
       "to": "getShortcutKey",
       "evidence": "GameSession uses returned key as existing shortcut-name table index for hint/button label;minus1 retains numeric fallback. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uw.a(Lqfa;III[IIZB)Lim;",
+      "originalName": "a",
+      "to": "createSpriteTexture",
+      "evidence": "Select original normal2D,rectangle or padded power-of-two sprite texture constructor from toolkit capabilities and dimensions;retain exact pixel offsets/flags/guard.",
       "confidence": "reviewed"
     },
     {
@@ -63570,6 +64298,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vdb.a(IIII)[Lphb;",
+      "originalName": "a",
+      "to": "createBeveledSpriteTiles",
+      "evidence": "Delegate original two-border-color tile factory using one-pixel border size under original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vdb.a(Z)Z",
       "originalName": "a",
       "to": "requiresPrimaryPress",
@@ -63588,6 +64323,13 @@
       "originalName": "d",
       "to": "getCooldown",
       "evidence": "Cooldown used by ship/component timers and UI readiness fill;original base defaults to ten times timing unit,concretes retain configured values and guards. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vdb.d(I)I",
+      "originalName": "d",
+      "to": "pollMenuAction",
+      "evidence": "Drain original menu input,update vertical and pointer selection,return selected action lookup when activated and retain original action2 helper.",
       "confidence": "reviewed"
     },
     {
@@ -64158,6 +64900,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vla.a(BLjava/lang/CharSequence;)I",
+      "originalName": "a",
+      "to": "hashCp1252",
+      "evidence": "Compute original31-polynomial hash over encoded CP1252 characters;archive callers lowercase names before hashing,which remains outside this helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vla.a(BLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "setLoginName",
+      "evidence": "Replace login-name field text and clear password under original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vla.a(I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getLoginName",
+      "evidence": "Return current login-name text with original empty/null/guard handling.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vla.a(IIILhtb;I)V",
       "originalName": "a",
       "to": "onAction",
@@ -64193,10 +64956,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vla.d(I)V",
+      "originalName": "d",
+      "to": "submitLogin",
+      "evidence": "Invoke original login helper with retained password/name only when reconnecting or both nonempty;preserve guard callbacks and argument order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vla.e(I)V",
       "originalName": "e",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_C, field_E; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vla.i(B)V",
+      "originalName": "i",
+      "to": "clearCredentials",
+      "evidence": "Clear both original text fields and retain guarded submit-button mutation.",
       "confidence": "reviewed"
     },
     {
@@ -76500,10 +77277,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-voidhunters-rules.mjs": "0ddec31d9660ab981f6bb998cd85dc641cfc9c028cb081adf03c702f7776e4cb",
+      "build-voidhunters-rules.mjs": "99b6c56b8e3f2395a700e42daba41518a8fa72efb0346b01e846968035957af2",
       "reproduce-voidhunters.mjs": "d166931d08f6ab274d50d2e60dae5ee815aca9510dc1d347a3a1a7488c0c4c4a",
       "voidhunters-diff-names.mjs": "f7928b13a33683097852e5efeb451e5072777f5635a2c1c5e45bb335900df785",
-      "voidhunters-names.json": "03762162a2de4e6908b85e06c71973e44e6ee4623938db81fcbcf51c2ad90dea",
+      "voidhunters-names.json": "88822ec600db957716164811cfcb51c1f5613a84b9bf34dde5d41462100fbafd",
       "voidhunters-coverage.mjs": "0b6c78523ef2b0271428e9d017570778b20bb985cdeaa6cdadb2fb04c854665a",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
