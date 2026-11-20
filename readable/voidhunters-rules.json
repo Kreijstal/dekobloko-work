@@ -4357,6 +4357,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kra",
+      "originalName": "kra",
+      "to": "FixedPointTrigonometry",
+      "evidence": "Quarter-wave16-bit fixed-point sine table supports full-turn8192-unit sine/cosine wrappers;retain unrelated thick-line dispatch on its original owner.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ks",
       "originalName": "ks",
       "to": "GetLaserReload",
@@ -5110,6 +5117,13 @@
       "originalName": "mua",
       "to": "ShieldBehaviour",
       "evidence": "Own reportDifferences implementation identifies this state as \"ShieldBehaviour\". Its state fields and serialization/copy operations corroborate this role; unrelated helpers remain in place.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mv",
+      "originalName": "mv",
+      "to": "ReflectionCheck",
+      "evidence": "Queued reflection protocol request retains operation ids,lookup requests,serialized method arguments,field-write values and per-operation lookup failures.",
       "confidence": "reviewed"
     },
     {
@@ -9033,10 +9047,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:aoa.field_a:Lanb;",
+      "originalName": "field_a",
+      "to": "targetBody",
+      "evidence": "Target ship retained by combat steering and used for aim/special-order decisions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:aoa.field_b:I",
       "originalName": "field_b",
       "to": "parentPlayer",
       "evidence": "The state-diff method prints \"parentPlayer has changed\" for this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aoa.field_d:I",
+      "originalName": "field_d",
+      "to": "desiredVelocityY",
+      "evidence": "Desired Y velocity after target seeking and avoidance,compared with current dy for control selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aoa.field_e:I",
+      "originalName": "field_e",
+      "to": "desiredVelocityX",
+      "evidence": "Desired X velocity after target seeking and avoidance,compared with current dx for control selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aoa.field_f:I",
+      "originalName": "field_f",
+      "to": "desiredAngularVelocity",
+      "evidence": "Weapon/steering angle error shifted left8 and compared with current angular velocity.",
       "confidence": "reviewed"
     },
     {
@@ -13107,6 +13149,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kra.field_a:[I",
+      "originalName": "field_a",
+      "to": "quarterSine",
+      "evidence": "2049-entry quarter-wave lookup exactly equal to rounded65536*sin(i*pi/4096).",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ksa.field_a:Lksa;",
       "originalName": "field_a",
       "to": "previous",
@@ -13475,6 +13524,13 @@
       "originalName": "field_y",
       "to": "enabled",
       "evidence": "Input and rendering combine inherited enablement with this flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lna.field_o:[Z",
+      "originalName": "field_o",
+      "to": "allowedCommonPackets",
+      "evidence": "Common server-opcode allow mask configured by NetworkGameClient and checked before dispatch.",
       "confidence": "reviewed"
     },
     {
@@ -14399,6 +14455,62 @@
       "originalName": "field_f",
       "to": "previousShieldY",
       "evidence": "The state-diff method prints \"previousShieldY has changed\" for this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mv.field_d:I",
+      "originalName": "field_d",
+      "to": "id",
+      "evidence": "Request identifier echoed before reflection results.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mv.field_e:[Lmob;",
+      "originalName": "field_e",
+      "to": "methodRequests",
+      "evidence": "Asynchronous platform method lookups consumed when preparing the response.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mv.field_f:[[[B",
+      "originalName": "field_f",
+      "to": "serializedArguments",
+      "evidence": "Per-operation serialized byte arrays for method invocation arguments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mv.field_g:[Lmob;",
+      "originalName": "field_g",
+      "to": "fieldRequests",
+      "evidence": "Asynchronous platform field lookups consumed when preparing the response.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mv.field_h:[I",
+      "originalName": "field_h",
+      "to": "operationTypes",
+      "evidence": "Original operation discriminator:field read/write/modifiers or method invoke/modifiers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mv.field_i:I",
+      "originalName": "field_i",
+      "to": "operationCount",
+      "evidence": "Number of decoded reflection operations and parallel-array lengths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mv.field_j:[I",
+      "originalName": "field_j",
+      "to": "fieldValues",
+      "evidence": "Replacement integer values for field-write operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mv.field_k:[I",
+      "originalName": "field_k",
+      "to": "lookupErrors",
+      "evidence": "Original per-operation class/security/lookup failure codes written directly into the response.",
       "confidence": "reviewed"
     },
     {
@@ -18301,6 +18413,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ta.field_b:[I",
+      "originalName": "field_b",
+      "to": "serverPacketLengths",
+      "evidence": "Opcode length specifications passed into the original incoming packet decoder;common lengths are installed by NetworkGameClient.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:tfa.field_b:I",
       "originalName": "field_b",
       "to": "specialorder",
@@ -18655,6 +18774,13 @@
       "originalName": "field_e",
       "to": "defaultCursorHandle",
       "evidence": "User32.LoadCursor result installed when cursorVisible is true.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:tma.field_r:Lij;",
+      "originalName": "field_r",
+      "to": "pendingReflectionChecks",
+      "evidence": "FIFO deque populated by decoding and consumed by reflection response serialization.",
       "confidence": "reviewed"
     },
     {
@@ -21234,6 +21360,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aoa.a(B)I",
+      "originalName": "a",
+      "to": "getParentPlayerId",
+      "evidence": "Decode the existing parentPlayer value by subtracting one,retaining the guard arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aoa.a(BLtv;)Z",
       "originalName": "a",
       "to": "differsFrom",
@@ -21241,10 +21374,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aoa.a(ILsg;Lpe;)V",
+      "originalName": "a",
+      "to": "addAsteroidAvoidance",
+      "evidence": "Add inverse-squared-distance repulsion from nearby asteroids to desired velocity,including the original supplied Y bias and distance guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aoa.a(IZ)V",
+      "originalName": "a",
+      "to": "setParentPlayerId",
+      "evidence": "Store player id plus one and retain the original guard-triggered shared-array clear.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aoa.a(Lfaa;Z)V",
       "originalName": "a",
       "to": "readState",
       "evidence": "Deserializes state fields from the supplied bit packet buffer, including integer fields and one-bit booleans. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aoa.a(Lpe;BLsg;)V",
+      "originalName": "a",
+      "to": "addFriendlyShipAvoidance",
+      "evidence": "Add inverse-squared-distance repulsion from nearby same-team ships,retaining the original distance cutoff and zero-distance substitution.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aoa.a(Lpe;BLsg;I)V",
+      "originalName": "a",
+      "to": "computeTargetSteering",
+      "evidence": "Find the nearest eligible target,set desired velocity toward its original standoff point and retain the chosen target body.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aoa.a(Lsg;BLpe;)Z",
+      "originalName": "a",
+      "to": "applyAiControls",
+      "evidence": "Compute steering,choose weapon alignment/fire and special orders,translate desired-minus-current motion into control bits,and apply nonzero controls;preserve all original conditions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aoa.a(Lsg;ILlta;Lpe;)V",
+      "originalName": "a",
+      "to": "drawSteeringDebug",
+      "evidence": "Project and draw a line from ship position to ship position plus the desired-velocity vector.",
       "confidence": "reviewed"
     },
     {
@@ -21259,6 +21434,20 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_c; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aoa.a(ZILsg;Lpe;)V",
+      "originalName": "a",
+      "to": "updateSteering",
+      "evidence": "Reset target/desired motion,compute target steering and add obstacle/friendly avoidance for nonfighters with active thrusters.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aoa.a([Lml;II)I",
+      "originalName": "a",
+      "to": "computeCombatRange",
+      "evidence": "Return the largest surviving weapon range shifted left3,excluding original weapon types2,8,9,10.",
       "confidence": "reviewed"
     },
     {
@@ -21308,6 +21497,13 @@
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:apb.a(I)Z",
+      "originalName": "a",
+      "to": "isReflectionCheckReady",
+      "evidence": "Report whether the first queued check exists and all non-null field/method lookup requests have left pending status.",
       "confidence": "reviewed"
     },
     {
@@ -27632,6 +27828,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eu.a(II)I",
+      "originalName": "a",
+      "to": "sinAngle",
+      "evidence": "Mirror/sign the quarter-wave table for an8192-unit turn,returning65536-scaled sine;retain original guards.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eu.b(BII)V",
       "originalName": "b",
       "to": "drawFilled",
@@ -28084,6 +28287,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_o; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.a(IB)I",
+      "originalName": "a",
+      "to": "cosAngle",
+      "evidence": "Mirror/sign the same quarter-wave table with a quarter-turn phase shift,returning65536-scaled cosine.",
       "confidence": "reviewed"
     },
     {
@@ -29701,6 +29911,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_o, field_p, field_q, field_r. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gca.a(Lpe;BILsg;)Lsg;",
+      "originalName": "a",
+      "to": "findNearestAiTarget",
+      "evidence": "Find the nearest eligible ship under original team,parent-owner and fighter/nebula filters;retain the neutral-team distance cap.",
       "confidence": "reviewed"
     },
     {
@@ -32623,6 +32840,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ida.a(Lfaa;B)V",
+      "originalName": "a",
+      "to": "writeReflectionCheckResponse",
+      "evidence": "Process the ready first check using original reflection reads/writes/invocations,serialize typed results or failure codes,append CRC and unlink the check;preserve all original exception handling.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ida.b(IIII)V",
       "originalName": "b",
       "to": "drawLayer",
@@ -34989,6 +35213,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jnb.a(Leab;ILds;Z)V",
+      "originalName": "a",
+      "to": "decodeReflectionCheck",
+      "evidence": "Decode field/method operations,request their original restricted platform lookups,retain serialized arguments and queue the check with original failure codes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jnb.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -36967,6 +37198,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_a, field_b; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kra.a(IIIIIIII)V",
+      "originalName": "a",
+      "to": "drawThickLine",
+      "evidence": "Dispatch GPU or software thick-line drawing with the original alpha,thickness and guard behavior.",
       "confidence": "reviewed"
     },
     {
@@ -40918,6 +41156,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ms.a(BZ)V",
+      "originalName": "a",
+      "to": "enableCorePacketHandlers",
+      "evidence": "Enable original core common-packet slots and configure the existing reflection-request slot boolean;retain guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.a(BZZ)I",
+      "originalName": "a",
+      "to": "processLoginUi",
+      "evidence": "Dispatch login/account UI actions,authentication polling,country-list loading and browser links;return original lifecycle actions0,1,2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.a(IIIIIIZI)V",
+      "originalName": "a",
+      "to": "initializeNetworkClient",
+      "evidence": "Initialize locale,protocol/archive connections,input devices,resource archive ids and common packet lengths with original arguments/guards.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ms.a(IIILjava/lang/String;I)V",
       "originalName": "a",
       "to": "initializeFromAppletParameters",
@@ -40932,6 +41191,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ms.a(ZII)V",
+      "originalName": "a",
+      "to": "initializeNetworkClient",
+      "evidence": "Delegate client initialization with the existing default archive-id tokens and supplied mode/id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.a(ZZZZIZZ)V",
+      "originalName": "a",
+      "to": "configureCommonPacketHandlers",
+      "evidence": "Enable core handlers and conditionally enable each original optional common-packet category,retaining guard calls.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ms.b(Ljava/lang/String;I)[B",
       "originalName": "b",
       "to": "loadNamedResource",
@@ -40939,10 +41212,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ms.b(ZI)V",
+      "originalName": "b",
+      "to": "updateClientServices",
+      "evidence": "Update screen size,input,session/archive errors and staged resource loading;rebuild the canvas as required and process enabled reflection checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.c(ZI)I",
+      "originalName": "c",
+      "to": "processLoginUi",
+      "evidence": "Delegate login UI processing with the original mode flag and guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.d(B)V",
+      "originalName": "d",
+      "to": "handleSessionCookiePacket",
+      "evidence": "Read the incoming session String and delegate the applet cookie/session update helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ms.d(Z)V",
       "originalName": "d",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_A, field_y; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.e(I)V",
+      "originalName": "e",
+      "to": "dispatchCommonServerPacket",
+      "evidence": "Validate the received common opcode against the allowed mask and dispatch its original handler;preserve unknown-packet logging/disconnection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.f(I)I",
+      "originalName": "f",
+      "to": "pollReconnect",
+      "evidence": "Poll reconnection when eligible,handle original success/error cases and update retry/error state without changing return codes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.h(I)V",
+      "originalName": "h",
+      "to": "updateLoginUi",
+      "evidence": "Select the original login UI/service branch based on loading/login/fullscreen state and process its actions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.i(I)V",
+      "originalName": "i",
+      "to": "enableHighscoreReplies",
+      "evidence": "Enable common opcode2,whose handler parses HS-tagged highscore replies;retain original guard-triggered client start.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.j(I)V",
+      "originalName": "j",
+      "to": "handleOpenUrlPacket",
+      "evidence": "Read the URL mode flag and ISAAC-decoded CP1252 URL bytes,then delegate ArchiveIndex.openExternalUrl.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ms.k(I)V",
+      "originalName": "k",
+      "to": "initializeCommonPacketLengths",
+      "evidence": "Install the original fixed/byte-length/short-length specifications for common server opcodes,retaining the guard flag mutation.",
       "confidence": "reviewed"
     },
     {
@@ -41055,6 +41391,13 @@
       "originalName": "b",
       "to": "writeState",
       "evidence": "Serializes state fields into the supplied bit packet buffer; confirmed by SettingsChange, MissionVariable and PlayerVote implementations. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mv.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "installKeyboardListeners",
+      "evidence": "Disable focus-traversal keys and attach the existing game key/focus listener to the supplied component.",
       "confidence": "reviewed"
     },
     {
@@ -49378,6 +49721,13 @@
       "originalName": "za",
       "to": "fillCircle",
       "evidence": "Software fills radius-squared scanline spans; OpenGL uses point or triangle fan based on radius. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qfb.a(I)V",
+      "originalName": "a",
+      "to": "sendReflectionCheckResponses",
+      "evidence": "While the first queued check is ready,frame an opcode8 response with a byte length and delegate result serialization.",
       "confidence": "reviewed"
     },
     {
@@ -59727,6 +60077,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wva.a(Ljava/applet/Applet;BLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "setSessionCookie",
+      "evidence": "Retain the session String,write the original cookieprefix/cookiehost session cookie through JavaScript and invoke the existing session follow-up;preserve empty-cookie expiry and swallowed failures.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ww.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -69787,10 +70144,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-voidhunters-rules.mjs": "f80004ddc29f5278480419f59d33e57143926368d51b99d5070b15e66772ff69",
+      "build-voidhunters-rules.mjs": "4d10c6a632721bec3a4cdd87c66ced54691f48426495fa6e6d51c8b8f97b9b8a",
       "reproduce-voidhunters.mjs": "d166931d08f6ab274d50d2e60dae5ee815aca9510dc1d347a3a1a7488c0c4c4a",
       "voidhunters-diff-names.mjs": "f7928b13a33683097852e5efeb451e5072777f5635a2c1c5e45bb335900df785",
-      "voidhunters-names.json": "2f7c5aef0f765303dc5588d6f36ab3f40b203dacaf5daaeba5d1db0506dad67a",
+      "voidhunters-names.json": "94ecc99ff443cb5c47a9dbfa15fb01c3f1ba5d2b86c662c0ec5a0fa3b4cdba26",
       "voidhunters-coverage.mjs": "0b6c78523ef2b0271428e9d017570778b20bb985cdeaa6cdadb2fb04c854665a",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
