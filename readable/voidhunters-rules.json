@@ -962,6 +962,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bfb",
+      "originalName": "bfb",
+      "to": "SoftwareFlatTriangleRasterizer",
+      "evidence": "Solid-color software triangle scan converter with Q16 edges,clip-relative row offsets and original destination-weight blending.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bg",
       "originalName": "bg",
       "to": "GetMessageFadetime",
@@ -3395,6 +3402,13 @@
       "originalName": "hna",
       "to": "PlayerAction",
       "evidence": "Own reportDifferences implementation identifies this state as \"PlayerAction\". Its state fields and serialization/copy operations corroborate this role; unrelated helpers remain in place.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hnb",
+      "originalName": "hnb",
+      "to": "DisplayModeDialog",
+      "evidence": "Modal classic/resizable/fullscreen mode selection with deduplicated display resolutions,apply/back controls and original capability/account gates.",
       "confidence": "reviewed"
     },
     {
@@ -7206,6 +7220,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:rbb",
+      "originalName": "rbb",
+      "to": "UiTheme",
+      "evidence": "Retains shared UI renderers,font,tooltip colors/padding and default stateful styles;also exposes original software drawing/clip helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rc",
       "originalName": "rc",
       "to": "MissionGenerationDataFactory",
@@ -10258,6 +10279,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bfb.field_a:I",
+      "originalName": "field_a",
+      "to": "clipWidth",
+      "evidence": "Original right-minus-left width used by horizontal span clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bfb.field_b:I",
+      "originalName": "field_b",
+      "to": "destinationWeight",
+      "evidence": "Original blend weight for old destination;zero overwrites,254 has special next-pixel-copy path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bfb.field_c:[I",
+      "originalName": "field_c",
+      "to": "reciprocal16",
+      "evidence": "Static65536/index reciprocal table with original zero entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bfb.field_d:Z",
+      "originalName": "field_d",
+      "to": "horizontalClipping",
+      "evidence": "True when supplied triangle X requires span clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bfb.field_e:[I",
+      "originalName": "field_e",
+      "to": "sineTable",
+      "evidence": "Original2048-entry sine table scaled65536 using retained angle multiplier literal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bfb.field_f:I",
+      "originalName": "field_f",
+      "to": "centerX",
+      "evidence": "Half original clip width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bfb.field_g:[I",
+      "originalName": "field_g",
+      "to": "rowOffsets",
+      "evidence": "Raster destination offset for each clip-relative scanline.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bfb.field_h:I",
+      "originalName": "field_h",
+      "to": "clipHeight",
+      "evidence": "Original bottom-minus-top height used by triangle vertical clipping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bfb.field_i:[I",
+      "originalName": "field_i",
+      "to": "reciprocal15",
+      "evidence": "Static32768/index reciprocal table with original zero entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bfb.field_j:I",
+      "originalName": "field_j",
+      "to": "centerY",
+      "evidence": "Half original clip height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bfb.field_k:[I",
+      "originalName": "field_k",
+      "to": "cosineTable",
+      "evidence": "Original2048-entry cosine table scaled65536 using retained angle multiplier literal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bha.field_a:Z",
       "originalName": "field_a",
       "to": "connected",
@@ -11119,6 +11217,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:da.field_a:Lha;",
+      "originalName": "field_a",
+      "to": "toolkit",
+      "evidence": "Graphics toolkit draws underline/strike spans and backend glyph implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:da.field_b:Lsw;",
+      "originalName": "field_b",
+      "to": "metrics",
+      "evidence": "ToolkitFontMetrics supplies original advances,kerning,wrapping,extents and default spacing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:dab.field_d:I",
       "originalName": "field_d",
       "to": "tick",
@@ -11627,6 +11739,13 @@
       "originalName": "field_i",
       "to": "value",
       "evidence": "Fixed-point constant written to every monochrome row sample.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:drb.field_j:I",
+      "originalName": "field_j",
+      "to": "fontJustificationStep",
+      "evidence": "Original Q8 extra advance per visible space.",
       "confidence": "reviewed"
     },
     {
@@ -12946,6 +13065,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gba.field_q:I",
+      "originalName": "field_q",
+      "to": "fontShadowColor",
+      "evidence": "Current original shadow ARGB color tested before shadow glyph draws.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gd.field_e:Z",
       "originalName": "field_e",
       "to": "pingPongLoop",
@@ -13342,6 +13468,13 @@
       "originalName": "field_f",
       "to": "pixels",
       "evidence": "Raster pixel storage handed to the image consumer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gqb.field_a:I",
+      "originalName": "field_a",
+      "to": "fontColor",
+      "evidence": "Current original glyph/sprite ARGB color changed by col/argb markup.",
       "confidence": "reviewed"
     },
     {
@@ -13748,6 +13881,90 @@
       "originalName": "field_r",
       "to": "specialOrderSubmessage",
       "evidence": "The state-diff method prints \"specialOrderSubmessage has changed\" for this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hnb.field_K:Z",
+      "originalName": "field_K",
+      "to": "hasDisplayModes",
+      "evidence": "True when original deduplicated/validated display-mode array has entries;distinct from account eligibility.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hnb.field_L:Lhtb;",
+      "originalName": "field_L",
+      "to": "fullscreenButton",
+      "evidence": "Mode control labelled Full screen.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hnb.field_M:Z",
+      "originalName": "field_M",
+      "to": "resolutionDropdownOpen",
+      "evidence": "Retained last dropdown-open state used to refresh selected fullscreen mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hnb.field_N:[Lfm;",
+      "originalName": "field_N",
+      "to": "displayModes",
+      "evidence": "Original deduplicated,size-validated and sorted display-mode records.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hnb.field_O:Lhtb;",
+      "originalName": "field_O",
+      "to": "classicButton",
+      "evidence": "Mode control labelled Classic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hnb.field_P:Lnva;",
+      "originalName": "field_P",
+      "to": "resolutionDropdown",
+      "evidence": "Optional fullscreen-resolution combo box.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hnb.field_Q:Lhtb;",
+      "originalName": "field_Q",
+      "to": "backButton",
+      "evidence": "Footer Back control deactivates dialog.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hnb.field_R:Lhtb;",
+      "originalName": "field_R",
+      "to": "resizableButton",
+      "evidence": "Optional mode control labelled Resizable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hnb.field_S:Lusb;",
+      "originalName": "field_S",
+      "to": "modeGrid",
+      "evidence": "Weighted grid retaining original mode controls.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hnb.field_T:[Lhtb;",
+      "originalName": "field_T",
+      "to": "modeButtons",
+      "evidence": "Original Classic/Full screen and optional Resizable controls used for focus/selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hnb.field_V:Lhtb;",
+      "originalName": "field_V",
+      "to": "selectedModeButton",
+      "evidence": "Retained pending mode choice used by selection markers and Apply.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hnb.field_W:Lhtb;",
+      "originalName": "field_W",
+      "to": "applyButton",
+      "evidence": "Footer Apply control dispatches selected mode transition.",
       "confidence": "reviewed"
     },
     {
@@ -14455,6 +14672,13 @@
       "originalName": "field_I",
       "to": "resizeTargetWidth",
       "evidence": "Width applied at resize completion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jd.field_p:Ljava/lang/String;",
+      "originalName": "field_p",
+      "to": "passwordForChatFilter",
+      "evidence": "Original login path retains supplied password for chat substring check,which emits original warning strings on match;no storage/lifetime behavior changes.",
       "confidence": "reviewed"
     },
     {
@@ -17118,6 +17342,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nn.field_b:I",
+      "originalName": "field_b",
+      "to": "fontDefaultColor",
+      "evidence": "Original default text color restored by closing col/argb tags.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nna.field_A:I",
       "originalName": "field_A",
       "to": "actionButtonCount",
@@ -17591,6 +17822,13 @@
       "originalName": "field_w",
       "to": "toolkit",
       "evidence": "Reviewed sprite factories, padded dimension getters and scaled/affine drawing establish this role.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oib.field_c:I",
+      "originalName": "field_c",
+      "to": "fontJustificationRemainder",
+      "evidence": "Original Q8 spacing remainder carried across visible spaces.",
       "confidence": "reviewed"
     },
     {
@@ -19652,6 +19890,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qlb.field_a:I",
+      "originalName": "field_a",
+      "to": "fontDefaultShadowColor",
+      "evidence": "Original shadow color restored by closing shad tag and line-style reset.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qma.field_a:J",
       "originalName": "field_a",
       "to": "packedAttributes",
@@ -20006,6 +20251,76 @@
       "originalName": "field_i",
       "to": "x",
       "evidence": "The state-diff method prints \"x has changed\" for this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rbb.field_b:I",
+      "originalName": "field_b",
+      "to": "tooltipBackgroundColor",
+      "evidence": "Original tooltip background fill color.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rbb.field_c:I",
+      "originalName": "field_c",
+      "to": "tooltipPaddingBottom",
+      "evidence": "Combined with top padding for tooltip box height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rbb.field_f:Z",
+      "originalName": "field_f",
+      "to": "wrapTooltips",
+      "evidence": "Selects original wrapped versus single-line tooltip path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rbb.field_g:I",
+      "originalName": "field_g",
+      "to": "tooltipLineSpacing",
+      "evidence": "Original wrapped-tooltip line spacing;minus1 selects font ascent/descent sum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rbb.field_h:I",
+      "originalName": "field_h",
+      "to": "tooltipPaddingLeft",
+      "evidence": "Added to tooltip text X;combined with right padding for box width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rbb.field_j:I",
+      "originalName": "field_j",
+      "to": "tooltipPaddingRight",
+      "evidence": "Combined with left padding for tooltip box width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rbb.field_m:I",
+      "originalName": "field_m",
+      "to": "tooltipBorderColor",
+      "evidence": "Wrapped tooltip border color retained by original theme initializer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rbb.field_p:Lno;",
+      "originalName": "field_p",
+      "to": "font",
+      "evidence": "Bitmap font retained by default style initialization and tooltip rendering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rbb.field_t:I",
+      "originalName": "field_t",
+      "to": "tooltipTextColor",
+      "evidence": "Original tooltip text color,also used for single-line tooltip border.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rbb.field_u:I",
+      "originalName": "field_u",
+      "to": "tooltipPaddingTop",
+      "evidence": "Added to tooltip paragraph Y;combined with bottom padding for box height.",
       "confidence": "reviewed"
     },
     {
@@ -21707,6 +22022,41 @@
       "originalName": "field_n",
       "to": "seed",
       "evidence": "Decoded Random seed for line placement and brightness.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sw.field_a:I",
+      "originalName": "field_a",
+      "to": "ascent",
+      "evidence": "Baseline-to-glyph-top offset in ToolkitFont line drawing,also used when paragraph spacing argument is zero;original decoded value retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sw.field_b:[B",
+      "originalName": "field_b",
+      "to": "advances",
+      "evidence": "Original256unsigned-byte glyph advances.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sw.field_c:I",
+      "originalName": "field_c",
+      "to": "maxAscent",
+      "evidence": "Paragraph top-alignment adds this extent to establish first baseline.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sw.field_e:I",
+      "originalName": "field_e",
+      "to": "maxDescent",
+      "evidence": "Paragraph bottom-alignment subtracts this extent from final baseline;combined with maxAscent for block height.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sw.field_g:[[B",
+      "originalName": "field_g",
+      "to": "kerning",
+      "evidence": "Optional256by256 signed glyph-pair adjustment table decoded from profiles.",
       "confidence": "reviewed"
     },
     {
@@ -23642,6 +23992,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vq.field_v:I",
+      "originalName": "field_v",
+      "to": "fontUnderlineColor",
+      "evidence": "Original u markup color;minus1 disables underline span.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vqa.field_h:Luf;",
       "originalName": "field_h",
       "to": "referenceField",
@@ -23933,6 +24290,13 @@
       "originalName": "field_d",
       "to": "depth",
       "evidence": "Reviewed renderer creation, buffer selection, clipping and disposal consumers establish this field role.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wob.field_p:I",
+      "originalName": "field_p",
+      "to": "fontStrikethroughColor",
+      "evidence": "Original str markup color;minus1 disables strikethrough span.",
       "confidence": "reviewed"
     },
     {
@@ -26694,10 +27058,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bfb.a()V",
+      "originalName": "a",
+      "to": "updateCenter",
+      "evidence": "Retain half clip width/height as original center coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bfb.a(III)V",
+      "originalName": "a",
+      "to": "updateHorizontalClipping",
+      "evidence": "Enable original span clipping if any supplied triangle X lies outside0..clipWidth inclusive;retain exact boundary comparisons.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bfb.a(IIII)V",
+      "originalName": "a",
+      "to": "setClip",
+      "evidence": "Retain clip width/height,update center,grow row-offset array with original helper and compute raster offsets from supplied top/left.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bfb.a(IIIIIII)V",
+      "originalName": "a",
+      "to": "fillTriangle",
+      "evidence": "Rasterize original solid triangle from three Y/three X/color inputs using Q16 edge slopes,vertical clipping and span helper;retain all vertex-order branches and integer math.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bfb.a([IIIIII)V",
+      "originalName": "a",
+      "to": "fillSpan",
+      "evidence": "Clip span X when enabled then fill original solid color or destination-weight blend;retain four-pixel unrolling and weight254 next-pixel-copy special case.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bfb.b()V",
       "originalName": "b",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_c, field_e, field_g, field_i, field_k; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bfb.c()I",
+      "originalName": "c",
+      "to": "getOriginX",
+      "evidence": "Return raster X origin from first retained row offset modulo software raster width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bfb.d()I",
+      "originalName": "d",
+      "to": "getOriginY",
+      "evidence": "Return raster Y origin from first retained row offset divided by software raster width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bfb.e()V",
+      "originalName": "e",
+      "to": "setClipFromRaster",
+      "evidence": "Forward current SoftwareRasterizer2D clip bounds to original clip/row-offset setup.",
       "confidence": "reviewed"
     },
     {
@@ -29323,6 +29743,62 @@
       "originalName": "a",
       "to": "drawGlyphMasked",
       "evidence": "Draw character through backend mask; software clips glyph against per-row mask starts/widths, OpenGL uses mask texture coordinates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(III)V",
+      "originalName": "a",
+      "to": "resetStyle",
+      "evidence": "Reset original shared underline/strike,default/current text/shadow colors and justification state;preserve minus1 shadow conversion and supplied spacing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(IIIIII[IZIILjava/lang/String;II[Laja;ILaa;)I",
+      "originalName": "a",
+      "to": "drawParagraph",
+      "evidence": "Delegate original paragraph argument reordering with retained max-line parameter and guard-triggered line draw.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(IIILjava/lang/String;[I[Laja;IIIIIILaa;IIII)I",
+      "originalName": "a",
+      "to": "drawParagraph",
+      "evidence": "Wrap original text,apply line limit/ellipsis and horizontal/vertical alignment,draw each masked/unmasked line and return count;retain all edge cases and guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(IIIZILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "drawRightAligned",
+      "evidence": "Reset original style and draw at supplied right edge minus measured width when original boolean guard permits.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(III[Laja;Ljava/lang/String;IILaa;[I)V",
+      "originalName": "a",
+      "to": "drawStringInternal",
+      "evidence": "Render original markup-aware line with glyph kerning,inline sprites,shadow/optional mask,justification,underline and strike using retained shared style state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(IILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "setJustification",
+      "evidence": "Count visible spaces outside markup and set original Q8 extra spacing from target-minus-measured width;retain stale spacing when count zero and arithmetic guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "applyStyleTag",
+      "evidence": "Apply original col/argb/strike/underline/shadow/br markup to shared style,retaining original alpha/default resets,swallowed parse exceptions and guard mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:da.a(ZIILjava/lang/String;II)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "Reset original style and draw supplied text at original left/baseline coordinates without inline sprites or mask;retain null/guard paths.",
       "confidence": "reviewed"
     },
     {
@@ -37054,6 +37530,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hnb.a(BLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "containsPassword",
+      "evidence": "Original chat input checks this case-insensitive substring predicate before posting and displays password-warning messages on match;retain null needle,false/true guard paths and default-locale folding.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hnb.a(IIILhtb;I)V",
       "originalName": "a",
       "to": "onAction",
@@ -37075,10 +37558,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hnb.a(Ljava/lang/String;BLsba;[Lcaa;)Lhtb;",
+      "originalName": "a",
+      "to": "addModeButton",
+      "evidence": "Create original indexed-sprite-backed mode control,append it to weighted grid and refresh layout;retain guard mutation and supplied listener/label.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hnb.a(Ljava/lang/String;Lsba;I)Lhtb;",
+      "originalName": "a",
+      "to": "addActionButton",
+      "evidence": "Create original footer action control with existing renderer,position and listener;retain original argument-derived geometry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hnb.a(ZLhtb;)V",
+      "originalName": "a",
+      "to": "selectMode",
+      "evidence": "Retain selected mode control,focus it,compare current mode/resolution and refresh Apply enablement/active markers;preserve original guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hnb.g(I)V",
+      "originalName": "g",
+      "to": "refreshModeSelection",
+      "evidence": "Mark each original mode button active exactly when it matches selected control;retain guarded current-mode query.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hnb.h(I)V",
+      "originalName": "h",
+      "to": "applySelectedMode",
+      "evidence": "Dispatch original Classic/Resizable/fullscreen transitions,optional resolution choice and confirmation panel;retain exact helper order,account/capability gates and Apply-disable guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hnb.i(I)V",
       "originalName": "i",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_U, field_X; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hnb.l(B)V",
+      "originalName": "l",
+      "to": "closeDialog",
+      "evidence": "Mark original active dialog inactive only under original guard;retain lifecycle handling in modal stack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hnb.m(B)Lhtb;",
+      "originalName": "m",
+      "to": "getCurrentModeButton",
+      "evidence": "Return fullscreen control when fullscreen window retained,otherwise resizable if current game window is resizable and control exists,else Classic;preserve guard helper.",
       "confidence": "reviewed"
     },
     {
@@ -57382,6 +57914,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rbb.a(B)V",
+      "originalName": "a",
+      "to": "popRasterState",
+      "evidence": "Pop original software raster state and retain guarded shared-reference cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rbb.a(BLjava/lang/String;II)V",
+      "originalName": "a",
+      "to": "drawTooltip",
+      "evidence": "Choose original wrapped or single-line tooltip path using retained theme flag;preserve argument order and guard mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rbb.a(IBIII)V",
+      "originalName": "a",
+      "to": "pushClip",
+      "evidence": "Forward original clip bounds to software raster stack,retaining guarded color mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rbb.a(IIIIII)V",
+      "originalName": "a",
+      "to": "drawLine",
+      "evidence": "Delegate original software line draw with original reordered endpoints/color and guarded tooltip call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rbb.a(IILjava/lang/String;I)V",
+      "originalName": "a",
+      "to": "drawSingleLineTooltip",
+      "evidence": "Measure/position original single-line tooltip and draw retained rectangle/fill/text with original fixed padding and baseline arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rbb.a(IIZIIII)V",
+      "originalName": "a",
+      "to": "fillRectangleAlpha",
+      "evidence": "Delegate original software alpha rectangle fill,retaining guarded raster pop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rbb.a(Lno;I)V",
+      "originalName": "a",
+      "to": "initializeDefaultStyles",
+      "evidence": "Build original default label/button/toggle/text-field styles and sprite variants,retain font/tooltip defaults and discarded style construction;preserve exact assignments,constants and guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rbb.a(ZIILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "drawWrappedTooltip",
+      "evidence": "Wrap/measure original tooltip text with theme font/spacing,position within raster bounds and draw retained border/background/text;preserve original line-count logic and guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rbb.b(B)V",
       "originalName": "b",
       "to": "clearSharedReferences",
@@ -61285,6 +61873,69 @@
       "originalName": "c",
       "to": "postDecode",
       "evidence": "Hook called by the operation loader after all tagged parameters have been decoded. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sw.a(BIIIII)V",
+      "originalName": "a",
+      "to": "fillEllipse",
+      "evidence": "Fill original symmetric ellipse spans in shared integer raster rows using midpoint recurrence;retain original parameter order,guards and integer arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sw.a(IB)I",
+      "originalName": "a",
+      "to": "getGlyphAdvance",
+      "evidence": "Return unsigned original advance byte for supplied glyph index,retaining raw indexing and guard side call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sw.a(ICI)I",
+      "originalName": "a",
+      "to": "getKerning",
+      "evidence": "Return original signed kerning entry for supplied glyph pair,or zero if table absent;retain arithmetic guard and raw indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sw.a(ILjava/lang/String;Z[Laja;)I",
+      "originalName": "a",
+      "to": "getParagraphWidth",
+      "evidence": "Wrap text to supplied width and return maximum measured line width using retained shared line buffer and original boolean guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sw.a(ILjava/lang/String;[Laja;)I",
+      "originalName": "a",
+      "to": "getStringWidth",
+      "evidence": "Measure original markup-aware glyph advances,kerning and optional inline sprites;retain raw entity indices and swallowed sprite exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sw.a(Ljava/lang/String;I)I",
+      "originalName": "a",
+      "to": "getStringWidth",
+      "evidence": "Delegate original string width without inline sprites and preserve guarded shared-flag mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sw.a(Ljava/lang/String;IIB[Laja;)I",
+      "originalName": "a",
+      "to": "getParagraphHeight",
+      "evidence": "Wrap text and return original top/bottom extents plus inter-line spacing,using default spacing when zero;retain no-line and guard behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sw.a(Ljava/lang/String;II[Laja;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "truncateWithEllipsis",
+      "evidence": "Retain original text if it fits;otherwise reserve three-dot width and return latest accepted markup/sprite prefix plus ellipsis under original width/kerning logic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sw.a(Ljava/lang/String;[Laja;[I[Ljava/lang/String;I)I",
+      "originalName": "a",
+      "to": "wrapLines",
+      "evidence": "Split original markup-aware text by line width,spaces,hyphens and br tags into supplied array;retain inline sprite widths,kerning,array exhaustion result and entity-index quirks.",
       "confidence": "reviewed"
     },
     {
@@ -78243,10 +78894,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-voidhunters-rules.mjs": "fb67ea7b19f9d6cad53e252e29c5ae58baaf13a1246db5334a2df0c152023a72",
+      "build-voidhunters-rules.mjs": "c6ee6ba7dcc82bd17ab45c36855af3f49c3cba12c80cd3f582bb50ece1bee385",
       "reproduce-voidhunters.mjs": "d166931d08f6ab274d50d2e60dae5ee815aca9510dc1d347a3a1a7488c0c4c4a",
       "voidhunters-diff-names.mjs": "f7928b13a33683097852e5efeb451e5072777f5635a2c1c5e45bb335900df785",
-      "voidhunters-names.json": "e1bb43033ac40f0eb703308af09d93d590cc1706aac292bca75146eaac010397",
+      "voidhunters-names.json": "6b67ac1a6e5f8b3a645775e852401cc4d39d4837c143adeb91abdd699821e5ee",
       "voidhunters-coverage.mjs": "0b6c78523ef2b0271428e9d017570778b20bb985cdeaa6cdadb2fb04c854665a",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
