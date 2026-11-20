@@ -577,6 +577,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:aia",
+      "originalName": "aia",
+      "to": "OpenGlTexture2D",
+      "evidence": "Legacy OpenGL 2D/rectangle texture storage creates or uploads int/byte/float images, updates regions, sets wrapping and attaches image levels to framebuffers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:aib",
       "originalName": "aib",
       "to": "AsteroidField",
@@ -3762,6 +3769,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kda",
+      "originalName": "kda",
+      "to": "CarouselGameClient",
+      "evidence": "Carousel_clientgame diagnostics identify ready-state, event buffering/transmission, server tick/CRC handling, initial game-state reception and black-box replay requests.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:kdb",
       "originalName": "kdb",
       "to": "SetMinimapWidth",
@@ -4088,6 +4102,13 @@
       "originalName": "lhb",
       "to": "GrapplingHookFactory",
       "evidence": "GameStateFactory implementation whose reviewed create/createArray bodies construct GrapplingHook and its typed arrays. Abstract-only scalar construction may return null; unrelated static helpers remain in place.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:li",
+      "originalName": "li",
+      "to": "OpenGlTexture1D",
+      "evidence": "Native GL_TEXTURE_1D3552 storage uploads byte data and controls S wrapping; framebuffer detachment is an intentional no-op.",
       "confidence": "reviewed"
     },
     {
@@ -4931,6 +4952,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nv",
+      "originalName": "nv",
+      "to": "OpenGlRenderbuffer",
+      "evidence": "Generates an EXT renderbuffer, allocates ordinary/multisample storage, attaches/detaches it and queues native disposal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nw",
       "originalName": "nw",
       "to": "GetMinimapWidth",
@@ -4970,6 +4998,13 @@
       "originalName": "oab",
       "to": "GetArmageddonTimerStart",
       "evidence": "Developer console command registered by name \"GetArmageddonTimerStart\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ob",
+      "originalName": "ob",
+      "to": "OpenGlTexture3D",
+      "evidence": "Native GL_TEXTURE_3D32879 storage allocates/uploads width-height-depth images and copies framebuffer regions into volume slices.",
       "confidence": "reviewed"
     },
     {
@@ -5243,6 +5278,13 @@
       "originalName": "ov",
       "to": "SetShipSpawnInvulnerabilityTime",
       "evidence": "Developer console command registered by name \"SetShipSpawnInvulnerabilityTime\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ova",
+      "originalName": "ova",
+      "to": "ChunkedDataSender",
+      "evidence": "Sends retained bytes in throttled length/offset/chunk packets with a configured opcode, preserving output capacity reservation.",
       "confidence": "reviewed"
     },
     {
@@ -7066,6 +7108,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:um",
+      "originalName": "um",
+      "to": "ChunkedDataReceiver",
+      "evidence": "Receives total length, offset and unsigned-short chunk length into a retained byte array, reports progress and yields completed data.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:umb",
       "originalName": "umb",
       "to": "ServerTick",
@@ -7931,6 +7980,34 @@
       "originalName": "field_j",
       "to": "serverCarousel",
       "evidence": "The state-diff method prints \"serverCarousel has changed\" for this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aia.field_h:I",
+      "originalName": "field_h",
+      "to": "width",
+      "evidence": "Passed as image width to native allocation and mipmap upload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aia.field_i:I",
+      "originalName": "field_i",
+      "to": "framebufferTarget",
+      "evidence": "Retained target passed into texture attachment and later detachment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aia.field_j:I",
+      "originalName": "field_j",
+      "to": "height",
+      "evidence": "Passed as image height to native allocation and used for top-origin upload coordinate conversion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:aia.field_k:I",
+      "originalName": "field_k",
+      "to": "framebufferAttachment",
+      "evidence": "Retained attachment point passed into texture attachment and later detachment.",
       "confidence": "reviewed"
     },
     {
@@ -10776,6 +10853,118 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:kda.field_a:Z",
+      "originalName": "field_a",
+      "to": "receivingGameState",
+      "evidence": "Set while initial-state chunks arrive; suppresses live timeline handling until initial session reception finishes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kda.field_b:I",
+      "originalName": "field_b",
+      "to": "eventFlushCounter",
+      "evidence": "Cycles modulo five to throttle queued event packet transmission.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kda.field_c:Lij;",
+      "originalName": "field_c",
+      "to": "bufferedIncoming",
+      "evidence": "Deque retaining events/ticks received while no live timeline can consume them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kda.field_d:I",
+      "originalName": "field_d",
+      "to": "pingMillis",
+      "evidence": "Local server-reported lag shown in the Ping scoreboard column and converted to tick offsets by division by1000.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kda.field_e:Z",
+      "originalName": "field_e",
+      "to": "checksumFailureReported",
+      "evidence": "Set after the first out-of-sync report/dump and reset for a new game.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kda.field_f:I",
+      "originalName": "field_f",
+      "to": "lastSubmittedEventTick",
+      "evidence": "Retain the last accepted local event tick for the original duplicate-tick suppression.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kda.field_h:I",
+      "originalName": "field_h",
+      "to": "readyTick",
+      "evidence": "Set to the timeline tick when initial catch-up marks ready; checksum comparisons ignore earlier/equal ticks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kda.field_i:Lij;",
+      "originalName": "field_i",
+      "to": "bufferedOutgoing",
+      "evidence": "Copied local events queued here are serialized and unlinked by the periodic network update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kda.field_j:Lova;",
+      "originalName": "field_j",
+      "to": "dataSender",
+      "evidence": "Optional sender transmits the existing debug state dump and is cleared when idle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kda.field_k:[I",
+      "originalName": "field_k",
+      "to": "playerPingMillis",
+      "evidence": "Player-indexed latency values displayed in the Ping scoreboard column.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kda.field_l:Z",
+      "originalName": "field_l",
+      "to": "ready",
+      "evidence": "Explicit ready/not-ready diagnostics bracket changes; gates ready event transmission and checksum comparison.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kda.field_m:Lum;",
+      "originalName": "field_m",
+      "to": "dataReceiver",
+      "evidence": "Reassembles initial game-state and debug response byte chunks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kda.field_n:I",
+      "originalName": "field_n",
+      "to": "pendingDisconnectedPlayerMask",
+      "evidence": "Buffered mask returned by startGame and assigned to the session disconnected-player mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kda.field_o:Z",
+      "originalName": "field_o",
+      "to": "serverUpdatesSuspended",
+      "evidence": "Suppress incoming tick/event/latency application during transition; startGame clears it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kda.field_p:Z",
+      "originalName": "field_p",
+      "to": "readyEventSent",
+      "evidence": "Ensure only one ready event is sent per game start.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kda.field_q:Z",
+      "originalName": "field_q",
+      "to": "stoppedWhileReceivingGameState",
+      "evidence": "Set by stop handling during initial-state reception and consumed when deciding whether to keep a newly built session.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kha.field_b:I",
       "originalName": "field_b",
       "to": "height",
@@ -11011,6 +11200,13 @@
       "originalName": "field_j",
       "to": "teamscores",
       "evidence": "The state-diff method prints \"teamscores has changed\" for this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:li.field_h:I",
+      "originalName": "field_h",
+      "to": "width",
+      "evidence": "Constructor width passed into glTexImage1Dub.",
       "confidence": "reviewed"
     },
     {
@@ -12148,10 +12344,101 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nv.field_k:I",
+      "originalName": "field_k",
+      "to": "internalFormat",
+      "evidence": "Native format used to allocate renderbuffer storage and calculate its byte size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nv.field_l:I",
+      "originalName": "field_l",
+      "to": "renderbufferId",
+      "evidence": "Generated by glGenRenderbuffersEXT and submitted to native binding/attachment/deferred disposal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nv.field_m:I",
+      "originalName": "field_m",
+      "to": "byteSize",
+      "evidence": "Original width-times-height-times-format-size estimate retained for disposal accounting.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nv.field_q:I",
+      "originalName": "field_q",
+      "to": "framebufferTarget",
+      "evidence": "Native framebuffer target retained on attachment and cleared on detachment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nv.field_s:I",
+      "originalName": "field_s",
+      "to": "framebufferAttachment",
+      "evidence": "Native attachment point retained on attachment and cleared on detachment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nv.field_t:Lqfa;",
+      "originalName": "field_t",
+      "to": "toolkit",
+      "evidence": "Owner used for format byte sizing and deferred disposal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nv.field_u:I",
+      "originalName": "field_u",
+      "to": "height",
+      "evidence": "Height passed into native renderbuffer storage allocation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:nv.field_w:I",
+      "originalName": "field_w",
+      "to": "width",
+      "evidence": "Width passed into native renderbuffer storage allocation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nwa.field_b:[Lrha;",
       "originalName": "field_b",
       "to": "messages",
       "evidence": "The state-diff method prints \"messages has changed\" for this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ob.field_h:I",
+      "originalName": "field_h",
+      "to": "depth",
+      "evidence": "Third native volume extent passed into glTexImage3Dub.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ob.field_i:I",
+      "originalName": "field_i",
+      "to": "width",
+      "evidence": "First native volume extent passed into glTexImage3Dub.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ob.field_k:I",
+      "originalName": "field_k",
+      "to": "height",
+      "evidence": "Second native volume extent passed into glTexImage3Dub.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ob.field_n:I",
+      "originalName": "field_n",
+      "to": "framebufferAttachment",
+      "evidence": "Retained attachment point consumed when detaching the volume image.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ob.field_o:I",
+      "originalName": "field_o",
+      "to": "framebufferTarget",
+      "evidence": "Retained target consumed when detaching the volume image.",
       "confidence": "reviewed"
     },
     {
@@ -12372,6 +12659,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oma.field_j:I",
+      "originalName": "field_j",
+      "to": "disconnectedPlayerMask",
+      "evidence": "CommonGameState constructor marks a player connected only when its bit is clear and a name is present; scoreboard also tests the mask.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oma.field_l:Lmib;",
       "originalName": "field_l",
       "to": "carouselInfo",
@@ -12537,6 +12831,48 @@
       "originalName": "field_e",
       "to": "filterMode",
       "evidence": "Reviewed native GPU texture allocation, dimensions, coordinate conversion, pixel update, binding and filtering operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ova.field_a:I",
+      "originalName": "field_a",
+      "to": "sendDelay",
+      "evidence": "Decremented on each update and advanced by the interval before sending another chunk.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ova.field_b:I",
+      "originalName": "field_b",
+      "to": "offset",
+      "evidence": "Next outgoing source offset retained in packet metadata and advanced by sent bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ova.field_c:[B",
+      "originalName": "field_c",
+      "to": "data",
+      "evidence": "Retained outgoing byte array cleared when all data has been sent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ova.field_d:I",
+      "originalName": "field_d",
+      "to": "outputReserve",
+      "evidence": "Original1024-byte output-capacity reservation used when choosing a chunk size.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ova.field_e:I",
+      "originalName": "field_e",
+      "to": "packetOpcode",
+      "evidence": "Constructor-supplied opcode written with ISAAC before each chunk.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ova.field_f:I",
+      "originalName": "field_f",
+      "to": "sendInterval",
+      "evidence": "Original8-update delay added between chunk sends.",
       "confidence": "reviewed"
     },
     {
@@ -15459,6 +15795,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:um.field_a:[B",
+      "originalName": "field_a",
+      "to": "data",
+      "evidence": "Byte array allocated to the declared transfer length and filled at received offsets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:um.field_b:I",
+      "originalName": "field_b",
+      "to": "receivedBytes",
+      "evidence": "Accumulated payload byte count used by completion and percentage calculations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:um.field_d:Z",
+      "originalName": "field_d",
+      "to": "complete",
+      "evidence": "Set when received byte count reaches the buffer length; governs takeCompletedData.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:una.field_b:[Lbba;",
       "originalName": "field_b",
       "to": "events",
@@ -16404,10 +16761,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aia.a(BIIIIIIZ[I)V",
+      "originalName": "a",
+      "to": "updatePixels",
+      "evidence": "Optionally flip packed integer rows, bind the texture, set/reset source row length and upload a subregion through glTexSubImage2Di.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aia.a(I)V",
       "originalName": "a",
       "to": "detachFromFramebuffer",
       "evidence": "Texture and renderbuffer implementations submit id zero to their retained framebuffer target/attachment and clear retained attachment identifiers. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aia.a(IIIIIII)V",
+      "originalName": "a",
+      "to": "copyFromFramebuffer",
+      "evidence": "Bind the texture, convert retained top-origin coordinates, submit glCopyTexSubImage2D and flush.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aia.a(IIIZ)V",
+      "originalName": "a",
+      "to": "attachToFramebuffer",
+      "evidence": "Submit this texture id and mip level through glFramebufferTexture2DEXT and retain attachment target/slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aia.a(III[BIIIIZI)V",
+      "originalName": "a",
+      "to": "updatePixels",
+      "evidence": "Optionally flip byte rows, bind the texture, set/reset unpack alignment and source row length, and upload through glTexSubImage2Dub.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aia.a(ZZI)V",
+      "originalName": "a",
+      "to": "setWrap",
+      "evidence": "For a standard 2D target, set S/T wrap modes independently to repeat or clamp-to-edge.",
       "confidence": "reviewed"
     },
     {
@@ -19519,10 +19911,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:coa.a(B)V",
+      "originalName": "a",
+      "to": "resetOptionStates",
+      "evidence": "Replace vote/component state arrays with their defaults and restore the existing hidden-copy flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.a(BI)Z",
+      "originalName": "a",
+      "to": "isVoteOptionMembersOnly",
+      "evidence": "Test the selected vote option through the member-state predicate; tooltip appends for members or displays the member requirement.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:coa.a(BLtv;)Z",
       "originalName": "a",
       "to": "differsFrom",
       "evidence": "State comparison contract: SettingsChange and MissionVariable return whether stored values differ; concrete implementations retain their original comparison formulas. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.a(I)V",
+      "originalName": "a",
+      "to": "ensureOptionStateArrays",
+      "evidence": "Allocate missing/default-sized option arrays and copy retained entries when lengths differ, preserving the original early returns.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.a(IB)Z",
+      "originalName": "a",
+      "to": "isVoteOptionNew",
+      "evidence": "Test the selected vote option through the new-state predicate; the corresponding tooltip literal is New.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.a(II)Z",
+      "originalName": "a",
+      "to": "isMembersOptionState",
+      "evidence": "States5,6,7,8 receive the for members badge or membership requirement in the vote tooltip.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.a(IIILgd;)Lana;",
+      "originalName": "a",
+      "to": "playPannedSample",
+      "evidence": "Create a panned PCM sample stream and register its returned handle and stream with the active audio deque/mixer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.a(IIZ)Z",
+      "originalName": "a",
+      "to": "isVoteOptionAvailable",
+      "evidence": "Require the current game mode to permit the option and its state to be available for the supplied membership flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.a(IZ)Z",
+      "originalName": "a",
+      "to": "isVoteOptionAllowedInCurrentMode",
+      "evidence": "Filter vote indices against the active CommonGameState mode and the existing mode-specific index predicates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.a(IZZ)Z",
+      "originalName": "a",
+      "to": "isOptionStateAvailable",
+      "evidence": "Allow normal/new/limited states0,1,3 and additionally member variants5,6,8 when the supplied membership flag permits them.",
       "confidence": "reviewed"
     },
     {
@@ -19547,6 +20002,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:coa.a(ZI)Z",
+      "originalName": "a",
+      "to": "isNewOptionState",
+      "evidence": "States1 and6 select the tooltip New literal; the original guard branch remains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.a(ZIB)Z",
+      "originalName": "a",
+      "to": "isComponentOptionAvailable",
+      "evidence": "Test the indexed component state for availability under the supplied membership flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.a([BI)Larb;",
+      "originalName": "a",
+      "to": "createFontFromDecodedSprites",
+      "evidence": "Construct a software monochrome bitmap font from supplied metrics and globally decoded glyph arrays, then clear the decoded sprite scratch data.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.a([IB[I)V",
+      "originalName": "a",
+      "to": "copyOptionStates",
+      "evidence": "Copy the shorter source/target length element by element, preserving existing default trailing entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.b(BI)Z",
+      "originalName": "b",
+      "to": "isLeapYear",
+      "evidence": "Apply the original pre-1582, negative-year and Gregorian divisibility rules.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:coa.b(BLtv;)V",
       "originalName": "b",
       "to": "copyTo",
@@ -19554,10 +20044,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:coa.b(I)[I",
+      "originalName": "b",
+      "to": "createDefaultVoteOptionStates",
+      "evidence": "Create the original31-element vote-option state array and retain its exact default assignments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.b(IB)Z",
+      "originalName": "b",
+      "to": "isComponentOptionMembersOnly",
+      "evidence": "Test the indexed component state with the same member-state predicate used by vote-option badges.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.b(II)Z",
+      "originalName": "b",
+      "to": "isVoteOptionComingSoon",
+      "evidence": "Test the selected vote option through the states2/7 predicate; tooltip and hover text use Coming soon.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.b(IZ)Z",
+      "originalName": "b",
+      "to": "isLimitedTimeOptionState",
+      "evidence": "States3 and8 select the tooltip Limited time only literal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:coa.b(Lfaa;I)V",
       "originalName": "b",
       "to": "writeState",
       "evidence": "Serializes state fields into the supplied bit packet buffer; confirmed by SettingsChange, MissionVariable and PlayerVote implementations. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.b(Z)V",
+      "originalName": "b",
+      "to": "ensureOptionStateArrays",
+      "evidence": "Delegate option-state array sizing/default initialization under the original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.c(I)[I",
+      "originalName": "c",
+      "to": "createDefaultComponentOptionStates",
+      "evidence": "Create the original56-element component-option state array, retaining zero defaults and member-marked indices8through11.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.c(IB)Z",
+      "originalName": "c",
+      "to": "isComponentOptionVisible",
+      "evidence": "Return whether the indexed component state differs from hidden state4; callers use it to include component buttons/list entries.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.c(II)Z",
+      "originalName": "c",
+      "to": "isComingSoonOptionState",
+      "evidence": "States2 and7 select the tooltip Coming soon literal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.d(IB)Z",
+      "originalName": "d",
+      "to": "isVoteOptionLimitedTime",
+      "evidence": "Test the indexed vote option with the states3/8 predicate that selects Limited time only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:coa.d(II)Z",
+      "originalName": "d",
+      "to": "isComponentOptionComingSoon",
+      "evidence": "Test the indexed component option with the states2/7 coming-soon predicate.",
       "confidence": "reviewed"
     },
     {
@@ -29956,10 +30516,178 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kda.a(B)V",
+      "originalName": "a",
+      "to": "finishReceivingGameState",
+      "evidence": "Clear the game-state reception flag; the main loop calls this when no session is active and chunk reception has no remaining progress.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(BI)V",
+      "originalName": "a",
+      "to": "setPingMillis",
+      "evidence": "Retain the server-reported local latency used in lag diagnostics and the scoreboard Ping column.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(BLjava/lang/String;Lfaa;)V",
+      "originalName": "a",
+      "to": "sendDebugRequest",
+      "evidence": "Wrap the supplied request text in DebugRequest/DebugMessage and serialize it to the debug packet opcode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(BLmib;ILfaa;)Z",
+      "originalName": "a",
+      "to": "sendReadyIfNeeded",
+      "evidence": "When ready and a valid player index is present, send a player-ready event once; retain the original always-false return value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(I)Z",
+      "originalName": "a",
+      "to": "isReceivingGameState",
+      "evidence": "Return the initial game-state reception flag used by start/stop handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(II)V",
+      "originalName": "a",
+      "to": "bufferDisconnectedPlayerMask",
+      "evidence": "Retain a disconnected-player bit mask received before the new session can consume it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(ILfaa;)V",
+      "originalName": "a",
+      "to": "requestNewestBlackBoxRecording",
+      "evidence": "Send the explicit RequestNewestBlackBox debug request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(IZI)V",
+      "originalName": "a",
+      "to": "setPlayerPingMillis",
+      "evidence": "Grow the player-indexed latency array as needed and store the supplied value, later displayed in the scoreboard Ping column.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(IZLmib;)V",
+      "originalName": "a",
+      "to": "applyBufferedEventsAndCatchUp",
+      "evidence": "Apply buffered carousel events/server ticks, request their catch-up tick and advance the timeline under the original follow-time rules.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(Lfaa;I)V",
+      "originalName": "a",
+      "to": "updateNetwork",
+      "evidence": "Update readiness, advance an optional chunk sender and flush buffered outgoing events every five calls.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(Lfaa;ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "sendCarouselConstant",
+      "evidence": "Send a DebugRequest with the explicit SetCarouselConstant prefix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(Lfaa;Lfaa;ZBILmib;)Z",
+      "originalName": "a",
+      "to": "handlePacket",
+      "evidence": "Decode server ticks, carousel events, tick probes, latency updates and chunked debug responses; retain replay/receiving/suspension guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(Lmib;I)Z",
+      "originalName": "a",
+      "to": "isTooFarBehind",
+      "evidence": "Compare ticksBehind with the retained allowed lag reduced by local ping converted into simulation ticks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(Lmib;IIIZ)V",
+      "originalName": "a",
+      "to": "checkServerChecksum",
+      "evidence": "Choose a sufficiently old confirmed history state, compare its checksum and optionally send the existing out-of-sync state dump.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(Luqb;Lfaa;I)V",
+      "originalName": "a",
+      "to": "sendEvent",
+      "evidence": "Serialize a carousel event through the event packet opcode with the original temporary codec flag changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(Z)V",
+      "originalName": "a",
+      "to": "handleGameStopped",
+      "evidence": "Remember a stop received while loading initial game state so session construction can discard the completed result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(ZI)I",
+      "originalName": "a",
+      "to": "startGame",
+      "evidence": "Reset buffered events/readiness/CRC state, optionally retain ping data, consume the pending disconnected-player mask and return it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.a(ZLuqb;Lmib;ZZILfaa;)V",
+      "originalName": "a",
+      "to": "submitLocalEvent",
+      "evidence": "Set event timing/confirmation, reject events while too far behind, optionally buffer/send and add the local event to the carousel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.b(B)Z",
+      "originalName": "b",
+      "to": "pollStoppedWhileReceivingGameState",
+      "evidence": "Return and clear the flag that makes initial session creation discard a game stopped during reception.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kda.b(I)V",
       "originalName": "b",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_g. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.b(Lfaa;I)[B",
+      "originalName": "b",
+      "to": "receiveGameStateChunk",
+      "evidence": "Receive the next chunk, mark initial game-state reception active and return completed bytes when available.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.b(Lmib;I)V",
+      "originalName": "b",
+      "to": "startBlackBoxReplay",
+      "evidence": "Copy the recorded server carousel into the supplied timeline, rewind to its oldest state and set replay mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.b(ZI)I",
+      "originalName": "b",
+      "to": "getPlayerPingMillis",
+      "evidence": "Return the player-indexed ping value displayed in the scoreboard or minus one when absent, preserving the original guard value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.c(B)V",
+      "originalName": "c",
+      "to": "suspendServerUpdates",
+      "evidence": "Set the flag suppressing server tick/event/latency application during connection transition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.c(I)I",
+      "originalName": "c",
+      "to": "getPingMillis",
+      "evidence": "Return local latency used in the Ping column, lag diagnostic and tick-delay calculations.",
       "confidence": "reviewed"
     },
     {
@@ -31248,6 +31976,13 @@
       "originalName": "a",
       "to": "detachFromFramebuffer",
       "evidence": "Texture and renderbuffer implementations submit id zero to their retained framebuffer target/attachment and clear retained attachment identifiers. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:li.a(ZZ)V",
+      "originalName": "a",
+      "to": "setWrap",
+      "evidence": "Bind this one-dimensional texture and set S wrapping to repeat or clamp-to-edge, retaining the original guard recursion.",
       "confidence": "reviewed"
     },
     {
@@ -35507,6 +36242,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nv.a(III)V",
+      "originalName": "a",
+      "to": "attachToFramebuffer",
+      "evidence": "Attach this renderbuffer through glFramebufferRenderbufferEXT and retain target/slot identifiers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nv.e(B)V",
+      "originalName": "e",
+      "to": "dispose",
+      "evidence": "Queue native renderbuffer id and allocation size for deferred disposal, clear the id and retain the original guard side effects.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nv.e(I)V",
       "originalName": "e",
       "to": "clearSharedReferences",
@@ -36211,6 +36960,13 @@
       "originalName": "a",
       "to": "detachFromFramebuffer",
       "evidence": "Texture and renderbuffer implementations submit id zero to their retained framebuffer target/attachment and clear retained attachment identifiers. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.a(IIIIIBII)V",
+      "originalName": "a",
+      "to": "copyFromFramebuffer",
+      "evidence": "Bind this volume texture, copy a framebuffer rectangle into the supplied volume offsets through glCopyTexSubImage3D and flush.",
       "confidence": "reviewed"
     },
     {
@@ -37345,6 +38101,27 @@
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ova.a(I)Z",
+      "originalName": "a",
+      "to": "isIdle",
+      "evidence": "Return whether no data array is queued, preserving the original guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ova.a(Lfaa;ZI)V",
+      "originalName": "a",
+      "to": "sendNextChunk",
+      "evidence": "Throttle sends by the retained delay, reserve output capacity, write length/offset/chunk metadata and clear data when all bytes have been sent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ova.a([BI)V",
+      "originalName": "a",
+      "to": "setData",
+      "evidence": "Retain the supplied data array and starting offset for chunk transmission.",
       "confidence": "reviewed"
     },
     {
@@ -47369,6 +48146,27 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_c; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.a(Lds;IZ)V",
+      "originalName": "a",
+      "to": "receiveChunk",
+      "evidence": "Read total length, byte offset and unsigned-short chunk size; allocate as needed, copy the payload and mark complete at the original received-byte threshold.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.b(I)[B",
+      "originalName": "b",
+      "to": "takeCompletedData",
+      "evidence": "Return the completed byte array and clear its retained reference; preserve the original completion flag behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:um.c(I)I",
+      "originalName": "c",
+      "to": "getProgressPercent",
+      "evidence": "Return received bytes as a percentage while receiving; return zero when complete or no buffer is present.",
       "confidence": "reviewed"
     },
     {
@@ -60316,10 +61114,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-voidhunters-rules.mjs": "4bb22dc88cf85cb29f303eb5ed2f574bd8fd075e8f08029d72537413b3eeb541",
+      "build-voidhunters-rules.mjs": "6e075af191e3b4942c3b32dbcf572c9c065e8f0c0da283675c5c02a3dae94891",
       "reproduce-voidhunters.mjs": "d166931d08f6ab274d50d2e60dae5ee815aca9510dc1d347a3a1a7488c0c4c4a",
       "voidhunters-diff-names.mjs": "f7928b13a33683097852e5efeb451e5072777f5635a2c1c5e45bb335900df785",
-      "voidhunters-names.json": "f03b94591603ac75422565b0125e625c585c2a697739fbdd27775d4d8a805526",
+      "voidhunters-names.json": "0d30479e1cf480c0438eecbad25778e0090220a0f006914a0cdf5508eb1eff2b",
       "voidhunters-coverage.mjs": "0b6c78523ef2b0271428e9d017570778b20bb985cdeaa6cdadb2fb04c854665a",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
