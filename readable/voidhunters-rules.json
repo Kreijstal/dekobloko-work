@@ -33463,6 +33463,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dm.a(IB)I",
+      "originalName": "a",
+      "to": "getArmageddonDurationTicks",
+      "evidence": "Return original configured duration multiplied by Particle.field_l tick scale for all objective cases;World Armageddon uses it to clamp elapsed ticks and shrink bounds. Preserve branch multiplication order and bad-byte recursive call.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dm.a(Z)I",
       "originalName": "a",
       "to": "getFiringSoundId",
@@ -56276,6 +56283,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(BLanb;Lml;Lwfb;)V",
+      "originalName": "a",
+      "to": "spawnComponentRadialProjectiles",
+      "evidence": "Delegate original type1 radial projectile burst from component final coordinates using supplied definition count and body owner/team when ship;retain bad-guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(BLcrb;)V",
       "originalName": "a",
       "to": "addAsteroid",
@@ -56318,10 +56332,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(I)V",
+      "originalName": "a",
+      "to": "clearTerrainAroundEntities",
+      "evidence": "Clear asteroid/nebula terrain around ships,spawn points,resources and rectangular map zones through original clearance helpers;retain all getter guards and list order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(IB)V",
       "originalName": "a",
       "to": "setWidth",
       "evidence": "Assign world width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(IBII)V",
+      "originalName": "a",
+      "to": "clearTerrainCircle",
+      "evidence": "Remove asteroids using center distance plus bounding radius and remove nebulae within circle;record clearance circle only on original nebula-helper result,with original invalid-guard call.",
       "confidence": "reviewed"
     },
     {
@@ -56343,6 +56371,20 @@
       "originalName": "a",
       "to": "initializeRespawnTimers",
       "evidence": "Allocate player respawn-timer array and initialize from starting index to configured duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(IIIBII)Lnbb;",
+      "originalName": "a",
+      "to": "findNearestUndraggedDebrisOfType",
+      "evidence": "Select nearest un-dragged debris of requested component type within original two-point distance limits and initial262144 bound;retain bad-byte partition-manager cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(IIIIB)V",
+      "originalName": "a",
+      "to": "clearTerrainRectangle",
+      "evidence": "Remove asteroids whose centers lie strictly inside rectangle,then conditionally clear/record nebula rectangle;retain early bad-byte return and original boundary comparisons.",
       "confidence": "reviewed"
     },
     {
@@ -56402,6 +56444,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(IIZI)Z",
+      "originalName": "a",
+      "to": "overlapsShipsOrSpawnPoints",
+      "evidence": "Test original approximate-distance overlap against eligible teamed ships and spawn points with their original extent/radius rules;retain boolean-guard projectile cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(IIZIILsg;)V",
+      "originalName": "a",
+      "to": "spawnPlayerShip",
+      "evidence": "Choose original objective/team spawn position and angle for supplied ship,zero movement/forces,assign owner/team and add ship;retain occupied-point scans,fallback arithmetic,unreachable branch and partial bad-guard return.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(II[Ltfa;Llbb;)V",
+      "originalName": "a",
+      "to": "updatePlayerRespawns",
+      "evidence": "Advance timers for players without ships when team respawn allowed,choose saved/preset ships,spawn and restore unmatched carried-over component debris;retain objective13 timer clamp,disconnected-player policy,guards and possible null failures.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(ILanb;)Z",
       "originalName": "a",
       "to": "overlapsAnyBodyBoundingCircle",
@@ -56448,6 +56511,13 @@
       "originalName": "a",
       "to": "removeNebula",
       "evidence": "Remove the indexed nebula from its field and optionally remove its bounds from spatial partitions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(IZLnwa;[Ltfa;Llbb;I[Ltfa;)V",
+      "originalName": "a",
+      "to": "updateSimulation",
+      "evidence": "Run original deterministic world tick,seed RNG from tick,update controls/projectiles/particles/debris/asteroids/hooks/pods,Armageddon,collisions/respawns and forces;preserve ordering,repeated hook forces,copy-on-write and guards.",
       "confidence": "reviewed"
     },
     {
@@ -56521,6 +56591,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(Llta;BILsg;)V",
+      "originalName": "a",
+      "to": "drawWorld",
+      "evidence": "Draw original resources,eligible AI/unowned ships,pods,hooks,debris,asteroids,particles,projectiles and nebula particles plus debug overlays;retain original visibility filters and invalid-byte map-zone insertion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Llta;ILlbb;)V",
+      "originalName": "a",
+      "to": "drawArmageddonBounds",
+      "evidence": "Delegate original Armageddon helper in draw mode using supplied camera/state;retain invalid-int objective-query side call.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(Lnbb;B)V",
       "originalName": "a",
       "to": "addDebris",
@@ -56532,6 +56616,13 @@
       "originalName": "a",
       "to": "resolveDraggedDebris",
       "evidence": "Retain existing dragged debris or,when trigger128 and no debris,aim ship,update chassis transforms and detach at point;store original dragging id and refresh thruster bindings,retaining bad-guard world-height mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Lnwa;I[Ltfa;[Lcrb;)V",
+      "originalName": "a",
+      "to": "processDestroyedEntities",
+      "evidence": "Process destroyed ships,pods,component carryover,kills/assists/deaths/messages,debris pruning,hooks,asteroids and expired escape pods;retain copy-on-write,original array/list order and bad-guard debug assignment.",
       "confidence": "reviewed"
     },
     {
@@ -56605,6 +56696,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(ZLlbb;BLlta;)V",
+      "originalName": "a",
+      "to": "processArmageddon",
+      "evidence": "Original bool selects shrinking-boundary damage/round completion versus drawing;retain width/duration-before-multiplication integer arithmetic,phase/timer gates,tie handling and invalid-byte width assignment.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(ZLqob;B)V",
       "originalName": "a",
       "to": "addNebula",
@@ -56630,6 +56728,13 @@
       "originalName": "a",
       "to": "registerBodyPartitions",
       "evidence": "Register each non-null member of the supplied body array in the supplied partition group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a([Ltfa;I[Ltfa;I)V",
+      "originalName": "a",
+      "to": "updateShipControlsAndRepairs",
+      "evidence": "Apply original player/AI controls and special orders,component dragging,tick updates,periodic repair,saved-ship copies and salvo-energy toggle;retain disconnected policy,aim mutation,settings aliases and exact sequence.",
       "confidence": "reviewed"
     },
     {
@@ -83906,10 +84011,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-voidhunters-rules.mjs": "3ffcd13701cdad90accf160c22d7c1f78ac376432cf08ccf7c449cbad9f0928c",
+      "build-voidhunters-rules.mjs": "30ab2d59400c21d66573facc5153a4560a71b345aa79eb25e11f8da23eb2e2bb",
       "reproduce-voidhunters.mjs": "d166931d08f6ab274d50d2e60dae5ee815aca9510dc1d347a3a1a7488c0c4c4a",
       "voidhunters-diff-names.mjs": "f7928b13a33683097852e5efeb451e5072777f5635a2c1c5e45bb335900df785",
-      "voidhunters-names.json": "3ff6284ea680d650ae2129f62690b291ccdd26f854afc3c1540efaf286badba5",
+      "voidhunters-names.json": "2f66ac752556eadab3e3026e90830be2ede1b6f8de0361e05c6b10d1fd0aa4d7",
       "voidhunters-coverage.mjs": "0b6c78523ef2b0271428e9d017570778b20bb985cdeaa6cdadb2fb04c854665a",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
