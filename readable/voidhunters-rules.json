@@ -717,6 +717,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:asb",
+      "originalName": "asb",
+      "to": "ResourceArchive",
+      "evidence": "File/group resource facade over ArchiveProvider; caches group/file objects and resolves archive metadata names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:au",
+      "originalName": "au",
+      "to": "BoundedRandomAccessFile",
+      "evidence": "Wraps RandomAccessFile with tracked position and maximum size; oversized writes mark limit and throw EOFException.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:aua",
       "originalName": "aua",
       "to": "SetLaserFireForce",
@@ -2068,6 +2082,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fnb",
+      "originalName": "fnb",
+      "to": "ArchiveProvider",
+      "evidence": "Abstract contract for archive index retrieval, group retrieval and group request progress; CachedArchiveProvider supplies disk/network implementation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fo",
+      "originalName": "fo",
+      "to": "ArchiveDisk",
+      "evidence": "Sector-based archive storage combines index and data BufferedFiles, with520-byte sectors and group headers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:foa",
       "originalName": "foa",
       "to": "SetMissionResnetResourceTickTime",
@@ -2240,6 +2268,13 @@
       "originalName": "gda",
       "to": "ComponentContact",
       "evidence": "Intrusive geometric contact records component pair, packed paths, contact coordinates and intersected edge indices.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gdb",
+      "originalName": "gdb",
+      "to": "BufferedFile",
+      "evidence": "Buffered random-access file layers read/write buffers and logical offset/length over bounded underlying file.",
       "confidence": "reviewed"
     },
     {
@@ -3258,6 +3293,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jma",
+      "originalName": "jma",
+      "to": "DiskArchiveRequest",
+      "evidence": "ArchiveRequest stores disk operation type, ArchiveDisk and byte payload; worker performs queued reads/writes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jmb",
       "originalName": "jmb",
       "to": "GetBombletSprayProjectiles",
@@ -3377,6 +3419,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jtb",
+      "originalName": "jtb",
+      "to": "ArchiveRequest",
+      "evidence": "Asynchronous archive data request contract; stores pending state and exposes bytes and percentage completion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ju",
       "originalName": "ju",
       "to": "GetPhasedEnergyBeamPulseFadetime",
@@ -3409,6 +3458,13 @@
       "originalName": "kc",
       "to": "PlayerGameData",
       "evidence": "Own reportDifferences implementation identifies this state as \"PlayerGameData\". Its state fields and serialization/copy operations corroborate this role; unrelated helpers remain in place.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kca",
+      "originalName": "kca",
+      "to": "IntIndexTable",
+      "evidence": "Linear-probed open-addressing table of integer key/index pairs, constructed from the key array and used for archive name hashes.",
       "confidence": "reviewed"
     },
     {
@@ -3542,6 +3598,13 @@
       "originalName": "klb",
       "to": "GetLagStandardDeviationIn",
       "evidence": "Developer console command registered by name \"GetLagStandardDeviationIn\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:km",
+      "originalName": "km",
+      "to": "NetworkArchiveRequest",
+      "evidence": "ArchiveRequest tracks network payload PacketBuffer, block/header state and trailing padding for percentage completion.",
       "confidence": "reviewed"
     },
     {
@@ -4819,6 +4882,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pfa",
+      "originalName": "pfa",
+      "to": "ArchiveDiskWorker",
+      "evidence": "Runnable worker serializes queued ArchiveDisk operations, serves synchronous reads through pending writes and supports shutdown.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pg",
       "originalName": "pg",
       "to": "GetSpecialOrderBoxWidth",
@@ -4984,6 +5054,13 @@
       "originalName": "prb",
       "to": "GetBurstFireRegenerationRate",
       "evidence": "Developer console command registered by name \"GetBurstFireRegenerationRate\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ps",
+      "originalName": "ps",
+      "to": "ByteStorage",
+      "evidence": "Abstract byte storage contract for replacing all bytes, reading a range and retrieving all bytes.",
       "confidence": "reviewed"
     },
     {
@@ -5271,6 +5348,13 @@
       "originalName": "qob",
       "to": "Nebula",
       "evidence": "Void Hunters state-diff messages name this type: \"Nebula has changed\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qp",
+      "originalName": "qp",
+      "to": "ArchiveIndex",
+      "evidence": "Decoded archive group/file metadata returned by provider; contains per-group CRC/version/hash and file/name lookup tables.",
       "confidence": "reviewed"
     },
     {
@@ -5670,6 +5754,13 @@
       "originalName": "sdb",
       "to": "GetThrusterBindingBalanceThreshold",
       "evidence": "Developer console command registered by name \"GetThrusterBindingBalanceThreshold\" in ConsoleCommandRegistry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:se",
+      "originalName": "se",
+      "to": "DirectByteStorage",
+      "evidence": "ByteStorage implemented by allocateDirect ByteBuffer; copies input bytes and returns copied full/range arrays.",
       "confidence": "reviewed"
     },
     {
@@ -7290,6 +7381,69 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:asb.field_c:[[Ljava/lang/Object;",
+      "originalName": "field_c",
+      "to": "files",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:asb.field_d:Lfnb;",
+      "originalName": "field_d",
+      "to": "provider",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:asb.field_e:Z",
+      "originalName": "field_e",
+      "to": "releasePackedGroups",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:asb.field_g:Lqp;",
+      "originalName": "field_g",
+      "to": "index",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:asb.field_h:I",
+      "originalName": "field_h",
+      "to": "fileRetentionMode",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:asb.field_i:[Ljava/lang/Object;",
+      "originalName": "field_i",
+      "to": "groups",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:au.field_a:Ljava/io/RandomAccessFile;",
+      "originalName": "field_a",
+      "to": "file",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:au.field_b:J",
+      "originalName": "field_b",
+      "to": "maxLength",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:au.field_d:J",
+      "originalName": "field_d",
+      "to": "position",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bba.field_b:[Lwm;",
       "originalName": "field_b",
       "to": "conditions",
@@ -8396,6 +8550,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fo.field_a:I",
+      "originalName": "field_a",
+      "to": "maxEntrySize",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fo.field_b:Lgdb;",
+      "originalName": "field_b",
+      "to": "indexFile",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fo.field_c:Lgdb;",
+      "originalName": "field_c",
+      "to": "dataFile",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fo.field_d:I",
+      "originalName": "field_d",
+      "to": "archiveId",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fwa.field_b:Ljava/math/BigInteger;",
       "originalName": "field_b",
       "to": "signatureExponent",
@@ -8421,6 +8603,125 @@
       "originalName": "field_f",
       "to": "archiveProviders",
       "evidence": "Reviewed constructor, archive loader and geometric contact collection/consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_d:[B",
+      "originalName": "field_d",
+      "to": "groupDiskStatus",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_e:J",
+      "originalName": "field_e",
+      "to": "nextRequestCleanupTime",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_f:Lpfa;",
+      "originalName": "field_f",
+      "to": "diskWorker",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_h:I",
+      "originalName": "field_h",
+      "to": "backgroundGroupIndex",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_i:Lij;",
+      "originalName": "field_i",
+      "to": "backgroundQueue",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_j:Lfo;",
+      "originalName": "field_j",
+      "to": "indexDisk",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_k:[B",
+      "originalName": "field_k",
+      "to": "expectedIndexDigest",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_l:Lfo;",
+      "originalName": "field_l",
+      "to": "archiveDisk",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_n:I",
+      "originalName": "field_n",
+      "to": "expectedIndexCrc",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_o:Z",
+      "originalName": "field_o",
+      "to": "validatingDiskGroups",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_p:I",
+      "originalName": "field_p",
+      "to": "archiveId",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_q:Z",
+      "originalName": "field_q",
+      "to": "prefetchingGroups",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_r:Ljtb;",
+      "originalName": "field_r",
+      "to": "indexRequest",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_t:Lqp;",
+      "originalName": "field_t",
+      "to": "index",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_u:Lgnb;",
+      "originalName": "field_u",
+      "to": "requests",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_v:Lij;",
+      "originalName": "field_v",
+      "to": "prefetchQueue",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ga.field_w:I",
+      "originalName": "field_w",
+      "to": "expectedIndexVersion",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
       "confidence": "reviewed"
     },
     {
@@ -8512,6 +8813,83 @@
       "originalName": "field_m",
       "to": "second",
       "evidence": "Reviewed constructor, archive loader and geometric contact collection/consumption.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gdb.field_a:J",
+      "originalName": "field_a",
+      "to": "position",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gdb.field_b:J",
+      "originalName": "field_b",
+      "to": "length",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gdb.field_c:J",
+      "originalName": "field_c",
+      "to": "filePosition",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gdb.field_e:J",
+      "originalName": "field_e",
+      "to": "readBufferOffset",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gdb.field_f:[B",
+      "originalName": "field_f",
+      "to": "writeBuffer",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gdb.field_g:J",
+      "originalName": "field_g",
+      "to": "writeBufferOffset",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gdb.field_h:[B",
+      "originalName": "field_h",
+      "to": "readBuffer",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gdb.field_j:I",
+      "originalName": "field_j",
+      "to": "writeBufferLength",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gdb.field_k:J",
+      "originalName": "field_k",
+      "to": "fileLength",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gdb.field_l:I",
+      "originalName": "field_l",
+      "to": "readBufferLength",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gdb.field_m:Lau;",
+      "originalName": "field_m",
+      "to": "file",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
       "confidence": "reviewed"
     },
     {
@@ -9152,6 +9530,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jma.field_o:Lfo;",
+      "originalName": "field_o",
+      "to": "archiveDisk",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jma.field_p:[B",
+      "originalName": "field_p",
+      "to": "data",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jma.field_r:I",
+      "originalName": "field_r",
+      "to": "operation",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:jn.field_b:Lfh;",
       "originalName": "field_b",
       "to": "lastReturned",
@@ -9222,6 +9621,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jtb.field_n:Z",
+      "originalName": "field_n",
+      "to": "pending",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:kc.field_c:[Z",
       "originalName": "field_c",
       "to": "tipsDone",
@@ -9240,6 +9646,13 @@
       "originalName": "field_f",
       "to": "blueprint",
       "evidence": "The state-diff method prints \"blueprint has changed\" for this field.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:kca.field_b:[I",
+      "originalName": "field_b",
+      "to": "entries",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
       "confidence": "reviewed"
     },
     {
@@ -9324,6 +9737,20 @@
       "originalName": "field_e",
       "to": "midi",
       "evidence": "Reconstructed MIDI file bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:km.field_p:Lds;",
+      "originalName": "field_p",
+      "to": "buffer",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:km.field_q:B",
+      "originalName": "field_q",
+      "to": "padding",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
       "confidence": "reviewed"
     },
     {
@@ -10272,6 +10699,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pfa.field_b:Ljava/lang/Thread;",
+      "originalName": "field_b",
+      "to": "thread",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pfa.field_c:Z",
+      "originalName": "field_c",
+      "to": "stopped",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pfa.field_e:I",
+      "originalName": "field_e",
+      "to": "pendingCount",
+      "evidence": "Reviewed archive requests, disk worker, sector access and bounded file operations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pob.field_a:I",
       "originalName": "field_a",
       "to": "value",
@@ -10629,6 +11077,118 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qp.field_a:Lkca;",
+      "originalName": "field_a",
+      "to": "groupNameLookup",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_b:[B",
+      "originalName": "field_b",
+      "to": "digest",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_c:[[B",
+      "originalName": "field_c",
+      "to": "groupDigests",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_d:[I",
+      "originalName": "field_d",
+      "to": "groupCrcs",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_e:I",
+      "originalName": "field_e",
+      "to": "version",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_f:I",
+      "originalName": "field_f",
+      "to": "groupCount",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_g:[[I",
+      "originalName": "field_g",
+      "to": "fileIds",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_h:[I",
+      "originalName": "field_h",
+      "to": "groupVersions",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_i:[I",
+      "originalName": "field_i",
+      "to": "groupIds",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_j:[I",
+      "originalName": "field_j",
+      "to": "groupFileCounts",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_k:I",
+      "originalName": "field_k",
+      "to": "crc",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_l:I",
+      "originalName": "field_l",
+      "to": "groupCapacity",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_m:[I",
+      "originalName": "field_m",
+      "to": "groupFileCapacities",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_n:[I",
+      "originalName": "field_n",
+      "to": "groupNameHashes",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_o:[[I",
+      "originalName": "field_o",
+      "to": "fileNameHashes",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qp.field_p:[Lkca;",
+      "originalName": "field_p",
+      "to": "fileNameLookups",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qqb.field_a:[Lwna;",
       "originalName": "field_a",
       "to": "results",
@@ -10962,6 +11522,13 @@
       "originalName": "field_F",
       "to": "pixels",
       "evidence": "Reviewed sprite factories, padded dimension getters and scaled/affine drawing establish this role.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:se.field_c:Ljava/nio/ByteBuffer;",
+      "originalName": "field_c",
+      "to": "buffer",
+      "evidence": "Reviewed index decoding, resource-file extraction, sector storage and buffered IO implementations.",
       "confidence": "reviewed"
     },
     {
@@ -13345,6 +13912,181 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:asb.a(BI)V",
+      "originalName": "a",
+      "to": "loadGroup",
+      "evidence": "Fetch provider group bytes into the packed group cache, using direct storage unless releasePackedGroups is enabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(BII)Z",
+      "originalName": "a",
+      "to": "isFileReady",
+      "evidence": "Validate file/group ids, then accept cached file or packed group bytes or request the group and test availability.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(BLjava/lang/String;Ljava/lang/String;)Z",
+      "originalName": "a",
+      "to": "containsNamedFile",
+      "evidence": "Lowercase and hash group/file names and test both metadata lookup results.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(I)Z",
+      "originalName": "a",
+      "to": "loadAllGroups",
+      "evidence": "Iterate declared group ids, requesting missing packed groups and report whether all are available.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(II)I",
+      "originalName": "a",
+      "to": "getGroupLoadPercent",
+      "evidence": "Report100 for a cached packed group, otherwise delegate to provider group request percentage.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(IIB)[B",
+      "originalName": "a",
+      "to": "fetchFile",
+      "evidence": "Delegate indexed file retrieval with no XTEA key.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(III)Z",
+      "originalName": "a",
+      "to": "isValidFile",
+      "evidence": "Load index and check group/file bounds; preserve original strict-check exception and obfuscation guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(III[I)Z",
+      "originalName": "a",
+      "to": "unpackGroup",
+      "evidence": "Optionally XTEA-decrypt packed group from offset5, decompress container, then split file chunks or extract selected file according to retention mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(II[II)[B",
+      "originalName": "a",
+      "to": "fetchFileWithKey",
+      "evidence": "Validate ids, load and unpack group with optional XTEA key, return selected bytes and release cached files according to retention mode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(ILjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "isNamedGroupReady",
+      "evidence": "Lowercase group name, resolve its hash and delegate group availability check.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(ILjava/lang/String;[BILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "writeDevelopmentLevelFile",
+      "evidence": "Write supplied bytes to original contentfs Void Hunters freelevels development path and report IOExceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(IZ)Z",
+      "originalName": "a",
+      "to": "isSingleFileReady",
+      "evidence": "Resolve a flat file id in single-group archives or single-file groups and delegate availability check.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(Ljava/lang/String;I)I",
+      "originalName": "a",
+      "to": "getNamedGroupLoadPercent",
+      "evidence": "Resolve lowercase group name and delegate group progress calculation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(Ljava/lang/String;ZLjava/lang/String;)[B",
+      "originalName": "a",
+      "to": "fetchNamedFile",
+      "evidence": "Resolve lowercase group and file names, validate group and delegate indexed file retrieval.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(ZILjava/lang/String;)I",
+      "originalName": "a",
+      "to": "getFileId",
+      "evidence": "Resolve lowercase file-name hash within valid group and validate returned file id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(ZLjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "containsNamedGroup",
+      "evidence": "Resolve lowercase group-name hash and test for nonnegative result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.a(ZLjava/lang/String;Ljava/lang/String;)Z",
+      "originalName": "a",
+      "to": "isNamedFileReady",
+      "evidence": "Resolve lowercase group/file hashes and delegate file availability check.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.b(B)Z",
+      "originalName": "b",
+      "to": "loadIndex",
+      "evidence": "Fetch provider index once, then allocate packed group and unpacked file caches at indexed group capacity.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.b(BI)Z",
+      "originalName": "b",
+      "to": "isValidGroup",
+      "evidence": "Load index and validate nonnegative group id with nonzero file capacity; optionally throw original strict-check exception.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.b(I)I",
+      "originalName": "b",
+      "to": "getLoadPercent",
+      "evidence": "Average load percentage over nonempty groups; return100 when no group contributes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.b(II)I",
+      "originalName": "b",
+      "to": "getGroupFileCapacity",
+      "evidence": "Return indexed file array capacity for a valid group, otherwise zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.b(Ljava/lang/String;I)I",
+      "originalName": "b",
+      "to": "getGroupId",
+      "evidence": "Resolve lowercase group-name hash and return validated group id or-1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.c(B)I",
+      "originalName": "c",
+      "to": "getGroupCapacity",
+      "evidence": "Return indexed group array capacity after loading metadata, or-1 while unavailable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.c(BI)[B",
+      "originalName": "c",
+      "to": "fetchSingleFile",
+      "evidence": "Resolve a flat file id in single-group archives or single-file groups and delegate file retrieval.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:asb.c(II)Z",
+      "originalName": "c",
+      "to": "isGroupReady",
+      "evidence": "Validate group id, request uncached packed data and report whether bytes are now available.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ata.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -13356,6 +14098,41 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_b. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:au.a(BI[BI)I",
+      "originalName": "a",
+      "to": "read",
+      "evidence": "Read underlying bytes and advance tracked position by positive read count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:au.a(BJ)V",
+      "originalName": "a",
+      "to": "seek",
+      "evidence": "Seek underlying file and assign tracked offset.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:au.a(I)J",
+      "originalName": "a",
+      "to": "length",
+      "evidence": "Return RandomAccessFile.length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:au.a(II[BI)V",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "Enforce maximum file size, write requested byte range and advance position under original guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:au.a(Z)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "Close underlying file when present and clear reference.",
       "confidence": "reviewed"
     },
     {
@@ -17713,6 +18490,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ffb.a(ZLjava/lang/Object;Z)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Accept byte arrays or ByteStorage, optionally clone byte arrays and retrieve stored bytes; reject unsupported objects under original guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fg.a(CI)Z",
       "originalName": "a",
       "to": "isNameSeparator",
@@ -18336,10 +19120,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fnb.a(B)Lqp;",
+      "originalName": "a",
+      "to": "fetchIndex",
+      "evidence": "Cached provider loads index from disk/network, validates metadata and returns decoded ArchiveIndex when ready.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fnb.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_c. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fnb.a(II)[B",
+      "originalName": "a",
+      "to": "fetchGroup",
+      "evidence": "Return completed group request bytes and unlink consumed request, or null while unavailable.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fnb.a(IZ)I",
+      "originalName": "a",
+      "to": "getGroupLoadPercent",
+      "evidence": "Return percentage from tracked group request or zero when no request is tracked.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fo.a(BI)[B",
+      "originalName": "a",
+      "to": "read",
+      "evidence": "Read indexed entry length and sector chain, validating group id, chunk number, archive id and sector bounds before returning payload.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fo.a(II[BI)Z",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "Validate requested length, try rewriting existing sector chain, then retry with new sectors when unsuccessful.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fo.a([BBZII)Z",
+      "originalName": "a",
+      "to": "writeSectorChain",
+      "evidence": "Write index entry and520-byte sector chain, optionally reusing valid existing sectors, with8/10-byte headers for small/large entry ids.",
       "confidence": "reviewed"
     },
     {
@@ -18410,6 +19236,13 @@
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fqb.a(BI[BI)[B",
+      "originalName": "a",
+      "to": "computeArchiveDigest",
+      "evidence": "Feed selected byte range into64-byte digest accumulator and return its finalized digest.",
       "confidence": "reviewed"
     },
     {
@@ -18560,10 +19393,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ga.a(B)Lqp;",
+      "originalName": "a",
+      "to": "fetchIndex",
+      "evidence": "Cached provider loads index from disk/network, validates metadata and returns decoded ArchiveIndex when ready. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.a(II)[B",
+      "originalName": "a",
+      "to": "fetchGroup",
+      "evidence": "Return completed group request bytes and unlink consumed request, or null while unavailable. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.a(III)Ljtb;",
+      "originalName": "a",
+      "to": "fetchGroupRequest",
+      "evidence": "Choose synchronous/queued disk or priority/background network request; validate CRC, optional digest and disk version, retry invalid data and persist accepted network bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.a(IZ)I",
+      "originalName": "a",
+      "to": "getGroupLoadPercent",
+      "evidence": "Return percentage from tracked group request or zero when no request is tracked. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.b(B)V",
+      "originalName": "b",
+      "to": "prefetchAllGroups",
+      "evidence": "Enable bulk network prefetch when archive disk exists and ensure work deque is allocated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.b(I)V",
+      "originalName": "b",
+      "to": "processBackgroundRequests",
+      "evidence": "Advance disk validation and bulk download scans under queue limits, then age and unlink completed priority requests.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ga.c(B)V",
       "originalName": "c",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_s; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.c(I)V",
+      "originalName": "c",
+      "to": "processQueuedPrefetches",
+      "evidence": "Process explicit group prefetch deque by validating unknown disk entries and downloading invalid entries until each is valid.",
       "confidence": "reviewed"
     },
     {
@@ -18665,10 +19547,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gdb.a(B)V",
+      "originalName": "a",
+      "to": "flush",
+      "evidence": "Write pending output buffer to underlying file, update physical length and overlap in read buffer, then reset pending range.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gdb.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_d, field_i; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gdb.a(IIB[B)V",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "Buffer or directly write requested input range, flush disjoint/full pending ranges and update overlapping read cache.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gdb.a(IJ)V",
+      "originalName": "a",
+      "to": "seek",
+      "evidence": "Validate nonnegative logical position and assign file cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gdb.a(I[B)V",
+      "originalName": "a",
+      "to": "readFully",
+      "evidence": "Read entire destination array by delegating offset/length read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gdb.a(Z)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "Flush buffered state then close underlying bounded file.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gdb.a([BIII)V",
+      "originalName": "a",
+      "to": "readFully",
+      "evidence": "Fill requested destination range from pending writes, read buffer or file; overlay pending writes and throw EOFException for unfilled remainder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gdb.b(I)J",
+      "originalName": "b",
+      "to": "length",
+      "evidence": "Return tracked logical file length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gdb.b(IJ)V",
+      "originalName": "b",
+      "to": "sleep",
+      "evidence": "Delegate sleep, splitting durations divisible by10 into duration-1 and1 millisecond calls.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gdb.c(I)V",
+      "originalName": "c",
+      "to": "fillReadBuffer",
+      "evidence": "Seek underlying file to logical cursor and fill read buffer until capacity or EOF, updating physical position.",
       "confidence": "reviewed"
     },
     {
@@ -18711,6 +19656,13 @@
       "originalName": "a",
       "to": "createArray",
       "evidence": "Factory contract creating an array with the requested length and concrete component state type. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gfb.a(Z[BI)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Store arrays longer than136 in DirectByteStorage; otherwise retain or clone array according to requested flag.",
       "confidence": "reviewed"
     },
     {
@@ -22970,6 +23922,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jma.a(I)[B",
+      "originalName": "a",
+      "to": "getData",
+      "evidence": "Return completed archive-request bytes; disk/network implementations reject pending requests. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jma.e(B)I",
+      "originalName": "e",
+      "to": "getLoadPercent",
+      "evidence": "Disk request reports0/100; network request divides received payload position by length excluding padding. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jma.e(I)V",
       "originalName": "e",
       "to": "clearSharedReferences",
@@ -23488,6 +24454,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jtb.a(I)[B",
+      "originalName": "a",
+      "to": "getData",
+      "evidence": "Return completed archive-request bytes; disk/network implementations reject pending requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jtb.e(B)I",
+      "originalName": "e",
+      "to": "getLoadPercent",
+      "evidence": "Disk request reports0/100; network request divides received payload position by length excluding padding.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ju.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -23660,6 +24640,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_a; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kca.a(II)I",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Probe key/index pairs using masked hash and linear collision handling; return-1 on empty bucket.",
       "confidence": "reviewed"
     },
     {
@@ -23982,6 +24969,20 @@
       "originalName": "b",
       "to": "clearSharedReferences",
       "evidence": "Clears own static reference fields field_o, field_q, field_r. The reviewed body retains its original guard-dependent helper calls, recursion and scalar assignments without changing their behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.a(I)[B",
+      "originalName": "a",
+      "to": "getData",
+      "evidence": "Return completed archive-request bytes; disk/network implementations reject pending requests. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.e(B)I",
+      "originalName": "e",
+      "to": "getLoadPercent",
+      "evidence": "Disk request reports0/100; network request divides received payload position by length excluding padding. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -29452,10 +30453,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(BI)Lit;",
+      "originalName": "a",
+      "to": "findEscapePodByOwner",
+      "evidence": "Scan escape pod array for matching owner id.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(BLtv;)Z",
       "originalName": "a",
       "to": "differsFrom",
       "evidence": "State comparison contract: SettingsChange and MissionVariable return whether stored values differ; concrete implementations retain their original comparison formulas. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(IB)V",
+      "originalName": "a",
+      "to": "setWidth",
+      "evidence": "Assign world width.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(II)V",
+      "originalName": "a",
+      "to": "initializeRespawnTimers",
+      "evidence": "Allocate player respawn-timer array and initialize from starting index to configured duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(IZ)V",
+      "originalName": "a",
+      "to": "setTeamsSwapped",
+      "evidence": "Assign swapped-team flag.",
       "confidence": "reviewed"
     },
     {
@@ -29487,10 +30516,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(Z)[Lcrb;",
+      "originalName": "a",
+      "to": "getAsteroids",
+      "evidence": "Return AsteroidField stored asteroid collection through its array getter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ZZI)Z",
+      "originalName": "a",
+      "to": "isDebrisBeingDragged",
+      "evidence": "Search ships for dragging id, optionally requiring no target blueprint.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.b(B)V",
+      "originalName": "b",
+      "to": "makeNebulaFieldMutable",
+      "evidence": "Copy NebulaField once before mutation and set ownership flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.b(BI)V",
+      "originalName": "b",
+      "to": "removeEscapePodAtIndex",
+      "evidence": "Remove escape pod from array using typed array removal helper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.b(BLtv;)V",
       "originalName": "b",
       "to": "copyTo",
       "evidence": "Copies this instance state into the supplied destination; confirmed by assignments in SettingsChange, MissionVariable and PlayerVote. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.b(IZ)V",
+      "originalName": "b",
+      "to": "setDebug",
+      "evidence": "Assign world debug flag.",
       "confidence": "reviewed"
     },
     {
@@ -29501,10 +30565,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.b(Z)I",
+      "originalName": "b",
+      "to": "countDebris",
+      "evidence": "Count non-null debris slots.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.c(B)Z",
       "originalName": "c",
       "to": "getDebug",
       "evidence": "Body is a single return of the field the state-diff names \"Debug\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.c(BI)V",
+      "originalName": "c",
+      "to": "removeResourceNodeAtIndex",
+      "evidence": "Remove indexed resource node with typed array helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.c(I)I",
+      "originalName": "c",
+      "to": "countShips",
+      "evidence": "Count non-null ship slots, adding supplied initial count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.c(IB)V",
+      "originalName": "c",
+      "to": "removeMapZoneAtIndex",
+      "evidence": "Remove indexed map zone with typed array helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.c(II)I",
+      "originalName": "c",
+      "to": "getRespawnProgress",
+      "evidence": "Return configured respawn duration minus current timer for valid player slot, otherwise zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.c(IZ)Lnbb;",
+      "originalName": "c",
+      "to": "getMutableDebris",
+      "evidence": "Validate debris slot, copy owning array when needed, copy debris node and return mutable copy.",
       "confidence": "reviewed"
     },
     {
@@ -29515,10 +30621,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.d(B)[Lqob;",
+      "originalName": "d",
+      "to": "getNebulae",
+      "evidence": "Return NebulaField nebula array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.d(I)[Lsg;",
       "originalName": "d",
       "to": "getShips",
       "evidence": "Body is a single return of the field the state-diff names \"Ships\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.d(II)Lsg;",
+      "originalName": "d",
+      "to": "findShipByOwner",
+      "evidence": "Scan ships for matching owner id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.e(B)Z",
+      "originalName": "e",
+      "to": "areTeamsSwapped",
+      "evidence": "Return swapped-team flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.e(BI)Lcq;",
+      "originalName": "e",
+      "to": "getMapZone",
+      "evidence": "Return indexed map zone when valid, otherwise null.",
       "confidence": "reviewed"
     },
     {
@@ -29529,6 +30663,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.e(IB)I",
+      "originalName": "e",
+      "to": "countAiShipsByType",
+      "evidence": "Count ships with AI whose type matches requested id.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.e(Z)I",
+      "originalName": "e",
+      "to": "getMapZoneCount",
+      "evidence": "Return map-zone array length or zero when absent.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.f(B)Lij;",
       "originalName": "f",
       "to": "getSpawnPoints",
@@ -29536,10 +30684,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.f(I)I",
+      "originalName": "f",
+      "to": "getPlayerSlotCount",
+      "evidence": "Return respawn-timer array length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.f(II)I",
+      "originalName": "f",
+      "to": "countTeamShips",
+      "evidence": "Count non-null ships with matching team id.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.g(B)I",
       "originalName": "g",
       "to": "getWidth",
       "evidence": "Body is a single return of the field the state-diff names \"Width\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.g(II)V",
+      "originalName": "g",
+      "to": "resetRespawnTimer",
+      "evidence": "For supported game modes reset valid player slot timer to configured respawn duration.",
       "confidence": "reviewed"
     },
     {
@@ -29557,10 +30726,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.h(II)Lmqb;",
+      "originalName": "h",
+      "to": "getGrapplingHookById",
+      "evidence": "Subtract grappling-hook id offset and resolve typed object from hook array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.i(I)[Lrba;",
       "originalName": "i",
       "to": "getResNodes",
       "evidence": "Body is a single return of the field the state-diff names \"ResNodes\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.i(II)Lnbb;",
+      "originalName": "i",
+      "to": "getDebrisById",
+      "evidence": "Subtract debris id offset and resolve typed debris object.",
       "confidence": "reviewed"
     },
     {
@@ -29904,6 +31087,41 @@
       "originalName": "za",
       "to": "fillCircle",
       "evidence": "Software fills radius-squared scanline spans; OpenGL uses point or triangle fan based on radius. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pfa.a(BLfo;I)Ljma;",
+      "originalName": "a",
+      "to": "enqueueRead",
+      "evidence": "Create type3 disk request with archive/group id, then enqueue.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pfa.a(I)V",
+      "originalName": "a",
+      "to": "shutdown",
+      "evidence": "Set stop flag, notify waiting queue, join worker thread and clear thread reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pfa.a(ILfo;B)Ljma;",
+      "originalName": "a",
+      "to": "readSynchronously",
+      "evidence": "Serve matching pending write bytes when available, otherwise synchronously read disk and return completed request.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pfa.a(ILjma;)V",
+      "originalName": "a",
+      "to": "enqueue",
+      "evidence": "Append request under queue lock, increment pending count and notify worker.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pfa.a(Lfo;[BBI)Ljma;",
+      "originalName": "a",
+      "to": "enqueueWrite",
+      "evidence": "Create type2 disk request with payload and group id, then enqueue.",
       "confidence": "reviewed"
     },
     {
@@ -30327,10 +31545,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ps.a(B[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Replace backing storage with supplied bytes; direct implementation allocates and fills native ByteBuffer.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ps.a(I)V",
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_a; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ps.a(III)[B",
+      "originalName": "a",
+      "to": "getRange",
+      "evidence": "Read requested byte count from supplied backing-buffer position.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ps.a(Ljava/lang/String;I)[B",
+      "originalName": "a",
+      "to": "decodeBase64",
+      "evidence": "Calculate decoded byte length including padding and delegate Base64 decoding into new array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ps.b(I)[B",
+      "originalName": "b",
+      "to": "getBytes",
+      "evidence": "Return full backing storage contents as byte array.",
       "confidence": "reviewed"
     },
     {
@@ -31685,6 +32931,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qp.a(B[B)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Decompress index and decode versions5-7, delta-coded group/file ids, optional name hashes and64-byte digests, CRCs and versions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qp.a(ZILjava/applet/Applet;Ljava/lang/String;)V",
+      "originalName": "a",
+      "to": "openExternalUrl",
+      "evidence": "Try Windows-specific URL handler, otherwise use applet context showDocument with_blank and report malformed URLs.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qpa.a(Z)V",
       "originalName": "a",
       "to": "clearSharedReferences",
@@ -32497,6 +33757,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rob.a(I[B)[B",
+      "originalName": "a",
+      "to": "decompressContainer",
+      "evidence": "Parse compression type and compressed length; copy uncompressed payload or dispatch compressed data into declared output length with configured bounds checks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rob.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -32907,6 +34174,27 @@
       "originalName": "e",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_o, field_p; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:se.a(B[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Replace backing storage with supplied bytes; direct implementation allocates and fills native ByteBuffer. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:se.a(III)[B",
+      "originalName": "a",
+      "to": "getRange",
+      "evidence": "Read requested byte count from supplied backing-buffer position. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:se.b(I)[B",
+      "originalName": "b",
+      "to": "getBytes",
+      "evidence": "Return full backing storage contents as byte array. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -48221,7 +49509,7 @@
   ],
   "classNameLiterals": {
     "policy": "direct-owned-class-for-name",
-    "expectedEdits": 3
+    "expectedEdits": 4
   },
   "labels": {
     "policy": "lexical-targets",
@@ -48234,10 +49522,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-voidhunters-rules.mjs": "cda49165768338dc4f3da9aa308742ecd1929690b6c8677e78f6a8ff67f0d2da",
+      "build-voidhunters-rules.mjs": "816066d8c04de9087d0a581aedf113915254e7bcc3dc76e84c529d65f99f6e4b",
       "reproduce-voidhunters.mjs": "d166931d08f6ab274d50d2e60dae5ee815aca9510dc1d347a3a1a7488c0c4c4a",
       "voidhunters-diff-names.mjs": "f7928b13a33683097852e5efeb451e5072777f5635a2c1c5e45bb335900df785",
-      "voidhunters-names.json": "80189ba37edb5a92068bd1d0a6874ce0a24f9c9e4013e314541d04d1b0cb383d",
+      "voidhunters-names.json": "8a77df359cbd78f49ebde0642551b50813b234ed1840d29d079e589697ec5a27",
       "voidhunters-coverage.mjs": "0b6c78523ef2b0271428e9d017570778b20bb985cdeaa6cdadb2fb04c854665a",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
