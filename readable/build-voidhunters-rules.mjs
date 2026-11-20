@@ -4,6 +4,7 @@ import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
 import {workflowRoot} from './game-export.mjs';
 import {diffClasses, scriptClasses, getters, diffFields} from './voidhunters-diff-names.mjs';
+import {voidHuntersCoverage} from './voidhunters-coverage.mjs';
 
 const classes = {
   ksa: ['IntrusiveNode', 'Long key plus two reciprocal links; base of buffers, widgets and sprites.'],
@@ -67,15 +68,30 @@ method('ntb', 'a', '(Ltv;I)V', 'reportDifferences', ['other', 'obfuscationGuard'
 method('rqa', 'a', '([Lnc;I)Lnc;', 'execute', ['arguments', 'obfuscationGuard'], 'Every console command subclass returns an nc result from an nc argument array.');
 method('VoidHunters', 'f', '(Z)V', 'applyShipCookie', ['logGuard'], 'Reads the fog_voidhunters_ship cookie, logs "Ship cookie=" and applies it.');
 
+// Supplemental reviews use immutable original declaration identities.
+const names = JSON.parse(fs.readFileSync(new URL('./voidhunters-names.json', import.meta.url), 'utf8'));
+for (const [owner, to, evidence] of names.classes) classes[owner] = [to, evidence];
+for (const [owner, original, descriptor, to, evidence] of names.methods)
+  members[`M:${owner}.${original}${descriptor}`] = {to, evidence};
+for (const [owner, original, descriptor, to, evidence] of names.fields)
+  members[`F:${owner}.${original}:${descriptor}`] = {to, evidence};
+
 export const config = {
-  game: 'voidhunters', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
+  game: 'voidhunters', version: 2, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-voidhunters-rules.mjs', 'reproduce-voidhunters.mjs', 'voidhunters-diff-names.mjs', 'reviewed-game.mjs',
-    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
+  workflowFiles: ['build-voidhunters-rules.mjs', 'reproduce-voidhunters.mjs', 'voidhunters-diff-names.mjs', 'voidhunters-names.json',
+    'voidhunters-coverage.mjs', 'naming-coverage.mjs', 'reviewed-game.mjs', 'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   readingGuide(rules, mapping) {
+    const coverage = voidHuntersCoverage(mapping);
     return ['# Reading Void Hunters', '',
-      `This pass names ${Object.keys(classes).length} reviewed classes in ${mapping.files.length} source files. Unresolved roles keep their original names.`, '',
-      'Start at `VoidHunters`; the shared engine (nodes, deques, packet buffer, sockets, widgets, sprites) uses the same role names as other FunOrb games.', ''].join('\n');
+      `Resolved declarations: ${coverage.namedClasses}/${coverage.classes} classes and ${coverage.namedMethods}/${coverage.methods} methods have readable names; ${coverage.constructors} constructors follow their class names.`,
+      `Remaining: ${coverage.unresolvedClasses.length} opaque classes and ${coverage.unresolvedMethods.length} opaque methods. ${coverage.complete ? 'All class and method declarations have readable names.' : 'The complete naming goal is still in progress.'}`, '',
+      'Start at `VoidHunters`; `World`, `Ship`, `ShipBody`, `ShipComponent`, `MissionControl` and `GameSnapshot` expose the simulation and mission state. The console command classes retain the names of their registered commands.', '',
+      'Names and review evidence are keyed by original declarations in `voidhunters-names.json` and `voidhunters-diff-names.mjs`. Reproduction verifies compilation, symbol bindings, inheritance relationships and exact source restoration. Fields and locals are outside the complete class/method naming claim. Full gameplay has not been runtime-tested.', '',
+      'Reproduce in dekobloko-work:', '', '```sh',
+      'env -u JAVA_TOOL_OPTIONS node readable/build-voidhunters-rules.mjs --check',
+      'env -u JAVA_TOOL_OPTIONS node readable/reproduce-voidhunters.mjs --check',
+      'node readable/voidhunters-coverage.mjs', '```', ''].join('\n');
   },
 };
 
