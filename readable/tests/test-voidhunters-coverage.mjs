@@ -20,3 +20,20 @@ test('Void Hunters counts three-letter obfuscated classes without rejecting shor
   }
   assert.equal(voidHuntersCoverage(mapping).complete, true);
 });
+
+test('generated partition methods prevent completion even when their class has a readable name', () => {
+  const symbols = [['C:loader', 'ComponentDefinitionInitializer'],
+    ['M:loader.runPartition0()V', 'runPartition0'],
+    ['M:loader.runPartition12()V', 'runPartition12'], ['M:loader.run()V', 'run']]
+    .map(([symbol, renamedName]) => ({symbol, renamedName, declaration: {file: 'loader.java'}}));
+  const mapping = {symbols, files: [{original: 'loader.java', renamed: 'Initializer.java'}]};
+  const result = voidHuntersCoverage(mapping);
+  assert.equal(result.namedClasses, 1);
+  assert.equal(result.namedMethods, 1);
+  assert.deepEqual(result.unresolvedMethods.map(row => row.symbol),
+    ['M:loader.runPartition0()V', 'M:loader.runPartition12()V']);
+  assert.equal(result.complete, false);
+  symbols[1].renamedName = 'initializeEquipmentGeometry';
+  symbols[2].renamedName = 'finalizeComponentDefinitionBuffers';
+  assert.equal(voidHuntersCoverage(mapping).complete, true);
+});

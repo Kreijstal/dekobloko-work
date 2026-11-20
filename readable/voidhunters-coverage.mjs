@@ -4,17 +4,22 @@ import {fileURLToPath} from 'node:url';
 import {namingCoverage} from './naming-coverage.mjs';
 import {funorbRepository} from './game-export.mjs';
 
-// This larger export also uses three lowercase letters for obfuscated classes.
-// Keep meaningful short method contracts such as run/get/put in the inventory.
+// This export also uses three lowercase letters for obfuscated classes and
+// generated runPartition methods. Keep short contracts such as run/get/put.
 export function voidHuntersCoverage(mapping) {
   const coverage = namingCoverage(mapping);
   const files = new Map(mapping.files.map(file => [file.original, file.renamed]));
   for (const row of mapping.symbols) {
-    if (!row.symbol.startsWith('C:') || !/^[a-z]{3}$/.test(row.renamedName)) continue;
-    coverage.unresolvedClasses.push({symbol: row.symbol, name: row.renamedName,
+    const unresolved = row.symbol.startsWith('C:') && /^[a-z]{3}$/.test(row.renamedName)
+      ? coverage.unresolvedClasses
+      : row.symbol.startsWith('M:') && /^runPartition\d+$/.test(row.renamedName)
+        ? coverage.unresolvedMethods : null;
+    if (!unresolved) continue;
+    unresolved.push({symbol: row.symbol, name: row.renamedName,
       file: files.get(row.declaration?.file) || row.declaration?.file});
   }
   coverage.namedClasses = coverage.classes - coverage.unresolvedClasses.length;
+  coverage.namedMethods = coverage.methods - coverage.unresolvedMethods.length;
   coverage.complete = !coverage.unresolvedClasses.length && !coverage.unresolvedMethods.length;
   return coverage;
 }
