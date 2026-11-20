@@ -2572,6 +2572,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fdb",
+      "originalName": "fdb",
+      "to": "FadingMidiPcmStream",
+      "evidence": "Original MidiPcmStream subclass stores Q12 per-channel gains and signed per-frame fade steps,target channel levels and master-gain scale;mix advances fades after rendering and restores original master volume.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fe",
       "originalName": "fe",
       "to": "SetMissileLauncherProjectileLife",
@@ -2985,6 +2992,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ge",
+      "originalName": "ge",
+      "to": "EmailAvailabilityCheck",
+      "evidence": "Original string-keyed pending/completed boolean check consumed by EmailAvailabilityValidator;network Boolean reply marks shared check complete.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:gea",
       "originalName": "gea",
       "to": "ContentTransitionDialog",
@@ -3059,6 +3073,13 @@
       "originalName": "ghb",
       "to": "ByteArrayNode",
       "evidence": "Intrusive node holding a byte array,used for instrument/key usage masks. Unrelated mouse-wheel factory remains in its original owner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gi",
+      "originalName": "gi",
+      "to": "EmailAvailabilityCheckFactory",
+      "evidence": "Original sole helper constructs pending string-keyed email check;preserve unrelated integer globals and recursive wrong-guard behavior.",
       "confidence": "reviewed"
     },
     {
@@ -6751,6 +6772,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pd",
+      "originalName": "pd",
+      "to": "WorldDebugArrow",
+      "evidence": "Original queued arrow record retains two world endpoints and a decrementing lifetime;force/component debug callers enqueue,drawWorldArrow renders and expiry unlinks.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pda",
       "originalName": "pda",
       "to": "GetTorpedoEnergyUsed",
@@ -9537,6 +9565,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:vra",
+      "originalName": "vra",
+      "to": "AttachmentInputState",
+      "evidence": "Original temporary ship attachment/drag state copies player aim target and current/prior triggers,shared with detach and blueprint attachment helpers;unrelated static action panel retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vrb",
       "originalName": "vrb",
       "to": "SetRepairModeActiveTime",
@@ -10066,6 +10101,34 @@
       "originalName": "za",
       "to": "GraphicsHeap",
       "evidence": "Base of OpenGL/GPU NativeHeap wrappers and native software heap; created and selected by GraphicsToolkit heap operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:VoidHunters.field_B:I",
+      "originalName": "field_B",
+      "to": "musicStingCooldown",
+      "evidence": "Original countdown preventing repeat game music stings,including original500tick reload and guarded negative assignment.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:VoidHunters.field_C:I",
+      "originalName": "field_C",
+      "to": "gameMusicMixId",
+      "evidence": "Original game MIDI mix id;initialized/reset-1 and compared against current game phase/selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:VoidHunters.field_D:I",
+      "originalName": "field_D",
+      "to": "menuMusicMixId",
+      "evidence": "Original menu MIDI mix id;initialized/reset-1 and compared against menu selection.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:VoidHunters.field_F:Lphb;",
+      "originalName": "field_F",
+      "to": "cachedFrame",
+      "evidence": "Original centered toolkit pixel snapshot cached for overlay presentation.",
       "confidence": "reviewed"
     },
     {
@@ -13541,6 +13604,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fdb.field_J:[I",
+      "originalName": "field_J",
+      "to": "channelGainStepsQ12",
+      "evidence": "Original signed per-sample-frame Q12 gain steps.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fdb.field_P:Z",
+      "originalName": "field_P",
+      "to": "channelFadesComplete",
+      "evidence": "Original completion flag cleared by per-channel fade setup and set after no active fade remains;default false unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fdb.field_Q:I",
+      "originalName": "field_Q",
+      "to": "masterGainScale",
+      "evidence": "Original Q8 factor applied temporarily to inherited master volume around rendering;index-1 setChannelGain changes it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fdb.field_R:[I",
+      "originalName": "field_R",
+      "to": "channelGainsQ12",
+      "evidence": "Original per-channel gain accumulators in Q12 scale.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fdb.field_U:Lcl;",
+      "originalName": "field_U",
+      "to": "targetChannelLevels",
+      "evidence": "Original target levels object retained by fade setup and read by mix.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fga.field_h:I",
       "originalName": "field_h",
       "to": "leftGainStep",
@@ -14122,6 +14220,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:gcb.field_p:Z",
+      "originalName": "field_p",
+      "to": "showTutorial",
+      "evidence": "Original show_tutorial setting,as read/written by exact registered console getters/setters.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gd.field_e:Z",
       "originalName": "field_e",
       "to": "pingPongLoop",
@@ -14290,6 +14395,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ge.field_a:Ljava/lang/String;",
+      "originalName": "field_a",
+      "to": "email",
+      "evidence": "Original string key for shared email availability check.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ge.field_d:Z",
+      "originalName": "field_d",
+      "to": "available",
+      "evidence": "Original returned availability boolean consumed by email validator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ge.field_e:Z",
+      "originalName": "field_e",
+      "to": "complete",
+      "evidence": "Original flag initialized false and set true on boolean result assignment.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gea.field_J:I",
       "originalName": "field_J",
       "to": "fadeInDuration",
@@ -14413,6 +14539,13 @@
       "originalName": "field_b",
       "to": "vertexBuffer",
       "evidence": "Retained GPU vertex buffer released by this owner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:glb.field_c:[Ljava/lang/String;",
+      "originalName": "field_c",
+      "to": "teamNames",
+      "evidence": "Original Blue/Yellow/Neutral table replaced by team_names,0/1/2 localization resources.",
       "confidence": "reviewed"
     },
     {
@@ -19904,6 +20037,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pd.field_d:I",
+      "originalName": "field_d",
+      "to": "remainingTicks",
+      "evidence": "Original expiry counter initialized from retained configured lifetime and unlinked when pre-decrement value zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pd.field_e:I",
+      "originalName": "field_e",
+      "to": "endY",
+      "evidence": "Original arrow end world y.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pd.field_f:I",
+      "originalName": "field_f",
+      "to": "endX",
+      "evidence": "Original arrow end world x.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pd.field_h:I",
+      "originalName": "field_h",
+      "to": "startX",
+      "evidence": "Original arrow start world x,proven force/component endpoint callers and camera transform.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pd.field_i:I",
+      "originalName": "field_i",
+      "to": "startY",
+      "evidence": "Original arrow start world y.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pe.field_a:[Lrba;",
       "originalName": "field_a",
       "to": "resNodes",
@@ -21763,6 +21931,13 @@
       "originalName": "field_b",
       "to": "port",
       "evidence": "Destination port used by direct and proxy sockets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rb.field_c:Lij;",
+      "originalName": "field_c",
+      "to": "debugArrows",
+      "evidence": "Original intrusive queue containing only world debug arrow records and shared by enqueue/draw/expiry helpers.",
       "confidence": "reviewed"
     },
     {
@@ -25756,6 +25931,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vra.field_a:I",
+      "originalName": "field_a",
+      "to": "aimTargetY",
+      "evidence": "Original current player aimtargety copied for attachment handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vra.field_c:I",
+      "originalName": "field_c",
+      "to": "aimTargetX",
+      "evidence": "Original current player aimtargetx copied for attachment handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vra.field_d:I",
+      "originalName": "field_d",
+      "to": "previousTriggers",
+      "evidence": "Original prior player trigger bits compared on release when current bit128 is clear.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vra.field_e:I",
+      "originalName": "field_e",
+      "to": "triggers",
+      "evidence": "Original current player trigger bits;bit128 controls detach/drag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vv.field_b:[Lphb;",
       "originalName": "field_b",
       "to": "backgroundSprites",
@@ -25893,6 +26096,13 @@
       "originalName": "field_z",
       "to": "okButton",
       "evidence": "Original OK action enabled when name is valid and submitting current name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wba.field_p:Lge;",
+      "originalName": "field_p",
+      "to": "emailAvailabilityCheck",
+      "evidence": "Original single shared email check retained across setup/query/reply handlers.",
       "confidence": "reviewed"
     },
     {
@@ -26393,6 +26603,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:VoidHunters.a(III)V",
+      "originalName": "a",
+      "to": "drawCachedCenteredFrame",
+      "evidence": "Read centered toolkit pixels only when cached sprite missing or dimensions differ,then draw opaque centered sprite;preserve divisor argument,vertical offset and nonpositive-size guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:VoidHunters.a(IIIILjava/lang/String;IZZ)V",
+      "originalName": "a",
+      "to": "updateChatInputDialog",
+      "evidence": "Open original chat input modal when input widget clicked,layout existing controls and process input;close on submit/reset buttons and preserve guarded array cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:VoidHunters.a(ILcl;I)V",
+      "originalName": "a",
+      "to": "setMenuMusicChannelLevels",
+      "evidence": "Apply supplied channel levels directly on first menu mix,otherwise fade existing menu MIDI stream over original4000milliseconds,and retain selected mix id/guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:VoidHunters.a(Lcl;II)V",
+      "originalName": "a",
+      "to": "setGameMusicChannelLevels",
+      "evidence": "Apply supplied channel levels directly on first game mix,otherwise fade existing game MIDI stream over original4000milliseconds,and retain selected mix id/guard.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:VoidHunters.a(Ljava/applet/Applet;I)V",
       "originalName": "a",
       "to": "quitToWebsite",
@@ -26421,6 +26659,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:VoidHunters.b(II)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "getTeamName",
+      "evidence": "Return original team-name entry or final Neutral fallback;resource team_names,0/1/2 and original Blue/Yellow/Neutral defaults prove role;preserve invalid guard null path.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:VoidHunters.b(Z)V",
       "originalName": "b",
       "to": "clearClientResources",
@@ -26432,6 +26677,13 @@
       "originalName": "d",
       "to": "renderGameFrame",
       "evidence": "Game-specific frame renderer invoked by the shell frame-timing wrapper. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:VoidHunters.d(ZI)V",
+      "originalName": "d",
+      "to": "updateClientStateAndInput",
+      "evidence": "Original client update coordinates screen transition/session/menu updates,key/chat handling,sound/music queues and debug shortcuts;preserve pause flag,packet writes,guards and all ordering.",
       "confidence": "reviewed"
     },
     {
@@ -26453,6 +26705,20 @@
       "originalName": "h",
       "to": "finishResourceLoading",
       "evidence": "Waits for the shared loader, creates menus, starts menu music, initializes audio handling and returns true once client setup is complete.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:VoidHunters.l(I)Z",
+      "originalName": "l",
+      "to": "isTutorialEnabled",
+      "evidence": "Return original show_tutorial setting,proven registered SetShowTutorial/GetShowTutorial access;preserve wrong-guard client update call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:VoidHunters.m(I)V",
+      "originalName": "m",
+      "to": "updatePanelAnimations",
+      "evidence": "Invoke original framebuffer-height/panel-position interpolation helper,then original slide-timer/bounds helper only for matching guard;preserve both arguments and ordering.",
       "confidence": "reviewed"
     },
     {
@@ -31482,6 +31748,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cqb.a(IIIIB)V",
+      "originalName": "a",
+      "to": "enqueueDebugArrow",
+      "evidence": "Append original two-endpoint/lifetime record only when debug queue exists and byte guard matches;constructor retains configured default lifetime.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cqb.a(ILlbb;Lpe;)Z",
       "originalName": "a",
       "to": "evaluate",
@@ -33799,6 +34072,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dva.a(ILlta;IIIIII)V",
+      "originalName": "a",
+      "to": "drawWorldArrow",
+      "evidence": "Transform original world endpoints through camera and draw shaft plus two arrowhead segments with supplied color/alpha;preserve arithmetic,guard multiplier and exception context.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dva.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -35745,10 +36025,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fdb.a(BILcl;)V",
+      "originalName": "a",
+      "to": "fadeToChannelLevels",
+      "evidence": "Convert original milliseconds duration to sample frames at AudioOutput.sampleRate and delegate;preserve int overflow,guard division and exception boundary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fdb.a(ILcl;I)V",
+      "originalName": "a",
+      "to": "fadeToChannelLevelsSamples",
+      "evidence": "Retain original target levels object and set all sixteen per-channel fades using supplied sample duration;preserve positive-guard early return after assignment.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fdb.a(Lkka;ZIZ)V",
       "originalName": "a",
       "to": "startTrack",
       "evidence": "Stops/resets prior playback,parses the new MIDI bytes,sets loop mode and initializes the next track event time. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fdb.a(ZZIB)V",
+      "originalName": "a",
+      "to": "updateLobbyAndTutorialInput",
+      "evidence": "Update original lobby selection/options widgets or tutorial modal under retained gating,refresh player-count text and dispatch original help/game actions;preserve every guard and side effect.",
       "confidence": "reviewed"
     },
     {
@@ -35763,6 +36064,20 @@
       "originalName": "b",
       "to": "setChannelGain",
       "evidence": "Sets one channel gain multiplier,or all sixteen when channel is negative. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fdb.b(IIIB)V",
+      "originalName": "b",
+      "to": "fadeChannelGainSamples",
+      "evidence": "Retain target gain and mark fades active,then compute signed originalQ12 step using (1+distance)/(duration+1);preserve guard return,zero-step behavior and no clamping.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fdb.f(I)V",
+      "originalName": "f",
+      "to": "resetChannelGains",
+      "evidence": "Initialize all sixteen Q12 channel gains to1048576 and reset inherited channel gains through original index-1 call;preserve guard and existing fade-array/flag state.",
       "confidence": "reviewed"
     },
     {
@@ -37488,6 +37803,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ge.a(I)Z",
+      "originalName": "a",
+      "to": "isComplete",
+      "evidence": "Return original completion flag under matching guard,otherwise false;initial false changes only through original result setter.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.a(IZ)V",
+      "originalName": "a",
+      "to": "complete",
+      "evidence": "Retain original boolean availability result and mark complete,including shared-reset setup caller and wrong-guard cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.b(B)Z",
+      "originalName": "b",
+      "to": "isAvailable",
+      "evidence": "Return original boolean result consumed by EmailAvailabilityValidator after completion;retain wrong-guard shared cleanup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.b(I)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "getEmail",
+      "evidence": "Return original string key compared with requested email and consumed by account form helpers;retain wrong-guard recursion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gea.a(I)Z",
       "originalName": "a",
       "to": "updateAndCheckClosed",
@@ -37653,6 +37996,13 @@
       "originalName": "c",
       "to": "createMouseWheelInput",
       "evidence": "Reflectively creates MouseWheelHandler and returns it as MouseWheelInput,retaining the original failure handling.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.a(Ljava/lang/String;B)Lge;",
+      "originalName": "a",
+      "to": "create",
+      "evidence": "Construct original pending check for supplied string;retain wrong-guard recursion and exception context.",
       "confidence": "reviewed"
     },
     {
@@ -39431,6 +39781,13 @@
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hcb.b(Z)V",
+      "originalName": "b",
+      "to": "initializeDebugArrows",
+      "evidence": "Replace original debug-arrow queue with new intrusive deque;retain true-guard unrelated string cleanup.",
       "confidence": "reviewed"
     },
     {
@@ -51390,6 +51747,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nkb.a(IZ)V",
+      "originalName": "a",
+      "to": "completeEmailAvailabilityCheck",
+      "evidence": "Complete original shared check with supplied network boolean only under guard12;preserve null behavior and assignment order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nkb.a([Lnc;I)Lnc;",
       "originalName": "a",
       "to": "execute",
@@ -55506,6 +55870,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(Lnbb;BLsg;ILvra;I)Lnbb;",
+      "originalName": "a",
+      "to": "resolveDraggedDebris",
+      "evidence": "Retain existing dragged debris or,when trigger128 and no debris,aim ship,update chassis transforms and detach at point;store original dragging id and refresh thruster bindings,retaining bad-guard world-height mutation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pe.a(Lqob;I)V",
       "originalName": "a",
       "to": "addNebula",
@@ -55524,6 +55895,13 @@
       "originalName": "a",
       "to": "addShip",
       "evidence": "Initialize ship tick/transforms, constrain to world bounds, start spawn protection, allocate body slot/id and register spatial partition.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Ltfa;ILtfa;Lsg;)Z",
+      "originalName": "a",
+      "to": "updateComponentDragging",
+      "evidence": "Reset preview/plan,copy original current/prior controls,handle target blueprint or detach/drag/release paths and looping sound;preserve return meanings,all guards and original helper ordering.",
       "confidence": "reviewed"
     },
     {
@@ -58163,6 +58541,13 @@
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:psb.a(Ljava/lang/String;I)Lge;",
+      "originalName": "a",
+      "to": "getEmailAvailabilityCheck",
+      "evidence": "Return shared original email check;replace only when prior check complete and string differs,with original nonzero-guard null return and pending reuse preserved.",
       "confidence": "reviewed"
     },
     {
@@ -60865,6 +61250,13 @@
       "originalName": "a",
       "to": "execute",
       "evidence": "Every console command subclass returns an nc result from an nc argument array. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:raa.a(BLlta;)V",
+      "originalName": "a",
+      "to": "drawDebugArrows",
+      "evidence": "Traverse original debug queue without unlinking and draw each world arrow in original magenta through supplied camera;preserve bad-guard logo-mesh-centers cleanup.",
       "confidence": "reviewed"
     },
     {
@@ -63623,6 +64015,13 @@
       "originalName": "a",
       "to": "clearSharedReferences",
       "evidence": "Only clears own static reference fields field_a; complete body contains only null assignments, returns and simple guard/arithmetic statements. Original guards are preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sh.a(I)V",
+      "originalName": "a",
+      "to": "expireDebugArrows",
+      "evidence": "Post-decrement original remaining counter and unlink only when old value zero;preserve queue null return,guard cleanup,iteration and exception boundary.",
       "confidence": "reviewed"
     },
     {
@@ -82394,10 +82793,10 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-voidhunters-rules.mjs": "0ac76661aeedeba9c06022f3dd57f1e193fafc6b0ab1f5896d02fa2062a38c3c",
+      "build-voidhunters-rules.mjs": "403a95a933dfa57b30d05ae28a88f5f4bc7f0e91f00e1a624b0d8434d8ed2a01",
       "reproduce-voidhunters.mjs": "d166931d08f6ab274d50d2e60dae5ee815aca9510dc1d347a3a1a7488c0c4c4a",
       "voidhunters-diff-names.mjs": "f7928b13a33683097852e5efeb451e5072777f5635a2c1c5e45bb335900df785",
-      "voidhunters-names.json": "da37700fd2078e599f1036e6b3036ebeac7f8e2c2203e59159ea13232443ab35",
+      "voidhunters-names.json": "740e457a4551b0e5d080f6419a8d65290dfc577a9d85dd38cb91e4ae96d834af",
       "voidhunters-coverage.mjs": "0b6c78523ef2b0271428e9d017570778b20bb985cdeaa6cdadb2fb04c854665a",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
