@@ -6,6 +6,7 @@ import {captureProcess} from './tools/lib/capture-process.mjs';
 import {sourceInventory, sourceIdentity} from './tools/readable-java.mjs';
 import {buildCompilationStubs} from './compilation-stubs.mjs';
 import {archivedInput, digest, funorbRepository, verifyToolPin, workflowRoot} from './game-export.mjs';
+import {gameNamingCoverage} from './catalog-naming-coverage.mjs';
 
 const SOURCE_COMMIT = '1655ca853d0d4027018f3efcdc37be76ab7895f4';
 const classNames = {
@@ -69,6 +70,27 @@ const explicitMembers = {
 };
 for (const [name, to] of Object.entries(boardFields)) explicitMembers[`F:lk.field_${name}:${['T','P','w'].includes(name)?'[I':['y','Bb'].includes(name)?'Z':'I'}`] = to;
 
+// Supplemental reviews retain the original declaration identity and evidence.
+const reviewedNames = JSON.parse(fs.readFileSync(new URL('./dekobloko-reviewed-names.json', import.meta.url), 'utf8'));
+const reviewedEvidence = new Map();
+for (const [owner, name, evidence] of reviewedNames.classes) {
+  if (classNames[owner]) throw new Error('Class already reviewed: ' + owner);
+  classNames[owner] = name;
+  reviewedEvidence.set('C:' + owner, evidence);
+}
+for (const [owner, original, descriptor, name, evidence] of reviewedNames.methods) {
+  const symbol = 'M:' + owner + '.' + original + descriptor;
+  if (explicitMembers[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  explicitMembers[symbol] = name;
+  reviewedEvidence.set(symbol, evidence);
+}
+for (const [owner, original, descriptor, name, evidence] of reviewedNames.fields) {
+  const symbol = 'F:' + owner + '.' + original + ':' + descriptor;
+  if (explicitMembers[symbol]) throw new Error('Field already reviewed: ' + symbol);
+  explicitMembers[symbol] = name;
+  reviewedEvidence.set(symbol, evidence);
+}
+
 function typeStem(type, aliases) {
   const primitives={I:'integer',B:'byte',S:'short',J:'long',F:'float',D:'double',C:'character',Z:'boolean',V:'action'};
   if (type[0]==='[') return typeStem(type.slice(1),aliases)+'Array';
@@ -100,9 +122,9 @@ export function buildNamingRules(input, rows, classMap) {
     let name=classNames[original];
     if(!name){const prefix=categoryNames[info.category];if(!prefix)throw new Error('Unknown class category');const index=(counts.get(prefix)||0)+1;counts.set(prefix,index);name=prefix+String(index).padStart(3,'0');}
     aliases[original]=name;
-    add(row[4],original,name,classNames[original]
+    add(row[4],original,name,reviewedEvidence.get(row[4]) || (classNames[original]
       ?'Reviewed current source, supported by the class map; gameplay anchors also use the existing original-bytecode differential.'
-      :`Structural category: ${info.category} (${info.confidence}); numbered category label, finer purpose unresolved.`,classNames[original]?'reviewed':'category');
+      :`Structural category: ${info.category} (${info.confidence}); numbered category label, finer purpose unresolved.`),classNames[original]?'reviewed':'category');
   }
   if(new Set(Object.values(aliases)).size!==topClasses.length)throw new Error('Class alias collision');
   const parents=new Map();
@@ -118,7 +140,7 @@ export function buildNamingRules(input, rows, classMap) {
     const readable=group.find(r=>r[5].length>2 && !r[5].startsWith('$'));
     const to=external?external.slice(2,external.indexOf('(')).split('.').at(-1):explicit||readable?.[5]||
       (group[0][4].endsWith('V')?'performAction':'compute'+typeStem(group[0][4].slice(group[0][4].indexOf(')')+1),aliases).replace(/^./,s=>s.toUpperCase()))+String(++methodIndex).padStart(4,'0');
-    for(const r of group)add(r[4],r[5],to,explicit?'Reviewed current source operation; core board operations also use the original-bytecode differential.':external?'Resolved external override contract.':'Resolved override family; type-based operation label, finer purpose unresolved.',explicit?'reviewed':'typed');
+    for(const r of group)add(r[4],r[5],to,reviewedEvidence.get(r[4]) || (explicit?'Reviewed current source operation; core board operations also use the original-bytecode differential.':external?'Resolved external override contract.':'Resolved override family; type-based operation label, finer purpose unresolved.'),explicit?'reviewed':'typed');
   }
   const sources=new Map(sourceInventory(input).map(f=>[f.path,fs.readFileSync(path.join(input,f.path),'utf8')]));
   for(const r of rows.filter(r=>r[0]==='T')) {
@@ -136,7 +158,7 @@ export function buildNamingRules(input, rows, classMap) {
       // field would hide a renamed inherited field with the same spelling.
       const key=stem,index=(fieldCounts.get(key)||0)+1;fieldCounts.set(key,index);
       const to=explicitMembers[symbol]||stem+String(index).padStart(4,'0');
-      add(symbol,original,to,explicitMembers[symbol]?'Current field identity and original-bytecode differential / linked-list or buffer layout.':'Resolved declaration type; state label, finer field purpose unresolved.',explicitMembers[symbol]?'reviewed':'typed');
+      add(symbol,original,to,reviewedEvidence.get(symbol) || (explicitMembers[symbol]?'Current field identity and original-bytecode differential / linked-list or buffer layout.':'Resolved declaration type; state label, finer field purpose unresolved.'),explicitMembers[symbol]?'reviewed':'typed');
     }else if(symbol.startsWith('P:')||symbol.startsWith('L:')) {
       if(!/^(?:param\d+|var\d+|stackIn_|dupTemp|incrementValue|array\$|fieldTemp|decompiled)/.test(original))continue;
       const ordinal=Number(symbol.slice(symbol.lastIndexOf('#')+1));let type;
@@ -158,11 +180,15 @@ export function buildNamingRules(input, rows, classMap) {
 }
 
 export function buildDekoblokoGuide(rules,mapping) {
+  const coverage=gameNamingCoverage(mapping);
   const names=new Map(mapping.rules.map(r=>[r.symbol,r.to]));
   const link=original=>`[${names.get('C:'+original)}](${names.get('C:'+original)}.java)`;
   return ['# Reading Deko Bloko','',
     'The Java in this directory is the single published version. Deko’s naming script rebuilds it from pinned Git input; the reverse dictionary is in `decompilation/dekobloko-naming.json`.','',
-    `All ${mapping.files.length} classes have stable names. ${rules.renames.filter(r=>r.symbol.startsWith('C:')&&r.confidence==='reviewed').length} class names are reviewed semantic anchors; other class names describe the structural category and explicitly retain an unresolved finer purpose. Type-based member names are also provisional. Numbers are deterministic labels, not original obfuscated suffixes.`, '',
+    `Resolved declarations: ${coverage.namedClasses}/${coverage.classes} classes and ${coverage.namedMethods}/${coverage.methods} methods have readable names; ${coverage.constructors} constructors follow their owning class. Remaining: ${coverage.unresolvedClasses.length} classes and ${coverage.unresolvedMethods.length} methods still need names. Numbered structural categories and type-based member labels count as unresolved; the complete naming goal remains in progress.`, '',
+    '`MouseWheelInput`, `MouseWheelHandler` and `KeyboardInputHandler` name component registration, wheel polling and key event ownership. `NodeHashTableIterator`, `SecondaryNodeDequeIterator` and `SecondaryNodeHashTable` distinguish primary buckets from independent secondary links and duplicate-key continuation.', '',
+    '`AbstractAudioSample`, `PcmMixerListener`, `PcmPlayerService`, `AudioFilter` and `PcmResampler` expose sample scheduling, listener ownership, mixer input/output, filter coefficients and rational sample conversion. PCM stream contracts name filling, skipping, priority and child traversal. Original loop/ramp boundaries, ordering, signed arithmetic and guards remain intact.', '',
+    'Supplemental names and review evidence are keyed by original declarations in `dekobloko-reviewed-names.json`. Unresolved labels remain provisional; fields and locals are outside the class/method completion claim.', '',
     '| Follow | Purpose |','| --- | --- |',
     `| ${link('client')} → ${link('qc')} | Loading, screens and active game-session coordination. |`,
     `| ${link('lk')} | Bucket cells, active domino, controls, gravity, locking and multiplayer snapshots. |`,
@@ -205,7 +231,7 @@ export function buildDekoblokoManifest() {
     if(rows.some(r=>r[0]==='U'&&rules.renames.some(n=>n.symbol===r[4])))throw new Error('Unsupported escaped class-name literal');
     const evidence=['docs/dekobloko-class-map.md','game-logic/src/test/java/org/alterorb/dekobloko/logic/OriginalMultiplayerProtocolTest.java','readable/tests/test-dekobloko-snapshots.mjs'];
     rules.publication={stubSourceTreeSha256:stubs.sourceTreeSha256,stubJarSha256:digest(fs.readFileSync(stubs.jar)),evidence:evidence.map(file=>({file,sha256:digest(fs.readFileSync(path.resolve(workflowRoot,'..',file)))}))};
-    const filesToPin=['build-dekobloko-rules.mjs','game-export.mjs','compilation-stubs.mjs','reproduce-dekobloko.mjs'];
+    const filesToPin=['build-dekobloko-rules.mjs','game-export.mjs','compilation-stubs.mjs','reproduce-dekobloko.mjs','dekobloko-reviewed-names.json','catalog-naming-coverage.mjs','naming-coverage.mjs'];
     rules.readabilityWorkflow={repository:'Kreijstal/dekobloko-work',files:Object.fromEntries(filesToPin.map(file=>[file,digest(fs.readFileSync(path.join(workflowRoot,file)))]))};
     rules.generators={javaTools:record.sourceGenerator,namingTool:verifyToolPin()};
     return rules;
