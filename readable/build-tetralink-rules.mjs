@@ -3,6 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
 import {workflowRoot} from './game-export.mjs';
+import {namingCoverage} from './naming-coverage.mjs';
 
 // Identities below belong to the pinned Tetra Link export. Similar names in
 // other FunOrb games are corroborating role evidence only.
@@ -165,10 +166,14 @@ export const config = {
   game: 'tetralink', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
   workflowFiles: ['build-tetralink-rules.mjs', 'tetralink-names.json', 'reproduce-tetralink.mjs', 'reviewed-game.mjs',
-    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
+    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs', 'naming-coverage.mjs'],
   readingGuide(rules, mapping) {
+    const coverage = namingCoverage(mapping);
     return ['# Reading Tetra Link', '',
-      `This pass names ${Object.keys(classes).length} reviewed classes and ${Object.keys(members).length} members in ${mapping.files.length} source files. Unresolved roles keep their original names.`, '',
+      `Resolved declarations: ${coverage.namedClasses}/${coverage.classes} classes and ${coverage.namedMethods}/${coverage.methods} methods have readable names. ${coverage.constructors} constructors follow their class names.`,
+      `Remaining: ${coverage.unresolvedClasses.length} opaque classes and ${coverage.unresolvedMethods.length} opaque methods.`, '',
+      '`InterfaceTextLoader` retains its local `TextTableInitialization` carrier with named login/lobby/reporting, account/social/loading, menu/multiplayer/display and membership/subscription phases. All 744 lookups retain their original null guards, array slots, discarded decodes, recursive guard and archive cleanup.', '',
+      'Rules and evidence use original declarations in `tetralink-names.json`. Reproduction checks compilation, bindings and exact source restoration. Fields and locals are outside the class/method naming claim; full gameplay has not been runtime-tested.', '',
       'Start at the `TetraLink` applet class; the shared engine (nodes, deques, packet buffer, sockets, widgets, sprites) uses the same role names as other FunOrb games.', ''].join('\n');
   },
 };

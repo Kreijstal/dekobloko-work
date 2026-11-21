@@ -154,6 +154,7 @@
     ["kn","FadeLayer","Container that draws its content with a fade alpha."],
     ["la","QueuedRequest","Request node kept in the vi.field_h queue and resent after reconnecting."],
     ["lb","LobbyAndTextHelpers","Grab-bag of statics: key-code table, lobby game player list and the localized text table loader."],
+    ["lb$1$CfrPartitionedBody","TextTableInitialization","Local state carrier for loadTextTable: retains resource archive, parameters, decoded bytes and exception state across744 named text lookups and four ordered phases. Original early completion and resource cleanup retained."],
     ["lc","TypeCode","Immutable value object of four ints used as shared type constants; toString is unsupported."],
     ["le","TextValidator","Interface of debounced text validators: state, message, emptiness and debounce restart."],
     ["lf","NativeSoundBackend","Empty marker interface implemented by the DirectSound backend."],
@@ -1502,6 +1503,10 @@
     ["lb","a","(IILum;ZI)V","updateLobbyGamePlayerList","Huge body: rebuilds and lays out the player rows, names, ratings and buttons of the current lobby game wl.field_d."],
     ["lb","a","(ILeh;)V","loadTextTable","Huge partitioned body that loads every localized UI string from the text archive."],
     ["lb","b","(I)V","releaseStatics","Nulls the class's static references."],
+    ["lb$1$CfrPartitionedBody","runChunk0","()V","loadLoginAndLobbyText","Reviewed complete resource-key inventory and non-resource control statements: 214 lookups from loginm3 through gameopt_inviteplayers_or_trychanging1; includes connection errors, lobby records/options and chat/context text. Retain archive assignment, guarded decodes, discarded results and order."],
+    ["lb$1$CfrPartitionedBody","runChunk1","()V","loadAccountAndSocialText","Reviewed complete resource-key inventory and non-resource control statements: 223 lookups from gameopt_inviteplayers_or_trychanging2 through waitingfor_extradata; includes abuse rules, login/reconnect, account creation/validation, social errors and loading labels. Retain original fields, array slots, null gates and order."],
+    ["lb$1$CfrPartitionedBody","runChunk2","()V","loadMenuAndMultiplayerText","Reviewed complete resource-key inventory and non-resource control statements: 228 lookups from waitingfor_languages through fs_timeout; includes loading/menu/game status, rematch, quick-chat and fullscreen text. Preserve extended-byte character decode, array slots, null gates, discarded results and ordering."],
+    ["lb$1$CfrPartitionedBody","runChunk3","()V","loadMembershipAndDisplayText","Reviewed complete resource-key inventory and non-resource control statements: 79 lookups from fs_button_tryagain through sentence_separator; includes display configuration, membership, login notices and subscription prices. Preserve early completion guard, null gates, discarded separator decode and final archive cleanup."],
     ["lc","a","(I)V","releaseStatics","Nulls the class's static references."],
     ["lc","a","(ILjava/lang/String;I)Lck;","createSuggestedUsernameQuery","Body matches the reviewed TextInputRenderer.createSuggestedUsernameQuery in GeoBlox (token similarity 0.98)."],
     ["ld","a","(B)V","releaseStatics","Nulls the class's static references."],
@@ -2546,5 +2551,7 @@
     ["wn","c","(Z)V","setGameViewFlag","Sets rk.field_f, read back by eg.a in the main loop and li."],
     ["wn","d","(I)V","releaseStatics","Static method that only nulls this class's static references (obfuscation guard calls are dead)."]
   ],
-  "fields": []
+  "fields": [
+
+  ]
 }

@@ -3,6 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
 import {workflowRoot} from './game-export.mjs';
+import {namingCoverage} from './naming-coverage.mjs';
 
 // Identities below belong to the pinned Virogrid export (an Ataxx-style
 // clone/jump capture game with a 3D board and a FunOrb multiplayer lobby).
@@ -264,10 +265,14 @@ export const config = {
   game: 'virogrid', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
   workflowFiles: ['build-virogrid-rules.mjs', 'virogrid-names.json', 'reproduce-virogrid.mjs', 'reviewed-game.mjs',
-    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
+    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs', 'naming-coverage.mjs'],
   readingGuide(rules, mapping) {
+    const coverage = namingCoverage(mapping);
     return ['# Reading Virogrid', '',
-      `This pass names ${Object.keys(classes).length} reviewed classes and ${Object.keys(members).length} members in ${mapping.files.length} source files. Unresolved roles keep their original names.`, '',
+      `Resolved declarations: ${coverage.namedClasses}/${coverage.classes} classes and ${coverage.namedMethods}/${coverage.methods} methods have readable names. ${coverage.constructors} constructors follow their class names.`,
+      `Remaining: ${coverage.unresolvedClasses.length} opaque classes and ${coverage.unresolvedMethods.length} opaque methods.`, '',
+      '`LobbyAndTextHelpers.loadTextTable` retains its local `TextTableInitialization` state carrier. Its four named phases load login/lobby, account/social, menu/multiplayer and membership/display text. The 744 resource lookups keep their original null guards, array slots, discarded decodes, early completion and archive cleanup.', '',
+      'Rules and review evidence use original declaration identities in `virogrid-names.json`. Reproduction checks compilation, symbol bindings and exact source restoration. Fields and locals are outside the class/method naming claim; full gameplay has not been runtime-tested.', '',
       'Start at `Virogrid`; the shared engine (nodes, deques, applet shell) uses the same role names as other FunOrb games.', ''].join('\n');
   },
 };

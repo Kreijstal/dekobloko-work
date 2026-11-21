@@ -71,6 +71,14 @@ for (const [owner, original, descriptor, to, evidence] of gameNames.fields) fiel
 for (const [owner, original, descriptor, ordinal, to, evidence] of gameNames.parameters)
   members[`P:${owner}.${original}${descriptor}#${ordinal}`] = {to, evidence};
 
+classes['nk$1$CfrPartitionedBody'] = ['CommonTextInitialization', 'Local carrier for744 shared interface text keys, archive/parameters, temporary bytes and exception state. Full ordered key inventory and non-resource/control statements reviewed; retain original dispatcher, guard recursion and cleanup.'];
+classes['qk$1$CfrPartitionedBody'] = ['PoolTextInitialization', 'Local carrier for423 Pool resource keys: achievements, options, shot/ball labels, instructions, tutorial, match/shot feedback and default controls. Full key inventory and non-resource/control statements reviewed.'];
+for (const [owner, names, counts] of [
+  ['nk$1$CfrPartitionedBody', ['loadLoginAndLobbyText', 'loadAccountSocialAndLoadingText', 'loadMenuMultiplayerAndDisplayText', 'loadMembershipAndDisplayText'], [216, 226, 232, 70]],
+  ['qk$1$CfrPartitionedBody', ['loadAchievementsOptionsAndInstructions', 'loadTutorialMatchAndControlText'], [214, 209]],
+]) for (const [index, name] of names.entries()) method(owner, 'runChunk' + index, '()V', name, [],
+  'Reviewed complete ordered inventory of ' + counts[index] + ' resource keys and non-resource/control statements. Preserve null gates, multidimensional array slots, decode/byte-key helpers, discarded results, guard arithmetic/recursion, archive assignment and cleanup.');
+
 export const config = {
   game: 'pool', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
@@ -85,6 +93,7 @@ export const config = {
       'Audit with `node readable/naming-coverage.mjs pool` in dekobloko-work; it exits unsuccessfully while opaque names remain.', '',
       'Start at `Pool` and `PoolMatchController`; `PoolGameModel`, `Ball`, `Pocket`, `CushionSegment`, `ShotRecord` and the `GameRules` implementations describe gameplay. `TableScene`, the table themes and `BallSkin` implementations handle its presentation.', '',
       'The obfuscator moved independent static helpers between owners. Class names describe their retained role; each method name describes its own behavior without relocating code.', '',
+      '`TranslatedUiText.CommonTextInitialization` names four phases over 744 shared keys. `PoolUiText.PoolTextInitialization` names the achievements/options/instructions and tutorial/match/controls phases over 423 Pool keys. Original null gates, table slots, discarded decodes, default-key bytes, guard arithmetic and resource cleanup remain intact.', '',
       'Regeneration compiles the raw and named sources and checks resolved bindings, override contracts, labels and class-name literals. Full gameplay and multiplayer behavior have not been verified by this naming workflow.', '',
       `Decompiler source commit: ${rules.generators.javaTools.commit}.`, ''].join('\n');
   },

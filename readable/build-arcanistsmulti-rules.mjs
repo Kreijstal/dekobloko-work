@@ -3,6 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
 import {workflowRoot} from './game-export.mjs';
+import {namingCoverage} from './naming-coverage.mjs';
 
 // Every identity belongs to the pinned Arcanists Multi export. Similar names in
 // other games are corroborating role evidence, never copied obfuscated IDs.
@@ -109,11 +110,15 @@ for (const [owner, original, descriptor, names, evidence] of reviewedNames.param
 export const arcanistsConfig = {
   game: 'arcanistsmulti', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   workflowFiles: ['build-arcanistsmulti-rules.mjs', 'arcanistsmulti-names.json', 'reproduce-arcanistsmulti.mjs', 'reviewed-game.mjs',
-    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
+    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs', 'naming-coverage.mjs'],
   verifyCore: async () => ({status: 'not-applicable', reason: 'naming-only pass without game-specific reconstructions'}),
   readingGuide(rules, mapping) {
+    const coverage = namingCoverage(mapping);
     return ['# Reading Arcanists Multi', '',
-      `This pass names ${Object.keys(classes).length} reviewed classes in ${mapping.files.length} source files. Unresolved roles keep their original names.`, '',
+      `Resolved declarations: ${coverage.namedClasses}/${coverage.classes} classes and ${coverage.namedMethods}/${coverage.methods} methods have readable names. ${coverage.constructors} constructors follow their class names.`,
+      `Remaining: ${coverage.unresolvedClasses.length} opaque classes and ${coverage.unresolvedMethods.length} opaque methods.`, '',
+      '`LoginMessageTable.CommonTextInitialization` names four phases over the shared 744-key interface table. `TextTableInitializer.GameTextInitialization` names five phases over 888 expansion, spell, achievement, control, spell-book, tutorial and familiar keys. Original array slots, null guards, byte-key decoding, discarded results, early completion and archive cleanup remain intact.', '',
+      'Names and evidence use original declarations in `arcanistsmulti-names.json`. Reproduction checks compilation, bindings and exact source restoration. Fields and locals are outside the class/method naming claim; full gameplay has not been runtime-tested.', '',
       'Reproduce with `node readable/build-arcanistsmulti-rules.mjs --check` and `node readable/reproduce-arcanistsmulti.mjs --check` from dekobloko-work.', ''].join('\n');
   },
 };
