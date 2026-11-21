@@ -6,6 +6,7 @@ import {captureProcess} from './tools/lib/capture-process.mjs';
 import {sourceInventory} from './tools/readable-java.mjs';
 import {archivedInput,digest,funorbRepository,verifyToolPin,workflowRoot} from './game-export.mjs';
 import {buildCompilationStubs} from './compilation-stubs.mjs';
+import {namingCoverage} from './naming-coverage.mjs';
 const SOURCE_COMMIT='9159750b0604b9082db8b91fe73a0a0b119c7f22';
 const classes={
  gf:['GameScreen','Abstract screen identity, render/update and key-input contract.'],
@@ -6680,6 +6681,24 @@ method("nb","a","(IIILjp;)V","drawShadowMask","Draws a sprite's low byte as a da
 method("og","a","(ZLmf;)V","loadGameStrings","Decodes the game's named text files into the static string fields.");
 method("um","a","(ZIZIIIB)V","updateLobbyGameList","Lays out the lobby game list rows and handles join and spectate presses.");
 // END round-3 reviewed method names.
+// Reviewed text initialization phases, keyed by original local declarations.
+for (const [owner, name, evidence] of [
+  ["nn$1$CfrPartitionedBody","CommonTextInitialization","Reviewed local resource initialization carrier and ordered dispatcher, archive/parameter/temporary-byte and caught-exception state. Full key inventories and non-resource/control statements reviewed; original guards and side effects retained."]
+]) {
+  if (classes[owner]) throw new Error("Text carrier already named: " + owner);
+  classes[owner] = [name, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of [
+  ["nn$1$CfrPartitionedBody","runChunk0","()V","loadLoginAndLobbyText","Reviewed all 210 resource keys (\"loginm3\" through \"gameopt_unselectedoptions\") and non-resource/control statements. Shared 744-key table matches Virogrid exactly; Preserve array destinations, null gates, discarded decodes, byte-key helpers, guard callbacks/recursion and archive cleanup."],
+  ["nn$1$CfrPartitionedBody","runChunk1","()V","loadAccountAndSocialText","Reviewed all 218 resource keys (\"gameopt_pleaseselectoption1\" through \"sse\") and non-resource/control statements. Shared 744-key table matches Virogrid exactly; Preserve array destinations, null gates, discarded decodes, byte-key helpers, guard callbacks/recursion and archive cleanup."],
+  ["nn$1$CfrPartitionedBody","runChunk2","()V","loadMenuAndMultiplayerText","Reviewed all 226 resource keys (\"purejava\" through \"fs_button_cancel\") and non-resource/control statements. Shared 744-key table matches Virogrid exactly; Preserve array destinations, null gates, discarded decodes, byte-key helpers, guard callbacks/recursion and archive cleanup."],
+  ["nn$1$CfrPartitionedBody","runChunk3","()V","loadMembershipAndDisplayText","Reviewed all 90 resource keys (\"fs_accept_aftercancel\" through \"sentence_separator\") and non-resource/control statements. Shared 744-key table matches Virogrid exactly; Preserve array destinations, null gates, discarded decodes, byte-key helpers, guard callbacks/recursion and archive cleanup."]
+]) {
+  const symbol = "M:" + owner + "." + original + descriptor;
+  if (members[symbol]) throw new Error("Text phase already named: " + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export function buildBrickRules(input, rows) {
   const declarations = rows.filter(row=>row[0]==='D');
   const declared = new Map(declarations.map(row=>[row[4],row]));
@@ -6742,11 +6761,12 @@ export function buildBrickRules(input, rows) {
   return [...rules.values()].sort((a,b)=>a.symbol<b.symbol?-1:1);
 }
 
-const workflowFiles=['build-brickabrac-rules.mjs','reproduce-brickabrac.mjs','tests/test-brickabrac-core.mjs','tests/brickabrac-original-contracts.mjs','game-export.mjs','compilation-stubs.mjs'];
+const workflowFiles=['build-brickabrac-rules.mjs','reproduce-brickabrac.mjs','tests/test-brickabrac-core.mjs','tests/brickabrac-original-contracts.mjs','game-export.mjs','compilation-stubs.mjs','naming-coverage.mjs'];
 export function validateBrickManifest(rules){if(rules.schema!==1||rules.game!=='brickabrac'||rules.source.commit!==SOURCE_COMMIT)throw new Error('Invalid Brick-a-brac naming manifest');for(const [file,sha] of Object.entries(rules.readabilityWorkflow.files))if(digest(fs.readFileSync(path.join(workflowRoot,file)))!==sha)throw new Error('Naming workflow changed: '+file);if(JSON.stringify(rules.generators.namingTool)!==JSON.stringify(verifyToolPin()))throw new Error('Naming tool identity changed');}
-export function buildBrickGuide(rules,mapping){const link=o=>`[${classes[o][0]}](${classes[o][0]}.java)`;return ['# Reading Brick-a-brac','',
+export function buildBrickGuide(rules,mapping){const coverage=namingCoverage(mapping);const link=o=>`[${classes[o][0]}](${classes[o][0]}.java)`;return ['# Reading Brick-a-brac','',
 'Java here is the single published version. Rebuild with Deko’s `readable/reproduce-brickabrac.mjs`. The reverse dictionary is `../../decompilation/brickabrac-naming.json`.','',
-`This pass reviews ${Object.keys(classes).length} class identities across ${mapping.files.length} compiled classes. Every top-level game class has a readable filename, including the original BrickABrac entry point. Unreviewed members retain their unresolved names. Numbered state masks/words identify observed storage without guessing server semantics. Reviewed names have no original-name suffixes; reversal recovers original bytes.`, '',
+`Resolved declarations: ${coverage.namedClasses}/${coverage.classes} classes and ${coverage.namedMethods}/${coverage.methods} methods have readable names; ${coverage.constructors} constructors follow their owning class. Remaining: ${coverage.unresolvedClasses.length} opaque classes and ${coverage.unresolvedMethods.length} opaque methods. Numbered state masks/words identify observed storage without guessing server semantics. Fields and locals are outside the class/method naming claim; reversal recovers original bytes.`, '',
+'`ContextActionController.CommonTextInitialization` names four phases over the shared 744-key interface table: login/lobby, account/social, menu/multiplayer and membership/display. Original null guards, table slots, byte-key decoding, discarded results, recursive guard and archive cleanup remain intact.', '',
 '| Start here | Follow |','| --- | --- |',
 `| ${link('qj')} → ${link('ak')} → ${link('j')} | Gameplay screen, multiplayer match and per-player boards. |`,
 `| ${link('om')} / ${link('id')} | Lobby game settings, capacity, invitations, player membership/rating and row sorting. |`,

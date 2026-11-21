@@ -3957,6 +3957,23 @@ for (const [signature, rows] of [
 ]) locals(signature, rows,
   'Reviewed exact prepared declaration ordinal and original spelling in the pinned loading, terrain, object drawing or gameplay method; names describe decoded values, owned objects, coordinates, loop roles or retained guard arithmetic.');
 
+// Reviewed text initialization phases, keyed by original local declarations.
+for (const [owner, name, evidence] of [
+  ["qa$1$CfrPartitionedBody","CommonTextInitialization","Reviewed local resource initialization carrier and ordered dispatcher, archive/parameter/temporary-byte and caught-exception state. Full key inventories and non-resource/control statements reviewed; original guards and side effects retained."]
+]) {
+  if (classes[owner]) throw new Error("Text carrier already named: " + owner);
+  classes[owner] = [name, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of [
+  ["qa$1$CfrPartitionedBody","runChunk0","()V","loadLoginLobbyAndConnectionText","Reviewed all 269 resource keys (\"loginm3\" through \"connectionlost_withreason\") and non-resource/control statements. Shared 744-key table matches Virogrid exactly; Preserve array destinations, null gates, discarded decodes, byte-key helpers, guard callbacks/recursion and archive cleanup."],
+  ["qa$1$CfrPartitionedBody","runChunk1","()V","loadAccountSocialAndLoadingText","Reviewed all 257 resource keys (\"passwordverificationrequired\" through \"mode\") and non-resource/control statements. Shared 744-key table matches Virogrid exactly; Preserve array destinations, null gates, discarded decodes, byte-key helpers, guard callbacks/recursion and archive cleanup."],
+  ["qa$1$CfrPartitionedBody","runChunk2","()V","loadMenuMultiplayerAndDisplayText","Reviewed all 218 resource keys (\"quality\" through \"sentence_separator\") and non-resource/control statements. Shared 744-key table matches Virogrid exactly; Preserve array destinations, null gates, discarded decodes, byte-key helpers, guard callbacks/recursion and archive cleanup."]
+]) {
+  const symbol = "M:" + owner + "." + original + descriptor;
+  if (members[symbol]) throw new Error("Text phase already named: " + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export const escapeConfig = {
   game:'escapevector',version:1,sourceCommit:'5bf6bf34923dd6ca1094e2e2c652ac9f1e608d35',classes,members,
   workflowFiles:['build-escapevector-rules.mjs','reproduce-escapevector.mjs','prepare-escapevector.mjs',
@@ -3968,6 +3985,7 @@ export const escapeConfig = {
       'This is the only published Java tree. Reviewed rules and the reproducer live in dekobloko-work/readable. The current reverse dictionary is ../../decompilation/escapevector-naming.json.','',
       `This pass names ${Object.keys(classes).length} reviewed classes and ${rules.renames.length} symbols across all ${mapping.files.length} sources. Unresolved roles keep their existing names; reviewed names have no opaque suffix.`,'',
       `Coverage: ${coverage.namedClasses}/${coverage.classes} class declarations and ${coverage.namedMethods}/${coverage.methods} methods have readable names; ${coverage.constructors} constructors follow their owning class. ${coverage.unresolvedClasses.length} classes and ${coverage.unresolvedMethods.length} methods remain opaque. Full naming is ${coverage.complete?'complete':'incomplete'}. The coverage command exits nonzero until every owned class and method is named; constructors and existing Java callbacks retain their required spellings.`,'',
+      '`DropTargetWidget.CommonTextInitialization` names the login/lobby/connection, account/social/loading and menu/multiplayer/display phases of the shared 744-key interface table. Original null guards, array destinations, discarded decodes, guard cleanup and archive lifetime remain unchanged. Fields and locals are outside the complete class/method naming claim.','',
       '## Entry points','',
       '`EscapeVector.updateClient` services input, audio, menus and the active session. `renderClient` calls `renderFrame`, which chooses dialogue, gameplay or another screen. `IntValueNode.startSelectedLevel` constructs `BoundedRandomAccessFile.activeSession` and calls `GameplaySession.startSession`. These unrelated static helpers remain on their original owners because the original client scatters globals across classes.','',
       '`GameplaySession.updateSession` contains ship physics, terrain collision, object interactions, mission state and effects. `renderSession` draws the world, HUD and `Minimap`. Ship position/velocity and spawn coordinates have Q16 names: divide by 65536 for pixels. The world wraps horizontally. `levelIndex < 0` selects tutorial behavior. Mission IDs and type codes remain their original integers.','',
