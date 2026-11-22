@@ -255,6 +255,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ig",
+      "originalName": "ig",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance field is direct ByteBuffer; setter allocateDirect/position/put, getter capacity-length array/position/get establish byte-storage role. Unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jl",
       "originalName": "jl",
       "to": "DualLinkNode",
@@ -290,6 +297,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qf",
+      "originalName": "qf",
+      "to": "ByteStorage",
+      "evidence": "Abstract class field shape and both abstract byte-array declarations reviewed with concrete direct implementation. No instance fields or other instance methods; role follows set/get byte contract, not unrelated static helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rk",
       "originalName": "rk",
       "to": "IntrusiveNode",
@@ -308,6 +322,13 @@
       "originalName": "te",
       "to": "GameAppletShell",
       "evidence": "Applet/Runnable with window and focus listeners, loader-applet hooks and abstract init/update/render client callbacks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ig.field_i:Ljava/nio/ByteBuffer;",
+      "originalName": "field_i",
+      "to": "buffer",
+      "evidence": "Sole instance ByteBuffer allocated directly and read/written by byte-array operations. Preserve all nullable/guard states.",
       "confidence": "reviewed"
     },
     {
@@ -693,6 +714,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ae82012bd464e7f54aa34ebbb7f5b963b314770d6ed7ba32ab380cfd20eecdd8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ig.a(B[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter arithmetic runs after allocation but before position/put. Getter allocates array before arithmetic, then position/get. Preserve partial state on guard failure. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ig.a(I)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter arithmetic runs after allocation but before position/put. Getter allocates array before arithmetic, then position/get. Preserve partial state on guard failure. Names describe dataflow without changing guard/null/position/copy behavior.",
       "confidence": "reviewed"
     },
     {
@@ -1179,6 +1214,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qf.a(B[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter arithmetic runs after allocation but before position/put. Getter allocates array before arithmetic, then position/get. Preserve partial state on guard failure. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qf.a(I)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter arithmetic runs after allocation but before position/put. Getter allocates array before arithmetic, then position/get. Preserve partial state on guard failure. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qf.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -1447,7 +1496,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-confined-rules.mjs": "a08806d13e3259a5e4a49e9de85dc6561b20a6ffc335a49925ea5169596b7ee2",
-      "confined-names.json": "861f6062d2a0b5980020ebd8864a939f1ad5d9e493979e9374fc01cc80f1051f",
+      "confined-names.json": "7254a290199b2e896a94a921760eb93864cc438367f29dad113ba204641c1850",
       "reproduce-confined.mjs": "9b3831fbe343e76865b33804d8980f36e4b2b1bbbf79b4539c6903b6f9ec7e92",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

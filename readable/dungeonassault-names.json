@@ -3,7 +3,9 @@
     ["uk","GzipDecompressor","Complete owned inflater method, constructors and fields reviewed: gzip magic31/139, lazy raw Inflater, caller-supplied output, original input bounds and reset/error paths. Preserve caller offset/length adjustments, bad-guard calls and reset skips, exception wrappers and unrelated static helpers."],
     ["qp","BoundedRandomAccessFile","Complete constructor, owned read/write/seek/length/close methods, private fields and finalizer reviewed: tracked RandomAccessFile position/max length, overflow sentinel write and EOFException, oversized-file deletion and unlimited-bound conversion. Preserve guard-specific handle discards, skipped position updates, helper calls, sentinels and partial failures; unrelated statics retained."],
     ["sk","MouseWheelHandler","Complete game-owned class reviewed: AWT MouseWheelListener accumulates getWheelRotation, consumes event, attaches/detaches and synchronously polls. Guards differ by game and remain unchanged."],
-    ["nl","MouseWheelInput","Abstract class declaration and all3abstract wheel operations reviewed alongside complete concrete implementation. Role follows component registration/removal and rotation polling; unrelated statics unselected."]
+    ["nl","MouseWheelInput","Abstract class declaration and all3abstract wheel operations reviewed alongside complete concrete implementation. Role follows component registration/removal and rotation polling; unrelated statics unselected."],
+    ["ep","DirectByteStorage","Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance field is direct ByteBuffer; setter allocateDirect/position/put, getter capacity-length array/position/get establish byte-storage role. Unrelated statics unselected."],
+    ["un","ByteStorage","Abstract class field shape and both abstract byte-array declarations reviewed with concrete direct implementation. No instance fields or other instance methods; role follows set/get byte contract, not unrelated static helpers."]
   ],
   "methods": [
     ["ac","a","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 7 null writes to 6 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 550da3f1d7925f4a2e14bee203b2986164c9d0eef4bf37269f4c9f024e582438."],
@@ -188,9 +190,14 @@
     ["nl","a","(ZLjava/awt/Component;)V","detach","Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths."],
     ["sk","a","(I)I","pollRotation","Complete concrete synchronized body and abstract declaration reviewed. Copies accumulator and clears it before guard6; wrong guard returns-79 after clearing. Preserve exact read/write/guard order."],
     ["nl","a","(I)I","pollRotation","Complete concrete synchronized body and abstract declaration reviewed. Copies accumulator and clears it before guard6; wrong guard returns-79 after clearing. Preserve exact read/write/guard order."],
-    ["pm","a","(B)Lnl;","createMouseWheelInput","Complete factory reviewed: reflective construction of concrete wheel listener cast to abstract contract, Throwable->null fallback and guard side effects unchanged. Literal rename explicitly limited to this owned Class.forName call."]
+    ["pm","a","(B)Lnl;","createMouseWheelInput","Complete factory reviewed: reflective construction of concrete wheel listener cast to abstract contract, Throwable->null fallback and guard side effects unchanged. Literal rename explicitly limited to this owned Class.forName call."],
+    ["ep","b","(B)[B","getBytes","Complete concrete body and matching abstract declaration reviewed. Setter helper on wrong guard precedes allocation; getter arithmetic precedes allocate/position/get. Preserve wrappers and failures. Names describe dataflow without changing guard/null/position/copy behavior."],
+    ["un","b","(B)[B","getBytes","Complete concrete body and matching abstract declaration reviewed. Setter helper on wrong guard precedes allocation; getter arithmetic precedes allocate/position/get. Preserve wrappers and failures. Names describe dataflow without changing guard/null/position/copy behavior."],
+    ["ep","a","([BI)V","setBytes","Complete concrete body and matching abstract declaration reviewed. Setter helper on wrong guard precedes allocation; getter arithmetic precedes allocate/position/get. Preserve wrappers and failures. Names describe dataflow without changing guard/null/position/copy behavior."],
+    ["un","a","([BI)V","setBytes","Complete concrete body and matching abstract declaration reviewed. Setter helper on wrong guard precedes allocation; getter arithmetic precedes allocate/position/get. Preserve wrappers and failures. Names describe dataflow without changing guard/null/position/copy behavior."]
   ],
   "fields": [
-    ["sk","field_h","I","rotation","Accumulator updated by wheel event, returned/reset by poll; preserve per-game reset/guard differences."]
+    ["sk","field_h","I","rotation","Accumulator updated by wheel event, returned/reset by poll; preserve per-game reset/guard differences."],
+    ["ep","field_h","Ljava/nio/ByteBuffer;","buffer","Sole instance ByteBuffer allocated directly and read/written by byte-array operations. Preserve all nullable/guard states."]
   ]
 }

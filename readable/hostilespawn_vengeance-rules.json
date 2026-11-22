@@ -458,6 +458,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:md",
+      "originalName": "md",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance field is direct ByteBuffer; setter allocateDirect/position/put, getter capacity-length array/position/get establish byte-storage role. Unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:nj",
+      "originalName": "nj",
+      "to": "ByteStorage",
+      "evidence": "Abstract class field shape and both abstract byte-array declarations reviewed with concrete direct implementation. No instance fields or other instance methods; role follows set/get byte contract, not unrelated static helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ol",
       "originalName": "ol",
       "to": "MouseWheelHandler",
@@ -511,6 +525,13 @@
       "originalName": "wc",
       "to": "ArchiveIndex",
       "evidence": "Per-group and per-file id, size and digest arrays describing an archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:md.field_h:Ljava/nio/ByteBuffer;",
+      "originalName": "field_h",
+      "to": "buffer",
+      "evidence": "Sole instance ByteBuffer allocated directly and read/written by byte-array operations. Preserve all nullable/guard states.",
       "confidence": "reviewed"
     },
     {
@@ -948,6 +969,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:md.a(B)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter only allocates/copies under <=-25 guard, otherwise null. Setter writes bytes before wrong-guard static string clear. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.a(I[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter only allocates/copies under <=-25 guard, otherwise null. Setter writes bytes before wrong-guard static string clear. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mg.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1001,6 +1036,20 @@
       "originalName": "k",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 fd836b49258a482b8c293f85e67888d61221f218f070dcc74fb141db4a71d9d0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.a(B)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter only allocates/copies under <=-25 guard, otherwise null. Setter writes bytes before wrong-guard static string clear. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.a(I[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter only allocates/copies under <=-25 guard, otherwise null. Setter writes bytes before wrong-guard static string clear. Names describe dataflow without changing guard/null/position/copy behavior.",
       "confidence": "reviewed"
     },
     {
@@ -1398,7 +1447,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-hostilespawn_vengeance-rules.mjs": "bd4983d008d73d23ae1bead320db5b9066cb068364feecec10df25c10ddbff04",
-      "hostilespawn_vengeance-names.json": "98c1396354150a5de784f6a619821e0aff1d77a9a7799af4159485fba9add1d2",
+      "hostilespawn_vengeance-names.json": "e41926769b4ea7c027c24e859040bc4c4b632cab327acb2515881747e7d51f86",
       "reproduce-hostilespawn_vengeance.mjs": "40c77f27ca968e11d14121fe671373284e37e0393b0fc20f781e4df14ef88438",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

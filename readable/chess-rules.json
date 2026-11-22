@@ -304,10 +304,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:f",
+      "originalName": "f",
+      "to": "ByteStorage",
+      "evidence": "Abstract class field shape and both abstract byte-array declarations reviewed with concrete direct implementation. No instance fields or other instance methods; role follows set/get byte contract, not unrelated static helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fa",
       "originalName": "fa",
       "to": "GameAppletShell",
       "evidence": "Applet/Runnable/Focus/Window listener lifecycle shell with paint, start and stop hooks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ja",
+      "originalName": "ja",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance field is direct ByteBuffer; setter allocateDirect/position/put, getter capacity-length array/position/get establish byte-storage role. Unrelated statics unselected.",
       "confidence": "reviewed"
     },
     {
@@ -378,6 +392,13 @@
       "originalName": "um",
       "to": "ResourceArchive",
       "evidence": "Holds an ArchiveProvider and ArchiveIndex plus per-group and per-file caches; same role as GeoBlox ResourceArchive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ja.field_d:Ljava/nio/ByteBuffer;",
+      "originalName": "field_d",
+      "to": "buffer",
+      "evidence": "Sole instance ByteBuffer allocated directly and read/written by byte-array operations. Preserve all nullable/guard states.",
       "confidence": "reviewed"
     },
     {
@@ -752,6 +773,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:f.a([BI)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong-guard helper precedes allocation; getter allocates and resets position before wrong-guard buffer clear then get. Preserve wrapped exceptions. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:f.b(I)[B",
+      "originalName": "b",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong-guard helper precedes allocation; getter allocates and resets position before wrong-guard buffer clear then get. Preserve wrapped exceptions. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fc.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -917,6 +952,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 5ee3c053b9c5a1ffbf422d3fd12d5772c771aeae79d68625aac8aba84e0b6df7.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a([BI)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong-guard helper precedes allocation; getter allocates and resets position before wrong-guard buffer clear then get. Preserve wrapped exceptions. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.b(I)[B",
+      "originalName": "b",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong-guard helper precedes allocation; getter allocates and resets position before wrong-guard buffer clear then get. Preserve wrapped exceptions. Names describe dataflow without changing guard/null/position/copy behavior.",
       "confidence": "reviewed"
     },
     {
@@ -1818,7 +1867,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-chess-rules.mjs": "96e89726e9752b6c32c9c36b36b5bed50f637c08bf0e2c3963477590a7927127",
-      "chess-names.json": "8f7db30c612af2b0ba83a50c6fd56939a6023defc4c59ccfdbdbb0ba3cfbc440",
+      "chess-names.json": "295de2ff1eca6e151309db05175df270a9e0fcc018442cc941391a04a615b617",
       "reproduce-chess.mjs": "83586202a6788e331bbadf9d01041fd32d100e7110eccafcbf80b4a91364ad46",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

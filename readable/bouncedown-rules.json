@@ -220,10 +220,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ah",
+      "originalName": "ah",
+      "to": "ByteStorage",
+      "evidence": "Abstract class field shape and both abstract byte-array declarations reviewed with concrete direct implementation. No instance fields or other instance methods; role follows set/get byte contract, not unrelated static helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ai",
       "originalName": "ai",
       "to": "IntrusiveNode",
       "evidence": "Long key plus two sibling links with unlink and linked test; base of packet buffers, widgets and audio nodes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:de",
+      "originalName": "de",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance field is direct ByteBuffer; setter allocateDirect/position/put, getter capacity-length array/position/get establish byte-storage role. Unrelated statics unselected.",
       "confidence": "reviewed"
     },
     {
@@ -297,6 +311,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:de.field_a:Ljava/nio/ByteBuffer;",
+      "originalName": "field_a",
+      "to": "buffer",
+      "evidence": "Sole instance ByteBuffer allocated directly and read/written by byte-array operations. Preserve all nullable/guard states.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wi.field_h:I",
       "originalName": "field_h",
       "to": "position",
@@ -350,6 +371,20 @@
       "originalName": "a",
       "to": "attach",
       "evidence": "Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(B[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter uses caller-supplied ByteBuffer position; setter allocates then wrong guard clears buffer before dereference. Do not force zero position or fix null guard. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ah.a(I)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter uses caller-supplied ByteBuffer position; setter allocates then wrong guard clears buffer before dereference. Do not force zero position or fix null guard. Names describe dataflow without changing guard/null/position/copy behavior.",
       "confidence": "reviewed"
     },
     {
@@ -434,6 +469,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 85767989a328b4c8d5db4bc6ee01211e287f4d0a85c743ea4b40c4e8fd6e76de.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.a(B[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter uses caller-supplied ByteBuffer position; setter allocates then wrong guard clears buffer before dereference. Do not force zero position or fix null guard. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.a(I)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter uses caller-supplied ByteBuffer position; setter allocates then wrong guard clears buffer before dereference. Do not force zero position or fix null guard. Names describe dataflow without changing guard/null/position/copy behavior.",
       "confidence": "reviewed"
     },
     {
@@ -1300,7 +1349,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "672ac1d42a52e1212a70530b2cd058e331b9607806eb9892244d7aa32225f88f",
+      "bouncedown-names.json": "4227d5111a668ca9151d304f104513d8a8c283179dd8588a6da226dcac2f380f",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -2,7 +2,9 @@
   "classes": [
     ["vaa","GzipDecompressor","Complete owned inflater method, constructors and fields reviewed: gzip magic31/139, lazy raw Inflater, caller-supplied output, original input bounds and reset/error paths. Preserve caller offset/length adjustments, bad-guard calls and reset skips, exception wrappers and unrelated static helpers."],
     ["qaa","BoundedRandomAccessFile","Complete constructor, owned read/write/seek/length/close methods, private fields and finalizer reviewed: tracked RandomAccessFile position/max length, overflow sentinel write and EOFException, oversized-file deletion and unlimited-bound conversion. Preserve guard-specific handle discards, skipped position updates, helper calls, sentinels and partial failures; unrelated statics retained."],
-    ["uca","Crc32Table","Complete48line class and CRC consumer reviewed: owns256-entry reflected CRC32 lookup table. Retain unrelated UI globals, guarded helper and already meaningful releaseStatics method with original repeated null writes."]
+    ["uca","Crc32Table","Complete48line class and CRC consumer reviewed: owns256-entry reflected CRC32 lookup table. Retain unrelated UI globals, guarded helper and already meaningful releaseStatics method with original repeated null writes."],
+    ["gla","DirectByteStorage","Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance field is direct ByteBuffer; setter allocateDirect/position/put, getter capacity-length array/position/get establish byte-storage role. Unrelated statics unselected."],
+    ["nu","ByteStorage","Abstract class field shape and both abstract byte-array declarations reviewed with concrete direct implementation. No instance fields or other instance methods; role follows set/get byte contract, not unrelated static helpers."]
   ],
   "methods": [
     ["dg","b","()V","clearStaticReferences","Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 3d167f32dc90c0bb10c4f12381b35d33bcd88952e65d8f6103bde696ee859e77."],
@@ -39,10 +41,15 @@
     ["sca","a","(Ljava/awt/Component;Z)V","detach","Complete concrete removal body and abstract contract reviewed. Preserve per-game guard and callback behavior in original order."],
     ["qv","a","(B)I","pollRotation","Complete synchronized concrete body and abstract contract reviewed. Copies and clears before guard; wrong guard>=-93 returns15 after reset. Preserve exact guards/read/write order."],
     ["sca","a","(B)I","pollRotation","Complete synchronized concrete body and abstract contract reviewed. Copies and clears before guard; wrong guard>=-93 returns15 after reset. Preserve exact guards/read/write order."],
-    ["qq","b","(I)Lsca;","createMouseWheelInput","Complete reflective factory body reviewed. Constructs existing meaningfully named wheel listener, casts to input contract, retains guard behavior and Throwable->null fallback (including nested exception wrapping in BachelorFridge). Existing class names and class-name literals unchanged."]
+    ["qq","b","(I)Lsca;","createMouseWheelInput","Complete reflective factory body reviewed. Constructs existing meaningfully named wheel listener, casts to input contract, retains guard behavior and Throwable->null fallback (including nested exception wrapping in BachelorFridge). Existing class names and class-name literals unchanged."],
+    ["gla","a","(Z)[B","getBytes","Complete concrete body and matching abstract declaration reviewed. Getter true clears buffer then dereferences it; setter performs full allocate/position/put before wrong-guard static helper. Preserve these paths. Names describe dataflow without changing guard/null/position/copy behavior."],
+    ["nu","a","(Z)[B","getBytes","Complete concrete body and matching abstract declaration reviewed. Getter true clears buffer then dereferences it; setter performs full allocate/position/put before wrong-guard static helper. Preserve these paths. Names describe dataflow without changing guard/null/position/copy behavior."],
+    ["gla","a","(B[B)V","setBytes","Complete concrete body and matching abstract declaration reviewed. Getter true clears buffer then dereferences it; setter performs full allocate/position/put before wrong-guard static helper. Preserve these paths. Names describe dataflow without changing guard/null/position/copy behavior."],
+    ["nu","a","(B[B)V","setBytes","Complete concrete body and matching abstract declaration reviewed. Getter true clears buffer then dereferences it; setter performs full allocate/position/put before wrong-guard static helper. Preserve these paths. Names describe dataflow without changing guard/null/position/copy behavior."]
   ],
   "fields": [
     ["uca","field_d","[I","lookupTable","Complete initializer/consumer reviewed:256reflected CRC entries, eight unsigned shifts/XOR-306674912 per entry. Preserve mutable array and shutdown null clearing."],
-    ["qv","field_e","I","rotation","Accumulator updated by getWheelRotation and read/reset/replaced by synchronized poll. Preserve per-game guards and side effects."]
+    ["qv","field_e","I","rotation","Accumulator updated by getWheelRotation and read/reset/replaced by synchronized poll. Preserve per-game guards and side effects."],
+    ["gla","field_i","Ljava/nio/ByteBuffer;","buffer","Sole instance ByteBuffer allocated directly and read/written by byte-array operations. Preserve all nullable/guard states."]
   ]
 }

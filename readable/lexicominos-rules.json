@@ -248,6 +248,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bh",
+      "originalName": "bh",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance field is direct ByteBuffer; setter allocateDirect/position/put, getter capacity-length array/position/get establish byte-storage role. Unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:cc",
       "originalName": "cc",
       "to": "PcmSampleStream",
@@ -381,6 +388,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nl",
+      "originalName": "nl",
+      "to": "ByteStorage",
+      "evidence": "Abstract class field shape and both abstract byte-array declarations reviewed with concrete direct implementation. No instance fields or other instance methods; role follows set/get byte contract, not unrelated static helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pk",
       "originalName": "pk",
       "to": "TriangleMesh",
@@ -420,6 +434,13 @@
       "originalName": "wf",
       "to": "PacketBuffer",
       "evidence": "Complete owned constructors and every instance method reviewed: byte payload/cursor, binary primitives, smart/variable encodings, byte ranges, strings, length patches, CRC, RSA and32-round XTEA. Unrelated static helpers/globals retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bh.field_d:Ljava/nio/ByteBuffer;",
+      "originalName": "field_d",
+      "to": "buffer",
+      "evidence": "Sole instance ByteBuffer allocated directly and read/written by byte-array operations. Preserve all nullable/guard states.",
       "confidence": "reviewed"
     },
     {
@@ -504,6 +525,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 dad7fd71fb370dedfac2a420c69291b53a1866ee5cccfe162792c477b44c5740.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(B)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter allocates before wrong-guard null return; setter false clears old buffer before evaluating new allocation. Preserve partial state for null input/allocation failure. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a([BZ)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter allocates before wrong-guard null return; setter false clears old buffer before evaluating new allocation. Preserve partial state for null input/allocation failure. Names describe dataflow without changing guard/null/position/copy behavior.",
       "confidence": "reviewed"
     },
     {
@@ -938,6 +973,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 9cee958ff02885182f241eb0a83cf9265ea735453bda3141e6c690eb615f8b8b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.a(B)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter allocates before wrong-guard null return; setter false clears old buffer before evaluating new allocation. Preserve partial state for null input/allocation failure. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.a([BZ)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter allocates before wrong-guard null return; setter false clears old buffer before evaluating new allocation. Preserve partial state for null input/allocation failure. Names describe dataflow without changing guard/null/position/copy behavior.",
       "confidence": "reviewed"
     },
     {
@@ -1482,7 +1531,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-lexicominos-rules.mjs": "407068f51801d5f59706f9b1a51b92d3ce7dda65d765eac9640c3e370f3b044d",
-      "lexicominos-names.json": "49bd421c5eacc83d7bdf63eecd0512c9ceb7a78b4936a17e33b49af19b56a8be",
+      "lexicominos-names.json": "addc1e89ee8494cc6859100664a1ff938db9c6e28d34f3d2d44a48cc374be2e7",
       "reproduce-lexicominos.mjs": "e1c24466083fff6a218772ecf30ba63a0a8990b92c02a2782bc76177b5238062",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

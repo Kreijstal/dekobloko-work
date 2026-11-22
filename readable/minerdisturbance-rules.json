@@ -451,6 +451,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ni",
+      "originalName": "ni",
+      "to": "ByteStorage",
+      "evidence": "Abstract class field shape and both abstract byte-array declarations reviewed with concrete direct implementation. No instance fields or other instance methods; role follows set/get byte contract, not unrelated static helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:oe",
       "originalName": "oe",
       "to": "MouseWheelInput",
@@ -483,6 +490,13 @@
       "originalName": "sb",
       "to": "PacketBuffer",
       "evidence": "Byte array with cursor and big-endian primitive and slice encodings; same shared role as Ace PacketBuffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:t",
+      "originalName": "t",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance field is direct ByteBuffer; setter allocateDirect/position/put, getter capacity-length array/position/get establish byte-storage role. Unrelated statics unselected.",
       "confidence": "reviewed"
     },
     {
@@ -525,6 +539,13 @@
       "originalName": "field_u",
       "to": "payload",
       "evidence": "Complete constructors and owned I/O reviewed: caller byte array or pooled allocation is backing payload; preserve array identity/all references.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:t.field_e:Ljava/nio/ByteBuffer;",
+      "originalName": "field_e",
+      "to": "buffer",
+      "evidence": "Sole instance ByteBuffer allocated directly and read/written by byte-array operations. Preserve all nullable/guard states.",
       "confidence": "reviewed"
     },
     {
@@ -1025,6 +1046,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ni.a(B[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter arithmetic precedes allocation; getter allocates before guard, valid3006 position/get, otherwise clears buffer before dereference. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ni.a(I)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter arithmetic precedes allocation; getter allocates before guard, valid3006 position/get, otherwise clears buffer before dereference. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nl.b()V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -1522,6 +1557,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:t.a(B[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter arithmetic precedes allocation; getter allocates before guard, valid3006 position/get, otherwise clears buffer before dereference. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:t.a(I)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter arithmetic precedes allocation; getter allocates before guard, valid3006 position/get, otherwise clears buffer before dereference. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tb.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1650,7 +1699,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-minerdisturbance-rules.mjs": "16fcf2e48a0b24b7a3b5adfaa84bb4d835098253436d0d71784385c2e1228b80",
-      "minerdisturbance-names.json": "358a4e741fa209cee2a82ccc01270f7ac6c016eeb69ab9ac3fa82c0a2268db76",
+      "minerdisturbance-names.json": "f10cd81e9124db97a58820d7df0c38b1c34a053cabf79aafcb2c668faa1801c3",
       "reproduce-minerdisturbance.mjs": "9c29b772086ae02805a24c9b493bfd651e742e7206976e902e269a1ae4c1e5d3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

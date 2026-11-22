@@ -157,6 +157,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hd",
+      "originalName": "hd",
+      "to": "ByteStorage",
+      "evidence": "Abstract class field shape and both abstract byte-array declarations reviewed with concrete direct implementation. No instance fields or other instance methods; role follows set/get byte contract, not unrelated static helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jg",
       "originalName": "jg",
       "to": "MouseWheelInput",
@@ -220,6 +227,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qe",
+      "originalName": "qe",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance field is direct ByteBuffer; setter allocateDirect/position/put, getter capacity-length array/position/get establish byte-storage role. Unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rh",
       "originalName": "rh",
       "to": "ResourceArchive",
@@ -273,6 +287,13 @@
       "originalName": "field_g",
       "to": "rotation",
       "evidence": "Accumulator updated by wheel event, returned/reset by poll; preserve per-game reset/guard differences.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qe.field_i:Ljava/nio/ByteBuffer;",
+      "originalName": "field_i",
+      "to": "buffer",
+      "evidence": "Sole instance ByteBuffer allocated directly and read/written by byte-array operations. Preserve all nullable/guard states.",
       "confidence": "reviewed"
     },
     {
@@ -518,6 +539,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 6 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 42dd97223519a340754afd4ef9394f002a347bdd655b512746853ffac9dcddce.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hd.a(I[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter guard256 precedes all work, otherwise returns null. Setter allocates before wrong-guard helper, then resets position/puts data. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hd.b(I)[B",
+      "originalName": "b",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter guard256 precedes all work, otherwise returns null. Setter allocates before wrong-guard helper, then resets position/puts data. Names describe dataflow without changing guard/null/position/copy behavior.",
       "confidence": "reviewed"
     },
     {
@@ -1088,6 +1123,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qe.a(I[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter guard256 precedes all work, otherwise returns null. Setter allocates before wrong-guard helper, then resets position/puts data. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.b(I)[B",
+      "originalName": "b",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter guard256 precedes all work, otherwise returns null. Setter allocates before wrong-guard helper, then resets position/puts data. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qg.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1377,7 +1426,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-fleacircus-rules.mjs": "3571dfc1819af06339a362abfbbea0548fcee4d30cc87325631cf51df11ca831",
-      "fleacircus-names.json": "5728eb99020be86115ccf07288afe50acec3e0566e595e4173c341492447927d",
+      "fleacircus-names.json": "4e0b3381c70b6de2602652eb81ec70414a5f9dc14717167b5c4e74232dbcfa4b",
       "reproduce-fleacircus.mjs": "f9b33bab5d0ce8492e00e3654e2ea6dd17c6e6fa2ad9d811f295323e567ca043",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

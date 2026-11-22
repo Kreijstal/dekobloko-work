@@ -1004,6 +1004,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:gla",
+      "originalName": "gla",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance field is direct ByteBuffer; setter allocateDirect/position/put, getter capacity-length array/position/get establish byte-storage role. Unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:gm",
       "originalName": "gm",
       "to": "MoveOrder",
@@ -1715,6 +1722,13 @@
       "originalName": "nt",
       "to": "SuperSpeedAllAnimation",
       "evidence": "bca subclass SuperSpeedAllEvent builds this ana animation in a(int,gj).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:nu",
+      "originalName": "nu",
+      "to": "ByteStorage",
+      "evidence": "Abstract class field shape and both abstract byte-array declarations reviewed with concrete direct implementation. No instance fields or other instance methods; role follows set/get byte contract, not unrelated static helpers.",
       "confidence": "reviewed"
     },
     {
@@ -2730,6 +2744,13 @@
       "originalName": "field_e",
       "to": "context",
       "evidence": "gi constructor stores its String argument here.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gla.field_i:Ljava/nio/ByteBuffer;",
+      "originalName": "field_i",
+      "to": "buffer",
+      "evidence": "Sole instance ByteBuffer allocated directly and read/written by byte-array operations. Preserve all nullable/guard states.",
       "confidence": "reviewed"
     },
     {
@@ -5187,6 +5208,20 @@
       "originalName": "d",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gla.a(B[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter true clears buffer then dereferences it; setter performs full allocate/position/put before wrong-guard static helper. Preserve these paths. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gla.a(Z)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter true clears buffer then dereferences it; setter performs full allocate/position/put before wrong-guard static helper. Preserve these paths. Names describe dataflow without changing guard/null/position/copy behavior.",
       "confidence": "reviewed"
     },
     {
@@ -7927,10 +7962,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nu.a(B[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter true clears buffer then dereferences it; setter performs full allocate/position/put before wrong-guard static helper. Preserve these paths. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nu.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nu.a(Z)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter true clears buffer then dereferences it; setter performs full allocate/position/put before wrong-guard static helper. Preserve these paths. Names describe dataflow without changing guard/null/position/copy behavior.",
       "confidence": "reviewed"
     },
     {
@@ -10939,7 +10988,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
-      "bachelorfridge-names.json": "5c00e48de295591f4fb807d120043a5104048bdd7fd5637afdcc6132568f829e",
+      "bachelorfridge-names.json": "3d20d67b8f0eeedf5362422e2a861b6f34cdfbc89785934c9e387ad8613b06e9",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",

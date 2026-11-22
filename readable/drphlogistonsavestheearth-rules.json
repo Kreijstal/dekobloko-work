@@ -353,6 +353,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bh",
+      "originalName": "bh",
+      "to": "ByteStorage",
+      "evidence": "Abstract class field shape and both abstract byte-array declarations reviewed with concrete direct implementation. No instance fields or other instance methods; role follows set/get byte contract, not unrelated static helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fe",
       "originalName": "fe",
       "to": "KeyboardInput",
@@ -385,6 +392,13 @@
       "originalName": "j",
       "to": "LevelSession",
       "evidence": "Large gameplay class whose debug overlay prints the level number and fps, and which shows the Cheating! and Bonus: texts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jc",
+      "originalName": "jc",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance field is direct ByteBuffer; setter allocateDirect/position/put, getter capacity-length array/position/get establish byte-storage role. Unrelated statics unselected.",
       "confidence": "reviewed"
     },
     {
@@ -493,6 +507,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:jc.field_f:Ljava/nio/ByteBuffer;",
+      "originalName": "field_f",
+      "to": "buffer",
+      "evidence": "Sole instance ByteBuffer allocated directly and read/written by byte-array operations. Preserve all nullable/guard states.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mc.field_i:I",
       "originalName": "field_i",
       "to": "rotation",
@@ -595,6 +616,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 3d868cd8eb7b5c867669261b187fca9f484d1c3ac412d1a0ae16796e7c9b42f9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a([BB)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong-guard helper runs after allocation/position before put; getter allocates and resets position before wrong-guard null return. Preserve exact order. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.c(I)[B",
+      "originalName": "c",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong-guard helper runs after allocation/position before put; getter allocates and resets position before wrong-guard null return. Preserve exact order. Names describe dataflow without changing guard/null/position/copy behavior.",
       "confidence": "reviewed"
     },
     {
@@ -861,6 +896,20 @@
       "originalName": "a",
       "to": "wrapClientException",
       "evidence": "ie.a returns an existing ClientException with appended context, otherwise wraps the throwable in a new one.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jc.a([BB)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong-guard helper runs after allocation/position before put; getter allocates and resets position before wrong-guard null return. Preserve exact order. Names describe dataflow without changing guard/null/position/copy behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jc.c(I)[B",
+      "originalName": "c",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong-guard helper runs after allocation/position before put; getter allocates and resets position before wrong-guard null return. Preserve exact order. Names describe dataflow without changing guard/null/position/copy behavior.",
       "confidence": "reviewed"
     },
     {
@@ -1713,7 +1762,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-drphlogistonsavestheearth-rules.mjs": "08315c3da5b003a5c650d15e9848760b3143b6b5152cbe9d0b4f811976e18e5b",
-      "drphlogistonsavestheearth-names.json": "8fe9768ec8eb606f3a69258b479cb0f8334a5ed66aa368b7a157ed025b432477",
+      "drphlogistonsavestheearth-names.json": "82487304a5015c05feb861614fbfd935af55d494437f0fb4aef9b31d11c1c922",
       "reproduce-drphlogistonsavestheearth.mjs": "4eb61234c8f693a5901143e23655851f6692c61799a49e6912b51d62f66d5dfb",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
