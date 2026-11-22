@@ -640,6 +640,132 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gk.a(BI)I",
+      "originalName": "a",
+      "to": "appendCrc32",
+      "evidence": "Complete owned body and constructors reviewed: Compute CRC32 over caller start/current cursor, append big-endian int and return it. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Guard>=-37 returns-68 before I/O.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(BLjava/math/BigInteger;Ljava/math/BigInteger;)V",
+      "originalName": "a",
+      "to": "applyRsa",
+      "evidence": "Complete owned body and constructors reviewed: Transform signed BigInteger plaintext using supplied exponent/modulus, emit toByteArray with short byte-length prefix. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Signed input; exponentparam1/modulusparam2; reset0/write short length before badguard>-125 sets cursor9 ahead of result copy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(IB)V",
+      "originalName": "a",
+      "to": "backpatchByteLength",
+      "evidence": "Complete owned body and constructors reviewed: Patch byte length behind current cursor without canonical cursor advance. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Guard division before patch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(II)V",
+      "originalName": "a",
+      "to": "writeInt",
+      "evidence": "Complete owned body and constructors reviewed: Write32bits big endian. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard changes scalar before writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(III[I)V",
+      "originalName": "a",
+      "to": "decryptXteaRange",
+      "evidence": "Complete owned body and constructors reviewed: Decrypt complete64-bit blocks in specified range with32 reverse XTEA rounds and initial sum-957401312; normal-only cursor restoration. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Startparam0/endparam1; guard invokes negative-length null copy after all blocks before restore; its guard clears payload even though copy loop is empty. Normal-only restore; mask7088>>>11=3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(IJ)V",
+      "originalName": "a",
+      "to": "writeLong56",
+      "evidence": "Complete owned body and constructors reviewed: Write low56bits as seven big-endian bytes. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard reads unsigned short after5writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "writeString",
+      "evidence": "Complete owned body and constructors reviewed: Reject embedded NUL, encode through original byte helper and append zero. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Guard modulo after encoding and terminator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(IZ)V",
+      "originalName": "a",
+      "to": "writeSignedSmart",
+      "evidence": "Complete owned body and constructors reviewed: Encode[-64,64) as byte+64 and[-16384,16384) as short+49152; reject other values. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Small byte case returns before trueflag sets cursor-125.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(I[I)V",
+      "originalName": "a",
+      "to": "encryptXtea",
+      "evidence": "Complete owned body and constructors reviewed: Process64-bit blocks using32 XTEA rounds, delta-1640531527 and four indexed int key words. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Floor(old cursor/8),reset0 before badguard Canvas helper; processed-end cursor; mask8160>>>11=3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(JB)V",
+      "originalName": "a",
+      "to": "writeLong",
+      "evidence": "Complete owned body and constructors reviewed: Write64bits big endian. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Guard modulo after4writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(JI)V",
+      "originalName": "a",
+      "to": "writeLong40",
+      "evidence": "Complete owned body and constructors reviewed: Write low40bits as five big-endian bytes. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard clears payload after2writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(Ljava/lang/String;B)V",
+      "originalName": "a",
+      "to": "writeBase38String",
+      "evidence": "Complete owned body and constructors reviewed: Case-fold letters/digits into two ten-character base38 groups, encoded as two56-bit values; preserve20-character truncation, missing positions and other-character mapping. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. String length before bad byte clears static string and before loop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "writePrefixedString",
+      "evidence": "Complete owned body and constructors reviewed: Reject embedded NUL, write leading0, encode through original helper, append0. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Guard modulo after complete prefix/encoding/terminator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(ZI)V",
+      "originalName": "a",
+      "to": "padZerosTo",
+      "evidence": "Complete owned body and constructors reviewed: Write zeros until cursor reaches caller absolute target. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Falseflag invokes Canvas helper after padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a([BIII)V",
+      "originalName": "a",
+      "to": "readBytes",
+      "evidence": "Complete owned body and constructors reviewed: Copy payload bytes to caller array range while advancing cursor. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Guard>-85 returns before copy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.b(B)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "readPrefixedString",
+      "evidence": "Complete owned body and constructors reviewed: Consume/validate prefix then scan/decode zero-terminated string. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Guard<90 returns null before I/O.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.b(II)V",
+      "originalName": "b",
+      "to": "writeByte",
+      "evidence": "Complete owned body and constructors reviewed: Write low8bits. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard sets cursor61 before write.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.b([BIII)V",
+      "originalName": "b",
+      "to": "writeBytes",
+      "evidence": "Complete owned body and constructors reviewed: Copy caller array range into payload while advancing cursor. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard clears payload before loop.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gk.c(B)I",
       "originalName": "c",
       "to": "readUnsignedMedium",
@@ -647,10 +773,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gk.c(II)V",
+      "originalName": "c",
+      "to": "writeShort",
+      "evidence": "Complete owned body and constructors reviewed: Write low16bits big endian. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Guard<=58 returns after first byte.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.d(II)V",
+      "originalName": "d",
+      "to": "backpatchShortLength",
+      "evidence": "Complete owned body and constructors reviewed: Patch big-endian short length behind current cursor. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard calls static helper after patches.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gk.e(I)I",
       "originalName": "e",
       "to": "readInt",
       "evidence": "PacketBuffer field_g payload and field_h cursor; reviewed big-endian shifts/masks and cursor increments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.e(II)V",
+      "originalName": "e",
+      "to": "writeMedium",
+      "evidence": "Complete owned body and constructors reviewed: Write low24bits big endian. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Guard modulo before writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.f(I)Ljava/lang/String;",
+      "originalName": "f",
+      "to": "readString",
+      "evidence": "Complete owned body and constructors reviewed: Scan to zero and decode through original helper; consume terminator. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Caller param0 is complement-of-length empty test, canonical-1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.g(I)Ljava/lang/String;",
+      "originalName": "g",
+      "to": "readNullableString",
+      "evidence": "Complete owned body and constructors reviewed: Consume null marker or delegate original zero-terminated reader. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Wrong guard returns null before peek.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.h(I)I",
+      "originalName": "h",
+      "to": "readSignedSmart",
+      "evidence": "Complete owned body and constructors reviewed: Peek high bit; unsigned byte minus64 or unsigned short minus49152. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Caller param0 controls complemented threshold comparison, canonical-129.",
       "confidence": "reviewed"
     },
     {
@@ -672,6 +840,34 @@
       "originalName": "k",
       "to": "readByte",
       "evidence": "PacketBuffer field_g payload and field_h cursor; reviewed big-endian shifts/masks and cursor increments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.l(I)Z",
+      "originalName": "l",
+      "to": "verifyCrc32",
+      "evidence": "Complete owned body and constructors reviewed: Rewind to stored checksum, compute preceding CRC32, read stored big-endian int and compare. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Wrong guard returns true before I/O.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.m(I)I",
+      "originalName": "m",
+      "to": "readUnsignedShortOrInt",
+      "evidence": "Complete owned body and constructors reviewed: Peek sign bit; unsigned short or int masked2147483647. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard writes int before peek.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.n(I)V",
+      "originalName": "n",
+      "to": "clearBufferStatics",
+      "evidence": "Complete body and owned static declaration identities reviewed. Bad guard clears same static string before unconditional repeated null write; preserve both writes and instance fields.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.o(I)I",
+      "originalName": "o",
+      "to": "readUnsignedSmart",
+      "evidence": "Complete owned body and constructors reviewed: Peek high bit; unsigned byte or unsigned short minus32768. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard writes byte (with cursor61 side effect) before peek.",
       "confidence": "reviewed"
     },
     {
@@ -945,6 +1141,13 @@
       "originalName": "f",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 a75ee155a31d4ba9048a25f189381d20530069902f8b5103d0ec50b68fbf3ff3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rc.a(III[B)I",
+      "originalName": "a",
+      "to": "computeCrc32",
+      "evidence": "Complete helper/table initialization reviewed:256entries, eight reflected shifts/XORs with polynomial-306674912; seed-1, table[(crc XOR byte)&255] XOR crc>>>8, complemented result. Preserve caller range, original scalar writes/callbacks/sentinels/recursive failures, mutable table, arithmetic and exception wrappers.",
       "confidence": "reviewed"
     },
     {
@@ -1223,7 +1426,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-monkeypuzzle2-rules.mjs": "a154933fc70d5d77c29762fb11f9501883dedcb625fc9fbb629e20e15db5bc32",
-      "monkeypuzzle2-names.json": "ee464ac7cac43cdaf9dc5dce821052bb16c1647bdde4078830133098496e6c75",
+      "monkeypuzzle2-names.json": "f0e2f4863ed54d8db9da6e48a0adb378786d45dcaf054845137ffed4f1b5ba4e",
       "reproduce-monkeypuzzle2.mjs": "e80c78fab2aa134de669a604ee7bc1d540df41c2a2d8e81e346e709c4914c594",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

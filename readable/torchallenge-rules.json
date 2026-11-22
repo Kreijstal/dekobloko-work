@@ -1221,6 +1221,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ef.a(I[BII)I",
+      "originalName": "a",
+      "to": "computeCrc32",
+      "evidence": "Complete helper/table initialization reviewed:256entries, eight reflected shifts/XORs with polynomial-306674912; seed-1, table[(crc XOR byte)&255] XOR crc>>>8, complemented result. Preserve caller range, original scalar writes/callbacks/sentinels/recursive failures, mutable table, arithmetic and exception wrappers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eg.a()V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2068,6 +2075,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uf.a(II[BI)V",
+      "originalName": "a",
+      "to": "writeBytes",
+      "evidence": "Complete owned body and constructors reviewed: Copy caller array range into payload while advancing cursor. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard calls existing writePrefixedString with guard-37 that returns before dereferencing null; preserve call and failure ordering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uf.a(IJ)V",
+      "originalName": "a",
+      "to": "writeLong56",
+      "evidence": "Complete owned body and constructors reviewed: Write low56bits as seven big-endian bytes. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Guard division after5writes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uf.a(IZ)V",
       "originalName": "a",
       "to": "writeInt",
@@ -2096,10 +2117,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uf.a(Ljava/math/BigInteger;ZLjava/math/BigInteger;)V",
+      "originalName": "a",
+      "to": "applyRsa",
+      "evidence": "Complete owned body and constructors reviewed: Transform signed BigInteger plaintext using supplied exponent/modulus, emit toByteArray with short byte-length prefix. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Signed input; exponentparam0/modulusparam2; falseflag clears static string after plaintext copy; short length prefix.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uf.a(ZJ)V",
       "originalName": "a",
       "to": "writeLong",
       "evidence": "Stores eight big-endian bytes and advances the cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uf.a(Z[III)V",
+      "originalName": "a",
+      "to": "decryptXteaRange",
+      "evidence": "Complete owned body and constructors reviewed: Decrypt complete64-bit blocks in specified range with32 reverse XTEA rounds and initial sum-957401312; normal-only cursor restoration. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Trueflag returns before cursor save/I/O; startparam3/endparam2; normal-only restore; mask7247>>>11=3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uf.a([IB)V",
+      "originalName": "a",
+      "to": "encryptXtea",
+      "evidence": "Complete owned body and constructors reviewed: Process64-bit blocks using32 XTEA rounds, delta-1640531527 and four indexed int key words. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Floor(oldcursor/8),reset0; leave processed-end; badguard>=-84 calls existing long reader with64 causing sentinel noIO; mask7059>>>11=3.",
       "confidence": "reviewed"
     },
     {
@@ -2124,6 +2166,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uf.b(II)I",
+      "originalName": "b",
+      "to": "appendCrc32",
+      "evidence": "Complete owned body and constructors reviewed: Compute CRC32 over caller start/current cursor, append big-endian int and return it. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard consumes int before computing/appending CRC.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uf.b(Ljava/lang/String;B)V",
+      "originalName": "b",
+      "to": "writeBase38String",
+      "evidence": "Complete owned body and constructors reviewed: Case-fold letters/digits into two ten-character base38 groups, encoded as two56-bit values; preserve20-character truncation, missing positions and other-character mapping. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Bad byte patches short length before string length/calculations; two56bit groups remain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uf.b(Z)Ljava/lang/String;",
       "originalName": "b",
       "to": "readString",
@@ -2142,6 +2198,13 @@
       "originalName": "c",
       "to": "writeSignedSmart",
       "evidence": "Writes values in -64..63 as a byte and larger ones as a short.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uf.c(IB)V",
+      "originalName": "c",
+      "to": "padZerosTo",
+      "evidence": "Complete owned body and constructors reviewed: Write zeros until cursor reaches caller absolute target. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Guard<=0 returns before padding.",
       "confidence": "reviewed"
     },
     {
@@ -2187,6 +2250,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uf.e(I)Z",
+      "originalName": "e",
+      "to": "verifyCrc32",
+      "evidence": "Complete owned body and constructors reviewed: Rewind to stored checksum, compute preceding CRC32, read stored big-endian int and compare. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Callerparam0 supplies CRC start, canonical0.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uf.f(I)I",
       "originalName": "f",
       "to": "readVarInt",
@@ -2198,6 +2268,13 @@
       "originalName": "g",
       "to": "readUnsignedMedium",
       "evidence": "Combines three bytes into an unsigned 24-bit value.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uf.h(I)I",
+      "originalName": "h",
+      "to": "readUnsignedShortOrInt",
+      "evidence": "Complete owned body and constructors reviewed: Peek sign bit; unsigned short or int masked2147483647. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Guard division before peek.",
       "confidence": "reviewed"
     },
     {
@@ -2399,7 +2476,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torchallenge-rules.mjs": "c042d4e7793d93c469822e85fad602baebb74bd01aac6bf321d09ca5452e99fc",
-      "torchallenge-names.json": "0cc3376d41dac7c77c9ffe980f1e876f6ec341906ea6a51370be4b101e47c1da",
+      "torchallenge-names.json": "fb2159f591144441ca386602bec1b6af2f422a0a834a8a449e3725c197858c2d",
       "reproduce-torchallenge.mjs": "b3388fa5e2619e82e11f0eae304b9ea97a779afb046e7272b5997c73407bf7be",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
