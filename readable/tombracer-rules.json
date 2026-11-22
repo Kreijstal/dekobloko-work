@@ -934,6 +934,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:apa",
+      "originalName": "apa",
+      "to": "NineSliceFrame",
+      "evidence": "Complete instance state, private throwing constructor, drawFrame and paired string-width bodies reviewed. Sole instance Sprite[] is forwarded to existing drawNineSlice; used for outer/dialog/button frames. Preserve unreachable constructor behavior, wrong-guard helper call, and unrelated static globals.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:aq",
       "originalName": "aq",
       "to": "MainRoomCatalog",
@@ -3265,6 +3272,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jk",
+      "originalName": "jk",
+      "to": "MidiNoteUsageNode",
+      "evidence": "Complete class/sole instance byte[] field/constructor reviewed, with MusicTrack.buildPatchUsage and MidiPcmStream patch-loading consumers. Intrusive node keyed by patch stores128 per-note usage flags: note-on events mark note index, loadSamples consumes mask. Preserve direct array alias, constructor exception wrapping and all unrelated console/UI/static helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jka",
       "originalName": "jka",
       "to": "DragListener",
@@ -5187,6 +5201,13 @@
       "originalName": "qma",
       "to": "ProceduralTextureProvider",
       "evidence": "TextureProvider that decodes ProceduralTextures from an archive, caches them and renders their pixels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qna",
+      "originalName": "qna",
+      "to": "FullscreenDialogLayout",
+      "evidence": "Complete utility class reviewed: dominant buildFullscreenDialog implementation creates mode-dependent dialog text/selection rows, measures text, computes centered left/right/top/content height, button rectangles, timed confirmation variants and initial selection. Three unrelated static text/component globals and cleanup remain unchanged. Full dialog layout and draw/getter consumers reviewed.",
       "confidence": "reviewed"
     },
     {
@@ -14633,6 +14654,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:apa.$cfr$intArgs$a$62abead39cee(IZLjava/lang/String;)I",
+      "originalName": "$cfr$intArgs$a$62abead39cee",
+      "to": "measureStringWidthWithIntGuard",
+      "evidence": "Complete int-argument helper and meaningful narrow measureStringWidth reviewed: selects one of two fonts, wrong int guard clears String. Preserve int domain, source argument order, helper exception wrapper and existing narrow method name.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:apa.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -17160,6 +17188,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:caa.$cfr$sneakyThrow(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;",
+      "originalName": "$cfr$sneakyThrow",
+      "to": "throwUnchecked",
+      "evidence": "Complete generic helper declaration/body and checked-exception throw consumers reviewed. Private static<T extends Throwable> RuntimeException helper throws the original (T)Throwable. Preserve generic throws T, SuppressWarnings, original Throwable identity, null/exception behavior and explicit type arguments at call sites; do not wrap or convert exceptions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:caa.a(B)V",
       "originalName": "a",
       "to": "startTutorial",
@@ -17829,6 +17864,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics clears the class's static references through it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ch.$cfr$sneakyThrow(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;",
+      "originalName": "$cfr$sneakyThrow",
+      "to": "throwUnchecked",
+      "evidence": "Complete generic helper declaration/body and checked-exception throw consumers reviewed. Private static<T extends Throwable> RuntimeException helper throws the original (T)Throwable. Preserve generic throws T, SuppressWarnings, original Throwable identity, null/exception behavior and explicit type arguments at call sites; do not wrap or convert exceptions.",
       "confidence": "reviewed"
     },
     {
@@ -28136,6 +28178,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fp.a(B)V",
+      "originalName": "a",
+      "to": "drawFullscreenDialogContents",
+      "evidence": "Complete content painter and qna builder reviewed: walks text/action rows, selection colors, button frames, font rendering, centered widths and timed countdown/replacement rows. Preserve clock arithmetic, fallback branches, wrapping, guard recursion, row order and dimensions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fp.a(I)V",
       "originalName": "a",
       "to": "startMenuBackgroundDemo",
@@ -37565,10 +37614,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jk.$cfr$intArgs$a$922851b022bc(ILjava/util/BitSet;Z)I",
+      "originalName": "$cfr$intArgs$a$922851b022bc",
+      "to": "getUnmarkedRoomWindowMaxKeyWithIntGuard",
+      "evidence": "Complete narrow and int helper bodies reviewed with room-list producer and overlay consumer. Same first-ten unmarked-room maximum-key algorithm, int guard22 else-122. Preserve int versus byte domains, iteration order, membership filter, null/BitSet access and wrapping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jk.a(B)Lvna;",
       "originalName": "a",
       "to": "createConsoleMethods",
       "evidence": "Builds the deque of console commands: load, hello, banner, showLevelSet, setFakeLag and the music commands.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jk.a(BLjava/util/BitSet;Z)I",
+      "originalName": "a",
+      "to": "getUnmarkedRoomWindowMaxKey",
+      "evidence": "Complete narrow and generated int bodies, CourseDefinition main-room producer and LevelSelectOverlay consumer reviewed. Scans main rooms, includes members rooms only when flag true, ignores marked room keys, returns maximum key among first ten eligible unmarked rooms or-1; wrong byte guard22 returns-122. Preserve iteration order, global break flag, null behavior and wrapping.",
       "confidence": "reviewed"
     },
     {
@@ -45118,6 +45181,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mg.a(I)I",
+      "originalName": "a",
+      "to": "getFullscreenDialogHeight",
+      "evidence": "Complete body and layout/frame consumer reviewed: returns HardwareModelVertexStream.field_f, calculated as summed dialog row/button heights; preserve guard>=-41 clearing unrelated static int[].",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mg.a(ILkh;)V",
       "originalName": "a",
       "to": "encode",
@@ -49976,6 +50046,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:or.d(I)V",
+      "originalName": "d",
+      "to": "drawFullscreenDialog",
+      "evidence": "Complete body reviewed: computes dialog width/height, draws padded outer frame at layout bounds, then calls content painter. Preserve exact wrong-guard recursive call and ordering of the second content draw after recursion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:or.e(I)V",
       "originalName": "e",
       "to": "releaseStatics",
@@ -52507,6 +52584,13 @@
       "originalName": "a",
       "to": "hasNonZeroEntry",
       "evidence": "True when any of the first eight entries is non-zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.a(B)I",
+      "originalName": "a",
+      "to": "getFullscreenDialogWidth",
+      "evidence": "Complete body and qna.buildFullscreenDialog/TurbulenceNoise3D frame draw consumer reviewed: right bound tia.field_a minus left FurnitureModel.field_o supplies dialog frame width. Preserve byte guard<9 returning95.",
       "confidence": "reviewed"
     },
     {
@@ -55947,6 +56031,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ro.$cfr$intArgs$a$590e95718a07(ILjava/lang/String;Z)I",
+      "originalName": "$cfr$intArgs$a$590e95718a07",
+      "to": "measureStringWidthWithIntGuard",
+      "evidence": "Complete generated int-argument helper and existing meaningful narrow measureStringWidth(byte,String,boolean) reviewed: int guard-116 else51, selects dialog normal/button font stringWidth. Retain original narrow method name and int/byte argument domains; no narrowing or merging overloads.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ro.a(BI)V",
       "originalName": "a",
       "to": "setSpeed",
@@ -58583,6 +58674,13 @@
       "originalName": "a",
       "to": "writeAsync",
       "evidence": "Queues a write of group data to a cache file. Body matches reference CacheIoWorker (writeAsync).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ssa.$cfr$sneakyThrow(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;",
+      "originalName": "$cfr$sneakyThrow",
+      "to": "throwUnchecked",
+      "evidence": "Complete generic helper declaration/body and checked-exception throw consumers reviewed. Private static<T extends Throwable> RuntimeException helper throws the original (T)Throwable. Preserve generic throws T, SuppressWarnings, original Throwable identity, null/exception behavior and explicit type arguments at call sites; do not wrap or convert exceptions.",
       "confidence": "reviewed"
     },
     {
@@ -67856,7 +67954,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "54ce34e018afdd9abe5c45d1b4d7534adde0adf2d62c9634ffb26895b77a3881",
+      "tombracer-names.json": "6d97b8574f46d767918a3edf8f4011a6fee708b4ff961ead4ce874c15fb06b14",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
