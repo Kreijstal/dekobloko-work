@@ -787,7 +787,17 @@
     ["jagdx.ah","Direct3DResult","Complete helper class and Direct3D factory, display-mode, reset, map/unmap callers reviewed. Integer overload reports negative-result failure; byte overload reports nonnegative success. Preserve magic and arithmetic guards."],
     ["jagdx.eva","Direct3DException","Complete exception class and creation/lock/buffer validation throw sites plus device retry catch reviewed. RuntimeException with unchanged optional String constructor; no native ABI/runtime equivalence claim."],
     ["jaclib.peer.nca","NativeHeapPeer","Complete class, NativeHeapPeerReference, Peer/PeerReference and concrete GeometryBuffer/PixelBuffer consumers reviewed. Installs the native-heap peer reference rather than the IUnknown reference."],
-    ["jaclib.peer.sha","PeerReferenceManager","Complete class and PeerReference registration, Direct3D update/dispose consumers reviewed. Owns ReferenceQueue and linked references; drains collected references or releases all, preserving every guard and link mutation."]
+    ["jaclib.peer.sha","PeerReferenceManager","Complete class and PeerReference registration, Direct3D update/dispose consumers reviewed. Owns ReferenceQueue and linked references; drains collected references or releases all, preserving every guard and link mutation."],
+    ["gk","ReturnToLobbyPacketWriter","Complete class, FallbackShaderEffect click handler and ck button construction reviewed: bc.field_b uses OpenGlSprite.field_k default Return to lobby. Writes caller opcode and byte1 plus guarded byte1; retain partial packet for non28guard."],
+    ["tk","MusicVolumeControl","Complete class and menu music slider, settings sender and mp.setMusicVolume field write reviewed. Getter returns music volume; unrelated archive/String table and guard mutations remain."],
+    ["ti","HiscorePlayerEntry","Complete tiny record and StripesOperator allocation plus CrossedSineBandsOperator highscore dictionary/three-result-group decoding reviewed. Per player name, optional secondary string and distinct-group seen flag; unrelated static editor integer unchanged."],
+    ["iaa","CompletedStatusText","Complete class, Completed! default, localization assignment and StandingsPhase declared-winner display reviewed. Preserve uppercase call, strings and modulo cleanup guard."],
+    ["nka","ConnectionLostText","Complete class, Connection lost. <%0> default, localization assignment and epa formatted disconnect-error consumer reviewed. Preserve placeholder and cleanup arithmetic."],
+    ["bpa","BottomlessPitHintText","Complete class/default bottomless-pit instant-death hint, localization assignment and rg HazardEffect hint-group population reviewed. Preserve string content and recursive cleanup."],
+    ["ju","EmailConfirmationHintText","Complete class/default email retype instruction, localization assignment and AccountRegistrationPanel.field_J hint binding reviewed. Preserve all string contents and cleanup guard."],
+    ["ora","ClientMemoryBuffer","Complete class re-read after verified native-memory naming export. Allocates/reuses OpenGL toolkit native heap buffers and putBytes; HeapIndexArray/ClientMemoryVertexArray use base and return address/zero GL buffer id. Preserve no shrinking, optional initial upload, allocation/copy order and absence of disposal."],
+    ["qca","OpenGlShaderProgram","Complete class and whole PasswordValidator.linkShaderProgram reviewed. Holds linked glCreateProgramObjectARB handle/toolkit; finalize queues shader object deletion before super. Preserve ignored pr[] constructor parameter and unrelated hasNonZeroEntry helper."],
+    ["tga","CurrentGraphicsToolkit","Complete class and MaskBlendOperator toolkit assignment plus PasswordValidator release reviewed. Holds active game toolkit, with raster clip helper that pushes state before guarded intersect. Preserve guard early return after push and null cleanup."]
   ],
   "methods": [
     ["rn","a","(ILla;I)Lcsa;","createComponent","Instantiates the RoomComponent subclass for a type id or throws \"Unrecognised component type\"."],
@@ -5782,7 +5792,10 @@
     ["jaclib.peer.sha","b","(ILjaclib/peer/PeerReference;)V","releaseReference","Complete body reviewed: releases native peer then repairs head/tail/neighbour links; preserve guard-dependent recursive null paths and mutation order."],
     ["jaclib.peer.sha","c","(I)V","processCollectedPeers","Complete body and synchronized Direct3D updateTime caller reviewed: expected guard drains queue; wrong guard returns unchanged."],
     ["jaclib.peer.Peer","a","()J","release","Complete body and PeerReference.release reviewed: delegates to reference release with guard34, returning native release result and clearing stored peer; no native signature changed."],
-    ["jaclib.peer.IUnknown","a","(Z)J","release","Complete body reviewed: false delegates to Peer.release; true returns101 without releasing. Preserve sentinel behavior and public final visibility."]
+    ["jaclib.peer.IUnknown","a","(Z)J","release","Complete body reviewed: false delegates to Peer.release; true returns101 without releasing. Preserve sentinel behavior and public final visibility."],
+    ["gk","a","(IB)V","sendReturnToLobby","Complete writer/button caller reviewed. Preserve ciphered opcode guard expression, first byte1 write, second byte1 only when byte guard28 and resulting partial packet for other guards. writeByte value is param0, param1=0 is its guard."],
+    ["tk","a","(I)I","getMusicVolume","Complete getter, music slider and setter identity reviewed: returns HardwareRidgedWaterNoise.field_v in both branches, wrong guard first clears unrelated archive. Preserve all effects."],
+    ["jaggl.MapBuffer","b","()Z","isMapped","Complete map/unmap/putBytes and getter re-read after naming export: nonzero GL target records successful map, unmap clears target/address/size. Getter only returns target!=0, native mapping calls untouched."]
   ],
   "fields": [
     ["fua","field_c","[Ljava/lang/String;","behaviourTypeNames","33 display names indexed by the behaviour type id that bda.readBehaviour dispatches on."],
@@ -6580,6 +6593,16 @@
     ["oha","field_c","I","y","Model.computeNormals cross-product assignments and lighting dot products reviewed; matching copy constructor preserves component. Names only, retain normalization/accumulation arithmetic."],
     ["oha","field_b","I","z","Model.computeNormals cross-product assignments and lighting dot products reviewed; matching copy constructor preserves component. Names only, retain normalization/accumulation arithmetic."],
     ["oha","field_d","I","contributionCount","Model.computeNormals increments once per contributing face vertex; lighting divides dot product by this value. Preserve zero/overflow and copy constructor."],
-    ["eta","field_a","[[Ljpa;","spritesByType","Six asset groups allocated by title sprite loader, converted by createGameToolkitSprites and used for room effect drawing; preserve group/frame indices and null cleanup."]
+    ["eta","field_a","[[Ljpa;","spritesByType","Six asset groups allocated by title sprite loader, converted by createGameToolkitSprites and used for room effect drawing; preserve group/frame indices and null cleanup."],
+    ["iaa","field_a","Ljava/lang/String;","text","Complete holder default/localization/display consumers reviewed. String field only renamed; all literal contents and formatter semantics retained."],
+    ["nka","field_a","Ljava/lang/String;","text","Complete holder default/localization/display consumers reviewed. String field only renamed; all literal contents and formatter semantics retained."],
+    ["bpa","field_a","Ljava/lang/String;","text","Complete holder default/localization/display consumers reviewed. String field only renamed; all literal contents and formatter semantics retained."],
+    ["ju","field_a","Ljava/lang/String;","text","Complete holder default/localization/display consumers reviewed. String field only renamed; all literal contents and formatter semantics retained."],
+    ["ti","field_a","Ljava/lang/String;","name","Packet highscore player dictionary reads name and tests it with isLocalPlayerName. Preserve other optional label, seen flag and unrelated static int."],
+    ["ora","field_a","Lcka;","toolkit","Constructor stores OpenGlToolkit used for native heap allocation in setData/constructor; no lifetime or resource ownership changes."],
+    ["ora","field_b","Ljaclib/memory/Buffer;","buffer","Native heap byte buffer used by base and both client index/vertex subclasses; preserve all resizing/addresses/copies."],
+    ["qca","field_a","Lkda;","toolkit","Stored toolkit queues linked shader program deletion from finalize; preserve strong reference and release order."],
+    ["qca","field_b","J","handle","glCreateProgramObjectARB result supplied by successful linker and queued for deletion by finalizer. Preserve all long values and lifetime."],
+    ["tga","field_a","Lha;","toolkit","Assigned active game GraphicsToolkit during initToolkitResources, used by rendering and close. Preserve aliasing, null/guard and release semantics."]
   ]
 }
