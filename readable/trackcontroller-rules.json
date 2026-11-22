@@ -556,6 +556,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bi.field_f:I",
+      "originalName": "field_f",
+      "to": "rotation",
+      "evidence": "Accumulator updated by getWheelRotation and read/reset/replaced by synchronized poll. Preserve per-game guards and side effects.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bk.field_E:Loh;",
       "originalName": "field_E",
       "to": "font",
@@ -1305,6 +1312,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bi.a(I)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized concrete body and abstract contract reviewed. Copies and clears before arithmetic guard, then returns copy; guard failure occurs after clearing. Preserve exact guards/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete concrete removal body and abstract contract reviewed. Preserve per-game guard and callback behavior in original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bi.a(Ljava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete concrete registration body and abstract contract reviewed. Preserve guard ordering, arithmetic, null callbacks, early returns and accumulator changes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bk.k(I)V",
       "originalName": "k",
       "to": "clearStaticReferences",
@@ -1484,6 +1512,27 @@
       "originalName": "j",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 709c55ebf140569884d123b8e3a74c19675cc179a9b052dcd26e1991761b88fd.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(I)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized concrete body and abstract contract reviewed. Copies and clears before arithmetic guard, then returns copy; guard failure occurs after clearing. Preserve exact guards/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete concrete removal body and abstract contract reviewed. Preserve per-game guard and callback behavior in original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.a(Ljava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete concrete registration body and abstract contract reviewed. Preserve guard ordering, arithmetic, null callbacks, early returns and accumulator changes.",
       "confidence": "reviewed"
     },
     {
@@ -1799,6 +1848,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 e5a91bccd608140054c54969303c77b26ee1019da90069b31dea8910db58d18a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lg.a(I)Lh;",
+      "originalName": "a",
+      "to": "createMouseWheelInput",
+      "evidence": "Complete reflective factory body reviewed. Constructs existing meaningfully named wheel listener, casts to input contract, retains guard behavior and Throwable->null fallback (including nested exception wrapping in BachelorFridge). Existing class names and class-name literals unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -2413,7 +2469,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-trackcontroller-rules.mjs": "edecc20b3dd537cbdadc180da58728d07ddf4bc1fa73dcc98ff0087cc65ddc08",
-      "trackcontroller-names.json": "92f90f41b0e0ab8cf4876fcbc77ca7c12faed5c4898f2fbde6b52c1eff661545",
+      "trackcontroller-names.json": "3909ce21fe4012d3de3a40033670f710271818a01f31cf25bb704b56cd323e9e",
       "reproduce-trackcontroller.mjs": "a19aeb34065d45283fe3ccc739656e3d43ea775242fdbecb34698f86b84538b9",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

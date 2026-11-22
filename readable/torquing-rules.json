@@ -717,6 +717,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:dl.field_e:I",
+      "originalName": "field_e",
+      "to": "rotation",
+      "evidence": "Accumulator updated by getWheelRotation and read/reset/replaced by synchronized poll. Preserve per-game guards and side effects.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fj.field_j:[B",
       "originalName": "field_j",
       "to": "payload",
@@ -1099,6 +1106,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dl.a(BLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete concrete registration body and abstract contract reviewed. Preserve guard ordering, arithmetic, null callbacks, early returns and accumulator changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dl.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete concrete removal body and abstract contract reviewed. Preserve per-game guard and callback behavior in original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dl.b(I)I",
+      "originalName": "b",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized concrete body and abstract contract reviewed. Copies accumulator, stores caller-provided replacement value and returns copy; no unconditional zero reset. Preserve exact guards/read/write order.",
       "confidence": "reviewed"
     },
     {
@@ -1592,6 +1620,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.b(I)Lvc;",
+      "originalName": "b",
+      "to": "createMouseWheelInput",
+      "evidence": "Complete reflective factory body reviewed. Constructs existing meaningfully named wheel listener, casts to input contract, retains guard behavior and Throwable->null fallback (including nested exception wrapping in BachelorFridge). Existing class names and class-name literals unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lg.i(I)V",
       "originalName": "i",
       "to": "clearStaticReferences",
@@ -2061,10 +2096,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vc.a(BLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete concrete registration body and abstract contract reviewed. Preserve guard ordering, arithmetic, null callbacks, early returns and accumulator changes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vc.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete concrete removal body and abstract contract reviewed. Preserve per-game guard and callback behavior in original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vc.b(I)I",
+      "originalName": "b",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized concrete body and abstract contract reviewed. Copies accumulator, stores caller-provided replacement value and returns copy; no unconditional zero reset. Preserve exact guards/read/write order.",
       "confidence": "reviewed"
     },
     {
@@ -2308,7 +2364,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torquing-rules.mjs": "8da598367c03f04c9e534a68a3861682d35d37834f3f17cf0207e7991dc70176",
-      "torquing-names.json": "d782322e6bcb629e829d0fc277b795544dc808334d6de09c5461f9cae5520cbf",
+      "torquing-names.json": "63f3e8e5bfd394063778c7293edfb58f8387e64eaae6b78e7fe70d94b2f00e0e",
       "reproduce-torquing.mjs": "2a778be33cf09997c514713d57df9e717c13ffbbb82534f476bf9fdb039bf6a2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

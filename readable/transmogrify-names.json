@@ -142,7 +142,16 @@
     ["oa","j","(II)V","backpatchIntLength","Complete body and constructor context reviewed: Patch big-endian int length behind current cursor. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard clears static string after all patches."],
     ["oa","k","(I)I","readSignedSmart","Complete body and constructor context reviewed: Peek high bit; unsigned byte minus64 or unsigned short minus49152. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Caller param0 supplies byte-range threshold, canonical128."],
     ["sg","a","(IBI[B)I","computeCrc32","Complete helper/table initialization reviewed:256entries, eight reflected shifts with polynomial-306674912; seed-1, table[(crc XOR byte)&255] XOR crc>>>8 and complemented result. Preserve caller range, guard helper calls/recursive failures/arithmetic, exception wrappers and all global behavior. Table initializer later clears the table to null; retain this behavior, all later assignments and resulting failures."],
-    ["oa","b","(B)V","clearStaticReferences","Complete body and owned static reference declarations reviewed. Null three statics, guard modulo, then string; preserve partial cleanup on arithmetic failure. Preserve instance fields and all other globals."]
+    ["oa","b","(B)V","clearStaticReferences","Complete body and owned static reference declarations reviewed. Null three statics, guard modulo, then string; preserve partial cleanup on arithmetic failure. Preserve instance fields and all other globals."],
+    ["sk","a","(ZLjava/awt/Component;)V","attach","Complete concrete registration body and abstract contract reviewed. Preserve guard ordering, arithmetic, null callbacks, early returns and accumulator changes."],
+    ["rj","a","(ZLjava/awt/Component;)V","attach","Complete concrete registration body and abstract contract reviewed. Preserve guard ordering, arithmetic, null callbacks, early returns and accumulator changes."],
+    ["sk","a","(BLjava/awt/Component;)V","detach","Complete concrete removal body and abstract contract reviewed. Preserve per-game guard and callback behavior in original order."],
+    ["rj","a","(BLjava/awt/Component;)V","detach","Complete concrete removal body and abstract contract reviewed. Preserve per-game guard and callback behavior in original order."],
+    ["sk","a","(I)I","pollRotation","Complete synchronized concrete body and abstract contract reviewed. Copies/clears before guard; <=-52 returns copy, wrong guard invokes null wheel callback before return. Preserve exact guards/read/write order."],
+    ["rj","a","(I)I","pollRotation","Complete synchronized concrete body and abstract contract reviewed. Copies/clears before guard; <=-52 returns copy, wrong guard invokes null wheel callback before return. Preserve exact guards/read/write order."],
+    ["nh","b","(I)Lrj;","createMouseWheelInput","Complete reflective factory body reviewed. Constructs existing meaningfully named wheel listener, casts to input contract, retains guard behavior and Throwable->null fallback (including nested exception wrapping in BachelorFridge). Existing class names and class-name literals unchanged."]
   ],
-  "fields": []
+  "fields": [
+    ["sk","field_c","I","rotation","Accumulator updated by getWheelRotation and read/reset/replaced by synchronized poll. Preserve per-game guards and side effects."]
+  ]
 }

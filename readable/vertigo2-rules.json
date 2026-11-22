@@ -780,6 +780,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:vk.field_l:I",
+      "originalName": "field_l",
+      "to": "rotation",
+      "evidence": "Accumulator updated by getWheelRotation and read/reset/replaced by synchronized poll. Preserve per-game guards and side effects.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wk.field_b:I",
       "originalName": "field_b",
       "to": "status",
@@ -1487,6 +1494,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:il.a(I)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized concrete body and abstract contract reviewed. Arithmetic guard runs before reading/clearing accumulator; preserve partial-state distinction. Preserve exact guards/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete concrete removal body and abstract contract reviewed. Preserve per-game guard and callback behavior in original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:il.a(Ljava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete concrete registration body and abstract contract reviewed. Preserve guard ordering, arithmetic, null callbacks, early returns and accumulator changes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:im.e(I)V",
       "originalName": "e",
       "to": "clearStaticReferences",
@@ -1911,6 +1939,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nb.i(I)Lil;",
+      "originalName": "i",
+      "to": "createMouseWheelInput",
+      "evidence": "Complete reflective factory body reviewed. Constructs existing meaningfully named wheel listener, casts to input contract, retains guard behavior and Throwable->null fallback (including nested exception wrapping in BachelorFridge). Existing class names and class-name literals unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -2474,6 +2509,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vk.a(I)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized concrete body and abstract contract reviewed. Arithmetic guard runs before reading/clearing accumulator; preserve partial-state distinction. Preserve exact guards/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vk.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete concrete removal body and abstract contract reviewed. Preserve per-game guard and callback behavior in original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vk.a(Ljava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete concrete registration body and abstract contract reviewed. Preserve guard ordering, arithmetic, null callbacks, early returns and accumulator changes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vl.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2574,7 +2630,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-vertigo2-rules.mjs": "dd6eb8cdf3928ef27046e7fe98dc389e3192977de79343b58e7e832c8a7bce4a",
-      "vertigo2-names.json": "dae525c57dde6e1de7461194b737fec0a8dca87a40037f2c34fbf749d888752a",
+      "vertigo2-names.json": "1b8b2aaad5b8d0c2ac170bdef4f37c55f0242f8e58cb3162e48667d6a3d95082",
       "reproduce-vertigo2.mjs": "c16a8b53427e79d4dcb3e40a4a42b4d3ec37e412469473382b608d53f95beae2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

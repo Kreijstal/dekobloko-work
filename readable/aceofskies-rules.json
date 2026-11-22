@@ -7139,6 +7139,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bq.field_f:I",
+      "originalName": "field_f",
+      "to": "rotation",
+      "evidence": "Accumulator updated by getWheelRotation and read/reset/replaced by synchronized poll. Preserve per-game guards and side effects.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bs.field_b:[Lpa;",
       "originalName": "field_b",
       "to": "upgradeSprites",
@@ -11374,6 +11381,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bq.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete concrete registration body and abstract contract reviewed. Preserve guard ordering, arithmetic, null callbacks, early returns and accumulator changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bq.a(Ljava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete concrete removal body and abstract contract reviewed. Preserve per-game guard and callback behavior in original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bq.b(I)I",
+      "originalName": "b",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized concrete body and abstract contract reviewed. Copies before guard; valid12 clears/returns, otherwise invokes null wheel callback before clearing. Preserve exact guards/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bs.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -13747,6 +13775,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qg.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete concrete registration body and abstract contract reviewed. Preserve guard ordering, arithmetic, null callbacks, early returns and accumulator changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.a(Ljava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete concrete removal body and abstract contract reviewed. Preserve per-game guard and callback behavior in original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.b(I)I",
+      "originalName": "b",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized concrete body and abstract contract reviewed. Copies before guard; valid12 clears/returns, otherwise invokes null wheel callback before clearing. Preserve exact guards/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qh.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -13758,6 +13807,13 @@
       "originalName": "d",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 6 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 771095629d5c50172809a05eba4ef17909089f58a188e0b9546937dc87254db3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qj.g(I)Lqg;",
+      "originalName": "g",
+      "to": "createMouseWheelInput",
+      "evidence": "Complete reflective factory body reviewed. Constructs existing meaningfully named wheel listener, casts to input contract, retains guard behavior and Throwable->null fallback (including nested exception wrapping in BachelorFridge). Existing class names and class-name literals unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -23136,7 +23192,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-aceofskies-rules.mjs": "f144b046334021de717312bcc4655ec2e74a95a9df7e13f2aeb66eacf195148a",
-      "aceofskies-names.json": "0c9f32238caa674865358a5b8c038cd854117b7db61f1b3aa10b2b343533fc0f",
+      "aceofskies-names.json": "679bbf86165d7a79caf135b7f2adf0a47abe021fb332a4edfad96ed1aee0014b",
       "reproduce-aceofskies.mjs": "52beddb283ae2c5e91461d2e696de92b83b07de1f5db1491c26999469bda4599",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "tests/test-aceofskies-core.mjs": "411552405573a5228962211d3e8ee1d080550c058b6e2505f5ccd939b2122427",
