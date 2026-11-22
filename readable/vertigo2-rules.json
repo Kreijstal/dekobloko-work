@@ -927,6 +927,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nj.field_g:Lli;",
+      "originalName": "field_g",
+      "to": "iterationCursor",
+      "evidence": "Shared pending-node cursor for manual forward/backward traversal;not the last-returned node. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:nj.field_h:Lli;",
       "originalName": "field_h",
       "to": "sentinel",
@@ -2341,6 +2348,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nj.a(B)Lli;",
+      "originalName": "a",
+      "to": "beginBackward",
+      "evidence": "Byte!=100 returns null before traversal;valid sentinel.previous empty clears cursor,otherwise save previous. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nj.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2373,6 +2387,34 @@
       "originalName": "b",
       "to": "removeLast",
       "evidence": "Unlinks and returns the node before the sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.b(I)Lli;",
+      "originalName": "b",
+      "to": "nextBackward",
+      "evidence": "Cursor sentinel clears cursor;otherwise save previous before guard;only int>=23 returns node,other ints null after advance. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.b(Lli;B)Lli;",
+      "originalName": "b",
+      "to": "beginBackwardFrom",
+      "evidence": "Choose supplied node or sentinel.previous;sentinel clears cursor. Nonempty save chosen.previous before-76/((54-byte)/55),then return chosen inside wrapper. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.b(Z)Lli;",
+      "originalName": "b",
+      "to": "nextForward",
+      "evidence": "True returns null before reading cursor. False cursor sentinel clears cursor,otherwise save next and return node. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.c(B)Lli;",
+      "originalName": "c",
+      "to": "beginForward",
+      "evidence": "Byte>=-1 returns null before traversal;valid sentinel.next empty clears cursor,otherwise save next. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -3092,7 +3134,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-vertigo2-rules.mjs": "dd6eb8cdf3928ef27046e7fe98dc389e3192977de79343b58e7e832c8a7bce4a",
-      "vertigo2-names.json": "ed766997d7e186b78b2d9ae53d34c7560f173ece3592b1dd4769f4a4abb53957",
+      "vertigo2-names.json": "327ad56446f15a2683d187accb144b5703c0d0ef6dfdb0a0f86499ce7b6d2da5",
       "reproduce-vertigo2.mjs": "c16a8b53427e79d4dcb3e40a4a42b4d3ec37e412469473382b608d53f95beae2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

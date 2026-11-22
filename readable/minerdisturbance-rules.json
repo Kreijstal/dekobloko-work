@@ -745,6 +745,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ta.field_c:Lpi;",
+      "originalName": "field_c",
+      "to": "sentinel",
+      "evidence": "Sentinel circular-endpoint role. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ta.field_e:Lpi;",
+      "originalName": "field_e",
+      "to": "iterationCursor",
+      "evidence": "Shared pending-node cursor for manual forward/backward traversal;not the last-returned node. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:vf.field_a:Z",
       "originalName": "field_a",
       "to": "privilegedTasksEnabled",
@@ -1935,6 +1949,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ta.a(B)V",
+      "originalName": "a",
+      "to": "clear",
+      "evidence": "Read global control;repeatedly unlink sentinel.field_f with34,clear cursor;byte!=55 calls nextForward(byte87) afterward. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ta.a(BLpi;)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "Unlink linked node(34),assign node.field_c=sentinel.field_c before7/((-29-byte)/56);then set field_f=sentinel and complete reciprocal append. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ta.a(I)Lpi;",
+      "originalName": "a",
+      "to": "nextBackward",
+      "evidence": "Cursor sentinel clears cursor,otherwise advance field_c;int!=21510 then nulls sentinel before returning node. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ta.a(Lpi;I)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "Unlink membership(34),assign field_f next and field_c previous and predecessor-next;int!=27862 calls static helper(-86,37) before final reciprocal write. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ta.b(B)Lpi;",
+      "originalName": "b",
+      "to": "nextForward",
+      "evidence": "Byte!=56 calls static helper(115,-34) before cursor read;sentinel clears cursor,otherwise save field_f and return. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ta.b(I)Lpi;",
+      "originalName": "b",
+      "to": "beginForward",
+      "evidence": "Int<60 calls static helper(73,-87) before sentinel.field_f read;empty clears cursor,nonempty advances field_f. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ta.c(B)I",
+      "originalName": "c",
+      "to": "size",
+      "evidence": "Read global control then evaluate-19/((-40-byte)/62) before counting field_f chain from0;preserve arithmetic failure and overflow. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ta.c(I)Lpi;",
+      "originalName": "c",
+      "to": "removeLast",
+      "evidence": "Take sentinel.field_c;empty null. Int!=51510 clears shared cursor before node.unlink(34);both guards return removed node. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ta.d(I)Lpi;",
+      "originalName": "d",
+      "to": "beginBackward",
+      "evidence": "Read sentinel.field_c;empty clears cursor. Nonempty int!=59287 nulls sentinel before advancing field_c cursor;return saved node. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ta.e(B)Z",
+      "originalName": "e",
+      "to": "isEmpty",
+      "evidence": "Byte<=98 clears shared cursor before sentinel.field_f identity test;other guards only compare. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ta.e(I)Lpi;",
+      "originalName": "e",
+      "to": "removeFirst",
+      "evidence": "Read sentinel.field_f;empty null;only int63854 unlinks(34) and returns node,other ints null without removal. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tb.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2161,7 +2252,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-minerdisturbance-rules.mjs": "16fcf2e48a0b24b7a3b5adfaa84bb4d835098253436d0d71784385c2e1228b80",
-      "minerdisturbance-names.json": "ecb72fa614101cd22e504eb5a0334e91f8bba5af1ca3b2675f666a9aa1fd0eae",
+      "minerdisturbance-names.json": "2212c9d862dd185732a8fe1c2f0ae09bd224851d67c0ae94cb1f897efdee9c5c",
       "reproduce-minerdisturbance.mjs": "9c29b772086ae02805a24c9b493bfd651e742e7206976e902e269a1ae4c1e5d3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

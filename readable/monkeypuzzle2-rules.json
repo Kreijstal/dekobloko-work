@@ -640,6 +640,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ni.field_b:Lbf;",
+      "originalName": "field_b",
+      "to": "sentinel",
+      "evidence": "Sentinel circular-endpoint role. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pj.field_e:Lug;",
+      "originalName": "field_e",
+      "to": "iterationCursor",
+      "evidence": "Shared pending-node cursor for manual forward/backward traversal;not the last-returned node. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pj.field_f:Lug;",
+      "originalName": "field_f",
+      "to": "sentinel",
+      "evidence": "Sentinel circular-endpoint role. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:r.field_c:Ljava/awt/Frame;",
       "originalName": "field_c",
       "to": "fullscreenFrame",
@@ -1571,6 +1592,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ni.a(ILbf;)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "Unlink secondary membership with7847;int!=12 clears static String[] before appending via field_g next and field_e previous. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ni.b(B)Lbf;",
+      "originalName": "b",
+      "to": "removeFirst",
+      "evidence": "Byte>-73 calls original static helper(109,null) before sentinel read;take field_g successor and unlink with7847 unless empty. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nj.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1617,6 +1652,97 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 706aa0bae0063b55bd2eb4b265d068578fddaebb0f5bcef42f55f9cb722d4d96.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(B)Lug;",
+      "originalName": "a",
+      "to": "beginBackward",
+      "evidence": "Byte!=-117 calls static helper(false,11) first;read sentinel.previous;empty clears cursor,otherwise save previous and return node. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(ILpj;Lug;)V",
+      "originalName": "a",
+      "to": "movePrefixToFront",
+      "evidence": "Move inclusive prefix from old head through supplied last node to target front by boundary splices. Int!=-16293 clears static String before all splices. Source sentinel.next and end.next.previous change before sentinel test;preserve same-deque/foreign/null aliases and wrapper. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(ILug;)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "Unlink membership(-19822),splice after sentinel;int!=-8212 clears static kc after links fully written. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(Lpj;I)V",
+      "originalName": "a",
+      "to": "moveAllToFront",
+      "evidence": "Int!=0 returns without action;valid0 calls movePrefixToFront(-16293,target,sentinel.previous) inside original wrapper. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(Lug;B)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "Unlink membership(-19822),append before sentinel;byte!=13 calls beginBackward(byte-120) after links complete. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(Z)Lug;",
+      "originalName": "a",
+      "to": "nextForward",
+      "evidence": "Cursor sentinel clears cursor;otherwise advance next. False writes static float-0.11541689187288284f before returning node. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.b(B)V",
+      "originalName": "b",
+      "to": "clear",
+      "evidence": "Read global control;repeatedly unlink sentinel.previous with byte-19943;byte!=121 clears static kc before final cursor null. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.b(I)I",
+      "originalName": "b",
+      "to": "size",
+      "evidence": "Read global control,count previous chain from0,then evaluate61/((int-78)/46) before returning. Preserve overflow/arithmetic after traversal. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.c(B)Lug;",
+      "originalName": "c",
+      "to": "removeFirst",
+      "evidence": "Take sentinel.next;empty null;otherwise unlink(-19822),then byte!=-66 writes static float-1.0866156816482544f before return. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.c(I)Lug;",
+      "originalName": "c",
+      "to": "beginForward",
+      "evidence": "Read sentinel.next;empty clears cursor. Nonempty only int-1 advances next and returns node;others null without cursor update. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.d(B)Lug;",
+      "originalName": "d",
+      "to": "nextBackward",
+      "evidence": "Cursor sentinel clears cursor. Nonempty only byte63 advances previous and returns node;others null without advance. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.d(I)Lug;",
+      "originalName": "d",
+      "to": "removeLast",
+      "evidence": "Int!=4011 clears static ta before reading sentinel.previous;nonempty unlink uses int-23833 preserving overflow. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.e(I)Z",
+      "originalName": "e",
+      "to": "isEmpty",
+      "evidence": "Int11253 compares sentinel.previous;other ints null sentinel then dereference,retaining failure. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1993,7 +2119,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-monkeypuzzle2-rules.mjs": "a154933fc70d5d77c29762fb11f9501883dedcb625fc9fbb629e20e15db5bc32",
-      "monkeypuzzle2-names.json": "5c923a3da83f5fd566cd02f5ed68f6bf03c00548ee4a39916acdf408a5b3c182",
+      "monkeypuzzle2-names.json": "b204f9c532f6cea75ba9faec53e5fe0c26cdff27c8386fb84f36a9283c1f691d",
       "reproduce-monkeypuzzle2.mjs": "e80c78fab2aa134de669a604ee7bc1d540df41c2a2d8e81e346e709c4914c594",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

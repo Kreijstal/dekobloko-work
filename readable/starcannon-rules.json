@@ -451,6 +451,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:bh.field_f:Luh;",
+      "originalName": "field_f",
+      "to": "sentinel",
+      "evidence": "Sentinel circular-endpoint role. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:bk.field_a:I",
       "originalName": "field_a",
       "to": "requestType",
@@ -654,6 +661,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:rk.field_b:Lrf;",
+      "originalName": "field_b",
+      "to": "iterationCursor",
+      "evidence": "Shared pending-node cursor for manual forward/backward traversal;not the last-returned node. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rk.field_c:Lrf;",
+      "originalName": "field_c",
+      "to": "sentinel",
+      "evidence": "Sentinel circular-endpoint role. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:uh.field_f:Luh;",
       "originalName": "field_f",
       "to": "secondaryPrevious",
@@ -749,6 +770,20 @@
       "originalName": "$cfr$sneakyThrow",
       "to": "throwUnchecked",
       "evidence": "Complete declaration/body verified against exact source-reviewed private static<T extends Throwable> RuntimeException helper with throws T and body throw(T)throwable. Preserve generic exception signature, original Throwable identity, null behavior, annotation and every explicit type argument/call site; do not wrap or convert checked exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(Luh;I)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "Int!=25184 calls removeFirst(-80) before membership test;unlink linked node with int-31426,then append via secondary links. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.b(I)Luh;",
+      "originalName": "b",
+      "to": "removeFirst",
+      "evidence": "Read sentinel.secondaryNext before-14%((int-15)/50);then unlink non-sentinel with-6242. Preserve read/arithmetic/unlink order. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1844,6 +1879,62 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rk.a(B)Lrf;",
+      "originalName": "a",
+      "to": "removeFirst",
+      "evidence": "Byte!=39 first calls removeLast(-75),then read sentinel.next and unlink with byte-35 unless empty. Preserve extra removal and arithmetic guard. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.a(I)Lrf;",
+      "originalName": "a",
+      "to": "nextForward",
+      "evidence": "Int!=-16913 calls addFirst(40,null) before cursor read;sentinel clears cursor,otherwise advance next. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.a(ILrf;)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "Unlink membership(4),splice predecessor and next;int>=-44 calls nextForward(63) before final successor.previous write. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.a(Z)Z",
+      "originalName": "a",
+      "to": "isEmpty",
+      "evidence": "False calls removeFirst(byte-75) before sentinel.next test;true only compares. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.b(I)V",
+      "originalName": "b",
+      "to": "clear",
+      "evidence": "Int!=23505 writes static int-8 first;both branches repeatedly unlink sentinel.next(4),then clear cursor. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.b(ILrf;)V",
+      "originalName": "b",
+      "to": "addLast",
+      "evidence": "Int<=55 calls beginForward(-56) first;unlink membership(4) then append before sentinel. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.c(I)Lrf;",
+      "originalName": "c",
+      "to": "beginForward",
+      "evidence": "Int!=-3905 nulls sentinel before sentinel.next read,retaining failure;valid guard empty clears cursor,nonempty saves next. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.d(I)Lrf;",
+      "originalName": "d",
+      "to": "removeLast",
+      "evidence": "Evaluate63%((int+5)/45) before reading sentinel.previous;nonempty unlink(4). Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sa.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2014,7 +2105,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-starcannon-rules.mjs": "820178d57ca214e426497e008fdf26a8f70c8f101ec48b13755d76c31ee972ef",
-      "starcannon-names.json": "4bff55e4dddcab9cfa685993a5f7708041b69e78f52dd9c6ccc948e9aae1b5f5",
+      "starcannon-names.json": "60ad7ed686d1366f3e59a05d3848a848826bbdb9c56ff9463aa0466c0694184c",
       "reproduce-starcannon.mjs": "40be1291a6c20246ea0c655d9031dd6642e444715cec6140e7c4b80ad449743e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

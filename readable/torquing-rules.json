@@ -801,6 +801,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ei.field_a:Lq;",
+      "originalName": "field_a",
+      "to": "iterationCursor",
+      "evidence": "Shared pending-node cursor for manual forward/backward traversal;not the last-returned node. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ei.field_b:Lq;",
+      "originalName": "field_b",
+      "to": "sentinel",
+      "evidence": "Sentinel circular-endpoint role. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fj.field_j:[B",
       "originalName": "field_j",
       "to": "payload",
@@ -931,6 +945,13 @@
       "originalName": "field_c",
       "to": "buffer",
       "evidence": "Sole instance direct ByteBuffer used by byte-array set/get operations; preserve nullable and guard states.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lj.field_a:Lta;",
+      "originalName": "field_a",
+      "to": "sentinel",
+      "evidence": "Sentinel circular-endpoint role. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
       "confidence": "reviewed"
     },
     {
@@ -1386,6 +1407,76 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(B)Lq;",
+      "originalName": "a",
+      "to": "removeLast",
+      "evidence": "Read sentinel.previous;empty null;nonempty unlink(0) before93/((byte+47)/35),preserving completed removal on arithmetic failure. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(BLq;)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "Unlink membership(0),splice after sentinel;byte!=54 calls nextBackward(-122) after complete insertion inside wrapper. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(I)V",
+      "originalName": "a",
+      "to": "clear",
+      "evidence": "Read global control;int!=0 calls isEmpty(-39) before repeated tail unlinks(0);both branches finish with cursor null. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(Z)I",
+      "originalName": "a",
+      "to": "size",
+      "evidence": "Read global control;true returns-4 without traversal,false counts previous chain from0 with Java overflow. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.b(B)Lq;",
+      "originalName": "b",
+      "to": "removeFirst",
+      "evidence": "Read sentinel.next before70/((byte+20)/35);only afterward test endpoint and unlink(0). Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.b(BLq;)V",
+      "originalName": "b",
+      "to": "addLast",
+      "evidence": "Unlink membership(0),append through node.next.previous;byte!=68 calls isEmpty(11) before final predecessor.next write. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.b(I)Lq;",
+      "originalName": "b",
+      "to": "beginBackward",
+      "evidence": "Read sentinel.previous;empty clears cursor. Nonempty only int0 saves previous and returns node;others return null without cursor write. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.c(I)Lq;",
+      "originalName": "c",
+      "to": "beginForward",
+      "evidence": "Int!=-6938 clears static ed before sentinel.next read;empty clears cursor,otherwise save next. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.e(I)Z",
+      "originalName": "e",
+      "to": "isEmpty",
+      "evidence": "Int>-84 calls nextBackward(41) before sentinel.previous identity test;other ints only compare. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.f(I)Lq;",
+      "originalName": "f",
+      "to": "nextBackward",
+      "evidence": "Read cursor before guard;int!=-24059 calls addFirst(byte-22,null) before endpoint test;sentinel clears cursor,nonempty advance previous. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1960,6 +2051,20 @@
       "originalName": "i",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(I)Lta;",
+      "originalName": "a",
+      "to": "removeFirst",
+      "evidence": "Read sentinel.field_p first;int!=4 recursively calls same method with121 before endpoint test;then unlink non-sentinel with0 if call returns. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lj.a(Lta;B)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "Unlink linked node with0;append using field_p next,field_j previous;byte>=-13 clears static String between predecessor-next and final successor-previous writes. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2875,7 +2980,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torquing-rules.mjs": "8da598367c03f04c9e534a68a3861682d35d37834f3f17cf0207e7991dc70176",
-      "torquing-names.json": "9b922d1f15141c800d305e70c389cb57cd4768ff5d8880fb5ca2b652fe23e8e4",
+      "torquing-names.json": "9104c8e1ab29f9d0ba8f1d619b606c7af2001e77f5016724834daf32ae399c6b",
       "reproduce-torquing.mjs": "2a778be33cf09997c514713d57df9e717c13ffbbb82534f476bf9fdb039bf6a2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

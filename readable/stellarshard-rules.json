@@ -717,6 +717,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:oj.field_c:Lgg;",
+      "originalName": "field_c",
+      "to": "iterationCursor",
+      "evidence": "Shared pending-node cursor for manual forward/backward traversal;not the last-returned node. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:oj.field_d:Lgg;",
       "originalName": "field_d",
       "to": "sentinel",
@@ -1956,6 +1963,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oj.b(B)Lgg;",
+      "originalName": "b",
+      "to": "nextForward",
+      "evidence": "Cursor sentinel clears cursor;otherwise advance next before68/((13-byte)/33),then return saved node. Preserve partial advance on arithmetic failure. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oj.b(I)Lgg;",
+      "originalName": "b",
+      "to": "beginForward",
+      "evidence": "Read sentinel.next;empty clears cursor. Nonempty save next;int>-74 calls nextForward(byte-32) before returning first node,retaining extra advance. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oj.b(ILgg;)V",
       "originalName": "b",
       "to": "addLast",
@@ -2350,7 +2371,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-stellarshard-rules.mjs": "e0aad811358351403390d3f71317f31025d7e9ef8434ab5477a9473e966eb7de",
-      "stellarshard-names.json": "01c32425a5c9b3df2b6b601ec4722a3717ec12e9f5b82ea0e39c65f67dd94e02",
+      "stellarshard-names.json": "d9a8bc48a3ef7bcbec3d645d833eb13881e88a3e85d9d8db68af43bb706100a2",
       "reproduce-stellarshard.mjs": "bd81f17e3db3182b75b19f828dfc185d0ec0f4b8ca0f78caa8495e2ff6f4a0a1",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

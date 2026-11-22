@@ -7538,6 +7538,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:er.field_a:Lwt;",
+      "originalName": "field_a",
+      "to": "sentinel",
+      "evidence": "Sentinel circular-endpoint role. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:er.field_b:Lwt;",
+      "originalName": "field_b",
+      "to": "iterationCursor",
+      "evidence": "Shared pending-node cursor for manual forward/backward traversal;not the last-returned node. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:es.field_b:[Lpa;",
       "originalName": "field_b",
       "to": "smokeSprites",
@@ -8252,6 +8266,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:lc.field_a:[Lwf;",
+      "originalName": "field_a",
+      "to": "buckets",
+      "evidence": "Per-bucket circular sentinel array allocated in constructor and used by lookup,insert,manual traversal and iterator.. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lc.field_c:I",
+      "originalName": "field_c",
+      "to": "bucketCount",
+      "evidence": "Constructor stores requested array length;lookup uses count-1 mask and scans bound by count. Failed lookup with byte<=87 overwrites count=-4;preserve.. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lc.field_d:I",
+      "originalName": "field_d",
+      "to": "nextBucketIndex",
+      "evidence": "Manual traversal next bucket index starts0;beginIterationAtBucket sets supplied int;next increments before reading next bucket chain.. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lc.field_e:Lwf;",
+      "originalName": "field_e",
+      "to": "iterationCursor",
+      "evidence": "Manual traversal pending chain node;advance next before returning node,independent of lookup cursor and JDK iterator cursor.. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lc.field_f:Lwf;",
+      "originalName": "field_f",
+      "to": "lookupCursor",
+      "evidence": "Get scans requested key bucket,advancing cursor before returning match;failed search clears cursor. Preserve completed-success cursor state.. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:lg.field_k:Lpa;",
       "originalName": "field_k",
       "to": "coinSprite",
@@ -8784,10 +8833,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:pe.field_a:I",
+      "originalName": "field_a",
+      "to": "nextBucketIndex",
+      "evidence": "Iterator tracks next array bucket to scan;reset writes1 after setting first pending node.. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:pe.field_b:[Lgl;",
       "originalName": "field_b",
       "to": "highscoreNameEntries",
       "evidence": "Reviewed query factory, client packet serialization/response decoder, acknowledgement routing and highscore result matching; same shared roles as GeoBlox.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pe.field_d:Lwf;",
+      "originalName": "field_d",
+      "to": "nextNode",
+      "evidence": "Pending node compared to prior bucket sentinel;hasNext may advance to nonempty bucket and next consumes then follows primary next.. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pe.field_e:Llc;",
+      "originalName": "field_e",
+      "to": "table",
+      "evidence": "Owning IterableNodeHashTable saved by constructor before reset;all bucket/count access through same table reference.. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pe.field_f:Lwf;",
+      "originalName": "field_f",
+      "to": "lastReturned",
+      "evidence": "Last node exposed by next for remove gating;remove requires nonnull,unlinks(-123),then nulls it. Reset(false) leaves previous last-returned unchanged.. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
       "confidence": "reviewed"
     },
     {
@@ -11899,6 +11976,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:er.a(I)Lwt;",
+      "originalName": "a",
+      "to": "removeLast",
+      "evidence": "Read sentinel.previousSecondaryNode;int!=3 clears iteration cursor before testing endpoint;unlink non-sentinel with-114. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.a(ILwt;)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "Unlink previous membership with-124,link before sentinel;int!=2 calls removeLast(-73) between predecessor-next and successor-previous writes. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.a(Lwt;B)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "Unlink with-123 then link after sentinel;byte<=122 returns before final successor-previous write. Only that last write is inside RuntimeException wrapper. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.b(B)Lwt;",
+      "originalName": "b",
+      "to": "beginForward",
+      "evidence": "Read sentinel.nextSecondaryNode;empty clears cursor and returns null. Otherwise byte<13 nulls sentinel before saving next cursor;all nonempty paths return node. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.b(I)Lwt;",
+      "originalName": "b",
+      "to": "removeFirst",
+      "evidence": "Int!=-18520 returns null before traversal. Otherwise unlink sentinel.nextSecondaryNode with-121 unless sentinel. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.c(I)I",
+      "originalName": "c",
+      "to": "countWithOffset",
+      "evidence": "Read global control;initialize count from supplied int,walk sentinel.nextSecondaryNode chain,increment with original Java overflow. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:er.e(I)Lwt;",
+      "originalName": "e",
+      "to": "nextForward",
+      "evidence": "Read shared cursor;sentinel clears cursor and returns null;otherwise advance nextSecondaryNode before checking int31542,other ints return null after advance. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:es.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -12907,6 +13033,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lc.a(I)Lwf;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "Read global control;if bucket index>0 and cursor not prior sentinel,advance chain and return. Only scanning path evaluates35/((int-55)/60),then scans buckets and advances index before node read;null at exhaustion. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(ILwf;J)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Unlink prior primary membership(-125) before computing bucket index key & (intOffset+bucketCount),preserving overflow. Append before bucket sentinel,then store key only after both reciprocal neighbor writes. Preserve wrapper/partial unlink/insertion failure states. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(JB)Lwf;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Read global control;mask long key with bucketCount-1,scan next chain using lookupCursor;successful match advances before returning. Exhaustion clears lookupCursor,then only byte<=87 writes bucketCount=-4 before null return. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.b(I)Lwf;",
+      "originalName": "b",
+      "to": "beginIterationAtBucket",
+      "evidence": "Assign nextBucketIndex directly from supplied int,then call next(-71). Preserve out-of-range/negative initial index behavior and partial assignment on arithmetic/array/cursor failure. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ld.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -13541,6 +13695,13 @@
       "originalName": "a",
       "to": "decodeGameImagesAndFonts",
       "evidence": "Reviewed applet run/shutdown callers, staged Ace resource loading, archive consumers, font/sprite asset literals and audio-cache construction; guards and stage ordering remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Z)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Set pending node from table.buckets[0].next,then nextBucketIndex1. False returns retaining old lastReturned;true clears it. Preserve bucket/null failures before index write and retained exhaustion state. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -23556,7 +23717,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-aceofskies-rules.mjs": "f144b046334021de717312bcc4655ec2e74a95a9df7e13f2aeb66eacf195148a",
-      "aceofskies-names.json": "0ba989c17ba9c63d244f587c73acffd99ccfb974b518470aeb7afc17d2d446c6",
+      "aceofskies-names.json": "7bef5c82e6752af201f010ac55ef6e9225797bcd8baa3c0f8c72c99647528187",
       "reproduce-aceofskies.mjs": "52beddb283ae2c5e91461d2e696de92b83b07de1f5db1491c26999469bda4599",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "tests/test-aceofskies-core.mjs": "411552405573a5228962211d3e8ee1d080550c058b6e2505f5ccd939b2122427",

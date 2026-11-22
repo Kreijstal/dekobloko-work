@@ -2740,6 +2740,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:eaa.field_e:Lbw;",
+      "originalName": "field_e",
+      "to": "iterationCursor",
+      "evidence": "Shared pending-node cursor for manual forward/backward traversal;not the last-returned node. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eaa.field_g:Lbw;",
+      "originalName": "field_g",
+      "to": "sentinel",
+      "evidence": "Sentinel circular-endpoint role. Exact declaration and complete collection constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:eh.field_a:I",
       "originalName": "field_a",
       "to": "intArgument",
@@ -4655,6 +4669,111 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eaa.a(B)Lbw;",
+      "originalName": "a",
+      "to": "removeLast",
+      "evidence": "Read sentinel.previous before byte guard;-124 unlinks non-sentinel with false;others return null without removing. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eaa.a(B[Lbw;)I",
+      "originalName": "a",
+      "to": "copyToArray",
+      "evidence": "Copy next-chain nodes into supplied array starting index0,return copied count. Byte<65 first calls isEmpty(98);preserve increment-before-array-write and partial copy/wrapper failures. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eaa.a(I)Lbw;",
+      "originalName": "a",
+      "to": "beginBackward",
+      "evidence": "Read sentinel.previous;empty clears cursor. Nonempty saves previous cursor;int!=6 then calls addLast(null,false) before return. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eaa.a(ILbw;)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "Unlink membership(false),splice after sentinel;int>-2 returns before final successor-previous write;only final write wrapped. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eaa.a(Lbw;I)Lbw;",
+      "originalName": "a",
+      "to": "beginForwardFrom",
+      "evidence": "Int!=0 writes static long81 before choosing explicit node or sentinel.next. Sentinel clears cursor;otherwise save chosen.next and return chosen;retain null/foreign-node behavior. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eaa.a(Lbw;Z)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "Unlink linked node with inverted Boolean;set node.next=sentinel;false calls beginForwardFrom(null,125) before setting previous and completing append. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eaa.a(Leaa;I)V",
+      "originalName": "a",
+      "to": "moveAllTo",
+      "evidence": "Invoke moveSuffixTo(target,sentinel.next,true);int!=12632256 then invokes moveSuffixTo(null,null,true). Preserve call/failure order and aliases. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eaa.a(Leaa;Lbw;Z)V",
+      "originalName": "a",
+      "to": "moveSuffixTo",
+      "evidence": "Move suffix beginning at supplied node through old tail to target tail by boundary splices. Modify source sentinel.previous and boundary predecessor before optional beginForward(true);only then test node==sentinel. Preserve empty/same-deque/foreign/null alias behavior,partial splices and wrapper. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eaa.a(Z)Lbw;",
+      "originalName": "a",
+      "to": "removeFirst",
+      "evidence": "Read sentinel.next;empty null;otherwise pass Boolean directly to node.unlink and return node. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eaa.b(B)Lbw;",
+      "originalName": "b",
+      "to": "beginForward",
+      "evidence": "Byte!=90 returns null before cursor work. Otherwise sentinel.next;empty clears cursor,nonempty saves next and returns node. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eaa.c(B)Lbw;",
+      "originalName": "c",
+      "to": "nextBackward",
+      "evidence": "Read shared cursor;sentinel clears cursor,nonempty saves previous. Byte!=116 then calls beginForward(byte-39) before returning saved node. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eaa.c(I)Lbw;",
+      "originalName": "c",
+      "to": "nextForward",
+      "evidence": "Read shared cursor;sentinel clears cursor,otherwise advance next;int!=0 nulls sentinel after advancing,then return node. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eaa.d(I)V",
+      "originalName": "d",
+      "to": "clear",
+      "evidence": "Read global control;repeatedly unlink sentinel.next with false;int<=56 calls nextBackward(byte-57) before final cursor null. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eaa.e(I)Z",
+      "originalName": "e",
+      "to": "isEmpty",
+      "evidence": "Int!=12917 calls nextBackward(byte-117) before sentinel.next identity test;preserve cursor/failure side effects. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eaa.g(I)I",
+      "originalName": "g",
+      "to": "countWithOffset",
+      "evidence": "Read global control;count starts at supplied int,walk next chain until sentinel,increment with Java overflow. Complete collection constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -11408,7 +11527,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
-      "bachelorfridge-names.json": "a05efb643b18616df856515b87e3df1f4f1aa6646f636000c62bbff0b268d871",
+      "bachelorfridge-names.json": "415a6dc1b09d58172dd67c9484e851d7afb460b8b0c4b8bc38b5d4773af6c2cd",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",
