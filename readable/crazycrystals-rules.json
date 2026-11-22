@@ -976,10 +976,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ii.a(B)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Wrong byte!=-112 first calls original clearStaticReferences(-107),then clear last-returned node,set current node from bucket0.field_b,set bucket index1. Preserve helper side effects/errors before reset,zero-bucket partial failures and constructor/JDK iterator behavior. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ii.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 8f7168f3eee3b913523c29f00d8a1c7dcd114b7c6e22d751aa96b347451b62ad.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ij.a(I)V",
+      "originalName": "a",
+      "to": "unlinkSecondary",
+      "evidence": "If field_g null return. Splice both secondary neighbors first;wrong int!=1 recursively calls this method37 before own link clears,which remains invalid while field_g nonnull. Valid1 clears field_j then field_g. Preserve recursive failure after repeated neighbor writes. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1015,6 +1029,20 @@
       "originalName": "d",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 0a53498d2c232cd4b12ff117e402595e60679cebbd2caa0cb0676a131ecb9b21.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.a(Z)V",
+      "originalName": "a",
+      "to": "unlink",
+      "evidence": "True Boolean first calls linked predicate(-25),whose arithmetic guard succeeds for a linked node;then both Boolean paths splice primary neighbors and clear field_b then field_d when linked. Preserve preliminary call/reads and exceptions. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jb.b(I)Z",
+      "originalName": "b",
+      "to": "isLinked",
+      "evidence": "If field_d null return false;otherwise evaluate-44%((int-53)/57) before returning true. Preserve overflow and arithmetic failures only when linked. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1809,6 +1837,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ug.a(JBLjb;)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Unlink existing primary chain via a(false),select bucket by key&(count-1),write node.field_b then field_d. Wrong byte!=42 clears static String field_a between own-link and neighbor writes. Then splice both neighbors and write key field_e. Preserve duplicates,aliases,partial ordering and exception wrapper. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.a(JI)Ljb;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Select/read masked bucket before evaluating-65%((intGuard+31)/54);only afterward assign lookup cursor and scan field_b chain by long-key equality. On match advance cursor before return;on sentinel clear cursor. Preserve overflow,exception order and existing lookup state on arithmetic failure. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ug.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -2042,7 +2084,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-crazycrystals-rules.mjs": "53fc8845bc15628f5f09948271dc7c15e829375009e924a68e220f175e8a3a65",
-      "crazycrystals-names.json": "a72229041568d13cb567b89537bafd01ab85aceb549cf51999900eb56d622d15",
+      "crazycrystals-names.json": "300ebfb53230f107c2f584b15602aa805758b8f9b3b2148ce5fb06b8ed34b42c",
       "reproduce-crazycrystals.mjs": "c436bdc5e8146e9c16d3dfc08e0152874a520d245840468c38a313fe58094a1c",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

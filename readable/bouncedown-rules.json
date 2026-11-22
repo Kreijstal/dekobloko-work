@@ -605,6 +605,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ai.b(I)Z",
+      "originalName": "b",
+      "to": "isLinked",
+      "evidence": "Return false when field_f null,then false for int<108,otherwise true. Preserve test order and guard domain. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.c(I)V",
+      "originalName": "c",
+      "to": "unlink",
+      "evidence": "If field_f nonnull splice both neighboring primary links,clear field_f then field_c,then wrong int!=2 writes key field_d=120L. If already unlinked return before guard/key mutation;preserve all partial effects. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ba.d(B)V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -1438,6 +1452,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ug.a(I)V",
+      "originalName": "a",
+      "to": "unlinkSecondary",
+      "evidence": "If secondary link field_i nonnull evaluate-31%((int+57)/61) before either splice;then splice both secondary neighbors and clear field_i then field_l. Unlinked path skips arithmetic. Preserve overflow/failure/write order. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ug.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -1790,7 +1811,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "39077c165c0396a075207e2d26f72c5da4a728c9cfc889d54b5bab35ca6c17a8",
+      "bouncedown-names.json": "03312bee9c0a061ba93de4ecd5eb2e2fe9bba7df2967a582815c0bbe19f9ebec",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

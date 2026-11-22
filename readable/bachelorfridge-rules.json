@@ -4896,6 +4896,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eo.d(I)J",
+      "originalName": "d",
+      "to": "getSecondaryKey",
+      "evidence": "Int>=-97 returns sentinel6L instead of the stored secondaryKey;otherwise return that already-named field. Preserve full input domain and no mutation. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ep.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -6583,6 +6590,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:js.a(JBLbw;)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Unlink linked node(false),select masked bucket,write own next/previous,neighbors and key,then evaluate41/((byteGuard-13)/45) inside original wrapper. Preserve arithmetic exception after completed insertion,duplicates and aliases. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:js.a(ZJ)Lbw;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "False Boolean first calls original static helper93,then both domains select key&(count-1),scan next links by long-key equality,advance lookup cursor past first match and clear at sentinel exhaustion. Preserve helper/global reads/exception order and duplicate order. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:js.b(I)Lbw;",
+      "originalName": "b",
+      "to": "first",
+      "evidence": "Reset iteration bucket index0 first;wrong int!=-13023 recursively calls this method45,which stays invalid,then would delegate next(-21446). Preserve repeated index resets and recursive failure;valid guard delegates once. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:js.c(I)Lbw;",
+      "originalName": "c",
+      "to": "next",
+      "evidence": "Valid int-21446 traverses current bucket via next then increments bucket index over sentinels. Other ints first perform get(false,-79L),including its static helper and lookup-cursor mutation,before table iteration. Preserve independent cursors,duplicate/global reads and all branches. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jt.b(Z)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -8246,6 +8281,13 @@
       "originalName": "a",
       "to": "createEvent",
       "evidence": "Abstract hook that each order implements to build the event the BattleState executes. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.a(I)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Set current node from bucket0.next,then bucket index1. Int>-34 overwrites index-99 before clearing last-returned node;other ints only clear it. Preserve zero-bucket failures and bad-index state;constructor and JDK iterator methods reviewed. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -11147,6 +11189,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wha.a(IJLbw;)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Unlink linked node(false),select masked bucket,write own previous/next,then wrong int!=0 changes bucketCount63 before first neighbor/key/second neighbor writes. Preserve insertion into already-selected bucket,partial state,duplicates and wrapper. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wha.a(JB)Lbw;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Masked bucket lookup traverses next links using complemented long-key equality,advances cursor past first match and clears on sentinel exhaustion. Both miss-only byte branches return null without additional mutation. Preserve comparisons/global reads and all guards. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wi.b(Z)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -11352,7 +11408,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
-      "bachelorfridge-names.json": "8c365934972837cad93cbb2a3629a125c395c669a074dd262c79c8726a05e644",
+      "bachelorfridge-names.json": "a05efb643b18616df856515b87e3df1f4f1aa6646f636000c62bbff0b268d871",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",

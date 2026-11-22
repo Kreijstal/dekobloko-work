@@ -2173,6 +2173,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ri.b(B)V",
+      "originalName": "b",
+      "to": "unlinkSecondary",
+      "evidence": "If field_g null return. Only byte<=-57 splices both secondary neighbors and clears field_h then field_g;other byte domain performs no unlink. Preserve guard and write order. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rj.a(BLjava/awt/Component;)V",
       "originalName": "a",
       "to": "detach",
@@ -2348,6 +2355,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vi.a(IJ)Lwf;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Choose bucket by longKey&(bucketCount+intArgument),then scan next links by long-key equality,advance lookup cursor past first match and clear on exhaustion. Preserve mask/overflow,global reads and duplicate order. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a(Lwf;BJ)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "If linked primary unlink5,select masked bucket,write own previous/next and first neighbor. Byte<60 invokes original string-splitting helper(charX,null,-67) before second neighbor and key writes. Preserve helper/failure after partial splice,duplicates and wrapper. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vj.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2362,10 +2383,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:w.a(B)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Always set bucket index1 first;wrong byte!=-75 returns leaving current/last-returned nodes unchanged. Valid guard sets current from bucket0.next,then last-returned null. Preserve partial-reset/zero-bucket failure and JDK protocol methods. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:w.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 fe37ee6ae0273cea729290ccd6e552158bc79d6d4e245928e739a8f30c5b5312.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.b(I)Z",
+      "originalName": "b",
+      "to": "isLinked",
+      "evidence": "If named previous null return false. Valid int8 returns true;other ints recursively call this predicate29,which stays invalid while linked. Preserve recursive failure and false early return on unlinked state. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wf.c(I)V",
+      "originalName": "c",
+      "to": "unlink",
+      "evidence": "If previous null return. Only int5 splices named primary neighbors and clears previous then next;other ints leave state untouched. Preserve guard/domain and aliases. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2413,7 +2455,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-transmogrify-rules.mjs": "490c8ac7b803bec45e36264c90d8a0d2e0d252d1671c0c7402e75f04539f2120",
-      "transmogrify-names.json": "be38077d1aeb4c467d9fa5bd5e2c7d3b050c750c7ef98d78824bd89cfdfd7cee",
+      "transmogrify-names.json": "4b12253f7fb9421d51bfda6a16b8197ba7f857d274c9079b3c6818f6715218f8",
       "reproduce-transmogrify.mjs": "275031618841925c88dcac462520b84fb1be33422795af31727af8ec70c869ee",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

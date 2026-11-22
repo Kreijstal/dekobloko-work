@@ -388,6 +388,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fi",
+      "originalName": "fi",
+      "to": "SecondaryNodeHashTable",
+      "evidence": "Complete constructor and all five instance operations reviewed. Fixed bucket array of circular DualLinkNode secondary-link sentinels;masked long secondary-key insertion/lookup with duplicate-key cursor and independent whole-table iterator. Preserve arbitrary bucket counts,duplicate keys,guards,partial writes,aliases and all unrelated static helpers. Every constructor/instance operation and all six table-state fields reviewed;static helpers unchanged. No native owned/type-use declarations or exact quoted owned class literals. Identifier-only change.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fp",
       "originalName": "fp",
       "to": "PcmStreamMixer",
@@ -714,6 +721,55 @@
       "originalName": "field_f",
       "to": "buckets",
       "evidence": "The IterableNodeHashTable constructor allocates one sentinel node per bucket here.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fi.field_a:Lgp;",
+      "originalName": "field_a",
+      "to": "iterationCursor",
+      "evidence": "Whole-table iterator secondary-chain cursor,distinct from duplicate-key lookup cursor. Exact declaration and complete constructors/instance consumers reviewed. Preserve defaults,visibility,mutability,aliases and every guard-dependent/partial read-write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fi.field_d:J",
+      "originalName": "field_d",
+      "to": "lookupKey",
+      "evidence": "Saved long lookup key written before lookup guard check;used to find the bucket/same-key chain. Exact declaration and complete constructors/instance consumers reviewed. Preserve defaults,visibility,mutability,aliases and every guard-dependent/partial read-write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fi.field_f:[Lgp;",
+      "originalName": "field_f",
+      "to": "buckets",
+      "evidence": "Fixed constructor-allocated array of circular DualLinkNode secondary-link sentinels. Preserve per-element allocation and previous/next initialization order. Exact declaration and complete constructors/instance consumers reviewed. Preserve defaults,visibility,mutability,aliases and every guard-dependent/partial read-write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fi.field_g:I",
+      "originalName": "field_g",
+      "to": "bucketCount",
+      "evidence": "Constructor-supplied count used for array allocation,mask(count-1) and traversal bounds;no power-of-two/positivity validation added. Exact declaration and complete constructors/instance consumers reviewed. Preserve defaults,visibility,mutability,aliases and every guard-dependent/partial read-write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fi.field_h:I",
+      "originalName": "field_h",
+      "to": "iterationBucketIndex",
+      "evidence": "Whole-table iterator next-bucket index;first resets0 after arithmetic guard,and next increments before bucket sentinel checks. Exact declaration and complete constructors/instance consumers reviewed. Preserve defaults,visibility,mutability,aliases and every guard-dependent/partial read-write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fi.field_i:Lgp;",
+      "originalName": "field_i",
+      "to": "lookupCursor",
+      "evidence": "State for first/next duplicate-key lookup;preserve guard-dependent stale cursor and independent table iteration. Exact declaration and complete constructors/instance consumers reviewed. Preserve defaults,visibility,mutability,aliases and every guard-dependent/partial read-write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gp.field_n:J",
+      "originalName": "field_n",
+      "to": "secondaryKey",
+      "evidence": "Long key consumed by reviewed secondary hash-table insertion and duplicate-key lookup,plus guarded key getter/setter. Existing primary key and both link planes remain separate. Exact declaration and complete constructors/instance consumers reviewed. Preserve defaults,visibility,mutability,aliases and every guard-dependent/partial read-write sequence.",
       "confidence": "reviewed"
     },
     {
@@ -1550,6 +1606,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fi.a(B)Lgp;",
+      "originalName": "a",
+      "to": "next",
+      "evidence": "Traverse current bucket via secondaryPrevious,then increment bucket index over empty sentinels. Wrong byte!=-60 invokes nextWithSameKey(-90) only when a bucket advance is needed;this independently advances lookup cursor before table iteration continues. Preserve discarded result/partial state,all repeated branches,global reads and null end behavior. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.a(I)Lgp;",
+      "originalName": "a",
+      "to": "nextWithSameKey",
+      "evidence": "Return null first if lookup cursor null,then return null if int>-89 without cursor mutation. Otherwise use saved lookupKey bucket sentinel,walk secondaryPrevious comparing complemented keys,advance cursor past matching node;clear cursor on sentinel exhaustion. Preserve independent iterator state and all failure domains. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.a(IJ)Lgp;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Write lookupKey from long argument before guard check. Int!=3661 returns null leaving existing lookup cursor intact. Valid guard chooses masked bucket,walks secondaryPrevious comparing bitwise-complemented secondary keys,advances lookup cursor past first match;sentinel exhaustion clears lookup cursor. Preserve duplicate-key order,overflow and partial state. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.a(Lgp;JI)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Unlink already-secondary-linked node first,then evaluate118/((intGuard+20)/35),so arithmetic failure retains prior detach. Select bucket by int(longKey&(bucketCount-1));write node.secondaryPrevious/sNext,neighbor.sPrevious,node.secondaryKey,then predecessor.sNext in exact order. Preserve duplicates,bitmask/overflow,array/null failures and wrapper exception behavior. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.b(I)Lgp;",
+      "originalName": "b",
+      "to": "first",
+      "evidence": "Evaluate59/((-72-intGuard)/53) before resetting iteration bucket index0 and delegating next(byte-60). Preserve arithmetic failures leaving iterator untouched and independent lookup cursor. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fi.c(I)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -1582,6 +1673,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gf.a(I)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Int<-99 sets current from bucket0.previous,index1,last-returned null. Other ints recursively call reset(-22),which remains invalid before any reset writes. Preserve recursive failure and all constructor/JDK iteration behavior. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1638,6 +1736,27 @@
       "originalName": "a",
       "to": "unlinkSecondary",
       "evidence": "Splices the node out of the secondary link pair.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gp.a(IJ)V",
+      "originalName": "a",
+      "to": "setSecondaryKey",
+      "evidence": "If secondaryNext nonnull throw bare RuntimeException before any key or guard writes. Otherwise set secondary hash-key field_n from exact long argument,then wrong int!=-1 clears static Archive field_s. Hash insertion/lookup consumer fi independently reviewed;preserve all order and aliases. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gp.e(I)Z",
+      "originalName": "e",
+      "to": "isSecondaryLinked",
+      "evidence": "Return false exactly when secondaryNext null;otherwise both int branches return true. Preserve original guard comparison and no mutation. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gp.f(I)J",
+      "originalName": "f",
+      "to": "getSecondaryKey",
+      "evidence": "Evaluate51/((56-int)/35) before returning secondary hash-key field_n. fi hash-table insertion and duplicate-key matching consumer independently reviewed;preserve overflow/arithmetic exceptions. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2051,6 +2170,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:li.b(I)Z",
+      "originalName": "b",
+      "to": "isLinked",
+      "evidence": "Int<76 clears named next field before linked test,without neighbor repair or previous clear;then return next nonnull. Other ints only test next. Preserve destructive guard side effect and resulting false/stale-link state. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2966,7 +3092,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-vertigo2-rules.mjs": "dd6eb8cdf3928ef27046e7fe98dc389e3192977de79343b58e7e832c8a7bce4a",
-      "vertigo2-names.json": "864e30a5621c3d37083924c9c3576dfe5e9eda0093b069b87ab47936959b1317",
+      "vertigo2-names.json": "ed766997d7e186b78b2d9ae53d34c7560f173ece3592b1dd4769f4a4abb53957",
       "reproduce-vertigo2.mjs": "c16a8b53427e79d4dcb3e40a4a42b4d3ec37e412469473382b608d53f95beae2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

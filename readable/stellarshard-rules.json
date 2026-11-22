@@ -955,6 +955,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ah.c(B)V",
+      "originalName": "c",
+      "to": "unlinkSecondary",
+      "evidence": "Byte!=36 returns before linked test or writes. Valid36 returns if field_l null,otherwise splices secondary neighbors and clears field_m then field_l. Preserve order. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.a(BLgg;J)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Unlink linked node20,select masked bucket,write node.next,then byte<=1 calls original static helper(byte37) before own previous/neighbor/key writes. Preserve partial link state and helper failures,duplicates and wrapper. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.a(JI)Lgg;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Bucket mask is longKey&(bucketCount+intArgument),not normalized. Scan next links using complemented keys,advance lookup cursor past first match and clear at exhaustion. Preserve global reads,overflow and duplicate order. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aj.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1309,6 +1330,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 481c209f7a3d4ec55bea4ed0ec0527271bfdd9fa49ae9e5629b6c7c86bfac7cf.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.a(I)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Set current node from bucket0.next,clear last-returned node,then set bucket index from int argument verbatim. Constructor uses1;preserve other indices and zero-bucket/partial failure. JDK iterator operations reviewed. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2322,7 +2350,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-stellarshard-rules.mjs": "e0aad811358351403390d3f71317f31025d7e9ef8434ab5477a9473e966eb7de",
-      "stellarshard-names.json": "786e37b211a9c12ff207ce316a3e7d50eb33954f2c6089901f8cc9c0291a4ba4",
+      "stellarshard-names.json": "01c32425a5c9b3df2b6b601ec4722a3717ec12e9f5b82ea0e39c65f67dd94e02",
       "reproduce-stellarshard.mjs": "bd81f17e3db3182b75b19f828dfc185d0ec0f4b8ca0f78caa8495e2ff6f4a0a1",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -766,6 +766,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:al.a(B)V",
+      "originalName": "a",
+      "to": "unlinkSecondary",
+      "evidence": "Byte>-90 clears static object field_s before linked test,even when unlinked. Both byte domains splice secondary neighbors and clear field_q then field_t when linked;preserve branch/write ordering. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:an.a(B)J",
       "originalName": "a",
       "to": "length",
@@ -1445,6 +1452,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pi.b(I)V",
+      "originalName": "b",
+      "to": "unlink",
+      "evidence": "If field_c null return. Always splice both primary neighbors;only int34 clears own field_f then field_c. Other guards retain stale own links after neighbor removal. Preserve partial unlink and later repeated-call behavior. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.c(I)Z",
+      "originalName": "c",
+      "to": "isLinked",
+      "evidence": "If field_c null return false. Int<115 calls unlink95,which splices neighbors but leaves own links intact,then returns true. Int>=115 returns true without splice. Preserve guarded mutation and stale-link behavior. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pi.d(I)V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -2070,7 +2091,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-minerdisturbance-rules.mjs": "16fcf2e48a0b24b7a3b5adfaa84bb4d835098253436d0d71784385c2e1228b80",
-      "minerdisturbance-names.json": "0ede7c8b89b166dd075f57b5b6b730c6c3cfc513843753a96c1b20b0cd4b7a79",
+      "minerdisturbance-names.json": "b00abc9fa6c2d442fb67984d616b7389b17371f6bb05201ef5b07b6859e829d8",
       "reproduce-minerdisturbance.mjs": "9c29b772086ae02805a24c9b493bfd651e742e7206976e902e269a1ae4c1e5d3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -759,10 +759,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:am.a(I)Z",
+      "originalName": "a",
+      "to": "isLinked",
+      "evidence": "Int!=3000 returns false before inspecting field_f;valid3000 returns its nonnull test. Preserve order. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:am.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 029881851330ed8aed1dc9b5d3cc2ea7f3afae2b41f675537939b900390d9c0b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.b(I)V",
+      "originalName": "b",
+      "to": "unlink",
+      "evidence": "If field_f null return. Splice primary neighbors,clear field_g then field_f,only then evaluate-107%((67-int)/39). Preserve arithmetic exception after unlink and absence of arithmetic on already unlinked path. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -899,6 +913,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dk.c(I)V",
+      "originalName": "c",
+      "to": "unlinkSecondary",
+      "evidence": "If field_i null return. Splice both secondary neighbors. Valid int-1 clears field_i then field_j;invalid guard performs an extra explicit null write to field_i before same clears. Preserve redundant writes and order. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dl.$cfr$sneakyThrow(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;",
       "originalName": "$cfr$sneakyThrow",
       "to": "throwUnchecked",
@@ -920,10 +941,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ed.a(BJLam;)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "If linked invoke primary unlink120,which completes splice/own clears before its safe arithmetic guard. Compute/read key&(count-1) bucket next;only afterward byte<=59 returns before insertion. Other bytes write own links,first neighbor,key,second neighbor in exact order inside original wrapper. Preserve detach-before-rejection,array failure order,duplicates and aliases. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ed.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 cd6e9886b489586dd8879f8c55815a55e79c6ded851e9e7640c8101c24f0223c.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ed.a(JI)Lam;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Select bucket via longKey&(bucketCount+intArgument),preserving all mask/overflow domains. Assign lookup cursor from sentinel.field_g,scan primary chain by key field_c,advance past first match and clear at sentinel exhaustion. Preserve global read,duplicates and failures. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1888,7 +1923,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-hostilespawn_vengeance-rules.mjs": "bd4983d008d73d23ae1bead320db5b9066cb068364feecec10df25c10ddbff04",
-      "hostilespawn_vengeance-names.json": "cff9c8294572fd30202fe79ba53bb33df1748f8d86ab21a44a31b07dd30085e6",
+      "hostilespawn_vengeance-names.json": "f335cbc26c04955f5415f90f9659f5f5a6a098fb6f036078fa54f776a24b8982",
       "reproduce-hostilespawn_vengeance.mjs": "40c77f27ca968e11d14121fe671373284e37e0393b0fc20f781e4df14ef88438",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

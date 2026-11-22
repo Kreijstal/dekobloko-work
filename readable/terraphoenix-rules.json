@@ -1816,6 +1816,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:c.a(Z)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Always set current node from bucket0.previous first. True Boolean returns leaving bucket index and last-returned unchanged;false writes index1 then last-returned null. Preserve partial reset and zero-bucket failure;JDK iterator operations reviewed. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cb.b(Z)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -2586,6 +2593,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jj.a(Luf;B)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "If node already linked call unlink(byte12). Set node.previous=sentinel.previous and node.next=sentinel,then wrong byte!=0 calls clear(-11) before either neighbor splice. That clear also invokes beginBackward(-102) and may detach saved neighboring objects. Only afterward write node.next.previous and node.previous.next. Preserve alias-dependent partial structure and wrapped failures;no guard normalization. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jj.a(Luf;I)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "Unlink already-linked node(byte12),then set node.next=sentinel.next,node.previous=sentinel and write node.next.previous=node. Int!=-16611 returns before final node.previous.next=node write. Valid guard performs final link inside original wrapper. Preserve half-insertion,aliases and partial failure ordering. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jj.b(B)Luf;",
+      "originalName": "b",
+      "to": "removeFirst",
+      "evidence": "Evaluate-86%((53-byteGuard)/47) before reading sentinel.next,including on empty deque. If first node differs from sentinel unlink(byte12) and return it;otherwise null. Preserve arithmetic/null/alias failures and unchanged iteration cursor. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jj.b(I)Luf;",
       "originalName": "b",
       "to": "nextForward",
@@ -2593,10 +2621,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jj.c(B)Luf;",
+      "originalName": "c",
+      "to": "beginForward",
+      "evidence": "Evaluate31%((byteGuard-36)/56) before reading sentinel.next or mutating cursor. If sentinel next is sentinel,clear cursor and return null;otherwise set cursor=node.next and return node. Preserve overflow/arithmetic failures even when empty. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jj.c(I)V",
       "originalName": "c",
       "to": "clear",
       "evidence": "Unlinks every node until only the sentinel remains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jj.d(B)Luf;",
+      "originalName": "d",
+      "to": "removeLast",
+      "evidence": "Read sentinel.previous;empty returns null without arithmetic. Otherwise unlink node(byte12) first,then evaluate-85/((byteGuard+37)/50),then return removed node. Preserve exception after detach,stale iteration cursor and exact call/read/write order. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -3757,7 +3799,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-terraphoenix-rules.mjs": "2b9ef0307d7e8ad8295f9a6d9e8e1d74cc01f0b1d1f8bbcad95b45bfce2e3b38",
-      "terraphoenix-names.json": "18044be7cba9b0c1e7050da6e6dbc1073b4a604868ace851cbdf8d43df2ca35b",
+      "terraphoenix-names.json": "ec8425e531c6d6d2efe0e952ba3e84a915d4de400cbf61b5480d48625ff07b20",
       "reproduce-terraphoenix.mjs": "26ebcd63f823ab4b28fe91b15329343bbc2ebca2f78d4652cffe0e8f8baf425a",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

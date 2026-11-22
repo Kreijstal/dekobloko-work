@@ -1445,6 +1445,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fd.a(IJ)Lda;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Read masked bucket first. Int<=72 calls original static helper(nullQk,-124,nullQk) before lookup-cursor assignment. Then both domains scan next links by key equality,advance after first match and clear on exhaustion. Preserve helper/global reads,duplicates and partial effects. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fd.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -1827,6 +1834,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 10 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ab14375bd40e22df93aa85b65f40cfde723272a80f44627a733cca157dee2e90.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.a(I)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Write bucket index1 and last-returned null first. Int<82 returns leaving current node stale;other ints set current from bucket0.next inside original exception wrapper. Preserve partial reset,zero-bucket failure and constructor/JDK methods. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2861,7 +2875,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torchallenge-rules.mjs": "c042d4e7793d93c469822e85fad602baebb74bd01aac6bf321d09ca5452e99fc",
-      "torchallenge-names.json": "858accff85625d89524193b9b553ec1b8d6d32578eb09bca8b293d472fbaf9a7",
+      "torchallenge-names.json": "bae6dd86c77fb98c5cb1f3bf8ebb997ebe2f58384b36c84c3287674a2b51b3dc",
       "reproduce-torchallenge.mjs": "b3388fa5e2619e82e11f0eae304b9ea97a779afb046e7272b5997c73407bf7be",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

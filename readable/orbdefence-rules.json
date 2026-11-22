@@ -864,6 +864,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ca.b(I)V",
+      "originalName": "b",
+      "to": "unlink",
+      "evidence": "If field_c null return. Write first primary neighbor;wrong int!=57 invokes original static helper(nullShortArray,120,true,nullObject) before second neighbor write. Then clear field_e followed by field_c;preserve partial effects and exceptions. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ca.b(Z)Z",
+      "originalName": "b",
+      "to": "isLinked",
+      "evidence": "If field_c null return false. False Boolean calls clearStaticReferences(-7) before true;true returns true directly. Preserve linked-only static side effect. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cc.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -987,6 +1001,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 78a7578620b425c0e463bc9b48c3e109b9882e89b9bed15bccb09332c8ce12e3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.a(JI)Lca;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Select bucket via longKey&(bucketCount+intArgument),then scan field_e primary chain by key field_d using stored lookup cursor. Advance cursor past first match;clear at sentinel exhaustion. Preserve int mask argument/overflow,global read,duplicates and failure order. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ek.a(Lca;IJ)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "If linked primary-unlink57 first. Select key&(count-1) bucket,write node.field_c,then int>=-122 clears static int-array field_e before node.field_e/neighbor/key writes. Preserve exact partial write order,duplicates,aliases and wrapper. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1634,6 +1662,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:o.c(I)V",
+      "originalName": "c",
+      "to": "unlinkSecondary",
+      "evidence": "If field_g null return. Splice both secondary neighbors,clear field_f,then wrong int!=-1 calls original six-argument applet helper before final field_g clear. Preserve failure leaving partial own-link clear and all argument/call order. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1701,6 +1736,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 0a803003903cbd3da788ad10721a7fec40e3a6ebae9ec1318597f1ad9f615176.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pl.a(B)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Write bucket index1,current node from bucket0.field_e,last-returned null;only afterward wrong byte!=103 clears owning table reference. Preserve partial failures and invalid guard leaving cursor initialized but table null. Constructor and all JDK iterator operations reviewed;names unchanged. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1937,7 +1979,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-orbdefence-rules.mjs": "7265f3a9f5e13a3fed5621337395faa83930486229ce2e8682b070f11e4f498e",
-      "orbdefence-names.json": "5cfd67bedd67b7b06d3c826227825f4b548774df7968d3d657e433c3c7454d88",
+      "orbdefence-names.json": "6a3c8048bc0912e4cceeeb4b18c00d32692ca50bac522f0d3fe7cceb8087100c",
       "reproduce-orbdefence.mjs": "24edd3e6decd14f7af15c46ba33901279428686ce88376fa1945d21ab4b43608",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

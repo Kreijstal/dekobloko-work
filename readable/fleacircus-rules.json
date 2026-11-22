@@ -1095,6 +1095,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lh.b(B)Z",
+      "originalName": "b",
+      "to": "isLinked",
+      "evidence": "If field_a null return false. Valid byte-54 returns true;other bytes call the original seven-argument static helper(-118,-117,-87,false,-11,-87,-1) before true. Preserve external call/partial effects/exceptions;do not treat predicate as pure for invalid guard. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lh.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -1102,10 +1109,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lh.c(I)V",
+      "originalName": "c",
+      "to": "unlink",
+      "evidence": "If field_a null return. Only int-1 splices primary neighbors and clears field_h then field_a;other guards leave linked state unchanged. Preserve all guard domains. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:li.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 5115e4942368d0ded4f1ec68744da2b3ba5d49f24b6c80213383e8340976ad58.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:li.a(JLlh;B)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Wrong byte!=43 first calls original clearStaticReferences(byte-31). If node.field_a nonnull call primary unlink(byte XOR-44);only byte43 yields unlink guard-1,so other byte paths may retain old links before overwriting. Select masked bucket,write own links,neighbors,key in exact order. Preserve duplicates,invalid-guard corruption/partial effects and wrapper. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:li.a(ZJ)Llh;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "False Boolean returns null before bucket/cursor mutation. True selects key&(count-1) bucket,scans field_h primary links by key field_c,advances lookup cursor past first match and clears it at sentinel exhaustion. Preserve global read,aliases and failures. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1155,6 +1183,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 6 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 1c371db727a42e75f6de150af451939a4960bfb9446304adaa1fd1e9d8dc854a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:na.a(I)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Valid int-1 writes bucket index1,last-returned null,current node from bucket0.field_h in that order. Other ints recursively call reset52 before any reset writes;52 remains invalid. Preserve recursive failure and JDK iterator/constructor protocol behavior. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1491,6 +1526,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 7 null writes to 6 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 46686584f1877505959d8afe396a22e1ddb7e5b7ffe789a819481cf3443bb472.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.e(I)V",
+      "originalName": "e",
+      "to": "unlinkSecondary",
+      "evidence": "Evaluate45%((-26-int)/54) before linked test,including on unlinked nodes. Then when field_m nonnull splice secondary neighbors and clear field_p then field_m. Preserve overflow/arithmetic failures and write order. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1846,7 +1888,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-fleacircus-rules.mjs": "3571dfc1819af06339a362abfbbea0548fcee4d30cc87325631cf51df11ca831",
-      "fleacircus-names.json": "278b2be0cd32eebff6f5bb48a3e1b87a64f97940c4b8d244096c066744db45dd",
+      "fleacircus-names.json": "2835d4221e99e146014bfb25855bf0aed84e4946984d6797ab9122b0bc4fe387",
       "reproduce-fleacircus.mjs": "f9b33bab5d0ce8492e00e3654e2ea6dd17c6e6fa2ad9d811f295323e567ca043",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

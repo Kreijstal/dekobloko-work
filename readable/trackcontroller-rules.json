@@ -1634,6 +1634,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ee.a(B)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Set current node from bucket0.next,index1,last-returned null,then evaluate80/((byteGuard-7)/59). Preserve arithmetic exception after completed reset and original constructor/JDK iterator behavior. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ef.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1729,6 +1736,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 46d6b9d58a40e1c34dadc67da6cd2d61375db8b04c2a406e766c6484b852d45e.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.a(JI)Lfc;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Masked bucket lookup scans next links by key equality and advances cursor after match. Only on miss wrong int!=20 clears static Boolean-array field_b before clearing cursor and returning null. Preserve miss-only side effect,duplicates/global reads. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ga.a(Lfc;JI)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "If linked invoke primary unlink(intGuard XOR64),preserving all invalid-guard behavior. Select bucket by longKey&(bucketCount+intGuard),then write own links,first neighbor,key,second neighbor. Preserve mask/overflow/partial failures and duplicates. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.e(I)V",
+      "originalName": "e",
+      "to": "unlinkSecondary",
+      "evidence": "If field_j null return. Int0 splices both secondary neighbors and clears field_k then field_j. Other ints recursively call this method11 before any pointer write;invalid recursion remains linked and fails before splice. Preserve recursive failure. Complete selected instance body,owning constructor and relevant link/cursor context reviewed. Preserve exact original argument widths/domains,guards,overflow,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2889,7 +2917,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-trackcontroller-rules.mjs": "edecc20b3dd537cbdadc180da58728d07ddf4bc1fa73dcc98ff0087cc65ddc08",
-      "trackcontroller-names.json": "420beb1d5837b966b140c09e76481ba90f8ad344f31927948ad459bd02838a9e",
+      "trackcontroller-names.json": "0300e28bf6e72769b8648eefd936258340b944f62db8768a9c894124782abfb4",
       "reproduce-trackcontroller.mjs": "a19aeb34065d45283fe3ccc739656e3d43ea775242fdbecb34698f86b84538b9",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
