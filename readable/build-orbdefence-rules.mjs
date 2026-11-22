@@ -23,9 +23,26 @@ const classes = {
   ph: ['NetworkGameClient', 'Abstract subclass of GameAppletShell holding shared client and connection state.'],
 };
 const members = {};
+// Source-reviewed original identities and evidence, including owned static cleanup.
+const names = JSON.parse(fs.readFileSync(new URL('./orbdefence-names.json', import.meta.url), 'utf8'));
+for (const [owner, to, evidence] of names.classes) {
+  if (classes[owner]) throw new Error('Class already reviewed: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of names.methods) {
+  const symbol = `M:${owner}.${original}${descriptor}`;
+  if (members[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+for (const [owner, original, descriptor, to, evidence] of names.fields) {
+  const symbol = `F:${owner}.${original}:${descriptor}`;
+  if (members[symbol]) throw new Error('Field already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export const orbDefenceConfig = {
   game: 'orbdefence', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
-  workflowFiles: ['build-orbdefence-rules.mjs', 'reproduce-orbdefence.mjs', 'reviewed-game.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
+  workflowFiles: ['build-orbdefence-rules.mjs', 'orbdefence-names.json', 'reproduce-orbdefence.mjs', 'reviewed-game.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   verifyCore: async () => ({status: 'not-applicable', reason: 'naming-only pass; no gameplay reconstruction'}),
   readingGuide(rules, mapping) {
     return ['# Reading Orb Defence', '',
