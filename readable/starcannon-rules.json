@@ -262,6 +262,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hi",
+      "originalName": "hi",
+      "to": "DelegatingCanvas",
+      "evidence": "Complete constructor/paint/update contract and sole instance Component field reviewed: constructor retains exact delegate alias,paint/update forward exact Graphics reference to matching delegate method with original RuntimeException wrapping. Unrelated static helpers preserved. No owned/type-use native declarations. Exact same-spelling non-class literals,where present,are separately source-reviewed and pinned unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:hl",
       "originalName": "hl",
       "to": "Sprite",
@@ -329,6 +336,20 @@
       "originalName": "ok",
       "to": "AccountCreationResultPanel",
       "evidence": "Complete instance contract source-reviewed: one constructor, three fields and four methods for pending result polling, private success/error/status/suggestion display, callback navigation and248 fallback handling. Full DTO/factory/poller and success-label context establishes role. Preserve all superclass/interface overrides, guard failures, allocation/write/call ordering and unrelated statics. All owned/type-use declarations non-native; No owned reflective class-name literal references; exact same-spelling literals are explicitly reviewed non-class tokens and remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pf",
+      "originalName": "pf",
+      "to": "AccountRequestState",
+      "evidence": "Complete instance contract reviewed: final Object subclass, no instance fields or declared constructor, one toString override that throws IllegalStateException (Orb Defence retains RuntimeException context), exactly three shared instances across five static fields. Full cached username-query contract was reviewed at888c; current7de query/file independently inverse-restores to identical original input. Those identities encode request lifecycle, not labels or unrelated static utility roles. All typed field declarations/initializations reviewed, no native owned/type-use declarations. Preserve default constructors, identity/null aliases, state transitions and every unrelated static method/field; same-spelling non-class literals explicitly pinned unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qc",
+      "originalName": "qc",
+      "to": "FullscreenFocusCanvas",
+      "evidence": "Complete six-method instance contract,Frame/volatile flag declarations and complete canvas factory reviewed. Empty constructor,paint/update/focusGained no-ops,focusLost sets volatile flag,owned exit wrapper delegates reviewed Frame release helper; factory attaches canvas and focus listener to display Frame. Unrelated static helpers preserved. No owned/type-use native declarations. Exact same-spelling non-class literals,where present,are separately source-reviewed and pinned unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -416,6 +437,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hi.field_c:Ljava/awt/Component;",
+      "originalName": "field_c",
+      "to": "delegateComponent",
+      "evidence": "Exact private Component declaration plus complete constructor/paint/update bodies reviewed. Retains delegate alias and receives both paint/update forwarding. Preserve declaration modifiers,default initialization,all aliases/reads/writes and guard-dependent reset order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ig.field_a:[Ljava/lang/String;",
       "originalName": "field_a",
       "to": "suggestions",
@@ -469,6 +497,20 @@
       "originalName": "field_o",
       "to": "nameAvailable",
       "evidence": "Exact private declaration, all four instance bodies and completed/error-free result cache assignments reviewed against available/unavailable diagnostics. nameAvailable stores the checked input or positive availability result; preserve null/false defaults, all conditional resets, guard arithmetic and aliases.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qc.field_b:Z",
+      "originalName": "field_b",
+      "to": "focusLost",
+      "evidence": "Exact volatile Boolean declaration,focusLost callback and all instance/factory bodies reviewed. Callback sets it true; obfuscation-guard writes,if present,remain observable. Preserve declaration modifiers,default initialization,all aliases/reads/writes and guard-dependent reset order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:qc.field_f:Ljava/awt/Frame;",
+      "originalName": "field_f",
+      "to": "fullscreenFrame",
+      "evidence": "Exact declaration and factory assignment,exit wrapper and callback contract reviewed. Shared display Frame retained in original field. Preserve declaration modifiers,default initialization,all aliases/reads/writes and guard-dependent reset order.",
       "confidence": "reviewed"
     },
     {
@@ -721,6 +763,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 716e087f2819f7293393730fd316e4d7386ebbb563ccb1717aad5009fcd7727f.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.a(Ljava/awt/Frame;BLka;)V",
+      "originalName": "a",
+      "to": "exitFullscreenFrame",
+      "evidence": "Complete Frame-release body/canvas caller reviewed. Task creation receives byte+12297, failure sleep guard receives byte-51. Hide/dispose precede wrong byte!=-47 static cleanup. Preserve domain, order and exact helper. Preserve every original argument domain,width,allocation/alias,guard,field write,callback,loop,exception context and evaluation order. Identifier-only rename.",
       "confidence": "reviewed"
     },
     {
@@ -1235,10 +1284,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pf.a(Z)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Complete declaration/body reviewed: Clears a, then false recursively invokes cleanup(false) before c/b clears. Preserve repeated write, unbounded recursion/StackOverflowError and exact order. Name states static cleanup role while retaining all guards, helper calls, exception context and non-reference writes; identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pk.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 05cdce4bfa348780d22369f84a2e8e53cbdb7c84857f70a21cfe794f5324d7d0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qc.a(Lka;B)V",
+      "originalName": "a",
+      "to": "exitFullscreen",
+      "evidence": "Complete wrapper and called Frame-release body reviewed. First evaluates -27/((byte-68)/49), then Frame helper(Frame,byte-47,manager). Preserve arithmetic failure before any platform call. Preserve every original argument domain,width,allocation/alias,guard,field write,callback,loop,exception context and evaluation order. Identifier-only rename.",
       "confidence": "reviewed"
     },
     {
@@ -1515,6 +1578,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:re.a(ILka;IZII)Lqc;",
+      "originalName": "a",
+      "to": "createFullscreenCanvas",
+      "evidence": "Complete factory body reviewed. Acquire Frame and check null before Boolean false returns null without canvas allocation. True constructs/attaches/configures/focuses. Preserve every original argument domain,width,allocation/alias,guard,field write,callback,loop,exception context and evaluation order. Identifier-only rename.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:re.d(I)V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -1727,7 +1797,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-starcannon-rules.mjs": "820178d57ca214e426497e008fdf26a8f70c8f101ec48b13755d76c31ee972ef",
-      "starcannon-names.json": "1b26969ae79e105e6b6bd87ccaa422c921f24421cf47e25004fcf0e22c02151f",
+      "starcannon-names.json": "d1b5068e15a497bf5fb2ba0933d5f3226152fa4f435b39564815381f940259ec",
       "reproduce-starcannon.mjs": "40be1291a6c20246ea0c655d9031dd6642e444715cec6140e7c4b80ad449743e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

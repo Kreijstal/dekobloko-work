@@ -192,6 +192,13 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:bc",
+      "originalName": "bc",
+      "to": "PlatformTask",
+      "evidence": "Complete public mutable task record and constructor plus every queue-assignment/worker consumption/status/result path reviewed. Record carries request kind,object/two integer arguments,next task,volatile result/status; constructor sets status0. It is an asynchronous request record,not a future with added cancellation or completion semantics. Preserve visibility/defaults/aliasing and publication order. No owned/type-use native declarations or exact quoted owned class-name literals. Identifier-only rename.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bg",
       "originalName": "bg",
       "to": "KeyboardInput",
@@ -210,6 +217,13 @@
       "originalName": "ck",
       "to": "MouseWheelInput",
       "evidence": "Abstract class declaration and all3abstract wheel operations reviewed alongside complete concrete implementation. Role follows component registration/removal and rotation polling; unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:df",
+      "originalName": "df",
+      "to": "PlatformTaskDispatcher",
+      "evidence": "Complete constructor,run loop,private FIFO enqueue routine and all instance request/shutdown/capability wrappers reviewed. Constructor discovers JVM/OS,optionally opens cache files and owned reflected fullscreen/cursor controllers,then starts daemon priority10 worker. Worker waits on queue,dispatches request kinds,sets volatile status1/2 and notifies request monitor; ThreadDeath is rethrown. Preserve every permission/vendor branch,reflection literal,task payload/identity,queue ordering,monitors,shutdown/resource order and guard/failure behavior. Unrelated static methods/fields remain unchanged. No owned/type-use native declarations or exact quoted owned class-name literals. Identifier-only rename.",
       "confidence": "reviewed"
     },
     {
@@ -252,6 +266,13 @@
       "originalName": "hb",
       "to": "CipherPacketBuffer",
       "evidence": "PacketBuffer retaining an IsaacRandom used to offset outgoing opcodes; same shared role as Ace CipherPacketBuffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ie",
+      "originalName": "ie",
+      "to": "DelegatingCanvas",
+      "evidence": "Complete constructor/paint/update contract and sole instance Component field reviewed: constructor retains exact delegate alias,paint/update forward exact Graphics reference to matching delegate method with original RuntimeException wrapping. Unrelated static helpers preserved. No owned/type-use native declarations. Exact same-spelling non-class literals,where present,are separately source-reviewed and pinned unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -343,6 +364,111 @@
       "originalName": "v",
       "to": "AccountCreationResultPanel",
       "evidence": "Complete instance contract reviewed: one constructor and four instance methods, covering active/pending result polling, private success/error/status/suggestion display, callback navigation and248 fallback-result handling. Stores related account form plus handled/fallback flags; inherits UI panel behavior. Constructor, all five instance bodies and DTO/factories/poller/UI label context source-reviewed. Preserve inherited overrides, guards, message/button/status selection, secondary success transition and unrelated statics. All owned/type-use method declarations non-native; exact quoted owned class-name literals absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ve",
+      "originalName": "ve",
+      "to": "AccountRequestState",
+      "evidence": "Complete instance contract reviewed: final Object subclass, no instance fields or declared constructor, one toString override that throws IllegalStateException (Orb Defence retains RuntimeException context), exactly three shared instances across five static fields. Full cached username-query contract was reviewed at888c; current7de query/file independently inverse-restores to identical original input. Those identities encode request lifecycle, not labels or unrelated static utility roles. All typed field declarations/initializations reviewed, no native owned/type-use declarations. Preserve default constructors, identity/null aliases, state transitions and every unrelated static method/field; same-spelling non-class literals explicitly pinned unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bc.field_a:Lbc;",
+      "originalName": "field_a",
+      "to": "next",
+      "evidence": "Exact declaration,complete constructor/queue/worker/shutdown/capability consumers reviewed. Name states task payload/lifecycle or dispatcher queue/thread/vendor/permission role. Preserve original public/private/volatile modifiers,initialization,all aliases and every guarded/monitored read/write. Integer task arguments stay polymorphic and unvalidated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bc.field_b:I",
+      "originalName": "field_b",
+      "to": "requestType",
+      "evidence": "Exact declaration,complete constructor/queue/worker/shutdown/capability consumers reviewed. Name states task payload/lifecycle or dispatcher queue/thread/vendor/permission role. Preserve original public/private/volatile modifiers,initialization,all aliases and every guarded/monitored read/write. Integer task arguments stay polymorphic and unvalidated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bc.field_c:Ljava/lang/Object;",
+      "originalName": "field_c",
+      "to": "objectArgument",
+      "evidence": "Exact declaration,complete constructor/queue/worker/shutdown/capability consumers reviewed. Name states task payload/lifecycle or dispatcher queue/thread/vendor/permission role. Preserve original public/private/volatile modifiers,initialization,all aliases and every guarded/monitored read/write. Integer task arguments stay polymorphic and unvalidated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bc.field_d:I",
+      "originalName": "field_d",
+      "to": "secondaryIntArgument",
+      "evidence": "Exact declaration,complete constructor/queue/worker/shutdown/capability consumers reviewed. Name states task payload/lifecycle or dispatcher queue/thread/vendor/permission role. Preserve original public/private/volatile modifiers,initialization,all aliases and every guarded/monitored read/write. Integer task arguments stay polymorphic and unvalidated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bc.field_e:I",
+      "originalName": "field_e",
+      "to": "intArgument",
+      "evidence": "Exact declaration,complete constructor/queue/worker/shutdown/capability consumers reviewed. Name states task payload/lifecycle or dispatcher queue/thread/vendor/permission role. Preserve original public/private/volatile modifiers,initialization,all aliases and every guarded/monitored read/write. Integer task arguments stay polymorphic and unvalidated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bc.field_f:Ljava/lang/Object;",
+      "originalName": "field_f",
+      "to": "result",
+      "evidence": "Exact declaration,complete constructor/queue/worker/shutdown/capability consumers reviewed. Name states task payload/lifecycle or dispatcher queue/thread/vendor/permission role. Preserve original public/private/volatile modifiers,initialization,all aliases and every guarded/monitored read/write. Integer task arguments stay polymorphic and unvalidated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bc.field_g:I",
+      "originalName": "field_g",
+      "to": "status",
+      "evidence": "Exact declaration,complete constructor/queue/worker/shutdown/capability consumers reviewed. Name states task payload/lifecycle or dispatcher queue/thread/vendor/permission role. Preserve original public/private/volatile modifiers,initialization,all aliases and every guarded/monitored read/write. Integer task arguments stay polymorphic and unvalidated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:df.field_a:Ljava/lang/Thread;",
+      "originalName": "field_a",
+      "to": "workerThread",
+      "evidence": "Exact declaration,complete constructor/queue/worker/shutdown/capability consumers reviewed. Name states task payload/lifecycle or dispatcher queue/thread/vendor/permission role. Preserve original public/private/volatile modifiers,initialization,all aliases and every guarded/monitored read/write. Integer task arguments stay polymorphic and unvalidated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:df.field_i:Lbc;",
+      "originalName": "field_i",
+      "to": "queueHead",
+      "evidence": "Exact declaration,complete constructor/queue/worker/shutdown/capability consumers reviewed. Name states task payload/lifecycle or dispatcher queue/thread/vendor/permission role. Preserve original public/private/volatile modifiers,initialization,all aliases and every guarded/monitored read/write. Integer task arguments stay polymorphic and unvalidated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:df.field_j:Z",
+      "originalName": "field_j",
+      "to": "shutdownRequested",
+      "evidence": "Exact declaration,complete constructor/queue/worker/shutdown/capability consumers reviewed. Name states task payload/lifecycle or dispatcher queue/thread/vendor/permission role. Preserve original public/private/volatile modifiers,initialization,all aliases and every guarded/monitored read/write. Integer task arguments stay polymorphic and unvalidated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:df.field_l:Z",
+      "originalName": "field_l",
+      "to": "microsoftJvm",
+      "evidence": "Exact declaration,complete constructor/queue/worker/shutdown/capability consumers reviewed. Name states task payload/lifecycle or dispatcher queue/thread/vendor/permission role. Preserve original public/private/volatile modifiers,initialization,all aliases and every guarded/monitored read/write. Integer task arguments stay polymorphic and unvalidated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:df.field_p:Z",
+      "originalName": "field_p",
+      "to": "privilegedTasksEnabled",
+      "evidence": "Exact declaration,complete constructor/queue/worker/shutdown/capability consumers reviewed. Name states task payload/lifecycle or dispatcher queue/thread/vendor/permission role. Preserve original public/private/volatile modifiers,initialization,all aliases and every guarded/monitored read/write. Integer task arguments stay polymorphic and unvalidated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:df.field_x:Lbc;",
+      "originalName": "field_x",
+      "to": "queueTail",
+      "evidence": "Exact declaration,complete constructor/queue/worker/shutdown/capability consumers reviewed. Name states task payload/lifecycle or dispatcher queue/thread/vendor/permission role. Preserve original public/private/volatile modifiers,initialization,all aliases and every guarded/monitored read/write. Integer task arguments stay polymorphic and unvalidated.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ie.field_d:Ljava/awt/Component;",
+      "originalName": "field_d",
+      "to": "delegateComponent",
+      "evidence": "Exact private Component declaration plus complete constructor/paint/update bodies reviewed. Retains delegate alias and receives both paint/update forwarding. Preserve declaration modifiers,default initialization,all aliases/reads/writes and guard-dependent reset order.",
       "confidence": "reviewed"
     },
     {
@@ -602,6 +728,90 @@
       "originalName": "$cfr$sneakyThrow",
       "to": "throwUnchecked",
       "evidence": "Complete declaration/body verified against exact source-reviewed private static<T extends Throwable> RuntimeException helper with throws T and body throw(T)throwable. Preserve generic exception signature, original Throwable identity, null behavior, annotation and every explicit type argument/call site; do not wrap or convert checked exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(BIIII)Lbc;",
+      "originalName": "a",
+      "to": "requestFullscreenEnter",
+      "evidence": "Full wrapper and worker kind6 reviewed. Wrong byte>-57 invokes shutdown(38) before enqueue. Pack secondary integer as param2+(param3<<16),primary as (param1<<16)+param4 without masking/validation; worker unpacks width/height/bit depth/refresh arguments exactly. All original widths,overflow,guards,task ordering,monitors,aliases,exception paths/context retained; no implementation changes or whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(BLjava/lang/Class;[Ljava/lang/Class;Ljava/lang/String;)Lbc;",
+      "originalName": "a",
+      "to": "requestDeclaredMethod",
+      "evidence": "Evaluates59%((-21-byte)/46) before allocation/enqueue of kind8 Object[]{Class,methodName,parameterTypes}. Preserve Class[] alias and worker bootstrap-class permission test. All original widths,overflow,guards,task ordering,monitors,aliases,exception paths/context retained; no implementation changes or whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(BLjava/lang/Runnable;I)Lbc;",
+      "originalName": "a",
+      "to": "requestThreadStart",
+      "evidence": "Byte<31 returns null; otherwise kind2 with Runnable alias and integer priority. Worker sets daemon,starts thread,then sets priority before publishing result: preserve start-before-priority and resulting partial effects on failure. All original widths,overflow,guards,task ordering,monitors,aliases,exception paths/context retained; no implementation changes or whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(BZILjava/lang/String;)Lbc;",
+      "originalName": "a",
+      "to": "requestSocketConnection",
+      "evidence": "Evaluates -5%((-38-byte)/54),then enqueues Boolean-selected kind22 or1 with exact host/port aliases. Worker kind1 directly creates Socket;kind22 uses alternate Socket-returning connector with original failure/message handling. Only connector factory and abstract Socket-return declaration corroborate result type; unrelated connector internals are not renamed. All original widths,overflow,guards,task ordering,monitors,aliases,exception paths/context retained; no implementation changes or whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(I)Lbc;",
+      "originalName": "a",
+      "to": "requestDisplayModes",
+      "evidence": "Wrong int!=5 clears static OS String before enqueue kind5. Worker permission/vendor branches and reflected listmodes call remain unchanged. All original widths,overflow,guards,task ordering,monitors,aliases,exception paths/context retained; no implementation changes or whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(IBLjava/lang/Object;II)Lbc;",
+      "originalName": "a",
+      "to": "enqueueTask",
+      "evidence": "Allocates record,assigns kind/object,wrong byte>-36 writes static cache integer,then primary/secondary integer arguments. Inside dispatcher monitor append to FIFO,updating both head/tail when empty,otherwise old tail.next then tail; notify before monitor exit. Preserve argument identity,record initial status0 and write/synchronization order. All original widths,overflow,guards,task ordering,monitors,aliases,exception paths/context retained; no implementation changes or whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(IILjava/lang/String;)Lbc;",
+      "originalName": "a",
+      "to": "requestDirectSocket",
+      "evidence": "Evaluates114%((intGuard-34)/51) before delegating socket wrapper(byte-93,false,port,host). Preserve extra guard and exact always-kind1 path. All original widths,overflow,guards,task ordering,monitors,aliases,exception paths/context retained; no implementation changes or whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(ILjava/lang/Class;Ljava/lang/String;)Lbc;",
+      "originalName": "a",
+      "to": "requestDeclaredField",
+      "evidence": "Wrong int!=0 first invokes direct-socket wrapper(-42,93,null),then enqueues kind9 Object[]{Class,fieldName}. Preserve prior task enqueue/failure effects and exact worker bootstrap-class permission test. All original widths,overflow,guards,task ordering,monitors,aliases,exception paths/context retained; no implementation changes or whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(ILjava/net/URL;)Lbc;",
+      "originalName": "a",
+      "to": "requestUrlStream",
+      "evidence": "Wrong int!=0 returns null before enqueue; kind4 preserves URL alias,worker network-block check and DataInputStream(openStream()) allocation/exception order. All original widths,overflow,guards,task ordering,monitors,aliases,exception paths/context retained; no implementation changes or whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(Ljava/awt/Frame;I)Lbc;",
+      "originalName": "a",
+      "to": "requestFullscreenExit",
+      "evidence": "Evaluates28%((intGuard+7)/57),then enqueues kind7 with Frame alias. Worker Microsoft-controller and reflected exit branches remain unchanged. All original widths,overflow,guards,task ordering,monitors,aliases,exception paths/context retained; no implementation changes or whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.b(I)V",
+      "originalName": "b",
+      "to": "shutdown",
+      "evidence": "Complete body reviewed: set shutdown flag and notifyAll inside monitor; wrong int!=20269 enables privileged tasks before join; InterruptedException swallowed. Close data,master index,individual index files,random file in order with separate IOException handling. Preserve null checks,loop bounds,partial close and outer RuntimeException/Error/Throwable behavior. All original widths,overflow,guards,task ordering,monitors,aliases,exception paths/context retained; no implementation changes or whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.c(I)Z",
+      "originalName": "c",
+      "to": "isFullscreenAvailable",
+      "evidence": "Disabled privileged tasks return false before guard. Int>-120 clears queue head before Microsoft/vendor-specific controller availability check. Preserve queue mutation,branch order and null-only capability result. All original widths,overflow,guards,task ordering,monitors,aliases,exception paths/context retained; no implementation changes or whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1641,6 +1851,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ve.a(I)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "Complete declaration/body reviewed: Clears c/b/d/e, then int!=-340 writes a=68. Name states static cleanup role while retaining all guards, helper calls, exception context and non-reference writes; identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ve.a([BBLjava/lang/CharSequence;III)I",
+      "originalName": "a",
+      "to": "encodeCp1252Range",
+      "evidence": "Complete six-argument body reviewed. Encodes CharSequence[start,end) into byte[] at offset using client CP1252 table, direct chars1..127/160..255, mapped extensions and byte63 fallback including NUL/unmapped characters. Returns end-start even for negative length; preserve charAt/array access order, all mappings, exact truncation, and byte!=-116 static-reference clear after loop. No new range/null checks or standard-library substitution.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vl.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1685,7 +1909,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-confined-rules.mjs": "a08806d13e3259a5e4a49e9de85dc6561b20a6ffc335a49925ea5169596b7ee2",
-      "confined-names.json": "e0e3a79138f5e9b17d482cd446a0ca0b6142e9a906dc217e45fa2abfd7284a45",
+      "confined-names.json": "2ce537d524740449ee399393469542c2611bb14441ac5b10647b9202a35a3f9b",
       "reproduce-confined.mjs": "9b3831fbe343e76865b33804d8980f36e4b2b1bbbf79b4539c6903b6f9ec7e92",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -304,6 +304,13 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:af",
+      "originalName": "af",
+      "to": "AccountRequestState",
+      "evidence": "Complete instance contract reviewed: final Object subclass, no instance fields or declared constructor, one toString override that throws IllegalStateException (Orb Defence retains RuntimeException context), exactly three shared instances across five static fields. Full cached username-query contract was reviewed at888c; current7de query/file independently inverse-restores to identical original input. Those identities encode request lifecycle, not labels or unrelated static utility roles. All typed field declarations/initializations reviewed, no native owned/type-use declarations. Preserve default constructors, identity/null aliases, state transitions and every unrelated static method/field; same-spelling non-class literals explicitly pinned unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:b",
       "originalName": "b",
       "to": "ClientException",
@@ -315,6 +322,13 @@
       "originalName": "ec",
       "to": "PacketBuffer",
       "evidence": "Byte payload and cursor with big-endian primitive, string and smart encodings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ek",
+      "originalName": "ek",
+      "to": "FullscreenFocusCanvas",
+      "evidence": "Complete six-method instance contract,Frame/volatile flag declarations and complete canvas factory reviewed. Empty constructor,paint/update/focusGained no-ops,focusLost sets volatile flag,owned exit wrapper delegates reviewed Frame release helper; factory attaches canvas and focus listener to display Frame. Unrelated static helpers preserved. No owned/type-use native declarations. Exact same-spelling non-class literals,where present,are separately source-reviewed and pinned unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -430,6 +444,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ql",
+      "originalName": "ql",
+      "to": "DelegatingCanvas",
+      "evidence": "Complete constructor/paint/update contract and sole instance Component field reviewed: constructor retains exact delegate alias,paint/update forward exact Graphics reference to matching delegate method with original RuntimeException wrapping. Unrelated static helpers preserved. No owned/type-use native declarations. Exact same-spelling non-class literals,where present,are separately source-reviewed and pinned unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qp",
       "originalName": "qp",
       "to": "BoundedRandomAccessFile",
@@ -514,6 +535,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ek.field_e:Ljava/awt/Frame;",
+      "originalName": "field_e",
+      "to": "fullscreenFrame",
+      "evidence": "Exact declaration and factory assignment,exit wrapper and callback contract reviewed. Shared display Frame retained in original field. Preserve declaration modifiers,default initialization,all aliases/reads/writes and guard-dependent reset order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ek.field_g:Z",
+      "originalName": "field_g",
+      "to": "focusLost",
+      "evidence": "Exact volatile Boolean declaration,focusLost callback and all instance/factory bodies reviewed. Callback sets it true; obfuscation-guard writes,if present,remain observable. Preserve declaration modifiers,default initialization,all aliases/reads/writes and guard-dependent reset order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ep.field_h:Ljava/nio/ByteBuffer;",
       "originalName": "field_h",
       "to": "buffer",
@@ -553,6 +588,13 @@
       "originalName": "field_h",
       "to": "key",
       "evidence": "Long node key carried by every intrusive node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ql.field_i:Ljava/awt/Component;",
+      "originalName": "field_i",
+      "to": "delegateComponent",
+      "evidence": "Exact private Component declaration plus complete constructor/paint/update bodies reviewed. Retains delegate alias and receives both paint/update forwarding. Preserve declaration modifiers,default initialization,all aliases/reads/writes and guard-dependent reset order.",
       "confidence": "reviewed"
     },
     {
@@ -1109,6 +1151,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ek.a(Lqg;I)V",
+      "originalName": "a",
+      "to": "exitFullscreen",
+      "evidence": "Complete wrapper and called Frame-release body reviewed. ng helper(manager,99,Frame) executes before int!=0 focusGained(null), retaining no-op callback and exact order. Preserve every original argument domain,width,allocation/alias,guard,field write,callback,loop,exception context and evaluation order. Identifier-only rename.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:em.a([Ljava/lang/String;I)Lvk;",
       "originalName": "a",
       "to": "createAccountSuggestionsResult",
@@ -1232,6 +1281,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 8 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ff2923b9823a39b8fc6ed6ab7ebd967aff4209b45721aa5b3bb4971c65ab8022.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gh.a(IIIILqg;I)Lek;",
+      "originalName": "a",
+      "to": "createFullscreenCanvas",
+      "evidence": "Complete factory body reviewed. Creates/attaches/configures/focuses canvas before guard int param1<-63 returns it; other guard values return null after those side effects. Never move guard before construction. Preserve every original argument domain,width,allocation/alias,guard,field write,callback,loop,exception context and evaluation order. Identifier-only rename.",
       "confidence": "reviewed"
     },
     {
@@ -1589,6 +1645,13 @@
       "originalName": "c",
       "to": "isLinked",
       "evidence": "Returns whether the forward link is non-null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ng.a(Lqg;ILjava/awt/Frame;)V",
+      "originalName": "a",
+      "to": "exitFullscreenFrame",
+      "evidence": "Complete Frame-release body/canvas caller reviewed. Int<38 clears static String before retry loop. Preserve captured DungeonAssault.field_K, scanLoop1 label and pending path early return when captured flag!=0; failure may fall through to dispose when flag!=0. Do not replace with unconditional retry-until-success. Preserve every original argument domain,width,allocation/alias,guard,field write,callback,loop,exception context and evaluation order. Identifier-only rename.",
       "confidence": "reviewed"
     },
     {
@@ -2196,7 +2259,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-dungeonassault-rules.mjs": "8eb15e13a50fdc4451ed6ef68e53e6f3481c4d7f58d0976003f9ed284e2452de",
-      "dungeonassault-names.json": "599ef3ccbdef79cebaae4163dbacc4b8769ed8f39cce97c0450540e1425878db",
+      "dungeonassault-names.json": "b4aaac9846e68340b4d4b828078a0630a79bbaf4ddafecdf9f386f4813312ac2",
       "reproduce-dungeonassault.mjs": "91cc0426bf614cfc9a70de2a232ea4543d6576e41cf2fec5dad4cf428a0fd8c4",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
