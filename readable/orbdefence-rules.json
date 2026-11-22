@@ -416,6 +416,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mg",
+      "originalName": "mg",
+      "to": "PacketBuffer",
+      "evidence": "Complete owned constructors and every instance method reviewed: byte payload/cursor, binary primitives, smart/variable encodings, byte ranges, strings, length patches, CRC, RSA and32-round XTEA. Unrelated static helpers/globals retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:o",
       "originalName": "o",
       "to": "DualLinkNode",
@@ -462,6 +469,20 @@
       "originalName": "tf",
       "to": "GameAppletShell",
       "evidence": "Abstract Applet implementing Runnable and focus/window listeners; owns the run loop and abstract init/update/shutdown hooks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mg.field_i:I",
+      "originalName": "field_i",
+      "to": "position",
+      "evidence": "Constructors initialize0; owned reads/writes, backpatches and crypto retain this exact mutable byte cursor. Preserve all noncanonical guard writes and failure positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mg.field_j:[B",
+      "originalName": "field_j",
+      "to": "payload",
+      "evidence": "Complete constructors and all owned I/O reviewed: caller byte array or pooled allocation is the backing payload. Preserve array identity and every reference.",
       "confidence": "reviewed"
     },
     {
@@ -878,6 +899,258 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mg.a(B)I",
+      "originalName": "a",
+      "to": "readUnsignedMedium",
+      "evidence": "Canonical operation reviewed: Read three big-endian bytes as0..16777215. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(BI)V",
+      "originalName": "a",
+      "to": "writeVarInt",
+      "evidence": "Canonical operation reviewed: Encode up to five most-significant-first7-bit groups with continuation; preserve unsigned shifts. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(BLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "writeBase38String",
+      "evidence": "Canonical operation reviewed: Case-fold letters/digits into two ten-character base38 groups, encoded as two56-bit values; preserve20-character truncation, missing positions and other-character mapping. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(B[BII)V",
+      "originalName": "a",
+      "to": "readBytes",
+      "evidence": "Canonical operation reviewed: Copy payload bytes to caller array range while advancing cursor. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(II)V",
+      "originalName": "a",
+      "to": "writeByte",
+      "evidence": "Canonical operation reviewed: Write low8bits. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(IIB[B)V",
+      "originalName": "a",
+      "to": "writeBytes",
+      "evidence": "Canonical operation reviewed: Copy caller array range into payload while advancing cursor. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(IIZ[I)V",
+      "originalName": "a",
+      "to": "decryptXteaRange",
+      "evidence": "Canonical operation reviewed: Decrypt complete64-bit blocks in specified range with32 reverse XTEA rounds and initial sum-957401312; normal-only cursor restoration. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. Start param0/end param1. True guard clears payload after blocks but before normal cursor restoration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(IJ)V",
+      "originalName": "a",
+      "to": "writeLong56",
+      "evidence": "Canonical operation reviewed: Write low56bits as seven big-endian bytes. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard calls the short writer after five bytes; preserve recursive guard failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(JI)V",
+      "originalName": "a",
+      "to": "writeLong",
+      "evidence": "Canonical operation reviewed: Write64bits big endian. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "writeString",
+      "evidence": "Canonical operation reviewed: Reject embedded NUL, encode through original byte helper and append zero. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V",
+      "originalName": "a",
+      "to": "applyRsa",
+      "evidence": "Canonical operation reviewed: Transform signed BigInteger plaintext using supplied exponent/modulus, emit toByteArray with short byte-length prefix. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. Signed BigInteger; exponent param0, modulus param1. Bad guard patches length after plaintext capture, before modPow; preserve short result prefix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(ZLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "writePrefixedString",
+      "evidence": "Canonical operation reviewed: Reject embedded NUL, write leading0, encode through original helper, append0. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a([II)V",
+      "originalName": "a",
+      "to": "encryptXtea",
+      "evidence": "Canonical operation reviewed: Process64-bit blocks using32 XTEA rounds, delta-1640531527 and four indexed int key words. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. Guard modulo before block count/cursor reset; floor(old cursor/8) blocks and processed-end cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.b(B)I",
+      "originalName": "b",
+      "to": "readUnsignedByte",
+      "evidence": "Canonical operation reviewed: Read byte masked255 and advance1. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard invokes null-string writer before reading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.b(BI)V",
+      "originalName": "b",
+      "to": "writeShort",
+      "evidence": "Canonical operation reviewed: Write low16bits big endian. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard calls seven-byte writer after two bytes; preserve recursion/failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.b(II)V",
+      "originalName": "b",
+      "to": "writeInt",
+      "evidence": "Canonical operation reviewed: Write32bits big endian. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.b(IJ)V",
+      "originalName": "b",
+      "to": "writeLong40",
+      "evidence": "Canonical operation reviewed: Write low40bits as five big-endian bytes. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. Guard below99 returns after two bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.c(B)J",
+      "originalName": "c",
+      "to": "readLong",
+      "evidence": "Canonical operation reviewed: Read two unsigned-masked int words and combine high32/low32. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard patches length between the two int reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.c(BI)V",
+      "originalName": "c",
+      "to": "backpatchByteLength",
+      "evidence": "Canonical operation reviewed: Patch byte length behind current cursor without canonical cursor advance. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.c(II)V",
+      "originalName": "c",
+      "to": "writeMedium",
+      "evidence": "Canonical operation reviewed: Write low24bits big endian. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard invokes CRC verification after two bytes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.c(Z)I",
+      "originalName": "c",
+      "to": "readSignedSmart",
+      "evidence": "Canonical operation reviewed: Peek high bit; unsigned byte minus64 or unsigned short minus49152. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. False guard returns-10 before I/O.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.d(BI)V",
+      "originalName": "d",
+      "to": "padZerosTo",
+      "evidence": "Canonical operation reviewed: Write zeros until cursor reaches caller absolute target. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.d(I)B",
+      "originalName": "d",
+      "to": "readByte",
+      "evidence": "Canonical operation reviewed: Read signed byte and advance1. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.d(II)V",
+      "originalName": "d",
+      "to": "backpatchShortLength",
+      "evidence": "Canonical operation reviewed: Patch big-endian short length behind current cursor. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. First-byte relative offset is caller param1, canonical-2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.d(Z)I",
+      "originalName": "d",
+      "to": "readUnsignedShortOrInt",
+      "evidence": "Canonical operation reviewed: Peek sign bit; unsigned short or int masked2147483647. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. False guard calls the original no-op guarded byte reader before peek.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.e(I)I",
+      "originalName": "e",
+      "to": "readUnsignedSmart",
+      "evidence": "Canonical operation reviewed: Peek high bit; unsigned byte or unsigned short minus32768. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. Guard<=118 returns9 without I/O.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.e(II)I",
+      "originalName": "e",
+      "to": "appendCrc32",
+      "evidence": "Canonical operation reviewed: Compute CRC32 over caller start/current cursor, append big-endian int and return it. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. Wrong guard returns41 without I/O.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.f(I)Ljava/lang/String;",
+      "originalName": "f",
+      "to": "readPrefixedString",
+      "evidence": "Canonical operation reviewed: Consume/validate prefix then scan/decode zero-terminated string. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.f(II)V",
+      "originalName": "f",
+      "to": "writeSignedSmart",
+      "evidence": "Canonical operation reviewed: Encode[-64,64) as byte+64 and[-16384,16384) as short+49152; reject other values. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.g(I)Ljava/lang/String;",
+      "originalName": "g",
+      "to": "readString",
+      "evidence": "Canonical operation reviewed: Scan to zero and decode through original helper; consume terminator. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.g(II)V",
+      "originalName": "g",
+      "to": "backpatchIntLength",
+      "evidence": "Canonical operation reviewed: Patch big-endian int length behind current cursor. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.h(I)Z",
+      "originalName": "h",
+      "to": "verifyCrc32",
+      "evidence": "Canonical operation reviewed: Rewind to stored checksum, compute preceding CRC32, read stored big-endian int and compare. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.i(I)Ljava/lang/String;",
+      "originalName": "i",
+      "to": "readNullableString",
+      "evidence": "Canonical operation reviewed: Consume null marker or delegate original zero-terminated reader. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. Null-marker test is param0==~peek; canonical-1. Preserve caller-controlled comparison and delegated reader guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.j(I)I",
+      "originalName": "j",
+      "to": "readUnsignedShort",
+      "evidence": "Canonical operation reviewed: Read two big-endian bytes as0..65535. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. ",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.k(I)I",
+      "originalName": "k",
+      "to": "readVarInt",
+      "evidence": "Canonical operation reviewed: Decode most-significant-first7-bit groups with high-bit continuation; preserve overflow/unbounded scan. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. Accumulator starts at caller param0, canonical0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.l(I)I",
+      "originalName": "l",
+      "to": "readInt",
+      "evidence": "Canonical operation reviewed: Read four big-endian bytes as signed int. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. Advance4 then bad guard clears payload before reading.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mh.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1025,6 +1298,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sd.a(I[BII)I",
+      "originalName": "a",
+      "to": "computeCrc32",
+      "evidence": "Complete helper and table initializer reviewed:256entries, eight reflected shifts with polynomial-306674912, seed-1, table[byte XOR crc &255] XOR crc>>>8, complemented result. Preserve original range/guard/call/failure behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:t.c(Z)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -1160,7 +1440,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-orbdefence-rules.mjs": "7265f3a9f5e13a3fed5621337395faa83930486229ce2e8682b070f11e4f498e",
-      "orbdefence-names.json": "a631a7a88733cbf8d94a94fe8d792ba481c6486047c0f8047010367aa5179204",
+      "orbdefence-names.json": "18a7617f206f2b4cf9f53db048a10ea0e749bb1bc02e23eb67768b9dd0afbde2",
       "reproduce-orbdefence.mjs": "24edd3e6decd14f7af15c46ba33901279428686ce88376fa1945d21ab4b43608",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
