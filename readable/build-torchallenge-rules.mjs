@@ -38,7 +38,7 @@ const classes = {
   mf: ['LevelDecoder', 'Decodes the level byte array into LevelEntity objects.'],
   sl: ['IntrusiveDeque', 'Sentinel-based deque of IntrusiveNode with append, poll and cursor traversal.'],
   ff: ['JavaScriptBridge', 'Static wrappers around netscape.javascript.JSObject call and eval.'],
-  hd: ['GzipDecoder', 'Owns a java.util.zip.Inflater that decompresses into a PacketBuffer.'],
+  hd: ['GzipDecoder', 'Owns a raw java.util.zip.Inflater that reads compressed bytes from a PacketBuffer into a supplied byte array.'],
   rk: ['BufferedCacheFile', 'Buffers reads and writes over a RandomAccessCacheFile with separate windows.'],
   la: ['SectorCacheStore', 'Reads and writes archive sectors across a data and an index BufferedCacheFile.'],
   jk: ['PcmStreamMixer', 'PcmStream owning two IntrusiveDeques of child streams and timed events.'],
@@ -185,10 +185,27 @@ field('qg', 'f', 'I', 'height', 'setTarget stores its height argument here.');
 field('oe', 'j', '[Ljava/lang/String;', 'helpTopicTitles', 'Static array initialised to Welcome to Tor Challenge!, Characters and Basic controls.');
 field('cg', 'c', '[Ljava/lang/String;', 'levelNames', 'Holds Tower0 to Tower5 and boss1 to boss3.');
 
+// Source-reviewed original identities and evidence for readable class/member names.
+const reviewedNames = JSON.parse(fs.readFileSync(new URL('./torchallenge-names.json', import.meta.url), 'utf8'));
+for (const [owner, to, evidence] of reviewedNames.classes) {
+  if (classes[owner]) throw new Error('Class already reviewed: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of reviewedNames.methods) {
+  const symbol = `M:${owner}.${original}${descriptor}`;
+  if (members[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+for (const [owner, original, descriptor, to, evidence] of reviewedNames.fields) {
+  const symbol = `F:${owner}.${original}:${descriptor}`;
+  if (members[symbol]) throw new Error('Field already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export const config = {
   game: 'torchallenge', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-torchallenge-rules.mjs', 'reproduce-torchallenge.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-torchallenge-rules.mjs', 'torchallenge-names.json', 'reproduce-torchallenge.mjs', 'reviewed-game.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   readingGuide(rules, mapping) {
     return ['# Reading Tor Challenge', '',

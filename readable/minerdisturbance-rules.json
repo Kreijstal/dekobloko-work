@@ -360,6 +360,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:an",
+      "originalName": "an",
+      "to": "BoundedRandomAccessFile",
+      "evidence": "Complete constructor, all owned file methods and finalizer reviewed: RandomAccessFile with tracked position and maximum length, seek/read/write/length/close, sentinel write plus EOFException on overflow, deletion of oversized initial file and unlimited-bound conversion. Preserve all guard mutations/returns, partial failures and unrelated static helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bj",
       "originalName": "bj",
       "to": "ResourceArchive",
@@ -444,6 +451,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pd",
+      "originalName": "pd",
+      "to": "GzipDecompressor",
+      "evidence": "Complete owned inflater method, fields and constructors reviewed: gzip magic31/139, lazy raw Inflater, caller output, original input offset/length and reset/error paths. Preserve guards/early returns, TerraPhoenix caller-supplied input offset and unrelated static helpers/initializers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pi",
       "originalName": "pi",
       "to": "IntrusiveNode",
@@ -477,6 +491,797 @@
       "to": "ArchiveProvider",
       "evidence": "Abstract provider of the encoded index and groups consumed by ResourceArchive.",
       "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 db3a0e46cc17f36e81d5e85d23c9829f0678ae6c6b8850ca20d0922cb3cb2881.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aa.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 6 null writes to 6 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 fbefe3682eab8cb00d32ec528d2ac921f880b53201ba137774e00d4214884bfe.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 44633a2702bbc13201b9f62fedeaac8d293903425f1f4a8ed7f6a5c68472aae2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.b(I)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 760c8192b9e28f737bcab14e955dda45ebbc37a0ad1c2d530077bde1e7da96d7.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ak.a(Z)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 73721856e731025899bf8563114d6bfc596a4a822d5eb1030527235bf58f86de.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:an.a(B)J",
+      "originalName": "a",
+      "to": "length",
+      "evidence": "Complete file length reviewed: preserve guard negative sentinel or return RandomAccessFile.length.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:an.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete own-static cleanup reviewed: leading string null, bad-guard boolean flag assignment and array null/return versus canonical array null. Preserve original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:an.a(II)V",
+      "originalName": "a",
+      "to": "setTickRate",
+      "evidence": "Complete nanosecond-period setter, GameAppletShell clock consumer and inverse getter reviewed: store1000000000/rate then original guard arithmetic. Preserve division/overflow/failure and order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:an.a(II[BI)V",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "Complete bounded write reviewed: overflow sentinel/EOF path precedes original guard return; valid ranged write advances tracked position. Preserve exact effects, argument order and exceptions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:an.a(IJ)V",
+      "originalName": "a",
+      "to": "seek",
+      "evidence": "Complete seek reviewed: always seek underlying file; original guard may return before updating tracked position. Preserve this distinction and failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:an.b(I)V",
+      "originalName": "b",
+      "to": "close",
+      "evidence": "Complete close reviewed: close/clear nonnull handle, then preserve guard return or original null-argument lookup call; preserve failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:an.b(II[BI)I",
+      "originalName": "b",
+      "to": "read",
+      "evidence": "Complete ranged read reviewed: guard division before RandomAccessFile.read, then advance tracked offset only on positive count. Preserve argument order, EOF and failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:b.b()V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 16 null writes to 16 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ce046c4a4a406caa987234ad834f1e6cbdbb1d0fba5c65b76c7f3aefc51c0168.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 10d34bbdaad0d90fe55c1c26b6531333a3a1d8cf70ecf7a7ea8fbd002484cfc3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bg.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 8095f78c002789a8d1cc02f83fddf96d2a09bbb5b3edc1dd5f40479c272e71f8.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bm.d(I)V",
+      "originalName": "d",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 bb9c83dead59e6f972193031d9d8adb384ba08e6966f44c3a40b253b564fc7eb.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:c.b(B)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 6 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 7066e0ab596be6a6365f4125cd3d1da6fd493cf2bfd59067ea77ef170b9d28ed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dc.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 0add3894649232f6e7cd4cabc453f8e133d65ad409f0d07b4e1b27226038d55d.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 a3c4be88779ecbdbad507dcd5ed2e03a285927b71e20b630f88a3f8a3f3c33da.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:df.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 97d3ff6c1cb082583b4b16c5b68b883203ee907d9f95405bd62fa5a218568ad2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dg.b(B)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 26b704895a4f452d74502aa638ba02591ed7d9e685cc310d28d330c026e3a793.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 8 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 e447c03a4c9138793eb75b1d5b462e1b2714d10b6e35d229e0469a9b56d4c038.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.c()V",
+      "originalName": "c",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 48eea5c903d31c32569b1e2a9b474261786fdd11c625100c21ccdc978f685ac0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.b(I)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 9 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 1b66780fb4119829f25ad1fd5153d703a7a0a3264b45944b8573f8b1b2abe77b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dl.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 a5b823260fae0e97d884103ec1417a9753067cbf6730750b72f2242b2f43c98a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn.b(B)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 7 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 eb7f2dbe953b928a670d8bea3c262d0a903c2aa387930354c2cc0e595f8e281c.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eb.b(B)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 7 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 63354b0ad63285209c9b1af76f31f8adf34f980b7349c9a785317594ec3f2278.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eg.c(I)V",
+      "originalName": "c",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 518a85ee60375ba625263f9fafa7d311591fb6757e1a52c37acc5ead2635e9cb.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:el.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 625a995ee5d3b9f3975b68b72b450dfc69c5b6cbaffccaa7eadfbdb49d53765b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:em.b(B)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 7 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 1e31b9c2ada2491ab0e502d1a286d024b4ab4f118754aef7bde600121e5d9015.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fa.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 7b4f7d052eca76b140ffa4e034499c12350a37ef32027f08afaab61d6007371b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.a(Z)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 9 null writes to 6 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 c8a0bc69bf460c6228d7fc773ddeee60e5e363a515af8e244dbc2774d560f14c.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ff.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 6461f9f5f2c2019c35c5b0b7ba948d65d546d5e58d3c98ce6e34d354d5a02be4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ad01047cbc44a6d4527183f52255183a1346bf48656bb30553e37e67ce810ad0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.d()V",
+      "originalName": "d",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 27801428b238b865fc69632d276ab5f34422987deffa9bb5fa7179eae660238e.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 fd3a7d33af3e793fa6ca654e6436b694726ca0777bc82218d109d781a60c343f.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gi.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 c44c47464db2c3cee3c94547cc23e988fa48db896aaf9747c12b0605a2d4d2af.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 8 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 6919c6354971fa3e410252cae9d6257081b8e548da3170a892a9a2f630246926.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gk.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 2e21e96bf871f9c02dc0ba283402f2b2813e02e68c7448f2b7f621978b44c5b6.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hd.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 8 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 0f5ab5cb72674c222f590c620e6faf715a2c6f93b3c1c9f02a4a280124055238.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hi.a(Z)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 4c1a12003a647ab4cf326126e1026183e4dca9ff0d4a27bf4429d462020851fd.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hl.b(Z)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 7857e790f8060520c43fba47da42004ca671792614c0e8eac6dc3457114b8081.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hm.c(B)V",
+      "originalName": "c",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 c3e01d3bdaf8811c16de3473dc2c77c714ca574616f6c4e1a4fd6e09d3c68c99.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:id.b(I)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 70ea04c3bad7194bd02b7b6fb4607f8a5acc72751cb9392a492e408a1ece6c37.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ii.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 15d5714443b5f8d7bc5740005119d16651c26cf2e3084ed575dc1e8204874cbb.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ij.a(Z)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 b3e7ff07e62b2bc3a80f405de9c816dbbe905b46b585a59bff8a649a00bee49c.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:im.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 bcc4ea4455b33b95e154960c2d89f13318eb1d2a83edd1a3f97c453ceca50b95.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:in.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 798e70dae43a75719fe13c3add6155a80f77e205ec7b994e4349699cf652beb1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 500e6b630b22a5144172e7a325d2bd70ccfb3e933b98cf1555f21923a2504bca.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.c()V",
+      "originalName": "c",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 22 null writes to 22 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 fe1a14bfdcfc87cbdb6d3d76245e5e6d06b2306f3cf960e9dad5f1702086a615.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jf.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 cd4548496fd7e34394c71964d3b92d6fa3ae98c3f6e32ddc6a7d4d1ad57f9a86.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jg.b(B)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 e24be7efe49c18c52664f0c6d14e56fd270f0873293605e48cf00084ab1fa468.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 508ccf54013d489f2c4b44d90a2963ca84a8675306124ba2655887f5a0c17b26.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kc.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 10 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 08995a7a782e0da5d287fa5515fe30079f72577ab118cc9ba8086273e9b6f367.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kf.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 9 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 913a080f1acea9ee80c05fce9e533780dec30bedb756792e15ab63e997765e48.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kn.d(B)V",
+      "originalName": "d",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 da6aab91389e0f2eee2f247b0804f306a09bd9aa82d16c38c566502dc59d209d.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:l.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 9dea748b6460a4b7228922a28cfd2fe46621c728576be6488e69e28840876c27.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a()V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 4f62c7391eebb12878a4879cce101bce98a04c389a4f723d1a047c68ca0f40df.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ld.d(Z)V",
+      "originalName": "d",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 7f920c2b72549522f07221c5f26fed46ba5662decc71ad6a75215173da1cef89.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:le.b(I)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 4a61b5a25b51ed8e769c50ce17f194e536e5ab0c94c8be033617dc9043545a76.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mb.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 6 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 b3c3eb14938139c4722ec3ff6dcbe4b5a79efa351efff2525f4ef3a453deab77.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:md.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 264871e28b0adbb96f28054ba265d53ecefd4b78b1fe09642be9a52c7cea01b5.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mf.c(B)V",
+      "originalName": "c",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 7 null writes to 6 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 d5ae79e5fa4c260bedb3c308aedc1e067226638a7bf666477428d1ca711b428f.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 11d7b5cf838c6f9a8d5035db55cf9ef4fa3be0859c7dee9d27e1dc631db5b11a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mj.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 bb5d0afa587c5cdbcdd007b47ed36d03621c09cba00314641d8dc0c76d8fc705.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mm.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 c4d7db522823b223cc7cd9ec400365cd9fd5f123bef187369b96d44da08f42c3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nd.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 dea5d14db5c38b2cfb1c1a848b6ca37e70eca74d3e04ece8375468132b107283.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nf.a(Z)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 5ff01df61dffba384e7a2dc483051f756a91e59c830c522d7f7d4e50bbf31b1d.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.b()V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 a9fe3f0a2943b5f76b8176f7cbaf15a713782a58604942c5f4a50003249244a9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:o.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 2acda127677b554da010b49eb3d00f1fa66aae6a377cf07e52e8fe412d46273f.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ob.o(I)V",
+      "originalName": "o",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 0c21e2653bf65b7f60e50245a81b4192fe1af6ce0fa327a425d92e1ee70bc8f6.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.b(B)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 c49daf6f117bd58127473103e584cd59ec7b760cc0d441d5df5378d4c005a12e.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 2fd33b6aceb493a6c6d8656c464a091e13943e9e53bbefa4b3f197c1c58a29ab.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ok.d(I)V",
+      "originalName": "d",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 b68dd05e96a87ba0b10acc871adf91ef94b33f03401d08228ea5e223a5416d27.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ol.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 8 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ba743ecc3d10d0e8fd4beb3217d98df6c856b4406e3679b4b2f2c1416fd04803.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:om.b(I)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 89e730988f69110ba06b62ca3eb81f5cb2811b4e83a2d9c8396403cbdb61276a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pa.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 71e8c618203ecf7b42a54f76a944bb21dd9df85f38a493bd9e6e29d7851f8692.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pd.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete own-static cleanup reviewed: preserve invalid-guard raster call before nulling client/sprite references, including nulls skipped on failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pd.a(Ljava/lang/CharSequence;IZB)Z",
+      "originalName": "a",
+      "to": "isValidInteger",
+      "evidence": "Complete radix2..36 integer validation reviewed: optional leading plus, leading minus, ASCII digits/letters, signed accumulation and multiplication/division overflow check. Preserve no-digit false, invalid-radix exception, null behavior and bad-guard recursion.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pd.a(Ljava/lang/CharSequence;ZZI)I",
+      "originalName": "a",
+      "to": "parseInteger",
+      "evidence": "Complete radix2..36 signed integer parser reviewed: optional plus/minus, ASCII digit mapping, range/overflow checks and no-digit failure. Preserve negative accumulation, NumberFormatException/wrappers and bad-guard sprite null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pd.a(Lsb;Z[B)V",
+      "originalName": "a",
+      "to": "decompress",
+      "evidence": "Complete gzip operation reviewed: magic check, lazy raw Inflater, supplied output, original offset/length expressions and reset/error paths. Preserve bad-guard arithmetic/calls/early returns and partial state. TerraPhoenix uses supplied input offset rather than a forced constant10; no gzip behavior fixes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.b(B)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 2a624dffbb5be728864343f95c5901f696e751cbc7f3d7f80da3c3b802705c3f.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pf.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 9add3f9a3cc74e765b8b42082282e785ccc3fae561f77a87d8c8f38e4f763880.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pg.a()V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 f81c678afbb3a6b0082f28d9ea1cf8ce7aded2205bab1387a2e07d222c30fee2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.d(I)V",
+      "originalName": "d",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 9 null writes to 9 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 79f3c0378b62f5ee5fbc470d9d4a295d78da9a3ff58b395f2c4d30cd529babc9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pj.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 219e211f8e4c03e326c355bc85ca7b679af9e7bd952b27473d26ebc8e37aefe2.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pl.b(B)I",
+      "originalName": "b",
+      "to": "getTickRate",
+      "evidence": "Complete getter, period producer and applet clock consumer reviewed: original cast of1000000000/period; preserve bad-guard static string null and zero-period failure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qc.b(I)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 c91d7d6bef930eb9e3da43b92adec30093d902dceb718ac6b9ea8a9aba69fc43.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.a(Z)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 5e3d890b8cf567a9f171dd656fbb459e5bcec18a8091fed15b7c9640d056d325.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qe.a(B)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 eb40d2613c51380ee9a3d643720ee6aa063c83bdc1d22ff82a9ba73a9c898309.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qg.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 4c4614b43f84c7167011c30250519d6e41f629e856c982d0938a9798e70837e3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qk.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ce5e04e08e6752274f86b48966d4855639dc7cbe9128b1fb7cdb3ad6572ede27.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qm.b(I)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 7a110438ea0245e99eddc57ce578dbdaf549d0d0acd5bb9d4afe2511a5e2e858.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rb.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 610d0727378763ac6779491d1ecdbce85d33f350c25e5b842e12f1e25d8f6217.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:re.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 8718a2ceef100940e03cda8d29af026b5b8724484703aee0932d8f4fd9e8e124.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sd.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 7 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 29b1e15b656fb87951ca798d305a0385ba1922066365a7d43038a6048facbe6c.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:si.b(B)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 41f52ac317b74a24f959e76823fc1d6e0fe11c2abdb98e448b44f057cfc6c2cc.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 1d454202b00cd8e26a74f64f3d6f7a0b6d1425bd945b150a7ff3f7ec50a530ec.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:td.a(Z)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 3f6bee69f2b071555cfa0fc82246c9f7d7d1fdc4b72c74ad0c718129126a8358.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:te.b(I)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 478f98b5e3a48775e413b167a303763a70bb53af061c945a8de69f2668a7066f.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ti.c(B)V",
+      "originalName": "c",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 14 null writes to 7 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 4d40181aeda782a6b82647cbe782afed54b9f1f7dc17ecddbaf526a45b4aff3d.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.a(Z)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 a7aff3127f8e9256b4f0c1282444ca652b13016792d1f7ea9bc36df567be2054.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tk.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 85a39c14b62213552bd51ee7c438ec6fb46375ae8df5aa2634ac53541a051cb6.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:u.c(I)V",
+      "originalName": "c",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 c6eaa5c67a40d2110c4a158599e84f76e3b04784bdf591638e4af72faae508f9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ub.b(I)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 cd4847b68874c477d8407a10b855fdf7c07196536b80aa30e0de801db509e41b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.b(B)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 470a8ae77dc024198698e151771d8b1428c0c2f6abbc6fb6af029e22f026ee2a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:va.a()V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 9afa273f48909703d70946c71a77fe437d3cbdc81c1721b4ad5d3a637c6b8b11.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ve.a()V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 8 null writes to 8 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 1e8e9c472ad628c8a4f321f7f581b57ca20fd13a211624b54191e9f91690f02f.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vh.b(I)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 13 null writes to 8 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 3b1711e5c767ef11f15ef939498eb4d1e97563a6e4af3557b411dab0e8adc120.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vi.a(I)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 4e773362c4c7899ef744d60f23406d3c68bd399f265444e0f95613be218b510b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wa.e(I)V",
+      "originalName": "e",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 3f6d5edae9eb2ea87d361a4cba1af557381853e47a0e3a8f31c2e2532a703541.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:we.a()V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 27580043db7d883c47ffeb527b24d0fdc9d20cb2373ca2b572643724d41cde25.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wk.a(Z)V",
+      "originalName": "a",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 6 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 5d5514aaea45bdd4395502fa95ec430dd38044ffb94764467a5a531c1d11b526.",
+      "confidence": "reviewed"
     }
   ],
   "classNameLiterals": {
@@ -494,7 +1299,8 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-minerdisturbance-rules.mjs": "182103a357fc0c5104336a920de7e68996dc661f3f91b9f2401533643f04bdb5",
+      "build-minerdisturbance-rules.mjs": "16fcf2e48a0b24b7a3b5adfaa84bb4d835098253436d0d71784385c2e1228b80",
+      "minerdisturbance-names.json": "314dfa7cd6690a2fbc6ade3bec3da78ae61073e16382cbad401f8eb7e1dbdf30",
       "reproduce-minerdisturbance.mjs": "9c29b772086ae02805a24c9b493bfd651e742e7206976e902e269a1ae4c1e5d3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
