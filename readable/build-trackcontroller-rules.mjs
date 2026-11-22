@@ -187,10 +187,27 @@ method('sl', 'a', '(ZIZ)V', 'drawGrid', 'Loops rows and columns in 26-pixel step
 method('sl', 'a', '([[IB[[I[[B)V', 'setGrids', 'Copies the tile, target and floor arrays into new arrays and centres the target block.');
 method('sl', 'a', '(Lea;I)V', 'loadLevel', 'Passes the LevelData grids to setGrids; ActiveLevel overrides it.');
 
+// Source-reviewed original identities and evidence, including owned static cleanup.
+const names = JSON.parse(fs.readFileSync(new URL('./trackcontroller-names.json', import.meta.url), 'utf8'));
+for (const [owner, to, evidence] of names.classes) {
+  if (classes[owner]) throw new Error('Class already reviewed: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of names.methods) {
+  const symbol = `M:${owner}.${original}${descriptor}`;
+  if (members[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+for (const [owner, original, descriptor, to, evidence] of names.fields) {
+  const symbol = `F:${owner}.${original}:${descriptor}`;
+  if (members[symbol]) throw new Error('Field already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export const config = {
   game: 'trackcontroller', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-trackcontroller-rules.mjs', 'reproduce-trackcontroller.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-trackcontroller-rules.mjs', 'trackcontroller-names.json', 'reproduce-trackcontroller.mjs', 'reviewed-game.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   readingGuide(rules, mapping) {
     return ['# Reading Track Controller', '',

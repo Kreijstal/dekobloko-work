@@ -114,10 +114,27 @@ method('Transmogrify', 'c', '(I)V', 'clearAppletStatics', 'Nulls the static fiel
 method('Transmogrify', 'e', '(I)V', 'releaseGameResources', 'Invoked just before destroy at shutdown to release audio and graphics resources.');
 method('ue', 'b', '(I)V', 'dumpRackState', 'Prints each rack tile and any tile that believes itself elsewhere.');
 
+// Source-reviewed original identities and evidence, including owned static cleanup.
+const names = JSON.parse(fs.readFileSync(new URL('./transmogrify-names.json', import.meta.url), 'utf8'));
+for (const [owner, to, evidence] of names.classes) {
+  if (classes[owner]) throw new Error('Class already reviewed: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of names.methods) {
+  const symbol = `M:${owner}.${original}${descriptor}`;
+  if (members[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+for (const [owner, original, descriptor, to, evidence] of names.fields) {
+  const symbol = `F:${owner}.${original}:${descriptor}`;
+  if (members[symbol]) throw new Error('Field already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export const config = {
   game: 'transmogrify', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-transmogrify-rules.mjs', 'reproduce-transmogrify.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-transmogrify-rules.mjs', 'transmogrify-names.json', 'reproduce-transmogrify.mjs', 'reviewed-game.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   readingGuide(rules, mapping) {
     return ['# Reading Transmogrify', '',
