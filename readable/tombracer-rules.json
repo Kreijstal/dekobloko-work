@@ -738,6 +738,13 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:a",
+      "originalName": "a",
+      "to": "NativeModelRenderContext",
+      "evidence": "Complete class/constructor reviewed: binds a per-thread native model context, owns pooled model copies, and dispatches model/transform drawing with optional fixed depth.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:aaa",
       "originalName": "aaa",
       "to": "LegacyOpenGlWaterTextures",
@@ -1697,6 +1704,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:e",
+      "originalName": "e",
+      "to": "NativeResource",
+      "evidence": "Complete interface, release queue/node, implementations and finalizers reviewed: boolean resource release is invoked immediately or when the deferred queue drains. Preserve flag/lifecycle order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ea",
       "originalName": "ea",
       "to": "C2SActionPacket",
@@ -2628,6 +2642,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:i",
+      "originalName": "i",
+      "to": "NativeToolkitModel",
+      "evidence": "Complete class and constructors reviewed: native-handle ToolkitModel backed by NativeSoftwareGraphicsToolkit and heap; consumes decomposed ModelData, pools copies, transforms/draws and retains synchronization/auxiliary data.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ib",
       "originalName": "ib",
       "to": "Spawner",
@@ -2863,6 +2884,13 @@
       "originalName": "iw",
       "to": "GpuPrimitiveType",
       "evidence": "Constants Direct3DToolkit.d3dPrimitiveType maps to point, line list, line strip, triangle list, strip and fan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:j",
+      "originalName": "j",
+      "to": "NativeToolkitSprite",
+      "evidence": "Complete class/both constructors and SpriteData conversion reviewed: native ToolkitSprite with size/inset/draw/affine wrappers and packed pixel or palette/index/alpha initialization.",
       "confidence": "reviewed"
     },
     {
@@ -6363,6 +6391,20 @@
       "originalName": "ww",
       "to": "Model",
       "evidence": "Software 3D model extending ka with vertex, face and colour arrays, normals and bounds. Body matches several games Model.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:xa",
+      "originalName": "xa",
+      "to": "NativeRenderBuffer",
+      "evidence": "Complete class and toolkit factory reviewed: native RenderBuffer initialized from dimensions; release forwards native handle/flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ya",
+      "originalName": "ya",
+      "to": "NativeSoftwareGraphicsHeap",
+      "evidence": "Complete class and toolkit createHeap/updateTime/dispose callers reviewed: GraphicsHeap for the native software backend, with native initialization and separate time/disposal hooks. Distinct from existing NativeGraphicsHeap.",
       "confidence": "reviewed"
     },
     {
@@ -12225,6 +12267,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:a.E(JZ)V",
+      "originalName": "E",
+      "to": "releaseNativeHandle",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: releaseNativeHandle describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.HA(JLha;II)V",
+      "originalName": "HA",
+      "to": "initializeNativeContext",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: initializeNativeContext describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.M(J)V",
+      "originalName": "M",
+      "to": "bindContextNative",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: bindContextNative describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.UA(JJJ[II)V",
+      "originalName": "UA",
+      "to": "drawModelNative",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: drawModelNative describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:a.a()V",
       "originalName": "a",
       "to": "bindToCurrentThread",
@@ -12257,6 +12327,20 @@
       "originalName": "b",
       "to": "bindNativeContext",
       "evidence": "Passes the native context id to its native binder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.f(JJJ[III)V",
+      "originalName": "f",
+      "to": "drawModelAtDepthNative",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: drawModelAtDepthNative describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:a.w(Z)V",
+      "originalName": "w",
+      "to": "releaseNative",
+      "evidence": "Complete queue immediate/deferred calls, eleven implementations and finalizer routes reviewed. Resource-release contract retains boolean flag and descriptor. Source naming/reversal does not establish native binary or whole-runtime equivalence. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -14441,6 +14525,13 @@
       "originalName": "h",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ba.w(Z)V",
+      "originalName": "w",
+      "to": "releaseNative",
+      "evidence": "Complete queue immediate/deferred calls, eleven implementations and finalizer routes reviewed. Resource-release contract retains boolean flag and descriptor. Source naming/reversal does not establish native binary or whole-runtime equivalence. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -17062,10 +17153,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cka.DA(IIII)V",
+      "originalName": "DA",
+      "to": "setProjectionParameters",
+      "evidence": "Software/hardware/OpenGL bodies and ToolkitState reviewed: stores the projection center/scale quartet returned by projectionParameters and updates derived projection/clip state. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cka.GA(I)V",
       "originalName": "GA",
       "to": "clear",
       "evidence": "Clears the colour buffer to a colour. Body matches sumoblitz OpenGlGraphicsToolkit.clear.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cka.HA(IIII[I)V",
+      "originalName": "HA",
+      "to": "projectPointAtDepth",
+      "evidence": "Software/hardware bodies reviewed: transform point and use fixed supplied divisor. Both reject actual near/far z; software also rejects view bounds. Preserve backend-specific coordinate/sentinel behavior. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -17083,6 +17188,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cka.L(III)V",
+      "originalName": "L",
+      "to": "setFogParameters",
+      "evidence": "Software/hardware bodies and lighting callers reviewed: fog RGB and distance/enable parameters plus backend updates. Preserve software channel clamps and ignored parameter. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cka.SA(IIII[III)V",
+      "originalName": "SA",
+      "to": "blitPixels",
+      "evidence": "Complete software body and frame/blitter callers reviewed: source rectangle copy with explicit source offset/stride and destination coordinates; preserve original bounds behavior and pixel values. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cka.T(IIII)V",
       "originalName": "T",
       "to": "intersectClip",
@@ -17097,10 +17216,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cka.XA()I",
+      "originalName": "XA",
+      "to": "farClipDistance",
+      "evidence": "Software/hardware getters and state capture/restore reviewed: returns far clipping depth stored by depth-range setter. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cka.Y()[I",
       "originalName": "Y",
       "to": "projectionParameters",
       "evidence": "Returns the projection parameter array. Body matches sumoblitz GraphicsToolkit (projectionParameters). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cka.ZA(IFFFFF)V",
+      "originalName": "ZA",
+      "to": "setDirectionalLighting",
+      "evidence": "Software/hardware bodies and lighting callers reviewed: RGB, opposed directional intensities and normalized direction. Preserve software ignored RGB, float/zero-vector behavior, fixed-point casts and callbacks. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -17629,6 +17762,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cka.da(III[I)V",
+      "originalName": "da",
+      "to": "projectPoint",
+      "evidence": "Software/hardware bodies reviewed: world transform and screen-relative projection/depth. Software rejects near/far/view bounds with three -1 values; hardware preserves near-zero-z fallback without those rejection checks. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cka.e()Lgda;",
       "originalName": "e",
       "to": "getTransform",
@@ -17657,6 +17797,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cka.ea(IIIIIIIII)V",
+      "originalName": "ea",
+      "to": "drawWorldLineAtDepth",
+      "evidence": "Software/hardware bodies reviewed: transform/near-clip endpoints and draw using fixed supplied divisor/orthographic projection. Preserve interpolation, rounding and backend state. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cka.f()Z",
       "originalName": "f",
       "to": "isBloomEnabled",
@@ -17675,6 +17822,13 @@
       "originalName": "f",
       "to": "estimatedResourceBytes",
       "evidence": "Sum of three byte counters updateTime compares against 96 MB.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cka.f(II)V",
+      "originalName": "f",
+      "to": "setDepthRange",
+      "evidence": "Software/hardware/OpenGL bodies and state capture/restore reviewed: stores near/far clipping depth and updates context, projection and fog state. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -17724,6 +17878,13 @@
       "originalName": "h",
       "to": "setTextureConstantArgb",
       "evidence": "Sets the texture constant colour from ARGB. Body matches voidhunters OpenGlToolkit.setTextureConstantArgb.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cka.i()I",
+      "originalName": "i",
+      "to": "nearClipDistance",
+      "evidence": "Software/hardware getters and state capture/restore reviewed: returns near clipping depth used by point/line rejection. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -17801,6 +17962,13 @@
       "originalName": "l",
       "to": "buildOrthographicProjection",
       "evidence": "Loads a glOrtho projection scaled by the orthographic scale.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cka.la()V",
+      "originalName": "la",
+      "to": "resetClip",
+      "evidence": "Software/hardware bodies reviewed: resets clip to full target dimensions and updates context/scissor state with original callbacks. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -17920,6 +18088,34 @@
       "originalName": "v",
       "to": "initializeRenderState",
       "evidence": "Constructor helper setting the default texture-combine, lighting and client state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cka.v(IIIIIIII)V",
+      "originalName": "v",
+      "to": "drawWorldLine",
+      "evidence": "Software/hardware bodies reviewed: transform and near-clip world endpoints, perspective-project and draw with original color/blend/backend state. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cka.xa(F)V",
+      "originalName": "xa",
+      "to": "setAmbientLightIntensity",
+      "evidence": "Software/hardware/OpenGL bodies and lighting callers reviewed: ambient light multiplier in fixed/float state; preserve cast/comparison behavior and backend light-color updates. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cka.ya()V",
+      "originalName": "ya",
+      "to": "clearDepthBuffer",
+      "evidence": "Complete software/OpenGL bodies reviewed: full/clipped float depth fill with2147483648.0f, or depth-write enable and glClear256; preserve state effects and clipping. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cka.za(IIIII)V",
+      "originalName": "za",
+      "to": "fillCircle",
+      "evidence": "Complete software/hardware bodies reviewed: clipped circle fill, radius normalization and overwrite/alpha/additive modes or circle primitive. Preserve fences, arithmetic and invalid-mode failure. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -19120,6 +19316,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cta.SA(IIII[III)V",
+      "originalName": "SA",
+      "to": "blitPixels",
+      "evidence": "Complete software body and frame/blitter callers reviewed: source rectangle copy with explicit source offset/stride and destination coordinates; preserve original bounds behavior and pixel values. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cta.T(I)Z",
       "originalName": "T",
       "to": "resetDevice",
@@ -19607,6 +19810,13 @@
       "originalName": "w",
       "to": "applyAlphaTest",
       "evidence": "HardwareOpenGlToolkit toggles GL_ALPHA_TEST. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cta.ya()V",
+      "originalName": "ya",
+      "to": "clearDepthBuffer",
+      "evidence": "Complete software/OpenGL bodies reviewed: full/clipped float depth fill with2147483648.0f, or depth-write enable and glClear256; preserve state effects and clipping. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -22228,6 +22438,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:e.w(Z)V",
+      "originalName": "w",
+      "to": "releaseNative",
+      "evidence": "Complete queue immediate/deferred calls, eleven implementations and finalizer routes reviewed. Resource-release contract retains boolean flag and descriptor. Source naming/reversal does not establish native binary or whole-runtime equivalence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ea.a(BILuia;II)V",
       "originalName": "a",
       "to": "writeSessionHeader",
@@ -23271,6 +23488,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eo.DA(IIII)V",
+      "originalName": "DA",
+      "to": "setProjectionParameters",
+      "evidence": "Software/hardware/OpenGL bodies and ToolkitState reviewed: stores the projection center/scale quartet returned by projectionParameters and updates derived projection/clip state. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eo.E(B)V",
       "originalName": "E",
       "to": "createCircleBuffer",
@@ -23306,6 +23530,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eo.HA(IIII[I)V",
+      "originalName": "HA",
+      "to": "projectPointAtDepth",
+      "evidence": "Software/hardware bodies reviewed: transform point and use fixed supplied divisor. Both reject actual near/far z; software also rejects view bounds. Preserve backend-specific coordinate/sentinel behavior. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eo.I(I)V",
       "originalName": "I",
       "to": "applyFogParameters",
@@ -23338,6 +23569,13 @@
       "originalName": "KA",
       "to": "setClip",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz SoftwareGraphicsToolkit.setClip. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eo.L(III)V",
+      "originalName": "L",
+      "to": "setFogParameters",
+      "evidence": "Software/hardware bodies and lighting callers reviewed: fog RGB and distance/enable parameters plus backend updates. Preserve software channel clamps and ignored parameter. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -23404,10 +23642,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eo.XA()I",
+      "originalName": "XA",
+      "to": "farClipDistance",
+      "evidence": "Software/hardware getters and state capture/restore reviewed: returns far clipping depth stored by depth-range setter. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eo.Y()[I",
       "originalName": "Y",
       "to": "projectionParameters",
       "evidence": "Returns the projection parameter array. Body matches sumoblitz GraphicsToolkit (projectionParameters). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eo.ZA(IFFFFF)V",
+      "originalName": "ZA",
+      "to": "setDirectionalLighting",
+      "evidence": "Software/hardware bodies and lighting callers reviewed: RGB, opposed directional intensities and normalized direction. Preserve software ignored RGB, float/zero-vector behavior, fixed-point casts and callbacks. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -23908,6 +24160,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eo.da(III[I)V",
+      "originalName": "da",
+      "to": "projectPoint",
+      "evidence": "Software/hardware bodies reviewed: world transform and screen-relative projection/depth. Software rejects near/far/view bounds with three -1 values; hardware preserves near-zero-z fallback without those rejection checks. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eo.e()Lgda;",
       "originalName": "e",
       "to": "getTransform",
@@ -23943,6 +24202,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eo.ea(IIIIIIIII)V",
+      "originalName": "ea",
+      "to": "drawWorldLineAtDepth",
+      "evidence": "Software/hardware bodies reviewed: transform/near-clip endpoints and draw using fixed supplied divisor/orthographic projection. Preserve interpolation, rounding and backend state. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eo.f(B)V",
       "originalName": "f",
       "to": "applyDepthTest",
@@ -23954,6 +24220,13 @@
       "originalName": "f",
       "to": "applyColorCombineOperation",
       "evidence": "HardwareOpenGlToolkit sets GL_COMBINE_RGB for the active unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eo.f(II)V",
+      "originalName": "f",
+      "to": "setDepthRange",
+      "evidence": "Software/hardware/OpenGL bodies and state capture/restore reviewed: stores near/far clipping depth and updates context, projection and fog state. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -24017,6 +24290,13 @@
       "originalName": "h",
       "to": "applyViewMatrix",
       "evidence": "Direct3DToolkit sets the D3D view transform; the OpenGL toolkit reloads the view matrix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eo.i()I",
+      "originalName": "i",
+      "to": "nearClipDistance",
+      "evidence": "Software/hardware getters and state capture/restore reviewed: returns near clipping depth used by point/line rejection. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -24094,6 +24374,13 @@
       "originalName": "l",
       "to": "createDynamicGeometryBuffer",
       "evidence": "Creates the streaming geometry buffer. Body matches sumoblitz HardwareGraphicsToolkit.createDynamicGeometryBuffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eo.la()V",
+      "originalName": "la",
+      "to": "resetClip",
+      "evidence": "Software/hardware bodies reviewed: resets clip to full target dimensions and updates context/scissor state with original callbacks. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -24230,6 +24517,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eo.v(IIIIIIII)V",
+      "originalName": "v",
+      "to": "drawWorldLine",
+      "evidence": "Software/hardware bodies reviewed: transform and near-clip world endpoints, perspective-project and draw with original color/blend/backend state. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eo.w(B)V",
       "originalName": "w",
       "to": "applyDirectionalLightsEnabled",
@@ -24258,6 +24552,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eo.xa(F)V",
+      "originalName": "xa",
+      "to": "setAmbientLightIntensity",
+      "evidence": "Software/hardware/OpenGL bodies and lighting callers reviewed: ambient light multiplier in fixed/float state; preserve cast/comparison behavior and backend light-color updates. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eo.y(B)Lasa;",
       "originalName": "y",
       "to": "getModelTransform",
@@ -24283,6 +24584,13 @@
       "originalName": "z",
       "to": "applyTextureMatrix",
       "evidence": "HardwareOpenGlToolkit loads the active unit's texture matrix into GL_TEXTURE.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eo.za(IIIII)V",
+      "originalName": "za",
+      "to": "fillCircle",
+      "evidence": "Complete software/hardware bodies reviewed: clipped circle fill, radius normalization and overwrite/alpha/additive modes or circle primitive. Preserve fences, arithmetic and invalid-mode failure. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -30054,10 +30362,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:h.w(Z)V",
+      "originalName": "w",
+      "to": "releaseNative",
+      "evidence": "Complete queue immediate/deferred calls, eleven implementations and finalizer routes reviewed. Resource-release contract retains boolean flag and descriptor. Source naming/reversal does not establish native binary or whole-runtime equivalence. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.DA(IIII)V",
+      "originalName": "DA",
+      "to": "setProjectionParameters",
+      "evidence": "Software/hardware/OpenGL bodies and ToolkitState reviewed: stores the projection center/scale quartet returned by projectionParameters and updates derived projection/clip state. Naming only; all original argument order and source operations retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.GA(I)V",
       "originalName": "GA",
       "to": "clear",
       "evidence": "Clears the colour buffer to a colour. Body matches sumoblitz OpenGlGraphicsToolkit.clear. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.HA(IIII[I)V",
+      "originalName": "HA",
+      "to": "projectPointAtDepth",
+      "evidence": "Software/hardware bodies reviewed: transform point and use fixed supplied divisor. Both reject actual near/far z; software also rejects view bounds. Preserve backend-specific coordinate/sentinel behavior. Naming only; all original argument order and source operations retained.",
       "confidence": "reviewed"
     },
     {
@@ -30075,6 +30404,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.L(III)V",
+      "originalName": "L",
+      "to": "setFogParameters",
+      "evidence": "Software/hardware bodies and lighting callers reviewed: fog RGB and distance/enable parameters plus backend updates. Preserve software channel clamps and ignored parameter. Naming only; all original argument order and source operations retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.SA(IIII[III)V",
+      "originalName": "SA",
+      "to": "blitPixels",
+      "evidence": "Complete software body and frame/blitter callers reviewed: source rectangle copy with explicit source offset/stride and destination coordinates; preserve original bounds behavior and pixel values. Naming only; all original argument order and source operations retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.T(IIII)V",
       "originalName": "T",
       "to": "intersectClip",
@@ -30089,10 +30432,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.XA()I",
+      "originalName": "XA",
+      "to": "farClipDistance",
+      "evidence": "Software/hardware getters and state capture/restore reviewed: returns far clipping depth stored by depth-range setter. Naming only; all original argument order and source operations retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.Y()[I",
       "originalName": "Y",
       "to": "projectionParameters",
       "evidence": "Returns the projection parameter array. Body matches sumoblitz GraphicsToolkit (projectionParameters).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.ZA(IFFFFF)V",
+      "originalName": "ZA",
+      "to": "setDirectionalLighting",
+      "evidence": "Software/hardware bodies and lighting callers reviewed: RGB, opposed directional intensities and normalized direction. Preserve software ignored RGB, float/zero-vector behavior, fixed-point casts and callbacks. Naming only; all original argument order and source operations retained.",
       "confidence": "reviewed"
     },
     {
@@ -30114,6 +30471,13 @@
       "originalName": "a",
       "to": "createHeap",
       "evidence": "Hardware toolkits allocate a native heap of the requested size; di passes 96 MB; the software one returns null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(IBIII)V",
+      "originalName": "a",
+      "to": "fillCircleAlpha",
+      "evidence": "Complete wrapper reviewed: guard division then filled-circle call with reordered original arguments and blend mode1. Preserve arithmetic/failure behavior. Naming only; all original argument order and source operations retained.",
       "confidence": "reviewed"
     },
     {
@@ -30334,6 +30698,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.da(III[I)V",
+      "originalName": "da",
+      "to": "projectPoint",
+      "evidence": "Software/hardware bodies reviewed: world transform and screen-relative projection/depth. Software rejects near/far/view bounds with three -1 values; hardware preserves near-zero-z fallback without those rejection checks. Naming only; all original argument order and source operations retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.e()Lgda;",
       "originalName": "e",
       "to": "getTransform",
@@ -30348,6 +30719,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.ea(IIIIIIIII)V",
+      "originalName": "ea",
+      "to": "drawWorldLineAtDepth",
+      "evidence": "Software/hardware bodies reviewed: transform/near-clip endpoints and draw using fixed supplied divisor/orthographic projection. Preserve interpolation, rounding and backend state. Naming only; all original argument order and source operations retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.f()Z",
       "originalName": "f",
       "to": "isBloomEnabled",
@@ -30355,10 +30733,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.f(II)V",
+      "originalName": "f",
+      "to": "setDepthRange",
+      "evidence": "Software/hardware/OpenGL bodies and state capture/restore reviewed: stores near/far clipping depth and updates context, projection and fog state. Naming only; all original argument order and source operations retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.h()Z",
       "originalName": "h",
       "to": "enableBloom",
       "evidence": "OpenGlToolkit adds its bloom effect to the post-process chain and reports success; the others return false.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.i()I",
+      "originalName": "i",
+      "to": "nearClipDistance",
+      "evidence": "Software/hardware getters and state capture/restore reviewed: returns near clipping depth used by point/line rejection. Naming only; all original argument order and source operations retained.",
       "confidence": "reviewed"
     },
     {
@@ -30383,10 +30775,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.la()V",
+      "originalName": "la",
+      "to": "resetClip",
+      "evidence": "Software/hardware bodies reviewed: resets clip to full target dimensions and updates context/scissor state with original callbacks. Naming only; all original argument order and source operations retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.s(IIIII)V",
       "originalName": "s",
       "to": "drawCircle",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz SoftwareGraphicsToolkit.drawCircle. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.v(IIIIIIII)V",
+      "originalName": "v",
+      "to": "drawWorldLine",
+      "evidence": "Software/hardware bodies reviewed: transform and near-clip world endpoints, perspective-project and draw with original color/blend/backend state. Naming only; all original argument order and source operations retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.xa(F)V",
+      "originalName": "xa",
+      "to": "setAmbientLightIntensity",
+      "evidence": "Software/hardware/OpenGL bodies and lighting callers reviewed: ambient light multiplier in fixed/float state; preserve cast/comparison behavior and backend light-color updates. Naming only; all original argument order and source operations retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.ya()V",
+      "originalName": "ya",
+      "to": "clearDepthBuffer",
+      "evidence": "Complete software/OpenGL bodies reviewed: full/clipped float depth fill with2147483648.0f, or depth-write enable and glClear256; preserve state effects and clipping. Naming only; all original argument order and source operations retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.za(IIIII)V",
+      "originalName": "za",
+      "to": "fillCircle",
+      "evidence": "Complete software/hardware bodies reviewed: clipped circle fill, radius normalization and overwrite/alpha/additive modes or circle primitive. Preserve fences, arithmetic and invalid-mode failure. Naming only; all original argument order and source operations retained.",
       "confidence": "reviewed"
     },
     {
@@ -32763,6 +33190,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:i.R(Loa;Lya;II[I[I[I[I[SI[S[S[S[B[B[B[B[S[S[IB[SI[B[S[S[S[I[I[I[B[B[I[I[I[IIIIIII[I)V",
+      "originalName": "R",
+      "to": "initializeNativeModel",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: initializeNativeModel describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.ZA(Li;Li;IZZ)V",
+      "originalName": "ZA",
+      "to": "copyInto",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: copyInto describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:i.a()V",
       "originalName": "a",
       "to": "lockForUpdate",
@@ -32809,6 +33250,27 @@
       "originalName": "b",
       "to": "unlockForUpdate",
       "evidence": "The software model clears its busy flag and notifies waiters; animate calls it last. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.l(JI[IIIIIZ)V",
+      "originalName": "l",
+      "to": "applyTransformNative",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: applyTransformNative describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.oa(Loa;)V",
+      "originalName": "oa",
+      "to": "initializeEmptyNativeModel",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: initializeEmptyNativeModel describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.w(Z)V",
+      "originalName": "w",
+      "to": "releaseNative",
+      "evidence": "Complete queue immediate/deferred calls, eleven implementations and finalizer routes reviewed. Resource-release contract retains boolean flag and descriptor. Source naming/reversal does not establish native binary or whole-runtime equivalence. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -34492,6 +34954,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:j.A(JIIII)V",
+      "originalName": "A",
+      "to": "setInsetsNative",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: setInsetsNative describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.I(J)I",
+      "originalName": "I",
+      "to": "heightNative",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: heightNative describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.JA(J)I",
+      "originalName": "JA",
+      "to": "paddedHeightNative",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: paddedHeightNative describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.M(J)I",
+      "originalName": "M",
+      "to": "widthNative",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: widthNative describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.R(JZ)V",
+      "originalName": "R",
+      "to": "releaseNativeHandle",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: releaseNativeHandle describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.RA(JIIIIIIII)V",
+      "originalName": "RA",
+      "to": "drawScaledNative",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: drawScaledNative describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.W(JIIIII)V",
+      "originalName": "W",
+      "to": "drawNative",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: drawNative describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:j.a()I",
       "originalName": "a",
       "to": "width",
@@ -34534,6 +35045,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:j.b(JFFFFFFIIII)V",
+      "originalName": "b",
+      "to": "drawAffineNative",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: drawAffineNative describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:j.c()I",
       "originalName": "c",
       "to": "height",
@@ -34545,6 +35063,41 @@
       "originalName": "d",
       "to": "paddedWidth",
       "evidence": "Width plus the left and right insets. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.ma(Loa;[I[B[BIIII)V",
+      "originalName": "ma",
+      "to": "initializeFromIndexedPixels",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: initializeFromIndexedPixels describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.ua(Loa;[IIIIIZ)V",
+      "originalName": "ua",
+      "to": "initializeFromPixels",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: initializeFromPixels describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.w(Z)V",
+      "originalName": "w",
+      "to": "releaseNative",
+      "evidence": "Complete queue immediate/deferred calls, eleven implementations and finalizer routes reviewed. Resource-release contract retains boolean flag and descriptor. Source naming/reversal does not establish native binary or whole-runtime equivalence. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.wa(J)I",
+      "originalName": "wa",
+      "to": "paddedWidthNative",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: paddedWidthNative describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.AA(JZ)V",
+      "originalName": "AA",
+      "to": "releaseNativeHandle",
+      "evidence": "Complete NativeTransform3D release wrapper and native declaration reviewed: direct forwarding of resource handle/flag. Preserve native signature and sequencing; source naming checks do not establish native binary equivalence.",
       "confidence": "reviewed"
     },
     {
@@ -34587,6 +35140,13 @@
       "originalName": "d",
       "to": "rotateY",
       "evidence": "AffineTransform3D rotates the x and z rows, including the translation, by a 16384-step angle. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.w(Z)V",
+      "originalName": "w",
+      "to": "releaseNative",
+      "evidence": "Complete queue immediate/deferred calls, eleven implementations and finalizer routes reviewed. Resource-release contract retains boolean flag and descriptor. Source naming/reversal does not establish native binary or whole-runtime equivalence. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -37138,6 +37698,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kda.SA(IIII[III)V",
+      "originalName": "SA",
+      "to": "blitPixels",
+      "evidence": "Complete software body and frame/blitter callers reviewed: source rectangle copy with explicit source offset/stride and destination coordinates; preserve original bounds behavior and pixel values. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kda.T(I)V",
       "originalName": "T",
       "to": "releaseStatics",
@@ -37583,6 +38150,13 @@
       "originalName": "w",
       "to": "applyAlphaTest",
       "evidence": "HardwareOpenGlToolkit toggles GL_ALPHA_TEST. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kda.ya()V",
+      "originalName": "ya",
+      "to": "clearDepthBuffer",
+      "evidence": "Complete software/OpenGL bodies reviewed: full/clipped float depth fill with2147483648.0f, or depth-write enable and glClear256; preserve state effects and clipping. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -44047,6 +44621,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:n.w(Z)V",
+      "originalName": "w",
+      "to": "releaseNative",
+      "evidence": "Complete queue immediate/deferred calls, eleven implementations and finalizer routes reviewed. Resource-release contract retains boolean flag and descriptor. Source naming/reversal does not establish native binary or whole-runtime equivalence. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nb.a(B)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -45846,10 +46427,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.DA(IIII)V",
+      "originalName": "DA",
+      "to": "setProjectionParameters",
+      "evidence": "Software/hardware/OpenGL bodies and ToolkitState reviewed: stores the projection center/scale quartet returned by projectionParameters and updates derived projection/clip state. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.GA(I)V",
       "originalName": "GA",
       "to": "clear",
       "evidence": "Clears the colour buffer to a colour. Body matches sumoblitz OpenGlGraphicsToolkit.clear. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.HA(IIII[I)V",
+      "originalName": "HA",
+      "to": "projectPointAtDepth",
+      "evidence": "Software/hardware bodies reviewed: transform point and use fixed supplied divisor. Both reject actual near/far z; software also rejects view bounds. Preserve backend-specific coordinate/sentinel behavior. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -45867,6 +46462,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.L(III)V",
+      "originalName": "L",
+      "to": "setFogParameters",
+      "evidence": "Software/hardware bodies and lighting callers reviewed: fog RGB and distance/enable parameters plus backend updates. Preserve software channel clamps and ignored parameter. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.SA(IIII[III)V",
+      "originalName": "SA",
+      "to": "blitPixels",
+      "evidence": "Complete software body and frame/blitter callers reviewed: source rectangle copy with explicit source offset/stride and destination coordinates; preserve original bounds behavior and pixel values. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.T(IIII)V",
       "originalName": "T",
       "to": "intersectClip",
@@ -45881,10 +46490,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.XA()I",
+      "originalName": "XA",
+      "to": "farClipDistance",
+      "evidence": "Software/hardware getters and state capture/restore reviewed: returns far clipping depth stored by depth-range setter. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.Y()[I",
       "originalName": "Y",
       "to": "projectionParameters",
       "evidence": "Returns the projection parameter array. Body matches sumoblitz GraphicsToolkit (projectionParameters). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.ZA(IFFFFF)V",
+      "originalName": "ZA",
+      "to": "setDirectionalLighting",
+      "evidence": "Software/hardware bodies and lighting callers reviewed: RGB, opposed directional intensities and normalized direction. Preserve software ignored RGB, float/zero-vector behavior, fixed-point casts and callbacks. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -46091,10 +46714,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.da(III[I)V",
+      "originalName": "da",
+      "to": "projectPoint",
+      "evidence": "Software/hardware bodies reviewed: world transform and screen-relative projection/depth. Software rejects near/far/view bounds with three -1 values; hardware preserves near-zero-z fallback without those rejection checks. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.e()Lgda;",
       "originalName": "e",
       "to": "getTransform",
       "evidence": "Returns the toolkit's current Transform3D (the thread context's transform in software). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.ea(IIIIIIIII)V",
+      "originalName": "ea",
+      "to": "drawWorldLineAtDepth",
+      "evidence": "Software/hardware bodies reviewed: transform/near-clip endpoints and draw using fixed supplied divisor/orthographic projection. Preserve interpolation, rounding and backend state. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -46109,6 +46746,13 @@
       "originalName": "f",
       "to": "createRenderContexts",
       "evidence": "Creates the native render contexts. Body matches reference NativeSoftwareGraphicsToolkit (createRenderContexts).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.f(II)V",
+      "originalName": "f",
+      "to": "setDepthRange",
+      "evidence": "Software/hardware/OpenGL bodies and state capture/restore reviewed: stores near/far clipping depth and updates context, projection and fog state. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -46133,6 +46777,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.i()I",
+      "originalName": "i",
+      "to": "nearClipDistance",
+      "evidence": "Software/hardware getters and state capture/restore reviewed: returns near clipping depth used by point/line rejection. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.j()Z",
       "originalName": "j",
       "to": "supportsHeap",
@@ -46154,6 +46805,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.la()V",
+      "originalName": "la",
+      "to": "resetClip",
+      "evidence": "Software/hardware bodies reviewed: resets clip to full target dimensions and updates context/scissor state with original callbacks. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.m()La;",
       "originalName": "m",
       "to": "contextForThread",
@@ -46165,6 +46823,41 @@
       "originalName": "s",
       "to": "drawCircle",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz SoftwareGraphicsToolkit.drawCircle. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.v(IIIIIIII)V",
+      "originalName": "v",
+      "to": "drawWorldLine",
+      "evidence": "Software/hardware bodies reviewed: transform and near-clip world endpoints, perspective-project and draw with original color/blend/backend state. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.w(Z)V",
+      "originalName": "w",
+      "to": "releaseNative",
+      "evidence": "Complete queue immediate/deferred calls, eleven implementations and finalizer routes reviewed. Resource-release contract retains boolean flag and descriptor. Source naming/reversal does not establish native binary or whole-runtime equivalence. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.xa(F)V",
+      "originalName": "xa",
+      "to": "setAmbientLightIntensity",
+      "evidence": "Software/hardware/OpenGL bodies and lighting callers reviewed: ambient light multiplier in fixed/float state; preserve cast/comparison behavior and backend light-color updates. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.ya()V",
+      "originalName": "ya",
+      "to": "clearDepthBuffer",
+      "evidence": "Complete software/OpenGL bodies reviewed: full/clipped float depth fill with2147483648.0f, or depth-write enable and glClear256; preserve state effects and clipping. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.za(IIIII)V",
+      "originalName": "za",
+      "to": "fillCircle",
+      "evidence": "Complete software/hardware bodies reviewed: clipped circle fill, radius normalization and overwrite/alpha/additive modes or circle primitive. Preserve fences, arithmetic and invalid-mode failure. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -48139,6 +48832,13 @@
       "originalName": "a",
       "to": "handlePresentationFailure",
       "evidence": "Handles a failed native present. Body matches several games NativeCanvasSurface.handlePresentationFailure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.w(Z)V",
+      "originalName": "w",
+      "to": "releaseNative",
+      "evidence": "Complete queue immediate/deferred calls, eleven implementations and finalizer routes reviewed. Resource-release contract retains boolean flag and descriptor. Source naming/reversal does not establish native binary or whole-runtime equivalence. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -54841,10 +55541,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sfa.DA(IIII)V",
+      "originalName": "DA",
+      "to": "setProjectionParameters",
+      "evidence": "Software/hardware/OpenGL bodies and ToolkitState reviewed: stores the projection center/scale quartet returned by projectionParameters and updates derived projection/clip state. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sfa.GA(I)V",
       "originalName": "GA",
       "to": "clear",
       "evidence": "Clears the colour buffer to a colour. Body matches sumoblitz OpenGlGraphicsToolkit.clear. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sfa.HA(IIII[I)V",
+      "originalName": "HA",
+      "to": "projectPointAtDepth",
+      "evidence": "Software/hardware bodies reviewed: transform point and use fixed supplied divisor. Both reject actual near/far z; software also rejects view bounds. Preserve backend-specific coordinate/sentinel behavior. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -54862,6 +55576,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sfa.L(III)V",
+      "originalName": "L",
+      "to": "setFogParameters",
+      "evidence": "Software/hardware bodies and lighting callers reviewed: fog RGB and distance/enable parameters plus backend updates. Preserve software channel clamps and ignored parameter. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sfa.SA(IIII[III)V",
+      "originalName": "SA",
+      "to": "blitPixels",
+      "evidence": "Complete software body and frame/blitter callers reviewed: source rectangle copy with explicit source offset/stride and destination coordinates; preserve original bounds behavior and pixel values. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sfa.T(IIII)V",
       "originalName": "T",
       "to": "intersectClip",
@@ -54876,10 +55604,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sfa.XA()I",
+      "originalName": "XA",
+      "to": "farClipDistance",
+      "evidence": "Software/hardware getters and state capture/restore reviewed: returns far clipping depth stored by depth-range setter. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sfa.Y()[I",
       "originalName": "Y",
       "to": "projectionParameters",
       "evidence": "Returns the projection parameter array. Body matches sumoblitz GraphicsToolkit (projectionParameters). Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sfa.ZA(IFFFFF)V",
+      "originalName": "ZA",
+      "to": "setDirectionalLighting",
+      "evidence": "Software/hardware bodies and lighting callers reviewed: RGB, opposed directional intensities and normalized direction. Preserve software ignored RGB, float/zero-vector behavior, fixed-point casts and callbacks. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -55093,6 +55835,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sfa.da(III[I)V",
+      "originalName": "da",
+      "to": "projectPoint",
+      "evidence": "Software/hardware bodies reviewed: world transform and screen-relative projection/depth. Software rejects near/far/view bounds with three -1 values; hardware preserves near-zero-z fallback without those rejection checks. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sfa.e()Lgda;",
       "originalName": "e",
       "to": "getTransform",
@@ -55100,10 +55849,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sfa.ea(IIIIIIIII)V",
+      "originalName": "ea",
+      "to": "drawWorldLineAtDepth",
+      "evidence": "Software/hardware bodies reviewed: transform/near-clip endpoints and draw using fixed supplied divisor/orthographic projection. Preserve interpolation, rounding and backend state. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sfa.f()Z",
       "originalName": "f",
       "to": "isBloomEnabled",
       "evidence": "OpenGlToolkit returns whether its LegacyOpenGlBloomEffect is enabled; TombRacer.beginFrame checks it before setting the bloom bounds. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sfa.f(II)V",
+      "originalName": "f",
+      "to": "setDepthRange",
+      "evidence": "Software/hardware/OpenGL bodies and state capture/restore reviewed: stores near/far clipping depth and updates context, projection and fog state. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -55135,6 +55898,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sfa.i()I",
+      "originalName": "i",
+      "to": "nearClipDistance",
+      "evidence": "Software/hardware getters and state capture/restore reviewed: returns near clipping depth used by point/line rejection. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sfa.i(I)V",
       "originalName": "i",
       "to": "createContexts",
@@ -55163,6 +55933,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sfa.la()V",
+      "originalName": "la",
+      "to": "resetClip",
+      "evidence": "Software/hardware bodies reviewed: resets clip to full target dimensions and updates context/scissor state with original callbacks. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sfa.m()V",
       "originalName": "m",
       "to": "refreshContexts",
@@ -55174,6 +55951,34 @@
       "originalName": "s",
       "to": "drawCircle",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz SoftwareGraphicsToolkit.drawCircle.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sfa.v(IIIIIIII)V",
+      "originalName": "v",
+      "to": "drawWorldLine",
+      "evidence": "Software/hardware bodies reviewed: transform and near-clip world endpoints, perspective-project and draw with original color/blend/backend state. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sfa.xa(F)V",
+      "originalName": "xa",
+      "to": "setAmbientLightIntensity",
+      "evidence": "Software/hardware/OpenGL bodies and lighting callers reviewed: ambient light multiplier in fixed/float state; preserve cast/comparison behavior and backend light-color updates. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sfa.ya()V",
+      "originalName": "ya",
+      "to": "clearDepthBuffer",
+      "evidence": "Complete software/OpenGL bodies reviewed: full/clipped float depth fill with2147483648.0f, or depth-write enable and glClear256; preserve state effects and clipping. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sfa.za(IIIII)V",
+      "originalName": "za",
+      "to": "fillCircle",
+      "evidence": "Complete software/hardware bodies reviewed: clipped circle fill, radius normalization and overwrite/alpha/additive modes or circle primitive. Preserve fences, arithmetic and invalid-mode failure. Naming only; all original argument order and source operations retained. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -65180,6 +65985,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:xa.r(II)V",
+      "originalName": "r",
+      "to": "initializeNativeRenderBuffer",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: initializeNativeRenderBuffer describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:xa.va(JZ)V",
+      "originalName": "va",
+      "to": "releaseNativeHandle",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: releaseNativeHandle describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:xa.w(Z)V",
+      "originalName": "w",
+      "to": "releaseNative",
+      "evidence": "Complete queue immediate/deferred calls, eleven implementations and finalizer routes reviewed. Resource-release contract retains boolean flag and descriptor. Source naming/reversal does not establish native binary or whole-runtime equivalence. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ya.aa(Loa;I)V",
+      "originalName": "aa",
+      "to": "initializeNativeHeap",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: initializeNativeHeap describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ya.ga()V",
+      "originalName": "ga",
+      "to": "onToolkitDispose",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: onToolkitDispose describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ya.r()V",
+      "originalName": "r",
+      "to": "onToolkitTimeUpdate",
+      "evidence": "Complete Java wrapper/constructor and native declaration reviewed: onToolkitTimeUpdate describes the direct wrapper operation or sole toolkit lifecycle trigger. Preserve descriptor, handles, flags, argument/data order and call sequencing. Native bodies remain native; runtime/JNI equivalence is not established.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ya.w(Z)V",
+      "originalName": "w",
+      "to": "releaseNative",
+      "evidence": "Complete queue immediate/deferred calls, eleven implementations and finalizer routes reviewed. Resource-release contract retains boolean flag and descriptor. Source naming/reversal does not establish native binary or whole-runtime equivalence. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:za.$cfr$intArgs$a$c604db63f465(IIII)I",
       "originalName": "$cfr$intArgs$a$c604db63f465",
       "to": "clampValue",
@@ -65231,7 +66085,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "690f8fc55cdcab2815560bb958c95bcf8e353a786eeb7eaed5919ff10de03b1c",
+      "tombracer-names.json": "5d73a82967bdeaafcbe72d122d4f773ea8e22b2eb6c6d20920671186f7c23677",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
