@@ -42,10 +42,10 @@ field('ec', 'm', '[B', 'payload', 'Byte array indexed by the cursor in every rea
 field('ec', 'o', 'I', 'position', 'Cursor advanced by each primitive read and write.');
 method('ec', 'a', '(II)V', 'writeByte', ['obfuscationGuard', 'value'], 'Stores one byte at the cursor and advances it.');
 method('ec', 'i', '(II)V', 'writeShort', ['value', 'obfuscationGuard'], 'Stores high then low byte and advances the cursor by two.');
-method('ec', 'a', '(JI)V', 'writeLong', ['value', 'obfuscationGuard'], 'Stores a long as consecutive big-endian bytes.');
+method('ec', 'a', '(JI)V', 'writeLong40', ['value', 'obfuscationGuard'], "Complete body and callers reviewed: shifts32/24/16/8/0 write exactly five low-order bytes, then bad guard calls length backpatch. Request callers write one opcode plus this five-byte value; preserve original parameters, guards and all effects.");
 method('ec', 'h', '(I)I', 'readInt', ['obfuscationGuard'], 'Advances four and assembles a big-endian int.');
 method('ec', 'e', '(B)I', 'readSignedMedium', ['obfuscationGuard'], 'Reads three bytes and sign-extends values above 8388607.');
-method('ec', 'b', '(B)J', 'readLong', ['obfuscationGuard'], 'Combines two unsigned ints into a long.');
+method('ec', 'b', '(B)J', 'readLong56', ['obfuscationGuard'], "Complete body and callers reviewed: high word is unsigned24bit f(-112), low word unsigned-masked readInt, combined high<<32 plus low. Raider null record consumes this seven-byte remainder; guard division occurs before I/O. Preserve exact original behavior.");
 method('ec', 'g', '(II)V', 'padWithZeros', ['obfuscationGuard', 'endPosition'], 'Writes zero bytes until the cursor reaches the end position.');
 field('va', 'k', '[B', 'data', 'Sample stream indexes this byte array for length and interpolated reads.');
 field('b', 'c', 'Ljava/lang/String;', 'context', 'Appended client context string.');

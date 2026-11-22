@@ -1368,6 +1368,265 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.a(B)I",
+      "originalName": "a",
+      "to": "readUnsignedShort",
+      "evidence": "Complete body and constructor context reviewed: Read two big-endian bytes as0..65535. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Advance2 before bad guard writes eight-byte long.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a(BI)V",
+      "originalName": "a",
+      "to": "backpatchByteLength",
+      "evidence": "Complete body and constructor context reviewed: Patch byte length behind current cursor without canonical cursor advance. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad byte writes long after patch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a(BLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "writeBase38String",
+      "evidence": "Complete body and constructor context reviewed: Case-fold letters/digits into two ten-character base38 groups, encoded as two56-bit values; preserve20-character truncation, missing positions and other-character mapping. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard changes scalar after both56bit groups.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a(B[BII)V",
+      "originalName": "a",
+      "to": "writeBytes",
+      "evidence": "Complete body and constructor context reviewed: Copy caller array range into payload while advancing cursor. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad byte clears deque static before copy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a(II)V",
+      "originalName": "a",
+      "to": "writeInt",
+      "evidence": "Complete body and constructor context reviewed: Write32bits big endian. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard clears deque static after first write.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a(II[BI)V",
+      "originalName": "a",
+      "to": "readBytes",
+      "evidence": "Complete body and constructor context reviewed: Copy payload bytes to caller array range while advancing cursor. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard invokes CRC append before copying.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a(IJ)V",
+      "originalName": "a",
+      "to": "writeLong56",
+      "evidence": "Complete body and constructor context reviewed: Write low56bits as seven big-endian bytes. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard patches byte length after3writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "writeString",
+      "evidence": "Complete body and constructor context reviewed: Reject embedded NUL, encode through original byte helper and append zero. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Guard division before NUL validation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a(JZ)V",
+      "originalName": "a",
+      "to": "writeLong40",
+      "evidence": "Complete body and constructor context reviewed: Write low40bits as five big-endian bytes. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. False flag attempts int read after5writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a(Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "writePrefixedString",
+      "evidence": "Complete body and constructor context reviewed: Reject embedded NUL, write leading0, encode through original helper, append0. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. NUL validation before bad guard writes short before prefix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a(Ljava/math/BigInteger;ILjava/math/BigInteger;)V",
+      "originalName": "a",
+      "to": "applyRsa",
+      "evidence": "Complete body and constructor context reviewed: Transform signed BigInteger plaintext using supplied exponent/modulus, emit toByteArray with short byte-length prefix. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Save size/reset cursor0 before guard>-115 returns; exponentparam0/modulusparam2; signed input and short result prefix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a([II)V",
+      "originalName": "a",
+      "to": "encryptXtea",
+      "evidence": "Complete body and constructor context reviewed: Process64-bit blocks using32 XTEA rounds, delta-1640531527 and four indexed int key words. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Block count/reset0 before guard<=98 returns; leave processed-end cursor.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.a([IZII)V",
+      "originalName": "a",
+      "to": "decryptXteaRange",
+      "evidence": "Complete body and constructor context reviewed: Decrypt complete64-bit blocks in specified range with32 reverse XTEA rounds and initial sum-957401312; normal-only cursor restoration. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. True flag clears static deque before cursor save; startparam2/endparam3; normal-only cursor restore.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.b(B)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete body and owned static reference declarations reviewed. Null three statics, guard modulo, then string; preserve partial cleanup on arithmetic failure. Preserve instance fields and all other globals.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.b(II)V",
+      "originalName": "b",
+      "to": "backpatchShortLength",
+      "evidence": "Complete body and constructor context reviewed: Patch big-endian short length behind current cursor. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard invokes null copy after both patches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.b(IJ)V",
+      "originalName": "b",
+      "to": "writeLong",
+      "evidence": "Complete body and constructor context reviewed: Write64bits big endian. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard clears static string before writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.b(Z)B",
+      "originalName": "b",
+      "to": "readByte",
+      "evidence": "Complete body and constructor context reviewed: Read signed byte and advance1. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. False flag writes short before read.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.c(B)I",
+      "originalName": "c",
+      "to": "readInt",
+      "evidence": "Complete body and constructor context reviewed: Read four big-endian bytes as signed int. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Guard>=-103 returns54 before I/O.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.c(II)V",
+      "originalName": "c",
+      "to": "writeShort",
+      "evidence": "Complete body and constructor context reviewed: Write low16bits big endian. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard clears static reference after1write.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.d(B)I",
+      "originalName": "d",
+      "to": "readUnsignedByte",
+      "evidence": "Complete body and constructor context reviewed: Read byte masked255 and advance1. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Guard<21 returns90 before I/O.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.d(I)Z",
+      "originalName": "d",
+      "to": "verifyCrc32",
+      "evidence": "Complete body and constructor context reviewed: Rewind to stored checksum, compute preceding CRC32, read stored big-endian int and compare. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard null-copy call before rewind4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.d(II)I",
+      "originalName": "d",
+      "to": "appendCrc32",
+      "evidence": "Complete body and constructor context reviewed: Compute CRC32 over caller start/current cursor, append big-endian int and return it. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard null-key encryption before computation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.e(B)J",
+      "originalName": "e",
+      "to": "readLong",
+      "evidence": "Complete body and constructor context reviewed: Read two unsigned-masked int words and combine high32/low32. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Guard modulo between two int reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.e(I)Ljava/lang/String;",
+      "originalName": "e",
+      "to": "readPrefixedString",
+      "evidence": "Complete body and constructor context reviewed: Consume/validate prefix then scan/decode zero-terminated string. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Consume/validate prefix before bad guard invokes signed-smart writer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.e(II)V",
+      "originalName": "e",
+      "to": "writeVarInt",
+      "evidence": "Complete body and constructor context reviewed: Encode up to five most-significant-first7-bit groups with continuation; preserve unsigned shifts. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Preserve caller-dependent byte-writer guards, alternate OR masks269616035/2098829/16481, and bad-guard scalar write before terminal group.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.f(I)I",
+      "originalName": "f",
+      "to": "readUnsignedSmart",
+      "evidence": "Complete body and constructor context reviewed: Peek high bit; unsigned byte or unsigned short minus32768. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Peek before bad guard recursive unsigned-smart call.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.f(II)V",
+      "originalName": "f",
+      "to": "writeByte",
+      "evidence": "Complete body and constructor context reviewed: Write low8bits. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Write before bad guard sets cursor49.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.g(B)I",
+      "originalName": "g",
+      "to": "readUnsignedMedium",
+      "evidence": "Complete body and constructor context reviewed: Read three big-endian bytes as0..16777215. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad byte invokes null RSA before advance3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.g(I)Ljava/lang/String;",
+      "originalName": "g",
+      "to": "readString",
+      "evidence": "Complete body and constructor context reviewed: Scan to zero and decode through original helper; consume terminator. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard clears payload before scan.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.g(II)V",
+      "originalName": "g",
+      "to": "writeSignedSmart",
+      "evidence": "Complete body and constructor context reviewed: Encode[-64,64) as byte+64 and[-16384,16384) as short+49152; reject other values. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Small byte case returns before bad guard calls short-or-int reader.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.h(I)I",
+      "originalName": "h",
+      "to": "readUnsignedShortOrInt",
+      "evidence": "Complete body and constructor context reviewed: Peek sign bit; unsigned short or int masked2147483647. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard invokes static helper before peek.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.h(II)V",
+      "originalName": "h",
+      "to": "padZerosTo",
+      "evidence": "Complete body and constructor context reviewed: Write zeros until cursor reaches caller absolute target. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard sets cursor-28 after padding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.i(I)I",
+      "originalName": "i",
+      "to": "readVarInt",
+      "evidence": "Complete body and constructor context reviewed: Decode most-significant-first7-bit groups with high-bit continuation; preserve overflow/unbounded scan. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard returns60 before reading.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.i(II)V",
+      "originalName": "i",
+      "to": "writeMedium",
+      "evidence": "Complete body and constructor context reviewed: Write low24bits big endian. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard invokes null-key decryption after1write.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.j(I)Ljava/lang/String;",
+      "originalName": "j",
+      "to": "readNullableString",
+      "evidence": "Complete body and constructor context reviewed: Consume null marker or delegate original zero-terminated reader. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard changes scalar before peek.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.j(II)V",
+      "originalName": "j",
+      "to": "backpatchIntLength",
+      "evidence": "Complete body and constructor context reviewed: Patch big-endian int length behind current cursor. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard clears static string after all patches.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.k(I)I",
+      "originalName": "k",
+      "to": "readSignedSmart",
+      "evidence": "Complete body and constructor context reviewed: Peek high bit; unsigned byte minus64 or unsigned short minus49152. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Caller param0 supplies byte-range threshold, canonical128.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:od.b(Z)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -1536,6 +1795,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sg.a(IBI[B)I",
+      "originalName": "a",
+      "to": "computeCrc32",
+      "evidence": "Complete helper/table initialization reviewed:256entries, eight reflected shifts with polynomial-306674912; seed-1, table[(crc XOR byte)&255] XOR crc>>>8 and complemented result. Preserve caller range, guard helper calls/recursive failures/arithmetic, exception wrappers and all global behavior. Table initializer later clears the table to null; retain this behavior, all later assignments and resulting failures.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:si.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1692,7 +1958,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-transmogrify-rules.mjs": "490c8ac7b803bec45e36264c90d8a0d2e0d252d1671c0c7402e75f04539f2120",
-      "transmogrify-names.json": "43bd96478dfb86d71b488fd684898e6edc9192a1179cef1ec747ec60082e95a3",
+      "transmogrify-names.json": "71ddbbc9e97964beaab0bae593671074229ff0cb7be00855b5ee7072226a781c",
       "reproduce-transmogrify.mjs": "275031618841925c88dcac462520b84fb1be33422795af31727af8ec70c869ee",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
