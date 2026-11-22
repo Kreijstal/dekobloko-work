@@ -913,6 +913,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:mi.field_d:I",
+      "originalName": "field_d",
+      "to": "status",
+      "evidence": "Role established from complete original constructor,queue,worker and instance-wrapper/shutdown bodies. Exact declaration and complete constructor/queue/worker/wrapper/shutdown consumers reviewed; retain public/private/volatile/defaults and every guarded/monitored read/write/alias.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:mi.field_e:Lmi;",
+      "originalName": "field_e",
+      "to": "next",
+      "evidence": "Role established from complete original constructor,queue,worker and instance-wrapper/shutdown bodies. Exact declaration and complete constructor/queue/worker/wrapper/shutdown consumers reviewed; retain public/private/volatile/defaults and every guarded/monitored read/write/alias.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:mi.field_f:I",
       "originalName": "field_f",
       "to": "kind",
@@ -1120,6 +1134,48 @@
       "originalName": "field_i",
       "to": "screens",
       "evidence": "Filled with new pd(index, client) for indices 0 to 15 at load.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_g:Z",
+      "originalName": "field_g",
+      "to": "privilegedTasksEnabled",
+      "evidence": "Role established from complete original constructor,queue,worker and instance-wrapper/shutdown bodies. Exact declaration and complete constructor/queue/worker/wrapper/shutdown consumers reviewed; retain public/private/volatile/defaults and every guarded/monitored read/write/alias.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_k:Lmi;",
+      "originalName": "field_k",
+      "to": "queueTail",
+      "evidence": "Role established from complete original constructor,queue,worker and instance-wrapper/shutdown bodies. Exact declaration and complete constructor/queue/worker/wrapper/shutdown consumers reviewed; retain public/private/volatile/defaults and every guarded/monitored read/write/alias.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_m:Lmi;",
+      "originalName": "field_m",
+      "to": "queueHead",
+      "evidence": "Role established from complete original constructor,queue,worker and instance-wrapper/shutdown bodies. Exact declaration and complete constructor/queue/worker/wrapper/shutdown consumers reviewed; retain public/private/volatile/defaults and every guarded/monitored read/write/alias.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_q:Z",
+      "originalName": "field_q",
+      "to": "microsoftJvm",
+      "evidence": "Role established from complete original constructor,queue,worker and instance-wrapper/shutdown bodies. Exact declaration and complete constructor/queue/worker/wrapper/shutdown consumers reviewed; retain public/private/volatile/defaults and every guarded/monitored read/write/alias.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_t:Ljava/lang/Thread;",
+      "originalName": "field_t",
+      "to": "workerThread",
+      "evidence": "Role established from complete original constructor,queue,worker and instance-wrapper/shutdown bodies. Exact declaration and complete constructor/queue/worker/wrapper/shutdown consumers reviewed; retain public/private/volatile/defaults and every guarded/monitored read/write/alias.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:uj.field_w:Z",
+      "originalName": "field_w",
+      "to": "shutdownRequested",
+      "evidence": "Role established from complete original constructor,queue,worker and instance-wrapper/shutdown bodies. Exact declaration and complete constructor/queue/worker/wrapper/shutdown consumers reviewed; retain public/private/volatile/defaults and every guarded/monitored read/write/alias.",
       "confidence": "reviewed"
     },
     {
@@ -2607,10 +2663,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uj.a(B)Z",
+      "originalName": "a",
+      "to": "isFullscreenAvailable",
+      "evidence": "Byte>-25 clears Microsoft cursor controller before privileged flag test;then check reflected/Microsoft fullscreen controller. Preserve side effect even when privilege disabled. Preserve exact original input domains,widths,overflow,allocation/write/call order,aliases,monitors,permission/exception paths and context. Identifier-only rename; no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uj.a(BLjava/lang/String;Ljava/lang/Class;)Lmi;",
       "originalName": "a",
       "to": "requestField",
       "evidence": "Queues kind 9 with the class and a name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.a(I)Lmi;",
+      "originalName": "a",
+      "to": "requestDisplayModes",
+      "evidence": "Wrong int!=5 sets Microsoft-JVM selector flag true before kind5 enqueue. Preserve changed worker dispatch behavior rather than treating guard as unused. Preserve exact original input domains,widths,overflow,allocation/write/call order,aliases,monitors,permission/exception paths and context. Identifier-only rename; no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.a(IBLjava/lang/String;Z)Lmi;",
+      "originalName": "a",
+      "to": "requestSocketConnection",
+      "evidence": "Evaluate -33%((byteGuard+33)/34) before submission;Boolean selects kind22/1 retaining host/port,alternate Socket/authentication-message failure behavior. Preserve exact original input domains,widths,overflow,allocation/write/call order,aliases,monitors,permission/exception paths and context. Identifier-only rename; no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.a(IIIII)Lmi;",
+      "originalName": "a",
+      "to": "requestFullscreenEnter",
+      "evidence": "Wrong int param4!=-2 writes cache identifier19 before kind6 enqueue. Primary=(param0<<16)+param1,secondary=param3+(param2<<16);preserve overflow/vendor unpack order. Preserve exact original input domains,widths,overflow,allocation/write/call order,aliases,monitors,permission/exception paths and context. Identifier-only rename; no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.a(IIILjava/lang/Object;I)Lmi;",
+      "originalName": "a",
+      "to": "enqueueTask",
+      "evidence": "Allocate task,write firstInt,Object argument,kind,secondInt in original order;append under monitor and notify. Only after releasing monitor wrong guard param4!=-27024 clears JVM-version String. Always return task;preserve publication-before-side-effect race. Preserve exact original input domains,widths,overflow,allocation/write/call order,aliases,monitors,permission/exception paths and context. Identifier-only rename; no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.a(ILjava/awt/Frame;)Lmi;",
+      "originalName": "a",
+      "to": "requestFullscreenExit",
+      "evidence": "Wrong int!=-3816 calls existing requestUrl(null,122),writing static network deadline125L and enqueuing extra kind4 before kind7. Preserve extra task/order and Frame alias. Preserve exact original input domains,widths,overflow,allocation/write/call order,aliases,monitors,permission/exception paths and context. Identifier-only rename; no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2639,6 +2737,13 @@
       "originalName": "a",
       "to": "requestUrl",
       "evidence": "Queues kind 4 with the URL.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uj.a(Z)V",
+      "originalName": "a",
+      "to": "shutdown",
+      "evidence": "Under monitor assign stop flag from Boolean argument verbatim and notifyAll,then join swallowing interruption. False may leave worker waiting and block join;do not force true. Data/master/indexes/random.a(byte47) each preserve separate IOException handling. Preserve exact original input domains,widths,overflow,allocation/write/call order,aliases,monitors,permission/exception paths and context. Identifier-only rename; no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2756,7 +2861,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torchallenge-rules.mjs": "c042d4e7793d93c469822e85fad602baebb74bd01aac6bf321d09ca5452e99fc",
-      "torchallenge-names.json": "d78549dcf48d00c2651833db677e5956a727ed6319e8705b7da7657b1be165ba",
+      "torchallenge-names.json": "858accff85625d89524193b9b553ec1b8d6d32578eb09bca8b293d472fbaf9a7",
       "reproduce-torchallenge.mjs": "b3388fa5e2619e82e11f0eae304b9ea97a779afb046e7272b5997c73407bf7be",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
