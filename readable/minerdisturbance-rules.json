@@ -444,6 +444,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:na",
+      "originalName": "na",
+      "to": "MouseWheelHandler",
+      "evidence": "Complete game-owned class reviewed: AWT MouseWheelListener accumulates getWheelRotation, consumes event, attaches/detaches and synchronously polls. Guards differ by game and remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:oe",
+      "originalName": "oe",
+      "to": "MouseWheelInput",
+      "evidence": "Abstract class declaration and all3abstract wheel operations reviewed alongside complete concrete implementation. Role follows component registration/removal and rotation polling; unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:og",
       "originalName": "og",
       "to": "ArgbSprite",
@@ -490,6 +504,13 @@
       "originalName": "vb",
       "to": "ArchiveProvider",
       "evidence": "Abstract provider of the encoded index and groups consumed by ResourceArchive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:na.field_h:I",
+      "originalName": "field_h",
+      "to": "rotation",
+      "evidence": "Accumulator updated by wheel event, returned/reset by poll; preserve per-game reset/guard differences.",
       "confidence": "reviewed"
     },
     {
@@ -969,6 +990,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:na.a(B)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete concrete synchronized body and abstract declaration reviewed. Wrong guard returns105 without reading/resetting accumulator; valid-124 copies, clears and returns. Preserve exact read/write/guard order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:na.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:na.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nd.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1004,10 +1046,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oe.a(B)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete concrete synchronized body and abstract declaration reviewed. Wrong guard returns105 without reading/resetting accumulator; valid-124 copies, clears and returns. Preserve exact read/write/guard order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oe.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oe.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 c49daf6f117bd58127473103e584cd59ec7b760cc0d441d5df5378d4c005a12e.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oh.c(B)Loe;",
+      "originalName": "c",
+      "to": "createMouseWheelInput",
+      "evidence": "Complete factory reviewed: reflective construction of concrete wheel listener cast to abstract contract, Throwable->null fallback and guard side effects unchanged. Literal rename explicitly limited to this owned Class.forName call.",
       "confidence": "reviewed"
     },
     {
@@ -1566,7 +1636,7 @@
   ],
   "classNameLiterals": {
     "policy": "direct-owned-class-for-name",
-    "expectedEdits": 0
+    "expectedEdits": 1
   },
   "labels": {
     "policy": "lexical-targets",
@@ -1580,7 +1650,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-minerdisturbance-rules.mjs": "16fcf2e48a0b24b7a3b5adfaa84bb4d835098253436d0d71784385c2e1228b80",
-      "minerdisturbance-names.json": "5e2c416f39c26460646e9d9a43163cdbf4a4ebc49d83a62368783724feb053a7",
+      "minerdisturbance-names.json": "358a4e741fa209cee2a82ccc01270f7ac6c016eeb69ab9ac3fa82c0a2268db76",
       "reproduce-minerdisturbance.mjs": "9c29b772086ae02805a24c9b493bfd651e742e7206976e902e269a1ae4c1e5d3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

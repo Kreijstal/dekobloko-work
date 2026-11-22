@@ -262,6 +262,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ee",
+      "originalName": "ee",
+      "to": "MouseWheelInput",
+      "evidence": "Abstract class declaration and all3abstract wheel operations reviewed alongside complete concrete implementation. Role follows component registration/removal and rotation polling; unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ek",
       "originalName": "ek",
       "to": "MidiTrackReader",
@@ -308,6 +315,13 @@
       "originalName": "ic",
       "to": "Bzip2Decoder",
       "evidence": "Bzip2 block decompressor (same shared role as Escape Vector Bzip2Decoder; matching member signatures here).",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ie",
+      "originalName": "ie",
+      "to": "MouseWheelHandler",
+      "evidence": "Complete game-owned class reviewed: AWT MouseWheelListener accumulates getWheelRotation, consumes event, attaches/detaches and synchronously polls. Guards differ by game and remain unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -409,6 +423,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ie.field_h:I",
+      "originalName": "field_h",
+      "to": "rotation",
+      "evidence": "Accumulator updated by wheel event, returned/reset by poll; preserve per-game reset/guard differences.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wf.field_h:I",
       "originalName": "field_h",
       "to": "position",
@@ -493,6 +514,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bl.a(I)Lee;",
+      "originalName": "a",
+      "to": "createMouseWheelInput",
+      "evidence": "Complete factory reviewed: reflective construction of concrete wheel listener cast to abstract contract, Throwable->null fallback and guard side effects unchanged. Literal rename explicitly limited to this owned Class.forName call.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:c.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -539,6 +567,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 6d57bec222a2e4c6d8aff0094fe5e72de2afd20728a2bcd6a0af8308040defea.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.a(ZLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ee.c(I)I",
+      "originalName": "c",
+      "to": "pollRotation",
+      "evidence": "Complete concrete synchronized body and abstract declaration reviewed. Guard>28 copies/clears/returns; otherwise writes-34 before copy/clear and returns-34. Preserve exact read/write/guard order.",
       "confidence": "reviewed"
     },
     {
@@ -700,6 +749,27 @@
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 9064af5d4e30cf79bc248c999f2a4d0d24264032dac9f78a97a1dd0bdaca3313.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.a(ZLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ie.c(I)I",
+      "originalName": "c",
+      "to": "pollRotation",
+      "evidence": "Complete concrete synchronized body and abstract declaration reviewed. Guard>28 copies/clears/returns; otherwise writes-34 before copy/clear and returns-34. Preserve exact read/write/guard order.",
       "confidence": "reviewed"
     },
     {
@@ -1398,7 +1468,7 @@
   ],
   "classNameLiterals": {
     "policy": "direct-owned-class-for-name",
-    "expectedEdits": 4
+    "expectedEdits": 5
   },
   "labels": {
     "policy": "lexical-targets",
@@ -1412,7 +1482,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-lexicominos-rules.mjs": "407068f51801d5f59706f9b1a51b92d3ce7dda65d765eac9640c3e370f3b044d",
-      "lexicominos-names.json": "f5d1f559f589b2151a7da7cfcca4cf6430a3a691512bd748d94c53831173a4c0",
+      "lexicominos-names.json": "49bd421c5eacc83d7bdf63eecd0512c9ceb7a78b4936a17e33b49af19b56a8be",
       "reproduce-lexicominos.mjs": "e1c24466083fff6a218772ecf30ba63a0a8990b92c02a2782bc76177b5238062",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

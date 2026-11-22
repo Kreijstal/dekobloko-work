@@ -1,7 +1,9 @@
 {
   "classes": [
     ["ln","GzipDecompressor","Complete owned inflater method, constructors and fields reviewed: gzip magic31/139, lazy raw Inflater, caller-supplied output, original input bounds and reset/error paths. Preserve caller offset/length adjustments, bad-guard calls and reset skips, exception wrappers and unrelated static helpers."],
-    ["fm","BoundedRandomAccessFile","Complete constructor, owned read/write/seek/length/close methods, private fields and finalizer reviewed: tracked RandomAccessFile position/max length, overflow sentinel write and EOFException, oversized-file deletion and unlimited-bound conversion. Preserve guard-specific handle discards, skipped position updates, helper calls, sentinels and partial failures; unrelated statics retained."]
+    ["fm","BoundedRandomAccessFile","Complete constructor, owned read/write/seek/length/close methods, private fields and finalizer reviewed: tracked RandomAccessFile position/max length, overflow sentinel write and EOFException, oversized-file deletion and unlimited-bound conversion. Preserve guard-specific handle discards, skipped position updates, helper calls, sentinels and partial failures; unrelated statics retained."],
+    ["tc","MouseWheelHandler","Complete game-owned class reviewed: AWT MouseWheelListener accumulates getWheelRotation, consumes event, attaches/detaches and synchronously polls. Guards differ by game and remain unchanged."],
+    ["ck","MouseWheelInput","Abstract class declaration and all3abstract wheel operations reviewed alongside complete concrete implementation. Role follows component registration/removal and rotation polling; unrelated statics unselected."]
   ],
   "methods": [
     ["aa","a","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 949d6acc48a1e275445afcf06af37fb725624f34709abfad7c1ac71fbcd54636."],
@@ -153,10 +155,18 @@
     ["kg","j","(B)I","readUnsignedShortOrInt","Complete owned body reviewed: Peek sign bit; unsigned short or int masked2147483647. Preserve original guards, helper calls, global flags, exception wrappers, cursor ordering and partial effects. "],
     ["kg","k","(B)I","readUnsignedSmart","Complete owned body reviewed: Peek high bit; unsigned byte or unsigned short minus32768. Preserve original guards, helper calls, global flags, exception wrappers, cursor ordering and partial effects. Bad-byte6 sentinel before I/O."],
     ["ah","a","([BIIB)I","computeCrc32","Complete helper and table initializer reviewed:256entries, eight reflected shifts with polynomial-306674912, seed-1, table[(crc XOR byte)&255] XOR crc>>>8. Complement result; retain range and guard side effects/arithmetic timing. Preserve exception wrappers and all helper behavior."],
-    ["kg","d","(I)V","clearBufferStatics","Complete body reviewed: guard!=-4 returns, otherwise null only owned static field_o inside RuntimeException wrapper. Preserve instance payload/cursor and all other globals."]
+    ["kg","d","(I)V","clearBufferStatics","Complete body reviewed: guard!=-4 returns, otherwise null only owned static field_o inside RuntimeException wrapper. Preserve instance payload/cursor and all other globals."],
+    ["tc","a","(Ljava/awt/Component;I)V","attach","Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order."],
+    ["ck","a","(Ljava/awt/Component;I)V","attach","Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order."],
+    ["tc","a","(Ljava/awt/Component;B)V","detach","Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths."],
+    ["ck","a","(Ljava/awt/Component;B)V","detach","Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths."],
+    ["tc","a","(I)I","pollRotation","Complete concrete synchronized body and abstract declaration reviewed. Guard8 copies/clears/returns; wrong guard invokes detach on null before later copy/clear. Preserve exact read/write/guard order."],
+    ["ck","a","(I)I","pollRotation","Complete concrete synchronized body and abstract declaration reviewed. Guard8 copies/clears/returns; wrong guard invokes detach on null before later copy/clear. Preserve exact read/write/guard order."],
+    ["ba","h","(B)Lck;","createMouseWheelInput","Complete factory reviewed: reflective construction of concrete wheel listener cast to abstract contract, Throwable->null fallback and guard side effects unchanged. Literal rename explicitly limited to this owned Class.forName call."]
   ],
   "fields": [
     ["kg","field_m","[B","payload","Constructors and every owned I/O body reviewed: caller array or allocated pooled byte array is backing payload. Preserve array identity and all references."],
-    ["kg","field_n","I","position","Constructors initialize0; every owned I/O body reviewed: mutable byte cursor used by reads/writes/patches/crypto. Preserve every noncanonical write and partial-failure position."]
+    ["kg","field_n","I","position","Constructors initialize0; every owned I/O body reviewed: mutable byte cursor used by reads/writes/patches/crypto. Preserve every noncanonical write and partial-failure position."],
+    ["tc","field_c","I","rotation","Accumulator updated by wheel event, returned/reset by poll; preserve per-game reset/guard differences."]
   ]
 }

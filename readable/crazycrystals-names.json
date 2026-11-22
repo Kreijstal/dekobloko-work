@@ -1,7 +1,9 @@
 {
   "classes": [
     ["ih","GzipDecompressor","Complete owned inflater method, constructors and fields reviewed: gzip magic31/139, lazy raw Inflater, caller-supplied output, original input bounds and reset/error paths. Preserve caller offset/length adjustments, bad-guard calls and reset skips, exception wrappers and unrelated static helpers."],
-    ["gl","BoundedRandomAccessFile","Complete constructor, owned read/write/seek/length/close methods, private fields and finalizer reviewed: tracked RandomAccessFile position/max length, overflow sentinel write and EOFException, oversized-file deletion and unlimited-bound conversion. Preserve guard-specific handle discards, skipped position updates, helper calls, sentinels and partial failures; unrelated statics retained."]
+    ["gl","BoundedRandomAccessFile","Complete constructor, owned read/write/seek/length/close methods, private fields and finalizer reviewed: tracked RandomAccessFile position/max length, overflow sentinel write and EOFException, oversized-file deletion and unlimited-bound conversion. Preserve guard-specific handle discards, skipped position updates, helper calls, sentinels and partial failures; unrelated statics retained."],
+    ["sf","MouseWheelHandler","Complete game-owned class reviewed: AWT MouseWheelListener accumulates getWheelRotation, consumes event, attaches/detaches and synchronously polls. Guards differ by game and remain unchanged."],
+    ["jm","MouseWheelInput","Abstract class declaration and all3abstract wheel operations reviewed alongside complete concrete implementation. Role follows component registration/removal and rotation polling; unrelated statics unselected."]
   ],
   "methods": [
     ["aa","a","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 860a6640a0040623dc715c9df38faebec011d486fd06448cd3bee8ff33ccce22."],
@@ -170,10 +172,18 @@
     ["ng","g","(I)Z","verifyCrc32","Complete owned body reviewed: Rewind to stored checksum, compute preceding CRC32, read stored big-endian int and compare. Preserve original guards, helper calls, global flags, exception wrappers, cursor ordering and partial effects. Rewind4 then guard>=-60 returns false without consuming stored CRC."],
     ["ng","h","(I)I","readUnsignedByte","Complete owned body reviewed: Read byte masked255 and advance1. Preserve original guards, helper calls, global flags, exception wrappers, cursor ordering and partial effects. Bad-guard39 sentinel before I/O."],
     ["ng","i","(I)Ljava/lang/String;","readString","Complete owned body reviewed: Scan to zero and decode through original helper; consume terminator. Preserve original guards, helper calls, global flags, exception wrappers, cursor ordering and partial effects. Bad guard calls writeBytes after full scan."],
-    ["pf","a","(I[BII)I","computeCrc32","Complete helper and table initializer reviewed:256entries, eight reflected shifts with polynomial-306674912, seed-1, table[(crc XOR byte)&255] XOR crc>>>8. Final XOR is caller param3, canonical-1; preserve caller-supplied final XOR rather than forcing complement. Preserve exception wrappers and all helper behavior."]
+    ["pf","a","(I[BII)I","computeCrc32","Complete helper and table initializer reviewed:256entries, eight reflected shifts with polynomial-306674912, seed-1, table[(crc XOR byte)&255] XOR crc>>>8. Final XOR is caller param3, canonical-1; preserve caller-supplied final XOR rather than forcing complement. Preserve exception wrappers and all helper behavior."],
+    ["sf","a","(ILjava/awt/Component;)V","attach","Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order."],
+    ["jm","a","(ILjava/awt/Component;)V","attach","Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order."],
+    ["sf","a","(BLjava/awt/Component;)V","detach","Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths."],
+    ["jm","a","(BLjava/awt/Component;)V","detach","Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths."],
+    ["sf","a","(Z)I","pollRotation","Complete concrete synchronized body and abstract declaration reviewed. Copies accumulator before guard; true returns115 without clearing, false clears and returns copy. Preserve exact read/write/guard order."],
+    ["jm","a","(Z)I","pollRotation","Complete concrete synchronized body and abstract declaration reviewed. Copies accumulator before guard; true returns115 without clearing, false clears and returns copy. Preserve exact read/write/guard order."],
+    ["qm","d","(I)Ljm;","createMouseWheelInput","Complete factory reviewed: reflective construction of concrete wheel listener cast to abstract contract, Throwable->null fallback and guard side effects unchanged. Literal rename explicitly limited to this owned Class.forName call."]
   ],
   "fields": [
     ["ng","field_h","[B","payload","Constructors and every owned I/O body reviewed: caller array or allocated pooled byte array is backing payload. Preserve array identity and all references."],
-    ["ng","field_f","I","position","Constructors initialize0; every owned I/O body reviewed: mutable byte cursor used by reads/writes/patches/crypto. Preserve every noncanonical write and partial-failure position."]
+    ["ng","field_f","I","position","Constructors initialize0; every owned I/O body reviewed: mutable byte cursor used by reads/writes/patches/crypto. Preserve every noncanonical write and partial-failure position."],
+    ["sf","field_l","I","rotation","Accumulator updated by wheel event, returned/reset by poll; preserve per-game reset/guard differences."]
   ]
 }

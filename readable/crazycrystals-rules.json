@@ -255,6 +255,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jm",
+      "originalName": "jm",
+      "to": "MouseWheelInput",
+      "evidence": "Abstract class declaration and all3abstract wheel operations reviewed alongside complete concrete implementation. Role follows component registration/removal and rotation polling; unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:km",
       "originalName": "km",
       "to": "SecondaryIntrusiveDeque",
@@ -280,6 +287,13 @@
       "originalName": "pg",
       "to": "GameCanvas",
       "evidence": "Canvas wrapping a Component and forwarding paint and update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sf",
+      "originalName": "sf",
+      "to": "MouseWheelHandler",
+      "evidence": "Complete game-owned class reviewed: AWT MouseWheelListener accumulates getWheelRotation, consumes event, attaches/detaches and synchronously polls. Guards differ by game and remain unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -315,6 +329,13 @@
       "originalName": "field_h",
       "to": "payload",
       "evidence": "Constructors and every owned I/O body reviewed: caller array or allocated pooled byte array is backing payload. Preserve array identity and all references.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sf.field_l:I",
+      "originalName": "field_l",
+      "to": "rotation",
+      "evidence": "Accumulator updated by wheel event, returned/reset by poll; preserve per-game reset/guard differences.",
       "confidence": "reviewed"
     },
     {
@@ -703,10 +724,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jm.a(BLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jm.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 13 null writes to 7 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 8360e1fe580a4374bd8d1852f5180877accd810856c61910893418a5445a82e4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jm.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jm.a(Z)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete concrete synchronized body and abstract declaration reviewed. Copies accumulator before guard; true returns115 without clearing, false clears and returns copy. Preserve exact read/write/guard order.",
       "confidence": "reviewed"
     },
     {
@@ -1193,6 +1235,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qm.d(I)Ljm;",
+      "originalName": "d",
+      "to": "createMouseWheelInput",
+      "evidence": "Complete factory reviewed: reflective construction of concrete wheel listener cast to abstract contract, Throwable->null fallback and guard side effects unchanged. Literal rename explicitly limited to this owned Class.forName call.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qn.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1295,6 +1344,27 @@
       "originalName": "d",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 cc3e6253c2c3f5a3b9fee8bcbd4281d84fa0b52849ce51b53af25ca7157d97cf.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.a(BLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.a(Z)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete concrete synchronized body and abstract declaration reviewed. Copies accumulator before guard; true returns115 without clearing, false clears and returns copy. Preserve exact read/write/guard order.",
       "confidence": "reviewed"
     },
     {
@@ -1489,7 +1559,7 @@
   ],
   "classNameLiterals": {
     "policy": "direct-owned-class-for-name",
-    "expectedEdits": 0
+    "expectedEdits": 1
   },
   "labels": {
     "policy": "lexical-targets",
@@ -1503,7 +1573,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-crazycrystals-rules.mjs": "53fc8845bc15628f5f09948271dc7c15e829375009e924a68e220f175e8a3a65",
-      "crazycrystals-names.json": "a08bab71dec71c5664c765fa4637847e44c43edeec64b835dc1c9248c0418a84",
+      "crazycrystals-names.json": "36babd72aa36c4c2b3dbdafa832207bb7e0827fb20e040862881ec1f01beddc2",
       "reproduce-crazycrystals.mjs": "c436bdc5e8146e9c16d3dfc08e0152874a520d245840468c38a313fe58094a1c",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

@@ -381,6 +381,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nl",
+      "originalName": "nl",
+      "to": "MouseWheelInput",
+      "evidence": "Abstract class declaration and all3abstract wheel operations reviewed alongside complete concrete implementation. Role follows component registration/removal and rotation polling; unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:og",
       "originalName": "og",
       "to": "KeyboardInput",
@@ -406,6 +413,13 @@
       "originalName": "qp",
       "to": "BoundedRandomAccessFile",
       "evidence": "Complete constructor, owned read/write/seek/length/close methods, private fields and finalizer reviewed: tracked RandomAccessFile position/max length, overflow sentinel write and EOFException, oversized-file deletion and unlimited-bound conversion. Preserve guard-specific handle discards, skipped position updates, helper calls, sentinels and partial failures; unrelated statics retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sk",
+      "originalName": "sk",
+      "to": "MouseWheelHandler",
+      "evidence": "Complete game-owned class reviewed: AWT MouseWheelListener accumulates getWheelRotation, consumes event, attaches/detaches and synchronously polls. Guards differ by game and remain unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -483,6 +497,13 @@
       "originalName": "field_h",
       "to": "key",
       "evidence": "Long node key carried by every intrusive node.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sk.field_h:I",
+      "originalName": "field_h",
+      "to": "rotation",
+      "evidence": "Accumulator updated by wheel event, returned/reset by poll; preserve per-game reset/guard differences.",
       "confidence": "reviewed"
     },
     {
@@ -1396,6 +1417,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nl.a(BLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.a(I)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete concrete synchronized body and abstract declaration reviewed. Copies accumulator and clears it before guard6; wrong guard returns-79 after clearing. Preserve exact read/write/guard order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nl.a(ZLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:np.c(B)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -1456,6 +1498,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 591244762b7ae74a100b8d713507617823d9a5879f8fbe469b1f3cc1fbdadc01.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pm.a(B)Lnl;",
+      "originalName": "a",
+      "to": "createMouseWheelInput",
+      "evidence": "Complete factory reviewed: reflective construction of concrete wheel listener cast to abstract contract, Throwable->null fallback and guard side effects unchanged. Literal rename explicitly limited to this owned Class.forName call.",
       "confidence": "reviewed"
     },
     {
@@ -1603,6 +1652,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 7cf1f61eae6260312c07fa9e3a09fcf13b9eb9c57d9be8ef5222d61f34391170.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sk.a(BLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sk.a(I)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete concrete synchronized body and abstract declaration reviewed. Copies accumulator and clears it before guard6; wrong guard returns-79 after clearing. Preserve exact read/write/guard order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sk.a(ZLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths.",
       "confidence": "reviewed"
     },
     {
@@ -1881,7 +1951,7 @@
   ],
   "classNameLiterals": {
     "policy": "direct-owned-class-for-name",
-    "expectedEdits": 0
+    "expectedEdits": 1
   },
   "labels": {
     "policy": "lexical-targets",
@@ -1895,7 +1965,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-dungeonassault-rules.mjs": "8eb15e13a50fdc4451ed6ef68e53e6f3481c4d7f58d0976003f9ed284e2452de",
-      "dungeonassault-names.json": "7d9dfdae5cf7e0c1bda6ce35b7cfc4f047e49cbbda901107259929d8e627bd92",
+      "dungeonassault-names.json": "54a8e9b7d3afece8b6e50ae282e13ce007d54b7a6a54d3faf94a9d6db47b7fa9",
       "reproduce-dungeonassault.mjs": "91cc0426bf614cfc9a70de2a232ea4543d6576e41cf2fec5dad4cf428a0fd8c4",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

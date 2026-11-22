@@ -1,5 +1,8 @@
 {
-  "classes": [],
+  "classes": [
+    ["af","MouseWheelHandler","Complete game-owned class reviewed: AWT MouseWheelListener accumulates getWheelRotation, consumes event, attaches/detaches and synchronously polls. Guards differ by game and remain unchanged."],
+    ["kf","MouseWheelInput","Abstract class declaration and all3abstract wheel operations reviewed alongside complete concrete implementation. Role follows component registration/removal and rotation polling; unrelated statics unselected."]
+  ],
   "methods": [
     ["ab","b","(B)V","clearStaticReferences","Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 100b3a6a165e64b3ded080ec0f696f75a382f92c59f7b42efe45ddbfcda5b071."],
     ["ad","a","()V","clearStaticReferences","Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 9afa273f48909703d70946c71a77fe437d3cbdc81c1721b4ad5d3a637c6b8b11."],
@@ -132,10 +135,18 @@
     ["wi","j","(I)I","readInt","Complete owned body reviewed: Read four big-endian bytes as signed int. Preserve original guards, helper calls, global flags, exception wrappers, cursor ordering and partial effects. Advance4 before bad-guard76 sentinel."],
     ["wi","k","(I)B","readByte","Complete owned body reviewed: Read signed byte and advance1. Preserve original guards, helper calls, global flags, exception wrappers, cursor ordering and partial effects. "],
     ["ib","a","(I[BIB)I","computeCrc32","Complete helper and table initializer reviewed:256entries, eight reflected shifts with polynomial-306674912, seed-1, table[(crc XOR byte)&255] XOR crc>>>8. Complement result; retain range and guard side effects/arithmetic timing. Preserve exception wrappers and all helper behavior."],
-    ["wi","a","(Ljava/lang/CharSequence;Z)[B","encodeCp1252","Complete body reviewed: one byte per UTF16unit; direct chars1..127/160..255, Windows1252 extension map, unmapped/NUL/surrogate units become63. False flag clears static references after length read; preserve allocation, mapping, ordering and exception wrapper."]
+    ["wi","a","(Ljava/lang/CharSequence;Z)[B","encodeCp1252","Complete body reviewed: one byte per UTF16unit; direct chars1..127/160..255, Windows1252 extension map, unmapped/NUL/surrogate units become63. False flag clears static references after length read; preserve allocation, mapping, ordering and exception wrapper."],
+    ["af","a","(Ljava/awt/Component;Z)V","attach","Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order."],
+    ["kf","a","(Ljava/awt/Component;Z)V","attach","Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order."],
+    ["af","a","(ILjava/awt/Component;)V","detach","Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths."],
+    ["kf","a","(ILjava/awt/Component;)V","detach","Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths."],
+    ["af","a","(I)I","pollRotation","Complete concrete synchronized body and abstract declaration reviewed. Copies accumulator; guard>=0 writes41 then0, otherwise writes0, then returns copied value. Preserve exact read/write/guard order."],
+    ["kf","a","(I)I","pollRotation","Complete concrete synchronized body and abstract declaration reviewed. Copies accumulator; guard>=0 writes41 then0, otherwise writes0, then returns copied value. Preserve exact read/write/guard order."],
+    ["ek","c","(I)Lkf;","createMouseWheelInput","Complete factory reviewed: reflective construction of concrete wheel listener cast to abstract contract, Throwable->null fallback and guard side effects unchanged. Literal rename explicitly limited to this owned Class.forName call."]
   ],
   "fields": [
     ["wi","field_i","[B","payload","Constructors and every owned I/O body reviewed: caller array or allocated pooled byte array is backing payload. Preserve array identity and all references."],
-    ["wi","field_h","I","position","Constructors initialize0; every owned I/O body reviewed: mutable byte cursor used by reads/writes/patches/crypto. Preserve every noncanonical write and partial-failure position."]
+    ["wi","field_h","I","position","Constructors initialize0; every owned I/O body reviewed: mutable byte cursor used by reads/writes/patches/crypto. Preserve every noncanonical write and partial-failure position."],
+    ["af","field_c","I","rotation","Accumulator updated by wheel event, returned/reset by poll; preserve per-game reset/guard differences."]
   ]
 }

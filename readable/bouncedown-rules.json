@@ -213,6 +213,13 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:af",
+      "originalName": "af",
+      "to": "MouseWheelHandler",
+      "evidence": "Complete game-owned class reviewed: AWT MouseWheelListener accumulates getWheelRotation, consumes event, attaches/detaches and synchronously polls. Guards differ by game and remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ai",
       "originalName": "ai",
       "to": "IntrusiveNode",
@@ -248,6 +255,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kf",
+      "originalName": "kf",
+      "to": "MouseWheelInput",
+      "evidence": "Abstract class declaration and all3abstract wheel operations reviewed alongside complete concrete implementation. Role follows component registration/removal and rotation polling; unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:kk",
       "originalName": "kk",
       "to": "GameClient",
@@ -273,6 +287,13 @@
       "originalName": "wi",
       "to": "PacketBuffer",
       "evidence": "IntrusiveNode holding a byte payload and cursor with big-endian primitive and string encodings.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:af.field_c:I",
+      "originalName": "field_c",
+      "to": "rotation",
+      "evidence": "Accumulator updated by wheel event, returned/reset by poll; preserve per-game reset/guard differences.",
       "confidence": "reviewed"
     },
     {
@@ -308,6 +329,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 8 null writes to 4 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 6ea2ac4df02d9e67c19ca95fb60e0a9743e5c5862f19e893a892267c247deb2b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.a(I)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete concrete synchronized body and abstract declaration reviewed. Copies accumulator; guard>=0 writes41 then0, otherwise writes0, then returns copied value. Preserve exact read/write/guard order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:af.a(Ljava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order.",
       "confidence": "reviewed"
     },
     {
@@ -444,6 +486,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ek.c(I)Lkf;",
+      "originalName": "c",
+      "to": "createMouseWheelInput",
+      "evidence": "Complete factory reviewed: reflective construction of concrete wheel listener cast to abstract contract, Throwable->null fallback and guard side effects unchanged. Literal rename explicitly limited to this owned Class.forName call.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fg.a()V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -574,6 +623,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 4b1505042d14bbe428a743ac2fc7bd20544800d01439bcb3b3b02b05f18f5658.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kf.a(I)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete concrete synchronized body and abstract declaration reviewed. Copies accumulator; guard>=0 writes41 then0, otherwise writes0, then returns copied value. Preserve exact read/write/guard order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kf.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kf.a(Ljava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order.",
       "confidence": "reviewed"
     },
     {
@@ -1216,7 +1286,7 @@
   ],
   "classNameLiterals": {
     "policy": "direct-owned-class-for-name",
-    "expectedEdits": 0
+    "expectedEdits": 1
   },
   "labels": {
     "policy": "lexical-targets",
@@ -1230,7 +1300,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "3653d9399324c4c4658a716eee5b5396831d9ae020bb9d86e06e1b632a03ad34",
+      "bouncedown-names.json": "672ac1d42a52e1212a70530b2cd058e331b9607806eb9892244d7aa32225f88f",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

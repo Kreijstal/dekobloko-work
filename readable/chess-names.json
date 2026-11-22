@@ -1,6 +1,8 @@
 {
   "classes": [
-    ["eg","BoundedRandomAccessFile","Complete constructor, owned read/write/seek/length/close methods, private fields and finalizer reviewed: tracked RandomAccessFile position/max length, overflow sentinel write and EOFException, oversized-file deletion and unlimited-bound conversion. Preserve guard-specific handle discards, skipped position updates, helper calls, sentinels and partial failures; unrelated statics retained."]
+    ["eg","BoundedRandomAccessFile","Complete constructor, owned read/write/seek/length/close methods, private fields and finalizer reviewed: tracked RandomAccessFile position/max length, overflow sentinel write and EOFException, oversized-file deletion and unlimited-bound conversion. Preserve guard-specific handle discards, skipped position updates, helper calls, sentinels and partial failures; unrelated statics retained."],
+    ["oe","MouseWheelHandler","Complete game-owned class reviewed: AWT MouseWheelListener accumulates getWheelRotation, consumes event, attaches/detaches and synchronously polls. Guards differ by game and remain unchanged."],
+    ["ek","MouseWheelInput","Abstract class declaration and all3abstract wheel operations reviewed alongside complete concrete implementation. Role follows component registration/removal and rotation polling; unrelated statics unselected."]
   ],
   "methods": [
     ["Chess","v","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 e0ea65b249a209337d86c8869f9b25c29ecbe703ff53b413e4f869c68abc8c1d."],
@@ -168,7 +170,16 @@
     ["p","i","(I)I","readUnsignedByte","Complete owned body reviewed: Read byte masked255 and advance1. Preserve original guards, helper calls, global flags, exception wrappers, cursor ordering and partial effects. Guard>-76 returns-11 before I/O."],
     ["p","j","(I)I","readUnsignedSmart","Complete owned body reviewed: Peek high bit; unsigned byte or unsigned short minus32768. Preserve original guards, helper calls, global flags, exception wrappers, cursor ordering and partial effects. "],
     ["p","k","(I)I","readUnsignedMedium","Complete owned body reviewed: Read three big-endian bytes as0..16777215. Preserve original guards, helper calls, global flags, exception wrappers, cursor ordering and partial effects. "],
-    ["ci","a","(I[BII)I","computeCrc32","Complete helper and table initializer reviewed:256entries, eight reflected shifts with polynomial-306674912, seed-1, table[(crc XOR byte)&255] XOR crc>>>8. Complement result; retain range and guard side effects/arithmetic timing. Preserve exception wrappers and all helper behavior."]
+    ["ci","a","(I[BII)I","computeCrc32","Complete helper and table initializer reviewed:256entries, eight reflected shifts with polynomial-306674912, seed-1, table[(crc XOR byte)&255] XOR crc>>>8. Complement result; retain range and guard side effects/arithmetic timing. Preserve exception wrappers and all helper behavior."],
+    ["oe","a","(BLjava/awt/Component;)V","attach","Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order."],
+    ["ek","a","(BLjava/awt/Component;)V","attach","Complete handler registration body and abstract contract reviewed. Preserve null dereferences, early returns, accumulator writes and guard arithmetic in their original order."],
+    ["oe","a","(Ljava/awt/Component;I)V","detach","Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths."],
+    ["ek","a","(Ljava/awt/Component;I)V","detach","Complete handler deregistration body and abstract contract reviewed. Preserve guard-dependent callback/registration side effects and return paths."],
+    ["oe","a","(B)I","pollRotation","Complete concrete synchronized body and abstract declaration reviewed. Guard<=-63 copies/clears/returns; wrong guard invokes attach on null before later copy/clear. Preserve exact read/write/guard order."],
+    ["ek","a","(B)I","pollRotation","Complete concrete synchronized body and abstract declaration reviewed. Guard<=-63 copies/clears/returns; wrong guard invokes attach on null before later copy/clear. Preserve exact read/write/guard order."],
+    ["sa","b","(I)Lek;","createMouseWheelInput","Complete factory reviewed: reflective construction of concrete wheel listener cast to abstract contract, Throwable->null fallback and guard side effects unchanged. Literal rename explicitly limited to this owned Class.forName call."]
   ],
-  "fields": []
+  "fields": [
+    ["oe","field_g","I","rotation","Accumulator updated by wheel event, returned/reset by poll; preserve per-game reset/guard differences."]
+  ]
 }
