@@ -339,6 +339,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jb",
+      "originalName": "jb",
+      "to": "AccountCreationResultPanel",
+      "evidence": "Complete instance contract reviewed: one constructor and four instance methods, covering active/pending result polling, private success/error/status/suggestion display, callback navigation and248 fallback-result handling. Stores related account form plus handled/fallback flags; inherits UI panel behavior. Constructor, all five instance bodies and DTO/factories/poller/UI label context source-reviewed. Preserve inherited overrides, guards, message/button/status selection, secondary success transition and unrelated statics. All owned/type-use method declarations non-native; exact quoted owned class-name literals absent.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:kg",
       "originalName": "kg",
       "to": "GameAppletShell",
@@ -458,6 +465,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:vk",
+      "originalName": "vk",
+      "to": "AccountServiceResult",
+      "evidence": "Complete class source reviewed: exactly five instance fields (success, status, message, suggestions and secondary flag), sole boolean constructor. Account creation UI success/error/status/suggestion paths plus cached name-check and result polling corroborate service-result role; mixed static helpers retain original semantics. All result-valued/owned method declarations non-native; no exact quoted owned class-name literal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:wj",
       "originalName": "wj",
       "to": "CipherPacketBuffer",
@@ -532,6 +546,34 @@
       "originalName": "field_k",
       "to": "data",
       "evidence": "Sample stream indexes this byte array for length and interpolated reads.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vk.field_a:Z",
+      "originalName": "field_a",
+      "to": "success",
+      "evidence": "Instance field declaration, result constructor, complete success/error/suggestion factories and account creation/name-query consumers source-reviewed: success. Preserve all defaults, caller object/array identity and static helpers. Secondary flag deliberately left unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vk.field_c:[Ljava/lang/String;",
+      "originalName": "field_c",
+      "to": "suggestions",
+      "evidence": "Instance field declaration, result constructor, complete success/error/suggestion factories and account creation/name-query consumers source-reviewed: suggestions. Preserve all defaults, caller object/array identity and static helpers. Secondary flag deliberately left unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vk.field_d:I",
+      "originalName": "field_d",
+      "to": "statusCode",
+      "evidence": "Instance field declaration, result constructor, complete success/error/suggestion factories and account creation/name-query consumers source-reviewed: statusCode. Preserve all defaults, caller object/array identity and static helpers. Secondary flag deliberately left unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vk.field_g:Ljava/lang/String;",
+      "originalName": "field_g",
+      "to": "message",
+      "evidence": "Instance field declaration, result constructor, complete success/error/suggestion factories and account creation/name-query consumers source-reviewed: message. Preserve all defaults, caller object/array identity and static helpers. Secondary flag deliberately left unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -1046,6 +1088,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:em.a([Ljava/lang/String;I)Lvk;",
+      "originalName": "a",
+      "to": "createAccountSuggestionsResult",
+      "evidence": "Complete declaration/body reviewed with result constructor and account creation/name-check UI. Allocates success=false result holding caller String[] suggestions by reference. Preserve every original guard (including early null returns), ordering, exception wrapping and unrelated static cleanup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:en.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1263,6 +1312,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jb.a(Lvk;ZZ)V",
+      "originalName": "a",
+      "to": "showAccountCreationResult",
+      "evidence": "Complete private result-processing UI declaration/body reviewed with result DTO fields, constructor, success/error/suggestion factories and request poller. Shows account creation success/error/status/suggestion panels, handles248 transition and secondary success action. Preserve guards, handled-state writes, secondary-panel transitions, button/status selection, allocation/call order and exception wrapping; no implementation edits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jc.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1351,6 +1407,20 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 0ec4e583c1665a86afc1ad28d34895f0a5949b23099178a3e1d6f4c09c78a4e0.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:l.$cfr$intArgs$a$fb458fdecc21(IZ)Lvk;",
+      "originalName": "$cfr$intArgs$a$fb458fdecc21",
+      "to": "createAccountSuccessResultWithIntGuard",
+      "evidence": "Both complete byte/int success factories, five instance fields, sole constructor and account creation/name-check UI consumers source-reviewed. Constructs success=true and copies caller boolean into a secondary flag. After allocation and secondary-flag assignment, guard!=-49 clears factory owner static String; preserve aliasing/order and full int domain. Never merge/narrow full-int helper or change any expression.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:l.a(BZ)Lvk;",
+      "originalName": "a",
+      "to": "createAccountSuccessResult",
+      "evidence": "Both complete byte/int success factories, five instance fields, sole constructor and account creation/name-check UI consumers source-reviewed. Constructs success=true and copies caller boolean into a secondary flag. After allocation and secondary-flag assignment, guard!=-49 clears factory owner static String; preserve aliasing/order and full int domain. Never merge/narrow full-int helper or change any expression.",
       "confidence": "reviewed"
     },
     {
@@ -1564,6 +1634,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:p.a(ILjava/lang/String;I)Lvk;",
+      "originalName": "a",
+      "to": "createAccountErrorResult",
+      "evidence": "Complete declaration/body reviewed with result constructor and account creation UI. Allocates success=false result and copies status/message. Preserve every original guard, side-effect order, RuntimeException wrapping, input identity and failure path; no implementation edits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:p.d(Z)V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -1582,6 +1659,13 @@
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 c3503ab2ad86c0869b90b3b4d4033a167c6c9c312d1de10c906bb3775e21c182.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.a(B)Lvk;",
+      "originalName": "a",
+      "to": "pollAccountCreationResult",
+      "evidence": "Complete declaration/body and account-creation UI caller source-reviewed. Throws IllegalStateException for idle request state; returns null while pending; on completed state resets to idle before returning cached account-service result. Preserve guard-triggered cleanup/arithmetic exceptions, state comparisons/write order, exact cached object identity and all exception paths. No implementation edits.",
       "confidence": "reviewed"
     },
     {
@@ -2084,7 +2168,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-dungeonassault-rules.mjs": "8eb15e13a50fdc4451ed6ef68e53e6f3481c4d7f58d0976003f9ed284e2452de",
-      "dungeonassault-names.json": "b4183715855221ff8f8bae08518cc48d0cc186efe4a94aa10cef7a0eba6a555d",
+      "dungeonassault-names.json": "62a9afb55c45deb38c1380ec52e7c2dc463c7233529e3ac1025d388728916116",
       "reproduce-dungeonassault.mjs": "91cc0426bf614cfc9a70de2a232ea4543d6576e41cf2fec5dad4cf428a0fd8c4",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

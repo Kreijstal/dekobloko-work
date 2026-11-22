@@ -2250,6 +2250,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:tea",
+      "originalName": "tea",
+      "to": "AccountCreationResultPanel",
+      "evidence": "Complete instance contract reviewed: one constructor and four instance methods, covering active/pending result polling, private success/error/status/suggestion display, callback navigation and248 fallback-result handling. Stores related account form plus handled/fallback flags; inherits UI panel behavior. Constructor, all five instance bodies and DTO/factories/poller/UI label context source-reviewed. Preserve inherited overrides, guards, message/button/status selection, secondary success transition and unrelated statics. All owned/type-use method declarations non-native; exact quoted owned class-name literals absent.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:tf",
       "originalName": "tf",
       "to": "UiNode",
@@ -2737,6 +2744,34 @@
       "originalName": "field_m",
       "to": "secondaryNext",
       "evidence": "eo.b(int) joins field_m and field_i of the neighbours like bw unlink.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eq.field_a:[Ljava/lang/String;",
+      "originalName": "field_a",
+      "to": "suggestions",
+      "evidence": "Instance field declaration, boolean constructor and complete success/error/suggestion factories plus account-creation/name-check UI consumers source-reviewed. Role: suggestions. Keep default values, object/array identity and all writes; secondary flag remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eq.field_d:I",
+      "originalName": "field_d",
+      "to": "statusCode",
+      "evidence": "Instance field declaration, boolean constructor and complete success/error/suggestion factories plus account-creation/name-check UI consumers source-reviewed. Role: statusCode. Keep default values, object/array identity and all writes; secondary flag remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eq.field_e:Z",
+      "originalName": "field_e",
+      "to": "success",
+      "evidence": "Instance field declaration, boolean constructor and complete success/error/suggestion factories plus account-creation/name-check UI consumers source-reviewed. Role: success. Keep default values, object/array identity and all writes; secondary flag remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:eq.field_g:Ljava/lang/String;",
+      "originalName": "field_g",
+      "to": "message",
+      "evidence": "Instance field declaration, boolean constructor and complete success/error/suggestion factories plus account-creation/name-check UI consumers source-reviewed. Role: message. Keep default values, object/array identity and all writes; secondary flag remains unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -6835,6 +6870,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kw.a(Z[Ljava/lang/String;)Leq;",
+      "originalName": "a",
+      "to": "createAccountSuggestionsResult",
+      "evidence": "Complete declaration/body, result constructor and account UI reviewed. Constructs result using caller boolean success flag (not a fixed false), then stores caller suggestion array by reference. Preserve nulls, caller-controlled success, allocation/write order and RuntimeException wrapping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kw.c(B)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -7819,6 +7861,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nea.f(B)Leq;",
+      "originalName": "f",
+      "to": "pollAccountCreationResult",
+      "evidence": "Complete declaration/body and account-creation UI caller source-reviewed. Throws IllegalStateException for idle request state; returns null while pending; on completed state resets to idle before returning cached account-service result. Preserve guard-triggered cleanup/arithmetic exceptions, state comparisons/write order, exact cached object identity and all exception paths. No implementation edits.",
       "confidence": "reviewed"
     },
     {
@@ -9936,6 +9985,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tea.a(IZLeq;)V",
+      "originalName": "a",
+      "to": "showAccountCreationResult",
+      "evidence": "Complete private result-processing UI declaration/body reviewed with result DTO fields, constructor, success/error/suggestion factories and request poller. Shows account creation success/error/status/suggestion panels, handles248 transition and secondary success action. Preserve guards, handled-state writes, secondary-panel transitions, button/status selection, allocation/call order and exception wrapping; no implementation edits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tea.q(I)V",
       "originalName": "q",
       "to": "releaseStatics",
@@ -11021,6 +11077,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wu.a(IBLjava/lang/String;)Leq;",
+      "originalName": "a",
+      "to": "createAccountErrorResult",
+      "evidence": "Complete method/constructor/UI consumer reviewed. Allocates success=false result, evaluates guard division -117/((35-byteGuard)/41), then copies status and message; preserves exception wrapping, division failure/order, aliases and full original code.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wu.a(IILwj;I)V",
       "originalName": "a",
       "to": "updateMouseOver",
@@ -11072,7 +11135,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
-      "bachelorfridge-names.json": "4aca258b582e2e6a42633d2cd0eae496f8733cf96a06d34867f8a85f481c862b",
+      "bachelorfridge-names.json": "32b5c39ec2c8554b15136ce1e16ca28b4b6018733e206d6f614ce82585ab5413",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",

@@ -64434,6 +64434,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dc.a(ZZ)Lwd;",
+      "originalName": "a",
+      "to": "createAccountSuccessResult",
+      "evidence": "dc.java: Both complete branches reviewed with named AccountRequestResult constructor/fields and registration dialog. False second boolean allocates accepted=true and copies first boolean into requiresAgreement. True guard recursively invokes dc.a(false,false), allocating a discarded extra result before allocating returned result and assigning flag. Preserve extra allocation, caller booleans, order, identity and all failures; no simplification.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dd.a(B)Z",
       "originalName": "a",
       "to": "pollMasterIndex",
@@ -65565,6 +65572,13 @@
       "originalName": "a",
       "to": "read",
       "evidence": "ei.java: Reads a slice and advances position by the positive byte count.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(I[Ljava/lang/String;)Lwd;",
+      "originalName": "a",
+      "to": "createAccountSuggestionsResult",
+      "evidence": "ei.java: Complete method/constructor/registration UI reviewed. Allocates accepted=false, aliases caller array into suggestedNames, then int!=2 calls BoundedFile.a(33,true,false,true). Preserve exact extra call after allocation/array write and all propagated/wrapped failures; no array copy or guard normalization.",
       "confidence": "reviewed"
     },
     {
@@ -69908,6 +69922,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:il.a(IILjava/lang/String;)Lwd;",
+      "originalName": "a",
+      "to": "createAccountErrorResult",
+      "evidence": "il.java: Complete method, named boolean constructor and registration UI reviewed. First int!=-1 returns null before allocation; valid guard allocates accepted=false then sets status from second int and errorText from caller String. Preserve all ordering, String identity, null behavior and RuntimeException context wrapping.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:il.a(ILha;)V",
       "originalName": "a",
       "to": "applyToBattlefield",
@@ -71725,6 +71746,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "ki.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ki.a(I)Lwd;",
+      "originalName": "a",
+      "to": "pollAccountCreationResult",
+      "evidence": "ki.java: Complete method and named AccountRegistrationDialog advanceDialogAnimation caller reviewed. Checks shared consumed-state singleton against registration state and throws if idle; consumes completed registration state before returning SoundCache.field_a. Pending returns null, with int!=-61440 additionally clearing contentFadeInStage. Preserve shared singleton identity/order, cached object, wrong-guard cleanup and failure behavior.",
       "confidence": "reviewed"
     },
     {
@@ -135821,7 +135849,7 @@
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "armiesofgielinor-names.json": "3ad8f858bff8c4ccb727ce1406863c1d5e3725a3a7eabc7f69c97b8d364336a0"
+      "armiesofgielinor-names.json": "b70956858741037be03861ed01c44d80a8dec7d69b8e128dc7ae0e7771ab3204"
     }
   },
   "generators": {

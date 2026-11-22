@@ -262,6 +262,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:in",
+      "originalName": "in",
+      "to": "AccountServiceResult",
+      "evidence": "Complete class source reviewed: exactly five instance fields (success, status, message, suggestions and secondary flag), sole boolean constructor. Account creation UI success/error/status/suggestion paths plus cached name-check and result polling corroborate service-result role; mixed static helpers retain original semantics. All result-valued/owned method declarations non-native; no exact quoted owned class-name literal.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jl",
       "originalName": "jl",
       "to": "DualLinkNode",
@@ -325,10 +332,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:v",
+      "originalName": "v",
+      "to": "AccountCreationResultPanel",
+      "evidence": "Complete instance contract reviewed: one constructor and four instance methods, covering active/pending result polling, private success/error/status/suggestion display, callback navigation and248 fallback-result handling. Stores related account form plus handled/fallback flags; inherits UI panel behavior. Constructor, all five instance bodies and DTO/factories/poller/UI label context source-reviewed. Preserve inherited overrides, guards, message/button/status selection, secondary success transition and unrelated statics. All owned/type-use method declarations non-native; exact quoted owned class-name literals absent.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ig.field_i:Ljava/nio/ByteBuffer;",
       "originalName": "field_i",
       "to": "buffer",
       "evidence": "Sole instance ByteBuffer allocated directly and read/written by byte-array operations. Preserve all nullable/guard states.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:in.field_a:Z",
+      "originalName": "field_a",
+      "to": "success",
+      "evidence": "Instance field declaration, result constructor, complete success/error/suggestion factories and account creation/name-query consumers source-reviewed: success. Preserve all defaults, caller object/array identity and static helpers. Secondary flag deliberately left unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:in.field_c:[Ljava/lang/String;",
+      "originalName": "field_c",
+      "to": "suggestions",
+      "evidence": "Instance field declaration, result constructor, complete success/error/suggestion factories and account creation/name-query consumers source-reviewed: suggestions. Preserve all defaults, caller object/array identity and static helpers. Secondary flag deliberately left unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:in.field_f:Ljava/lang/String;",
+      "originalName": "field_f",
+      "to": "message",
+      "evidence": "Instance field declaration, result constructor, complete success/error/suggestion factories and account creation/name-query consumers source-reviewed: message. Preserve all defaults, caller object/array identity and static helpers. Secondary flag deliberately left unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:in.field_g:I",
+      "originalName": "field_g",
+      "to": "statusCode",
+      "evidence": "Instance field declaration, result constructor, complete success/error/suggestion factories and account creation/name-query consumers source-reviewed: statusCode. Preserve all defaults, caller object/array identity and static helpers. Secondary flag deliberately left unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -668,6 +710,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gd.a(ILjava/lang/String;I)Lin;",
+      "originalName": "a",
+      "to": "createAccountErrorResult",
+      "evidence": "Complete declaration/body reviewed with result constructor and account creation UI. Allocates success=false result and copies status/message. Preserve every original guard, side-effect order, RuntimeException wrapping, input identity and failure path; no implementation edits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gg.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -798,6 +847,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 e2e22ff13e915a45e9f931d520e6285163eb67466bd2a9605c98bf72e834eee6.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jj.$cfr$intArgs$a$81305413f30a(IZ)Lin;",
+      "originalName": "$cfr$intArgs$a$81305413f30a",
+      "to": "createAccountSuccessResultWithIntGuard",
+      "evidence": "Both complete byte/int success factories, five instance fields, sole constructor and account creation/name-check UI consumers source-reviewed. Constructs success=true and copies caller boolean into a secondary flag. Preserve division -100/((guard-80)/42) before result allocation, int overflow, zero divisors and exceptions. Never merge/narrow full-int helper or change any expression.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jj.a(BZ)Lin;",
+      "originalName": "a",
+      "to": "createAccountSuccessResult",
+      "evidence": "Both complete byte/int success factories, five instance fields, sole constructor and account creation/name-check UI consumers source-reviewed. Constructs success=true and copies caller boolean into a secondary flag. Preserve division -100/((guard-80)/42) before result allocation, int overflow, zero divisors and exceptions. Never merge/narrow full-int helper or change any expression.",
       "confidence": "reviewed"
     },
     {
@@ -1074,6 +1137,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lc.b(B)Lin;",
+      "originalName": "b",
+      "to": "pollAccountCreationResult",
+      "evidence": "Complete declaration/body and account-creation UI caller source-reviewed. Throws IllegalStateException for idle request state; returns null while pending; on completed state resets to idle before returning cached account-service result. Preserve guard-triggered cleanup/arithmetic exceptions, state comparisons/write order, exact cached object identity and all exception paths. No implementation edits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ld.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1204,6 +1274,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 4b9ed4fcae5e37d609ddf659370f23ada9c20423cfb370f2502fe21195713bf6.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(I[Ljava/lang/String;)Lin;",
+      "originalName": "a",
+      "to": "createAccountSuggestionsResult",
+      "evidence": "Complete declaration/body reviewed with result constructor and account creation/name-check UI. Allocates success=false result holding caller String[] suggestions by reference. Preserve every original guard (including early null returns), ordering, exception wrapping and unrelated static cleanup.",
       "confidence": "reviewed"
     },
     {
@@ -1508,6 +1585,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:v.a(BZLin;)V",
+      "originalName": "a",
+      "to": "showAccountCreationResult",
+      "evidence": "Complete private result-processing UI declaration/body reviewed with result DTO fields, constructor, success/error/suggestion factories and request poller. Shows account creation success/error/status/suggestion panels, handles248 transition and secondary success action. Preserve guards, handled-state writes, secondary-panel transitions, button/status selection, allocation/call order and exception wrapping; no implementation edits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:v.j(B)V",
       "originalName": "j",
       "to": "clearStaticReferences",
@@ -1573,7 +1657,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-confined-rules.mjs": "a08806d13e3259a5e4a49e9de85dc6561b20a6ffc335a49925ea5169596b7ee2",
-      "confined-names.json": "2bc73825e433d3e3e155d8c93e8836a4175e990c88143e3c36a6474a2b407675",
+      "confined-names.json": "08b13a921df0c301502dd654d9bf3534a9d4527d42959813a0944b3db04411bc",
       "reproduce-confined.mjs": "9b3831fbe343e76865b33804d8980f36e4b2b1bbbf79b4539c6903b6f9ec7e92",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

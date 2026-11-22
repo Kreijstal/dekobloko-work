@@ -283,6 +283,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:rg",
+      "originalName": "rg",
+      "to": "AccountServiceResult",
+      "evidence": "Complete instance contract source-reviewed: exactly five fields (success, secondary flag, status, message and String[] suggestions), sole boolean constructor and no other instance operations. Full creation-result UI and exact success label plus three complete factories and consuming poller establish account-service result role. Mixed unrelated statics retained. All result type/owner method declarations non-native; exact quoted owned class-name literals absent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sd",
+      "originalName": "sd",
+      "to": "AccountCreationResultPanel",
+      "evidence": "Complete instance contract reviewed: one constructor and four instance methods, covering active/pending result polling, private success/error/status/suggestion display, callback navigation and248 fallback-result handling. Stores related account form plus handled/fallback flags; inherits UI panel behavior. Constructor, all five instance bodies and DTO/factories/poller/UI label context source-reviewed. Preserve inherited overrides, guards, message/button/status selection, secondary success transition and unrelated statics. All owned/type-use method declarations non-native; exact quoted owned class-name literals absent.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ud",
       "originalName": "ud",
       "to": "Slime",
@@ -315,6 +329,34 @@
       "originalName": "field_a",
       "to": "buffer",
       "evidence": "Sole instance ByteBuffer allocated directly and read/written by byte-array operations. Preserve all nullable/guard states.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rg.field_c:Ljava/lang/String;",
+      "originalName": "field_c",
+      "to": "message",
+      "evidence": "Exact instance declaration, boolean constructor, success/error/suggestion factories and complete account-creation UI consumer reviewed. Role message; preserve defaults, all writes and caller aliases. Secondary flag remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rg.field_d:[Ljava/lang/String;",
+      "originalName": "field_d",
+      "to": "suggestions",
+      "evidence": "Exact instance declaration, boolean constructor, success/error/suggestion factories and complete account-creation UI consumer reviewed. Role suggestions; preserve defaults, all writes and caller aliases. Secondary flag remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rg.field_f:Z",
+      "originalName": "field_f",
+      "to": "success",
+      "evidence": "Exact instance declaration, boolean constructor, success/error/suggestion factories and complete account-creation UI consumer reviewed. Role success; preserve defaults, all writes and caller aliases. Secondary flag remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rg.field_g:I",
+      "originalName": "field_g",
+      "to": "statusCode",
+      "evidence": "Exact instance declaration, boolean constructor, success/error/suggestion factories and complete account-creation UI consumer reviewed. Role statusCode; preserve defaults, all writes and caller aliases. Secondary flag remains unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -696,6 +738,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jf.a(Z)Lrg;",
+      "originalName": "a",
+      "to": "pollAccountCreationResult",
+      "evidence": "Complete declaration/body, five-field instance shape and boolean constructor reviewed with account-creation UI and its exact Account created successfully! label. Success factory always allocates success=true before guard5579, with null return and no secondary-flag assignment on wrong guard. Error factory tests guard1 before allocation. Suggestion factory passes caller-controlled success boolean, not fixed false. Poller clears unrelated String for false guard before idle/ready comparisons, then consumes ready state. Preserve every arithmetic expression, guard path, allocation/write/call order, object/array identity, RuntimeException wrapping and unrelated static effect; identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jg.j(I)V",
       "originalName": "j",
       "to": "clearStaticReferences",
@@ -962,6 +1011,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qj.a(Z[Ljava/lang/String;)Lrg;",
+      "originalName": "a",
+      "to": "createAccountSuggestionsResult",
+      "evidence": "Complete declaration/body, five-field instance shape and boolean constructor reviewed with account-creation UI and its exact Account created successfully! label. Success factory always allocates success=true before guard5579, with null return and no secondary-flag assignment on wrong guard. Error factory tests guard1 before allocation. Suggestion factory passes caller-controlled success boolean, not fixed false. Poller clears unrelated String for false guard before idle/ready comparisons, then consumes ready state. Preserve every arithmetic expression, guard path, allocation/write/call order, object/array identity, RuntimeException wrapping and unrelated static effect; identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qk.b()V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -973,6 +1029,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 2eb96ebde876922917e198ba72aa63a6b579495efe11d5ea9bda3cb01e0cc700.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:r.a(IZ)Lrg;",
+      "originalName": "a",
+      "to": "createAccountSuccessResult",
+      "evidence": "Complete declaration/body, five-field instance shape and boolean constructor reviewed with account-creation UI and its exact Account created successfully! label. Success factory always allocates success=true before guard5579, with null return and no secondary-flag assignment on wrong guard. Error factory tests guard1 before allocation. Suggestion factory passes caller-controlled success boolean, not fixed false. Poller clears unrelated String for false guard before idle/ready comparisons, then consumes ready state. Preserve every arithmetic expression, guard path, allocation/write/call order, object/array identity, RuntimeException wrapping and unrelated static effect; identifiers only.",
       "confidence": "reviewed"
     },
     {
@@ -1001,6 +1064,13 @@
       "originalName": "d",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 ad75bf3ac97686c40335fead76dbebb3f85a50b0a3177af230ab575286f716ce.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sd.a(IZLrg;)V",
+      "originalName": "a",
+      "to": "showAccountCreationResult",
+      "evidence": "Complete declaration/body, five-field instance shape and boolean constructor reviewed with account-creation UI and its exact Account created successfully! label. Success factory always allocates success=true before guard5579, with null return and no secondary-flag assignment on wrong guard. Error factory tests guard1 before allocation. Suggestion factory passes caller-controlled success boolean, not fixed false. Poller clears unrelated String for false guard before idle/ready comparisons, then consumes ready state. Preserve every arithmetic expression, guard path, allocation/write/call order, object/array identity, RuntimeException wrapping and unrelated static effect; identifiers only.",
       "confidence": "reviewed"
     },
     {
@@ -1127,6 +1197,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 1e87f94233bcdf0a3d85734d772e1608bf53787904ad5c3eb6d4dd3cb0ec005a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.a(IILjava/lang/String;)Lrg;",
+      "originalName": "a",
+      "to": "createAccountErrorResult",
+      "evidence": "Complete declaration/body, five-field instance shape and boolean constructor reviewed with account-creation UI and its exact Account created successfully! label. Success factory always allocates success=true before guard5579, with null return and no secondary-flag assignment on wrong guard. Error factory tests guard1 before allocation. Suggestion factory passes caller-controlled success boolean, not fixed false. Poller clears unrelated String for false guard before idle/ready comparisons, then consumes ready state. Preserve every arithmetic expression, guard path, allocation/write/call order, object/array identity, RuntimeException wrapping and unrelated static effect; identifiers only.",
       "confidence": "reviewed"
     },
     {
@@ -1426,7 +1503,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "4ce2ec82af3a4a4b7ff68eacadad760c8ce3e957605924e04614071952750615",
+      "bouncedown-names.json": "284b6ecab07ab771f4a7b8bd6b200903be82602a971f734e317215d8936f416b",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
