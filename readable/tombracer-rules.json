@@ -1921,6 +1921,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:eta",
+      "originalName": "eta",
+      "to": "BillboardSpriteData",
+      "evidence": "Complete static holder reviewed. loadTitleSprites initializes six groups of flame/smoke/thin-dust/thick-dust/spark/gas sprites; createGameToolkitSprites converts them and room renderer uses these groups. Preserve recursive cleanup guard and diagnostic string.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:eua",
       "originalName": "eua",
       "to": "QuickChatMenu",
@@ -2352,6 +2359,13 @@
       "originalName": "gn",
       "to": "FadingDialog",
       "evidence": "Abstract centred WidgetContainer dialog whose opacity fades toward 256 while it is the top visible dialog of its DialogStack.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gna",
+      "originalName": "gna",
+      "to": "FaceNormal",
+      "evidence": "Complete class and Model.computeNormals, lighting and copy paths reviewed. Normalized triangle-edge cross product stored per face; three components copied without behavior changes.",
       "confidence": "reviewed"
     },
     {
@@ -2947,6 +2961,34 @@
       "originalName": "ja",
       "to": "NativeTransform3D",
       "evidence": "Transform3D backed by a native peer (field_nativeid) that NativeSoftwareGraphicsToolkit creates.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jaclib.peer.nca",
+      "originalName": "nca",
+      "to": "NativeHeapPeer",
+      "evidence": "Complete class, NativeHeapPeerReference, Peer/PeerReference and concrete GeometryBuffer/PixelBuffer consumers reviewed. Installs the native-heap peer reference rather than the IUnknown reference.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jaclib.peer.sha",
+      "originalName": "sha",
+      "to": "PeerReferenceManager",
+      "evidence": "Complete class and PeerReference registration, Direct3D update/dispose consumers reviewed. Owns ReferenceQueue and linked references; drains collected references or releases all, preserving every guard and link mutation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jagdx.ah",
+      "originalName": "ah",
+      "to": "Direct3DResult",
+      "evidence": "Complete helper class and Direct3D factory, display-mode, reset, map/unmap callers reviewed. Integer overload reports negative-result failure; byte overload reports nonnegative success. Preserve magic and arithmetic guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jagdx.eva",
+      "originalName": "eva",
+      "to": "Direct3DException",
+      "evidence": "Complete exception class and creation/lock/buffer validation throw sites plus device retry catch reviewed. RuntimeException with unchanged optional String constructor; no native ABI/runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -3874,6 +3916,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mja",
+      "originalName": "mja",
+      "to": "Direct3DLibraryLoader",
+      "evidence": "Complete class and Direct3D factory caller reviewed. Loads jaclib first and hw3d only with byte guard -50, then factory separately loads jagdx. Preserve all guard behavior, load order and partial failure.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mk",
       "originalName": "mk",
       "to": "ValidationProvider",
@@ -3906,6 +3955,13 @@
       "originalName": "mo",
       "to": "PitBehaviour",
       "evidence": "bda.readBehaviour builds it for type 8, which the behaviour name table fua.field_c labels \"Pit\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mqa",
+      "originalName": "mqa",
+      "to": "SoundVolumeControl",
+      "evidence": "Complete wrapper, menu slider callers and underlying setter reviewed. Delegates to sound master-volume update, distinct from adjacent music-volume controls. Preserve arithmetic guard and both audio-system updates.",
       "confidence": "reviewed"
     },
     {
@@ -4301,6 +4357,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:oha",
+      "originalName": "oha",
+      "to": "VertexNormal",
+      "evidence": "Complete class and Model.computeNormals, lighting and copy paths reviewed. Accumulates face cross-product components for each vertex plus contribution count; lighting divides by count.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:oia",
       "originalName": "oia",
       "to": "PitEdgePiece",
@@ -4431,6 +4494,13 @@
       "originalName": "ou",
       "to": "CourseGenerator",
       "evidence": "Abstract seeded generator of CourseLayouts with a room count; MatchState asks it for one layout per round.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:oua",
+      "originalName": "oua",
+      "to": "Direct3DToolkitFactory",
+      "evidence": "Complete class reviewed. Loads native dependencies and jagdx, reflectively invokes Direct3DToolkit.createToolkit with Canvas,TextureProvider,ResourceArchive,Integer; preserves RuntimeException/Throwable handling and Class literal bindings.",
       "confidence": "reviewed"
     },
     {
@@ -7780,6 +7850,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:eta.field_a:[[Ljpa;",
+      "originalName": "field_a",
+      "to": "spritesByType",
+      "evidence": "Six asset groups allocated by title sprite loader, converted by createGameToolkitSprites and used for room effect drawing; preserve group/frame indices and null cleanup.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:f.field_a:I",
       "originalName": "field_a",
       "to": "maxTargets",
@@ -8624,6 +8701,27 @@
       "originalName": "field_b",
       "to": "effectPresetNames",
       "evidence": "Static initialiser lists Damage, Yellow Fire, Blue Fire, Water, Light, Ice, White Light in Effect preset order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gna.field_a:I",
+      "originalName": "field_a",
+      "to": "x",
+      "evidence": "Model.computeNormals cross-product assignments and lighting dot products reviewed; matching copy constructor preserves component. Names only, retain normalization/accumulation arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gna.field_b:I",
+      "originalName": "field_b",
+      "to": "z",
+      "evidence": "Model.computeNormals cross-product assignments and lighting dot products reviewed; matching copy constructor preserves component. Names only, retain normalization/accumulation arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:gna.field_c:I",
+      "originalName": "field_c",
+      "to": "y",
+      "evidence": "Model.computeNormals cross-product assignments and lighting dot products reviewed; matching copy constructor preserves component. Names only, retain normalization/accumulation arithmetic.",
       "confidence": "reviewed"
     },
     {
@@ -10570,6 +10668,34 @@
       "originalName": "field_h",
       "to": "enabled",
       "evidence": "Returned by isEnabled.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oha.field_a:I",
+      "originalName": "field_a",
+      "to": "x",
+      "evidence": "Model.computeNormals cross-product assignments and lighting dot products reviewed; matching copy constructor preserves component. Names only, retain normalization/accumulation arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oha.field_b:I",
+      "originalName": "field_b",
+      "to": "z",
+      "evidence": "Model.computeNormals cross-product assignments and lighting dot products reviewed; matching copy constructor preserves component. Names only, retain normalization/accumulation arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oha.field_c:I",
+      "originalName": "field_c",
+      "to": "y",
+      "evidence": "Model.computeNormals cross-product assignments and lighting dot products reviewed; matching copy constructor preserves component. Names only, retain normalization/accumulation arithmetic.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oha.field_d:I",
+      "originalName": "field_d",
+      "to": "contributionCount",
+      "evidence": "Model.computeNormals increments once per contributing face vertex; lighting divides dot product by this value. Preserve zero/overflow and copy constructor.",
       "confidence": "reviewed"
     },
     {
@@ -35360,10 +35486,185 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jaclib.memory.Buffer.a([BIII)V",
+      "originalName": "a",
+      "to": "putBytes",
+      "evidence": "Complete owned Buffer contract and all four implementations reviewed. Copies caller byte array at source offset into buffer destination offset for count bytes. Preserve each original validation/overflow/null/liveness check, exception type, synchronization and native call; no native method renamed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.NativeBuffer.a(JI)V",
+      "originalName": "a",
+      "to": "setAddressAndSize",
+      "evidence": "Complete protected setter reviewed: stores long address then int size, with no validation or allocation. Preserve protected visibility and ordering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.NativeBuffer.a([BIII)V",
+      "originalName": "a",
+      "to": "putBytes",
+      "evidence": "Complete owned Buffer contract and all four implementations reviewed. Copies caller byte array at source offset into buffer destination offset for count bytes. Preserve each original validation/overflow/null/liveness check, exception type, synchronization and native call; no native method renamed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.Stream.a()V",
+      "originalName": "a",
+      "to": "flush",
+      "evidence": "Complete body reviewed: zero pending returns; checks pending+destination against limit, putBytes, then advances destination/reset pending. Preserve partial failure state and overflow.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.Stream.a(F)V",
+      "originalName": "a",
+      "to": "writeFloatLE",
+      "evidence": "Complete both fast and flush branches reviewed: floatToRawIntBits then low-to-high four byte stores. Preserve native conversion, allocation and cursor/error ordering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.Stream.a(I)V",
+      "originalName": "a",
+      "to": "writeShortBE",
+      "evidence": "Complete body reviewed: capacity guard/flush then high byte followed by low byte; no new validation or masking.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.Stream.a(Ljaclib/memory/Buffer;)V",
+      "originalName": "a",
+      "to": "setBuffer",
+      "evidence": "Complete body reviewed: delegates range setter with offset0 and buffer.getSize, retaining null failure ordering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.Stream.a(Ljaclib/memory/Buffer;II)V",
+      "originalName": "a",
+      "to": "setBuffer",
+      "evidence": "Complete body reviewed: flush old buffer, set new buffer/start/end, then bounds check. Preserve post-mutation failure and lack of negative/overflow checks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.Stream.b()Z",
+      "originalName": "b",
+      "to": "isNativeBigEndian",
+      "evidence": "Complete byte-probe body and HardwareModel/DynamicGeometryBuffer paired upload branches reviewed: true selects big-endian short/float writers, false little-endian. Retain getLSB(-65536)==-1 and native method unchanged. Local x86 jaclib getLSB disassembly returns low byte, corroborating false on this host; no cross-platform runtime claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.Stream.b(F)V",
+      "originalName": "b",
+      "to": "writeFloatBE",
+      "evidence": "Complete body reviewed: capacity guard/flush then raw float bits high-to-low four byte stores, no conversion change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.Stream.b(I)V",
+      "originalName": "b",
+      "to": "writeShortLE",
+      "evidence": "Complete body reviewed: capacity guard/flush then low byte followed by high byte; retain original cursor increments and failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.heap.NativeHeap.a()V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "Complete body/finalizer reviewed: deallocates only if live and then clears live flag. Keep synchronized native-call and failure ordering; not a new AutoCloseable contract.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.heap.NativeHeap.a(IZ)Ljaclib/memory/heap/NativeHeapBuffer;",
+      "originalName": "a",
+      "to": "createBuffer",
+      "evidence": "Complete wrapper reviewed: while live allocates native buffer then constructs handle with requested size, otherwise IllegalStateException; preserve supplied boolean, checks and native allocateBuffer method.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.heap.NativeHeap.b()Z",
+      "originalName": "b",
+      "to": "isAllocated",
+      "evidence": "Complete getter/lifecycle reviewed: returns heap allocation flag, initialized after allocateHeap and cleared after close. Keep synchronization.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.heap.NativeHeapBuffer.a()Z",
+      "originalName": "a",
+      "to": "isValid",
+      "evidence": "Complete body reviewed: heap is allocated and own live flag true; preserve short-circuit behavior and synchronization.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.heap.NativeHeapBuffer.a([BIII)V",
+      "originalName": "a",
+      "to": "putBytes",
+      "evidence": "Complete owned Buffer contract and all four implementations reviewed. Copies caller byte array at source offset into buffer destination offset for count bytes. Preserve each original validation/overflow/null/liveness check, exception type, synchronization and native call; no native method renamed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.memory.heap.NativeHeapBuffer.b()V",
+      "originalName": "b",
+      "to": "releaseBuffer",
+      "evidence": "Complete body/finalizer reviewed: if valid deallocateBuffer(handle), then clear own flag. Preserve native failure ordering and finalizer calling super first.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.peer.IUnknown.a(Z)J",
+      "originalName": "a",
+      "to": "release",
+      "evidence": "Complete body reviewed: false delegates to Peer.release; true returns101 without releasing. Preserve sentinel behavior and public final visibility.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.peer.Peer.a()J",
+      "originalName": "a",
+      "to": "release",
+      "evidence": "Complete body and PeerReference.release reviewed: delegates to reference release with guard34, returning native release result and clearing stored peer; no native signature changed.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jaclib.peer.PeerReference.a(B)J",
       "originalName": "a",
       "to": "release",
       "evidence": "Releases the native peer once and clears it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.peer.sha.a(I)V",
+      "originalName": "a",
+      "to": "drainCollectedPeers",
+      "evidence": "Complete class reviewed: polls ReferenceQueue until empty, releases/removes each reference; retain post-drain wrong-guard recursive null path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.peer.sha.a(ILjaclib/peer/PeerReference;)V",
+      "originalName": "a",
+      "to": "registerReference",
+      "evidence": "Complete class and PeerReference constructor reviewed: prepends reference and maintains end links; preserve guard>61 and recursive failure path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.peer.sha.b(I)V",
+      "originalName": "b",
+      "to": "releaseAll",
+      "evidence": "Complete class and Direct3D dispose caller reviewed: drains queue, repeatedly releases head, then guard-dependent extra drain/tail clear. Preserve all mutations and repeated drain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.peer.sha.b(ILjaclib/peer/PeerReference;)V",
+      "originalName": "b",
+      "to": "releaseReference",
+      "evidence": "Complete body reviewed: releases native peer then repairs head/tail/neighbour links; preserve guard-dependent recursive null paths and mutation order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaclib.peer.sha.c(I)V",
+      "originalName": "c",
+      "to": "processCollectedPeers",
+      "evidence": "Complete body and synchronized Direct3D updateTime caller reviewed: expected guard drains queue; wrong guard returns unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jagdx.GeometryBuffer.a([BIII)V",
+      "originalName": "a",
+      "to": "putBytes",
+      "evidence": "Complete owned Buffer contract and all four implementations reviewed. Copies caller byte array at source offset into buffer destination offset for count bytes. Preserve each original validation/overflow/null/liveness check, exception type, synchronization and native call; no native method renamed.",
       "confidence": "reviewed"
     },
     {
@@ -35514,10 +35815,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jagdx.IDirect3DIndexBuffer.a()J",
+      "originalName": "a",
+      "to": "release",
+      "evidence": "Complete body and PeerReference.release reviewed: delegates to reference release with guard34, returning native release result and clearing stored peer; no native signature changed. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jagdx.IDirect3DSwapChain.a(II)Ljagdx/IDirect3DSurface;",
       "originalName": "a",
       "to": "getBackBuffer",
       "evidence": "Wrapper whose body calls the native _GetBackBuffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jagdx.IDirect3DVertexBuffer.a()J",
+      "originalName": "a",
+      "to": "release",
+      "evidence": "Complete body and PeerReference.release reviewed: delegates to reference release with guard34, returning native release result and clearing stored peer; no native signature changed. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jagdx.PixelBuffer.a([BIII)V",
+      "originalName": "a",
+      "to": "putBytes",
+      "evidence": "Complete owned Buffer contract and all four implementations reviewed. Copies caller byte array at source offset into buffer destination offset for count bytes. Preserve each original validation/overflow/null/liveness check, exception type, synchronization and native call; no native method renamed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jagdx.PixelBuffer.a([IIII)V",
+      "originalName": "a",
+      "to": "putInts",
+      "evidence": "Complete wrapper reviewed. Array/source/destination checks followed by capacity >= destinationOffset+4*count then original puti; preserve multiplication overflow, ordering and Direct3D exception.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jagdx.ah.a(IB)Z",
+      "originalName": "a",
+      "to": "succeeded",
+      "evidence": "Full body/callers reviewed: result>=0 lets lock/unlock/reset succeed; retain original arithmetic division and all failures.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jagdx.ah.a(II)Z",
+      "originalName": "a",
+      "to": "failed",
+      "evidence": "Full body/callers reviewed: guarded result<0 triggers exception/failure handling; wrong guard returns true. Retain exact signed test and guard10643.",
       "confidence": "reviewed"
     },
     {
@@ -35532,6 +35875,13 @@
       "originalName": "a",
       "to": "map",
       "evidence": "Calls glMapBufferARB and remembers the mapped target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jaggl.MapBuffer.a([BIII)V",
+      "originalName": "a",
+      "to": "putBytes",
+      "evidence": "Complete owned Buffer contract and all four implementations reviewed. Copies caller byte array at source offset into buffer destination offset for count bytes. Preserve each original validation/overflow/null/liveness check, exception type, synchronization and native call; no native method renamed. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -66274,7 +66624,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "354d8b487f7a1f73f6d6d4dced6b0325eec932aac71ec5c5bb80988e0f3b781a",
+      "tombracer-names.json": "ca420fcc664cc53f1ba33f799817e506c3ac2d2aa1830ba383949b171e2679e1",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
