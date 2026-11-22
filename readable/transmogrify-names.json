@@ -1,6 +1,8 @@
 {
   "classes": [
-    ["qd","GzipDecompressor","Complete class, constructors and owned decompression body reviewed: own raw Inflater, gzip magic31/139, fixed ten-byte header/eight-byte trailer slice and destination inflate. Preserve original reset/error paths, setup/reset early returns, guard effects, exception wrappers and unrelated static helpers/initializers."]
+    ["qd","GzipDecompressor","Complete class, constructors and owned decompression body reviewed: own raw Inflater, gzip magic31/139, fixed ten-byte header/eight-byte trailer slice and destination inflate. Preserve original reset/error paths, setup/reset early returns, guard effects, exception wrappers and unrelated static helpers/initializers."],
+    ["hf","DirectByteStorage","Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance ByteBuffer is directly allocated and copied to/from caller bytes. Unrelated statics unselected."],
+    ["dj","ByteStorage","Complete instance field shape and both abstract byte-array declarations reviewed with concrete direct implementation. Base has no instance state or additional instance operations. Preserve unrelated static helpers and globals."]
   ],
   "methods": [
     ["a","e","(B)V","clearStaticReferences","Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 1e7ac7ceb43db632034ed7ef0463710a64dbbb66604ccdb10893b7deed0d90b5."],
@@ -149,9 +151,14 @@
     ["rj","a","(BLjava/awt/Component;)V","detach","Complete concrete removal body and abstract contract reviewed. Preserve per-game guard and callback behavior in original order."],
     ["sk","a","(I)I","pollRotation","Complete synchronized concrete body and abstract contract reviewed. Copies/clears before guard; <=-52 returns copy, wrong guard invokes null wheel callback before return. Preserve exact guards/read/write order."],
     ["rj","a","(I)I","pollRotation","Complete synchronized concrete body and abstract contract reviewed. Copies/clears before guard; <=-52 returns copy, wrong guard invokes null wheel callback before return. Preserve exact guards/read/write order."],
-    ["nh","b","(I)Lrj;","createMouseWheelInput","Complete reflective factory body reviewed. Constructs existing meaningfully named wheel listener, casts to input contract, retains guard behavior and Throwable->null fallback (including nested exception wrapping in BachelorFridge). Existing class names and class-name literals unchanged."]
+    ["nh","b","(I)Lrj;","createMouseWheelInput","Complete reflective factory body reviewed. Constructs existing meaningfully named wheel listener, casts to input contract, retains guard behavior and Throwable->null fallback (including nested exception wrapping in BachelorFridge). Existing class names and class-name literals unchanged."],
+    ["hf","a","(Z)[B","getBytes","Complete concrete body and matching abstract declaration reviewed. Getter true returns null before allocation; setter arithmetic precedes allocation/position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order."],
+    ["dj","a","(Z)[B","getBytes","Complete concrete body and matching abstract declaration reviewed. Getter true returns null before allocation; setter arithmetic precedes allocation/position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order."],
+    ["hf","a","([BB)V","setBytes","Complete concrete body and matching abstract declaration reviewed. Getter true returns null before allocation; setter arithmetic precedes allocation/position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order."],
+    ["dj","a","([BB)V","setBytes","Complete concrete body and matching abstract declaration reviewed. Getter true returns null before allocation; setter arithmetic precedes allocation/position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order."]
   ],
   "fields": [
-    ["sk","field_c","I","rotation","Accumulator updated by getWheelRotation and read/reset/replaced by synchronized poll. Preserve per-game guards and side effects."]
+    ["sk","field_c","I","rotation","Accumulator updated by getWheelRotation and read/reset/replaced by synchronized poll. Preserve per-game guards and side effects."],
+    ["hf","field_e","Ljava/nio/ByteBuffer;","buffer","Sole instance direct ByteBuffer used by byte-array set/get operations; preserve nullable and guard states."]
   ]
 }

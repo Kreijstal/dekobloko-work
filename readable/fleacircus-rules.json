@@ -626,6 +626,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jg.a(ZLjava/lang/Object;Z)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete body, direct storage instance contract and clone helper reviewed. Null handling,136-byte threshold, direct allocation versus byte-array alias/optional copy, invalid-object exception and every guard remain unchanged. Wrapper uses exact ~length < callerThreshold and forwards callerThreshold+13 to setter; reviewed ResourceArchive callers pass-137, yielding >136. Preserve all caller values, not a hard-coded threshold. Extraction boolean helper only affects non-byte[] values; existing copyByteArray/copyBytes names remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jg.b(I)I",
       "originalName": "b",
       "to": "pollRotation",
@@ -651,6 +658,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 db03c97c15f84592a2930fd2078559744e2dbe6967fadba3d42f86d62e678001.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kh.a(Z[BI)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete body, direct storage instance contract and clone helper reviewed. Null handling,136-byte threshold, direct allocation versus byte-array alias/optional copy, invalid-object exception and every guard remain unchanged. Wrapper uses exact ~length < callerThreshold and forwards callerThreshold+13 to setter; reviewed ResourceArchive callers pass-137, yielding >136. Preserve all caller values, not a hard-coded threshold. Extraction boolean helper only affects non-byte[] values; existing copyByteArray/copyBytes names remain unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -1426,7 +1440,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-fleacircus-rules.mjs": "3571dfc1819af06339a362abfbbea0548fcee4d30cc87325631cf51df11ca831",
-      "fleacircus-names.json": "4e0b3381c70b6de2602652eb81ec70414a5f9dc14717167b5c4e74232dbcfa4b",
+      "fleacircus-names.json": "784e61202acfdc536cdcbf8c8e6d49e74150251ede094f1f07e48a6a4944a046",
       "reproduce-fleacircus.mjs": "f9b33bab5d0ce8492e00e3654e2ea6dd17c6e6fa2ad9d811f295323e567ca043",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

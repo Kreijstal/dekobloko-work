@@ -213,6 +213,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fh",
+      "originalName": "fh",
+      "to": "ByteStorage",
+      "evidence": "Complete instance field shape and both abstract byte-array declarations reviewed with concrete direct implementation. Base has no instance state or additional instance operations. Preserve unrelated static helpers and globals.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:g",
       "originalName": "g",
       "to": "SpriteState",
@@ -392,6 +399,13 @@
       "originalName": "pf",
       "to": "Model",
       "evidence": "Mesh with short vertex and face arrays, int colour tables and an int bounding box.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pi",
+      "originalName": "pi",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance ByteBuffer is directly allocated and copied to/from caller bytes. Unrelated statics unselected.",
       "confidence": "reviewed"
     },
     {
@@ -826,6 +840,13 @@
       "originalName": "field_a",
       "to": "idleTicks",
       "evidence": "Reset by every mouse event and incremented by of.c once per frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pi.field_g:Ljava/nio/ByteBuffer;",
+      "originalName": "field_g",
+      "to": "buffer",
+      "evidence": "Sole instance direct ByteBuffer used by byte-array set/get operations; preserve nullable and guard states.",
       "confidence": "reviewed"
     },
     {
@@ -1480,6 +1501,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fh.a([BI)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong guard calls null setter after writing. Getter wrong guard calls null setter before subsequent allocation. Preserve null behavior and recursion. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fh.b(B)[B",
+      "originalName": "b",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong guard calls null setter after writing. Getter wrong guard calls null setter before subsequent allocation. Preserve null behavior and recursion. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fi.d(I)V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -2110,6 +2145,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pi.a([BI)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong guard calls null setter after writing. Getter wrong guard calls null setter before subsequent allocation. Preserve null behavior and recursion. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pi.b(B)[B",
+      "originalName": "b",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong guard calls null setter after writing. Getter wrong guard calls null setter before subsequent allocation. Preserve null behavior and recursion. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pl.c(I)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -2469,7 +2518,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-trackcontroller-rules.mjs": "edecc20b3dd537cbdadc180da58728d07ddf4bc1fa73dcc98ff0087cc65ddc08",
-      "trackcontroller-names.json": "3909ce21fe4012d3de3a40033670f710271818a01f31cf25bb704b56cd323e9e",
+      "trackcontroller-names.json": "f4def3a61d2d36ba1e94ddee168d25b882faba60dee7824ee338b2912ea53086",
       "reproduce-trackcontroller.mjs": "a19aeb34065d45283fe3ccc739656e3d43ea775242fdbecb34698f86b84538b9",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

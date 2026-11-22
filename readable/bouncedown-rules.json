@@ -444,6 +444,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cb.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete overlap-aware byte range implementation reviewed: equal-index no-op, forward8-byte blocks/tail and backward overlap8-byte blocks/tail. Preserve arithmetic, bounds/partial-write behavior and pointer order; do not replace with System.arraycopy.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cd.a()V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -794,6 +801,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nh.a(ZI[B)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete body, direct storage instance contract and clone helper reviewed. Null handling,136-byte threshold, direct allocation versus byte-array alias/optional copy, invalid-object exception and every guard remain unchanged. Clone helper wrong guard>=-66 returns null before input dereference. Extraction guard0 check after null but before all type cases; wrapper clears guard global before null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nk.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -899,6 +913,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qf.a(IZLjava/lang/Object;)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete body, direct storage instance contract and clone helper reviewed. Null handling,136-byte threshold, direct allocation versus byte-array alias/optional copy, invalid-object exception and every guard remain unchanged. Clone helper wrong guard>=-66 returns null before input dereference. Extraction guard0 check after null but before all type cases; wrapper clears guard global before null.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qg.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -917,6 +938,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 2eb96ebde876922917e198ba72aa63a6b579495efe11d5ea9bda3cb01e0cc700.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rd.a(B[B)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete same-length allocation/copy wrapper and underlying byte-copy implementation reviewed. Clone helper wrong guard>=-66 returns null before input dereference. Extraction guard0 check after null but before all type cases; wrapper clears guard global before null. Preserve original allocation/guard/exception ordering and byte identity.",
       "confidence": "reviewed"
     },
     {
@@ -1349,7 +1377,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "4227d5111a668ca9151d304f104513d8a8c283179dd8588a6da226dcac2f380f",
+      "bouncedown-names.json": "302f4eda4221157d0c17db261cd10efa4c9fa3c0f4a337ecc9027b37e737c0bc",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

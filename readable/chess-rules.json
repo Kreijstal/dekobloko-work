@@ -990,6 +990,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jf.a(ZZLjava/lang/Object;)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete body, direct storage instance contract and clone helper reviewed. Null handling,136-byte threshold, direct allocation versus byte-array alias/optional copy, invalid-object exception and every guard remain unchanged. Clone helper wrong-guard call happens after destination allocation before copy. Wrapper large-array branch precedes guard25633; extraction byte[] branch precedes boolean guard for other objects.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jh.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1113,6 +1120,13 @@
       "originalName": "a",
       "to": "skip",
       "evidence": "Abstract skip hook, called by b() instead of mixing when the stream is silenced. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete overlap-aware byte range implementation reviewed: equal-index no-op, forward8-byte blocks/tail and backward overlap8-byte blocks/tail. Preserve arithmetic, bounds/partial-write behavior and pointer order; do not replace with System.arraycopy.",
       "confidence": "reviewed"
     },
     {
@@ -1648,6 +1662,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tj.a(I[B)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete same-length allocation/copy wrapper and underlying byte-copy implementation reviewed. Clone helper wrong-guard call happens after destination allocation before copy. Wrapper large-array branch precedes guard25633; extraction byte[] branch precedes boolean guard for other objects. Preserve original allocation/guard/exception ordering and byte identity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tl.f(B)V",
       "originalName": "f",
       "to": "clearStaticReferences",
@@ -1722,6 +1743,13 @@
       "originalName": "f",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 52810df381110bd378dc7563ee3796596ce500048bdcbce4092ce419fc0e4241.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vm.a(I[BZ)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete body, direct storage instance contract and clone helper reviewed. Null handling,136-byte threshold, direct allocation versus byte-array alias/optional copy, invalid-object exception and every guard remain unchanged. Clone helper wrong-guard call happens after destination allocation before copy. Wrapper large-array branch precedes guard25633; extraction byte[] branch precedes boolean guard for other objects.",
       "confidence": "reviewed"
     },
     {
@@ -1867,7 +1895,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-chess-rules.mjs": "96e89726e9752b6c32c9c36b36b5bed50f637c08bf0e2c3963477590a7927127",
-      "chess-names.json": "295de2ff1eca6e151309db05175df270a9e0fcc018442cc941391a04a615b617",
+      "chess-names.json": "5a80c0ce65b487f862bdbd994b22933ca20fc745497226f7903eb9938aaf99d8",
       "reproduce-chess.mjs": "83586202a6788e331bbadf9d01041fd32d100e7110eccafcbf80b4a91364ad46",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

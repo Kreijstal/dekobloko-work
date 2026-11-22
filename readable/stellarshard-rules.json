@@ -374,6 +374,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:i",
+      "originalName": "i",
+      "to": "ByteStorage",
+      "evidence": "Complete instance field shape and both abstract byte-array declarations reviewed with concrete direct implementation. Base has no instance state or additional instance operations. Preserve unrelated static helpers and globals.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ie",
       "originalName": "ie",
       "to": "SpriteState",
@@ -469,6 +476,13 @@
       "originalName": "s",
       "to": "DualLinkDequeIterator",
       "evidence": "Iterator constructed from a DualLinkDeque.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sa",
+      "originalName": "sa",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance ByteBuffer is directly allocated and copied to/from caller bytes. Unrelated statics unselected.",
       "confidence": "reviewed"
     },
     {
@@ -665,6 +679,13 @@
       "originalName": "field_a",
       "to": "level",
       "evidence": "LevelScreen shows it after the Start level text and increments it up to a ceiling; GameEntity caps counts by it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sa.field_f:Ljava/nio/ByteBuffer;",
+      "originalName": "field_f",
+      "to": "buffer",
+      "evidence": "Sole instance direct ByteBuffer used by byte-array set/get operations; preserve nullable and guard states.",
       "confidence": "reviewed"
     },
     {
@@ -1071,6 +1092,20 @@
       "originalName": "b",
       "to": "mix",
       "evidence": "Abstract fill of an int sample range; PcmSampleStream implements it as the resampling loop. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.a(I)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter arithmetic after allocation/position before get; setter arithmetic after bytes written. Preserve partial state. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.a([BB)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter arithmetic after allocation/position before get; setter arithmetic after bytes written. Preserve partial state. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
       "confidence": "reviewed"
     },
     {
@@ -1655,6 +1690,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sa.a(I)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter arithmetic after allocation/position before get; setter arithmetic after bytes written. Preserve partial state. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a([BB)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter arithmetic after allocation/position before get; setter arithmetic after bytes written. Preserve partial state. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sb.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1867,7 +1916,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-stellarshard-rules.mjs": "e0aad811358351403390d3f71317f31025d7e9ef8434ab5477a9473e966eb7de",
-      "stellarshard-names.json": "993100ef7f393a1d4fb1e79871e842997e574502b7287d7d5670d33b30179457",
+      "stellarshard-names.json": "1c6000b506da8431313de9515a5462af574087a6ae1610b2641804a67a261149",
       "reproduce-stellarshard.mjs": "bd81f17e3db3182b75b19f828dfc185d0ec0f4b8ca0f78caa8495e2ff6f4a0a1",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

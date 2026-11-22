@@ -234,6 +234,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:f",
+      "originalName": "f",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance ByteBuffer is directly allocated and copied to/from caller bytes. Unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:gb",
       "originalName": "gb",
       "to": "PacketBuffer",
@@ -430,6 +437,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:rk",
+      "originalName": "rk",
+      "to": "ByteStorage",
+      "evidence": "Complete instance field shape and both abstract byte-array declarations reviewed with concrete direct implementation. Base has no instance state or additional instance operations. Preserve unrelated static helpers and globals.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:sc",
       "originalName": "sc",
       "to": "MouseWheelHandler",
@@ -497,6 +511,13 @@
       "originalName": "field_l",
       "to": "secondaryKey",
       "evidence": "DualLinkNode secondary link fields and unlink body; SecondaryNodeDeque splices them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:f.field_f:Ljava/nio/ByteBuffer;",
+      "originalName": "field_f",
+      "to": "buffer",
+      "evidence": "Sole instance direct ByteBuffer used by byte-array set/get operations; preserve nullable and guard states.",
       "confidence": "reviewed"
     },
     {
@@ -693,6 +714,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 3232adae71383f2abbdb9632ea57a246ea32987a80b516c3aec4b27be3a0bb07.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:f.a(I)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter uses caller-supplied buffer position, not unconditional zero. Getter wrong guard recurses before allocation. Preserve overflow and recursion. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:f.a(I[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter uses caller-supplied buffer position, not unconditional zero. Getter wrong guard recurses before allocation. Preserve overflow and recursion. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
       "confidence": "reviewed"
     },
     {
@@ -1333,6 +1368,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rk.a(I)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter uses caller-supplied buffer position, not unconditional zero. Getter wrong guard recurses before allocation. Preserve overflow and recursion. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.a(I[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter uses caller-supplied buffer position, not unconditional zero. Getter wrong guard recurses before allocation. Preserve overflow and recursion. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sc.a(I)I",
       "originalName": "a",
       "to": "pollRotation",
@@ -1615,7 +1664,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-solknight-rules.mjs": "d510dd3c5215d127be812bd794c1668890712739b676d0f83f2bf4b4a34f49d6",
-      "solknight-names.json": "8a114ffd0c1c402d6e38ca495843d9434f50aa1cc84fd4a1639ffa8601575e24",
+      "solknight-names.json": "f71ba51b2a291087cfa1ea195b7e49d6f0ed461455c1987c5c2df3bd42343f4a",
       "reproduce-solknight.mjs": "13b4e70cdbc3799ce0c256f7eb4afa61bbdd6dd18b17fd5cfda8475d81e10fc3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

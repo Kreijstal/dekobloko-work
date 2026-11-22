@@ -570,6 +570,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:eg.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete overlap-aware byte range implementation reviewed: equal-index no-op, forward8-byte blocks/tail and backward overlap8-byte blocks/tail. Preserve arithmetic, bounds/partial-write behavior and pointer order; do not replace with System.arraycopy.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ej.b()V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -588,6 +595,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 2cc00a6a653fec2aac7f71579ff5333557660807cd0ed33642be6bc795ad03b9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(ZZ[B)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete body, direct storage instance contract and clone helper reviewed. Null handling,136-byte threshold, direct allocation versus byte-array alias/optional copy, invalid-object exception and every guard remain unchanged. Wrapper false boolean guard returns null before checking input. Extraction wrong guard clears String before null/type checks. Clone arithmetic precedes length/allocation.",
       "confidence": "reviewed"
     },
     {
@@ -819,6 +833,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 6a640f301a3c9245c05ab1884091754fc1206615fe72199ff27585bfddb3b91b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:l.a(BZLjava/lang/Object;)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete body, direct storage instance contract and clone helper reviewed. Null handling,136-byte threshold, direct allocation versus byte-array alias/optional copy, invalid-object exception and every guard remain unchanged. Wrapper false boolean guard returns null before checking input. Extraction wrong guard clears String before null/type checks. Clone arithmetic precedes length/allocation.",
       "confidence": "reviewed"
     },
     {
@@ -1417,6 +1438,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sm.a(I[B)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete same-length allocation/copy wrapper and underlying byte-copy implementation reviewed. Wrapper false boolean guard returns null before checking input. Extraction wrong guard clears String before null/type checks. Clone arithmetic precedes length/allocation. Preserve original allocation/guard/exception ordering and byte identity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sp.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1622,7 +1650,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-crazycrystals-rules.mjs": "53fc8845bc15628f5f09948271dc7c15e829375009e924a68e220f175e8a3a65",
-      "crazycrystals-names.json": "9ebb30ffc427f6bc029964e739dacc39cd918c1a5fbfd1629e5cd7cc1948ce10",
+      "crazycrystals-names.json": "5158232a74d8d14985974a539ba86eb8f23b508632f89dfc7dd1251c9f8b6ee2",
       "reproduce-crazycrystals.mjs": "c436bdc5e8146e9c16d3dfc08e0152874a520d245840468c38a313fe58094a1c",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

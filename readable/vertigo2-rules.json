@@ -332,6 +332,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dh",
+      "originalName": "dh",
+      "to": "ByteStorage",
+      "evidence": "Complete instance field shape and both abstract byte-array declarations reviewed with concrete direct implementation. Base has no instance state or additional instance operations. Preserve unrelated static helpers and globals.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:dr",
       "originalName": "dr",
       "to": "AbstractAudioSample",
@@ -577,6 +584,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:vb",
+      "originalName": "vb",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance ByteBuffer is directly allocated and copied to/from caller bytes. Unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vk",
       "originalName": "vk",
       "to": "MouseWheelHandler",
@@ -777,6 +791,13 @@
       "originalName": "field_c",
       "to": "selectedIndex",
       "evidence": "Key 98 decrements and key 99 increments this index with wraparound.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:vb.field_i:Ljava/nio/ByteBuffer;",
+      "originalName": "field_i",
+      "to": "buffer",
+      "evidence": "Sole instance direct ByteBuffer used by byte-array set/get operations; preserve nullable and guard states.",
       "confidence": "reviewed"
     },
     {
@@ -1092,6 +1113,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a([BZ)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter allocates before optional static panel clear. Getter guard arithmetic follows complete allocation/position/get. Preserve partial state on failure. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.b(I)[B",
+      "originalName": "b",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter allocates before optional static panel clear. Getter guard arithmetic follows complete allocation/position/get. Preserve partial state on failure. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
       "confidence": "reviewed"
     },
     {
@@ -2474,6 +2509,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vb.a([BZ)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter allocates before optional static panel clear. Getter guard arithmetic follows complete allocation/position/get. Preserve partial state on failure. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.b(I)[B",
+      "originalName": "b",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter allocates before optional static panel clear. Getter guard arithmetic follows complete allocation/position/get. Preserve partial state on failure. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vc.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -2630,7 +2679,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-vertigo2-rules.mjs": "dd6eb8cdf3928ef27046e7fe98dc389e3192977de79343b58e7e832c8a7bce4a",
-      "vertigo2-names.json": "1b8b2aaad5b8d0c2ac170bdef4f37c55f0242f8e58cb3162e48667d6a3d95082",
+      "vertigo2-names.json": "26a484a79bf940709c3bf4c0575458cbda302535c10c8717e176be8a91b12df3",
       "reproduce-vertigo2.mjs": "c16a8b53427e79d4dcb3e40a4a42b4d3ec37e412469473382b608d53f95beae2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

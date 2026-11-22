@@ -388,6 +388,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fc",
+      "originalName": "fc",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance ByteBuffer is directly allocated and copied to/from caller bytes. Unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fh",
       "originalName": "fh",
       "to": "RasterBuffer",
@@ -413,6 +420,13 @@
       "originalName": "le",
       "to": "GzipDecompressor",
       "evidence": "Complete class, constructors and decompression body reviewed: own raw Inflater, gzip magic31/139, fixed ten-byte header/eight-byte trailer slice, destination inflate and reset after success/error. Preserve all original guards, exceptions and unrelated static helpers/initializers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ll",
+      "originalName": "ll",
+      "to": "ByteStorage",
+      "evidence": "Complete instance field shape and both abstract byte-array declarations reviewed with concrete direct implementation. Base has no instance state or additional instance operations. Preserve unrelated static helpers and globals.",
       "confidence": "reviewed"
     },
     {
@@ -483,6 +497,13 @@
       "originalName": "tf",
       "to": "GameAppletShell",
       "evidence": "Abstract Applet implementing Runnable and focus/window listeners; owns the run loop and abstract init/update/shutdown hooks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fc.field_c:Ljava/nio/ByteBuffer;",
+      "originalName": "field_c",
+      "to": "buffer",
+      "evidence": "Sole instance direct ByteBuffer used by byte-array set/get operations; preserve nullable and guard states.",
       "confidence": "reviewed"
     },
     {
@@ -717,6 +738,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fc.a(B)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter allocates/positions before guard and wrong guard calls static null helper before get. Setter arithmetic after allocation before position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fc.a(I[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter allocates/positions before guard and wrong guard calls static null helper before get. Setter arithmetic after allocation before position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fi.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -903,6 +938,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 7960c449f3b2c6f241db3877eb9379731e5f640bb2b3d51cd72852f389edc3fc.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a(B)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter allocates/positions before guard and wrong guard calls static null helper before get. Setter arithmetic after allocation before position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ll.a(I[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter allocates/positions before guard and wrong guard calls static null helper before get. Setter arithmetic after allocation before position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
       "confidence": "reviewed"
     },
     {
@@ -1510,7 +1559,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-orbdefence-rules.mjs": "7265f3a9f5e13a3fed5621337395faa83930486229ce2e8682b070f11e4f498e",
-      "orbdefence-names.json": "82ef99b646b8adc0fec5b75d1d1bdbcdd6f617962f9e8fe5bcd31bb73a7ecff4",
+      "orbdefence-names.json": "3e1e799dd991367d75c5bcfe40b58dc47197715dabb02899cb03c26d97b6546a",
       "reproduce-orbdefence.mjs": "24edd3e6decd14f7af15c46ba33901279428686ce88376fa1945d21ab4b43608",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

@@ -1,6 +1,8 @@
 {
   "classes": [
-    ["t","GzipDecompressor","Complete owned inflater method, fields and constructors reviewed: gzip magic31/139, lazy raw Inflater, caller output, original input offset/length and reset/error paths. Preserve guards/early returns, TerraPhoenix caller-supplied input offset and unrelated static helpers/initializers."]
+    ["t","GzipDecompressor","Complete owned inflater method, fields and constructors reviewed: gzip magic31/139, lazy raw Inflater, caller output, original input offset/length and reset/error paths. Preserve guards/early returns, TerraPhoenix caller-supplied input offset and unrelated static helpers/initializers."],
+    ["nj","DirectByteStorage","Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance ByteBuffer is directly allocated and copied to/from caller bytes. Unrelated statics unselected."],
+    ["ke","ByteStorage","Complete instance field shape and both abstract byte-array declarations reviewed with concrete direct implementation. Base has no instance state or additional instance operations. Preserve unrelated static helpers and globals."]
   ],
   "methods": [
     ["a","a","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 7 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 e6c0e1b1ecb792846b5460305869ef97755ea8e3ffa7b594400411c2e86deff8."],
@@ -152,7 +154,13 @@
     ["dh","j","(I)Ljava/lang/String;","readNullableString","Complete body and constructor context reviewed: Consume null marker or delegate original zero-terminated reader. Preserve original guards, global flags, helper calls, cursor ordering, exception wrappers and partial failures. Null marker consume/return before bad guard calls null string writer."],
     ["dh","j","(II)V","backpatchByteLength","Complete body and constructor context reviewed: Patch byte length behind current cursor without canonical cursor advance. Preserve original guards, global flags, helper calls, cursor ordering, exception wrappers and partial failures. Bad guard calls unsigned-byte sentinel reader before patch."],
     ["gj","a","(III[B)I","computeCrc32","Complete helper and table initialization reviewed:256entries, eight reflected shifts with polynomial-306674912, seed-1, table[(crc XOR byte)&255] XOR crc>>>8, complemented result. Preserve original caller range, guard helper calls/arithmetic/static writes, recursive failures and exception wrappers."],
-    ["dh","a","(Ljava/applet/Applet;Z)V","updateBrowserLinks","Complete body reviewed: derive base file via existing applet helper, invoke JavaScript updatelinks for home/gamelist/serverlist/options/terms/privacy with original suffixes. False flag updates scalar only after link calls; preserve swallowed Throwable, nested exception wrappers, URLs and call ordering."]
+    ["dh","a","(Ljava/applet/Applet;Z)V","updateBrowserLinks","Complete body reviewed: derive base file via existing applet helper, invoke JavaScript updatelinks for home/gamelist/serverlist/options/terms/privacy with original suffixes. False flag updates scalar only after link calls; preserve swallowed Throwable, nested exception wrappers, URLs and call ordering."],
+    ["nj","c","(Z)[B","getBytes","Complete concrete body and matching abstract declaration reviewed. Setter allocates then optional static archive clear before position/put. Getter allocates before true wrong-guard null setter call. Names describe dataflow without changing guards, exceptions, buffer position or copy order."],
+    ["ke","c","(Z)[B","getBytes","Complete concrete body and matching abstract declaration reviewed. Setter allocates then optional static archive clear before position/put. Getter allocates before true wrong-guard null setter call. Names describe dataflow without changing guards, exceptions, buffer position or copy order."],
+    ["nj","a","([BZ)V","setBytes","Complete concrete body and matching abstract declaration reviewed. Setter allocates then optional static archive clear before position/put. Getter allocates before true wrong-guard null setter call. Names describe dataflow without changing guards, exceptions, buffer position or copy order."],
+    ["ke","a","([BZ)V","setBytes","Complete concrete body and matching abstract declaration reviewed. Setter allocates then optional static archive clear before position/put. Getter allocates before true wrong-guard null setter call. Names describe dataflow without changing guards, exceptions, buffer position or copy order."]
   ],
-  "fields": []
+  "fields": [
+    ["nj","field_h","Ljava/nio/ByteBuffer;","buffer","Sole instance direct ByteBuffer used by byte-array set/get operations; preserve nullable and guard states."]
+  ]
 }

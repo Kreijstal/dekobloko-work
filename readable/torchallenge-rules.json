@@ -570,10 +570,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:of",
+      "originalName": "of",
+      "to": "ByteStorage",
+      "evidence": "Complete instance field shape and both abstract byte-array declarations reviewed with concrete direct implementation. Base has no instance state or additional instance operations. Preserve unrelated static helpers and globals.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:og",
       "originalName": "og",
       "to": "MouseWheelInput",
       "evidence": "Abstract wheel-input hook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:oi",
+      "originalName": "oi",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance ByteBuffer is directly allocated and copied to/from caller bytes. Unrelated statics unselected.",
       "confidence": "reviewed"
     },
     {
@@ -868,6 +882,13 @@
       "originalName": "field_j",
       "to": "helpTopicTitles",
       "evidence": "Static array initialised to Welcome to Tor Challenge!, Characters and Basic controls.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:oi.field_i:Ljava/nio/ByteBuffer;",
+      "originalName": "field_i",
+      "to": "buffer",
+      "evidence": "Sole instance direct ByteBuffer used by byte-array set/get operations; preserve nullable and guard states.",
       "confidence": "reviewed"
     },
     {
@@ -1767,6 +1788,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:of.a(I[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong-guard helper after put; getter allocates before wrong-guard recursion before position/get. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:of.c(I)[B",
+      "originalName": "c",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong-guard helper after put; getter allocates before wrong-guard recursion before position/get. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:og.a(B)I",
       "originalName": "a",
       "to": "pollRotation",
@@ -1792,6 +1827,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 6 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 b515936d67ebd08bf84fe1357b31fdb43076517e177a2662e82336c09546a992.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.a(I[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong-guard helper after put; getter allocates before wrong-guard recursion before position/get. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oi.c(I)[B",
+      "originalName": "c",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter wrong-guard helper after put; getter allocates before wrong-guard recursion before position/get. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
       "confidence": "reviewed"
     },
     {
@@ -2532,7 +2581,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torchallenge-rules.mjs": "c042d4e7793d93c469822e85fad602baebb74bd01aac6bf321d09ca5452e99fc",
-      "torchallenge-names.json": "e4ac1ee5ade006e9707d25bf9ecaf64149d70a6dc3467708a45f5049c5c8d935",
+      "torchallenge-names.json": "b0dc387adc01b4ef7f8534d28849d8a095c9d6250b6191fe607b42d247753a1f",
       "reproduce-torchallenge.mjs": "b3388fa5e2619e82e11f0eae304b9ea97a779afb046e7272b5997c73407bf7be",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -3,7 +3,9 @@
     ["le","GzipDecompressor","Complete class, constructors and decompression body reviewed: own raw Inflater, gzip magic31/139, fixed ten-byte header/eight-byte trailer slice, destination inflate and reset after success/error. Preserve all original guards, exceptions and unrelated static helpers/initializers."],
     ["mg","PacketBuffer","Complete owned constructors and every instance method reviewed: byte payload/cursor, binary primitives, smart/variable encodings, byte ranges, strings, length patches, CRC, RSA and32-round XTEA. Unrelated static helpers/globals retained."],
     ["ma","MouseWheelHandler","Complete concrete class reviewed: AWT listener adds/removes itself, accumulates and consumes wheel events and synchronously polls stored rotation. Preserve guard-specific state and recursion."],
-    ["pe","MouseWheelInput","Abstract class declaration and all3abstract operations reviewed alongside complete concrete wheel implementation. Names component registration/removal/rotation contract; unrelated static methods and fields left unchanged."]
+    ["pe","MouseWheelInput","Abstract class declaration and all3abstract operations reviewed alongside complete concrete wheel implementation. Names component registration/removal/rotation contract; unrelated static methods and fields left unchanged."],
+    ["fc","DirectByteStorage","Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance ByteBuffer is directly allocated and copied to/from caller bytes. Unrelated statics unselected."],
+    ["ll","ByteStorage","Complete instance field shape and both abstract byte-array declarations reviewed with concrete direct implementation. Base has no instance state or additional instance operations. Preserve unrelated static helpers and globals."]
   ],
   "methods": [
     ["OrbDefence","h","(B)V","clearStaticReferences","Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 ff0877dbe972f0920164c2f46f6e7140cfb1d54cd3ba99d181f78ba71f513e7f."],
@@ -146,11 +148,16 @@
     ["pe","a","(ILjava/awt/Component;)V","detach","Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order."],
     ["ma","a","(I)I","pollRotation","Complete synchronized implementation and abstract declaration reviewed. Valid guard1 copies/clears/returns; wrong guard recursively calls same method with-92 before later copy/reset. Preserve all guard/read/write order."],
     ["pe","a","(I)I","pollRotation","Complete synchronized implementation and abstract declaration reviewed. Valid guard1 copies/clears/returns; wrong guard recursively calls same method with-92 before later copy/reset. Preserve all guard/read/write order."],
-    ["de","a","(B)Lpe;","createMouseWheelInput","Complete reflective factory reviewed: Class.forName(...).newInstance cast to abstract input contract, Throwable->null fallback and per-game guards unchanged. Existing meaningful handler names/literals retained for SolKnight/StarCannon."]
+    ["de","a","(B)Lpe;","createMouseWheelInput","Complete reflective factory reviewed: Class.forName(...).newInstance cast to abstract input contract, Throwable->null fallback and per-game guards unchanged. Existing meaningful handler names/literals retained for SolKnight/StarCannon."],
+    ["fc","a","(B)[B","getBytes","Complete concrete body and matching abstract declaration reviewed. Getter allocates/positions before guard and wrong guard calls static null helper before get. Setter arithmetic after allocation before position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order."],
+    ["ll","a","(B)[B","getBytes","Complete concrete body and matching abstract declaration reviewed. Getter allocates/positions before guard and wrong guard calls static null helper before get. Setter arithmetic after allocation before position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order."],
+    ["fc","a","(I[B)V","setBytes","Complete concrete body and matching abstract declaration reviewed. Getter allocates/positions before guard and wrong guard calls static null helper before get. Setter arithmetic after allocation before position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order."],
+    ["ll","a","(I[B)V","setBytes","Complete concrete body and matching abstract declaration reviewed. Getter allocates/positions before guard and wrong guard calls static null helper before get. Setter arithmetic after allocation before position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order."]
   ],
   "fields": [
     ["mg","field_j","[B","payload","Complete constructors and all owned I/O reviewed: caller byte array or pooled allocation is the backing payload. Preserve array identity and every reference."],
     ["mg","field_i","I","position","Constructors initialize0; owned reads/writes, backpatches and crypto retain this exact mutable byte cursor. Preserve all noncanonical guard writes and failure positions."],
-    ["ma","field_d","I","rotation","Wheel-event accumulator returned/replaced by polling. Preserve game-specific resets, early constants and guard writes."]
+    ["ma","field_d","I","rotation","Wheel-event accumulator returned/replaced by polling. Preserve game-specific resets, early constants and guard writes."],
+    ["fc","field_c","Ljava/nio/ByteBuffer;","buffer","Sole instance direct ByteBuffer used by byte-array set/get operations; preserve nullable and guard states."]
   ]
 }

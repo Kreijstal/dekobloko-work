@@ -283,6 +283,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dj",
+      "originalName": "dj",
+      "to": "ByteStorage",
+      "evidence": "Complete instance field shape and both abstract byte-array declarations reviewed with concrete direct implementation. Base has no instance state or additional instance operations. Preserve unrelated static helpers and globals.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ec",
       "originalName": "ec",
       "to": "SocketConnector",
@@ -336,6 +343,13 @@
       "originalName": "hb",
       "to": "PcmSample",
       "evidence": "Holds a byte sample array with rate and loop bounds, consumed by PcmSampleStream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hf",
+      "originalName": "hf",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance ByteBuffer is directly allocated and copied to/from caller bytes. Unrelated statics unselected.",
       "confidence": "reviewed"
     },
     {
@@ -553,6 +567,13 @@
       "originalName": "field_h",
       "to": "endGameLabel",
       "evidence": "Text constant \"End Game\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hf.field_e:Ljava/nio/ByteBuffer;",
+      "originalName": "field_e",
+      "to": "buffer",
+      "evidence": "Sole instance direct ByteBuffer used by byte-array set/get operations; preserve nullable and guard states.",
       "confidence": "reviewed"
     },
     {
@@ -976,6 +997,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dj.a(Z)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter true returns null before allocation; setter arithmetic precedes allocation/position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dj.a([BB)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter true returns null before allocation; setter arithmetic precedes allocation/position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:e.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -1141,6 +1176,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 11 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 d4511472ee22691554113ec1ef58a7776b1d6bcf9c057b3f701d4c4075b1e95b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a(Z)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter true returns null before allocation; setter arithmetic precedes allocation/position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hf.a([BB)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Getter true returns null before allocation; setter arithmetic precedes allocation/position/put. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
       "confidence": "reviewed"
     },
     {
@@ -2014,7 +2063,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-transmogrify-rules.mjs": "490c8ac7b803bec45e36264c90d8a0d2e0d252d1671c0c7402e75f04539f2120",
-      "transmogrify-names.json": "26c8d585b90e129454baf2cb7aca7c3afe28e83e03356f536ed8847c1a50ef34",
+      "transmogrify-names.json": "8fee54365adac09a4ce807b1fc7c7238f0ab0095e8a7a848e6830997d0bfd1b1",
       "reproduce-transmogrify.mjs": "275031618841925c88dcac462520b84fb1be33422795af31727af8ec70c869ee",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -675,6 +675,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cj.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete overlap-aware byte range implementation reviewed: equal-index no-op, forward8-byte blocks/tail and backward overlap8-byte blocks/tail. Preserve arithmetic, bounds/partial-write behavior and pointer order; do not replace with System.arraycopy.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:d.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -721,6 +728,13 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 12 null writes to 7 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 fac0024a465b41fa3365b632cd7ee0b09b3eef3eef0221713bc3253b65cab55a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dn.a(Ljava/lang/Object;ZB)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete body, direct storage instance contract and clone helper reviewed. Null handling,136-byte threshold, direct allocation versus byte-array alias/optional copy, invalid-object exception and every guard remain unchanged. Extraction wrong guard recurses before null/type checks. Wrapper null first, then wrong-guard null wrapper call, then136 threshold. Clone reads input length before arithmetic before allocation.",
       "confidence": "reviewed"
     },
     {
@@ -1123,6 +1137,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gg.a(B[B)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete same-length allocation/copy wrapper and underlying byte-copy implementation reviewed. Extraction wrong guard recurses before null/type checks. Wrapper null first, then wrong-guard null wrapper call, then136 threshold. Clone reads input length before arithmetic before allocation. Preserve original allocation/guard/exception ordering and byte identity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gg.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1288,6 +1309,13 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 14 null writes to 7 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 591b8d724bb5103696cc7e171394828466c2ab226625bddf52deb3ac5979d5d7.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.a(ZZ[B)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete body, direct storage instance contract and clone helper reviewed. Null handling,136-byte threshold, direct allocation versus byte-array alias/optional copy, invalid-object exception and every guard remain unchanged. Extraction wrong guard recurses before null/type checks. Wrapper null first, then wrong-guard null wrapper call, then136 threshold. Clone reads input length before arithmetic before allocation.",
       "confidence": "reviewed"
     },
     {
@@ -2014,7 +2042,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-dungeonassault-rules.mjs": "8eb15e13a50fdc4451ed6ef68e53e6f3481c4d7f58d0976003f9ed284e2452de",
-      "dungeonassault-names.json": "e4048d2ad6155b2663b721446936e4689ea00b0e394f53e454675400940b24f3",
+      "dungeonassault-names.json": "50d1d2a98f07609bc6237e1dbc40ee927619b2456592787f57de8d93be8d1717",
       "reproduce-dungeonassault.mjs": "91cc0426bf614cfc9a70de2a232ea4543d6576e41cf2fec5dad4cf428a0fd8c4",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

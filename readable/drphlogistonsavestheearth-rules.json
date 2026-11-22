@@ -920,6 +920,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ji.a(ILjava/lang/Object;Z)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete body, direct storage instance contract and clone helper reviewed. Null handling,136-byte threshold, direct allocation versus byte-array alias/optional copy, invalid-object exception and every guard remain unchanged. Wrapper may clear static String[] before null. Extraction wrong guard helper only runs on invalid-type path. Clone wrong guard recursively calls null clone before dereference.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ji.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -927,10 +934,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jk.a(Z[BB)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete body, direct storage instance contract and clone helper reviewed. Null handling,136-byte threshold, direct allocation versus byte-array alias/optional copy, invalid-object exception and every guard remain unchanged. Wrapper may clear static String[] before null. Extraction wrong guard helper only runs on invalid-type path. Clone wrong guard recursively calls null clone before dereference.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:k.g(B)V",
       "originalName": "g",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 fed894b03c19243d61cf971a246a0643b0295d0d32295f5d5696d71ebbcfef44.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kg.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete overlap-aware byte range implementation reviewed: equal-index no-op, forward8-byte blocks/tail and backward overlap8-byte blocks/tail. Preserve arithmetic, bounds/partial-write behavior and pointer order; do not replace with System.arraycopy.",
       "confidence": "reviewed"
     },
     {
@@ -1473,6 +1494,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qd.a(B[B)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete same-length allocation/copy wrapper and underlying byte-copy implementation reviewed. Wrapper may clear static String[] before null. Extraction wrong guard helper only runs on invalid-type path. Clone wrong guard recursively calls null clone before dereference. Preserve original allocation/guard/exception ordering and byte identity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qk.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -1762,7 +1790,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-drphlogistonsavestheearth-rules.mjs": "08315c3da5b003a5c650d15e9848760b3143b6b5152cbe9d0b4f811976e18e5b",
-      "drphlogistonsavestheearth-names.json": "82487304a5015c05feb861614fbfd935af55d494437f0fb4aef9b31d11c1c922",
+      "drphlogistonsavestheearth-names.json": "4f01263a799fa87ec5049ecfcbdbebd5ef63fe0d58ebdd881639142afc654062",
       "reproduce-drphlogistonsavestheearth.mjs": "4eb61234c8f693a5901143e23655851f6692c61799a49e6912b51d62f66d5dfb",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -1060,6 +1060,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lj.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete overlap-aware byte range implementation reviewed: equal-index no-op, forward8-byte blocks/tail and backward overlap8-byte blocks/tail. Preserve arithmetic, bounds/partial-write behavior and pointer order; do not replace with System.arraycopy.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ln.a(Z[BLkg;)V",
       "originalName": "a",
       "to": "decompress",
@@ -1424,6 +1431,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ug.a(IZ[B)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete body, direct storage instance contract and clone helper reviewed. Null handling,136-byte threshold, direct allocation versus byte-array alias/optional copy, invalid-object exception and every guard remain unchanged. Clone helper guard194 precedes input dereference. Wrapper large-array branch precedes guard124; extraction invalid-type path may clear static int[] before IllegalArgumentException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.a([BI)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete same-length allocation/copy wrapper and underlying byte-copy implementation reviewed. Clone helper guard194 precedes input dereference. Wrapper large-array branch precedes guard124; extraction invalid-type path may clear static int[] before IllegalArgumentException. Preserve original allocation/guard/exception ordering and byte identity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uh.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1442,6 +1463,13 @@
       "originalName": "j",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 7b4a05ebb421148f5060c61399028ed43f46c9e519e8efa2d6349983fc4d5ffb.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vb.a(ZILjava/lang/Object;)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete body, direct storage instance contract and clone helper reviewed. Null handling,136-byte threshold, direct allocation versus byte-array alias/optional copy, invalid-object exception and every guard remain unchanged. Clone helper guard194 precedes input dereference. Wrapper large-array branch precedes guard124; extraction invalid-type path may clear static int[] before IllegalArgumentException.",
       "confidence": "reviewed"
     },
     {
@@ -1496,7 +1524,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-confined-rules.mjs": "a08806d13e3259a5e4a49e9de85dc6561b20a6ffc335a49925ea5169596b7ee2",
-      "confined-names.json": "7254a290199b2e896a94a921760eb93864cc438367f29dad113ba204641c1850",
+      "confined-names.json": "9402872e5b4d31192c2e0253a8fc0441e614939944adbd363a6a66969aa81463",
       "reproduce-confined.mjs": "9b3831fbe343e76865b33804d8980f36e4b2b1bbbf79b4539c6903b6f9ec7e92",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

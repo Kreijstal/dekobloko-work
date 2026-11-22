@@ -192,6 +192,13 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:ab",
+      "originalName": "ab",
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape, empty constructor and both concrete byte-array bodies reviewed. Sole instance ByteBuffer is directly allocated and copied to/from caller bytes. Unrelated statics unselected.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ae",
       "originalName": "ae",
       "to": "ArgbSprite",
@@ -304,6 +311,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ka",
+      "originalName": "ka",
+      "to": "ByteStorage",
+      "evidence": "Complete instance field shape and both abstract byte-array declarations reviewed with concrete direct implementation. Base has no instance state or additional instance operations. Preserve unrelated static helpers and globals.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:le",
       "originalName": "le",
       "to": "Sprite",
@@ -409,6 +423,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ab.field_c:Ljava/nio/ByteBuffer;",
+      "originalName": "field_c",
+      "to": "buffer",
+      "evidence": "Sole instance direct ByteBuffer used by byte-array set/get operations; preserve nullable and guard states.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:gk.field_g:[B",
       "originalName": "field_g",
       "to": "payload",
@@ -455,6 +476,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 f0e18e4ef214fe6f2fea8aaac42dabe8ad0a1fee97b2573c3f1ed1c8ef72c487.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ab.a(I[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter arithmetic after allocation/position before put. Getter fully copies before guard; invalid returns null after copy. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ab.d(I)[B",
+      "originalName": "d",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter arithmetic after allocation/position before put. Getter fully copies before guard; invalid returns null after copy. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
       "confidence": "reviewed"
     },
     {
@@ -1025,6 +1060,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ka.a(I[B)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter arithmetic after allocation/position before put. Getter fully copies before guard; invalid returns null after copy. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.d(I)[B",
+      "originalName": "d",
+      "to": "getBytes",
+      "evidence": "Complete concrete body and matching abstract declaration reviewed. Setter arithmetic after allocation/position before put. Getter fully copies before guard; invalid returns null after copy. Names describe dataflow without changing guards, exceptions, buffer position or copy order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kc.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1496,7 +1545,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-monkeypuzzle2-rules.mjs": "a154933fc70d5d77c29762fb11f9501883dedcb625fc9fbb629e20e15db5bc32",
-      "monkeypuzzle2-names.json": "898158ad25c540ce3f4256429569804c04407d1bad701a69ca7e281a924840d5",
+      "monkeypuzzle2-names.json": "9dac2cd877689714a9bda3f1fa2c388e1790bc8c1f49b91baa44700109044432",
       "reproduce-monkeypuzzle2.mjs": "e80c78fab2aa134de669a604ee7bc1d540df41c2a2d8e81e346e709c4914c594",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
