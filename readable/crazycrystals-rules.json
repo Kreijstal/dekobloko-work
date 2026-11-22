@@ -801,10 +801,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bl.a(I)I",
+      "originalName": "a",
+      "to": "readBits",
+      "evidence": "Read the requested bit count LSB-first across byte boundaries,retaining the exact signed shifts,mask calculations,32-bit accumulation,cursor updates and invalid-count behavior. Pre-rename body SHA256 c97df6f3b2e05e13239d18e8c6fd19212497f8bf192c197b1b08351b0c605611. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bl.b()I",
+      "originalName": "b",
+      "to": "readBit",
+      "evidence": "Extract one LSB-first bit from the current sample byte;advance bit offset and byte cursor in their original order,then mask bit offset to7. Pre-rename body SHA256 19506b422659729187e03ac780bdd40dc7d5b725cd44be666908f6b527c3d055. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bl.c()V",
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 16 null writes to 16 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 a95bfc5c3d3965b1c7116daaa41c8762172cae7cf0e3019acc24e55a19315b68.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bl.e(I)F",
+      "originalName": "e",
+      "to": "unpackVorbisFloat",
+      "evidence": "Unpack the Vorbis21-bit mantissa,sign bit and exponent bits;apply sign and multiply the mantissa by2^(exponent-788) using the original double/float casts. Pre-rename body SHA256 1bd3608ca1ee7f868b1a098108e890001c62a2c8f42188740bfea3ec9bc4ff5d. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1022,6 +1043,13 @@
       "originalName": "a",
       "to": "createAccountSuggestionsResult",
       "evidence": "Complete source declaration/body, five-field DTO instance contract, boolean constructor and all account-result panel instance methods reviewed, with exact account-created success label. Success factory allocates true and writes caller secondary flag before byte<=93 null return. Error factory allocates false, writes message/status, then optionally clears unrelated String for guard!=20. Suggestion factory checks int169 before allocation. Poller throws in idle then retains invalid-byte call jd.e(-51) before ready consumption. UI marks handled and allocates message panel before guard!=-1 return; every guard/write/call and exception path remains exact. Identifier edits only; retain caller array/object identity, defaults, original guard domains, all operators/branches and failure behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eq.c(IB)I",
+      "originalName": "c",
+      "to": "bitLength",
+      "evidence": "Determine the integer bit width using unsigned shifts by16,8,4,2,1 and accumulated width. Preserve game-specific threshold/guard parameter positions,unused arithmetic,global side effects,early returns and exception wrappers for every input. Pre-rename body SHA256 7415cb5d64670c3c3ef83ad0c734730f5a8075114e70e86c93db3646604b6236. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1417,6 +1445,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ml.a(Lng;)V",
+      "originalName": "a",
+      "to": "decodeSegments",
+      "evidence": "Read the envelope segment count,allocate the two retained segment arrays,and read paired unsigned16-bit values per segment. Preserve every actual packet-reader argument,allocation/write order and partial state. Pre-rename body SHA256 233bc73aba5a0ce5919f4169a2a6f46849cf969cc6e2cf0473f89ccc993a2004. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mn.c(B)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -1757,6 +1792,13 @@
       "originalName": "a",
       "to": "computeCrc32",
       "evidence": "Complete helper and table initializer reviewed:256entries, eight reflected shifts with polynomial-306674912, seed-1, table[(crc XOR byte)&255] XOR crc>>>8. Final XOR is caller param3, canonical-1; preserve caller-supplied final XOR rather than forcing complement. Preserve exception wrappers and all helper behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pg.a(III)I",
+      "originalName": "a",
+      "to": "integerPower",
+      "evidence": "Exponentiation-by-squaring helper with signed32-bit multiplication and right shifts. Preserve each actual base/exponent/seed-or-terminal/guard parameter arrangement,global control reads,side effects,early returns and exception wrapper;do not substitute Math.pow. Pre-rename body SHA256 2cc62fe39c2f74ce4e2334a85f8431898e9c306f02ecd14aaad275b9a5f55bea. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2364,7 +2406,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-crazycrystals-rules.mjs": "53fc8845bc15628f5f09948271dc7c15e829375009e924a68e220f175e8a3a65",
-      "crazycrystals-names.json": "f53ba84b08a67b160465c0646770a344df952b20f42c18f628021eb0ee3bce49",
+      "crazycrystals-names.json": "ac37c9f43da2f19c56dd3a46138becbf9f4a800e42db2891c42cf0d2b1570684",
       "reproduce-crazycrystals.mjs": "c436bdc5e8146e9c16d3dfc08e0152874a520d245840468c38a313fe58094a1c",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

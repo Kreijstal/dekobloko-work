@@ -1424,6 +1424,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kb.a(II)I",
+      "originalName": "a",
+      "to": "bitLength",
+      "evidence": "Determine the integer bit width using unsigned shifts by16,8,4,2,1 and accumulated width. Preserve game-specific threshold/guard parameter positions,unused arithmetic,global side effects,early returns and exception wrappers for every input. Pre-rename body SHA256 0edb8312c841cd28aee98d47f8b16c086a4133d5b71b827818abe61f3016ba26. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kc.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1617,6 +1624,13 @@
       "originalName": "a",
       "to": "removeFirst",
       "evidence": "Evaluate-7/((byte-3)/33) before sentinel.next read;nonempty unlink(byte-120). Complete deque constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ng.a(BII)I",
+      "originalName": "a",
+      "to": "integerPower",
+      "evidence": "Exponentiation-by-squaring helper with signed32-bit multiplication and right shifts. Preserve each actual base/exponent/seed-or-terminal/guard parameter arrangement,global control reads,side effects,early returns and exception wrapper;do not substitute Math.pow. Pre-rename body SHA256 65f0a48b9f434b84945810cb555a9a8ab5aeb2bfa15c5ad8825148396c2ef7e7. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1907,10 +1921,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sd.a()I",
+      "originalName": "a",
+      "to": "readBit",
+      "evidence": "Extract one LSB-first bit from the current sample byte;advance bit offset and byte cursor in their original order,then mask bit offset to7. Pre-rename body SHA256 62c2a556b96581ef81d11f66b097d9d4430a786c34218c0ecc97ec9d5f9cea0a. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sd.a(I)I",
+      "originalName": "a",
+      "to": "readBits",
+      "evidence": "Read the requested bit count LSB-first across byte boundaries,retaining the exact signed shifts,mask calculations,32-bit accumulation,cursor updates and invalid-count behavior. Pre-rename body SHA256 0d239e344ae0d167452c29e82476678a42ead583d77ab1e6dd2903328e142b15. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sd.b()V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 16 null writes to 16 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 eece805d5524d57fdb61f724f20d0bbc6d4f56a9a12650934ec5b136341fa4fd.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sd.b(I)F",
+      "originalName": "b",
+      "to": "unpackVorbisFloat",
+      "evidence": "Unpack the Vorbis21-bit mantissa,sign bit and exponent bits;apply sign and multiply the mantissa by2^(exponent-788) using the original double/float casts. Pre-rename body SHA256 1bd3608ca1ee7f868b1a098108e890001c62a2c8f42188740bfea3ec9bc4ff5d. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2364,7 +2399,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-lexicominos-rules.mjs": "407068f51801d5f59706f9b1a51b92d3ce7dda65d765eac9640c3e370f3b044d",
-      "lexicominos-names.json": "34167013428d0b8baf1cf26182296e13307cb725b4cf0eb672125be9b9dd74b9",
+      "lexicominos-names.json": "4572ae04e783384a527f2676fee5009643b42f92c8081f915ee6f521f269ed8c",
       "reproduce-lexicominos.mjs": "e1c24466083fff6a218772ecf30ba63a0a8990b92c02a2782bc76177b5238062",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

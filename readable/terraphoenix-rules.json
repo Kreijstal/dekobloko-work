@@ -2320,6 +2320,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fj.b(Ldh;)V",
+      "originalName": "b",
+      "to": "decodeSegments",
+      "evidence": "Read the envelope segment count,allocate the two retained segment arrays,and read paired unsigned16-bit values per segment. Preserve every actual packet-reader argument,allocation/write order and partial state. Pre-rename body SHA256 fd1c4292906a308259a20452627c7d534f6251738109a2e3c2bcd17eb0db4853. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fk.a()V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2667,6 +2674,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 8e971395e0c6bf3936fa9e35d1935c6a61941553c62fc956f8c44288ecd11c8d.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.a(II)I",
+      "originalName": "a",
+      "to": "bitLength",
+      "evidence": "Determine the integer bit width using unsigned shifts by16,8,4,2,1 and accumulated width. Preserve game-specific threshold/guard parameter positions,unused arithmetic,global side effects,early returns and exception wrappers for every input. Pre-rename body SHA256 28b672cb857d2ef328efe8d52042c6f02d1375cee890504e7a9e09283b83323b. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -3195,6 +3209,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rl.a(IIZ)I",
+      "originalName": "a",
+      "to": "integerPower",
+      "evidence": "Exponentiation-by-squaring helper with signed32-bit multiplication and right shifts. Preserve each actual base/exponent/seed-or-terminal/guard parameter arrangement,global control reads,side effects,early returns and exception wrapper;do not substitute Math.pow. Pre-rename body SHA256 62ce3d7aa55afc2a328d77158cf76f915a2e5e18c4075c3d6cf763a52c33190e. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sa.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -3349,10 +3370,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tl.a(I)F",
+      "originalName": "a",
+      "to": "unpackVorbisFloat",
+      "evidence": "Unpack the Vorbis21-bit mantissa,sign bit and exponent bits;apply sign and multiply the mantissa by2^(exponent-788) using the original double/float casts. Pre-rename body SHA256 1bd3608ca1ee7f868b1a098108e890001c62a2c8f42188740bfea3ec9bc4ff5d. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tl.b()V",
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 16 null writes to 16 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 50461ad8a7d74e461304ee3d7bb801b24080fab40c6c6eb20059e94c3ebc5590.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tl.c()I",
+      "originalName": "c",
+      "to": "readBit",
+      "evidence": "Extract one LSB-first bit from the current sample byte;advance bit offset and byte cursor in their original order,then mask bit offset to7. Pre-rename body SHA256 c1a579f820e0c737766b01656ca6897f05b97eff63106663e1aaf12440413270. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tl.d(I)I",
+      "originalName": "d",
+      "to": "readBits",
+      "evidence": "Read the requested bit count LSB-first across byte boundaries,retaining the exact signed shifts,mask calculations,32-bit accumulation,cursor updates and invalid-count behavior. Pre-rename body SHA256 18c58dd60c7ea4d5a57564b7b7575d11b287622a51ce6997f5e500a5f2f456e8. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -3953,7 +3995,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-terraphoenix-rules.mjs": "2b9ef0307d7e8ad8295f9a6d9e8e1d74cc01f0b1d1f8bbcad95b45bfce2e3b38",
-      "terraphoenix-names.json": "8658c1fb556edfd40d0da924b74bf29eb2ac82f4e417d4042cf16922b9dedec8",
+      "terraphoenix-names.json": "6b92b278446723d3a4c060e57454a67dd7643cce1e81fde6cedef2f3a0440dc0",
       "reproduce-terraphoenix.mjs": "26ebcd63f823ab4b28fe91b15329343bbc2ebca2f78d4652cffe0e8f8baf425a",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
