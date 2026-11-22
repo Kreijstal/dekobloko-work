@@ -1,6 +1,7 @@
 {
   "classes": [
-    ["nc","GzipDecompressor","Complete class, constructors and owned decompression body reviewed: own raw Inflater, gzip magic31/139, fixed ten-byte header/eight-byte trailer slice and destination inflate. Preserve original reset/error paths, setup/reset early returns, guard effects, exception wrappers and unrelated static helpers/initializers."]
+    ["nc","GzipDecompressor","Complete class, constructors and owned decompression body reviewed: own raw Inflater, gzip magic31/139, fixed ten-byte header/eight-byte trailer slice and destination inflate. Preserve original reset/error paths, setup/reset early returns, guard effects, exception wrappers and unrelated static helpers/initializers."],
+    ["gj","MouseWheelSource","Abstract class declaration and all3abstract operations reviewed alongside complete concrete wheel implementation. Names component registration/removal/rotation contract; unrelated static methods and fields left unchanged."]
   ],
   "methods": [
     ["StarCannon","r","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 a94bcaebf5b710087398dd20b714a341c4a662d83710532841a4a7854923aef6."],
@@ -140,7 +141,16 @@
     ["rb","j","(I)I","readUnsignedByte","Complete body and constructor context reviewed: Read byte masked255 and advance1. Preserve guards, global flags, helper calls, exception wrappers, cursor ordering and partial failures. Bad guard patches short length before read."],
     ["rj","a","(IIB[B)I","computeCrc32","Complete helper/table initialization reviewed:256entries, eight reflected shifts with polynomial-306674912; seed-1, table[(crc XOR byte)&255] XOR crc>>>8 and complemented result. Preserve caller range, guard helper calls/recursive failures/arithmetic, exception wrappers and all global behavior. "],
     ["rb","g","(B)V","clearStaticReferences","Complete body and owned static reference declarations reviewed. Null sole owned static reference, then bad byte changes scalar. Preserve instance fields and all other globals."],
-    ["rb","e","(B)Z","alwaysTrue","Complete body and boolean callers reviewed: always returns true; bad byte changes static field_i=68 first. Preserve side effect and all call sites; do not infer an unproven feature-specific role."]
+    ["rb","e","(B)Z","alwaysTrue","Complete body and boolean callers reviewed: always returns true; bad byte changes static field_i=68 first. Preserve side effect and all call sites; do not infer an unproven feature-specific role."],
+    ["me","a","(ILjava/awt/Component;)V","attach","Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes."],
+    ["gj","a","(ILjava/awt/Component;)V","attach","Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes."],
+    ["me","a","(Ljava/awt/Component;Z)V","detach","Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order."],
+    ["gj","a","(Ljava/awt/Component;Z)V","detach","Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order."],
+    ["me","a","(B)I","pollRotation","Complete synchronized implementation and abstract declaration reviewed. Wrong guard returns-120 before reading/reset; valid-107 copies/clears/returns. Preserve all guard/read/write order."],
+    ["gj","a","(B)I","pollRotation","Complete synchronized implementation and abstract declaration reviewed. Wrong guard returns-120 before reading/reset; valid-107 copies/clears/returns. Preserve all guard/read/write order."],
+    ["wc","b","(I)Lgj;","createMouseWheelInput","Complete reflective factory reviewed: Class.forName(...).newInstance cast to abstract input contract, Throwable->null fallback and per-game guards unchanged. Existing meaningful handler names/literals retained for SolKnight/StarCannon."]
   ],
-  "fields": []
+  "fields": [
+    ["me","field_g","I","rotation","Wheel-event accumulator returned/replaced by polling. Preserve game-specific resets, early constants and guard writes."]
+  ]
 }

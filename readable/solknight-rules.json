@@ -325,6 +325,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:lf",
+      "originalName": "lf",
+      "to": "MouseWheelInput",
+      "evidence": "Abstract class declaration and all3abstract operations reviewed alongside complete concrete wheel implementation. Names component registration/removal/rotation contract; unrelated static methods and fields left unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:lg",
       "originalName": "lg",
       "to": "CachedArchiveSource",
@@ -539,6 +546,13 @@
       "originalName": "field_a",
       "to": "currentScreenIndex",
       "evidence": "kd.field_a indexes vd.field_d to tick the active menu screen each frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sc.field_g:I",
+      "originalName": "field_g",
+      "to": "rotation",
+      "evidence": "Wheel-event accumulator returned/replaced by polling. Preserve game-specific resets, early constants and guard writes.",
       "confidence": "reviewed"
     },
     {
@@ -1158,10 +1172,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ld.j(I)Llf;",
+      "originalName": "j",
+      "to": "createMouseWheelInput",
+      "evidence": "Complete reflective factory reviewed: Class.forName(...).newInstance cast to abstract input contract, Throwable->null fallback and per-game guards unchanged. Existing meaningful handler names/literals retained for SolKnight/StarCannon.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:le.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 79b779204cc54f1e91a23f0dbbdf6b97bad26a3df3568198a76eb8ade5805f29.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.a(I)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized implementation and abstract declaration reviewed. Wrong guard returns60 before reading/reset; valid9408 copies/clears/returns. Preserve all guard/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.a(Ljava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes.",
       "confidence": "reviewed"
     },
     {
@@ -1288,6 +1330,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 f62f815a310a096d7c3668d9d3a76c0f620ca10662c710b201f3113581760df3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sc.a(I)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized implementation and abstract declaration reviewed. Wrong guard returns60 before reading/reset; valid9408 copies/clears/returns. Preserve all guard/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sc.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sc.a(Ljava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes.",
       "confidence": "reviewed"
     },
     {
@@ -1552,7 +1615,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-solknight-rules.mjs": "d510dd3c5215d127be812bd794c1668890712739b676d0f83f2bf4b4a34f49d6",
-      "solknight-names.json": "e42dbd311ed7ab1d48ab740a966d8d0da6746afdb13caca754bcd72306130f63",
+      "solknight-names.json": "8a114ffd0c1c402d6e38ca495843d9434f50aa1cc84fd4a1639ffa8601575e24",
       "reproduce-solknight.mjs": "13b4e70cdbc3799ce0c256f7eb4afa61bbdd6dd18b17fd5cfda8475d81e10fc3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

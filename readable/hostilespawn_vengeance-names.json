@@ -1,6 +1,8 @@
 {
   "classes": [
-    ["fh","GzipDecompressor","Complete class, constructors and owned decompression body reviewed: own raw Inflater, gzip magic31/139, fixed ten-byte header/eight-byte trailer slice and destination inflate. Preserve original reset/error paths, setup/reset early returns, guard effects, exception wrappers and unrelated static helpers/initializers."]
+    ["fh","GzipDecompressor","Complete class, constructors and owned decompression body reviewed: own raw Inflater, gzip magic31/139, fixed ten-byte header/eight-byte trailer slice and destination inflate. Preserve original reset/error paths, setup/reset early returns, guard effects, exception wrappers and unrelated static helpers/initializers."],
+    ["ol","MouseWheelHandler","Complete concrete class reviewed: AWT listener adds/removes itself, accumulates and consumes wheel events and synchronously polls stored rotation. Preserve guard-specific state and recursion."],
+    ["kb","MouseWheelInput","Abstract class declaration and all3abstract operations reviewed alongside complete concrete wheel implementation. Names component registration/removal/rotation contract; unrelated static methods and fields left unchanged."]
   ],
   "methods": [
     ["aa","a","(B)V","clearStaticReferences","Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 1089221dd69fb275bab60a1cdd9216ef7d4a8a9fb1ac090f07f03b5034b303f2."],
@@ -118,7 +120,16 @@
     ["wh","a","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 6 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 42e817d4f004c2ae7e4a2858204672364bd04c407d1caa2846269134d5c27a0c."],
     ["wk","a","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 10 null writes to 6 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 11e0be04fba75e32ff465e2645d8adbce96e26af5cf60bb53c07008e55c1640e."],
     ["fh","a","(I[BLvi;)V","decompress","Complete gzip method reviewed: magic check, lazy raw Inflater, fixed header/trailer bounds and caller-supplied output. Preserve all original guards, early returns before inflate/reset, reset/error paths, ignored flags/lengths, partial state and exceptions; no gzip behavior fixes."],
-    ["fh","b","(I)V","clearStaticReferences","Complete own-static cleanup reviewed: preserve two leading null writes, canonical trailing-null/return path, invalid-guard integer state71 assignment and remaining null-write order."]
+    ["fh","b","(I)V","clearStaticReferences","Complete own-static cleanup reviewed: preserve two leading null writes, canonical trailing-null/return path, invalid-guard integer state71 assignment and remaining null-write order."],
+    ["ol","a","(Ljava/awt/Component;B)V","attach","Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes."],
+    ["kb","a","(Ljava/awt/Component;B)V","attach","Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes."],
+    ["ol","a","(ILjava/awt/Component;)V","detach","Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order."],
+    ["kb","a","(ILjava/awt/Component;)V","detach","Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order."],
+    ["ol","a","(B)I","pollRotation","Complete synchronized implementation and abstract declaration reviewed. Wrong guard returns57 before reading/reset; valid60 copies/clears/returns. Preserve all guard/read/write order."],
+    ["kb","a","(B)I","pollRotation","Complete synchronized implementation and abstract declaration reviewed. Wrong guard returns57 before reading/reset; valid60 copies/clears/returns. Preserve all guard/read/write order."],
+    ["ti","b","(B)Lkb;","createMouseWheelInput","Complete reflective factory reviewed: Class.forName(...).newInstance cast to abstract input contract, Throwable->null fallback and per-game guards unchanged. Existing meaningful handler names/literals retained for SolKnight/StarCannon."]
   ],
-  "fields": []
+  "fields": [
+    ["ol","field_e","I","rotation","Wheel-event accumulator returned/replaced by polling. Preserve game-specific resets, early constants and guard writes."]
+  ]
 }

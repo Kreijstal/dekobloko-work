@@ -1,6 +1,8 @@
 {
   "classes": [
-    ["hi","GzipDecompressor","Complete class, constructors and decompression body reviewed: own raw Inflater, gzip magic31/139, fixed ten-byte header/eight-byte trailer slice, destination inflate and reset after success/error. Preserve all original guards, exceptions and unrelated static helpers/initializers."]
+    ["hi","GzipDecompressor","Complete class, constructors and decompression body reviewed: own raw Inflater, gzip magic31/139, fixed ten-byte header/eight-byte trailer slice, destination inflate and reset after success/error. Preserve all original guards, exceptions and unrelated static helpers/initializers."],
+    ["nb","MouseWheelHandler","Complete concrete class reviewed: AWT listener adds/removes itself, accumulates and consumes wheel events and synchronously polls stored rotation. Preserve guard-specific state and recursion."],
+    ["cc","MouseWheelInput","Abstract class declaration and all3abstract operations reviewed alongside complete concrete wheel implementation. Names component registration/removal/rotation contract; unrelated static methods and fields left unchanged."]
   ],
   "methods": [
     ["a","a","(Z)V","clearStaticReferences","Complete cleanup statement proof reviewed: 5 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 f0e18e4ef214fe6f2fea8aaac42dabe8ad0a1fee97b2573c3f1ed1c8ef72c487."],
@@ -124,7 +126,16 @@
     ["gk","m","(I)I","readUnsignedShortOrInt","Complete owned body and constructors reviewed: Peek sign bit; unsigned short or int masked2147483647. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard writes int before peek."],
     ["gk","o","(I)I","readUnsignedSmart","Complete owned body and constructors reviewed: Peek high bit; unsigned byte or unsigned short minus32768. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard writes byte (with cursor61 side effect) before peek."],
     ["rc","a","(III[B)I","computeCrc32","Complete helper/table initialization reviewed:256entries, eight reflected shifts/XORs with polynomial-306674912; seed-1, table[(crc XOR byte)&255] XOR crc>>>8, complemented result. Preserve caller range, original scalar writes/callbacks/sentinels/recursive failures, mutable table, arithmetic and exception wrappers."],
-    ["gk","n","(I)V","clearBufferStatics","Complete body and owned static declaration identities reviewed. Bad guard clears same static string before unconditional repeated null write; preserve both writes and instance fields."]
+    ["gk","n","(I)V","clearBufferStatics","Complete body and owned static declaration identities reviewed. Bad guard clears same static string before unconditional repeated null write; preserve both writes and instance fields."],
+    ["nb","a","(Ljava/awt/Component;I)V","attach","Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes."],
+    ["cc","a","(Ljava/awt/Component;I)V","attach","Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes."],
+    ["nb","a","(ILjava/awt/Component;)V","detach","Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order."],
+    ["cc","a","(ILjava/awt/Component;)V","detach","Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order."],
+    ["nb","a","(Z)I","pollRotation","Complete synchronized implementation and abstract declaration reviewed. Copies and clears accumulator before boolean guard; false calls detach on null after reset. Preserve all guard/read/write order."],
+    ["cc","a","(Z)I","pollRotation","Complete synchronized implementation and abstract declaration reviewed. Copies and clears accumulator before boolean guard; false calls detach on null after reset. Preserve all guard/read/write order."],
+    ["cf","a","(I)Lcc;","createMouseWheelInput","Complete reflective factory reviewed: Class.forName(...).newInstance cast to abstract input contract, Throwable->null fallback and per-game guards unchanged. Existing meaningful handler names/literals retained for SolKnight/StarCannon."]
   ],
-  "fields": []
+  "fields": [
+    ["nb","field_c","I","rotation","Wheel-event accumulator returned/replaced by polling. Preserve game-specific resets, early constants and guard writes."]
+  ]
 }

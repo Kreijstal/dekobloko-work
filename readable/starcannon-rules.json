@@ -248,6 +248,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:gj",
+      "originalName": "gj",
+      "to": "MouseWheelSource",
+      "evidence": "Abstract class declaration and all3abstract operations reviewed alongside complete concrete wheel implementation. Names component registration/removal/rotation contract; unrelated static methods and fields left unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:gk",
       "originalName": "gk",
       "to": "AbstractAudioSample",
@@ -371,6 +378,13 @@
       "originalName": "wk",
       "to": "MouseInput",
       "evidence": "Mouse and mouse-motion listener recording events.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:me.field_g:I",
+      "originalName": "field_g",
+      "to": "rotation",
+      "evidence": "Wheel-event accumulator returned/replaced by polling. Preserve game-specific resets, early constants and guard writes.",
       "confidence": "reviewed"
     },
     {
@@ -661,6 +675,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gj.a(B)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized implementation and abstract declaration reviewed. Wrong guard returns-120 before reading/reset; valid-107 copies/clears/returns. Preserve all guard/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gj.a(Ljava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gl.a()V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -847,6 +882,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 a6e75d6e583ca97a2b05d6ee115ec6d076deb0d70ffe259ba5de72afa3f77062.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:me.a(B)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized implementation and abstract declaration reviewed. Wrong guard returns-120 before reading/reset; valid-107 copies/clears/returns. Preserve all guard/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:me.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:me.a(Ljava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order.",
       "confidence": "reviewed"
     },
     {
@@ -1382,6 +1438,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wc.b(I)Lgj;",
+      "originalName": "b",
+      "to": "createMouseWheelInput",
+      "evidence": "Complete reflective factory reviewed: Class.forName(...).newInstance cast to abstract input contract, Throwable->null fallback and per-game guards unchanged. Existing meaningful handler names/literals retained for SolKnight/StarCannon.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wc.c(I)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -1433,7 +1496,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-starcannon-rules.mjs": "820178d57ca214e426497e008fdf26a8f70c8f101ec48b13755d76c31ee972ef",
-      "starcannon-names.json": "c1be5e08e2c64e6d8bb146bb9e39f1b5c58c3dee2595e2a2b36996dd0d697f36",
+      "starcannon-names.json": "75674a1049b14f9dd3831e0f7f769f09a63ac96550d074313f54789e7ba21188",
       "reproduce-starcannon.mjs": "40be1291a6c20246ea0c655d9031dd6642e444715cec6140e7c4b80ad449743e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -1,6 +1,7 @@
 {
   "classes": [
-    ["kg","GzipDecompressor","Complete class, constructors and decompression body reviewed: own raw Inflater, gzip magic31/139, fixed ten-byte header/eight-byte trailer slice, destination inflate and reset after success/error. Preserve all original guards, exceptions and unrelated static helpers/initializers."]
+    ["kg","GzipDecompressor","Complete class, constructors and decompression body reviewed: own raw Inflater, gzip magic31/139, fixed ten-byte header/eight-byte trailer slice, destination inflate and reset after success/error. Preserve all original guards, exceptions and unrelated static helpers/initializers."],
+    ["lf","MouseWheelInput","Abstract class declaration and all3abstract operations reviewed alongside complete concrete wheel implementation. Names component registration/removal/rotation contract; unrelated static methods and fields left unchanged."]
   ],
   "methods": [
     ["ab","e","(B)V","clearStaticReferences","Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 360e7c6e543cb4ed2433a5d177e34f1cb3d56ea00795e64bee784f2a6c08c852."],
@@ -114,7 +115,16 @@
     ["gb","k","(I)Z","verifyCrc32","Complete owned body and constructors reviewed: Rewind to stored checksum, compute preceding CRC32, read stored big-endian int and compare. Preserve all original guards, global flags, helper calls, cursor ordering, exception wrappers and partial effects. Caller param0 controls rewind amount, canonical4."],
     ["ki","a","(I[BII)I","computeCrc32","Complete helper/table initialization reviewed:256entries, eight reflected shifts/XORs with polynomial-306674912; seed-1, table[(crc XOR byte)&255] XOR crc>>>8, complemented result. Preserve caller range, original scalar writes/callbacks/sentinels/recursive failures, mutable table, arithmetic and exception wrappers."],
     ["gb","f","(I)V","clearBufferStatics","Complete body and owned static declaration identities reviewed. Null static sprite array first, then bad guard calls original a(false,-86,67), then null two remaining references. Preserve callback and partial cleanup/failures."],
-    ["ue","a","(ILjava/lang/CharSequence;II[BI)I","encodeCp1252","Complete helper reviewed: encode UTF16units in inputparam1[startparam5,endparam2) to outputparam4 at offsetparam0. Nonzero ASCII/160..255 direct, explicit1252extension mapping, unmapped/NUL/surrogate units63. Wrong guard352 returns-101 before I/O. Preserve global-flag early break returning0 without writing first character, original negative counts/ranges/failures and wrapper."]
+    ["ue","a","(ILjava/lang/CharSequence;II[BI)I","encodeCp1252","Complete helper reviewed: encode UTF16units in inputparam1[startparam5,endparam2) to outputparam4 at offsetparam0. Nonzero ASCII/160..255 direct, explicit1252extension mapping, unmapped/NUL/surrogate units63. Wrong guard352 returns-101 before I/O. Preserve global-flag early break returning0 without writing first character, original negative counts/ranges/failures and wrapper."],
+    ["sc","a","(Ljava/awt/Component;Z)V","attach","Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes."],
+    ["lf","a","(Ljava/awt/Component;Z)V","attach","Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes."],
+    ["sc","a","(Ljava/awt/Component;I)V","detach","Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order."],
+    ["lf","a","(Ljava/awt/Component;I)V","detach","Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order."],
+    ["sc","a","(I)I","pollRotation","Complete synchronized implementation and abstract declaration reviewed. Wrong guard returns60 before reading/reset; valid9408 copies/clears/returns. Preserve all guard/read/write order."],
+    ["lf","a","(I)I","pollRotation","Complete synchronized implementation and abstract declaration reviewed. Wrong guard returns60 before reading/reset; valid9408 copies/clears/returns. Preserve all guard/read/write order."],
+    ["ld","j","(I)Llf;","createMouseWheelInput","Complete reflective factory reviewed: Class.forName(...).newInstance cast to abstract input contract, Throwable->null fallback and per-game guards unchanged. Existing meaningful handler names/literals retained for SolKnight/StarCannon."]
   ],
-  "fields": []
+  "fields": [
+    ["sc","field_g","I","rotation","Wheel-event accumulator returned/replaced by polling. Preserve game-specific resets, early constants and guard writes."]
+  ]
 }

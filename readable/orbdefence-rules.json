@@ -416,6 +416,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ma",
+      "originalName": "ma",
+      "to": "MouseWheelHandler",
+      "evidence": "Complete concrete class reviewed: AWT listener adds/removes itself, accumulates and consumes wheel events and synchronously polls stored rotation. Preserve guard-specific state and recursion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mg",
       "originalName": "mg",
       "to": "PacketBuffer",
@@ -434,6 +441,13 @@
       "originalName": "ol",
       "to": "DualLinkDequeIterator",
       "evidence": "Iterator that walks a DualLinkDeque through its secondary links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pe",
+      "originalName": "pe",
+      "to": "MouseWheelInput",
+      "evidence": "Abstract class declaration and all3abstract operations reviewed alongside complete concrete wheel implementation. Names component registration/removal/rotation contract; unrelated static methods and fields left unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -469,6 +483,13 @@
       "originalName": "tf",
       "to": "GameAppletShell",
       "evidence": "Abstract Applet implementing Runnable and focus/window listeners; owns the run loop and abstract init/update/shutdown hooks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ma.field_d:I",
+      "originalName": "field_d",
+      "to": "rotation",
+      "evidence": "Wheel-event accumulator returned/replaced by polling. Preserve game-specific resets, early constants and guard writes.",
       "confidence": "reviewed"
     },
     {
@@ -623,6 +644,13 @@
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 35590dea6d7ab1bf1436e14991deb327ed5c3ad55921b160a71df713d47dcdd3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.a(B)Lpe;",
+      "originalName": "a",
+      "to": "createMouseWheelInput",
+      "evidence": "Complete reflective factory reviewed: Class.forName(...).newInstance cast to abstract input contract, Throwable->null fallback and per-game guards unchanged. Existing meaningful handler names/literals retained for SolKnight/StarCannon.",
       "confidence": "reviewed"
     },
     {
@@ -882,6 +910,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 8512920ef11e97ac954460b5bd6c47e260a1a0b58dc45745da87ec1b437555a1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.a(I)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized implementation and abstract declaration reviewed. Valid guard1 copies/clears/returns; wrong guard recursively calls same method with-92 before later copy/reset. Preserve all guard/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes.",
       "confidence": "reviewed"
     },
     {
@@ -1221,6 +1270,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pe.a(I)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized implementation and abstract declaration reviewed. Valid guard1 copies/clears/returns; wrong guard recursively calls same method with-92 before later copy/reset. Preserve all guard/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pe.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pf.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1426,7 +1496,7 @@
   ],
   "classNameLiterals": {
     "policy": "direct-owned-class-for-name",
-    "expectedEdits": 0
+    "expectedEdits": 1
   },
   "labels": {
     "policy": "lexical-targets",
@@ -1440,7 +1510,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-orbdefence-rules.mjs": "7265f3a9f5e13a3fed5621337395faa83930486229ce2e8682b070f11e4f498e",
-      "orbdefence-names.json": "18a7617f206f2b4cf9f53db048a10ea0e749bb1bc02e23eb67768b9dd0afbde2",
+      "orbdefence-names.json": "82ef99b646b8adc0fec5b75d1d1bdbcdd6f617962f9e8fe5bcd31bb73a7ecff4",
       "reproduce-orbdefence.mjs": "24edd3e6decd14f7af15c46ba33901279428686ce88376fa1945d21ab4b43608",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

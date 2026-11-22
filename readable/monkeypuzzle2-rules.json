@@ -213,6 +213,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cc",
+      "originalName": "cc",
+      "to": "MouseWheelInput",
+      "evidence": "Abstract class declaration and all3abstract operations reviewed alongside complete concrete wheel implementation. Names component registration/removal/rotation contract; unrelated static methods and fields left unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ck",
       "originalName": "ck",
       "to": "DequeCursor",
@@ -325,6 +332,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nb",
+      "originalName": "nb",
+      "to": "MouseWheelHandler",
+      "evidence": "Complete concrete class reviewed: AWT listener adds/removes itself, accumulates and consumes wheel events and synchronously polls stored rotation. Preserve guard-specific state and recursion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nd",
       "originalName": "nd",
       "to": "SecondaryNodeDequeIterator",
@@ -409,6 +423,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:nb.field_c:I",
+      "originalName": "field_c",
+      "to": "rotation",
+      "evidence": "Wheel-event accumulator returned/replaced by polling. Preserve game-specific resets, early constants and guard writes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ug.field_a:J",
       "originalName": "field_a",
       "to": "key",
@@ -483,6 +504,34 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 3d37c0be58f9117e78429ea4743c10331f6ddd3ee5a5d64c059f3845e2225045.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a(Z)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized implementation and abstract declaration reviewed. Copies and clears accumulator before boolean guard; false calls detach on null after reset. Preserve all guard/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cf.a(I)Lcc;",
+      "originalName": "a",
+      "to": "createMouseWheelInput",
+      "evidence": "Complete reflective factory reviewed: Class.forName(...).newInstance cast to abstract input contract, Throwable->null fallback and per-game guards unchanged. Existing meaningful handler names/literals retained for SolKnight/StarCannon.",
       "confidence": "reviewed"
     },
     {
@@ -1053,6 +1102,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nb.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nb.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nb.a(Z)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized implementation and abstract declaration reviewed. Copies and clears accumulator before boolean guard; false calls detach on null after reset. Preserve all guard/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nd.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1412,7 +1482,7 @@
   ],
   "classNameLiterals": {
     "policy": "direct-owned-class-for-name",
-    "expectedEdits": 0
+    "expectedEdits": 1
   },
   "labels": {
     "policy": "lexical-targets",
@@ -1426,7 +1496,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-monkeypuzzle2-rules.mjs": "a154933fc70d5d77c29762fb11f9501883dedcb625fc9fbb629e20e15db5bc32",
-      "monkeypuzzle2-names.json": "f0e2f4863ed54d8db9da6e48a0adb378786d45dcaf054845137ffed4f1b5ba4e",
+      "monkeypuzzle2-names.json": "898158ad25c540ce3f4256429569804c04407d1bad701a69ca7e281a924840d5",
       "reproduce-monkeypuzzle2.mjs": "e80c78fab2aa134de669a604ee7bc1d540df41c2a2d8e81e346e709c4914c594",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

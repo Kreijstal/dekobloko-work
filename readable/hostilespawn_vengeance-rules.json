@@ -451,6 +451,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kb",
+      "originalName": "kb",
+      "to": "MouseWheelInput",
+      "evidence": "Abstract class declaration and all3abstract operations reviewed alongside complete concrete wheel implementation. Names component registration/removal/rotation contract; unrelated static methods and fields left unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ol",
+      "originalName": "ol",
+      "to": "MouseWheelHandler",
+      "evidence": "Complete concrete class reviewed: AWT listener adds/removes itself, accumulates and consumes wheel events and synchronously polls stored rotation. Preserve guard-specific state and recursion.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:se",
       "originalName": "se",
       "to": "GameAppletShell",
@@ -497,6 +511,13 @@
       "originalName": "wc",
       "to": "ArchiveIndex",
       "evidence": "Per-group and per-file id, size and digest arrays describing an archive.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ol.field_e:I",
+      "originalName": "field_e",
+      "to": "rotation",
+      "evidence": "Wheel-event accumulator returned/replaced by polling. Preserve game-specific resets, early constants and guard writes.",
       "confidence": "reviewed"
     },
     {
@@ -843,6 +864,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kb.a(B)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized implementation and abstract declaration reviewed. Wrong guard returns57 before reading/reset; valid60 copies/clears/returns. Preserve all guard/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kb.a(Ljava/awt/Component;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kc.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -994,6 +1036,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 8 null writes to 8 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 e152b5b3583eb5423e6356664006a7e36efcddc6ac9b65e28c87d0d029c833e5.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ol.a(B)I",
+      "originalName": "a",
+      "to": "pollRotation",
+      "evidence": "Complete synchronized implementation and abstract declaration reviewed. Wrong guard returns57 before reading/reset; valid60 copies/clears/returns. Preserve all guard/read/write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ol.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete deregistration method and abstract declaration reviewed. Preserve removal, guard arithmetic and accumulator writes in order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ol.a(Ljava/awt/Component;B)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete registration method and abstract declaration reviewed. Preserve original guard ordering, null callback/recursion and state writes.",
       "confidence": "reviewed"
     },
     {
@@ -1179,6 +1242,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ti.b(B)Lkb;",
+      "originalName": "b",
+      "to": "createMouseWheelInput",
+      "evidence": "Complete reflective factory reviewed: Class.forName(...).newInstance cast to abstract input contract, Throwable->null fallback and per-game guards unchanged. Existing meaningful handler names/literals retained for SolKnight/StarCannon.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tm.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1314,7 +1384,7 @@
   ],
   "classNameLiterals": {
     "policy": "direct-owned-class-for-name",
-    "expectedEdits": 0
+    "expectedEdits": 1
   },
   "labels": {
     "policy": "lexical-targets",
@@ -1328,7 +1398,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-hostilespawn_vengeance-rules.mjs": "bd4983d008d73d23ae1bead320db5b9066cb068364feecec10df25c10ddbff04",
-      "hostilespawn_vengeance-names.json": "6078807b5bcd65f140391628df15b373211945e3a8f931ec21404b35113fc5e2",
+      "hostilespawn_vengeance-names.json": "98c1396354150a5de784f6a619821e0aff1d77a9a7799af4159485fba9add1d2",
       "reproduce-hostilespawn_vengeance.mjs": "40c77f27ca968e11d14121fe671373284e37e0393b0fc20f781e4df14ef88438",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
