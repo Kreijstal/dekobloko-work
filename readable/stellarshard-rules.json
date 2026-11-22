@@ -297,6 +297,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dh",
+      "originalName": "dh",
+      "to": "SoundFilter",
+      "evidence": "Two-channel synthesized-audio filter: constructor allocates paired frequency/magnitude endpoints,pair counts and gain endpoints. Decode reads packed pair counts and masked endpoint changes plus conditional envelope segments. Coefficient computation interpolates pole radius/frequency,cascades the polynomial,applies channel0 gain and stores Q16 coefficients consumed by the instrument. Full owning constructor,all instance/related static bodies,field associations,own/helper calls and typed consumers reviewed. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:eb",
       "originalName": "eb",
       "to": "KeyHandler",
@@ -322,6 +329,13 @@
       "originalName": "fh",
       "to": "BufferedSocket",
       "evidence": "Runnable owning a Socket with input stream and buffered writer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fi",
+      "originalName": "fi",
+      "to": "VorbisCodebook",
+      "evidence": "Vorbis codebook: constructor consumes24bits without validating them,reads dimensions/entry count and ordered/sparse code lengths,builds a canonical Huffman tree,and reads quantized lookup vectors. Scalar bit traversal returns complemented tree leaf;vector decoding returns the retained vector row by alias;lookup1 uses the original integer-power helper. Full owning constructor,all instance/related static bodies,field associations,own/helper calls and typed consumers reviewed. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -434,6 +448,13 @@
       "originalName": "mh",
       "to": "ImageProducerRasterBuffer",
       "evidence": "RasterBuffer implementing ImageProducer to push pixels to an ImageConsumer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mi",
+      "originalName": "mi",
+      "to": "VorbisFloor",
+      "evidence": "Vorbis floor type1: constructor reads and requires16-bit type1,partition classes,subclass codebooks,multiplier and x coordinates. Owns shared x/y/active scratch and inverse-dB/range tables;decodes presence and scalar y values,unpacks predicted residuals,sorts linked points and applies the floor curve to the spectrum. Full owning constructor,all instance/related static bodies,field associations,own/helper calls and typed consumers reviewed. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1144,6 +1165,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dh.a(F)F",
+      "originalName": "a",
+      "to": "normalizeFrequency",
+      "evidence": "Convert the logarithmic frequency value through32.70319747924805*2^value and pi/11025,preserving exact literals,casts and FP operations. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 d351ac2d2abe66a9cb99df96dc311b2dd894374720702ea587c7ba45230d35a6. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(IF)I",
+      "originalName": "a",
+      "to": "computeCoefficients",
+      "evidence": "Interpolate gain and paired pole magnitude/frequency,cascade polynomial coefficients,apply channel0 gain,convert to Q16 integer coefficients and return twice the pair count. Preserve FP evaluation/casts,shared buffers,overflow and all partial updates. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 099f863b27040bfe19abec23ba7c2d2a4d1b4538b21d25b387df4e0f1fd041db. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(IIF)F",
+      "originalName": "a",
+      "to": "interpolateFrequency",
+      "evidence": "Interpolate retained phase/frequency values,scale by1/8192 and delegate to the original frequency normalization helper. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 d4cf49c0402145aedb7c7fab4bdcbe1956d6bd6d31899ea30acb2f4985a59a00. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(Lka;Lqg;)V",
+      "originalName": "a",
+      "to": "decode",
+      "evidence": "Read pair counts from packed nibbles,two gain endpoints,per-pair first-state phase/magnitude and masked second-state overrides;copy unchanged pairs,conditionally decode the envelope segments,or reset both gains for zero counts. Preserve every original reader/envelope guard and read/allocation/write/failure order. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 3f40ffb7d78596c35fdc6eeef218d9c84bab59c27d6614c5a210542db1b3b312. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.b(IIF)F",
+      "originalName": "b",
+      "to": "interpolateMagnitude",
+      "evidence": "Interpolate the two retained magnitude values,scale to decibels and return1-10^(-value/20),preserving exact float/double evaluation and indexing. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 3511135d5c140a1dedcc5384c4687605a14a89513169e976330f79400882ade8. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dj.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1323,6 +1379,34 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 7100be9eb50230b72effcb208aa0f578db1a1f2810b7b788957b117860d8cd51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.a()[F",
+      "originalName": "a",
+      "to": "decodeVector",
+      "evidence": "Decode one scalar entry and return its stored float vector row directly,retaining shared mutable alias and all null/index failures. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 9eec2a7dca0c5306cddbb3a405f07c71a07721cc20e6658748591043a8bb7bbc. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.a(II)I",
+      "originalName": "a",
+      "to": "lookup1Values",
+      "evidence": "Estimate entryCount^(1/dimensions)+1,then decrement while the integer-power helper exceeds entryCount. Preserve Java floating casts,int overflow,helper guards and invalid-domain behavior. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 4e6ac54e09f5bf8d2161c40124768464eb1ca2458a65d62c4a44ef6423bde6e3. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.b()I",
+      "originalName": "b",
+      "to": "decodeScalar",
+      "evidence": "Walk the Huffman decode tree with each input bit;return complemented leaf entry index. Preserve tree/bit-reader access and failure order. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 501632415b4575475be53a3ff1e8d096206502ac9232b16a9f15d8d42186ed2f. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fi.c()V",
+      "originalName": "c",
+      "to": "buildHuffmanTree",
+      "evidence": "Build canonical codewords from per-entry lengths with32-bit shifts/carry updates,then construct the expandable decode tree with complemented leaf indices. Preserve exact growth,aliasing,overflow and allocation/write order. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 2ab626d8c8455076a09e3f4fc12dc58598037454b8890affde601227fdaf4dfc. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1872,6 +1956,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mi.a(II)V",
+      "originalName": "a",
+      "to": "sortFloorPoints",
+      "evidence": "Quicksort the shared floor x/y/active arrays together by x coordinate,including recursive subranges and original alias/write ordering. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 54fd23dff0cdebaa99388626beeea73b12bc14fdb862cb036fc058691792ff9d. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mi.a(IIIII)I",
+      "originalName": "a",
+      "to": "interpolateFloorPoint",
+      "evidence": "Integer interpolation of y between two x/y endpoints at a requested x,preserving signed arithmetic,overflow and division failure. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 494cc4fc2e7efa6e6e8c17bedc6b2fc34e6db8834835d4ca76ce3540a802cc56. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mi.a(IIII[FI)V",
+      "originalName": "a",
+      "to": "renderFloorLine",
+      "evidence": "Multiply the spectrum by the inverse-decibel lookup while stepping an integer floor line;preserve the first write before clipping,division and all index/failure behavior. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 ed725d0acd952ab81b08ae50cdff7b215496bf348cc144e12b5e235be2316f40. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mi.a([FI)V",
+      "originalName": "a",
+      "to": "applyFloorCurve",
+      "evidence": "Predict and unpack floor y values using low/high neighbors,mark active points,sort linked x/y/active state,render each active segment and multiply the remaining tail. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 9a9decbca57db35b1f91a68603f493ba42199a3d59fe95b2c4838311fb2c82a8. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mi.a([II)I",
+      "originalName": "a",
+      "to": "findHighNeighbor",
+      "evidence": "Among earlier points find the least x strictly above the current x;retain-1 when absent and original bounds behavior. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 293330375be3f582cd57a8ee20c093bb2f9907e41203e96e3fa4e2e03cb35132. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mi.b()Z",
+      "originalName": "b",
+      "to": "decodeFloor",
+      "evidence": "Read the floor-presence bit;absent returns false before scratch writes. Present copies x coordinates,decodes initial y and partition/subclass scalar codebook values into shared scratch arrays. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 8de045268d079cba1b00b6ad8f2e302bd08c6b70cef4ecc71f3f21b3c3e144b9. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mi.b([II)I",
+      "originalName": "b",
+      "to": "findLowNeighbor",
+      "evidence": "Among earlier points find the greatest x strictly below the current x;retain-1 when absent and original bounds behavior. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 22fa3860475d230be729ce7453bbfa6efbf876d94caaa7c22015689ff97d3b68. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mj.i(I)Lml;",
       "originalName": "i",
       "to": "pollAccountCreationResult",
@@ -2371,7 +2504,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-stellarshard-rules.mjs": "e0aad811358351403390d3f71317f31025d7e9ef8434ab5477a9473e966eb7de",
-      "stellarshard-names.json": "d9a8bc48a3ef7bcbec3d645d833eb13881e88a3e85d9d8db68af43bb706100a2",
+      "stellarshard-names.json": "21fe0291b0e6d48f9644a018bbd1f52eab034c35da0f29cf7a5c3c4284384f50",
       "reproduce-stellarshard.mjs": "bd81f17e3db3182b75b19f828dfc185d0ec0f4b8ca0f78caa8495e2ff6f4a0a1",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

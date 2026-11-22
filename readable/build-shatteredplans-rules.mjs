@@ -59,6 +59,10 @@ field("pf", "b", "Loh;", "iterationCursor", "Role traced through complete owning
 field("pf", "h", "Loh;", "sentinel", "Role traced through complete owning constructor and all instance operations;preserve every partial/default/exhaustion state.. Exact declaration and complete deque constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.");
 // End reviewed collection instance contracts.
 
+// Reviewed Vorbis Huffman tree contract (audio).
+method("vb", "b", "()V", "buildHuffmanTree", "Build canonical codewords from per-entry lengths with32-bit shifts/carry updates,then construct the expandable decode tree with complemented leaf indices. Preserve exact growth,aliasing,overflow and allocation/write order. Complete owning audio context and exact dependency/consumer bindings reviewed. Pre-rename body SHA256 861f8d3cd44db2c6f04a9bf211783979bca6e242a5173617aa83b24c8d5ef888. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.");
+// End reviewed Vorbis Huffman tree contract.
+
 for (const [original, descriptor, to] of [['f', 'Loh;', 'next'], ['e', 'Loh;', 'previous'], ['b', 'J', 'key']])
   field('oh', original, descriptor, to, node);
 field('ob', 'h', '[B', 'payload', 'PacketBuffer byte array indexed by the cursor in every read and write.');
