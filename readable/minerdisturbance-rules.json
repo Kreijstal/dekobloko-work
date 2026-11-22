@@ -423,6 +423,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fj",
+      "originalName": "fj",
+      "to": "AudioOutput",
+      "evidence": "PCM output controller: creates output devices,services adaptive frame buffers,schedules/mixes PCM stream children and disposes shared audio service membership. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:g",
       "originalName": "g",
       "to": "ArchiveIndex",
@@ -560,6 +567,13 @@
       "originalName": "sd",
       "to": "IterableNodeHashTable",
       "evidence": "Complete constructor and every instance operation reviewed against associated iterator and node-link contracts. Long-key bucketed circular intrusive-node hash table with independent lookup cursor and preserved iterator behavior. Full owning constructor/all instance operations and every instance field reviewed. Static helper names unchanged. Preserve native descriptors/modifiers and class-name/nonclass literals. No native owned/type-use declarations or exact quoted class literals. Identifier-only change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sm",
+      "originalName": "sm",
+      "to": "JavaSoundAudioOutput",
+      "evidence": "JavaSound-backed signed16-bit PCM output: SourceDataLine lifecycle,mono/stereo byte conversion,queued-frame count,guarded capacity retry and vendor-workaround flush when present. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -1165,10 +1179,122 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fj.a()V",
+      "originalName": "a",
+      "to": "dispose",
+      "evidence": "Deregister from shared service slots,stop/wait for the service when both slots are empty,close the device,null the mix buffer and mark disposed in exact original order. Original-body SHA256 8dad17ffe9458c919503e682c2a536ada2df3e9421a6f637a5d62b6ba93e860f. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(I)V",
+      "originalName": "a",
+      "to": "skipFrames",
+      "evidence": "Subtract and clamp activation countdown,then skip frames on the retained root stream when present. Original-body SHA256 2474bad4521e5374caeef3dfb2fe8858434c2c370eeee307fde4b661398b757f. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(IZI)V",
+      "originalName": "a",
+      "to": "configureAudio",
+      "evidence": "Validate sample rate8000..48000 and assign sample rate,stereo and service-priority configuration in original order. Original-body SHA256 40a5e6ba365dadc1a1f10ffecebf9787916bb366628dcdfdd4a11bcd55e44003. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(Ljava/awt/Component;)V",
+      "originalName": "a",
+      "to": "initializeDevice",
+      "evidence": "Inspect available mixers for vendor workaround when present,create signed16-bit little-endian mono/stereo AudioFormat at configured rate,and allocate the256-frame byte buffer in exact source order. Original-body SHA256 9265619237dc049c9efd5c01a5c74a7e99db1a67aa7ef3e2e396e54563e1bc57. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(Lum;)V",
+      "originalName": "a",
+      "to": "resetStreamScheduling",
+      "evidence": "Recursively clear stream active flags and retained sample scheduling positions using the actual first/next-child traversal methods. Original-body SHA256 5a2d41aa4e48ed249fa500bd711565221d2e2a2cf630ecf81c0b45fa0950a26f. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(Lum;I)V",
+      "originalName": "a",
+      "to": "enqueueByPriority",
+      "evidence": "Append the stream to the priority>>5 bucket via retained head/tail arrays and stream link/priority fields. Original-body SHA256 a6d870aa6cb4c580d0b173ba9b4d6d871f693b368fae9312222e4f6634148971. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a(Lvf;Ljava/awt/Component;II)Lfj;",
+      "originalName": "a",
+      "to": "createOutput",
+      "evidence": "Validate configuration and slot,clamp requested frame count,create backend/buffer,initialize,round/clamp capacity,open and register with shared service;preserve every original Throwable fallback,dispatcher guard and partial state. Original-body SHA256 0cab968f60e9be1db6a9c68a34788ca7e859970a38894bbd90a39a6bb5f7f264. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.a([II)V",
+      "originalName": "a",
+      "to": "mixBlock",
+      "evidence": "Clear output and run the retained priority-bucket stream activation/cost scheduler,clean links,delegate root stream mixing and update timestamp. Preserve shared arrays,state and scheduling order. Original-body SHA256 a5a9a6522b7126bbab94bc429f85f4ddfcd5c9be25cb4896426207d07d5287bc. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.b()I",
+      "originalName": "b",
+      "to": "getQueuedFrames",
+      "evidence": "Device implementation returns capacity minus available bytes converted to mono/stereo frames. Base implementation returns retained capacity;retain each actual body and units. Original-body SHA256 1a89bf11f21063421e17356e43f59c17ff5501adc1bffa8753924a94acb83efb. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.b(I)V",
+      "originalName": "b",
+      "to": "openDevice",
+      "evidence": "Create SourceDataLine.Info with requested frame capacity converted to bytes,obtain/open/start the line and retain capacity;on LineUnavailableException retry through the original bit-count/rounding helpers or clear line and rethrow as originally coded. Original-body SHA256 9265619237dc049c9efd5c01a5c74a7e99db1a67aa7ef3e2e396e54563e1bc57. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.b(Lum;)V",
+      "originalName": "b",
+      "to": "setRootStream",
+      "evidence": "Assign the retained root PCM stream under the existing synchronization/modifiers. Original-body SHA256 79cd66c2c30ffa0a4eb403ccfc879e2f29d755754ae27b79908c660a73b324c0. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.c()V",
+      "originalName": "c",
+      "to": "flushDevice",
+      "evidence": "Device implementation flushes the line and conditionally closes,reobtains,opens and restarts it for the retained vendor workaround;the base implementation is empty. This operation exists only in the28implementations that actually declare it. Original-body SHA256 9265619237dc049c9efd5c01a5c74a7e99db1a67aa7ef3e2e396e54563e1bc57. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fj.d()V",
       "originalName": "d",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 27801428b238b865fc69632d276ab5f34422987deffa9bb5fa7179eae660238e.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.e()V",
+      "originalName": "e",
+      "to": "serviceOutput",
+      "evidence": "Apply clock-drift skipping,reopen delay,queued-frame/drain tracking,adaptive capacity growth,256-frame mixing/writes and periodic drain/idle checks;preserve all time-helper guards and exception handling. Original-body SHA256 97d8314823432c28baf2ca6a1dee49302527b3324958fcfb36ef16d7db2521ab. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.f()V",
+      "originalName": "f",
+      "to": "flushAndMarkDrainCheck",
+      "evidence": "Mark fresh/drain-check state,invoke device flush,and on Exception close and schedule delayed reopen. Preserve actual source wrappers and partial updates. Original-body SHA256 31c0282cf812cd297ff7f7a1dbecff45a63272ea6346774ba10660a4e2f9d85d. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.g()V",
+      "originalName": "g",
+      "to": "closeDevice",
+      "evidence": "Device implementation closes and clears the retained line only when nonnull;the base implementation is empty. Preserve null state,close failures and exact ordering. Original-body SHA256 9265619237dc049c9efd5c01a5c74a7e99db1a67aa7ef3e2e396e54563e1bc57. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fj.h()V",
+      "originalName": "h",
+      "to": "writeMixBlock",
+      "evidence": "Clamp signed24-bit mixed samples to the original bounds,write high16bits as little-endian bytes and emit the current256-frame mono/stereo block through the retained line. Original-body SHA256 9265619237dc049c9efd5c01a5c74a7e99db1a67aa7ef3e2e396e54563e1bc57. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2152,6 +2278,48 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sm.a(Ljava/awt/Component;)V",
+      "originalName": "a",
+      "to": "initializeDevice",
+      "evidence": "Inspect available mixers for vendor workaround when present,create signed16-bit little-endian mono/stereo AudioFormat at configured rate,and allocate the256-frame byte buffer in exact source order. Original-body SHA256 7979dde88e167af3c1713a281a330c3a88a5fac82257aaeea1b7f64a7be67dc4. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.b()I",
+      "originalName": "b",
+      "to": "getQueuedFrames",
+      "evidence": "Device implementation returns capacity minus available bytes converted to mono/stereo frames. Base implementation returns retained capacity;retain each actual body and units. Original-body SHA256 29f5cb442773fad3c882983810018d9016bbeff8adfce32ae58629ec399ca31d. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.b(I)V",
+      "originalName": "b",
+      "to": "openDevice",
+      "evidence": "Create SourceDataLine.Info with requested frame capacity converted to bytes,obtain/open/start the line and retain capacity;on LineUnavailableException retry through the original bit-count/rounding helpers or clear line and rethrow as originally coded. Original-body SHA256 0d6a0102ab81e78bc0b7c54d118ac9233916a0c2d7a1eb76d6cd5f6d4ae808b3. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.c()V",
+      "originalName": "c",
+      "to": "flushDevice",
+      "evidence": "Device implementation flushes the line and conditionally closes,reobtains,opens and restarts it for the retained vendor workaround;the base implementation is empty. This operation exists only in the28implementations that actually declare it. Original-body SHA256 743d2dc318182918824456b50bbb23f620d24bf3a1656eff9272892260da33b9. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.g()V",
+      "originalName": "g",
+      "to": "closeDevice",
+      "evidence": "Device implementation closes and clears the retained line only when nonnull;the base implementation is empty. Preserve null state,close failures and exact ordering. Original-body SHA256 ffb1e0e5b3b167ab553d290adf9580032b1b7b593c3fd42aef591960e730e9a8. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sm.h()V",
+      "originalName": "h",
+      "to": "writeMixBlock",
+      "evidence": "Clamp signed24-bit mixed samples to the original bounds,write high16bits as little-endian bytes and emit the current256-frame mono/stereo block through the retained line. Original-body SHA256 807625d3144265c900457819397408b826855fa448fe81d7f302b7f2ee9aadd3. Identifier-only naming. Retain exact full argument widths/domains,guards,all constants and diagnostic strings,integer overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,declared modifiers and override/native bindings. No intentional native or class-name-literal edits;existing meaningful names remain unchanged. Full owning body variants,compiler-bound field/call identities,helper/interface definitions and service consumers reviewed;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:t.a(B[B)V",
       "originalName": "a",
       "to": "setBytes",
@@ -2497,7 +2665,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-minerdisturbance-rules.mjs": "16fcf2e48a0b24b7a3b5adfaa84bb4d835098253436d0d71784385c2e1228b80",
-      "minerdisturbance-names.json": "8fddfc7d392ab4fa9a3b2e36c9036b89b85ee140abe87db2243ed3b719047893",
+      "minerdisturbance-names.json": "1c841be7227a5d46b038b7dbdeaf7e63223ccf1cb082963e23f869c9eb0eeda4",
       "reproduce-minerdisturbance.mjs": "9c29b772086ae02805a24c9b493bfd651e742e7206976e902e269a1ae4c1e5d3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
