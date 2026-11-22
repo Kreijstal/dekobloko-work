@@ -521,6 +521,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qc",
+      "originalName": "qc",
+      "to": "SecondaryNodeDeque",
+      "evidence": "Complete constructor and every instance operation reviewed against associated iterator and node-link contracts. Circular secondary-link sentinel deque supporting append and head removal. Full owning constructor/all instance operations and every instance field reviewed. Static helper names unchanged. Preserve native descriptors/modifiers and class-name/nonclass literals. No native owned/type-use declarations or exact quoted class literals. Identifier-only change.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qi",
       "originalName": "qi",
       "to": "AccountNameAvailabilityValidator",
@@ -532,6 +539,13 @@
       "originalName": "sb",
       "to": "PacketBuffer",
       "evidence": "Byte array with cursor and big-endian primitive and slice encodings; same shared role as Ace PacketBuffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sd",
+      "originalName": "sd",
+      "to": "IterableNodeHashTable",
+      "evidence": "Complete constructor and every instance operation reviewed against associated iterator and node-link contracts. Long-key bucketed circular intrusive-node hash table with independent lookup cursor and preserved iterator behavior. Full owning constructor/all instance operations and every instance field reviewed. Static helper names unchanged. Preserve native descriptors/modifiers and class-name/nonclass literals. No native owned/type-use declarations or exact quoted class literals. Identifier-only change.",
       "confidence": "reviewed"
     },
     {
@@ -710,6 +724,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qc.field_e:Lal;",
+      "originalName": "field_e",
+      "to": "sentinel",
+      "evidence": "Secondary circular endpoint shared by append,head remove and iterator. Full owning constructor and every instance body reviewed;preserve defaults,visibility,mutability,aliasing and guarded/partial update behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qi.field_i:Ljava/lang/String;",
       "originalName": "field_i",
       "to": "checkedName",
@@ -735,6 +756,27 @@
       "originalName": "field_u",
       "to": "payload",
       "evidence": "Complete constructors and owned I/O reviewed: caller byte array or pooled allocation is backing payload; preserve array identity/all references.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sd.field_b:[Lpi;",
+      "originalName": "field_b",
+      "to": "buckets",
+      "evidence": "Primary-node bucket sentinel array. Full owning constructor and every instance body reviewed;preserve defaults,visibility,mutability,aliasing and guarded/partial update behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sd.field_f:I",
+      "originalName": "field_f",
+      "to": "bucketCount",
+      "evidence": "Primary key mask count-1 and JDK iterator bound. Full owning constructor and every instance body reviewed;preserve defaults,visibility,mutability,aliasing and guarded/partial update behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:sd.field_h:Lpi;",
+      "originalName": "field_h",
+      "to": "lookupCursor",
+      "evidence": "Primary field_f next-chain lookup cursor advanced before match return and cleared on exhaustion. Full owning constructor and every instance body reviewed;preserve defaults,visibility,mutability,aliasing and guarded/partial update behavior.",
       "confidence": "reviewed"
     },
     {
@@ -1571,6 +1613,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qc.a(BLal;)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "Unlink linked secondary node(byte-120),append through predecessor-next;byte!=-37 calls removeFirst(113) before final reciprocal write. Complete owning constructor,all collection instance operations and iterator/node-link contexts reviewed. Preserve exact argument widths/domains,guards,overflow,partial reads/writes,aliasing,allocation/call/exception order,modifiers and override relationships. Naming only;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qc.a(I)Lal;",
+      "originalName": "a",
+      "to": "removeFirst",
+      "evidence": "Int!=609 returns null before sentinel read;otherwise field_t head nonempty unlinks with byte-99. Complete owning constructor,all collection instance operations and iterator/node-link contexts reviewed. Preserve exact argument widths/domains,guards,overflow,partial reads/writes,aliasing,allocation/call/exception order,modifiers and override relationships. Naming only;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qc.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -1928,6 +1984,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sd.a(IJ)Lpi;",
+      "originalName": "a",
+      "to": "get",
+      "evidence": "Read global control;mask key&(bucketCount-1),scan field_f complemented keys;advance before match return,clear on exhaustion. Both int branches at end return null without extra side effects. Complete owning constructor,all collection instance operations and iterator/node-link contexts reviewed. Preserve exact argument widths/domains,guards,overflow,partial reads/writes,aliasing,allocation/call/exception order,modifiers and override relationships. Naming only;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sd.a(JZLpi;)V",
+      "originalName": "a",
+      "to": "put",
+      "evidence": "Unlink linked primary node(34),then read masked sentinel before Boolean test. False returns after unlink/bucket read;true append via field_c previous/field_f next,write key between neighbors. Only final insertion wrapped. Complete owning constructor,all collection instance operations and iterator/node-link contexts reviewed. Preserve exact argument widths/domains,guards,overflow,partial reads/writes,aliasing,allocation/call/exception order,modifiers and override relationships. Naming only;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:si.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -2252,7 +2322,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-minerdisturbance-rules.mjs": "16fcf2e48a0b24b7a3b5adfaa84bb4d835098253436d0d71784385c2e1228b80",
-      "minerdisturbance-names.json": "2212c9d862dd185732a8fe1c2f0ae09bd224851d67c0ae94cb1f897efdee9c5c",
+      "minerdisturbance-names.json": "58d268545463d9a178df56f7d3c379b07c3a10e50eec49412d7a98d1abc6809a",
       "reproduce-minerdisturbance.mjs": "9c29b772086ae02805a24c9b493bfd651e742e7206976e902e269a1ae4c1e5d3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

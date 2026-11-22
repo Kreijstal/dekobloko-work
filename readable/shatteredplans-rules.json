@@ -2831,6 +2831,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fl.field_a:Loh;",
+      "originalName": "field_a",
+      "to": "nextNode",
+      "evidence": "Role traced through complete owning constructor and all instance operations;preserve every partial/default/exhaustion state.. Exact declaration and complete deque constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fl.field_c:Loh;",
+      "originalName": "field_c",
+      "to": "lastReturned",
+      "evidence": "Role traced through complete owning constructor and all instance operations;preserve every partial/default/exhaustion state.. Exact declaration and complete deque constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fl.field_d:I",
+      "originalName": "field_d",
+      "to": "nextBucketIndex",
+      "evidence": "Role traced through complete owning constructor and all instance operations;preserve every partial/default/exhaustion state.. Exact declaration and complete deque constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:fl.field_g:Lrm;",
+      "originalName": "field_g",
+      "to": "table",
+      "evidence": "Role traced through complete owning constructor and all instance operations;preserve every partial/default/exhaustion state.. Exact declaration and complete deque constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fs.field_t:Ljava/lang/String;",
       "originalName": "field_t",
       "to": "name",
@@ -2919,6 +2947,20 @@
       "originalName": "field_f",
       "to": "next",
       "evidence": "IntrusiveDeque traverses field_f forward and field_e backward from its sentinel.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pf.field_b:Loh;",
+      "originalName": "field_b",
+      "to": "iterationCursor",
+      "evidence": "Role traced through complete owning constructor and all instance operations;preserve every partial/default/exhaustion state.. Exact declaration and complete deque constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pf.field_h:Loh;",
+      "originalName": "field_h",
+      "to": "sentinel",
+      "evidence": "Role traced through complete owning constructor and all instance operations;preserve every partial/default/exhaustion state.. Exact declaration and complete deque constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
       "confidence": "reviewed"
     },
     {
@@ -6111,6 +6153,13 @@
       "originalName": "b",
       "to": "clearStatics",
       "evidence": "Assigns null to 2 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fl.c(I)V",
+      "originalName": "c",
+      "to": "reset",
+      "evidence": "Clear lastReturned first;int>-77 calls next() on old bucket/cursor state before writing nextBucketIndex1 and pending node from table.buckets[0].next. Preserve partial reset,old-state traversal/failures and constructor guard-107. Complete deque constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -11287,6 +11336,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pf.a(ZLoh;Lpf;)V",
+      "originalName": "a",
+      "to": "transferSuffixTo",
+      "evidence": "Save source tail;true clears static String before source sentinel.previous and start.previous.next boundary writes. Only afterward test start==sentinel;nonempty suffix attaches to target tail with original reciprocal write order. Preserve self/foreign/null alias behavior,cursor state,partial splices and exception-string allocation/failure ordering. Complete deque constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pf.b(I)Loh;",
       "originalName": "b",
       "to": "nextReverse",
@@ -14466,7 +14522,7 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-shatteredplans-rules.mjs": "558e106221d4c0a11f7907855e5781bb87a1b949a425d3655150816af4cb5831",
+      "build-shatteredplans-rules.mjs": "1a6e2fb3b7fb645850e8d6dd0e8a2d89c4d34cac560b412d372f470c74578743",
       "reproduce-shatteredplans.mjs": "c97d18e945d2818780e9aa7d2ed30e04a75e5ba59388010d329585f010e7cd8e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

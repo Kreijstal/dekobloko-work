@@ -213,6 +213,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:be",
+      "originalName": "be",
+      "to": "SecondaryNodeDeque",
+      "evidence": "Complete constructor and every instance operation reviewed against associated iterator and node-link contracts. Circular secondary-link sentinel deque supporting append and head removal. Full owning constructor/all instance operations and every instance field reviewed. Static helper names unchanged. Preserve native descriptors/modifiers and class-name/nonclass literals. No native owned/type-use declarations or exact quoted class literals. Identifier-only change.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bm",
       "originalName": "bm",
       "to": "IsaacRandom",
@@ -381,6 +388,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:wb",
+      "originalName": "wb",
+      "to": "IntrusiveDeque",
+      "evidence": "Owns a circular primary-link IntrusiveNode sentinel and an independent shared pending-node traversal cursor. Complete constructor and all instance methods independently reviewed,including every guard-dependent side effect and all partial link/cursor updates. Static helpers unchanged. Preserve argument widths/domains,guards,overflow,partial effects,aliasing,exceptions,modifiers and existing meaningful names. No native owner/type-use declarations or exact quoted class literals;identifier-only change.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:wk",
       "originalName": "wk",
       "to": "SecondaryNodeDequeIterator",
@@ -392,6 +406,13 @@
       "originalName": "field_d",
       "to": "buffer",
       "evidence": "Sole instance ByteBuffer allocated directly and read/written by byte-array operations. Preserve all nullable/guard states.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:be.field_f:Lij;",
+      "originalName": "field_f",
+      "to": "sentinel",
+      "evidence": "Secondary circular endpoint shared by append,head remove and JDK iterator. Full owning constructor and every instance body reviewed;preserve defaults,visibility,mutability,aliasing and guarded/partial update behavior.",
       "confidence": "reviewed"
     },
     {
@@ -563,6 +584,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:wb.field_a:Ljb;",
+      "originalName": "field_a",
+      "to": "sentinel",
+      "evidence": "Circular primary-chain endpoint. Exact declaration and complete deque constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:wb.field_c:Ljb;",
+      "originalName": "field_c",
+      "to": "iterationCursor",
+      "evidence": "Shared pending-node cursor for manual directional traversal;not last-returned node. Exact declaration and complete deque constructor/instance bodies reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:wk.field_a:Lij;",
       "originalName": "field_a",
       "to": "lastReturned",
@@ -679,6 +714,20 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 31247b525f00a3c00277829f2d91e3aeea011b6c7c7195ef6ea5856f31f1e59c.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:be.a(BLij;)V",
+      "originalName": "a",
+      "to": "addLast",
+      "evidence": "Unlink linked node(1);assign field_g previous and field_j next;byte<7 returns before reciprocal neighbor writes,which alone are wrapped. Complete owning constructor,all collection instance operations and iterator/node-link contexts reviewed. Preserve exact argument widths/domains,guards,overflow,partial reads/writes,aliasing,allocation/call/exception order,modifiers and override relationships. Naming only;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:be.a(I)Lij;",
+      "originalName": "a",
+      "to": "removeFirst",
+      "evidence": "Read field_j head;empty null. Int!=30244 calls addLast(byte94,null) before unlink(1);valid guard removes directly. Complete owning constructor,all collection instance operations and iterator/node-link contexts reviewed. Preserve exact argument widths/domains,guards,overflow,partial reads/writes,aliasing,allocation/call/exception order,modifiers and override relationships. Naming only;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2054,10 +2103,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wb.a(B)Ljb;",
+      "originalName": "a",
+      "to": "beginBackward",
+      "evidence": "Read sentinel.field_d previous;empty clears cursor. Nonempty byte>=-23 recursively calls beginBackward(byte-78) before final previous-cursor assignment. Complete deque constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.a(I)V",
+      "originalName": "a",
+      "to": "clear",
+      "evidence": "Read global control,repeatedly unlink sentinel.field_b next(false),clear cursor;int!=22800 then calls addLast(44,null). Complete deque constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.a(ILjb;)V",
+      "originalName": "a",
+      "to": "addFirst",
+      "evidence": "Unlink linked node(false),set field_b next and field_d previous;int<=74 writes static field_d=72 before reciprocal writes. Complete deque constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.a(Z)Ljb;",
+      "originalName": "a",
+      "to": "nextForward",
+      "evidence": "Read cursor before guard;true returns null unchanged. False sentinel clears cursor,nonempty advances field_b next. Complete deque constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.b(I)Z",
+      "originalName": "b",
+      "to": "isEmpty",
+      "evidence": "Int!=-16497 clears static deque reference before sentinel.field_b next identity comparison. Complete deque constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.b(ILjb;)V",
+      "originalName": "b",
+      "to": "addLast",
+      "evidence": "Unlink membership(false),append fully via field_d previous and field_b next;int!=0 then calls removeFirst(-27),retaining wrapper/partial failures. Complete deque constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.c(I)Ljb;",
+      "originalName": "c",
+      "to": "removeFirst",
+      "evidence": "Int!=0 calls addFirst(4,null) before sentinel read;otherwise take field_b next and unlink(false) unless empty. Complete deque constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.d(I)Ljb;",
+      "originalName": "d",
+      "to": "removeLast",
+      "evidence": "Evaluate-76%((-55-int)/57) before sentinel.field_d previous read;nonempty unlink(false). Complete deque constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.e(I)Ljb;",
+      "originalName": "e",
+      "to": "nextBackward",
+      "evidence": "Cursor sentinel clears cursor;otherwise advance field_d previous before guard;only int0 returns node,others null after advance. Complete deque constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wb.f(I)V",
       "originalName": "f",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 a7ea9d84cf39f6af85c2b75b5975b4a571a6c956f93622cdde66d09b8250937c.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wb.g(I)Ljb;",
+      "originalName": "g",
+      "to": "beginForward",
+      "evidence": "Read sentinel.field_b next;empty clears cursor. Nonempty int!=32073 nulls sentinel before saving next cursor;return saved node. Complete deque constructor and all instance operations reviewed with exact node-link/cursor context. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliasing,call/allocation/exception order,modifiers and meaningful existing names. Identifier-only change;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2112,7 +2231,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-crazycrystals-rules.mjs": "53fc8845bc15628f5f09948271dc7c15e829375009e924a68e220f175e8a3a65",
-      "crazycrystals-names.json": "3b113453fd96988d85049b2e980e810120918a11dd51302ddb89f8191a65ce22",
+      "crazycrystals-names.json": "978dbc6c92ad92cc4fdbebbcc5c4f92c60b90fc10a34383bf0329a1dc225fd30",
       "reproduce-crazycrystals.mjs": "c436bdc5e8146e9c16d3dfc08e0152874a520d245840468c38a313fe58094a1c",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
