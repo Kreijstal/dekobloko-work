@@ -23,9 +23,26 @@ const classes = {
 };
 const members = {};
 
+// Source-reviewed original identities and evidence for readable class/member names.
+const reviewedNames = JSON.parse(fs.readFileSync(new URL('./crazycrystals-names.json', import.meta.url), 'utf8'));
+for (const [owner, to, evidence] of reviewedNames.classes) {
+  if (classes[owner]) throw new Error('Class already reviewed: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of reviewedNames.methods) {
+  const symbol = `M:${owner}.${original}${descriptor}`;
+  if (members[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+for (const [owner, original, descriptor, to, evidence] of reviewedNames.fields) {
+  const symbol = `F:${owner}.${original}:${descriptor}`;
+  if (members[symbol]) throw new Error('Field already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export const crazyConfig = {
   game: 'crazycrystals', version: 1, sourceCommit: '67141d635b7060c02e01505325a82243446974c0', classes, members,
-  workflowFiles: ['build-crazycrystals-rules.mjs', 'reproduce-crazycrystals.mjs', 'reviewed-game.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
+  workflowFiles: ['build-crazycrystals-rules.mjs', 'crazycrystals-names.json', 'reproduce-crazycrystals.mjs', 'reviewed-game.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures in this wave.'}),
   readingGuide(rules, mapping) {
     return ['# Reading Crazy Crystals', '',

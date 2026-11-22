@@ -41,10 +41,27 @@ method('ke', 'b', '(I)I', 'nextValue', ['obfuscationGuard'], 'Regenerates the ba
 method('nm', 'a', '(I)V', 'skip', ['sampleCount'], 'Abstract skip hook, called by b() instead of mixing when the stream is silenced.');
 method('nm', 'b', '([III)V', 'mixOrSkip', ['buffer', 'offset', 'length'], 'Mixes into the buffer when enabled, otherwise skips the same length.');
 
+// Source-reviewed original identities and evidence for readable class/member names.
+const reviewedNames = JSON.parse(fs.readFileSync(new URL('./chess-names.json', import.meta.url), 'utf8'));
+for (const [owner, to, evidence] of reviewedNames.classes) {
+  if (classes[owner]) throw new Error('Class already reviewed: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of reviewedNames.methods) {
+  const symbol = `M:${owner}.${original}${descriptor}`;
+  if (members[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+for (const [owner, original, descriptor, to, evidence] of reviewedNames.fields) {
+  const symbol = `F:${owner}.${original}:${descriptor}`;
+  if (members[symbol]) throw new Error('Field already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export const chessConfig = {
   game: 'chess', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-chess-rules.mjs', 'reproduce-chess.mjs', 'reviewed-game.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
+  workflowFiles: ['build-chess-rules.mjs', 'chess-names.json', 'reproduce-chess.mjs', 'reviewed-game.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   readingGuide(rules, mapping) {
     return ['# Reading Chess', '',
       'This directory is the single published Java tree. The scripts and reviewed rules live in dekobloko-work/readable.',

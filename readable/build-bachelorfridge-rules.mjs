@@ -17,9 +17,26 @@ cls('eo', 'DualLinkNode', 'IntrusiveNode subclass with an independent second lin
 cls('ck', 'GameAppletShell', 'Abstract Applet implementing Runnable and focus/window listeners; base of the game applet.');
 cls('ms', 'NetworkGameClient', 'Abstract GameAppletShell subclass that is the direct superclass of BachelorFridge and holds client state.');
 
+// Source-reviewed original identities and evidence for readable class/member names.
+const reviewedNames = JSON.parse(fs.readFileSync(new URL('./bachelorfridge-names.json', import.meta.url), 'utf8'));
+for (const [owner, to, evidence] of reviewedNames.classes) {
+  if (classes[owner]) throw new Error('Class already reviewed: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of reviewedNames.methods) {
+  const symbol = `M:${owner}.${original}${descriptor}`;
+  if (members[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+for (const [owner, original, descriptor, to, evidence] of reviewedNames.fields) {
+  const symbol = `F:${owner}.${original}:${descriptor}`;
+  if (members[symbol]) throw new Error('Field already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export const config = {
   game: 'bachelorfridge', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
-  workflowFiles: ['build-bachelorfridge-rules.mjs', 'reproduce-bachelorfridge.mjs', 'bachelorfridge-name-api.mjs',
+  workflowFiles: ['build-bachelorfridge-rules.mjs', 'bachelorfridge-names.json', 'reproduce-bachelorfridge.mjs', 'bachelorfridge-name-api.mjs',
     'bachelorfridge-names.mjs', 'bachelorfridge-names-engine.mjs', 'bachelorfridge-names-engine-members.mjs',
     'bachelorfridge-names-specials.mjs', 'bachelorfridge-names-game.mjs', 'bachelorfridge-names-statics.mjs', 'reviewed-game.mjs',
     'game-export.mjs', 'compilation-stubs.mjs'],

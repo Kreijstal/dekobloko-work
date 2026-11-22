@@ -845,9 +845,26 @@ for (const [original, descriptor, to, names] of [
   ['b','(IIII)V','drawScaledPlain',['x','y','destinationWidth','destinationHeight']],
 ]) method('pa', original, descriptor, to, names, spriteGeometryEvidence);
 
+// Source-reviewed original identities and evidence for readable class/member names.
+const reviewedNames = JSON.parse(fs.readFileSync(new URL('./aceofskies-names.json', import.meta.url), 'utf8'));
+for (const [owner, to, evidence] of reviewedNames.classes) {
+  if (classes[owner]) throw new Error('Class already reviewed: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of reviewedNames.methods) {
+  const symbol = `M:${owner}.${original}${descriptor}`;
+  if (members[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+for (const [owner, original, descriptor, to, evidence] of reviewedNames.fields) {
+  const symbol = `F:${owner}.${original}:${descriptor}`;
+  if (members[symbol]) throw new Error('Field already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export const aceConfig = {
   game: 'aceofskies', version: 16, sourceCommit: 'b168d7edeb104599156b5f908df62dfdc9f3b250', classes, members,
-  workflowFiles: ['build-aceofskies-rules.mjs', 'reproduce-aceofskies.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-aceofskies-rules.mjs', 'aceofskies-names.json', 'reproduce-aceofskies.mjs', 'reviewed-game.mjs',
     'tests/test-aceofskies-core.mjs', 'tests/test-aceofskies-highscores.mjs', 'tests/test-aceofskies-hud.mjs', 'reconstruct-aceofskies.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   prepareInput: reconstructAceMethods,

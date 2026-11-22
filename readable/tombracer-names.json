@@ -748,7 +748,15 @@
     ["kaa","LinkPainter","WidgetPainter drawing underlined \"<u=\" link text; used for form link buttons and username suggestions."],
     ["fua","DropdownButtonPainter","WidgetPainter that a DropdownList passes itself to for painting its toggle button."],
     ["jla","CheckboxWidget","FocusableWidget whose activate flips its boolean state; AccountRegistrationPanel creates one with an initial value."],
-    ["ee","CheckboxPainter","WidgetPainter that AccountRegistrationPanel installs on its CheckboxWidget field."]
+    ["ee","CheckboxPainter","WidgetPainter that AccountRegistrationPanel installs on its CheckboxWidget field."],
+    ["ai","AvailabilityQueryFactory","Owned createAvailabilityQuery method and both SequencePlayer/CharacterChoice callers create the asynchronous name availability query. Unrelated localized strings and chat flag remain."],
+    ["aq","MainRoomCatalog","Owned getMainRoomCount method returns CourseDefinition room array length; level selection, demo generation and completion masks consume it. Unrelated tiled-frame sprites remain."],
+    ["bi","SoftwareRasterBlitter","Complete owned blitSoftwareRasterRegion body clips to UiComponent bounds, uploads the global SoftwareRasterizer pixel region via GraphicsToolkit and pops the clip; TombRacer frame caller reviewed. Unrelated statics remain."],
+    ["bw","ByteStorageFactory","Complete wrapByteStorage body preserves null/guard behavior, >136 direct storage, optional small-array copy, and original array sharing. ResourceArchive and hardware-texture consumers reviewed; unrelated scratch raster globals remain."],
+    ["bq","MidiPatchEnvelope","Complete class fields reviewed. MidiPatch constructs shared per-key envelope objects with paired time/value byte arrays; MidiVoice holds one, and MidiPcmStream applies interpolated amplitude/release envelopes, exponential decay and vibrato parameters. Unrelated static raster circle helper and strings remain."],
+    ["mra","TimedShooter","Complete interface reviewed: setTimingPattern and isFiring contracts implemented by both beam and weapon shooter behaviours; ShooterComponent configures timing and LightSourceModel uses firing state to enable light."],
+    ["rqa","FrameDrawable","Complete interface reviewed: draw(byte, boolean) callback implemented by MatchScreen and called by TombRacer.drawFrame for optional screen rendering. Preserve callback method name and all argument contracts."],
+    ["ud","AudioSample","Complete base class and PcmSample constructors reviewed: IntrusiveNode with scheduler activity counter, used by PcmStream/PcmSampleStream and AudioOutput priority scheduling. PcmSample is its concrete byte-sample subclass."]
   ],
   "methods": [
     ["rn","a","(ILla;I)Lcsa;","createComponent","Instantiates the RoomComponent subclass for a type id or throws \"Unrecognised component type\"."],
@@ -5665,7 +5673,9 @@
     ["an","a","(Z)V","invalidateBounds","TriangleMesh scaleVertices and translateVertices clear the cached-bounds flag through it."],
     ["gea","a","(ILcn;Lil;)V","loadQuickChatInterface","Builds the quick-chat root component and reports error \"QC1\" when the archive is missing."],
     ["tp","a","(IBIIIII)V","drawThickRectOutline","Draws nested rectangle outlines shrinking by one pixel per step of the thickness."],
-    ["b","a","(Ljava/lang/String;ILjava/lang/String;ZJ)Llu;","createChatTarget","Returns the ChatTarget subclass for a named, id-based or default chat target."]
+    ["b","a","(Ljava/lang/String;ILjava/lang/String;ZJ)Llu;","createChatTarget","Returns the ChatTarget subclass for a named, id-based or default chat target."],
+    ["bc","a","(Z)Z","handleNameEntryKeyInput","Complete wrapper body: false guard/null popup returns false, otherwise delegates active NameEntryPopup key handler. PressureSwitchBehaviour event dispatcher caller reviewed. Preserve all short-circuit and return behavior."],
+    ["is","a","(Z)Z","handleKeyInput","Complete body reviewed: inactive status false; otherwise processes typed letter/digit/underscore, backspace, accept/cancel keys and name text/status with twelve-character bound. Preserve canonical false guard and noncanonical static float mutation, every original branch/order and return. No algorithm edits."]
   ],
   "fields": [
     ["fua","field_c","[Ljava/lang/String;","behaviourTypeNames","33 display names indexed by the behaviour type id that bda.readBehaviour dispatches on."],

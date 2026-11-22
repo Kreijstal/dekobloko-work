@@ -1914,6 +1914,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qaa",
+      "originalName": "qaa",
+      "to": "BoundedRandomAccessFile",
+      "evidence": "Complete constructor, owned read/write/seek/length/close methods, private fields and finalizer reviewed: tracked RandomAccessFile position/max length, overflow sentinel write and EOFException, oversized-file deletion and unlimited-bound conversion. Preserve guard-specific handle discards, skipped position updates, helper calls, sentinels and partial failures; unrelated statics retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qda",
       "originalName": "qda",
       "to": "WidgetRenderer",
@@ -2394,6 +2401,13 @@
       "originalName": "v",
       "to": "BufferedCacheFile",
       "evidence": "Buffers reads and writes over a file handle with separate read and write windows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vaa",
+      "originalName": "vaa",
+      "to": "GzipDecompressor",
+      "evidence": "Complete owned inflater method, constructors and fields reviewed: gzip magic31/139, lazy raw Inflater, caller-supplied output, original input bounds and reset/error paths. Preserve caller offset/length adjustments, bad-guard calls and reset skips, exception wrappers and unrelated static helpers.",
       "confidence": "reviewed"
     },
     {
@@ -4112,6 +4126,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dg.b()V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 3d167f32dc90c0bb10c4f12381b35d33bcd88952e65d8f6103bde696ee859e77.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dg.b(IIII)V",
       "originalName": "b",
       "to": "fillCircle",
@@ -5614,6 +5635,13 @@
       "originalName": "b",
       "to": "update",
       "evidence": "Runs the node and its children once and reports whether the whole node has finished. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iha.e(I)V",
+      "originalName": "e",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 8045367b66e10ceaf0c059eb19380d28a2c103955848de3a7e8fdad2ecd98c77.",
       "confidence": "reviewed"
     },
     {
@@ -7458,6 +7486,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ms.g(B)V",
+      "originalName": "g",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 024c8b13bafbd2b8e00d566a80f084ca9a36e2afdaf234a8b3eb51804adef680.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mt.a(Lop;I)Lii;",
       "originalName": "a",
       "to": "createEvent",
@@ -8669,6 +8704,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qaa.a(B)J",
+      "originalName": "a",
+      "to": "length",
+      "evidence": "Complete owned file body, constructor and delegate reviewed. Preserve guard-controlled call to existing releaseStatics before returning file length; do not rename that already-readable method.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qaa.a(II[BB)V",
+      "originalName": "a",
+      "to": "write",
+      "evidence": "Complete owned file body, constructor and delegate reviewed. Overflow sentinel/EOF path precedes guard-controlled existing releaseStatics call, then ranged write/position update. Preserve original effects and argument order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qaa.a(JZ)V",
+      "originalName": "a",
+      "to": "seek",
+      "evidence": "Complete owned file body, constructor and delegate reviewed. Seek then assign tracked position; preserve true-guard static array null and return.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qaa.a(Z)V",
+      "originalName": "a",
+      "to": "close",
+      "evidence": "Complete owned file body, constructor and delegate reviewed. Preserve false-guard no-op; valid close closes nonnull handle then clears it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qaa.a([BIII)I",
+      "originalName": "a",
+      "to": "read",
+      "evidence": "Complete owned file body, constructor and delegate reviewed. Ranged read returns underlying count/EOF and updates tracked position only when count exceeds supplied threshold. Preserve exact original threshold and argument order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qaa.b(Z)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -9761,6 +9831,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uc.b(I)V",
+      "originalName": "b",
+      "to": "clearStaticReferences",
+      "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 692247e521d23d76b17a02fee8b4d14ae6c887042100a82cfdbf31ce00f1e15a.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uc.c(B)V",
       "originalName": "c",
       "to": "releaseStatics",
@@ -9996,6 +10073,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Static method whose body only assigns null to static fields of its own class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vaa.a(Llu;[BI)V",
+      "originalName": "a",
+      "to": "decompress",
+      "evidence": "Complete gzip operation reviewed: magic check, lazy raw Inflater, input PacketBuffer and supplied output. Preserve all offset/length formulas, especially Ace caller offset and Bachelor caller length adjustment, guard helper calls, reset skips, partial state, ignored inflate count and original exception behavior.",
       "confidence": "reviewed"
     },
     {
@@ -10658,7 +10742,8 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-bachelorfridge-rules.mjs": "21657fac0ce3b3c0ebaa6d3dab6909b95f2a1baee160c4271b0c1c2e603f4f5f",
+      "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
+      "bachelorfridge-names.json": "dfb61776d6ecbaac37e7c00b91bcf0a2c27e7c65a8ae2363df90597ab3290d80",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",

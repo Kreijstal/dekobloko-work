@@ -815,6 +815,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ai",
+      "originalName": "ai",
+      "to": "AvailabilityQueryFactory",
+      "evidence": "Owned createAvailabilityQuery method and both SequencePlayer/CharacterChoice callers create the asynchronous name availability query. Unrelated localized strings and chat flag remain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:aia",
       "originalName": "aia",
       "to": "PitSnake",
@@ -903,6 +910,13 @@
       "originalName": "ap",
       "to": "C2SChooseCharacterPacket",
       "evidence": "GamePacket writing a 4-bit character id; CharacterSelectPhase sends it through MatchProtocol.sendCharacterChoice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:aq",
+      "originalName": "aq",
+      "to": "MainRoomCatalog",
+      "evidence": "Owned getMainRoomCount method returns CourseDefinition room array length; level selection, demo generation and completion masks consume it. Unrelated tiled-frame sprites remain.",
       "confidence": "reviewed"
     },
     {
@@ -1060,6 +1074,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bi",
+      "originalName": "bi",
+      "to": "SoftwareRasterBlitter",
+      "evidence": "Complete owned blitSoftwareRasterRegion body clips to UiComponent bounds, uploads the global SoftwareRasterizer pixel region via GraphicsToolkit and pops the clip; TombRacer frame caller reviewed. Unrelated statics remain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bia",
       "originalName": "bia",
       "to": "CauldronComponent",
@@ -1151,6 +1172,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bq",
+      "originalName": "bq",
+      "to": "MidiPatchEnvelope",
+      "evidence": "Complete class fields reviewed. MidiPatch constructs shared per-key envelope objects with paired time/value byte arrays; MidiVoice holds one, and MidiPcmStream applies interpolated amplitude/release envelopes, exponential decay and vibrato parameters. Unrelated static raster circle helper and strings remain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bqa",
       "originalName": "bqa",
       "to": "S2CNewRoomPacket",
@@ -1204,6 +1232,13 @@
       "originalName": "bv",
       "to": "TabbedPanel",
       "evidence": "UiComponent with tab buttons and pages; processes tab presses and lays out the tabs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bw",
+      "originalName": "bw",
+      "to": "ByteStorageFactory",
+      "evidence": "Complete wrapByteStorage body preserves null/guard behavior, >136 direct storage, optional small-array copy, and original array sharing. ResourceArchive and hardware-texture consumers reviewed; unrelated scratch raster globals remain.",
       "confidence": "reviewed"
     },
     {
@@ -3776,6 +3811,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:mra",
+      "originalName": "mra",
+      "to": "TimedShooter",
+      "evidence": "Complete interface reviewed: setTimingPattern and isFiring contracts implemented by both beam and weapon shooter behaviours; ShooterComponent configures timing and LightSourceModel uses firing state to enable light.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ms",
       "originalName": "ms",
       "to": "MessagePanel",
@@ -4945,6 +4987,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:rqa",
+      "originalName": "rqa",
+      "to": "FrameDrawable",
+      "evidence": "Complete interface reviewed: draw(byte, boolean) callback implemented by MatchScreen and called by TombRacer.drawFrame for optional screen rendering. Preserve callback method name and all argument contracts.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rra",
       "originalName": "rra",
       "to": "RasterShape",
@@ -5558,6 +5607,13 @@
       "originalName": "uc",
       "to": "PushableBlockMazeComponent",
       "evidence": "rn.createComponent builds it for type 51, which rn's constructor labels \"Maze: Pushable Blocks\" in dsa.field_a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ud",
+      "originalName": "ud",
+      "to": "AudioSample",
+      "evidence": "Complete base class and PcmSample constructors reviewed: IntrusiveNode with scheduler activity counter, used by PcmStream/PcmSampleStream and AudioOutput priority scheduling. PcmSample is its concrete byte-sample subclass.",
       "confidence": "reviewed"
     },
     {
@@ -14434,6 +14490,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "Only nulls or resets static fields, like the other releaseStatics cleanup methods.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bc.a(Z)Z",
+      "originalName": "a",
+      "to": "handleNameEntryKeyInput",
+      "evidence": "Complete wrapper body: false guard/null popup returns false, otherwise delegates active NameEntryPopup key handler. PressureSwitchBehaviour event dispatcher caller reviewed. Preserve all short-circuit and return behavior.",
       "confidence": "reviewed"
     },
     {
@@ -34034,6 +34097,13 @@
       "originalName": "j",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:is.a(Z)Z",
+      "originalName": "a",
+      "to": "handleKeyInput",
+      "evidence": "Complete body reviewed: inactive status false; otherwise processes typed letter/digit/underscore, backspace, accept/cancel keys and name text/status with twelve-character bound. Preserve canonical false guard and noncanonical static float mutation, every original branch/order and return. No algorithm edits.",
       "confidence": "reviewed"
     },
     {
@@ -65161,7 +65231,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "42286cc318cede63b928fcb72cd8b8a7d23b7d5bd2037f25517bb20261dcb4fd",
+      "tombracer-names.json": "690f8fc55cdcab2815560bb958c95bcf8e353a786eeb7eaed5919ff10de03b1c",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

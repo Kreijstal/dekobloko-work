@@ -115,10 +115,27 @@ field('rc', 'd', 'Ljava/lang/Object;', 'result', 'UrlRequest casts this to the s
 field('fj', 'j', '[B', 'payload', 'PacketBuffer byte array indexed by the cursor in every read and write.');
 field('fj', 'n', 'I', 'position', 'PacketBuffer cursor advanced by reads and writes.');
 
+// Source-reviewed original identities and evidence for readable class/member names.
+const reviewedNames = JSON.parse(fs.readFileSync(new URL('./torquing-names.json', import.meta.url), 'utf8'));
+for (const [owner, to, evidence] of reviewedNames.classes) {
+  if (classes[owner]) throw new Error('Class already reviewed: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of reviewedNames.methods) {
+  const symbol = `M:${owner}.${original}${descriptor}`;
+  if (members[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+for (const [owner, original, descriptor, to, evidence] of reviewedNames.fields) {
+  const symbol = `F:${owner}.${original}:${descriptor}`;
+  if (members[symbol]) throw new Error('Field already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export const config = {
   game: 'torquing', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
   verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
-  workflowFiles: ['build-torquing-rules.mjs', 'reproduce-torquing.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-torquing-rules.mjs', 'torquing-names.json', 'reproduce-torquing.mjs', 'reviewed-game.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   readingGuide(rules, mapping) {
     return ['# Reading Torquing', '',
