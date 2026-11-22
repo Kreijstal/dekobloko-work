@@ -9,6 +9,17 @@ import {archivedInput, digest, funorbRepository, verifyToolPin, workflowRoot} fr
 import {gameNamingCoverage} from './catalog-naming-coverage.mjs';
 
 const SOURCE_COMMIT = '1655ca853d0d4027018f3efcdc37be76ab7895f4';
+// Reviewing one declaration must not renumber unrelated provisional aliases.
+// The original-ID table retains existing labels until each role is reviewed.
+const provisional = JSON.parse(fs.readFileSync(new URL('./dekobloko-provisional-names.json', import.meta.url), 'utf8'));
+if (provisional.schema !== 1 || provisional.sourceCommit !== SOURCE_COMMIT)
+  throw new Error('Provisional names belong to a different source');
+const provisionalNames = new Map(Object.entries(provisional.names));
+function provisionalName(symbol) {
+  const name = provisionalNames.get(symbol);
+  if (!name) throw new Error('Missing provisional name: ' + symbol);
+  return name;
+}
 const classNames = {
   client:'DekoBlokoClient',hn:'GameApplet',bd:'FunOrbClient',fd:'PlatformService',mh:'AsyncTask',
   hk:'SoftwareRaster',wf:'SoftwareFramebuffer',eh:'Framebuffer',ck:'RgbSprite',pi:'IndexedSprite',lc:'Sprite',
@@ -21,16 +32,6 @@ const classNames = {
   wg:'MouseInput',lk:'BucketBoard',qc:'GameSession',rf:'ReturnedShape',oi:'ReturnedShapeCache',
   uk:'AnimatedTileRegion',cf:'TextLayout',ea:'RichTextLayout',nf:'TextLineMetrics',
   ml:'TranslatedUiText',sh:'GameAssets',jj:'ThemeTips',jg:'LoginCredentials',vk:'GameplayControls',
-};
-const categoryNames = {
-  'Application lifecycle':'ApplicationSupport', 'Platform and asynchronous I/O':'PlatformSupport',
-  'Input and AWT events':'InputAdapter', 'Game-screen widget tree':'SceneWidgetPart',
-  'Reusable UI components':'UiComponentPart', 'Software rendering, sprites, and fonts':'RenderingSupport',
-  'Audio and music':'AudioSupport', 'Networking and wire protocol':'NetworkSupport',
-  'Resources, cache, and serialization':'ResourceSupport', 'Collections and intrusive nodes':'CollectionSupport',
-  'Game and lobby domain logic':'GameDomainSupport', 'Crypto and compression helpers':'CodecSupport',
-  'Errors and diagnostics':'DiagnosticSupport', 'Callback and strategy interfaces':'CallbackContract',
-  'Utility or mixed responsibility':'MixedSupport',
 };
 // These identities are asserted by the existing original-bytecode differential.
 const boardFields = {O:'boardWidth',a:'boardHeight',U:'pieceAcknowledgement',C:'pieceWidth',zb:'pieceHeight',
@@ -91,20 +92,6 @@ for (const [owner, original, descriptor, name, evidence] of reviewedNames.fields
   reviewedEvidence.set(symbol, evidence);
 }
 
-function typeStem(type, aliases) {
-  const primitives={I:'integer',B:'byte',S:'short',J:'long',F:'float',D:'double',C:'character',Z:'boolean',V:'action'};
-  if (type[0]==='[') return typeStem(type.slice(1),aliases)+'Array';
-  if (primitives[type]) return primitives[type];
-  const owner=type.replace(/^L|;$/g,'').replaceAll('/','.');
-  const name=aliases[owner] || owner.split('.').at(-1);
-  return name[0].toLowerCase()+name.slice(1);
-}
-
-function descriptorParameters(key) {
-  const descriptor=key.slice(key.indexOf('(')+1,key.indexOf(')'));
-  return descriptor.match(/\[*L[^;]+;|\[*[ZBCSIJFD]/g)||[];
-}
-
 export function buildNamingRules(input, rows, classMap) {
   const declarations=rows.filter(r=>r[0]==='D');
   const topClasses=declarations.filter(r=>r[4].startsWith('C:') && r[1]===r[5]+'.java');
@@ -114,13 +101,13 @@ export function buildNamingRules(input, rows, classMap) {
     const name=cells[1]?.match(/^\[`([^`]+)`\]/)?.[1];
     if(name && ['high','medium','low'].includes(cells[3]) && cells[4]?.startsWith('`')) categories.set(name,{category:cells[2],confidence:cells[3]});
   }
-  const aliases={},counts=new Map(),rules=[];
+  const aliases={},rules=[];
   const add=(symbol,originalName,to,evidence,confidence)=>{if(originalName!==to)rules.push({symbol,originalName,to,evidence,confidence});};
   for(const row of topClasses.sort((a,b)=>a[4]<b[4]?-1:1)) {
     const original=row[5],info=categories.get(original);
     if(!info)throw new Error('Unclassified current class: '+original);
     let name=classNames[original];
-    if(!name){const prefix=categoryNames[info.category];if(!prefix)throw new Error('Unknown class category');const index=(counts.get(prefix)||0)+1;counts.set(prefix,index);name=prefix+String(index).padStart(3,'0');}
+    if(!name)name=provisionalName(row[4]);
     aliases[original]=name;
     add(row[4],original,name,reviewedEvidence.get(row[4]) || (classNames[original]
       ?'Reviewed current source, supported by the class map; gameplay anchors also use the existing original-bytecode differential.'
@@ -132,14 +119,15 @@ export function buildNamingRules(input, rows, classMap) {
   for(const r of rows.filter(r=>r[0]==='O'))parents.set(find(r[2]),find(r[1]));
   const groups=new Map();
   for(const r of declarations.filter(r=>r[4].startsWith('M:')&&!r[4].includes('.<'))){const k=find(r[4]);const group=groups.get(k)||[];group.push(r);groups.set(k,group);}
-  let methodIndex=0;
   for(const group of [...groups.values()].sort((a,b)=>a[0][4]<b[0][4]?-1:1)) {
     const family=find(group[0][4]);
     const external=[...parents.keys()].find(k=>find(k)===family&&!declarations.some(r=>r[4]===k));
     const explicit=group.map(r=>explicitMembers[r[4]]).find(Boolean);
     const readable=group.find(r=>r[5].length>2 && !r[5].startsWith('$'));
-    const to=external?external.slice(2,external.indexOf('(')).split('.').at(-1):explicit||readable?.[5]||
-      (group[0][4].endsWith('V')?'performAction':'compute'+typeStem(group[0][4].slice(group[0][4].indexOf(')')+1),aliases).replace(/^./,s=>s.toUpperCase()))+String(++methodIndex).padStart(4,'0');
+    const priorNames=[...new Set(group.map(r=>provisionalNames.get(r[4])).filter(Boolean))];
+    if(priorNames.length>1)throw new Error('Inconsistent provisional override family: '+family);
+    const to=external?external.slice(2,external.indexOf('(')).split('.').at(-1):explicit||readable?.[5]||priorNames[0];
+    if(!to)throw new Error('Missing provisional method family: '+family);
     for(const r of group)add(r[4],r[5],to,reviewedEvidence.get(r[4]) || (explicit?'Reviewed current source operation; core board operations also use the original-bytecode differential.':external?'Resolved external override contract.':'Resolved override family; type-based operation label, finer purpose unresolved.'),explicit?'reviewed':'typed');
   }
   const sources=new Map(sourceInventory(input).map(f=>[f.path,fs.readFileSync(path.join(input,f.path),'utf8')]));
@@ -149,29 +137,14 @@ export function buildNamingRules(input, rows, classMap) {
     const ordinal=Number(r[4].slice(r[4].lastIndexOf('#')+1))+1;
     add(r[4],r[5],(loop?'scanLoop':'regionExit')+ordinal,'Resolved lexical label target and declaration ordinal; transfer kind and target are unchanged.','structural');
   }
-  const fieldCounts=new Map();
   for(const r of declarations) {
     const symbol=r[4],original=r[5];
     if(symbol.startsWith('F:')) {
-      const stem=typeStem(symbol.slice(symbol.indexOf(':',2)+1),aliases)+'State';
-      // Fields can be selected through subclasses: even an inaccessible private
-      // field would hide a renamed inherited field with the same spelling.
-      const key=stem,index=(fieldCounts.get(key)||0)+1;fieldCounts.set(key,index);
-      const to=explicitMembers[symbol]||stem+String(index).padStart(4,'0');
+      const to=explicitMembers[symbol]||provisionalName(symbol);
       add(symbol,original,to,reviewedEvidence.get(symbol) || (explicitMembers[symbol]?'Current field identity and original-bytecode differential / linked-list or buffer layout.':'Resolved declaration type; state label, finer field purpose unresolved.'),explicitMembers[symbol]?'reviewed':'typed');
     }else if(symbol.startsWith('P:')||symbol.startsWith('L:')) {
       if(!/^(?:param\d+|var\d+|stackIn_|dupTemp|incrementValue|array\$|fieldTemp|decompiled)/.test(original))continue;
-      const ordinal=Number(symbol.slice(symbol.lastIndexOf('#')+1));let type;
-      if(symbol.startsWith('P:'))type=descriptorParameters(symbol)[ordinal];
-      else {const text=sources.get(r[1]).slice(0,Number(r[2]));const prefix=text.slice(text.lastIndexOf('\n')+1);const found=prefix.match(/([\w.$]+(?:\[\])*)\s+$/)?.[1];
-        if(found){const primitives={int:'I',byte:'B',short:'S',long:'J',float:'F',double:'D',char:'C',boolean:'Z'};const dimensions=(found.match(/\[\]/g)||[]).length;const base=found.replaceAll('[]','');type='['.repeat(dimensions)+(primitives[base]||'L'+base.replaceAll('.','/')+';');}}
-      const stem=type?typeStem(type,aliases):'value';
-      const generatedRole=original.match(/^decompiled([A-Z]\w*?)[0-9]*$/)?.[1];
-      const role=generatedRole?generatedRole[0].toLowerCase()+generatedRole.slice(1):
-        original.startsWith('stackIn_')?'stack'+stem[0].toUpperCase()+stem.slice(1):
-        original.startsWith('incrementValue')?'previous'+stem[0].toUpperCase()+stem.slice(1):
-        original.startsWith('dupTemp')?'cached'+stem[0].toUpperCase()+stem.slice(1):stem;
-      add(symbol,original,explicitMembers[symbol]||role+(symbol.startsWith('P:')?'Argument':'Local')+(ordinal+1),
+      add(symbol,original,explicitMembers[symbol]||provisionalName(symbol),
         explicitMembers[symbol]?'Current source operation and original-bytecode gameplay differential.':'Resolved declaration ordinal and type; cached values, stores and branch behavior are unchanged.',explicitMembers[symbol]?'reviewed':'typed');
     }
   }
@@ -231,7 +204,7 @@ export function buildDekoblokoManifest() {
     if(rows.some(r=>r[0]==='U'&&rules.renames.some(n=>n.symbol===r[4])))throw new Error('Unsupported escaped class-name literal');
     const evidence=['docs/dekobloko-class-map.md','game-logic/src/test/java/org/alterorb/dekobloko/logic/OriginalMultiplayerProtocolTest.java','readable/tests/test-dekobloko-snapshots.mjs'];
     rules.publication={stubSourceTreeSha256:stubs.sourceTreeSha256,stubJarSha256:digest(fs.readFileSync(stubs.jar)),evidence:evidence.map(file=>({file,sha256:digest(fs.readFileSync(path.resolve(workflowRoot,'..',file)))}))};
-    const filesToPin=['build-dekobloko-rules.mjs','game-export.mjs','compilation-stubs.mjs','reproduce-dekobloko.mjs','dekobloko-reviewed-names.json','catalog-naming-coverage.mjs','naming-coverage.mjs'];
+    const filesToPin=['build-dekobloko-rules.mjs','game-export.mjs','compilation-stubs.mjs','reproduce-dekobloko.mjs','dekobloko-reviewed-names.json','dekobloko-provisional-names.json','catalog-naming-coverage.mjs','naming-coverage.mjs'];
     rules.readabilityWorkflow={repository:'Kreijstal/dekobloko-work',files:Object.fromEntries(filesToPin.map(file=>[file,digest(fs.readFileSync(path.join(workflowRoot,file)))]))};
     rules.generators={javaTools:record.sourceGenerator,namingTool:verifyToolPin()};
     return rules;

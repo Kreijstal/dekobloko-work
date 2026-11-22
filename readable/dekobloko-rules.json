@@ -1027,9 +1027,9 @@
     {
       "symbol": "C:fn",
       "originalName": "fn",
-      "to": "MixedSupport044",
-      "evidence": "Structural category: Utility or mixed responsibility (low); numbered category label, finer purpose unresolved.",
-      "confidence": "category"
+      "to": "DirectByteStorage",
+      "evidence": "Complete instance field shape/empty constructor and both concrete bytes bodies plus abstract get/set declarations reviewed. Direct ByteBuffer allocation/capacity-length copying establish storage roles. Preserve unrelated statics and all guard/partial-state behavior.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "C:g",
@@ -1727,9 +1727,9 @@
     {
       "symbol": "C:mk",
       "originalName": "mk",
-      "to": "MixedSupport082",
-      "evidence": "Structural category: Utility or mixed responsibility (low); numbered category label, finer purpose unresolved.",
-      "confidence": "category"
+      "to": "ByteStorage",
+      "evidence": "Complete instance field shape/empty constructor and both concrete bytes bodies plus abstract get/set declarations reviewed. Direct ByteBuffer allocation/capacity-length copying establish storage roles. Preserve unrelated statics and all guard/partial-state behavior.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "C:ml",
@@ -8510,9 +8510,9 @@
     {
       "symbol": "F:fn.field_h:Ljava/nio/ByteBuffer;",
       "originalName": "field_h",
-      "to": "byteBufferState0001",
-      "evidence": "Resolved declaration type; state label, finer field purpose unresolved.",
-      "confidence": "typed"
+      "to": "buffer",
+      "evidence": "Sole instance ByteBuffer allocated directly and read/written by bytes operations; preserve nullable/guard states.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "F:g.field_K:Ljava/lang/String;",
@@ -133299,9 +133299,9 @@
     {
       "symbol": "M:fn.a(I)[B",
       "originalName": "a",
-      "to": "computeByteArray0547",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "getBytes",
+      "evidence": "Complete concrete body and abstract declaration reviewed. Getter valid256 allocates capacity-length array, positions0 and gets bytes; invalid returns null before allocation. Setter allocates/positions before false guard early return, true writes input in wrapped try. Preserve all ordering, null input failures and exception context.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:fn.a(Lji;Lji;Lji;I)V",
@@ -133313,9 +133313,9 @@
     {
       "symbol": "M:fn.a([BZ)V",
       "originalName": "a",
-      "to": "performAction0549",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "setBytes",
+      "evidence": "Complete concrete body and abstract declaration reviewed. Getter valid256 allocates capacity-length array, positions0 and gets bytes; invalid returns null before allocation. Setter allocates/positions before false guard early return, true writes input in wrapped try. Preserve all ordering, null input failures and exception context.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:fn.b(I)V",
@@ -138192,9 +138192,9 @@
     {
       "symbol": "M:mk.a(I)[B",
       "originalName": "a",
-      "to": "computeByteArray0547",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "getBytes",
+      "evidence": "Complete concrete body and abstract declaration reviewed. Getter valid256 allocates capacity-length array, positions0 and gets bytes; invalid returns null before allocation. Setter allocates/positions before false guard early return, true writes input in wrapped try. Preserve all ordering, null input failures and exception context.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:mk.a(IIBLcc;ILcc;)V",
@@ -138213,9 +138213,9 @@
     {
       "symbol": "M:mk.a([BZ)V",
       "originalName": "a",
-      "to": "performAction0549",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "setBytes",
+      "evidence": "Complete concrete body and abstract declaration reviewed. Getter valid256 allocates capacity-length array, positions0 and gets bytes; invalid returns null before allocation. Setter allocates/positions before false guard early return, true writes input in wrapped try. Preserve all ordering, null input failures and exception context.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ml.a(B)V",
@@ -194765,11 +194765,12 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-dekobloko-rules.mjs": "adf6ed8cc0fb2b18f6ba80673faa698fde2d323c62c6fae8967a40c17429c421",
+      "build-dekobloko-rules.mjs": "e61f3cd759abde1f0a166db58b807ec2828ccf643edb6c305e1f5920c26ce45a",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "reproduce-dekobloko.mjs": "2a1c461995165406fd2fad26551c82dbc06aa441ae38cff980551230c1b2144b",
-      "dekobloko-reviewed-names.json": "507c225854928a0615d8141d4268656d3a1b05deead0bda3f60108cb65b8abd0",
+      "dekobloko-reviewed-names.json": "1f4bce82f1215d5d233fe13910f50f5ff7b552250f11fb5c9b8a108af6faf473",
+      "dekobloko-provisional-names.json": "99a1f75e618d2dd63a8885728ecdfb70e4fa3bc7f1b3bd584951c5a27359cb30",
       "catalog-naming-coverage.mjs": "0a733b0a7e4a2779b01b5c15f1e7b027c0fdfed9012851e35f420d3bfcf6ce43",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2"
     }
