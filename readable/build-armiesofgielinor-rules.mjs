@@ -4952,8 +4952,24 @@ Object.assign(classes,{
   lp:["TextWidthSupport","Measures text width with one of two retained fonts; unrelated map-theme tables remain separate."],
 });
 
+// Supplemental reviews retain original symbol identities and cannot replace
+// the inline names above. Pin this input alongside the builder for reproduction.
+const supplementalNames=JSON.parse(fs.readFileSync(new URL('./armiesofgielinor-names.json',import.meta.url),'utf8'));
+for(const [owner,to,evidence] of supplementalNames.classes) {
+  if(classes[owner]) throw new Error('Class already reviewed: '+owner);
+  classes[owner]=[to,evidence];
+}
+for(const [kind,entries] of [['M',supplementalNames.methods],['F',supplementalNames.fields]]) {
+  for(const [owner,original,descriptor,to,evidence] of entries) {
+    const symbol=kind+':'+owner+'.'+original+(kind==='F'?':':'')+descriptor;
+    if(members[symbol]) throw new Error('Member already reviewed: '+symbol);
+    members[symbol]={to,evidence};
+  }
+}
+
 const workflowFiles=['build-armiesofgielinor-rules.mjs','reproduce-armiesofgielinor.mjs','reconstruct-armies-methods.mjs',
-  'tests/test-armiesofgielinor-core.mjs','tests/archive-index-probe.mjs','game-export.mjs','compilation-stubs.mjs'];
+  'tests/test-armiesofgielinor-core.mjs','tests/archive-index-probe.mjs','game-export.mjs','compilation-stubs.mjs',
+  'armiesofgielinor-names.json'];
 export function validateArmiesManifest(rules) {
   if(rules.schema!==1||rules.game!=='armiesofgielinor'||rules.source.commit!==SOURCE_COMMIT) throw new Error('Invalid Armies naming manifest');
   for(const [file,sha] of Object.entries(rules.readabilityWorkflow.files))
