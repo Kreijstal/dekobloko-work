@@ -1956,6 +1956,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fb",
+      "originalName": "fb",
+      "to": "LargeByteArrayPoolStorage",
+      "evidence": "Complete class and all exact pool references reviewed: static byte[50][] holds30000-byte array slots consumed/cleared by acquireByteArray; retain unrelated ValidationOutcome/string globals, diagnostic string and already meaningful recursive releaseStatics with repeated null clearing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fe",
       "originalName": "fe",
       "to": "DateFieldsWidget",
@@ -2649,6 +2656,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ia",
+      "originalName": "ia",
+      "to": "LargeByteArrayPoolCounter",
+      "evidence": "Complete class and every exact Java source reference reviewed: sole static int initialized0; acquireByteArray tests/decrements it when popping30000-byte arrays from fb.field_a. Preserve unreachable duplicate branches and all failure behavior. This Java tree has no replenishing writes; naming does not add pooling behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ib",
       "originalName": "ib",
       "to": "Spawner",
@@ -2709,6 +2723,13 @@
       "originalName": "ih",
       "to": "LaserShooterComponent",
       "evidence": "rn.createComponent builds it for type 26, which rn's constructor labels \"Laser Shooter\" in dsa.field_a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ii",
+      "originalName": "ii",
+      "to": "FriendListCounter",
+      "evidence": "Complete tiny class and exact Java references reviewed: sole static int is current friend-list count. Friend-packet creation increments it and assigns entry order, removal decrements it, lobby clearing resets0, add-friend validation enforces100/200limits. Preserve implicit0 initialization and all references.",
       "confidence": "reviewed"
     },
     {
@@ -3577,6 +3598,13 @@
       "originalName": "ln",
       "to": "PlatformComponent",
       "evidence": "rn.createComponent builds it for types 16, 60, which rn's constructor labels \"Platform\", \"Hidden Platform\" in dsa.field_a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lna",
+      "originalName": "lna",
+      "to": "ConsoleOpenParenthesisKind",
+      "evidence": "Complete class and all exact references reviewed: mutable token-kind id initialized0. Tokenizer uses it for ASCII40, ConsoleToken prints ArgStart, parser requires it after method name, console nesting decrements on it. Preserve mutability and all values.",
       "confidence": "reviewed"
     },
     {
@@ -4805,6 +4833,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qsa",
+      "originalName": "qsa",
+      "to": "LobbyRemovalTiming",
+      "evidence": "Complete tiny class and all exact Java references reviewed: sole static duration configured by initializeLobbyCollections, canonical150. Lobby removal packets set player/game countdowns from it; tickLobbyRemovalTimers decrements them and removes entries at0. Status text alpha is remaining*256/duration in renderers, confirmed by UiComponent drawTextAlpha. Preserve value, zero/overflow/division behavior and all timing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qta",
       "originalName": "qta",
       "to": "BladeShooterComponent",
@@ -5026,6 +5061,13 @@
       "originalName": "rra",
       "to": "RasterShape",
       "evidence": "Abstract shape primitive that RasterizerOperator decodes by type 0 to 3 and draws into its pixel rows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rs",
+      "originalName": "rs",
+      "to": "ConsoleCloseParenthesisKind",
+      "evidence": "Complete class and every exact kind reference reviewed: mutable id initialized1; tokenizer creates it for ASCII41, ConsoleToken prints ArgEnd, parser ends argument lists and console tracks closing nesting. Retain unrelated already meaningful queueSoundRelease/getTopDialogHeight helpers and their guards/calls.",
       "confidence": "reviewed"
     },
     {
@@ -7703,6 +7745,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:fb.field_a:[[B",
+      "originalName": "field_a",
+      "to": "arrays",
+      "evidence": "Complete initializer and all exact pool references reviewed:50slots, pop indexed by decremented large-pool count and clear slot to null; shutdown may null whole array. Preserve identities, nulls and guards.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:fe.field_A:[Ljava/lang/String;",
       "originalName": "field_A",
       "to": "gasDeathMessages",
@@ -9124,10 +9173,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:ia.field_a:I",
+      "originalName": "field_a",
+      "to": "availableCount",
+      "evidence": "Complete initializer and exact source references reviewed: initializes0, tested>0 and decremented on large-pool pops. Preserve every write and absence of Java replenishment.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:id.field_g:[Ljava/lang/String;",
       "originalName": "field_g",
       "to": "laserDeathMessages",
       "evidence": "Static initialiser fills it with \"<%0>\" message variants starting \"<%0> didn't see the light\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ii.field_a:I",
+      "originalName": "field_a",
+      "to": "count",
+      "evidence": "Sole static count read/incremented/decremented/reset by reviewed friend add/remove and packet/lobby contexts; preserve arithmetic and mutation order.",
       "confidence": "reviewed"
     },
     {
@@ -9996,6 +10059,13 @@
       "originalName": "field_x",
       "to": "tiles",
       "evidence": "Grid of WallTiles covering the wall area in 32-unit cells.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:lna.field_a:I",
+      "originalName": "field_a",
+      "to": "kind",
+      "evidence": "Mutable kind id initialized0; explicit tokenizer/parser/debug/nesting consumers establish open-parenthesis role. Preserve storage and every reference.",
       "confidence": "reviewed"
     },
     {
@@ -11035,6 +11105,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:qsa.field_a:I",
+      "originalName": "field_a",
+      "to": "durationTicks",
+      "evidence": "Shared lobby removal countdown duration, canonical150 passed unchanged by TombRacer initialization. Used to initialize remaining counters and normalize fading status-text alpha. Preserve exact integer arithmetic, zero/failure behavior and timing.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:qw.field_h:Lhca;",
       "originalName": "field_h",
       "to": "player",
@@ -11207,6 +11284,13 @@
       "originalName": "field_d",
       "to": "outlineWidth",
       "evidence": "Third constructor argument passed to the outline drawing routines.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:rs.field_a:I",
+      "originalName": "field_a",
+      "to": "kind",
+      "evidence": "Mutable console close-parenthesis kind initialized1; ASCII41/ArgEnd/parser/nesting references prove role. Preserve mutability and every use.",
       "confidence": "reviewed"
     },
     {
@@ -53483,6 +53567,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rf.a(ZLjava/lang/String;I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "requestAddFriend",
+      "evidence": "Complete body reviewed: validate account name, lobby status, self/friend/ignored conditions and100/200capacity; return original message on rejection. On accepted request write caller-supplied opcode and length-prefixed marker0/name payload, return null. Preserve boolean-dependent validators, all messages, buffer positions, dynamic opcode and wrapper.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rf.b(B)J",
       "originalName": "b",
       "to": "millisSinceLastReceive",
@@ -59472,6 +59563,13 @@
       "originalName": "a",
       "to": "writeQueuedListRequest",
       "evidence": "resendQueuedListRequests writes each toa record with a length byte under the opcode.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uca.a(Ljava/lang/String;BI)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "requestRemoveFriend",
+      "evidence": "Complete body reviewed: validate name/lobby and locate friend; renumber later entries, unlink both lists, decrement friend count, then write caller opcode and length-prefixed marker1/name payload. Preserve original mutation-before-packet ordering, byte guard scalar write, all messages, failure positions and wrapper.",
       "confidence": "reviewed"
     },
     {
@@ -66085,7 +66183,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "5d73a82967bdeaafcbe72d122d4f773ea8e22b2eb6c6d20920671186f7c23677",
+      "tombracer-names.json": "db68a0b0ef65a705aa4ffa7db650c15badfb9de35881b75e050b66d3bd0aeceb",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
