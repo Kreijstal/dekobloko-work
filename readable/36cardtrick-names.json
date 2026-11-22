@@ -1,7 +1,17 @@
 {
   "classes": [
     ["pb","PacketBuffer","Complete owned constructors and every instance method reviewed: byte payload/cursor, binary primitives, smart/variable encodings, byte ranges, strings, length patches, CRC, RSA and32-round XTEA. Unrelated static helpers/globals retained."],
-    ["pc","Crc32Table","Complete class reviewed: initializes the reflected CRC32 lookup table used by computeCrc32. Unrelated UI globals and reference cleanup/arithmetic remain."]
+    ["pc","Crc32Table","Complete class reviewed: initializes the reflected CRC32 lookup table used by computeCrc32. Unrelated UI globals and reference cleanup/arithmetic remain."],
+    ["bh","MouseWheelHandler","Complete class reviewed. MouseWheelListener accumulates getWheelRotation, consumes event, attach/detach listener and synchronized poll resets accumulator."],
+    ["te","MouseWheelInput","Complete abstract class reviewed. Three abstract component attach/detach/rotation-poll operations implemented by bh; preserve unrelated static sprite, string validation and text utilities."],
+    ["ce","DelegatingCanvas","Complete class reviewed. Component stored by constructor receives paint/update calls; fj canvas creation reviewed. Preserve unrelated intrusive insertion, archive and byte-array helpers."],
+    ["ac","ClientException","Complete class and ma wrapper reviewed. RuntimeException stores underlying Throwable plus context string; wrapper appends context to existing instance. Preserve unrelated heap probe and compressed-container decoding."],
+    ["vc","ProxyAuthenticationRequiredException","Complete class and q CONNECT response branch reviewed. IOException(String) thrown on HTTP407 with parsed proxy-authenticate scheme or empty fallback; preserve unrelated sprite/rectangle helpers."],
+    ["ag","MouseInputHandler","Complete class reviewed. MouseListener/MouseMotionListener/FocusListener callbacks track coordinates, button state, popup consumption and focus reset in shared globals. Preserve unrelated statics and synchronized callbacks."],
+    ["be","KeyboardInputHandler","Class declaration and complete keyPressed body reviewed. KeyListener/FocusListener translates AWT keycodes through key table, updates key rings and consumes modifier/special keys. Existing callback names and synchronization retained."],
+    ["vf","ByteArrayStore","Complete class and ce extraction/sj wrapping consumers reviewed. Abstract byte-array setter/getter implemented by direct-buffer ei; unrelated string, UI and packet statics retained."],
+    ["ei","DirectByteArrayStore","Complete class reviewed. ByteArrayStore allocates a direct ByteBuffer, fills it, and returns a fresh array copied from capacity; preserve allocation before guarded early return and unrelated statics."],
+    ["ge","GzipInflater","Complete class reviewed. Sole instance field is Inflater(true); decoder checks1f8b GZIP magic, skips10byte header/8byte trailer, inflates destination and resets on success/error. Preserve all unrelated sprite/input/login/text statics."]
   ],
   "methods": [
     ["ab","e","(I)V","clearStaticReferences","Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 a1aef18a81192e802e1130976d2b40bd3b57bfd32b23f2c06664beb7f78a9ec9."],
@@ -126,11 +136,38 @@
     ["pb","f","(I)I","readUnsignedByte","Canonical operation reviewed: Read byte masked255 and advance1. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. "],
     ["pb","f","(II)V","backpatchByteLength","Canonical operation reviewed: Patch byte length behind current cursor without canonical cursor advance. Preserve all original guards, helper calls, cursor ordering, exception wrappers and partial effects. Bad guard discards payload after patching."],
     ["ml","a","([BIII)I","computeCrc32","Complete helper and table initializer reviewed:256entries, eight reflected shifts with polynomial-306674912, seed-1, table[byte XOR crc &255] XOR crc>>>8, complemented result. Preserve original range/guard/call/failure behavior."],
-    ["pc","a","(I)V","clearStaticReferences","Complete body reviewed: null three owned static references, then original guard modulo. Preserve cleanup order, surviving scalar/string fields and arithmetic failure after clearing."]
+    ["pc","a","(I)V","clearStaticReferences","Complete body reviewed: null three owned static references, then original guard modulo. Preserve cleanup order, surviving scalar/string fields and arithmetic failure after clearing."],
+    ["te","a","(ILjava/awt/Component;)V","attach","Complete abstract declaration or implementation reviewed: registers this wheel listener on component, retaining wrong-guard accumulator write."],
+    ["te","a","(Ljava/awt/Component;Z)V","detach","Complete abstract declaration or implementation reviewed: unregisters wheel listener; preserve guard-dependent null event callback."],
+    ["te","b","(I)I","pollRotation","Complete abstract declaration or synchronized implementation reviewed: copies accumulated rotations, zeroes counter before arithmetic guard, returns value."],
+    ["bh","a","(ILjava/awt/Component;)V","attach","Complete abstract declaration or implementation reviewed: registers this wheel listener on component, retaining wrong-guard accumulator write."],
+    ["bh","a","(Ljava/awt/Component;Z)V","detach","Complete abstract declaration or implementation reviewed: unregisters wheel listener; preserve guard-dependent null event callback."],
+    ["bh","b","(I)I","pollRotation","Complete abstract declaration or synchronized implementation reviewed: copies accumulated rotations, zeroes counter before arithmetic guard, returns value."],
+    ["te","a","(IILjava/lang/CharSequence;Z)Z","isValidRadixInteger","Complete body reviewed: radix2..36, optional leading plus, minus, character-digit conversion, overflow check and at-least-one-digit test. Preserve wrong guard returntrue and radix exception."],
+    ["ce","a","(Lqb;ILqb;)V","insertBefore","Complete body reviewed: unlinks node if linked, splices it before anchor using previous/next reciprocal links; preserve wrong-guard static write."],
+    ["ce","a","(ZILjava/lang/Object;)[B","extractBytes","Complete body plus vf/ei getters and bf copy reviewed: null passthrough, byte[] optional clone, ByteArrayStore getter, other type exception. Preserve guard assignment and aliasing/copy distinction."],
+    ["ac","a","(I)V","detectMaxHeapMegabytes","Complete reflective Runtime.maxMemory method reviewed: converts bytes to MiB plus1 into v.field_Q; preserves swallowed checked/Throwable paths and guard helper."],
+    ["ac","a","(I[B)[B","decompressContainer","Complete body plus ge GZIP decoder reviewed: compression tag, stored length limits, raw payload or expanded destination and alternate decoders. Preserve limits, synchronized decoder and exception paths; no codec rewrite."],
+    ["ma","a","(Ljava/lang/Throwable;Ljava/lang/String;)Lac;","wrapException","Complete wrapper reviewed: new ClientException for plain Throwable, otherwise append space+context to same wrapper. Preserve cause and object identity."],
+    ["vf","a","([BB)V","setBytes","Complete abstract declaration/implementation and sj consumer reviewed. Direct implementation allocates capacity before113guard then resets position/fills bytes. Preserve partial state and exceptions."],
+    ["vf","a","(B)[B","getBytes","Complete abstract declaration/implementation and ce consumer reviewed. Direct implementation allocates new capacity-length array and copies after resetting buffer position; preserve wrong-guard null setter before copy."],
+    ["ei","a","([BB)V","setBytes","Complete abstract declaration/implementation and sj consumer reviewed. Direct implementation allocates capacity before113guard then resets position/fills bytes. Preserve partial state and exceptions."],
+    ["ei","a","(B)[B","getBytes","Complete abstract declaration/implementation and ce consumer reviewed. Direct implementation allocates new capacity-length array and copies after resetting buffer position; preserve wrong-guard null setter before copy."],
+    ["vf","a","(IIC)Ljava/lang/String;","repeatChar","Complete body reviewed. Allocate char[count], fill with requested character and construct String; preserve allocation before wrong-guard null return."],
+    ["bf","a","(I[B)[B","copyBytes","Complete method and ce/sj callers reviewed. Allocate same-length destination and invoke primitive array-copy helper at caller offset; preserve offset and failures rather than forcing zero."],
+    ["vc","a","(IIIIIII)Z","containsPoint","Complete rectangle predicate reviewed: half-open X/Y extents, invalid guard returntrue. Preserve endpoint tests and overflow behavior."],
+    ["ge","a","(Lpb;I[B)V","inflate","Complete method reviewed. GZIP magic/header/trailer handling, raw Inflater initialization, inflate destination and reset in success/failure; preserve wrong-guard static clear and wrapped exceptions."],
+    ["sj","a","(ZI[B)Ljava/lang/Object;","storeBytes","Complete main body and exception tail context reviewed. Null passthrough; above threshold allocate/fill direct store; otherwise optional copy or same array. Preserve byte identity and threshold semantics."]
   ],
   "fields": [
     ["pb","field_g","[B","payload","Complete constructors and all owned I/O reviewed: caller byte array or pooled allocation is the backing payload. Preserve array identity and every reference."],
     ["pb","field_i","I","position","Constructors initialize0; owned reads/writes, backpatches and crypto retain this exact mutable byte cursor. Preserve all noncanonical guard writes and failure positions."],
-    ["pc","field_b","[I","lookupTable","Complete initializer and CRC consumer reviewed:256-entry reflected CRC32 table, eight shifts/XORs per entry with polynomial-306674912. Preserve mutable table and shutdown clearing."]
+    ["pc","field_b","[I","lookupTable","Complete initializer and CRC consumer reviewed:256-entry reflected CRC32 table, eight shifts/XORs per entry with polynomial-306674912. Preserve mutable table and shutdown clearing."],
+    ["bh","field_c","I","rotation","Accumulated event rotations consumed/reset by pollRotation."],
+    ["ce","field_a","Ljava/awt/Component;","delegate","Component stored by constructor and receives paint/update."],
+    ["ac","field_a","Ljava/lang/String;","context","Context appended by wrapException."],
+    ["ac","field_b","Ljava/lang/Throwable;","cause","Wrapped Throwable stored unchanged."],
+    ["ei","field_c","Ljava/nio/ByteBuffer;","buffer","Direct ByteBuffer allocated and copied by set/get."],
+    ["ge","field_d","Ljava/util/zip/Inflater;","inflater","Inflater(true) used for raw deflate data inside GZIP framing."]
   ]
 }

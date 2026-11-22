@@ -185,6 +185,55 @@
       "confidence": "structural"
     },
     {
+      "symbol": "C:ac",
+      "originalName": "ac",
+      "to": "ClientException",
+      "evidence": "Complete class and ma wrapper reviewed. RuntimeException stores underlying Throwable plus context string; wrapper appends context to existing instance. Preserve unrelated heap probe and compressed-container decoding.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ag",
+      "originalName": "ag",
+      "to": "MouseInputHandler",
+      "evidence": "Complete class reviewed. MouseListener/MouseMotionListener/FocusListener callbacks track coordinates, button state, popup consumption and focus reset in shared globals. Preserve unrelated statics and synchronized callbacks.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:be",
+      "originalName": "be",
+      "to": "KeyboardInputHandler",
+      "evidence": "Class declaration and complete keyPressed body reviewed. KeyListener/FocusListener translates AWT keycodes through key table, updates key rings and consumes modifier/special keys. Existing callback names and synchronization retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bh",
+      "originalName": "bh",
+      "to": "MouseWheelHandler",
+      "evidence": "Complete class reviewed. MouseWheelListener accumulates getWheelRotation, consumes event, attach/detach listener and synchronized poll resets accumulator.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ce",
+      "originalName": "ce",
+      "to": "DelegatingCanvas",
+      "evidence": "Complete class reviewed. Component stored by constructor receives paint/update calls; fj canvas creation reviewed. Preserve unrelated intrusive insertion, archive and byte-array helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ei",
+      "originalName": "ei",
+      "to": "DirectByteArrayStore",
+      "evidence": "Complete class reviewed. ByteArrayStore allocates a direct ByteBuffer, fills it, and returns a fresh array copied from capacity; preserve allocation before guarded early return and unrelated statics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ge",
+      "originalName": "ge",
+      "to": "GzipInflater",
+      "evidence": "Complete class reviewed. Sole instance field is Inflater(true); decoder checks1f8b GZIP magic, skips10byte header/8byte trailer, inflates destination and resets on success/error. Preserve all unrelated sprite/input/login/text statics.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pb",
       "originalName": "pb",
       "to": "PacketBuffer",
@@ -203,6 +252,69 @@
       "originalName": "qb",
       "to": "IntrusiveNode",
       "evidence": "Long key plus two links with a null-link-guarded unlink; same shared role as other games.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:te",
+      "originalName": "te",
+      "to": "MouseWheelInput",
+      "evidence": "Complete abstract class reviewed. Three abstract component attach/detach/rotation-poll operations implemented by bh; preserve unrelated static sprite, string validation and text utilities.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vc",
+      "originalName": "vc",
+      "to": "ProxyAuthenticationRequiredException",
+      "evidence": "Complete class and q CONNECT response branch reviewed. IOException(String) thrown on HTTP407 with parsed proxy-authenticate scheme or empty fallback; preserve unrelated sprite/rectangle helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vf",
+      "originalName": "vf",
+      "to": "ByteArrayStore",
+      "evidence": "Complete class and ce extraction/sj wrapping consumers reviewed. Abstract byte-array setter/getter implemented by direct-buffer ei; unrelated string, UI and packet statics retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ac.field_a:Ljava/lang/String;",
+      "originalName": "field_a",
+      "to": "context",
+      "evidence": "Context appended by wrapException.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ac.field_b:Ljava/lang/Throwable;",
+      "originalName": "field_b",
+      "to": "cause",
+      "evidence": "Wrapped Throwable stored unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:bh.field_c:I",
+      "originalName": "field_c",
+      "to": "rotation",
+      "evidence": "Accumulated event rotations consumed/reset by pollRotation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ce.field_a:Ljava/awt/Component;",
+      "originalName": "field_a",
+      "to": "delegate",
+      "evidence": "Component stored by constructor and receives paint/update.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ei.field_c:Ljava/nio/ByteBuffer;",
+      "originalName": "field_c",
+      "to": "buffer",
+      "evidence": "Direct ByteBuffer allocated and copied by set/get.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ge.field_d:Ljava/util/zip/Inflater;",
+      "originalName": "field_d",
+      "to": "inflater",
+      "evidence": "Inflater(true) used for raw deflate data inside GZIP framing.",
       "confidence": "reviewed"
     },
     {
@@ -262,6 +374,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ac.a(I)V",
+      "originalName": "a",
+      "to": "detectMaxHeapMegabytes",
+      "evidence": "Complete reflective Runtime.maxMemory method reviewed: converts bytes to MiB plus1 into v.field_Q; preserves swallowed checked/Throwable paths and guard helper.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ac.a(I[B)[B",
+      "originalName": "a",
+      "to": "decompressContainer",
+      "evidence": "Complete body plus ge GZIP decoder reviewed: compression tag, stored length limits, raw payload or expanded destination and alternate decoders. Preserve limits, synchronized decoder and exception paths; no codec rewrite.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ad.d(I)V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -273,6 +399,34 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 2 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 16e47e8aebd8323ac789fc24cd4eaa23d6360e5d00100ed4f46110af8a53d1d1.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bf.a(I[B)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete method and ce/sj callers reviewed. Allocate same-length destination and invoke primitive array-copy helper at caller offset; preserve offset and failures rather than forcing zero.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete abstract declaration or implementation reviewed: registers this wheel listener on component, retaining wrong-guard accumulator write.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.a(Ljava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete abstract declaration or implementation reviewed: unregisters wheel listener; preserve guard-dependent null event callback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bh.b(I)I",
+      "originalName": "b",
+      "to": "pollRotation",
+      "evidence": "Complete abstract declaration or synchronized implementation reviewed: copies accumulated rotations, zeroes counter before arithmetic guard, returns value.",
       "confidence": "reviewed"
     },
     {
@@ -294,6 +448,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 3 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 8af167f4410cbf441016b1dbcc8a7064a26c3f1a2f699078eab59118768229c3.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.a(Lqb;ILqb;)V",
+      "originalName": "a",
+      "to": "insertBefore",
+      "evidence": "Complete body reviewed: unlinks node if linked, splices it before anchor using previous/next reciprocal links; preserve wrong-guard static write.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ce.a(ZILjava/lang/Object;)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete body plus vf/ei getters and bf copy reviewed: null passthrough, byte[] optional clone, ByteArrayStore getter, other type exception. Preserve guard assignment and aliasing/copy distinction.",
       "confidence": "reviewed"
     },
     {
@@ -367,6 +535,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ei.a(B)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete abstract declaration/implementation and ce consumer reviewed. Direct implementation allocates new capacity-length array and copies after resetting buffer position; preserve wrong-guard null setter before copy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a([BB)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete abstract declaration/implementation and sj consumer reviewed. Direct implementation allocates capacity before113guard then resets position/fills bytes. Preserve partial state and exceptions.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ek.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -385,6 +567,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 d2f8b89de9bcc21fab2485519a3755398ae2356ed3f85f6f1680f2bc63d383fa.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ge.a(Lpb;I[B)V",
+      "originalName": "a",
+      "to": "inflate",
+      "evidence": "Complete method reviewed. GZIP magic/header/trailer handling, raw Inflater initialization, inflate destination and reset in success/failure; preserve wrong-guard static clear and wrapped exceptions.",
       "confidence": "reviewed"
     },
     {
@@ -602,6 +791,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 5f69cd34036a7d158157b51b443f5350cbd79c3682a0909f69f4b8e73dac82f4.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.a(Ljava/lang/Throwable;Ljava/lang/String;)Lac;",
+      "originalName": "a",
+      "to": "wrapException",
+      "evidence": "Complete wrapper reviewed: new ClientException for plain Throwable, otherwise append space+context to same wrapper. Preserve cause and object identity.",
       "confidence": "reviewed"
     },
     {
@@ -1018,6 +1214,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sj.a(ZI[B)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete main body and exception tail context reviewed. Null passthrough; above threshold allocate/fill direct store; otherwise optional copy or same array. Preserve byte identity and threshold semantics.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sk.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1036,6 +1239,34 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 3 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 0df07c80134c10e7a7a35e449bffa775b4cf1f18bcf1a5ea96544a36bd419f33.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:te.a(IILjava/lang/CharSequence;Z)Z",
+      "originalName": "a",
+      "to": "isValidRadixInteger",
+      "evidence": "Complete body reviewed: radix2..36, optional leading plus, minus, character-digit conversion, overflow check and at-least-one-digit test. Preserve wrong guard returntrue and radix exception.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:te.a(ILjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "attach",
+      "evidence": "Complete abstract declaration or implementation reviewed: registers this wheel listener on component, retaining wrong-guard accumulator write.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:te.a(Ljava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "detach",
+      "evidence": "Complete abstract declaration or implementation reviewed: unregisters wheel listener; preserve guard-dependent null event callback.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:te.b(I)I",
+      "originalName": "b",
+      "to": "pollRotation",
+      "evidence": "Complete abstract declaration or synchronized implementation reviewed: copies accumulated rotations, zeroes counter before arithmetic guard, returns value.",
       "confidence": "reviewed"
     },
     {
@@ -1088,10 +1319,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vc.a(IIIIIII)Z",
+      "originalName": "a",
+      "to": "containsPoint",
+      "evidence": "Complete rectangle predicate reviewed: half-open X/Y extents, invalid guard returntrue. Preserve endpoint tests and overflow behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vd.e(I)V",
       "originalName": "e",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 6 null writes to 6 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 693637b495dfd4316f3f7436e8208d08ae2a09e0a967cb5800992a9ceab281ed.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vf.a(B)[B",
+      "originalName": "a",
+      "to": "getBytes",
+      "evidence": "Complete abstract declaration/implementation and ce consumer reviewed. Direct implementation allocates new capacity-length array and copies after resetting buffer position; preserve wrong-guard null setter before copy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vf.a(IIC)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "repeatChar",
+      "evidence": "Complete body reviewed. Allocate char[count], fill with requested character and construct String; preserve allocation before wrong-guard null return.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vf.a([BB)V",
+      "originalName": "a",
+      "to": "setBytes",
+      "evidence": "Complete abstract declaration/implementation and sj consumer reviewed. Direct implementation allocates capacity before113guard then resets position/fills bytes. Preserve partial state and exceptions.",
       "confidence": "reviewed"
     },
     {
@@ -1139,7 +1398,7 @@
   ],
   "classNameLiterals": {
     "policy": "direct-owned-class-for-name",
-    "expectedEdits": 0
+    "expectedEdits": 1
   },
   "labels": {
     "policy": "lexical-targets",
@@ -1153,7 +1412,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-36cardtrick-rules.mjs": "50dbdca01ccbc37049448a6c5673dcd1f8af792b0cf93f16ef76c7ac2de01d53",
-      "36cardtrick-names.json": "016bac909ac3d5a0a22083e79cd8b6a4998783ab25df5429b8fae956d86a2d9f",
+      "36cardtrick-names.json": "5abdd5d9bc4df787c51a9f7a7a99a47e3d860de48b6aa02851a890143be8f5e7",
       "reproduce-36cardtrick.mjs": "d69474327fda28f59b518411a57d253a7dc723b2c7cebec47cdf1a89a48a54b6",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
