@@ -388,6 +388,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cd.$cfr$lcmp(JJ)I",
+      "originalName": "$cfr$lcmp",
+      "to": "compareLongs",
+      "evidence": "Complete private static declaration/body source reviewed and exactly checked against archived pinned source. Signed64-bit comparison returning-1/0/1 without subtracting operands; preserve full long range and argument order. Pure comparison with no allocation/state/side effects; preserve all operators, result constants, operand types and caller behavior. No replacement of the comparison implementation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ce.$cfr$sneakyThrow(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;",
       "originalName": "$cfr$sneakyThrow",
       "to": "throwUnchecked",
@@ -651,6 +658,13 @@
       "originalName": "b",
       "to": "pollRotation",
       "evidence": "Complete concrete synchronized body and abstract declaration reviewed. Returns old accumulator and stores the caller-provided replacement value, rather than unconditionally resetting to zero. Preserve exact read/write/guard order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ji.$cfr$dcmpg(DD)I",
+      "originalName": "$cfr$dcmpg",
+      "to": "compareDoublesNaNResultPositive",
+      "evidence": "Complete private static declaration/body source reviewed and exactly checked against archived pinned source. Double comparisons return+1 when either operand is NaN, compare signed zeros equal, and preserve original relational/infinity behavior. Pure comparison with no allocation/state/side effects; preserve all operators, result constants, operand types and caller behavior. No replacement of the comparison implementation.",
       "confidence": "reviewed"
     },
     {
@@ -1468,7 +1482,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-fleacircus-rules.mjs": "3571dfc1819af06339a362abfbbea0548fcee4d30cc87325631cf51df11ca831",
-      "fleacircus-names.json": "014003e88f2129f98bbb68c86e4e1f9af904a2d362c698529c6476a75762d975",
+      "fleacircus-names.json": "6b2b7b049a73ffe56c919e090a5c81a63af59151f0a3d71ffb828a02df0aca69",
       "reproduce-fleacircus.mjs": "f9b33bab5d0ce8492e00e3654e2ea6dd17c6e6fa2ad9d811f295323e567ca043",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

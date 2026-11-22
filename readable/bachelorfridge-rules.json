@@ -871,6 +871,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:eq",
+      "originalName": "eq",
+      "to": "AccountServiceResult",
+      "evidence": "Complete class instance fields and sole boolean constructor reviewed with account-creation result UI, error/suggestion factories and cached string-query/creation-result consumers. Plain mutable result holds success flag, secondary success/action flag, status code, message and String[] suggestions; constructor sets success only. Preserve all data defaults/aliases and unrelated static battle activation/assets/messages. Result-valued method declarations are all non-native and no exact owned class-name literal was found.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:er",
       "originalName": "er",
       "to": "FlirtAnimation",
@@ -3808,6 +3815,13 @@
       "originalName": "a",
       "to": "createAnimation",
       "evidence": "Abstract hook that each update implements to build its animation node for a gj. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ck.$cfr$lcmp(JJ)I",
+      "originalName": "$cfr$lcmp",
+      "to": "compareLongs",
+      "evidence": "Complete private static declaration/body source reviewed and exactly checked against archived pinned source. Signed64-bit comparison returning-1/0/1 without subtracting operands; preserve full long range and argument order. Pure comparison with no allocation/state/side effects; preserve all operators, result constants, operand types and caller behavior. No replacement of the comparison implementation.",
       "confidence": "reviewed"
     },
     {
@@ -7934,6 +7948,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nna.$cfr$intArgs$a$262119530e06(IZ)Leq;",
+      "originalName": "$cfr$intArgs$a$262119530e06",
+      "to": "createAccountSuccessResultWithIntGuard",
+      "evidence": "Complete full-int and narrow factory bodies reviewed against account-result constructor, error/suggestion factories and creation UI. Same success-result allocation/flag copy, retaining full int guard arithmetic/overflow/division before allocation; never narrow or merge the int argument.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nna.a(BZ)Leq;",
+      "originalName": "a",
+      "to": "createAccountSuccessResult",
+      "evidence": "Complete narrow and generated int factory bodies, result constructor/state and account UI consumers reviewed. Constructs a result with success=true, copies caller boolean to secondary success flag; guard division happens before allocation. Preserve byte domain, overflow/division exceptions, flag identity and exact allocation/write order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nna.c(B)Z",
       "originalName": "c",
       "to": "isFinished",
@@ -10377,6 +10405,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vb.$cfr$clinit()V",
+      "originalName": "$cfr$clinit",
+      "to": "initializeSoftReferenceReflection",
+      "evidence": "Complete private static initializer helper and its sole class-initializer call site reviewed. Allocates24-element scratch int[] before looking up external java.lang.ref.SoftReference, its Object constructor and zero-argument get method. Preserve lookup order/null varargs, exact constructor/getter cache writes, each caught ClassNotFoundException/NoSuchMethodException clearing only constructor cache, retained getter state, and all other propagated failures. Unrelated instance drawing/state remains unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vb.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -11037,7 +11072,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bachelorfridge-rules.mjs": "8390f3de6e0244f7bf1a68a29aa68a5a875b43f3235447749a1c859d16a0e9ba",
-      "bachelorfridge-names.json": "6e19a504687d9c0203e4652505a4f3b7e1fd4a24788668c5885d3843ee110b4f",
+      "bachelorfridge-names.json": "4aca258b582e2e6a42633d2cd0eae496f8733cf96a06d34867f8a85f481c862b",
       "reproduce-bachelorfridge.mjs": "bff3085f7454966836d48cef4d2eef12f1dd24f27ae1c8d41f345cf2cf9298c6",
       "bachelorfridge-name-api.mjs": "9702a1ed42207a4f8008df7def6a17fc6b6c23bf7007709a03e90792c13810a8",
       "bachelorfridge-names.mjs": "18c3a67e19c5c3506941b2b00066ce8a6ef3c5b67ffc9cf35518897a1adb43c0",
