@@ -21,9 +21,26 @@ const members = {};
 const field = (owner, original, descriptor, to, evidence) =>
   members[`F:${owner}.field_${original}:${descriptor}`] = {to, evidence};
 
+// Source-reviewed original identities and evidence, including owned static cleanup.
+const names = JSON.parse(fs.readFileSync(new URL('./bouncedown-names.json', import.meta.url), 'utf8'));
+for (const [owner, to, evidence] of names.classes) {
+  if (classes[owner]) throw new Error('Class already reviewed: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of names.methods) {
+  const symbol = `M:${owner}.${original}${descriptor}`;
+  if (members[symbol]) throw new Error('Method already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+for (const [owner, original, descriptor, to, evidence] of names.fields) {
+  const symbol = `F:${owner}.${original}:${descriptor}`;
+  if (members[symbol]) throw new Error('Field already reviewed: ' + symbol);
+  members[symbol] = {to, evidence};
+}
+
 export const bouncedownConfig = {
   game: 'bouncedown', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
-  workflowFiles: ['build-bouncedown-rules.mjs', 'reproduce-bouncedown.mjs', 'reviewed-game.mjs',
+  workflowFiles: ['build-bouncedown-rules.mjs', 'bouncedown-names.json', 'reproduce-bouncedown.mjs', 'reviewed-game.mjs',
     'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
   verifyCore: async () => ({status: 'not-run', reason: 'No game-specific reconstruction or test in this naming wave.'}),
   readingGuide(rules, mapping) {
