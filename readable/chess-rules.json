@@ -346,6 +346,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:hc",
+      "originalName": "hc",
+      "to": "SecondaryNodeDequeIterator",
+      "evidence": "Complete constructor/hasNext/next/remove and all three instance fields independently reviewed. Traverse one secondary-link sentinel chain from the owning deque,advance the pending node before exposing result,and track the last node for removal. Preserve sentinel-end null return,cursor/last-node writes,subsequent exhausted-state behavior,IllegalStateException gating and exact unlink guards/exceptions. Complete constructor and instance operations reviewed with all selected state-field roles. Preserve original modifiers,guards,exceptions,partial effects and protocol names. No native owner/type-use declarations or exact quoted class literals. Identifier-only change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ik",
+      "originalName": "ik",
+      "to": "NodeHashTableIterator",
+      "evidence": "Complete constructor/reset/hasNext/next/remove and all four instance fields independently reviewed. Traverse circular primary-link bucket sentinels with a mutable next-bucket index and chain cursor. hasNext may advance state;next returns null at exhaustion and retains the original last-returned state on that path. remove requires a last node,invokes exact original unlink guard,then clears last-returned. Preserve global reads,exception wrappers,null/array failures and every partial reset. Complete constructor and instance operations reviewed with all selected state-field roles. Preserve original modifiers,guards,exceptions,partial effects and protocol names. No native owner/type-use declarations or exact quoted class literals. Identifier-only change.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ja",
       "originalName": "ja",
       "to": "DirectByteStorage",
@@ -364,6 +378,13 @@
       "originalName": "ke",
       "to": "IsaacCipher",
       "evidence": "Constructed from an int[] seed; hands out 256 results per batch from a countdown index and regenerates when it is exhausted.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:l",
+      "originalName": "l",
+      "to": "DualLinkNode",
+      "evidence": "Extends readable IntrusiveNode with independently spliced secondary links and secondary hash key. All four instance operations and empty constructor reviewed,including guarded failures. dk constructor/hash traversal and insertion prove key and edge roles. Complete constructor and instance operations reviewed with all selected state-field roles. Preserve original modifiers,guards,exceptions,partial effects and protocol names. No native owner/type-use declarations or exact quoted class literals. Identifier-only change.",
       "confidence": "reviewed"
     },
     {
@@ -500,6 +521,55 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "F:hc.field_a:Lcn;",
+      "originalName": "field_a",
+      "to": "deque",
+      "evidence": "Role traced through the complete constructor,reset if present,hasNext,next and remove instance bodies. Preserve declaration modifiers,defaults,duplicate/partial writes,aliasing,exhaustion and all guarded failure states. Exact declaration and complete constructor/instance consumers reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_c:Ll;",
+      "originalName": "field_c",
+      "to": "nextNode",
+      "evidence": "Role traced through the complete constructor,reset if present,hasNext,next and remove instance bodies. Preserve declaration modifiers,defaults,duplicate/partial writes,aliasing,exhaustion and all guarded failure states. Exact declaration and complete constructor/instance consumers reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:hc.field_f:Ll;",
+      "originalName": "field_f",
+      "to": "lastReturned",
+      "evidence": "Role traced through the complete constructor,reset if present,hasNext,next and remove instance bodies. Preserve declaration modifiers,defaults,duplicate/partial writes,aliasing,exhaustion and all guarded failure states. Exact declaration and complete constructor/instance consumers reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ik.field_c:Lo;",
+      "originalName": "field_c",
+      "to": "nextNode",
+      "evidence": "Role traced through the complete constructor,reset if present,hasNext,next and remove instance bodies. Preserve declaration modifiers,defaults,duplicate/partial writes,aliasing,exhaustion and all guarded failure states. Exact declaration and complete constructor/instance consumers reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ik.field_d:Lo;",
+      "originalName": "field_d",
+      "to": "lastReturned",
+      "evidence": "Role traced through the complete constructor,reset if present,hasNext,next and remove instance bodies. Preserve declaration modifiers,defaults,duplicate/partial writes,aliasing,exhaustion and all guarded failure states. Exact declaration and complete constructor/instance consumers reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ik.field_h:I",
+      "originalName": "field_h",
+      "to": "nextBucketIndex",
+      "evidence": "Role traced through the complete constructor,reset if present,hasNext,next and remove instance bodies. Preserve declaration modifiers,defaults,duplicate/partial writes,aliasing,exhaustion and all guarded failure states. Exact declaration and complete constructor/instance consumers reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:ik.field_j:Lbl;",
+      "originalName": "field_j",
+      "to": "table",
+      "evidence": "Role traced through the complete constructor,reset if present,hasNext,next and remove instance bodies. Preserve declaration modifiers,defaults,duplicate/partial writes,aliasing,exhaustion and all guarded failure states. Exact declaration and complete constructor/instance consumers reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "F:ja.field_d:Ljava/nio/ByteBuffer;",
       "originalName": "field_d",
       "to": "buffer",
@@ -546,6 +616,27 @@
       "originalName": "field_w",
       "to": "queueHead",
       "evidence": "Payload/lifecycle or dispatcher queue/thread/vendor/permission role traced through complete instance contract. Exact declaration and complete constructor/queue/worker/wrapper/shutdown consumers reviewed; retain public/private/volatile/defaults and every guarded/monitored read/write/alias.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:l.field_l:J",
+      "originalName": "field_l",
+      "to": "secondaryKey",
+      "evidence": "Long key read/set by node accessor bodies;dk hashes input key into bucket,compares this field for lookup/duplicate continuation,and writes it on secondary-chain insertion. Exact declaration and complete constructor/instance consumers reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:l.field_m:Ll;",
+      "originalName": "field_m",
+      "to": "secondaryPrevious",
+      "evidence": "Secondary predecessor used for membership and setter exclusion;reciprocal splice proved by node and dk hash insertion. Exact declaration and complete constructor/instance consumers reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:l.field_p:Ll;",
+      "originalName": "field_p",
+      "to": "secondaryNext",
+      "evidence": "Secondary successor followed by deque iterator and dk secondary-key hash bucket chains;reciprocal splice proved by complete node/table bodies. Exact declaration and complete constructor/instance consumers reviewed;preserve defaults,visibility,mutability,aliasing and every guard-dependent/partial write sequence.",
       "confidence": "reviewed"
     },
     {
@@ -1207,6 +1298,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ik.a(I)V",
+      "originalName": "a",
+      "to": "reset",
+      "evidence": "Set next-bucket index1 before evaluating-7/((12-intGuard)/54);only afterward set next node from bucket0.previous and clear last-returned. Preserve overflow/arithmetic exception after index write and before cursor reset. Complete owning iterator constructor and JDK protocol methods reviewed;preserve protocol method names and all field read/write,exception and call ordering. Complete owning constructor/protocol or node operations reviewed. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Naming only;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ik.b(I)Laj;",
       "originalName": "b",
       "to": "pollAccountCreationResult",
@@ -1393,6 +1491,34 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 8e30e8316d51a050dd7ad5941655a0fe9453e11ed50ae58e8c935b1b52b7d785.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:l.a(I)J",
+      "originalName": "a",
+      "to": "getSecondaryKey",
+      "evidence": "Int0 returns secondaryKey;all other ints return-20L without reading it. Preserve guarded sentinel return. Complete owning constructor/protocol or node operations reviewed. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Naming only;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:l.a(JB)V",
+      "originalName": "a",
+      "to": "setSecondaryKey",
+      "evidence": "Throw bare RuntimeException if secondaryPrevious nonnull before any write. Otherwise store long argument;byte71 returns,other bytes overwrite key with-17L. Preserve throw/write/overwrite order. Complete owning constructor/protocol or node operations reviewed. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Naming only;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:l.d(I)V",
+      "originalName": "d",
+      "to": "unlinkSecondary",
+      "evidence": "If secondaryPrevious null return;splice both secondary neighbors,clear secondaryPrevious,then only int-1 clears secondaryNext;other guards leave successor stale. Complete owning constructor/protocol or node operations reviewed. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Naming only;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:l.e(I)Z",
+      "originalName": "e",
+      "to": "isSecondaryLinked",
+      "evidence": "Return false if secondaryPrevious null;otherwise return false unless int-4,then true. Preserve guarded membership result. Complete owning constructor/protocol or node operations reviewed. Preserve original argument widths/domains,overflow,guards,partial reads/writes,aliases,call/allocation/exception order and modifier/override relationships. Naming only;no whole-runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2315,7 +2441,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-chess-rules.mjs": "96e89726e9752b6c32c9c36b36b5bed50f637c08bf0e2c3963477590a7927127",
-      "chess-names.json": "7edd0ee8052a72f450b18e7122d9a38878366f27203068ef49db323047e0d6d7",
+      "chess-names.json": "188eee01fefde88a81eb2cfa23369ab1260d354d0c9d27d41547cc1d6502faff",
       "reproduce-chess.mjs": "83586202a6788e331bbadf9d01041fd32d100e7110eccafcbf80b4a91364ad46",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
