@@ -4847,6 +4847,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pr",
+      "originalName": "pr",
+      "to": "OpenGlShader",
+      "evidence": "Complete class plus ToolkitModel.compileShader and PasswordValidator.linkShaderProgram reviewed: stores compiled shader handle/toolkit, linker attaches these handles, finalizer queues shader object deletion then calls super. Preserve ignored constructor shader-type int, unrelated mask helper, login form helper, strings and guards.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ps",
       "originalName": "ps",
       "to": "MovingPlatformComponent",
@@ -11242,6 +11249,20 @@
       "originalName": "field_l",
       "to": "end",
       "evidence": "PendingEvent.decode sets it to start + 50 * duration.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pr.field_a:Lkda;",
+      "originalName": "field_a",
+      "to": "toolkit",
+      "evidence": "Constructor stores toolkit used for queued shader deletion; preserve reference/lifetime.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:pr.field_c:J",
+      "originalName": "field_c",
+      "to": "handle",
+      "evidence": "Compiled glCreateShaderObjectARB handle returned by compileShader, attached/detached by linker, queued for deletion by finalizer; preserve every long value and lifetime.",
       "confidence": "reviewed"
     },
     {
@@ -30019,6 +30040,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gja.I(I[IIIIZI[I)V",
+      "originalName": "I",
+      "to": "applyMaskedTransform",
+      "evidence": "Base masked/unmasked animation dispatch plus complete software492/OpenGL795/hardware820line implementations reviewed. Supports pivot/translation/rotation/scaling with optional15int matrix and per-vertex masks, masked face alpha/HSL updates and billboard transforms. Preserve software lazy Q4 shifts and ignored boolean, GPU optional normal rotation, material-colour differences, integer overflow/rounding, every debug/exception branch and original selective invalidation. Billboard8/9/10paths do not apply per-element masks; retain that behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gja.NA()Z",
       "originalName": "NA",
       "to": "prepareAnimation",
@@ -30117,10 +30145,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gja.b(I)V",
+      "originalName": "b",
+      "to": "releaseUnusedCpuArrays",
+      "evidence": "Complete222line body reviewed. Equivalent hardware CPU-array retention checks against buffer readiness, calculates bounds first, preserves palette/mapping/group arrays based on original masks. Keep arithmetic guard late in cleanup, retry and all debug paths; no GPU resource release added.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gja.c(B)Z",
       "originalName": "c",
       "to": "uploadVertexBuffers",
       "evidence": "Refills every dirty vertex stream buffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gja.c(I)V",
+      "originalName": "c",
+      "to": "drawBillboards",
+      "evidence": "Complete body, draw callers and HardwareModelBillboard types reviewed. Disables depth writes/lighting, derives face-centred billboard transform, binds material/blend/colour and draws unit quad; skips original bloom-suppressed records and restores combine/depth state as implemented. Preserve transform arithmetic, reciprocal length behavior and guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gja.d(B)V",
+      "originalName": "d",
+      "to": "invalidateNormalBuffer",
+      "evidence": "Complete body and masked normal rotation callers plus uploadVertexBuffers copyNormals/copyLighting reviewed. Clears normal-stream uploaded flag when present; otherwise clears CPU-lit colour stream, using original55mask and debug behavior. Keep division guard and all null handling.",
       "confidence": "reviewed"
     },
     {
@@ -32616,6 +32665,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:hg.b(I)Z",
+      "originalName": "b",
+      "to": "canDiscardCpuData",
+      "evidence": "Complete HardwareModelVertexStream class and all12getter callers in hardware CPU-array cleanup reviewed: returns uploaded flag && !retention flag. Preserve wrong-guard string clearing, flag short-circuit order, constructor/copy ownership and release behavior; no new freeing or upload logic.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hg.c(I)V",
       "originalName": "c",
       "to": "release",
@@ -33789,6 +33845,13 @@
       "originalName": "H",
       "to": "translate",
       "evidence": "Complete three Java implementations and model-position callers reviewed: adds three supplied offsets to corresponding coordinates; preserve per-axis permission checks, zero shortcuts, synchronization, debug-loop behavior and invalidation differences. Native declaration inspected; role follows shared override contract/callers and Java implementations. Native body equivalence not established; keep native modifier, descriptor and original symbol in dictionary.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:i.I(I[IIIIZI[I)V",
+      "originalName": "I",
+      "to": "applyMaskedTransform",
+      "evidence": "Base masked/unmasked animation dispatch plus complete software492/OpenGL795/hardware820line implementations reviewed. Supports pivot/translation/rotation/scaling with optional15int matrix and per-vertex masks, masked face alpha/HSL updates and billboard transforms. Preserve software lazy Q4 shifts and ignored boolean, GPU optional normal rotation, material-colour differences, integer overflow/rounding, every debug/exception branch and original selective invalidation. Billboard8/9/10paths do not apply per-element masks; retain that behavior. Native declaration inspected; role inferred from shared override contract and Java implementations, not native-body equivalence. Preserve native modifier/descriptor and original symbol in dictionary.",
       "confidence": "reviewed"
     },
     {
@@ -38146,6 +38209,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jv.d(I)I",
+      "originalName": "d",
+      "to": "getSelectionMenuWidth",
+      "evidence": "Complete getter and menu frame/item renderer reviewed: returns right-left bounds after original division guard. No changes to bounds, validation or negative sizes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jva.a()V",
       "originalName": "a",
       "to": "onRemoved",
@@ -38262,6 +38332,13 @@
       "originalName": "H",
       "to": "translate",
       "evidence": "Complete three Java implementations and model-position callers reviewed: adds three supplied offsets to corresponding coordinates; preserve per-axis permission checks, zero shortcuts, synchronization, debug-loop behavior and invalidation differences. Abstract declaration and animation/position callers reviewed; keep abstract contract and all implementations consistent.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ka.I(I[IIIIZI[I)V",
+      "originalName": "I",
+      "to": "applyMaskedTransform",
+      "evidence": "Base masked/unmasked animation dispatch plus complete software492/OpenGL795/hardware820line implementations reviewed. Supports pivot/translation/rotation/scaling with optional15int matrix and per-vertex masks, masked face alpha/HSL updates and billboard transforms. Preserve software lazy Q4 shifts and ignored boolean, GPU optional normal rotation, material-colour differences, integer overflow/rounding, every debug/exception branch and original selective invalidation. Billboard8/9/10paths do not apply per-element masks; retain that behavior.",
       "confidence": "reviewed"
     },
     {
@@ -44761,6 +44838,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mi.a(I)V",
+      "originalName": "a",
+      "to": "drawSelectionMenuItems",
+      "evidence": "Complete body and menu frame/input context reviewed. Centres existing bounds, draws header/option labels and selected/unselected frames based on MenuInputState.selectedIndex. Preserve guard after bounds mutation, item arrays/spacing, debug loop behavior and failures.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mi.a(I[Lela;)Lbfa;",
       "originalName": "a",
       "to": "evaluate",
@@ -46434,6 +46518,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:np.I(I[IIIIZI[I)V",
+      "originalName": "I",
+      "to": "applyMaskedTransform",
+      "evidence": "Base masked/unmasked animation dispatch plus complete software492/OpenGL795/hardware820line implementations reviewed. Supports pivot/translation/rotation/scaling with optional15int matrix and per-vertex masks, masked face alpha/HSL updates and billboard transforms. Preserve software lazy Q4 shifts and ignored boolean, GPU optional normal rotation, material-colour differences, integer overflow/rounding, every debug/exception branch and original selective invalidation. Billboard8/9/10paths do not apply per-element masks; retain that behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:np.NA()Z",
       "originalName": "NA",
       "to": "prepareAnimation",
@@ -46462,10 +46553,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:np.a(BZ)V",
+      "originalName": "a",
+      "to": "uploadIndexBuffer",
+      "evidence": "Complete body/callers reviewed. Serializes three ushort triangle indices in toolkit byte order, reuses dynamic index array or allocates static one, assigns draw index array. Preserve byte guard invalid transform call, buffer resizing, dynamic/static branch fallthrough and null/zero behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.a(IIBSI)I",
+      "originalName": "a",
+      "to": "computeFaceRgba",
+      "evidence": "Complete body and per-face vertex-colour upload callers reviewed. HSL/lightness palette conversion, original material blend/brightness modifiers and clamp, packs RGB<<8 plus255-alpha. Preserve debug branches, primitive overflow and wrong-guard unlockForUpdate side effect.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:np.a(IIII)V",
       "originalName": "a",
       "to": "tintColours",
       "evidence": "Moves every face colour's hue, saturation and lightness toward the targets by amount/128. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.a(IZ)V",
+      "originalName": "a",
+      "to": "uploadVertexBuffers",
+      "evidence": "Complete548line body reviewed. Chooses dirty position/colour/normal/UV attributes, packs interleaved stride in native byte order, computes lighting when needed, creates/reuses vertex buffer and assigns per-attribute offsets. Preserve mask/dynamic flags, byte stride narrowing, allocation/serialization order, all debug fallthrough, partial failures and cache flags.",
       "confidence": "reviewed"
     },
     {
@@ -46497,6 +46609,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:np.a(Z)V",
+      "originalName": "a",
+      "to": "drawMaterialBatches",
+      "evidence": "Complete body and draw/drawAtFixedDepth callers reviewed. Ensures required vertex/index buffers, binds arrays/lighting/materials, draws indexed face ranges and releases discardable CPU arrays. Separate existing renderBuffers helper draws billboards and remains named as before. Preserve all flags and early exits.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:np.a(ZIZILnp;Lnp;)Lka;",
       "originalName": "a",
       "to": "copyInto",
@@ -46515,6 +46634,20 @@
       "originalName": "b",
       "to": "renderBuffers",
       "evidence": "Binds the vertex arrays and draws the faces.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.b(I)V",
+      "originalName": "b",
+      "to": "drawSelectionMenu",
+      "evidence": "Complete static helper and pka render caller, menu item renderer/width/height/visibility helpers reviewed. Draws selection menu frame then items; guard may clear unrelated archive. Preserve frame padding/coordinates and item-layout timing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.c(B)V",
+      "originalName": "c",
+      "to": "releaseUnusedCpuArrays",
+      "evidence": "Complete214line body reviewed. Discards CPU coordinates/normal/colour/alpha/UV/index/group arrays only under existing retention masks and uploaded-buffer conditions, computes bounds before releasing needed coordinates, preserves retry flag. Keep guard arithmetic, debug alternatives, order and partial clears.",
       "confidence": "reviewed"
     },
     {
@@ -48244,6 +48377,13 @@
       "originalName": "d",
       "to": "onResizeFinished",
       "evidence": "Called when the resize animation has finished. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ofa.d(Z)Z",
+      "originalName": "d",
+      "to": "isSelectionMenuOpen",
+      "evidence": "Complete getter and pka selection menu render branch plus qfa close helper reviewed. Returnsfalse for false guard, otherwise existing menu-open flag. Preserve absence of any new true-setting path.",
       "confidence": "reviewed"
     },
     {
@@ -52101,6 +52241,13 @@
       "originalName": "a",
       "to": "openAccountRegistration",
       "evidence": "Creates an AccountRegistrationPanel and adds it to the root widget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qfa.a(I)V",
+      "originalName": "a",
+      "to": "closeSelectionMenu",
+      "evidence": "Complete helper and kc selection-menu activation handler reviewed: clears menu-open flag and conditionally clears unrelated hint string. Preserve exact guard and partial effects; no input/selection state reset added.",
       "confidence": "reviewed"
     },
     {
@@ -66783,6 +66930,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ww.I(I[IIIIZI[I)V",
+      "originalName": "I",
+      "to": "applyMaskedTransform",
+      "evidence": "Base masked/unmasked animation dispatch plus complete software492/OpenGL795/hardware820line implementations reviewed. Supports pivot/translation/rotation/scaling with optional15int matrix and per-vertex masks, masked face alpha/HSL updates and billboard transforms. Preserve software lazy Q4 shifts and ignored boolean, GPU optional normal rotation, material-colour differences, integer overflow/rounding, every debug/exception branch and original selective invalidation. Billboard8/9/10paths do not apply per-element masks; retain that behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ww.NA()Z",
       "originalName": "NA",
       "to": "prepareAnimation",
@@ -67105,6 +67259,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:za.a(I)I",
+      "originalName": "a",
+      "to": "getSelectionMenuHeight",
+      "evidence": "Complete getter and selection menu frame/layout consumers reviewed: returns aa.field_c for expected guard, otherwise12. Retain sentinel rather than replacing with computed value.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:za.a(IBII)I",
       "originalName": "a",
       "to": "clamp",
@@ -67142,7 +67303,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "68b7bb879bb076e98186912276c13d13ad41bc1e02787faa114a31f8256b4832",
+      "tombracer-names.json": "c41ff3bed93ee82877913a922929a9f0597d7d949b43c3c7103da271f54b2b30",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
