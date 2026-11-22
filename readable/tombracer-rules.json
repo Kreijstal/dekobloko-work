@@ -1963,6 +1963,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fd",
+      "originalName": "fd",
+      "to": "OpenGlModelBillboardState",
+      "evidence": "Complete class/constructors/copy/copyFrom and OpenGL model construction consumers reviewed. Mutable billboard colour and128-based transform state. Keep null-sentinel copy guard, partial effects, duplicate static clearing and unrelated chat-target global.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fe",
       "originalName": "fe",
       "to": "DateFieldsWidget",
@@ -2180,6 +2187,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fw",
+      "originalName": "fw",
+      "to": "BillboardDefinitionCache",
+      "evidence": "Complete class reviewed: cache lookup by definition id, archive(group0,id) read on miss, construct/decode optional bytes, insert/reuse definition. Keep caller boolean, default-on-missing behavior, recursive cleanup and unrelated TAB string.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:g",
       "originalName": "g",
       "to": "RoomDefinition",
@@ -2205,6 +2219,13 @@
       "originalName": "gba",
       "to": "StringListNode",
       "evidence": "Node holding one decoded string list; GameAssetLoader collects them into a table.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:gca",
+      "originalName": "gca",
+      "to": "HardwareModelBillboardState",
+      "evidence": "Complete class/constructors/copy/copyFrom and hardware-model construction consumers reviewed. Mutable billboard colour and128-based transform state. Preserve all guard side effects, copy ordering and unrelated tooltip/death-message/UI statics.",
       "confidence": "reviewed"
     },
     {
@@ -2569,6 +2590,13 @@
       "originalName": "hn",
       "to": "MazeComponent",
       "evidence": "Abstract base of exactly the three components labelled \"Maze: Platforms\", \"Maze: Pushable Blocks\" and \"Maze: All Platforms\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:hna",
+      "originalName": "hna",
+      "to": "SoftwareModelBillboard",
+      "evidence": "Complete class, constructor and software-model consumers reviewed. Fixed face-billboard data stores face index, narrowed dimensions/material/modes, replacement flag and original extra integer. Unused constructor vertex parameters and unrelated task/global cleanup remain.",
       "confidence": "reviewed"
     },
     {
@@ -3139,6 +3167,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jt",
+      "originalName": "jt",
+      "to": "ModelBillboardAttachment",
+      "evidence": "Complete constructor/copy and ModelData merge plus all model attachment consumers reviewed. Retains definition id and mesh face index plus two other original attachment integers. Face index addresses colour and triangle-index arrays, not a vertex offset.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jta",
       "originalName": "jta",
       "to": "DialogStack",
@@ -3580,6 +3615,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ll",
+      "originalName": "ll",
+      "to": "HardwareModelBillboard",
+      "evidence": "Complete class/constructor and hardware model construction consumers reviewed. Face-billboard record retains resolved face and vertex indices, narrowed dimensions/material/modes and original flag/extra integer. Preserve ignored boolean parameter and unrelated main-room lookup/cleanup/globals.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:lm",
       "originalName": "lm",
       "to": "ColourFillOperator",
@@ -3619,6 +3661,13 @@
       "originalName": "loa",
       "to": "MazeGenerator",
       "evidence": "Abstract class lba instantiates per type id, throwing \"Unrecognised maze gen type\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lp",
+      "originalName": "lp",
+      "to": "BillboardDefinition",
+      "evidence": "Complete decoder/opcodes/default constructor reviewed, with model consumers. Cached face-sprite definition supplies material id, two dimensions, rendering modes and flags to software/OpenGL/hardware records and native int-array packing. Static console tokenizer/menu globals remain unrelated and unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -4112,6 +4161,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nsa",
+      "originalName": "nsa",
+      "to": "SoftwareModelBillboardState",
+      "evidence": "Complete class/constructors/copy/copyFrom and software model draw/transform consumers reviewed. Mutable billboard colour,128-based scale/offset/angle state and projected screen/depth geometry. Preserve copy guard mutations, partial copies, initialization and unrelated UI globals.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nta",
       "originalName": "nta",
       "to": "MonsterRemains",
@@ -4529,6 +4585,13 @@
       "originalName": "pla",
       "to": "IntIntHashTable",
       "evidence": "Open-addressing table of key/value int pairs; lookup probes from key & mask until a -1 slot.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pm",
+      "originalName": "pm",
+      "to": "OpenGlModelBillboard",
+      "evidence": "Complete class/constructor and OpenGL model construction consumers reviewed. Fixed face-billboard record retains resolved face/vertex indices, narrowed dimensions/material/modes and original flag/extra integer. Preserve ignored boolean, primitive narrowing and unrelated static arrays/cleanup.",
       "confidence": "reviewed"
     },
     {
@@ -9373,6 +9436,20 @@
       "originalName": "field_j",
       "to": "gunshotDeathMessages",
       "evidence": "Static initialiser fills it with \"<%0>\" message variants starting \"<%0> ate lead\".",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jt.field_a:I",
+      "originalName": "field_a",
+      "to": "faceIndex",
+      "evidence": "Constructor and all model/merge consumers reviewed: mesh face index, used to index face colours and the three triangle vertex-index arrays; merge rebases by current face count. Preserve all values and indexing.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "F:jt.field_d:I",
+      "originalName": "field_d",
+      "to": "definitionId",
+      "evidence": "Constructor, cache lookup and native/software/OpenGL/hardware consumers reviewed: key supplied to billboard definition getter. Preserve all values, including unsupported ids and resulting failures.",
       "confidence": "reviewed"
     },
     {
@@ -28766,6 +28843,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fw.a(IZ)Llp;",
+      "originalName": "a",
+      "to": "getDefinition",
+      "evidence": "Complete cache getter reviewed: reuse typed cached result first; otherwise original archive read, default definition allocation, optional decode, cache insertion. Preserve boolean passed to archive, misses, allocation/exception order and all cache identities.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:g.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -37252,8 +37336,8 @@
     {
       "symbol": "M:jt.a(II)Ljt;",
       "originalName": "a",
-      "to": "withVertexOffset",
-      "evidence": "Returns a copy whose vertex index is shifted; ModelData's merging constructor rebases entries with it.",
+      "to": "withFaceIndex",
+      "evidence": "Complete copy/constructor and ModelData merge caller reviewed: supplied param1 is replacement absolute face index. Merge passes prior face index plus current face count; model consumers index face colours and three face-vertex arrays with it. Preserve guard9677 null return and allocation/field-copy behavior; update inaccurate earlier vertex-shift label only.",
       "confidence": "reviewed"
     },
     {
@@ -55884,6 +55968,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sfa.b(IIIIIIIIII)V",
+      "originalName": "b",
+      "to": "drawBillboard",
+      "evidence": "Complete helper and software-model face consumer reviewed: zero half-extents return; eligible material uses last-id/sprite cache, original texture pixels/size and sprite creation, then depth-aware draw at center-minus-half-extents with doubled dimensions. Retain sentinel/metadata fallback helper, null pixels, cache state, all rendering modes and arithmetic. No physical-pixel or native-render equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sfa.b(Ljava/awt/Canvas;II)V",
       "originalName": "b",
       "to": "recreateCanvasBuffer",
@@ -66183,7 +66274,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "db68a0b0ef65a705aa4ffa7db650c15badfb9de35881b75e050b66d3bd0aeceb",
+      "tombracer-names.json": "354d8b487f7a1f73f6d6d4dced6b0325eec932aac71ec5c5bb80988e0f3b781a",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
