@@ -780,6 +780,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ba.a(BJ)V",
+      "originalName": "a",
+      "to": "sleepIgnoringInterrupts",
+      "evidence": "Call Thread.sleep with the original full long delay slot and catch InterruptedException as originally recovered. Retain pre/post sleep guards and side effects,early returns,recursive calls,arithmetic failures,outer unchecked rethrows and checked-Throwable wrapping. Complete original-body SHA256 b589b21a69b3d04999cac5cf6698751874e0b42c11056947ce9c6ecdb6cd6765. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ba.d(B)V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -910,6 +917,13 @@
       "originalName": "a",
       "to": "copyByteRange",
       "evidence": "Complete overlap-aware byte range implementation reviewed: equal-index no-op, forward8-byte blocks/tail and backward overlap8-byte blocks/tail. Preserve arithmetic, bounds/partial-write behavior and pointer order; do not replace with System.arraycopy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cb.a([III)V",
+      "originalName": "a",
+      "to": "clearInts",
+      "evidence": "Zero an int-array segment using the original eight sequential stores per unrolled iteration and scalar tail. Retain start/count arithmetic overflow,null/index exceptions and partial writes;do not substitute a library fill. Complete original-body SHA256 b3d53399488c4b1eb25cb619da620df3b5fedda0a1a29e454ee47e028fd4bdb6. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
       "confidence": "reviewed"
     },
     {
@@ -1172,6 +1186,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fa.a(I)J",
+      "originalName": "a",
+      "to": "correctedCurrentTimeMillis",
+      "evidence": "Read System.currentTimeMillis,apply the original retained correction when the sampled clock goes backwards,update the retained sample and return the corrected time where the original guard permits. Preserve synchronization and every game-specific guard,sentinel,recursive call,arithmetic trap and update order. Complete original-body SHA256 78b46a7b456a852bea613e4dfd98638d70c3c5a6374b5b59eac3669704271202. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fg.a()V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1246,6 +1267,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 2775394d73f2eda156e69eac707a2bbd7cd23545524e5cbef30a440997c71fb7.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.a(ZI)I",
+      "originalName": "a",
+      "to": "countSetBits",
+      "evidence": "Count set bits through the original masked parallel sums and shifts1,2,4,8,16,then low-byte accumulation. Extra arguments may be real stage masks,guard predicates or arithmetic traps;retain every actual slot and all bad-domain side effects/sentinels. Complete original-body SHA256 07ecbfb904cb7369b53a2898b10f4fcf352d848eaa3339b52397d4d32d433e8f. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
       "confidence": "reviewed"
     },
     {
@@ -1442,6 +1470,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields, with parameter guards/returns/braces only. Own-field declaration, qualification and absent parameter/local shadow establish every target; preserve partial/duplicate cleanup and write order. Published pre-rename body SHA256 4b1505042d14bbe428a743ac2fc7bd20544800d01439bcb3b3b02b05f18f5658.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ke.a(II)I",
+      "originalName": "a",
+      "to": "roundUpPowerOfTwo",
+      "evidence": "Round an integer through decrement,OR with unsigned shifts1,2,4,8,16,and increment. Retain exact signed32-bit overflow,all argument positions,guard thresholds,partial evaluation,early returns,field writes and diagnostic wrappers. Complete original-body SHA256 77f1458a29c2d49703bc76ac343492ae35734bbcaa52df672aa7fa7c4cd85b2a. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
       "confidence": "reviewed"
     },
     {
@@ -2103,6 +2138,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wh.a(JI)V",
+      "originalName": "a",
+      "to": "sleepMillis",
+      "evidence": "Retain the guarded millisecond delay helper,including the original delay-1 then1 split for multiples of ten where specified. Preserve parameter-derived threshold/modulo behavior,inner helper arguments,all guard effects,early returns and exception wrappers. Complete original-body SHA256 1327866f2bffcc5e59b9de6c31457e99aaa3278ef905a6d76f08978d90e093a9. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wi.a(BI)V",
       "originalName": "a",
       "to": "backpatchIntLength",
@@ -2385,7 +2427,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-bouncedown-rules.mjs": "2f48a66379a1e9046ebdec2a983954dc4b48f4a3c7642cc7adf3ee7e7b2ad179",
-      "bouncedown-names.json": "5ace48cdd0ffd014b4079f7ae8f0740509b6bce327812c96e2eb5f872ef08443",
+      "bouncedown-names.json": "c4075a79f3ca959a2e608bb3bc17ac812b441b0f6aec30564c41d87119581e0a",
       "reproduce-bouncedown.mjs": "89c194601fe0f7b85ed7428d5b44c4f17fa7d44a38cd1416f73331078232c08f",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

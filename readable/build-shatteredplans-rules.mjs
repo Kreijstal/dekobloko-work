@@ -78,6 +78,10 @@ method("qb", "$cfr$sneakyThrow", "(Ljava/lang/Throwable;)Ljava/lang/RuntimeExcep
 method("r", "$cfr$sneakyThrow", "(Ljava/lang/Throwable;)Ljava/lang/RuntimeException;", "rethrowUnchecked", "Generic unchecked rethrow helper:private static<T extends Throwable>RuntimeException method(Throwable) throws T;the complete body only throws the same parameter cast to T. Preserve the original generic bound,throws signature,private/static modifiers,original Throwable object and null-input failure. No additional operations,allocations,fields or calls. Complete method/signature/parameter bindings reviewed;body SHA256 bfc8b2fb0688c56c9c4fd5c566d5564ac6748cd8834b17718e6a2fb11b59ef56. Naming only;no native or class-name-literal edits.");
 // End reviewed audio output and generated helper contracts.
 
+// Reviewed audio utility helper contracts (audio-utility).
+method("he", "a", "(ZJ)V", "sleepIgnoringInterrupts", "Call Thread.sleep with the original full long delay slot and catch InterruptedException as originally recovered. Retain pre/post sleep guards and side effects,early returns,recursive calls,arithmetic failures,outer unchecked rethrows and checked-Throwable wrapping. Complete original-body SHA256 83328180a1189190584bc777ed639fc9c646fcd5efcae732b9ccd456cf2082ba. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.");
+// End reviewed audio utility helper contracts.
+
 for (const [original, descriptor, to] of [['f', 'Loh;', 'next'], ['e', 'Loh;', 'previous'], ['b', 'J', 'key']])
   field('oh', original, descriptor, to, node);
 field('ob', 'h', '[B', 'payload', 'PacketBuffer byte array indexed by the cursor in every read and write.');

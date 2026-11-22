@@ -7152,8 +7152,8 @@
     {
       "symbol": "M:fh.a(II)I",
       "originalName": "a",
-      "to": "unsignedByte",
-      "evidence": "Masks the supplied integer to its low unsigned byte.",
+      "to": "countSetBits",
+      "evidence": "Correct the misleading unsignedByte name:the complete body implements a parallel population count,not an unsigned-byte conversion. With guard11682,value255 follows the sums to8;masking255 to a byte would return255. Retain the guard-triggered fh.b call for all other arguments. Count set bits through the original masked parallel sums and shifts1,2,4,8,16,then low-byte accumulation. Extra arguments may be real stage masks,guard predicates or arithmetic traps;retain every actual slot and all bad-domain side effects/sentinels. Complete original-body SHA256 cfe1b8f7e0900e4472bef394dc9c5c5d9a4512be3bcd93019477ac922ab5d56f. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction.",
       "confidence": "reviewed"
     },
     {
@@ -16910,7 +16910,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-wizardrun-rules.mjs": "d2852c96ec262bd16637782aca0a81ebe0381014be5b3c7fbf119acb88fd11bd",
-      "wizardrun-names.json": "3b83d1dd77cbdc10e16d07244128d0f1550c55cb2bd4dbf0127495924a2a328f",
+      "wizardrun-names.json": "1f3308e8ba9f75bba5905fadce8e6c9d1950ca612dcaf1c062a1c619b6662a2c",
       "reproduce-wizardrun.mjs": "43cd95464ca7ad195613a316012acd52202dc84e604058ca2c7576aae888d005",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -3822,13 +3822,7 @@
       "processRequestedGroups",
       "Advances explicitly requested group validation/downloads and removes completed entries from the work deque."
     ],
-    [
-      "fh",
-      "a",
-      "(II)I",
-      "unsignedByte",
-      "Masks the supplied integer to its low unsigned byte."
-    ],
+    ["fh","a","(II)I","countSetBits","Correct the misleading unsignedByte name:the complete body implements a parallel population count,not an unsigned-byte conversion. With guard11682,value255 follows the sums to8;masking255 to a byte would return255. Retain the guard-triggered fh.b call for all other arguments. Count set bits through the original masked parallel sums and shifts1,2,4,8,16,then low-byte accumulation. Extra arguments may be real stage masks,guard predicates or arithmetic traps;retain every actual slot and all bad-domain side effects/sentinels. Complete original-body SHA256 cfe1b8f7e0900e4472bef394dc9c5c5d9a4512be3bcd93019477ac922ab5d56f. Naming only;preserve full original JVM parameter widths/domains,all operators/constants/diagnostic strings,integer overflow,FP/cast order,shared aliases,partial writes,allocation/call/exception order,and declared modifiers. No class,field,parameter,local,native or class-name-literal changes. Existing meaningful aliases remain unchanged except the one explicitly reviewed Wizard Run correction."],
     [
       "fh",
       "a",
