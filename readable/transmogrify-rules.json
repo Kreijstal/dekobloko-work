@@ -962,6 +962,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cf.a(Ljava/lang/Object;ZB)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Extraction null check precedes byte guard16 return. Wrapper null/large-array branches precede static int mutation. Clone calls wrong-guard null String helper only after full allocation/copy. Existing AchievementUnlockEvent class name retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:d.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1263,6 +1270,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ji.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete primitive byte copy reviewed: same-array equal-index no-op, forward eight-byte blocks and tail, backward eight-byte blocks and tail for overlap. Preserve integer arithmetic, all bounds/partial-write behavior and pointer order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jk.m(I)V",
       "originalName": "m",
       "to": "clearStaticReferences",
@@ -1323,6 +1337,13 @@
       "originalName": "i",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 37d6b85e1d935d65ffcc2d63e743ca66ad0fb72bbe17ad045aab85c1f4aaf693.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.a(BZ[B)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Extraction null check precedes byte guard16 return. Wrapper null/large-array branches precede static int mutation. Clone calls wrong-guard null String helper only after full allocation/copy. Existing AchievementUnlockEvent class name retained.",
       "confidence": "reviewed"
     },
     {
@@ -1767,6 +1788,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pi.a(B[B)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete byte[] allocation/copy wrapper and called primitive range copy reviewed. Preserve caller offsets, guards, returns, arithmetic and side effects before/after partial or full copying. Extraction null check precedes byte guard16 return. Wrapper null/large-array branches precede static int mutation. Clone calls wrong-guard null String helper only after full allocation/copy. Existing AchievementUnlockEvent class name retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qd.a(Loa;I[B)V",
       "originalName": "a",
       "to": "decompress",
@@ -2063,7 +2091,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-transmogrify-rules.mjs": "490c8ac7b803bec45e36264c90d8a0d2e0d252d1671c0c7402e75f04539f2120",
-      "transmogrify-names.json": "8fee54365adac09a4ce807b1fc7c7238f0ab0095e8a7a848e6830997d0bfd1b1",
+      "transmogrify-names.json": "6ce36150dab183b3e21a942f82463bb1c7b473be0c5cead523406b5cd4234345",
       "reproduce-transmogrify.mjs": "275031618841925c88dcac462520b84fb1be33422795af31727af8ec70c869ee",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

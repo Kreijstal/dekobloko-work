@@ -899,6 +899,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ld.a(I[B)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete byte[] allocation/copy wrapper and called primitive range copy reviewed. Preserve caller offsets, guards, returns, arithmetic and side effects before/after partial or full copying. Wrapper uses caller threshold param0 < length and forwards param0-30 to clone; preserve variable threshold rather than hard-code136. Extraction byte guard-74 returns null before input checks. Clone allocates before wrong-guard helper and range copy.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:le.a()V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -983,6 +990,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nl.a(Ljava/lang/Object;BZ)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper uses caller threshold param0 < length and forwards param0-30 to clone; preserve variable threshold rather than hard-code136. Extraction byte guard-74 returns null before input checks. Clone allocates before wrong-guard helper and range copy.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nl.a([BZ)V",
       "originalName": "a",
       "to": "setBytes",
@@ -994,6 +1008,13 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 0a9c34661668633adc4bf1c61250bb6542e116879b9a25958751764756440ded.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:o.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete primitive byte copy reviewed: same-array equal-index no-op, forward eight-byte blocks and tail, backward eight-byte blocks and tail for overlap. Preserve integer arithmetic, all bounds/partial-write behavior and pointer order.",
       "confidence": "reviewed"
     },
     {
@@ -1106,6 +1127,13 @@
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 f3588309354807ab0c16a146e632ca46d30a42d45f1a9feb5c5481db4189a32e.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ri.a(I[BZ)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper uses caller threshold param0 < length and forwards param0-30 to clone; preserve variable threshold rather than hard-code136. Extraction byte guard-74 returns null before input checks. Clone allocates before wrong-guard helper and range copy.",
       "confidence": "reviewed"
     },
     {
@@ -1531,7 +1559,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-lexicominos-rules.mjs": "407068f51801d5f59706f9b1a51b92d3ce7dda65d765eac9640c3e370f3b044d",
-      "lexicominos-names.json": "addc1e89ee8494cc6859100664a1ff938db9c6e28d34f3d2d44a48cc374be2e7",
+      "lexicominos-names.json": "5fd06c4ab4fe4eefdbef4967750aff4fbdc0ff14f0eca16b946ed31ecc465ace",
       "reproduce-lexicominos.mjs": "e1c24466083fff6a218772ecf30ba63a0a8990b92c02a2782bc76177b5238062",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

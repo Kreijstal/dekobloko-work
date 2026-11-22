@@ -703,6 +703,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:e.a(Ljava/lang/Object;ZI)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper null/large-array branches precede static int[] clear. Extraction null branch precedes optional Font clear. Clone wrong-guard helper precedes input dereference.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ea.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -763,6 +770,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 651277884b6a1c5f98f6d2e50165ad57aad3e4c1879c4959b3057b3937b05f61.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fm.a([BIZ)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper null/large-array branches precede static int[] clear. Extraction null branch precedes optional Font clear. Clone wrong-guard helper precedes input dereference.",
       "confidence": "reviewed"
     },
     {
@@ -1263,10 +1277,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mk.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete primitive byte copy reviewed: same-array equal-index no-op, forward eight-byte blocks and tail, backward eight-byte blocks and tail for overlap. Preserve integer arithmetic, all bounds/partial-write behavior and pointer order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ml.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 9 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 f2f0d093d5685245a038b53d9a47c3db8b0628b6f34d9a21679b279f370ff3ff.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:n.a([BB)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete byte[] allocation/copy wrapper and called primitive range copy reviewed. Preserve caller offsets, guards, returns, arithmetic and side effects before/after partial or full copying. Wrapper null/large-array branches precede static int[] clear. Extraction null branch precedes optional Font clear. Clone wrong-guard helper precedes input dereference.",
       "confidence": "reviewed"
     },
     {
@@ -1559,7 +1587,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-orbdefence-rules.mjs": "7265f3a9f5e13a3fed5621337395faa83930486229ce2e8682b070f11e4f498e",
-      "orbdefence-names.json": "3e1e799dd991367d75c5bcfe40b58dc47197715dabb02899cb03c26d97b6546a",
+      "orbdefence-names.json": "2792be72b35d30e18d213df0290d211f88664ab56b43806a5d794e6bf682228e",
       "reproduce-orbdefence.mjs": "24edd3e6decd14f7af15c46ba33901279428686ce88376fa1945d21ab4b43608",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",

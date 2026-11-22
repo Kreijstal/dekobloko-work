@@ -668,6 +668,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dc.a(I[B)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete byte[] allocation/copy wrapper and called primitive range copy reviewed. Preserve caller offsets, guards, returns, arithmetic and side effects before/after partial or full copying. Wrapper null/large-array cases precede <=104 guard returning null. Extraction false guard recursively invokes null extraction before checking input. Clone reads length before optional static String clear and allocation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:df.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -721,6 +728,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 b430f03f2ca03f436cc82fc88bdc86ce85d8027649396ce425ae6969b4c50d30.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(Z[BI)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper null/large-array cases precede <=104 guard returning null. Extraction false guard recursively invokes null extraction before checking input. Clone reads length before optional static String clear and allocation.",
       "confidence": "reviewed"
     },
     {
@@ -910,6 +924,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 c919007cd840fd50b3961105c618543f04308944864a43892637b9b676975865.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kf.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete primitive byte copy reviewed: same-array equal-index no-op, forward eight-byte blocks and tail, backward eight-byte blocks and tail for overlap. Preserve integer arithmetic, all bounds/partial-write behavior and pointer order.",
       "confidence": "reviewed"
     },
     {
@@ -1256,6 +1277,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sb.a(ZLjava/lang/Object;Z)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper null/large-array cases precede <=104 guard returning null. Extraction false guard recursively invokes null extraction before checking input. Clone reads length before optional static String clear and allocation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sj.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1447,7 +1475,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-hostilespawn_vengeance-rules.mjs": "bd4983d008d73d23ae1bead320db5b9066cb068364feecec10df25c10ddbff04",
-      "hostilespawn_vengeance-names.json": "e41926769b4ea7c027c24e859040bc4c4b632cab327acb2515881747e7d51f86",
+      "hostilespawn_vengeance-names.json": "65f75ab0238074ccb483155e36967676abaee59f0bf92d98beac239b7ebb3ef2",
       "reproduce-hostilespawn_vengeance.mjs": "40c77f27ca968e11d14121fe671373284e37e0393b0fc20f781e4df14ef88438",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

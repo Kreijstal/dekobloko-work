@@ -1928,6 +1928,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:me.a(ZILjava/lang/Object;)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Extraction int guard22692 precedes input checks. Wrapper null/large-array cases precede arithmetic. Clone arithmetic executes after full copy.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:me.e(I)Z",
       "originalName": "e",
       "to": "advance",
@@ -2138,6 +2145,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pd.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete primitive byte copy reviewed: same-array equal-index no-op, forward eight-byte blocks and tail, backward eight-byte blocks and tail for overlap. Preserve integer arithmetic, all bounds/partial-write behavior and pointer order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pg.a()V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2163,6 +2177,13 @@
       "originalName": "c",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 5 null writes to 4 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 d766a565dabd3b3528122d4ae0f9d5d2b0b456c404a8e9969eba682f02046c32.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qd.a([BB)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete byte[] allocation/copy wrapper and called primitive range copy reviewed. Preserve caller offsets, guards, returns, arithmetic and side effects before/after partial or full copying. Extraction int guard22692 precedes input checks. Wrapper null/large-array cases precede arithmetic. Clone arithmetic executes after full copy.",
       "confidence": "reviewed"
     },
     {
@@ -2205,6 +2226,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 88822d5e5d3562d29a7cb5551372a06f9dae19e75a7de2d94fd5d2c72b5f906b.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qk.a([BZB)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Extraction int guard22692 precedes input checks. Wrapper null/large-array cases precede arithmetic. Clone arithmetic executes after full copy.",
       "confidence": "reviewed"
     },
     {
@@ -2518,7 +2546,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-trackcontroller-rules.mjs": "edecc20b3dd537cbdadc180da58728d07ddf4bc1fa73dcc98ff0087cc65ddc08",
-      "trackcontroller-names.json": "f4def3a61d2d36ba1e94ddee168d25b882faba60dee7824ee338b2912ea53086",
+      "trackcontroller-names.json": "22d364ffcd96814f7a7466740bf616e3d680d0a12dbe80c6353e62965c8fdbc5",
       "reproduce-trackcontroller.mjs": "a19aeb34065d45283fe3ccc739656e3d43ea775242fdbecb34698f86b84538b9",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

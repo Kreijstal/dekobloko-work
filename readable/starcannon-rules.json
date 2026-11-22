@@ -570,6 +570,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:d.a(ZB[B)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper null check precedes arithmetic, then136 threshold. Extraction arithmetic precedes null check. Clone reads length before optional static mutation and allocation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:db.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -595,6 +602,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 0f954696fc1bbf757b63f2d473fee43c5416f88ac2e25c0d168fe8353c429ea5.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.a(BLjava/lang/Object;Z)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper null check precedes arithmetic, then136 threshold. Extraction arithmetic precedes null check. Clone reads length before optional static mutation and allocation.",
       "confidence": "reviewed"
     },
     {
@@ -1389,6 +1403,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rg.a(B[B)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete byte[] allocation/copy wrapper and called primitive range copy reviewed. Preserve caller offsets, guards, returns, arithmetic and side effects before/after partial or full copying. Wrapper null check precedes arithmetic, then136 threshold. Extraction arithmetic precedes null check. Clone reads length before optional static mutation and allocation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rg.k(I)V",
       "originalName": "k",
       "to": "clearStaticReferences",
@@ -1463,6 +1484,13 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 5954caaa7a1cf233811baba95b02dbb2f20ca3d194a46e07a9f58f824acfd1c9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete primitive byte copy reviewed: same-array equal-index no-op, forward eight-byte blocks and tail, backward eight-byte blocks and tail for overlap. Preserve integer arithmetic, all bounds/partial-write behavior and pointer order.",
       "confidence": "reviewed"
     },
     {
@@ -1545,7 +1573,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-starcannon-rules.mjs": "820178d57ca214e426497e008fdf26a8f70c8f101ec48b13755d76c31ee972ef",
-      "starcannon-names.json": "6a3ce975b313d17b7816177e2b7c6e5b62d6959ee38ee40b51c27f61c683fb92",
+      "starcannon-names.json": "d26d896d66dc60ecf24bf56865be37bc965e85f5699bca5b5b64e12836442e00",
       "reproduce-starcannon.mjs": "40be1291a6c20246ea0c655d9031dd6642e444715cec6140e7c4b80ad449743e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

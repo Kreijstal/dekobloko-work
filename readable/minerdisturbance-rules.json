@@ -570,6 +570,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ai.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete primitive byte copy reviewed: same-array equal-index no-op, forward eight-byte blocks and tail, backward eight-byte blocks and tail for overlap. Preserve integer arithmetic, all bounds/partial-write behavior and pointer order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aj.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -934,6 +941,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kh.a([BB)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete byte[] allocation/copy wrapper and called primitive range copy reviewed. Preserve caller offsets, guards, returns, arithmetic and side effects before/after partial or full copying. Wrapper may mutate static int before null check. Extraction null case precedes boolean static mutation. Clone byte guard-16 returns null before input dereference.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kn.d(B)V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -1249,6 +1263,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qh.a(BZ[B)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper may mutate static int before null check. Extraction null case precedes boolean static mutation. Clone byte guard-16 returns null before input dereference.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qk.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1543,6 +1564,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sc.a(ZZLjava/lang/Object;)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper may mutate static int before null check. Extraction null case precedes boolean static mutation. Clone byte guard-16 returns null before input dereference.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sd.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1699,7 +1727,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-minerdisturbance-rules.mjs": "16fcf2e48a0b24b7a3b5adfaa84bb4d835098253436d0d71784385c2e1228b80",
-      "minerdisturbance-names.json": "f10cd81e9124db97a58820d7df0c38b1c34a053cabf79aafcb2c668faa1801c3",
+      "minerdisturbance-names.json": "c633ecc439ce876fa586dbb2c339fd12a823e5e8e2cfed1b7c37a029d7ae9582",
       "reproduce-minerdisturbance.mjs": "9c29b772086ae02805a24c9b493bfd651e742e7206976e902e269a1ae4c1e5d3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

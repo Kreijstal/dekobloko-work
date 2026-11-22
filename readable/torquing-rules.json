@@ -1074,6 +1074,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ch.a([BB)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete byte[] allocation/copy wrapper and called primitive range copy reviewed. Preserve caller offsets, guards, returns, arithmetic and side effects before/after partial or full copying. Wrapper byte guard-5 precedes input checks. Extraction byte[] case precedes byte guard37 for other types. Clone byte guard115 returns null before dereferencing input.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cm.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1127,6 +1134,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Source-reviewed pure cleanup: only owned static reference null assignments, primitive parameter guards, return and braces after inert default locals. Each reference ownership and no-shadow binding proved against the current source/dictionary; guard order, partial cleanup and arithmetic-free predicates preserved. No scalar clearing or helper calls introduced.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete primitive byte copy reviewed: same-array equal-index no-op, forward eight-byte blocks and tail, backward eight-byte blocks and tail for overlap. Preserve integer arithmetic, all bounds/partial-write behavior and pointer order.",
       "confidence": "reviewed"
     },
     {
@@ -1704,6 +1718,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:md.a(B[BZ)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper byte guard-5 precedes input checks. Extraction byte[] case precedes byte guard37 for other types. Clone byte guard115 returns null before dereferencing input.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mh.b(I)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -2117,6 +2138,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ui.a(ZLjava/lang/Object;B)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper byte guard-5 precedes input checks. Extraction byte[] case precedes byte guard37 for other types. Clone byte guard115 returns null before dereferencing input.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uk.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2413,7 +2441,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torquing-rules.mjs": "8da598367c03f04c9e534a68a3861682d35d37834f3f17cf0207e7991dc70176",
-      "torquing-names.json": "3baff43ad71c3939dc4c5b126f3e1df3c28aed25fdf5acd2846e8ad69be5fe9d",
+      "torquing-names.json": "5c91ccc3e3c95e80ab3506040283238982e0b967463546cd69586bd1be89a890",
       "reproduce-torquing.mjs": "2a778be33cf09997c514713d57df9e717c13ffbbb82534f476bf9fdb039bf6a2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

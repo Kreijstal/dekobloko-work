@@ -2005,6 +2005,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ei.a(Ljava/lang/Object;ZZ)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper null check precedes boolean static mutation then136 threshold. Extraction true guard returns null before input checks. Copy helper allocates input length then forwards caller-supplied source offset; retain all offset/bounds behavior.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ek.a()V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2341,6 +2348,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ka.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete primitive byte copy reviewed: same-array equal-index no-op, forward eight-byte blocks and tail, backward eight-byte blocks and tail for overlap. Preserve integer arithmetic, all bounds/partial-write behavior and pointer order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kd.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2387,6 +2401,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 3 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 c5d799a1c1fb863ca05ec919aea4ffc004d2a66a2ce9a62986a88cee818140d9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:li.a(I[B)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete byte[] allocation/copy wrapper and called primitive range copy reviewed. Preserve caller offsets, guards, returns, arithmetic and side effects before/after partial or full copying. Wrapper null check precedes boolean static mutation then136 threshold. Extraction true guard returns null before input checks. Copy helper allocates input length then forwards caller-supplied source offset; retain all offset/bounds behavior.",
       "confidence": "reviewed"
     },
     {
@@ -2590,6 +2611,13 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 b12b8197048a8579760bd60827a4e071e92086d949054fc8d72b0e9fc6cdd961.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pl.a([BZZ)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper null check precedes boolean static mutation then136 threshold. Extraction true guard returns null before input checks. Copy helper allocates input length then forwards caller-supplied source offset; retain all offset/bounds behavior.",
       "confidence": "reviewed"
     },
     {
@@ -3400,7 +3428,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-terraphoenix-rules.mjs": "2b9ef0307d7e8ad8295f9a6d9e8e1d74cc01f0b1d1f8bbcad95b45bfce2e3b38",
-      "terraphoenix-names.json": "20e1c642e0f227d87dbe97fe70b9d35b9575f0bddfa7c88dc8619a2a29888727",
+      "terraphoenix-names.json": "e4c7aa9fe8b37a50bedeeccc9dc0f917f4060de289eb71e8b75e448542de67ca",
       "reproduce-terraphoenix.mjs": "26ebcd63f823ab4b28fe91b15329343bbc2ebca2f78d4652cffe0e8f8baf425a",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

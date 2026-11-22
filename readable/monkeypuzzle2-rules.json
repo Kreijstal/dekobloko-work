@@ -521,6 +521,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bk.a(I[B)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete byte[] allocation/copy wrapper and called primitive range copy reviewed. Preserve caller offsets, guards, returns, arithmetic and side effects before/after partial or full copying. Wrapper null/large-array branches precede guard cleanup. Extraction byte[] branch precedes arithmetic on non-byte[] values. Copy helper forwards caller param0 as destination offset into same-length allocation; preserve nonzero-offset failure and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ca.d(I)V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -955,6 +962,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gl.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete primitive byte copy reviewed: same-array equal-index no-op, forward eight-byte blocks and tail, backward eight-byte blocks and tail for overlap. Preserve integer arithmetic, all bounds/partial-write behavior and pointer order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hc.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1214,6 +1228,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:p.a([BBZ)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper null/large-array branches precede guard cleanup. Extraction byte[] branch precedes arithmetic on non-byte[] values. Copy helper forwards caller param0 as destination offset into same-length allocation; preserve nonzero-offset failure and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:pb.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1396,6 +1417,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uj.a(ILjava/lang/Object;Z)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper null/large-array branches precede guard cleanup. Extraction byte[] branch precedes arithmetic on non-byte[] values. Copy helper forwards caller param0 as destination offset into same-length allocation; preserve nonzero-offset failure and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:v.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1545,7 +1573,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-monkeypuzzle2-rules.mjs": "a154933fc70d5d77c29762fb11f9501883dedcb625fc9fbb629e20e15db5bc32",
-      "monkeypuzzle2-names.json": "9dac2cd877689714a9bda3f1fa2c388e1790bc8c1f49b91baa44700109044432",
+      "monkeypuzzle2-names.json": "6acf62295c66407b8d82cc0dc20f6b83fdab7f31c8921306ae2ca08b30168984",
       "reproduce-monkeypuzzle2.mjs": "e80c78fab2aa134de669a604ee7bc1d540df41c2a2d8e81e346e709c4914c594",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

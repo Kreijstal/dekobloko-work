@@ -843,6 +843,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ch.a(IZ[B)Ljava/lang/Object;",
+      "originalName": "a",
+      "to": "storeBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper uses caller-supplied threshold param0; do not hard-code136. Extraction null check precedes guard helper. Copy helper allocates input length then copies input from caller-supplied source offset param0 for full length; preserve bounds failures and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ci.c(I)V",
       "originalName": "c",
       "to": "clearStaticReferences",
@@ -861,6 +868,13 @@
       "originalName": "n",
       "to": "createMouseWheelInput",
       "evidence": "Complete reflective factory body reviewed. Constructs existing meaningfully named wheel listener, casts to input contract, retains guard behavior and Throwable->null fallback (including nested exception wrapping in BachelorFridge). Existing class names and class-name literals unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(I[B)[B",
+      "originalName": "a",
+      "to": "copyBytes",
+      "evidence": "Complete byte[] allocation/copy wrapper and called primitive range copy reviewed. Preserve caller offsets, guards, returns, arithmetic and side effects before/after partial or full copying. Wrapper uses caller-supplied threshold param0; do not hard-code136. Extraction null check precedes guard helper. Copy helper allocates input length then copies input from caller-supplied source offset param0 for full length; preserve bounds failures and partial writes.",
       "confidence": "reviewed"
     },
     {
@@ -1683,6 +1697,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ri.a([BI[BII)V",
+      "originalName": "a",
+      "to": "copyByteRange",
+      "evidence": "Complete primitive byte copy reviewed: same-array equal-index no-op, forward eight-byte blocks and tail, backward eight-byte blocks and tail for overlap. Preserve integer arithmetic, all bounds/partial-write behavior and pointer order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rk.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -1778,6 +1799,13 @@
       "originalName": "b",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 4 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 47c4e865414a704f30f5d4f79eb1aef809e1cbda22d497a7cba2ab75360c1707.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tf.a(IZLjava/lang/Object;)[B",
+      "originalName": "a",
+      "to": "extractBytes",
+      "evidence": "Complete wrapper/extractor, storage instance contracts and copy helpers reviewed from pinned source. Preserve null/type handling, byte[] alias versus optional copy, direct storage allocation, exact caller-dependent thresholds/arguments, every guard and exception ordering. Wrapper uses caller-supplied threshold param0; do not hard-code136. Extraction null check precedes guard helper. Copy helper allocates input length then copies input from caller-supplied source offset param0 for full length; preserve bounds failures and partial writes.",
       "confidence": "reviewed"
     },
     {
@@ -1916,7 +1944,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-stellarshard-rules.mjs": "e0aad811358351403390d3f71317f31025d7e9ef8434ab5477a9473e966eb7de",
-      "stellarshard-names.json": "1c6000b506da8431313de9515a5462af574087a6ae1610b2641804a67a261149",
+      "stellarshard-names.json": "67b27f731f7ff5527241e4099745e35e0e320f2c60d8a07bbd211017b9366c15",
       "reproduce-stellarshard.mjs": "bd81f17e3db3182b75b19f828dfc185d0ec0f4b8ca0f78caa8495e2ff6f4a0a1",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
