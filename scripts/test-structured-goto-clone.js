@@ -3869,11 +3869,34 @@ function withOnlyStructuredGotoEnv(overrides, fn) {
   const result = withOnlyStructuredGotoEnv({
     STRUCTURED_GOTO_SIMPLIFY_CONSTANT_BRANCHES: '1',
   }, () => runStructuredGotoClone(targetAstFrom('renamedOwner', 'renamedMethod', '()V', codeItems)));
-  assert.equal(result.changed, true, 'never-taken constant boolean branch should be removed');
-  assert.equal(result.rewrites, 1);
+  assert.equal(result.changed, true, 'constant boolean branches should be simplified');
+  assert.equal(result.rewrites, 2);
   assert.equal(codeItems.find((entry) => entry.labelDef === 'LNEVER_VALUE:').instruction, 'nop');
   assert.equal(codeItems.find((entry) => entry.labelDef === 'LNEVER_BRANCH:').instruction, 'nop');
-  assert.equal(codeItems.find((entry) => entry.labelDef === 'LALWAYS_BRANCH:').instruction.op, 'ifeq');
+  assert.equal(codeItems.find((entry) => entry.labelDef === 'LALWAYS_VALUE:').instruction, 'nop');
+  assert.equal(codeItems.find((entry) => entry.labelDef === 'LALWAYS_BRANCH:').instruction.op, 'goto');
+  assert.equal(codeItems.find((entry) => entry.labelDef === 'LALWAYS_BRANCH:').instruction.arg, 'LEXIT');
+}
+
+{
+  const codeItems = padded([
+    item('LTRUE_VALUE', 'iconst_1'),
+    item('LTRUE_BRANCH', { op: 'ifne', arg: 'LTARGET' }),
+    item('LFALLTHROUGH_VALUE', 'iconst_1'),
+    item('LFALLTHROUGH_BRANCH', { op: 'ifeq', arg: 'LUNREACHABLE' }),
+    item('LTARGET', 'return'),
+    item('LUNREACHABLE', 'return'),
+  ]);
+  const result = withOnlyStructuredGotoEnv({
+    STRUCTURED_GOTO_SIMPLIFY_CONSTANT_BRANCHES: '1',
+  }, () => runStructuredGotoClone(targetAstFrom('renamedOwner', 'renamedMethod', '()V', codeItems)));
+  assert.equal(result.changed, true, 'iconst_1 branches should be simplified');
+  assert.equal(result.rewrites, 2);
+  assert.equal(codeItems.find((entry) => entry.labelDef === 'LTRUE_VALUE:').instruction, 'nop');
+  assert.equal(codeItems.find((entry) => entry.labelDef === 'LTRUE_BRANCH:').instruction.op, 'goto');
+  assert.equal(codeItems.find((entry) => entry.labelDef === 'LTRUE_BRANCH:').instruction.arg, 'LTARGET');
+  assert.equal(codeItems.find((entry) => entry.labelDef === 'LFALLTHROUGH_VALUE:').instruction, 'nop');
+  assert.equal(codeItems.find((entry) => entry.labelDef === 'LFALLTHROUGH_BRANCH:').instruction, 'nop');
 }
 
 {
