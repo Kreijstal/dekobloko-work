@@ -15424,6 +15424,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aia.h(I)Z",
+      "originalName": "h",
+      "to": "isInCollisionRecovery",
+      "evidence": "Query the snake collision-recovery movement mode,exactly field_o>20. Tick raises this counter after blocked movement and uses the predicate to allow quarter-step movement rather than rollback;the same mode suppresses player chasing and random cooldown. Effect8and the end of fleeing can also seed this counter. Preserve all signed counter values,strict threshold20,guard int!=21302 writing field_m=121 before the read,and every caller;do not relabel this as the separate isScared predicate or infer an item identity. Complete original-body SHA256 b41ee5a0b805395c04fca3b18717568a68c902edf826ab9f17b4b67bdd50f928. Naming only.12complete selected bodies,40compiler-bound callers,272field declarations/76owned,12supporting classes,28purpose witnesses and one complete unchanged full-int formatter reviewed. Preserve descriptors,all int/byte/short/long domains,guards,modifiers/visibility,field/parameter/local names,literals,overflow/division/shifts,floating-point/cast order,aliases/partial writes,allocation/call/exception order and diagnostics. Four Iformatter calls retain full signed domain;byte companion unchanged. No native/class-name-literal edits and no whole-runtime or pixel equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aia.i(I)V",
       "originalName": "i",
       "to": "releaseStatics",
@@ -17370,6 +17377,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bh.a(IZ)Z",
+      "originalName": "a",
+      "to": "supportsBinaryAlphaTexturePixels",
+      "evidence": "Check whether a texture effect permits binary-alpha pixel generation:all int values except1and7. Legacy and hardware texture caches use this predicate to select the loadPixels(int,...) overload when texture mode is not2. That provider overload delegates to generateBinaryAlphaPixels;the byte overload delegates to generateAlphaPixels. The name describes support,not unconditional use independent of other mode checks. Preserve the Boolean true side effect field_o=18 before the predicate and its noncanonical caller;no int narrowing or effect-enum validation. Complete original-body SHA256 1faf71bbf6f03cf91b4b20a11e67d18ced33b650cb41e19d9d2313f577b4bef2. Naming only.12complete selected bodies,40compiler-bound callers,272field declarations/76owned,12supporting classes,28purpose witnesses and one complete unchanged full-int formatter reviewed. Preserve descriptors,all int/byte/short/long domains,guards,modifiers/visibility,field/parameter/local names,literals,overflow/division/shifts,floating-point/cast order,aliases/partial writes,allocation/call/exception order and diagnostics. Four Iformatter calls retain full signed domain;byte companion unchanged. No native/class-name-literal edits and no whole-runtime or pixel equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bh.a([Lbfa;I)Lbfa;",
       "originalName": "a",
       "to": "invoke",
@@ -17983,6 +17997,13 @@
       "originalName": "h",
       "to": "mirror",
       "evidence": "Called when the room is mirrored; WallModel mirrors its wall tiles. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:boa.i(I)Z",
+      "originalName": "i",
+      "to": "usesLargeBlockDragSound",
+      "evidence": "Select the large-block drag sound family for block variants5,8,10,11,12,13,14,15,16. Sole tick caller selects SoundEvent0when true;HardwareGraphicsHeap maps event0to sample8,and GameSoundEffectLoader maps sample8to tr_large_block_drag_loop through MatchProtocol.playSoundEffect. Preserve every signed variant value including16despite the four-bit serialized field,short-circuit reads,and wrong-int!=77 decode(42,null,null) before the predicate. Do not infer physical block size or replace the explicit variant list. Complete original-body SHA256 7f3212ff9aff312b71eb572724a4093b637c1e09f32545737958807d641c5323. Naming only.12complete selected bodies,40compiler-bound callers,272field declarations/76owned,12supporting classes,28purpose witnesses and one complete unchanged full-int formatter reviewed. Preserve descriptors,all int/byte/short/long domains,guards,modifiers/visibility,field/parameter/local names,literals,overflow/division/shifts,floating-point/cast order,aliases/partial writes,allocation/call/exception order and diagnostics. Four Iformatter calls retain full signed domain;byte companion unchanged. No native/class-name-literal edits and no whole-runtime or pixel equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -23562,6 +23583,13 @@
       "originalName": "a",
       "to": "drawVerticalSpan",
       "evidence": "Writes a colour into one raster column between two rows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dfa.a(IZI)Z",
+      "originalName": "a",
+      "to": "handleChatShortcutKey",
+      "evidence": "Handle chat shortcut keys in the routed keyboard path. Key9opens player-targeted quick chat after eligibility/channel checks;10opens general quick chat outside opponent-search state;11replies through the stored chat target when permitted and reachable. Preserve every duplicated branch,repeated global key/state reads,all early false/true results,send-throttle calls,full-int request argument,param0unused normally,and Boolean true clearing the Applet field at its existing branch point. Existing helper I/byte descriptors and null arguments remain unchanged;do not collapse the branches or cache mutable global reads. Complete original-body SHA256 a7774c90e80bff9f75559a98c3447462a932e3a12886923d166dd26238a5d291. Naming only.12complete selected bodies,40compiler-bound callers,272field declarations/76owned,12supporting classes,28purpose witnesses and one complete unchanged full-int formatter reviewed. Preserve descriptors,all int/byte/short/long domains,guards,modifiers/visibility,field/parameter/local names,literals,overflow/division/shifts,floating-point/cast order,aliases/partial writes,allocation/call/exception order and diagnostics. Four Iformatter calls retain full signed domain;byte companion unchanged. No native/class-name-literal edits and no whole-runtime or pixel equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -36795,6 +36823,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ica.a(IIIIII[IIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "rasterizeInterpolatedColourTriangle",
+      "evidence": "Rasterize a triangle with interpolated colour components into the supplied pixel array. The six-branch caller sorts the three Y coordinates and permutes all corresponding coordinates/colour components before calling this helper;scanlines use blendInterpolatedColourSpan. Preserve flat-top/degenerate and upper/lower segment branches,all16.16 shifts,int overflow/division/truncation,viewport clipping,row-offset and framebuffer-stride reads,arbitrary signed guard/control param4and its derived byte guards,zero-width span calls,partial pixel writes and wrapped diagnostics. No triangulation,raster-loop or blend math is rewritten and no pixel/runtime equivalence is claimed. Complete original-body SHA256 b1a2f454a15ad0fc2ff580ae36956fd721c06925a8cc9de0a5c8c9c51d8c13d9. Naming only.12complete selected bodies,40compiler-bound callers,272field declarations/76owned,12supporting classes,28purpose witnesses and one complete unchanged full-int formatter reviewed. Preserve descriptors,all int/byte/short/long domains,guards,modifiers/visibility,field/parameter/local names,literals,overflow/division/shifts,floating-point/cast order,aliases/partial writes,allocation/call/exception order and diagnostics. Four Iformatter calls retain full signed domain;byte companion unchanged. No native/class-name-literal edits and no whole-runtime or pixel equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:id.a(B)Lwea;",
       "originalName": "a",
       "to": "generateLayout",
@@ -37492,6 +37527,13 @@
       "originalName": "a",
       "to": "increaseSoundVolume",
       "evidence": "Increase the shared master sound volume by the existing32-step signed-remainder expression,capping values>=224to256. Existing setSoundVolume writes the integer and forwards it to both audio players. Preserve full signed integer domain,wrong-full-int cleanup call before subsequent reads,duplicated branches and original setter guard bytes. ChatOverlay Booleanfalse helper runs before delegating,with any recursion or failures retained. Complete original-body SHA256 193fd092363b25570cd930cc3763e50e38b37beb93d2ef8c31c96f21e8201038. Naming only. Complete original bodies,all33bound incoming calls,115field declarations/100owned,fourteen supporting classes and19unchanged dialog/fade/progress/volume/contact/player/game-list witnesses reviewed. Preserve descriptors,full-int and byte domains,unused guards,method visibility/modifiers,all field/parameter/local names,literals,integer overflow/shifts/division,NaN/cast order,array aliases/partial writes,volatile reads and allocation/call/exception order and diagnostics. No native/class-name-literal edits;no pixel or whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ila.a(ZLjava/lang/String;IILjava/lang/String;Z)I",
+      "originalName": "a",
+      "to": "pollLoginHandshake",
+      "evidence": "Poll the login handshake used by initial login and reconnect. It probes connection availability before the int!=50 return-82guard;creates the selected credential target,writes hello14and channel type,reads reply/challenge,then sends the existing login packet. Preserve state identity comparisons,availability gates,reply8disconnect,reply7retry/port swap policy,30000ms timeout distinctions,all -1pending/final codes,error-payload reads,account/session fields,cookie and JavaScript callbacks,caught Throwable behavior,remembered login method and exact cipher initialization order including in-place four-seed +50mutation. Preserve credential/null/Boolean/full-int domains and all partial state/cursor writes. This is the login handshake rather than chat input handling. Complete original-body SHA256 f6b2ea875511b61361c3744864c248d6ce49135ce9f0f0baa7ceb6e1fc5e7a53. Naming only.12complete selected bodies,40compiler-bound callers,272field declarations/76owned,12supporting classes,28purpose witnesses and one complete unchanged full-int formatter reviewed. Preserve descriptors,all int/byte/short/long domains,guards,modifiers/visibility,field/parameter/local names,literals,overflow/division/shifts,floating-point/cast order,aliases/partial writes,allocation/call/exception order and diagnostics. Four Iformatter calls retain full signed domain;byte companion unchanged. No native/class-name-literal edits and no whole-runtime or pixel equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -39315,6 +39357,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jc.a(ZZZI)V",
+      "originalName": "a",
+      "to": "updateMainLobbyControls",
+      "evidence": "Update the main lobby controls after sliding-panel layout. Layout/input masks depend on selection/opponent-search/ratings-panel flags;the method updates the queue-position label,tab presses,help button,rated matchmaking eligibility,new-game selection and ratings dismissal. Preserve wrong-Boolean param1false recursive call after tab processing,all gating and member/permission reads,one full-int formatText(89,...) call,packet opcode forwarding and single-choice selection update before writing the new-game request. No UI policy or action order is changed. Complete original-body SHA256 66a0904de6ffa04cd87fdef0a8b1a47a81857ec7f79ad9b44fd0d04136cbd74c. Naming only.12complete selected bodies,40compiler-bound callers,272field declarations/76owned,12supporting classes,28purpose witnesses and one complete unchanged full-int formatter reviewed. Preserve descriptors,all int/byte/short/long domains,guards,modifiers/visibility,field/parameter/local names,literals,overflow/division/shifts,floating-point/cast order,aliases/partial writes,allocation/call/exception order and diagnostics. Four Iformatter calls retain full signed domain;byte companion unchanged. No native/class-name-literal edits and no whole-runtime or pixel equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jc.c(III)Z",
       "originalName": "c",
       "to": "requiresCpuVertexZ",
@@ -39725,6 +39774,13 @@
       "originalName": "D",
       "to": "releaseStatics",
       "evidence": "TombRacer.clearAllStatics calls it; its body only sets static fields of this class to null.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jh.a(ILjava/lang/String;Lil;Lkha;I)V",
+      "originalName": "a",
+      "to": "populateTextCharacterPositions",
+      "evidence": "Populate interior UTF-16 character X positions for a cached text line,with8-bit fixed-point justification spacing. Callers initialize first and final boundaries for left/center/right/multiline layouts;this helper starts at index1and stops before length. Markup characters60and62pin positions across the tag until its close;ordinary spaces add the supplied full-int spacing before shifted accumulation. Preserve wrong-int!=2097152 return before String/font/array access,repeated substring/width calls,base-position reads,charWidth subtraction,integer overflow/shifts,null/alias/bounds failures,partial position writes and wrapped diagnostics. Do not change UTF-16 indexing or infer glyph identities. Complete original-body SHA256 108b9c3504ab71dc5d3be555afa07136246c613f0b451f4c0bf9d6170fd83236. Naming only.12complete selected bodies,40compiler-bound callers,272field declarations/76owned,12supporting classes,28purpose witnesses and one complete unchanged full-int formatter reviewed. Preserve descriptors,all int/byte/short/long domains,guards,modifiers/visibility,field/parameter/local names,literals,overflow/division/shifts,floating-point/cast order,aliases/partial writes,allocation/call/exception order and diagnostics. Four Iformatter calls retain full signed domain;byte companion unchanged. No native/class-name-literal edits and no whole-runtime or pixel equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -46179,6 +46235,13 @@
       "originalName": "k",
       "to": "isDynamic",
       "evidence": "True when the body is mobile or a Trap; dynamic walls register no tile occupancy.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lma.l(I)V",
+      "originalName": "l",
+      "to": "refineWallTileShapes",
+      "evidence": "Refine initially category5wall tiles into detailed boundary shapes. addToScene calls this after buildTiles only when detailed geometry is enabled. Inspect a5x5perimeter using room occupancy for static walls or grid bounds for dynamic walls,then select categories7/8/9/10and quarter-turn orientation from counts5/11/15/16and corner/edge tests. Preserve count<5path,all decompiled branch flags,rotation-table indexing,variation/checker resets,the category5restriction,int!=32166 recursion before scene reads and every arithmetic/allocation/partial-state order. No extra neighbor queries or material guesses. Complete original-body SHA256 3f52cc29602c6bd7b8ae80df62323c421893cb56bc2774afbaa8af3dc8ff6537. Naming only.12complete selected bodies,40compiler-bound callers,272field declarations/76owned,12supporting classes,28purpose witnesses and one complete unchanged full-int formatter reviewed. Preserve descriptors,all int/byte/short/long domains,guards,modifiers/visibility,field/parameter/local names,literals,overflow/division/shifts,floating-point/cast order,aliases/partial writes,allocation/call/exception order and diagnostics. Four Iformatter calls retain full signed domain;byte companion unchanged. No native/class-name-literal edits and no whole-runtime or pixel equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -57620,6 +57683,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qqa.a([ILoc;IB)Lima;",
+      "originalName": "a",
+      "to": "buildTextureProjectionData",
+      "evidence": "Build texture-projection data shared by software,OpenGL and hardware model constructors. For selected face IDs,collect per-texture vertex bounds from three vertex-coordinate arrays and unsigned byte texture indices other than-1;derive integer centers and projection-scale matrices for mapping types. Return ModelTextureProjectionData containing three center arrays and matrix array,including all-null arrays when texture-index data is absent. Preserve byte!=-6 immediate null before model/array reads,allocation sequence,sentinels2147483647/-2147483647,all int/byte/face-count domains,overflow before integer /2,float reciprocal/scaling and sign order,mutable decompiled loop flags,casts/aliasing and exception diagnostics. No model/UV math is simplified. Complete original-body SHA256 5e515e0b17d0f8bb28b57402db95b335df61a8c8b25c21e61f6fe76554a12e54. Naming only.12complete selected bodies,40compiler-bound callers,272field declarations/76owned,12supporting classes,28purpose witnesses and one complete unchanged full-int formatter reviewed. Preserve descriptors,all int/byte/short/long domains,guards,modifiers/visibility,field/parameter/local names,literals,overflow/division/shifts,floating-point/cast order,aliases/partial writes,allocation/call/exception order and diagnostics. Four Iformatter calls retain full signed domain;byte companion unchanged. No native/class-name-literal edits and no whole-runtime or pixel equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qqa.b(B)[B",
       "originalName": "b",
       "to": "getBytes",
@@ -57869,6 +57939,13 @@
       "originalName": "b",
       "to": "decodeElement",
       "evidence": "Reads the element from the BitPacketBuffer; gha.readDecodableArray calls it on each array entry.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qt.a(I)V",
+      "originalName": "a",
+      "to": "readLobbyStateUpdate",
+      "evidence": "Read and apply lobby-state update packet10. Subcommands0..4reset player/game/current-search state;5..7update/remove/clear lobby players;8..13update game listings and flags;14..17adjust invitation/player flags and counts;18..20update current-game players/options;21sets start deadline;22updates queue position/rating;23sets local player ID. Preserve int>-10early return before any packet read,exact unknown-subcommand diagnostic and socket close,all signed/unsigned reads,IDs,list/hash ordering,unlink order,delayed removals,conditional counter increments/decrements,field publication before subsequent reads and partial state on exceptions. State3publishes searching flag before reading option arrays. No packet schema changes or transactional rewrite. Complete original-body SHA256 a87c3d480e52dbd463b4404d0a4365e9cc86ef33bfdf322e28c69eaa8173def0. Naming only.12complete selected bodies,40compiler-bound callers,272field declarations/76owned,12supporting classes,28purpose witnesses and one complete unchanged full-int formatter reviewed. Preserve descriptors,all int/byte/short/long domains,guards,modifiers/visibility,field/parameter/local names,literals,overflow/division/shifts,floating-point/cast order,aliases/partial writes,allocation/call/exception order and diagnostics. Four Iformatter calls retain full signed domain;byte companion unchanged. No native/class-name-literal edits and no whole-runtime or pixel equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -68869,6 +68946,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vna.a(ZII)Lmu;",
+      "originalName": "a",
+      "to": "updateFriendListControls",
+      "evidence": "Update friend-list controls and return the clicked contact. Scroll/layout work precedes mode-dependent disconnected text or online list rendering. Create missing row widgets,colour same-world/online/offline entries,truncate names,set hover tooltips,open player context menu and optional private-chat/join actions,then handle add/remove friend popup modes0/1. Preserve guard intparam2>-114 recursion before UI reads,all repeated mode/contact/global reads,widget allocation/link and partial layout order,three full-int formatter calls99/114/86,reference-identity world comparisons and all null/Boolean/int domains. The returned contact is consumed by BoulderComponent to add its context-menu action;ignore-list processing stays separate. Complete original-body SHA256 e4d86c90e6301b675422157485853b7feadc3a4b0a2909f24d03da60292cc0e6. Naming only.12complete selected bodies,40compiler-bound callers,272field declarations/76owned,12supporting classes,28purpose witnesses and one complete unchanged full-int formatter reviewed. Preserve descriptors,all int/byte/short/long domains,guards,modifiers/visibility,field/parameter/local names,literals,overflow/division/shifts,floating-point/cast order,aliases/partial writes,allocation/call/exception order and diagnostics. Four Iformatter calls retain full signed domain;byte companion unchanged. No native/class-name-literal edits and no whole-runtime or pixel equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vna.b(B)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -72301,7 +72385,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "9c6de150a40e42340b1d64bf38d2a4dbf5d00a197ed05b258bc1d121007f2cdc",
+      "tombracer-names.json": "af5465f55e6f80c9c15bed1a21dd94f8c87ff39acbae8e8dbf342278dcbe51dc",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
