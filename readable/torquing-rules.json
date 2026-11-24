@@ -521,6 +521,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kk",
+      "originalName": "kk",
+      "to": "VolumeScaledPcmStream",
+      "evidence": "Torquing PCM wrapper retaining an owned stream mixer and scratch buffer;render mixes the child into cleared/allocated scratch and accumulates each original int sample times the shared volume divided by160,with exact stereo indexing. Skip delegates directly and priority is255*sharedVolume/160;constructor allocates the mixer. Reviewed constructor SHA256s 6323a3e75a6dc87c6cc1c91e41d3921d254077c306377276fd9074750f903069. Naming only. Complete owning PCM API and directly supporting bodies,all91 candidate constructor bodies and independent selected native/class-name-literal scans reviewed. Preserve original fields and default/declaration state,constructor chaining,all JVM widths/domains,guards,literals,overflow,FP/casts,aliases,partial writes,allocation/call/exception ordering,visibility/modifiers and native/override binding identities. No intentional literal/native edits or whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:kl",
+      "originalName": "kl",
+      "to": "DelayedPcmStream",
+      "evidence": "Countdown wrapper that initially suppresses frames,then replaces its own intrusive-list links with the retained child and forwards only a positive remainder;priority delegates to the child while child enumeration returns null and scheduler cost zero. Constructor retains child/delay and shared sample reference in each original game order,including diagnostic wrapping. Reviewed constructor SHA256s b4d187fee30bf95418a93911957a890cadd4671370c639de890dc19635606532. Naming only. Complete owning PCM API and directly supporting bodies,all91 candidate constructor bodies and independent selected native/class-name-literal scans reviewed. Preserve original fields and default/declaration state,constructor chaining,all JVM widths/domains,guards,literals,overflow,FP/casts,aliases,partial writes,allocation/call/exception ordering,visibility/modifiers and native/override binding identities. No intentional literal/native edits or whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:kn",
       "originalName": "kn",
       "to": "RasterBuffer",
@@ -2425,6 +2439,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nj.a([IIIII)I",
+      "originalName": "a",
+      "to": "mixForwardSegment",
+      "evidence": "Mix a forward raw-PCM segment using exact aligned-step256 versus interpolated and mono/stereo kernel dispatch,with ramp boundary/countdown updates and gain-convergence loop;preserve all original signed arithmetic,output positions and returned limits. Complete original-body SHA256 2a8771521692a761e3547109889b04434c10041bcbe12fdfb8d9caa62c62acf3. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nj.b()Llf;",
       "originalName": "b",
       "to": "nextChildStream",
@@ -2439,6 +2460,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nj.b([IIIII)I",
+      "originalName": "b",
+      "to": "mixBackwardSegment",
+      "evidence": "Mix a reverse raw-PCM segment using exact aligned-step-minus256 versus interpolated and mono/stereo kernel dispatch,with ramp boundary/countdown updates and gain-convergence loop;preserve all original signed arithmetic,output positions and returned limits. Complete original-body SHA256 689edf8e8437c243d571cba236d4b3ceef119b917e3b608454084d8a98ac9805. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nj.c()Llf;",
       "originalName": "c",
       "to": "firstChildStream",
@@ -2450,6 +2478,20 @@
       "originalName": "d",
       "to": "getSchedulingPriority",
       "evidence": "Return the original PCM scheduling priority:default255,child delegation,raw-volume/position/loop attenuation,or effect/global scaling where implemented. Preserve original signed int overflow,division,absolute-value edge case,upper cap and exceptional paths. Complete original-body SHA256 7795bc9bda5f2fa537b3b24678932b564a5a1304fbaa4f013cc8a9c12e80035e. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.f()V",
+      "originalName": "f",
+      "to": "cancelRamp",
+      "evidence": "If the retained raw PCM ramp countdown is nonzero,translate the MIN_INT fade target to zero,clear the countdown,and invoke gain recomputation in the original order. Complete original-body SHA256 ecc2949e4482dcaf96e21d5070e9baf0dd1e7c8297c0ce3dd8b1672671e22dea. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.i()V",
+      "originalName": "i",
+      "to": "recomputeGains",
+      "evidence": "Copy target volume into current mono gain,then evaluate and store left and right panning gains through the two exact original static helpers in their retained order. Complete original-body SHA256 7aa391e6d2adbc5839d3b19b340f5d0743a97365a563ee6d7397da18267eac39. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2915,6 +2957,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sl.a(Luh;)I",
+      "originalName": "a",
+      "to": "onScheduledEvent",
+      "evidence": "Run the scheduled mixer listener callback and return the original next frame delay or negative unschedule result. Preserve the retained virtual dispatch and caller monitor. Concrete tracker callbacks first call their original state updater,conditionally return minus one,and otherwise compute ((sampleRate<<9)+(sampleRate<<7))/(tempo*scale) with original int overflow and division behavior. Original abstract declaration SHA256 22cc28f67734d06e2dbefb652d4a0acbae867f1e585cb6b041c60f90d65b3e0e. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ta.a(B)Z",
       "originalName": "a",
       "to": "isSecondaryLinked",
@@ -3041,10 +3090,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uh.a(Lq;Lsl;)V",
+      "originalName": "a",
+      "to": "insertListenerByDeadline",
+      "evidence": "Walk through listeners with deadline less than or equal to the supplied listener until sentinel/first-greater,perform the original node insertion with exact argument order/guard,and reread the head deadline. Complete original-body SHA256 16321a192dbcea3797193ed7001470fd78291df240856666a932c5c8c8a224f3. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uh.b()Llf;",
       "originalName": "b",
       "to": "nextChildStream",
       "evidence": "Continue enumeration of immediate child PCM streams using the original cursor/voice traversal or paired-stream state. Preserve next-link read order,sentinel/null tests,skipped voice states,all global/guard paths and exceptional behavior. Complete original-body SHA256 fdb9b3bdba9a4d79c69a92029c414fd0fd8d9006c3e75104afffd7e1a6dae988. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.b(I)V",
+      "originalName": "b",
+      "to": "skipChildFrames",
+      "evidence": "Traverse the original child-stream deque and invoke each virtual skip method with the supplied count,preserving cursor/sentinel/cast/null behavior and exact guard arguments. Complete original-body SHA256 3b938f9af84ee1dedfe6a37def26fe6543020368770ec3e843d7fecba3e39bf9. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.b(Lsl;)V",
+      "originalName": "b",
+      "to": "removeListener",
+      "evidence": "Unlink the supplied scheduled listener,invoke its removal callback,clear its mixer back-reference only where present,and reread the retained head deadline or store minus one in original order. Complete original-body SHA256 236d87d0e122438b63cc8d159ab35943a1438ead1d3187994788697c5b7f16dd. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -3059,6 +3129,20 @@
       "originalName": "c",
       "to": "firstChildStream",
       "evidence": "Begin enumeration of immediate child PCM streams using the original null/raw,linked-mixer,voice-deque or paired-stream contract. Preserve all mutable iterator cursors,guard/global exceptional paths,casts and exact null behavior. Complete original-body SHA256 95cc147b7c532bfcda08548d007247af7bc913a5ddfa6c22bef8c5e4d7d5476e. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.c([III)V",
+      "originalName": "c",
+      "to": "mixChildStreams",
+      "evidence": "Traverse the original child-stream deque and call each active-flag render-or-skip wrapper with the original buffer,offset and count,preserving cursor/cast/null behavior and all guard arguments. Complete original-body SHA256 39c4f7feb71e4fc314c8dabc89d228c3052a12a38a832fc6dd5f1d6c199f114e. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.e()V",
+      "originalName": "e",
+      "to": "normalizeListenerDeadlines",
+      "evidence": "Only when accumulated progress is positive,subtract it from each scheduled listener deadline,then from the retained next deadline,and finally clear accumulated progress;preserve exact traversal and integer overflow. Complete original-body SHA256 236264fc60991464e42f2d811a3f73c738c4f6bf30cdf1ac8a5ae573723435be. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -3384,6 +3468,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:wl.a(Luh;)I",
+      "originalName": "a",
+      "to": "onScheduledEvent",
+      "evidence": "Run the scheduled mixer listener callback and return the original next frame delay or negative unschedule result. Preserve the retained virtual dispatch and caller monitor. Concrete tracker callbacks first call their original state updater,conditionally return minus one,and otherwise compute ((sampleRate<<9)+(sampleRate<<7))/(tempo*scale) with original int overflow and division behavior. Complete original-body SHA256 a2a67d302a9b45f0ccd63daaa356869499ae9f2013baf5307ffa4c6d1b488f98. Naming only. Entire original selected bodies and compiler-bound calls/fields were source-reviewed;support/owning PCM contracts and exact game-specific exceptional branches retained. Preserve all JVM widths/domains,original literals/operators,overflow,FP/casts,shared aliases,partial writes,allocation/call/exception order,visibility/modifiers,native and override bindings. No bodies,fields,parameters,locals or intentional native/class-name literals change. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wl.d()V",
       "originalName": "d",
       "to": "clearStaticReferences",
@@ -3561,7 +3652,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torquing-rules.mjs": "8da598367c03f04c9e534a68a3861682d35d37834f3f17cf0207e7991dc70176",
-      "torquing-names.json": "872c4ac71d59bccdf913198b172e807b085489bcfba8741d0d7e92507acf9077",
+      "torquing-names.json": "9caf5ebbe55ef87e7f2ec4055d0d2eef62d9b6d5443dcae2f4ecbad494a70f5b",
       "reproduce-torquing.mjs": "2a778be33cf09997c514713d57df9e717c13ffbbb82534f476bf9fdb039bf6a2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
