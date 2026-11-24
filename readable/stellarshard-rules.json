@@ -507,6 +507,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:qh",
+      "originalName": "qh",
+      "to": "PcmResampler",
+      "evidence": "Fourteen-tap polyphase signed-byte PCM resampler with original input/output rate integers and optional fixed-point coefficient table. Preserve equal-rate constructor early return,original normalization helper and division/store/allocation order,phase bounds,sinc threshold and exact window coefficients,Math sin/cos/floor evaluation and int casts. Original constructor SHA256 5c8b896b66db9a19b730b40f4059745ea3fcb37472aabafe146c9f7cfd8b98c7. Keep the original remainder expressions in byte resampling and rate scaling,the exact bad-position-guard rate-helper call,and full signed/overflow/division behavior. Sample wrapper uses original85/15/minus10689 guards and exact endpoint write/return-this ordering. Naming only. Complete original selected and supporting bodies,constructors and field declarations source-reviewed against compiler-bound immutable originals;preserve all fields,literals,argument widths/domains,guards,int/long overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,modifiers and native/override bindings. Existing meaningful aliases remain unchanged. No intentional native/class-name-literal edits or whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rc",
       "originalName": "rc",
       "to": "NanoFrameTimer",
@@ -2565,6 +2572,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qh.a(II)I",
+      "originalName": "a",
+      "to": "scaleRate",
+      "evidence": "With a retained coefficient table,scale the original full-width rate/count through long multiplication and division followed by int cast;otherwise retain the supplied value. Keep original guard-specific returns,extra helper calls and arithmetic/exception order. Keep the original remainder expressions in byte resampling and rate scaling,the exact bad-position-guard rate-helper call,and full signed/overflow/division behavior. Sample wrapper uses original85/15/minus10689 guards and exact endpoint write/return-this ordering. Complete original-body SHA256 eb657b8bada47fbba7953d3742387f5ac9f93c2dff950991c11be186b920a587. Naming only. Complete original selected and supporting bodies,constructors and field declarations source-reviewed against compiler-bound immutable originals;preserve all fields,literals,argument widths/domains,guards,int/long overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,modifiers and native/override bindings. Existing meaningful aliases remain unchanged. No intentional native/class-name-literal edits or whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.a(I[B)[B",
+      "originalName": "a",
+      "to": "resampleBytes",
+      "evidence": "Run the original14-tap coefficient convolution and rate-phase stepping into an int accumulation buffer,then round with32768 and shift16 and clamp to signed-byte range. Preserve input-array identity when the coefficient table is absent,output length long multiplication/cast plus14,int overflow,allocation/exception order,all captured global reads and diagnostic wrapping. Keep game-specific guard effects:Bounce false returns null after work,Dr bad byte invokes account helper,Flea computes the original remainder division,Hostile bad int clears the retained static reference,and Miner false stores output rate minus34 before processing. Keep the original remainder expressions in byte resampling and rate scaling,the exact bad-position-guard rate-helper call,and full signed/overflow/division behavior. Sample wrapper uses original85/15/minus10689 guards and exact endpoint write/return-this ordering. Complete original-body SHA256 e2a19bc3bf49e375e93cccab07687e22f0323a0f7a793c66766c0eea01c0ec8a. Naming only. Complete original selected and supporting bodies,constructors and field declarations source-reviewed against compiler-bound immutable originals;preserve all fields,literals,argument widths/domains,guards,int/long overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,modifiers and native/override bindings. Existing meaningful aliases remain unchanged. No intentional native/class-name-literal edits or whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qh.b(II)I",
+      "originalName": "b",
+      "to": "scalePosition",
+      "evidence": "With a retained coefficient table,scale the original sample position through long multiplication/division,int cast and plus6;otherwise retain it. Preserve each exact guard:return sentinels before work where present,clear the retained static reference or call the original helper in the original order. Keep the original remainder expressions in byte resampling and rate scaling,the exact bad-position-guard rate-helper call,and full signed/overflow/division behavior. Sample wrapper uses original85/15/minus10689 guards and exact endpoint write/return-this ordering. Complete original-body SHA256 6f97e73202396b101a683bba6853409a7783757530e08673e3cd35a68b1d761b. Naming only. Complete original selected and supporting bodies,constructors and field declarations source-reviewed against compiler-bound immutable originals;preserve all fields,literals,argument widths/domains,guards,int/long overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,modifiers and native/override bindings. Existing meaningful aliases remain unchanged. No intentional native/class-name-literal edits or whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qj.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2761,6 +2789,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ud.a(Lqh;)Lud;",
+      "originalName": "a",
+      "to": "resample",
+      "evidence": "Resample this sample in place through the original resampler:store the returned byte array,then scaled sample rate,and transform original loop endpoints. Equal endpoints use one retained helper result;unequal endpoints are transformed separately and decrement the start if they collapse. Preserve exact helper guards,call/write ordering,full domains,partial mutations and return-this identity. Keep the original remainder expressions in byte resampling and rate scaling,the exact bad-position-guard rate-helper call,and full signed/overflow/division behavior. Sample wrapper uses original85/15/minus10689 guards and exact endpoint write/return-this ordering. Complete original-body SHA256 086ed4c498ab01a1e9bee7c021e9ab1ac216088396cb3b80a27933645a6e0aee. Naming only. Complete original selected and supporting bodies,constructors and field declarations source-reviewed against compiler-bound immutable originals;preserve all fields,literals,argument widths/domains,guards,int/long overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,modifiers and native/override bindings. Existing meaningful aliases remain unchanged. No intentional native/class-name-literal edits or whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ue.b(B)V",
       "originalName": "b",
       "to": "clearStaticReferences",
@@ -2889,7 +2924,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-stellarshard-rules.mjs": "e0aad811358351403390d3f71317f31025d7e9ef8434ab5477a9473e966eb7de",
-      "stellarshard-names.json": "69fec6c3cfd8892bee9c3e16861cd414f03d892cc9ea6f8650f02252a7a3a643",
+      "stellarshard-names.json": "337329030c3b1109ec68afa31f0b47201060661e067d54d1385f30c50fdb32fa",
       "reproduce-stellarshard.mjs": "bd81f17e3db3182b75b19f828dfc185d0ec0f4b8ca0f78caa8495e2ff6f4a0a1",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

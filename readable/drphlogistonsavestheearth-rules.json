@@ -493,10 +493,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:me",
+      "originalName": "me",
+      "to": "AbstractAudioSample",
+      "evidence": "Abstract intrusive sound-data node retaining the original single int scheduling counter and empty package-visible constructor,shared by the sample reference in the PCM stream scheduler. Preserve default field state and inherited node semantics. Original constructor SHA256s 9265619237dc049c9efd5c01a5c74a7e99db1a67aa7ef3e2e396e54563e1bc57. Naming only. Complete selected sample classes,all50selected constructor bodies,20resampling bodies and115field declarations source-reviewed against immutable compiler-bound definitions. Preserve every original field/body,literal,guard,JVM width/domain,int/long overflow,FP/cast,alias,partial write,allocation/call/exception order,modifier and native/override binding. Existing meaningful aliases stay unchanged;native and class-name-literal intentional edit allowlists empty;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mg",
       "originalName": "mg",
       "to": "GzipDecompressor",
       "evidence": "Complete owned inflater method, fields and constructors reviewed: gzip magic31/139, lazy raw Inflater, caller output, original input offset/length and reset/error paths. Preserve guards/early returns, TerraPhoenix caller-supplied input offset and unrelated static helpers/initializers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ng",
+      "originalName": "ng",
+      "to": "PcmResampler",
+      "evidence": "Fourteen-tap polyphase signed-byte PCM resampler with original input/output rate integers and optional fixed-point coefficient table. Preserve equal-rate constructor early return,original normalization helper and division/store/allocation order,phase bounds,sinc threshold and exact window coefficients,Math sin/cos/floor evaluation and int casts. Original constructor SHA256s 64ba456f48ec109fb8f23a6a891cfe2ec12d592a6b30b6cf99ebd1dfbf6c573b. Naming only. Complete selected sample classes,all50selected constructor bodies,20resampling bodies and115field declarations source-reviewed against immutable compiler-bound definitions. Preserve every original field/body,literal,guard,JVM width/domain,int/long overflow,FP/cast,alias,partial write,allocation/call/exception order,modifier and native/override binding. Existing meaningful aliases stay unchanged;native and class-name-literal intentional edit allowlists empty;no whole-game runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -609,6 +623,13 @@
       "originalName": "vd",
       "to": "IntrusiveDeque",
       "evidence": "Owns a circular primary-link IntrusiveNode sentinel and an independent shared pending-node traversal cursor. Complete constructor and all instance methods independently reviewed,including every guard-dependent side effect and all partial link/cursor updates. Static helpers unchanged. Preserve argument widths/domains,guards,overflow,partial effects,aliasing,exceptions,modifiers and existing meaningful names. No native owner/type-use declarations or exact quoted class literals;identifier-only change.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vk",
+      "originalName": "vk",
+      "to": "PcmSample",
+      "evidence": "Signed-byte PCM sample data with retained sample rate,byte-array identity,loop start/end and ping-pong flag. Complete original constructors preserve direct byte-array aliases or exact new-byte-array allocation,assignment order,default booleans and full argument domains;no validation or copies added. Original constructor SHA256s 7168466646a7cf08c08e63d0a56e828048a2dd86631abbf0de6b1e7a81265070,35c69d20f1b9751e96361d55397d1e85a45ac814df907c1f6a2550cc6b912e55,cf062d68e407aad6a480420e6b67802e8285b0a7617ecb23e13552d25b7c62db. Naming only. Complete selected sample classes,all50selected constructor bodies,20resampling bodies and115field declarations source-reviewed against immutable compiler-bound definitions. Preserve every original field/body,literal,guard,JVM width/domain,int/long overflow,FP/cast,alias,partial write,allocation/call/exception order,modifier and native/override binding. Existing meaningful aliases stay unchanged;native and class-name-literal intentional edit allowlists empty;no whole-game runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -2222,6 +2243,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ng.a(BI)I",
+      "originalName": "a",
+      "to": "scaleRate",
+      "evidence": "With a retained coefficient table,scale the original full-width rate/count through long multiplication and division followed by int cast;otherwise retain the supplied value. Keep original guard-specific returns,extra helper calls and arithmetic/exception order. Complete original-body SHA256 8fcd34cd40083c9a62813831e8a6b3367e2ab969112c351c17481641f31c8248. Naming only. Complete selected sample classes,all50selected constructor bodies,20resampling bodies and115field declarations source-reviewed against immutable compiler-bound definitions. Preserve every original field/body,literal,guard,JVM width/domain,int/long overflow,FP/cast,alias,partial write,allocation/call/exception order,modifier and native/override binding. Existing meaningful aliases stay unchanged;native and class-name-literal intentional edit allowlists empty;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ng.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2229,10 +2257,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ng.a(IB)I",
+      "originalName": "a",
+      "to": "scalePosition",
+      "evidence": "With a retained coefficient table,scale the original sample position through long multiplication/division,int cast and plus6;otherwise retain it. Preserve each exact guard:return sentinels before work where present,clear the retained static reference or call the original helper in the original order. Complete original-body SHA256 72992512b5d648d6115d9183e400344ee86ac2389c237544b54bec1c29235bc3. Naming only. Complete selected sample classes,all50selected constructor bodies,20resampling bodies and115field declarations source-reviewed against immutable compiler-bound definitions. Preserve every original field/body,literal,guard,JVM width/domain,int/long overflow,FP/cast,alias,partial write,allocation/call/exception order,modifier and native/override binding. Existing meaningful aliases stay unchanged;native and class-name-literal intentional edit allowlists empty;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ng.a(Ljava/lang/String;I)Log;",
       "originalName": "a",
       "to": "pollAccountNameCheck",
       "evidence": "Complete query declaration/body and validator constructor/text/status/reset bodies, cache fields and explicit availability diagnostics reviewed. Query returns pending null before int!=3582 early null guard. Matching complete consumes exact cached result; otherwise cache/name/state written in that order. Text byte<=47 invokes pk.d(-100) before syntax validation. Status validation calls pk.e(69) for int!=8192 after syntax, then derives query guard with int^11774; preserve computed full-int domain, calls and failures. Reset always clears checkedName then wrong byte!=-27 clears availability flag. All result/error/cache-write order, defaults and RuntimeException wrapping retained. Full original argument domains, stale-name handling, pending behavior, shared singleton identity and allocation/error context remain unchanged; identifiers only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ng.a([BB)[B",
+      "originalName": "a",
+      "to": "resampleBytes",
+      "evidence": "Run the original14-tap coefficient convolution and rate-phase stepping into an int accumulation buffer,then round with32768 and shift16 and clamp to signed-byte range. Preserve input-array identity when the coefficient table is absent,output length long multiplication/cast plus14,int overflow,allocation/exception order,all captured global reads and diagnostic wrapping. Keep game-specific guard effects:Bounce false returns null after work,Dr bad byte invokes account helper,Flea computes the original remainder division,Hostile bad int clears the retained static reference,and Miner false stores output rate minus34 before processing. Complete original-body SHA256 bb6cc72e123046ca8f59fe178954cd78fe37fc41669a2d42a23eb8ab4935dff2. Naming only. Complete selected sample classes,all50selected constructor bodies,20resampling bodies and115field declarations source-reviewed against immutable compiler-bound definitions. Preserve every original field/body,literal,guard,JVM width/domain,int/long overflow,FP/cast,alias,partial write,allocation/call/exception order,modifier and native/override binding. Existing meaningful aliases stay unchanged;native and class-name-literal intentional edit allowlists empty;no whole-game runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -3062,6 +3104,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vk.a(Lng;)Lvk;",
+      "originalName": "a",
+      "to": "resample",
+      "evidence": "Resample this sample in place through the original resampler:store the returned byte array,then scaled sample rate,and transform original loop endpoints. Equal endpoints use one retained helper result;unequal endpoints are transformed separately and decrement the start if they collapse. Preserve exact helper guards,call/write ordering,full domains,partial mutations and return-this identity. Complete original-body SHA256 49d7e750632f085495676057553e259154a16ac55172c9b1d3623fdd8565c2b1. Naming only. Complete selected sample classes,all50selected constructor bodies,20resampling bodies and115field declarations source-reviewed against immutable compiler-bound definitions. Preserve every original field/body,literal,guard,JVM width/domain,int/long overflow,FP/cast,alias,partial write,allocation/call/exception order,modifier and native/override binding. Existing meaningful aliases stay unchanged;native and class-name-literal intentional edit allowlists empty;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:wd.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -3141,7 +3190,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-drphlogistonsavestheearth-rules.mjs": "08315c3da5b003a5c650d15e9848760b3143b6b5152cbe9d0b4f811976e18e5b",
-      "drphlogistonsavestheearth-names.json": "47e7b8ccd2b32c660f8ddd68c63ac774df296cb30557c896fb5ddfe957a6261d",
+      "drphlogistonsavestheearth-names.json": "5ab8d263eff9a06ce7536e812006fef3bb155acd5b372ab4ea7be0cf60d56af8",
       "reproduce-drphlogistonsavestheearth.mjs": "4eb61234c8f693a5901143e23655851f6692c61799a49e6912b51d62f66d5dfb",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

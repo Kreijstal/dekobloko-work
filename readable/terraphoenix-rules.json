@@ -1130,6 +1130,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:m",
+      "originalName": "m",
+      "to": "PcmResampler",
+      "evidence": "Fourteen-tap polyphase signed-byte PCM resampler with original input/output rate integers and optional fixed-point coefficient table. Preserve equal-rate constructor early return,original normalization helper and division/store/allocation order,phase bounds,sinc threshold and exact window coefficients,Math sin/cos/floor evaluation and int casts. Original constructor SHA256 e15a28547b58943d5271890129b67442a73edaeed17a1a240d6d48d779a6bf94. Keep early null return for byte guard other than109,rate-scaling false flag clearing the coefficient table before the table test,and bad position byte invoking rate scaling with false before its table test. Preserve byte46,true and109 guards in the sample wrapper and all original aliases/partial writes. Naming only. Complete original selected and supporting bodies,constructors and field declarations source-reviewed against compiler-bound immutable originals;preserve all fields,literals,argument widths/domains,guards,int/long overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,modifiers and native/override bindings. Existing meaningful aliases remain unchanged. No intentional native/class-name-literal edits or whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mf",
       "originalName": "mf",
       "to": "AsyncRequest",
@@ -2404,6 +2411,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gg.a(Lm;)Lgg;",
+      "originalName": "a",
+      "to": "resample",
+      "evidence": "Resample this sample in place through the original resampler:store the returned byte array,then scaled sample rate,and transform original loop endpoints. Equal endpoints use one retained helper result;unequal endpoints are transformed separately and decrement the start if they collapse. Preserve exact helper guards,call/write ordering,full domains,partial mutations and return-this identity. Keep early null return for byte guard other than109,rate-scaling false flag clearing the coefficient table before the table test,and bad position byte invoking rate scaling with false before its table test. Preserve byte46,true and109 guards in the sample wrapper and all original aliases/partial writes. Complete original-body SHA256 8bde66f63818936b314fd150fc95dd2501e0c3413f140141589bb838ff4dad32. Naming only. Complete original selected and supporting bodies,constructors and field declarations source-reviewed against compiler-bound immutable originals;preserve all fields,literals,argument widths/domains,guards,int/long overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,modifiers and native/override bindings. Existing meaningful aliases remain unchanged. No intentional native/class-name-literal edits or whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gi.a(BJ)V",
       "originalName": "a",
       "to": "sleepMillis",
@@ -3080,6 +3094,27 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 6 null writes to 5 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 a37cf2041e922e3db9d3250bd73b2558553f3227700be035f64dbecf05b63642.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.a(BI)I",
+      "originalName": "a",
+      "to": "scalePosition",
+      "evidence": "With a retained coefficient table,scale the original sample position through long multiplication/division,int cast and plus6;otherwise retain it. Preserve each exact guard:return sentinels before work where present,clear the retained static reference or call the original helper in the original order. Keep early null return for byte guard other than109,rate-scaling false flag clearing the coefficient table before the table test,and bad position byte invoking rate scaling with false before its table test. Preserve byte46,true and109 guards in the sample wrapper and all original aliases/partial writes. Complete original-body SHA256 0c56f2e097290d9fdcc203573d3206bac86cfce20f50cffad78758dbfc7b62db. Naming only. Complete original selected and supporting bodies,constructors and field declarations source-reviewed against compiler-bound immutable originals;preserve all fields,literals,argument widths/domains,guards,int/long overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,modifiers and native/override bindings. Existing meaningful aliases remain unchanged. No intentional native/class-name-literal edits or whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.a(B[B)[B",
+      "originalName": "a",
+      "to": "resampleBytes",
+      "evidence": "Run the original14-tap coefficient convolution and rate-phase stepping into an int accumulation buffer,then round with32768 and shift16 and clamp to signed-byte range. Preserve input-array identity when the coefficient table is absent,output length long multiplication/cast plus14,int overflow,allocation/exception order,all captured global reads and diagnostic wrapping. Keep game-specific guard effects:Bounce false returns null after work,Dr bad byte invokes account helper,Flea computes the original remainder division,Hostile bad int clears the retained static reference,and Miner false stores output rate minus34 before processing. Keep early null return for byte guard other than109,rate-scaling false flag clearing the coefficient table before the table test,and bad position byte invoking rate scaling with false before its table test. Preserve byte46,true and109 guards in the sample wrapper and all original aliases/partial writes. Complete original-body SHA256 6637b8eb3a9c0b28a7a8332f6bb835685dee45ec939d0f9b77cbd03c34560f16. Naming only. Complete original selected and supporting bodies,constructors and field declarations source-reviewed against compiler-bound immutable originals;preserve all fields,literals,argument widths/domains,guards,int/long overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,modifiers and native/override bindings. Existing meaningful aliases remain unchanged. No intentional native/class-name-literal edits or whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:m.a(IZ)I",
+      "originalName": "a",
+      "to": "scaleRate",
+      "evidence": "With a retained coefficient table,scale the original full-width rate/count through long multiplication and division followed by int cast;otherwise retain the supplied value. Keep original guard-specific returns,extra helper calls and arithmetic/exception order. Keep early null return for byte guard other than109,rate-scaling false flag clearing the coefficient table before the table test,and bad position byte invoking rate scaling with false before its table test. Preserve byte46,true and109 guards in the sample wrapper and all original aliases/partial writes. Complete original-body SHA256 8b68f069e2d27c59748bcf3bc2cfa4ccc3ab0a5351d26c7cf0eb97031735500a. Naming only. Complete original selected and supporting bodies,constructors and field declarations source-reviewed against compiler-bound immutable originals;preserve all fields,literals,argument widths/domains,guards,int/long overflow,FP/cast order,aliases,partial writes,allocation/call/exception order,modifiers and native/override bindings. Existing meaningful aliases remain unchanged. No intentional native/class-name-literal edits or whole-game runtime equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -4499,7 +4534,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-terraphoenix-rules.mjs": "2b9ef0307d7e8ad8295f9a6d9e8e1d74cc01f0b1d1f8bbcad95b45bfce2e3b38",
-      "terraphoenix-names.json": "98dabdb1d802ee170a3a9bf4431852adb04a316e9fecdaad9f0aadab21ec63e3",
+      "terraphoenix-names.json": "59f491eff0c48d4ab995af44bce995bc486ca1e436a32fc5bdebd8acb01b1375",
       "reproduce-terraphoenix.mjs": "26ebcd63f823ab4b28fe91b15329343bbc2ebca2f78d4652cffe0e8f8baf425a",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
