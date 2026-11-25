@@ -2540,6 +2540,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ep",
+      "originalName": "ep",
+      "to": "IntroSequence",
+      "evidence": "ep.java: Intro phases, timed fades,16JPEG panorama images, scrolling speed/position and five pause durations. Eleven private state fields and draw/advance helpers establish intro sequence role; preserve all image caching/eviction, timers, FP arithmetic, transitions and unrelated static chat/social/resource connection helpers.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:eq",
       "originalName": "eq",
       "to": "PasswordLoginCredentials",
@@ -2600,6 +2607,13 @@
       "originalName": "fc",
       "to": "EmptyWidgetPainter",
       "evidence": "fc.java: WidgetPainter whose paint callback draws nothing; the keyboard idle tick counter and labels are unrelated shared statics.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fd",
+      "originalName": "fd",
+      "to": "AnimationFrameSetCacheEntry",
+      "evidence": "fd.java: Intrusive frame-set cache entry retains frame-group ID and AnimationFrameSet value. Constructor creates frame set,sets frame archives,and busy-waits on ensureFramesAvailable. Preserve the busy-wait,argument/archive order and exception wrapper. Unrelated static animation-name table contains eight literal j suffixes that remain unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -3440,6 +3454,13 @@
       "originalName": "kn",
       "to": "TelefragEvent",
       "evidence": "kn.java: Diagnostic EventTelefrag on the affected unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ko",
+      "originalName": "ko",
+      "to": "HighscoreAccountEntry",
+      "evidence": "ko.java: Indexed highscore account table record holds account name,optional display alias and distinct-account visited flag. handleHighscoreResponse fills and reads it,with local account at index0. Preserve null/default values and table aliases; unrelated byte-storage and pointer/UI statics remain.",
       "confidence": "reviewed"
     },
     {
@@ -66058,6 +66079,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ep.a(B)V",
+      "originalName": "a",
+      "to": "releaseStatics",
+      "evidence": "ep.java: Clears retained archive,text and boolean-table statics;byte!=11sets field_o=9 between clears. Preserve exact clear/guard order and all byte values. Naming only: preserve original descriptor,modifiers,all primitive domains/guards,aliases,literals,allocations,locks and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(BI)I",
+      "originalName": "a",
+      "to": "toScreenY",
+      "evidence": "ep.java: Adds centred intro viewport vertical offset to supplied coordinate. Byte>-22returns69before any viewport access. Preserve int overflow,subtraction/shift order and guard branch. Naming only: preserve original descriptor,modifiers,all primitive domains/guards,aliases,literals,allocations,locks and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(DI)D",
+      "originalName": "a",
+      "to": "toScreenX",
+      "evidence": "ep.java: Double-coordinate overload adds the integer-computed viewport horizontal offset. Wrong int guard first loads a discarded intro106JPEG through existing helper. Preserve exact integer offset before double conversion,all double values and I/O/failure ordering. Naming only: preserve original descriptor,modifiers,all primitive domains/guards,aliases,literals,allocations,locks and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(I)V",
+      "originalName": "a",
+      "to": "draw",
+      "evidence": "ep.java: Draws intro text/fades or16image panorama plus captions,particles and ending overlay. Preserve bad-guard coordinate call,OutOfMemoryError-only catch during partial image preloading,deferred retry,all FP/casts/sine ordering,allocation/call order,alpha arithmetic and transition after terminal fade threshold. Naming only: preserve original descriptor,modifiers,all primitive domains/guards,aliases,literals,allocations,locks and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(IB)V",
+      "originalName": "a",
+      "to": "drawPanoramaStrip",
+      "evidence": "ep.java: Draws clipped scrolling panorama with16th-pixel sampling and per-row carry workspace,loading missing images and evicting fully passed ones;adds original64column left fade. Preserve byte-guard early return,global first-image/origin offsets,allocation/partial-write order and signed arithmetic. Naming only: preserve original descriptor,modifiers,all primitive domains/guards,aliases,literals,allocations,locks and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(II)I",
+      "originalName": "a",
+      "to": "toScreenX",
+      "evidence": "ep.java: Int-coordinate overload adds centred viewport offset;guard!=4592sets phase countdown=-45before accessing viewport. Preserve subtraction/shift/add overflow and distinct guard effects from double overload. Naming only: preserve original descriptor,modifiers,all primitive domains/guards,aliases,literals,allocations,locks and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(Lje;ILje;)V",
+      "originalName": "a",
+      "to": "initializeSocialLists",
+      "evidence": "ep.java: Ensures friend/ignore child deques and name hash tables exist,aliases global entry lists to supplied components,then clears social lists. Preserve component/argument order,64bucket allocations,guard-side field write and all null/partial initialization behavior. Naming only: preserve original descriptor,modifiers,all primitive domains/guards,aliases,literals,allocations,locks and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(Z)V",
+      "originalName": "a",
+      "to": "advance",
+      "evidence": "ep.java: Advances intro phase/countdowns,scroll speed,pauses and ending ticks,with original2835position cap. Preserve double precision/order,second tick increment during motion,zero-speed fallback0.175,11.904threshold/special2521..2552window,and transition call without added return when pause list exhausted. Boolean guard clears static flag only after phase3work. Naming only: preserve original descriptor,modifiers,all primitive domains/guards,aliases,literals,allocations,locks and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(ZLjava/lang/String;Z)V",
+      "originalName": "a",
+      "to": "drawChatInputWithText",
+      "evidence": "ep.java: Temporarily substitutes chat-input component text,draws chat root,and restores saved text on normal return. Preserve guard-side table clear and lack of finally restoration on failure,argument identity,draw flag and RuntimeException wrapper. Naming only: preserve original descriptor,modifiers,all primitive domains/guards,aliases,literals,allocations,locks and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.b(B)I",
+      "originalName": "b",
+      "to": "pollResourceConnection",
+      "evidence": "ep.java: Polls asynchronous resource socket open,13byte handshake with opcode15/version,one-byte reply/deadline and ResourceProtocolClient transport attachment. Preserve errorCount>=4mapping,30second deadline,phase progression/reset,IOException-only retry handler,raw server reply codes and post-work byte-dependent-1/37returns. Naming only: preserve original descriptor,modifiers,all primitive domains/guards,aliases,literals,allocations,locks and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.b(II)Lwk;",
+      "originalName": "b",
+      "to": "loadIntroImage",
+      "evidence": "ep.java: Loads intro(index+1).jpg from retained archive and constructs RGB sprite against original AWT component. Wrong int guard invokes draw(29)first. Preserve full int string/index overflow,fetch/component/construction order and errors. Naming only: preserve original descriptor,modifiers,all primitive domains/guards,aliases,literals,allocations,locks and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eq.a(B)Lh;",
       "originalName": "a",
       "to": "getLoginKind",
@@ -66307,6 +66405,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "fd.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fd.a(ZI)I",
+      "originalName": "a",
+      "to": "highestOneBit",
+      "evidence": "fd.java: Unsigned shifts spread bits below highest set bit,then returns input & ~spread. Preserve all signed int values (negative inputs retain sign bit),zero,and false-boolean discarded recursive true call before final spreads. Naming only: preserve original descriptor,modifiers,all primitive domains/guards,aliases,literals,allocations,locks and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -136829,7 +136934,7 @@
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "armiesofgielinor-names.json": "3d81b0bff675440c5d2d4ff65f1653dd5177dbe1f1f26450f97202057865d785"
+      "armiesofgielinor-names.json": "c5b5d5b6810339ef09ca063499fe566e9795618cf0456dab5241afc0211a415a"
     }
   },
   "generators": {
