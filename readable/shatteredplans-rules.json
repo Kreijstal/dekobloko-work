@@ -6317,6 +6317,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dc.a(BI)I",
+      "originalName": "a",
+      "to": "findCombatantIndex",
+      "evidence": "Search retained dense combatant-id array up to active count and return matching index. Miss invokes original null validate-orders callback for byte<=57then throws RuntimeException; never change to-1. Battle initialization/hostility/removal/simulation flow read; preserve sentinel neutral id and full primitive domains. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dc.a(BLk;Lln;)Z",
       "originalName": "a",
       "to": "tallyShipsAtStar",
@@ -6331,10 +6338,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dc.a(BLln;Leg;)V",
+      "originalName": "a",
+      "to": "applyCombatLossRetreats",
+      "evidence": "Use initial versus surviving per-player fleet totals to record casualties and return half lost fleets to pending origin/defender retreat state, with distinct all-defender-fleets-lost branch. Complete battle resolution and BattleEvent append helpers read. Preserve proportional rounding/division, original-owner predicate, optional event writes, byte guard wormhole callback and queue order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dc.a(B[[Z)V",
       "originalName": "a",
       "to": "buildHostilePairs",
       "evidence": "Lists for each candidate the other candidates that are neutral or not allied with it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dc.a(I)V",
+      "originalName": "a",
+      "to": "resetChatRateLimit",
+      "evidence": "Store client-clock timestamp then zero retained chat rate counter; wrong int clears GameState statics afterward. Quick Chat send caller, timed rate-limit consumer and chat packet caller inspected. Preserve clock-call/write ordering and complete int guard behavior. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -6363,6 +6384,13 @@
       "originalName": "a",
       "to": "setYearNameIndices",
       "evidence": "Stores the adjective and noun indices used by the year name.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dc.a(ILeg;Lln;)V",
+      "originalName": "a",
+      "to": "returnFleetsAfterCapture",
+      "evidence": "After selecting/capturing winner, distribute retained pre-capture surviving counts back to incoming fleet origins, subtracting final star garrison for winning owner. Optionally append return contributions to battle event. Preserve original arithmetic/division, predicate/read order, zero-entry logging rule and wrong-int null wormhole callback. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -6436,6 +6464,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dc.a(Lk;II)V",
+      "originalName": "a",
+      "to": "resolveUnderGarrisonedStars",
+      "evidence": "Mark owned stars below minimum garrison, propagate neighbour minimum changes until original rule-dependent termination, return/distribute pending fleets with deterministic per-star RNG seed, log abandonment and abandon marked stars. Complete211line body and turn phase read. Preserve initial16slot scratch quirks, resize timing, seeded draw count/order, partial global flags, owner aliases, exceptions and final work-array clear. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dc.a(Lk;ILse;)V",
       "originalName": "a",
       "to": "applyDefensiveNetAndStellarBombProjects",
@@ -6457,6 +6492,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dc.a(Lln;Leg;I)V",
+      "originalName": "a",
+      "to": "returnSurvivingForeignFleets",
+      "evidence": "When original star owner survives, return proportional surviving counts of incoming fleets whose owner differs from star owner to their origins, optionally logging nonzero contributions. Preserve original denominator/rounding/overflow, predicate and queue order; wrong int calls processTurn before work. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dc.a(Lln;Lln;I)Z",
       "originalName": "a",
       "to": "isWithinMovementRange",
@@ -6468,6 +6510,20 @@
       "originalName": "a",
       "to": "setDefensiveNet",
       "evidence": "Stores the flag that the AI messages call a Defensive Net at the star.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dc.a(Lln;ZB)V",
+      "originalName": "a",
+      "to": "updateMinimumGarrison",
+      "evidence": "Delegate original rule-aware minimum garrison helper with(rules,bool,star,-2). Complete helper read including disregard-marked-neighbours bool and rule modes. Byte<=113then invokes original null combat helper. Preserve flag forwarding, partial star update and late callback/failure. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dc.a(Lob;BLfs;)V",
+      "originalName": "a",
+      "to": "writeState",
+      "evidence": "For byte>49delegate complete state serializer with retained players/map/territories/alliances/projects/wormholes/scores/turn values and supplied player; smaller bytes return before dereferences. Snapshot packet caller inspected. Preserve exact argument order, byte truncation, player/null paths, buffer/cursor and failure ordering. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -6506,10 +6562,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dc.a(Z)V",
+      "originalName": "a",
+      "to": "removeUnopposedCombatants",
+      "evidence": "Remove active combatants whose retained hostility-link count iszero, rechecking same dense index after swap. Original hostile-pair builder/simulator read. True bool clears galaxy map first. Preserve array aliases, in-place swap behavior, full null/exception paths and no reordering of links. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dc.a(ZLk;I)V",
       "originalName": "a",
       "to": "applyPlacementsAndIncome",
       "evidence": "Moves placed fleets to their stars, tops up territory stars, logs placements and adds random resource income.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dc.b(B)V",
+      "originalName": "b",
+      "to": "resolveCaptureCompetition",
+      "evidence": "After initial combat leaves allied survivors and no defending garrison, choose max of one RNG int per active player, decrement selected remaining fleet count and remove zero entries until one combatant remains. Capture caller establishes phase. Preserve all random draw counts/order, decrement loop, negative-result failure and wrong-byte initial-array clear. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -6548,10 +6618,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dc.c(I)V",
+      "originalName": "c",
+      "to": "resetTerritoryProductionBudgets",
+      "evidence": "Loop players from supplied index and reset per-territory production budget from nonnegative minimum of four accumulated resources, choosing individual/combined territory by original rule flag. Complete budget helper and placement/income consumer read. Preserve arbitrary starting index, allocation/helper guards and partial writes. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dc.c(II)V",
+      "originalName": "c",
+      "to": "removeCombatant",
+      "evidence": "Remove selected dense combatant slot by last-entry swaps across id/hostility arrays, then remove references to removed id from remaining adjacency lists. Preserve original swapped-edge skip caused by increasing loop index, duplicate/self-link behavior and bad-int capture-competition callback before mutation. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dc.d(B)[I",
       "originalName": "d",
       "to": "simulateCombat",
       "evidence": "Repeatedly picks a random hostile pair and removes one ship from the victim, counting kills per player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dc.d(I)V",
+      "originalName": "d",
+      "to": "detectMaximumHeapSize",
+      "evidence": "Reflect Runtime.maxMemory and invoke on getRuntime with original null argument array; on success store1+integer MiB in retained global. Preserve nested Exception/Throwable catch scopes, exact casts/overflow, ignored missing method and wrong-int caption clear. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -6566,6 +6657,13 @@
       "originalName": "e",
       "to": "clearStatics",
       "evidence": "Assigns null to 6 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dc.e(I)V",
+      "originalName": "e",
+      "to": "recomputeTerritoryEconomy",
+      "evidence": "For each selected player territory or combined territory, reset production budget then recompute retained minimum resource value, surplus array and resource ordering through complete helpers. Preserve branch-dependent guard expressions, allocation/alias behavior, arbitrary start index, original minima calculations and callback/exception order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -19450,7 +19548,7 @@
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
-      "shatteredplans-names.json": "06aa7a7103d1eabf76d2fe607da738ff697cc736b2160756be45a0586338ae52"
+      "shatteredplans-names.json": "8f054d79b5c02ceff89a2740ed685977da99138fe9465468dc1c11e6c8fbfed8"
     }
   },
   "generators": {
