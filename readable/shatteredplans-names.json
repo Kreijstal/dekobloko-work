@@ -321,6 +321,46 @@
       "ls",
       "GalaxyMapLayoutSupport",
       "Complete37-line static type read. Computes alternating hex-row map extent from row count and shared scale; Standard/Sol/Tutorial map constructors consume it as second map dimension. Existing cleanup retained."
+    ],
+    [
+      "mi",
+      "LobbyRoomDecoder",
+      "Complete132-line static type read and pinned unchanged across previous checkpoint. Decodes LobbyRoomEntry fields, option bytes, flags, timestamps and names. All three room decoder callers read; captions and cleanup remain in original owner."
+    ],
+    [
+      "mj",
+      "LobbyPlayerEntry",
+      "Complete212-line AnimatedPanel type read. Lobby player entry retains account id, names, sort flags/time and child panels; packet creation, ordered insertion and context-menu consumers inspected. Shared overlay/sprite helpers remain static."
+    ],
+    [
+      "mk",
+      "LobbyOptionResources",
+      "Complete40-line mixed static holder read. Retains lobby rating/option/report captions, option names and option bytes consumed by lobby configuration. Unrelated applet counter and diagnostic string retained; no claim of an exclusive resource purpose."
+    ],
+    [
+      "mp",
+      "AccountRequestState",
+      "Complete41-line identity-marker type read. Three singleton instances are compared by account creation/name-availability state machines. Throwing toString and unrelated archive-index poll helper retained unchanged."
+    ],
+    [
+      "mq",
+      "TutorialOverlaySupport",
+      "Complete155-line static type read. Draws interpolating tutorial text/conditional objective overlays; fixed-point rotation matrix and basic graphics-settings factory remain in original owner. Graphics-setting consumers confirm factory role."
+    ],
+    [
+      "n",
+      "DiplomacyNotice",
+      "Complete89-line IntrusiveNode type read. GameSession constructs notification nodes on pact/offer events and expires their retained age counter at2. Constructor deliberately ignores its player/message inputs. Tutorial tag lookup and UI statics remain in original owner."
+    ],
+    [
+      "nb",
+      "GameTextResources",
+      "Complete124-line mixed static type read. Loads named byte resources from temporary localization archive, used by495 literal-key invocations in GameTextLoader. Printable-chat predicate/login helper, sprite/text arrays and static cleanup remain in owner."
+    ],
+    [
+      "nd",
+      "IntroGlowPoint",
+      "Complete146-line type read. Constructor retains x/y/radius; intro updater animates brightness/step, renderer uses the same positions/radius/brightness for radial glows. Static tutorial scene parser and resources remain in original owner."
     ]
   ],
   "methods": [
@@ -1800,6 +1840,125 @@
       "(II)I",
       "computeMapHeight",
       "Guard2 computes alternating quarter/three-quarter hex-row offset plus paired-row spacing using shared double scale and200, then casts once to int. Other integers return18. Map constructors consume as second extent. Preserve Java integer division/remainder for negative rows, floating-point association and narrowing behavior. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "mi",
+      "a",
+      "(BLfb;Lob;Z)V",
+      "readLobbyRoom",
+      "Entire105-line body read. Optionally read current player count, then capacity/settings/packed flags/options/rating/time/optional value/id/name data into room. Preserve partial writes before late byte guard, signed elapsed-int subtraction, array identity and cursor rewind to reread first name as participant list when flag2 is set. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "mj",
+      "a",
+      "(IIIII[Lbi;)V",
+      "drawTintedHorizontalSpriteStrip",
+      "Entire45-line draw helper read. Draw left/right caps tinted, save/intersect shared clip, tile middle sprite, restore clip. Preserve right-width lookup by supplied index while actual cap draw uses index2, null/nonpositive-width no-op, zero-width tile behavior, arithmetic and clip state on exception. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "mj",
+      "a",
+      "(IZ)V",
+      "drawSharedUiOverlays",
+      "Draw retained tooltip if present, then context menu; only guard0 proceeds to existing shared UI helper, report panel and quickchat help. Preserve duplicated branches, bool forwarding, nullable globals and original partial rendering/failure order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "mj",
+      "a",
+      "(Ljava/lang/String;Ljava/lang/String;B)V",
+      "setPlayerNames",
+      "Store second string into retained display-name field before byte guard; byte>1 stores first string into other name field and calls existing name helper. Preserve constructor versus setter argument order, guard-domain partial mutation and helper exception wrapping. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "mj",
+      "a",
+      "(Lmj;I)Z",
+      "sortsBefore",
+      "Entire52-line comparator read plus ordered-insertion caller. Compare first flag priority, then second flag priority, then ascending retained timestamp; wrong int clears static preference first. Preserve asymmetric null/flag reads, exact boolean branches and no timestamp subtraction overflow change. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "mj",
+      "h",
+      "(I)Z",
+      "isSecondaryDetached",
+      "Return negation of inherited secondary-link membership check; guard>=-58 invokes existing static cleanup before same check. Preserve original guard and cleanup side effect; no inferred invitation or room-membership classification. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "mk",
+      "a",
+      "(B)V",
+      "releaseLobbyOptionResources",
+      "Byte<-20 clears resource arrays/strings; other bytes recurse with-3 before the same clears. Preserve private diagnostic string, unrelated integer counter, recursion and write order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "mp",
+      "a",
+      "(Z)Z",
+      "pollArchiveIndexReady",
+      "Delegate shared ArchiveSourceManager.b(107); false guard first invokes existing static cleanup. Complete delegate165..222 read: lazily request master archive index, wait for response, verify digest/RSA when configured, publish cache and return readiness. Preserve all calls, exceptions and manager identity; no account-state polling claim. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "mq",
+      "a",
+      "(B)V",
+      "drawTutorialOverlay",
+      "Entire103-line renderer read. Draw interpolated hex panel, reveal tutorial text sprites and animate objective glow/fade according to shared frame counters. Preserve early return before late guard, wrong-byte recursion when reached, per-objective arrays, clipped draws, adjustments to reveal counter, casts/overflow and draw order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "mq",
+      "a",
+      "(IBI)[I",
+      "createRotationMatrix",
+      "Read trig values for both angles, multiply in long and shift16, assemble zero translation plus nine matrix values into new12-int array. Preserve original negations, exact order/overflow casts and wrong-byte recursive call before final product/allocation. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "mq",
+      "c",
+      "(B)Lva;",
+      "createBasicGraphicsSettings",
+      "Allocate graphics settings and explicitly set two booleans false and three modes0; byte<=20 first clears retained caption. Contrasting us.b and rendering consumers inspected. Preserve allocation/field-write order and original zero/false configuration; no defaults changed. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "n",
+      "a",
+      "(Ljava/lang/String;I)Lsq;",
+      "findTutorialSceneByTag",
+      "Read shared tutorial scene array, return null on wrong int before iteration, otherwise case-insensitively compare supplied tag with scene tag and return first match or null. Preserve null argument/element failures, scan order, aliases and exception wrapping. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "nb",
+      "a",
+      "(B)V",
+      "releaseGameTextStatics",
+      "Clear sprite grid first; byte>99 clears numeric scratch and caption; otherwise call printable-character predicate with original constants before same clears. Preserve repeated helper guard arithmetic and partial state. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "nb",
+      "a",
+      "(CI)Z",
+      "isPrintableChatCharacter",
+      "Entire48-line predicate read and both caller contexts inspected. After guard division accept ASCII32..126, Latin1 160..255 or exactly euro/OE/oe/em-dash/Y-diaeresis. Preserve char domain and all duplicated comparisons; no expansion to the full CP1252 extension set. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "nb",
+      "a",
+      "(I)V",
+      "showForcedLoginForm",
+      "Require original account flag or throw, optionally close status dialog, retrieve retained login name, allocate forced LoginForm, add shared dialog, attach content and finish animations. Preserve duplicate paths, original guard arithmetic passed to children, parent identity and partial dialog state on failure. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "nb",
+      "a",
+      "(Ljava/lang/String;I)[B",
+      "loadGameTextResource",
+      "Complete26-line body read and all495 complete literal-key invocations reviewed in two lists, plus loader setup/teardown intervals. Guard<=94 first releases own statics; retrieve named group with empty file name from temporary localization archive and return same byte[] result. Preserve null archive/result behavior, key strings, all int guards, source-order and exception diagnostics. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "nd",
+      "a",
+      "(B)Lsq;",
+      "readTutorialScene",
+      "Entire103-line parser read. Skip to bracket header, evaluate byte guard, allocate scene, preserve discarded header substring, collect text and parse position/tag/next/objective/action/flag/endthread/nostack/clearstack directives until next header or EOF. Preserve shared line cursor, unknown directive behavior, StringBuilder spacing, array casts, charAt/index errors and exact helper/exception order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
     ]
   ],
   "fields": []
