@@ -900,12 +900,12 @@ method("qr", "a", "(IB)I", "measureWidth", "Measures the widest text or sprite o
 method("qr", "e", "(Z)I", "measureWidthUnbounded", "Measures the panel width with no limit.");
 method("pj", "a", "(Lvg;Z)Lqo;", "getTextLayout", "Returns the cached qo text layout of the widget, creating it when missing.");
 method("pj", "a", "(IIILvg;ZI)I", "getCharacterIndexAt", "Returns the character index of the widget text nearest to a point.");
-method("pj", "a", "(ZLvg;)I", "getTextWidth", "Returns the layout width plus the padding.");
+method("pj", "a", "(ZLvg;)I", "getTextHeight", "Return layout height plus vertical padding,as proved by TextLayout.getHeight and UiWidget height assignment. Correct reversed width/height alias;preserve boolean forwarding,layout refresh,padding arithmetic and exception/call order. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.");
 method("pj", "a", "(ILvg;)I", "getInnerWidth", "Returns the widget width minus the horizontal padding.");
 method("pj", "a", "(Z)I", "getLineHeight", "Returns the font ascent plus descent.");
 method("pj", "a", "(IIIIILvg;)V", "drawSelection", "Fills the selected character range of the widget text.");
 method("pj", "b", "(ILvg;I)I", "getTextX", "Returns the x origin of the text inside the widget.");
-method("pj", "a", "(BLvg;)I", "getTextHeight", "Returns the layout height plus the padding.");
+method("pj", "a", "(BLvg;)I", "getTextWidth", "Return layout maximum line width plus horizontal padding,as proved by TextLayout.getMaxLineWidth and UiWidget width assignment. Correct reversed width/height alias;preserve byte guard,layout refresh,late static clear and arithmetic/call order. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.");
 method("pj", "a", "(IIIILvg;)V", "drawCaret", "Draws the caret of a focused widget at a character index.");
 method("pj", "a", "(ILvg;I)I", "getTextY", "Returns the y origin of the text inside the widget.");
 method("qo", "a", "(BI)I", "getLineIndexOfCharacter", "Walks the lines subtracting their lengths until the character index falls inside one.");
