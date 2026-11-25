@@ -3,6 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {buildReviewedManifest} from './reviewed-game.mjs';
 import {workflowRoot} from './game-export.mjs';
+import {verifyTombNativeNamespace} from './tombracer-native-namespace.mjs';
 
 // Identities below belong to the pinned Tomb Racer export; names from other games are corroborating role evidence only.
 const classes = {
@@ -143,13 +144,18 @@ for (const [owner, original, descriptor, to, evidence] of names.fields) {
 
 export const config = {
   game: 'tombracer', version: 1, sourceCommit: '32e4691aae4850122db80d30c2db96a06b6b4029', classes, members,
-  verifyCore: async () => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.'}),
+  verifyCore: async (...args) => ({status: 'not-run', note: 'Naming-only pass; no gameplay core fixtures.',
+    nativeNamespace: verifyTombNativeNamespace(...args)}),
   workflowFiles: ['build-tombracer-rules.mjs', 'tombracer-names.json', 'reproduce-tombracer.mjs', 'reviewed-game.mjs',
-    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs'],
+    'pinned-compiler.mjs', 'game-export.mjs', 'compilation-stubs.mjs',
+    'tombracer-native-namespace.mjs', 'tombracer-native-namespace.json',
+    'native-namespace/RestoreNativeNamespace.java', 'native-namespace/VerifyNativeClasses.java',
+    'native-namespace/verify-namespace.py', 'native-namespace/dependencies.json', 'native-namespace/README.md'],
   readingGuide(rules, mapping) {
     return ['# Reading Tomb Racer', '',
-      `This pass names ${Object.keys(classes).length} reviewed classes in ${mapping.files.length} source files. Unresolved roles keep their original names.`, '',
-      'Start at `TombRacer`; the shared engine (nodes, sockets, applet shell, input) uses the same role names as other FunOrb games.', ''].join('\n');
+      `All ${mapping.symbols.filter(s => s.symbol.startsWith('C:')).length} classes and ${mapping.symbols.filter(s => s.symbol.startsWith('M:') && !s.symbol.includes('.<init>(')).length} methods have readable names in ${mapping.files.length} source files. Constructors follow their class names.`, '',
+      'Start at `TombRacer`; the shared engine (nodes, sockets, applet shell, input) uses the same role names as other FunOrb games.', '',
+      'For native libraries, use the consuming workflow repository command `node readable/tombracer-native-namespace.mjs --output NEW_DIRECTORY`. It produces a separate JAR with original JVM identities and verifies its instructions, native API and class loading. See `readable/native-namespace/README.md` there for dependencies and reports. Readable Java retains its descriptive names.', ''].join('\n');
   },
 };
 

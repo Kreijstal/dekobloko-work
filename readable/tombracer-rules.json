@@ -745,6 +745,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:aa",
+      "originalName": "aa",
+      "to": "FontMask",
+      "evidence": "Abstract type of the drawMaskedGlyph/drawText mask argument;SoftwareScanlineMask supplies per-row bounds and LegacyOpenGlFontMask supplies a mask texture. Preserve protected constructor throwing Error and all unrelated static labels.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:aaa",
       "originalName": "aaa",
       "to": "LegacyOpenGlWaterTextures",
@@ -1032,6 +1039,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ava",
+      "originalName": "ava",
+      "to": "ModelTriangleAttachment",
+      "evidence": "Model data attachment decoded with an ID,three vertices of one triangle and its priority byte;merge remaps all three vertices,copyWithVertices preserves ID/priority,and NativeToolkitModel packs three vertex indices per attachment. Preserve unrelated lobby-row static method.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:aw",
       "originalName": "aw",
       "to": "MirrorComponent",
@@ -1043,6 +1057,13 @@
       "originalName": "b",
       "to": "WidgetContainer",
       "evidence": "UiWidget holding children in an IntrusiveDeque and forwarding focus, key and pointer events to them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ba",
+      "originalName": "ba",
+      "to": "NativeResourceHandle",
+      "evidence": "Native resource wrapper returned as Object by the software toolkit JNI allocation callback;owns a nativeid long,queues release on finalization if nonzero,and implements native releaseNative(boolean). Java constructor intentionally stores nothing.",
       "confidence": "reviewed"
     },
     {
@@ -2933,6 +2954,13 @@
       "originalName": "gw",
       "to": "PlantComponent",
       "evidence": "rn.createComponent builds it for types 38, 39, 40, 41, which rn's constructor labels \"Plant, Green\", \"Plant, Red\", \"Plant, Grassy\", \"Plant, Flower\" in dsa.field_a.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:h",
+      "originalName": "h",
+      "to": "NativeSoftwareMonochromeFont",
+      "evidence": "Software-native GameFont selected by createFont when monochrome=true and no alpha plane;constructor sends per-glyph byte masks,widths,heights and offsets without palette to native initialization.",
       "confidence": "reviewed"
     },
     {
@@ -4882,6 +4910,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:n",
+      "originalName": "n",
+      "to": "NativeSoftwarePaletteFont",
+      "evidence": "Software-native GameFont selected by createFont when monochrome=false and no alpha plane;constructor sends per-glyph masks plus the first sprite palette and geometry arrays to native initialization.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:na",
       "originalName": "na",
       "to": "CubeTexture",
@@ -6258,6 +6293,13 @@
       "originalName": "rg",
       "to": "OpacityWidget",
       "evidence": "SingleChildWidget with integer opacity initialized256 by both constructors. ContentTransitionDialog changes that field during fade-out/fade-in. RenderLayer skips null child,zero opacity and nonzero layer;at256it renders directly,otherwise it renders into an offscreen Sprite,pops the raster state and alpha-draws the result. Preserve exact original child.renderLayer arguments,unclamped full opacity domain,normal-path-only raster restoration,allocations and unrelated static menu/layout/cookie helpers/globals. Original constructor SHA256s 154dac65ac272ce0b34c9fb65223c89c482197ec9b1244e23bd37afb15fbad22,2edb564a1d2547083bd42613c376b94e431aed668c70635462d65324f51d1f3c. Naming only. Three instance-purpose class contracts,4constructor bodies,15selected complete nonnative methods and53field declarations reviewed with bound callers,resource-state/label/action/opacity witnesses. Preserve exact bodies/declarations,all field/parameter/local names,literals,descriptors,full argument domains,overflow/FP/casts,aliases,partial writes,allocation/call/exception ordering,modifiers/visibility,native/override bindings and existing meaningful aliases. Unselected static helper purposes are not inferred from a class name. Native/class-name-literal intentional edit allowlists empty;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rga",
+      "originalName": "rga",
+      "to": "ModelVertexAttachment",
+      "evidence": "Model data attachment with ID and one vertex;merge remaps that vertex,copyWithVertex preserves ID,and NativeToolkitModel packs one vertex index per attachment. Preserve unrelated string splitting,rectangle rows,model copy and room-count static helpers.",
       "confidence": "reviewed"
     },
     {
@@ -33617,6 +33659,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:h.JA(Loa;Lya;[[B[I[I[I[I)V",
+      "originalName": "JA",
+      "to": "initializeNativeMonochromeGlyphs",
+      "evidence": "Constructor passes toolkit,heap and per-sprite byte masks,widths,heights,X/Y offsets;unlike palette variant it passes no palette. Keep arrays,loop order and all descriptor positions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:h.NA(CIIIZLaa;II)V",
+      "originalName": "NA",
+      "to": "drawNativeMaskedGlyph",
+      "evidence": "drawMaskedGlyph forwards char,X/Y,colour,boolean,FontMask and both mask origins unchanged;private final native implementation entry.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:h.a(CIIIZLaa;II)V",
       "originalName": "a",
       "to": "drawMaskedGlyph",
@@ -38678,6 +38734,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ja.J(JI)V",
+      "originalName": "J",
+      "to": "rotateNativeX",
+      "evidence": "rotateX forwards this.nativeid and full int angle unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.P(JIIIIII)V",
+      "originalName": "P",
+      "to": "setNativeCamera",
+      "evidence": "setCamera forwards nativeid and its six full int arguments in exact order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ja.a()V",
       "originalName": "a",
       "to": "setIdentity",
@@ -38696,6 +38766,13 @@
       "originalName": "a",
       "to": "setCamera",
       "evidence": "AffineTransform3D builds the rotation from three angles and sets the translation to minus the rotated position. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.a(JIII)V",
+      "originalName": "a",
+      "to": "translateNative",
+      "evidence": "translate forwards nativeid and all three full int arguments.",
       "confidence": "reviewed"
     },
     {
@@ -38720,10 +38797,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ja.la()V",
+      "originalName": "la",
+      "to": "initializeNativeTransform",
+      "evidence": "Only called by NativeTransform3D constructor,with no arguments;allocates/initializes the native transform represented by its nativeid field. Preserve constructor and finalization separately.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.m(JI)V",
+      "originalName": "m",
+      "to": "rotateNativeY",
+      "evidence": "rotateY forwards nativeid and full int angle unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.u(J)V",
+      "originalName": "u",
+      "to": "setNativeIdentity",
+      "evidence": "setIdentity forwards nativeid unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ja.w(Z)V",
       "originalName": "w",
       "to": "releaseNative",
       "evidence": "Complete queue immediate/deferred calls, eleven implementations and finalizer routes reviewed. Resource-release contract retains boolean flag and descriptor. Source naming/reversal does not establish native binary or whole-runtime equivalence. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ja.za(JI)V",
+      "originalName": "za",
+      "to": "rotateNativeZ",
+      "evidence": "rotateZ forwards nativeid and full int angle unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -49010,6 +49115,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:n.PA(CIIIZLaa;II)V",
+      "originalName": "PA",
+      "to": "drawNativeMaskedGlyph",
+      "evidence": "Palette font drawMaskedGlyph forwards all eight arguments unchanged.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:n.S(Loa;Lya;[[B[I[I[I[I[I)V",
+      "originalName": "S",
+      "to": "initializeNativePalettedGlyphs",
+      "evidence": "Constructor passes toolkit,heap,per-glyph masks,the first sprite palette,then widths/heights/X/Y offsets. Keep param3[0] access even for empty input and all allocation/access order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:n.a(CIIIZLaa;II)V",
       "originalName": "a",
       "to": "drawMaskedGlyph",
@@ -51047,10 +51166,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.AA(SSIBBIZBBBBZZZZZBZZI)V",
+      "originalName": "AA",
+      "to": "registerNativeTextureMetadata",
+      "evidence": "JNI metadata callback reads TextureMetadata while synchronized on this,returns false for null,and forwards ID plus19metadata fields in exact order;no pixel array. Preserve byte/short signed domains.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.CA(S[ISIBBIZBBBBZZZZZBZZI)V",
+      "originalName": "CA",
+      "to": "uploadNativeTexturePixels",
+      "evidence": "Pixel-loading callback forwards texture ID,pixel array,and all metadata fields;the distinct metadata-only native entry takes no pixel array.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.DA(IIII)V",
       "originalName": "DA",
       "to": "setProjectionParameters",
       "evidence": "Software/hardware/OpenGL bodies and ToolkitState reviewed: stores the projection center/scale quartet returned by projectionParameters and updates derived projection/clip state. Naming only; all original argument order and source operations retained. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.FA()V",
+      "originalName": "FA",
+      "to": "disposeNativeToolkit",
+      "evidence": "dispose clears Java references and all heaps,then invokes this native teardown before shared-palette release,collectGarbage,releaseReference and marking disposed. Preserve idempotent guard and order.",
       "confidence": "reviewed"
     },
     {
@@ -51089,6 +51229,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.MA(Ld;II)V",
+      "originalName": "MA",
+      "to": "initializeNativeToolkit",
+      "evidence": "Constructor loads sw3d,acquires NativeReleaseQueue,then calls with inherited TextureProvider and0,0 before palettes,transforms,contexts and optional canvas. Keep catch/close order and all arguments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.N(I[I[F)V",
+      "originalName": "N",
+      "to": "setNativeLights",
+      "evidence": "setLights packs five ints per light X,Y,Z,radius,colour and a parallel float intensity array,then sends count and shared arrays. Preserve shared aliases,increment/evaluation order and full count domain.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.OA()Ljava/lang/Object;",
+      "originalName": "OA",
+      "to": "createNativeResourceHandle",
+      "evidence": "Private final JNI callback returns a freshly allocated ba(this) as Object. Preserve exact Object descriptor,constructor allocation and modifiers;original lookup OA is restored in compiled compatibility artifact.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.P(IIIII)V",
+      "originalName": "P",
+      "to": "drawNativeVerticalLine",
+      "evidence": "drawRectOutline calls this for left/right vertical edges after two horizontal edges,with X,Y+1,height-1,colour,blend. Preserve endpoint arithmetic,overflow and both calls.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.SA(IIII[III)V",
       "originalName": "SA",
       "to": "blitPixels",
@@ -51107,6 +51275,13 @@
       "originalName": "U",
       "to": "drawHorizontalLine",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz SoftwareGraphicsToolkit.drawHorizontalLine. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.WA(S)Z",
+      "originalName": "WA",
+      "to": "loadAndUploadTexture",
+      "evidence": "Private final JNI callback locks TextureProvider;false if texture is not ready or metadata null;loads128x128pixels at float0.699999988079071 using field_d==2 overload choice,uploads with all21args,unlocks and returns true. Preserve full signed short domain,lock identity and early returns.",
       "confidence": "reviewed"
     },
     {
@@ -51327,6 +51502,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.d(I)V",
+      "originalName": "d",
+      "to": "updateNativeTime",
+      "evidence": "updateTime flushes the release queue,forwards the exact int time,then walks heap onToolkitTimeUpdate calls. Native operation is the time-update boundary,not a guessed simulation effect.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.d(IIIIII)V",
       "originalName": "d",
       "to": "drawRectOutline",
@@ -51439,10 +51621,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.ma(J)V",
+      "originalName": "ma",
+      "to": "setNativeTransform",
+      "evidence": "setTransform first stores the Transform3D Java reference,casts to NativeTransform3D,and forwards its nativeid.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.n(JJ)V",
+      "originalName": "n",
+      "to": "bindNativeRenderTarget",
+      "evidence": "bindRenderTarget forwards colour-sprite nativeid then depth-buffer nativeid;bindSpriteTarget forwards sprite nativeid and0L. Preserve casts/null exceptions and evaluation order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.s(IIIII)V",
       "originalName": "s",
       "to": "drawCircle",
       "evidence": "Body is token-identical (identifiers normalised) to sumoblitz SoftwareGraphicsToolkit.drawCircle. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.t(Lp;)V",
+      "originalName": "t",
+      "to": "bindNativeCanvasSurface",
+      "evidence": "bindCanvasSurface stores the hash-table result then forwards it;null canvas stores/forwards null. Preserve hashCode and lookup guards/order.",
       "confidence": "reviewed"
     },
     {
@@ -51453,10 +51656,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:oa.va(Lza;)V",
+      "originalName": "va",
+      "to": "useNativeHeap",
+      "evidence": "useHeap casts/stores NativeSoftwareGraphicsHeap before forwarding the original GraphicsHeap argument.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oa.w(Z)V",
       "originalName": "w",
       "to": "releaseNative",
       "evidence": "Complete queue immediate/deferred calls, eleven implementations and finalizer routes reviewed. Resource-release contract retains boolean flag and descriptor. Source naming/reversal does not establish native binary or whole-runtime equivalence. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:oa.wa(IIIIII)V",
+      "originalName": "wa",
+      "to": "drawNativeLine",
+      "evidence": "drawLine forwards all six int arguments unchanged to this private native entry.",
       "confidence": "reviewed"
     },
     {
@@ -53609,6 +53826,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:p.H(IIII)V",
+      "originalName": "H",
+      "to": "presentNativeCanvas",
+      "evidence": "present locks canvas tree lock,reads Dimension,forwards both presentation args plus width/height,and only after the native call resets the failure flag.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:p.a(II)V",
       "originalName": "a",
       "to": "present",
@@ -53627,6 +53851,20 @@
       "originalName": "a",
       "to": "handlePresentationFailure",
       "evidence": "Handles a failed native present. Body matches several games NativeCanvasSurface.handlePresentationFailure.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.oa(Ljava/awt/Canvas;II)V",
+      "originalName": "oa",
+      "to": "attachNativeCanvas",
+      "evidence": "attachCanvas updates stored dimensions before forwarding Canvas,width,height unchanged. Preserve existing canvas reference behavior.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.sa(Loa;Ljava/awt/Canvas;II)V",
+      "originalName": "sa",
+      "to": "initializeNativeCanvasSurface",
+      "evidence": "Constructor stores Canvas,width,height,then initializes native surface with toolkit and stored canvas plus dimensions.",
       "confidence": "reviewed"
     },
     {
@@ -72384,13 +72622,20 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "13f67b0be826e6a8d84984198a6709313706c36cc5b1f0b04173ef6bee36e3cc",
+      "build-tombracer-rules.mjs": "64bd299a9ac50c18bf3dc6066fe7adccad42e2825497e277e23afa23a7456379",
+      "tombracer-names.json": "c4de2503ef460c9cdd761faccd47c040709bae9c43ef78793e617f99165d84f7",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
-      "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2"
+      "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
+      "tombracer-native-namespace.mjs": "4539ec01146bf19351f2ec3062d169c78824074b25dd0fe204d50bb3147ba79e",
+      "tombracer-native-namespace.json": "fdedc05d7830cfbe03c68dd4fc2efd8789c5a87cf34084097ac13f167f6232fc",
+      "native-namespace/RestoreNativeNamespace.java": "0f540b46d12f463f69928ad3e97f26d9ed05482a87b6bb35b4fcd13f82d56b43",
+      "native-namespace/VerifyNativeClasses.java": "38620542b18520bdaedf61058d9209bb8ffc27cde8b49afe856ec6b84ff4d622",
+      "native-namespace/verify-namespace.py": "6a25cf2fa14f3ce83d0c019624ce9bb45c35fec32bc8fe2a2e845e9e5ce196f3",
+      "native-namespace/dependencies.json": "b84bf4c52161f83383aced642f012d6942e0081ca0ce7bee9556303e9a400513",
+      "native-namespace/README.md": "c2b481d73d6811f820c647f9de4253a5b7974ac08f2fb0d5731d0c21cf8581f3"
     }
   },
   "generators": {
