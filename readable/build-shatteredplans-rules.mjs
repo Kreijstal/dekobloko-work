@@ -279,10 +279,10 @@ Object.assign(classes, {
   "t": ["StarLinkPlanner", "Builds a CandidateLink for every star pair, prunes crossing links and adds the rest as neighbours."],
   "nc": ["CandidateLink", "IntrusiveNode joining two stars with float length and angle fields used by StarLinkPlanner."],
   "r": ["UrlLoader", "Runnable that reads a URL such as countrylist.ws into a PacketBuffer on the PlatformTaskDispatcher; also holds the static exception wrapper."],
-  "dp": ["QuickChatCategoryDefinition", "DualLinkNode decoded by opcode from a PacketBuffer into a name string and int arrays of phrase ids."],
-  "si": ["QuickChatPhraseDefinition", "DualLinkNode decoded by opcode from a PacketBuffer into a text, prefix and parameter arrays."],
-  "jo": ["QuickChatPhraseRegistry", "Holds two archives and a WeightedLruCache and returns decoded QuickChatPhraseDefinition objects by id."],
-  "re": ["QuickChatCategoryRegistry", "Holds two archives and a WeightedLruCache and returns decoded QuickChatCategoryDefinition objects by id."],
+  "dp": ["QuickChatPhraseDefinition", "Quick Chat phrase definition: archive group1 decodes text fragments split at dynamic placeholders,automatic response phrase IDs,and parameter type/configuration arrays. Display text joins fragments with ellipses. Full definition,registry and category-menu factory read;previous Category alias reversed the source roles."],
+  "si": ["QuickChatCategoryDefinition", "Quick Chat category definition: archive group0 decodes category label,subcategory IDs/shortcut chars,and phrase IDs/shortcut chars. Recursive menu factory follows subcategories and displays phrase definitions. Full definition,registry and factory read;previous Phrase alias reversed the source roles."],
+  "jo": ["QuickChatCategoryRegistry", "Caches QuickChatCategoryDefinition si by ID from archive group0,selecting base/extended archive and marking both extended subcategory/phrase IDs. Full registry/definition and recursive menu factory read;previous PhraseRegistry alias reversed the loader role."],
+  "re": ["QuickChatPhraseRegistry", "Caches QuickChatPhraseDefinition dp by ID from archive group1,selecting base/extended archive and marking extended automatic response IDs. Full registry/definition and leaf-menu label consumers read;previous CategoryRegistry alias reversed the loader role."],
   "jk": ["MenuContent", "Empty marker interface for the content objects stored in the field_x slot of a MenuWindow."],
   "em": ["ProductionContent", "MenuContent that holds the labels, toggles and list of the production panel that kq reads."],
   "rh": ["ProjectsContent", "MenuContent that holds the label array and list of the projects panel that kq reads."],
@@ -1552,7 +1552,7 @@ Object.assign(classes, {
   ts: ['TextHotspotWidget', 'Text widget that hit-tests retained link rectangles and dispatches their ids to its HyperlinkListener.'],
   th: ['CoverageBitmapFont', 'BitmapFont implementation whose glyph kernels blend each destination pixel by its byte coverage and optional global alpha.'],
   'vi$1$CfrPartitionedBody': ['ClientTextLoader', 'Generated local loader whose sections decode shared login, account, menu, membership and subscription text resources.'],
-  vm: ['QuickChatMenu', 'Animated menu with per-entry text/shortcut arrays, selected entries and nested QuickChatMenu submenus; its factory consumes QuickChatPhraseDefinition.'],
+  vm: ['QuickChatMenu', 'Animated menu with per-entry text/shortcut arrays, selected entries and nested QuickChatMenu submenus; its factory consumes QuickChatCategoryDefinition.'],
 });
 
 for (const [owner, original, descriptor, to, evidence] of [
