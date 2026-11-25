@@ -1389,7 +1389,7 @@ method("nc", "d", "(I)V", "clearStatics", "Assigns null to 4 static fields of th
 method("ne", "c", "(Z)V", "clearStatics", "Assigns null to 4 static fields of the class.");
 method("np", "b", "(Z)V", "clearStatics", "Assigns null to 4 static fields of the class.");
 method("ns", "j", "(B)V", "clearStatics", "Assigns null to 4 static fields of the class.");
-method("pl", "a", "(ZB)V", "clearStatics", "Assigns null to 3 static fields of the class.");
+method("pl", "a", "(ZB)V", "pollQuickChatHelpPanel", "Poll the retained QuickChatHelpPanel by forwarding the boolean to updateAndCheckDismissed with -1; clear the retained panel only when dismissed. Byte other than -26 additionally nulls the caption before the panel lookup. Full owner, both incoming caller bodies and complete dismissal helper read. Preserve both byte branches, boolean forwarding, repeated shared-field reads, aliases, partial mutations, guards, descriptors/modifiers and call/exception order. Identifier-only correction of the former clearStatics alias; the separate int cleanup overload remains unchanged.");
 method("qi", "a", "(I)V", "clearStatics", "Assigns null to 2 static fields of the class.");
 method("r", "a", "(BZ)V", "clearStatics", "Assigns null to 2 static fields of the class.");
 method("rh", "a", "(I)V", "clearStatics", "Assigns null to 3 static fields of the class.");
