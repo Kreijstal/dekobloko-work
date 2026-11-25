@@ -3391,6 +3391,41 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ud",
+      "originalName": "ud",
+      "to": "AwtEventQueueSupport",
+      "evidence": "Complete83-line original static type preread, pinned unchanged input revalidated. Polls dispatcher AWT EventQueue then optionally posts dummy ActionEvent; achievement captions/shared arrays remain in owner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ue",
+      "originalName": "ue",
+      "to": "ExternalLinkSupport",
+      "evidence": "Complete85-line original static type preread, pinned unchanged input revalidated. Opens external URL via Windows helper/applet fallback; shared captions and account pending-state marker remain in owner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:uf",
+      "originalName": "uf",
+      "to": "ArchiveLoadStep",
+      "evidence": "Complete57-line original descriptor type preread, pinned unchanged input revalidated. Retains Archive, numeric/named group and progress/wait text, consumed by ArchiveLoadProgress. Private constructor still throws Error. Readiness/ranking packet helpers remain static.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ug",
+      "originalName": "ug",
+      "to": "CacheFileLocator",
+      "evidence": "Complete56-line original public type preread and full published type read this turn. Stores cache config/home but actual file resolution delegates launcher Hook.cacheRedirect. Preserve private throwing constructor and unused table/flags; no external callback rename.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:uh",
+      "originalName": "uh",
+      "to": "ArchiveLoadProgress",
+      "evidence": "Complete120-line original type preread and full published type read this turn. Sequential archive load steps with retained cursor, percentage and status text. Private constructor always throws; no new instances introduced. Popup X helper remains static.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ui",
       "originalName": "ui",
       "to": "SolVictoryChecker",
@@ -3400,8 +3435,22 @@
     {
       "symbol": "C:uj",
       "originalName": "uj",
-      "to": "Ai",
+      "to": "PlayerAi",
       "evidence": "Interface implemented by TaskAi and ka with per-turn planning and update methods for one player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:uk",
+      "originalName": "uk",
+      "to": "MapStateReader",
+      "evidence": "Complete356-line original static type preread, pinned unchanged input revalidated. Decodes received map and associated player/territory/diplomacy/gate/victory state; star-type sprite helper remains in owner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ul",
+      "originalName": "ul",
+      "to": "ContextActionMenu",
+      "evidence": "Complete254-line original AnimatedPanel subtype and two constructors preread, pinned unchanged input revalidated. Retains256icon-label rows/action ids, anchor layout, action polling and dismissal state. Ranking append/angle/static resource helpers stay in owner.",
       "confidence": "reviewed"
     },
     {
@@ -17370,6 +17419,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ud.a(ILqb;Ljava/lang/Object;)V",
+      "originalName": "a",
+      "to": "postDummyEvent",
+      "evidence": "Return when dispatcher event queue absent or guard>=-20; otherwise poll pending events at most50times with1ms waits, then post dummy ActionEvent if source nonnull. Preserve queue rereads, post-only Exception catch and outer RuntimeException wrapping; no event dispatch substitution. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.a(I)V",
+      "originalName": "a",
+      "to": "releaseExternalLinkStatics",
+      "evidence": "Clear caption and pending account-state marker first; guard18031 clears remaining fields and returns, others invoke original URL helper with null and guard-37 before same clears. Preserve ignored/null guard call and write order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ue.a(Ljava/applet/Applet;ZLjava/lang/String;I)V",
+      "originalName": "a",
+      "to": "openExternalUrl",
+      "evidence": "Guard>=-75 returns before accessing URL/applet; otherwise Windows launcher helper first, then applet showDocument target_blank fallback. Preserve ignored bool, malformed-URL reporting MGR1, RuntimeException wrapping and original Throwable handling. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uf.a(B)V",
       "originalName": "a",
       "to": "clearStatics",
@@ -17377,10 +17447,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:uf.a(Lgr;IZ)V",
+      "originalName": "a",
+      "to": "writeRankingRequest",
+      "evidence": "False bool writes original packet opcode then two short request fields to retained output buffer; true bool returns before state access. Creation/retry callers use retained PlayerRankingRequest. Preserve short truncation, order and request aliases. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uf.a(Z)Z",
+      "originalName": "a",
+      "to": "isClientNotReady",
+      "evidence": "True bool forces true; otherwise require loading phase>=20 and existing client/UI readiness predicate, then retain account flag/capability guard branch. Helpers/producers confirm loading/client counters, not versions. Preserve all reads/short circuits and guard-only callback even though canonical result true. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.a(ILjava/lang/String;B)V",
+      "originalName": "a",
+      "to": "initializeCacheLocation",
+      "evidence": "Store configuration int before byte division, store namespace, read user.home with original Exception catch, mark initialized and retain slash or ~/fallback. Preserve writes before guard failure and old home value if property access throws. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.a(Ljava/lang/String;IILjava/lang/String;)Ljava/io/File;",
+      "originalName": "a",
+      "to": "getCacheFile",
+      "evidence": "Delegate exactly to launcher Hook.cacheRedirect(namespace,filename), ignoring both supplied ints. Preserve external callback owner/name/descriptor, argument permutation and all null/exception behavior. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ug.a(Ljava/lang/String;Z)Ljava/io/File;",
+      "originalName": "a",
+      "to": "getCacheFile",
+      "evidence": "True bool returnsnull before any field access; false delegates to four-argument cache locator with retained config and original-18261. Preserve before-initialization state and ignored argument semantics. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:uh.a(I)V",
       "originalName": "a",
       "to": "clearStatics",
       "evidence": "Assigns null to 3 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.a(IIII)I",
+      "originalName": "a",
+      "to": "positionPopupX",
+      "evidence": "Return anchor when popup fits right edge; otherwise original formula flips left using supplied offset or right-aligns when flipped X<0. Wrong guard clears caption first. Six popup/tooltip callers confirm return is X coordinate, not width; preserve overflow and no added left clamp. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.a(ZILuf;)V",
+      "originalName": "a",
+      "to": "updateProgress",
+      "evidence": "False bool returns before state reads. Compute original float progress from percentage,index,scale,count; zero percent uses waiting text, otherwise caption plus percentage. Preserve math order, untouched completion state, null handling and string construction. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uh.b(I)Z",
+      "originalName": "b",
+      "to": "pollLoaded",
+      "evidence": "Wrong int writes scale107 before sequential archive steps. Check index readiness, numeric group, named group or full archive; update progress/message and returnfalse at first incomplete step, otherwise advance cursor until true. Preserve exact guard calls, aliases and partial progress. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -17493,6 +17619,76 @@
       "originalName": "a",
       "to": "clearStatics",
       "evidence": "Assigns null to 1 static field of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.a(ILdc;Lob;Lpf;[Lfs;Lfs;BLvr;)Ll;",
+      "originalName": "a",
+      "to": "readMapState",
+      "evidence": "Complete356-line owner read. Read header, select received map generator, set star owners/territories/combined territories, resources/diplomacy/gates/victory flags and return GalaxyMap. Preserve byte-7 late guard after header, sentinel127, optional local-player read, all partial player/global writes and unconnected-gate exception. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:uk.a(ZLln;)Lbi;",
+      "originalName": "a",
+      "to": "getStarTypeSprite",
+      "evidence": "Optionally clear shared sprite array before star access; Sol name selects special sprite, types0..8select retained sprites, other values throw original message. Three draw callers inspected; preserve case-insensitive name test and aliases. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.a(IIIII)Z",
+      "originalName": "a",
+      "to": "isAngleBefore",
+      "evidence": "Compare atan2 values with original selective2pi wrap only for negative-X and Y strictly between-40and0. Nonzero third int returnsfalse after first atan2. Preserve unusual thresholds, evaluation order and complete signed-int inputs; no standard angular-sort replacement. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.a(IIIIII)V",
+      "originalName": "a",
+      "to": "appendRankingRow",
+      "evidence": "Write retained rankings arrays/cursor, original min/max bookkeeping and1000scaled ratio from supplied result totals, then increment cursor. Preserve original cross-field comparisons/overwrites, guard total equality, overflow/division and partial array writes. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.a(IILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "addItem",
+      "evidence": "Allocate IconLabelPanel at current row, apply shared sprites/flags and supplied style int, attach child, store action id, then increment row count. Preserve fixed256capacity, null label and failure order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.a(ZLbi;Ljava/lang/String;I)V",
+      "originalName": "a",
+      "to": "addIconItem",
+      "evidence": "Allocate row from supplied icon/label, optionally clear caption for true bool, set sprites/flags/style1, attach, store action id and increment count. Preserve input aliases and partial mutations. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.b(IIIII)V",
+      "originalName": "b",
+      "to": "layoutAtAnchor",
+      "evidence": "Measure largest row width plus padding, compute total height, position via original popup X/Y helpers and set row bounds. Empty menu first adds placeholder row/action-1. Preserve nonzero starting index, fixed arrays, original argument permutation and both duplicate layout paths. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.b(ZB)I",
+      "originalName": "b",
+      "to": "pollAction",
+      "evidence": "Update base panel first; false bool returns-2. Otherwise return first clicked row action before byte division, then outside click returns-1or retained dismissal state. Preserve traversal/guard order and original shared input reads. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.f(B)Z",
+      "originalName": "f",
+      "to": "pollOpenState",
+      "evidence": "Returnfalse unless retained state-2; while open returntrue and set state-1when ESC key13. Wrong byte first calls original layout with unusual arguments. Preserve final true even on ESC update and subsequent false behavior. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ul.g(I)V",
+      "originalName": "g",
+      "to": "releaseContextMenuStatics",
+      "evidence": "Clear retained caption/arrays before guard; guard1000 clears font and returns, others call original angle predicate with nonzero third argument then clear font. Preserve discarded comparison and partial cleanup ordering. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -18484,14 +18680,14 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-shatteredplans-rules.mjs": "5c3ee80c5bf4fdaa0b1d4fe650bd677c1dcdaa90b11945e659bf0a0b0a6cf589",
+      "build-shatteredplans-rules.mjs": "4c425f22f14c920ed66af8f8b9526f27df9b1a22f2ccebc607fe273fcfd51d25",
       "reproduce-shatteredplans.mjs": "c97d18e945d2818780e9aa7d2ed30e04a75e5ba59388010d329585f010e7cd8e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
-      "shatteredplans-names.json": "a6fca5492ed594dbbe9655d1d485dfe59606aed66c54cd8316f3a3089b733cf9"
+      "shatteredplans-names.json": "8bf2e1a1d6eb8ac5ff1b261f2e89d8243b3448b5e34d15bfc232554a3bf24340"
     }
   },
   "generators": {

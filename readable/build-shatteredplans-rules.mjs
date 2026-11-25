@@ -177,7 +177,7 @@ Object.assign(classes, {
   "in": ["SecondaryNodeHashTable", "Bucket array of DualLinkNode keyed by long with put and get methods."],
   "ti": ["IntrusiveNodeHashTable", "Power-of-two bucket array of IntrusiveNode keyed by long with put, get and iteration cursor."],
   "db": ["DualLinkDeque", "Sentinel deque of DualLinkNode secondary links with cursor, tail insertion and first removal."],
-  "uj": ["Ai", "Interface implemented by TaskAi and ka with per-turn planning and update methods for one player."],
+  "uj": ["PlayerAi", "Interface implemented by TaskAi and ka with per-turn planning and update methods for one player."],
   "mn": ["AiHost", "Interface that km implements and that AI objects call to send chat lines and alliance proposals."],
   "ka": ["StandardAi", "Base AI created by og for personality 3; holds GameState, Player and AiHost and scores stars and territories."],
   "j": ["LegacyAi", "ka subclass created for the two Old personalities with a level argument."],
