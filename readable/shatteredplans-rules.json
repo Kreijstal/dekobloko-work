@@ -2425,6 +2425,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nf",
+      "originalName": "nf",
+      "to": "ChatHistoryEntry",
+      "evidence": "Complete type read with both constructors. Retains decoded chat/player/channel/filter metadata and rendered line panel; existing chat-history insertion/filtering/context-menu consumers inspected. Attack summary, sorted indices and report polling remain static.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ng",
+      "originalName": "ng",
+      "to": "PacketBooleanSupport",
+      "evidence": "Complete static type read. Existing readable readBoolean helper consumes one bit from CipherPacketBuffer on its original byte guard. Retained caption/int scratch and cleanup remain unchanged.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nh",
       "originalName": "nh",
       "to": "PointsVictoryChecker",
@@ -2439,10 +2453,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:nj",
+      "originalName": "nj",
+      "to": "ClientDialogSupport",
+      "evidence": "Complete mixed static type read. Updates loading progress, animates lobby side panels, validates/sends add-friend requests and restores saved chat panels after transient overlay closure. UI construction and social-action callers inspected.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:nk",
       "originalName": "nk",
       "to": "IndexedSprite",
       "evidence": "IndexedSpriteState subclass holding a palette index byte array and a palette int array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:nl",
+      "originalName": "nl",
+      "to": "DiplomacyRowSupport",
+      "evidence": "Complete static type read. Builds player name/icon/divider rows in the diplomacy list without the alliance-action button in ClientDrawingSupport player row. Both caller contexts inspected; shared panel/int resources retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:nm",
+      "originalName": "nm",
+      "to": "PairedIntSortSupport",
+      "evidence": "Complete static type read. Wrapper sorts parallel int arrays by second-array keys through existing quicksort. Unrelated panel/frame-time resources and cleanup remain in original owner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:nn",
+      "originalName": "nn",
+      "to": "AccountNameValidationSupport",
+      "evidence": "Complete static type read. Returns first structural/account-character error or null, delegating established name checks; star-component labeling wrapper and byte-pool storage remain static with original guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:no",
+      "originalName": "no",
+      "to": "TutorialStageSupport",
+      "evidence": "Complete static type read, including full tutorial-map advance body. Regenerates later tutorial stages while carrying star/territory/player state, and owns shared loading/account drawing and chat-notification helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:np",
+      "originalName": "np",
+      "to": "MenuInputState",
+      "evidence": "Complete type read, including full pointer-selection state machine and applet URL rewriter. Retains selection, pointer buttons/repeat delay and client key code; keyboard map and menu slider consumers confirm directions/activation/home/end. Static room reference and URL helper remain in owner.",
       "confidence": "reviewed"
     },
     {
@@ -12267,10 +12323,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nf.a(B)I",
+      "originalName": "a",
+      "to": "getFilterPriority",
+      "evidence": "Return system/high-priority2, own-player/friend1 or ordinary0 under valid byte, with original guard-dependent23 fallback. Chat filter comparisons and per-priority counters inspected. Preserve duplicated branches, user-id comparisons and shared login/friend lookups. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nf.a(IIZ)V",
+      "originalName": "a",
+      "to": "handlePlayerReportPanel",
+      "evidence": "Poll retained report panel, optionally read mute/name and serialize reason request, then clear panel and active menu. Evaluate guard remainder after partial actions or on no-panel path. Preserve cancellation sentinels, original bool/opcode forwarding, shared aliases and exception order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nf.a(Leg;I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatLocalAttackLosses",
+      "evidence": "Aggregate local-player lost fleets and retreat targets from battle contributions, select zero/one/many loss text, append per-target retreat messages and combine them using original list formatter. Localization literals and tutorial combat consumer inspected; retain two traversals, order, allocation, overflow and late guard null result. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nf.a(Ljava/lang/String;Ljava/lang/String;BLjava/lang/String;)Ljava/lang/String;",
       "originalName": "a",
       "to": "replaceAll",
       "evidence": "Replaces every occurrence of the first string in the second with the fourth.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nf.a([II)[I",
+      "originalName": "a",
+      "to": "sortedIndices",
+      "evidence": "Allocate zero-initialized index permutation and insertion-sort indices by corresponding input values ascending, shifting only strictly greater keys. Wrong int clears own statics after allocation. Preserve empty arrays, stable equal-value order, input alias and all guard/exception behavior. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -12337,6 +12421,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nj.a(FILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "setLoadingProgress",
+      "evidence": "Store float progress and status text; wrong int changes retained status integer after those writes. All19loading/init contexts read. Preserve arbitrary floats including NaN/infinities and partial state. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.a(I)V",
+      "originalName": "a",
+      "to": "layoutLobbySidePanels",
+      "evidence": "Compute shared viewport centering and squared transition fraction, then set targets for left social/chat panel and right room-options panel. Panel construction and resize callers inspected. Preserve division by zero/overflow, original int height argument and first-set-before-second failure ordering. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.a(Ljava/lang/String;IB)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "requestAddFriend",
+      "evidence": "Validate account name, connection, self/friend/ignore membership and100/200capacity; return localized error or write original opcode/length/selector0/name packet and return null. Preserve late byte recursion, original name spelling, order of checks, packet partial state and guard domains. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nj.b(I)V",
+      "originalName": "b",
+      "to": "closeChatPanelOverlay",
+      "evidence": "Execute guard remainder, clear transient root; when saved chat panel exists restore saved two panel identities, reset original style sentinels and clear saved pointers, then clear overlay children and set layout-dirty flag. Overlay setup and sole caller read; preserve null branch, ordering and style values. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nk.a(III)V",
       "originalName": "a",
       "to": "drawAlpha",
@@ -12365,10 +12477,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nl.a(Lph;[Lfs;ILfs;)Llp;",
+      "originalName": "a",
+      "to": "createDiplomacySummaryRow",
+      "evidence": "Allocate player row, store in first free row slot, attach gradient name, divider buttons and faction icon, and update parallel icon table. Preserve no-free-slot failures, supplied-int child-id XOR and late icon-y divisor, all original allocations/aliases/geometry. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nm.a(B)V",
       "originalName": "a",
       "to": "clearStatics",
       "evidence": "Assigns null to 5 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nm.a([I[IB)V",
+      "originalName": "a",
+      "to": "sortPairsByKeys",
+      "evidence": "Optionally clear shared panel on byte<17, then sort full second-array key range while permuting first-array values through existing ProgressDialog quicksort. Complete delegate read. Preserve unequal-length/alias failures, empty ranges, parity tie behavior and in-place writes. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -12379,6 +12505,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nn.a(ILjava/lang/CharSequence;Z)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "validateAccountName",
+      "evidence": "Invoke structural name validator first, evaluate int guard remainder, return structural error if present, otherwise scan allowed account characters and return null or invalid-character error. Full structural/character helpers read. Preserve char/UTF16 behavior, null order and delegated separator option. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nn.a([Lln;I)I",
+      "originalName": "a",
+      "to": "labelStarComponents",
+      "evidence": "Guard0 delegates graph traversal which resets/replaces star component labels and returns connected-component count; other ints return-87 before dereference. Full delegate read including intrusive queue mutation. Preserve existing traversal/order, star aliases and node-link side effects. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:no.a(I)V",
       "originalName": "a",
       "to": "clearStatics",
@@ -12386,10 +12526,115 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:no.a(II)V",
+      "originalName": "a",
+      "to": "advanceTutorialStage",
+      "evidence": "Entire large body read across two source intervals. Guard division then monotonic stage check/update; regenerate map, transfer star state/neighbor arrays/territory memberships, rebind selected stars and replacement text, create additional players at stages5/6/7, refresh player views and tutorial scene. Preserve exact aliases, repeated writes, map-exception translation, partial mutations, indices and allocation/call order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:no.a(Lnf;I)V",
+      "originalName": "a",
+      "to": "notifyChatEntriesAfter",
+      "evidence": "Find most recent identical history entry from tail, then enqueue notification text for later rendered entries. Wrong int clears retained login form between scan and notification loop. Preserve null/default-start behavior, identity comparison and live shared history reads. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:no.a(ZILjava/awt/Canvas;)V",
+      "originalName": "a",
+      "to": "drawLoadingOrAccountUi",
+      "evidence": "Depending on loading/client state draw progress, cleared/backdrop UI, account dialogs or existing canvas presenter. Preserve consumed refresh flag, bool forwarding, guard-derived child arguments, shared raster and exact branch/call/exception order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.a(B)Z",
+      "originalName": "a",
+      "to": "isInitiallyActivated",
+      "evidence": "Evaluate original byte guard division, then return whether initial pointer event is nonzero or last key is Enter/Space. Keyboard translation table and menu callers inspected. Preserve no state clearing and all guard failures. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.a(I)Z",
+      "originalName": "a",
+      "to": "isHomePressed",
+      "evidence": "Guard-1 returns key102 comparison; other ints recurse with126 before read. Client AWT key36 maps102. Preserve recursion, full int domains and no new key consumption. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.a(III)V",
+      "originalName": "a",
+      "to": "updatePointerSelection",
+      "evidence": "Entire pointer state machine read across source intervals1..225,226..445,446..642. Check upper selection bounds, clear events/key, handle press/release/hold-repeat countdown and hover/keyboard-selection flag across original duplicated branches. Preserve negative indices, complement guard, repeat clocks, globals, write/read ordering and all partial states. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.a(IIZI)V",
+      "originalName": "a",
+      "to": "resetSelection",
+      "evidence": "Evaluate guard remainder, clear held pointer state, store supplied selection-mode bool, and select first or second integer by that mode. Preserve argument identities, negative selection values and partial mutations. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.a(Ljava/lang/String;ILjava/lang/String;ZLjava/net/URL;)Ljava/net/URL;",
+      "originalName": "a",
+      "to": "rewriteAppletUrlParameters",
+      "evidence": "Complete URL rewrite body read. Scan existing l/a/p/s/c path prefixes, preserve or replace language/settings/session fields according to original null/int rules, build relative URL and return original base when URL construction throws Exception after printing trace. Preserve prefix-loop quirks, absence of escaping, wrong-bool caption clear, StringBuilder capacity, URI text and all guard/exception order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.a(Z)Z",
+      "originalName": "a",
+      "to": "isEndPressed",
+      "evidence": "Return key103 comparison, with false bool first clearing static scratch array. Client AWT key35 maps103. Preserve side effect and descriptor. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.b(B)Z",
+      "originalName": "b",
+      "to": "isPointerHeld",
+      "evidence": "Return held pointer button state nonzero; byte>=-34 first sets item count69. Preserve state mutation and all byte values. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.b(I)V",
+      "originalName": "b",
+      "to": "updateVerticalKeys",
+      "evidence": "Clear event state/store supplied int, then when pointer not held copy current shared key; Up98 decrements selection with wrap, Down99 increments with wrap, and keyboard changes clear pointer-selection flag. Preserve original asymmetrical write order and arbitrary item counts/indices. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:np.b(Z)V",
       "originalName": "b",
       "to": "clearStatics",
       "evidence": "Assigns null to 4 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.c(I)Z",
+      "originalName": "c",
+      "to": "isLeftPressed",
+      "evidence": "Guard-97 compares key96; other ints return true before reading key. Client AWT key37 maps96. Preserve fallback rather than rejecting invalid guard. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.d(I)Z",
+      "originalName": "d",
+      "to": "isActivated",
+      "evidence": "For guard-1 query repeat/current pointer event or Enter/Space; other ints first set repeat-event state80 and return original branch result. Preserve artificial event mutation and duplicate paths; no event consumption added. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.e(I)V",
+      "originalName": "e",
+      "to": "updateHorizontalKeys",
+      "evidence": "Clear event/key state first; guard<=2 returns; when no pointer held copy shared key, Left96 decrements selection/wrap and Right97 increments/wrap, clearing pointer-selection mode. Preserve exact read/write sequence and no item-count normalization. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:np.f(I)Z",
+      "originalName": "f",
+      "to": "isRightPressed",
+      "evidence": "Guard<-38 compares key97; other ints return false before reading key. Client AWT key39 maps97. Preserve full int domain and fallback. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -16818,7 +17063,7 @@
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
-      "shatteredplans-names.json": "ad92b5506160565951b87468e632e942c9e60112e0f375c281fc656ac42e0f2b"
+      "shatteredplans-names.json": "8bffdb64e779a0e10dcc94cc61381c0c62dfedc1ca9fb1195b9a8381197c4c7a"
     }
   },
   "generators": {
