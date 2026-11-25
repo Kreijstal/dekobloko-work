@@ -20739,8 +20739,8 @@
     {
       "symbol": "M:cm.a(IIIIIIIIIIIIIIII)V",
       "originalName": "a",
-      "to": "drawMeshQuad",
-      "evidence": "Static sixteen-coordinate quad draw; body matches arcanistsmulti drawMeshQuad.",
+      "to": "drawInterpolatedColourTriangle",
+      "evidence": "Correct the earlier quad interpretation to a single interpolated-colour triangle. Six mutually exclusive branches sort three vertex Y coordinates param0/12/14and permute their X/colour components into one rasterizer call. Preserve full signed domains,all comparisons/permutations,software pixel-array binding,intparam7<=49 static CourseDefinition-array nulling before sorting and all call/exception order. No triangle math or raster behavior changes. Complete original-body SHA256 6b1b6691b56041fc869f340aa122522bab0c949259f4344c4a933ee83720edb7. Previous reviewed name drawMeshQuad. Reviewed semantic name correction only,zero new naming gain. Complete original bodies and compiler-bound callers reviewed;retain all descriptors,modifiers,integer/Boolean domains,guards,literals,aliases,allocation/call/exception order and partial state. No native or class-name-literal edits;no runtime/pixel equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -28418,8 +28418,8 @@
     {
       "symbol": "M:f.a(Z)I",
       "originalName": "a",
-      "to": "getTopDialogId",
-      "evidence": "Returns the id of the top visible dialog or -1.",
+      "to": "getTopDialogX",
+      "evidence": "Correct the earlier dialog-ID interpretation to X coordinate. The returned UiWidget.field_i feeds the left/right clip coordinates alongside independent Y,width,height getters. Widget construction/setBounds and the Y getter confirm coordinate roles. Preserve Boolean true HSV-palette call before visibility check,repeated top-dialog queries,all -1sentinels and original null/guard behavior. Complete original-body SHA256 09eb9efb261c89ed2ae0dfb2aa148fba34fdd2714385283197c3fca872238104. Previous reviewed name getTopDialogId. Reviewed semantic name correction only,zero new naming gain. Complete original bodies and compiler-bound callers reviewed;retain all descriptors,modifiers,integer/Boolean domains,guards,literals,aliases,allocation/call/exception order and partial state. No native or class-name-literal edits;no runtime/pixel equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -52085,8 +52085,8 @@
     {
       "symbol": "M:oga.b(I)I",
       "originalName": "b",
-      "to": "getPassCount",
-      "evidence": "Number of passes; the base returns 0 and bloom returns 1.",
+      "to": "getColourPrecision",
+      "evidence": "Correct the earlier render-pass interpretation to colour-buffer precision. LegacyPostProcessChain takes the maximum of this result to choose internal colour texture format6408/34842/34836,and separately sums getRenderPassCount. Base nominal result0and wrong-int!=13727 initialize(byte63) before returning0remain unchanged. Rename the complete override family together;do not change visibility or descriptor. Complete original-body SHA256 448e103cdf44332dbeedf2cd05a53873a44211c60ca4c3639ccf8bc6d647eac4. Previous reviewed name getPassCount. Reviewed semantic name correction only,zero new naming gain. Complete original bodies and compiler-bound callers reviewed;retain all descriptors,modifiers,integer/Boolean domains,guards,literals,aliases,allocation/call/exception order and partial state. No native or class-name-literal edits;no runtime/pixel equivalence claim. Complete bloom override body SHA256 4c23d442e317b744058ccdc6055182e65c993e22956af1017be7f78016f09fb1. Same colour-precision override family. Bloom returns1for int13727and-92for every other int. Preserve full signed guard domain and final modifier;do not replace its wrong-guard result with the base default or confuse this with actual render-pass count.",
       "confidence": "reviewed"
     },
     {
@@ -67394,8 +67394,8 @@
     {
       "symbol": "M:uv.b(I)I",
       "originalName": "b",
-      "to": "getPassCount",
-      "evidence": "Number of passes; the base returns 0 and bloom returns 1. Resolved override family.",
+      "to": "getColourPrecision",
+      "evidence": "Correct the earlier render-pass interpretation to colour-buffer precision. LegacyPostProcessChain takes the maximum of this result to choose internal colour texture format6408/34842/34836,and separately sums getRenderPassCount. Base nominal result0and wrong-int!=13727 initialize(byte63) before returning0remain unchanged. Rename the complete override family together;do not change visibility or descriptor. Complete original-body SHA256 448e103cdf44332dbeedf2cd05a53873a44211c60ca4c3639ccf8bc6d647eac4. Previous reviewed name getPassCount. Reviewed semantic name correction only,zero new naming gain. Complete original bodies and compiler-bound callers reviewed;retain all descriptors,modifiers,integer/Boolean domains,guards,literals,aliases,allocation/call/exception order and partial state. No native or class-name-literal edits;no runtime/pixel equivalence claim. Complete bloom override body SHA256 4c23d442e317b744058ccdc6055182e65c993e22956af1017be7f78016f09fb1. Same colour-precision override family. Bloom returns1for int13727and-92for every other int. Preserve full signed guard domain and final modifier;do not replace its wrong-guard result with the base default or confuse this with actual render-pass count. Resolved override family.",
       "confidence": "reviewed"
     },
     {
@@ -72385,7 +72385,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-tombracer-rules.mjs": "b46cc12ba7371782c568a71925fe4f78bc154f6bd1007499eaa9521bb45687cf",
-      "tombracer-names.json": "af5465f55e6f80c9c15bed1a21dd94f8c87ff39acbae8e8dbf342278dcbe51dc",
+      "tombracer-names.json": "13f67b0be826e6a8d84984198a6709313706c36cc5b1f0b04173ef6bee36e3cc",
       "reproduce-tombracer.mjs": "fe551a43b3986bc8fe06bd2ece9f1d0d6ec84597e19042c8898867f303da03d5",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

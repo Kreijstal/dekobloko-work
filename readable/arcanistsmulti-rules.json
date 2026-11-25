@@ -21278,8 +21278,8 @@
     {
       "symbol": "M:tn.a(IIIIIIIIIIIIIIII)V",
       "originalName": "a",
-      "to": "drawMeshQuad",
-      "evidence": "Splits a quad into two triangles for the mesh triangle rasterizer.",
+      "to": "drawInterpolatedColourTriangle",
+      "evidence": "Correct the earlier quad interpretation to a single interpolated-colour triangle. Six mutually exclusive branches sort three vertex Y coordinates param3/6/11and permute corresponding X/colour components into exactly one drawMeshTriangle call. Preserve every argument permutation,guard byte constants109/127/97/89/95,software pixel-array binding and full signed int domains. Late intparam4>=-104recursive self-call occurs after rasterization and retains its arguments/stack-overflow/partial-pixel behavior. Do not move the guard,split into two triangles or infer equivalence to another game. Complete original-body SHA256 98584da0b15ddb3c53ee7b5fe444959c7a918772ba110c0ca3272efdd625378d. Previous reviewed name drawMeshQuad. Reviewed semantic name correction only,zero new naming gain. Complete original bodies and compiler-bound callers reviewed;retain all descriptors,modifiers,integer/Boolean domains,guards,literals,aliases,allocation/call/exception order and partial state. No native or class-name-literal edits;no runtime/pixel equivalence claim.",
       "confidence": "reviewed"
     },
     {
@@ -26682,7 +26682,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-arcanistsmulti-rules.mjs": "82b321f6eb8fd1be308b86b62f8b9f917834ac31d392acce923bfe547711b6d0",
-      "arcanistsmulti-names.json": "67eefa94464d102f3ebf6d5e1940fd592432176aaea1d1c81ebfcf173ce03405",
+      "arcanistsmulti-names.json": "0312ba0733eea20c9938b9b21986317dbfc961f29572808beacf19cb8a8592de",
       "reproduce-arcanistsmulti.mjs": "73e17b4e0aa472c63147f7ef8810b1833f51d002cbb5b34a0799a674238503d9",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
