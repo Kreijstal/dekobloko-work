@@ -72099,6 +72099,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ho.a(I)V",
+      "originalName": "a",
+      "to": "releaseCampaignMenuResources",
+      "evidence": "ho.java: Guard remainder first,then null shared fullscreen-status reference,then campaignMenu.releaseCampaignResources123. Preserve null/exception and guard order. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ho.a(Ljava/applet/Applet;B)V",
+      "originalName": "a",
+      "to": "openQuitPage",
+      "evidence": "ho.java: Open quit.ws relative to appletcodebase with changed-session parameters and_top;inner exception prints then wrongbyte recursive null call. Preserve nested catches/recursion and full byte domain. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:hp.a(BZ)Ljava/lang/String;",
       "originalName": "a",
       "to": "describeEvent",
@@ -74115,10 +74129,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:im.a(I[BII)I",
+      "originalName": "a",
+      "to": "computeCrc32",
+      "evidence": "im.java: Compute CRC32 over supplied[start,end):init-1,unsignedshift8 and shared table indexed(lowbyte XOR accumulator),complement. Table polynomial-306674912 confirmed. Wrongguard returns-54 only after reading data. Preserve empty/reversed ranges,overflow,bounds and exception context. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:im.a(Lom;I)I",
       "originalName": "a",
       "to": "getProfileMissionScore",
       "evidence": "im.java: Delegates using the mission parent campaign index and mission ID.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:im.b(II)V",
+      "originalName": "b",
+      "to": "unpackChatFilterSettings",
+      "evidence": "im.java: Unpack three chatfilters using exact masks51/13/3 and shifts4/2/0,clamp only above2;wrongguard nulls component between first/second writes. Social packettype4 confirms wire role. Do not normalize unusual masks or partial writes. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
       "confidence": "reviewed"
     },
     {
@@ -74287,6 +74315,20 @@
       "originalName": "a",
       "to": "draw",
       "evidence": "iq.java: Draws the button frame and label using pointer hover state.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iq.a(ILjava/lang/String;)Z",
+      "originalName": "a",
+      "to": "isSingleLowercaseCharacter",
+      "evidence": "iq.java: Return true only length1 string whose UTF16 char is Character.isLowerCase;length check before wrongguard cleanup. Preserve Unicode BMP semantics,null/exception order and guards. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:iq.b(I)V",
+      "originalName": "b",
+      "to": "openLoginFromGuestSession",
+      "evidence": "iq.java: Require guestSession elseIllegalStateException;mark retained-sessionflagtrue,open login dialogue via DraggableWidgetContainer(false,-49)→LinkButtonPainter→openLoginDialog3,null,false,false,then sessionstage0. Wrongint extra cleanup. This is guest-to-login transition,distinct from restartGuestSession that enables registration. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
       "confidence": "reviewed"
     },
     {
@@ -75340,6 +75382,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:je.a(IZ)V",
+      "originalName": "a",
+      "to": "layoutSharedLobbyPanels",
+      "evidence": "je.java: Layout shared lobby/community/options panels using rasterdimensions and room/setup mode;record viewport first,animate sidepanels,layout top/search/options/buttons,hide rows by roomoptions,then smallmodal and report controls. Guard<13 returns after initial bounds. Preserve all divisions,aliases,loops,dimensions and allocations. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:je.a(Lje;I)V",
       "originalName": "a",
       "to": "addChild",
@@ -75393,6 +75442,13 @@
       "originalName": "b",
       "to": "draw",
       "evidence": "je.java: Draws the component tree in the current raster with optional blinking text suffix.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:je.c(ZI)V",
+      "originalName": "c",
+      "to": "advanceLobbyPanelTransitions",
+      "evidence": "je.java: Advance three lobby/setup/empty-state transition counters according currentRoom,roomSetup and boolclose;initialize panels at zero crossings via RadialSummonMenu orDeployEvent. Late/early guard mutations and decrementpriority preserved. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
       "confidence": "reviewed"
     },
     {
@@ -75620,6 +75676,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jm.a(II)V",
+      "originalName": "a",
+      "to": "prepareRatingLeaderboardOrder",
+      "evidence": "jm.java: Prepare ratingleaderboard order:sort one key,index secondary segment starting supplied offset,sort ratio key descending/ascendingflag exactly,truncate count to supplied limit. Complete reply caller confirms role. Preserve scratchaliases,indices,full int starts and comparator tie behavior. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jm.a(Lje;I)V",
+      "originalName": "a",
+      "to": "collapseComponentVerticalBounds",
+      "evidence": "jm.java: Collapse component and child vertical geometry. Preserve original while-loop var4 never reassigned despite deque.next assigned onlyvar5;nonnull child can loop forever. Preserve pending writes,iterator effects,guardreturn and context placement;do not repair behavior. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jm.a([BZ)V",
       "originalName": "a",
       "to": "decode",
@@ -75669,6 +75739,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jp.a(IIII)I",
+      "originalName": "a",
+      "to": "fitPopupX",
+      "evidence": "jp.java: Fit popup horizontal origin using SoftwareRaster.width,anchorwidth,popupwidth and complement comparison against supplied fourthint. Menu/accountprompt/reportpopup callers confirm. Preserve negative widths,overflow and weird guard comparison. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jp.a(III[Lwk;II)V",
       "originalName": "a",
       "to": "drawHorizontalThreeSliceWithBrightness",
@@ -75683,10 +75760,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jp.a(Lvh;I)V",
+      "originalName": "a",
+      "to": "readPackedRatingLeaderboardStats",
+      "evidence": "jp.java: Read packed ratingleaderboard statistics into four shared ints using exact ushort/byte interleaving and masks2064384;guardmod between thirdvalue/lastbyte. Full reply links request fields and appendRatingLeaderboardEntry. Preserve streamposition and partial writes. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jq.a(I[Lnd;)Lnd;",
       "originalName": "a",
       "to": "execute",
       "evidence": "dr.java: Virtual registered command execution with canonical guard -24872. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jq.a(ZIIIZI)[Lwk;",
+      "originalName": "a",
+      "to": "createGradientBarSprites",
+      "evidence": "jq.java: Create16wide verticalgradient center plus optional top-left/right rounded copies,return9slotswith onlyindices3/4/5 populated;save/restore shared raster only normalpath. Wrongint clears stringmatrix afterdrawing. Preserve objectaliasing,nulls and pixel order. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jq.b(II)I",
+      "originalName": "b",
+      "to": "alignLengthToEightBytes",
+      "evidence": "jq.java: If(mask & length)!=0 add8-(length&7),else unchanged. RSA/XTEA caller suppliesmask7 for8-byte padding. Preserve generalmask/full ints and overflow. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
       "confidence": "reviewed"
     },
     {
@@ -75704,10 +75802,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jr.a(IIIII)V",
+      "originalName": "a",
+      "to": "drawKalphiteSpriteCluster",
+      "evidence": "jr.java: Draw four halfsize animated kalphite sprites:seedfold/xor,corner offsets,frame(seed+time/(4+(seed&3)))%3,shift each iteration. Guardmod afterseed;obfuscationcontrol earlyreturn retained. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jr.a(IIZI)V",
       "originalName": "a",
       "to": "draw",
       "evidence": "jr.java: Draws the god or unit choice, with availability and pointer highlight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jr.a(ILje;I[BILje;IIILje;)V",
+      "originalName": "a",
+      "to": "initializeLobbyState",
+      "evidence": "jr.java: Initialize shared lobby state from option counts and three listcontainers:storebytesbyalias,allocate bitarrays,clear queues/createhashes/reset IDs/counts/timestamps. Guard clears grid before allocations. Preserve capacityints,allocation/partial state/childrenalias and all order. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
       "confidence": "reviewed"
     },
     {
@@ -76488,6 +76600,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kj.a(ZI)V",
+      "originalName": "a",
+      "to": "initializePairedSpriteSelection",
+      "evidence": "kj.java: Allocate two-item UiSelectionState,restore selection fallback-1 using current paired-sprite hit and supplied bool/button. Preserve allocation before hit-test and parameter domains. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.a([BI)[B",
+      "originalName": "a",
+      "to": "copyByteArray",
+      "evidence": "kj.java: Copy bytearray:read length,wrongguard prints currentcoat,allocate exactlylength,copybytes. Preserve newallocation/aliasindependence and exceptionorder. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kk.a()V",
       "originalName": "a",
       "to": "finishAnimation",
@@ -76936,6 +77062,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kr.a(Lkl;ZLkl;Lkl;)V",
+      "originalName": "a",
+      "to": "loadCommonUiAssets",
+      "evidence": "kr.java: Load common UI frame/button/logo/validation fonts,decodeGIF,configure dropdownand3x4shared palettes,grayscale/sliceGIF into3button sprites with raster push/pop. Booltrue invokes cleanupmidload;preserve clones/palettealiases,resourcekeys and partial raster/state failures. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kr.g(I)V",
+      "originalName": "g",
+      "to": "releaseMoveEventStatics",
+      "evidence": "kr.java: Clear MoveEvent staticfields/layouts/tutorials/campaignMenu in original order;wrongint recurses-45 after firstfiveclears before laterclears. Preserve recursion and JVM partialstate. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ks.a(ILcf;Lvh;)Lsd;",
       "originalName": "a",
       "to": "readCampaignParticipant",
@@ -77006,6 +77146,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kv.a(I)V",
+      "originalName": "a",
+      "to": "initializeSharedCombatSandbox",
+      "evidence": "kv.java: Initialize sharedCombatSandbox with3colourpalette,screenwipe,clipandgamma0.75f. Wrongint writesfieldF18 before screenwipe. Preserve allocations/order/floatingconstant. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kv.a(IIBI)V",
       "originalName": "a",
       "to": "drawWidget",
@@ -77045,6 +77192,13 @@
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "kv.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kv.k(I)Lfl;",
+      "originalName": "k",
+      "to": "getSharedWidgetTheme",
+      "evidence": "kv.java: Lazyget cached WidgetTheme;wrongint clearsstringfirst,create/installpainters then exactstylefields andfonts. Preserve partially initialized cache if delegate throws and all settings/order. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
       "confidence": "reviewed"
     },
     {
@@ -77846,6 +78000,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lo.a([IILha;)[Lne;",
+      "originalName": "a",
+      "to": "buildTerrainTiles",
+      "evidence": "lo.java: Build MapTile[] from supplied terrainints and battlefield over dimensions;maptype11→0;wrongguard gets terraingridfirst. Preserve multiplicationoverflow,>=length guard and partial writes/null failures. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lo.a([Lne;Lvh;I)V",
+      "originalName": "a",
+      "to": "readLegacyStartingUnits",
+      "evidence": "lo.java: Read legacy startingunit count+coordinatebytes;valid positions allocateUnit(type0),setoccupant then sequential ownerID. Guard<86/nullarray earlyreturn;preserve <=array.length condition,invalidcoordinate consumption,overwrites and partial allocations. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lo.e(I)[[I",
       "originalName": "e",
       "to": "getTerrainGrid",
@@ -78231,6 +78399,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mg.a(IIBII)[Lwk;",
+      "originalName": "a",
+      "to": "createThinBeveledFrameSprites",
+      "evidence": "mg.java: Create beveled9slice frame bydelegate with exactfixed thickness/margins1,1,3,-1,1;wrongbyte calls itself oncewithvalidguard before returning secondallocation. Preserve doublecreation and parameter ordering. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.a(ILjava/applet/Applet;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "readSettingsCookie",
+      "evidence": "mg.java: Read settings cookie cookieprefix+settings via browsergetcookies/splitsemicolon/trim;loopstarts suppliedint,catchThrowable then fallbackstagedsettings or appletparameter. Preserve unprefixed keyconcat,null behavior,lookup priority and full startindex. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mg.b(I)V",
       "originalName": "b",
       "to": "releaseStatics",
@@ -78266,10 +78448,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mi.a(IIII)V",
+      "originalName": "a",
+      "to": "setSpriteMenuTextColours",
+      "evidence": "mi.java: Set shared paired-sprite menu textcolours(disabled,normal,selected) into3globals before wrongguardrecursion. SpellCastEvent.draw chooses disabledfornegativeIDs,selectedfor matchingindex. Preserve channelints,writeorder and invalidguard recursion. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mi.e(I)V",
       "originalName": "e",
       "to": "releaseReferences",
       "evidence": "mi.java: Drops stream, patch, sample and envelope references while retaining scalar note state and links.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mi.f(I)V",
+      "originalName": "f",
+      "to": "initializeSharedDialogHost",
+      "evidence": "mi.java: Initialize shared dialoghost via BufferedFile.initializeGameDialogHost102;wrongint runs MusicPatchNode.releaseStatics38 first. Preserve delegate/cleanup order. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
       "confidence": "reviewed"
     },
     {
@@ -78413,6 +78609,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mn.a(I)V",
+      "originalName": "a",
+      "to": "releaseActionRequestStatics",
+      "evidence": "mn.java: Clear ActionRequest model/name/statics;guard>=9 normalreturn,else setshutdownDeadline-121 then remainingclears. Preserve primitive sideeffect and writeorder;unique cleanupname avoids inheritedhiding. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mn.a(ILha;)Lbd;",
       "originalName": "a",
       "to": "prepareAction",
@@ -78424,6 +78627,13 @@
       "originalName": "a",
       "to": "formatIllegalMove",
       "evidence": "mn.java: Formats player, action kind and concatenated diagnostic fragments.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mn.a(ZIIBII)V",
+      "originalName": "a",
+      "to": "drawGridTileInteractionOverlays",
+      "evidence": "mn.java: Grid-coordinate wrapper draws tile interaction overlays only boolfalse,byte>64 and in mapbounds;flatten index then LocalizedUrlSupport helper draws target highlights/opacity/presenters. Preserve guardorder,intoverflow,and ignoredflag domain. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
       "confidence": "reviewed"
     },
     {
@@ -78473,6 +78683,20 @@
       "originalName": "a",
       "to": "activateItem",
       "evidence": "mq.java: Toggles an existing open item, opens a submenu or dispatches the selected phrase/custom-message path.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mq.a(IIIIIIII)V",
+      "originalName": "a",
+      "to": "drawTintedTerrainTileLayers",
+      "evidence": "mq.java: Draw tinted terrain base first;type11 remap7/disablesextra foliage,zero earlyreturn;guardmod then onlytype7 branch loadsneighbor categories,draw4corners and optional quality foliage. Preserve shared neighborwrites,in-place categories,overflow,exactguards and order. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mq.a(Lje;IZ)V",
+      "originalName": "a",
+      "to": "openChatFilterMenu",
+      "evidence": "mq.java: Open chatfilter contextmenu forchannel0/1/2,alwaysopenfirst then booltrue earlyreturn. Append actionIDs11/12/13 with icons/captions for public/game/private and layout bycomponentbounds. Preserve unsupportedchannel empty menu,aliases and failureorder. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
       "confidence": "reviewed"
     },
     {
@@ -78686,6 +78910,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:mw.b(IIIIII)V",
+      "originalName": "b",
+      "to": "layoutSharedChatPanel",
+      "evidence": "mw.java: Layout shared chatpanel/input/history/social rows using fixed485width and suppliedpadding/text/icon dimensions. Wrongint cleanup afterfirstbounds;set chat editor ifpresent,then rowcontrols widths. Preserve all divisions/negativegeometry and partial writes. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mw.e(B)V",
+      "originalName": "e",
+      "to": "compactLogoFaceDepthBuckets",
+      "evidence": "mw.java: Compact logo face depthbuckets into shared faceorder array:offsetstarts bucket0count,copyremaining bucket slices from bucketIndex<<4 into current packedoffset;wrongbyte clearsnoise tablefirst. Preserve overlapping copy semantics,counts/fullbounds. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mw.g(I)V",
       "originalName": "g",
       "to": "releaseStatics",
@@ -78854,6 +79092,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nb.a(IIBLjd;)V",
+      "originalName": "a",
+      "to": "drawVisibilityTrinketIcon",
+      "evidence": "nb.java: Draw halfsize eye sprite then summonring at fixedrelativeoffsets,onlybyte-97. Unitargumentunused but appears only diagnosticcontext. Assets eye/summonrings confirm visibilitytrinket purpose;preserve rendering order/fullints. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nb.a(III)Z",
       "originalName": "a",
       "to": "containsPointer",
@@ -78928,6 +79173,13 @@
       "originalName": "b",
       "to": "hasChanged",
       "evidence": "nb.java: Reviewed sprite scrollbar axis/arrow geometry, range, repeat, change and input state; original extent/guard quirks preserved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nb.c(B)I",
+      "originalName": "c",
+      "to": "getEffectsLatencyFrames",
+      "evidence": "nb.java: Return configured effectsLatencyFrames global;byte<93 invokes visibility icon helperwith invalidguard returningearly before read. TileMetadata.initializeAudioPlayers assignment confirms role. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
       "confidence": "reviewed"
     },
     {
@@ -79085,6 +79337,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ne.a(IIII)V",
+      "originalName": "a",
+      "to": "applyStructureTurnEffects",
+      "evidence": "ne.java: Apply structure turn income/heal/cure/damage/ownership effects with campaignowner gate,alliance/occupantflags and fog/localplayer branch. Terrain7mana50/25 anddoubleheal;8mana25/12;9/14mana75/37;11damage/owner only. Preserve270-line event order,teamstats,1b caps and differing uncapped playerMana branches,full intguard and partialstate. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ne.a(ILaa;)Lte;",
       "originalName": "a",
       "to": "playRawSound",
@@ -79096,6 +79355,13 @@
       "originalName": "a",
       "to": "decodeTaggedField",
       "evidence": "uo.java: Shared decoder dispatches named fields while preserving the interface contract. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ne.a(Lhd;Ljava/lang/Object;Z)V",
+      "originalName": "a",
+      "to": "pumpAwtEventQueue",
+      "evidence": "ne.java: Pump AWT queue:ifqueue nullreturn;up to50peek/wait1ms;postdummy ActionEvent1001 ifsourcenonnull swallowingException;latefalseguard playRawSound(null). Preserve waits,postorder,exceptions/monitor semantics and fullbooldomain. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
       "confidence": "reviewed"
     },
     {
@@ -79253,6 +79519,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nf.a(Lls;Lls;I)Z",
+      "originalName": "a",
+      "to": "isDisplayModeSizeBefore",
+      "evidence": "nf.java: Compare fullscreen displaymodes lexicographically width thenheight;ignorebitdepth/refresh. Insertion-sortcaller confirms ordering;guard has identicalfalse branches and all nullaccess order retained. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nf.a(ZLjava/lang/String;)Ljava/lang/String;",
       "originalName": "a",
       "to": "reverseString",
@@ -79264,6 +79537,13 @@
       "originalName": "k",
       "to": "releaseStatics",
       "evidence": "nf.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nf.l(I)I",
+      "originalName": "l",
+      "to": "getBattleCameraX",
+      "evidence": "nf.java: Return sharedbattlecamera.currentPosition[0];wrongintrecurses77 forever before read. Preserve cameraalias/bounds/recursiveguard. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
       "confidence": "reviewed"
     },
     {
@@ -79673,10 +79953,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ni.a(BC)Z",
+      "originalName": "a",
+      "to": "isAsciiLetter",
+      "evidence": "ni.java: ASCIIletterpredicateA-Z/a-z;wrongbyte invokes dialogviewport setter before duplicatedpredicate. Preserve fullchar domain and guard-sideeffects. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ni.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "ni.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ni.a(III)V",
+      "originalName": "a",
+      "to": "resizeSharedDialogViewport",
+      "evidence": "ni.java: Set dialogviewportwidth unconditionally,wrongint returns before height/resize;correct-8994 setsheight thenresizeexistinghost. Preserve partialdimensions and callbackorder. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
       "confidence": "reviewed"
     },
     {
@@ -79855,6 +80149,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nk.a(B)V",
+      "originalName": "a",
+      "to": "rebuildTerrainPresentationGrid",
+      "evidence": "nk.java: Rebuild terrainpresentation categorygrid from currentMapTile array then scaninplace category1 smoothing to7/4 dependingflag unlessedge/neighbor1. Guard<=79 recursive84 between gridmap and scan. Preserve traversaldependence,alias,edgechecks and recursion. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nk.a(IBILkl;)[Lwk;",
+      "originalName": "a",
+      "to": "loadSpritesWithOptionalAlphaById",
+      "evidence": "nk.java: Load spritearray by archivegroup/file:decode sharedsheet first;byte28 invokes alpha-aware builder toreturnRgbSprite/ArgbSprite entries andreleasebuffers. Wrongbyte returnsnull AFTER successfuldecode retainingbuffers. Preserve that state and all argorder. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nk.a(ZLjava/lang/CharSequence;B)Ljava/lang/String;",
       "originalName": "a",
       "to": "getAccountNameValidationError",
@@ -80030,6 +80338,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nm.a(BZ)V",
+      "originalName": "a",
+      "to": "drawSharedLobbyPanels",
+      "evidence": "nm.java: Draw sharedlobby panels with640wide centered clip,panelanimationgates and modaldisabledflags;wrongbyte earlyreturns before popRasterState leavingclipchanged. Preserve clipstack/renderorder/failurepaths. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nm.a(I)V",
       "originalName": "a",
       "to": "skip",
@@ -80055,6 +80370,13 @@
       "originalName": "a",
       "to": "initializeSequencers",
       "evidence": "nm.java: Retains both slots, selects first and sets fixed-point position to the first-slot endpoint.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:nm.a(IZ)Z",
+      "originalName": "a",
+      "to": "isSharedUiStageActive",
+      "evidence": "nm.java: Boolean-gated sharedUI-stagepredicate:returnfalse ifboolfalse,else int>=0. Full callers use stagecounter;preserve negativeints and allbools. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
       "confidence": "reviewed"
     },
     {
@@ -80265,6 +80587,20 @@
       "originalName": "a",
       "to": "readTaggedFields",
       "evidence": "no.java: Reads name/length fields, exposes their payload and restores relocated length headers after dispatch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:no.a(Ljava/lang/String;Lkb;III)V",
+      "originalName": "a",
+      "to": "drawDateFieldLabel",
+      "evidence": "no.java: Draw dateinputlabel centeredover fieldusing sharedfont,origin and baselineoffset-5;day/month/year drawcaller confirms. Preserve coordinateoverflow and contextwrapper. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:no.b(Z)V",
+      "originalName": "b",
+      "to": "markAccountCreationBlocked",
+      "evidence": "no.java: Mark accountcreation block via TilePosition helper(byte-99,currentApplet),which setsinmemoryTuhstatbutflag andbrowsercookie(name=tuhstatbut,value=rvnadlm,time-1). Registrationstatus248 ineligiblecaller confirms purpose;latebool clears cachedconsolesource. Preserve literalcookiecontract,order and exceptions. Naming only:preserve descriptors/modifiers,full primitive domains,guards,literals,allocations,aliases,locks,arithmetic and exception/state order.",
       "confidence": "reviewed"
     },
     {
@@ -143766,7 +144102,7 @@
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "armiesofgielinor-names.json": "21e79223db02607d1496393ce69f673a9ae9549e4dffa64f47aee57c922a474d"
+      "armiesofgielinor-names.json": "5dd0acdeb76d1fd6af7a3d6f153a41e1e847e6613754a0d1228b5a46aaff3771"
     }
   },
   "generators": {
