@@ -68746,10 +68746,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gb.a(BI)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getSpellPrerequisiteMessage",
+      "evidence": "gb.java: Equipped-spell tutorial availability message: god lock for spell mode4/type1 and five unit prerequisite mappings115..119. Preserve duplicate115/unit63 check, early return before byte guard and original wrong-guard tutorial interaction.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.a(IIIIB)V",
+      "originalName": "a",
+      "to": "drawSurroundingTerrainTile",
+      "evidence": "gb.java: Shared surrounding-tile border renderer: accepts grid border coordinates -1..configuredwidth/height, builds edge/corner variant, checkerboard plain/sampled sprite, floorMod/index math and latebyte division. Caller/resource role still to verify. Tile-layer callers invoke this at map borders; BattleGraphicsAssets loads the source indexed sprites from surround_tiles. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gb.a(IIIIII[II)V",
       "originalName": "a",
       "to": "configureTutorialStage",
       "evidence": "gb.java: Registers stage item IDs and sets its bounds/spacing; MoveEvent static initialization configures all tutorial stage presets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.a([Lwk;IIII)V",
+      "originalName": "a",
+      "to": "drawTiledThreeSlice",
+      "evidence": "gb.java: Three-slice horizontal sprite strip: left/right caps then clipped repeated middle. Preserve null/nonpositive-width early return, shared clip-save alias, middle zero-width nontermination, recursive wrong-guard call and raster restoration only on normal path.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -68774,6 +68795,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gb.d(II)V",
+      "originalName": "d",
+      "to": "setHighlightedSpellControl",
+      "evidence": "gb.java: Writes supplied value to controller.field_Jb and wrong positive guard sets globalfield_B. Controller field purpose requires callers/read sites before name. GameplayController.drawEquippedSpellStrip pulses the matching0..4slot or mode-switch control255; -1clears. This is a control selector,not a mask of allslots. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gb.e(II)V",
       "originalName": "e",
       "to": "setEquipmentStage",
@@ -68785,6 +68813,13 @@
       "originalName": "h",
       "to": "updateLesson",
       "evidence": "gb.java: Uses the current stage, equipped slot and spell definition to update lesson controls and hints.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gb.i(I)I",
+      "originalName": "i",
+      "to": "getEquippedSpellFeedbackIndex",
+      "evidence": "gb.java: Maps equippedSpellIds[0][equipmentSlot] to integer0..28 via explicit ID-1..134 branches. Wrong int guard returns8 after array read; original obfuscation predicates/ordering retained. Destination role requires updateLesson caller. setEquipmentStage indexes AttackOverlaySupport.field_b with this result,then displays post-spell feedback. Literal feedback messages confirm the returned index is neither a tutorial-stage ID nor an availability category. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -76089,10 +76124,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ln.a(IIIII)I",
+      "originalName": "a",
+      "to": "findPartAt",
+      "evidence": "ln.java: Instance coat part hit-test using relative pointer coordinates and this.parts. Wrong guard calls setPart(42,-104,-118) before same query; all fullint arithmetic retained. MatchConditionRegistry hit-test scans sixparts in reversepaintorder and may reset invalid partIDs to0. Keep mutable parts alias and these partial writes. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ln.a(IIIILjava/lang/String;II)I",
+      "originalName": "a",
+      "to": "drawEditorPreview",
+      "evidence": "ln.java: Instance coat drawing wrapper forwards this.parts/colourIndices to CoatOfArmsDrawingSupport.drawCoatOfArms and returns selected/highlighted part. Wrong guard queries missing-part offset first; descriptor/args retained. CoatOfArmsDrawingSupport delegates to MatchSetupPanel drawing with pointer hit-testing enabled and returns hovered part; caller drawCoatEditor supplies selectedpart and pointer coordinates. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ln.a(ILjava/lang/String;ZZIZZI)V",
+      "originalName": "a",
+      "to": "drawHalfSizeWithStatus",
+      "evidence": "ln.java: Half-size coat drawing: capture current raster in shared sprite, optional184pixel glow, drawcoat to shared scratch, status overlay variants, restore and half-size draw. Byte-less guard clearsstaticbytearray first. Preserve bool precedence, aliases, exception/raster order.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ln.a(Ljava/lang/String;BZ)Lwk;",
+      "originalName": "a",
+      "to": "createQuarterSizeSprite",
+      "evidence": "ln.java: Creates coat RGB/ARGB sprite using shared scratch and renderer. Boolfalse temporarily clears part3 then restores only on normal path; calls second draw helper regardless. Wrong byte recursively invokes small coat drawing before remaining raster capture; exception can leave part3/raster mutated. ArchiveProvider helper averages4x4RGBblocks into a new quarter-dimension ArgbSprite,using nonzero coverage for alpha. Preserve original RgbSprite return descriptor and normal-only restoration. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ln.a(Lkl;Lkl;Lkl;I)V",
+      "originalName": "a",
+      "to": "loadUnitAnimationSequences",
+      "evidence": "ln.java: Static unit animation loader: build sequences per group/name, optional six supplemental sequence groups, decode both sets via sharedhelper and build animation variants. param3functional starting index and XORhelperargument, not discardable guard. Preserve partial global arrays and original archive/order failures. AnimationSequence named constructor resolves archive group; SingleChildWidgetContainer helper preloads frame sets for all frameIds,then MovementPresentation builds variants. Functional starting index remains unchanged. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ln.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "ln.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ln.a(ZIIZILjava/lang/String;ZZZI)V",
+      "originalName": "a",
+      "to": "drawQuarterSizeWithStatus",
+      "evidence": "ln.java: Quarter-size coat draw with optional tinted glow cache and part3 hiding. Preserve cache condition/tintpixel formula, absent update to ReloadPageSupport.field_f, shared raster snapshots and restoration only on normal path; wrongguard invokes small-coat draw late.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ln.a(ZZBZZZILjava/lang/String;I)V",
+      "originalName": "a",
+      "to": "drawEighthSizeWithStatus",
+      "evidence": "ln.java: Eighth-size coat draw via shared full/quarter/half scratch passes; hide part3 bool and status overlay precedence. param1unused stillretained, byteguardclearsstaticarray betweenfirstandsecondrastertargets. Exact partialstate/aliases/failureorder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -80877,6 +80961,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qn.a(IIIIIIIII[II[IIII)Z",
+      "originalName": "a",
+      "to": "drawAdditivePaletteSpan",
+      "evidence": "qn.java: Additive radial-palette scanline kernel: second-order distance increments, palette index from distance/radius and saturating RGB add. Returns true on upper palette overflow so caller retries reverse direction; negative index stillthrows; fullint division/overflow/partialwrites retained.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qn.a(IIIIIIII[II[IIIIIIII)V",
+      "originalName": "a",
+      "to": "drawAdditivePaletteBlock",
+      "evidence": "qn.java: Additive radial-palette rectangle kernel: per-row/per-column second-order distance, writes only distance<radius threshold, saturating RGB add. Exact palette bounds/strides/negative loop counts and fullint domain retained.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qn.a(IIII[I)V",
       "originalName": "a",
       "to": "fillRadialPaletteCircle",
@@ -80902,6 +81000,20 @@
       "originalName": "a",
       "to": "setTarget",
       "evidence": "qn.java: Rebinds the raster pixel array and dimensions, then resets clip to full target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qn.a([IIIIIIII)V",
+      "originalName": "a",
+      "to": "blurRows",
+      "evidence": "qn.java: In-place horizontal box-blur pass with cropped edge windows and16384reciprocal central region. Preserve original clipRight versus width distinctions, channelclamps, mixed division/fixedpoint rounding and input/output overlap/order.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qn.a([IIIIIIIII)V",
+      "originalName": "a",
+      "to": "blurColumns",
+      "evidence": "qn.java: In-place vertical box-blur pass using three shared per-column sum arrays; allocation gatedonlybyfirstarraylength. Preserve clearing/allocation order, aliasing, width/clipBottom distinctions, channelclamps and exact edge/central rounding.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -80933,6 +81045,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qn.b(IIII[I)V",
+      "originalName": "b",
+      "to": "fillAdditiveRadialPaletteCircle",
+      "evidence": "qn.java: Fixed16-coordinate additive radial palette circle: clipped bounds and binary-searched strict circle interior, quadratic row/column increments, forwardkernel plus reverse retry only when first returns true. Preserve all overflow/boundary/read/write order.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qn.b([I)V",
       "originalName": "b",
       "to": "saveClip",
@@ -80958,6 +81077,13 @@
       "originalName": "c",
       "to": "drawHorizontalLineAdditive",
       "evidence": "qn.java: Clips a horizontal run and adds the intensity-scaled colour with channel saturation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qn.c(IIIIII)V",
+      "originalName": "c",
+      "to": "blurRectangle",
+      "evidence": "qn.java: Two-pass box-blur rectangle dispatcher: horizontal then vertical over same raster buffer; independent x/y radii, functional rectangle geometry, exact overlap and failure order.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -84279,6 +84405,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tm.a(F)V",
+      "originalName": "a",
+      "to": "setRandomizedGamma",
+      "evidence": "tm.java: Sets palette gamma/brightness exponent then applies random perturbation uniformly[-.015,.015); preserve Math.random call, double arithmetic then float cast and full float domain.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tm.a(II)V",
+      "originalName": "a",
+      "to": "buildColorPaletteRange",
+      "evidence": "tm.java: Builds HSL-to-RGB palette rows in supplied interval,128lightness steps each, hue/saturation offsets, Math.pow channel gamma with staticfield_b, packed RGB and remap zero to1. Preserve fullint bounds/overflow and all float/NaN/cast/order behavior.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tm.a(IIII)V",
       "originalName": "a",
       "to": "setClip",
@@ -84300,10 +84440,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tm.a(IIIIIIIIIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawTexturedTriangle",
+      "evidence": "tm.java: Textured triangle dispatcher/rasterizer629lines fullyread in four contiguous chunks: fetch texture before all conditions, use texture path only nonnull and blendAlpha<=10, set size/alpha flags, determinant/gradient math, all six vertex-order scan conversions and span calls. Fallback average texture color/lightness to shaded triangle. No signed overflow/fixedpoint/clipping/side-effect normalization.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tm.a([IIIIII)V",
+      "originalName": "a",
+      "to": "drawFlatSpan",
+      "evidence": "tm.java: Flat triangle span: optional horizontal clip, fourpixel unroll and tail. Alpha0opaque, alpha254copies next neighbor pixel including original potential bounds failure, other values originalblend. Keep all fullint alpha/state/array and failure domains.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tm.a([IIIIIIII)V",
+      "originalName": "a",
+      "to": "drawShadedSpan",
+      "evidence": "tm.java: Palette-shaded triangle span: optional clipping, fixedpointcolor interpolation, optional fourpixel coarse shading, zeroalphaopaque or originalblend. Preserve invalid palette indexes, alpha outside nominal range, all alias/read/write order and exact truncation.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tm.a([I[IIIIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawTexturedSpan",
+      "evidence": "tm.java: Perspective-textured triangle span454lines fullyread in three contiguous chunks: 64/128texture coordinate modes, eightpixel perspective stepping, zero denominator coordinate fallback, transparentzero-skip versusopaque path, brightness update everyblock/tail. Preserve unsigned shifts, bitpacking,overflow,index failures,aliasing and pixel order.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tm.b()V",
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "tm.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tm.b(F)V",
+      "originalName": "b",
+      "to": "rebuildPaletteWithGamma",
+      "evidence": "tm.java: Gamma/brightness reset wrapper: randomizes exponent through a(F), then rebuilds full512x128palette. Preserve randomization/global write before rebuild and every float value.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tm.b(II)I",
+      "originalName": "b",
+      "to": "modulateHslLightness",
+      "evidence": "tm.java: Modulate packed HSL lightness: multiplylow7bits by inputfactor then>>7,clamp2..126,add unchanged upperbits. Preserve int overflow and unsigned/full-domain upperbits behavior.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -85469,6 +85651,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:v.a(I)V",
+      "originalName": "a",
+      "to": "applyTerrainTintOverlay",
+      "evidence": "v.java: Battle terrain overlay traversal: project origin, duplicate grid/screen projection calls, walk40x20staggeredblocks with parity toggles and render overlay tiles. param0functional XORwithselfstillretained; scratchcamera writes and call order retained. BattleGraphicsAssets sets activeTerrainSample to currenttheme terrain sprite1. This is terrain-tint postprocessing over existingnonzero raster pixels. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:v.a(IBI)Z",
       "originalName": "a",
       "to": "moveTowardTile",
@@ -85504,6 +85693,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:v.a(IIIZIZIIIZIIII)V",
+      "originalName": "a",
+      "to": "applyTerrainTintBlock",
+      "evidence": "v.java: Terrain overlay40x20cell kernel: boundary neighbors dispatch triangular edge helper, wrongguard null clampingcall, bilinear-style interpolated overlay values and terrain sample multiply over nonzero pixels. Preserve odd mask16745529, bounds, fullbool/int domains and scratch/raster mutation.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.a(IIIZZIZIII)V",
+      "originalName": "a",
+      "to": "applyTerrainTintCell",
+      "evidence": "v.java: Overlay cell wrapper samples direct values and averaged opposite corners depending parity, calls fullcellkernel. Wrongguard nulls overlayValues before lateraverages. Preserve outside-map defaults255, branches and halfcell geometry.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:v.a(IZ)V",
       "originalName": "a",
       "to": "snapToTile",
@@ -85529,6 +85732,13 @@
       "originalName": "a",
       "to": "updateViewportCenterGrid",
       "evidence": "v.java: Projects the screen centre back to the grid and stores it.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.a(ZIIIZIIIZZI)V",
+      "originalName": "a",
+      "to": "applyTerrainTintEdge",
+      "evidence": "v.java: Triangular boundary terrain overlay kernel121lines: interpolate values across40x20region, select half by diagonal mask/booleans, terrain-sample tint multiply only nonzero existingpixels. Preserve distinct mask16772243,wrongguardfocusWorldX=-88, all fixedpoint/overflow/bounds/order.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -85564,6 +85774,13 @@
       "originalName": "b",
       "to": "generateOverlayValues",
       "evidence": "v.java: Stores 256 minus each unsigned generated byte; overlay drawing reads these retained values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.b(II)V",
+      "originalName": "b",
+      "to": "drawTerrainLayer",
+      "evidence": "v.java: Terrain layer traversal from viewportOriginGrid: clipped fullraster,80x20staggeredrows and RasterState.a with pass/lower-screenflag; optionally overlay whenpass0andglobal/tutorial flags. Functional passargument; guard1745035905earlyreturn retained.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -85634,6 +85851,13 @@
       "originalName": "f",
       "to": "projectGridToTarget",
       "evidence": "v.java: Maps grid coordinates to targetX=40+40*(x+y), targetY=20*(y-x)+mapWidth*20.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:v.g(I)V",
+      "originalName": "g",
+      "to": "drawCombinedTerrainLayers",
+      "evidence": "v.java: Terrain decoration layer traversal: three offset helper passes per80x20cell with40/120/200lower-screen cutoffs, expanded grid bounds and viewport scratch mutations. WrongguardfocusWorldY67 retained; exact offsets/booleans/render order. Threeoffset helperpasses include terrainbase,object/effects and furtherlayers; name combinedterrainlayers avoids a decorations-only assumption. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -141008,7 +141232,7 @@
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "armiesofgielinor-names.json": "53972976eed601f8b169600d1d343cd9ecfb6eeb90c3773f21660d3dcf2aec9d"
+      "armiesofgielinor-names.json": "485f936d913430fc371db1ae74665eeb0e5f34bf3b89499f823db3c2bb7f5aac"
     }
   },
   "generators": {
