@@ -3191,6 +3191,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:j",
+      "originalName": "j",
+      "to": "BattleCameraTargetTransform",
+      "evidence": "j.java: Owns BattleCamera, three FixedQuaternion objects, fixed-point origin offsets and three-int workspace. Instance helper writes camera target, transforms it and lays out transformed coordinates plus supplied height. Constructor initializes rotations and origin and mutates shared camera; all three discarded constructor allocations in presenters/renderer must remain. This class performs no perspective divide.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ja",
       "originalName": "ja",
       "to": "CameraOverviewTarget",
@@ -3443,6 +3450,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kq",
+      "originalName": "kq",
+      "to": "FocusProxyWidget",
+      "evidence": "kq.java: InteractiveWidget subclass retains a target Widget and delegates its final takeFocus override to that widget, forwarding root and guard. Constructor, inheritance and focus binding preserved; unrelated static spell prompts, menu metrics, string and tagged-bit payload helpers remain.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:kr",
       "originalName": "kr",
       "to": "MoveEvent",
@@ -3489,6 +3503,13 @@
       "originalName": "l",
       "to": "QuickChatCategoryMenuSupport",
       "evidence": "l.java: Builds a quick-chat menu for a category; unrelated labels, sprites and music player state remain on this owner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:la",
+      "originalName": "la",
+      "to": "UnitUnlockPreviewModel",
+      "evidence": "la.java: Tutorial unit-unlock display constructs this animated model preview from unlocked unit ID. Owns AnimationPlayer, ModelMesh, projection flag and animation variant. Preserve special model lookup43->77 while stored unit/animation ID remains43, per-unit geometry scales, frame-set binding and all unrelated foliage/face-group helpers.",
       "confidence": "reviewed"
     },
     {
@@ -4276,6 +4297,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:pu",
+      "originalName": "pu",
+      "to": "LogoMesh",
+      "evidence": "pu.java: Logo.fo3d mesh record with short vertex/triangle/normal/material arrays, cached bounds and optional face groups. GameEvent decodes it, FriendLookupSupport loads/scales/centres it, and IconLabelControl/MapRepository/et render and transform it. Preserve39instance fields, bounds cache, short wraparound and all unrelated static lobby/reflection utilities; no logo performance default or rendering implementation changes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pv",
       "originalName": "pv",
       "to": "AccountNameFoldingSupport",
@@ -4889,6 +4917,13 @@
       "originalName": "tu",
       "to": "BinaryBitmapFont",
       "evidence": "tu.java: Font glyph renderer treating every nonzero glyph-mask byte as opaque; opaque drawing supports optional scanline masks, alpha drawing uses rectangular clipping only.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tv",
+      "originalName": "tv",
+      "to": "ContentTransitionStage",
+      "evidence": "tv.java: Identity tokens for modal content fade-out, resize and fade-in stages, held by ContentTransitionDialog and the three named singleton fields. No instance fields or explicit constructor. Preserve token identities, state comparisons and unrelated static shared UI initializer and cleanup.",
       "confidence": "reviewed"
     },
     {
@@ -64567,6 +64602,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:db.a(ZC)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "charToString",
+      "evidence": "db.java: Returns String.valueOf supplied char when boolean true. False first recursively calls same false path with exclamation mark. Preserve full UTF16char domain, recursion and allocation, including discarded nonbreaking-space call in IconLabelControl static initializer. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dc.a(Ljava/awt/Component;I)V",
       "originalName": "a",
       "to": "detachPointerInput",
@@ -70328,6 +70370,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:io.a(Lwp;B)V",
+      "originalName": "a",
+      "to": "setCurrentFrameSet",
+      "evidence": "io.java: Stores supplied frame set,including null,in active global before guard-dependent sprite-array clear. Preserve reference identity and byte guard effects. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ip.a(BI)Lip;",
       "originalName": "a",
       "to": "setContentY",
@@ -70640,6 +70689,41 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "iw.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(B)V",
+      "originalName": "a",
+      "to": "initializeMenuTextTables",
+      "evidence": "j.java: Builds indexed menu/dialog text tables, campaign labels, socket labels, battle hints and missing text fallbacks. Preserve once-only nonnull check, all exact assignments/duplicates/null slots, title substitution, allocation order and guard<81 early return after publishing partial tables. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(BI[III)V",
+      "originalName": "a",
+      "to": "transformTargetCoordinates",
+      "evidence": "j.java: Writes supplied XY into retained camera target, invokes transformTarget, writes transformed X,height,transformed Y into caller array. Preserve shared camera mutation, read/write order, array aliases/partial failures and guard-dependent sprite-offset-array clear between destination writes. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(I)V",
+      "originalName": "a",
+      "to": "initializeBasisRotations",
+      "evidence": "j.java: Creates normalized X/Z basis rotations with original1194/256angles, copies and prepends into retained quaternion. Preserve order and intervening remainder guard and its failures; retain the apparently unused composed quaternion. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(III)V",
+      "originalName": "a",
+      "to": "updateTransformedOrigin",
+      "evidence": "j.java: Transforms supplied target coordinates into retained workspace using fixed-point height, then subtracts origin offset at caller-specified axis index. Preserve all int domains, arbitrary axis index, camera mutation and partial writes. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:j.a(IZZI)V",
+      "originalName": "a",
+      "to": "updateLobbyControls",
+      "evidence": "j.java: Updates lobby/room setup buttons, enabled restrictions, membership/tooltips, animated pending text, panel input and tab selection, then dispatches room buttons/options. Preserve all duplicated tooltip locals/concatenation, bit masks, permission ordering, guard cleanup and global input work even when no room setup exists. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -72470,6 +72554,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kq.a(IIBII)V",
+      "originalName": "a",
+      "to": "setSelectionMenuTextMetrics",
+      "evidence": "kq.java: Stores selectable/header line heights and their font baselines used by selection-menu rendering, hit testing and height calculation. Preserve assignment order before wrong-byte-guard spell helper call, and raw int metrics. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kq.a(IIIILbv;)V",
       "originalName": "a",
       "to": "enterTaggedPayload",
@@ -72488,6 +72579,13 @@
       "originalName": "a",
       "to": "takeFocus",
       "evidence": "kb.java: Virtual focus request; interactive implementation checks enabled/focusable then blurs supplied root. Resolved override family. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kq.a(Ljava/lang/String;Z)Z",
+      "originalName": "a",
+      "to": "isSingleSpace",
+      "evidence": "kq.java: True only for a one-character string equal to String.valueOf(space). Preserve length-first behavior, null exception wrapping, boolean-guard recursive null call and subsequent char-to-string helper evaluation. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -72673,6 +72771,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:la.a(B)V",
+      "originalName": "a",
+      "to": "advancePreviewAnimation",
+      "evidence": "la.java: Selects default animation variant0, advances animation player and binds its current cached frame set. Preserve guard division before all work and exact reset/advance/bind sequencing. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(BI)V",
+      "originalName": "a",
+      "to": "selectAnimationVariant",
+      "evidence": "la.java: Selects valid changed variant, repairs invalid current index and falls back to first available variant when sequence absent. Preserve bounds9,-1sentinel, guard-XOR sequence helper argument and wrong-byte unit-ID mutation after selection. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(I)V",
+      "originalName": "a",
+      "to": "bindCurrentFrameSet",
+      "evidence": "la.java: Looks up cached AnimationFrameSet from current frameId high16bits, then stores it as active frame set through MusicPatch helper,including null. Guard<68 performs an extra recursive bind before lookup. This does not fetch or guarantee loaded frames. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.a(IIIIIZ)V",
+      "originalName": "a",
+      "to": "drawFoliageCluster",
+      "evidence": "la.java: Draws four seeded foliage sprites with retained cached offsets, separate first-sprite band and faded-to-colour parameters. Preserve signed shifts/modulo, exact draw order and boolean-dependent loaderApplet clear. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:la.a(ZII)V",
       "originalName": "a",
       "to": "updateSocialListControls",
@@ -72698,6 +72824,34 @@
       "originalName": "b",
       "to": "openPublicTextChat",
       "evidence": "la.java: Selects outgoing channel 0 and enables text chat for the canonical guard.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.b(IIIIIZ)V",
+      "originalName": "b",
+      "to": "drawPreview",
+      "evidence": "la.java: Applies current animation into shared model workspace, applies special unit75/76scales, sets projection centre, computes variant/unit offsets, scales and optionally runs extra raster preparation, then draws perspective. Preserve wrong-guard stored-unit mutation after model selection, all shared aliases and projection arithmetic. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.c(B)I",
+      "originalName": "c",
+      "to": "findFirstAvailableAnimationVariant",
+      "evidence": "la.java: Returns first variant whose first sequence ID is nonnegative. If none, returns0for byte82 or111otherwise. Preserve array accesses, loop length and all byte guard values. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.c(I)V",
+      "originalName": "c",
+      "to": "selectCurrentAnimationSequence",
+      "evidence": "la.java: Selects sequence for valid current variant or fallback sequence0, then binds current cached frame set. Wrong int guard also invokes original invalid variant helper. Preserve complement guard passed to fallback selection and all recursion/call order. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:la.d(B)V",
+      "originalName": "d",
+      "to": "clearLogoFaceGroupCounts",
+      "evidence": "la.java: Zeros global128entry face-group count/prefix table used when sorting/rendering grouped logo faces. Preserve original8-write unrolling with no remainder loop, alias/partial writes and guard remainder performed after clearing. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -75760,6 +75914,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nw.a([B[[Ljava/lang/String;I[[Lwk;IZ[[Ljava/lang/String;ILkl;[Ljava/lang/String;I[[Lwk;[Ljava/lang/String;Lkl;[Lru;[I[B[Ljava/lang/String;Lkl;[I)V",
+      "originalName": "a",
+      "to": "initializeSharedUiAssets",
+      "evidence": "nw.java: Orchestrates shared UI sprite/context/lobby/chat assets and related initializers in original order. Preserve arrays/archive aliases, fixed helper arguments, guard-dependent static-string clear between initialization phases and all exception wrapping. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nw.d(B)V",
       "originalName": "d",
       "to": "releaseStatics",
@@ -77206,6 +77367,48 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "pu.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pu.a(I)V",
+      "originalName": "a",
+      "to": "calculateBounds",
+      "evidence": "pu.java: Computes and caches six extrema over short vertex arrays unless already valid. Preserve initial valid=true before guard, wrong-guard invalidation/global clear, empty-mesh short extrema, vertex read order and all failures. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pu.a(IIII)V",
+      "originalName": "a",
+      "to": "translateVertices",
+      "evidence": "pu.java: Adds three supplied offsets to short vertex coordinates beginning at caller-supplied vertex index, then invalidates bounds. Preserve coordinate/argument order, arbitrary starting index, short wraparound, partial writes and final invalidation. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pu.a(IIIII)V",
+      "originalName": "a",
+      "to": "scaleVertices",
+      "evidence": "pu.java: Scales each short coordinate with separate integer numerator and common divisor, then invalidates bounds. Preserve guard division before loop, multiplication overflow before division, short casts, zero-divisor timing and partial writes. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pu.b(I)V",
+      "originalName": "b",
+      "to": "sendReadyReflectionCheckResponses",
+      "evidence": "pu.java: While head reflection check is ready, writes ciphered opcode8 and reserved byte length, executes response writer and backpatches length. Preserve guard-derived readiness/loop-start/writer guards, global outgoing-buffer aliases, record order and all partial writes/failures. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pu.c(I)V",
+      "originalName": "c",
+      "to": "invalidateBounds",
+      "evidence": "pu.java: Clears bounds-valid flag before optionally clearing global int array on int guard!=8. Preserve both writes and all int domain values. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pu.d(I)V",
+      "originalName": "d",
+      "to": "clearLobbyState",
+      "evidence": "pu.java: Resets current room/setup and pending flag, clears lobby player/room orders and caches, with early return after first player-cache clear for guard>-86. Retain later apparently redundant player-cache traversal, unlink order and all callbacks/partial work. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -80457,6 +80660,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tv.a([Lru;[B[[Lwk;[ILkl;[[Lwk;ILkl;IZ[[Ljava/lang/String;[[Ljava/lang/String;I[Ljava/lang/String;[B[Ljava/lang/String;ZLkl;[I)V",
+      "originalName": "a",
+      "to": "initializeSharedUiAssets",
+      "evidence": "tv.java: Reorders original arrays/archives/counts into DamageEvent shared UI orchestration, supplying retained fixed guards and null string array. Boolean param9 recursively invokes original null-input wrapper only after first orchestration. Preserve unused int argument, all diagnostics and argument evaluation/order. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:u.a(I)V",
       "originalName": "a",
       "to": "processSocialListUpdate",
@@ -82400,6 +82610,13 @@
       "originalName": "a",
       "to": "playSoundAtVolume",
       "evidence": "we.java: Creates rate-100 raw playback at the supplied external volume and registers it under the canonical guard 100.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:we.a(IZ)Lwp;",
+      "originalName": "a",
+      "to": "findCachedFrameSet",
+      "evidence": "we.java: Finds first cached frame set matching ID. Preserve null/empty cache checks, original negated boolean passed to deque size before false-guard return, cursor mutation and null/no-match results; no fetching or LRU changes. Naming only: preserve complete original descriptor, modifiers, all primitive domains, guards, aliases, literal strings, allocations, locks, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -136612,7 +136829,7 @@
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "armiesofgielinor-names.json": "051ac5e8effdb71cab99cd82154e1659dd0ed222e69c1785e6adf9254816196b"
+      "armiesofgielinor-names.json": "3d81b0bff675440c5d2d4ff65f1653dd5177dbe1f1f26450f97202057865d785"
     }
   },
   "generators": {
