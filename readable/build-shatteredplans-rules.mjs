@@ -1779,7 +1779,9 @@ for (const [owner, to, evidence] of supplementalNames.classes) {
 }
 for (const [owner, original, descriptor, to, evidence] of supplementalNames.methods) {
   const id = `M:${owner}.${original}${descriptor}`;
-  if (members[id] && members[id].to !== to) throw new Error('Conflicting method name: ' + id);
+  // Correct the former phrase alias while accepting the retained legacy candidate.
+  const correctedCategoryLookup = id === 'M:hc.a(Z)Lsi;' && members[id]?.to === 'findFirstEnabledQuickChatPhrase' && to === 'findFirstEnabledQuickChatCategory';
+  if (members[id] && members[id].to !== to && !correctedCategoryLookup) throw new Error('Conflicting method name: ' + id);
   method(owner, original, descriptor, to, evidence);
 }
 if (supplementalNames.fields.length !== 0) throw new Error('This supplemental scope does not rename fields');
