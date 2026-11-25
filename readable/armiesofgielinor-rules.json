@@ -67206,6 +67206,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gd.a(IIIIIIII)Z",
+      "originalName": "a",
+      "to": "isPointInTriangleBounds",
+      "evidence": "gd.java: Inclusive axis-aligned bounding-box test of a point against three projected vertices, used only for coarse picking. This does not test triangle edge containment. Preserve all four three-way short-circuit comparisons and full int domains, including coordinate extrema and boundary equality; no subtraction/overflow-based replacement.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gd.a(IIIIIIIJ)V",
       "originalName": "a",
       "to": "drawPerspective",
@@ -67255,6 +67262,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gd.b(I)V",
+      "originalName": "b",
+      "to": "drawFace",
+      "evidence": "gd.java: Dispatches a depth-ordered mesh face to near-plane clipping or textured, Gouraud-shaded or flat-colour triangle rasterization. Preserves horizontal clipping and alpha state writes, signed texture sentinel comparisons, unsigned byte/colour masks, texture-coordinate vertex overrides and original evaluation/error order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gd.b(III)V",
       "originalName": "b",
       "to": "scaleGeometry",
@@ -67266,6 +67280,13 @@
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "gd.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gd.c(I)V",
+      "originalName": "c",
+      "to": "drawNearClippedFace",
+      "evidence": "gd.java: Clips a face against camera z=50 using fixed-point reciprocal interpolation, writes shared projected XY/colour scratch incrementally, and draws the resulting triangle or two triangles for a quadrilateral. Preserve scratch reads before count checking, alpha/clip writes, texture overrides, flat/shaded paths, arithmetic overflow/shifts, unused frame remainder and all failure/partial-write ordering.",
       "confidence": "reviewed"
     },
     {
@@ -136122,7 +136143,7 @@
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "armiesofgielinor-names.json": "c9acd25fc04c8dcc8a03c6fec8e84a0372282aa8f66b89b937edefe594931915"
+      "armiesofgielinor-names.json": "e4704889ce802827e7174d9a9d4eb52901a94b6f3c1c151a81694e8220ec88c6"
     }
   },
   "generators": {
