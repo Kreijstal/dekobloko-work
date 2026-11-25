@@ -201,6 +201,46 @@
       "ie",
       "SpriteMaskEffects",
       "Complete597-line static type read, including414-line rotated ARGB resampler,107-line bilinear pixel sampler and both mask wrapper/kernel. Name agrees with pending user patch; unrelated rotation stays in place."
+    ],
+    [
+      "ig",
+      "ClientUiLoadingSupport",
+      "Complete91-line static type read. Checks commonui/button asset readiness and activates/reuses connection progress dialog; GzipInflater and caption state retained in original owner."
+    ],
+    [
+      "ih",
+      "AccountNoticeKind",
+      "Complete94-line identity marker type read. AccountNoticeDialog constructor branches by its three marker identities; static base37 formatting, chat request and social-name dialog helpers remain in place. Name agrees with pending user patch."
+    ],
+    [
+      "ij",
+      "ProjectsWindowSupport",
+      "Complete67-line static type read. Builds ProjectsContent MenuWindow and retains shared status result, with seed-cache, unshined panel and NanoFrameTimer helpers retained in original owner."
+    ],
+    [
+      "ik",
+      "MutableIntPairNode",
+      "Complete88-line IntrusiveNode type read, including setter/constructor. Two retained integers assigned together; index sorting, room-member lookup and keyboard-idle helper remain static. Name agrees with pending user patch."
+    ],
+    [
+      "im",
+      "PlayerOverlaySupport",
+      "Complete110-line static holder read. Retains shared key handler and draws interface overlays; existing writePlayer and account-name validator stay in place."
+    ],
+    [
+      "is",
+      "ArchiveConnectionRetrySupport",
+      "Complete100-line static type read. Resets pending archive connection, swaps retained port values, records failure kind/count and selects retry/error status by response code. Original diagnostic string and UI flags retained."
+    ],
+    [
+      "jb",
+      "ClientOverlayDrawSupport",
+      "Complete57-line static type read. Draws shared client overlay stages in order. Existing guarded sleep and project captions/counters remain in place."
+    ],
+    [
+      "je",
+      "LobbyCommandSupport",
+      "Complete84-line static type read. Sends Return to lobby selector pair, retains shared UI/sprite state and existing sine lookup; no helpers relocated."
     ]
   ],
   "methods": [
@@ -1078,6 +1118,139 @@
       "([I[IIIIIIII)V",
       "darkenSpriteMaskPixels",
       "Full23-line kernel read. For nonzero mask word, multiply destination RGB by256 minus mask low byte, retain original packed-mask arithmetic shift; zero mask still advances destination. Preserve source/destination aliasing, postincrements, row strides and signed loop counts. Name agrees with pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ig",
+      "a",
+      "(I)V",
+      "showConnectionProgressDialog",
+      "Deactivate shared dialogs before guard check. Guard7655 re-adds cached progress dialog or allocates/stores/adds a new one. Preserve reused object identity, constructor parent/caption and partial deactivation. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ig",
+      "a",
+      "(Lbc;ILbc;Lbc;)Z",
+      "areCommonUiArchivesReady",
+      "Guard-7526 gates all archive calls. Check first/second indexes and commonui groups, then third index/button.gif group in exact short-circuit order. Preserve guard-derived preload argument, null ordering and request side effects. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ih",
+      "a",
+      "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      "formatBase37Name",
+      "Encode CharSequence base37 then decode titlecase/nbsp display name; null decode becomes empty string, then execute guard division. Complete encode/decode helpers read. Preserve full long bounds, original whitespace/case mapping and null/failure order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ih",
+      "a",
+      "(Ljava/lang/String;IIILjava/lang/String;I)V",
+      "writeChatMessageRequest",
+      "Write opcode/reserve length and channel; matching selector appends first string; null target writes short id, otherwise writes target through original name helper; patch byte length. Preserve conditional string evaluation, wire truncation, buffer alias and partial writes. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ih",
+      "b",
+      "(I)Z",
+      "hasSocialNameDialog",
+      "Execute guard remainder before returning retained jp dialog nonnull. Social add/remove name-dialog creation and text consumers inspected. Preserve int arithmetic failures, global-read ordering and identity. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ij",
+      "a",
+      "(I)V",
+      "cacheClientSeedBytes",
+      "If seed cache exists, seek0 and attempt exactly24bytes from inbound buffer position using guard param0+84. Exception branch and success/cache-absent branch both advance inbound position by supplied param0. random.dat cache allocation and login consumer inspected; preserve inner Exception/outer Throwable scopes, signed overflow and partial I/O/position effects. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ij",
+      "a",
+      "(IIZIII)V",
+      "drawPlainHexagonPanel",
+      "Draw shared hexagon panel with shine flag false and original argument permutation. False supplied bool clears retained status result afterward. Preserve draw-before-clear and primitive domains. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ij",
+      "b",
+      "(B)Lqh;",
+      "createProjectsWindow",
+      "Allocate/store fixed Projects window, close button pointing at that window, child MenuList and ProjectsContent; guard division occurs after allocations before storing content. Preserve geometry, aliases, discarded locals and failure/assignment order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ij",
+      "b",
+      "(I)Lfp;",
+      "createFrameTimer",
+      "Execute guard division then allocate NanoFrameTimer and return as FrameTimer. Preserve arithmetic and allocation order; no fallback or timer behavior change. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ik",
+      "a",
+      "(I)I",
+      "getKeyboardIdleTicks",
+      "Wrong int returns113 before global read; guard-26918 returns idle tick counter. Key release/press reset and synchronized tick increment contexts inspected; preserve unsynchronized read and full int domain. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ik",
+      "a",
+      "(IBI)V",
+      "setPair",
+      "Assign supplied first/second integers in order, then byte<7 overwrites first with-64. Preserve both initial writes, late overwrite and full byte/int domains. Name agrees with pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ik",
+      "a",
+      "(IJ)Lmj;",
+      "findRoomMember",
+      "Guard>-87 returns null before table access; otherwise retrieve account-id keyed member from current-room member table. Server opcode18 inserts and increments room player count; context menu offers Kick for this record. Preserve long key, return identity, cast and map failures. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ik",
+      "a",
+      "([IIB)[I",
+      "sortedIndices",
+      "Allocate requested-length int index array; wrong byte sets retained state50 before stable insertion sort by supplied values. Preserve zero/negative/oversize lengths, default index0, tie stability, raw array alias/access order and wrapped exceptions. Name agrees with pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "im",
+      "a",
+      "(Ljava/lang/CharSequence;B)Ljava/lang/String;",
+      "validateAccountName",
+      "Execute guard remainder then delegate name-structure/character validator returning null or error String. Complete nn wrapper and wp structure validator read. Preserve error priority and guards; return is validation text, not a normalized name. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "im",
+      "a",
+      "(ZZ)V",
+      "drawInterfaceOverlays",
+      "False first bool clears caption before other work; shared modal predicate can force redraw bool false, then draw GameScreen overlays and account/shared overlay helper. Preserve repeated branches, caller bool forwarding and draw order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "is",
+      "a",
+      "(BI)I",
+      "handleArchiveConnectionFailure",
+      "Full87-line body read: reset attempt/socket state before wrong-byte recursion, swap retained archive ports, set network error category for response51/50/other, increment failures and return original retry/error codes at thresholds2/4. Preserve contradictory/redundant branches, overflow and partial resets. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "jb",
+      "a",
+      "(ZB)V",
+      "drawSharedClientOverlays",
+      "Invoke first shared overlay stage, optional wrong-byte cleanup, then interface overlays with first bool true. Preserve both branches, argument forwarding and call/failure order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "je",
+      "a",
+      "(BI)V",
+      "writeReturnToLobbyRequest",
+      "Write opcode first. Guard<=32 invokes sine helper before writing fixed selector bytes1,1; other guards directly write them. Caller button caption is Return to lobby. Preserve header-before-helper, byte domains and partial writes. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "je",
+      "a",
+      "(I)V",
+      "releaseLobbyCommandStatics",
+      "Guard1 clears two sprites and marker reference; other ints first set shared boolean false then clear same fields. Preserve assignments, no extra clearing or allocation. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
     ]
   ],
   "fields": []
