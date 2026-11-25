@@ -521,6 +521,46 @@
       "sf",
       "SoundTriggerTick",
       "Complete57-line original type and constructor read. Linked records retain trigger tick; GameSession appends after requesting sound, expires records after50ticks and decrements active count. Constructor ignores SoundPlayback argument; preserve that omission. AI work-array capacity/static cleanup helpers remain in original owner."
+    ],
+    [
+      "sg",
+      "IconLabelPanel",
+      "Complete published282-line AnimatedPanel subclass read, including constructor. Optional icon and label children with independent styles, constrained group layout and padding/gap measurement; intro/retreat-visual static helpers stay in owner."
+    ],
+    [
+      "sj",
+      "SocialListSetupSupport",
+      "Complete original167-line type preread and pinned unchanged input revalidated. Sets friends/ignore list deques and hash tables then clears lists; tutorial resource placeholder helper remains static in same owner."
+    ],
+    [
+      "sk",
+      "DelayedInboundPacket",
+      "Complete original101-line type/constructor preread, pinned unchanged input revalidated. Intrusive record holds release timestamp, packet opcode and copied byte payload; complete producer/release method shows simulated receive latency and due-time replay. Chat decoder remains static."
+    ],
+    [
+      "sm",
+      "GameMenuController",
+      "Complete published2834-line type and constructor read in four contiguous ranges1..750/751..1450/1451..2150/2151..2834. Owns menu id, selection/input and animation; renders menus, instructions, rankings and achievements. Existing meaningful helpers retained; separate findHexAt correction recorded."
+    ],
+    [
+      "sn",
+      "IntroLogoSupport",
+      "Complete original201-line static type preread, pinned unchanged input revalidated. Draws staged intro logo; rectangle brightness/resource accumulation helpers remain in same owner. Naming only, no logo performance change."
+    ],
+    [
+      "so",
+      "BattleExplosionVisual",
+      "Complete original173-line StarSoundState subclass/constructor preread, pinned unchanged input revalidated. Constructor attaches explosion sound and random radial offsets; battle snapshot producer,130tick lifetime/volume update and glow renderer intervals inspected. Static mask/lobby/split helpers retained."
+    ],
+    [
+      "sq",
+      "TutorialScene",
+      "Complete published260-line type/constructor read. Retains text, successor/tag, placement, flag/action/objective arrays and stack/end-thread flags; parser and directive helpers confirm roles. Byte storage, lobby join, scanline insertion and menu presence helpers remain static."
+    ],
+    [
+      "sr",
+      "MeshData",
+      "Complete published257-line type/constructor read. Short-coordinate vertex arrays/count, topology/material arrays and cached bounds; scale/translate/bounds methods and model consumers confirm geometry data. Login/tutorial flag helpers remain static."
     ]
   ],
   "methods": [
@@ -2805,6 +2845,482 @@
       "(BI)V",
       "ensureAiWorkCapacity",
       "If requested capacity>=retained capacity, store it and allocate boolean array plus three int arrays, then byte<123 writes long41. Equality also reallocates. Canonical TaskAi passes star count/byte124; cleanup branch passes97/byte-109. Preserve signed capacities, aliases, allocation failures and partial writes. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sg",
+      "a",
+      "(BLmg;)Las;",
+      "createOppositeArcFleetVisual",
+      "Allocate FleetVisual then negate its retained arc-height int. Constructor derives it from half endpoint distance; MapView uses it in parabolic height. Wrong byte recursively invokes factory with null. Preserve endpoint identity, allocation, negation overflow and guard order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sg",
+      "a",
+      "(IBI)I",
+      "measureIconLabelWidth",
+      "Measure optional icon/text child widths and sum gap plus twice padding. Wrong byte nulls text child before its lookup; preserve negative widths for absent children. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sg",
+      "a",
+      "(III)V",
+      "layoutIconAndLabel",
+      "Measure icon unbounded and label within remaining width, clamp total, align group by original mode, set child targets and propagate alignment/style. Wrong first int calls intro helper with null before duplicate layout branch. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sg",
+      "a",
+      "(IIIIIII)V",
+      "setIconLabelBounds",
+      "Set outer target using original parameter permutation then perform child layout. Preserve partial geometry if layout fails. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sg",
+      "a",
+      "(ZZILjava/lang/String;Lnq;)V",
+      "enqueueIntroText",
+      "Allocate deque if absent, wrap text into fixed32slot array at width600; optional bool shifts initial delay by50per line, false first bool returns after wrapping, otherwise enqueue IntroTextLine objects at50step delays. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sj",
+      "a",
+      "(BLqr;Lqr;)V",
+      "initializeSocialLists",
+      "Create missing panel child deques and two64bucket hash tables, retain both deques then clear social lists. Canonical caller supplies friends and ignore panels; byte<=42 clears unrelated array before clear. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sj",
+      "a",
+      "(I)V",
+      "updateTutorialResourceText",
+      "Build resource shortfall and project-progress replacement values from local player/territory, retain original grammar and loops. Newly allocated boolean[4] is never populated, so original project-progress can stay null. Wrong int recurses; do not fix either behavior. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sk",
+      "a",
+      "(ZI)Lnf;",
+      "readChatMessage",
+      "Read chat channel/identity/type headers into shared globals and decode ordinary or quick-chat payload. Quick-chat path catches Exception and reports CC1 before returning ChatHistoryEntry with null payload. Preserve all guard-derived reader arguments and partial global updates. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(B)Z",
+      "advanceCloseAnimation",
+      "For rankings/achievements/error menus decrement corresponding animation counter and return whether finished; other menus immediately true. Preserve byte caption cleanup after rankings early branch. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(BI)Z",
+      "isItemSelectable",
+      "Return exactly byte==44 independently of supplied item index. Preserve ignored argument and full byte domain; add no eligibility logic. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(I)V",
+      "handleAchievementPointer",
+      "Compute hovered achievement through existing hit-test; on click toggle retained selected achievement or select a valid new one. Wrong int performs original discarded geometry call. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(IB)V",
+      "scrollInstructionSection",
+      "Determine section containing scroll+147 then move by requested relative index within original bounds; byte-57 required after scanning. Delegate section jump unchanged. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(IBI)I",
+      "findMenuItemAt",
+      "Scan menu items using existing Y/right/X/height helpers and selectability guard, with exact inclusive/exclusive rectangle checks. Wrong byte mutates animation counter before scan. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(IBIIIII)V",
+      "drawInstructionProductionBar",
+      "Draw rounded production bar outline, positive amount fill and gradient, sprite-mask shading under saved clip, and numeric caption. Preserve byte division, negative amount display and restoration only on normal path. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(IBZ)V",
+      "resetMenuInput",
+      "Retain selection fallback and special menu selections, initialize MenuInputState from pointer hit, reset counters/achievement/instruction state and lazily compute instruction heights. Preserve optional leaderboard request and bad-byte draw call ordering. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(II)V",
+      "clearMenuActivation",
+      "If target menu is a menu state, clear its retained activation index; preserve empty this-index test and wrong-int self-recursion. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(III)V",
+      "drawInstructionPane",
+      "Draw clipped instruction sections, scroll arrows and animated section tabs with allocated rotated text sprites. Preserve smooth scroll, exact section weights, late guard return and all raster allocation/draw order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(IIIIBI)V",
+      "drawInstructionProjectIcon",
+      "For counters below150 compute entry/exit size and offset then draw indexed project icon or rotating special icon. Preserve phase branches, integer division guard and arbitrary icon indices. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(IIIIIIILnq;Ljava/lang/String;)V",
+      "drawWrappedInstructions",
+      "Wrap supplied text with supplied font/width; advance baseline per line and justify only lines at least three-quarter width. Preserve unused height parameter and late wrong-guard draw callback. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(IIIILjava/lang/String;IIIBI)V",
+      "drawVerticalInstructionCallout",
+      "Draw vertical bracket and routed connector to text; optionally route around bracket when text Y lies outside endpoints. Byte110 permits measuring/drawing caption only after lines. Preserve exact signed lengths and wrapping. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(IIIZIIIIZ)V",
+      "drawInstructionFleet",
+      "Compute parabolic animated fleet position and rotation from endpoints/time using original integer and double expressions, choose sprite, optionally draw count. Preserve zero-distance NaN/casts, overflow before conversion and wrong-int menu-id write. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(ILjava/lang/String;IIIIIBII)V",
+      "drawHorizontalInstructionCallout",
+      "Draw horizontal bracket with vertical sides and routed caption connector, measure text then draw only for byte62. Preserve line order, endpoint comparisons, wrap dimensions and late guard return. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(IZII)V",
+      "drawInstructionSection",
+      "Complete large section renderer read: static text, annotated screenshots, resource/project/combat/fleet diagrams and original per-section animation. Preserve all nested section branches, random-offset reads, temporary sprites/raster pushes and false-bool reset callback. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(Ljava/lang/String;IBIIIIIII)V",
+      "drawRankingsRow",
+      "Normalize three result counts using existing rounding, then draw rank/name/rating/game count and percentages at retained columns. Preserve 50+ caption, division/overflow and late bad-byte diagram callback. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(Z)V",
+      "updateAchievementAnimation",
+      "Advance fade counter, discard nonhovered/unselected cached achievement sprites, interpolate detail-panel height and stage target change. Preserve locked achievement24 logic and false-bool caption clear. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(ZI)I",
+      "itemRight",
+      "Return animated left+65+item width; false boolean first sets dragging flag. Preserve current getter calls and signed overflow. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "a",
+      "(ZIZ)V",
+      "handleMenuItemInput",
+      "Optionally set static bool, dispatch activated item, then handle sound/music slider keys/pointer and sound preview throttle. Preserve full action whitelist, ignored branches, original bool propagation and late input reads. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "b",
+      "(B)I",
+      "getAnimatedHeight",
+      "Return0 for inactive menu; interpolate old/new menu heights during menu transitions, otherwise compute current item rows plus header. Wrong byte mutates animation counter only after transition branch. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "b",
+      "(I)I",
+      "getTransitionBoundaryX",
+      "Compute original menu transition boundary from smoothstep and retained widths, or center320/ inactive0. Preserve alternate wrong-int callback and integer/double truncation. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "b",
+      "(II)V",
+      "drawFadeTransition",
+      "Draw menu background/fade composition, optional masked backdrop and frame, clip item rendering and restore saved bounds. Preserve parameter opacity arithmetic, discarded geometry call and partial raster state. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "b",
+      "(III)I",
+      "findInstructionControlAt",
+      "Hit-test instruction arrows or weighted section tab polygons with original coordinate thresholds; return section index or-1/-2/-3. Preserve dynamic weight division, guard remainder and exact endpoint rules. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "b",
+      "(IZII)V",
+      "activateMenuItem",
+      "Complete dispatcher read: transition menu/game actions, session readiness, account dialogs, rankings category, membership links, view settings and music choices. Preserve action-specific branches/flags, original string identity comparisons, early exits and ignored actions. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "b",
+      "(Z)I",
+      "getAnimatedLeft",
+      "Compute transition-dependent left coordinate or centered width; true bool returns-21 only on final nontransition branch. Preserve transition geometry and original smoothstep calls. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "c",
+      "(B)V",
+      "drawRankingsPanel",
+      "Save/reset clip, choose account-required prompt or lazily request rankings, render headings/results/local row and status text. Preserve shared request retention, category indices, original row loop and early prompt delegation. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "c",
+      "(I)I",
+      "getAnimatedWidth",
+      "Return0 for inactive menu, fixed width when menu ids equal, interpolate two menu widths or scale current width during cross-mode transition. Preserve guard int as smoothstep input. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "c",
+      "(III)V",
+      "drawMenuTransition",
+      "Darken backdrop if session exists, compute smooth transition split, clip current-menu items to split then draw other menu items and restore clip. Preserve ignored/guard arguments and item draw order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "d",
+      "(B)V",
+      "updateInstructionAnimation",
+      "Locate scroll-centered section, animate per-section weights and smooth scroll; initialize five random graph values and refresh every50ticks. Preserve RNG count/order, shared arrays and guard caption clear. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "d",
+      "(I)V",
+      "drawRankingsAccountPrompt",
+      "Render animated account-required prompt using existing text and frame, then restore shared saved clip. Wrong int first invokes original instruction pane drawing. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "d",
+      "(II)V",
+      "jumpToInstructionSection",
+      "Retain current interpolated scroll as start, sum previous section heights into target scroll and start32tick interpolation. Preserve writes before guard callback and invalid section bounds. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "e",
+      "(B)V",
+      "drawErrorPanel",
+      "Save/reset clip, compute animated panel width, draw ERROR title and retained error text only at fully open32stage. Wrong byte returns with changed clip; preserve this partial raster state. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "e",
+      "(I)V",
+      "handleInstructionKeys",
+      "Guard170 dispatches up/down section stepping, home/last section and remaining vertical navigation. Preserve original menu input updates and return for every other int. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "f",
+      "(B)V",
+      "handleInstructionPointer",
+      "Hit-test pointer/click, jump clicked section and scroll by wheel, held arrows or drag delta, clamping original start/target scroll values. Preserve preguard hover write and captured drag coordinate. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "g",
+      "(B)V",
+      "releaseHighscoreRequest",
+      "Menu5 clears retained rankings request; byte<=52 then runs original static cleanup call. Preserve callback and potential guard failure after clearing request. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "g",
+      "(I)V",
+      "drawMenu",
+      "Darken active-session backdrop, compute menu bounds, perform original integer division guard, draw frame then items. Preserve getter order and partial drawing on failures. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "h",
+      "(I)I",
+      "getAnimatedTop",
+      "Return0 for inactive menu; wrong int invokes error rendering before optional interpolation of retained menu top coordinates. Preserve guarded callback and original menu-id tests. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "i",
+      "(I)V",
+      "updateMenu",
+      "Read keyboard events and escape transitions, process pointer/menu actions unless input blocked, update instruction/achievement animations and menu counters. Preserve input priority, shared flags, bad-guard callback and exact per-menu branches. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "j",
+      "(I)V",
+      "drawAchievements",
+      "Draw25 achievement icons in staggered rows with hover/selection glow, enlarged detail images, locked/unlocked captions and animated rank markers. Preserve lazy sprite allocations, shared raster stack, byte/int arithmetic and late guard. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sm",
+      "k",
+      "(I)V",
+      "handleMenuKey",
+      "Toggle debug option or select existing graphics preset for keys1..4, evaluate guard division, then instruction/horizontal/vertical navigation based on active menu. Preserve ordering before guard failure. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sn",
+      "a",
+      "(III)V",
+      "drawIntroLogo",
+      "Render original logo into scratch sprite, adjust staged alpha and flash/glow overlays for retained intro counter, restoring raster before late int guard. Preserve original logo renderer calls and all stage thresholds. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sn",
+      "a",
+      "(IIIIII)V",
+      "scaleRectangleBrightness",
+      "Factor256 returns,0 fills black,128 uses existing half-brightness helper; otherwise clip to raster dimensions and scale packed RGB with signed shift. Preserve original unusual masks, integer overflow and guard division after X clipping. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sn",
+      "a",
+      "([IBLsd;)V",
+      "accumulateTerritoryResources",
+      "Traverse supplied territory stars and add four resource values into caller array. Preserve existing values, shared iterator cursor, overflow and wrong-byte cleanup callback before traversal. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "so",
+      "a",
+      "(IIILbi;)V",
+      "darkenThroughSpriteMaskFromOffset",
+      "Clip sprite-sized source region starting at first-int pixel offset then call original mask kernel. Complete kernel read: skip source values0/255, otherwise scale destination RGB by low source byte. Preserve source offset also driving late kernel guard; not a colour-copy blit. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "so",
+      "a",
+      "(IZIZIIZIIIIZIZ)V",
+      "updateLobbyUi",
+      "Clear retained component, call original pre-update helper, compute interaction bool, update lobby interface then remaining shared UI passes with original argument order. Preserve bool reassignment and doubled first int. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "so",
+      "a",
+      "(Ljava/lang/String;CI)[Ljava/lang/String;",
+      "splitOnCharacter",
+      "Count delimiter chars, allocate count+1 strings, retain each segment including empties and final tail. Original int guard runs before final tail assignment. Preserve UTF16 char delimiter, substring/allocation order and no regex substitution. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sq",
+      "a",
+      "(BLlm;)V",
+      "appendObjective",
+      "Byte>=5 appends supplied conditional objective to scene array, retaining first-element special path. Preserve existing order and allocation/assignment failure order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sq",
+      "a",
+      "(III)V",
+      "writeJoinGameRequest",
+      "Write original opcode then selectors3/8 and short room id; bad int clears caption afterward. Context menus bind action to Join and Accept invitation captions; preserve all wire widths/order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sq",
+      "a",
+      "(IIIIIII)V",
+      "insertPolygonScanlineSpan",
+      "Validate scanline/nonzero span, normalize original degenerate case, insert retained scanline record into ordered list by X then width. Preserve same-position comparison asymmetry, guard caption clear and original factory parameters. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sq",
+      "a",
+      "(ILjava/lang/Object;Z)[B",
+      "unwrapByteArray",
+      "Null returnsnull; byte[] optionally cloned; ByteArrayStorage calls its conversion, other types throw. Preserve false-copy alias, nonarray guard recursion, type-test order and exact exceptions. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sq",
+      "a",
+      "(ILjava/lang/String;)V",
+      "appendAction",
+      "Int30712 appends action string to retained scene action array; other ints return before reads. Preserve first-allocation and later-copy paths. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sq",
+      "a",
+      "(Ljava/lang/String;B)V",
+      "appendFlag",
+      "Append flag string to retained private array; first allocation returns before byte guard, later bad guard calls no-op action append. Tutorial parser flag/action directives independently traced. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sq",
+      "a",
+      "(Z)Z",
+      "isQuickChatMenuOpen",
+      "True bool returnsfalse, otherwise read retained menu visibility flag. Existing draw/input callers confirm Quick Chat menu role; preserve guard and shared read. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sr",
+      "a",
+      "(I)V",
+      "invalidateBounds",
+      "Clear mesh bounds-valid flag before optional invalid-int account request helper with null values. Preserve exception after invalidation. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sr",
+      "a",
+      "(IBZI)I",
+      "pollLoginUiAction",
+      "Only byte affects cleanup; delegate existing login/dialog input status poll with-75, ignoring other wrapper arguments. Preserve return codes and all ignored inputs. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sr",
+      "a",
+      "(IIII)V",
+      "translate",
+      "Add supplied axis offsets to short vertex arrays then invalidate bounds; wrong int first invokes tutorial flag lookup. Preserve axis permutation, short truncation and partial array writes. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sr",
+      "a",
+      "(IIIII)V",
+      "scale",
+      "Scale each short coordinate by supplied axis factor/divisor using integer math, invalidate bounds, optionally recompute for wrong guard. Preserve division-by-zero location, truncation and partially scaled vertices. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sr",
+      "a",
+      "(ILjava/lang/String;)Z",
+      "hasTutorialFlag",
+      "Case-insensitive search of both retained StringNode flag deques, passing supplied int only to second traversal. Preserve equality direction, null behavior, shared cursors and short-circuit return. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sr",
+      "a",
+      "(Ljava/lang/String;IBILjava/lang/String;Ljava/lang/String;Z)I",
+      "pollLoginWithTextFields",
+      "Wrap first supplied text, byte>-38 returns-102 before second wrapper allocation; otherwise wrap second and delegate existing login protocol poll with original argument permutation. Preserve packet/RSA/request state delegate, ignored guard domain and exception wrapping. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sr",
+      "a",
+      "(Z)V",
+      "updateBounds",
+      "Skip if already valid; otherwise set valid flag to supplied bool and scan signed-short coordinates for six extrema. Preserve empty-mesh extrema, false flag with still-computed bounds and exact writes. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, random/locks, clipping, integer overflow/casts, FP, partial state and call/exception order."
     ]
   ],
   "fields": []
