@@ -2033,6 +2033,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:kj",
+      "originalName": "kj",
+      "to": "AccountRequestResult",
+      "evidence": "Complete94-line type read. Account request result carries success/kind flags, status code, optional message and suggested names; constructors/factories and account-creation consumer inspected. GameRules decoder and static cleanup remain in original owner.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:kk",
       "originalName": "kk",
       "to": "PcmSample",
@@ -2089,6 +2096,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ks",
+      "originalName": "ks",
+      "to": "AccountBooleanRequest",
+      "evidence": "Complete413-line type read. Retains input text, completion state and boolean result used by account/email validation; string factory, validator, request initialization and server result setter inspected. Mixed UI/drawing/submission helpers stay in original owner.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:l",
       "originalName": "l",
       "to": "GalaxyMap",
@@ -2114,6 +2128,13 @@
       "originalName": "lc",
       "to": "ArchiveSource",
       "evidence": "Abstract provider of an ArchiveIndex and per-group byte arrays.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ld",
+      "originalName": "ld",
+      "to": "ByteArrayReadRequest",
+      "evidence": "Complete134-line IntrusiveNode type read. Byte-array request is queued by IntroTextLine.requestByteArray; checksummed response fills completion and data before unlinking. Sprite row blending and closing intro animation remain static. Alias agrees with pending user patch.",
       "confidence": "reviewed"
     },
     {
@@ -2166,6 +2187,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ll",
+      "originalName": "ll",
+      "to": "BrowserJavaScriptBridge",
+      "evidence": "Complete25-line type read. Wraps applet JSObject window eval and call, including null-argument and explicit-argument variants. Existing readable method names and Throwable signatures remain. Alias agrees with pending user patch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lm",
+      "originalName": "lm",
+      "to": "TutorialConditionalText",
+      "evidence": "Complete53-line type read. Retains condition key and localized text key; tutorial text loader constructs entries and scene transition tests conditions before displaying their associated text. Punctuation key mapping and static cleanup remain in owner.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ln",
       "originalName": "ln",
       "to": "Star",
@@ -2184,6 +2219,27 @@
       "originalName": "lp",
       "to": "MenuList",
       "evidence": "MenuComponent that scrolls its children and implements the scroll position callback gj.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lq",
+      "originalName": "lq",
+      "to": "FourIntSubmissionRequest",
+      "evidence": "Complete36-line IntrusiveNode record read. Queued checksummed submission writer sends two byte selectors and four retained integer values; response unlinks queue head. Private throwing constructor and volatile UI flag retained. Alias agrees with pending user patch.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:lr",
+      "originalName": "lr",
+      "to": "ClientDrawingSupport",
+      "evidence": "Complete739-line mixed static type read, including333-line sorted vertex-color triangle rasterizer and122-line diplomacy-row builder. Byte pooling, integer/data responses, concatenation, sorting and random helpers remain in original owner; no sources moved.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ls",
+      "originalName": "ls",
+      "to": "GalaxyMapLayoutSupport",
+      "evidence": "Complete37-line static type read. Computes alternating hex-row map extent from row count and shared scale; Standard/Sol/Tutorial map constructors consume it as second map dimension. Existing cleanup retained.",
       "confidence": "reviewed"
     },
     {
@@ -10636,6 +10692,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:kj.a(BLob;)Lvr;",
+      "originalName": "a",
+      "to": "readGameRules",
+      "evidence": "Read two unsigned bytes, derive seven rule booleans from bits1 through64 and allocate GameRules with first-byte value. Preserve the guard division between flag extraction, exact read order, original masks, wrapped exception text and all byte domains. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:kj.a(I)V",
+      "originalName": "a",
+      "to": "releaseAccountRequestStatics",
+      "evidence": "Clear deque and caption first; guard1 clears remaining caption/sprites and returns. Other integers recurse with-84 before later clears. Preserve partial cleanup and unbounded recursion behavior. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:kl.d(I)V",
       "originalName": "d",
       "to": "clearStatics",
@@ -11063,6 +11133,83 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ks.a(B)V",
+      "originalName": "a",
+      "to": "releaseAccountBooleanRequestStatics",
+      "evidence": "Clear caption first; byte>=122 clears byte/sprite/parameter/name arrays and returns. Other bytes obtain cached style before same clears. Preserve guard domain, allocation and failure order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ks.a(I)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "getInput",
+      "evidence": "Evaluate original integer guard division, then return retained request input by identity. Preserve all integer values and possible arithmetic exception before field read. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ks.a(IIIIII)V",
+      "originalName": "a",
+      "to": "drawAdditiveSteppedLine",
+      "evidence": "Complete47-line body read. Clip starting y/count against raster, advance x by supplied step and y by one, saturating-add supplied RGB to each horizontally in-bounds pixel. Preserve original vertical-clipping arithmetic, signed step/count, overflow/masks and wrong-guard null context-menu call before loop. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ks.a(ILwj;I)V",
+      "originalName": "a",
+      "to": "queueHighscoreSubmission",
+      "evidence": "Add request to pending highscore deque, optionally alter retained integer on wrong guard, then serialize through original writer. Complete writer read proves counted extras/checksum/length patch; preserve request alias and queue-before-write partial failure. Name agrees with pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ks.a(IZLjava/lang/String;)Ltm;",
+      "originalName": "a",
+      "to": "queueClientNotification",
+      "evidence": "Allocate notification from message/sticky flag, optionally clear caption, then insert directly into visible notification array when shared spacing counter>=18 or append to pending queue otherwise. Return same object. Constructor and display/tick consumers inspected; preserve spacing, allocation, queue identity and failure order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ks.a(Lnf;I)V",
+      "originalName": "a",
+      "to": "openChatPlayerContextMenu",
+      "evidence": "Complete90-line body read. Initialize context menu from chat entry/player fields, conditionally add public/room actions, then room-join/invite/social/report/filter actions and display at pointer position. Preserve null-entry failure, role/room branches, guard-dependent arithmetic and original call/exception order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ks.a(Z)Z",
+      "originalName": "a",
+      "to": "getResult",
+      "evidence": "False guard returns false before field read; true returns retained boolean result. Preserve descriptor and primitive guard domain; do not add completion checks. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ks.a(ZI)V",
+      "originalName": "a",
+      "to": "setResult",
+      "evidence": "For guard>1 set completion true then result; other integers clear input first, then perform same writes. Preserve distinct partial mutation order and boolean value. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ks.a(ZZ)Z",
+      "originalName": "a",
+      "to": "handleTutorialPointer",
+      "evidence": "Complete130-line method read. Check tutorial active/target scene and pointer inside current interpolated bounds; when click flag and caller bool permit, commit scene transition if needed and run enter command when condition helper succeeds. Preserve duplicated branches, early-return domains and wrong second-bool null-menu call before checks. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ks.b(I)Z",
+      "originalName": "b",
+      "to": "isComplete",
+      "evidence": "Guard14 returns retained completion state; other integers recurse with-102 first. Preserve recursion and field-read ordering without normalizing guard. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ks.c(I)Lsp;",
+      "originalName": "c",
+      "to": "getAccountDialogStyle",
+      "evidence": "Lazily allocate shared WidgetStyle and copy base style, then assign original font/colors/paddings; evaluate guard division afterward and return same cache object. Root dialog setup consumer inspected; preserve partial initialization, cache alias and all integers. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:l.a(B)V",
       "originalName": "a",
       "to": "clearStatics",
@@ -11182,6 +11329,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ld.a(IIIIIIILbi;)V",
+      "originalName": "a",
+      "to": "blendSpriteRow",
+      "evidence": "Complete59-line body read. Adjust sprite source coordinates by offsets, execute optional cleanup guard, then blend one horizontal row into raster with supplied alpha and256-alpha. Preserve exact unsigned shift/masks, no added clipping or transparent-pixel skip, signed counts, overflows and partial writes. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ld.d(I)V",
+      "originalName": "d",
+      "to": "advanceClosingIntroText",
+      "evidence": "Queue final two intro text lines at initial counter0, increment counter and switch intro state to5 exactly at950. Wrong guard clears archive before same logic. Preserve duplicated branches, post-increment test, original timings and call order. Alias agrees with pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:le.a(I)V",
       "originalName": "a",
       "to": "clearStatics",
@@ -11291,6 +11452,13 @@
       "originalName": "a",
       "to": "callJavaScript",
       "evidence": "Calls a named browser function without arguments and returns its result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lm.a(B)V",
+      "originalName": "a",
+      "to": "initializePunctuationKeyMap",
+      "evidence": "Populate shared AWT keycode map at original punctuation indices/values, with first five writes before guard. Bytes<=85 invoke recursive static cleanup before remaining seven writes. Preserve existing table reference, index520, recursion and partial writes. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -11455,6 +11623,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lr.a(I)V",
+      "originalName": "a",
+      "to": "readArrayAndSubmissionResponse",
+      "evidence": "Complete84-line packet handler read. Selector0 reads count/ints into shared eight-int result and completes pending request; selector1 unlinks four-int submission; selector2 fills default array/result flags. Missing queue entries or unknown selector take original protocol-error paths. Preserve stream consumption before queue checks, aliases, bounds failures and write/unlink order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lr.a(II)[B",
       "originalName": "a",
       "to": "allocateByteArray",
@@ -11462,10 +11637,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lr.a(IIIII[IIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawSortedVertexColoredTriangle",
+      "evidence": "Entire333-line fixed-point triangle method read. Y-sorted wrapper has six vertex-order calls; method clips extents, derives16-bit edge/color gradients, handles flat/degenerate/offscreen splits and sends spans to original half-destination color kernel. Preserve every cast/shift/division/overflow, zero-width call, clipping quirk, scanline stride, loop-bound and early-return order; no raster rewrite. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lr.a(II[IB[Ljava/lang/Object;)V",
       "originalName": "a",
       "to": "quickSort",
       "evidence": "Sorts the int keys between two indices and moves the object values along.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lr.a(I[Ljava/lang/CharSequence;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "concatenateAll",
+      "evidence": "Guard>=63 delegates full array range to existing PanelNode concatenator; other integers return null before array-length read. Complete delegate read separately. Preserve null-element handling, array alias, length access and exception wrapper. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lr.a(Lph;Lfs;BLfs;[Lfs;)Llp;",
+      "originalName": "a",
+      "to": "createDiplomacyPlayerRow",
+      "evidence": "Complete122-line body read. Allocate/store player row, gradient heading and alliance button, attach player-name tooltips, then create divider/player-icon buttons and side-array indices relative to local player. Wrong byte returns null after earlier allocations/mutations. Preserve all indexing asymmetries, aliasing, geometry/overflow and late guard order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -11480,6 +11676,13 @@
       "originalName": "a",
       "to": "clearStatics",
       "evidence": "Assigns null to 9 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ls.a(II)I",
+      "originalName": "a",
+      "to": "computeMapHeight",
+      "evidence": "Guard2 computes alternating quarter/three-quarter hex-row offset plus paired-row spacing using shared double scale and200, then casts once to int. Other integers return18. Map constructors consume as second extent. Preserve Java integer division/remainder for negative rows, floating-point association and narrowing behavior. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -16440,7 +16643,7 @@
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
-      "shatteredplans-names.json": "77f3cb779e08476ec2aedd884736081a725daa34fa4144c6af4e9bbba1d93e42"
+      "shatteredplans-names.json": "937c39dd77d7111bcaabfe9225896d852025bc4aa8e281501c2dc8049891e6c0"
     }
   },
   "generators": {
