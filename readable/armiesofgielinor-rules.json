@@ -79547,10 +79547,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ql.a(IB)V",
+      "originalName": "a",
+      "to": "drawFloatingEffectIcon",
+      "evidence": "ql.java: Draws selected overlayicons sprite rising/fading relative to presenter and random offsets. Heal/strength/upkeep callers select icon. Preserve byte<83return before reads,full signed amount including MIN_VALUE negation overflow,signed width mirroring,absolute-value specialcase1,all scaling/opacity arithmetic and raster calls. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(III)V",
+      "originalName": "a",
+      "to": "drawParticleBurstAt",
+      "evidence": "ql.java: Draws double additive glow at supplied screen point during first20frames and shared scatter particles thereafter. Spell-selection-origin wrapper supplies absolute coordinates. Preserve elapsed<40and<20tests,duplicate draws/int-operation order,late intguard nulling unit,shared scatter array,parabolic motion and unclamped opacity arithmetic. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(IIILoj;)Z",
+      "originalName": "a",
+      "to": "initializeTileEvent",
+      "evidence": "ql.java: EventPresenter initializes popup at explicit tile coordinates. Handles conditional heal/bonus/lifesteal/corpse events,teleport and spell classification into status,area/single-target damage/healing visuals. Preserve reset/tile write before event read,random offsets even on failed eligibility,early50/-1failures,all casts/nulls,guard> -68clearing tile array,kind25helper side effect,advanceFrame before tile rewrite and full signed domains. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ql.a(Loj;B)Z",
       "originalName": "a",
       "to": "initialize",
       "evidence": "pa.java: Initializes presentation data for the event. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(Z)V",
+      "originalName": "a",
+      "to": "drawAreaHealingGlow",
+      "evidence": "ql.java: Draws area-healing spell glow selected for negative effect amount and positive radius. Rises during first20frames then expands/fades until40. Preserve true flag nulling presenter before frame test,all integer coordinate/width/opacity operations and absence of clamping. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -79582,10 +79610,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ql.c(I)V",
+      "originalName": "c",
+      "to": "drawDamageNumber",
+      "evidence": "ql.java: Draws coloured damage circle,bloodsplat/poison sprite and numeric amount. Overlay dispatcher uses it for effect types0/3/4. Preserve circle then sprite then wrong-intguard recursive drawBaseLayer then text,all palette/index/null failures and original amount formatting. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ql.d(B)V",
       "originalName": "d",
       "to": "releaseStatics",
       "evidence": "ql.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.d(I)V",
+      "originalName": "d",
+      "to": "drawUnitEffectBurst",
+      "evidence": "ql.java: Shared unit-effect burst used for summoning,teleport,owner change and default spell visuals. Guard20required before any reads;double80x100glow first20frames then scatter. Preserve both frame tests,duplicate draws,shared vectors,parabolic integer motion and fade arithmetic. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.e(B)V",
+      "originalName": "e",
+      "to": "drawAreaDamageFireballs",
+      "evidence": "ql.java: Area-damage spell visual uses randomly selected basic/fireball sprites. Rises first20frames then draws randomly chosen sprite per scatter particle with growth/parabolic motion/fade. Preserve random calls in rendering,all signed math and duplicate expressions,late wrong-byte initialize(null),null/empty asset failures and guard width. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.e(I)V",
+      "originalName": "e",
+      "to": "drawStatusEffectBurst",
+      "evidence": "ql.java: Status-effect spell handlerkind6selects double100x50glow followed by scatter particles. Preserve elapsed<40and<20tests,paired draw/int order,shared vectors,parabolic/fade arithmetic and late intguard>=-108clearing field_a. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.f(I)V",
+      "originalName": "f",
+      "to": "drawSpellSelectionBurst",
+      "evidence": "ql.java: SpellCastEvent selection mode sets origin on radial spell-menu ring;delegates burst at retained field_r/field_f screen coordinates. Preserve intguard arithmetic passed into draw helper before late wrongguard clearing static string,and all guard domains. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.g(I)V",
+      "originalName": "g",
+      "to": "drawSingleTargetHealingGlow",
+      "evidence": "ql.java: Negative-effect spell with nonpositive radius selects rising,expanding then fading double glow. Preserve guard10return before frame reads,20/30/40timing boundaries,all paired draw calls,integer operation order and unclamped pixel/opacity domains. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.h(I)Z",
+      "originalName": "h",
+      "to": "requiresAccountUi",
+      "evidence": "ql.java: Shared client predicate routes update/drawing to account UI until resource/session state is ready. Canonical guard31337false requires loader>=20,account helper and original counter/socket condition. Preserve every helper/short-circuit read and otherwise redundant SocketFactory.c(10)call;all other ints recurse through-19indefinitely with original stack failure rather than simplifying guard. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.i(I)V",
+      "originalName": "i",
+      "to": "drawSingleTargetDamageSparks",
+      "evidence": "ql.java: Nonnegative-damage spell with nonpositive radius selects rising random-walk spark trail plus shared scatter. Preserve rendering-time random calls/order,up-to30points bounded by elapsed frame,signed right shifts,var coordinate accumulation,late wrong-intguard invoking fireballs and parabolic/fade integer arithmetic. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -139377,7 +139461,7 @@
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "armiesofgielinor-names.json": "e441e924d7978c7918e86f959117fdf2c3bc8c1393a6f7e370ccef29a26a4c8f"
+      "armiesofgielinor-names.json": "961a2869dd00a106947181df51c109c34480ff3edec4ae95702da86e1184681b"
     }
   },
   "generators": {
