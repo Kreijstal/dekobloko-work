@@ -612,6 +612,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ae",
+      "originalName": "ae",
+      "to": "HighscoreResponseSupport",
+      "evidence": "Entire288-line type read. Static highscore-response decoder matches pending query/submission IDs,reads names/accounts/columns,unlinks acknowledgements. Static input/sprite/audio helpers retain their own separate roles.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:af",
       "originalName": "af",
       "to": "DelegatingCanvas",
@@ -633,6 +640,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ai",
+      "originalName": "ai",
+      "to": "LeaderboardSortSupport",
+      "evidence": "Entire157-line type read. Static leaderboard index partition/bubble sort and comparator usage establish the main helper role;orbiting glows and account/context-menu helpers remain in place.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:aj",
+      "originalName": "aj",
+      "to": "ClientContextMenuSupport",
+      "evidence": "Entire228-line type read. Shared context-menu construction/actions plus polygon,login-credential,text helpers andvolatileinput counter. No instance behavior;all mixed statics retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ak",
       "originalName": "ak",
       "to": "DiskArchiveRequest",
@@ -647,6 +668,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:am",
+      "originalName": "am",
+      "to": "SocialListPanel",
+      "evidence": "Entire158-line type,two constructors andall instance methods read. AnimatedPanel withscrollpane/content andtwo side-by-side action buttons;copyconstructor reuses styles. Three external typed fields andself-typed constructorparameter retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:an",
+      "originalName": "an",
+      "to": "TerritoryResourcePanelSupport",
+      "evidence": "Entire134-line type read. Builds territory resource/production menu withfour resource icons/counts andproduction total. Unrelated social-list reset/account statics retained without relocation.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ao",
       "originalName": "ao",
       "to": "SolidNineSliceFactory",
@@ -658,6 +693,13 @@
       "originalName": "ap",
       "to": "PcmPlayerService",
       "evidence": "Owns a PcmStream array and an int mix buffer, with attach and open hooks and a factory taking the dispatcher.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:aq",
+      "originalName": "aq",
+      "to": "IntValueWriteRequest",
+      "evidence": "Entire125-line type read pluscomplete86-line LR response handler. IntrusiveNode retained category/key fields are matched bybytecategory/signedsmart key andacknowledged/unlinked. Private throwingconstructor andunrelated leaderboard/raster/quickchat helpers retained. Matches pending user naming.",
       "confidence": "reviewed"
     },
     {
@@ -679,6 +721,20 @@
       "originalName": "b",
       "to": "FilledMenuPanel",
       "evidence": "MenuComponent with retained fill and outline colors; rendering fills its rectangle and optionally draws a contrasting border.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ba",
+      "originalName": "ba",
+      "to": "ChatPanelSetupSupport",
+      "evidence": "Entire235-line type read. Builds sharedchat composition/scroll panels,fivechannel controls,font/palette state andbirthdate form;retain allallocation/branch/alias/guard order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bb",
+      "originalName": "bb",
+      "to": "LobbyRoomControlsSupport",
+      "evidence": "Entire289-line type read. Sharedroom-option/filter/ready controls andmatching/invitation state,withreport-frame,fleet-visual andscroll-content helpers left in their original owner.",
       "confidence": "reviewed"
     },
     {
@@ -3223,10 +3279,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ae.a(B)V",
+      "originalName": "a",
+      "to": "readHighscoreResponse",
+      "evidence": "Full165-line decoder:querytype0 matches requestID thenreads sharedname records,three resultgroups andcolumn arrays withstreamrewinds;type1acknowledges submissionID;unknown/missingIDs protocolerror. Preserve allallocations,duplicatevisited flags,discardedtables,stream/queue/lateguard order. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(I)[I",
+      "originalName": "a",
+      "to": "newEightIntArray",
+      "evidence": "Guardremainder thenallocatezeroed8intarray;preserve guardfailure/allocationorder andfullints. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(ILjava/lang/String;Lbc;Ljava/lang/String;)[Lbi;",
+      "originalName": "a",
+      "to": "loadSpriteSetByName",
+      "evidence": "Resolve group/file IDs thenperformguardremainder anddelegate sprite-set loader;preserve lookup/cache/failureorder andnullstrings. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.a(Ljava/awt/Component;I)V",
+      "originalName": "a",
+      "to": "detachKeyboardInput",
+      "evidence": "Remove sharedkeylistener thenfocuslistener;wrongguard mixergetter thenresetheldkeyindex-1. Preserve AWTidentity/callback/partialstate order. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.b(B)V",
+      "originalName": "b",
+      "to": "snapshotMouseInput",
+      "evidence": "Guarddivision then synchronize onsharedmouseinputlock;incrementtick,copycoordinates/buttons/pressstate,clearconsumedpress flags/counter. Preserve volatile/sharedread/write/monitororder. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ae.b(I)V",
       "originalName": "b",
       "to": "clearStatics",
       "evidence": "Assigns null to 6 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ae.c(I)Lvk;",
+      "originalName": "c",
+      "to": "getSharedPcmMixer",
+      "evidence": "Validguard3returns sharedPcmStreamMixer;otherintsreturnnull beforeglobalread. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
       "confidence": "reviewed"
     },
     {
@@ -3272,10 +3370,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ai.a(I)V",
+      "originalName": "a",
+      "to": "clearActiveContextMenu",
+      "evidence": "Ifactivecontextmenu hasparent,clearparentactiveflag,thenclear sharedactive references;guardcontrols latearrayclear. Preserve nullbranches/partialwrites. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.a(IZIIBII)V",
+      "originalName": "a",
+      "to": "sortLeaderboardEntryIndices",
+      "evidence": "Full74-line leaderboard indexsort:range/limit gates,midpoint partition whenwide/unequalbounds,recursivehalves,smallrangebubblesort withselecteddescendingcomparator. Preserve overflow,pivot/tie/index order andunusedguard byte. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.a(Z)V",
+      "originalName": "a",
+      "to": "updateOrbitingGlowOffsets",
+      "evidence": "Compute orbitingQ4glow offsets fromframe%512 andspritewidth:sine/cos,oppositepair and120/240degreepoints;falsebool stopsafteronlythirdXwrite. Actualradialglowcallers inspected;preserve FP/casts/partialarrays. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ai.a(ZILjava/lang/String;Ljava/lang/String;)V",
+      "originalName": "a",
+      "to": "openAccountStatusDialog",
+      "evidence": "Stageaccountidentifier/password strings thenopenAccountStatusDialog throughByteArrayNode;wrongintrecursivecleanup beforewrites. Preserve exactbool forwarding andcallback/failureorder. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aj.a(I)V",
       "originalName": "a",
       "to": "clearStatics",
       "evidence": "Assigns null to 5 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.a(III[I)Z",
+      "originalName": "a",
+      "to": "containsPointInPolygon",
+      "evidence": "Odd-even point-in-polygon:readclosingcoordinate pairwithfunctionalparam0 offset,walkx/y pairs,callray-crossingpredicate,countparity. Preserve odd/shortarray/null/indexfailures andallintdomains. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
       "confidence": "reviewed"
     },
     {
@@ -3286,10 +3419,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aj.a(Ljava/lang/String;ZZLjava/lang/String;)Lms;",
+      "originalName": "a",
+      "to": "createLoginCredentials",
+      "evidence": "Identifiercontaining@ passesstringidentity,else encodeBase37;computeidentityevenrejectedbool thenfactory suppliedsecret/flag;wrongboolreturnsnull. Completecredentialfactory pluslogin callsite inspected;existing ChatMessage typealias retained. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:aj.a(Ljava/lang/StringBuilder;IIC)Ljava/lang/StringBuilder;",
       "originalName": "a",
       "to": "padWithChar",
       "evidence": "Sets the builder length and fills the new characters with the given char.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aj.a(ZBLfb;Ljava/lang/String;)V",
+      "originalName": "a",
+      "to": "openLobbyPlayerContextMenu",
+      "evidence": "Full64-line lobbyplayer menu:baseactions viaSliderPainter,conditional spectate andinvite/cancelactions,finalmenuplacement. Guardreturnaftermenubuild;preserve identifiers/captions/UIevents andfailureorder. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
       "confidence": "reviewed"
     },
     {
@@ -3615,10 +3762,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:am.a(IIII)V",
+      "originalName": "a",
+      "to": "layoutSocialListControls",
+      "evidence": "Instance layout:scrollpane plus two bottom actionbuttons splitavailablewidth;keeporiginalfieldassignment/callorder,overflow andallparameters. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(IIIIII)V",
+      "originalName": "a",
+      "to": "drawStackedHexagonPattern",
+      "evidence": "Compute rowcount=height/10+1 and96/rowcount BEFOREguard;drawfirstthenremaining ten-pixel-spaced hexagon-pattern rows withfadingbrightness. CompleteGameKeyHandler patternrowdelegate inspected;preserve division0/overflow/noopguard/math. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(IIIIIIBI)V",
+      "originalName": "a",
+      "to": "setSocialListBounds",
+      "evidence": "Instance bounds setter writesy first;lowbyteguardnullssecondbutton BEFOREremainingbounds/layout. Preserve partialstate,guardbyte anddelegatedargs. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:am.a(IILbi;IIIB)V",
+      "originalName": "a",
+      "to": "copySpriteScanline",
+      "evidence": "Directsprite scanlinecopy:spriteoffsetadjustment beforeguarddivide,source/destinationindices thenpostdecrementedlengthloop assigningrawpixels. No clipping/blending introduced;preserve aliases/overlap/signedlength/exceptions. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:am.g(I)V",
       "originalName": "g",
       "to": "clearStatics",
       "evidence": "Assigns null to 5 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:an.a(BZLsd;)Llp;",
+      "originalName": "a",
+      "to": "createTerritoryResourcePanel",
+      "evidence": "Full82-line territorypanel:allocateMenuList,retainTerritory,titlecapitalname/optionalownername,4resourceiconsandclampedcounts,productiontotalpanel andtooltips. Preserve styles/aliases/geometry/latecleanup andallpartialallocations. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:an.a(Z)V",
+      "originalName": "a",
+      "to": "clearSocialLists",
+      "evidence": "Clear sharedsocialcomposition/countersalways;trueboolclearbothsocialentrydeques,unlinksecondarylinks inbothnamehashes,resetcount. Completeinitializer andname-list updatecontexts confirm social(notarchive)role. Preserve iteration/aliases/partialstate. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
       "confidence": "reviewed"
     },
     {
@@ -3755,10 +3944,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:aq.a(I)Z",
+      "originalName": "a",
+      "to": "getRegistrationEmailOptIn",
+      "evidence": "Return pendingregistration emailoptin onlyguard>=2;falsebeforeglobal forsmallerints. Checkbox→registrationstaging→getter→accountrequest path inspected;preserve allints. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aq.a(II)Lgq;",
+      "originalName": "a",
+      "to": "findQuickChatParameterType",
+      "evidence": "Enumerate quickchatparameter descriptors thenstartscan atsuppliedindex,param0wireID match;preserve negative/startindex/array/null andenumeratorfailure order. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:aq.a(IZIZ)Z",
+      "originalName": "a",
+      "to": "ranksLeaderboardEntryBefore",
+      "evidence": "Compare leaderboard indices descending bybool-selectedprimary score,other score,sum3stats thenoriginalindex;falseguard getterbeforeall. Preserve intoverflow/equality andexactreadorder. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:as.a(I)V",
       "originalName": "a",
       "to": "clearStatics",
       "evidence": "Assigns null to 8 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ba.a(I)V",
+      "originalName": "a",
+      "to": "releaseChatPanelSetupStatics",
+      "evidence": "Clear twochatsetup strings;wrongintsetsstatus101 first. Preserve uniquecleanupname/stateorder. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ba.a(Lqr;Lqr;ILqr;Lur;Lqr;Lqr;Lqr;ZLnq;Lqr;Lqr;)V",
+      "originalName": "a",
+      "to": "initializeSharedChatPanel",
+      "evidence": "Full204-line chatsetup:palettes/fonts/styles/4x4pattern,composition/scroll/input/control children/fivechannel arrays,partialnormal-loop branches andoptionalbirthdateconfirmation. Preserve objectaliases/duplicatepalettewrites/allocation/order/guards. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.a(B)Lqr;",
+      "originalName": "a",
+      "to": "getLobbyScrollContent",
+      "evidence": "Return sharedlobbyScrollPane content;wrongbyte invokesroomcontrolsupdate first. Preserve delegatefailurebeforeglobalread andaliases. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.a(IJIZLjava/lang/String;I)V",
+      "originalName": "a",
+      "to": "writePlayerReportRequest",
+      "evidence": "Write reportopcode/reserveonebytelength,accountlong/name/selectionbyte/muteflag,patchlength;wrongguardroomupdate AFTERheader andreserve. Reportformconsumer/context reviewed;preserve partialpacket order/fullints. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.a(ILmg;)Las;",
+      "originalName": "a",
+      "to": "createReverseFleetVisual",
+      "evidence": "Validguard-2 allocatesFleetVisual fromFleetMove thennegates retainedmotionfield;otherintsnullbeforeconstructor. Preserve subclass/sideeffects/intnegation overflow. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bb.a(ZZBI)V",
+      "originalName": "a",
+      "to": "updateLobbyRoomControls",
+      "evidence": "Full207-line lobbyroomcontrolsread:resetsearch/roompanels,derivecapacityfilterstatus/ellipsis/eligibility,updatecontrols andtooltip/currentroom actions. Preserve originalconstant/contradictorybranches,stringoverwrites,allpartialstate,input/packetorder andprimitiveguards. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder.",
       "confidence": "reviewed"
     },
     {
@@ -14711,13 +14963,14 @@
   "readabilityWorkflow": {
     "repository": "Kreijstal/dekobloko-work",
     "files": {
-      "build-shatteredplans-rules.mjs": "f3b176ea5ca5d4e6437ae8367fc71e30354ebd73b7d19e7606adc905d778a130",
+      "build-shatteredplans-rules.mjs": "ce25d54e38aef8344c8a7141090c7b3ac371673eb5318b789b9b9991e5de5f95",
       "reproduce-shatteredplans.mjs": "c97d18e945d2818780e9aa7d2ed30e04a75e5ba59388010d329585f010e7cd8e",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2"
+      "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
+      "shatteredplans-names.json": "c3e35ba8a00088f44571d376b7180de81e9a6416ab0b831a3232ce5716bd88bb"
     }
   },
   "generators": {

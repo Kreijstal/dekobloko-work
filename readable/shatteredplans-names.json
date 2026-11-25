@@ -1,0 +1,245 @@
+{
+  "schema": 1,
+  "game": "shatteredplans",
+  "classes": [
+    [
+      "ae",
+      "HighscoreResponseSupport",
+      "Entire288-line type read. Static highscore-response decoder matches pending query/submission IDs,reads names/accounts/columns,unlinks acknowledgements. Static input/sprite/audio helpers retain their own separate roles."
+    ],
+    [
+      "ai",
+      "LeaderboardSortSupport",
+      "Entire157-line type read. Static leaderboard index partition/bubble sort and comparator usage establish the main helper role;orbiting glows and account/context-menu helpers remain in place."
+    ],
+    [
+      "aj",
+      "ClientContextMenuSupport",
+      "Entire228-line type read. Shared context-menu construction/actions plus polygon,login-credential,text helpers andvolatileinput counter. No instance behavior;all mixed statics retained."
+    ],
+    [
+      "am",
+      "SocialListPanel",
+      "Entire158-line type,two constructors andall instance methods read. AnimatedPanel withscrollpane/content andtwo side-by-side action buttons;copyconstructor reuses styles. Three external typed fields andself-typed constructorparameter retained."
+    ],
+    [
+      "an",
+      "TerritoryResourcePanelSupport",
+      "Entire134-line type read. Builds territory resource/production menu withfour resource icons/counts andproduction total. Unrelated social-list reset/account statics retained without relocation."
+    ],
+    [
+      "aq",
+      "IntValueWriteRequest",
+      "Entire125-line type read pluscomplete86-line LR response handler. IntrusiveNode retained category/key fields are matched bybytecategory/signedsmart key andacknowledged/unlinked. Private throwingconstructor andunrelated leaderboard/raster/quickchat helpers retained. Matches pending user naming."
+    ],
+    [
+      "ba",
+      "ChatPanelSetupSupport",
+      "Entire235-line type read. Builds sharedchat composition/scroll panels,fivechannel controls,font/palette state andbirthdate form;retain allallocation/branch/alias/guard order."
+    ],
+    [
+      "bb",
+      "LobbyRoomControlsSupport",
+      "Entire289-line type read. Sharedroom-option/filter/ready controls andmatching/invitation state,withreport-frame,fleet-visual andscroll-content helpers left in their original owner."
+    ]
+  ],
+  "methods": [
+    [
+      "ae",
+      "a",
+      "(B)V",
+      "readHighscoreResponse",
+      "Full165-line decoder:querytype0 matches requestID thenreads sharedname records,three resultgroups andcolumn arrays withstreamrewinds;type1acknowledges submissionID;unknown/missingIDs protocolerror. Preserve allallocations,duplicatevisited flags,discardedtables,stream/queue/lateguard order. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "ae",
+      "a",
+      "(I)[I",
+      "newEightIntArray",
+      "Guardremainder thenallocatezeroed8intarray;preserve guardfailure/allocationorder andfullints. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "ae",
+      "a",
+      "(ILjava/lang/String;Lbc;Ljava/lang/String;)[Lbi;",
+      "loadSpriteSetByName",
+      "Resolve group/file IDs thenperformguardremainder anddelegate sprite-set loader;preserve lookup/cache/failureorder andnullstrings. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "ae",
+      "a",
+      "(Ljava/awt/Component;I)V",
+      "detachKeyboardInput",
+      "Remove sharedkeylistener thenfocuslistener;wrongguard mixergetter thenresetheldkeyindex-1. Preserve AWTidentity/callback/partialstate order. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "ae",
+      "b",
+      "(B)V",
+      "snapshotMouseInput",
+      "Guarddivision then synchronize onsharedmouseinputlock;incrementtick,copycoordinates/buttons/pressstate,clearconsumedpress flags/counter. Preserve volatile/sharedread/write/monitororder. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "ae",
+      "c",
+      "(I)Lvk;",
+      "getSharedPcmMixer",
+      "Validguard3returns sharedPcmStreamMixer;otherintsreturnnull beforeglobalread. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "ai",
+      "a",
+      "(I)V",
+      "clearActiveContextMenu",
+      "Ifactivecontextmenu hasparent,clearparentactiveflag,thenclear sharedactive references;guardcontrols latearrayclear. Preserve nullbranches/partialwrites. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "ai",
+      "a",
+      "(IZIIBII)V",
+      "sortLeaderboardEntryIndices",
+      "Full74-line leaderboard indexsort:range/limit gates,midpoint partition whenwide/unequalbounds,recursivehalves,smallrangebubblesort withselecteddescendingcomparator. Preserve overflow,pivot/tie/index order andunusedguard byte. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "ai",
+      "a",
+      "(Z)V",
+      "updateOrbitingGlowOffsets",
+      "Compute orbitingQ4glow offsets fromframe%512 andspritewidth:sine/cos,oppositepair and120/240degreepoints;falsebool stopsafteronlythirdXwrite. Actualradialglowcallers inspected;preserve FP/casts/partialarrays. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "ai",
+      "a",
+      "(ZILjava/lang/String;Ljava/lang/String;)V",
+      "openAccountStatusDialog",
+      "Stageaccountidentifier/password strings thenopenAccountStatusDialog throughByteArrayNode;wrongintrecursivecleanup beforewrites. Preserve exactbool forwarding andcallback/failureorder. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "aj",
+      "a",
+      "(III[I)Z",
+      "containsPointInPolygon",
+      "Odd-even point-in-polygon:readclosingcoordinate pairwithfunctionalparam0 offset,walkx/y pairs,callray-crossingpredicate,countparity. Preserve odd/shortarray/null/indexfailures andallintdomains. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "aj",
+      "a",
+      "(Ljava/lang/String;ZZLjava/lang/String;)Lms;",
+      "createLoginCredentials",
+      "Identifiercontaining@ passesstringidentity,else encodeBase37;computeidentityevenrejectedbool thenfactory suppliedsecret/flag;wrongboolreturnsnull. Completecredentialfactory pluslogin callsite inspected;existing ChatMessage typealias retained. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "aj",
+      "a",
+      "(ZBLfb;Ljava/lang/String;)V",
+      "openLobbyPlayerContextMenu",
+      "Full64-line lobbyplayer menu:baseactions viaSliderPainter,conditional spectate andinvite/cancelactions,finalmenuplacement. Guardreturnaftermenubuild;preserve identifiers/captions/UIevents andfailureorder. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "am",
+      "a",
+      "(IIII)V",
+      "layoutSocialListControls",
+      "Instance layout:scrollpane plus two bottom actionbuttons splitavailablewidth;keeporiginalfieldassignment/callorder,overflow andallparameters. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "am",
+      "a",
+      "(IIIIII)V",
+      "drawStackedHexagonPattern",
+      "Compute rowcount=height/10+1 and96/rowcount BEFOREguard;drawfirstthenremaining ten-pixel-spaced hexagon-pattern rows withfadingbrightness. CompleteGameKeyHandler patternrowdelegate inspected;preserve division0/overflow/noopguard/math. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "am",
+      "a",
+      "(IIIIIIBI)V",
+      "setSocialListBounds",
+      "Instance bounds setter writesy first;lowbyteguardnullssecondbutton BEFOREremainingbounds/layout. Preserve partialstate,guardbyte anddelegatedargs. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "am",
+      "a",
+      "(IILbi;IIIB)V",
+      "copySpriteScanline",
+      "Directsprite scanlinecopy:spriteoffsetadjustment beforeguarddivide,source/destinationindices thenpostdecrementedlengthloop assigningrawpixels. No clipping/blending introduced;preserve aliases/overlap/signedlength/exceptions. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "an",
+      "a",
+      "(BZLsd;)Llp;",
+      "createTerritoryResourcePanel",
+      "Full82-line territorypanel:allocateMenuList,retainTerritory,titlecapitalname/optionalownername,4resourceiconsandclampedcounts,productiontotalpanel andtooltips. Preserve styles/aliases/geometry/latecleanup andallpartialallocations. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "an",
+      "a",
+      "(Z)V",
+      "clearSocialLists",
+      "Clear sharedsocialcomposition/countersalways;trueboolclearbothsocialentrydeques,unlinksecondarylinks inbothnamehashes,resetcount. Completeinitializer andname-list updatecontexts confirm social(notarchive)role. Preserve iteration/aliases/partialstate. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "aq",
+      "a",
+      "(I)Z",
+      "getRegistrationEmailOptIn",
+      "Return pendingregistration emailoptin onlyguard>=2;falsebeforeglobal forsmallerints. Checkbox\u2192registrationstaging\u2192getter\u2192accountrequest path inspected;preserve allints. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "aq",
+      "a",
+      "(II)Lgq;",
+      "findQuickChatParameterType",
+      "Enumerate quickchatparameter descriptors thenstartscan atsuppliedindex,param0wireID match;preserve negative/startindex/array/null andenumeratorfailure order. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "aq",
+      "a",
+      "(IZIZ)Z",
+      "ranksLeaderboardEntryBefore",
+      "Compare leaderboard indices descending bybool-selectedprimary score,other score,sum3stats thenoriginalindex;falseguard getterbeforeall. Preserve intoverflow/equality andexactreadorder. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "ba",
+      "a",
+      "(I)V",
+      "releaseChatPanelSetupStatics",
+      "Clear twochatsetup strings;wrongintsetsstatus101 first. Preserve uniquecleanupname/stateorder. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "ba",
+      "a",
+      "(Lqr;Lqr;ILqr;Lur;Lqr;Lqr;Lqr;ZLnq;Lqr;Lqr;)V",
+      "initializeSharedChatPanel",
+      "Full204-line chatsetup:palettes/fonts/styles/4x4pattern,composition/scroll/input/control children/fivechannel arrays,partialnormal-loop branches andoptionalbirthdateconfirmation. Preserve objectaliases/duplicatepalettewrites/allocation/order/guards. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "bb",
+      "a",
+      "(B)Lqr;",
+      "getLobbyScrollContent",
+      "Return sharedlobbyScrollPane content;wrongbyte invokesroomcontrolsupdate first. Preserve delegatefailurebeforeglobalread andaliases. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "bb",
+      "a",
+      "(IJIZLjava/lang/String;I)V",
+      "writePlayerReportRequest",
+      "Write reportopcode/reserveonebytelength,accountlong/name/selectionbyte/muteflag,patchlength;wrongguardroomupdate AFTERheader andreserve. Reportformconsumer/context reviewed;preserve partialpacket order/fullints. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "bb",
+      "a",
+      "(ILmg;)Las;",
+      "createReverseFleetVisual",
+      "Validguard-2 allocatesFleetVisual fromFleetMove thennegates retainedmotionfield;otherintsnullbeforeconstructor. Preserve subclass/sideeffects/intnegation overflow. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ],
+    [
+      "bb",
+      "a",
+      "(ZZBI)V",
+      "updateLobbyRoomControls",
+      "Full207-line lobbyroomcontrolsread:resetsearch/roompanels,derivecapacityfilterstatus/ellipsis/eligibility,updatecontrols andtooltip/currentroom actions. Preserve originalconstant/contradictorybranches,stringoverwrites,allpartialstate,input/packetorder andprimitiveguards. Naming only:retain descriptors/modifiers,full primitive domains,guards,literals,aliases,allocations,locks,overflow,partial mutations andexception/callorder."
+    ]
+  ],
+  "fields": []
+}

@@ -1770,6 +1770,21 @@ export const config = {
   },
 };
 
+// Reproducible, source-reviewed additions;existing aliases are retained.
+const supplementalNames = JSON.parse(fs.readFileSync(new URL('./shatteredplans-names.json', import.meta.url), 'utf8'));
+if (supplementalNames.schema !== 1 || supplementalNames.game !== 'shatteredplans') throw new Error('Invalid Shattered Plans supplemental names');
+for (const [owner, to, evidence] of supplementalNames.classes) {
+  if (classes[owner] && classes[owner][0] !== to) throw new Error('Conflicting class name: ' + owner);
+  classes[owner] = [to, evidence];
+}
+for (const [owner, original, descriptor, to, evidence] of supplementalNames.methods) {
+  const id = `M:${owner}.${original}${descriptor}`;
+  if (members[id] && members[id].to !== to) throw new Error('Conflicting method name: ' + id);
+  method(owner, original, descriptor, to, evidence);
+}
+if (supplementalNames.fields.length !== 0) throw new Error('This supplemental scope does not rename fields');
+config.workflowFiles.push('shatteredplans-names.json');
+
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     const rules = buildReviewedManifest(config), file = path.join(workflowRoot, 'shatteredplans-rules.json');
