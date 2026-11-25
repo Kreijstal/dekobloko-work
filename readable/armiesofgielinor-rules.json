@@ -2099,6 +2099,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bq",
+      "originalName": "bq",
+      "to": "LogoMaterial",
+      "evidence": "bq.java: Material table entry decoded from the logo.fo3d resource; its retained24-bit RGB colour tints rendered model faces, while table references can share the same material object. No other instance fields or native/literal contracts. Preserve all discarded bitstream fields and alias identities.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:br",
       "originalName": "br",
       "to": "CampaignLookupSupport",
@@ -3219,6 +3226,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jl",
+      "originalName": "jl",
+      "to": "FullscreenStatusToken",
+      "evidence": "jl.java: Three identity tokens select fullscreen status text in FullscreenStatusDialog, reached from display settings, fullscreen confirmation and login-method failure. No instance fields or native/literal contracts; throwing toString and static cleanup retained exactly.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jm",
       "originalName": "jm",
       "to": "ArchiveIndex",
@@ -3489,6 +3503,13 @@
       "originalName": "lh",
       "to": "TextureProvider",
       "evidence": "lh.java: Texture availability, pixel and colour queries used by mesh construction and textured rasterization; unresolved property queries retain their names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:li",
+      "originalName": "li",
+      "to": "PreferencesWriteRequest",
+      "evidence": "li.java: Intrusive pending preferences-write record retains its input byte array and the serialized checksum. The shared opcode5 response matches that checksum and unlinks the first matching record; reconnect retransmits pending records. Unrelated static animation helper and cleanup remain unchanged.",
       "confidence": "reviewed"
     },
     {
@@ -4997,6 +5018,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:vg",
+      "originalName": "vg",
+      "to": "PreferencesReadRequest",
+      "evidence": "vg.java: Intrusive pending preferences-read record stores completion flag and optional response bytes. Shared opcode5 validates CRC, marks complete then writes bytes and unlinks; login/menu initialization waits for completion before applying flags. Preserve initial false/null fields and queued record identity.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:vh",
       "originalName": "vh",
       "to": "PacketBuffer",
@@ -5169,6 +5197,13 @@
       "originalName": "wl",
       "to": "ModalDialog",
       "evidence": "wl.java: Deque-backed dialog with owning host, open flag, top-dialog opacity target, asymmetric fade and background hook.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wm",
+      "originalName": "wm",
+      "to": "AccountRequestState",
+      "evidence": "wm.java: Identity tokens shared by account-name checking and account creation: exactly three instances represent pending, complete and consumed. All five fields typed as this class and their comparisons/transitions traced; no instance fields, native contracts or class-name literals. Preserve all singleton identities and unrelated static utilities.",
       "confidence": "reviewed"
     },
     {
@@ -63762,6 +63797,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cd.b(I)V",
+      "originalName": "b",
+      "to": "handlePreferencesResponse",
+      "evidence": "cd.java: Shared server opcode5 handler: subtype1 matches the first queued write checksum and unlinks it; subtype0 receives optional bytes, validates CRC, marks the first queued read complete, assigns its payload, then unlinks it. Preserve guard-side field write, invalid-type diagnostics/socket close, missing-record/error paths, zero-length null payload, CRC position advance, duplicate-checksum ordering and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ce.a(IIBI)V",
       "originalName": "a",
       "to": "drawWidget",
@@ -66674,6 +66716,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:fk.a(ILbv;)[Lbq;",
+      "originalName": "a",
+      "to": "decodeLogoMaterials",
+      "evidence": "fk.java: Decodes the material table from logo.fo3d bit stream. Version>0 returns null; count uses the caller bit width. New materials retain their third24-bit colour while all discarded24/9/12bit fields still advance the stream. Backreferences alias prior material objects using bitLength(index-1). Preserve all bit-reader guards, allocations, counts, failures and aliases.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:fk.a(Les;I)Log;",
       "originalName": "a",
       "to": "parseConsoleExpression",
@@ -66986,6 +67035,13 @@
       "originalName": "a",
       "to": "getEffectsMixer",
       "evidence": "fq.java: Returns shared effects mixer under canonical guard 18757.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fq.a(II)Lvg;",
+      "originalName": "a",
+      "to": "requestPreferences",
+      "evidence": "fq.java: Allocates and queues a preferences read record before sending the request. Noncanonical guard first runs the existing date formatter, then still allocates/queues/sends. Preserve distinct branch allocations, deque order, guard behavior and reference identity.",
       "confidence": "reviewed"
     },
     {
@@ -69002,6 +69058,13 @@
       "originalName": "a",
       "to": "applyToBattlefield",
       "evidence": "oj.java: Abstract application contract propagated to every event subclass. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:hp.a(Lli;II)V",
+      "originalName": "a",
+      "to": "sendPreferencesWrite",
+      "evidence": "hp.java: Writes subtype1, byte-count and optional preferences bytes under caller-selected ciphered opcode, appends CRC, reads it back into the queued record and backpatches byte length. Preserve every buffer position write, length truncation, null handling, byte guard, exception context, and guard-dependent sprite clear after transmission encoding.",
       "confidence": "reviewed"
     },
     {
@@ -74948,6 +75011,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:nm.a(II[B)Lli;",
+      "originalName": "a",
+      "to": "queuePreferencesWrite",
+      "evidence": "nm.java: Retains caller byte array in a new write record, appends it to the pending deque, then serializes it with sendPreferencesWrite. Returns that record only when first int is0, otherwise null after all side effects. Preserve queue insertion before potential encoding failure and all aliases.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:nm.a(ILih;II)V",
       "originalName": "a",
       "to": "configureSelectedSequencer",
@@ -79995,6 +80065,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tq.a(II)V",
+      "originalName": "a",
+      "to": "sendPreferencesRead",
+      "evidence": "tq.java: Serializes caller ciphered opcode and the one-byte subtype supplied by the second int, normally0. First writeByte guard uses subtype XOR1. Preserve both int domains and byte-writer guard effects; this method creates no request record.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tq.a(IZIIII)[Lwk;",
       "originalName": "a",
       "to": "buildSolidFrameSprites",
@@ -82589,6 +82666,20 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "wm.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(IIBI)Lmo;",
+      "originalName": "a",
+      "to": "updateChatHistoryRows",
+      "evidence": "wm.java: Filters chat history by category limits, priorities and ignored-account rules; creates or removes row components, lays out children, updates content extent and scroll position, and returns the original null result. Preserve the separate pressed-row local, duplicated scroll branches, UI flags, all overflow/arithmetic, wrong-guard cleanup call and original ordering.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:wm.a(IIZ)V",
+      "originalName": "a",
+      "to": "processAbuseReportDialog",
+      "evidence": "wm.java: Polls the current report dialog; offence -2 keeps it open, -1 cancels, other values serialize a report including mute selection. Clears the dialog and refreshes UI after completion. Nonzero first int also updates chat rows before polling. Preserve all guards, separate branch locals, caller opcode, allocation/error order and null paths.",
       "confidence": "reviewed"
     },
     {
@@ -136143,7 +136234,7 @@
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "armiesofgielinor-names.json": "e4704889ce802827e7174d9a9d4eb52901a94b6f3c1c151a81694e8220ec88c6"
+      "armiesofgielinor-names.json": "bd9c4b7c77063066d5448e5a782c32b332574eef689b03ea75c3eae6aeab91fc"
     }
   },
   "generators": {
