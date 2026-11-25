@@ -701,7 +701,7 @@ method("er", "a", "(B)V", "processBlock", "Runs the ten-round transform over the
 method("vg", "d", "(B)V", "reapplyBounds", "Calls setBounds with the widget's own y, height, x and width.");
 method("vg", "a", "(IIBII)V", "setBounds", "Stores y, height, x and width.");
 method("vg", "a", "(Ljava/util/Hashtable;IZLjava/lang/StringBuilder;)V", "appendDescription", "Appends the class name, hash code, position and text of the widget.");
-method("vg", "a", "(BLvg;)Z", "containsWidget", "Returns whether the argument is this widget or one of its descendants.");
+method("vg", "a", "(BLvg;)Z", "focusFirst", "Request focus on first eligible widget:containers traverse retained child order,FocusableWidget checks eligibility,blurs supplied root,sets focus and notifies listener;default/rejected leaf implementations return false. All8complete current bodies and caller windows reviewed;correct former pure-containment alias. Identifier-only: preserve descriptors/modifiers and complete override closure, full primitive domains and int companions, all guards/recursion, literals, array/queue aliases, allocations, RNG/clock/locks, raster state, signed overflow/casts/FP, partial state and call/exception order.");
 method("vg", "a", "(BLjava/util/Hashtable;ILjava/lang/StringBuilder;)Ljava/lang/StringBuilder;", "describeTree", "Appends the description of this widget and of its children to the builder.");
 method("vg", "a", "(ZILjava/lang/StringBuilder;Ljava/util/Hashtable;)Z", "markVisited", "Records the widget in the table and appends a circular marker when it was already there.");
 method("vg", "c", "(Z)Ljava/lang/String;", "getTooltip", "Returns the tooltip string when the hover flag is set.");
