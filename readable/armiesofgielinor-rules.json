@@ -64462,10 +64462,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cl.a(B)V",
+      "originalName": "a",
+      "to": "prepareActionMovement",
+      "evidence": "cl.java: Prepares shared actionMovement for this unit and player using original unrestricted target coordinates. Preserve planner reads/helper arguments and badbyte<=23setting decisionPriority=-31after prepare. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cl.a(BLcl;)Z",
       "originalName": "a",
       "to": "shouldFollow",
       "evidence": "cl.java: Decision ordering by priority then the unit coordinate sum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.a(BZ)I",
+      "originalName": "a",
+      "to": "findReachableNonAlliedStructure",
+      "evidence": "cl.java: Returns first positive-cost reachable nonallied structure tile using ordinary movement costs or costs through own units,with corresponding occupancy rule. Returns1000000when absent. Preserve chosen array alias,iteration bound based on ordinary array,early return order and badbyte float mutation. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -64494,6 +64508,20 @@
       "originalName": "a",
       "to": "evaluateActions",
       "evidence": "cl.java: Scores candidate tiles with action or evaluation movement data and stores a selected action.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.b(II)V",
+      "originalName": "b",
+      "to": "sendRoomOptionsUpdate",
+      "evidence": "cl.java: TileableNoiseGenerator calls subtype5after room options change outside filter mode. Writes caller opcode/current room capacity/gameType+spectatorMode bits/options and length prefix. Preserve arbitrary subtype-derived helper guards,int overflow,shared room re-reads,payload alias and partial packet writes. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cl.c(II)V",
+      "originalName": "c",
+      "to": "addBlockedCaptureInfluence",
+      "evidence": "cl.java: Called when a nonallied structure is reachable only through own units. Adds weight54scaled capture influence around that structure and this unit source into field_V,which scoreTile conditionally subtracts. Helper true selects squared-distance falloff. Preserve original guard division,float order,template-unit mutations and both additions. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -66478,6 +66506,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ej.a(IIBZ)V",
+      "originalName": "a",
+      "to": "updateDebugScoreOverlay",
+      "evidence": "ej.java: Optionally rebuilds influence synchronously,clears shared debug scores,selects mode-dependent ally/enemy/capture/objective array or evaluates selected unit,then copies chosen values for tile-colour overlay. Preserve byte guard action reconciliation,reflection array-length access,mode indexing and all cache/side effects. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ej.a(III)F",
       "originalName": "a",
       "to": "scoreSummoningAtTile",
@@ -66492,10 +66527,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ej.a(IIII)V",
+      "originalName": "a",
+      "to": "addTileObjectiveInfluence",
+      "evidence": "ej.java: Adds radius0objective influence using caller objective id,tile and signed count. Preserve badguard29selection-strategy call with null and guard-derived delegate integer before any helper behavior. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(IIIII)V",
+      "originalName": "a",
+      "to": "addObjectiveInfluence",
+      "evidence": "ej.java: Adds weight55scaled signed objective influence for eight unit categories,at tile or distributed over original exclusive-loop Manhattan perimeter. Preserve objectiveId-1index,length comparison,zero-cell float division,overflow,badguard field mutation and helper traversal order. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(IIILjd;)V",
+      "originalName": "a",
+      "to": "addUnitInfluenceForCategory",
+      "evidence": "ej.java: Adds signed effective-strength influence for one evaluation category using current unit category. MovementFlag1scales by weight59. Preserve guard19551early return,null/cast/float order and original exception context. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ej.a(ILjd;)V",
       "originalName": "a",
       "to": "activateUnitPlanner",
       "evidence": "ej.java: Registers a planner for an own unit that does not already have one, refreshes its priority and updates the influence map; in state six it also switches to state three and starts at this planner.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(ILjd;I)V",
+      "originalName": "a",
+      "to": "addUnitInfluenceForAllCategories",
+      "evidence": "ej.java: Loops categories0..7and delegates signed unit influence only when first guard>56. Preserve guard before unit dereferences,loop order and unchanged null/exception behavior. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.a(IZ)V",
+      "originalName": "a",
+      "to": "considerNextEquippedSpell",
+      "evidence": "ej.java: Advances one of five campaign-equipped spell slots and transitions to summon or priority phase according to boolean. Preserve no-campaign early phase transition,late badguard deque clear and reset after fifth slot. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -66548,6 +66618,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ej.a([IIB)V",
+      "originalName": "a",
+      "to": "updateStructureInfluenceForTiles",
+      "evidence": "ej.java: Adjusts structure-capture influence for distinct supplied tile indices while skipping-1. Called with prior source/target/destination tiles. Preserve original duplicate scanning,array alias and repeated reads;badbyte<79registers null planner after updates. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.b(II)V",
+      "originalName": "b",
+      "to": "setPlanningPhase",
+      "evidence": "ej.java: Always stores new phase;canonical guard4resets phase tick to-1. Preserve partial state when guard differs and full signed integer phase values. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.b(IIII)Z",
+      "originalName": "b",
+      "to": "handleChatKey",
+      "evidence": "ej.java: Handles quick-chat help escape,quick-chat keys and text-chat activation/edit/submit/cancel. Preserve all four int domains,font-clear guard,short-circuit permission checks and every flag/text/helper order. Both CameraOverviewTarget byte caller and full-int companion remain separate with unchanged signatures/bodies apart from bound call name. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ej.b(Ljd;B)Lcl;",
       "originalName": "b",
       "to": "registerUnitPlanner",
@@ -66555,10 +66646,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ej.c(B)V",
+      "originalName": "c",
+      "to": "rebuildInfluenceStep",
+      "evidence": "ej.java: Advances staged influence rebuild:clear grids;iterate player units/categories;reset capture/reservation arrays;rebuild objective maps;mark rebuild finished. Preserve intrusive traversal,ally/enemy branch,Unit.field_Xchanges,late byte arithmetic and first-phase early return. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ej.c(Ljd;B)V",
       "originalName": "c",
       "to": "reevaluateUnitActions",
       "evidence": "ej.java: Finds the planner of the supplied unit and asks it to evaluate its actions again.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.e(I)V",
+      "originalName": "e",
+      "to": "awaitSummonedUnit",
+      "evidence": "ej.java: Polls unit at pending summon coordinates,activates its planner and phase3when present,otherwise phase7after timeout. Preserve badguard null-array helper call before polling and phase/timer arithmetic. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.f(I)V",
+      "originalName": "f",
+      "to": "executeNextUnitAction",
+      "evidence": "ej.java: Reconciles previous dirty unit/target influence,then evaluates and executes current unit action,records affected tile indices and advances unless action can repeat. Preserve all signed influence reversals,Float negative-max sentinel tests,dirty flags,guard after previous-unit assignment and evaluation/execute order. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.g(I)V",
+      "originalName": "g",
+      "to": "refreshNextUnitPriority",
+      "evidence": "ej.java: Refreshes one unit-planner decision priority per call,unlinking removed/wrong-owner units and ending with phase3. Preserve next-node read before unlink,late badguard influence-map clear,previous-planner assignment and iteration order. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.h(I)Z",
+      "originalName": "h",
+      "to": "advanceTurn",
+      "evidence": "ej.java: Per-tick AI turn state machine with event wait,even-tick influence rebuild,spells/actions/summon/priority phases and phase7completion after50ticks. Preserve initial tick increment,discarded clock calls,elimination/portal checks,original phase fallthrough/obfuscation branches and int guard effects. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ej.i(I)V",
+      "originalName": "i",
+      "to": "chooseAndExecuteSummon",
+      "evidence": "ej.java: Scores summon candidates at owned empty portals with unit/corpse/favour/influence/action values,and selects/executes weighted strategy result. Preserve minimum-positive float seed,all float/double conversions,unlock predicate,temporary mana with two income calls,allocation order,pre-execute result capture and phase6/7early-return behavior. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -138656,7 +138789,7 @@
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "armiesofgielinor-names.json": "d07cc75b4c99460d900f86dee17a2f693b50f8c0b5c73e2c75646f7abc9df0ab"
+      "armiesofgielinor-names.json": "499030c117158eecd4c093f2855c59440acbca7aec34b78d9ebb28cf69da98e0"
     }
   },
   "generators": {
