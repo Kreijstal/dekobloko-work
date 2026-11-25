@@ -64413,6 +64413,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ci.a(B)V",
+      "originalName": "a",
+      "to": "drawRatingLeaderboard",
+      "evidence": "ci.java: Stage6 renderer requests rating leaderboard when absent, draws five column headings, up to10 ranked rows and an unlisted local-account fallback, or guest/loading/error caption. Preserve mode fallback, request parameters, current-account palette, all packet-result array reads, unused metrics and byte guard division. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ci.a(BI)Z",
       "originalName": "a",
       "to": "isItemEnabled",
@@ -64420,10 +64427,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ci.a(BII)I",
+      "originalName": "a",
+      "to": "getPackedItemEdgeX",
+      "evidence": "ci.java: Packed stage-item layout queries mode0 left or1 right edge. Sums half-width labels and distributes remaining horizontal space across all items. Preserve invalid mode/count/index returning-1, late byte guard clearing text table, integer division/overflow and all font reads. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(BIII[ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "drawCampaignScoreRow",
+      "evidence": "ci.java: Campaign leaderboard row draws optional rank, player name and formatted score in the configured last column. Preserve column-mode fallback, late wrong byte guard nulling field_c, score formatter guard derived from byte, coordinates and all integer inputs. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(BILrg;)V",
+      "originalName": "a",
+      "to": "rebuildSpellDescriptionSprite",
+      "evidence": "ci.java: Spell selection and breadcrumb callers render spell or category description into a new250pixel-wide sprite. Spell cards include quantity/cost lines; category uses supplied label/icon. Preserve null/negative selection clearing before byte guard, height/font arithmetic, raster binding and restoration only on normal path, aliases and all sprite/icon reads. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(I)V",
+      "originalName": "a",
+      "to": "handleRatingLeaderboardNavigation",
+      "evidence": "ci.java: Stage6 key dispatcher navigates two leaderboard tabs and row2 with key codes96..99, then polls activation state. Preserve wrong int guard querying item58 first, exact wrap/fallback branches and selected-index alias writes. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ci.a(II)I",
       "originalName": "a",
       "to": "getItemRightX",
       "evidence": "ci.java: Stage-specific right bound, including special campaign/setup panels.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(III)V",
+      "originalName": "a",
+      "to": "drawUnitPurchaseControl",
+      "evidence": "ci.java: Unit shop resolves group/slot to unit definition, draws scrollable description and owned/free/price status, with purchase button when group unlocked and runes sufficient. Preserve mapped-ID versus input indexes, modulo before drawing, all bit shifts/cost branches and hover action52. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(ILrg;ZIIB)I",
+      "originalName": "a",
+      "to": "drawOwnedSpellGrid",
+      "evidence": "ci.java: Spell equipment list recursively draws category headings and positive-quantity spells in four58pixel columns with70pixel rows, carrying a cursor and optional40pixel group offset. Returns cursor; outer call records content height. Preserve child recursion before byte modulo, all clipping eligibility, counts, hover action200+ID, empty-state paragraph, bool/int domains and integer overflow. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -64441,10 +64490,108 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ci.a(Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;BLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "rebuildUnitDescriptionSprite",
+      "evidence": "ci.java: Unit/group selection builds250pixel-wide description sprite from title, optional category icon/label and text blocks. Preserve null inputs and font queries, line-break prefixes, byte guard modulo before allocation, exact height/order arithmetic, global raster target mutation and restoration only on successful completion. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(Lrg;B)I",
+      "originalName": "a",
+      "to": "handleSpellBreadcrumbSelection",
+      "evidence": "ci.java: Spell input recursively hit-tests ancestors in the50pixel-spaced breadcrumb row and returns depth. A hit selects deferred menu and rebuilds category description, records previous selection and optional248counter. Preserve byte division first, recursive parent cycles, nullable arguments, all alias/write order and full byte domain. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(Lrg;ZII)I",
+      "originalName": "a",
+      "to": "drawSpellBreadcrumbs",
+      "evidence": "ci.java: Spell shop recursively draws ancestor icons/connectors then current category, with opacity, hover action and label tooltip. Preserve parent-first drawing, bool forwarding dependent on opacity256, guard returning49 after parent drawing before own icon, circle blending, all coordinates and aliases. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(Lrg;ZIIII)I",
+      "originalName": "a",
+      "to": "handleOwnedSpellGridSelection",
+      "evidence": "ci.java: Spell list input recursively hit-tests positive-quantity spells with same four-column cursor/group layout as renderer, returning cursor or-1 on selection. Preserve wrong guard field_f clear first, negative-cursor termination, group offsets, row limits, selection/description/sound write order and exact integer domains. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(Z)V",
+      "originalName": "a",
+      "to": "equipSelectedSpellAtPointer",
+      "evidence": "ci.java: Spell drag release caller writes supplied drag flag then hit-tests five equipped slots, equips selected spell at first hit, plays sound and persists equipment. Preserve bool assignment before loop, no quantity/duplicate validation added, original obfuscation early return and write/call order. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(ZB)V",
+      "originalName": "a",
+      "to": "drawAchievements",
+      "evidence": "ci.java: Achievement stages render visible32pixel icons, selected/hover glow and detail panel, membership/locked state, earned caption, description and difficulty stars. Boolean chooses exact mask alias ReportAbuseDialog.field_Nb or BoundedFile.field_e; no speculative lifetime meaning assigned. Preserve wrong byte querying right edge first, loop predicates, nullable selection, guest caption, wrapper guards, all font/raster/sprite calls and alias reads. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ci.a(ZI)I",
       "originalName": "a",
       "to": "getItemLeftX",
       "evidence": "ci.java: Stage-specific left bound; defaults to the centered stage layout and delegates campaign panels to their existing layout helpers.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a(ZII)V",
+      "originalName": "a",
+      "to": "handleStageItemInput",
+      "evidence": "ci.java: Central stage-item activation dispatcher handles menu transitions, guest prompts, campaigns, settings, audio gains, match options, instructions pages and shop entry. Preserve all55+item-ID branch domains and obfuscation flow, bool forwarding, functional int XOR/helper arguments, repeated activation queries, packet/music/profile writes and their order, original arithmetic/array failures and partial state. Includes effects sound cooldown, player count2..8 wraps and original theme-index gate. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.a([IIIIIIIILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "drawRatingLeaderboardRow",
+      "evidence": "ci.java: Rating row draws optional rank, name, rating, game count capped50+ and three rounded percentage columns. Preserve mode fallback, wrong guard drawStageItem before row data, sums/200*n/(2*sum) int overflow and zero behavior, all formatting/coordinate/font calls and full signed inputs. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.b(B)V",
+      "originalName": "b",
+      "to": "drawCampaignScoreLeaderboard",
+      "evidence": "ci.java: Stages26/27/28 request campaign0/1/2 score leaderboard and render10rows, normalized campaign scores and optional unlisted local-account fallback. Preserve guest caption, literal request arguments, int divisor helper calls, status captions, late byte division and discarded metric reads. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.b(BI)I",
+      "originalName": "b",
+      "to": "getItemSeparatorX",
+      "evidence": "ci.java: Stage-item renderer draws separator between adjacent packed items in stages12/13/18/20. Returns midpoint of own right and next left, or-1 outside supported stage/last item. Preserve byte division before stage/index reads, negative item domain, shift-after-add overflow and all helper calls. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.b(I)V",
+      "originalName": "b",
+      "to": "drawAccountRequiredMessage",
+      "evidence": "ci.java: Guest leaderboard fallback draws the create-free-account message centered at supplied x coordinate and fixed y220. Integer parameter is functional x, not guard. Preserve font/color/width/coordinate helpers and exception wrapper. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.b(II)Z",
+      "originalName": "b",
+      "to": "isAchievementEarnedForStage",
+      "evidence": "ci.java: Achievement visibility/layout and hit-test use stage-specific earned mask: stage9 selects ReportAbuseDialog.field_Nb, others BoundedFile.field_e. Preserve wrong guard clearing selectionState before mask reads, all index domains and exact bit-query helper. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.b(III)I",
+      "originalName": "b",
+      "to": "findStageItemAt",
+      "evidence": "ci.java: Stage pointer selection returns first enabled item containing x=param1,y=param0, excluding debug items31/32 below moderator level2. Preserve initial wrong guard recursive-left query, top-5/height arithmetic, left/top inclusive versus right/bottom exclusive bounds, per-item enabled query and no-result-1. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.b(Z)V",
+      "originalName": "b",
+      "to": "drawScrollableDescription",
+      "evidence": "ci.java: Unit/spell details renderer draws shared description sprite and scrollbar, and processes active description drag. Preserve initial null return, height-dependent scroll math, bool coordinate forwarding and field_b clear, original0..137 clamp branches, clip mutations, pointer state and resetClip ordering. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -64455,10 +64602,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ci.c(B)V",
+      "originalName": "c",
+      "to": "handleAchievementInput",
+      "evidence": "ci.java: Achievement stage input updates hover from live coordinates, then toggles selected achievement from press coordinates on button1, playing click sound even on miss. Preserve separate live/press hits, prior selection alias, no speculative deselection changes and late wrong-byte spell-input delegate. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.c(BI)Z",
+      "originalName": "c",
+      "to": "isAchievementVisible",
+      "evidence": "ci.java: Achievement layout/render/hit-test includes earned-for-stage achievements or the independent always-visible flag. Preserve byte modulo first, short-circuit OR, all indexes and bit-query calls. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.c(I)V",
+      "originalName": "c",
+      "to": "updateOwnedSpellScrollbar",
+      "evidence": "ci.java: Spell equipment list handles active scrollbar2 while pointer held, clamping scroll position0..291 or releasing drag state. Preserve all obfuscation branches, functional integer domain and late nonzero guard invoking unit purchase-control helper. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.c(II)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "formatRuneCount",
+      "evidence": "ci.java: Shop captions use singular one-rune template versus plural runes with exact integer formatting. Preserve wrong guard return null before string/template reads and all signed counts. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ci.c(III)Ljava/lang/String;",
       "originalName": "c",
       "to": "formatCoordinatePair",
       "evidence": "ci.java: Formats two coordinates without changing their values.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.c(Z)V",
+      "originalName": "c",
+      "to": "handleSpellShopInput",
+      "evidence": "ci.java: Spell shop/equipment input switches radial/list modes, selects/removes five equipped slots, buys spells with opcode70/ID+2000 and quantity cap250, navigates categories and initializes scroll drags. Preserve debug inspection branch, exact bool use in hit/coordinate helpers, all radial sin/cos expressions, quantity/debit/write/sound order, first-free-slot behavior and late false bool scrollbar delegate. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.d(B)V",
+      "originalName": "d",
+      "to": "advanceStageUi",
+      "evidence": "ci.java: Main client delegates shared menu-stage input and animation here. Handles membership stage15, key polling/debug filters, stage-item activation, shops/coat clicks, chat/campaign/instruction/setup/achievement delegates, preview/transition timers and final battle transition. Preserve open-dialog early return, byte division placement, duplicated debug toggles, full stage domains and every packet/profile/music/input/write order. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.d(BI)V",
+      "originalName": "d",
+      "to": "drawUnitGroupPurchaseControl",
+      "evidence": "ci.java: Unit shop group selection draws description then50rune unlock control when unitUnlockMasks[param1] is0 and funds sufficient. Preserve wrong-byte equip-at-pointer side effect before eligibility, runes comparison, hover action53 and all draw/palette ordering. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.d(I)V",
+      "originalName": "d",
+      "to": "handleCoatEditorInput",
+      "evidence": "ci.java: Coat editor handles colour grid, allowed coat-part clicks and six layer/preview selections. Preserve initial colour mutation early return, functional guard-derived helper arguments, unlock/moderator predicate, local-coat aliases, sound/error calls, viewport/selection resets and late wrong guard stats query. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -64469,10 +64672,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ci.d(III)I",
+      "originalName": "d",
+      "to": "findAchievementAt",
+      "evidence": "ci.java: Achievement pointer lookup returns first visible32x32 icon containing x=param0,y=param2 using inclusive outer bounds, else-1. Preserve wrong guard param1!=-1 recursive call with51, exact visibility-first array reads, all signed domains and loop/exception behavior. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ci.d(Z)V",
       "originalName": "d",
       "to": "clearSelectionResources",
       "evidence": "ci.java: Clears selected index and stage-specific transient resources.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.e(B)V",
+      "originalName": "e",
+      "to": "selectUnlockLevelAtPointer",
+      "evidence": "ci.java: Unlock progression stage hit-tests each56pixel coat preview in57pixel steps and sets selected unlock level. Preserve full loop, byte-derived bounds helper and late wrong guard right-edge query; no mouse-button gate added inside helper. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -64490,10 +64707,122 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ci.e(Z)V",
+      "originalName": "e",
+      "to": "drawStageUi",
+      "evidence": "ci.java: Shared stage renderer dispatches membership, shops, coat editor, campaign/instructions/setup/intro and framed menu backgrounds/titles, then enabled item captions and stage content. Preserve boolean used negated in geometry helpers and true early return before items, all stage branches, exact font/raster dimensions/coordinates and call order. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.f(B)V",
+      "originalName": "f",
+      "to": "handleInstructionsNavigation",
+      "evidence": "ci.java: Instruction stage key input wraps left/right among enabled previous/back/next controls, then polls activation state. Preserve byte100 early gate, enabled query order, held-pointer suppression, negative selected-index behavior and all wrap branches. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ci.f(I)V",
       "originalName": "f",
       "to": "drawInstructionsPanel",
       "evidence": "ci.java: Draws the initialized instruction panel with its original guards.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.f(II)Ljava/lang/String;",
+      "originalName": "f",
+      "to": "formatUnitStats",
+      "evidence": "ci.java: Unit details format level/speed/strength/range/cost from definition slots2..8, with separate equal/ranged attack templates and model34 special combined range using model75 values. Second integer is functional definition index, canonical8, and template guard XOR input. Preserve all array reads before branches, template argument order and exact full int domain. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.f(Z)Ljava/lang/String;",
+      "originalName": "f",
+      "to": "getBackCaption",
+      "evidence": "ci.java: Menu and instruction/setup captions choose return label from current/prior UI stage groups, retaining null fallback. Preserve short-circuit comparisons, exact label aliases and late false bool drawing instructions side effect. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.g(B)V",
+      "originalName": "g",
+      "to": "updateMatchSetupPanel",
+      "evidence": "ci.java: Stage5 UI updater forwards selected index, rules/theme/player and team options, boolean setting and back caption to MatchSetupPanel. Preserve null panel early return, exact argument order and trailing byte modulo after panel mutation. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.g(I)V",
+      "originalName": "g",
+      "to": "drawGuestSavePrompt",
+      "evidence": "ci.java: Stage10 renderer tests pending achievement mask and score submission; if neither exists switches UIstage0, otherwise draws guest save prompt. Preserve exact mask/score aliases, guard XOR/template arguments and geometry, nullable prompt fields and all state/write order. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.g(II)V",
+      "originalName": "g",
+      "to": "drawSpellPurchaseAndEquipmentControls",
+      "evidence": "ci.java: Spell shop draws scrollable description then price/buy or equip/unequip controls by current mode, funds, quantity250 cap and five equipment slots. Preserve global selected spell versus supplied param0 distinction, guard division placement, hover action8, full array/index domains and all draw ordering. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.h(B)V",
+      "originalName": "h",
+      "to": "showDisplaySettingsDialog",
+      "evidence": "ci.java: BufferedFile initialization caller opens display settings by closing dialogs and showing a new DisplaySettingsDialog. Preserve wrong byte<44 recursive call with-22 after allocation, including unbounded recursion/partial state; no guard normalization. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.h(I)V",
+      "originalName": "h",
+      "to": "releaseStatics",
+      "evidence": "ci.java: Main finishShutdown caller releases static text/palette tables. Preserve initial field_b clear and redundant wrong-guard clear before field_e/f/c nulls, exact failure order and all int values. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.i(B)V",
+      "originalName": "i",
+      "to": "drawCoatEditor",
+      "evidence": "ci.java: Coat editor renderer draws current coat, six layer buttons,2x16 colour grid and part selector; computes hover action offsets100/200/300. Preserve helper calls that also process held pointer/scroll state, local-coat aliases, palette/sprite order, late byte guard text query and all geometry/arithmetic/index domains. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.i(I)V",
+      "originalName": "i",
+      "to": "handleUnitShopInput",
+      "evidence": "ci.java: Unit shop handles seven group tabs, radial unit selection/preview and description, unlock purchases and description-scroll drag. Preserve wrong guard stage=-35, same-tab early return, animation aliases/timers, opcode70 order, original group mask q-vs-q+1 difference and individual cost indexing/no-debit behavior; naming only, no behavior repair. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.j(I)V",
+      "originalName": "j",
+      "to": "handleStageKeyInput",
+      "evidence": "ci.java: Shared stage input routes fullscreen key84+held86, campaign keys, leaderboard tab navigation, instruction controls or stage-specific selection fallback. Preserve guard modulo first, fullscreen/exit order and all debug-item31/32 skips/selection writes, complete key and stage domains. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.k(I)V",
+      "originalName": "k",
+      "to": "drawUnitShop",
+      "evidence": "ci.java: Unit shop renderer draws seven group frames and cosine crossfades, current preview model, old/new radial icon rings, locked brightness and purchase/description controls. Preserve duplicate additive calls, exact sin/cos/float expression order and casts, postincremented preview angle, raster clipping and reset order, signed guard division and all aliases/index reads. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.l(I)V",
+      "originalName": "l",
+      "to": "drawUnlockLevelProgression",
+      "evidence": "ci.java: Unlock progression screen lazily builds coat preview sprites from parts/colours/account name, draws current/locked levels, cumulative rune requirements and next-level purchase eligibility. Preserve cached aliases and exact allocation timing, XOR-derived helper args, runeCredit/progressionCredit arithmetic, clipping, brightness, moderator text and hover action52. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.m(I)V",
+      "originalName": "m",
+      "to": "drawSpellShop",
+      "evidence": "ci.java: Spell shop/equipment renderer draws radial transitions or owned-spell list/scrollbar, breadcrumbs and tooltips, five equipped slots with duplicate-quantity brightness, description/buy controls and dragged icon. Preserve cosine math, old/new menu aliases, all clip changes, discarded draw-return calls, global versus passed selection, late wrong-guard recursive achievement lookup and exact side-effect ordering. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ci.n(I)V",
+      "originalName": "n",
+      "to": "layoutAchievementIcons",
+      "evidence": "ci.java: Achievement stage constructor/entry lays out up to56 visible icons in staggered40x28 rows using12/13column parity and float-ceil row count. Preserve visibility predicate calls, original var4/2 expression, extra row-array allocation and final-row adjustment, late wrong guard coat input call, all index/overflow and partial writes. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -139944,7 +140273,7 @@
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "armiesofgielinor-names.json": "87159c65c83da640244bbb2061b634b1e383c3ef3c7846efbff509378fab42e1"
+      "armiesofgielinor-names.json": "4fab7a865f3e8b1c3e07e9487369f9c63e645529c9316c569163e76a65949912"
     }
   },
   "generators": {
