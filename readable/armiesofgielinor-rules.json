@@ -69124,6 +69124,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(BII)I",
+      "originalName": "a",
+      "to": "getGodStrengthBonus",
+      "evidence": "ha.java: Unit tooltip adds this result to base strength and supplies godId/playerId. Canonical byte11 returns zero; preserve all other byte values calling healOrRaiseSkeletonAt before zero. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(BIII)V",
       "originalName": "a",
       "to": "healOrRaiseSkeletonAt",
@@ -69166,6 +69173,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(IB)V",
+      "originalName": "a",
+      "to": "updateTurnStartNotification",
+      "evidence": "ha.java: Turn advancement and explicit turn-state setter update one-shot notification consumed by camera focus. Preserve division/modulo before writes,negative local player handling,obfuscation branch and empty turnNumber test. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(IBII)[I",
       "originalName": "a",
       "to": "getSummoningFavourAt",
@@ -69194,6 +69208,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(IIIB)I",
+      "originalName": "a",
+      "to": "findAvailableAlliedRevivalStructure",
+      "evidence": "ha.java: Dying unit with accessory5 searches for empty,unreserved allied structure and queues RevivalEvent. Preserve persistent radius cursor initialized once to1,perimeter order,all signed coordinate arithmetic,bad byte calling name lookup first and obfuscation return. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(IIII)V",
       "originalName": "a",
       "to": "refreshTileEffectsNear",
@@ -69205,6 +69226,13 @@
       "originalName": "a",
       "to": "getSummonFailureFlags",
       "evidence": "ha.java: Flags 1/2/4 describe insufficient mana, favour and locked unit.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(IIIIII)I",
+      "originalName": "a",
+      "to": "getSummoningBonus",
+      "evidence": "ha.java: SummonRequest and SummonAction assign result to named summoningBonus. Canonical fourth argument zero returns zero,all other signed values return-22. Preserve all unused arguments and six-int descriptor. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -69285,6 +69313,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(ILne;BILgn;I)V",
+      "originalName": "a",
+      "to": "appendTileDiagnostics",
+      "evidence": "ha.java: State diagnostic builder appends checksum-included changed/corpse/owned tiles with coordinate,terrain,bones,fort and owner lines. Preserve early-return/read order,indent changes,late wrong-byte readMoveEvent(null) and exception context literals. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(ILne;I)Z",
       "originalName": "a",
       "to": "includesTileInChecksum",
@@ -69313,10 +69348,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(IZI)Z",
+      "originalName": "a",
+      "to": "hasRequiredGodFavour",
+      "evidence": "ha.java: Summoning eligibility compares available favour from selected god channel with unitDefinitions[type][2]. Preserve false-boolean registerUnit(null) before comparison and full signed int domains. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(IZII)V",
       "originalName": "a",
       "to": "assignTileOwner",
       "evidence": "ha.java: Sets an explicit tile owner inside the map bounds and optionally marks a retained flag.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(IZIII)Z",
+      "originalName": "a",
+      "to": "canSelectUnitAt",
+      "evidence": "ha.java: Pointer selection requires occupied inbounds tile then permits allied units or caller-supplied nonallied selection flag. Preserve guard relation param0<~playerId permitting any occupant,short circuit bounds and all player domains. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -69334,10 +69383,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(I[BZ)I",
+      "originalName": "a",
+      "to": "getQuicksaveTurnNumber",
+      "evidence": "ha.java: Campaign menu labels snapshot with mission name and turn. Reads variable header flag after participant records,then turn byte divided by participant count plus1. Preserve only-six-byte check,all offsets,zero-count failure,obfuscation extra read and late static clear. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(Ljava/lang/String;B)I",
+      "originalName": "a",
+      "to": "getPlayerChatTeamColour",
+      "evidence": "ha.java: Incoming chat sets text colour slot4 from first team palette. Uses local-player team when available,otherwise matching sender team,then fallback palette index2. Preserve byte guard-64 returning-101 before lookups,array bounds and wrapped exceptions. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(Ljava/lang/String;BLjava/lang/String;)Z",
       "originalName": "a",
       "to": "passwordContainsCompactNameVariant",
       "evidence": "ha.java: Removes name underscores, then checks that compact name and its variant inside password.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(Ljava/lang/String;I)I",
+      "originalName": "a",
+      "to": "findPlayerByAccountName",
+      "evidence": "ha.java: Scans playerNames with accountNamesMatch for chat team fallback. Preserve wrong int guard returning-8,first match,-1notfound,obfuscation early result and original exception wrapping. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -69366,6 +69436,13 @@
       "originalName": "a",
       "to": "canEnterTile",
       "evidence": "ha.java: True for an unoccupied in-bounds tile or when the moving unit is type 51.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(Ljd;IIZIIILjd;IIIZI)Z",
+      "originalName": "a",
+      "to": "reportCombatStateMismatch",
+      "evidence": "ha.java: Combat validation failure emits applycombat diagnostics with nullable attacker/defender types,coordinates,damage and deaths. Preserve string construction before int guard,logging mode true return versus stdout/field_o false return and all original context strings. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -69404,6 +69481,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(Z)V",
+      "originalName": "a",
+      "to": "checkSurvivingPlayersForDefeat",
+      "evidence": "ha.java: Turn advancement iterates surviving-player bitmask and checks each for defeat. Preserve boolean forwarding,all bit shifts,obfuscation stack flow and false flag writing winnerCount57 after loop. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(ZI)I",
       "originalName": "a",
       "to": "computeStateChecksum",
@@ -69418,10 +69502,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.a(ZIIIIII)V",
+      "originalName": "a",
+      "to": "createUnitAt",
+      "evidence": "ha.java: SummonEvent and CombatSandbox create/register a unit at supplied tile,replace old occupant,track dragon/achievement flags,refresh nearby effects and optionally charge mana/favour/statistics. Preserve unlink before allocation,unit74override,sandbox early return,integer arithmetic,aliases and every partial mutation. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a(ZLjd;Lgn;)V",
+      "originalName": "a",
+      "to": "appendUnitDiagnostics",
+      "evidence": "ha.java: State diagnostic builder appends type,coordinate,owner,poison/deployment/movement/trinket flags,remaining attacks,bonus and strength. Preserve output strings,default-locale lowercasing,indent mutation,late boolean guard and exception wrapping. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.a(ZZI)Lat;",
       "originalName": "a",
       "to": "prepareTurnConsequences",
       "evidence": "ha.java: Refreshes captures/unit turn consequences and optionally collects prepared marker actions.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.a([IIII)Z",
+      "originalName": "a",
+      "to": "isChallengerRankedAhead",
+      "evidence": "ha.java: Selection-sort comparator ranks challenger param3 ahead of incumbent param1 by elimination ranks,collected mana,structure score,current mana then smaller player id. Preserve array-read-before-guard and godFavourLevels nulling,comparison directions,early returns and overflow/full integer domains. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.b(B)I",
+      "originalName": "b",
+      "to": "calculateTurnLimit",
+      "evidence": "ha.java: Constructor derives turn limit from map-size table and duration setting+1;valid map sizes in campaigns override to9999. Preserve invalid-size early return bypassing campaign override and guard,overflow and late byte mutation. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -69457,6 +69569,13 @@
       "originalName": "b",
       "to": "isPlayerInactive",
       "evidence": "ha.java: Tests either eliminated or secondary inactive mask.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.b(III)I",
+      "originalName": "b",
+      "to": "resolveUnitAnimationSlot",
+      "evidence": "ha.java: Unit animation variant builder resolves supplied slot for unit type. Existing method is identity,including slot3/category3 branch;preserve predicate call even though assignment is redundant,full int inputs and wrong-guard static clear. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -69509,6 +69628,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.b(IZI)Z",
+      "originalName": "b",
+      "to": "checkBlockedPortalsFailure",
+      "evidence": "ha.java: Campaign end-turn controller eliminates player on third blocked portal turn. Owned terrain7/11 portal counts as unblocked when empty or occupied by allied unit. Preserve reset flag behavior,campaign-null early return,wrong int guard,scan order and counter overflow. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.b(IZIII)V",
       "originalName": "b",
       "to": "applyTerrainChange",
@@ -69527,6 +69653,20 @@
       "originalName": "b",
       "to": "peekPendingEvent",
       "evidence": "ha.java: Returns the first pending event without removing it, or null when none are pending.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.b(ZZI)Lat;",
+      "originalName": "b",
+      "to": "advanceTurnAndPrepareConsequences",
+      "evidence": "ha.java: End-turn controller refreshes units,advances noneliminated player,increments turn count,updates camera notification,checks match limits and prepares consequences. Preserve field_X exception before guard,all deque iteration including existing repeated next-player selection,boolean semantics,early null returns and partial state. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.b([IIII)V",
+      "originalName": "b",
+      "to": "collectNearbyTeamEffectFlags",
+      "evidence": "ha.java: Tile effect refresh clears per-team masks then scans offsets-3..3 for unit59/53/43/63/58 Manhattan-radius effects,with packedFlag32 adding1range. Preserve bit assignments4/8/16/1/2,type43excludingdistance0,obfuscation null dereference,badguard readGameEvent(null) and all alias writes. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -69558,6 +69698,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.c(IIIB)V",
+      "originalName": "c",
+      "to": "changeStructureOwner",
+      "evidence": "ha.java: StateChangeEvent transfers tile owner,clears accessory1,decrements old team structure counts,increments new counts,updates statistics,handles modifier defeat and campaign/match outcome. Preserve negative-id/index behavior,all array aliases,late guard clearing field_U and event/defeat ordering. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.c(IIII)I",
       "originalName": "c",
       "to": "getSummoningGodMaskAt",
@@ -69572,6 +69719,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.d(B)Z",
+      "originalName": "d",
+      "to": "isFirstTeamRankedFirst",
+      "evidence": "ha.java: Team ranking places team0 first using elimination masks0x55/0xaa,collected mana,structure score,sum of alternating player mana,then team0 on tie. Preserve initial mask checks before guard,guard nulling unitsByPlayer and all signed overflow/control paths. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.d(I)[I",
       "originalName": "d",
       "to": "getEliminationRanks",
@@ -69583,6 +69737,20 @@
       "originalName": "d",
       "to": "getPlayerTeam",
       "evidence": "ha.java: Returns teams[playerTeamIndices[player]].",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.d(III)I",
+      "originalName": "d",
+      "to": "scaleStructureManaIncome",
+      "evidence": "ha.java: MapTile turn effects scale base mana by original allied count over surviving allies in noncampaign play,and campaign player multiplier otherwise. Preserve wrong guard returning58,zero-survivor return0,integer multiply/divide before conversion,campaign float cast and overflow. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.d(IIII)V",
+      "originalName": "d",
+      "to": "recordStatisticMaximum",
+      "evidence": "ha.java: All16call sites pass statistic slot as fourth argument,value and owner. Updates slot maximum and associated player only for strictly larger value with statistics enabled and int guard>=68. Preserve reads/writes/order and arbitrary indexes. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -69642,10 +69810,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.f(III)Z",
+      "originalName": "f",
+      "to": "hasRequiredMana",
+      "evidence": "ha.java: Summoning eligibility compares player mana against unitDefinitions[type][8]. Preserve comparison before bad-int guard invoking getSpellCastDelay,full signed ranges and unchanged predicate. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.f(IIII)V",
       "originalName": "f",
       "to": "grantBonusStrengthAt",
       "evidence": "ha.java: Gives an allied unit at the tile five bonus strength.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.g(B)V",
+      "originalName": "g",
+      "to": "prepareTileTurnEffects",
+      "evidence": "ha.java: Turn consequences snapshot teamManaCollected then invoke each tile turn-effect dispatcher for current player. Preserve copying before byte division/modulo guard,negative-current-player exit,x-major iteration,all tile dispatch side effects and exceptions. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.g(I)I",
+      "originalName": "g",
+      "to": "getBlockedPortalFailureTurnsRemaining",
+      "evidence": "ha.java: Campaign warning formats3minus blocked-turn counter;canonical-1returns-1when counter0. Preserve guard equality to complemented counter for every signed value and subtraction overflow. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -69677,6 +69866,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ha.h(I)Z",
+      "originalName": "h",
+      "to": "consumeTurnStartNotification",
+      "evidence": "ha.java: Gameplay controller consumes notification before focusing camera on controlled/current player. Preserve read-and-clear before wrong int guard setting turnDurationOption1,all integer domains and returned old flag. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ha.h(II)I",
       "originalName": "h",
       "to": "getPlayerTeamSize",
@@ -69695,6 +69891,13 @@
       "originalName": "i",
       "to": "getCollectedManaScore",
       "evidence": "ha.java: Combines twenty-five per player index with the team collected mana, capped at the target.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ha.j(I)V",
+      "originalName": "j",
+      "to": "markKingBlackDragonSummonedUnlessGuardMatches",
+      "evidence": "ha.java: Guard helper called with7 by reportEventFailure does nothing canonically;every other signed int marks kingBlackDragonSummoned. Name describes actual side effect rather than inventing event recovery behavior. Preserve separate method and all guard domains. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -138866,7 +139069,7 @@
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "armiesofgielinor-names.json": "dad00c220aae51f138d50cc678965c4255d133f71d76893e56ffb4491b277e44"
+      "armiesofgielinor-names.json": "a4491f0ad688b94bc4d97b392037c264c562944eef98817181d5bc60f3ebb035"
     }
   },
   "generators": {
