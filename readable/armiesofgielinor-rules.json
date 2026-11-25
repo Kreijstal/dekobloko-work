@@ -74045,10 +74045,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lf.a(B)V",
+      "originalName": "a",
+      "to": "cacheActionAnimationFrameCount",
+      "evidence": "lf.java: For action states1/3, lazily counts frameChanged events in the first selected attack/ranged sequence variant, cached by state. Preserve all metadata bounds/null checks, current-slot requirement, shared frame-set selection, temporary AnimationPlayer, cap10000and ordered zero-cache fallbacks;this is a frame-change count,not elapsed duration. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.a(I)V",
+      "originalName": "a",
+      "to": "selectCurrentFrameSet",
+      "evidence": "lf.java: Selects shared current frame set from animation player frameId high16bits and ArchiveLoadStep cache lookup. Preserve lookup and setter before late integer guard;bad guard changes no earlier side effects. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lf.a(IB)V",
       "originalName": "a",
       "to": "setAnimationState",
       "evidence": "lf.java: Assigns the animation state while preserving the guard side effect.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.a(II)V",
+      "originalName": "a",
+      "to": "selectAnimationSlot",
+      "evidence": "lf.java: Selects valid slot0..8 when changed or forced,coerces invalid current slot to0,then reloads sequence and resets tick/effect flag. Preserve caller-supplied complement comparison,ignored invalid requested slots,field write order and guard-induced recursive reloads. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.a(IIIIIIB)V",
+      "originalName": "a",
+      "to": "initializeParticles",
+      "evidence": "lf.java: Initializes particle kind,16.16positions,lifetimes and random velocity arrays. Preserve mirror sign,overflow,Math.sin casts, every bounded-RNG call/order and bad-byte velocity-array clear before loop. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.a(IIIIIIIII)[Lwk;",
+      "originalName": "a",
+      "to": "createBeveledFrameSprites",
+      "evidence": "lf.java: Creates nine beveled frame sprites with background fill,highlight/shadow edges and accent strips,including fixed64x64center. ByteStorage wrapper supplies standard thin-frame dimensions. Preserve allocation/write/overlap order,guard-triggered font clear,arbitrary dimensions and full signed primitive domains. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.a(IIZ)V",
+      "originalName": "a",
+      "to": "drawAnimatedCharacter",
+      "evidence": "lf.java: Applies current frame to model,scales special model indices75/76,computes facing and draws perspective character plus optional particle pass. Preserve unused int argument,late bad-guard character advance,boolean-controlled model helper and particle suppression,mirroring,alpha caps and all original helper bindings. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -74073,10 +74115,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lf.c(B)V",
+      "originalName": "c",
+      "to": "startRangedAttack",
+      "evidence": "lf.java: Sets state3 and forces animation-slot reload. Sole caller selects an idle attacker for a remaining projectile;state3maps to slot4whose explicit label is ranged. Preserve state setter before force flag and noncanonical-byte nine-slice factory call with invalid arguments. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lf.c(I)V",
       "originalName": "c",
       "to": "releaseStatics",
       "evidence": "lf.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.d(B)V",
+      "originalName": "d",
+      "to": "advanceFrame",
+      "evidence": "lf.java: Advances action-frame cache,movement/animation mapping,delayed animation,exact tick effect triggers,completion flags and particle gravity. Preserve original overflow/sqrt/guard/RNG/effect order,movement of destination coordinates,all obfuscation branches and single-fire flags. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lf.d(I)V",
+      "originalName": "d",
+      "to": "reloadAnimationSequence",
+      "evidence": "lf.java: Selects model animation sequence for current slot then selects shared current frame set. Preserve int guard checked after both calls and bad-guard call back to slot selection with-77,60. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -81136,10 +81199,73 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:sr.a(BI)I",
+      "originalName": "a",
+      "to": "getInterpolationSign",
+      "evidence": "sr.java: Returns +1for zero/nonnegative delta and-1for negative delta so size/position interpolation can use absolute widths. Preserve byte-71branch and noncanonical call to begin-collapse helper before computing sign. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sr.a(I)V",
+      "originalName": "a",
+      "to": "interpolateSize",
+      "evidence": "sr.java: Interpolates current width/height from start/end size arrays using transition tick and duration. Preserve guard division first,original signed multiplication/overflow and possible zero-duration division. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sr.a(II)V",
+      "originalName": "a",
+      "to": "beginCollapseTransition",
+      "evidence": "sr.java: Starts fading/shrinking viewport-sized sprite toward16x16at camera-projected tile. Preserve progress reversal,state write/projection order and noncanonical guard calling isExpanded with byte-51after all writes. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sr.a(IIIB)I",
+      "originalName": "a",
+      "to": "getTerrainCategoryAt",
+      "evidence": "sr.java: Returns flattened terrain category with caller fallback when either coordinate is out of bounds. In-bounds lookup requires byte<-91;other byte returns-54. Preserve all early bounds checks and original indexing/overflow before array access. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sr.a(IIIII)I",
+      "originalName": "a",
+      "to": "interpolateInt",
+      "evidence": "sr.java: Integer interpolation between caller endpoints;denominator is floored at1. Preserve mode1fast branch,arbitrary numerator/endpoint values and overflow;noncanonical mode calls begin-collapse(9,-1)before denominator processing. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sr.a(ILwk;)V",
+      "originalName": "a",
+      "to": "drawTransitionSprite",
+      "evidence": "sr.java: Draws scaled transition sprite centered on interpolated position,using opaque path at alpha256and opacity otherwise. Preserve unused sprite/center reads,guard division,Exception printStackTrace swallowing and outer RuntimeException context. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:sr.b(B)V",
       "originalName": "b",
       "to": "releaseStatics",
       "evidence": "sr.java: Only nulls static references, apart from guard arithmetic and guard-conditioned calls to other statics of its owner; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sr.b(I)V",
+      "originalName": "b",
+      "to": "finishTransition",
+      "evidence": "sr.java: Snaps current dimensions,alpha and position to configured endpoints. Preserve ordered array writes,guard<=-41branch and bad-guard nulling start-size array before position writes. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sr.b(II)V",
+      "originalName": "b",
+      "to": "beginExpandTransition",
+      "evidence": "sr.java: Starts fading/expanding16x16sprite from projected tile to viewport center. Preserve initial tick0/alpha0to256,size/endpoint order,camera read order and guard division after flag write but before destination-center writes. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sr.c(I)V",
+      "originalName": "c",
+      "to": "advanceFrame",
+      "evidence": "sr.java: Advances size,alpha and interpolated screen position;active expanding/collapsing branches refresh viewport center at different endpoints and snap when complete. Preserve complete-before-guard recentering,full int arithmetic,nonzero sign behavior and tick/snap ordering. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -138418,7 +138544,7 @@
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "armiesofgielinor-names.json": "831e450bd556a321dfad43dcbceec0fac780b73526d4eef3a905f98c0031b7e6"
+      "armiesofgielinor-names.json": "3e30ff39000e1af710b6b342e646a1d881a1787b4b122f55d0a53590a0c7756f"
     }
   },
   "generators": {
