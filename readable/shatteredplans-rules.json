@@ -759,6 +759,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bf",
+      "originalName": "bf",
+      "to": "AccountStatusSupport",
+      "evidence": "Entire 129-line static holder read. Updates the active account status dialog from login results and lays out a shared message dialog; its unrelated vertex-color triangle dispatcher stays in place.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bg",
       "originalName": "bg",
       "to": "LoginMethodPreference",
@@ -784,6 +791,13 @@
       "originalName": "bj",
       "to": "NameSuggestionsPanel",
       "evidence": "Builds normalized account-name suggestion buttons plus More Suggestions and calls the supplied suggestion listener.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bk",
+      "originalName": "bk",
+      "to": "ChatCompositionSupport",
+      "evidence": "Entire 287-line static holder read. Updates chat input prefix, channel, cursor and status/tooltip, alongside reflection-check readiness and fixed-point polygon edge collection helpers.",
       "confidence": "reviewed"
     },
     {
@@ -833,6 +847,13 @@
       "originalName": "br",
       "to": "MusicPatch",
       "evidence": "Per-note sample, envelope, pan and pitch arrays decoded from a patch byte array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bs",
+      "originalName": "bs",
+      "to": "RasterTargetSupport",
+      "evidence": "Entire 86-line type read. Saves legacy raster state before binding a Sprite target. Unrelated menu colors, account boolean response and existing CRC32 stay in place.",
       "confidence": "reviewed"
     },
     {
@@ -913,6 +934,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ck",
+      "originalName": "ck",
+      "to": "GameAssetSetupSupport",
+      "evidence": "Entire 471-line static type read, including all sprite loads and individual pixel writes. Builds game fonts, HUD, planets, fleet/resource/achievement icons; cookie, status-result and byte-copy helpers remain in this owner.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:cl",
       "originalName": "cl",
       "to": "RasterStateFrame",
@@ -955,10 +983,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:cr",
+      "originalName": "cr",
+      "to": "UniformNineSliceFactory",
+      "evidence": "Entire 42-line type read. Creates nine entries sharing a solid square, then replaces the center with a distinct square. Name agrees with the preserved pending user patch.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:cs",
       "originalName": "cs",
       "to": "Wormhole",
       "evidence": "Links two stars and counts down a turn timer that GameState decrements each turn.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:d",
+      "originalName": "d",
+      "to": "ClientPacketFlushSupport",
+      "evidence": "Entire 176-line static type read, including narrow and full-integer flush bodies. Writes queued packets with keepalive/connection-state checks; social-entry ordering and inclusive random range helpers stay in place.",
       "confidence": "reviewed"
     },
     {
@@ -980,6 +1022,20 @@
       "originalName": "dc",
       "to": "GameState",
       "evidence": "Owns players, stars, territories and instantiates the VictoryChecker by gametype.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:dd",
+      "originalName": "dd",
+      "to": "ChatMessageFactory",
+      "evidence": "Entire 196-line static type read. Constructs existing ChatMessage subclasses used as login credential records. Retains the pending user-selected class alias; does not claim these are ordinary outgoing chat messages. Dotted focus outline and lobby player-list request helpers remain in place.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:de",
+      "originalName": "de",
+      "to": "StringNode",
+      "evidence": "Entire 76-line type read. IntrusiveNode constructor retains one String. Complete name-list search/insert body compares it case-insensitively. Browser support navigation helper remains static in this owner; name agrees with pending user patch.",
       "confidence": "reviewed"
     },
     {
@@ -4196,6 +4252,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bf.a(BILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "showLoginResult",
+      "evidence": "Clears shared flags before guard/try, remaps result 8 to 2 with stored account identifier, result 10 opens display-name form, otherwise updates active account status dialog and may clear password. Preserve active-dialog checks, result/string overrides and late flags. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bf.a(IIIIIIIIIIIIIIII)V",
+      "originalName": "a",
+      "to": "drawVertexColoredTriangle",
+      "evidence": "Dispatches six Y-order cases to the raster triangle helper, permuting vertex positions and RGB components. Mesh-renderer call site splits per-vertex RGB. Preserve global flag read, equal-Y branches, guard XOR and late cleanup. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bf.a(ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "showClientMessageDialog",
+      "evidence": "Sets shared dialog-visible flag, optional cleanup, text and measured height, then animates shared window, text and button bounds. Preserve overflow, null/measurement failures and allocation/call order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bg.a(BLjava/lang/String;)Z",
       "originalName": "a",
       "to": "matches",
@@ -4553,6 +4630,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bk.a(B)Z",
+      "originalName": "a",
+      "to": "isNextReflectionCheckReady",
+      "evidence": "Wrong byte recursively calls itself before queue access. Peeks first ReflectionCheck; returns false for absent node or pending field/method lookup task. Original global loop flag may stop after one entry; retain it. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.a(I)V",
+      "originalName": "a",
+      "to": "releaseChatCompositionStatics",
+      "evidence": "Nulls deque and first string before wrong-guard recursion; only then clears remaining string and array. Preserve partial cleanup, recursive behavior and wrapped exceptions. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.a([Lik;I)V",
+      "originalName": "a",
+      "to": "collectPolygonScanlineEdges",
+      "evidence": "Reads Q4 vertex Y to expand clipped scanline bounds, closes polygon from last vertex and delegates each unequal-Y edge in orientation order. Preserve empty/null arrays, starting index, original shared loop exits and shift/overflow. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bk.b(I)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "updateChatComposition",
+      "evidence": "Full 130-line body read: derive channel/account/chat eligibility, write status or escaped input with name/channel prefixes, choose cursor and update shared text widget, return tooltip/status. Preserve division guard, discarded locals, shared flags, partial widget writes and calls. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bl.a(ILjava/awt/Component;BI)V",
       "originalName": "a",
       "to": "allocate",
@@ -4651,10 +4756,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bs.a(IIIB)V",
+      "originalName": "a",
+      "to": "setMenuHighlightColors",
+      "evidence": "Writes selected-menu color first, wrong-byte account-response helper next, then heading/other menu colors. Exact menu-render consumer inspected; preserve assignment order and integer color domains. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bs.a(I[BBI)I",
       "originalName": "a",
       "to": "crc32",
       "evidence": "Updates a CRC-32 register with the table over a byte range and returns the complemented result.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bs.a(Lbi;I)V",
+      "originalName": "a",
+      "to": "pushSpriteRenderTarget",
+      "evidence": "Pushes current legacy raster state before binding sprite pixels. Wrong int changes retained status after binding. Complete raster push and paired pop call contexts inspected; preserve stack overflow/null failure/partial state. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bs.a(ZB)V",
+      "originalName": "a",
+      "to": "setAccountResponseFlag",
+      "evidence": "Wrong byte clears static caption then forwards boolean to shared account-response record setter, which marks completion and stores the value. Response getter and setter inspected; no assumption about the particular question. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -4903,10 +5029,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ck.a(BLjava/applet/Applet;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "readSettingsCookie",
+      "evidence": "Reads applet cookieprefix, guard division and JavaScript getcookies; splits semicolon records and finds exact trimmed settings cookie. Swallows original Throwable then falls back to retained override or applet settings parameter. Preserve failure nesting and trim/index behavior. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ck.a(I)V",
       "originalName": "a",
       "to": "clearStatics",
       "evidence": "Assigns null to 6 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ck.a(Lbc;Ljava/applet/Applet;Lbc;Lbc;Lbc;Lbc;B)V",
+      "originalName": "a",
+      "to": "initializeGameAssets",
+      "evidence": "Full 307-line body and all 471 owning lines read: load fonts, logo, HUD/production/project/faction/planet/fleet/defense/resource/achievement assets, transform pixels, preserve swaps, palettes, raster push/pop, allocations, discarded zoom result, guard arithmetic and late cleanup. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ck.a(Ljava/lang/String;II)Lkj;",
+      "originalName": "a",
+      "to": "createStatusResult",
+      "evidence": "Allocates result(false), stores code and text, then returns it only for guard <= -13; otherwise returns null after allocation/assignments. Code/text consumers and result constructor inspected; retain all int domains. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ck.a([BZ)[B",
+      "originalName": "a",
+      "to": "copyByteArray",
+      "evidence": "Reads length, allocates same-size byte array and copies via existing ArrayOperations helper; true invokes asset setup with nulls after copy. Preserve alias independence, allocation/copy/failure and guard side effects. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -5015,6 +5169,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cr.a(IIII)[Lbi;",
+      "originalName": "a",
+      "to": "createUniformNineSlice",
+      "evidence": "Allocate nine Sprite entries, create shared outer square, alias it into remaining entries, then allocate separate center with fixed alpha64. Wrong guard recursively calls fixed arguments before center replacement; retain original recursion and allocation order. Name agrees with pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cs.a(I)V",
       "originalName": "a",
       "to": "clearStatics",
@@ -5022,10 +5183,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:d.$cfr$intArgs$a$a6964d7afeb1(II)V",
+      "originalName": "$cfr$intArgs$a$a6964d7afeb1",
+      "to": "flushOutboundPacketsFullInts",
+      "evidence": "Full-integer companion body separately read. Connection/state check, guard82, optional idle keepalive after10000ms, socket write/timestamp, IOException disconnect and position reset. Preserve full int guard domain independently of byte overload; do not cast/narrow. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.a(BIILjava/util/Random;)I",
+      "originalName": "a",
+      "to": "randomInclusive",
+      "evidence": "Wrong byte invokes cleanup before bounded Random helper, then returns lower + randomBelow(1-lower+upper). Preserve int overflow, invalid range/null Random behavior, recursion and wrapped exceptions. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:d.a(I)V",
       "originalName": "a",
       "to": "clearStatics",
       "evidence": "Assigns null to 4 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.a(IB)V",
+      "originalName": "a",
+      "to": "flushOutboundPackets",
+      "evidence": "Narrow-byte body separately read. If active connection and negative opcode or matching phase, guard82 gates keepalive/socket writes. IOException disconnect before buffer reset; absent/wrong phase clears position. Preserve partial writes/timestamps, checked-throwable wrapping and byte signature. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:d.a(Lve;Lve;B)Z",
+      "originalName": "a",
+      "to": "socialEntryRanksAfter",
+      "evidence": "Subtract retained insertion indices, adjust +/-200 by interned current-world string identity or null status, return delta>0. Complete GzipInflater social-update insertion context inspected. Preserve identity rather than string equality, overflow and wrong-guard random side effect. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -5421,10 +5610,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dd.a(III)V",
+      "originalName": "a",
+      "to": "requestLobbyPlayerList",
+      "evidence": "Guard remainder before state check. On changed room id, look up previous room, store next id, clear old cached player names, write opcode and fixed payload3,11 plus short room id. Menu show/hide-player-list contexts inspected; preserve update and partial-packet order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dd.a(IIIII)V",
+      "originalName": "a",
+      "to": "drawDottedRectangleOutline",
+      "evidence": "Full 112-line body read. Clip bounds and write alternating white pixels along rectangle sides. Preserve original asymmetric vertical tests, parity expressions, inclusive endpoints, int overflow and wrong-guard cleanup; do not repair raster logic. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dd.a(ZLjava/lang/String;Ljava/lang/String;IJ)Lms;",
+      "originalName": "a",
+      "to": "createLoginCredentials",
+      "evidence": "If zero account id and nonnull identifier, create PrivateChatMessage; otherwise boolean chooses jm subclass, else valid guard4684 chooses TargetedChatMessage, otherwise null. Full factory and both credential consumers inspected; retain existing misleading type aliases, branch precedence and allocation order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:de.a(B)V",
       "originalName": "a",
       "to": "clearStatics",
       "evidence": "Assigns null to 2 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:de.a(ILjava/applet/Applet;)V",
+      "originalName": "a",
+      "to": "openCustomerSupportPage",
+      "evidence": "Resolve tosupport.ws against applet codebase, pass through AudioService URL helper and show at _top. Inner Exception prints stacktrace; guard<=107 recursively calls with null applet. Preserve recursion, catches, printing and navigation order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -14970,7 +15187,7 @@
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
-      "shatteredplans-names.json": "c3e35ba8a00088f44571d376b7180de81e9a6416ab0b831a3232ce5716bd88bb"
+      "shatteredplans-names.json": "4b8f2a40a27298f3845b7a59136292b190ab5d1a7dc979ba37f76768aff93c2e"
     }
   },
   "generators": {
