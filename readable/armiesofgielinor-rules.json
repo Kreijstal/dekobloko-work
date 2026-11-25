@@ -79526,10 +79526,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qv.a(II)V",
+      "originalName": "a",
+      "to": "setDirectionDelta",
+      "evidence": "qv.java: Sets one coordinate of existing direction delta:0right,1up,2down,3left. Preserve other coordinate and division guard between0/1and2/3writes;arbitrary direction and int guard domains unchanged. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.a(IIIZ[BI)V",
+      "originalName": "a",
+      "to": "sendCreateGameRequest",
+      "evidence": "qv.java: Sole caller is lobby create-unrated-game/New Game button and supplies selected player capacity plus encoded options. Writes caller opcode,byte-length reservation,subtype4,capacity,option byte with optional+128,raw options and final length. Preserve original payload alias,guard clear after length reservation,byte truncation and partial packet writes. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.a(ILjava/lang/Throwable;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatErrorTrace",
+      "evidence": "qv.java: Prints throwable trace,unwraps ContextualRuntimeException and reads/trims trace lines for error reporting. Preserve original decompiled alias behavior including discarded accumulated/context text and EOF null-string prefix;do not repair formatting. Retain IOException,writer close,guard mutation and arbitrary Throwable behavior. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qv.a(Loj;B)Z",
       "originalName": "a",
       "to": "initialize",
       "evidence": "pa.java: Initializes presentation data for the event. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.a(Z)Z",
+      "originalName": "a",
+      "to": "advancePathIndex",
+      "evidence": "qv.java: Computes path step and8-bit interpolation progress;returnsfalse when index unchanged,trueafter one-step or full edge recomputation. Preserve true-argument screen-array clear before division,one-step state/write order,current index bounds and skipped-step recomputation before index update. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.a(ZLoj;)V",
+      "originalName": "a",
+      "to": "updatePresenterTileIndex",
+      "evidence": "qv.java: Updates presenter tile using direction-dependent edge selector-1for start/-2for next. Preserve initial sentinel write,unused event argument,bad boolean readiness call,zero coordinate fallback and final map-width multiplication. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.a([IZI)V",
+      "originalName": "a",
+      "to": "setMovementPath",
+      "evidence": "qv.java: Aliases direction array,stores length/start tile,calculates path end and total duration,resets index and optionally initializes first edge. Preserve null/empty/division behavior,guard boolean effect,helper order and partial writes. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -79561,10 +79603,80 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:qv.c(I)V",
+      "originalName": "c",
+      "to": "buildUnitAnimationVariants",
+      "evidence": "qv.java: Builds animation name alternatives and allocates variant table up to minimum available name/group count,then canonical guard resolves each group through PreparedAction. Preserve allocation before guard-11757,shared aliases,indexing and loop behavior. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.d(B)V",
+      "originalName": "d",
+      "to": "initializeFirstPathEdge",
+      "evidence": "qv.java: Copies start tile into current edge,zeroes delta,applies first direction and writes next tile only for byte>24. Preserve early pathLength<=0return,existing arrays and partial writes before byte guard. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.d(I)V",
+      "originalName": "d",
+      "to": "projectPathEdge",
+      "evidence": "qv.java: Projects current and next path-edge coordinates through shared camera into two screen-space endpoint arrays. Preserve guard<=12presenter clear first and exact camera mutation,projection,read and array write order. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.e(B)I",
+      "originalName": "e",
+      "to": "getPathFacingAngle",
+      "evidence": "qv.java: Returns direction-facing2048angle(0:1280,1:768,2:1792,3:256),or-1for empty/null path. Preserve noncanonical byte-69clearing start-tile array between direction1and remaining direction tests,current index access and arbitrary direction behavior. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.e(I)V",
+      "originalName": "e",
+      "to": "interpolateScreenPosition",
+      "evidence": "qv.java: Interpolates8-bit screen progress between two projected endpoints. Preserve arbitrary parameter as one start-coordinate index,integer overflow/shift and write ordering. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.f(B)V",
+      "originalName": "f",
+      "to": "calculatePathEnd",
+      "evidence": "qv.java: Sets index to final direction,recomputes edge and copies resulting next tile to final path coordinates. Preserve original repeated-final-direction recomputation,empty-path failure and bad byte nulling delta before endpoint writes. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.f(I)I",
+      "originalName": "f",
+      "to": "getTileEndpointSelector",
+      "evidence": "qv.java: Selects current edge tile(-1)for directions0/1or next tile(-2)for2/3. Preserve empty/null path returning-1before guard;noncanonical-4923returns-113only with nonempty path;invalid direction defaults-1. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qv.g(I)V",
       "originalName": "g",
       "to": "releaseStatics",
       "evidence": "qv.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.h(I)V",
+      "originalName": "h",
+      "to": "configureMovementTiming",
+      "evidence": "qv.java: Sets per-step duration from speed table,or50for parasite eventKind7;canonical guard-7432sets total duration to pathLength*step duration. Preserve shared presenter reads,table indexing and partial state before int guard. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.i(I)V",
+      "originalName": "i",
+      "to": "recomputePathEdge",
+      "evidence": "qv.java: Recomputes edge from start tile by repeating the current direction pathIndex+1times. Preserve original pathDirections[pathIndex]rather than loop-variable indexing,zero-delta initialization,bad int guard screen interpolation and final subtraction order. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qv.j(I)Z",
+      "originalName": "j",
+      "to": "needsSessionReconnect",
+      "evidence": "qv.java: Canonical guard-11tests client state>=10,nonguest and missing connected session;NetworkGameShell.pollGameConnection and client recovery gates consume it. Preserve int early return and short-circuit order;backoff checks remain with callers. Naming only: preserve descriptors,modifiers,full primitive domains,guards,literals,allocations,locks,aliases,arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -138544,7 +138656,7 @@
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "armiesofgielinor-names.json": "3e30ff39000e1af710b6b342e646a1d881a1787b4b122f55d0a53590a0c7756f"
+      "armiesofgielinor-names.json": "d07cc75b4c99460d900f86dee17a2f693b50f8c0b5c73e2c75646f7abc9df0ab"
     }
   },
   "generators": {
