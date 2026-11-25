@@ -12778,6 +12778,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:lc.a(BI)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Abstract completed-group payload retrieval contract;sole implementation loads priority request and returns/nulls as available,unlinks on success. Archive.loadGroup and concrete implementation read;preserve abstract descriptor and override closure. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(I)Lci;",
+      "originalName": "a",
+      "to": "loadIndex",
+      "evidence": "Abstract async archive-index retrieval contract;sole CachedArchiveSource implementation returns cached index,loads/validates disk/network result,or returns null while pending. Archive.isIndexLoaded and complete implementation read;preserve descriptor/dispatch. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:lc.a(IB)I",
+      "originalName": "a",
+      "to": "getGroupProgress",
+      "evidence": "Abstract per-group loading percentage contract;sole implementation delegates to retained request progress or returns0after original missing-request guard. Archive.getGroupProgress and concrete methods read;preserve descriptor/override family. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:lc.a(II)I",
       "originalName": "a",
       "to": "bitCount",
@@ -15270,10 +15291,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:p.a(B)V",
+      "originalName": "a",
+      "to": "pollGroupPrefetches",
+      "evidence": "When scan deque exists and index loads, iterate explicit group queue, discard invalid/empty IDs, perform disk check for state0or background network request for state-1,unlink completed state1entries. Preserve reused intrusive cursor, discarded requests, byte-derived index guard and late wrong-byte prefetch-all callback. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(BI)[B",
+      "originalName": "a",
+      "to": "takeGroupData",
+      "evidence": "Request group in priority mode0;return null if unavailable,otherwise evaluate original byte modulo,get completed payload and unlink request before return. Archive.loadGroup and concrete disk/network data helpers read;preserve padding/version bytes,aliases,arithmetic traps and call order. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(I)Lci;",
+      "originalName": "a",
+      "to": "loadIndex",
+      "evidence": "Return retained index or request archive255/index-ID subject to priority capacity,wait for completion,validate index CRC/Whirlpool and disk revision. Disk failure retries via network;network failure resets transport/XOR then retries;optional disk-write cache and allocate group-state array. Preserve distinct catch paths,guard caption clear,aliases and all partial state. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(IB)I",
+      "originalName": "a",
+      "to": "getGroupProgress",
+      "evidence": "Find retained per-group request and return its implementation progress;missing request evaluates original byte division then returns0. Complete disk/network progress helpers and Archive.getGroupProgress caller read;preserve early hit bypass of guard,hash cursor and arithmetic failures. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.a(III)Ljc;",
+      "originalName": "a",
+      "to": "loadGroupRequest",
+      "evidence": "Get/create group request by mode0priority,1disk-check,2prefetch;upgrade pending nonpriority on priority access. Validate data CRC,optional64byteWhirlpool digest and disk version;retry failed disk reads via priority network,reset transport on network validation failure,append two version bytes and queue disk write after success. Preserve both catch scopes,request unlink/hash insertion timing,queue-capacity checks,invalid modes/indices,full integer domains and partial writes. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:p.b(B)V",
       "originalName": "b",
       "to": "clearStatics",
       "evidence": "Assigns null to 3 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.b(Z)V",
+      "originalName": "b",
+      "to": "pollBackgroundRequests",
+      "evidence": "Progress initial disk-validation scan with worker cap250,then optional prefetch-all scan with network cap20;retain pending IDs and completion flags/cursor. Periodically mark/unlink completed priority requests using original one-second clock gates. Preserve all three decompiler control flags,label transfers,clock call/write schedule,queued aliases,wrong-bool index-request clear and partial phase transitions. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.c(I)V",
+      "originalName": "c",
+      "to": "prefetchAllGroups",
+      "evidence": "If group disk cache exists,enable all-group network prefetch and allocate scan deque if absent. Wrong int first invokes original invalid-mode loadGroupRequest;preserve flag write before callback/failure and no-cache return. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:p.d(I)V",
+      "originalName": "d",
+      "to": "layoutLobbyPlayerList",
+      "evidence": "Lay out Name and optional Rating column headers and lobby player ScrollPane from retained panel width/height. Lobby UI constructor identifies both header captions;DialogRoot and lobby-layout callers read. Preserve parameter as rating-header height,conditional width expression,negative offsets and nested scrollbar layout callback. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -18175,10 +18252,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tj.a(BIJ)V",
+      "originalName": "a",
+      "to": "writeInviteRequest",
+      "evidence": "Lobby player Invite action writes caller-selected ISAAC opcode,reserves length byte,writes action-kind6and supplied player64bit ID,then patches length byte. Invite caption/action0callers and complete packet writers read. Preserve modulo after opcode/reservation,ISAAC draw,byte/cursor/overflow/partial write and long serialization order. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tj.a(I)I",
       "originalName": "a",
       "to": "getTargetFrameRate",
       "evidence": "Returns the frames per second from the stored nanoseconds per frame.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.a(ZILua;Lua;Z)Lp;",
+      "originalName": "a",
+      "to": "getOrCreateArchiveSource",
+      "evidence": "Require validated master index,check archive ID,return cached source or parse its72byte record of CRC/revision/digest,construct with correctly ordered sector caches and retain by ID. Archive factory and full source constructor read. Preserve param0RSA-modulus clear only on creation path,record cursor,64byte allocation,exceptions and cache identity. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.a(ZIZIIB)[Lbi;",
+      "originalName": "a",
+      "to": "createGradientPanelSprites",
+      "evidence": "Create16px-wide vertical gradient strip and optional copies with black top-left/top-right corner masks;return nine-slot panel sprite array with copies/base at3,4,5. Lobby panel setup callers read. Preserve copy/null alias behavior,wrong-byte static clear,gradient/row geometry and setTarget restoration that resets clip rather than restoring previous clip. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.b(I)Z",
+      "originalName": "b",
+      "to": "loadMasterIndex",
+      "evidence": "Request network master index255/255when capacity permits,wait for response,read archive count and72byte records,optionally RSA-decode trailing signature then verify65byte form and64byteWhirlpool digest. Retain source array and packet buffer only after success. Complete digest helper read;preserve signed BigInteger behavior,length/cursor arithmetic,partial allocations,bad-guard late field write and no invented catch/retry. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tj.c(I)V",
+      "originalName": "c",
+      "to": "pollArchiveSources",
+      "evidence": "When source array exists,evaluate original int modulo,first poll explicit group-prefetch queues for every nonnull source,then poll every source background scanner in second pass. Preserve two-pass order,null slots,modulo failure and pending state visibility. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -20465,7 +20577,7 @@
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
-      "shatteredplans-names.json": "24c97fe324c52c028f04503fc9d46b24726e4d5a5c8fc93a8b199e0aed3a15ba"
+      "shatteredplans-names.json": "df190c12816e77220a077d04feb3c50ae7417a73ebcaae1943c16a476a7c747c"
     }
   },
   "generators": {
