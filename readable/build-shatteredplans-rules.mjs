@@ -1477,7 +1477,7 @@ method("hh", "a", "(IIIIIIIZ)V", "drawGlyphTransposedAlpha", "Clips and draws on
 method("sm", "e", "(II)V", "drawItems", "Draws every menu item with its reveal animation and highlight.");
 method("sm", "a", "(IZIZ)V", "drawItem", "Draws one menu item with its label or slider at the item position with an alpha.");
 method("sm", "a", "(IIZ)V", "drawItem", "Draws one menu item with its label or slider at the item position.");
-method("sm", "d", "(III)I", "findHexAt", "Returns the index of the hexagonal button under the pointer or minus one.");
+method("sm", "d", "(III)I", "findAchievementAt", "Return index0..24of achievement icon bounding box under supplied pointer coordinates, or-1. Full hit-test, achievement pointer caller and25icon renderer bodies read. Original layout is13icons then12in offset second row,32pixel hit bounds,42pixel spacing and sqrt(3)*21vertical offset. Preserve int<53drawItems callback before hit-testing, new int[4] allocation, saveClip then resetClip WITHOUT restore, all signed input/overflow/FPcasts, modifiers/descriptor, literals, aliases and call/exception order. Identifier-only clarification of prior findHexAt alias; no behavior changes.");
 method("sm", "a", "(IZ)I", "itemWidth", "Returns the width of a menu item, a fixed width for sliders.");
 method("sm", "b", "(IZ)I", "itemX", "Returns the horizontal position of a menu item.");
 method("sm", "c", "(IZ)I", "itemY", "Returns the vertical position of a menu item.");
