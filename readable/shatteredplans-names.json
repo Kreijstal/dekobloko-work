@@ -441,6 +441,46 @@
       "or",
       "UiTextSupport",
       "Complete66-line static type read. Selects font for shared menu label width and owns project labels/colors; logo-intro completion query remains static. All selected callers and logo frame-counter setup/update intervals read."
+    ],
+    [
+      "os",
+      "RoundedMenuPanel",
+      "Complete295-line MenuComponent type read. Renders rounded translucent panel with hex texture/corner gradients and children, retains MenuContent; drawComponent/findComponentAt callbacks already readable and unchanged. Account/social/char/filter helpers remain static."
+    ],
+    [
+      "pl",
+      "QuickChatHelpPanelSupport",
+      "Complete43-line static holder read. Polls retained QuickChatHelpPanel and drops it when dismissed; shared captions/cleanup retained. Existing clearStatics(boolean,byte) alias is misleading and recorded separately for later correction rather than silently changing an old rule."
+    ],
+    [
+      "po",
+      "ClientInputSupport",
+      "Complete43-line mixed static type read. Reads mouse idle ticks and resets selected chat channel with dirty flag; login/caption/color/panel resources remain in owner. Mouse listeners and synchronized snapshot prove idle count semantics."
+    ],
+    [
+      "pr",
+      "ClientClockSupport",
+      "Complete72-line type read. Existing synchronized currentTimeMillis compensates backward wall-clock movement using retained offset. Keyboard attachment and static cleanup remain in original owner; clock algorithm/name unchanged."
+    ],
+    [
+      "q",
+      "TabbedPanel",
+      "Complete242-line AnimatedPanel type read. Owns tab buttons/content panels and selected index, lays out tabs and offsets inactive panels by10000. CP1252 encoding/socket close helpers remain static in original owner."
+    ],
+    [
+      "qe",
+      "StarSoundState",
+      "Complete62-line IntrusiveNode base read. Retains Star and SoundPlayback inherited by so; complete child constructor/use confirms attached star playback. Leap-year and active-dialog helpers remain static."
+    ],
+    [
+      "qf",
+      "SoundEffectDefinition",
+      "Complete144-line type read. Constructor retains PcmSample/playback integer and audio factory forwards both. Pending user alias agrees. Intro initialization, bounded random wrapper, UI input/overlay helpers remain static."
+    ],
+    [
+      "qj",
+      "TutorialTextSupport",
+      "Complete235-line static type read. Builds tutorial text/objective sprites and blur variants, compares command prefixes, sets pending UI action and has guard-only helper. Existing placement decoder and static cleanup retained."
     ]
   ],
   "methods": [
@@ -2410,6 +2450,174 @@
       "(ZLjava/lang/String;Z)I",
       "measureMenuLabel",
       "Use first bool to select one of two retained fonts and measure string width; false final bool clears shared string array before font access. Preserve all null behavior, glyph widths and ignored/nonmutating first-bool branches. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "os",
+      "a",
+      "(BILjava/lang/String;Ljava/lang/String;)Ljava/lang/String;",
+      "requestRemoveIgnore",
+      "Validate supplied wire name and social connection, find retained ignore entry by other name, return localized error if absent, otherwise unlink both memberships/decrement count before writing selector3/name packet. Ignore list count and action7 consumers inspected. Preserve pre-send mutation, lookup/packet name distinction and late byte guard. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "os",
+      "a",
+      "(CI)C",
+      "normalizeAccountCharacter",
+      "Read complete nested mapping: separators map underscore, bracket/hash retained, exact accented Latin sets fold to ASCII, sharp-s maps b, otherwise Character.toLowerCase. Wrong int clears sprites before mapping. Preserve all char values and original exceptional mappings; no Unicode library substitution. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "os",
+      "a",
+      "(II)V",
+      "readChatFilterSettings",
+      "Unpack three channel filter states using exact original mask50/shift4 and two2-bit fields, clamp each to2, with wrong int helper call between earlier/later assignments. Preserve unusual mask and partial mutation/order; do not normalize wire bits. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "os",
+      "a",
+      "(IIZ)V",
+      "writeSpectateRequest",
+      "Write original opcode, selectors3/10 and short room id; false bool clears shared sprites between selector and room writes. Context menu caption Spectate and room action caller confirm intent. Preserve short truncation, packet ordering and all guard domains. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "os",
+      "a",
+      "(ILjava/lang/String;)Lks;",
+      "getAccountBooleanRequest",
+      "Guard202 compares completed request input with supplied text, allocates/replaces request only for changed text, returns retained request; wrong int returns null before state reads. Preserve completed/input call order, null failures and aliases. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "po",
+      "a",
+      "(I)V",
+      "resetChatChannel",
+      "Set chat channel0, evaluate original guard remainder, then set layout-dirty flag true. Preserve partial state and arbitrary int guard behavior. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "po",
+      "b",
+      "(I)I",
+      "getMouseIdleTicks",
+      "Evaluate guard remainder then return shared mouse idle tick count. Mouse input handlers reset it and synchronized snapshot increments it. Preserve volatile/shared state access exactly; no conversion to wall-clock time. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "pr",
+      "a",
+      "(Ljava/awt/Component;I)V",
+      "attachKeyboardInput",
+      "Optionally clear shared panel for wrong int, disable focus traversal keys and attach existing key/focus listeners in order. Preserve component/listener aliases, guard and partial registration failures. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "pr",
+      "b",
+      "(I)V",
+      "releaseClientClockStatics",
+      "Clear caption/sprite first, guard21455 clears remaining resources and returns; other ints store-51 then same clears. Preserve clock offset/state stored in other classes and all write order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "q",
+      "a",
+      "(BC)B",
+      "charToCp1252",
+      "Complete single-character encoder read. Direct cast for positive ASCII/Latin1, exact CP1252 extension mappings and63fallback; byte<-76 returns mapped byte, others6 after all mapping work. Preserve zero/surrogate treatment, signed output and full char/byte domains. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "q",
+      "a",
+      "(III)V",
+      "layoutTabs",
+      "Compute tab button segments from panel width/count, set tab geometry, size content area and inner panels, offset every inactive panel by10000. Wrong int mutates selected index before layout. Preserve zero-tab divisions, array length mismatches, repeated offsets and geometry/overflow order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "q",
+      "a",
+      "(IIIIIZI)V",
+      "setTabBounds",
+      "True bool nulls retained content array first; assign outer geometry and delegate original layout with tab-height/padding arguments. Preserve exact parameter order, partial geometry writes and late null failure. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "q",
+      "f",
+      "(Z)V",
+      "handleTabClicks",
+      "Scan all tab buttons, switch on each clicked non-current button, clear/set selected flags and move old/new content by plus/minus10000. True bool first changes static int3. Preserve multiple-click traversal, content aliases and accumulated offsets. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "q",
+      "g",
+      "(I)V",
+      "closeClientSocket",
+      "Optional caption-sprite clear for guard>-95; close shared BufferedSocket when present then null it. All protocol/IO error callers inspected. Preserve close argument111, field read timing and nulling only after successful close. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "qe",
+      "a",
+      "(BI)Z",
+      "isLeapYear",
+      "Guard-65 checks negative years using(year+1)%4, nonnegative years<1582 using%4, later years Gregorian4/100/400 rule; wrong byte returns true. Preserve integer overflow and historical cutoff without modern-calendar substitution. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "qe",
+      "a",
+      "(I)Z",
+      "hasActiveModalDialog",
+      "Guard<89 returns true; otherwise require retained root and nonnull active dialog from original getter. Preserve root rereads, guard and null/callback behavior. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "qf",
+      "a",
+      "(B)V",
+      "initializeIntro",
+      "Evaluate byte guard then choose original random value, retain font, allocate particle deque, clear intro counters/flags, select null music at50 and invoke initialization helper. Preserve random call/state, allocation and order. Alias agrees pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "qf",
+      "a",
+      "(BILjava/util/Random;)I",
+      "randomBelow",
+      "Guard<=0 first runs existing UI input helper with original constants; then delegate original bounded Random helper. Complete delegate read and all seeded map/combat callers reviewed. Preserve bounds errors, RNG identity/state/draw count and wrapping. Alias agrees pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "qf",
+      "a",
+      "(IIII)Z",
+      "handleOverlayInput",
+      "Poll context menu/report idle close state, clear overlays when dismissed, then name-entry key handling and chat/menu input dispatch in original order. Preserve repeated branches, guard recursion, priority/short-circuit behavior and all state mutations. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "qf",
+      "b",
+      "(B)V",
+      "openChatPanelOverlay",
+      "Call existing chat overlay setup with retained panels/styles first, then execute original byte guard division. Setup body read previously; preserve partial allocation/global writes before guard failure. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "qj",
+      "a",
+      "(BI)V",
+      "setPendingUiAction",
+      "Only byte-127 writes supplied int to shared pending UI action; all other bytes return before state mutation. UI action consumers confirm consumed/reset behavior. Preserve every integer value. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "qj",
+      "a",
+      "(Lsq;I)V",
+      "buildTutorialTextSprites",
+      "Entire sprite construction body read. Reset reveal counter, null scene clears arrays; otherwise expand text and wrap lines into sprites, then for guard-1 build per-objective normal/blur sprite arrays and restore raster. Preserve wrong-int early return after push/draw, array aliases, blur calls, zero-line cases and exception state. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "qj",
+      "a",
+      "(ZLjava/lang/CharSequence;Ljava/lang/CharSequence;)Z",
+      "startsWithIgnoreCase",
+      "Compare prefix(first sequence) against text(second sequence) by exact/lower/upper UTF16-char equality, return false when prefix longer. False guard recursively passes null after initial lengths check. Preserve operand read/order and Unicode char semantics; no String allocation/normalization added. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "qj",
+      "b",
+      "(B)V",
+      "checkInitializationGuard",
+      "Retain guard-only integer division-31/((byte+8)/53), with original sole initialization caller and no other effects. Preserve division failures over full byte domain, without removing or inventing cleanup. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
     ]
   ],
   "fields": []
