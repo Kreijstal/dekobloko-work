@@ -161,6 +161,46 @@
       "gq",
       "QuickChatParameterType",
       "Complete292-line type and constructor read. Stores quick-chat wire id and configuration-word count consumed by category decoder. Mixed name validation, star decoding, intro and sprite helpers stay in place. Name agrees with pending user patch."
+    ],
+    [
+      "gr",
+      "PlayerRankingRequest",
+      "Complete119-line IntrusiveNode type read, including constructor, retained category/row limits, two name tables, two four-column result tables and local-player values. Ranking response interval confirms these fields. Static polygon/dialog/square helpers remain in place. Name agrees with pending user patch."
+    ],
+    [
+      "hc",
+      "MeshMaterial",
+      "Complete80-line type read. Retains 24-bit material RGB decoded into shared material table and split into lighting channels by mesh renderer. Quick-chat scan and heading-divider factories stay static. Name agrees with pending user patch."
+    ],
+    [
+      "hd",
+      "IntroTextLine",
+      "Complete192-line IntrusiveNode type read, including60-line constructor rendering text and blurred glow sprites with negative start delay. Mixed galaxy draw, byte-request and instruction-height helpers stay in place. Name agrees with pending user patch."
+    ],
+    [
+      "ho",
+      "QuickChatHelpSupport",
+      "Complete86-line static type read. Draws retained QuickChatHelpPanel with raster clearing and guard-dependent cleanup. Existing socket factory and mixed fonts/palette/player state remain in place."
+    ],
+    [
+      "hq",
+      "AccountHandshakeSupport",
+      "Complete81-line static holder read. Writes fixed account/service socket handshake header; ASCII letter validation, production sprite and shared UI state remain in place."
+    ],
+    [
+      "hr",
+      "ChatPanelLayoutSupport",
+      "Complete152-line static holder read. Lays out chat composition/scroll/filter controls. Reload-page browser helper, RSA exponent and captions remain in place."
+    ],
+    [
+      "id",
+      "SpriteResourceSupport",
+      "Complete181-line static holder read. Named Sprite archive lookup, server-list navigation, local name, chat filters, shared widget metrics and tutorial objective parsing remain in the original mixed owner."
+    ],
+    [
+      "ie",
+      "SpriteMaskEffects",
+      "Complete597-line static type read, including414-line rotated ARGB resampler,107-line bilinear pixel sampler and both mask wrapper/kernel. Name agrees with pending user patch; unrelated rotation stays in place."
     ]
   ],
   "methods": [
@@ -877,6 +917,167 @@
       "(I)V",
       "drawLitMeshScene",
       "Full101-line body read: install camera matrix, compute per-mesh bounds/depth, derive pointer/time lighting vectors with double normalization, select farthest mesh repeatedly, transform/offset and draw lit geometry, execute guard division last. Preserve all allocations, overflow, ties, repeated mutation, FP evaluation/casts and exceptions. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "gr",
+      "a",
+      "(II[II)V",
+      "drawStippledPolygonAlpha",
+      "Full58-line body read. Reset/append/scan polygon edges, clip horizontal spans and alpha-blend every eighth pixel at scanline-dependent phase. Late int guard draws shared dialog layer. Preserve array access order, edge iterator state, signed overflow/bit ops and all alpha/int domains. Name agrees with pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "gr",
+      "a",
+      "(ZZI)V",
+      "drawDialogsWithBackdrop",
+      "False first bool clears raster, true darkens full raster at alpha192; then draw shared dialogs at supplied vertical parameter. Second bool unused. Complete og delegate read; preserve descriptor, bool gates and original draw order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "hc",
+      "a",
+      "(III)Llp;",
+      "createHeadingWithDividers",
+      "Allocate209-wide MenuList, measure caption, allocate shared2-pixel-high divider sprite, guard division before raster save/bind/fill/restore, create two aliased divider buttons and heading. Preserve geometry, allocation/alias/raster state and failures. Name agrees with pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "hc",
+      "a",
+      "(Z)Lsi;",
+      "findFirstEnabledQuickChatPhrase",
+      "True bool returns null before registry access; false scans ids from0 until enabled phrase, returning null when registry throws IllegalArgumentException. Preserve both catch scopes, repeated global reads and int wrap. Name agrees with pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "hd",
+      "a",
+      "(I)V",
+      "drawIntroGalaxyLayers",
+      "Clear raster and draw shifted/tinted galaxy layers, alpha/glow overlays and two radial-glow point arrays from frame counter. Supplied int is functional sprite Y coordinate. Preserve all shifts/casts, shared arrays and source read/draw order. Name agrees with pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "hd",
+      "a",
+      "(II)Lld;",
+      "requestByteArray",
+      "Guard<102 writes retained long before allocating request; append to byte-read deque then send selector1 via packet helper. Complete packet helper read. Preserve constructor/enqueue/write ordering and return aliases. Name agrees with pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "hd",
+      "c",
+      "(Z)V",
+      "computeInstructionSectionHeights",
+      "Read section count, reset total, true bool returns; false allocate heights, measure each instruction section, add50 except last, accumulate and subtract294 viewport. Section headings and scroll consumers inspected. Preserve empty/null, total reset before return, integer overflow and partial arrays. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ho",
+      "a",
+      "(I)V",
+      "releaseQuickChatHelpSupportStatics",
+      "Null palette/font first; guard520 clears remaining fields directly; other ints call draw helper before remaining nulls. Preserve mutual guard recursion and all partial state. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ho",
+      "a",
+      "(ZI)V",
+      "drawQuickChatHelp",
+      "If retained help panel exists, clear current clip region and draw it with supplied bool. Wrong int invokes cleanup after draw or when absent. Preserve null tests, raster bounds arithmetic, recursive guards and call order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "hq",
+      "a",
+      "(IC)Z",
+      "isAsciiLetter",
+      "Valid int<-17 tests ASCII uppercase/lowercase ranges. Other ints recurse with75 before all char predicates. Preserve recursion and all int/char domains, not only normal calls. Name agrees with pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "hq",
+      "a",
+      "(IILob;BI)V",
+      "writeAccountHandshake",
+      "Write fixed byte12 and short17 before guard check and outside wrapped try; guard20 then writes second/first integer as shorts and final byte. Both socket consumers inspected. Preserve signed argument truncation, guard-derived writeShort argument and partial packet/exception boundaries. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "hr",
+      "a",
+      "(IIIIII)V",
+      "layoutSharedChatPanel",
+      "Full56-line layout read. Set composition/input/scroll geometry, optional clip peer bounds, derive filter columns/rows, then valid guard>19 lays out six controls. Preserve pre-guard writes, divisions, original array/null branches and widths/coordinates. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "hr",
+      "a",
+      "(Ljava/applet/Applet;B)V",
+      "reloadGamePage",
+      "Read document file and preserve query suffix when resolving reload.ws against codebase. Wrong byte invokes recursive null-applet call before URL/showDocument(_self); original Exception prints stacktrace. Preserve URL helper, nested catch/wrapping and query/call order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "id",
+      "a",
+      "(I)Ljava/lang/String;",
+      "getLocalPlayerName",
+      "Perform guard division before null test; return empty string for null retained local name, otherwise return it. Preserve repeated global read, string identity and all int values. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "id",
+      "a",
+      "(II)I",
+      "getChatChannelFilter",
+      "Initialize0, select retained channel0/1/2 filter; valid guard-7019 returns it, other ints invoke null-archive sprite lookup first. Preserve unknown-channel default, independent tests and failure order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "id",
+      "a",
+      "(IIIII)V",
+      "setSharedWidgetMetrics",
+      "Write two shared geometry values first; guard26883 writes remaining two and returns; other ints replace first retained value with22 before final writes. Widget-width call contexts inspected; preserve exact order, partial state and full ints. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "id",
+      "a",
+      "(ILbc;Ljava/lang/String;Ljava/lang/String;)Lbi;",
+      "loadSpriteByName",
+      "Wrong int nulls retained Star before group/file lookup and first-sprite loader. Preserve original lookup arguments, null/string failures, aliases and decoder cleanup behavior delegated unchanged. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "id",
+      "a",
+      "(Ljava/applet/Applet;B)V",
+      "openServerListPage",
+      "Resolve toserverlist.ws against codebase, execute guard division then pass through URL helper/showDocument(_top). Inner Exception prints stacktrace; preserve nested outer RuntimeException/checked Throwable handling and navigation order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "id",
+      "a",
+      "([Ljava/lang/String;ILsq;)V",
+      "appendTutorialObjective",
+      "Allocate objective record, retain args[index] cue, join args1..end with comma+space or retain args1, append to scene. Caller parses objective directive. Preserve short arrays/negative index, allocation/alias/StringBuilder/discarded append and exception order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ie",
+      "a",
+      "(Lbi;II)V",
+      "darkenThroughSpriteMask",
+      "Add Sprite offsets, clip rows/columns against raster bounds while updating raw source/destination indices and strides; nonpositive dimensions return before kernel. Preserve overflow, aliases and clipped access ordering. Name agrees with pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ie",
+      "a",
+      "(Lom;IIIIII)V",
+      "drawRotatedBilinear",
+      "Entire414-line body read. Zero scale returns before Sprite access; otherwise trim offsets, masked16-bit angle, sin/cos floor rounding, four transformed corners, integer clipping and inverse-scale sampling across four step-sign cases. Preserve exact divisions, negative-scale and zero-step behavior, FP/casts, aliases and pixel helper calls. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ie",
+      "a",
+      "([IIIIIIII)V",
+      "blendBilinearPixel",
+      "Entire107-line body read. Compute four edge-aware neighbors and fractional Q12 weights, suppress weights for zero-alpha pixels, shift weights, reject sum<128, combine packed channels/alpha and blend against global raster. Preserve all asymmetric bounds checks, int overflow, shifts, threshold and read/write/alias order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ie",
+      "a",
+      "([I[IIIIIIII)V",
+      "darkenSpriteMaskPixels",
+      "Full23-line kernel read. For nonzero mask word, multiply destination RGB by256 minus mask low byte, retain original packed-mask arithmetic shift; zero mask still advances destination. Preserve source/destination aliasing, postincrements, row strides and signed loop counts. Name agrees with pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
     ]
   ],
   "fields": []
