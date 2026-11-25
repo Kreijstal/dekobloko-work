@@ -1430,7 +1430,7 @@ method("kq", "a", "(BZ)V", "drawOverlays", "Draws the pending overlay windows wh
 method("kq", "i", "(I)V", "buildDiplomacyPanel", "Creates one diplomacy row per player and adds them to the diplomacy panel.");
 method("kq", "a", "(BLfs;)V", "refreshDiplomacyRow", "Updates one player's diplomacy row for the local player's alliance state.");
 method("kq", "n", "(I)V", "refreshAllPanels", "Refreshes the fleets and production panels and every player's diplomacy row.");
-method("tr", "a", "(BLpf;)V", "drawFleetTrails", "Draws the moving trail points of each fleet visual along its line.");
+method("tr", "a", "(BLpf;)V", "updateFleetTrailPoints", "Update each fleet visual twenty-slot trail ring with one or two interpolated samples per replay tick, using original elevated trajectory, and emit FleetTrailPoint at retained marker time. Complete58line body and all3replay tick callers read. Clarifies prior drawFleetTrails alias:actual raster drawing remains in replay-effects method. Preserve speed-dependent sample loop, marker test against unchanged replay timer, allocations, byte early return and queue insertion order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, array/queue aliases, allocations, RNG/clock/locks, clipping/raster state, signed overflow/casts, FP operation order/NaNs, partial writes and call/exception order.");
 method("tr", "b", "(IIB)V", "drawAnnotations", "Draws each star annotation that is within its 150-tick display window.");
 method("tr", "a", "(IIII)V", "updateHoverTarget", "Finds the fleet or star under the pointer and stores it as the hover target.");
 method("tr", "a", "(Lpf;Lpf;ZIZLel;)V", "drawMap", "Draws the whole star map, its overlays and fleets for the current tick.");
@@ -1533,7 +1533,7 @@ Object.assign(classes, {
   c: ['PolygonSpanIterator', 'Sorts polygon edges, advances their Q16 x intersections by scanline and emits paired left/right endpoints until the clip bottom.'],
   cb: ['DirectByteArrayStorage', 'ByteArrayStorage implementation that positions and fills its java.nio.ByteBuffer with supplied bytes.'],
   cl: ['RasterStateFrame', 'Saved pixel target, dimensions and clip bounds; the raster-state push helper copies the current SoftwareRasterizer values into it.'],
-  di: ['FleetTrailPoint', 'Intrusive node created by MapView.drawFleetTrails to retain the interpolated fleet x/y and elevated trail coordinate.'],
+  di: ['FleetTrailPoint', 'Intrusive node created by MapView.updateFleetTrailPoints to retain the interpolated fleet x/y and elevated trail coordinate.'],
   dj: ['WidgetFocusListener', 'FocusableWidget notifies this listener with its current isFocused flag after focus changes.'],
   cd: ['WidgetDragListener', 'DraggableWidget notifies this listener when pointer dragging changes its position.'],
   dr: ['WidgetPointerListener', 'ButtonListener extension notified separately by FocusableWidget.handlePress and handleRelease.'],
