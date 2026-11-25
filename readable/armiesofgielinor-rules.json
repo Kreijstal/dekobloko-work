@@ -2120,6 +2120,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bs",
+      "originalName": "bs",
+      "to": "MapHeaderSupport",
+      "evidence": "bs.java: Reads AOG map signature/version consumed by MapLayout.readHeader;also retains the keyboard idle-tick accessor and unrelated UI/table/string globals without relocation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bt",
+      "originalName": "bt",
+      "to": "LoginAndTutorialSetupSupport",
+      "evidence": "bt.java: Two setup operations stage login from stored registration credentials and derive the equipment tutorial stage from a newly initialized MatchSetupPanel. Preserve original static initializer callers and unrelated archive/shortcut/UI globals.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:bu",
       "originalName": "bu",
       "to": "UnitRecordWriter",
@@ -2159,6 +2173,13 @@
       "originalName": "cb",
       "to": "ConsoleEvaluationException",
       "evidence": "cb.java: Checked console evaluation diagnostic retained separately from the standard Exception message.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:cc",
+      "originalName": "cc",
+      "to": "CoatOfArmsDrawingSupport",
+      "evidence": "cc.java: CoatOfArms callers use the non-solid renderer wrapper;second operation loads binary bitmap font metrics after sprite decoding. Preserve key-state read cursor and unrelated guard field.",
       "confidence": "reviewed"
     },
     {
@@ -3317,6 +3338,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jk",
+      "originalName": "jk",
+      "to": "ColourRampSupport",
+      "evidence": "jk.java: Builds per-entry RGB interpolation ramps used during client resource preparation. Retains reflective optional AWT mouse-wheel construction and quick-chat definition/label statics;the abstract declaration is a static holder,not a new instance hierarchy.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:jl",
       "originalName": "jl",
       "to": "FullscreenStatusToken",
@@ -3370,6 +3398,13 @@
       "originalName": "js",
       "to": "MeshData",
       "evidence": "js.java: Decoded vertex coordinates, face indices/materials, normal accumulation and animation skin groups used to construct ModelMesh.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jt",
+      "originalName": "jt",
+      "to": "ChatInputDispatchSupport",
+      "evidence": "jt.java: Dispatches quick-chat help/menu input updates and polls active AccountNamePrompt legacy key handling. Preserve shared guard integer and every call/side effect.",
       "confidence": "reviewed"
     },
     {
@@ -3874,6 +3909,13 @@
       "originalName": "mt",
       "to": "TextCursor",
       "evidence": "mt.java: Instance owns a string, character position and end test; static helpers also decode short tagged-field names.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:mv",
+      "originalName": "mv",
+      "to": "StructureGlowRenderer",
+      "evidence": "mv.java: Static renderer draws animated structure glow sparks and rays;TickCounter terrain rendering and InstructionsPanel structure illustration callers traced to glowspark/glowray/godspark assets. Preserve unrelated account-state/name and sprite globals.",
       "confidence": "reviewed"
     },
     {
@@ -62173,6 +62215,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ArmiesOfGielinor.a([BZ)Ltu;",
+      "originalName": "a",
+      "to": "createBinaryBitmapFont",
+      "evidence": "ArmiesOfGielinor.java: Guard can mutate retained field before null bytes check;null returns null without decode-buffer release. Otherwise constructs BinaryBitmapFont from shared decoded glyph arrays then releases buffers only after successful construction. Preserve constructor allocation,aliases,exception order and partial globals. Naming only:preserve descriptor,modifiers,guards/full primitive domains,literals,allocations,locks,aliases and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ArmiesOfGielinor.b(B)V",
       "originalName": "b",
       "to": "shutdownClient",
@@ -63783,10 +63832,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:bs.a(B)I",
+      "originalName": "a",
+      "to": "getKeyboardIdleTicks",
+      "evidence": "bs.java: Evaluates original zero-remainder guard then returns keyboardIdleTicks;retain possible arithmetic exception before field read and full byte domain. Naming only:preserve descriptor,modifiers,guards/full primitive domains,literals,allocations,locks,aliases and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bs.a(Lvh;I)I",
+      "originalName": "a",
+      "to": "readMapFormatVersion",
+      "evidence": "bs.java: Peeks signed byte at caller offset from current buffer position before testing first three AOG magic bytes;matching magic discards readInt result and consumes4bytes,nonmatch returns-1without consuming. Retain caller offset full domain,short-circuit bounds/null failures and original exception context. Naming only:preserve descriptor,modifiers,guards/full primitive domains,literals,allocations,locks,aliases and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:bs.a(Z)V",
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "bs.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bt.a(I)V",
+      "originalName": "a",
+      "to": "initializeEquipmentTutorialStage",
+      "evidence": "bt.java: Constructs and initializes shared MatchSetupPanel,reads start/end with early null returns,then evaluates remainder guard and reads row height/item IDs;configures stage5only for nonempty IDs. Preserve allocations,global replacement,late guard,original getter calls and initializer timing. Naming only:preserve descriptor,modifiers,guards/full primitive domains,literals,allocations,locks,aliases and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:bt.b(I)V",
+      "originalName": "b",
+      "to": "stagePostRegistrationLogin",
+      "evidence": "bt.java: Canonical zero guard stages stored registration name/password with existing flags then sets IgnoreRequestSupport.field_f. Other guard first calls releaseStatics(83),whose recursive path is retained exactly;do not move assignments or remove recursion. Naming only:preserve descriptor,modifiers,guards/full primitive domains,literals,allocations,locks,aliases and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -63990,6 +64067,20 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "cb.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a(II[IIIZILjava/lang/String;[II)I",
+      "originalName": "a",
+      "to": "drawCoatOfArms",
+      "evidence": "cc.java: Retains guard-dependent field write then delegates the entire non-solid coat-of-arms draw/hit-test argument order with fixed false flags. Preserve array aliases,return value and original context wrapper. Naming only:preserve descriptor,modifiers,guards/full primitive domains,literals,allocations,locks,aliases and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:cc.a(Lkl;ILkl;ZI)Ltu;",
+      "originalName": "a",
+      "to": "loadBinaryBitmapFont",
+      "evidence": "cc.java: Decodes sprite sheet from first archive with inverted boolean guard;failure returns null immediately. On success applies guard cursor mutation then reads second archive metrics and constructs font from shared decode buffers. Retain all partial globals and early-return ordering. Naming only:preserve descriptor,modifiers,guards/full primitive domains,literals,allocations,locks,aliases and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -65110,6 +65201,13 @@
       "originalName": "a",
       "to": "getItemTopY",
       "evidence": "dm.java: Returns centered item start Y or sentinel 1; preserves the noncanonical guard return.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dm.a(II[IIZ[IIZIZILjava/lang/String;)I",
+      "originalName": "a",
+      "to": "drawCoatOfArms",
+      "evidence": "dm.java: Optional part hit test precedes early guard return-48;then traverses six layer indices,normalizes too-large part IDs in caller array,draws highlights/placeholders and solid/textured parts and truncated central text. Preserve all layer order,array mutation,selected/hover behavior,short circuits and raster calls. Naming only:preserve descriptor,modifiers,guards/full primitive domains,literals,allocations,locks,aliases and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -68172,6 +68270,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:gs.a(Ljava/lang/String;Lkl;Lkl;BLjava/lang/String;)Ltu;",
+      "originalName": "a",
+      "to": "loadBinaryBitmapFontByName",
+      "evidence": "gs.java: Resolves group/file IDs in first archive,retains guard flag mutation,then delegates font load with original archive and ID order. Preserve missing-ID behavior,exceptions and source decode side effects. Naming only:preserve descriptor,modifiers,guards/full primitive domains,literals,allocations,locks,aliases and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:gs.a(Lkb;IIZI)V",
       "originalName": "a",
       "to": "paintWidget",
@@ -69950,6 +70055,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ib.a(IZII)V",
+      "originalName": "a",
+      "to": "updateQuickChatMenuInput",
+      "evidence": "ib.java: Retains wrong-guard recursion;when visible updates quick-chat host,polls pressed items,closes on outside press,advances active menu conditionally,may update host twice,and adjusts horizontal drift by5near screen edge. Preserve repeated calls,all pointer/flag state,coordinate order and failure sequence. Naming only:preserve descriptor,modifiers,guards/full primitive domains,literals,allocations,locks,aliases and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ib.a(Ljava/lang/String;I)Z",
       "originalName": "a",
       "to": "containsEmailComponent",
@@ -71637,6 +71749,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jk.a(I[II[I)[I",
+      "originalName": "a",
+      "to": "interpolateColourRamps",
+      "evidence": "jk.java: Returns null for unequal or empty palettes;otherwise allocates steps*palette length and interpolates each RGB channel from source toward target with separately truncated integer divisions. Preserve signed overflow,zero/negative/overflow allocation domains,null access order,excluded endpoint and late guard string clear. Naming only:preserve descriptor,modifiers,guards/full primitive domains,literals,allocations,locks,aliases and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jk.b(I)Lel;",
+      "originalName": "b",
+      "to": "createMouseWheelSource",
+      "evidence": "jk.java: Guard<=64returns null;otherwise Class.forName/newInstance/cast of existing AWT implementation name under catch Throwable returns optional source or null. Preserve reflection target contract,initialization/cast/failure order and outer unchecked wrapping. Naming only:preserve descriptor,modifiers,guards/full primitive domains,literals,allocations,locks,aliases and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:jl.a(I)V",
       "originalName": "a",
       "to": "releaseStatics",
@@ -71795,6 +71921,20 @@
       "originalName": "b",
       "to": "decodeLegacyFormat",
       "evidence": "js.java: Decodes the eighteen-byte footer format, signed-smart vertex/index deltas and optional attributes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jt.a(B)Z",
+      "originalName": "a",
+      "to": "pollAccountNameKey",
+      "evidence": "jt.java: Evaluates original division guard then checks active AccountNamePrompt and invokes handleLegacyNameKey. Preserve null short-circuit,return value and key side effects. Naming only:preserve descriptor,modifiers,guards/full primitive domains,literals,allocations,locks,aliases and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jt.a(IZII)V",
+      "originalName": "a",
+      "to": "updateQuickChatInput",
+      "evidence": "jt.java: Calls quick-chat help update then menu input routine with original coordinate order;guard mutates retained field after both calls. Preserve side effects before guard and all parameter domains. Naming only:preserve descriptor,modifiers,guards/full primitive domains,literals,allocations,locks,aliases and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -74294,6 +74434,13 @@
       "originalName": "a",
       "to": "releaseStatics",
       "evidence": "mv.java: Only nulls static references, apart from guard arithmetic or an obfuscator self-call; instance state and unrelated helpers on the owner are untouched.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mv.a(IBIII)V",
+      "originalName": "a",
+      "to": "drawStructureGlow",
+      "evidence": "mv.java: Draws seven animated additive sparks using per-owner or generic sprite;nonnegative owner then uses144steps of three additive ray sprites or destructive offscreen tinted/scaled god-spark fallback. Preserve guard recursion before work,Math.sin and floating-point casts,full owner/index domains,mask arithmetic,all raster target changes/clear/vertical flip,partial effects and exception order. Naming only:preserve descriptor,modifiers,guards/full primitive domains,literals,allocations,locks,aliases and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -137060,7 +137207,7 @@
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "armiesofgielinor-names.json": "e96bb95053c9e9ee6f868b5e24326fa33c0a47be70db06fd8a0de53a1b1399f6"
+      "armiesofgielinor-names.json": "3b588f50bd22b2f8c45443b7400e931103872c18989e5d6f9ae2d211eee54e5c"
     }
   },
   "generators": {
