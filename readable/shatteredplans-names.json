@@ -481,6 +481,46 @@
       "qj",
       "TutorialTextSupport",
       "Complete235-line static type read. Builds tutorial text/objective sprites and blur variants, compares command prefixes, sets pending UI action and has guard-only helper. Existing placement decoder and static cleanup retained."
+    ],
+    [
+      "ql",
+      "TextHotspotRegion",
+      "Complete193-line original type read. Intrusive rectangle record stores hotspot id,x,y,width,height and next region. TextHotspotWidget creates records from <hotspot=> markup across wrapped lines and tests exact rectangle bounds; tutorial/audio/fullscreen static helpers stay in original owner."
+    ],
+    [
+      "qn",
+      "IntroRenderSupport",
+      "Complete132-line original static type read. Draws retained intro text line sprites with reveal/glow/fade stages; FleetVisual factory, polygon wrapper and chat-history reset remain in original owner."
+    ],
+    [
+      "rk",
+      "IntArrayReadRequest",
+      "Complete41-line original intrusive type read. Retains int[] filled by login-response decoder, selected from pending request deque and unlinked after reading. Private constructor still throws Error; no instances invented. Alias agrees pending user work."
+    ],
+    [
+      "rl",
+      "TextReplacementContext",
+      "Complete203-line original type and two constructors read. Owns linked TextReplacementEntry list and optional parent context; updates/prepends replacements, looks through parent and expands <%...> placeholders. Archive factory/static resources remain in original owner."
+    ],
+    [
+      "ro",
+      "EmailValidationError",
+      "Complete66-line original identity-marker type read, including throwing toString. Full email/local-part/domain-label/domain-suffix validator bodies return these retained error instances or null on success. Static byte decoder/resources remain in original owner."
+    ],
+    [
+      "rs",
+      "IconTextPanel",
+      "Complete107-line original AnimatedPanel subclass and three constructors read. Owns separate icon/text child panels, sums their preferred widths plus gap and lays them side by side; icon sprite states and styles copied through original constructors. Keyboard release remains static."
+    ],
+    [
+      "sa",
+      "SpriteWipeSupport",
+      "Complete106-line original static type read. Main helper reveals sprite with full additive region plus column alpha gradient under temporary clipping. Quick Chat menu width and hex-map row count helpers stay in original owner."
+    ],
+    [
+      "sf",
+      "SoundTriggerTick",
+      "Complete57-line original type and constructor read. Linked records retain trigger tick; GameSession appends after requesting sound, expires records after50ticks and decrements active count. Constructor ignores SoundPlayback argument; preserve that omission. AI work-array capacity/static cleanup helpers remain in original owner."
     ]
   ],
   "methods": [
@@ -2618,6 +2658,153 @@
       "(B)V",
       "checkInitializationGuard",
       "Retain guard-only integer division-31/((byte+8)/53), with original sole initialization caller and no other effects. Preserve division failures over full byte domain, without removing or inventing cleanup. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order."
+    ],
+    [
+      "ql",
+      "a",
+      "(B[Ljava/lang/String;)V",
+      "loadTutorialScenes",
+      "Store supplied script lines before byte50 guard; empty lines null scene array, otherwise reset parser/index, read all scenes into ObjectList, copy array and resolve named/fallthrough successors except final scene. Preserve null/empty, unresolved/terminal flags, original parser calls and partial writes. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "ql",
+      "a",
+      "(I)V",
+      "updateAudio",
+      "Update both retained PCM outputs, decrement cleanup counter, every200ticks traverse both playback deques and unlink playback nodes with inactive streams; retain final music update predicate call. Wrong int invokes original static cleanup before decrement. Preserve loop cursors, guards and audio call order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "ql",
+      "a",
+      "(Ljava/awt/Frame;ILqb;)V",
+      "disposeFullscreenFrame",
+      "Repeatedly request platform frame operation, wait in10ms steps while pending and retry failures after100ms; only after success and int0 hide/dispose frame. Both fullscreen callers inspected. Preserve unbounded retries, waits, dispatcher/frame aliases and nonzero-int early return. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "qn",
+      "a",
+      "(B)V",
+      "drawIntroText",
+      "Traverse retained intro line sprites, skip drawing negative counters but advance vertical position; base sprite below230, glow fade-in230..249, both fade-out250+. Preserve exact arithmetic, clip/render delegate arguments, byte guard and traversal/order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "qn",
+      "a",
+      "(ILmg;)Las;",
+      "createFleetVisual",
+      "Allocate FleetVisual from supplied FleetMove before guard remainder and return it. Preserve allocation-before-guard failures, original exception wrapping and argument identity. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "qn",
+      "a",
+      "([Lik;IZ)V",
+      "fillPolygon",
+      "Reset scanline buckets then collect supplied vertex edges, false boolean writes retained int, finally invoke coverage-weighted polygon fill with supplied colour. Full fill delegate body and four MapView resource-region callers read. Preserve original point arrays, reset/collect/order, colour and boolean guard. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "qn",
+      "b",
+      "(I)V",
+      "clearChatHistory",
+      "Int<82 returns before reading history; otherwise null exactly entries0..count-1 then set count0. Retained array is ChatHistoryEntry[]. Preserve old count bounds, partial clears and all array failure behavior. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "rl",
+      "a",
+      "(ILjava/lang/String;)Ljava/lang/String;",
+      "expandPlaceholders",
+      "Scan <%...> pairs, append ordinary text and present replacement values, drop missing replacements, retain unterminated markup tail. Wrong int clears caption after builder allocation. Preserve parent lookup and left-to-right scans, exact delimiters, allocations and exception wrappers. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "rl",
+      "a",
+      "(IZIIZ)Lbc;",
+      "createArchive",
+      "Int-1 delegates to existing Archive factory with original argument permutation/constants; other ints return null before delegate. Complete factory body and three archive setup calls inspected. Preserve caches/index allocations and original null/guard behavior. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "rl",
+      "a",
+      "(Ljava/lang/String;ILjava/lang/String;)V",
+      "putReplacement",
+      "First argument is value, third key. Search own linked list and replace matching entry value; otherwise wrong int calls original factory helper then prepend new entry. Preserve key.equals call, parent distinction, null cases, allocations and exception context strings. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "rl",
+      "b",
+      "(ILjava/lang/String;)Ljava/lang/String;",
+      "lookupReplacement",
+      "Compute original guard remainder after loading head, find exact key in own list then recurse to parent with-112 or return null. Preserve local match with null value, parent recursion/cycles, equality direction and errors. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "ro",
+      "a",
+      "(BLob;)Z",
+      "readBooleanByte",
+      "Read unsigned byte with original-77 argument, compare exactly1, then evaluate byte guard division before returning. Sole response caller stores boxed result and resets packet cursor afterward. Preserve consumed byte before guard failure and equality1 semantics. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "rs",
+      "a",
+      "(IIIIII)V",
+      "setIconTextBounds",
+      "Apply outer target geometry through existing setTarget with original argument order, evaluate int guard remainder, then layout children using supplied gap. Preserve partially set geometry on guard failure and all signed int values. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "rs",
+      "b",
+      "(IB)V",
+      "layoutChildren",
+      "Size icon child to its preferred width and panel height at origin; place text at icon width+gap using remaining width. Evaluate original byte division last. Preserve repeated child reads, bounds overflow/negative sizes and late failure. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "rs",
+      "c",
+      "(II)I",
+      "getContentWidth",
+      "Return icon preferred width plus gap and text preferred width; nonzero second int sets static int86 first. Preserve both branches, call/read order and overflow. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "rs",
+      "g",
+      "(I)V",
+      "releaseKeyboardInput",
+      "If retained GameKeyHandler absent, optionally clear static resource then return; otherwise synchronize on captured handler and null shared reference, then apply guard cleanup. Preserve captured monitor, shared-reference reads and threshold-70. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sa",
+      "a",
+      "(I)I",
+      "getQuickChatMenuWidth",
+      "Return retained menu right-minus-left bounds; wrong int clears archive first. Exact producers compute both bounds from maximum menu string width; Quick Chat draw caller uses width with separately retained menu height. Preserve signed overflow and guard. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sa",
+      "a",
+      "(II)I",
+      "hexRowsForMapHeight",
+      "Return1+(int)((height-50*scale)/(scale*150)) using existing double geometry scale. Map decoder passes unsigned-short map height to construct map generator dimensions; corresponding width helper and hex geometry formulas inspected. Preserve cast/truncation, FP, arbitrary int inputs and guard resource clear. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sa",
+      "a",
+      "(IIBILbi;I)V",
+      "drawAdditiveSpriteWipe",
+      "Save raster clip bounds; byte<=71 returns after first bound read. Draw fully revealed region when progress>=gradient width, then one-column clips and additive blits with original alpha formula; restore saved clip only on normal completion. Preserve clamp expressions, zero/negative gradient widths, clipping, aliases and partial raster state on failures. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sf",
+      "a",
+      "(B)V",
+      "releaseSoundTriggerStatics",
+      "Clear retained panel first; byte82 clears other retained strings/sound/resource and returns; other bytes call existing AI capacity helper with97 before same clears. Preserve extra allocation branch and all partial cleanup ordering. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
+    ],
+    [
+      "sf",
+      "a",
+      "(BI)V",
+      "ensureAiWorkCapacity",
+      "If requested capacity>=retained capacity, store it and allocate boolean array plus three int arrays, then byte<123 writes long41. Equality also reallocates. Canonical TaskAi passes star count/byte124; cleanup branch passes97/byte-109. Preserve signed capacities, aliases, allocation failures and partial writes. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order."
     ]
   ],
   "fields": []

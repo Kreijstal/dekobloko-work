@@ -2887,10 +2887,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ql",
+      "originalName": "ql",
+      "to": "TextHotspotRegion",
+      "evidence": "Complete193-line original type read. Intrusive rectangle record stores hotspot id,x,y,width,height and next region. TextHotspotWidget creates records from <hotspot=> markup across wrapped lines and tests exact rectangle bounds; tutorial/audio/fullscreen static helpers stay in original owner.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:qm",
       "originalName": "qm",
       "to": "ProjectUse",
       "evidence": "Records a project kind, the using Player and one or two target stars; the AI text calls it ProjectUse.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qn",
+      "originalName": "qn",
+      "to": "IntroRenderSupport",
+      "evidence": "Complete132-line original static type read. Draws retained intro text line sprites with reveal/glow/fade stages; FleetVisual factory, polygon wrapper and chat-history reset remain in original owner.",
       "confidence": "reviewed"
     },
     {
@@ -3006,6 +3020,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:rk",
+      "originalName": "rk",
+      "to": "IntArrayReadRequest",
+      "evidence": "Complete41-line original intrusive type read. Retains int[] filled by login-response decoder, selected from pending request deque and unlinked after reading. Private constructor still throws Error; no instances invented. Alias agrees pending user work.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rl",
+      "originalName": "rl",
+      "to": "TextReplacementContext",
+      "evidence": "Complete203-line original type and two constructors read. Owns linked TextReplacementEntry list and optional parent context; updates/prepends replacements, looks through parent and expands <%...> placeholders. Archive factory/static resources remain in original owner.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:rm",
       "originalName": "rm",
       "to": "IterableNodeHashTable",
@@ -3017,6 +3045,13 @@
       "originalName": "rn",
       "to": "DiskCacheWorker",
       "evidence": "Runnable with a Thread that drains a queue of disk requests.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ro",
+      "originalName": "ro",
+      "to": "EmailValidationError",
+      "evidence": "Complete66-line original identity-marker type read, including throwing toString. Full email/local-part/domain-label/domain-suffix validator bodies return these retained error instances or null on success. Static byte decoder/resources remain in original owner.",
       "confidence": "reviewed"
     },
     {
@@ -3041,10 +3076,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:rs",
+      "originalName": "rs",
+      "to": "IconTextPanel",
+      "evidence": "Complete107-line original AnimatedPanel subclass and three constructors read. Owns separate icon/text child panels, sums their preferred widths plus gap and lays them side by side; icon sprite states and styles copied through original constructors. Keyboard release remains static.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:s",
       "originalName": "s",
       "to": "GzipInflater",
       "evidence": "Wraps a java.util.zip.Inflater that decompresses gzip bytes into a PacketBuffer.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sa",
+      "originalName": "sa",
+      "to": "SpriteWipeSupport",
+      "evidence": "Complete106-line original static type read. Main helper reveals sprite with full additive region plus column alpha gradient under temporary clipping. Quick Chat menu width and hex-map row count helpers stay in original owner.",
       "confidence": "reviewed"
     },
     {
@@ -3073,6 +3122,13 @@
       "originalName": "se",
       "to": "AchievementProgress",
       "evidence": "Holds per-player counters and a boolean row of achievement flags that GameState sets.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sf",
+      "originalName": "sf",
+      "to": "SoundTriggerTick",
+      "evidence": "Complete57-line original type and constructor read. Linked records retain trigger tick; GameSession appends after requesting sound, expires records after50ticks and decrements active count. Constructor ignores SoundPlayback argument; preserve that omission. AI work-array capacity/static cleanup helpers remain in original owner.",
       "confidence": "reviewed"
     },
     {
@@ -14843,10 +14899,59 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ql.a(B[Ljava/lang/String;)V",
+      "originalName": "a",
+      "to": "loadTutorialScenes",
+      "evidence": "Store supplied script lines before byte50 guard; empty lines null scene array, otherwise reset parser/index, read all scenes into ObjectList, copy array and resolve named/fallthrough successors except final scene. Preserve null/empty, unresolved/terminal flags, original parser calls and partial writes. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(I)V",
+      "originalName": "a",
+      "to": "updateAudio",
+      "evidence": "Update both retained PCM outputs, decrement cleanup counter, every200ticks traverse both playback deques and unlink playback nodes with inactive streams; retain final music update predicate call. Wrong int invokes original static cleanup before decrement. Preserve loop cursors, guards and audio call order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ql.a(Ljava/awt/Frame;ILqb;)V",
+      "originalName": "a",
+      "to": "disposeFullscreenFrame",
+      "evidence": "Repeatedly request platform frame operation, wait in10ms steps while pending and retry failures after100ms; only after success and int0 hide/dispose frame. Both fullscreen callers inspected. Preserve unbounded retries, waits, dispatcher/frame aliases and nonzero-int early return. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qn.a(B)V",
+      "originalName": "a",
+      "to": "drawIntroText",
+      "evidence": "Traverse retained intro line sprites, skip drawing negative counters but advance vertical position; base sprite below230, glow fade-in230..249, both fade-out250+. Preserve exact arithmetic, clip/render delegate arguments, byte guard and traversal/order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:qn.a(I)V",
       "originalName": "a",
       "to": "clearStatics",
       "evidence": "Assigns null to 5 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qn.a(ILmg;)Las;",
+      "originalName": "a",
+      "to": "createFleetVisual",
+      "evidence": "Allocate FleetVisual from supplied FleetMove before guard remainder and return it. Preserve allocation-before-guard failures, original exception wrapping and argument identity. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qn.a([Lik;IZ)V",
+      "originalName": "a",
+      "to": "fillPolygon",
+      "evidence": "Reset scanline buckets then collect supplied vertex edges, false boolean writes retained int, finally invoke coverage-weighted polygon fill with supplied colour. Full fill delegate body and four MapView resource-region callers read. Preserve original point arrays, reset/collect/order, colour and boolean guard. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:qn.b(I)V",
+      "originalName": "b",
+      "to": "clearChatHistory",
+      "evidence": "Int<82 returns before reading history; otherwise null exactly entries0..count-1 then set count0. Retained array is ChatHistoryEntry[]. Preserve old count bounds, partial clears and all array failure behavior. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -15347,6 +15452,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rl.a(ILjava/lang/String;)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "expandPlaceholders",
+      "evidence": "Scan <%...> pairs, append ordinary text and present replacement values, drop missing replacements, retain unterminated markup tail. Wrong int clears caption after builder allocation. Preserve parent lookup and left-to-right scans, exact delimiters, allocations and exception wrappers. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rl.a(IZIIZ)Lbc;",
+      "originalName": "a",
+      "to": "createArchive",
+      "evidence": "Int-1 delegates to existing Archive factory with original argument permutation/constants; other ints return null before delegate. Complete factory body and three archive setup calls inspected. Preserve caches/index allocations and original null/guard behavior. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rl.a(Ljava/lang/String;ILjava/lang/String;)V",
+      "originalName": "a",
+      "to": "putReplacement",
+      "evidence": "First argument is value, third key. Search own linked list and replace matching entry value; otherwise wrong int calls original factory helper then prepend new entry. Preserve key.equals call, parent distinction, null cases, allocations and exception context strings. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rl.b(ILjava/lang/String;)Ljava/lang/String;",
+      "originalName": "b",
+      "to": "lookupReplacement",
+      "evidence": "Compute original guard remainder after loading head, find exact key in own list then recurse to parent with-112 or return null. Preserve local match with null value, parent recursion/cycles, equality direction and errors. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rm.a(I)V",
       "originalName": "a",
       "to": "clearStatics",
@@ -15410,6 +15543,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ro.a(BLob;)Z",
+      "originalName": "a",
+      "to": "readBooleanByte",
+      "evidence": "Read unsigned byte with original-77 argument, compare exactly1, then evaluate byte guard division before returning. Sole response caller stores boxed result and resets packet cursor afterward. Preserve consumed byte before guard failure and equality1 semantics. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rp.a(I)V",
       "originalName": "a",
       "to": "clearStatics",
@@ -15445,6 +15585,34 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rs.a(IIIIII)V",
+      "originalName": "a",
+      "to": "setIconTextBounds",
+      "evidence": "Apply outer target geometry through existing setTarget with original argument order, evaluate int guard remainder, then layout children using supplied gap. Preserve partially set geometry on guard failure and all signed int values. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rs.b(IB)V",
+      "originalName": "b",
+      "to": "layoutChildren",
+      "evidence": "Size icon child to its preferred width and panel height at origin; place text at icon width+gap using remaining width. Evaluate original byte division last. Preserve repeated child reads, bounds overflow/negative sizes and late failure. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rs.c(II)I",
+      "originalName": "c",
+      "to": "getContentWidth",
+      "evidence": "Return icon preferred width plus gap and text preferred width; nonzero second int sets static int86 first. Preserve both branches, call/read order and overflow. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rs.g(I)V",
+      "originalName": "g",
+      "to": "releaseKeyboardInput",
+      "evidence": "If retained GameKeyHandler absent, optionally clear static resource then return; otherwise synchronize on captured handler and null shared reference, then apply guard cleanup. Preserve captured monitor, shared-reference reads and threshold-70. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rs.h(I)V",
       "originalName": "h",
       "to": "clearStatics",
@@ -15456,6 +15624,27 @@
       "originalName": "a",
       "to": "clearStatics",
       "evidence": "Assigns null to 4 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(I)I",
+      "originalName": "a",
+      "to": "getQuickChatMenuWidth",
+      "evidence": "Return retained menu right-minus-left bounds; wrong int clears archive first. Exact producers compute both bounds from maximum menu string width; Quick Chat draw caller uses width with separately retained menu height. Preserve signed overflow and guard. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(II)I",
+      "originalName": "a",
+      "to": "hexRowsForMapHeight",
+      "evidence": "Return1+(int)((height-50*scale)/(scale*150)) using existing double geometry scale. Map decoder passes unsigned-short map height to construct map generator dimensions; corresponding width helper and hex geometry formulas inspected. Preserve cast/truncation, FP, arbitrary int inputs and guard resource clear. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sa.a(IIBILbi;I)V",
+      "originalName": "a",
+      "to": "drawAdditiveSpriteWipe",
+      "evidence": "Save raster clip bounds; byte<=71 returns after first bound read. Draw fully revealed region when progress>=gradient width, then one-column clips and additive blits with original alpha formula; restore saved clip only on normal completion. Preserve clamp expressions, zero/negative gradient widths, clipping, aliases and partial raster state on failures. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -15582,6 +15771,20 @@
       "originalName": "a",
       "to": "clearStatics",
       "evidence": "Assigns null to 5 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.a(B)V",
+      "originalName": "a",
+      "to": "releaseSoundTriggerStatics",
+      "evidence": "Clear retained panel first; byte82 clears other retained strings/sound/resource and returns; other bytes call existing AI capacity helper with97 before same clears. Preserve extra allocation branch and all partial cleanup ordering. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sf.a(BI)V",
+      "originalName": "a",
+      "to": "ensureAiWorkCapacity",
+      "evidence": "If requested capacity>=retained capacity, store it and allocate boolean array plus three int arrays, then byte<123 writes long41. Equality also reallocates. Canonical TaskAi passes star count/byte124; cleanup branch passes97/byte-109. Preserve signed capacities, aliases, allocation failures and partial writes. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -17525,7 +17728,7 @@
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
-      "shatteredplans-names.json": "eb9bb324a36206d98dac7b23a269d7c9bc0f4c19ba102f73837411861233ef47"
+      "shatteredplans-names.json": "e0fa00ada7488d2e9bb0e40c6921a7f4cdffea56f24c7c1d9e8bfd3ea74d3ea8"
     }
   },
   "generators": {
