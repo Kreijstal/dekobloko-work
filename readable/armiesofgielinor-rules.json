@@ -71483,10 +71483,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ic.A(I)V",
+      "originalName": "A",
+      "to": "releaseBattleResources",
+      "evidence": "ic.java: A(I):fullresourcecleanup,clear eventPresenters then camera.followEventPresenters before nulling battleTutorial/presenters/camera/unitRenderer(twice),globalcameraaliases and ConsoleParseException helper,latewrongguardfield_hb66,tiles/lineOfSightnullthenunitdequesclear,AI/teamnulls. Needcallerpurpose beforefinalname. Campaign resource reload invokes this on both primary and spectator controllers: release battle resources; preserve duplicate renderer null and teardown order. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.B(I)Z",
+      "originalName": "B",
+      "to": "usesAlternateMenuBackground",
+      "evidence": "ic.java: B(I):wrongguardfield_rbfalse,compares ReflectionCheckRequest.field_o exactly2098862971322544L. NO purpose candidate yet;identify account identity and caller role,do notlabel merelyspecialaccount. The sole caller is drawMenuBackground: true selects AchievementNotification.field_m at brightness96 instead of the tiled MatchConditionEntry.field_n. Compare the original exact long constant; no account-identity claim. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.C(I)V",
+      "originalName": "C",
+      "to": "updateEndTurnHint",
+      "evidence": "ic.java: C(I):controlledplayernegativeearlyreturn;guarddivisionthenANDs all ownedunits,flagfalsewhen a unit has notspentmovement and is notcurrentlycapturingnonalliedstructure;emptydeque writestrue. Preserve tilelookupbeforeobfuscationreturn and exact predicates. Sets the end-turn glow hint: every owned unit has spent movement or is capturing a nonallied structure. Empty deque sets true; not a claim that every unit actually spent movement. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(B)Z",
+      "originalName": "a",
+      "to": "hasPendingPresentationWork",
+      "evidence": "ic.java: a(B)Z:guarddivision then shortcircuitfield_Q ORpendingbattleeventsnonempty ORfield_Ubnonempty;queues/flag roles needcallerreview. Queries presentation work using field_Q, pending game events and mana-star queue, retaining short-circuit/read order. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(BI)I",
+      "originalName": "a",
+      "to": "estimateTurnsUntilVictory",
+      "evidence": "ic.java: a(BI)I:structureincome<=0return-1 beforebyteguard;elsewrongguardfield_nb-90,return1+(target-collectedscore-1)/income fullsignedoverflow/truncation,notclamped.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ic.a(BLsl;Lom;)V",
       "originalName": "a",
       "to": "restoreCampaignQuicksave",
       "evidence": "ic.java: Reads the snapshot, restores score/loss/mana/mask fields, clears inactive ownership and reconstructs missing player turn counts.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(I)V",
+      "originalName": "a",
+      "to": "drawTurnBanner",
+      "evidence": "ic.java: a(I)V:turn/player/team banner renderer delegates this.a(timer,text,teamBool,64),truncatesplayer/teamnames240,ownturncaptionandteamturn/campaign distinction,minimumtimer50;latewrongguardthis.l(-61).  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -71497,10 +71539,164 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ic.a(II)V",
+      "originalName": "a",
+      "to": "notifyTutorialAction",
+      "evidence": "ic.java: a(II)V:battleTutorial interactiondelegate(-1,-3,param0)ifnonnull;wrongguardthis.a(nullunit,byte66)first. No guessed interaction name until BattleTutorial handler contract read. BattleTutorial.handleInteraction(-1,-3,interactionKind) confirms no-tile tutorial action notification. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(IIBII)V",
+      "originalName": "a",
+      "to": "drawLargeParticipantResultCard",
+      "evidence": "ic.java: a(IIBII)V:large134x228 ranked participant card,highlightfield_Rb,uppercasedname,coat+statusflags,rasterpush/pop,rankcaptionorunknowncaption,playerstats+mana bar helpers. Preservedefaultlocaleuppercase,latebyteguardotherdraw,allalias/cliporder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(III)V",
+      "originalName": "a",
+      "to": "drawSelectedPlayerAwards",
+      "evidence": "ic.java: a(III)V:223x228 selectedparticipantdetail withcached217wide list of up to16battlefield.field_Gflags and scrolling atNanoGameClock/functionalparam1;minimum192height,duplicateverticalwrapdraw,selectedpalette. Needliteral SocketFactory.field_gflagtext to determine exact listpurpose. Menu table SocketFactory.field_g contains16 awards such as First house, First portal, Most kills and Most health lost. This variant indexes the selected player directly. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(IIIBZIIIII)V",
+      "originalName": "a",
+      "to": "drawGameInfoFrameAndBackground",
+      "evidence": "ic.java: a(IIIBZIIIII)V:guardbyte89earlyreturn,drawframe then suppliedgeometrySelectionMenuLayoutSupport.field_b scaledifbooltrue elseopaque;boolobfuscationcanalsodrawopaqueafter scaled. Needasset/callerrole. Resource loader binds SelectionMenuLayoutSupport.field_b from gameinfobg; shared game-info frame background renderer. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(IIII)V",
+      "originalName": "a",
+      "to": "drawParticipantResultCard",
+      "evidence": "ic.java: a(IIII)V:rankedparticipant compact184x111 card except2participants delegateslargecard;rankcaption,name,coatcolorteamflags,stats/bars. Wrongintguarddivisionmid-draw. field_Rb rankindexvsplayerIDdistinctionretained.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(IIIII)V",
+      "originalName": "a",
+      "to": "drawThirdPlaceResultCard",
+      "evidence": "ic.java: a(IIIII)V:third-rankedparticipant compactcard onlywhenparticipantcountparam4>2;wrongguardnullunitRendererfirst. Hardcodedrank2 andbarx280 notderivedx. Allbranchduplicates/statusflags/casts untouched.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(IIIIIB)V",
+      "originalName": "a",
+      "to": "drawVictoryProgressBar",
+      "evidence": "ic.java: a(IIIIIB)V:victorypoint/mana progressbar;team palette,fillandtargetmarker,outlineflasheswhen1..3income-turnsremaining,optionalglobalhighlightfield_Mb sineoverlay. Functionalintdimensions/player,byteguardwritesfield_Hb lateafterpalette.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(IIIIII)V",
+      "originalName": "a",
+      "to": "drawGameInfoIconRows",
+      "evidence": "ic.java: a(IIIIII)V:byte-less intguardparam0==-4then4rows from-1..2drawblendedrectangle+ByteArrayPoolSupport.field_a[var8+1]sprite;role needsasset/callerconfirmation. Resource loader binds ByteArrayPoolSupport.field_a from info_icons; four game-info icon row backdrops, index0..3. No assumption that all four are structures. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(IIIIIIII)V",
+      "originalName": "a",
+      "to": "drawInsetVictoryProgressBar",
+      "evidence": "ic.java: a(IIIIIIII)V:inset victorypoint/mana progressbar,fullsignedgeometrychanges/twoalpha fills,lateguardfield_afalse,playerpalette0ratherthanteamtable,sinehighlightoverlay. Needcallersforname distinction.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(IIIILne;III)V",
+      "originalName": "a",
+      "to": "drawTileInfoPanel",
+      "evidence": "ic.java: a(IIIILne;III)V:309x71tilepopup,ownercoat,labelscroll,terrainicon,income25/50/75halfwhenenemyoccupant,terraincover%,corpse/structure/terrain/effecticons andexplicitownermarker. Guardparam1<=101returnsaftercoverdrawbeforeeffecticons. param7onlyupperboundadjusted (negativekept),allintmath/nestedobfuscation/alias/rasterorder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ic.a(IIIIZI)V",
       "originalName": "a",
       "to": "requestSpellCast",
       "evidence": "ic.java: Validates the spell and shows an optional confirmation prompt before preparing movement or queuing the cast.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(III[II)V",
+      "originalName": "a",
+      "to": "drawSpellTooltip",
+      "evidence": "ic.java: a(III[II)V:spelltooltip200widewithname/descriptionandoptionalruneprice/remainingcap;negativeIDreturn beforearrayreads,lateguardfield_lfalse,allfontmeasure/drawcallorder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(IILjd;Z)Ljd;",
+      "originalName": "a",
+      "to": "findOwnedActiveUnit",
+      "evidence": "ic.java: a(IILjd;Z)Ljd;:findownedactiveunit usingnewNodeIterator,clearstalehintifremovedorunlinked;booltruefirstthenstopswhenhintreached,boolfalse startsatpointer;skipremoved/differentowner/self;initial~player>param0returnnullandfullintguards retained. Need NodeIterator.startForwardAt contract. NodeIterator.startForwardAt includes the given node and next advances its next link. Preserve restart/stop-at-hint behavior, stale-link checks and full integer domain. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(IIZ)V",
+      "originalName": "a",
+      "to": "requestSummon",
+      "evidence": "ic.java: a(IIZ)V:summon action gatedfield_mb,currentcontrolledturn,remainingticks;failureflagsdisplayerror elseplayssound,networkmodeopcode65length4payload32/unit/type/coords;localmodeSummonRequest.prepare/apply. Wrongguardfield_J59late. BoolforwardserrorUI. Preservewriteorderandlocal/networkobfuscationpaths.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(IIZI)V",
+      "originalName": "a",
+      "to": "drawCampaignResults",
+      "evidence": "ic.java: a(IIZI)V:campaign resultstats/reward panel:turn/damage/score,player-slotmatchedrankandboolrewarddisplay,participantcountlayout,createRewardPreview/title/icon. No suppliedguard;allargsfunctionalincludingrankindex. Preserve allmath/aliases andpartialdraws.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(ILjava/lang/String;ZI)I",
+      "originalName": "a",
+      "to": "drawTurnBannerCaptionAndCoats",
+      "evidence": "ic.java: a(int,String,bool,int)I:turnbanner helper,earlycurrentplayer<0return-1,slideoffsetthis.g(timer,-50),captionxcenter170,drawcurrentcoatorteamcoatsusingteamlayouttable;wrongguardfield_jcfalseaftercaption,innerArrayIndexOutOfBoundsException intentionallyswallowed,defaultlocalcoatalias,winnerCount/team/current/controlledconditionsretained. 210linesread0..190+190..end.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(IZ)V",
+      "originalName": "a",
+      "to": "advanceBattle",
+      "evidence": "ic.java: a(int,bool)V:mainbattleadvance545linesread0..210+210..420+420..end. Earlyfield_Ab/intguard/field_odisconnectgates,lazymovementplanner,metrics/timer/hints/toast/tutorial/cameraupdates,eventpresenteradvance/apply/unlinkandselectionrefresh,pendingeventpipelineoverlap gating,manaparticlegenerationwithmutablemanaPoints,randomcallorder,summonmenuKBDswap,timers/AIturnadvance/localmatchoutcomeandresults,GUIcounter/caption updates. Boolenablescamera/pointersectiononly. Preserveallnestedguards,duplicatecalls,aliases,RNG,packet/world/callorder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(IZB)V",
+      "originalName": "a",
+      "to": "selectTile",
+      "evidence": "ic.java: a(int,bool,byte)V:tile selectiontoggle,savesoldunit/tile/scrolldata,clearsunit,conditionalresetanimation,selectedtile labelwidthscroll setup,latebyteguardduplicatedfield_mfalse,plannerselectionclear,tutorialnotification25ifspellactive,optionalsound+interaction28. Allsignedtilevaluesandpartialwritesuntouched.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(IZII)V",
+      "originalName": "a",
+      "to": "drawAbilityDirectionDiamond",
+      "evidence": "ic.java: a(int,bool,int,int)V:drawisometricdiamondoutlinewhite/red4lines;param0functionalbottomverticaloffsetcanonical40,notguard. Preservefullintegergeometriesandlineorder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(IZIIBII)V",
+      "originalName": "a",
+      "to": "drawTurnAndStructureSummary",
+      "evidence": "ic.java: a(int,bool,int,int,byte,int,int)V:drawturnordinal/limitand3structurecountsintosharedSpellConfirmationDialog.field_jsprite;optionalrankedleadercomparisoncounts,teamcolourpalettes,rasterrestoreonlynormalpath,latebyteguardremainingTurnTicks93. Preserveordinalunusedwidthcall,allarray/index/team-vs-player distinctions.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(Ljava/lang/String;BLjava/lang/String;Lkl;)Lwk;",
+      "originalName": "a",
+      "to": "loadRgbSpriteByName",
+      "evidence": "ic.java: astatic(String,byte,String,ResourceArchive)RgbSprite:resolvegroup/file namesanddecodeviaManaEvent.a;byteguardwrongcallsGameplayController.d(45)staticcleanupbetweengetGroupIdandgetFileId. Namesargorderfile,guard,group,archive;preserveXORandfailureorder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(Ljava/lang/String;II)Ljava/lang/String;",
+      "originalName": "a",
+      "to": "formatPlayerVictorySummary",
+      "evidence": "ic.java: a(String,int,int)String:formatplayerstructureincome/victorypointsandturnsuntiltargetsummary,battlefield.field_rchoosesscoretrackingvsincomeonly;wrongguarddrawhelperonlyafterearlyincome-onlyreturn. Templatesone-turn/two-three-turn/general;needliteralcaptionsreadbeforefinalname. Literal captions confirm income-only, current/target victory score, Victory in1turn and Victory inNturns summaries; all original overflow and early-return behavior retained. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(Ljd;B)I",
+      "originalName": "a",
+      "to": "findTileContainingUnit",
+      "evidence": "ic.java: a(Unit,byte)I:findtilecontainingexactunitreference bylinearoccupant scan;nullbattlefield/tilesreturn-1,wrongbyteguardreturns1beforeloop,keepsnulltile+obfuscationpathfailures andidentitycomparison.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -71511,10 +71707,178 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ic.a(Lvb;Z)Z",
+      "originalName": "a",
+      "to": "canOverlapPresenter",
+      "evidence": "ic.java: a(EventPresenter,bool)Z:booltrueornullpresenterfalseelsedelegatesa(false,presenter.event);classify overlap roleaftereventpredicatecallersreview. Presenter adapter for event-overlap classification; advanceBattle uses this to permit overlapping queued event presentation. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(Z)Z",
+      "originalName": "a",
+      "to": "canAcceptPlayerInput",
+      "evidence": "ic.java: a(bool)Z:queryplayerinput eligibility:wrongfalseflagfield_L117then !matchover,controlled=current,!field_bc,noeventpresenters,field_j0,emptyManaParticles,!field_bb. Keep predicates/readorderandallaliascalls.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(ZIBII)V",
+      "originalName": "a",
+      "to": "drawPlayerRuneReward",
+      "evidence": "ic.java: a(bool,int,byte,int,int)V:noncampaignresultplayerrewardbadgefrombattlefield.field_rbpluslocalfield_Gbbonus,backgroundvariantbool,coinicon/amountandhoverrunecreditcaption;byteguardmodulolateafterrankarraylookup. Needcaption/helperroles beforefinalname. Results rune reward badge and optional prestige-refund tooltip; literal caption explains quadruple rune-rate refund until progression credit is exhausted. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(ZILjd;)V",
+      "originalName": "a",
+      "to": "selectUnit",
+      "evidence": "ic.java: a(bool,int,Unit)V:selectunit/toggletotileonsameunit,savespreviousselection,cleartile/currentUIflags,labelscrollwidth,clearplannerifnullorprepareForUnitifnonnull,optionalAIreevaluationdebugmode2,optionalsoundandinteraction4. Wrongintguardmusicnullbetweenpreviousstateandnewwrites. Preserveold/newaliases andsameunitresetmovementtarget.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(ZLjava/lang/String;B)V",
+      "originalName": "a",
+      "to": "showBattleError",
+      "evidence": "ic.java: a(bool,String,byte)V:byte<-117elseearlyreturn;playerrorUI sound,setfield_Sflag,timer50,messagefield_wb. Candidateerrornoticepurposependingrenderer/fieldroles.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(ZLjd;)V",
+      "originalName": "a",
+      "to": "selectUnitAfterEvent",
+      "evidence": "ic.java: a(bool,Unit)V:eventcompletionauto-selecteligiblelocalunitonlywhenno selectedunit andfield_y==-2;currentlocalturn/unspentmoveorattacks+attacktargetmaskbit4gates;temporaryprepareplannerandrestoreoldonlyspecificfailurepath,thenunitselectionhelper;boolfalseearlyreturnlateafterreadgates. Keepallpartialplannerstate.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a(ZLoj;)Z",
+      "originalName": "a",
+      "to": "canOverlapEventPresentation",
+      "evidence": "ic.java: a(bool,GameEvent)Z:booltrueornulleventfalse;eventtypes3/12/14/16/17/9andTurnEffect19effect5/3/2trueelsefalse. Purposeoverlapcompatibilityneedsphysicaleventsemantics/callerreview;do notguess merelynonblockinguntilverified. advanceBattle uses this event-kind whitelist to permit presentation overlap; preserve all listed types and effect subclasses exactly, not a generic nonblocking classification. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.a([BILjava/lang/CharSequence;IIB)I",
+      "originalName": "a",
+      "to": "encodeCp1252Range",
+      "evidence": "ic.java: astatic(byte[],int,CharSequence,int,int,byte)I:CP1252encoderange [param1,param3)intodestinationatparam4,exactextendedcharacterlookup,?substitutionforunsupportedincludingNUL,fullUTF16charunits,separatesurrogates,guarddivisionbeforeloopafterlengthdifference,negativecountreturnsdifferencewithoutwrites;partialbufferwrites/failureorder preserved.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.b(B)V",
+      "originalName": "b",
+      "to": "drawBattleTooltips",
+      "evidence": "ic.java: b(byte)V1291lines:mainhover/tooltips renderer,spellslots/debuglist,timer/chat/endturn/maptoggle/player/teamcoats/structurecounts,victorypoints,unitstats/movement/range/effects/equipment,terrainincome/cover/effects,chosen-godfavour,summonchoicesandmapmovementfailure hints. Setscamera scratchcoords/queriesmenusandcallsanchoredtooltiphelpersbeforefallbackfloatingmessage. Preserve earlywrongguardthis.a(-99,false),overwrittenbonus-strengthcaption,originalnullORarraylengthfailure,allhelper/RNG? no RNG observed,coordinate/alias/statewriteorder andflashingerrornotice. Read all0..220..440..660..880..1100..1291chunkswithoutgaps.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.b(I)V",
+      "originalName": "b",
+      "to": "submitChosenGods",
+      "evidence": "ic.java: b(int)V:sendchosen3gods:wrongguardCP1252nullencoderfirst;networkmodeopcode65length2thenfirstgod|128,second<<4|third;localmodeassignChosenGodsToAllPlayers(third,first,second,-9513). Preservepacketcallguardparam0+24937andfullintdomain.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.b(IBI)V",
+      "originalName": "b",
+      "to": "drawLowerParticipantResultCards",
+      "evidence": "ic.java: b(int,byte,int)V:resultsremainingparticipantsrank3..count,negatesrankcaptioncounterfirst,palette/statuscoats+uppercaseplayername,rewardbadge;wrongbyte<=70nullManaStarqueuefirst,paramcount>3only,each110pxspacing. Rankindexfield_RbvsplayerIDdistinctionretained.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.b(II)V",
+      "originalName": "b",
+      "to": "handleBattlePointerAction",
+      "evidence": "ic.java: b(int,int)V933lines:mainbattlepointer/inputactiondispatcher;action16mapslivepointertopreviewtarget/spellerror/crossingdirectionandschedulesunitpopup;clearselectiononnonlocalturn;popupanimationupdatedbeforeclickgate;actioncodes1tutorial/2chat/3choosegods/4endturnafterpendingroutes/5minimap/6unitability/7..13god-directionchoices/14..15summonmenus/16unitselect/move/spell/tile/18skipcombat/19exit/20minimapexpand/21..22spellslots/23switchspells/24spectate/25playeroverview/26teamchat/27..28spellconfirmation. Rightpress/release short-dragcancel<400sqdist andsnapshotpointerlast. Preserveallguarddomains,UIqueries,paths,packet/worldmusic/writes,andobfuscationflows. Read0..230..460..690..933all.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.b(III)V",
+      "originalName": "b",
+      "to": "drawSelectedRankAwards",
+      "evidence": "ic.java: b(int,int,int)V:rankedparticipantcommendations/resultslist card,selectedrankmappedtorankedParticipants,cache217xmax192bitcount*19,SocketFactory.field_g16flags,scrollNanoGameClock/3,wrongguardstartEquipmentTutorialbeforeclipping. Needliteral listpurposeconfirmation,distinctfroma(III)directplayerindex variant. Preserveallsharedcachealiases/rasterrestoreconditions. The same16award captions as the direct-player variant; maps selected result rank through rankedParticipants before indexing flags. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.b(IIII)V",
+      "originalName": "b",
+      "to": "drawTeamStructureCounts",
+      "evidence": "ic.java: b(int,int,int,int)V:3structureiconsandteamcounts/totaltext18pxrows;guard-12857elseearlyreturn,functionalteamindex,x,y,exactcallorder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.b(IIIII)V",
+      "originalName": "b",
+      "to": "drawTeamResultCard",
+      "evidence": "ic.java: b(int,int,int,int,int)V:teamresults340x160card,teamname/palette,membercoats+rewardbadges,3structurecounts;spacing260/teamSize(functionaldomainzeroerrorsretained),wrongguardcallsinputeligibilityfirst,rankfield_RbcomparisonusesplayerIDhere.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.b(IIZ)I",
+      "originalName": "b",
+      "to": "findNextOwnedPortal",
+      "evidence": "ic.java: b(int,int,bool)I:findnextownedterrain7portalaftercurrenttile (negative starts0),boolfalseimmediate-87afterstartcalc,scanexactownerandterrain7,nulltiles/obfuscationpath,return-1. Needterrain7literalconfirmation beforeportalname. MapTile.isPortal recognizes terrain7 or11; this iterator deliberately accepts terrain7 only. Retain exact-type restriction, not a broader isPortal call. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.b(IZ)V",
+      "originalName": "b",
+      "to": "drawBattleFrame",
+      "evidence": "ic.java: b(int,bool)V308lines:mainbattleframe renderer:earlyunreadyclearsraster,transitionorresultsrendering,terrainbase/options,gridhighlightwhenbool,world/path/overlays/toasts/UI/presentations/spellconfirmation,endturnanimations/chat/tooltips,manastars/turnbanners/tutorialanddebugchecksums. Containsrender-timefield_Handfield_ibincrements,decrements,alloriginal bool/int guards/call/alias/RNGorder preserved. Read0..210and210..308.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.b(Z)I",
+      "originalName": "b",
+      "to": "resolvePointerAction",
+      "evidence": "ic.java: b(bool)I658lines:resolvepointeractioncode pairedwith b(II)inputdispatcher. Callsmetrics,boolisfunctionalinputtohelpers,clearsfield_jwhenmatchover,earlytransition/notice guards,hitpriority/tutorial/chat/endturn/mapoverlay/playercoat/spell/action/god/summonworld;mutatesBattleTutorial.field_nskiphover,sharedcamerascratch. Minimapmaskshapequeries andfallback16world/-1ignore;allgeometryboundarydifferences preserved. Read0..210..440..658.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.c(B)V",
+      "originalName": "c",
+      "to": "drawSelectedMovementPath",
+      "evidence": "ic.java: c(byte)V:drawselectedpathifplanner.selectionActive,thenbyteguardmodulo;do notmoveguardbeforeoptionaldraw.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.c(I)V",
+      "originalName": "c",
+      "to": "sendRandomBattleDebugPacket",
+      "evidence": "ic.java: c(int)V:writeopcode65thenintguardmodulo,RNGlength5+bounded15,writebyte length andthatmany random0..255bytes. This is deliberately framed/randompacket behavior;exact-purposecallercheck required,do notinventkeepalivewithouttiming/protocol evidence. Only debug-key paths in handleBattleKeyInput call the randomized opcode65 packet writer, including repeated calls; no keepalive claim. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.c(II)Ljava/lang/String;",
+      "originalName": "c",
+      "to": "formatCompactAmount",
+      "evidence": "ic.java: CompactK/M/Bamountformatter;>=1e9returns lots beforedivisionguard,>=1e8shows0.xB,>=1e7wholeM,>=1e5decimalM,>=1e4wholeK,>=1000decimalK,else signeddecimal. Preserve unintuitive thresholds andnegativevaluefullintdomain.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ic.c(III)V",
       "originalName": "c",
       "to": "focusCameraOnTile",
       "evidence": "ic.java: Stores the flattened tile, marks pending focus and clears the two other camera-follow flags.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.c(IIII)V",
+      "originalName": "c",
+      "to": "drawSummonUnitStats",
+      "evidence": "ic.java: Summonunitstatcard:themetintedbackground,corner-shadows,sharedraster150origin,name/favour/mana-cost/strength/speed/range/category/perktext,model34usesmodel75range. Functionalparam2controlsneutralfavourindexvsunitgodandtemplateXOR. Preserve measure/draw/order/aliasandonlynormalrasterrestore plusoutline mutation.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.c(IZ)V",
+      "originalName": "c",
+      "to": "updateAiDebugOverlay",
+      "evidence": "ic.java: AIdebugscoreoverlay updater,originalaiPlanners.length>=selectedindexcondition (offbyonestays),boolforwardedplannerupdate,modecaptionnormal/capture/ownpower/enemypower/unitvalues,full-intLineOfSightGridhelper. Wrongintguardnullpresenterquerymidsequence.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.c(Z)V",
+      "originalName": "c",
+      "to": "cycleSpellMenuMode",
+      "evidence": "ic.java: Cyclebattlespellmenu mode0/1/2withrunecap anddebugheld82/86gates,clearselectedspellalways,slotfield_nc onlywhenboolfalse;preservefullbooldomains.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -71525,10 +71889,101 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ic.d(I)V",
+      "originalName": "d",
+      "to": "releaseStatics",
+      "evidence": "ic.java: Staticcleanupfield_A=null thenwrongguard>=-95callsnullarchiveRGBloader;preservepartialstate/exceptionorder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.d(II)V",
+      "originalName": "d",
+      "to": "beginCombatPresentationPause",
+      "evidence": "ic.java: Begincombatpresentationpause:guard4earlygate,networkmodeassertfield_db0,ifcontrolled=currentmarkpaused/sendopcode74,recordbattleIDandticktimestamp;localmodeinteraction16/pausedflag. Exact networkwritebeforeID/timestamp andwrongdomainbehavior.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.d(III)Z",
+      "originalName": "d",
+      "to": "isTwoByTwoTileBlockInBounds",
+      "evidence": "ic.java: Query2x2terrainblock inmap:checkscoords,width/height/tiles array adjacent indexes including diagonal;excludesfinalrow/colimplicitly;latewrongguardrebuildcoats. Preserveallread/order/fullintoverflow. Pure coordinate/array-neighbor validity test apart from original wrong-guard coat rebuild; checks a2x2 tile block, not terrain content. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.d(IZ)V",
+      "originalName": "d",
+      "to": "leaveBattle",
+      "evidence": "ic.java: Exitbattle/sessiontransition:clearbattleTutorialfirst,nonnetworkregularguest/accountreturn to main/equipment/savepromptaccordingpendingachievements/score, campaignquickdeleteonmatchoverelsequicksaveifownturnanddirty,opencampaignmenu,globalsSocketFactoryfalse/QuickChatDisplaytrue;latewrongguardstartequipmenttutorial. Boolforwardstotransitions.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ic.d(Z)V",
       "originalName": "d",
       "to": "prepareMatchResults",
       "evidence": "ic.java: Prepares result presentation and submits local campaign metrics when the local slot is the active player.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.e(B)V",
+      "originalName": "e",
+      "to": "prepareTurnConsequences",
+      "evidence": "ic.java: Prepareturnconsequences delegate(true,!network,0),wrongbytefirstdrawresults.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.e(I)V",
+      "originalName": "e",
+      "to": "rebuildPlayerCoatSprites",
+      "evidence": "ic.java: Allocatecoatspritecache perplayer usingplayerlabel/teamGame;wrongguardnullsmanaparticledequeafterallocationbeforeloop. Aliases/cacheallocationandpartialstatepreserved.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.e(II)V",
+      "originalName": "e",
+      "to": "finishCombatPresentationPause",
+      "evidence": "ic.java: Finishcombatpresentationpause pairedwithd(II):guard-56first,localinteraction17/unpause,networkassertmatchingbattleID,ifowncurrentturnsendopcode73,byteIDandelapsedtickshort thenunpause;field_db0last. Preserveticksintwrap/shorttruncation.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.e(III)V",
+      "originalName": "e",
+      "to": "selectSpell",
+      "evidence": "ic.java: Selectspellcastmode:pendingcastreturn,clearpriorselectionbeforewrongguardcontrolledPlayer27;validatecurrent/humanorerrornotice,immediatespellmode4requestswithouttile,elsedeselectunit/clearpath/setspellandbookslot,notifytutorial. Allerrorandcastorderingretained.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.e(Z)V",
+      "originalName": "e",
+      "to": "drawMatchResults",
+      "evidence": "ic.java: Drawmatchresults:clearraster/background/frame/title,team2cardsplusrankedawards/campaignstats withinnerRuntimeExceptioncatch,elsethird/remaining/first/secondcards andawarddetails. Boolfunctionalcoordinateguardinput;preserveallocation/raster/catch/arrayindexandrank-vs-playerdifferences.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.f(B)V",
+      "originalName": "f",
+      "to": "submitPreparedMovement",
+      "evidence": "ic.java: Submitpreparedmovement/attack:ownturn/busy/timeguards,selectionActivefalsebeforepacket/localprepare,networkwritesmoveorattackchain,localPreparedActionorSphinxActionRequestapply,spellinteraction27,selectnull+clearcarriedunit;byteguarddivisionlate. Preservepossible nullPreparedAction deref andallpartialwrites.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.f(I)V",
+      "originalName": "f",
+      "to": "drawLocalTurnHandover",
+      "evidence": "ic.java: Drawlocalhandover-screen;backgroundhelper,captionsunlessfield_bb,titleimage,currentplayername+coat. Initialdrawoutsidecatch,negativecurrentearlyreturnbeforeguardmodulo;preserveboundaries.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.f(II)I",
+      "originalName": "f",
+      "to": "getBattleUiBottomAtX",
+      "evidence": "ic.java: GetUIbottom-at-x geometry:guard128wrongnullcamera,ifx>rootCombatEvent.field_I.widthreturnrasterheightelse root.screenY;exactstrictgreaterandfullintdomain retained.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.f(III)V",
+      "originalName": "f",
+      "to": "applyTurnChange",
+      "evidence": "ic.java: Applynewturn:Battlefield.applyTurnChange(true,param1,param0),sound,ifparam2nonzeroearlyreturn;elseintro100/timerfromturnoption,allunitscommittedfalse,overviewtrue,inputlockfalse,pausedtrue. Preservewritesoutsidecatch.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -71539,10 +71994,101 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ic.g(B)V",
+      "originalName": "g",
+      "to": "drawCompactMinimap",
+      "evidence": "ic.java: Drawcompactminimapwhenmapsize!=4andpaneloffsetpositive:themedterrain/ownership/unitsgrayscalesprites,movingunitpulses,viewportcompassmanyexactlinecalls,masktogglehighlight. UsesmapWidthforbothloopsanddimensions,keepthatquirk;latebyteguardfield_fb2;cliprestorenormalonly.222linesallread.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.g(I)I",
+      "originalName": "g",
+      "to": "getFavourPanelCenterX",
+      "evidence": "ic.java: Getgodfavourrowxcenter=rasterwidth/2-50;wrongguardcallsworlddrawhelper k(1)first.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.g(II)I",
+      "originalName": "g",
+      "to": "drawTurnBannerBackdrop",
+      "evidence": "ic.java: Drawturnbannerbackdrop/transition:integercubicoffset timer*(timer-50)^2 arithmeticandpassedsecondparam,blackalphasinfill,titleimageoffset,returnoffset. Bothintsfunctional;preserveintoverflow/floatorder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ic.g(III)V",
       "originalName": "g",
       "to": "notifyTutorialInteraction",
       "evidence": "ic.java: Forwards interactionKind and tileIndex to the current BattleTutorial when present.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.g(Z)V",
+      "originalName": "g",
+      "to": "handleBattleKeyInput",
+      "evidence": "ic.java: Battlekeyboardhandler379linesfullread0..220/220..end:escpausestagemenu,debughealth89/toggles,chatreturn,skipturnorcombat,keyfullscreen,endturnctrl,unitcycleforward/backwithunspentmove/focus,help200,minimapexpanded/spellmode,AIdebug/grants/spawn/pauseandrandompackets. Preserveduplicateddebuggrant/randompacketcalls,keydownmodifier/stategates,postdecrementloopboundsandwrongboolbannerhelper.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.h(B)V",
+      "originalName": "h",
+      "to": "requestResign",
+      "evidence": "ic.java: Network-only opcode66requestwithIllegalStateException iflocalmode,wrongbyteclearsnoticemessageafterwrite;callerrolepending review. Tutorial item11 invokes this. Menu initialization maps item11 to TilePosition.field_p literal Resign. Preserve local-mode exception before opcode66 and late byte guard. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.h(I)V",
+      "originalName": "h",
+      "to": "drawTurnControls",
+      "evidence": "ic.java: Drawturntimer/endturnbuttonandminimaptoggle:campaigntimeromitted,glowstate/fullinputeligibility repeatedchecks,buttonhover/pulse,guard82returnsbeforeminimapicon. Preservefont/draw/timer/aliascalls.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.h(II)V",
+      "originalName": "h",
+      "to": "activateSelectedUnitAbility",
+      "evidence": "ic.java: Selectedunitability/deployrequest:ownturn/busy/timeguards;unit72togglesadjacent-unitselection,34structureerror,7terrain0godchooser,17directionchooser;negativechoiceclamp0;networkopcode65type97/98coords+optionalchoice,localDeployRequestprepare/applyifnotmoved;clearunitselectionlast. Guardmoduloafterselectedunitnullcheck. Preserveexactarray/data paths.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.h(Z)V",
+      "originalName": "h",
+      "to": "initializeBattlePresentation",
+      "evidence": "ic.java: Initializebattlepresentation:allocatepresenters/camera/unitrenderer,sharedcameraref,modelrefreshhelper,center-mapdefault/firstplayerunitfocus,snapcameraunlessmatchover,allocateminimaprasterbysettings. Boolwrongfield_Gb-93writealsopassedtosnap;duplicatewidth-centereddefaultretained.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.i(B)V",
+      "originalName": "i",
+      "to": "drawUnitInfoPopups",
+      "evidence": "ic.java: DrawqueuedUnitInfoPopupsusingcurrentselectedunit,controlledplayer,cameracurrentposition,battlefield;byteguard-69earlyreturn,retainiteration/callorder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.i(I)V",
+      "originalName": "i",
+      "to": "requestNetworkEndTurn",
+      "evidence": "ic.java: Requestendturnnetworkmessage:opcode65cipherguardparam0^32161,length1andcommand64guardparam0+1,setsremainingTurnTicks=param0thenpausedtrue. Param0canonical0functionalguardmix,notdiscardable.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.i(II)Ljava/lang/String;",
+      "originalName": "i",
+      "to": "getSpellUnavailableMessage",
+      "evidence": "ic.java: Spellselectionfailurecaption:castdelayfirst,guardmodulothenifpositiveformatavailableturnfromdelay+playerTurnCount+1;elserunecap!=4andremaining<costformatscaperror;elsenull. Exactfullsignedmath/readorder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.i(Z)V",
+      "originalName": "i",
+      "to": "advanceSelectionPanel",
+      "evidence": "ic.java: Advanceselectedunit/tilepanel:openoffset+5upto80,labelpingpongscrollwith100/200hold,oldpaneloffset-5andclearsoldaliasesonlyat0;wrongtrueboolsubmitmovementafteranimation. Keepalltiming/repeatedbranches andpartialstate.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.j(B)V",
+      "originalName": "j",
+      "to": "acknowledgeTurnIntro",
+      "evidence": "ic.java: Acknowledgeturnintrocompletion:guard109elseearlyreturn;ownturnopcode73command0elapsedtickshort,resetturnticksandunpause. Tickdiffwrapandpacketorderpreserved.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -71560,6 +72106,139 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ic.k(B)V",
+      "originalName": "k",
+      "to": "startBasicBattleTutorial",
+      "evidence": "ic.java: Startbasicbattletutorial:map0/1,replacemovementplanner/tutorial,clearsAIplanners,rune/spell/turnflags,first3gods0..2favour1,2namesandcoats,player0/current/ticks;latebyteguardquery. Preserveallallocation/global/localcoat alias/order.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.k(I)V",
+      "originalName": "k",
+      "to": "drawPlayerStatusSidebar",
+      "evidence": "ic.java: Drawrightplayer/teamstatussidebar346linesfull0..220+220..end;lazycoatcache,teamcurrentgroupverticalvsotherhorizontal/playercounts,VPbarsandteamlabels;nonteamtop3activeplayersbycollectedmana/tiesbasedturn-relativeindex,ranksmedals/glow,palettes/statusflags. WrongguardcontrolledPlayer1first,temporaryarrays sorting/nosharedstatechangesexceptcache,allrender/RNGnone/order retained.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.k(Z)V",
+      "originalName": "k",
+      "to": "handleResultsPointerInput",
+      "evidence": "ic.java: Resultspanelpointerhandling:noncampaignonly,titlehovercyclesselectedparticipantandinvalidatescommendationcache,clickmain/second/third/lowerplayercardsor2teamcardsselectsrank/player;boolfalseearlyreturnbeforelowerrowonly;exactgeometry/playerIDvsrankindex differences anddivision260/(playerCount/teamCount).  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.l(B)V",
+      "originalName": "l",
+      "to": "requestReturnToLobby",
+      "evidence": "ic.java: Networkonlyopcode68request(action24resultsbutton),throwsiflocalbeforeguard108earlyreturn;purpose likely leave/spectate continuation needscaller/wireevidence. Tutorial item13 invokes this and item13 maps to DeployAction.field_v literal Return to lobby; pointer results action24 also invokes it. Keep wrong-guard return after local-mode exception. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.l(I)V",
+      "originalName": "l",
+      "to": "drawMinimap",
+      "evidence": "ic.java: Drawminimapdispatcher:wrongguardfield_fb31thencompactg(byte118)orexpandedq(2)byglobalmode;keepobfuscationpossibilityofbothdraws.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.l(Z)Z",
+      "originalName": "l",
+      "to": "handleCompactMinimapClick",
+      "evidence": "ic.java: Handlecompactminimapclick:setsfield_Pb=bool,field_Xbfalsebeforebounds,settings-specificscale/padding,convertslivepointertorotation/worldcoords,camera.setWorldPosition,returnbool. Bothviewportflagsupdatedevenmiss;fulloverflow/division preserved.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.m(B)V",
+      "originalName": "m",
+      "to": "advanceTurnCountdown",
+      "evidence": "ic.java: Advanceturncountdown:negativecurrentreturn;decrementticksbeforeguardmodulo,beepsat<=500every50includingzero/negative;do notclamp.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.m(I)V",
+      "originalName": "m",
+      "to": "drawDebugSpellStrip",
+      "evidence": "ic.java: Drawdebugall-spellstripwhenfield_Pandfield_n!=256,7slots-1..5withscrolloffset,turnavailability/dimmedalpha,selectionglow/icons/numbers/arrows;outofrangeiconusesRNGcolourcirclesatdrawtime. Wrongguardfield_rfalseonlyinsidevisiblegate. PreserveallRNGcallcount/order,NaN/overflow/clip state.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.m(Z)Z",
+      "originalName": "m",
+      "to": "handleMinimapClick",
+      "evidence": "ic.java: Handleminimapclickdispatcher:compactcalls l(false)regardlessinputbool,expandedt(217)onlyifboolfalseelsetrueflagreturnsfalse. Noaddedbounds/statechanges.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.n(B)I",
+      "originalName": "n",
+      "to": "getEndTurnButtonOpacity",
+      "evidence": "ic.java: Endturnbuttonopacity=128+2*field_ibafterbyteguarddivision;preservesignedoverflow/domain.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.n(I)V",
+      "originalName": "n",
+      "to": "drawGodFavourPanel",
+      "evidence": "ic.java: Drawgodfavour/spellpanel:incrementglobalparticlePhasePercentmod100beforeguardandvisibility;renderchosenorplaceholdergodicons/rings/highlight,optionalmana badge,thenequippedanddebugspellstrips. Wrongguardfield_bbtrue;allaliases/float/int/RNGcalls viahelpers retained.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.o(B)V",
+      "originalName": "o",
+      "to": "drawGameStatusSummary",
+      "evidence": "ic.java: Drawgamestatussummarypanel:controlledplayerfallbackcurrent,leadercomparisonbool,multiplehelpersbackground/icons/turnordinal/structurecounts/VPbar/sharedsprite,optionalpulsefield_fc. WrongbyteclearsbattleTutorialaftereligibility;keepallrasterintermediatealias/order.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.o(I)I",
+      "originalName": "o",
+      "to": "getBattleUiBottom",
+      "evidence": "ic.java: GetbattleUIbottom delegatesf(128,0);wrongguard<124exitbattlefirst. Keepread/failureorder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.p(B)V",
+      "originalName": "p",
+      "to": "maskExpandedMinimapCorners",
+      "evidence": "ic.java: Maskoffscreenexpandedminimaprastercornerswithfourblackrowlines,guard-71afterrasterhalfdimreads,fulldimensions/off-by-oneheight-y/readzeroheight behavior preserved.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.p(I)V",
+      "originalName": "p",
+      "to": "drawGodSelection",
+      "evidence": "ic.java: Drawinitialgodselection202linesallread:6availablegodsradialicons,3selectioncosineanimations/framecaches/interpolation/jump/glow,updatesrastertargettemporarilywithnofinally. Guard20afterallocating3intarray/cosines,somecanonicaltempalphaandcastsretainclasscastARGBassumption;callsn(-12)advancesparticlecounterasbefore.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.q(B)V",
+      "originalName": "q",
+      "to": "cycleUnitOrPortalFocus",
+      "evidence": "ic.java: Cyclebattlefocusunit/ownedportal:onlylocalcurrentturn,activepresenterssetsfield_Pbreturn,discardstalehint,findnextunitthenportalwrapping,select/preparemenus/favour,focuscamera;latewrongbyteclearfield_dc. Terrain7pendingconfirmationasportal;exactiteratorownership/no-actiongates retained. Focus cycle combines active unit iterator and terrain7-only owned portal iterator; preserve this narrower portal subtype and all focus/selection writes. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.q(I)V",
+      "originalName": "q",
+      "to": "drawExpandedMinimap",
+      "evidence": "ic.java: Drawexpandedisometricminimap271linesallread:terrain/owner/units,AIdebugheatmapwithFloat.MIN_VALUE/MAX_VALUEandNaNcomparisonhelper,per-settingprojection/maskbutton,pulsemovingunits. UsesmapWidthbothloops,preservesfloatequalrangeNaNdiv/bit-colours,temporaryrasterlines+cornermask,restorenormalpath,andfunctionalparam0usedXOR/drawingarithmeticcanonical2.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.r(B)V",
+      "originalName": "r",
+      "to": "endCurrentTurn",
+      "evidence": "ic.java: Endcurrentturn:guardmodulo first,clearspellconfirmation,campaignquicksave/blockedportalelimination/hints,networkendcommandorlocaldrainManaStars/advanceconsequences/resetUI/player/AI/transition/timers,musicturnsound,4debugglobalresetslast. Preservependingmanaparticle application loop,selectedunit/AIindexesfailure,allworld/write/callorder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.r(I)V",
+      "originalName": "r",
+      "to": "requestRematch",
+      "evidence": "ic.java: Networkonlyopcode67request,throwsiflocalthenwritebeforeintguarddivision;exactpurposependingcallerreview. Tutorial item12 invokes this, and WhirlpoolHasher.d sets item12 captions to Offer/Accept/Cancel rematch or Set up new game. Item5 also uses it on the rematch flow. Preserve opcode67 before int guard division. Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ic.s(B)V",
       "originalName": "s",
       "to": "saveCampaignQuicksave",
@@ -71567,10 +72246,66 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ic.s(I)V",
+      "originalName": "s",
+      "to": "drawMenuBackground",
+      "evidence": "ic.java: Drawbattlebackground:if!B(34)tileMatchConditionEntry.field_nacrossrasterelseAchievementNotification.field_mbrightness96at0,0;wrongguardfield_ic85late. This establishesBsolecallersbackgroundrole,candidateusesMenuBackgroundImage. Preservezeroassetsizeinfinite-loops/nulls andrenderorder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ic.t(B)V",
       "originalName": "t",
       "to": "startEquipmentTutorial",
       "evidence": "ic.java: Resets planners, creates EquipmentBattleTutorial and installs the existing two-player tutorial setup.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.t(I)Z",
+      "originalName": "t",
+      "to": "handleExpandedMinimapClick",
+      "evidence": "ic.java: Handleexpandedminimapclick:resetsfield_Pb/field_Xbfirst,per-setting scale/padding,usesparam0inoneboundsedgecanonical217then pointertoworldcoords/cameramove. Allboolhelperbounds/intmath/partialstate preserved.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.u(I)V",
+      "originalName": "u",
+      "to": "drawManaCounter",
+      "evidence": "ic.java: Drawmanacounterbadgeusingcompactamountformatter,wrongguardinvokescompactminimapclickfirst. Functionalcurrentplayerarraysandgeometryunaltered.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.v(I)V",
+      "originalName": "v",
+      "to": "drawSelectionOverlays",
+      "evidence": "ic.java: Drawsummon/unitability/tile-unitinfooverlays169linesallread:invalidsummonpermissionclearsfield_yandearlyreturn,drawgod/unitradialsandunitstatpopup,directiondiamondvalidityandarrowicons,threegodorbpositionlayout,cachedoldandselectedtile/unitpanels;clearsoldaliasesatfade0. Wrongguardmusicnullfirst,cameraprojectionandallsharedsprite/raster/statewrites preserved.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.w(I)V",
+      "originalName": "w",
+      "to": "advanceAmbientSoundTimer",
+      "evidence": "ic.java: Ambient-effecttimer:decrementbeforewrongguardstaticfield_f79,whenexact0choose/playthemeambient,if<=0reset50+RNG200. PreserveRNG0vsnegativecases/orderandguard-derivedambientarg.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.x(I)V",
+      "originalName": "x",
+      "to": "advanceGodSelection",
+      "evidence": "ic.java: Advance3godselectionanimations+4upto384,at320assignchosenGod/currentindex/favour1;whenlast384andselected3rebuild/sendgods,localturnchange+tutorialinteraction29orhandover,field_Cbtrue. WrongguardAIoverlayhelperfirst;preserveloops,aliases,network/localworld/packetorder.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.y(I)V",
+      "originalName": "y",
+      "to": "reportPlayerStatusChanges",
+      "evidence": "ic.java: Reportplayerstatuschanges:inplacexorpreviousmasksagainstcurrenteliminated/inactive/field_C,then toaststatusperplayer(incinactivepriorityoverelimination),thenstorecurrentmasks. Wrongguardselectspellbeforeloop;obfuscationmaypreventsomefinalstores,aliases/partialxorstate retained.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ic.z(I)V",
+      "originalName": "z",
+      "to": "drawEquippedSpellStrip",
+      "evidence": "ic.java: Drawequippedspellradialstrip5slots,availability/costcaptionhelper,selection/dimming/frame/glow,currentanimationradius;wrongguardreturnsafterstripbeforemode-switchicon. Rune/debugvisibilityconditions,allsignedshift/floatmath/calls preserved.  Naming only: preserve descriptors, modifiers, full primitive domains, guards, literals, allocations, locks, aliases, arithmetic and failure order.",
       "confidence": "reviewed"
     },
     {
@@ -140273,7 +141008,7 @@
       "tests/archive-index-probe.mjs": "4992a63947177cd20b0a471fc4c03720d0da2508bde85f5fc6c8e8edcb710ec6",
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
-      "armiesofgielinor-names.json": "4fab7a865f3e8b1c3e07e9487369f9c63e645529c9316c569163e76a65949912"
+      "armiesofgielinor-names.json": "53972976eed601f8b169600d1d343cd9ecfb6eeb90c3773f21660d3dcf2aec9d"
     }
   },
   "generators": {
