@@ -11560,10 +11560,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:km.a(BII)V",
+      "originalName": "a",
+      "to": "applyTurnResult",
+      "evidence": "Reset territory production budgets, decode supplied alliance bit matrix, run turn using supplied seed and set map animation seed. Preserve byte<=89 local-player clear between decoding and turn processing. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:km.a(BLfs;)V",
       "originalName": "a",
       "to": "clearPlayerStars",
       "evidence": "Clears owner and territory of every star in the player's territories and unlinks them.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.a(BLfs;Lfs;)V",
+      "originalName": "a",
+      "to": "submitAllianceOffer",
+      "evidence": "AiHost implementation submits first player offer to second; suppress self/duplicate offers, set reciprocal offer masks and form three-turn non-aggression pact if reciprocal. Multiplayer debug path delegates local proposeAlliance first. Preserve exact warning/turn-chat callbacks, notice ordering and byte guard. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -11578,6 +11592,20 @@
       "originalName": "a",
       "to": "refreshMapView",
       "evidence": "Copies star owners, garrisons and territories into the arrays handed to the MapView.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.a(IBI)V",
+      "originalName": "a",
+      "to": "handleMapClick",
+      "evidence": "Update hovered map target then dispatch click according to current interaction mode: select fleet origin/destination, place fleets, select project targets or wormhole endpoints. Read whole300line implementation and left-click caller. Preserve key-dependent fleet quantities, movement/alliance checks, sound chain/pitch arithmetic, UI transitions and guard returns. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.a(IBLfs;Lfs;I)V",
+      "originalName": "a",
+      "to": "displayAiChat",
+      "evidence": "AiHost implementation selects random retained chat template for category when recipient is local player or single-player player0, substitutes largestplayer/you/me/system, then appends speaker chat. Preserve template/index/null/negative-star failure domains, random call count and guard division. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -11602,6 +11630,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:km.a(ILln;I)V",
+      "originalName": "a",
+      "to": "queueStarProject",
+      "evidence": "Find existing project by type or allocate one with local player and star, update target then append to active projects. Multiplayer also appends to pending changes and schedules send. Preserve intrusive alias/relink behavior, branch fallthrough and guard-derived arguments. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:km.a(ILln;Lln;I)V",
       "originalName": "a",
       "to": "queueProjectUse",
@@ -11609,10 +11644,38 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:km.a(ILob;I)V",
+      "originalName": "a",
+      "to": "readTurnOrders",
+      "evidence": "Delegate GameState turn-order decoding using supplied byte count and buffer; wrong first int clears retained garrison work array afterward. Packet67caller read. Preserve partial buffer/state writes and late guard clear. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:km.a(Lfs;B)V",
       "originalName": "a",
       "to": "proposeAlliance",
       "evidence": "Sets the alliance bits between the local player and the argument and sends packet 59 when online.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.a(Lfs;I)V",
+      "originalName": "a",
+      "to": "updateProjectedGarrisons",
+      "evidence": "Compute two retained per-star fleet/ownership projections from selected player and pending incoming orders, exclude hostile-neighbour cases, then propagate rule-dependent abandonment/garrison requirements to a fixed point and forward all eight original arrays to MapViewState. Complete327line body and complete map setter read; setter retains only four supplied arrays. Preserve unused calculations, guard advanceLocalPlayerTurn callback, loop/control flags, distances and exact array aliases. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.a(Lfs;ILfs;)V",
+      "originalName": "a",
+      "to": "handleAllianceFormed",
+      "evidence": "Enqueue local/other-player non-aggression-pact notices, trigger tutorial signtreaty hook, recompute projected garrisons and notify first player AI. Complete notice strings and reciprocal alliance mutation callers read. Preserve flag-dependent multiple notices, late int guard null and callback order. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.a(Lfs;Lfs;Z)V",
+      "originalName": "a",
+      "to": "showAllianceOfferNotice",
+      "evidence": "Enqueue sent or received non-aggression-pact notice according to local player, then call recipient AI turn-chat callback. Complete offer strings and local/network offer callers read. False bool invokes original null fleet-move path afterward; preserve all guards and queue aliases. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -11644,10 +11707,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:km.a(Lob;II)V",
+      "originalName": "a",
+      "to": "readDiplomacyUpdates",
+      "evidence": "Decode length-delimited diplomacy updates: offer-mask changes generate received notices; pact messages set bilateral three-turn alliance state, clear offers and invoke alliance-formed handler. Preserve byte consumption, unknown message behavior, partial writes, loop flags and early guard division. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.a(Z)V",
+      "originalName": "a",
+      "to": "beginPlanningPhase",
+      "evidence": "Show victory results, reset star planning garrisons/display snapshots, refresh projections and UI, run appropriate current-player AI or debug AI then count active players and handle game-over/loser presentation. Complete191line body read; local advancement and turn-result callers establish planning phase. Preserve System.gc, AI exception scope, allocations, tutorial/network callbacks and original branching. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.a(ZI)V",
+      "originalName": "a",
+      "to": "drawMap",
+      "evidence": "Forward event/project/fleet queues and debug display flag to MapView.drawMap after original int division guard. Complete body and render dispatcher callers read; preserve boolean arguments and evaluation order. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:km.a(ZILln;Lln;)V",
       "originalName": "a",
       "to": "queueFleetMove",
       "evidence": "Reuses or creates the local player's FleetMove between two stars and moves ships out of the origin.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.a(ZZ)V",
+      "originalName": "a",
+      "to": "handleGameExit",
+      "evidence": "On non-guard call clear single-player chat and begin menu transition; queue animation preferences when retained setting differs. End Game menu and client disconnect context read. Preserve multiplayer branching, second bool transition flag and first-bool no-op. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.a(Z[I)V",
+      "originalName": "a",
+      "to": "updatePlayerStatistics",
+      "evidence": "Accumulate per-player star/fleet/resource/production totals plus turn event placements, losses, battles, projects and movement, then update history slot, maxima and cumulative player stats. Complete261line body and turn-replay caller read. Preserve eight allocations, modulo100 indexing, division/overflow, null initial-count branch and false-bool display-owner clear. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.b(B)V",
+      "originalName": "b",
+      "to": "initializeGameScreen",
+      "evidence": "Construct map view and screen if absent, initialize planning projection arrays, broadcast single-player AI chat, recompute totals, register debug AI, mark empty players eliminated, begin planning and diplomacy and focus map. Whole162line body and constructor/client callers read. Preserve constructor flags, byte-specific setup, allocation order, AI callbacks and camera selection. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -11665,6 +11770,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:km.b(ILob;I)V",
+      "originalName": "b",
+      "to": "readAndApplyPlanningOrders",
+      "evidence": "Read orders then spend territory/combined production budgets for placements, add placed fleets, subtract outgoing fleets, invoke per-star helpers and recompute projected garrisons. Packet70caller read. Preserve full int count domain, partial updates and late modulo guard. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.b(Z)V",
+      "originalName": "b",
+      "to": "advanceTurnNotices",
+      "evidence": "Age diplomacy notices, unlink exactly when incremented age is2, then emit tutorial hooks for queued project types. Called before advancing local/network turns. Preserve iterator advance before true-bool return, original node mutation and hook iteration order. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.b(ZZ)V",
+      "originalName": "b",
+      "to": "tick",
+      "evidence": "Update camera/screen input, screen animation and map replay; expire queued sounds, decrement turn timer, auto-submit/checksum ready turns and send pending orders on original debounce/max-delay schedule. Main client update callers read. Preserve bool modes, signed timer/decrement/modulo and packet cadence. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:km.c(B)[I",
       "originalName": "c",
       "to": "shipsPerPlayer",
@@ -11679,10 +11805,45 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:km.c(Z)V",
+      "originalName": "c",
+      "to": "toggleDrawOffer",
+      "evidence": "Require multiplayer and send draw-state toggle packet63. Menu item11label switches Offer draw/Accept draw/Cancel draw from retained player draw mask. Preserve true-bool recursive extra packet and nonmultiplayer failure before recursion. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.d(B)V",
+      "originalName": "d",
+      "to": "advanceLocalPlayerTurn",
+      "evidence": "Advance local current-player index; on wrap reset budgets, resolve turn with fresh RNG seed, assign separate animation seed, choose year and update AI diplomacy, then set current player/timer and begin planning. Preserve tutorial first-turn budget zeroing, two RNG draws and wrong-byte null move callback. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.d(I)V",
+      "originalName": "d",
+      "to": "sendResignRequest",
+      "evidence": "For expected int require multiplayer then send resignation packet64. Menu item12uses Resign label. Preserve mismatched-int no-op before multiplayer check and original header argument. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.e(I)V",
+      "originalName": "e",
+      "to": "scheduleOrderSend",
+      "evidence": "If turn was submitted, send result/ready cancellation acknowledgement first; initialize maximum pending delay only for original complemented timer match and reset short debounce delay to25. Mutating move/project/placement callers read. Preserve exact int predicate and acknowledgement ordering. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:km.f(I)I",
       "originalName": "f",
       "to": "checksumOrders",
       "evidence": "Mixes the queued ProjectUse entries into an int checksum.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:km.g(I)V",
+      "originalName": "g",
+      "to": "handleKeyInput",
+      "evidence": "Handle Escape menu transitions and debug keys that remove player stars, submit turn or replace local orders with AI plans. Main key-event loop caller and complete182line implementation read. Preserve multiplayer input gates, wrong-int return, debug predicates, intrusive queue transfers and packet scheduling. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -12894,6 +13055,20 @@
       "originalName": "f",
       "to": "showDisplayNameForm",
       "evidence": "Closes the retained account status dialog, creates DisplayNameForm and installs it in the current content dialog.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mn.a(BLfs;Lfs;)V",
+      "originalName": "a",
+      "to": "submitAllianceOffer",
+      "evidence": "Abstract AiHost callback matching complete GameSession implementation and AI diplomacy callers. Declaration only; no body exists. Preserve public abstract modifiers, byte/player/player descriptor and complete override family. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mn.a(IBLfs;Lfs;I)V",
+      "originalName": "a",
+      "to": "displayAiChat",
+      "evidence": "Abstract AiHost callback matching complete GameSession implementation and AI warning/turn/broadcast callers. Declaration only; no body exists. Preserve public abstract modifiers, int/byte/player/player/int descriptor and complete override family. Identifier-only: preserve descriptors/modifiers, callback dispatch, full primitive domains, guards/recursion, literals, aliases, allocations, RNG/locks, clipping, overflow/casts, FP, partial state and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -19548,7 +19723,7 @@
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
-      "shatteredplans-names.json": "8f054d79b5c02ceff89a2740ed685977da99138fe9465468dc1c11e6c8fbfed8"
+      "shatteredplans-names.json": "0e61839bb092dbecd636cc52b35b158cbff2ca8db941134f94e04e0aa6762a80"
     }
   },
   "generators": {
