@@ -1486,7 +1486,7 @@ method("sm", "c", "(II)Ljava/lang/String;", "itemLabel", "Returns the label text
 method("aa", "k", "(I)Ljava/lang/String;", "linkEndTag", "Returns the markup that closes a coloured underlined link.");
 method("aa", "l", "(I)Ljava/lang/String;", "linkStartTag", "Returns the markup that opens a coloured underlined link.");
 method("aa", "a", "(ZLki;)Z", "validateField", "Checks one form field.");
-method("aa", "d", "(Z)Z", "validateAge", "Parses the age field as a number and checks it.");
+method("aa", "d", "(Z)Z", "submitAccountCreation", "Validate every form field,optionally request suggestions,parse age with original NumberFormatException fallback-1,and begin account creation using retained inputs. Complete sole submit-button caller,validateAll and beginAccountCreation helpers read. Correct builder-owned validateAge alias and evidence;preserve guard bool,validation order,partial UI/request state and returned request-acceptance result. Identifier-only: preserve descriptors/modifiers and override closure, full primitive domains and int companions, all guards/recursion, literals, aliases, allocations, RNG/clock/locks, raster state, integer overflow/casts/FP, partial mutations and call/exception order.");
 method("aa", "m", "(I)Z", "validateAll", "Validates every form field and reports whether all pass.");
 method("wk", "a", "([Lbi;I)Lwk;", "setSprites", "Stores the sprite array of the style and returns the style.");
 method("wk", "a", "(ILjava/lang/CharSequence;IZ)Z", "parseInt", "Parses a digit string in a radix from 2 to 36.");
