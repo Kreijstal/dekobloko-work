@@ -6156,6 +6156,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:cq.d(Z)I",
+      "originalName": "d",
+      "to": "pollFullscreenDialogAction",
+      "evidence": "Poll vertical keyboard selection and both pointer positions for fullscreen dialog buttons, map activated selection to retained action id, clear dialog state for original close/accept actions or cancellation outside confirmation mode, and on confirmation timeout return action2after opening timeout dialog. Complete59line body, action consumer context and builder read. Preserve bool cancel input, key code13, exact10999ms clock formula, index failures, poll/call order and timeout partial state. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, array/queue aliases, allocations, clock/RNG/locks, clipping/raster state, overflow/casts, FP, partial writes and call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:cr.a(B)V",
       "originalName": "a",
       "to": "clearStatics",
@@ -8771,6 +8778,13 @@
       "originalName": "a",
       "to": "setVolume",
       "evidence": "Stores the volume and applies a scaled value to the PcmSampleStream.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:gm.a(ZII)V",
+      "originalName": "a",
+      "to": "showFullscreenDialog",
+      "evidence": "Set mode/open flag then build one of six fullscreen membership/configuration/focus/confirmation/timeout dialogs: allocate wrapped text/action arrays, split singular/plural countdown templates, measure maximum width, calculate row heights/button hit rectangles, reset selection and capture confirmation clock. Complete309line body and all callers read. Preserve modes0..5and invalid-mode failure after initial writes, original array padding/indices, allocations/aliases, unused/guard parameters, wrap/measurement order and late division. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, array/queue aliases, allocations, clock/RNG/locks, clipping/raster state, overflow/casts, FP, partial writes and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -11422,8 +11436,8 @@
     {
       "symbol": "M:kd.a(B)V",
       "originalName": "a",
-      "to": "drawQuickChatMenu",
-      "evidence": "Full119-line draw body read: valid guard-119 gates all work, derive timed lookup countdown and replacement rows, compute text widths/colors/highlights, render normal/selected rows. Preserve timer casts/overflow, substitutions, indices and draw order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "to": "drawFullscreenDialog",
+      "evidence": "For byte-119render retained fullscreen dialog rows/buttons with selected styles and clock countdown; switch singular wording at1, substitute numeric countdown marker and draw text/nine-slice buttons. Complete119line body, producer and client draw caller confirm fullscreen role rather than Quick Chat. Preserve early byte return including cleanup guard call, live clock timing, integer truncation/clamp, original singular/plural indexing, shared arrays and draw/evaluation order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, array/queue aliases, allocations, clock/RNG/locks, clipping/raster state, overflow/casts, FP, partial writes and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -13258,6 +13272,13 @@
       "originalName": "a",
       "to": "readStar",
       "evidence": "Reads a star index from the packet and returns the star of the map.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:mg.e(I)I",
+      "originalName": "e",
+      "to": "getFullscreenDialogHeight",
+      "evidence": "Return cached fullscreen dialog layout height written by complete dialog builder. Int>=-77first clears retained unrelated AnimatedPanel; both branches return same shared height. Complete7line body and sole drawing caller read; source search confirms builder owns height writes. Preserve guard side effect and duplicate-return structure. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, array/queue aliases, allocations, clock/RNG/locks, clipping/raster state, overflow/casts, FP, partial writes and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -16840,8 +16861,8 @@
     {
       "symbol": "M:sa.a(I)I",
       "originalName": "a",
-      "to": "getQuickChatMenuWidth",
-      "evidence": "Return retained menu right-minus-left bounds; wrong int clears archive first. Exact producers compute both bounds from maximum menu string width; Quick Chat draw caller uses width with separately retained menu height. Preserve signed overflow and guard. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, aliases, allocations, locks/random, clipping, integer overflow/casts, FP, partial state and call/exception order.",
+      "to": "getFullscreenDialogWidth",
+      "evidence": "Return cached fullscreen text span right-minus-left established by complete dialog builder. Client fullscreen drawing path consumes width/height together. Complete6line body confirms old Quick Chat alias misleading. Preserve signed subtraction and wrong-int CipherPacketBuffer clear before shared reads. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, array/queue aliases, allocations, clock/RNG/locks, clipping/raster state, overflow/casts, FP, partial writes and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -18382,6 +18403,13 @@
       "originalName": "a",
       "to": "setBounds",
       "evidence": "Stores y, height, x and width. Resolved override family.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ts.a(III)V",
+      "originalName": "a",
+      "to": "drawCenteredMenuPanel",
+      "evidence": "Add30pixels to supplied width; for guard-1also add30to height and draw retained plain hexagon panel centered in640x480. Complete8line body and complete delegated panel helper read; client draw uses it for fullscreen dialog and separate menu, so name is shared-menu scope. Preserve guard/no-op, signed overflow and shift/center arithmetic, helper guard and all drawing order. Identifier-only: preserve descriptors/modifiers, full primitive domains, guards/recursion, literals, array/queue aliases, allocations, clock/RNG/locks, clipping/raster state, overflow/casts, FP, partial writes and call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -20129,7 +20157,7 @@
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
-      "shatteredplans-names.json": "1b6b064c60706e0812732ad260354cd67c3d2f72c6317d9c17e2f1e0a3a30aa5"
+      "shatteredplans-names.json": "8758ff10a35588203a2d6fd8e8d88d98c10f787287ac6da61a9926eee3f8a5d4"
     }
   },
   "generators": {
