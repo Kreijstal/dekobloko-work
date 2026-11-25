@@ -1046,6 +1046,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:dg",
+      "originalName": "dg",
+      "to": "QuickChatHelpPanel",
+      "evidence": "Complete144-line AnimatedPanel type read. Builds Quick Chat Help title, close control and Shortcut Reference rows; retained private button drives dismissal. Unrelated default view-settings factory stays static.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:dh",
+      "originalName": "dh",
+      "to": "ClientCapabilitySupport",
+      "evidence": "Complete31-line static holder read. Boolean helper is exactly a guard equality test, used by client UI-transition callers. Task dispatcher, quickchat registry and captions retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:di",
       "originalName": "di",
       "to": "FleetTrailPoint",
@@ -1057,6 +1071,13 @@
       "originalName": "dj",
       "to": "WidgetFocusListener",
       "evidence": "FocusableWidget notifies this listener with its current isFocused flag after focus changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:dk",
+      "originalName": "dk",
+      "to": "TooltipSupport",
+      "evidence": "Complete63-line static holder read. Measures, clamps and draws yellow bordered multiline tooltip; existing digit predicate and raster scratch array retained.",
       "confidence": "reviewed"
     },
     {
@@ -1158,6 +1179,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ef",
+      "originalName": "ef",
+      "to": "ReflectionQueueSupport",
+      "evidence": "Complete87-line static holder read. Initializes reflection-check deque; original ASCII alphanumeric predicate, round-to-eight helper, sprite and captions remain in place.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:eg",
       "originalName": "eg",
       "to": "BattleEvent",
@@ -1169,6 +1197,13 @@
       "originalName": "eh",
       "to": "BirthDateConfirmationForm",
       "evidence": "ArrayWidgetGroup containing a validated numeric date input and its submit button.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ei",
+      "originalName": "ei",
+      "to": "LobbyUiSupport",
+      "evidence": "Complete294-line static holder read. Sorted lobby room insertion, bounded chat history, UI archive progress, option payload serialization and rounded hexagon panel rendering remain in this mixed static owner.",
       "confidence": "reviewed"
     },
     {
@@ -1200,10 +1235,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:en",
+      "originalName": "en",
+      "to": "LobbyLayoutSupport",
+      "evidence": "Complete193-line static type read. Lays out chat/sidebar, room options and shared modal panels, including selective option hiding and per-row geometry.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:eo",
       "originalName": "eo",
       "to": "ProgressDialog",
       "evidence": "Resizing dialog with a progress-message label, optional detail text and an animated striped progress widget.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ep",
+      "originalName": "ep",
+      "to": "ClientOverlaySupport",
+      "evidence": "Complete45-line static type read. Tests retained quickchat help panel or shared overlay flag. Original wrong-guard recursion and caption/state cleanup retained.",
       "confidence": "reviewed"
     },
     {
@@ -1239,6 +1288,13 @@
       "originalName": "fa",
       "to": "ValidatedTextInputWidget",
       "evidence": "TextFieldWidget implementing ValidatableWidget; it retains a ValidationSource and notifies/queries it on text and hover changes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:fb",
+      "originalName": "fb",
+      "to": "LobbyRoomEntry",
+      "evidence": "Complete364-line AnimatedPanel subclass read, including constructor, room-index queries and113-line comparator. Retains room metadata, player-name cache and controls; mixed player-score-row and interface update statics remain in place.",
       "confidence": "reviewed"
     },
     {
@@ -5680,6 +5736,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dg.c(ZI)Z",
+      "originalName": "c",
+      "to": "updateAndCheckDismissed",
+      "evidence": "Updates inherited panel state first; guard other than -1 returns true, otherwise checks global press and panel/button interaction fields. Preserve ignored boolean, precedence and partial updates. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dg.f(B)V",
       "originalName": "f",
       "to": "clearStatics",
@@ -5687,10 +5750,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:dg.g(I)Lva;",
+      "originalName": "g",
+      "to": "createDefaultViewSettings",
+      "evidence": "Allocate settings record, retain supplied mode and assign exact false/1/true/1 defaults. Complete va field header, production setter and view consumer contexts inspected; do not infer game-option packet fields. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:dh.a(B)V",
       "originalName": "a",
       "to": "clearStatics",
       "evidence": "Assigns null to 4 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dh.a(I)Z",
+      "originalName": "a",
+      "to": "matchesClientCapabilityGuard",
+      "evidence": "Exactly returns param0 == -12165. Both transition/availability call contexts inspected. Preserve full int domain without replacing guarded behavior with an unconditional capability. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -5726,6 +5803,13 @@
       "originalName": "a",
       "to": "isDigit",
       "evidence": "Returns whether the character lies between 0 and 9.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:dk.a(BLjava/lang/String;)V",
+      "originalName": "a",
+      "to": "drawTooltip",
+      "evidence": "Read pointer coordinates, measure line count, then guard division, width/height and clamp helpers; draw border/background/text. Preserve measurement and division order, overflow, clip and null behavior. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -5974,10 +6058,31 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ef.a(CZ)Z",
+      "originalName": "a",
+      "to": "isAsciiAlphanumeric",
+      "evidence": "True boolean bypasses all character tests; false performs original ASCII digit/upper/lowercase predicates, including redundant branches. Preserve char and boolean domains. Name agrees with pending user patch. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ef.a(I)V",
+      "originalName": "a",
+      "to": "releaseReflectionQueueSupportStatics",
+      "evidence": "Null three strings, then valid guard0 clears sprite/string and returns; otherwise recurse -116 before remaining clears. Preserve original recursion, partial state and duplicate nulling. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:ef.a(II)I",
       "originalName": "a",
       "to": "roundUpToMultipleOfEight",
       "evidence": "Rounds the first argument up to the next multiple of eight.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ef.a(Z)V",
+      "originalName": "a",
+      "to": "initializeReflectionCheckQueue",
+      "evidence": "Allocate new IntrusiveDeque and store it in reflection-check queue; false clears retained sprite afterward. Reflection serializer queue consumer inspected; preserve allocation and replacement/alias order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -6020,6 +6125,41 @@
       "originalName": "a",
       "to": "clearStatics",
       "evidence": "Assigns null to 6 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(BLnf;)V",
+      "originalName": "a",
+      "to": "addChatHistoryEntry",
+      "evidence": "Guard<35 returns before clears. Count three display categories for matching channel including incoming message; compact old entries beyond per-category cap then append. Full nf message record/category body read. Preserve array bounds, counter increments, stable compaction and partial state. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(I)I",
+      "originalName": "a",
+      "to": "getUiArchiveLoadProgress",
+      "evidence": "Read initialization state; test shared/special archive indexes and commonui groups in exact order, returning original progress milestones. Final guard82 chooses100 versus4. Preserve delegates, null paths and guard-derived preload argument. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(II[BZZI)V",
+      "originalName": "a",
+      "to": "writeLobbyOptionPayload",
+      "evidence": "Write opcode/reserve byte length and subtype4; optional wrong boolean invokes room insertion with null after header, then selector/128-flagged byte and raw payload, patch length. Preserve full int byte truncation, partial writes and exceptions. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(ILfb;)V",
+      "originalName": "a",
+      "to": "insertLobbyRoomByRank",
+      "evidence": "Unlink incoming room, iterate sorted deque using existing room comparator, splice before first nonpreceding room or append. Preserve iterator guard, self/alias handling, lookup and partial unlink/splice order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ei.a(ZIIIIII)V",
+      "originalName": "a",
+      "to": "drawHexagonPanel",
+      "evidence": "For dimensions>20, allocate/save clip, draw rounded alpha background, hex pattern, gradient border and optional additive shine. Preserve guard return after top-corner restoration, all clip updates, FP-free integer math and shine division domains. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -6226,6 +6366,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:en.a(IZ)V",
+      "originalName": "a",
+      "to": "layoutLobbyRoomPanels",
+      "evidence": "Full167-line layout read: retain raster dimensions, select layout mode and write header/chat/sidebar geometry; wrong guard stops after initial writes. Hide option rows/children or position them, build modal panel background and invoke final relayout. Preserve all divisions, partial geometry, aliases and call/allocation order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:eo.a(II)Z",
       "originalName": "a",
       "to": "isPowerOfTwo",
@@ -6258,6 +6405,13 @@
       "originalName": "p",
       "to": "enableDeterminateProgress",
       "evidence": "Enables determinate progress and disables the progress-widget animation.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ep.a(I)Z",
+      "originalName": "a",
+      "to": "hasClientOverlay",
+      "evidence": "Valid guard640 returns helpPanel!=null || sharedOverlayFlag. Other ints recurse78 before same tests. Preserve recursive behavior and short-circuit global read order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -6482,6 +6636,41 @@
       "originalName": "l",
       "to": "clearStatics",
       "evidence": "Assigns null to 7 static fields of the class.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.a(IIIILfs;I[Lfs;Ldc;)Llp;",
+      "originalName": "a",
+      "to": "createPlayerScoreRow",
+      "evidence": "Full112-line score/menu row: locate player identity in supplied list, create panel and faction/icon/score/elimination labels, propagate point tooltips through child deque. Preserve guard remainder, ownership bits, identity, allocations and duplicate aliases. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.a(Lfb;I)Z",
+      "originalName": "a",
+      "to": "ranksBefore",
+      "evidence": "Full113-line lexicographic room comparator: promoted/status groups, invitation/rank keys, active flag, timestamp and joinable/capacity groups. Preserve original signed comparisons, boolean intermediate expressions and wrong-guard null recursion. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.a(ZZIIIZIZZI)V",
+      "originalName": "a",
+      "to": "updateLobbyInterface",
+      "evidence": "Full47-line UI update: conditional raster resize/layout, horizontal origin, overlays, room controls, waiting/interaction state and child updates; increment retained frame counter last. Preserve short circuit null paths, bool forwarding and all partial effects. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.f(B)Z",
+      "originalName": "f",
+      "to": "isSecondaryUnlinked",
+      "evidence": "Wrong byte returns false before link access; valid guard returns negation of isSecondaryLinked. Preserve byte domain and inherited-link query. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fb.g(I)I",
+      "originalName": "g",
+      "to": "getRoomId",
+      "evidence": "Wrong int >=-74 recursively invokes itself before secondaryKey; valid guard casts retained secondary key to int. Preserve recursion, cast and read order. Identifier-only change: preserve descriptors/modifiers, full primitive domains, guards, literals, aliases, allocations, locks, overflow/casts, partial mutations and exception/call order.",
       "confidence": "reviewed"
     },
     {
@@ -15187,7 +15376,7 @@
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2",
-      "shatteredplans-names.json": "061f3251b5fb43bdd2a272a56602012c215bba0e3460ea44ade8400743ae2bc1"
+      "shatteredplans-names.json": "06ceedfa0bfd52f92c737dfe73cb1e204fbec43b58760abf468b3b065dbac165"
     }
   },
   "generators": {
