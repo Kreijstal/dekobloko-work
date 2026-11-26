@@ -332,6 +332,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bk",
+      "originalName": "bk",
+      "to": "PcmOutputWorker",
+      "evidence": "Source-purpose review: Runnable output worker with volatile two-slot PCM output array (existing AudioOutput/PcmPlayerService/AudioMixer names retained),two volatile running/stop flags,and retained system-task service. Package-visible constructor allocates two player slots and initializes both flags false;public final run services nonnull players through the already reviewed bound output serviceOutput method,sleeps via sleepMillis(10),and performs its original post-service helper call. All22run bodies,22constructors and22creation/task-registration contexts human read. Preserve run callback name,all field/method leaves,volatile declarations,flag placement,Exception/Throwable/finally routing,diagnostic wrappers,partial writes and call/allocation/exception order. Unrelated static helper bodies preserved without claiming their semantic review.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:c",
       "originalName": "c",
       "to": "AwtRasterBuffer",
@@ -486,6 +493,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ma",
+      "originalName": "ma",
+      "to": "DirectDrawFullscreenManager",
+      "evidence": "Source-purpose review: final DirectDraw-backed fullscreen manager implements IEnumModesCallback,owns one DirectDraw and shared static int count/int[] mode accumulator;public constructor initializes DirectDraw. Complete class and all73incoming method/65class use contexts across21games reviewed. Enumerates flat width,height,rgbBitCount,refreshRate records;switches a Frame into fullscreen and restores display mode/cooperative level. Preserve callback name/signature,public constructor,all fields/modifiers/guard paths,shared state,primitive domains,allocation/call/exception order. No native callback or implementation fixes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:mb",
       "originalName": "mb",
       "to": "PcmStreamMixer",
@@ -549,6 +563,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:on",
+      "originalName": "on",
+      "to": "Win32CursorManager",
+      "evidence": "Source-purpose review: final Win32 cursor manager extends com.ms.dll.Callback;owns five private fields,including two volatile window/procedure ints and one volatile visibility boolean. Package-visible no-argument constructor starts visibility true;synchronized final callback routes existing window messages through bound User32 cursor/window-procedure operations. Complete class and all helper/callback/constructor bodies reviewed across23games,plus all53incoming helper contexts and50class reference contexts. Preserve native-facing callback name/signature,volatile fields,Root.alloc lifetime,monitor regions,window procedure chain,full primitive domains,guards/recursion/partial writes and call/exception order. No native implementation repairs or callback leaf renames.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:pj",
       "originalName": "pj",
       "to": "CombatState",
@@ -602,6 +623,13 @@
       "originalName": "rd",
       "to": "SpriteGeometry",
       "evidence": "Abstract sprite geometry superclass with exactly six per-instance int fields: fullWidth/fullHeight, offsetX/offsetY and width/height. Reviewed RGB blank/supplied-pixel constructors assign all six inherited fields. Empty no-argument constructor and complete original class source reviewed. Existing unrelated static utilities and any rotation wrappers/abstract methods retain their original behavior and names. All1208class reference spans inventoried:1197qualified-member uses and11RGB subclass inheritance sites;33representative contexts reviewed. Class and constructor leaf naming only;preserve hierarchy,all unselected ordinary method/field leaves,all literals,native ABI and initialization/evaluation/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rk",
+      "originalName": "rk",
+      "to": "BufferedSocket",
+      "evidence": "Source-purpose review: final Runnable Socket wrapper retains InputStream/OutputStream,private5000-default circular output storage and asynchronous writer-task state;performs direct input reads with queued output writes,error-latch handling and close/join/finalizer lifecycle. All110instance bodies across11games human read,including22constructors and11writer loops/finalizers;all278incoming method references compiler-bound,66representative method callers and21construction contexts human read. Preserve callbacks run/finalize,constructor visibility and defaults,full primitive/byte-array domains,IO/EOF behavior,monitor and task/join semantics,guard/sentinel/partial-write/diagnostic/exception order. Unrelated static bodies preserved without claiming semantic review.",
       "confidence": "reviewed"
     },
     {
@@ -665,6 +693,13 @@
       "originalName": "wj",
       "to": "CipherPacketBuffer",
       "evidence": "PacketBuffer subclass holding an opcode cipher and bit-level read/write operations.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:wl",
+      "originalName": "wl",
+      "to": "ProxyAuthenticationRequiredException",
+      "evidence": "Source-purpose review: final IOException subtype with one String constructor forwarding unchanged to super,and no own instance fields or other instance methods. Both bound throw sites in each game are within HTTP/1.0 or HTTP/1.1 407 proxy-authentication handling:carry parsed proxy-authenticate scheme or empty fallback. Two typed catch paths retain/rethrow and expose getMessage through platform-task result. All22constructors,44throw sites and44catch contexts human read;all class references mechanically bound,unrelated static helpers/fields preserved. Preserve visibility,message payloads,inheritance,exception/guard order and every unselected member name;no implementation repairs.",
       "confidence": "reviewed"
     },
     {
@@ -3139,6 +3174,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ma.a(BLjava/awt/Frame;IIII)V",
+      "originalName": "a",
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Makes a Frame visible,adjusts window styles through bound Win32.SetWindowLong,sets DirectDraw cooperative level/display mode and updates frame bounds/focus. Preserve per-game parameter order and semantics,including supplied visibility,window style/index and display-mode flags;retain all guard returns/nulls/recursion/exception and operation order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.a(I)[I",
+      "originalName": "a",
+      "to": "listDisplayModes",
+      "evidence": "Source-purpose review: Calls bound DirectDraw.enumDisplayModes twice around shared flat-int mode array allocation,using callbackEnumModes to count/fill width,height,rgbBitCount,refreshRate records. Preserve each supplied enum flag,counter-reset argument,null/early-return/recursive guard path and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ma.a(ILjava/awt/Frame;)V",
+      "originalName": "a",
+      "to": "restoreDisplayMode",
+      "evidence": "Source-purpose review: Calls bound DirectDraw.restoreDisplayMode followed by guarded/cooperative-level restoration on a Frame. Preserve caller-supplied cooperative flags,guard branches,arithmetic exceptions,static resets and recursive sibling calls.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:mb.a()I",
       "originalName": "a",
       "to": "getSchedulingCost",
@@ -3720,6 +3776,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:on.a(ILjava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "setCursorVisible",
+      "evidence": "Source-purpose review: Registers/root-retains a Win32 callback,loads the cursor,updates the retained window-procedure/visibility state under original monitors,and sends cursor-update messages for a Component. All incoming task dispatch/guard-call contexts reviewed;preserve boolean meaning,supplied SendMessage arguments,all early returns/field writes/guards/nulls/recursion and native-call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:on.a(IZI)V",
+      "originalName": "a",
+      "to": "setCursorPosition",
+      "evidence": "Source-purpose review: Calls bound Win32 User32.SetCursorPos with original per-game coordinate order. All incoming task dispatch/self-call contexts reviewed;preserve original guard values,conditional field writes,arithmetic exceptions,callback/self recursion and before/after native-call order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:oo.a(I)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -4147,10 +4217,52 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:rk.a(B)I",
+      "originalName": "a",
+      "to": "readSingleByte",
+      "evidence": "Source-purpose review: Returns a single bound InputStream.read() result on the primary open-socket path. Preserve EOF -1,closed return0,all parameter-dependent sentinel returns,guard mutations/finalizer or close calls and exceptions;no unsigned-byte normalization. Complete owning body and representative bound caller reviewed;all declarations/signatures/modifiers and unselected leaves retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.a(I)I",
+      "originalName": "a",
+      "to": "availableBytes",
+      "evidence": "Source-purpose review: Returns bound InputStream.available() on the primary open-socket path. Preserve closed/sentinel returns,arithmetic guards,static helper calls,field writes and exception order. Complete owning body and representative bound caller reviewed;all declarations/signatures/modifiers and unselected leaves retained.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:rk.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 7 null writes to 3 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 85098d67a523ecf1bae9ad8847ab21ca7956a2d57c80e6d7fb8c7dbdbd79cf81.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.a([BZII)V",
+      "originalName": "a",
+      "to": "readFully",
+      "evidence": "Source-purpose review: Fills the requested input range by repeated bound InputStream.read(byte[],offset,count) calls,advancing offset/reducing remaining count and throwing EOFException for nonpositive progress. Preserve original argument order,closed/guard returns,partial writes,EOF routing,debug mutations and diagnostic wrapping. Complete owning body and representative bound caller reviewed;all declarations/signatures/modifiers and unselected leaves retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.b(I)V",
+      "originalName": "b",
+      "to": "checkWriteError",
+      "evidence": "Source-purpose review: Checks and consumes the owned deferred write-error latch,throwing IOException on the original branches. Latch identity verified against queueWrite and both writer IOException handlers;preserve closed/guard paths,parameter domains,field mutations and exception order. Complete owning body and representative bound caller reviewed;all declarations/signatures/modifiers and unselected leaves retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.b([BZII)V",
+      "originalName": "b",
+      "to": "queueWrite",
+      "evidence": "Source-purpose review: Copies caller bytes into the owned circular output buffer under the original monitor,lazily starts the writer task,and notifies it on the original branches. Preserve consumed error latch,capacity/modulo/overflow/fullness effects,partial writes,all argument roles and guard paths;BounceDown fourth int is the starting copy-counter value,Confined boolean can skip notifyAll after task creation. Complete owning body and representative bound caller reviewed;all declarations/signatures/modifiers and unselected leaves retained.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:rk.c(I)V",
+      "originalName": "c",
+      "to": "close",
+      "evidence": "Source-purpose review: Marks the socket closed/notifies under the original monitor,waits for writer-task completion and joins its Thread using the original status/InterruptedException paths. Preserve36CardTrick supplied closed-flag boolean,all guard returns/mutations,join order and exception wrapping. Complete owning body and representative bound caller reviewed;all declarations/signatures/modifiers and unselected leaves retained.",
       "confidence": "reviewed"
     },
     {
@@ -4975,7 +5087,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-dungeonassault-rules.mjs": "8eb15e13a50fdc4451ed6ef68e53e6f3481c4d7f58d0976003f9ed284e2452de",
-      "dungeonassault-names.json": "79d0e19e57361748b0f8bd69cf5cf2d234ff0c55116d0152ef919f7195e02d8d",
+      "dungeonassault-names.json": "0a2346021d1b1e370f18b819899412ad3a523904dc8af27d3f4aacbbfad769d0",
       "reproduce-dungeonassault.mjs": "91cc0426bf614cfc9a70de2a232ea4543d6576e41cf2fec5dad4cf428a0fd8c4",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

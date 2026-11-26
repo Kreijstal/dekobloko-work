@@ -94,6 +94,26 @@
       "ke",
       "BufferedImageRasterBuffer",
       "AWT raster buffer backed by inherited int pixel storage through DataBufferInt/DirectColorModel/WritableRaster/BufferedImage,and drawn through Graphics.drawImage using retained Component observer. Complete class,public empty no-argument constructor,and both initialization/drawing bodies reviewed;exactly one own nonstatic Component field and four inherited dimension/pixel/image fields verified with bound platform APIs. Preserve finality/visibility,all method/field leaves except constructor class-name display,full primitive domains,guard paths,int overflow and pixel-array size,Lexicominos supplied premultiplication boolean,aliases,partial writes and allocation/call/exception order. Exactly one bound Class.forName string must follow this class rename;other literals unchanged. Deko already has provisional RenderingSupport013 alias,so its existing literal edit is refined rather than counted twice."
+    ],
+    [
+      "sb",
+      "DirectDrawFullscreenManager",
+      "Source-purpose review: final DirectDraw-backed fullscreen manager implements IEnumModesCallback,owns one DirectDraw and shared static int count/int[] mode accumulator;public constructor initializes DirectDraw. Complete class and all73incoming method/65class use contexts across21games reviewed. Enumerates flat width,height,rgbBitCount,refreshRate records;switches a Frame into fullscreen and restores display mode/cooperative level. Preserve callback name/signature,public constructor,all fields/modifiers/guard paths,shared state,primitive domains,allocation/call/exception order. No native callback or implementation fixes."
+    ],
+    [
+      "bj",
+      "ProxyAuthenticationRequiredException",
+      "Source-purpose review: final IOException subtype with one String constructor forwarding unchanged to super,and no own instance fields or other instance methods. Both bound throw sites in each game are within HTTP/1.0 or HTTP/1.1 407 proxy-authentication handling:carry parsed proxy-authenticate scheme or empty fallback. Two typed catch paths retain/rethrow and expose getMessage through platform-task result. All22constructors,44throw sites and44catch contexts human read;all class references mechanically bound,unrelated static helpers/fields preserved. Preserve visibility,message payloads,inheritance,exception/guard order and every unselected member name;no implementation repairs."
+    ],
+    [
+      "ld",
+      "Win32CursorManager",
+      "Source-purpose review: final Win32 cursor manager extends com.ms.dll.Callback;owns five private fields,including two volatile window/procedure ints and one volatile visibility boolean. Package-visible no-argument constructor starts visibility true;synchronized final callback routes existing window messages through bound User32 cursor/window-procedure operations. Complete class and all helper/callback/constructor bodies reviewed across23games,plus all53incoming helper contexts and50class reference contexts. Preserve native-facing callback name/signature,volatile fields,Root.alloc lifetime,monitor regions,window procedure chain,full primitive domains,guards/recursion/partial writes and call/exception order. No native implementation repairs or callback leaf renames."
+    ],
+    [
+      "bb",
+      "PcmOutputWorker",
+      "Source-purpose review: Runnable output worker with volatile two-slot PCM output array (existing AudioOutput/PcmPlayerService/AudioMixer names retained),two volatile running/stop flags,and retained system-task service. Package-visible constructor allocates two player slots and initializes both flags false;public final run services nonnull players through the already reviewed bound output serviceOutput method,sleeps via sleepMillis(10),and performs its original post-service helper call. All22run bodies,22constructors and22creation/task-registration contexts human read. Preserve run callback name,all field/method leaves,volatile declarations,flag placement,Exception/Throwable/finally routing,diagnostic wrappers,partial writes and call/allocation/exception order. Unrelated static helper bodies preserved without claiming their semantic review."
     ]
   ],
   "methods": [
@@ -3008,6 +3028,41 @@
       "(Z)V",
       "resetStaticState",
       "Source-purpose review: Resets declared static state through 3 null-reference stores and 1 primitive-literal stores. Source-bound effect grammar permits primitive guard/local expressions and conditional returns only,with no foreign fields/array effects/external calls;all bound stores/static ownership verified. Preserve full primitive domains,original literal values including nonzero guard-path writes,all conditional paths,casts,write/evaluation/allocation/exception order and modifiers. Parser passed11positive/20hostile fixtures;27representative bodies25callers human-reviewed. Purpose synonym avoids inherited/same-signature collisions;existing meaningful names preserved."
+    ],
+    [
+      "sb",
+      "a",
+      "(I)[I",
+      "listDisplayModes",
+      "Source-purpose review: Calls bound DirectDraw.enumDisplayModes twice around shared flat-int mode array allocation,using callbackEnumModes to count/fill width,height,rgbBitCount,refreshRate records. Preserve each supplied enum flag,counter-reset argument,null/early-return/recursive guard path and partial writes."
+    ],
+    [
+      "sb",
+      "a",
+      "(IIIIILjava/awt/Frame;)V",
+      "enterFullscreen",
+      "Source-purpose review: Makes a Frame visible,adjusts window styles through bound Win32.SetWindowLong,sets DirectDraw cooperative level/display mode and updates frame bounds/focus. Preserve per-game parameter order and semantics,including supplied visibility,window style/index and display-mode flags;retain all guard returns/nulls/recursion/exception and operation order."
+    ],
+    [
+      "sb",
+      "a",
+      "(ZLjava/awt/Frame;)V",
+      "restoreDisplayMode",
+      "Source-purpose review: Calls bound DirectDraw.restoreDisplayMode followed by guarded/cooperative-level restoration on a Frame. Preserve caller-supplied cooperative flags,guard branches,arithmetic exceptions,static resets and recursive sibling calls."
+    ],
+    [
+      "ld",
+      "a",
+      "(III)V",
+      "setCursorPosition",
+      "Source-purpose review: Calls bound Win32 User32.SetCursorPos with original per-game coordinate order. All incoming task dispatch/self-call contexts reviewed;preserve original guard values,conditional field writes,arithmetic exceptions,callback/self recursion and before/after native-call order."
+    ],
+    [
+      "ld",
+      "a",
+      "(Ljava/awt/Component;ZI)V",
+      "setCursorVisible",
+      "Source-purpose review: Registers/root-retains a Win32 callback,loads the cursor,updates the retained window-procedure/visibility state under original monitors,and sends cursor-update messages for a Component. All incoming task dispatch/guard-call contexts reviewed;preserve boolean meaning,supplied SendMessage arguments,all early returns/field writes/guards/nulls/recursion and native-call/exception order."
     ]
   ],
   "fields": [

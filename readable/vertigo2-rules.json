@@ -444,6 +444,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:fl",
+      "originalName": "fl",
+      "to": "Win32CursorManager",
+      "evidence": "Source-purpose review: final Win32 cursor manager extends com.ms.dll.Callback;owns five private fields,including two volatile window/procedure ints and one volatile visibility boolean. Package-visible no-argument constructor starts visibility true;synchronized final callback routes existing window messages through bound User32 cursor/window-procedure operations. Complete class and all helper/callback/constructor bodies reviewed across23games,plus all53incoming helper contexts and50class reference contexts. Preserve native-facing callback name/signature,volatile fields,Root.alloc lifetime,monitor regions,window procedure chain,full primitive domains,guards/recursion/partial writes and call/exception order. No native implementation repairs or callback leaf renames.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fp",
       "originalName": "fp",
       "to": "PcmStreamMixer",
@@ -511,6 +518,13 @@
       "originalName": "jj",
       "to": "PlatformTaskDispatcher",
       "evidence": "Runnable owning a Thread and queued tasks for sockets, reflection, frames and URLs.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:jr",
+      "originalName": "jr",
+      "to": "PcmOutputWorker",
+      "evidence": "Source-purpose review: Runnable output worker with volatile two-slot PCM output array (existing AudioOutput/PcmPlayerService/AudioMixer names retained),two volatile running/stop flags,and retained system-task service. Package-visible constructor allocates two player slots and initializes both flags false;public final run services nonnull players through the already reviewed bound output serviceOutput method,sleeps via sleepMillis(10),and performs its original post-service helper call. All22run bodies,22constructors and22creation/task-registration contexts human read. Preserve run callback name,all field/method leaves,volatile declarations,flag placement,Exception/Throwable/finally routing,diagnostic wrappers,partial writes and call/allocation/exception order. Unrelated static helper bodies preserved without claiming their semantic review.",
       "confidence": "reviewed"
     },
     {
@@ -630,6 +644,13 @@
       "originalName": "rd",
       "to": "VorbisFloor",
       "evidence": "Vorbis floor type1: constructor reads and requires16-bit type1,partition classes,subclass codebooks,multiplier and x coordinates. Owns shared x/y/active scratch and inverse-dB/range tables;decodes presence and scalar y values,unpacks predicted residuals,sorts linked points and applies the floor curve to the spectrum. Full owning constructor,all instance/related static bodies,field associations,own/helper calls and typed consumers reviewed. Identifier-only naming change. Preserve all original argument widths,guards,integer overflow,FP evaluation/casts,partial writes,shared aliases,allocation/call/exception order,modifiers and override bindings. Existing meaningful names and native signatures stay unchanged. No whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:rg",
+      "originalName": "rg",
+      "to": "ProxyAuthenticationRequiredException",
+      "evidence": "Source-purpose review: final IOException subtype with one String constructor forwarding unchanged to super,and no own instance fields or other instance methods. Both bound throw sites in each game are within HTTP/1.0 or HTTP/1.1 407 proxy-authentication handling:carry parsed proxy-authenticate scheme or empty fallback. Two typed catch paths retain/rethrow and expose getMessage through platform-task result. All22constructors,44throw sites and44catch contexts human read;all class references mechanically bound,unrelated static helpers/fields preserved. Preserve visibility,message payloads,inheritance,exception/guard order and every unselected member name;no implementation repairs.",
       "confidence": "reviewed"
     },
     {
@@ -2583,6 +2604,20 @@
       "originalName": "d",
       "to": "getSchedulingCost",
       "evidence": "Return the original PCM scheduler work-cost value:fixed container/leaf cost or state-dependent activity/effect cost as actually implemented. Retain original integer products,guards,shared/volatile reads and all special return values. Complete original-body SHA256 a520cd148a505c1285bc362fa4c7d5ba5836d161b68b8db64667086dea18a1b6. Naming only. Complete original owning/supporting bodies,compiler-bound fields/calls,root constructor/wrapper and selected override families source-reviewed. Preserve all JVM argument widths and domains,operators/constants/diagnostic literals,int overflow,FP/cast order,shared aliases,partial mutations,allocation/call/exception ordering,visibility/modifiers and native/override bindings. No fields,parameters,locals,method bodies or intentional native/class-name-literal edits. Existing meaningful aliases remain unchanged;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fl.a(IBI)V",
+      "originalName": "a",
+      "to": "setCursorPosition",
+      "evidence": "Source-purpose review: Calls bound Win32 User32.SetCursorPos with original per-game coordinate order. All incoming task dispatch/self-call contexts reviewed;preserve original guard values,conditional field writes,arithmetic exceptions,callback/self recursion and before/after native-call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:fl.a(ILjava/awt/Component;Z)V",
+      "originalName": "a",
+      "to": "setCursorVisible",
+      "evidence": "Source-purpose review: Registers/root-retains a Win32 callback,loads the cursor,updates the retained window-procedure/visibility state under original monitors,and sends cursor-update messages for a Component. All incoming task dispatch/guard-call contexts reviewed;preserve boolean meaning,supplied SendMessage arguments,all early returns/field writes/guards/nulls/recursion and native-call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -5157,7 +5192,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-vertigo2-rules.mjs": "dd6eb8cdf3928ef27046e7fe98dc389e3192977de79343b58e7e832c8a7bce4a",
-      "vertigo2-names.json": "4f89c19e6ce71c75d0a900654af7552b118627001b028bf4daf85988e1a106bb",
+      "vertigo2-names.json": "2e72b83a393f2ef1fb0796beba2e10411ec50ce363d5a55f665b86a27db8d2ad",
       "reproduce-vertigo2.mjs": "c16a8b53427e79d4dcb3e40a4a42b4d3ec37e412469473382b608d53f95beae2",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

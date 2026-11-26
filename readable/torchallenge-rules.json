@@ -402,6 +402,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:bb",
+      "originalName": "bb",
+      "to": "PcmOutputWorker",
+      "evidence": "Source-purpose review: Runnable output worker with volatile two-slot PCM output array (existing AudioOutput/PcmPlayerService/AudioMixer names retained),two volatile running/stop flags,and retained system-task service. Package-visible constructor allocates two player slots and initializes both flags false;public final run services nonnull players through the already reviewed bound output serviceOutput method,sleeps via sleepMillis(10),and performs its original post-service helper call. All22run bodies,22constructors and22creation/task-registration contexts human read. Preserve run callback name,all field/method leaves,volatile declarations,flag placement,Exception/Throwable/finally routing,diagnostic wrappers,partial writes and call/allocation/exception order. Unrelated static helper bodies preserved without claiming their semantic review.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:bj",
+      "originalName": "bj",
+      "to": "ProxyAuthenticationRequiredException",
+      "evidence": "Source-purpose review: final IOException subtype with one String constructor forwarding unchanged to super,and no own instance fields or other instance methods. Both bound throw sites in each game are within HTTP/1.0 or HTTP/1.1 407 proxy-authentication handling:carry parsed proxy-authenticate scheme or empty fallback. Two typed catch paths retain/rethrow and expose getMessage through platform-task result. All22constructors,44throw sites and44catch contexts human read;all class references mechanically bound,unrelated static helpers/fields preserved. Preserve visibility,message payloads,inheritance,exception/guard order and every unselected member name;no implementation repairs.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ce",
       "originalName": "ce",
       "to": "SoundFilter",
@@ -591,6 +605,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:ld",
+      "originalName": "ld",
+      "to": "Win32CursorManager",
+      "evidence": "Source-purpose review: final Win32 cursor manager extends com.ms.dll.Callback;owns five private fields,including two volatile window/procedure ints and one volatile visibility boolean. Package-visible no-argument constructor starts visibility true;synchronized final callback routes existing window messages through bound User32 cursor/window-procedure operations. Complete class and all helper/callback/constructor bodies reviewed across23games,plus all53incoming helper contexts and50class reference contexts. Preserve native-facing callback name/signature,volatile fields,Root.alloc lifetime,monitor regions,window procedure chain,full primitive domains,guards/recursion/partial writes and call/exception order. No native implementation repairs or callback leaf renames.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:lj",
       "originalName": "lj",
       "to": "ResourceArchive",
@@ -728,6 +749,13 @@
       "originalName": "rk",
       "to": "BufferedCacheFile",
       "evidence": "Buffers reads and writes over a RandomAccessCacheFile with separate windows.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:sb",
+      "originalName": "sb",
+      "to": "DirectDrawFullscreenManager",
+      "evidence": "Source-purpose review: final DirectDraw-backed fullscreen manager implements IEnumModesCallback,owns one DirectDraw and shared static int count/int[] mode accumulator;public constructor initializes DirectDraw. Complete class and all73incoming method/65class use contexts across21games reviewed. Enumerates flat width,height,rgbBitCount,refreshRate records;switches a Frame into fullscreen and restores display mode/cooperative level. Preserve callback name/signature,public constructor,all fields/modifiers/guard paths,shared state,primitive domains,allocation/call/exception order. No native callback or implementation fixes.",
       "confidence": "reviewed"
     },
     {
@@ -3111,6 +3139,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:ld.a(III)V",
+      "originalName": "a",
+      "to": "setCursorPosition",
+      "evidence": "Source-purpose review: Calls bound Win32 User32.SetCursorPos with original per-game coordinate order. All incoming task dispatch/self-call contexts reviewed;preserve original guard values,conditional field writes,arithmetic exceptions,callback/self recursion and before/after native-call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:ld.a(Ljava/awt/Component;ZI)V",
+      "originalName": "a",
+      "to": "setCursorVisible",
+      "evidence": "Source-purpose review: Registers/root-retains a Win32 callback,loads the cursor,updates the retained window-procedure/visibility state under original monitors,and sends cursor-update messages for a Component. All incoming task dispatch/guard-call contexts reviewed;preserve boolean meaning,supplied SendMessage arguments,all early returns/field writes/guards/nulls/recursion and native-call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:le.a(Z)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -3990,6 +4032,27 @@
       "originalName": "a",
       "to": "bitLength",
       "evidence": "Determine the integer bit width using unsigned shifts by16,8,4,2,1 and accumulated width. Preserve game-specific threshold/guard parameter positions,unused arithmetic,global side effects,early returns and exception wrappers for every input. Pre-rename body SHA256 e75d91a565670fff5a8a657c9d8747f48955517604742b5719b0f8076637b925. Complete method bodies and their variants reviewed with exact original descriptors,own-field accesses and bound audio caller contexts. Identifier-only naming;preserve argument widths,guards,signed overflow,FP evaluation,shared aliases,all partial writes,call/allocation/exception order,modifiers and override/native bindings. Existing meaningful names remain unchanged;no whole-runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sb.a(I)[I",
+      "originalName": "a",
+      "to": "listDisplayModes",
+      "evidence": "Source-purpose review: Calls bound DirectDraw.enumDisplayModes twice around shared flat-int mode array allocation,using callbackEnumModes to count/fill width,height,rgbBitCount,refreshRate records. Preserve each supplied enum flag,counter-reset argument,null/early-return/recursive guard path and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sb.a(IIIIILjava/awt/Frame;)V",
+      "originalName": "a",
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Makes a Frame visible,adjusts window styles through bound Win32.SetWindowLong,sets DirectDraw cooperative level/display mode and updates frame bounds/focus. Preserve per-game parameter order and semantics,including supplied visibility,window style/index and display-mode flags;retain all guard returns/nulls/recursion/exception and operation order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:sb.a(ZLjava/awt/Frame;)V",
+      "originalName": "a",
+      "to": "restoreDisplayMode",
+      "evidence": "Source-purpose review: Calls bound DirectDraw.restoreDisplayMode followed by guarded/cooperative-level restoration on a Frame. Preserve caller-supplied cooperative flags,guard branches,arithmetic exceptions,static resets and recursive sibling calls.",
       "confidence": "reviewed"
     },
     {
@@ -4891,7 +4954,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-torchallenge-rules.mjs": "c042d4e7793d93c469822e85fad602baebb74bd01aac6bf321d09ca5452e99fc",
-      "torchallenge-names.json": "839ec9aa7f3da684dae20c61d13e3ef40f820bd20b170084c1b6694c5e2108c7",
+      "torchallenge-names.json": "c9f35045a59415acfe41590a74c1d2c46c1943d240c9985e5bef725c5cbf67b7",
       "reproduce-torchallenge.mjs": "b3388fa5e2619e82e11f0eae304b9ea97a779afb046e7272b5997c73407bf7be",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

@@ -432,9 +432,9 @@
     {
       "symbol": "C:ae",
       "originalName": "ae",
-      "to": "PlatformSupport001",
-      "evidence": "Structural category: Platform and asynchronous I/O (high); numbered category label, finer purpose unresolved.",
-      "confidence": "category"
+      "to": "Win32CursorManager",
+      "evidence": "Source-purpose review: final Win32 cursor manager extends com.ms.dll.Callback;owns five private fields,including two volatile window/procedure ints and one volatile visibility boolean. Package-visible no-argument constructor starts visibility true;synchronized final callback routes existing window messages through bound User32 cursor/window-procedure operations. Complete class and all helper/callback/constructor bodies reviewed across23games,plus all53incoming helper contexts and50class reference contexts. Preserve native-facing callback name/signature,volatile fields,Root.alloc lifetime,monitor regions,window procedure chain,full primitive domains,guards/recursion/partial writes and call/exception order. No native implementation repairs or callback leaf renames.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "C:af",
@@ -733,9 +733,9 @@
     {
       "symbol": "C:db",
       "originalName": "db",
-      "to": "DiagnosticSupport001",
-      "evidence": "Structural category: Errors and diagnostics (high); numbered category label, finer purpose unresolved.",
-      "confidence": "category"
+      "to": "ProxyAuthenticationRequiredException",
+      "evidence": "Source-purpose review: final IOException subtype with one String constructor forwarding unchanged to super,and no own instance fields or other instance methods. Both bound throw sites in each game are within HTTP/1.0 or HTTP/1.1 407 proxy-authentication handling:carry parsed proxy-authenticate scheme or empty fallback. Two typed catch paths retain/rethrow and expose getMessage through platform-task result. All22constructors,44throw sites and44catch contexts human read;all class references mechanically bound,unrelated static helpers/fields preserved. Preserve visibility,message payloads,inheritance,exception/guard order and every unselected member name;no implementation repairs.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "C:dc",
@@ -796,9 +796,9 @@
     {
       "symbol": "C:dk",
       "originalName": "dk",
-      "to": "PlatformSupport002",
-      "evidence": "Structural category: Platform and asynchronous I/O (high); numbered category label, finer purpose unresolved.",
-      "confidence": "category"
+      "to": "DelegatingCanvas",
+      "evidence": "Source-purpose review: final java.awt.Canvas wrapper owns private Component field set by its package-visible constructor;public final paint/update forward to the matching retained-component operations,wrapping RuntimeException through existing error helper. Complete133line class,all three instance bodies,and game-applet construction/add-to-container context reviewed;unrelated static helpers/fields and diagnostic strings unchanged. Preserve platform callback names,component aliases,constructor/modifier/exception order;no implementation repairs.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "C:dl",
@@ -978,9 +978,9 @@
     {
       "symbol": "C:fg",
       "originalName": "fg",
-      "to": "PlatformSupport003",
-      "evidence": "Structural category: Platform and asynchronous I/O (high); numbered category label, finer purpose unresolved.",
-      "confidence": "category"
+      "to": "DirectDrawFullscreenManager",
+      "evidence": "Source-purpose review: final DirectDraw-backed fullscreen manager implements IEnumModesCallback,owns one DirectDraw and shared static int count/int[] mode accumulator;public constructor initializes DirectDraw. Complete class and all73incoming method/65class use contexts across21games reviewed. Enumerates flat width,height,rgbBitCount,refreshRate records;switches a Frame into fullscreen and restores display mode/cooperative level. Preserve callback name/signature,public constructor,all fields/modifiers/guard paths,shared state,primitive domains,allocation/call/exception order. No native callback or implementation fixes.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "C:fh",
@@ -129197,16 +129197,16 @@
     {
       "symbol": "M:ae.a(IIB)V",
       "originalName": "a",
-      "to": "performAction0048",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "setCursorPosition",
+      "evidence": "Source-purpose review: Calls bound Win32 User32.SetCursorPos with original per-game coordinate order. All incoming task dispatch/self-call contexts reviewed;preserve original guard values,conditional field writes,arithmetic exceptions,callback/self recursion and before/after native-call order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:ae.a(ZLjava/awt/Component;B)V",
       "originalName": "a",
-      "to": "performAction0049",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "setCursorVisible",
+      "evidence": "Source-purpose review: Registers/root-retains a Win32 callback,loads the cursor,updates the retained window-procedure/visibility state under original monitors,and sends cursor-update messages for a Component. All incoming task dispatch/guard-call contexts reviewed;preserve boolean meaning,supplied SendMessage arguments,all early returns/field writes/guards/nulls/recursion and native-call/exception order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:af.a(B)V",
@@ -133082,23 +133082,23 @@
     {
       "symbol": "M:fg.a(I)[I",
       "originalName": "a",
-      "to": "computeIntegerArray0521",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "listDisplayModes",
+      "evidence": "Source-purpose review: Calls bound DirectDraw.enumDisplayModes twice around shared flat-int mode array allocation,using callbackEnumModes to count/fill width,height,rgbBitCount,refreshRate records. Preserve each supplied enum flag,counter-reset argument,null/early-return/recursive guard path and partial writes.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:fg.a(IZIIILjava/awt/Frame;)V",
       "originalName": "a",
-      "to": "performAction0522",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Makes a Frame visible,adjusts window styles through bound Win32.SetWindowLong,sets DirectDraw cooperative level/display mode and updates frame bounds/focus. Preserve per-game parameter order and semantics,including supplied visibility,window style/index and display-mode flags;retain all guard returns/nulls/recursion/exception and operation order.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:fg.a(Ljava/awt/Frame;B)V",
       "originalName": "a",
-      "to": "performAction0523",
-      "evidence": "Resolved override family; type-based operation label, finer purpose unresolved.",
-      "confidence": "typed"
+      "to": "restoreDisplayMode",
+      "evidence": "Source-purpose review: Calls bound DirectDraw.restoreDisplayMode followed by guarded/cooperative-level restoration on a Frame. Preserve caller-supplied cooperative flags,guard branches,arithmetic exceptions,static resets and recursive sibling calls.",
+      "confidence": "reviewed"
     },
     {
       "symbol": "M:fh.a(B)Z",
@@ -194769,7 +194769,7 @@
       "game-export.mjs": "1878ebe8e0a08f4571439a303871ce38714994ea4cef817184aafb0ce78894c7",
       "compilation-stubs.mjs": "eb46a81ed597d8c9482eaaccc34f10724711a1e04c9ff3e27daf595f872805c2",
       "reproduce-dekobloko.mjs": "2a1c461995165406fd2fad26551c82dbc06aa441ae38cff980551230c1b2144b",
-      "dekobloko-reviewed-names.json": "ba0c6c7659b9056c22397387d50dde2778f85f35e2e2eb5d0f407d72daf64362",
+      "dekobloko-reviewed-names.json": "702d592d6a8df651c749dc9ff9f8cec8072cc9b5e3e5ac67625a5ee13c7dfa4c",
       "dekobloko-provisional-names.json": "99a1f75e618d2dd63a8885728ecdfb70e4fa3bc7f1b3bd584951c5a27359cb30",
       "catalog-naming-coverage.mjs": "0a733b0a7e4a2779b01b5c15f1e7b027c0fdfed9012851e35f420d3bfcf6ce43",
       "naming-coverage.mjs": "f08c6a4e75d77374cf878304c4585fb95099216424bcf9124f29ae30cd44f6f2"

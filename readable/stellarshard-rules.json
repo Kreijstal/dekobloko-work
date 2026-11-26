@@ -444,6 +444,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:jl",
+      "originalName": "jl",
+      "to": "DirectDrawFullscreenManager",
+      "evidence": "Source-purpose review: final DirectDraw-backed fullscreen manager implements IEnumModesCallback,owns one DirectDraw and shared static int count/int[] mode accumulator;public constructor initializes DirectDraw. Complete class and all73incoming method/65class use contexts across21games reviewed. Enumerates flat width,height,rgbBitCount,refreshRate records;switches a Frame into fullscreen and restores display mode/cooperative level. Preserve callback name/signature,public constructor,all fields/modifiers/guard paths,shared state,primitive domains,allocation/call/exception order. No native callback or implementation fixes.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:ka",
       "originalName": "ka",
       "to": "PacketBuffer",
@@ -462,6 +469,13 @@
       "originalName": "m",
       "to": "JavaSoundAudioOutput",
       "evidence": "Audio output writing mixed samples to a javax.sound SourceDataLine.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:me",
+      "originalName": "me",
+      "to": "Win32CursorManager",
+      "evidence": "Source-purpose review: final Win32 cursor manager extends com.ms.dll.Callback;owns five private fields,including two volatile window/procedure ints and one volatile visibility boolean. Package-visible no-argument constructor starts visibility true;synchronized final callback routes existing window messages through bound User32 cursor/window-procedure operations. Complete class and all helper/callback/constructor bodies reviewed across23games,plus all53incoming helper contexts and50class reference contexts. Preserve native-facing callback name/signature,volatile fields,Root.alloc lifetime,monitor regions,window procedure chain,full primitive domains,guards/recursion/partial writes and call/exception order. No native implementation repairs or callback leaf renames.",
       "confidence": "reviewed"
     },
     {
@@ -518,6 +532,13 @@
       "originalName": "qe",
       "to": "GameEntity",
       "evidence": "Constructed from a kind number, rolls a random heading and speed, and trades momentum by mass on collision; kind -1 is element 0 of the entity array.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:qf",
+      "originalName": "qf",
+      "to": "PcmOutputWorker",
+      "evidence": "Source-purpose review: Runnable output worker with volatile two-slot PCM output array (existing AudioOutput/PcmPlayerService/AudioMixer names retained),two volatile running/stop flags,and retained system-task service. Package-visible constructor allocates two player slots and initializes both flags false;public final run services nonnull players through the already reviewed bound output serviceOutput method,sleeps via sleepMillis(10),and performs its original post-service helper call. All22run bodies,22constructors and22creation/task-registration contexts human read. Preserve run callback name,all field/method leaves,volatile declarations,flag placement,Exception/Throwable/finally routing,diagnostic wrappers,partial writes and call/allocation/exception order. Unrelated static helper bodies preserved without claiming their semantic review.",
       "confidence": "reviewed"
     },
     {
@@ -581,6 +602,13 @@
       "originalName": "ti",
       "to": "SoftwareRasterizer",
       "evidence": "Static software framebuffer rasterizer: all12 fields coherently mapped to pixels,stride,height,four clip boundaries,two row masks and three RGB blur sums; all owned operations covered by reviewed complete reference/alternative method bodies and bound field/call correspondences. Preserve class initialization,visibility,integer domains,clipping,shared state and every allocation/exception/partial-write order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tl",
+      "originalName": "tl",
+      "to": "ProxyAuthenticationRequiredException",
+      "evidence": "Source-purpose review: final IOException subtype with one String constructor forwarding unchanged to super,and no own instance fields or other instance methods. Both bound throw sites in each game are within HTTP/1.0 or HTTP/1.1 407 proxy-authentication handling:carry parsed proxy-authenticate scheme or empty fallback. Two typed catch paths retain/rethrow and expose getMessage through platform-task result. All22constructors,44throw sites and44catch contexts human read;all class references mechanically bound,unrelated static helpers/fields preserved. Preserve visibility,message payloads,inheritance,exception/guard order and every unselected member name;no implementation repairs.",
       "confidence": "reviewed"
     },
     {
@@ -2257,6 +2285,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:jl.a(BIILjava/awt/Frame;II)V",
+      "originalName": "a",
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Makes a Frame visible,adjusts window styles through bound Win32.SetWindowLong,sets DirectDraw cooperative level/display mode and updates frame bounds/focus. Preserve per-game parameter order and semantics,including supplied visibility,window style/index and display-mode flags;retain all guard returns/nulls/recursion/exception and operation order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jl.a(I)[I",
+      "originalName": "a",
+      "to": "listDisplayModes",
+      "evidence": "Source-purpose review: Calls bound DirectDraw.enumDisplayModes twice around shared flat-int mode array allocation,using callbackEnumModes to count/fill width,height,rgbBitCount,refreshRate records. Preserve each supplied enum flag,counter-reset argument,null/early-return/recursive guard path and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:jl.a(Ljava/awt/Frame;B)V",
+      "originalName": "a",
+      "to": "restoreDisplayMode",
+      "evidence": "Source-purpose review: Calls bound DirectDraw.restoreDisplayMode followed by guarded/cooperative-level restoration on a Frame. Preserve caller-supplied cooperative flags,guard branches,arithmetic exceptions,static resets and recursive sibling calls.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:k.a(B)V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -2709,6 +2758,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 2 null writes to 2 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish every target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 0b30eb3b15bdb187cbd946fbda71014d58c77aeb6305b60270613b702deb70ba.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:me.a(IIB)V",
+      "originalName": "a",
+      "to": "setCursorPosition",
+      "evidence": "Source-purpose review: Calls bound Win32 User32.SetCursorPos with original per-game coordinate order. All incoming task dispatch/self-call contexts reviewed;preserve original guard values,conditional field writes,arithmetic exceptions,callback/self recursion and before/after native-call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:me.a(ZLjava/awt/Component;B)V",
+      "originalName": "a",
+      "to": "setCursorVisible",
+      "evidence": "Source-purpose review: Registers/root-retains a Win32 callback,loads the cursor,updates the retained window-procedure/visibility state under original monitors,and sends cursor-update messages for a Component. All incoming task dispatch/guard-call contexts reviewed;preserve boolean meaning,supplied SendMessage arguments,all early returns/field writes/guards/nulls/recursion and native-call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -3953,7 +4016,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-stellarshard-rules.mjs": "e0aad811358351403390d3f71317f31025d7e9ef8434ab5477a9473e966eb7de",
-      "stellarshard-names.json": "f9ad29a519acad2d8102c2eb3f69fe242fbb1b6a9e5fd54f3927658c9ded96ee",
+      "stellarshard-names.json": "e8747764fdd327bf2625bb82316965ecc73d8387e45526d314c05b626e4575c9",
       "reproduce-stellarshard.mjs": "bd81f17e3db3182b75b19f828dfc185d0ec0f4b8ca0f78caa8495e2ff6f4a0a1",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

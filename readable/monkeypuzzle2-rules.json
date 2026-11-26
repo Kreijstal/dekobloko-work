@@ -262,10 +262,24 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:eh",
+      "originalName": "eh",
+      "to": "Win32CursorManager",
+      "evidence": "Source-purpose review: final Win32 cursor manager extends com.ms.dll.Callback;owns five private fields,including two volatile window/procedure ints and one volatile visibility boolean. Package-visible no-argument constructor starts visibility true;synchronized final callback routes existing window messages through bound User32 cursor/window-procedure operations. Complete class and all helper/callback/constructor bodies reviewed across23games,plus all53incoming helper contexts and50class reference contexts. Preserve native-facing callback name/signature,volatile fields,Root.alloc lifetime,monitor regions,window procedure chain,full primitive domains,guards/recursion/partial writes and call/exception order. No native implementation repairs or callback leaf renames.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:fc",
       "originalName": "fc",
       "to": "GameApplet",
       "evidence": "Abstract Applet implementing Runnable and focus listener; owns the canvas and main loop.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:ff",
+      "originalName": "ff",
+      "to": "PcmOutputWorker",
+      "evidence": "Source-purpose review: Runnable output worker with volatile two-slot PCM output array (existing AudioOutput/PcmPlayerService/AudioMixer names retained),two volatile running/stop flags,and retained system-task service. Package-visible constructor allocates two player slots and initializes both flags false;public final run services nonnull players through the already reviewed bound output serviceOutput method,sleeps via sleepMillis(10),and performs its original post-service helper call. All22run bodies,22constructors and22creation/task-registration contexts human read. Preserve run callback name,all field/method leaves,volatile declarations,flag placement,Exception/Throwable/finally routing,diagnostic wrappers,partial writes and call/allocation/exception order. Unrelated static helper bodies preserved without claiming their semantic review.",
       "confidence": "reviewed"
     },
     {
@@ -469,6 +483,13 @@
       "originalName": "pj",
       "to": "IntrusiveDeque",
       "evidence": "Sentinel-based deque of IntrusiveNode with directional traversal, insertion and removal.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:pk",
+      "originalName": "pk",
+      "to": "DirectDrawFullscreenManager",
+      "evidence": "Source-purpose review: final DirectDraw-backed fullscreen manager implements IEnumModesCallback,owns one DirectDraw and shared static int count/int[] mode accumulator;public constructor initializes DirectDraw. Complete class and all73incoming method/65class use contexts across21games reviewed. Enumerates flat width,height,rgbBitCount,refreshRate records;switches a Frame into fullscreen and restores display mode/cooperative level. Preserve callback name/signature,public constructor,all fields/modifiers/guard paths,shared state,primitive domains,allocation/call/exception order. No native callback or implementation fixes.",
       "confidence": "reviewed"
     },
     {
@@ -1281,6 +1302,20 @@
       "originalName": "a",
       "to": "clearStaticReferences",
       "evidence": "Complete cleanup statement proof reviewed: 1 null writes to 1 declared own static reference fields; only parameter guards, returns and braces otherwise. Own-field qualification and absent parameter/default-local shadow establish each target. Preserve partial/duplicate cleanup and order. Published pre-rename body SHA256 c8867a19491713a3c696bb554daad5240c7bd5bdea1880348424d9cb403d2c33.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eh.a(BII)V",
+      "originalName": "a",
+      "to": "setCursorPosition",
+      "evidence": "Source-purpose review: Calls bound Win32 User32.SetCursorPos with original per-game coordinate order. All incoming task dispatch/self-call contexts reviewed;preserve original guard values,conditional field writes,arithmetic exceptions,callback/self recursion and before/after native-call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:eh.a(ZBLjava/awt/Component;)V",
+      "originalName": "a",
+      "to": "setCursorVisible",
+      "evidence": "Source-purpose review: Registers/root-retains a Win32 callback,loads the cursor,updates the retained window-procedure/visibility state under original monitors,and sends cursor-update messages for a Component. All incoming task dispatch/guard-call contexts reviewed;preserve boolean meaning,supplied SendMessage arguments,all early returns/field writes/guards/nulls/recursion and native-call/exception order.",
       "confidence": "reviewed"
     },
     {
@@ -3188,6 +3223,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:pk.a(B)[I",
+      "originalName": "a",
+      "to": "listDisplayModes",
+      "evidence": "Source-purpose review: Calls bound DirectDraw.enumDisplayModes twice around shared flat-int mode array allocation,using callbackEnumModes to count/fill width,height,rgbBitCount,refreshRate records. Preserve each supplied enum flag,counter-reset argument,null/early-return/recursive guard path and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pk.a(IIIIILjava/awt/Frame;)V",
+      "originalName": "a",
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Makes a Frame visible,adjusts window styles through bound Win32.SetWindowLong,sets DirectDraw cooperative level/display mode and updates frame bounds/focus. Preserve per-game parameter order and semantics,including supplied visibility,window style/index and display-mode flags;retain all guard returns/nulls/recursion/exception and operation order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:pk.a(ILjava/awt/Frame;)V",
+      "originalName": "a",
+      "to": "restoreDisplayMode",
+      "evidence": "Source-purpose review: Calls bound DirectDraw.restoreDisplayMode followed by guarded/cooperative-level restoration on a Frame. Preserve caller-supplied cooperative flags,guard branches,arithmetic exceptions,static resets and recursive sibling calls.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:q.a(B)V",
       "originalName": "a",
       "to": "resetStaticState",
@@ -3932,7 +3988,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-monkeypuzzle2-rules.mjs": "a154933fc70d5d77c29762fb11f9501883dedcb625fc9fbb629e20e15db5bc32",
-      "monkeypuzzle2-names.json": "fa3c76f86cf20ebda2631152d094c30d0cfd7c463db8409efec891c9e87229bb",
+      "monkeypuzzle2-names.json": "6689ba95d726a0b8b95da3de8d807aec5db655ff394d986380ace5e02024353d",
       "reproduce-monkeypuzzle2.mjs": "e80c78fab2aa134de669a604ee7bc1d540df41c2a2d8e81e346e709c4914c594",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",

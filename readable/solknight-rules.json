@@ -507,6 +507,13 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "C:sb",
+      "originalName": "sb",
+      "to": "PcmOutputWorker",
+      "evidence": "Source-purpose review: Runnable output worker with volatile two-slot PCM output array (existing AudioOutput/PcmPlayerService/AudioMixer names retained),two volatile running/stop flags,and retained system-task service. Package-visible constructor allocates two player slots and initializes both flags false;public final run services nonnull players through the already reviewed bound output serviceOutput method,sleeps via sleepMillis(10),and performs its original post-service helper call. All22run bodies,22constructors and22creation/task-registration contexts human read. Preserve run callback name,all field/method leaves,volatile declarations,flag placement,Exception/Throwable/finally routing,diagnostic wrappers,partial writes and call/allocation/exception order. Unrelated static helper bodies preserved without claiming their semantic review.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "C:sc",
       "originalName": "sc",
       "to": "MouseWheelHandler",
@@ -532,6 +539,13 @@
       "originalName": "sh",
       "to": "PcmSample",
       "evidence": "Signed-byte PCM sample data with retained sample rate,byte-array identity,loop start/end and ping-pong flag. Complete original constructors preserve direct byte-array aliases or exact new-byte-array allocation,assignment order,default booleans and full argument domains;no validation or copies added. Original constructor SHA256s 20416a49527e355be483c17b253fbd502ceb34a0817e1ec792358e40340b352c,5d91e4259f5b9f90193f29598725eba78bffe609ae5e3b7889be18f733cacd83. Naming only. Complete selected sample classes,all50selected constructor bodies,20resampling bodies and115field declarations source-reviewed against immutable compiler-bound definitions. Preserve every original field/body,literal,guard,JVM width/domain,int/long overflow,FP/cast,alias,partial write,allocation/call/exception order,modifier and native/override binding. Existing meaningful aliases stay unchanged;native and class-name-literal intentional edit allowlists empty;no whole-game runtime equivalence claim.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:tb",
+      "originalName": "tb",
+      "to": "Win32CursorManager",
+      "evidence": "Source-purpose review: final Win32 cursor manager extends com.ms.dll.Callback;owns five private fields,including two volatile window/procedure ints and one volatile visibility boolean. Package-visible no-argument constructor starts visibility true;synchronized final callback routes existing window messages through bound User32 cursor/window-procedure operations. Complete class and all helper/callback/constructor bodies reviewed across23games,plus all53incoming helper contexts and50class reference contexts. Preserve native-facing callback name/signature,volatile fields,Root.alloc lifetime,monitor regions,window procedure chain,full primitive domains,guards/recursion/partial writes and call/exception order. No native implementation repairs or callback leaf renames.",
       "confidence": "reviewed"
     },
     {
@@ -574,6 +588,13 @@
       "originalName": "vf",
       "to": "BufferedImageRasterBuffer",
       "evidence": "AWT raster buffer backed by inherited int pixel storage through DataBufferInt/DirectColorModel/WritableRaster/BufferedImage,and drawn through Graphics.drawImage using retained Component observer. Complete class,public empty no-argument constructor,and both initialization/drawing bodies reviewed;exactly one own nonstatic Component field and four inherited dimension/pixel/image fields verified with bound platform APIs. Preserve finality/visibility,all method/field leaves except constructor class-name display,full primitive domains,guard paths,int overflow and pixel-array size,Lexicominos supplied premultiplication boolean,aliases,partial writes and allocation/call/exception order. Exactly one bound Class.forName string must follow this class rename;other literals unchanged. Deko already has provisional RenderingSupport013 alias,so its existing literal edit is refined rather than counted twice.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "C:vj",
+      "originalName": "vj",
+      "to": "DirectDrawFullscreenManager",
+      "evidence": "Source-purpose review: final DirectDraw-backed fullscreen manager implements IEnumModesCallback,owns one DirectDraw and shared static int count/int[] mode accumulator;public constructor initializes DirectDraw. Complete class and all73incoming method/65class use contexts across21games reviewed. Enumerates flat width,height,rgbBitCount,refreshRate records;switches a Frame into fullscreen and restores display mode/cooperative level. Preserve callback name/signature,public constructor,all fields/modifiers/guard paths,shared state,primitive domains,allocation/call/exception order. No native callback or implementation fixes.",
       "confidence": "reviewed"
     },
     {
@@ -3524,6 +3545,20 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:tb.a(III)V",
+      "originalName": "a",
+      "to": "setCursorPosition",
+      "evidence": "Source-purpose review: Calls bound Win32 User32.SetCursorPos with original per-game coordinate order. All incoming task dispatch/self-call contexts reviewed;preserve original guard values,conditional field writes,arithmetic exceptions,callback/self recursion and before/after native-call order.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:tb.a(ZLjava/awt/Component;B)V",
+      "originalName": "a",
+      "to": "setCursorVisible",
+      "evidence": "Source-purpose review: Registers/root-retains a Win32 callback,loads the cursor,updates the retained window-procedure/visibility state under original monitors,and sends cursor-update messages for a Component. All incoming task dispatch/guard-call contexts reviewed;preserve boolean meaning,supplied SendMessage arguments,all early returns/field writes/guards/nulls/recursion and native-call/exception order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:tc.a()V",
       "originalName": "a",
       "to": "clearStaticReferences",
@@ -3867,6 +3902,27 @@
       "confidence": "reviewed"
     },
     {
+      "symbol": "M:vj.a(B)[I",
+      "originalName": "a",
+      "to": "listDisplayModes",
+      "evidence": "Source-purpose review: Calls bound DirectDraw.enumDisplayModes twice around shared flat-int mode array allocation,using callbackEnumModes to count/fill width,height,rgbBitCount,refreshRate records. Preserve each supplied enum flag,counter-reset argument,null/early-return/recursive guard path and partial writes.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.a(ILjava/awt/Frame;)V",
+      "originalName": "a",
+      "to": "restoreDisplayMode",
+      "evidence": "Source-purpose review: Calls bound DirectDraw.restoreDisplayMode followed by guarded/cooperative-level restoration on a Frame. Preserve caller-supplied cooperative flags,guard branches,arithmetic exceptions,static resets and recursive sibling calls.",
+      "confidence": "reviewed"
+    },
+    {
+      "symbol": "M:vj.a(ILjava/awt/Frame;IIII)V",
+      "originalName": "a",
+      "to": "enterFullscreen",
+      "evidence": "Source-purpose review: Makes a Frame visible,adjusts window styles through bound Win32.SetWindowLong,sets DirectDraw cooperative level/display mode and updates frame bounds/focus. Preserve per-game parameter order and semantics,including supplied visibility,window style/index and display-mode flags;retain all guard returns/nulls/recursion/exception and operation order.",
+      "confidence": "reviewed"
+    },
+    {
       "symbol": "M:vk.c(I)V",
       "originalName": "c",
       "to": "resetStaticState",
@@ -4086,7 +4142,7 @@
     "repository": "Kreijstal/dekobloko-work",
     "files": {
       "build-solknight-rules.mjs": "d510dd3c5215d127be812bd794c1668890712739b676d0f83f2bf4b4a34f49d6",
-      "solknight-names.json": "923555dac76bf318070b6ca1a782dcf17fad96b73b12dfe6b672d05d580fdc29",
+      "solknight-names.json": "cb8c97f967c98e956c22e584a2168c8e6e83c3bcaa6ceccc391ebd56a1bbb80e",
       "reproduce-solknight.mjs": "13b4e70cdbc3799ce0c256f7eb4afa61bbdd6dd18b17fd5cfda8475d81e10fc3",
       "reviewed-game.mjs": "564fd02e2b3e3260088e33d10279839fd557ebb789a29885692e499b89853a7f",
       "pinned-compiler.mjs": "8d6fc363135ac476de06d36d254484d645367237d55a6186153f4d777ebcb7cb",
